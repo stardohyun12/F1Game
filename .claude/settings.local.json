@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Program Files/Unity/**)",
+      "Read(//c/Program Files/Unity Hub/**)"
+    ]
+  }
+}
