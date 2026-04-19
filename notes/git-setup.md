@@ -71,8 +71,8 @@ git commit -m "init: PIT CREW 프로젝트 초기 커밋 (GDD, dev-plan, notes, 
 
 ## 5단계 (선택): GitHub 원격 연결
 
-```bash
-# GitHub에서 먼저 pit-crew 리포 생성 (비공개 권장)
+```cmd
+REM GitHub에서 먼저 pit-crew 리포 생성 (비공개 권장)
 git remote add origin https://github.com/stardohyun12/pit-crew.git
 git push -u origin main
 ```
