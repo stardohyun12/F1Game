@@ -106,6 +106,30 @@
 - **결정:** PIT CREW 가칭 유지. 제목 변경 논의는 MVP 완성 후.
 - **근거:** 지금 브랜딩에 시간 쓸 필요 없음. 재미 검증이 우선.
 
+## 2026-04-18 — 세션 2 (하네스 정비)
+
+### D-016. 하네스 엔지니어링 1~3단계 적용
+- **결정:** 영상 기반 감사 후 CLAUDE.md 슬림화(172→82줄), 세션 관리 파일 3종 도입(session-log, feature-list, session-opener), MCP 가이드, git init.
+- **근거:** Cowork 컨텍스트 예산 관리, 세션간 인수인계 장치 확보, 조기 종료 방지.
+- **이관:** 하네스 4~6단계(검증 파이프라인, 멀티에이전트, 유지보수)는 MVP 완성 후 도입. `dev-plan/feature-list.md` "추후" 섹션에 기록.
+- **관련 문서:** `CLAUDE.md`, `notes/session-log.md`, `dev-plan/feature-list.md`, `notes/session-opener.md`, `notes/mcp-setup.md`, `notes/git-setup.md`.
+
+### D-017. 프로젝트 루트에 단일 git 리포
+- **결정:** PitCrew/ 전체를 하나의 git 리포로. Unity 프로젝트(F1/)는 하위에 포함.
+- **근거:** 기획 문서와 코드가 같은 역사 축. 특정 기능 구현이 어떤 GDD 수정을 동반했는지 한 번의 `git log`로 추적.
+- **대안 검토:** Unity 규범(F1/만 리포)은 솔로 + 문서 중심 프로젝트에선 오버헤드. 두 리포 분리(문서/코드)는 관리 부담 증가.
+
+## 2026-04-19 — 세션 3 (Day 2 진입)
+
+### D-018. 1주차 스코프 밖 Kenny 에셋 유지
+- **결정:** `F1/Assets/Model/` 에 선행 임포트된 `kenney_city-kit-commercial`, `kenney_city-kit-industrial`, `kenney_city-kit-suburban`, `kenney_train-kit` 4종을 **삭제하지 않고 그대로 둔다.**
+- **근거:** 도현 명시 선택. 재임포트 왕복 비용 회피.
+- **전제 (위반 시 스코프 원칙 재위배):**
+  - 1주차 씬/프리팹에서 이 4종은 **참조 금지.** 차량 + Road Tiles + 평면 외 배치 금지.
+  - 4주차 이전에 "이 에셋 써보자"는 충동이 생기면 즉시 `notes/ideas-parking.md`로 이동.
+  - Unity 빌드 용량에 들어가지만 1주차에는 측정 불필요.
+- **관련 원칙:** CLAUDE.md 규칙 1(제한이 곧 재미), 규칙 3(비주얼 폴리싱 4주차 이후).
+
 ### D-XXX. [질문 제목]
 - **결정:**
 - **근거:**

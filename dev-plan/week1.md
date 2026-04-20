@@ -39,17 +39,18 @@
 
 ### Day 1 — 세팅
 - [x] Unity 6 신규 프로젝트 생성 — `F1/` (URP 템플릿)
-- [~] Git 초기화, .gitignore 세팅 — `.gitignore` 준비 완료, init은 터미널에서 (`notes/git-setup.md`)
+- [x] Git 초기화, .gitignore 세팅 (`git init -b main` + 첫 커밋 완료)
 - [ ] Kenny Car Kit 다운로드 및 임포트
 - [ ] Kenny 3D Road Tiles 다운로드 및 임포트
 - [ ] 빈 씬에 테스트 차량 + 평면 배치 확인
 
 ### Day 2 — 차량 물리 MVP
-- [ ] 차량 스크립트 작성 (`ArcadeCarController.cs`)
-  - 키보드 입력 (WASD / 화살표)
-  - Rigidbody 기반 아케이드 물리
-  - 가속, 제동, 조향 기본값 세팅
-- [ ] 테스트: 차가 움직인다
+- [x] 차량 스크립트 작성 (`ArcadeCarController.cs`) — `F1/Assets/Scripts/ArcadeCarController.cs`
+  - [x] InputSystem `Move` 액션 재활용 (WASD / 화살표 / 좌측스틱)
+  - [x] Rigidbody 기반 아케이드 물리 (WheelCollider 미사용 — D-007 1주차 전제)
+  - [x] 가속, 제동, 조향 기본값 세팅 (최고속 60km/h, 0→60 4.5s, 조향 속도비례 AnimationCurve)
+  - [x] 사이드 그립 감쇠 (코너 진입 관성 — D-007 "약간의 무게감")
+- [ ] 테스트: 차가 움직인다 — 도현 Unity 에디터에서 씬 배치 + Play 테스트
 
 ### Day 3 — 카메라 + 트랙
 - [ ] 3인칭 카메라 컨트롤러 (`FollowCamera.cs`)
