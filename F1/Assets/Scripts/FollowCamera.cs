@@ -12,10 +12,16 @@ public class FollowCamera : MonoBehaviour
 
     [Header("FOV")]
     [SerializeField] private float baseFov = 60f;
-    [SerializeField] private float maxFov = 75f;
+    [SerializeField] private float maxFov = 80f;
     [Tooltip("차량 최고속(m/s). 0이면 ArcadeCarController.MaxSpeedMps 사용.")]
     [SerializeField] private float referenceMaxSpeedMps = 0f;
-    [SerializeField] private float fovLerpSpeed = 4f;
+    [SerializeField] private float fovLerpSpeed = 5f;
+
+    [Header("Corner Roll")]
+    [SerializeField] private float maxRollDeg = 5f;
+    [SerializeField] private float rollLerpSpeed = 6f;
+    [SerializeField] private float rollMinSpeedNorm = 0.2f;
+    private float currentRoll;
 
     private Camera cam;
     private Vector3 posVelocity;
@@ -39,7 +45,20 @@ public class FollowCamera : MonoBehaviour
 
         Quaternion lookRot = Quaternion.LookRotation(target.position + Vector3.up * 1.2f - transform.position, Vector3.up);
         Vector3 e = lookRot.eulerAngles;
-        Quaternion flatLook = Quaternion.Euler(e.x, e.y, 0f);
+
+        float targetRoll = 0f;
+        if (car != null)
+        {
+            float maxSpdForRoll = car.MaxSpeedMps > 0.01f ? car.MaxSpeedMps : 16.67f;
+            float speedNormForRoll = Mathf.Clamp01(Mathf.Abs(car.CurrentSpeedMps) / maxSpdForRoll);
+            if (speedNormForRoll > rollMinSpeedNorm)
+            {
+                float scale = (speedNormForRoll - rollMinSpeedNorm) / (1f - rollMinSpeedNorm);
+                targetRoll = car.SteerInput * maxRollDeg * scale;
+            }
+        }
+        currentRoll = Mathf.Lerp(currentRoll, targetRoll, rollLerpSpeed * Time.deltaTime);
+        Quaternion flatLook = Quaternion.Euler(e.x, e.y, currentRoll);
         transform.rotation = Quaternion.Slerp(transform.rotation, flatLook, rotationLerpSpeed * Time.deltaTime);
 
         if (cam != null)

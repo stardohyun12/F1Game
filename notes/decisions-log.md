@@ -130,6 +130,28 @@
   - Unity 빌드 용량에 들어가지만 1주차에는 측정 불필요.
 - **관련 원칙:** CLAUDE.md 규칙 1(제한이 곧 재미), 규칙 3(비주얼 폴리싱 4주차 이후).
 
+## 2026-04-20 — 세션 4 (Day 3~5 진행 중)
+
+### D-019. F1 리얼리즘 요청 재확인 — D-007 유지
+- **결정:** Day 5 드리프트 구현 후 "F1처럼 만들고 싶다"는 도현 요청에 대해 **D-007(아케이드 + 무게감) 방침 유지.** Tier A(수치 튜닝)만 수용, Tier B(기어박스/다운포스/ERS/슬립스트림/서스펜션) 전부 `ideas-parking.md`로, Tier C(풀 시뮬 물리)는 기각.
+- **근거:**
+  - D-007 근거 그대로 유효: 화물 Shock 긴장감, 튜닝 비용, 배달 톤 부조화.
+  - "유치함" 피드백의 진짜 원인은 수치 튜닝 거친 상태일 가능성 높음 (드리프트 방금 넣음, 브레이크 한 번 조정).
+  - 1주차 재미 판정 기준은 "계속 놀고 싶나", 사실감이 아님.
+  - 도현 패턴 3번째 반복 관찰 (세션 1 카메라 전환, 세션 3 에셋 쓸어담기, 세션 4 F1 리얼리즘) → 방어선으로 D-007 재확인.
+- **수용한 Tier A 튜닝:** 고속 조향 반응 더 둔화(커브 끝값 0.35→0.2), 공기저항 추가(airDrag 0.35), 브레이크 속도 곡선화(저속 1.0 / 고속 0.6), Rigidbody angularDamping 2.5, 카메라 maxFov 75→80, 코너 롤 ±5°.
+- **파킹 항목:** `notes/ideas-parking.md` "2026-04-20 F1 시뮬 요소 검토 결과" 블록.
+- **관련 문서:** `F1/Assets/Scripts/ArcadeCarController.cs`, `F1/Assets/Scripts/FollowCamera.cs`, `notes/ideas-parking.md`, 플랜 `C:\Users\stard\.claude\plans\happy-puzzling-raccoon.md`.
+
+### D-020. 차량 엔진 사운드 외부 CC0 허용 (D-011 보정)
+- **결정:** 차량 엔진 루프 **1개 한정**으로 Kenny 외 CC0 에셋 허용. 출처는 freesound.org CC0 필터 우선, 다른 SFX/UI/음악은 D-011 유지.
+- **근거:** Kenny Audio 라인업에 엔진 음원 부재. 엔진 사운드는 주행 체감의 약 50% 비중이라 생략 불가. AI 생성(generate_sfx)은 현재 401 오류 + 라이선스/퀄리티 불확실 → 실사 녹음 CC0가 퀄리티·안전성 모두 우위.
+- **제약:**
+  - 엔진 루프 1개만. 추가 외부 SFX 요청 발생 시 재심사.
+  - 파일 경로: `F1/Assets/Audio/EngineLoop.wav` (또는 유사).
+  - 출처 URL과 라이선스(CC0) 확인 문서를 같은 폴더 `Audio/LICENSE.txt`에 기록.
+- **관련 문서:** `F1/Assets/Scripts/EngineAudio.cs`, `dev-plan/week1.md` Day 4.
+
 ### D-XXX. [질문 제목]
 - **결정:**
 - **근거:**

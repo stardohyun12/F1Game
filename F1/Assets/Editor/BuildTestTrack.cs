@@ -10,6 +10,7 @@ public static class BuildTestTrack
     const float TileSize = 4f;
     const float TileY = 0.05f;
 
+    [MenuItem("PitCrew/Build Test Track")]
     public static void Execute()
     {
         var straight = AssetDatabase.LoadAssetAtPath<GameObject>(StraightPath);
@@ -34,12 +35,12 @@ public static class BuildTestTrack
 
         // Curve is 2x2 tile bounds. Center at z = (8 + 0.5) * TileSize so it sits after last straight.
         float curveCenterZ = 8.5f * TileSize; // = 34
-        Place(curve, track, "Road_C_00", new Vector3(0, TileY, curveCenterZ), Quaternion.Euler(0, 180, 0));
+        Place(curve, track, "Road_C_00", new Vector3(0, TileY, curveCenterZ), Quaternion.identity);
 
         // 4 straights +X after curve (curve rotated 180° exits to +X).
         for (int i = 1; i <= 4; i++)
         {
-            float ex = (0.5f + i) * TileSize;
+            float ex = -(0.5f + i) * TileSize;
             Place(straight, track, $"Road_E_{i:00}", new Vector3(ex, TileY, curveCenterZ), Quaternion.Euler(0, 90, 0));
         }
 

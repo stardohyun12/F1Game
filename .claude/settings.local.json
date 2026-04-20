@@ -26,7 +26,11 @@
       "mcp__coplay-mcp__play_game",
       "mcp__coplay-mcp__stop_game",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "mcp__coplay-mcp__list_unity_project_roots",
+      "mcp__coplay-mcp__set_unity_project_root",
+      "mcp__coplay-mcp__set_transform",
+      "Bash(git *)"
     ]
   }
 }

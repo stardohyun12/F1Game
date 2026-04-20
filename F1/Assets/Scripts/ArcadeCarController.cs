@@ -7,25 +7,38 @@ public class ArcadeCarController : MonoBehaviour
     [Header("Performance")]
     [SerializeField] private float maxSpeedKmh = 60f;
     [SerializeField] private float accelTime = 2.5f;
-    [SerializeField] private float brakeDecel = 12f;
+    [SerializeField] private float brakeDecel = 6f;
     [SerializeField] private float reverseMaxKmh = 20f;
     [SerializeField] private float coastDrag = 0.8f;
+    [SerializeField] private float airDrag = 0.35f;
+    [SerializeField] private AnimationCurve brakeStrengthBySpeed =
+        AnimationCurve.Linear(0f, 1f, 1f, 0.6f);
+    [SerializeField] private float angularDamping = 2.5f;
 
     [Header("Steering")]
     [SerializeField] private float maxTurnDegPerSec = 110f;
     [SerializeField] private AnimationCurve turnResponseBySpeed =
-        AnimationCurve.Linear(0f, 1f, 1f, 0.35f);
+        AnimationCurve.Linear(0f, 1f, 1f, 0.2f);
     [SerializeField] private float minSpeedForSteer = 0.5f;
 
     [Header("Grip")]
     [SerializeField] private float sideGripDamping = 6f;
     [SerializeField] private Vector3 centerOfMassOffset = new Vector3(0f, -0.3f, 0f);
 
+    [Header("Drift")]
+    [SerializeField] private float driftGripMultiplier = 0.15f;
+    [SerializeField] private float driftYawBoost = 1.35f;
+    [SerializeField] private float driftBrakeThrottleScale = 0.4f;
+    [SerializeField] private float driftLongitudinalDrag = 3.5f;
+    [SerializeField] private float driftMaxSpeedKmh = 42f;
+
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 0.6f;
     [SerializeField] private LayerMask groundLayer = ~0;
 
     private Rigidbody rb;
+    private PlayerInput playerInput;
+    private InputAction handbrakeAction;
     private Vector2 moveInput;
     private float maxSpeedMps;
     private float reverseMaxMps;
@@ -34,11 +47,17 @@ public class ArcadeCarController : MonoBehaviour
 
     public float CurrentSpeedMps => rb != null ? Vector3.Dot(rb.linearVelocity, transform.forward) : 0f;
     public float MaxSpeedMps => maxSpeedMps;
+    public bool IsDrifting { get; private set; }
+    public float SteerInput => moveInput.x;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = centerOfMassOffset;
+        rb.angularDamping = angularDamping;
+        playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null && playerInput.actions != null)
+            handbrakeAction = playerInput.actions.FindAction("Handbrake", throwIfNotFound: false);
         RecalculateForces();
     }
 
@@ -64,6 +83,7 @@ public class ArcadeCarController : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = true;
+        IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
 
         Vector3 v = rb.linearVelocity;
         float forwardSpeed = Vector3.Dot(v, transform.forward);
@@ -72,6 +92,29 @@ public class ArcadeCarController : MonoBehaviour
         ApplyThrottle(forwardSpeed);
         ApplySteering(forwardSpeed);
         ApplySideGrip(sideSpeed);
+        ApplyDriftDrag(forwardSpeed);
+        ApplyAirDrag(forwardSpeed);
+    }
+
+    void ApplyAirDrag(float forwardSpeed)
+    {
+        if (forwardSpeed <= 0.1f) return;
+        float speedNorm = Mathf.Clamp01(forwardSpeed / maxSpeedMps);
+        rb.AddForce(-transform.forward * (forwardSpeed * airDrag * speedNorm), ForceMode.Acceleration);
+    }
+
+    void ApplyDriftDrag(float forwardSpeed)
+    {
+        if (!IsDrifting || !isGrounded) return;
+        if (forwardSpeed > 0.1f)
+            rb.AddForce(-transform.forward * (forwardSpeed * driftLongitudinalDrag), ForceMode.Acceleration);
+
+        float driftMaxMps = driftMaxSpeedKmh / 3.6f;
+        if (forwardSpeed > driftMaxMps)
+        {
+            Vector3 excess = transform.forward * (forwardSpeed - driftMaxMps);
+            rb.AddForce(-excess * 10f, ForceMode.Acceleration);
+        }
     }
 
     void ApplyThrottle(float forwardSpeed)
@@ -82,12 +125,19 @@ public class ArcadeCarController : MonoBehaviour
         if (t > 0.01f)
         {
             if (forwardSpeed < maxSpeedMps)
-                rb.AddForce(transform.forward * (accelForce * t), ForceMode.Force);
+            {
+                float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
+                rb.AddForce(transform.forward * (accelForce * t * throttleScale), ForceMode.Force);
+            }
         }
         else if (t < -0.01f)
         {
             if (forwardSpeed > 0.2f)
-                rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t), ForceMode.Force);
+            {
+                float brakeSpeedNorm = Mathf.Clamp01(forwardSpeed / maxSpeedMps);
+                float brakeMult = brakeStrengthBySpeed.Evaluate(brakeSpeedNorm);
+                rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult), ForceMode.Force);
+            }
             else if (forwardSpeed > -reverseMaxMps)
                 rb.AddForce(transform.forward * (accelForce * t * 0.5f), ForceMode.Force);
         }
@@ -105,6 +155,7 @@ public class ArcadeCarController : MonoBehaviour
 
         float speedNorm = Mathf.Clamp01(speedMag / maxSpeedMps);
         float response = turnResponseBySpeed.Evaluate(speedNorm);
+        if (IsDrifting) response *= driftYawBoost;
         float yaw = maxTurnDegPerSec * moveInput.x * response * Time.fixedDeltaTime;
 
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yaw, 0f));
@@ -113,6 +164,7 @@ public class ArcadeCarController : MonoBehaviour
     void ApplySideGrip(float sideSpeed)
     {
         if (!isGrounded) return;
-        rb.AddForce(-transform.right * (sideSpeed * sideGripDamping), ForceMode.Acceleration);
+        float grip = IsDrifting ? sideGripDamping * driftGripMultiplier : sideGripDamping;
+        rb.AddForce(-transform.right * (sideSpeed * grip), ForceMode.Acceleration);
     }
 }

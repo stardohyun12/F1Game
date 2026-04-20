@@ -1,0 +1,11 @@
+EngineLoop.mp3
+Source: AI 생성 (ElevenLabs Sound Effects 또는 유사 서비스)
+Original filename: high-revving_F1_V10__#1-1776671015128.mp3
+Prompt (추정, 원본 파일명에서 유추): "high-revving F1 V10"
+Generated: 2026-04-20
+License: 생성 서비스의 무료/유료 티어 이용 약관에 따름 (세부 URL은 도현이 보충 가능)
+Purpose: Vehicle engine loop (per decision D-020)
+
+Notes:
+- D-020에 따라 차량 엔진 루프 한정 Kenny 외 외부 에셋 1개 허용.
+- 필요 시 도현이 출처 URL/서비스명/약관 URL로 이 파일 내용 보완.
