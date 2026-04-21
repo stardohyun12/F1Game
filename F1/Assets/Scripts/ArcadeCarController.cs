@@ -5,20 +5,20 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    [SerializeField] private float maxSpeedKmh = 60f;
-    [SerializeField] private float accelTime = 2.5f;
+    [SerializeField] private float maxSpeedKmh = 90f;
+    [SerializeField] private float accelTime = 2.8f;
     [SerializeField] private float brakeDecel = 6f;
     [SerializeField] private float reverseMaxKmh = 20f;
     [SerializeField] private float coastDrag = 0.8f;
     [SerializeField] private float airDrag = 0.35f;
     [SerializeField] private AnimationCurve brakeStrengthBySpeed =
         AnimationCurve.Linear(0f, 1f, 1f, 0.6f);
-    [SerializeField] private float angularDamping = 2.5f;
+    [SerializeField] private float angularDamping = 1.5f;
 
     [Header("Steering")]
     [SerializeField] private float maxTurnDegPerSec = 110f;
     [SerializeField] private AnimationCurve turnResponseBySpeed =
-        AnimationCurve.Linear(0f, 1f, 1f, 0.2f);
+        AnimationCurve.Linear(0f, 1f, 1f, 0.35f);
     [SerializeField] private float minSpeedForSteer = 0.5f;
 
     [Header("Grip")]
@@ -26,11 +26,14 @@ public class ArcadeCarController : MonoBehaviour
     [SerializeField] private Vector3 centerOfMassOffset = new Vector3(0f, -0.3f, 0f);
 
     [Header("Drift")]
-    [SerializeField] private float driftGripMultiplier = 0.15f;
-    [SerializeField] private float driftYawBoost = 1.35f;
-    [SerializeField] private float driftBrakeThrottleScale = 0.4f;
-    [SerializeField] private float driftLongitudinalDrag = 3.5f;
-    [SerializeField] private float driftMaxSpeedKmh = 42f;
+    [SerializeField] private float driftGripMultiplier = 0.02f;
+    [SerializeField] private float driftYawBoost = 1.5f;
+    [SerializeField] private float driftBrakeThrottleScale = 0.9f;
+    [SerializeField] private float driftLongitudinalDrag = 0f;
+    [SerializeField] private float driftMaxSpeedKmh = 90f;
+    [SerializeField] private float driftAngularDamping = 0.3f;
+    [SerializeField] private float driftEntryYawImpulse = 4f;
+    [SerializeField] private float driftYawTorque = 15f;
 
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 0.6f;
@@ -44,6 +47,7 @@ public class ArcadeCarController : MonoBehaviour
     private float reverseMaxMps;
     private float accelForce;
     private bool isGrounded;
+    private bool wasDrifting;
 
     public float CurrentSpeedMps => rb != null ? Vector3.Dot(rb.linearVelocity, transform.forward) : 0f;
     public float MaxSpeedMps => maxSpeedMps;
@@ -84,6 +88,17 @@ public class ArcadeCarController : MonoBehaviour
     {
         isGrounded = true;
         IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
+
+        if (IsDrifting && !wasDrifting)
+        {
+            rb.angularDamping = driftAngularDamping;
+            rb.AddTorque(Vector3.up * (driftEntryYawImpulse * Mathf.Sign(moveInput.x == 0 ? 1f : moveInput.x)), ForceMode.VelocityChange);
+        }
+        else if (!IsDrifting && wasDrifting)
+        {
+            rb.angularDamping = angularDamping;
+        }
+        wasDrifting = IsDrifting;
 
         Vector3 v = rb.linearVelocity;
         float forwardSpeed = Vector3.Dot(v, transform.forward);
@@ -155,10 +170,16 @@ public class ArcadeCarController : MonoBehaviour
 
         float speedNorm = Mathf.Clamp01(speedMag / maxSpeedMps);
         float response = turnResponseBySpeed.Evaluate(speedNorm);
-        if (IsDrifting) response *= driftYawBoost;
-        float yaw = maxTurnDegPerSec * moveInput.x * response * Time.fixedDeltaTime;
 
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yaw, 0f));
+        if (IsDrifting)
+        {
+            rb.AddTorque(Vector3.up * (moveInput.x * driftYawTorque * driftYawBoost * response), ForceMode.Acceleration);
+        }
+        else
+        {
+            float yaw = maxTurnDegPerSec * moveInput.x * response * Time.fixedDeltaTime;
+            rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yaw, 0f));
+        }
     }
 
     void ApplySideGrip(float sideSpeed)

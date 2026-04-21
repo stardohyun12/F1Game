@@ -4,8 +4,12 @@ using UnityEngine.SceneManagement;
 
 public static class BuildTestTrack
 {
-    const string StraightPath = "Assets/Model/kenney_city-kit-roads/Models/FBX format/road-straight.fbx";
-    const string CurvePath = "Assets/Model/kenney_city-kit-roads/Models/FBX format/road-curve.fbx";
+    const string Root = "Assets/Model/kenney_city-kit-roads/Models/FBX format/";
+    const string StraightPath = Root + "road-straight.fbx";
+    const string StraightBarrierPath = Root + "road-straight-barrier.fbx";
+    const string CurvePath = Root + "road-curve.fbx";
+    const string CurveBarrierPath = Root + "road-curve-barrier.fbx";
+
     const float TileScale = 4f;
     const float TileSize = 4f;
     const float TileY = 0.05f;
@@ -14,10 +18,12 @@ public static class BuildTestTrack
     public static void Execute()
     {
         var straight = AssetDatabase.LoadAssetAtPath<GameObject>(StraightPath);
+        var straightBarrier = AssetDatabase.LoadAssetAtPath<GameObject>(StraightBarrierPath);
         var curve = AssetDatabase.LoadAssetAtPath<GameObject>(CurvePath);
-        if (straight == null || curve == null)
+        var curveBarrier = AssetDatabase.LoadAssetAtPath<GameObject>(CurveBarrierPath);
+        if (straight == null || curve == null || straightBarrier == null || curveBarrier == null)
         {
-            Debug.LogError($"Missing asset. straight={straight} curve={curve}");
+            Debug.LogError("BuildTestTrack: missing source asset(s).");
             return;
         }
 
@@ -27,25 +33,42 @@ public static class BuildTestTrack
         var track = new GameObject("Track");
         Undo.RegisterCreatedObjectUndo(track, "Build Test Track");
 
-        // 8 straights +Z, starting at Race origin
-        for (int i = 0; i < 8; i++)
+        // Start segment: 10 straights along +Z. rot 90 so tile's road axis aligns with Z (crosswalks on sides).
+        for (int i = 0; i < 10; i++)
         {
-            Place(straight, track, $"Road_S_{i:00}", new Vector3(0, TileY, i * TileSize), Quaternion.identity);
+            var p = new Vector3(0, TileY, i * TileSize);
+            Place(straight, track, $"Road_S_{i:00}", p, Quaternion.Euler(0, 90, 0));
         }
 
-        // Curve is 2x2 tile bounds. Center at z = (8 + 0.5) * TileSize so it sits after last straight.
-        float curveCenterZ = 8.5f * TileSize; // = 34
-        Place(curve, track, "Road_C_00", new Vector3(0, TileY, curveCenterZ), Quaternion.identity);
+        // Curve 1: rot 180 gives connectors at -Z (meets start) and -X (leads to middle).
+        float curve1Z = 10.5f * TileSize;
+        var c1 = new Vector3(0, TileY, curve1Z);
+        Place(curve, track, "Road_C_01", c1, Quaternion.Euler(0, 180, 0));
 
-        // 4 straights +X after curve (curve rotated 180° exits to +X).
-        for (int i = 1; i <= 4; i++)
+        // Middle segment: 8 straights along -X. rot 0 so tile's road axis aligns with X (crosswalks on sides).
+        for (int i = 1; i <= 8; i++)
         {
             float ex = -(0.5f + i) * TileSize;
-            Place(straight, track, $"Road_E_{i:00}", new Vector3(ex, TileY, curveCenterZ), Quaternion.Euler(0, 90, 0));
+            var p = new Vector3(ex, TileY, curve1Z);
+            Place(straight, track, $"Road_M_{i:00}", p, Quaternion.identity);
+        }
+
+        // Curve 2: rot 90 gives connectors at +X (meets middle's -X end) and -Z (leads to return).
+        float curve2X = -10f * TileSize; // = -40, so +X edge at -36
+        var c2 = new Vector3(curve2X, TileY, curve1Z);
+        Place(curve, track, "Road_C_02", c2, Quaternion.Euler(0, 90, 0));
+
+        // Return segment: 10 straights along -Z (rot 180). Start at z=36 so +Z edge meets curve2's -Z edge at z=38.
+        float returnZStart = curve1Z - 1.5f * TileSize; // = 36
+        for (int i = 1; i <= 10; i++)
+        {
+            float ez = returnZStart - (i - 1) * TileSize;
+            var p = new Vector3(curve2X, TileY, ez);
+            Place(straight, track, $"Road_R_{i:00}", p, Quaternion.Euler(0, 90, 0));
         }
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log("BuildTestTrack: placed 8 straights + 1 curve + 4 straights.");
+        Debug.Log("BuildTestTrack: road + barrier overlay pairs placed (U-turn layout).");
     }
 
     static void Place(GameObject source, GameObject parent, string name, Vector3 pos, Quaternion rot)

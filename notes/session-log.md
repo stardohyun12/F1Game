@@ -136,3 +136,70 @@
   - 집중력 저하 신호 한 번 (엔진 사운드 탐색 중). 세션 종료 유도 + AI 생성 루트로 간단화.
   - 코플레이 generate_sfx는 계정+크레딧 필요 — 앞으로 "쉽게 쉽게" 옵션 제시할 때 유료 가능성 미리 점검.
 - **컨텍스트 상태:** 세션 종료.
+
+---
+
+## 세션 5 — 2026-04-22
+
+- **목표:** 속도감 튜닝 + 맵 구성 (Day 6 본작업).
+- **한 일:**
+  - **속도감 튜닝 (Tier A 연장):**
+    - FollowCamera `baseFov` 60→55, `maxFov` 80→90 (FOV 델타 확대로 가속 체감↑).
+    - ArcadeCarController `maxSpeedKmh` 60→90, `accelTime` 2.5→3.2 (실체감 향상).
+    - 도현 "기어 시스템" 재제안 → D-019 방어선 4번째 작동, `ideas-parking.md`에 재검토 조건(Day 7 판정 통과 후 + 구체 피드백) 명시하고 파킹.
+  - **Coplay MCP 도입:** 세션 초반 "도구 없이 맵 짜기 불가" 판단 → Coplay MCP로 `capture_scene_object`, `place_asset_in_scene`, `get_game_object_info`, `execute_script` 활용. 씬 스크린샷 보고 판단하는 루프 확립.
+  - **맵 구성 (Day 6):** `BuildTestTrack.cs` 확장 — U-턴 레이아웃 (직선 10 + 커브 + 직선 8 + 커브 + 직선 10), `DecorateTrack.cs` 신규 (저지벽 양측 + 갠트리 표지판 + 출발선 콘).
+  - **Kenny 타일 방향 디버깅 (대규모):** 여러 차례 시행착오 끝에 `road-straight.fbx`의 **자연 도로 축이 local +X**임을 확인 (내내 local +Z로 잘못 가정). 이로 인한 버그 3건 모두 수정:
+    1. 커브 커넥터 방향 오인 (세션 3 로그 "rot 0 출구 -X" 오답 확인) → 커브 1 rot=180, 커브 2 rot=90.
+    2. 직선 타일이 도로 축과 스택 방향 수직이라 타일 이음매마다 크로스워크 띠 발생 → 스타트 rot=90, 중간 rot=0, 복귀 rot=90으로 수정.
+    3. 저지벽 긴 축(local Z)이 도로 축과 수직이라 도로 가로지르게 배치 → 방벽 회전 `tileRot * Euler(0,90,0)` 추가.
+  - DecorateTrack 좌표계 정리: `sideDir = tile.forward` (도로 수직), `alongDir = tile.right` (도로 축).
+  - **D-021 (도로 에셋 교체 파킹):** Kenny city-kit-roads가 도시 교차로용이라 타일마다 크로스워크 mesh 박혀있음이 구조적 한계. 현재 rot로 "옆면" 처리해 문제 없지만, 4주차 폴리싱에서 Kenny racing-kit 또는 커스텀 Plane 재검토. `ideas-parking.md`에 기록.
+- **다음 세션 할 일:**
+  - **도현: Play 테스트 전 인스펙터 Reset 2곳:**
+    - Race → ArcadeCarController (maxSpeed 90, accelTime 3.2 반영)
+    - Main Camera → FollowCamera (FOV 55/90 반영)
+  - Play 테스트 — Tier A 튜닝 + 새 맵 전체 체감.
+  - 느낌 OK면 Day 6 나머지 (30분 플레이 재미 판정) + Day 7 (1주차 체크포인트).
+  - 커밋 (현재 미커밋 상태): BuildTestTrack, DecorateTrack, ArcadeCarController, FollowCamera, ideas-parking, session-log.
+- **관련 문서/코드:**
+  - `F1/Assets/Editor/BuildTestTrack.cs`, `DecorateTrack.cs`
+  - `F1/Assets/Scripts/ArcadeCarController.cs`, `FollowCamera.cs`
+  - `notes/ideas-parking.md` (기어 시스템 재검토 조건 + D-021 도로 에셋 교체)
+- **메모:**
+  - **Coplay MCP가 맵 작업의 판세를 완전히 바꿈.** 에셋 이름만 보고 추측하던 루프 → 스크린샷 보고 확인하는 루프. 이전 세션들은 Coplay 붙어있어도 잘 안 썼는데, 앞으로 비주얼/씬 작업은 무조건 Coplay 선행.
+  - **도현 패턴 5번째 관찰:** "기어 시스템" 재제안. D-019 방어선 작동. ideas-parking에 재검토 조건 명시해서 다음 반복에 방어 근거 축적.
+  - **세션 3 로그 오류 확인:** "rot 0 출구 -X 방향" 단언이 틀렸음 (실제 rot=0 커넥터는 +Z와 +X). 원인은 시각적 착시 — 도로 surface가 인접 타일과 겹쳐 보여서 "연결된 것처럼" 인식. 앞으로 에셋 방향 판단은 반드시 Coplay 캡처로 검증.
+  - **도현의 집요함이 이번엔 플러스로 작용.** "도로 아직 이상함" 3~4번 반복해서 강조 → 결국 근본 버그(local +X 가정 오류) 발견. 보통 스코프 방어해야 할 타이밍이지만, 이번 건은 진짜 버그였음. 사용자 피드백 신중히 듣기.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트부터 시작.
+
+---
+
+## 세션 6 — 2026-04-22 (저녁)
+
+- **목표:** 드리프트/주행 튜닝 → 맵 + 배달 시스템 도입 → 도로 정확성 확보.
+- **한 일:**
+  - **드리프트 구조적 버그 수정:** `ApplySteering`이 `MoveRotation`으로 차 방향을 매 프레임 강제 회전 → 사이드슬립 자체가 성립 안 함 = "브레이크 느낌"의 근본 원인. 드리프트 중에는 `AddTorque`로 회전(차체와 속도 벡터 분리), 진입 순간 yaw impulse, `angularDamping`을 0.3으로 낮춤. 그립 0.02, longDrag 0, throttleScale 0.9, maxSpeed 90 (속도 제한 실질 해제).
+  - **주행 반응성 튜닝:** `accelTime` 3.2→2.8, `turnResponseBySpeed` 끝 0.2→0.35, `angularDamping` 2.5→1.5. 도현 피드백: "주행 자체 재미 없음" → 맵 + 목적 추가 후 재검증 결정.
+  - **TileMapAuto 시스템 (D-022):** 셀별 수동 회전(TileMapTrack) 방식 폐기. 그리드 마스크 5줄 + 인접 셀 자동 추론으로 직사각형 루프 트랙 자동 생성. 직선/코너 회전 매핑 메타데이터를 `RotationFor` dict에 보관.
+  - **road-curve native size 발견 (D-021 정정):** 도로 폭 어긋남 + 흰 띠가 crosswalk 마킹 한계가 아니라 **road-curve.fbx의 native size가 2×2 (직선은 1×1)**여서 동일 TileScale로 깔면 코너만 8×8 유닛으로 깔리는 mesh 크기 불일치였음. `MeasureTiles.cs`로 측정 → `NativeSize` dict로 정규화 → 도로 폭 정확히 일치. D-021 (도로 에셋 교체) 파킹 해제, city-kit-roads 유지.
+  - **에셋 도입 워크플로우 (D-023):** 신규 키트 첫 단계로 `MeasureTiles` 측정 + `RotationFor`/`NativeSize` 등록 의무화.
+  - **배달 시스템 MVP:** `DeliveryPoint` (Trigger zone), `DeliveryManager` (순서 추적, 시작→1→2→3→복귀), `DeliveryHUD` (상단 N/3 + 화면 가장자리 화살표), `SetupDeliverySystem.cs` (한 메뉴로 자동 배치 + 차량 출발 셀 정렬).
+  - **검증 도구 정리 (`_Recovery/`):** `RebuildAndCleanup.cs`, `TopDownView.cs`, `TopDownCloseup.cs`, `MeasureTiles.cs`. **시각 검증은 무조건 톱다운 정사영** (isometric 두 번 오판함).
+- **다음 세션 할 일:**
+  - **도현: Race → ArcadeCarController Reset** (드리프트 새 필드 반영 — 안 하면 새 동작 안 함). Main Camera FollowCamera도 함께.
+  - **Play 테스트** — 드리프트 미끄러짐 + 배달 루프(0/3 → RETURN → COMPLETE) + 새 주행 튜닝 체감.
+  - 결과 OK면 **Building 시스템 (Phase 1)**: ScriptableObject 외부화 + `BuildingDef` + `BuildingPlacer` (suburban + commercial 키트 1×1 footprint, 인접 도로 보고 entry 자동 회전).
+  - 흰 띠 폴리싱은 4주차로 미룸.
+- **관련 문서/코드:**
+  - `F1/Assets/Scripts/ArcadeCarController.cs` (드리프트 재설계)
+  - `F1/Assets/Editor/TileMapAuto.cs` (메타데이터 시스템 핵심)
+  - `F1/Assets/Editor/SetupDeliverySystem.cs`
+  - `F1/Assets/Scripts/Delivery*.cs`
+  - `F1/Assets/Editor/_Recovery/*.cs` (디버그/검증 도구)
+  - `notes/decisions-log.md` D-021 (정정), D-022, D-023
+- **메모:**
+  - **시행착오 6번 분석:** 코너 회전 매핑을 머리로 추론하다 6번 틀림. 원인은 (1) Unity Y euler CW vs CCW 헷갈림 (2) base 출구 방향 가정이 틀림 (3) isometric 캡처에서 시각 착시. **해결: 톱다운 정사영 + 메타데이터 한 번 검증 후 영구 사용**. 도로 흰 띠 진단도 추측(crosswalk)에서 측정(MeasureTiles)으로 옮겼더니 진짜 원인(native size 2x2) 발견.
+  - **도현 패턴 6번째 — "건물도 메타데이터 시스템으로"** 요청. 스코프 부풀림 신호 의심했으나 도현이 "MVP 구성에 필요"라 명시 + 합리적 근거(앞으로 어차피 써야) → 진행 결정. Phase 1만 (footprint 1×1, suburban+commercial 2개 키트). Phase 2(가변 footprint)는 다음.
+  - **Coplay MCP가 다시 결정적 역할:** `capture_scene_object` 톱다운 + `execute_script` mesh 측정 + `check_compile_errors`. 이게 없었으면 today's 6번 시행착오가 60번 됐을 것.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트 + Building 시스템 Phase 1.

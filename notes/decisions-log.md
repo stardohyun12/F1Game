@@ -152,6 +152,24 @@
   - 출처 URL과 라이선스(CC0) 확인 문서를 같은 폴더 `Audio/LICENSE.txt`에 기록.
 - **관련 문서:** `F1/Assets/Scripts/EngineAudio.cs`, `dev-plan/week1.md` Day 4.
 
+## 2026-04-22 — 세션 6: 트랙 시스템 재정비
+
+### D-021. Kenny city-kit-roads 유지 결정 (세션 5 파킹 정정)
+- **결정:** city-kit-roads 그대로 사용. racing-kit/커스텀 Plane 교체 불필요.
+- **근거:** 세션 5에서 "코너 흰 띠"를 crosswalk 마킹 한계로 추정해 D-021 파킹했으나, 세션 6 측정 결과 진짜 원인은 **road-curve.fbx의 native size가 2×2 (직선은 1×1)**여서 동일 TileScale로 깔면 코너만 8×8 유닛으로 깔리는 mesh 크기 불일치 문제였음. 타일별 native size 정규화로 해결.
+- **관련:** `F1/Assets/Editor/TileMapAuto.cs` `NativeSize` dict, `_Recovery/MeasureTiles.cs`.
+
+### D-022. 그리드 마스크 + 자동 추론 기반 트랙 시스템 (TileMapAuto)
+- **결정:** 트랙 빌더는 셀별 회전 수동 지정(TileMapTrack) 방식 폐기, **그리드 마스크 + 인접 셀 분석 자동 추론** 방식으로 전환. 사용자는 `'#'`(도로) `'.'`(빈칸) 마스크만 정의 → 시스템이 도로 인접 수에 따라 직선/코너/T자/4갈래/end 자동 결정 + 회전 매핑 lookup.
+- **근거:** 셀별 수동 회전은 시행착오에 취약(세션 5/6 합쳐 6회 오답). 자동 추론은 (Kind, ExitSet)→rotation 메타데이터만 검증되면 영구 정확. 향후 레이아웃 확장(S자, 분기, T자) 시 마스크 수정만으로 자동 처리.
+- **메타데이터 검증 방법:** 톱다운 정사영 캡처 (isometric은 시각 착시 위험 — 세션 6 두 번 오판).
+- **관련:** `F1/Assets/Editor/TileMapAuto.cs`, `_Recovery/TopDownView.cs`/`TopDownCloseup.cs`.
+
+### D-023. 에셋 도입 워크플로우 — native size 측정 + 메타데이터 등록 의무
+- **결정:** 신규 키트(racing, suburban, commercial 등) 도입 시 첫 단계로 `MeasureTiles.cs`로 native size 측정 → `TileMapAuto.NativeSize` (또는 향후 ScriptableObject)에 등록. 회전 매핑은 빈 씬 4회전 톱다운 캡처로 검증 후 `RotationFor`에 등록.
+- **근거:** 같은 키트 내에서도 타일별 native size가 다를 수 있음(road-straight 1×1 vs road-curve 2×2). 측정 없이 동일 스케일 적용하면 mesh 크기 불일치로 도로 폭 어긋남. 한 번 측정 + 등록하면 영구 사용.
+- **관련:** `_Recovery/MeasureTiles.cs`, `TileMapAuto.cs` `NativeSize` dict.
+
 ### D-XXX. [질문 제목]
 - **결정:**
 - **근거:**

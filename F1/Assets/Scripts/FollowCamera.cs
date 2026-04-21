@@ -11,8 +11,8 @@ public class FollowCamera : MonoBehaviour
     [SerializeField] private float rotationLerpSpeed = 8f;
 
     [Header("FOV")]
-    [SerializeField] private float baseFov = 60f;
-    [SerializeField] private float maxFov = 80f;
+    [SerializeField] private float baseFov = 55f;
+    [SerializeField] private float maxFov = 90f;
     [Tooltip("차량 최고속(m/s). 0이면 ArcadeCarController.MaxSpeedMps 사용.")]
     [SerializeField] private float referenceMaxSpeedMps = 0f;
     [SerializeField] private float fovLerpSpeed = 5f;
