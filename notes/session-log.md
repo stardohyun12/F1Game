@@ -289,3 +289,39 @@
   - **스케일 의사결정 오갔음:** fit-to-cell(flatten) → uniform 4x(varied but overflow) → fit-to-cell with multi-cell(varied within category via cells). 정답 찾는 데 3번 왕복. 교훈: 2축(변이 vs 피팅) 트레이드오프는 사전 선언 후 결정 요청.
   - **Coplay MCP 효과성:** execute_script + get_unity_logs로 씬 재생성 루프가 세션 내 5회 이상 반복됨. 수작업이면 세션 시간 2배 필요했을 것.
 - **컨텍스트 상태:** 세션 종료 유도(도현 요청: 세이브 후 기획 대화). 새 세션 권장.
+
+---
+
+## 세션 9 — 2026-04-22 (기획 재검토)
+
+- **목표:** 1주차 체크포인트 판정 + 2주차 시스템 기획 정립.
+- **한 일:**
+  - **1주차 판정 합의:** "그럭저럭" — 코어 돌아감, 주행감 단독 튜닝은 한계 → 2주차 진입 결정.
+  - **2주차 시스템 5개 상세 기획:** 기어(자동/수동 토글), 타이어 마모, 부스터 ↔ 마모 트레이드오프, 연료, 화물 Shock. HUD 4종 게이지 합의.
+  - **기어 수동 제안 3번째 방어 + 절충:** 도현 "경영 감각" 프레이밍으로 재등장. 본인 "스트레스 회피" 원칙과 충돌 지적 → 자동 기본 + 수동 Post-MVP 토글로 절충.
+  - **수치 근거 부족 지적 (도현):** NotebookLM 같은 도구로 사전조사하며 기획 재정립 제안 → plan mode 진입.
+  - **연구 기반 재정립 플랜 확정:** `C:\Users\stard\.claude\plans\whimsical-juggling-kernighan.md`. 도현 NotebookLM + Claude WebSearch 병렬. 레퍼런스 Burnout Paradise / F1 22/23 / Forza Horizon 5.
+  - **Claude 1차 웹조사 완료:** `GDD/research/claude-web-findings.md` — 3개 토픽 수치 표 + 출처 URL + Key Takeaways + 미해결 U1~U5.
+  - **D-029 기록.**
+- **주요 조사 인사이트:**
+  - 부스트 % 비중은 업계 비공개 관행 (Criterion/Codemasters) → 감각 튜닝
+  - F1 Soft-Hard 실제 델타 ~1.5s/랩. 5~15분 런은 **~8%(1.5~2초)로 과장** 필요
+  - Codemasters도 실제 50% 축약 (Soft 10~15랩 → 게임 5~8랩). PIT CREW는 더 공격적 축약
+  - F1 무게 페널티 10kg당 0.3~0.4s/랩 = 실수치. 화물 무게 시스템 근거 확보
+  - FH5 기본값 Auto + Driving Line + Assisted Brake → 배달 게임 기본 세팅 근거
+- **다음 세션(세션 10) 할 일:**
+  - **도현:** NotebookLM 노트북 3개(Burnout 우선) 생성 → 요약본 export → `GDD/research/notebooklm-summaries/{burnout,forza,f1}.md`
+  - **오프닝 커밋 정리:** 세션 7~8 덩어리(Layout SO, BuildingPlacer, ComplexTrack 등) + 세션 9 기획/연구 셋업 → **2개 커밋 분리**
+  - NotebookLM 요약 + Claude 웹조사 교차검증 → GDD 6개 문서 일괄 업데이트 (tires/fuel/cargo/core-loop + gears/boost 신설)
+  - 미해결 U1~U5 중 NotebookLM이 커버한 항목 확인, 남은 건 `open-questions.md` Q11~로 이관
+- **세션 11 예정:** 검증된 수치 기반으로 2주차 구현 플랜 재작성 (plan mode 진입).
+- **관련 문서:**
+  - `C:\Users\stard\.claude\plans\whimsical-juggling-kernighan.md`
+  - `GDD/research/claude-web-findings.md`
+  - `notes/decisions-log.md` D-029
+- **메모:**
+  - **도현 패턴 7번째:** 기어 수동 제안 3번째. 프레이밍만 바뀜 (F1 리얼리즘 → 조작 깊이 → 경영 감각). D-029에 기록 → 연구 결과가 "아케이드=자동 기본"이면 `ideas-parking.md`에 재파킹 강화 가능.
+  - **연구 페이즈 리스크:** 끝없이 파다 2주차 진입 늦어질 가능성. 타임박스 2세션 엄격 준수. 세션 11 진입 시 "연구 끝" 공동 선언 필요.
+  - **연구 접근 자체는 좋은 변화.** 이전 세션까지는 수치가 "감"이었고, 이번에 처음으로 "출처"가 생김. 앞으로 수치 결정할 때 기본 루틴으로 자리잡으면 완성도 상승.
+  - **미커밋 누적 커짐.** 세션 7~9 3세션 분량. 세션 10 오프닝 첫 작업으로 분리 커밋 필수.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 커밋 정리 + 도현 NotebookLM 요약본 공유부터.
