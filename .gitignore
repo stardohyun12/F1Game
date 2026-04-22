@@ -102,3 +102,7 @@ $RECYCLE.BIN/
 # === 세션 스크래치 ===
 # Claude/Cowork 세션 폴더 (만약 생기면)
 .claude/cache/
+.claude/scheduled_tasks.lock
+.claude/worktrees/
+# F1 폴더 안의 로컬 .claude는 프로젝트 allowlist와 분리 (개인 Unity 작업용)
+F1/.claude/
