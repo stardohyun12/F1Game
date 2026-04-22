@@ -61,14 +61,23 @@
 
 - [ ] 단순 화물 시스템 (Shock 민감도만, 박스 1종)
 - [ ] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음)
-- [ ] 단순 연료 시스템 (소비 + 고갈 시 정지)
-- [ ] 간단한 HUD (화물 무결성 / 타이어 / 연료 게이지)
-- [ ] 배달지 노드 3~4개 배치
-- [ ] 시작 → 배달지 순회 → 복귀 기본 루프
+- [x] 단순 연료 시스템 (소비 + 고갈 시 정지) — `FuelSystem.cs` (세션 10, 5분 풀탱크)
+- [x] 단순 기어 시스템 (Auto 5단 + HUD) — `GearSystem.cs` + `GearHUD.cs` (세션 10)
+- [x] 간단한 HUD (연료 게이지 + 기어) — `FuelHUD.cs` + `GearHUD.cs` 좌하단/우하단
+- [x] 배달지 노드 3~4개 배치 — 8개 (`SetupOrderSystem.cs`)
+- [x] 시작 → 배달지 순회 → 복귀 기본 루프 — `Order/RunController.cs` 오케스트레이션
+- [x] **B 시스템 — 주문 보드 + 오버뷰 카메라 + 정산 화면** (세션 10, 핵심 결정 루프 첫 진입점)
+  - `Order/OrderBoard.cs` 카드 3장(A/B/C 트레이드오프)
+  - `Order/OverviewCamera.cs` 탑다운 ↔ 팔로우 전환
+  - `Order/RunController.cs` + `ResultPanel.cs` 정산
+  - `Order/CountdownHUD.cs` 시간제한 카운트다운
+- [ ] 부스트 시스템 (D-030 K1/K2 — 채널 A 즉시충전만 우선)
+- [ ] 화물 Shock 시스템
 
 ### 2주차 체크포인트
 - [ ] 화물 때문에 운전 스타일이 바뀌는가?
 - [ ] 긴장감이 있는가?
+- [ ] 주문 A/B/C 선택 차이가 체감되는가? (세션 10 추가)
 
 ---
 

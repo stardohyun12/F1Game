@@ -325,3 +325,52 @@
   - **연구 접근 자체는 좋은 변화.** 이전 세션까지는 수치가 "감"이었고, 이번에 처음으로 "출처"가 생김. 앞으로 수치 결정할 때 기본 루틴으로 자리잡으면 완성도 상승.
   - **미커밋 누적 커짐.** 세션 7~9 3세션 분량. 세션 10 오프닝 첫 작업으로 분리 커밋 필수.
 - **컨텍스트 상태:** 세션 종료. 다음 세션은 커밋 정리 + 도현 NotebookLM 요약본 공유부터.
+
+---
+
+## 세션 10 — 2026-04-22 ~ 2026-04-23
+
+- **목표:** 세션 7~9 커밋 정리 + 2주차 시스템 본격 구현 (연료/기어/주문보드/부스트 등) + 차별점 명확화.
+- **한 일:**
+  - **세션 7~9 커밋 정리 (4 커밋):**
+    - `366ed09` docs(session-9) — 세션 9 기획·연구 셋업
+    - `d243d16` chore — gitignore 보강 + defaultMode auto + Prefabs.meta
+    - `f7d499f` docs(research) — U1~U5 2차 웹조사 결과
+    - `ed22f3d` docs(gdd) — D-030 K1~K5 + boost/gears 신설 + fuel 재설계
+  - **2차 웹조사 완료 (D-029 약속 이행):** `claude-web-findings-v2.md` — Burnout 부스트 8초(U2 해결), FH5 Granular Synthesis 90 FPS 오디오(U5 해결, Playground Games 담당), F1 게임 시간 시뮬 1:1(U4 결정적 발견 — Codemasters 모델 부적합).
+  - **D-030 결정 + GDD 반영:** K1 부스트 이중충전 / K2 8초 / K3 Manual +10% 인센티브 / K4 "주유 결정 2~4번" 감각 / K5 시프트 연출 3종.
+  - **연료 시스템 MVP (코드):** `FuelSystem.cs`, `FuelHUD.cs`. 5분 풀탱크 정속 기준. F12 디버그 풀충전 (옛 Input → 신 InputSystem 수정). ArcadeCarController에 `ThrottleInput` 노출.
+  - **기어 시스템 MVP (코드):** `GearSystem.cs` (5단 Auto + R + N, 히스테리시스), `GearHUD.cs` (우하단 큰 박스 + 시프트 0.15초 화이트 플래시 = K5 일부).
+  - **B 시스템 — 주문 보드/오버뷰 카메라/정산:**
+    - `Order/{OrderJob,OrderCatalog,OverviewCamera,DeliveryPointMarker,OrderBoard,RunController,ResultPanel,CountdownHUD}.cs`
+    - `Editor/SetupOrderSystem.cs` 메뉴 — Order_A/B/C + Catalog + 8지점 + RunRoot/HUD 자동 생성·와이어링
+    - `DeliveryManager.cs` `ActivateSubset(int n)` 추가
+    - 3 트레이드오프: A.안전(3지점/무제한/₩500) / B.균형(5지점/5분/₩900+₩200) / C.도전(7지점/6분/₩1800+₩500)
+  - **OverviewCamera 버그 수정:** `Quaternion.Euler(70,0,0) * Vector3.back` 결과로 카메라 지면 아래로 박혔던 것 → 명시적 삼각함수 + LookAt 방식. height 95, pitch 75°, FOV 55.
+  - **DeliveryPointMarker 자동 상태 반영:** 현재 목표 펄스 / 대기 흐림 / 완료 회색.
+  - **DeliveryHUD(화살표) 셋업에 추가** — 화면 밖 다음 목표 방향 표시 복구.
+  - **EngineAudio 일시정지 시 mute** — 처음 lerp 페이드 → 새는 듯해서 강제 `src.mute=true`로 강화. AudioSource 직렬화도 `playOnAwake=false, mute=true`로 정리.
+  - **Easy Delivery Co. 조사 (도현 요청):** `research/easy-delivery-co.md` — 95% 압긍 4800+ 리뷰. 잡 보드 / 장비 잠금해제 / 이중 게이지 인사이트. 페인 포인트(시간 압박+GPS 둘 다 없음)가 PIT CREW 강점과 정확히 반대 = 시장 빈 칸 검증.
+  - **D-031 시도 → D-032 철회 사이클:** EDC "운전자 자원" 차용해 부스트 폐기하고 운전자 집중력 시스템 신설(`DriverResource.cs`+`DriverHUD.cs`+ArcadeCarController External* 인터페이스). 도현 검토 결과 컨셉 동의가 즉시 구현 동의는 아니었음 → 전체 롤백. 부스트(D-030) 정본 복귀.
+  - **USP 4개 명문화 (overview.md):** ① 압축 폼팩터 5~15분 ② 결정 밀도 4/런 ③ 운전감(Burnout급) ④ 로그라이트 정산. 시장 빈 칸 표(EDC/Crazy Taxi/Burnout/Pacific Drive) 명시. **이후 모든 시스템 결정은 USP 4개 중 하나 이상 강화해야 채택.**
+  - **권한 모드 / auto mode 활성화:** 도현이 데스크톱 설정에서 직접 토글로 켰음. `defaultMode: "auto"` 도 settings.local.json에 들어감.
+- **다음 세션(세션 11) 할 일:**
+  - **3 트랙 동시 진행 — 주제만 정해져 있고 구체 명세는 다음 세션 시작 때 합의:**
+    1. **맵 디자인 — 실제 도시 느낌.** 현재는 단순 격자 (3×4 도로 그리드 + Kenny 건물). 도로 다양성·랜드마크·구역 구분·교차로 디테일 등 도시감 보강.
+    2. **UI — 실제 게임처럼.** 현재는 OnGUI 박스 + 텍스트만. Canvas + UI Toolkit으로 전환, 폰트/아이콘/애니메이션 정리.
+    3. **그래픽 느낌 / 렌더링.** URP 셰이더·라이팅·포스트프로세싱 톤 정리. Kenny 에셋 위에 어떤 무드를 입힐지.
+  - **위 3개 진입 전 합의 단계 필수 (D-032 교훈):** ① 컨셉 합의 → ② 명칭/디테일 합의 → ③ MVP 명세 합의 → ④ 구현. 단계 합치지 말 것.
+- **관련 문서/코드:**
+  - `GDD/overview.md` (USP 4개), `GDD/systems/{boost,gears,fuel}.md`, `GDD/research/{claude-web-findings-v2,easy-delivery-co}.md`
+  - `notes/decisions-log.md` D-030, D-031(시도), D-032(철회)
+  - `F1/Assets/Scripts/{FuelSystem,FuelHUD,GearSystem,GearHUD,Order/*,EngineAudio,ArcadeCarController,DeliveryManager}.cs`
+  - `F1/Assets/Editor/SetupOrderSystem.cs`, `_Recovery/{RunSetupOrderSystem,RemoveDriverComponents,InspectAudioSource,CleanRaceAudioSource}.cs`
+  - `F1/Assets/{ComplexTrack.unity,Prefabs/Race.prefab,Data/Orders/*}`
+- **메모:**
+  - **도현 패턴 8번째 — "차별점이 명확하려나" 자발적 검증.** ExulMundi 패턴 회피 의지 강해지는 신호. USP 명문화 프로세스로 매 결정 게이트화 도입.
+  - **D-032 교훈 (큰 시스템 도입 시 단계 분리):** "ㅇㅇ" 답변 = 컨셉 동의. 즉시 구현 진입 X. 명칭·디테일·MVP 명세 단계별 합의 필요. 이번 D-031 → 코드까지 가서 롤백. 비용 한 시간이지만 다음엔 단계 분리로 0.
+  - **EDC 조사 = 시장 진단 도구로 유효.** 단순 "메커니즘 카피" 이상의 가치. 페인 포인트(EDC가 못 한 것)가 우리 USP 검증.
+  - **2차 조사로 발견한 결정적 사실:** F1 공식 게임도 시간 시뮬 1:1. PIT CREW가 Codemasters를 따라할 모델 아님. 독자 설계 정당화.
+  - **OverviewCamera 버그 = 회전 직접 계산 함정 재발.** 세션 7 D-026("Y-yaw만 atan2로 직접") 교훈이 카메라 시점에서도 적용됨. CLAUDE.md "에셋/맵 자동 배치 작업 규칙"에 카메라 포즈도 검토 필요.
+  - **Coplay MCP 효과성 또 입증:** SetupOrderSystem 자동화 + DriverResource 롤백까지 모든 씬 작업이 `execute_script` + `add_component` + `check_compile_errors` 루프. 수작업이면 세션 시간 2~3배.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 맵/UI/그래픽 3 트랙 — 시작 시 각 트랙별 컨셉 합의부터.

@@ -270,3 +270,56 @@
   - 1차 조사: `GDD/research/claude-web-findings.md`
   - 교차참조: D-007(아케이드), D-019(F1 시뮬 기각), D-020(엔진 사운드), D-029(연구 페이즈 정의)
 - **도현 패턴 관찰:** 세션 10에서 Q3(U1 추가 추적 여부) "해보면서 정하자"로 답함 — 연구 페이즈 종료 의지 명확. 세션 11에서 D-029의 "타임박스 2세션 초과 금지" 약속 지키며 구현 진입 가능.
+
+### D-031. 부스트 시스템 폐기 → 운전자 자원(집중력)으로 전환 + USP 명문화
+
+- **결정:**
+  - **부스트(차량 자원) 폐기.** D-030 K1/K2 의 "이중 충전 + 8초 풀바" 구조 폐기 (코드 미구현 상태에서 결정, 비용 작음).
+  - **신설: Driver Concentration (운전자 집중력 자원).** EDC 의 이중 게이지(차량+운전자) 패턴 차용.
+    - 소모: 고속(>70%) 4분 풀소진 / 드리프트 2분 풀소진 / 근접회피 -5% 즉시
+    - 회복: 정지+무입력 1분 풀충전 / 배달 완료 +30% / 커피 아이템 풀충전 (Post-MVP)
+    - 저상태 효과: 30% 그립-10% / 15% 그립-25%+핸들-20% / 0% 그립-40%+화면 비네팅
+    - 번아웃(0%) 도달해도 게임오버 X (CLAUDE.md "런 중 게임오버 없음")
+  - **부스트 정체성은 "집중 발동" 액션으로 흡수 (옵션 B).** R 키로 발동, 집중력 -30% 소모, 3초간 그립+20%/가속+10%. Burnout press-to-go-faster 보존.
+  - **장비 잠금해제(EDC 패턴) 기록만, 구현은 4주차+ 또는 Post-MVP.** `ideas-parking.md` 또는 `core-loop.md` 메모만.
+- **USP 4개 명문화 (overview.md):**
+  1. 압축 폼팩터 (5~15분/런)
+  2. 결정 밀도 (4결정/런)
+  3. 운전감 (Burnout급 아케이드)
+  4. 로그라이트 정산 (업그레이드 → 다음 런 변화)
+- **차별점 진단:** EDC + Pacific Drive + Crazy Taxi + Burnout 어느 것도 위 4개를 동시에 만족 못 함 → "5~15분 압축 로그라이트 운전" 카테고리는 시장 빈 칸. 메커니즘 차용은 OK, USP 모방은 금지.
+- **GDD 반영:**
+  - 신설: `GDD/systems/driver-resource.md` (D-031 메커니즘)
+  - 폐기 표시: `GDD/systems/boost.md` 상단에 "D-031로 폐기, driver-resource.md 참조" 명시
+  - 수정: `GDD/systems/gears.md` Manual 인센티브를 "부스트 충전율 +10%"에서 "집중력 회복율 +10%"로 변경
+  - 수정: `GDD/overview.md` USP 섹션 신설
+- **코드 영향:**
+  - 신설: `F1/Assets/Scripts/Driver/DriverResource.cs`, `DriverHUD.cs`
+  - ArcadeCarController에 그립/스티어링 멀티플라이어 외부 주입 인터페이스 추가
+- **관련:**
+  - `GDD/research/easy-delivery-co.md`
+  - `GDD/research/claude-web-findings-v2.md` (U2 부스트 8초)
+  - 교차참조: D-007(아케이드), D-019(F1 시뮬 기각), D-030(폐기된 부스트)
+- **도현 패턴 관찰:** 세션 10에서 "차별점이 명확하려나" 질문 — 메커니즘 쌓기 충동에 대한 자발적 검증 신호. ExulMundi 패턴(스코프 부풀림 + 차별점 흐림) 회피 의지 강해짐. USP 명문화로 매 결정을 USP 체크로 게이트하는 프로세스 도입.
+
+### D-032. D-031 운전자 집중력 시스템 철회
+
+- **결정:** D-031로 신설한 운전자 집중력 시스템(`DriverResource`/`DriverHUD`/관련 멀티플라이어)을 코드·도큐먼트에서 모두 제거. 부스트 시스템(D-030 K1/K2) 복구.
+- **철회 사유:** 도현 검토 결과 "집중력 메커니즘 지금은 없애는게 좋겠다" — 다음 중 어느 것이든 해당:
+  - 컨셉(에너지·피로 vs 집중력)·구체 메커니즘이 도현 의도와 다름
+  - 부스트 폐기 비용이 예상보다 큼 (D-030 도큐먼트·gears.md 연동 등)
+  - "운전자 자원 OK"는 방향 동의였으나 즉시 구현 진입은 시기상조 — 더 큰 합의 필요
+- **남기는 것 (롤백 안 함):**
+  - `overview.md` USP 4개 명문화 — 좋은 부산물, 유지
+  - `research/easy-delivery-co.md` — 조사 결과 자체는 유효
+- **제거 대상:**
+  - 코드: `Driver/DriverResource.cs`, `Driver/DriverHUD.cs` (파일 삭제)
+  - `ArcadeCarController.cs`: ExternalGripMul/SteerMul/AccelMul 인터페이스 제거
+  - `RunController.cs`: driver 필드/refill/배달 보너스 제거
+  - 씬: ComplexTrack HUD GameObject에서 DriverHUD 제거, Race 프리팹에서 DriverResource 제거
+  - 도큐먼트: `GDD/systems/driver-resource.md` 삭제, `gears.md` 부스트 인센티브 복구, `boost.md` 폐기 표시 제거
+- **교훈:**
+  - 도현 "ㅇㅇ" 답변 → 큰 시스템 즉시 구현으로 해석한 게 과했음. 컨셉 동의 vs 구현 동의를 구분해야 함
+  - "집중력"이라는 명칭·구체 트리거(고속 4분/드리프트 2분/근접 -5%)는 도현 합의 없이 내가 임의로 채움. 도현이 "어디서 나왔지?" 질문할 만한 비약
+  - 다음에 큰 시스템 도입 시: ① 컨셉 합의 → ② 명칭/디테일 합의 → ③ MVP 명세 합의 → ④ 구현. 단계 합치지 말 것
+- **D-030 부스트 시스템 다시 활성:** `boost.md` 정본 복귀.
