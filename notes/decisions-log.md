@@ -244,3 +244,29 @@
   - 플랜: `C:\Users\stard\.claude\plans\whimsical-juggling-kernighan.md`
   - 1차 조사: `GDD/research/claude-web-findings.md`
   - 교차참조: D-007(아케이드 정체성), D-019(F1 시뮬 기각), D-020(엔진 사운드 외부 예외)
+
+## 2026-04-22 — 세션 10: 2차 조사 + 2주차 시스템 수치 확정
+
+### D-030. K1~K5 결정 — 부스트/기어/연료/타이어 핵심 수치
+
+- **결정 요약 (K1~K5):**
+  - **K1. 부스트 충전 = 이중화.** "완수 이벤트 100% 즉시충전" (배달 완료·완벽 정차) + "위험주행 점진충전" (드리프트·근접회피). Burnout의 Takedown=풀충전 / Oncoming=점진 패턴 차용.
+  - **K2. 풀부스트 지속시간 = 6~10초 범위, 기준값 8초.** Burnout Speed Boost 풀바 정확히 8초가 다중 위키 출처 일치값. 5~15분 런에서 런당 3~6회 발동을 자연 빈도로 잡음.
+  - **K3. 기어 = 자동 기본 + Manual 토글에 부스트 충전율 +10% 인센티브.** 클러치는 생략 (패드 UX 희생 대비 이득 작음). FH5 정성 사실(WR 100%=Manual+Clutch, 캐주얼=Auto) 근거.
+  - **K4. 연료 축약 = "한 런 안에 주유 결정 2~4번" 감각 기준.** 수치 기준(분당 소비량) 아닌 의사결정 빈도 기준. F1 게임은 1:1 시뮬이라 레퍼런스로 부적합 → 독자 설계 필요.
+  - **K5. 기어 시프트 연출 = 샘플 조합 방식 3종 세트.** 엔진 피치 순간 드롭 + 0.1초 카메라쉐이크 + HUD 기어숫자 플래시. FH5의 Granular Synthesis 방식은 Kenny+아케이드 스케일에 과한 솔루션.
+- **근거:**
+  - 2차 조사(`GDD/research/claude-web-findings-v2.md`) U1~U5 심화. NotebookLM 단계는 도현 결정으로 생략, Claude WebSearch 2차로 대체.
+  - 결정적 발견: F1 공식 게임도 시간 시뮬 축약 없이 1:1 시뮬 + 랩 수만 축약. PIT CREW가 따라할 모델 아님.
+  - FH5 오디오는 Playground Games(Turn 10 아님) 담당이며 Granular Synthesis로 시프트를 표현 — 우리가 흉내내기엔 과함.
+- **U1 정량치(행동별 부스트 % 비중)는 추가 추적 포기.** Criterion 비공개 + 리버스엔지 문서 없음. K1 이중화 구조만으로 충분, % 수치는 MVP 구현 후 플레이 튜닝으로 결정.
+- **GDD 반영:**
+  - 신설: `GDD/systems/boost.md` (K1+K2)
+  - 신설: `GDD/systems/gears.md` (K3+K5)
+  - 수정: `GDD/systems/fuel.md` (방향 A=통합 안 폐기, K4 반영, 부스트는 boost.md로 분리)
+  - 유지: `GDD/systems/tires.md` (D-029 1차 조사 결과 이미 부합)
+- **관련:**
+  - 2차 조사: `GDD/research/claude-web-findings-v2.md`
+  - 1차 조사: `GDD/research/claude-web-findings.md`
+  - 교차참조: D-007(아케이드), D-019(F1 시뮬 기각), D-020(엔진 사운드), D-029(연구 페이즈 정의)
+- **도현 패턴 관찰:** 세션 10에서 Q3(U1 추가 추적 여부) "해보면서 정하자"로 답함 — 연구 페이즈 종료 의지 명확. 세션 11에서 D-029의 "타임박스 2세션 초과 금지" 약속 지키며 구현 진입 가능.
