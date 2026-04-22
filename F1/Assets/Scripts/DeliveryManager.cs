@@ -15,19 +15,39 @@ public class DeliveryManager : MonoBehaviour
     bool finished = false;
 
     public int CurrentIndex => currentIndex;
-    public int TotalCount => points.Count;
+    public int TotalCount => activeCount > 0 ? activeCount : points.Count;
     public bool Returning => returning;
     public bool Finished => finished;
     public DeliveryPoint CurrentTarget => returning || finished || currentIndex >= points.Count ? null : points[currentIndex];
     public Transform ReturnTarget => startReturn;
 
+    int activeCount = -1; // -1 = 전체 (기본). RunController가 세팅.
+
     void Start()
     {
+        // RunController가 ActivateSubset 안 하면 전체 사용
+        if (activeCount < 0) ActivateSubset(points.Count);
+    }
+
+    /// <summary>
+    /// 앞에서부터 N개 지점만 활성화. 나머지는 숨김(비활성).
+    /// RunController가 OrderJob.pointCount로 호출.
+    /// </summary>
+    public void ActivateSubset(int n)
+    {
+        activeCount = Mathf.Clamp(n, 0, points.Count);
+        currentIndex = 0;
+        returning = false;
+        finished = false;
+
         for (int i = 0; i < points.Count; i++)
         {
             if (points[i] == null) continue;
             points[i].Bind(this, points[i].Label);
-            points[i].SetActive(i == 0);
+            // 사용할 지점 = 처음 N개. 그 안에서 첫 번째만 활성, 나머지는 비활성 (Completed는 리셋 못 — Bind에서 새로 시작)
+            bool used = i < activeCount;
+            points[i].gameObject.SetActive(used);
+            points[i].SetActive(used && i == 0);
         }
     }
 
@@ -40,7 +60,8 @@ public class DeliveryManager : MonoBehaviour
         OnDeliveryCompleted?.Invoke(p);
         currentIndex++;
 
-        if (currentIndex >= points.Count)
+        int limit = activeCount > 0 ? activeCount : points.Count;
+        if (currentIndex >= limit)
         {
             returning = (startReturn != null);
             if (!returning) Finish();

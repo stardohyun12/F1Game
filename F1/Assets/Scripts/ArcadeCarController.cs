@@ -53,6 +53,7 @@ public class ArcadeCarController : MonoBehaviour
     public float MaxSpeedMps => maxSpeedMps;
     public bool IsDrifting { get; private set; }
     public float SteerInput => moveInput.x;
+    public float ThrottleInput => moveInput.y;
 
     void Awake()
     {

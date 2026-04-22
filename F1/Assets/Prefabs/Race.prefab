@@ -10075,6 +10075,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8586498683429853758}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3897670325595319276}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 934473438500580793}
   m_SourcePrefab: {fileID: 100100000, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
 --- !u!1 &8380733253417130255 stripped
 GameObject:
@@ -10273,11 +10279,11 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
-  Mute: 0
+  Loop: 1
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -10378,6 +10384,46 @@ MonoBehaviour:
   idleVolume: 0.35
   maxVolume: 0.9
   volumeLerpSpeed: 4
+--- !u!114 &3897670325595319276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380733253417130255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfbe57e54f14ca447aaf530a355cf003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelSystem
+  fuelLevel: 1
+  baseConsumptionPerSec: 0.0013888889
+  topSpeedMultiplier: 2
+  fullThrottleMultiplier: 1.5
+  idleMultiplier: 0.3
+  depletionGraceSec: 0
+  debugRefillKeyEnabled: 1
+--- !u!114 &934473438500580793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380733253417130255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16f10aae62df9c46b98461d5e0bb39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GearSystem
+  gearCount: 5
+  shiftUpThresholds:
+  - 0.2
+  - 0.4
+  - 0.6
+  - 0.8
+  hysteresis: 0.04
+  useNeutral: 1
+  neutralSpeedThreshold: 0.03
 --- !u!4 &9152872249828246453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}

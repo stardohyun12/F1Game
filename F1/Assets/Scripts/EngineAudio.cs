@@ -28,16 +28,27 @@ public class EngineAudio : MonoBehaviour
         src.spatialBlend = 0f;
         src.pitch = idlePitch;
         src.volume = idleVolume;
+        src.mute = true; // 시작 시 항상 muted — Update가 timeScale 보고 풀어줌
     }
 
     void OnEnable()
     {
         if (src != null && src.clip != null && !src.isPlaying) src.Play();
+        // OnEnable 직후도 muted 유지 (선택 보드가 첫 프레임에 timeScale=0 세팅하기 전에 소리 새는 것 방지)
+        if (src != null) src.mute = true;
     }
 
     void Update()
     {
         if (src == null || src.clip == null || car == null) return;
+
+        // 게임 일시정지 (주문 보드 / 정산 화면) 중엔 엔진 즉시 무음 (mute로 확실히 차단)
+        if (Time.timeScale < 0.01f)
+        {
+            src.mute = true;
+            return;
+        }
+        src.mute = false;
 
         float speedNorm = Mathf.Clamp01(Mathf.Abs(car.CurrentSpeedMps) / Mathf.Max(0.1f, car.MaxSpeedMps));
         float targetPitch = Mathf.Lerp(idlePitch, maxPitch, speedNorm);
