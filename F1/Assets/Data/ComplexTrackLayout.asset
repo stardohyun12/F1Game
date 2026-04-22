@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa910892f55bf043b3f656060246425, type: 3}
+  m_Name: ComplexTrackLayout
+  m_EditorClassIdentifier: Assembly-CSharp::TrackLayout
+  roadMask:
+  - '#############'
+  - '#...#...#...#'
+  - '#...#...#...#'
+  - '#...#...#...#'
+  - '#############'
+  - '#...#...#...#'
+  - '#...#...#...#'
+  - '#...#...#...#'
+  - '#############'
+  buildingMask:
+  - .............
+  - .KKC.XXS.KKC.
+  - .KKS.XXC.KKS.
+  - .SCS.CSC.SCS.
+  - .............
+  - .XXC.KKS.XXC.
+  - .XXS.KKC.XXS.
+  - .CSC.SCS.CSC.
+  - .............
+  catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
+  deliveries:
+  - col: 6
+    row: 0
+    label: Delivery_Bottom
+  - col: 12
+    row: 4
+    label: Delivery_RightMid
+  - col: 6
+    row: 8
+    label: Delivery_Top
+  - col: 0
+    row: 4
+    label: Delivery_LeftMid
+  startCell: {x: 1, y: 0}
+  startYawDeg: 0

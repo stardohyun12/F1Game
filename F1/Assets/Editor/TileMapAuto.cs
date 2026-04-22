@@ -13,8 +13,8 @@ using UnityEngine.SceneManagement;
 public static class TileMapAuto
 {
     const string Root = "Assets/Model/kenney_city-kit-roads/Models/FBX format/";
-    const float CellSize = 4f;
-    const float TileScale = 4f;
+    const float CellSize = 6f;
+    const float TileScale = 6f;
     const float TileY = 0.05f;
 
     // ----- Metadata (validated empirically via top-down capture, 2026-04-22) -----
@@ -63,7 +63,7 @@ public static class TileMapAuto
     static readonly Dictionary<Kind, string> SourcePath = new()
     {
         { Kind.Straight, "road-straight.fbx" },
-        { Kind.Curve, "road-curve.fbx" },
+        { Kind.Curve, "road-bend.fbx" },
         { Kind.Intersection, "road-intersection.fbx" },
         { Kind.Crossroad, "road-crossroad.fbx" },
         { Kind.End, "road-end.fbx" },
@@ -74,7 +74,7 @@ public static class TileMapAuto
     static readonly Dictionary<Kind, float> NativeSize = new()
     {
         { Kind.Straight, 1f },
-        { Kind.Curve, 2f },          // measured 2x2, must shrink to fit one cell
+        { Kind.Curve, 1f },          // road-bend is 1x1 (matches straight road width)
         { Kind.Intersection, 1f },
         { Kind.Crossroad, 1f },
         { Kind.End, 1f },
@@ -107,7 +107,20 @@ public static class TileMapAuto
         BuildMask(DefaultMask);
     }
 
+    // Builds the road portion from a TrackLayout SO. Does not place buildings (see BuildingPlacer).
+    public static GameObject BuildFromLayout(TrackLayout layout)
+    {
+        if (layout == null || layout.roadMask == null || layout.roadMask.Length == 0)
+        { Debug.LogError("TileMapAuto.BuildFromLayout: layout/roadMask is empty"); return null; }
+        return BuildMaskInternal(layout.roadMask);
+    }
+
     public static void BuildMask(string[] mask)
+    {
+        BuildMaskInternal(mask);
+    }
+
+    static GameObject BuildMaskInternal(string[] mask)
     {
         var sources = new Dictionary<Kind, GameObject>();
         foreach (var kv in SourcePath)
@@ -122,12 +135,48 @@ public static class TileMapAuto
         // Validate uniform width
         for (int r = 0; r < height; r++)
             if (mask[r].Length != width)
-            { Debug.LogError($"TileMapAuto: row {r} width {mask[r].Length} != expected {width}"); return; }
+            { Debug.LogError($"TileMapAuto: row {r} width {mask[r].Length} != expected {width}"); return null; }
 
         bool IsRoad(int c, int r)
         {
             if (c < 0 || c >= width || r < 0 || r >= height) return false;
             return mask[r][c] == '#';
+        }
+
+        Dir NeighborExits(int c, int r)
+        {
+            if (!IsRoad(c, r)) return Dir.None;
+            Dir d = Dir.None;
+            if (IsRoad(c, r + 1)) d |= Dir.N;
+            if (IsRoad(c, r - 1)) d |= Dir.S;
+            if (IsRoad(c + 1, r)) d |= Dir.E;
+            if (IsRoad(c - 1, r)) d |= Dir.W;
+            return d;
+        }
+
+        // road-straight.fbx has a crosswalk only on its +X end (native). Rotating the tile
+        // by 180° moves the crosswalk to the opposite side. For smoother T/curve boundaries,
+        // we want the crosswalk to meet another straight (which merges into a clean edge)
+        // rather than a curve/intersection. Return the adjusted rotation.
+        int AdjustStraightRotation(int c, int r, Dir exits, int baseRot)
+        {
+            if (exits == (Dir.E | Dir.W))
+            {
+                // rot 0 => crosswalk on east. rot 180 => crosswalk on west.
+                bool eastStraight = NeighborExits(c + 1, r) == (Dir.E | Dir.W);
+                bool westStraight = NeighborExits(c - 1, r) == (Dir.E | Dir.W);
+                if (!eastStraight && westStraight) return 180; // push crosswalk to straight side (west)
+                return 0;
+            }
+            if (exits == (Dir.N | Dir.S))
+            {
+                // rot 90 => crosswalk on north (+Z). rot 270 => crosswalk on south.
+                bool northStraight = NeighborExits(c, r + 1) == (Dir.N | Dir.S);
+                bool southStraight = NeighborExits(c, r - 1) == (Dir.N | Dir.S);
+                if (!northStraight && southStraight) return 270;
+                return 90;
+            }
+            return baseRot;
         }
 
         var existing = GameObject.Find("Track");
@@ -168,6 +217,7 @@ public static class TileMapAuto
                     Debug.LogWarning($"TileMapAuto: no rotation for ({kind}, {exits}) at ({c},{r})");
                     continue;
                 }
+                if (kind == Kind.Straight) rot = AdjustStraightRotation(c, r, exits, rot);
 
                 if (!sources.TryGetValue(kind, out var src) || src == null)
                 {
@@ -186,6 +236,7 @@ public static class TileMapAuto
 
         UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         Debug.Log($"TileMapAuto: placed {placed} tiles from mask {width}x{height}.");
+        return track;
     }
 
     public static Vector3 CellToWorld(int col, int row)

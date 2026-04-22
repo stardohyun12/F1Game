@@ -203,3 +203,89 @@
   - **도현 패턴 6번째 — "건물도 메타데이터 시스템으로"** 요청. 스코프 부풀림 신호 의심했으나 도현이 "MVP 구성에 필요"라 명시 + 합리적 근거(앞으로 어차피 써야) → 진행 결정. Phase 1만 (footprint 1×1, suburban+commercial 2개 키트). Phase 2(가변 footprint)는 다음.
   - **Coplay MCP가 다시 결정적 역할:** `capture_scene_object` 톱다운 + `execute_script` mesh 측정 + `check_compile_errors`. 이게 없었으면 today's 6번 시행착오가 60번 됐을 것.
 - **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트 + Building 시스템 Phase 1.
+
+---
+
+## 세션 7 — 2026-04-22
+
+- **목표:** Building Phase 1 + 복잡한 트랙 제작 + 도로 연결성·재발 방지.
+- **한 일:**
+  - **도로 연결성 근본 수정 (D-024):** `road-curve.fbx`(native 2×2, 좁은 원호) → `road-bend.fbx`(native 1×1, 직선 폭 일치)로 교체. 세션 6 D-021 "native size 정규화로 해결" 결론이 반쪽 진단이었음 — 외곽 bounds만 맞추고 아스팔트 stripe 자체 폭은 맞추지 못해 curve-straight 이음매마다 도로 폭이 절반으로 줄어드는 단차 존재. `road-bend`는 `road-straight`와 같은 스타일 한 쌍.
+  - **Layout SO 외부화 + 건물 자동 배치 Phase 1 (D-025):**
+    - `BuildingDef` / `BuildingCatalog` / `TrackLayout` ScriptableObject 추가 (`F1/Assets/Scripts/Layout/*.cs`).
+    - `BuildingPlacer`(에디터): 2-layer 마스크(road + building), 인접 도로 우선순위 기반 회전, (c,r) 해시 결정론적 프리팹 선택, FootprintMargin 0.8.
+    - `SetupLayoutAssets`: Kenny suburban 18 + commercial 10 1×1 후보를 측정값 기반으로 `BuildingDef.asset` 28개 + `BuildingCatalog.asset` + `DefaultTrackLayout.asset` 일괄 생성.
+    - `BuildFromLayoutMenu`: 한 메뉴로 도로+건물 재빌드 + SceneView 톱다운 자동 프레이밍.
+  - **복잡 씬 (`ComplexTrack.unity`):** 9×7 더블 루프(가운데 가로 through road + T교차로 2). `SetupComplexScene` 메뉴 한 방에 레이아웃 SO + 씬 + 카메라/라이트/ground 세팅. 35 타일 + 22 건물.
+  - **건물 땅 속 박힘 버그 진단 및 수정 (D-026):** `Quaternion.FromToRotation(+Z, -Z)`가 Y축 180이 아닌 X축 180을 리턴해 건물 절반이 뒤집혀 땅 아래 박힘. 톱다운에선 정상처럼 보여 발견 못함. 사이드 캡처로 즉시 발견. `atan2(x,z)`로 Y-yaw만 직접 계산하도록 교체.
+  - **재발 방지 시스템 (D-026):** `BuildingPlacer.VerifyPlacements()` — euler X/Z 1° 초과 시 "flipped/tilted", bounds.min.y < −0.05 시 "sunk" 경고. 빌드 로그에 `"all verified"` 또는 `"N FAILED"` 명시.
+  - **도로 연결성 컨텍스트 개선:** `TileMapAuto.AdjustStraightRotation`. 각 직선 타일의 인접 이웃이 straight인지 검사 후, 비(非)straight(커브/T) 쪽으로 크로스워크 edge가 오지 않도록 rot 0↔180 / 90↔270 플립. T-교차로 주변 단절 느낌 제거.
+  - **CLAUDE.md 업데이트:** "에셋/맵 자동 배치 작업 규칙" 섹션 추가 — side-by-side 렌더 의무 + Y-yaw 직접 계산 + post-build verification + Layout SO 사용 규칙.
+  - **차량 배치:** SampleScene의 Race 인스턴스를 `Assets/Prefabs/Race.prefab`으로 만들고(`SetupRaceInScene`), ComplexTrack의 startCell(1,0)에 배치 + Main Camera에 FollowCamera 연결. startYawDeg 90으로 교정해 도로 방향 정렬.
+  - **후반 버그 수정 2건:**
+    1. **FollowCamera target/car None** — `private [SerializeField]` 필드를 `GetField()` 기본 호출로 접근해 리플렉션 실패(에러 없이 무시). `SerializedObject + FindProperty` 방식으로 교체. target=Race, car=Race 할당 확인.
+    2. **Ground 물리 머티리얼 로드 실패** — 세션 3에서 생성한 `Assets/GroundPhysics.physicsMaterial`이 Unity 6에서 `DefaultAsset` 타입으로만 인식돼 `PhysicsMaterial`로 로드 안됨(확장자 호환 이슈 추정). `Assets/GroundPhysicsMat.physicMaterial`로 신규 생성(friction 0.15) 후 SetupRaceInScene/SetupComplexScene 경로 업데이트. ComplexTrack Ground에 할당 완료. SampleScene은 영향 없을 가능성 높지만 필요 시 도현이 수동 할당.
+- **다음 세션 할 일:**
+  - **ComplexTrack 씬 열고 Play 테스트 첫 스텝.** 기대 동작: WASD로 차 이동, 카메라가 따라옴, 배달 HUD 표시. 안 움직이면 콘솔 확인 → 예상 원인들:
+    - Race 인스턴스에 최신 드리프트/Tier A 필드 미반영 → Inspector에서 ArcadeCarController Reset
+    - Ground collider에 물리 머티리얼 미할당 → GroundPhysicsMat 수동 드래그
+    - PlayerInput actions 연결 끊김 → InputSystem_Actions.inputactions 재할당
+  - OK면 더블 루프 + T교차로 + 배달 루프(4 포인트) 주행 체감 + 30분 플레이.
+  - 필요 시 DefaultTrackLayout(SampleScene)도 `PitCrew/Build Everything From Layout`으로 새 시스템 재빌드. SampleScene의 Race 인스턴스는 이제 Race.prefab 인스턴스로 연결됨 — 수정하면 프리팹까지 영향.
+  - OK면 Building Phase 2(가변 footprint 2×1 등) 또는 Day 7 1주차 체크포인트.
+  - **커밋 필요(미커밋, 큰 덩어리):**
+    - `F1/Assets/Scripts/Layout/*.cs`
+    - `F1/Assets/Editor/{BuildingPlacer, BuildFromLayout, SetupLayoutAssets, SetupComplexScene, SetupRaceInScene, TileMapAuto}.cs`
+    - `F1/Assets/Editor/_Recovery/*` (디버그/셋업 스크립트 다수)
+    - `F1/Assets/Data/*` (28 BuildingDefs + BuildingCatalog + 2 TrackLayouts)
+    - `F1/Assets/Prefabs/Race.prefab`
+    - `F1/Assets/ComplexTrack.unity`
+    - `F1/Assets/GroundPhysicsMat.physicMaterial` (신규)
+    - `F1/Assets/SampleScene.unity` (Race 프리팹 연결 변경)
+    - `CLAUDE.md`, `notes/decisions-log.md`, `notes/session-log.md`, `dev-plan/feature-list.md`
+    - 구 `F1/Assets/GroundPhysics.physicsMaterial`은 유지 (참조 없지만 제거는 도현 판단).
+- **관련 문서/코드:**
+  - `F1/Assets/Scripts/Layout/BuildingDef.cs`, `BuildingCatalog.cs`, `TrackLayout.cs`
+  - `F1/Assets/Editor/BuildingPlacer.cs`, `BuildFromLayout.cs`, `SetupLayoutAssets.cs`, `SetupComplexScene.cs`, `SetupRaceInScene.cs`, `TileMapAuto.cs`
+  - `F1/Assets/Data/*` (28 BuildingDefs + 2 Layouts + Catalog), `Prefabs/Race.prefab`, `ComplexTrack.unity`
+  - `notes/decisions-log.md` D-024/025/026, `CLAUDE.md`
+- **메모:**
+  - **D-021 반성:** 세션 6에서 "측정만 하면 안전"이라 믿었지만, 측정 대상이 잘못됐음(외곽 bounds ≠ 아스팔트 폭). 측정은 "무엇을 측정하는지" 명확히 해야. 교훈을 D-024/D-023 보정에 기록.
+  - **도현 패턴 7번째 관찰:** "차 배치해서 다음 세션 이어가자"로 자연스러운 세션 정리 요청. 전 세션들에서의 "컨텍스트 남기기" 습관 축적 확인. 긍정적 변화.
+  - **Coplay MCP 필수성 재확인:** `capture_scene_object`(톱다운+사이드) + `execute_script`(스크립트 주입) + `get_unity_logs`. 사이드 캡처 없었으면 건물 땅속 박힘 계속 몰랐을 것.
+  - **auto mode와 non-auto 전환:** 복잡한 판단(에셋 교체 결정 등)은 non-auto에서 질문. 반복 반영/빌드/검증은 auto에서 빠르게. 이번 세션 둘 다 효과적으로 전환.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트부터.
+
+---
+
+## 세션 8 — 2026-04-22
+
+- **목표:** 에셋 비율 정상화 + 도시 볼륨감 확보. 플레이 테스트로 1주차 체크포인트 접근.
+- **한 일:**
+  - **스케일 리밸런스 (D-027):** CellSize/TileScale 4m→6m, Race 0.7x, BuildingPlacer 고정 4x → fit-to-cell(margin 0.9). 도로 침범 해소.
+  - **멀티셀 건물 인프라 (D-028):** BuildingDef cellsWide/cellsDeep, BuildingCatalog K/X 2×2 풀, 점유 그리드 기반 충돌 검증, MeshCollider 자동 부착(차 통과 버그 해결).
+  - **맵 확장 V1 → V2:** 9×7 단일 크로스 → **13×9 3×4 그리드** (가로 3 + 세로 4 도로, 6블록 3×3). 타일 35→63, 건물 22→36.
+  - **드리프트 튜닝 2회:** gripMultiplier 0.02→0.3, yawBoost 1.5→0.8, yawTorque 15→8, sideGripDamping 6→9. "실제 차 느낌"보다 "유저가 좋다 느끼는 톤" 목표로 재조정 예정.
+  - **MeasureBuildings** 메뉴 항목 추가 + 스카이스크레이퍼 5종 포함. Coplay MCP(`get_unity_logs`)로 콘솔 로그 바로 수신.
+  - **RunSetupAndRebuild** 러너(Assets/Editor/_Recovery) 생성 — MCP execute_script로 씬 재생성 자동화.
+- **도현 피드백 (세션 중 라이브):**
+  - "주행 자체 재미는 기본 레이싱 수준" → 폴리시 필요
+  - 도시 느낌 OK, 맵은 더 넓고 복잡해야 함 (반영 완료 일부)
+  - 드리프트 "실제 차 느낌 아님" → 중요 X, "유저가 느꼈을 때 좋으면 됨"으로 정정
+  - 맵 조금 더 복잡하게 하는 방향 선호 (세션 9에서 논의)
+- **다음 세션 할 일:**
+  - **세션 9 오프닝: 기획 재검토 대화** (도현 요청). 1주차 체크포인트("차 몰기 자체가 재밌는가") 판정 + 향후 방향.
+  - 논의 포인트: 아케이드 드리프트 톤 설정(레퍼런스 게임), 맵 복잡도 상한, 2주차(화물) 진입 타이밍, 비주얼 폴리시 순위.
+  - 판정 YES면 2주차 화물 시스템, 그럭저럭이면 Day 4~5 튜닝 재방문, NO면 스코프 재조정.
+- **관련 문서/코드:**
+  - `F1/Assets/Scripts/Layout/BuildingDef.cs` (cellsWide/cellsDeep 추가)
+  - `F1/Assets/Editor/{BuildingPlacer, TileMapAuto, SetupLayoutAssets, SetupComplexScene, SetupRaceInScene, _Recovery/RunSetupAndRebuild, _Recovery/MeasureBuildings}.cs`
+  - `F1/Assets/Prefabs/Race.prefab` (드리프트 파라미터 + scale 0.7)
+  - `F1/Assets/ComplexTrack.unity` (13×9 그리드 재생성)
+  - `F1/Assets/Data/Buildings/*` (2×2 K/X 풀 7종 신규)
+  - `notes/decisions-log.md` D-027, D-028
+- **메모:**
+  - **도현 피드백 패턴:** "실제 차 느낌 안남"을 처음에 중요한 문제로 제시 → 추가 튜닝 후 "사실 실제 차는 중요하지 않음"으로 정정. **과제: 피드백 초기에 "이게 중요해서 하는 말인가?" 한번 더 물어봐서 헛튜닝 방지.**
+  - **스케일 의사결정 오갔음:** fit-to-cell(flatten) → uniform 4x(varied but overflow) → fit-to-cell with multi-cell(varied within category via cells). 정답 찾는 데 3번 왕복. 교훈: 2축(변이 vs 피팅) 트레이드오프는 사전 선언 후 결정 요청.
+  - **Coplay MCP 효과성:** execute_script + get_unity_logs로 씬 재생성 루프가 세션 내 5회 이상 반복됨. 수작업이면 세션 시간 2배 필요했을 것.
+- **컨텍스트 상태:** 세션 종료 유도(도현 요청: 세이브 후 기획 대화). 새 세션 권장.
