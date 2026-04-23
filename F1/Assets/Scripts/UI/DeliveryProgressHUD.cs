@@ -14,7 +14,7 @@ public class DeliveryProgressHUD : MonoBehaviour
 
     [Header("Layout (상단 중앙)")]
     [SerializeField] Vector2 anchoredPos = new Vector2(0, -40);
-    [SerializeField] Vector2 size = new Vector2(400, 80);
+    [SerializeField] Vector2 size = new Vector2(520, 80);
 
     RectTransform rt;
     Image bg;
@@ -76,10 +76,12 @@ public class DeliveryProgressHUD : MonoBehaviour
             labelText = g.AddComponent<TextMeshProUGUI>();
             labelText.raycastTarget = false;
             labelText.alignment = TextAlignmentOptions.MidlineLeft;
-            labelText.fontSize = 26;
+            labelText.fontSize = 24;
+            labelText.enableWordWrapping = false; // 한 줄 강제
+            labelText.overflowMode = TextOverflowModes.Ellipsis;
             if (theme != null) { if (theme.fontCondensed != null) labelText.font = theme.fontCondensed; labelText.color = theme.colorText; }
             var r = labelText.rectTransform;
-            r.anchorMin = new Vector2(0.4f, 0); r.anchorMax = new Vector2(1, 1);
+            r.anchorMin = new Vector2(0.3f, 0); r.anchorMax = new Vector2(1, 1);
             r.offsetMin = new Vector2(0, 0); r.offsetMax = new Vector2(-20, 0);
         }
     }

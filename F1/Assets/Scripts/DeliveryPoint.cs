@@ -20,6 +20,8 @@ public class DeliveryPoint : MonoBehaviour
         trigger = GetComponent<SphereCollider>();
         trigger.isTrigger = true;
         trigger.radius = radius;
+        // SetupOrderSystem이 GameObject.name만 세팅하는 경우 label 대체 (세션 13 fix)
+        if (string.IsNullOrEmpty(label)) label = gameObject.name;
     }
 
     public void Bind(DeliveryManager mgr, string lbl)

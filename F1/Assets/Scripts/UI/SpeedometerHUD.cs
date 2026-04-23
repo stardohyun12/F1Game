@@ -70,7 +70,7 @@ public class SpeedometerHUD : MonoBehaviour
             if (theme != null) { if (theme.fontPrimary != null) speedText.font = theme.fontPrimary; speedText.color = theme.colorText; }
             var r = speedText.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
-            r.offsetMin = new Vector2(12, 8); r.offsetMax = new Vector2(-60, -8);
+            r.offsetMin = new Vector2(12, 8); r.offsetMax = new Vector2(-86, -8);
         }
 
         if (unitText == null)
@@ -82,12 +82,13 @@ public class SpeedometerHUD : MonoBehaviour
             unitText.text = "KM/H";
             unitText.alignment = TextAlignmentOptions.BottomRight;
             unitText.fontSize = 18;
+            unitText.enableWordWrapping = false; // "KM/H" 줄바꿈 방지
             if (theme != null) { if (theme.fontCondensed != null) unitText.font = theme.fontCondensed; unitText.color = theme.colorTextMuted; }
             var r = unitText.rectTransform;
             r.anchorMin = new Vector2(1, 0); r.anchorMax = new Vector2(1, 0);
             r.pivot = new Vector2(1, 0);
-            r.sizeDelta = new Vector2(54, 40);
-            r.anchoredPosition = new Vector2(-14, 14);
+            r.sizeDelta = new Vector2(80, 40);
+            r.anchoredPosition = new Vector2(-12, 14);
         }
     }
 
