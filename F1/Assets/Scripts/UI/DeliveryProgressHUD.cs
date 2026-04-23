@@ -90,6 +90,7 @@ public class DeliveryProgressHUD : MonoBehaviour
     {
         if (manager == null) return;
         var theme = UITheme.Active;
+        if (theme != null && labelText != null) labelText.color = theme.colorText;
 
         if (manager.Finished)
         {

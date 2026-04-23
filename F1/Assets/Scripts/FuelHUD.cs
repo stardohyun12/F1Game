@@ -97,6 +97,9 @@ public class FuelHUD : MonoBehaviour
         if (fuel == null) return;
         var theme = UITheme.Active;
 
+        // Theme 변경 즉시 반영 (fill 위 라벨은 흰색 유지)
+        if (theme != null && label != null) label.color = theme.colorTextOnFill;
+
         float level = Mathf.Clamp01(fuel.FuelLevel);
         float innerW = rt.rect.width - 16f;
         fillRt.sizeDelta = new Vector2(innerW * level, 0);

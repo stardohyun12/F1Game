@@ -101,9 +101,10 @@ public class GearHUD : MonoBehaviour
         if (flashT > 0f) flashT -= Time.unscaledDeltaTime;
 
         var theme = UITheme.Active;
+        if (theme != null && title != null) title.color = theme.colorTextMuted;
         float f = flashDurationSec > 0 ? Mathf.Clamp01(flashT / flashDurationSec) : 0f;
-        Color baseCol = theme != null ? theme.colorText : Color.white;
-        Color flashCol = theme != null ? theme.colorTextFlash : Color.white;
+        Color baseCol = theme != null ? theme.colorText : Color.black;
+        Color flashCol = theme != null ? theme.colorAccent : Color.yellow;
         gearText.color = Color.Lerp(baseCol, flashCol, f);
         gearText.text = gears.GearLabel;
     }

@@ -86,6 +86,9 @@ public class CountdownHUD : MonoBehaviour
         {
             var panelSprite = theme.PanelForTimer(remaining);
             if (panelSprite != null && bg.sprite != panelSprite) bg.sprite = panelSprite;
+            // 30s 미만 빨강/60s 미만 노랑 fill 위는 흰 텍스트, 그 외 Grey bg 위는 검정
+            if (timeText != null)
+                timeText.color = remaining < 60f ? theme.colorTextOnFill : theme.colorText;
         }
 
         int m = Mathf.FloorToInt(remaining / 60f);

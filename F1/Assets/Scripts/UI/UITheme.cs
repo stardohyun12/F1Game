@@ -33,14 +33,15 @@ public class UITheme : ScriptableObject
     public Sprite arrowNorth;      // Yellow/arrow_basic_n (회전 기반 화살표)
     public Sprite iconCheck;       // Green/icon_checkmark
 
-    [Header("Text Colors")]
-    public Color colorText = new Color(0.96f, 0.96f, 0.95f, 1f);
-    public Color colorTextMuted = new Color(0.70f, 0.70f, 0.68f, 1f);
-    public Color colorTextFlash = Color.white;
-    public Color colorAccent = new Color(1f, 0.85f, 0.28f, 1f);
-    public Color colorOkText = new Color(0.4f, 0.85f, 0.45f, 1f);
-    public Color colorWarnText = new Color(1f, 0.80f, 0.30f, 1f);
-    public Color colorCritText = new Color(0.95f, 0.32f, 0.32f, 1f);
+    [Header("Text Colors — Kenney 밝은 회색 패널 대비용 검정 계열")]
+    public Color colorText = new Color(0.18f, 0.19f, 0.22f, 1f);        // near-black, 본문
+    public Color colorTextMuted = new Color(0.38f, 0.40f, 0.44f, 1f);   // 중간 회색, 보조
+    public Color colorTextFlash = Color.white;                            // flash 순간만 흰색
+    public Color colorAccent = new Color(0.92f, 0.58f, 0.10f, 1f);        // 진한 주황 (노란 fill과 구별)
+    public Color colorOkText = new Color(0.20f, 0.55f, 0.25f, 1f);         // 진녹색 텍스트
+    public Color colorWarnText = new Color(0.75f, 0.50f, 0.05f, 1f);       // 진노랑
+    public Color colorCritText = new Color(0.78f, 0.18f, 0.18f, 1f);       // 진빨강
+    public Color colorTextOnFill = Color.white;                           // Yellow/Red fill 위 흰 텍스트
 
     [Header("Sounds")]
     public AudioClip sfxClick;
@@ -73,4 +74,7 @@ public class UITheme : ScriptableObject
             return _runtime;
         }
     }
+
+    /// <summary>Edit-mode에서 asset 변경 후 static cache 무효화.</summary>
+    public static void InvalidateCache() { _runtime = null; }
 }

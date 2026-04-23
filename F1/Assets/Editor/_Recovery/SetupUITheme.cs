@@ -12,8 +12,11 @@ public static class SetupUITheme
     const string ResourcesDir = "Assets/Resources";
     const string ThemePath = "Assets/Resources/UITheme.asset";
 
-    const string FontPrimaryPath = "Assets/UI/Fonts/KenneyFuture SDF.asset";
-    const string FontCondensedPath = "Assets/UI/Fonts/KenneyFutureNarrow SDF.asset";
+    // 세션 13 업데이트: Kenney Future는 outline 스타일이라 본문 가독성 낮음.
+    // Primary = LiberationSans SDF (TMP Essentials 기본, 읽기 편함)
+    // Condensed = Kenney Future (제목/액센트 전용, 게임 느낌)
+    const string FontPrimaryPath = "Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset";
+    const string FontCondensedPath = "Assets/UI/Fonts/KenneyFuture SDF.asset";
 
     const string KennyRoot = "Assets/UI/kenney_ui-pack/PNG/";
 
