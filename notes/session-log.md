@@ -448,3 +448,31 @@
   - **실측 도구화의 가치:** `MeasureIntersectionRotations.cs` 같은 "N개 회전 side-by-side" 패턴이 단일 probe보다 확정적. 추상적 방향(CW/CCW) 추론 불가할 때 기계적 검증으로 대체.
   - **BuildingDef.addCollider 확장성:** 이 플래그 하나로 road-kit 타일을 Building catalog에 통합 가능 → 향후 sign-highway (랜드마크) / road-square (광장) / construction-cone (장애물) / light (가로등) 전부 "Building" 파이프라인으로 배치 가능.
 - **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트 + UI 트랙.
+
+### 세션 11 이어서 — 커밋 + UI 트랙 세션 12 이관
+
+- **커밋 3개 분리 완료:**
+  - `b0f6fda` feat(session-11) — 맵 Lynch 5요소 + T자 + 오픈월드 Tier A (90 files, +6342/-4599)
+  - `8f53bff` docs(session-11) — D-033/034 + 리서치 + Kenny 도로 카탈로그 (5 files, +417)
+  - `98364a4` chore(session-11) — Kenny UI pack + interface sounds 임포트 (세션 12 스테이징)
+- **UI 트랙 명세 합의 (구현은 세션 12로 이관):**
+  - 기술: UGUI (Canvas) 확정
+  - 에셋: Kenny UI pack (Grey+Yellow 조합, Warm 아트 프리셋 매칭) + Kenny Future TTF + Kenny interface-sounds
+  - Tier 1 (주행 상시): FuelHUD / GearHUD / CountdownHUD — 1순위
+  - Tier 2 (1회성): DeliveryHUD / OrderBoard / ResultPanel — 2순위
+  - 공통 인프라: UIRoot (Canvas 1920×1080) / UITheme SO / UISounds static helper / TMP_FontAsset 생성
+- **세션 12 오프닝 진입점:**
+  1. TMP Essentials 임포트 + Kenney Future → TMP_FontAsset 2종 변환
+  2. UIRoot + UITheme + UISounds 인프라 구축
+  3. FuelHUD UGUI 전환 → 패턴 검증
+  4. GearHUD/CountdownHUD 동일 패턴으로 전환
+  5. (선택) DeliveryHUD 전환 or 세션 13으로 이관
+- **세션 11 총괄:**
+  - 연구 페이즈 1 (맵 3 병렬 조사) → 즉시 구현 완결 (D-033 Lynch 5요소)
+  - 버그 수정 2회 시행착오 → 실측 기반 해결 (D-034 T자 rot 0→S/90→W/180→N/270→E)
+  - 에셋 카탈로그 인프라화 (72 Kenny roads + Industrial kit + UI pack)
+  - 맵 "정형화" → "오픈월드 느낌" 전환 (Tier A: 지름길 4 + 광장 2)
+  - 커밋 위생 유지 (3 분리 커밋, 미커밋 축적 0)
+  - UI 트랙은 D-032 교훈 따라 신규 세션 진입 결정 (장시간 후 판단력 저하 회피)
+- **도현 패턴 10번째:** "B로 ㄱㄱ" 세션 종료 판단 자발적 수용. 세션 경계 관리 능력 향상 — 세션 10 "세이브 후 기획 대화" 요청 이어서 두 번째 성숙한 신호.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 UI 트랙 Tier 1 구현부터.
