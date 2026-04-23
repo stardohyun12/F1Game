@@ -22,6 +22,15 @@ public static class RunFullRebuild
         Debug.Log("[RunFullRebuild] Step 5 — SetupUIScene.Execute");
         SetupUIScene.Execute();
 
+        // Step 6 — 연결성 검증 (D-038 세션 13 방지 시스템)
+        Debug.Log("[RunFullRebuild] Step 6 — TrackConnectivityVerifier");
+        var layoutGuids = AssetDatabase.FindAssets("t:TrackLayout ComplexTrackLayout");
+        if (layoutGuids.Length > 0)
+        {
+            var layout = AssetDatabase.LoadAssetAtPath<TrackLayout>(AssetDatabase.GUIDToAssetPath(layoutGuids[0]));
+            TrackConnectivityVerifier.Verify(layout, logPrefix: "RunFullRebuild");
+        }
+
         UnityEditor.SceneManagement.EditorSceneManager.SaveScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 

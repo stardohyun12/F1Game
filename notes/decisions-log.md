@@ -497,3 +497,32 @@
   - H5. Roundabout 3×3 — Downtown Hub 시각 앵커
 - **언제 재검토:** MVP 완성 후 (5주차 시작). 그 시점에 유저 피드백(내부 테스트) + 상대적 우선순위로 재평가.
 - **이번 세션 선택:** 도현이 "맵 단조로움"만 지금 해결 요청 → 저비용 확장(D-036)만 실행. H1~H5는 기록만.
+
+### D-038. TrackConnectivityVerifier — 맵 빌드 후 자동 구조 검증 (재발 방지 인프라)
+
+- **결정:** `F1/Assets/Editor/TrackConnectivityVerifier.cs` 신규 에디터 스크립트. RunFullRebuild Step 6으로 자동 실행. roadMask를 BFS로 훑어 (1) 고립 cell(exits=0), (2) startCell 도달 불가 road, (3) 도달 불가 End 여부를 리포트.
+- **발단:** 도현 세션 13 피드백 "타일 끝나는 지점이 이상함" + "재발 방지 조치".
+  - 진단 과정: 톱다운 캡처로 우측 cols 13-14 고립 건물 먼저 발견(이전 D-036 후속 fix). 그 다음 End 4개(`Tile_End_{2,10}_{2,6}`)가 지름길 `.###` 패턴의 **spur**로 작동 — 외곽 main에서 직접 접근 불가(`col 1/11 = '.'`). 회전은 맞지만 구조적으로 어색.
+  - 수정: 지름길을 `#####` 관통 형태로. End 4개 → 0개, 87 road cells 전부 도달 가능.
+- **방지 시스템 구현:**
+  - `TrackConnectivityVerifier.Verify(layout, logPrefix)` — BFS로 도달 가능 집합 계산 → 비교.
+  - 리포트 필드: `ok / totalRoad / reachable / orphans / ends / endsUnreachable / isolated`
+  - OK 시 `✓ 연결성 OK` 한 줄. 실패 시 cell 좌표 리스트 LogError.
+  - `PitCrew > Verify Track Connectivity` 수동 메뉴 + `RunFullRebuild` Step 6 자동.
+  - `IsRoad`는 `#/X/D` 세 char 모두 road 취급 (TileMapAuto와 일치).
+- **설계 원칙 (D-026 "침묵 실패 방지"와 동일):**
+  - 새 타일/마스크 도입 시 **"하나라도 이상하면 콘솔에 경고"**. 시각 확인은 보조.
+  - BuildingPlacer.VerifyPlacements(건물 기울어짐)와 쌍을 이룸: 건물은 기울어짐, 도로는 연결성.
+  - Rebuild 실행 시 항상 리포트 나오므로 **"어? End 개수 왜 늘었지?"** 같은 감지 가능.
+- **제한사항:**
+  - 회전 매핑(rot 0/90/180/270 → 실제 exits)은 검증 안 함. D-034 T-교차 같은 회전 버그는 별도 도구(`MeasureIntersectionRotations`) 필요.
+  - 타일 mesh 이음매(crosswalk 중복 등)는 시각만 확인 가능. 자동화 비현실.
+  - BuildingPlacer.addCollider=false 건물과 road 겹침은 의도된 케이스(광장 'P'), 현 검증에서 못 잡음. 필요 시 별도.
+- **향후 확장:**
+  - 회전 sanity (TileMapAuto의 `RotationFor` 딕셔너리와 실 배치 tile의 rotation 비교)
+  - 각 tile의 `Kind`와 exits 짝 검증 (예: Intersection인데 exits가 2개면 이상)
+  - `TrackLayout.OnValidate` 훅으로 에디터 필드 변경 즉시 검증 (이중 안전망)
+- **세션 13 결과 (수정 + 검증 후):**
+  - 15×9 맵, 87 road cells, Ends 0, Crossing 11, 동쪽 cols 13-14 완전 ring.
+  - 지름길 2곳(row 2/6) 관통 구조로 성숙.
+  - TrackConnectivityVerifier가 매 rebuild에서 `Ends=0 ✓` 확인.

@@ -67,6 +67,7 @@
 - **회전은 Y-yaw만 명시적으로 계산.** `Quaternion.FromToRotation(A, -A)`는 180° 축이 여러 해 → Unity가 X축 선택하면 상하 뒤집힘. `atan2(x, z)` 패턴 사용.
 - **자동 배치 스크립트에는 post-build verification 포함 의무.** `BuildingPlacer.VerifyPlacements` 패턴 (euler X/Z 검사 + bounds.min.y 검사). 침묵 실패 방지.
 - **맵 레이아웃은 ScriptableObject (`TrackLayout`)로 관리.** 코드 하드코드 금지. 여러 씬에 각자의 Layout SO.
+- **roadMask 수정 시 `TrackConnectivityVerifier` 자동 실행 필수** (세션 13 D-038). `RunFullRebuild` Step 6에 내장. BFS로 고립/도달불가/End 자동 리포트. 수동: `PitCrew > Verify Track Connectivity`. End 개수가 의도와 다르면 즉시 확인.
 
 ---
 

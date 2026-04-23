@@ -29,11 +29,11 @@ public static class SetupComplexScene
             // col 13은 row 4만 road (L 꺾임 1칸), 나머지는 건물/빈 자리.
             "#X###X###X###X#", // row 0 — south main full ring + Crossing cols 1/5/9/13
             "#...#...#...#.#", // row 1
-            "#.###...###.#.#", // row 2 — shortcuts + east vertical main (col 14)
+            "#####...#####.#", // row 2 — 관통 shortcut (spur 아님, main col 0↔col 4, col 8↔col 12)
             "#...#...#...#.#", // row 3
             "#X###X###X#####", // row 4 — mid main + Crossings + east full connect (cols 13-14)
             "#...#...#...#.#", // row 5
-            "#.###...###.#.#", // row 6 — mirrored shortcuts + east
+            "#####...#####.#", // row 6 — 관통 shortcut (대칭)
             "#...#...#...#.#", // row 7
             "#X###X###X###X#", // row 8 — north main full ring + Crossings
         };
