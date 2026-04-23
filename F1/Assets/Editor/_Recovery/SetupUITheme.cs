@@ -4,8 +4,8 @@ using TMPro;
 using System.IO;
 
 /// <summary>
-/// UITheme.asset을 Resources/ 밑에 생성하고 Kenny UI + TMP 폰트 참조를 자동 연결.
-/// 9-slice 경계 설정까지 포함.
+/// UITheme.asset 생성 + Kenney UI sprite/font/sfx 전체 자동 연결.
+/// 세션 13: Sprite 기반 상태 표현으로 전환. 5색 variants 전부 import.
 /// </summary>
 public static class SetupUITheme
 {
@@ -15,12 +15,29 @@ public static class SetupUITheme
     const string FontPrimaryPath = "Assets/UI/Fonts/KenneyFuture SDF.asset";
     const string FontCondensedPath = "Assets/UI/Fonts/KenneyFutureNarrow SDF.asset";
 
-    // Kenny UI sprite 경로 (9-slice 후보)
-    const string PanelSpritePath = "Assets/UI/kenney_ui-pack/PNG/Grey/Default/button_rectangle_depth_flat.png";
-    const string TrackSpritePath = "Assets/UI/kenney_ui-pack/PNG/Grey/Default/slide_horizontal_grey_section_wide.png";
-    const string FillSpritePath = "Assets/UI/kenney_ui-pack/PNG/Yellow/Default/button_rectangle_flat.png";
+    const string KennyRoot = "Assets/UI/kenney_ui-pack/PNG/";
 
-    // 사운드 경로
+    // Panels (Grey)
+    const string PanelDark = KennyRoot + "Grey/Default/button_rectangle_depth_flat.png";
+    const string PanelBright = KennyRoot + "Grey/Default/button_rectangle_flat.png";
+    const string PanelGloss = KennyRoot + "Grey/Default/button_rectangle_gloss.png";
+    const string BarTrack = KennyRoot + "Grey/Default/slide_horizontal_grey_section_wide.png";
+
+    // Fills (5색)
+    const string FillOk = KennyRoot + "Green/Default/button_rectangle_flat.png";
+    const string FillWarn = KennyRoot + "Yellow/Default/button_rectangle_flat.png";
+    const string FillCrit = KennyRoot + "Red/Default/button_rectangle_flat.png";
+    const string FillAccent = KennyRoot + "Yellow/Default/button_rectangle_gloss.png";
+
+    // Buttons
+    const string ButtonNormal = KennyRoot + "Grey/Default/button_rectangle_gloss.png";
+    const string ButtonHighlight = KennyRoot + "Yellow/Default/button_rectangle_gloss.png";
+
+    // Icons (non-9-slice, 작은 것)
+    const string ArrowNorth = KennyRoot + "Yellow/Default/arrow_basic_n.png";
+    const string IconCheck = KennyRoot + "Green/Default/icon_checkmark.png";
+
+    // Sounds
     const string SfxClickPath = "Assets/Sound/kenney_interface-sounds (1)/Audio/click_001.ogg";
     const string SfxBackPath = "Assets/Sound/kenney_interface-sounds (1)/Audio/back_001.ogg";
     const string SfxConfirmPath = "Assets/Sound/kenney_interface-sounds (1)/Audio/confirmation_001.ogg";
@@ -29,19 +46,18 @@ public static class SetupUITheme
     [MenuItem("PitCrew/UI/Setup UITheme Asset")]
     public static void Execute()
     {
-        if (!Directory.Exists(ResourcesDir))
-        {
-            Directory.CreateDirectory(ResourcesDir);
-            AssetDatabase.Refresh();
-        }
+        if (!Directory.Exists(ResourcesDir)) { Directory.CreateDirectory(ResourcesDir); AssetDatabase.Refresh(); }
 
-        // 0. Kenny sprite들의 9-slice 경계 + SpriteMode 설정
-        ConfigureSpriteImporter(PanelSpritePath, borderPx: 14);
-        ConfigureSpriteImporter(TrackSpritePath, borderPx: 14);
-        ConfigureSpriteImporter(FillSpritePath, borderPx: 14);
+        // 9-slice sprites (border 14)
+        string[] nineSlice = { PanelDark, PanelBright, PanelGloss, BarTrack, FillOk, FillWarn, FillCrit, FillAccent, ButtonNormal, ButtonHighlight };
+        foreach (var p in nineSlice) ConfigureSpriteImporter(p, borderPx: 14);
+
+        // 단일 icon (no border)
+        ConfigureSpriteImporter(ArrowNorth, borderPx: 0);
+        ConfigureSpriteImporter(IconCheck, borderPx: 0);
+
         AssetDatabase.Refresh();
 
-        // 1. 기존 에셋 로드 or 새로 생성
         var theme = AssetDatabase.LoadAssetAtPath<UITheme>(ThemePath);
         bool created = false;
         if (theme == null)
@@ -51,13 +67,24 @@ public static class SetupUITheme
             created = true;
         }
 
-        // 2. 참조 연결
         theme.fontPrimary = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontPrimaryPath);
         theme.fontCondensed = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(FontCondensedPath);
 
-        theme.panelBackground = AssetDatabase.LoadAssetAtPath<Sprite>(PanelSpritePath);
-        theme.barTrack = AssetDatabase.LoadAssetAtPath<Sprite>(TrackSpritePath);
-        theme.barFill = AssetDatabase.LoadAssetAtPath<Sprite>(FillSpritePath);
+        theme.panelDark = AssetDatabase.LoadAssetAtPath<Sprite>(PanelDark);
+        theme.panelBright = AssetDatabase.LoadAssetAtPath<Sprite>(PanelBright);
+        theme.panelGloss = AssetDatabase.LoadAssetAtPath<Sprite>(PanelGloss);
+        theme.barTrack = AssetDatabase.LoadAssetAtPath<Sprite>(BarTrack);
+
+        theme.fillOk = AssetDatabase.LoadAssetAtPath<Sprite>(FillOk);
+        theme.fillWarn = AssetDatabase.LoadAssetAtPath<Sprite>(FillWarn);
+        theme.fillCrit = AssetDatabase.LoadAssetAtPath<Sprite>(FillCrit);
+        theme.fillAccent = AssetDatabase.LoadAssetAtPath<Sprite>(FillAccent);
+
+        theme.buttonNormal = AssetDatabase.LoadAssetAtPath<Sprite>(ButtonNormal);
+        theme.buttonHighlight = AssetDatabase.LoadAssetAtPath<Sprite>(ButtonHighlight);
+
+        theme.arrowNorth = AssetDatabase.LoadAssetAtPath<Sprite>(ArrowNorth);
+        theme.iconCheck = AssetDatabase.LoadAssetAtPath<Sprite>(IconCheck);
 
         theme.sfxClick = AssetDatabase.LoadAssetAtPath<AudioClip>(SfxClickPath);
         theme.sfxBack = AssetDatabase.LoadAssetAtPath<AudioClip>(SfxBackPath);
@@ -69,34 +96,31 @@ public static class SetupUITheme
         AssetDatabase.Refresh();
 
         Debug.Log($"[UITheme] {(created ? "Created" : "Updated")} {ThemePath}. "
-            + $"fontPrimary={NullToStr(theme.fontPrimary)} fontCondensed={NullToStr(theme.fontCondensed)} "
-            + $"panel={NullToStr(theme.panelBackground)} track={NullToStr(theme.barTrack)} fill={NullToStr(theme.barFill)}");
+            + $"panels={NullCheck(theme.panelDark, theme.panelBright, theme.panelGloss)} "
+            + $"fills={NullCheck(theme.fillOk, theme.fillWarn, theme.fillCrit, theme.fillAccent)} "
+            + $"arrow={theme.arrowNorth?.name ?? "null"}");
     }
 
-    static string NullToStr(Object o) => o == null ? "null" : o.name;
+    static string NullCheck(params Object[] objs)
+    {
+        int ok = 0;
+        foreach (var o in objs) if (o != null) ok++;
+        return $"{ok}/{objs.Length}";
+    }
 
     static void ConfigureSpriteImporter(string path, int borderPx)
     {
         var imp = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (imp == null)
-        {
-            Debug.LogWarning("[UITheme] Sprite not found: " + path);
-            return;
-        }
+        if (imp == null) { Debug.LogWarning("[UITheme] Sprite not found: " + path); return; }
 
         bool changed = false;
         if (imp.textureType != TextureImporterType.Sprite) { imp.textureType = TextureImporterType.Sprite; changed = true; }
         if (imp.spriteImportMode != SpriteImportMode.Single) { imp.spriteImportMode = SpriteImportMode.Single; changed = true; }
-
-        var current = imp.spriteBorder;
-        var want = new Vector4(borderPx, borderPx, borderPx, borderPx);
-        if (current != want) { imp.spriteBorder = want; changed = true; }
         if (imp.spritePixelsPerUnit != 100f) { imp.spritePixelsPerUnit = 100f; changed = true; }
 
-        if (changed)
-        {
-            imp.SaveAndReimport();
-            Debug.Log($"[UITheme] Configured sprite: {path} border={borderPx}");
-        }
+        var want = new Vector4(borderPx, borderPx, borderPx, borderPx);
+        if (imp.spriteBorder != want) { imp.spriteBorder = want; changed = true; }
+
+        if (changed) imp.SaveAndReimport();
     }
 }

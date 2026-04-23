@@ -3,10 +3,10 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 연료 게이지 HUD (UGUI). 이전 OnGUI 버전 대체 (세션 12, UI 트랙).
-/// - 좌하단 가로 바 + 라벨
-/// - 25% warn, 10% crit 블링크
-/// - 자가구성: Canvas 하위에 GameObject만 두면 Awake에서 자식 Image/TMP 자동 생성
+/// 연료 게이지 HUD (UGUI). 세션 13 Kenney sprite 스왑 방식.
+/// - BG: panelDark, Fill: Green/Yellow/Red Kenney sprite 상태별 교체
+/// - Image.color = white (tint 없음, sprite 원색 사용)
+/// - 10% crit는 깜박 blink
 /// </summary>
 [DisallowMultipleComponent]
 public class FuelHUD : MonoBehaviour
@@ -39,79 +39,56 @@ public class FuelHUD : MonoBehaviour
     void EnsureCanvasParent()
     {
         if (GetComponentInParent<Canvas>() != null) return;
-        // 루트 오브젝트일 때만 UIRoot 하위로 자동 이동 — 이미 부모가 있으면 씬 구조 존중
         if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
-        Debug.LogWarning($"[FuelHUD] Canvas 밖에 있음. GameObject를 UIRoot 직속으로 이동하거나 Canvas 하위에 두세요.");
+        Debug.LogWarning("[FuelHUD] Canvas 밖에 있음.");
         enabled = false;
     }
 
     void BuildIfNeeded()
     {
         var theme = UITheme.Active;
-
-        rt.anchorMin = new Vector2(0, 0);
-        rt.anchorMax = new Vector2(0, 0);
-        rt.pivot = new Vector2(0, 0);
+        rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(0, 0); rt.pivot = new Vector2(0, 0);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
 
         if (bg == null)
         {
-            var bgGo = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            bgGo.transform.SetParent(transform, false);
-            bg = bgGo.GetComponent<Image>();
+            var go = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(transform, false);
+            bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0, 0, 0, 0.55f);
-            if (theme != null && theme.panelBackground != null)
-            {
-                bg.sprite = theme.panelBackground;
-                bg.type = Image.Type.Sliced;
-            }
-            var bgRt = bg.rectTransform;
-            bgRt.anchorMin = Vector2.zero;
-            bgRt.anchorMax = Vector2.one;
-            bgRt.offsetMin = Vector2.zero;
-            bgRt.offsetMax = Vector2.zero;
+            bg.color = Color.white;
+            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            var r = bg.rectTransform;
+            r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
 
         if (fillImg == null)
         {
-            var fillGo = new GameObject("Fill", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            fillGo.transform.SetParent(transform, false);
-            fillImg = fillGo.GetComponent<Image>();
+            var go = new GameObject("Fill", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(transform, false);
+            fillImg = go.GetComponent<Image>();
             fillImg.raycastTarget = false;
-            if (theme != null && theme.barFill != null)
-            {
-                fillImg.sprite = theme.barFill;
-                fillImg.type = Image.Type.Sliced;
-            }
+            fillImg.color = Color.white;
+            if (theme?.fillOk != null) { fillImg.sprite = theme.fillOk; fillImg.type = Image.Type.Sliced; }
             fillRt = fillImg.rectTransform;
-            fillRt.anchorMin = new Vector2(0, 0);
-            fillRt.anchorMax = new Vector2(0, 1);
+            fillRt.anchorMin = new Vector2(0, 0); fillRt.anchorMax = new Vector2(0, 1);
             fillRt.pivot = new Vector2(0, 0.5f);
-            fillRt.offsetMin = new Vector2(4, 4);
-            fillRt.offsetMax = new Vector2(4, -4);
+            fillRt.offsetMin = new Vector2(8, 8); fillRt.offsetMax = new Vector2(8, -8);
         }
 
         if (label == null)
         {
-            var lblGo = new GameObject("Label", typeof(RectTransform));
-            lblGo.transform.SetParent(transform, false);
-            label = lblGo.AddComponent<TextMeshProUGUI>();
+            var go = new GameObject("Label", typeof(RectTransform));
+            go.transform.SetParent(transform, false);
+            label = go.AddComponent<TextMeshProUGUI>();
             label.raycastTarget = false;
             label.alignment = TextAlignmentOptions.MidlineLeft;
-            label.fontSize = 28;
-            label.fontStyle = FontStyles.Bold;
-            if (theme != null)
-            {
-                if (theme.fontPrimary != null) label.font = theme.fontPrimary;
-                label.color = theme.colorText;
-            }
-            var lRt = label.rectTransform;
-            lRt.anchorMin = new Vector2(0, 0);
-            lRt.anchorMax = new Vector2(1, 1);
-            lRt.offsetMin = new Vector2(16, 0);
-            lRt.offsetMax = new Vector2(-16, 0);
+            label.fontSize = 28; label.fontStyle = FontStyles.Bold;
+            if (theme != null) { if (theme.fontPrimary != null) label.font = theme.fontPrimary; label.color = theme.colorText; }
+            var r = label.rectTransform;
+            r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);
+            r.offsetMin = new Vector2(20, 0); r.offsetMax = new Vector2(-20, 0);
         }
     }
 
@@ -121,24 +98,27 @@ public class FuelHUD : MonoBehaviour
         var theme = UITheme.Active;
 
         float level = Mathf.Clamp01(fuel.FuelLevel);
-
-        float innerW = rt.rect.width - 8f;
+        float innerW = rt.rect.width - 16f;
         fillRt.sizeDelta = new Vector2(innerW * level, 0);
 
-        Color fill;
-        if (level <= critThreshold)
+        // Sprite 스왑 방식
+        if (theme != null)
         {
-            float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * critBlinkHz * Mathf.PI * 2f);
-            var a = theme != null ? theme.colorCrit : new Color(1f, 0.3f, 0.3f, 1f);
-            var b = theme != null ? theme.colorCritPulse : new Color(1f, 0.6f, 0.6f, 1f);
-            fill = Color.Lerp(a, b, t);
-        }
-        else if (level <= warnThreshold) fill = theme != null ? theme.colorWarn : new Color(1f, 0.85f, 0.3f, 0.95f);
-        else fill = theme != null ? theme.colorOk : new Color(0.4f, 0.9f, 0.4f, 0.9f);
-        fillImg.color = fill;
+            var s = theme.FillForLevel(level, warnThreshold, critThreshold);
+            if (s != null && fillImg.sprite != s) fillImg.sprite = s;
 
-        label.text = fuel.IsDepleted
-            ? "FUEL EMPTY  (F12 refill)"
-            : $"FUEL  {Mathf.RoundToInt(level * 100)}%";
+            // crit 깜박: alpha로만 조절 (sprite는 Red 고정)
+            if (level <= critThreshold)
+            {
+                float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * critBlinkHz * Mathf.PI * 2f);
+                fillImg.color = new Color(1f, 1f, 1f, 0.55f + 0.45f * t);
+            }
+            else
+            {
+                fillImg.color = Color.white;
+            }
+        }
+
+        label.text = fuel.IsDepleted ? "FUEL EMPTY  (F12)" : $"FUEL  {Mathf.RoundToInt(level * 100)}%";
     }
 }

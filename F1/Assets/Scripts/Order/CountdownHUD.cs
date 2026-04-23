@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 시간제한 카운트다운 HUD (UGUI). 우상단. 시간제한 없는 작업이면 자동 숨김.
-/// 세션 12 UI 트랙 — OnGUI → UGUI 전환.
+/// 카운트다운 HUD (UGUI). 세션 13 Kenney sprite 방식.
+/// 30s 미만: fillCrit(빨강) BG, 60s 미만: fillWarn(노랑), 그 외: panelDark.
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
@@ -14,7 +14,7 @@ public class CountdownHUD : MonoBehaviour
 
     [Header("Layout (우상단 기준)")]
     [SerializeField] Vector2 anchoredPos = new Vector2(-40, -40);
-    [SerializeField] Vector2 size = new Vector2(240, 72);
+    [SerializeField] Vector2 size = new Vector2(240, 80);
 
     RectTransform rt;
     Image bg;
@@ -27,7 +27,6 @@ public class CountdownHUD : MonoBehaviour
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
-        // Unity의 ?? 연산자 + UnityEngine.Object fake-null 이슈 회피. TryGetComponent는 안전.
         if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
     }
@@ -36,72 +35,58 @@ public class CountdownHUD : MonoBehaviour
     {
         if (GetComponentInParent<Canvas>() != null) return;
         if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
-        Debug.LogWarning($"[CountdownHUD] Canvas 밖에 있음. GameObject를 UIRoot 직속으로 이동하세요.");
+        Debug.LogWarning("[CountdownHUD] Canvas 밖.");
         enabled = false;
     }
 
     void BuildIfNeeded()
     {
         var theme = UITheme.Active;
-
-        rt.anchorMin = new Vector2(1, 1);
-        rt.anchorMax = new Vector2(1, 1);
-        rt.pivot = new Vector2(1, 1);
+        rt.anchorMin = new Vector2(1, 1); rt.anchorMax = new Vector2(1, 1); rt.pivot = new Vector2(1, 1);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
 
         if (bg == null)
         {
-            var bgGo = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            bgGo.transform.SetParent(transform, false);
-            bg = bgGo.GetComponent<Image>();
+            var go = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(transform, false);
+            bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorTimerNormal : new Color(0, 0, 0, 0.55f);
-            if (theme != null && theme.panelBackground != null)
-            {
-                bg.sprite = theme.panelBackground;
-                bg.type = Image.Type.Sliced;
-            }
-            var bgRt = bg.rectTransform;
-            bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
-            bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+            bg.color = Color.white;
+            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            var r = bg.rectTransform;
+            r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
 
         if (timeText == null)
         {
-            var t = new GameObject("Time", typeof(RectTransform));
-            t.transform.SetParent(transform, false);
-            timeText = t.AddComponent<TextMeshProUGUI>();
+            var go = new GameObject("Time", typeof(RectTransform));
+            go.transform.SetParent(transform, false);
+            timeText = go.AddComponent<TextMeshProUGUI>();
             timeText.raycastTarget = false;
             timeText.alignment = TextAlignmentOptions.Center;
-            timeText.fontSize = 40;
-            timeText.fontStyle = FontStyles.Bold;
-            if (theme != null)
-            {
-                if (theme.fontPrimary != null) timeText.font = theme.fontPrimary;
-                timeText.color = theme.colorText;
-            }
-            var tRt = timeText.rectTransform;
-            tRt.anchorMin = Vector2.zero; tRt.anchorMax = Vector2.one;
-            tRt.offsetMin = Vector2.zero; tRt.offsetMax = Vector2.zero;
+            timeText.fontSize = 44; timeText.fontStyle = FontStyles.Bold;
+            if (theme != null) { if (theme.fontPrimary != null) timeText.font = theme.fontPrimary; timeText.color = theme.colorText; }
+            var r = timeText.rectTransform;
+            r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
+            r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
     }
 
     void Update()
     {
-        if (group == null) return; // Awake가 enabled=false로 끝난 이례 상황 방어
+        if (group == null) return;
         if (controller == null || !controller.RunActive) { group.alpha = 0f; return; }
-
         float remaining = controller.TimeRemaining;
         if (remaining < 0f) { group.alpha = 0f; return; }
-
         group.alpha = 1f;
+
         var theme = UITheme.Active;
-        Color bgCol;
-        if (remaining < 30f) bgCol = theme != null ? theme.colorTimerLow : new Color(0.7f, 0.15f, 0.15f, 0.85f);
-        else if (remaining < 60f) bgCol = theme != null ? theme.colorTimerMid : new Color(0.8f, 0.6f, 0.1f, 0.7f);
-        else bgCol = theme != null ? theme.colorTimerNormal : new Color(0, 0, 0, 0.55f);
-        bg.color = bgCol;
+        if (theme != null)
+        {
+            var panelSprite = theme.PanelForTimer(remaining);
+            if (panelSprite != null && bg.sprite != panelSprite) bg.sprite = panelSprite;
+        }
 
         int m = Mathf.FloorToInt(remaining / 60f);
         int s = Mathf.FloorToInt(remaining % 60f);

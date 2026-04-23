@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 using TMPro;
 
 /// <summary>
-/// ESC로 토글하는 Pause 메뉴. Time.timeScale 0/1. Resume + Quit 버튼.
-/// 풀스크린 반투명 overlay + 중앙 패널.
+/// Pause 메뉴. 세션 13 Kenney panelGloss + button sprite.
+/// ESC 토글, Time.timeScale 0/1, Kenney click/back SFX.
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(RectTransform))]
@@ -30,43 +30,40 @@ public class PauseMenu : MonoBehaviour
     {
         if (GetComponentInParent<Canvas>() != null) return;
         if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
-        Debug.LogWarning("[PauseMenu] Canvas 밖. UIRoot 직속으로.");
+        Debug.LogWarning("[PauseMenu] Canvas 밖.");
         enabled = false;
     }
 
     void BuildIfNeeded()
     {
         var theme = UITheme.Active;
-
-        // 전체 화면 덮기
         rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
         rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
 
         if (overlay == null)
         {
-            var bgGo = new GameObject("Overlay", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            bgGo.transform.SetParent(transform, false);
-            overlay = bgGo.GetComponent<Image>();
-            overlay.color = new Color(0, 0, 0, 0.65f);
-            overlay.raycastTarget = true; // 뒤쪽 UI 클릭 차단
-            var bgRt = overlay.rectTransform;
-            bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
-            bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+            var go = new GameObject("Overlay", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(transform, false);
+            overlay = go.GetComponent<Image>();
+            overlay.color = new Color(0, 0, 0, 0.75f);
+            overlay.raycastTarget = true;
+            var r = overlay.rectTransform;
+            r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
+            r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
 
         if (panelRt == null)
         {
-            var panelGo = new GameObject("Panel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
-            panelGo.transform.SetParent(transform, false);
-            var panelImg = panelGo.GetComponent<Image>();
-            panelImg.color = theme != null ? new Color(0.12f, 0.12f, 0.13f, 0.98f) : new Color(0.12f, 0.12f, 0.13f, 0.98f);
-            if (theme != null && theme.panelBackground != null) { panelImg.sprite = theme.panelBackground; panelImg.type = Image.Type.Sliced; }
+            var go = new GameObject("Panel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            go.transform.SetParent(transform, false);
+            var panelImg = go.GetComponent<Image>();
+            panelImg.color = Color.white;
+            if (theme?.panelGloss != null) { panelImg.sprite = theme.panelGloss; panelImg.type = Image.Type.Sliced; }
             panelImg.raycastTarget = true;
             panelRt = panelImg.rectTransform;
-            panelRt.anchorMin = new Vector2(0.5f, 0.5f);
-            panelRt.anchorMax = new Vector2(0.5f, 0.5f);
+            panelRt.anchorMin = new Vector2(0.5f, 0.5f); panelRt.anchorMax = new Vector2(0.5f, 0.5f);
             panelRt.pivot = new Vector2(0.5f, 0.5f);
-            panelRt.sizeDelta = new Vector2(480, 360);
+            panelRt.sizeDelta = new Vector2(520, 400);
 
             // Title
             var titleGo = new GameObject("Title", typeof(RectTransform));
@@ -74,19 +71,14 @@ public class PauseMenu : MonoBehaviour
             var title = titleGo.AddComponent<TextMeshProUGUI>();
             title.text = "PAUSED";
             title.alignment = TextAlignmentOptions.Center;
-            title.fontSize = 56;
-            title.fontStyle = FontStyles.Bold;
+            title.fontSize = 60; title.fontStyle = FontStyles.Bold;
             if (theme != null) { if (theme.fontPrimary != null) title.font = theme.fontPrimary; title.color = theme.colorAccent; }
-            var tRt = title.rectTransform;
-            tRt.anchorMin = new Vector2(0, 1); tRt.anchorMax = new Vector2(1, 1);
-            tRt.pivot = new Vector2(0.5f, 1);
-            tRt.sizeDelta = new Vector2(0, 80);
-            tRt.anchoredPosition = new Vector2(0, -32);
+            var tR = title.rectTransform;
+            tR.anchorMin = new Vector2(0, 1); tR.anchorMax = new Vector2(1, 1); tR.pivot = new Vector2(0.5f, 1);
+            tR.sizeDelta = new Vector2(0, 96); tR.anchoredPosition = new Vector2(0, -40);
 
-            // Resume button
-            CreateButton("ResumeBtn", panelRt, "RESUME", new Vector2(0, 40), () => SetOpen(false));
-            // Quit button
-            CreateButton("QuitBtn", panelRt, "QUIT", new Vector2(0, -40), OnQuit);
+            CreateButton("ResumeBtn", panelRt, "RESUME", new Vector2(0, 30), () => SetOpen(false));
+            CreateButton("QuitBtn", panelRt, "QUIT", new Vector2(0, -60), OnQuit);
         }
     }
 
@@ -96,22 +88,24 @@ public class PauseMenu : MonoBehaviour
         var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
         go.transform.SetParent(parent, false);
         var img = go.GetComponent<Image>();
-        img.color = theme != null ? new Color(0.25f, 0.25f, 0.28f, 1f) : new Color(0.25f, 0.25f, 0.28f, 1f);
-        if (theme != null && theme.panelBackground != null) { img.sprite = theme.panelBackground; img.type = Image.Type.Sliced; }
+        img.color = Color.white;
+        if (theme?.buttonNormal != null) { img.sprite = theme.buttonNormal; img.type = Image.Type.Sliced; }
         var btnRt = img.rectTransform;
-        btnRt.anchorMin = new Vector2(0.5f, 0.5f);
-        btnRt.anchorMax = new Vector2(0.5f, 0.5f);
-        btnRt.pivot = new Vector2(0.5f, 0.5f);
-        btnRt.sizeDelta = new Vector2(280, 64);
+        btnRt.anchorMin = new Vector2(0.5f, 0.5f); btnRt.anchorMax = new Vector2(0.5f, 0.5f); btnRt.pivot = new Vector2(0.5f, 0.5f);
+        btnRt.sizeDelta = new Vector2(320, 72);
         btnRt.anchoredPosition = anchoredPos;
 
         var btn = go.GetComponent<Button>();
         btn.targetGraphic = img;
-        var colors = btn.colors;
-        colors.normalColor = Color.white;
-        colors.highlightedColor = new Color(1.15f, 1.15f, 1.15f, 1f);
-        colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
-        btn.colors = colors;
+        // Kenney highlight sprite로 hover 전환
+        if (theme?.buttonHighlight != null)
+        {
+            var spriteState = btn.spriteState;
+            spriteState.highlightedSprite = theme.buttonHighlight;
+            spriteState.pressedSprite = theme.buttonHighlight;
+            btn.spriteState = spriteState;
+            btn.transition = Selectable.Transition.SpriteSwap;
+        }
         btn.onClick.AddListener(() => { UISounds.Click(); onClick?.Invoke(); });
 
         var lblGo = new GameObject("Label", typeof(RectTransform));
@@ -119,21 +113,17 @@ public class PauseMenu : MonoBehaviour
         var lbl = lblGo.AddComponent<TextMeshProUGUI>();
         lbl.text = label;
         lbl.alignment = TextAlignmentOptions.Center;
-        lbl.fontSize = 28;
-        lbl.fontStyle = FontStyles.Bold;
+        lbl.fontSize = 32; lbl.fontStyle = FontStyles.Bold;
         if (theme != null) { if (theme.fontPrimary != null) lbl.font = theme.fontPrimary; lbl.color = theme.colorText; }
         lbl.raycastTarget = false;
-        var lRt = lbl.rectTransform;
-        lRt.anchorMin = Vector2.zero; lRt.anchorMax = Vector2.one;
-        lRt.offsetMin = Vector2.zero; lRt.offsetMax = Vector2.zero;
+        var lR = lbl.rectTransform;
+        lR.anchorMin = Vector2.zero; lR.anchorMax = Vector2.one;
+        lR.offsetMin = Vector2.zero; lR.offsetMax = Vector2.zero;
     }
 
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            SetOpen(!isOpen);
-        }
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) SetOpen(!isOpen);
     }
 
     void SetOpen(bool open)

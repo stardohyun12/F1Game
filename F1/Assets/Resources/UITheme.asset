@@ -14,21 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UITheme
   fontPrimary: {fileID: 11400000, guid: 5d94d8d68b00f4f41bbddcfbfa25ff52, type: 2}
   fontCondensed: {fileID: 11400000, guid: e0bd61a5419e2ba46946ac3e99672d50, type: 2}
-  panelBackground: {fileID: 21300000, guid: 0718788fd4a3f9d49be3d684d68b6800, type: 3}
+  panelDark: {fileID: 21300000, guid: 0718788fd4a3f9d49be3d684d68b6800, type: 3}
+  panelBright: {fileID: 21300000, guid: 0b3a7d26585b23241a9ac8f60b0c6ed1, type: 3}
+  panelGloss: {fileID: 21300000, guid: e8aa2133693bba94aa8797cd3feafeeb, type: 3}
   barTrack: {fileID: 21300000, guid: 4eb579d6f6f43d646b727a61288d3e5d, type: 3}
-  barFill: {fileID: 21300000, guid: e765dc6116ba54942b510c4a54094ac5, type: 3}
-  colorOk: {r: 0.4, g: 0.85, b: 0.45, a: 0.95}
-  colorWarn: {r: 1, g: 0.8, b: 0.3, a: 0.98}
-  colorCrit: {r: 0.95, g: 0.32, b: 0.32, a: 1}
-  colorCritPulse: {r: 1, g: 0.6, b: 0.6, a: 1}
-  colorPanel: {r: 0, g: 0, b: 0, a: 0.55}
+  fillOk: {fileID: 21300000, guid: c6c5bce868794f34fb975c5961b30567, type: 3}
+  fillWarn: {fileID: 21300000, guid: e765dc6116ba54942b510c4a54094ac5, type: 3}
+  fillCrit: {fileID: 21300000, guid: 8d82b70b585019f4695fae32964f6f80, type: 3}
+  fillAccent: {fileID: 21300000, guid: 169ab8c48dd369e41bfd2ca1e2fecc09, type: 3}
+  buttonNormal: {fileID: 21300000, guid: e8aa2133693bba94aa8797cd3feafeeb, type: 3}
+  buttonHighlight: {fileID: 21300000, guid: 169ab8c48dd369e41bfd2ca1e2fecc09, type: 3}
+  arrowNorth: {fileID: 21300000, guid: ebbd591b73640cf479655a480eb4c13a, type: 3}
+  iconCheck: {fileID: 21300000, guid: 9f84e8b15103b264091bea87aaad3716, type: 3}
   colorText: {r: 0.96, g: 0.96, b: 0.95, a: 1}
   colorTextMuted: {r: 0.7, g: 0.7, b: 0.68, a: 1}
   colorTextFlash: {r: 1, g: 1, b: 1, a: 1}
   colorAccent: {r: 1, g: 0.85, b: 0.28, a: 1}
-  colorTimerNormal: {r: 0, g: 0, b: 0, a: 0.55}
-  colorTimerMid: {r: 0.85, g: 0.58, b: 0.1, a: 0.85}
-  colorTimerLow: {r: 0.75, g: 0.15, b: 0.15, a: 0.92}
+  colorOkText: {r: 0.4, g: 0.85, b: 0.45, a: 1}
+  colorWarnText: {r: 1, g: 0.8, b: 0.3, a: 1}
+  colorCritText: {r: 0.95, g: 0.32, b: 0.32, a: 1}
   sfxClick: {fileID: 8300000, guid: f9321cd2eaaf7604ca5929ad8d01d9c1, type: 3}
   sfxBack: {fileID: 8300000, guid: 0989012bedd47cf4aa4058f6ddee7566, type: 3}
   sfxConfirm: {fileID: 8300000, guid: cf0e13846c2694e4c97eb6383cf64af4, type: 3}
