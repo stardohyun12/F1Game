@@ -1,54 +1,105 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
-/// 시간제한 카운트다운 표시 (상단 우측). 시간제한 없는 작업이면 미표시.
+/// 시간제한 카운트다운 HUD (UGUI). 우상단. 시간제한 없는 작업이면 자동 숨김.
+/// 세션 12 UI 트랙 — OnGUI → UGUI 전환.
 /// </summary>
+[DisallowMultipleComponent]
 public class CountdownHUD : MonoBehaviour
 {
-    [SerializeField] private RunController controller;
+    [SerializeField] RunController controller;
 
     [Header("Layout (우상단 기준)")]
-    [SerializeField] private Vector2 anchor = new Vector2(-260, 30);
-    [SerializeField] private Vector2 size = new Vector2(220, 56);
+    [SerializeField] Vector2 anchoredPos = new Vector2(-40, -40);
+    [SerializeField] Vector2 size = new Vector2(240, 72);
 
-    Texture2D pixel;
-    GUIStyle timeStyle;
+    RectTransform rt;
+    Image bg;
+    TMP_Text timeText;
+    CanvasGroup group;
 
     void Awake()
     {
         if (controller == null) controller = FindFirstObjectByType<RunController>();
+        EnsureCanvasParent();
+        rt = GetComponent<RectTransform>();
+        if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+        group = gameObject.GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+        BuildIfNeeded();
     }
 
-    void OnGUI()
+    void EnsureCanvasParent()
     {
-        if (controller == null || !controller.RunActive) return;
+        if (GetComponentInParent<Canvas>() == null)
+            transform.SetParent(UIRoot.Ensure(), false);
+    }
+
+    void BuildIfNeeded()
+    {
+        var theme = UITheme.Active;
+
+        rt.anchorMin = new Vector2(1, 1);
+        rt.anchorMax = new Vector2(1, 1);
+        rt.pivot = new Vector2(1, 1);
+        rt.anchoredPosition = anchoredPos;
+        rt.sizeDelta = size;
+
+        if (bg == null)
+        {
+            var bgGo = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            bgGo.transform.SetParent(transform, false);
+            bg = bgGo.GetComponent<Image>();
+            bg.raycastTarget = false;
+            bg.color = theme != null ? theme.colorTimerNormal : new Color(0, 0, 0, 0.55f);
+            if (theme != null && theme.panelBackground != null)
+            {
+                bg.sprite = theme.panelBackground;
+                bg.type = Image.Type.Sliced;
+            }
+            var bgRt = bg.rectTransform;
+            bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
+            bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+        }
+
+        if (timeText == null)
+        {
+            var t = new GameObject("Time", typeof(RectTransform));
+            t.transform.SetParent(transform, false);
+            timeText = t.AddComponent<TextMeshProUGUI>();
+            timeText.raycastTarget = false;
+            timeText.alignment = TextAlignmentOptions.Center;
+            timeText.fontSize = 40;
+            timeText.fontStyle = FontStyles.Bold;
+            if (theme != null)
+            {
+                if (theme.fontPrimary != null) timeText.font = theme.fontPrimary;
+                timeText.color = theme.colorText;
+            }
+            var tRt = timeText.rectTransform;
+            tRt.anchorMin = Vector2.zero; tRt.anchorMax = Vector2.one;
+            tRt.offsetMin = Vector2.zero; tRt.offsetMax = Vector2.zero;
+        }
+    }
+
+    void Update()
+    {
+        if (controller == null || !controller.RunActive) { group.alpha = 0f; return; }
+
         float remaining = controller.TimeRemaining;
-        if (remaining < 0f) return; // 무제한 작업
+        if (remaining < 0f) { group.alpha = 0f; return; }
 
-        if (pixel == null)
-        {
-            pixel = new Texture2D(1, 1);
-            pixel.SetPixel(0, 0, Color.white);
-            pixel.Apply();
-        }
-        if (timeStyle == null)
-        {
-            timeStyle = new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
-        }
-
-        Rect r = new Rect(Screen.width + anchor.x, anchor.y, size.x, size.y);
-
+        group.alpha = 1f;
+        var theme = UITheme.Active;
         Color bgCol;
-        if (remaining < 30f) bgCol = new Color(0.7f, 0.15f, 0.15f, 0.8f);
-        else if (remaining < 60f) bgCol = new Color(0.8f, 0.6f, 0.1f, 0.7f);
-        else bgCol = new Color(0, 0, 0, 0.55f);
-
-        GUI.color = bgCol;
-        GUI.DrawTexture(r, pixel);
-        GUI.color = Color.white;
+        if (remaining < 30f) bgCol = theme != null ? theme.colorTimerLow : new Color(0.7f, 0.15f, 0.15f, 0.85f);
+        else if (remaining < 60f) bgCol = theme != null ? theme.colorTimerMid : new Color(0.8f, 0.6f, 0.1f, 0.7f);
+        else bgCol = theme != null ? theme.colorTimerNormal : new Color(0, 0, 0, 0.55f);
+        bg.color = bgCol;
 
         int m = Mathf.FloorToInt(remaining / 60f);
         int s = Mathf.FloorToInt(remaining % 60f);
-        GUI.Label(r, $"⏱ {m}:{s:D2}", timeStyle);
+        timeText.text = $"{m}:{s:D2}";
     }
 }

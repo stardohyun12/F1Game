@@ -1,31 +1,45 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
-/// 기어 표시 HUD. 우하단 큰 박스.
-/// gears.md K5 — "HUD 기어숫자 플래시"는 시프트 순간 0.15초 화이트→원색 페이드.
+/// 기어 HUD (UGUI). 우하단 큰 박스. 시프트 순간 0.15s 화이트 플래시 (GDD gears.md K5).
+/// 세션 12 UI 트랙에서 OnGUI → UGUI 전환.
 /// </summary>
+[DisallowMultipleComponent]
 public class GearHUD : MonoBehaviour
 {
-    [SerializeField] private GearSystem gears;
+    [SerializeField] GearSystem gears;
 
-    [Header("Layout (우하단 기준 offset)")]
-    [SerializeField] private Vector2 anchor = new Vector2(-160, -130); // 우하단에서 좌/상
-    [SerializeField] private Vector2 size = new Vector2(120, 110);
+    [Header("Layout (우하단 기준)")]
+    [SerializeField] Vector2 anchoredPos = new Vector2(-36, 80);
+    [SerializeField] Vector2 size = new Vector2(140, 140);
 
-    [Header("Style")]
-    [SerializeField] private Color colorBg = new Color(0, 0, 0, 0.55f);
-    [SerializeField] private Color colorText = new Color(0.95f, 0.95f, 0.95f);
-    [SerializeField] private Color colorFlash = Color.white;
-    [SerializeField] private float flashDurationSec = 0.15f;
+    [Header("Flash")]
+    [SerializeField] float flashDurationSec = 0.15f;
 
-    Texture2D pixel;
-    GUIStyle gearStyle;
-    GUIStyle labelStyle;
+    RectTransform rt;
+    Image bg;
+    TMP_Text title, gearText;
     float flashT;
+
+    void Awake()
+    {
+        if (gears == null) gears = FindFirstObjectByType<GearSystem>();
+        EnsureCanvasParent();
+        rt = GetComponent<RectTransform>();
+        if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+        BuildIfNeeded();
+    }
+
+    void EnsureCanvasParent()
+    {
+        if (GetComponentInParent<Canvas>() == null)
+            transform.SetParent(UIRoot.Ensure(), false);
+    }
 
     void OnEnable()
     {
-        if (gears == null) gears = FindFirstObjectByType<GearSystem>();
         if (gears != null) gears.OnShift += OnShift;
     }
 
@@ -36,71 +50,92 @@ public class GearHUD : MonoBehaviour
 
     void OnShift(int prev, int cur)
     {
-        // 기어 변화 전부 플래시 (N→1 포함)
         flashT = flashDurationSec;
+        UISounds.Shift();
+    }
+
+    void BuildIfNeeded()
+    {
+        var theme = UITheme.Active;
+
+        rt.anchorMin = new Vector2(1, 0);
+        rt.anchorMax = new Vector2(1, 0);
+        rt.pivot = new Vector2(1, 0);
+        rt.anchoredPosition = anchoredPos;
+        rt.sizeDelta = size;
+
+        if (bg == null)
+        {
+            var bgGo = new GameObject("BG", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            bgGo.transform.SetParent(transform, false);
+            bg = bgGo.GetComponent<Image>();
+            bg.raycastTarget = false;
+            bg.color = theme != null ? theme.colorPanel : new Color(0, 0, 0, 0.55f);
+            if (theme != null && theme.panelBackground != null)
+            {
+                bg.sprite = theme.panelBackground;
+                bg.type = Image.Type.Sliced;
+            }
+            var bgRt = bg.rectTransform;
+            bgRt.anchorMin = Vector2.zero; bgRt.anchorMax = Vector2.one;
+            bgRt.offsetMin = Vector2.zero; bgRt.offsetMax = Vector2.zero;
+        }
+
+        if (title == null)
+        {
+            var t = new GameObject("Title", typeof(RectTransform));
+            t.transform.SetParent(transform, false);
+            title = t.AddComponent<TextMeshProUGUI>();
+            title.raycastTarget = false;
+            title.text = "GEAR";
+            title.alignment = TextAlignmentOptions.Top;
+            title.fontSize = 18;
+            title.fontStyle = FontStyles.UpperCase;
+            if (theme != null)
+            {
+                if (theme.fontCondensed != null) title.font = theme.fontCondensed;
+                title.color = theme.colorTextMuted;
+            }
+            var tRt = title.rectTransform;
+            tRt.anchorMin = new Vector2(0, 1);
+            tRt.anchorMax = new Vector2(1, 1);
+            tRt.pivot = new Vector2(0.5f, 1f);
+            tRt.offsetMin = new Vector2(0, -32);
+            tRt.offsetMax = new Vector2(0, -8);
+        }
+
+        if (gearText == null)
+        {
+            var g = new GameObject("Gear", typeof(RectTransform));
+            g.transform.SetParent(transform, false);
+            gearText = g.AddComponent<TextMeshProUGUI>();
+            gearText.raycastTarget = false;
+            gearText.alignment = TextAlignmentOptions.Center;
+            gearText.fontSize = 96;
+            gearText.fontStyle = FontStyles.Bold;
+            if (theme != null)
+            {
+                if (theme.fontPrimary != null) gearText.font = theme.fontPrimary;
+                gearText.color = theme.colorText;
+            }
+            var gRt = gearText.rectTransform;
+            gRt.anchorMin = Vector2.zero; gRt.anchorMax = Vector2.one;
+            gRt.offsetMin = new Vector2(0, 0);
+            gRt.offsetMax = new Vector2(0, -24);
+        }
     }
 
     void Update()
     {
-        if (flashT > 0f) flashT -= Time.unscaledDeltaTime;
-    }
-
-    void EnsureRes()
-    {
-        if (pixel == null)
-        {
-            pixel = new Texture2D(1, 1);
-            pixel.SetPixel(0, 0, Color.white);
-            pixel.Apply();
-        }
-        if (gearStyle == null)
-        {
-            gearStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 68,
-                alignment = TextAnchor.MiddleCenter,
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = colorText }
-            };
-        }
-        if (labelStyle == null)
-        {
-            labelStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 14,
-                alignment = TextAnchor.MiddleCenter,
-                normal = { textColor = new Color(0.7f, 0.7f, 0.7f) }
-            };
-        }
-    }
-
-    void OnGUI()
-    {
         if (gears == null) return;
-        EnsureRes();
+        if (flashT > 0f) flashT -= Time.unscaledDeltaTime;
 
-        Rect bgRect = new Rect(
-            Screen.width + anchor.x,
-            Screen.height + anchor.y - size.y,
-            size.x,
-            size.y
-        );
-
-        // 배경
-        GUI.color = colorBg;
-        GUI.DrawTexture(bgRect, pixel);
-
-        // 라벨 "GEAR"
-        Rect titleRect = new Rect(bgRect.x, bgRect.y + 6, bgRect.width, 20);
-        GUI.color = Color.white;
-        GUI.Label(titleRect, "GEAR", labelStyle);
-
-        // 기어 숫자 (플래시 중에는 색상 interp)
+        var theme = UITheme.Active;
         float flashAmt = flashDurationSec > 0 ? Mathf.Clamp01(flashT / flashDurationSec) : 0f;
-        Color textCol = Color.Lerp(colorText, colorFlash, flashAmt);
+        Color baseCol = theme != null ? theme.colorText : new Color(0.95f, 0.95f, 0.95f);
+        Color flashCol = theme != null ? theme.colorTextFlash : Color.white;
+        gearText.color = Color.Lerp(baseCol, flashCol, flashAmt);
 
-        gearStyle.normal.textColor = textCol;
-        Rect gearRect = new Rect(bgRect.x, bgRect.y + 20, bgRect.width, bgRect.height - 20);
-        GUI.Label(gearRect, gears.GearLabel, gearStyle);
+        gearText.text = gears.GearLabel;
     }
 }
