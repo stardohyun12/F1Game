@@ -476,3 +476,46 @@
   - UI 트랙은 D-032 교훈 따라 신규 세션 진입 결정 (장시간 후 판단력 저하 회피)
 - **도현 패턴 10번째:** "B로 ㄱㄱ" 세션 종료 판단 자발적 수용. 세션 경계 관리 능력 향상 — 세션 10 "세이브 후 기획 대화" 요청 이어서 두 번째 성숙한 신호.
 - **컨텍스트 상태:** 세션 종료. 다음 세션은 UI 트랙 Tier 1 구현부터.
+
+---
+
+## 세션 12 — 2026-04-23
+
+- **목표:** UI 트랙 Tier 1 완결 — TMP 인프라 + UIRoot/UITheme/UISounds + FuelHUD/GearHUD/CountdownHUD OnGUI → UGUI 전환. 세션 11 종료 시 합의된 5단계 진입점 그대로 실행.
+- **한 일 (D-035):**
+  - **TMP Essentials 자동 임포트 (`Editor/_Recovery/EnsureTMP.cs`):** Unity 6 UGUI 2.0이 PackageCache에 번들한 `TMP Essential Resources.unitypackage`를 `AssetDatabase.ImportPackage`로 자동 임포트. `com.unity.ugui@*/Package Resources/` glob 탐색으로 버전 무관 대응.
+  - **Kenney Future TMP FontAsset 2종 (`Editor/_Recovery/CreateKenneyFontAssets.cs`):** `TMP_FontAsset.CreateFontAsset`으로 Dynamic SDF 아틀라스 생성. sampling 90, padding 9, 1024² atlas, multi-atlas 활성. 결과: `Assets/UI/Fonts/{KenneyFuture SDF, KenneyFutureNarrow SDF}.asset`.
+  - **UI 인프라 3종 (`Scripts/UI/`):**
+    - `UIRoot.cs` — 1920×1080 Canvas + CanvasScaler(Match 0.5) + GraphicRaycaster. `Ensure()` static helper로 싱글톤 보장.
+    - `UITheme.cs` ScriptableObject — 폰트 2종 + panel/track/fill 9-slice sprite + 상태색(ok/warn/crit/pulse, text/muted/flash/accent, timer normal/mid/low) + 사운드 4종(click/back/confirm/shift). `UITheme.Active`는 Resources 싱글톤.
+    - `UISounds.cs` — lazy singleton. `UISounds.Shift()` 등 정적 호출 → UITheme에서 클립 가져와 PlayOneShot.
+  - **HUD 3종 UGUI 전환 (파일 GUID 유지 → 씬 참조 보존):**
+    - `FuelHUD.cs` — 좌하단 가로 바. BG Image + Fill Image(크기 anchoredPosition 기반 뉴비) + TMP_Text 라벨. 25% warn(Yellow), 10% crit(Red blink).
+    - `GearHUD.cs` — 우하단 박스. "GEAR" 라벨(Narrow font) + 큰 기어숫자(Primary font). `OnShift` 이벤트 구독 → 0.15s 화이트 플래시 Lerp + `UISounds.Shift()` 호출 (Kenney bong_001).
+    - `CountdownHUD.cs` — 우상단. `RunController.TimeRemaining < 0` 이면 CanvasGroup.alpha 0 (무제한 작업 자동 숨김). 30s/60s 경계별 배경 색 전환.
+  - **HUD 자가구성 패턴:** 세 HUD 모두 Awake에서 `EnsureCanvasParent()` → Canvas 부모 없으면 `UIRoot.Ensure()` 하위로 자동 재부착. 이전 `RunRoot`에 붙어있던 CountdownHUD도 런타임에 알아서 이동.
+  - **UITheme 연결 자동화 (`Editor/_Recovery/SetupUITheme.cs`):** Resources/UITheme.asset 생성 + Kenney font/sprite/sfx 참조 연결. Kenney sprite 3종(`button_rectangle_depth_flat`, `slide_horizontal_grey_section_wide`, `button_rectangle_flat[Yellow]`) TextureImporter 자동 설정 (Sprite mode, border=14px, pixelsPerUnit=100).
+  - **씬 배치 자동화 (`Editor/_Recovery/SetupUIScene.cs`):** 현재 열린 씬에 UIRoot Canvas + FuelHUD + GearHUD GameObject 멱등 배치. 이미 있으면 스킵. 저장까지 자동.
+  - **Play 테스트 (Coplay capture_ui_canvas):** ComplexTrack.unity에서 Play 진입 → "FUEL 100%" (녹색 9-slice fill, Kenney 폰트) 좌하단 + "GEAR N" (Primary font 96pt) 우하단 정상 표시 확인.
+- **다음 세션(세션 13) 할 일:**
+  - **도현 Play 테스트:** 실제 주행으로 기어 시프트 플래시 + bong 사운드 + 연료 warn/crit 깜박임 체감.
+  - **UI Tier 2 이관:** DeliveryHUD(화살표) / OrderBoard(A/B/C 카드) / ResultPanel(정산) 같은 자가구성 패턴으로. Button + Kenney click/confirmation SFX 연결.
+  - **커밋 (미커밋):** TMP Essentials 임포트 + UI 인프라 + HUD 전환 — 세션 11 패턴처럼 2~3 분리 권장.
+  - **그래픽 트랙 잔여 (4주차 이후):** URP 머티리얼 톤 / 셰이더 / 포스트프로세싱 디테일. 아트 프리셋은 세션 11에서 선행.
+- **관련 문서/코드:**
+  - `notes/decisions-log.md` D-035
+  - `F1/Assets/Scripts/UI/{UIRoot,UITheme,UISounds}.cs` (신규)
+  - `F1/Assets/Scripts/{FuelHUD,GearHUD}.cs` + `F1/Assets/Scripts/Order/CountdownHUD.cs` (UGUI 재작성)
+  - `F1/Assets/Editor/_Recovery/{EnsureTMP,CreateKenneyFontAssets,SetupUITheme,SetupUIScene}.cs` (신규)
+  - `F1/Assets/Resources/UITheme.asset` (신규)
+  - `F1/Assets/UI/Fonts/{KenneyFuture SDF, KenneyFutureNarrow SDF}.asset` (신규)
+  - `F1/Assets/TextMesh Pro/` (TMP Essentials 전체 임포트 — Resources/Shaders/Sprites/Fonts)
+  - `F1/Assets/ComplexTrack.unity` (UIRoot + FuelHUD + GearHUD 추가)
+- **메모:**
+  - **UI 자가구성 패턴이 키.** `Awake → EnsureCanvasParent → BuildIfNeeded` 3-step이 Tier 2도 동일하게 반복될 베이스 패턴. 신규 HUD 추가 비용이 "스크립트 1개 + 씬에 빈 GameObject 1개"로 내려감. 프리팹 관리 부담 없음.
+  - **파일 GUID 보존 선택 (구 HUD → UGUI 내용 덮어쓰기):** `Scripts/UI/` 하위에 신규 HUD 3종을 먼저 썼다가, 같은 클래스명 중복 컴파일 에러 + 씬 참조 깨짐 리스크를 고려해 구 경로 파일을 그대로 UGUI 내용으로 덮어쓰고 UI/ 중복은 삭제. Unity의 MonoScript GUID 기반 참조 방식 특성상 이 방식이 가장 저위험.
+  - **TMP Dynamic SDF의 실전성:** 한글 없음 + 영문/숫자만 → Dynamic 모드로 아틀라스 pre-bake 없이 즉시 사용 가능. 첫 글자 사용 시 런타임 rasterize 비용은 한 프레임 미만, 이후 캐시. 2주차 개발에 최적.
+  - **Kenney UI pack에 "panel" sprite가 없다는 제약.** button_rectangle/slide/input만 있음. BG로 `button_rectangle_depth_flat`(어두운 회색) 전용 → tint colorPanel(검정 0.55α)을 곱하면 배경이 흐려져 거의 안 보임 (Play 캡처에서 확인). **튜닝 대상:** colorPanel을 더 밝은 회색으로, 또는 Extra/Default의 `divider` + 별도 반투명 레이어 조합 검토. 세션 13 Tier 2 작업 시 함께 개선.
+  - **CountdownHUD가 RunRoot에 남아있어도 문제 없음.** Awake에서 Canvas 부모 탐색 → 없으면 UIRoot로 이동. 씬 편집 없이 마이그레이션 완료.
+  - **D-032 교훈 지속 적용.** 세션 11 말미에 UI 트랙 컨셉/명세를 먼저 합의하고 구현은 새 세션으로 분리 → 이번 세션은 단일 트랙 집중으로 롤백 0 + 컨텍스트 유지.
+- **컨텍스트 상태:** 세션 종료. 미커밋 변경 있음 (TMP + UI 인프라 + HUD 전환 + 씬 업데이트). 다음 세션 오프닝 첫 작업으로 분리 커밋.

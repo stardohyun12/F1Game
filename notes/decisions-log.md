@@ -410,3 +410,35 @@
   - D-022에서 "Empirical default — adjust after first capture if wrong" 주석으로 남겨둔 것을 실제로는 실측 생략한 채 사용. **주석은 "나중에 검증"의 대체물이 될 수 없음** — 실측 없이 배포된 empirical default는 끝까지 틀린 채로 남음.
   - 단일 회전 probe (MeasureIntersection)만으로는 회전 방향(CW vs CCW) 혼동 가능. **4 rotation side-by-side** 방식이 확정적. 향후 다른 타일 회전 검증 시 같은 패턴.
   - 도현 "아직도 연결 안됨" 재피드백 → 첫 수정 후 재검증 생략 가설 검증. "all verified"는 건물 기울어짐만 체크 (BuildingPlacer.VerifyPlacements). **도로 타일 회전 검증 도구가 없음** — 향후 `TileMapAuto.VerifyRoadTiles()` 추가 고려 (각 intersection cell이 실제로 열린 방향과 mask의 exits 일치하는지).
+
+---
+
+## 2026-04-23 — 세션 12
+
+### D-035. UI 트랙 Tier 1 — UGUI 인프라 + HUD 3종 OnGUI → UGUI 전환
+
+- **결정:** 주행 상시 HUD 3종(Fuel/Gear/Countdown)을 OnGUI(IMGUI)에서 UGUI(Canvas) 기반으로 전환. Kenney UI pack + Kenney Future TMP 폰트 + Kenney interface-sounds를 공통 테마 SO(`UITheme`)로 중앙화.
+- **근거:** OnGUI는 빠른 프로토타이핑에는 좋았지만 (1) 9-slice sprite 미지원, (2) 폰트 품질(Bitmap font only), (3) 해상도 스케일링 부재로 세션 11 "실제 게임처럼" UI 합의에 부합하지 않음. Tier 1 3종을 먼저 UGUI로 옮겨 **공통 패턴**(자가구성 Awake + UIRoot 자동 재부착)을 검증한 뒤 Tier 2(DeliveryHUD/OrderBoard/ResultPanel)도 같은 경로로 이관.
+- **기술 선택:**
+  - **UGUI(Canvas) 확정** — UI Toolkit 대신. Kenney 9-slice sprite + TMP를 가장 얇게 조합 가능.
+  - **TMP Essentials** — Unity 6 UGUI 2.0이 PackageCache에 `TMP Essential Resources.unitypackage`를 번들하므로 `AssetDatabase.ImportPackage` 자동화 (`EnsureTMP.cs`).
+  - **폰트** — Kenney Future(본문/숫자) + Kenney Future Narrow(라벨/서브) → `TMP_FontAsset.CreateFontAsset`으로 Dynamic SDF 아틀라스(1024², padding 9, sampling 90). 영문/숫자 위주라 Dynamic으로도 런타임 부담 없음.
+  - **9-slice border** — Kenney button_rectangle/slide_horizontal은 모서리 14px 기준. `SetupUITheme.cs`가 TextureImporter 자동 설정.
+- **패턴 — HUD 자가구성:**
+  - HUD MonoBehaviour Awake에서 (1) `EnsureCanvasParent` → 부모가 Canvas 아니면 `UIRoot.Ensure()` 로 자동 재부착, (2) `BuildIfNeeded` → RectTransform 앵커 + BG Image + Fill Image + TMP_Text 자식 1회 생성.
+  - 씬에 `UIRoot/FuelHUD` 처럼 빈 GameObject + 컴포넌트만 두면 끝. 프리팹 불필요.
+  - **장점:** 레이아웃 필드는 인스펙터로 노출(anchor/size), 색·폰트·sprite는 `UITheme.Active`(Resources) 에서 당겨옴 → HUD 간 일관성 + 테마 한 곳 수정.
+- **트레이드오프:**
+  - Awake에서 자식 GameObject를 만드는 방식은 Undo 이력이 없음 → 디자이너가 인스펙터에서 BG/Fill 자식을 직접 꾸밀 수 없음. 레이아웃 숫자만 노출. 지금 단계에서는 **단순성 > 유연성**.
+  - `UITheme.Active`는 `Resources.Load<UITheme>("UITheme")` 싱글톤. 여러 테마 전환은 지원 안 함 (현 단계 불필요).
+- **구현 체크리스트:**
+  - [x] `Scripts/UI/{UIRoot,UITheme,UISounds}.cs` 신규
+  - [x] `Scripts/FuelHUD.cs`, `Scripts/GearHUD.cs`, `Scripts/Order/CountdownHUD.cs` UGUI로 전면 재작성 (파일 GUID 유지 → 씬 참조 보존)
+  - [x] `Editor/_Recovery/{EnsureTMP,CreateKenneyFontAssets,SetupUITheme,SetupUIScene}.cs` 신규 (원샷 자동화)
+  - [x] `Assets/Resources/UITheme.asset` 생성 + Kenney font/sprite/sfx 참조 자동 연결
+  - [x] Kenney sprite 3종 9-slice import 설정 (`button_rectangle_depth_flat`, `slide_horizontal_grey_section_wide`, `button_rectangle_flat[Yellow]`)
+  - [x] ComplexTrack.unity에 UIRoot Canvas + FuelHUD + GearHUD 배치. CountdownHUD는 기존 RunRoot 부착 상태 유지(런타임에 Canvas 하위로 자동 이동)
+  - [x] Play 모드 캡처로 "FUEL 100%"(녹색 9-slice) + "GEAR N" 표시 확인
+- **USP 매핑:** USP ③ "운전감(Burnout급)" 보조 — HUD 품질이 **몰입을 깨지 않는 수준**까지 올라옴. USP 자체를 강화하지는 않지만 보조 게이트(가시성/가독성) 충족.
+- **세션 11→12 이관 이유:** D-032 교훈 "장시간 후 판단력 저하 회피". 세션 11이 맵 트랙 완료로 이미 컨텍스트가 두꺼워졌고, UI 트랙 진입은 컨셉/에셋/코드 3축이 동시에 움직이는 작업이라 새 세션에서 시작하는 게 실수 감소.
+- **다음 (Tier 2):** DeliveryHUD(화살표) / OrderBoard(A/B/C 카드) / ResultPanel(정산) 같은 패턴으로 이관. Order 카드는 UGUI Button + Kenney click/confirmation 효과음. 세션 13 후보.

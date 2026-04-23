@@ -65,7 +65,7 @@
 - [ ] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음)
 - [x] 단순 연료 시스템 (소비 + 고갈 시 정지) — `FuelSystem.cs` (세션 10, 5분 풀탱크)
 - [x] 단순 기어 시스템 (Auto 5단 + HUD) — `GearSystem.cs` + `GearHUD.cs` (세션 10)
-- [x] 간단한 HUD (연료 게이지 + 기어) — `FuelHUD.cs` + `GearHUD.cs` 좌하단/우하단
+- [x] 간단한 HUD (연료 게이지 + 기어) — `FuelHUD.cs` + `GearHUD.cs` 좌하단/우하단. **세션 12 (D-035) UGUI/TMP 전환** — Kenney Future SDF 폰트 + 9-slice sprite + UITheme SO 중앙화. 자가구성 패턴(`Awake → EnsureCanvasParent → BuildIfNeeded`) 3종 검증. CountdownHUD 동시 전환.
 - [x] 배달지 노드 3~4개 배치 — 8개 (`SetupOrderSystem.cs`)
 - [x] 시작 → 배달지 순회 → 복귀 기본 루프 — `Order/RunController.cs` 오케스트레이션
 - [x] **B 시스템 — 주문 보드 + 오버뷰 카메라 + 정산 화면** (세션 10, 핵심 결정 루프 첫 진입점)
