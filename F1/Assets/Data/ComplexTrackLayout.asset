@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: ComplexTrackLayout
   m_EditorClassIdentifier: Assembly-CSharp::TrackLayout
   roadMask:
-  - '#X###X###X###..'
-  - '#...#...#...#..'
-  - '#.###...###.#..'
+  - '#X###X###X###X#'
+  - '#...#...#...#.#'
+  - '#.###...###.#.#'
   - '#...#...#...#.#'
   - '#X###X###X#####'
   - '#...#...#...#.#'
-  - '#.###...###.#..'
-  - '#...#...#...#..'
-  - '#X###X###X###..'
+  - '#.###...###.#.#'
+  - '#...#...#...#.#'
+  - '#X###X###X###X#'
   buildingMask:
   - ...............
-  - .SSS.CCC.WWW.SS
-  - .S...KKC...W.SS
-  - .PPP.KKC.WWW...
+  - .SSS.CCC.WWW.S.
+  - .S...KKC...W.S.
+  - .PPP.KKC.WWW.P.
   - ...............
-  - .SSS.HTH.WWW...
-  - .S...HKK...W.HH
-  - .PPP.HKK.WWW.HH
+  - .SSS.HTH.WWW.H.
+  - .S...HKK...W.H.
+  - .PPP.HKK.WWW.H.
   - ...............
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:

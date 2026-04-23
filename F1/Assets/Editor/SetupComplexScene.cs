@@ -24,15 +24,18 @@ public static class SetupComplexScene
         //  - 기존 지름길(row 2,6) 유지
         layout.roadMask = new[]
         {
-            "#X###X###X###..", // row 0 — south main 유지 + cols 1/5/9에 'X' crossing 시각 변종
-            "#...#...#...#..", // row 1
-            "#.###...###.#..", // row 2 — shortcut W + shortcut E
-            "#...#...#...#.#", // row 3 — east L branch (col 14 dead-end 북쪽)
-            "#X###X###X#####", // row 4 — mid main + crossings + east L 꺾임 (col 13-14 연결)
-            "#...#...#...#.#", // row 5 — east L branch (col 14 dead-end 남쪽)
-            "#.###...###.#..", // row 6 — mirrored shortcuts
-            "#...#...#...#..", // row 7
-            "#X###X###X###..", // row 8 — north main + crossings
+            // 15×9 완전 ring — 세션 13 fix: col 14를 동쪽 수직 main으로 승격,
+            // 이전 버전의 "cols 13-14 건물 2블록 고립" 문제 해결.
+            // col 13은 row 4만 road (L 꺾임 1칸), 나머지는 건물/빈 자리.
+            "#X###X###X###X#", // row 0 — south main full ring + Crossing cols 1/5/9/13
+            "#...#...#...#.#", // row 1
+            "#.###...###.#.#", // row 2 — shortcuts + east vertical main (col 14)
+            "#...#...#...#.#", // row 3
+            "#X###X###X#####", // row 4 — mid main + Crossings + east full connect (cols 13-14)
+            "#...#...#...#.#", // row 5
+            "#.###...###.#.#", // row 6 — mirrored shortcuts + east
+            "#...#...#...#.#", // row 7
+            "#X###X###X###X#", // row 8 — north main full ring + Crossings
         };
         // Building mask — Lynch districts + 세션 13 동쪽 확장:
         //   Left (cols 1-3): 교외 S + P plaza
@@ -41,14 +44,17 @@ public static class SetupComplexScene
         //   East extension (cols 13-14): 북쪽 H 확장 + 남쪽 S 확장 (road L 우회)
         layout.buildingMask = new[]
         {
+            // col 13 = 건물 자리 (동쪽 수직 main인 col 14 서쪽 인도),
+            // col 14 = road (buildingMask는 '.').
+            // col 13 row 4 = road (L 꺾임), 나머지 col 13은 건물 배치 가능.
             "...............", // row 0 — edge
-            ".SSS.CCC.WWW.SS", // row 1 — 교외/상업/산업 + 동쪽 교외 확장
-            ".S...KKC...W.SS", // row 2 — 지름길 비움, K anchor, 동쪽 교외
-            ".PPP.KKC.WWW...", // row 3 — P 광장 + K + W, 동쪽은 road L 진입 영역
-            "...............", // row 4 — road (col 13-14 도로 추가됐으므로 여전히 빈 줄)
-            ".SSS.HTH.WWW...", // row 5 — Downtown + H/T landmark, 동쪽 road L
-            ".S...HKK...W.HH", // row 6 — 지름길 + Downtown K + 동쪽 Downtown 확장
-            ".PPP.HKK.WWW.HH", // row 7 — P 광장 + 동쪽 Downtown H 확장
+            ".SSS.CCC.WWW.S.", // row 1 — 교외/상업/산업 + 동쪽 col 13 교외 확장
+            ".S...KKC...W.S.", // row 2 — 지름길 비움 + 동쪽 col 13
+            ".PPP.KKC.WWW.P.", // row 3 — 광장 + 동쪽 col 13 광장 확장
+            "...............", // row 4 — road row
+            ".SSS.HTH.WWW.H.", // row 5 — Downtown + 동쪽 col 13 H 확장
+            ".S...HKK...W.H.", // row 6 — 지름길 + 동쪽 col 13
+            ".PPP.HKK.WWW.H.", // row 7 — 광장 + 동쪽 col 13 H
             "...............", // row 8 — edge
         };
         var catalogGuids = AssetDatabase.FindAssets("t:BuildingCatalog");
