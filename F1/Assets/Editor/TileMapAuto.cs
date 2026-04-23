@@ -23,7 +23,7 @@ public static class TileMapAuto
     [System.Flags]
     public enum Dir { None = 0, N = 1, S = 2, E = 4, W = 8 }
 
-    public enum Kind { Straight, Curve, Intersection, Crossroad, End }
+    public enum Kind { Straight, Curve, Intersection, Crossroad, End, Crossing, Driveway }
 
     // Lookup: given (kind, exit-set), what rotation places the tile correctly?
     // Built from validated rotation->exits mappings.
@@ -62,6 +62,16 @@ public static class TileMapAuto
         { (Kind.End, Dir.S), 90 },
         { (Kind.End, Dir.W), 180 },
         { (Kind.End, Dir.N), 270 },
+
+        // Crossing (pedestrian crossing): same exits as Straight. Rotation reuses Straight mapping.
+        { (Kind.Crossing, Dir.E | Dir.W), 0 },
+        { (Kind.Crossing, Dir.N | Dir.S), 90 },
+
+        // Driveway (single-car entry): 1 exit. Same rotation semantics as End.
+        { (Kind.Driveway, Dir.E), 0 },
+        { (Kind.Driveway, Dir.S), 90 },
+        { (Kind.Driveway, Dir.W), 180 },
+        { (Kind.Driveway, Dir.N), 270 },
     };
 
     static readonly Dictionary<Kind, string> SourcePath = new()
@@ -70,7 +80,9 @@ public static class TileMapAuto
         { Kind.Curve, "road-bend.fbx" },
         { Kind.Intersection, "road-intersection.fbx" },
         { Kind.Crossroad, "road-crossroad.fbx" },
-        { Kind.End, "road-end.fbx" },
+        { Kind.End, "road-end-round.fbx" },       // 세션 13: 막다른 골목은 round cap 사용 (교외 분위기)
+        { Kind.Crossing, "road-crossing.fbx" },   // 세션 13: 횡단보도 straight 대체
+        { Kind.Driveway, "road-driveway-single.fbx" }, // 세션 13: 배달점 진입로
     };
 
     // Per-tile native footprint in mesh units (measured via MeasureTiles).
@@ -82,6 +94,8 @@ public static class TileMapAuto
         { Kind.Intersection, 1f },
         { Kind.Crossroad, 1f },
         { Kind.End, 1f },
+        { Kind.Crossing, 1f },        // road-crossing = 1x1 (D-034 catalog)
+        { Kind.Driveway, 1f },        // road-driveway-single = 1x1
     };
 
     // ----- Layout (rectangular loop, 7 wide x 5 tall) -----
@@ -141,10 +155,22 @@ public static class TileMapAuto
             if (mask[r].Length != width)
             { Debug.LogError($"TileMapAuto: row {r} width {mask[r].Length} != expected {width}"); return null; }
 
+        // 세션 13: 복합 도로 문자 지원
+        //   '#' = 일반 도로 (자동 Kind 추론)
+        //   'X' = pedestrian crossing (Straight 시각 변종, 연결성 동일)
+        //   'D' = driveway 진입로 (End 변종, 1 exit 강제)
+        // 전부 IsRoad = true 로 취급해 이웃 탐색에 참여.
         bool IsRoad(int c, int r)
         {
             if (c < 0 || c >= width || r < 0 || r >= height) return false;
-            return mask[r][c] == '#';
+            char ch = mask[r][c];
+            return ch == '#' || ch == 'X' || ch == 'D';
+        }
+
+        char CellChar(int c, int r)
+        {
+            if (c < 0 || c >= width || r < 0 || r >= height) return '.';
+            return mask[r][c];
         }
 
         Dir NeighborExits(int c, int r)
@@ -214,6 +240,19 @@ public static class TileMapAuto
                     default:
                         Debug.LogWarning($"TileMapAuto: isolated road cell at ({c},{r})");
                         continue;
+                }
+
+                // 세션 13: mask char 기반 시각 변종 override
+                char ch = CellChar(c, r);
+                if (ch == 'X')
+                {
+                    if (kind == Kind.Straight) kind = Kind.Crossing;
+                    else Debug.LogWarning($"TileMapAuto: 'X' crossing at ({c},{r}) needs opposite exits, got {kind} {exits}");
+                }
+                else if (ch == 'D')
+                {
+                    if (kind == Kind.End) kind = Kind.Driveway;
+                    else Debug.LogWarning($"TileMapAuto: 'D' driveway at ({c},{r}) needs 1 exit, got {kind} {exits}");
                 }
 
                 if (!RotationFor.TryGetValue((kind, exits), out int rot))

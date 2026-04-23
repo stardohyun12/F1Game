@@ -19,6 +19,9 @@ public static class RunFullRebuild
         Debug.Log("[RunFullRebuild] Step 4 — SetupOrderSystem.Run");
         SetupOrderSystem.Run();
 
+        Debug.Log("[RunFullRebuild] Step 5 — SetupUIScene.Execute");
+        SetupUIScene.Execute();
+
         UnityEditor.SceneManagement.EditorSceneManager.SaveScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 

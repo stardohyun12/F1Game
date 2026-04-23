@@ -13,25 +13,25 @@ MonoBehaviour:
   m_Name: ComplexTrackLayout
   m_EditorClassIdentifier: Assembly-CSharp::TrackLayout
   roadMask:
-  - '#############'
-  - '#...#...#...#'
-  - '#.###...###.#'
-  - '#...#...#...#'
-  - '#############'
-  - '#...#...#...#'
-  - '#.###...###.#'
-  - '#...#...#...#'
-  - '#############'
+  - '#X###X###X###..'
+  - '#...#...#...#..'
+  - '#.###...###.#..'
+  - '#...#...#...#.#'
+  - '#X###X###X#####'
+  - '#...#...#...#.#'
+  - '#.###...###.#..'
+  - '#...#...#...#..'
+  - '#X###X###X###..'
   buildingMask:
-  - .............
-  - .SSS.CCC.WWW.
-  - .S...KKC...W.
-  - .PPP.KKC.WWW.
-  - .............
-  - .SSS.HTH.WWW.
-  - .S...HKK...W.
-  - .PPP.HKK.WWW.
-  - .............
+  - ...............
+  - .SSS.CCC.WWW.SS
+  - .S...KKC...W.SS
+  - .PPP.KKC.WWW...
+  - ...............
+  - .SSS.HTH.WWW...
+  - .S...HKK...W.HH
+  - .PPP.HKK.WWW.HH
+  - ...............
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
   - col: 6
@@ -43,9 +43,9 @@ MonoBehaviour:
   - col: 12
     row: 2
     label: FactoryEast
-  - col: 12
-    row: 6
-    label: IndustryNorth
+  - col: 14
+    row: 4
+    label: EastBranchEnd
   - col: 0
     row: 6
     label: SuburbWest
