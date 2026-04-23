@@ -52,7 +52,7 @@ public class SpeedometerHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = Color.white;
+            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
             if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -99,7 +99,11 @@ public class SpeedometerHUD : MonoBehaviour
     {
         if (car == null) return;
         var theme = UITheme.Active;
-        if (theme != null && unitText != null) unitText.color = theme.colorTextMuted;
+        if (theme != null)
+        {
+            if (bg != null) bg.color = theme.colorPanel;
+            if (unitText != null) unitText.color = theme.colorTextMuted;
+        }
 
         float mps = Mathf.Abs(car.CurrentSpeedMps);
         int kmh = Mathf.RoundToInt(mps * 3.6f);

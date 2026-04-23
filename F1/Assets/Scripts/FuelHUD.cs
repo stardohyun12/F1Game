@@ -57,7 +57,7 @@ public class FuelHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = Color.white;
+            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
             if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -97,8 +97,12 @@ public class FuelHUD : MonoBehaviour
         if (fuel == null) return;
         var theme = UITheme.Active;
 
-        // Theme 변경 즉시 반영 (fill 위 라벨은 흰색 유지)
-        if (theme != null && label != null) label.color = theme.colorTextOnFill;
+        // Theme 변경 즉시 반영
+        if (theme != null)
+        {
+            if (bg != null) bg.color = theme.colorPanel;
+            if (label != null) label.color = theme.colorTextOnFill;
+        }
 
         float level = Mathf.Clamp01(fuel.FuelLevel);
         float innerW = rt.rect.width - 16f;

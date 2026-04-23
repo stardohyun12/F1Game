@@ -58,7 +58,7 @@ public class GearHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = Color.white;
+            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
             if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -101,7 +101,11 @@ public class GearHUD : MonoBehaviour
         if (flashT > 0f) flashT -= Time.unscaledDeltaTime;
 
         var theme = UITheme.Active;
-        if (theme != null && title != null) title.color = theme.colorTextMuted;
+        if (theme != null)
+        {
+            if (bg != null) bg.color = theme.colorPanel;
+            if (title != null) title.color = theme.colorTextMuted;
+        }
         float f = flashDurationSec > 0 ? Mathf.Clamp01(flashT / flashDurationSec) : 0f;
         Color baseCol = theme != null ? theme.colorText : Color.black;
         Color flashCol = theme != null ? theme.colorAccent : Color.yellow;

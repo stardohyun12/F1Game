@@ -52,7 +52,7 @@ public class CountdownHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = Color.white;
+            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
             if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -86,9 +86,9 @@ public class CountdownHUD : MonoBehaviour
         {
             var panelSprite = theme.PanelForTimer(remaining);
             if (panelSprite != null && bg.sprite != panelSprite) bg.sprite = panelSprite;
-            // 30s 미만 빨강/60s 미만 노랑 fill 위는 흰 텍스트, 그 외 Grey bg 위는 검정
-            if (timeText != null)
-                timeText.color = remaining < 60f ? theme.colorTextOnFill : theme.colorText;
+            // panelDark 시 어두운 tint, fill sprite(Red/Yellow) 시 원색
+            bg.color = (panelSprite == theme.panelDark) ? theme.colorPanel : Color.white;
+            if (timeText != null) timeText.color = theme.colorText;
         }
 
         int m = Mathf.FloorToInt(remaining / 60f);

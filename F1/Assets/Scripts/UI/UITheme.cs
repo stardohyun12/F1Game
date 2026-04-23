@@ -33,15 +33,18 @@ public class UITheme : ScriptableObject
     public Sprite arrowNorth;      // Yellow/arrow_basic_n (회전 기반 화살표)
     public Sprite iconCheck;       // Green/icon_checkmark
 
-    [Header("Text Colors — Kenney 밝은 회색 패널 대비용 검정 계열")]
-    public Color colorText = new Color(0.18f, 0.19f, 0.22f, 1f);        // near-black, 본문
-    public Color colorTextMuted = new Color(0.38f, 0.40f, 0.44f, 1f);   // 중간 회색, 보조
-    public Color colorTextFlash = Color.white;                            // flash 순간만 흰색
-    public Color colorAccent = new Color(0.92f, 0.58f, 0.10f, 1f);        // 진한 주황 (노란 fill과 구별)
-    public Color colorOkText = new Color(0.20f, 0.55f, 0.25f, 1f);         // 진녹색 텍스트
-    public Color colorWarnText = new Color(0.75f, 0.50f, 0.05f, 1f);       // 진노랑
-    public Color colorCritText = new Color(0.78f, 0.18f, 0.18f, 1f);       // 진빨강
-    public Color colorTextOnFill = Color.white;                           // Yellow/Red fill 위 흰 텍스트
+    [Header("Panel Tint — Kenney sprite 위에 덮어 어둡게")]
+    public Color colorPanel = new Color(0.12f, 0.14f, 0.18f, 0.92f);      // 어두운 남색 느낌 panel
+
+    [Header("Text Colors — 어두운 패널 위 흰 텍스트 체계")]
+    public Color colorText = new Color(0.98f, 0.98f, 0.98f, 1f);          // 흰색, 본문
+    public Color colorTextMuted = new Color(0.72f, 0.74f, 0.78f, 1f);     // 밝은 회색, 보조
+    public Color colorTextFlash = Color.white;
+    public Color colorAccent = new Color(1f, 0.82f, 0.25f, 1f);           // 밝은 노랑 (강조)
+    public Color colorOkText = new Color(0.55f, 0.95f, 0.60f, 1f);        // 밝은 녹색
+    public Color colorWarnText = new Color(1f, 0.82f, 0.30f, 1f);         // 밝은 노랑
+    public Color colorCritText = new Color(1f, 0.45f, 0.42f, 1f);         // 밝은 빨강
+    public Color colorTextOnFill = Color.white;                            // fill 위 흰 텍스트 유지
 
     [Header("Sounds")]
     public AudioClip sfxClick;
