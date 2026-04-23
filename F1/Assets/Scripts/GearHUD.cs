@@ -34,8 +34,10 @@ public class GearHUD : MonoBehaviour
 
     void EnsureCanvasParent()
     {
-        if (GetComponentInParent<Canvas>() == null)
-            transform.SetParent(UIRoot.Ensure(), false);
+        if (GetComponentInParent<Canvas>() != null) return;
+        if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
+        Debug.LogWarning($"[GearHUD] Canvas 밖에 있음. GameObject를 UIRoot 직속으로 이동하거나 Canvas 하위에 두세요.");
+        enabled = false;
     }
 
     void OnEnable()

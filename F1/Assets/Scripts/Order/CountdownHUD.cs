@@ -7,6 +7,7 @@ using TMPro;
 /// 세션 12 UI 트랙 — OnGUI → UGUI 전환.
 /// </summary>
 [DisallowMultipleComponent]
+[RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
 public class CountdownHUD : MonoBehaviour
 {
     [SerializeField] RunController controller;
@@ -26,14 +27,17 @@ public class CountdownHUD : MonoBehaviour
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
-        group = gameObject.GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+        // Unity의 ?? 연산자 + UnityEngine.Object fake-null 이슈 회피. TryGetComponent는 안전.
+        if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
     }
 
     void EnsureCanvasParent()
     {
-        if (GetComponentInParent<Canvas>() == null)
-            transform.SetParent(UIRoot.Ensure(), false);
+        if (GetComponentInParent<Canvas>() != null) return;
+        if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
+        Debug.LogWarning($"[CountdownHUD] Canvas 밖에 있음. GameObject를 UIRoot 직속으로 이동하세요.");
+        enabled = false;
     }
 
     void BuildIfNeeded()
@@ -85,6 +89,7 @@ public class CountdownHUD : MonoBehaviour
 
     void Update()
     {
+        if (group == null) return; // Awake가 enabled=false로 끝난 이례 상황 방어
         if (controller == null || !controller.RunActive) { group.alpha = 0f; return; }
 
         float remaining = controller.TimeRemaining;

@@ -121,7 +121,15 @@ public static class SetupOrderSystem
         var board = runRoot.AddComponent<OrderBoard>();
         var ctrl = runRoot.AddComponent<RunController>();
         var result = runRoot.AddComponent<ResultPanel>();
-        runRoot.AddComponent<CountdownHUD>();
+
+        // CountdownHUD는 UGUI라 Canvas(UIRoot) 하위 별도 GameObject로 생성 (세션 12 D-035 수정)
+        var oldCountdown = GameObject.Find("UIRoot/CountdownHUD");
+        if (oldCountdown != null) Object.DestroyImmediate(oldCountdown);
+        var uiRootT = UIRoot.Ensure();
+        var countdownGo = new GameObject("CountdownHUD", typeof(RectTransform));
+        Undo.RegisterCreatedObjectUndo(countdownGo, "Setup Order System");
+        countdownGo.transform.SetParent(uiRootT, false);
+        countdownGo.AddComponent<CountdownHUD>();
 
         // DeliveryHUD (화살표) — RequireComponent(Canvas)이므로 별도 GameObject
         var oldHud = GameObject.Find("DeliveryHUD");

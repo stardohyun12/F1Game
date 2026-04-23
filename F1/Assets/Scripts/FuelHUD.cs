@@ -38,8 +38,11 @@ public class FuelHUD : MonoBehaviour
 
     void EnsureCanvasParent()
     {
-        if (GetComponentInParent<Canvas>() == null)
-            transform.SetParent(UIRoot.Ensure(), false);
+        if (GetComponentInParent<Canvas>() != null) return;
+        // 루트 오브젝트일 때만 UIRoot 하위로 자동 이동 — 이미 부모가 있으면 씬 구조 존중
+        if (transform.parent == null) { transform.SetParent(UIRoot.Ensure(), false); return; }
+        Debug.LogWarning($"[FuelHUD] Canvas 밖에 있음. GameObject를 UIRoot 직속으로 이동하거나 Canvas 하위에 두세요.");
+        enabled = false;
     }
 
     void BuildIfNeeded()
