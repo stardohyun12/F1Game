@@ -68,21 +68,8 @@ public static class SetupOrderSystem
 
         if (layout != null)
         {
-            // 8 cells: 도로 위 균등 분포 (13x9 그리드 기준)
-            layout.deliveries = new List<TrackLayout.DeliveryCell>
-            {
-                new TrackLayout.DeliveryCell { col = 3, row = 0, label = "Delivery_S_W" },
-                new TrackLayout.DeliveryCell { col = 9, row = 0, label = "Delivery_S_E" },
-                new TrackLayout.DeliveryCell { col = 0, row = 2, label = "Delivery_W_S" },
-                new TrackLayout.DeliveryCell { col = 12, row = 2, label = "Delivery_E_S" },
-                new TrackLayout.DeliveryCell { col = 6, row = 4, label = "Delivery_Center" },
-                new TrackLayout.DeliveryCell { col = 0, row = 6, label = "Delivery_W_N" },
-                new TrackLayout.DeliveryCell { col = 12, row = 6, label = "Delivery_E_N" },
-                new TrackLayout.DeliveryCell { col = 3, row = 8, label = "Delivery_N_W" },
-            };
-            EditorUtility.SetDirty(layout);
-            AssetDatabase.SaveAssets();
-            Debug.Log($"[SetupOrderSystem] Layout 'ComplexTrackLayout' deliveries 갱신: {layout.deliveries.Count}개");
+            // Layout SO가 truth. SetupComplexScene이 작성한 deliveries를 존중해 GameObject만 생성.
+            Debug.Log($"[SetupOrderSystem] Layout 'ComplexTrackLayout' deliveries: {layout.deliveries.Count}개 (SO 기준).");
         }
         else
         {

@@ -46,12 +46,16 @@ public static class TileMapAuto
         // Crossroad: 4 exits, rotation irrelevant.
         { (Kind.Crossroad, Dir.N | Dir.S | Dir.E | Dir.W), 0 },
 
-        // Intersection (T): 3 exits. Rotation = the side WITHOUT a road points to natural -X (W).
-        // Empirical default — adjust after first capture if wrong.
-        { (Kind.Intersection, Dir.N | Dir.S | Dir.E), 0 },     // missing W
-        { (Kind.Intersection, Dir.S | Dir.E | Dir.W), 90 },    // missing N
-        { (Kind.Intersection, Dir.N | Dir.S | Dir.W), 180 },   // missing E
-        { (Kind.Intersection, Dir.N | Dir.E | Dir.W), 270 },   // missing S
+        // Intersection (T): 3 exits. Verified via _Recovery/MeasureIntersectionRotations.cs (session 11).
+        // Top-down capture of 4 yaws side-by-side: the thick sidewalk "missing" leg lands at
+        //   rot 0   → missing -Z (South)
+        //   rot 90  → missing -X (West)
+        //   rot 180 → missing +Z (North)
+        //   rot 270 → missing +X (East)
+        { (Kind.Intersection, Dir.N | Dir.E | Dir.W), 0 },     // missing S
+        { (Kind.Intersection, Dir.N | Dir.S | Dir.E), 90 },    // missing W
+        { (Kind.Intersection, Dir.S | Dir.E | Dir.W), 180 },   // missing N
+        { (Kind.Intersection, Dir.N | Dir.S | Dir.W), 270 },   // missing E
 
         // End (dead-end): 1 exit. Tile points outward in -X by default.
         { (Kind.End, Dir.E), 0 },

@@ -13,6 +13,8 @@ public static class SetupLayoutAssets
     const string LayoutPath = "Assets/Data/DefaultTrackLayout.asset";
     const string SuburbanRoot = "Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/";
     const string CommercialRoot = "Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/";
+    const string IndustrialRoot = "Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/";
+    const string RoadsRoot = "Assets/Model/kenney_city-kit-roads/Models/FBX format/";
 
     // (filename, nativeSize measured via MeasureBuildings.cs). 1x1 entries (max <= ~1.5).
     static readonly (string file, float size)[] SuburbanCandidates =
@@ -25,16 +27,46 @@ public static class SetupLayoutAssets
         ("building-type-f.fbx", 1.43f), ("building-type-u.fbx", 1.43f), ("building-type-g.fbx", 1.45f),
     };
 
-    // 1x1 commercials (max <= ~1.5). Skyscrapers included — they are narrow but tall.
+    // 1x1 commercials (max <= ~1.5). Skyscrapers moved to a dedicated 'H' pool for Downtown concentration.
     static readonly (string file, float size)[] CommercialCandidates =
     {
         ("building-d.fbx", 0.90f), ("building-a.fbx", 0.94f), ("building-g.fbx", 0.97f),
         ("building-b.fbx", 0.97f), ("building-h.fbx", 1.01f), ("building-f.fbx", 1.03f),
         ("building-c.fbx", 1.09f), ("building-m.fbx", 1.24f), ("building-i.fbx", 1.30f),
         ("building-l.fbx", 1.40f),
+    };
+
+    // 'H' — 1x1 skyscrapers pulled out of commercial, concentrated in Downtown for a visible skyline.
+    static readonly (string file, float size)[] HighriseCandidates =
+    {
         ("building-skyscraper-e.fbx", 1.30f), ("building-skyscraper-a.fbx", 1.36f),
         ("building-skyscraper-b.fbx", 1.36f), ("building-skyscraper-c.fbx", 1.39f),
         ("building-skyscraper-d.fbx", 1.39f),
+    };
+
+    // 'T' — 1x1 chimney landmarks. chimney-large measured maxXZ=1.00 h=1.70. chimney-medium maxXZ=0.45 h=1.93.
+    static readonly (string file, float size)[] TowerCandidates =
+    {
+        ("chimney-large.fbx", 1.00f), ("chimney-medium.fbx", 0.45f),
+    };
+
+    // 'F' — 2x2 industrial factory landmarks. building-l maxXZ=2.08 h=1.93. building-c maxXZ=2.11 h=1.25.
+    static readonly (string file, float size)[] FactoryCandidates =
+    {
+        ("building-l.fbx", 2.08f), ("building-c.fbx", 2.11f),
+    };
+
+    // 'W' — 1x1 industrial warehouses/towers. building-f maxXZ=1.79 h=1.93. building-e maxXZ=1.68 h=1.65.
+    static readonly (string file, float size)[] WarehouseCandidates =
+    {
+        ("building-f.fbx", 1.79f), ("building-e.fbx", 1.68f), ("building-g.fbx", 1.68f),
+    };
+
+    // 'P' — Plaza tiles: flat asphalt squares the car drives over. road-square measured 1.00x1.00.
+    // Uses road-kit but registered through BuildingCatalog so BuildingPlacer scales it to cell.
+    static readonly (string file, float size)[] PlazaCandidates =
+    {
+        ("road-square.fbx", 1.00f),
     };
 
     // 2x2 big commercials (nativeSize ~1.6-2.3). At fixed scale 4, they render ~6.5-9.3m — fills 2x2 footprint (8m).
@@ -59,8 +91,19 @@ public static class SetupLayoutAssets
         var commercialDefs = CreateDefs(CommercialCandidates, CommercialRoot, "commercial", 1, 1);
         var bigCommercialDefs = CreateDefs(BigCommercialCandidates, CommercialRoot, "commercial_big", 2, 2);
         var bigSuburbanDefs = CreateDefs(BigSuburbanCandidates, SuburbanRoot, "suburban_big", 2, 2);
+        var highriseDefs = CreateDefs(HighriseCandidates, CommercialRoot, "highrise", 1, 1);
+        var towerDefs = CreateDefs(TowerCandidates, IndustrialRoot, "tower", 1, 1);
+        var factoryDefs = CreateDefs(FactoryCandidates, IndustrialRoot, "factory", 2, 2);
+        var warehouseDefs = CreateDefs(WarehouseCandidates, IndustrialRoot, "warehouse", 1, 1);
+        var plazaDefs = CreateDefs(PlazaCandidates, RoadsRoot, "plaza", 1, 1);
+        // Plaza tiles are drive-over: disable colliders so the car doesn't bump into flat squares.
+        foreach (var d in plazaDefs) { d.addCollider = false; EditorUtility.SetDirty(d); }
 
-        // Catalog. maskChar 'S' = 1x1 suburban, 'C' = 1x1 commercial, 'K' = 2x2 commercial, 'X' = 2x2 suburban.
+        // Catalog. Districts:
+        //   S = 1x1 suburban, X = 2x2 suburban           → 교외
+        //   C = 1x1 commercial, K = 2x2 commercial       → 상업
+        //   H = 1x1 skyscraper (Downtown), T = chimney landmark
+        //   W = 1x1 industrial, F = 2x2 industrial       → 산업
         var catalog = LoadOrCreate<BuildingCatalog>(CatalogPath);
         catalog.entries = new List<BuildingCatalog.Entry>
         {
@@ -68,6 +111,11 @@ public static class SetupLayoutAssets
             new BuildingCatalog.Entry { maskChar = "C", pool = commercialDefs },
             new BuildingCatalog.Entry { maskChar = "K", pool = bigCommercialDefs },
             new BuildingCatalog.Entry { maskChar = "X", pool = bigSuburbanDefs },
+            new BuildingCatalog.Entry { maskChar = "H", pool = highriseDefs },
+            new BuildingCatalog.Entry { maskChar = "T", pool = towerDefs },
+            new BuildingCatalog.Entry { maskChar = "F", pool = factoryDefs },
+            new BuildingCatalog.Entry { maskChar = "W", pool = warehouseDefs },
+            new BuildingCatalog.Entry { maskChar = "P", pool = plazaDefs },
         };
         EditorUtility.SetDirty(catalog);
 
@@ -102,7 +150,7 @@ public static class SetupLayoutAssets
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log($"SetupLayoutAssets: {suburbanDefs.Count} suburban(1x1) + {commercialDefs.Count} commercial(1x1) + {bigCommercialDefs.Count} commercial(2x2) + {bigSuburbanDefs.Count} suburban(2x2) defs.");
+        Debug.Log($"SetupLayoutAssets: S={suburbanDefs.Count} C={commercialDefs.Count} K={bigCommercialDefs.Count} X={bigSuburbanDefs.Count} H={highriseDefs.Count} T={towerDefs.Count} F={factoryDefs.Count} W={warehouseDefs.Count} defs.");
     }
 
     static List<BuildingDef> CreateDefs((string file, float size)[] entries, string root, string category, int cellsWide, int cellsDeep)

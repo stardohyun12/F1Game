@@ -17,44 +17,54 @@ public static class SetupComplexScene
     {
         // 1. Layout SO
         var layout = LoadOrCreate<TrackLayout>(LayoutPath);
-        // 13x9 grid with 3 horizontal + 4 vertical roads → 6 interior blocks (3x3 each) for T-junction variety.
+        // 13x9 grid with shortcuts added at row 2 (south suburban) + row 6 (north suburban).
+        // Breaks the perfectly uniform 3x4 grid (session 11 D-034 "오픈월드 체감" Tier A).
         layout.roadMask = new[]
         {
             "#############", // row 0 — horizontal south
             "#...#...#...#", // row 1
-            "#...#...#...#", // row 2
+            "#.###...###.#", // row 2 — shortcut W + shortcut E cut through suburban/industrial blocks
             "#...#...#...#", // row 3
             "#############", // row 4 — horizontal middle
             "#...#...#...#", // row 5
-            "#...#...#...#", // row 6
+            "#.###...###.#", // row 6 — mirrored shortcuts
             "#...#...#...#", // row 7
             "#############", // row 8 — horizontal north
         };
-        // Building mask: S/C = 1x1 suburban/commercial, K/X = 2x2 big commercial/suburban.
-        // Each 3x3 block holds one 2x2 anchor (top-left) + 5 1x1 fillers. K/X alternate between rows for variety.
+        // Building mask — Lynch districts + D-034 오픈월드 Tier A:
+        //   Left (cols 1-3): 교외 S + P plaza (북쪽/남쪽 블록 남단 광장)
+        //   Middle (cols 5-7): 상업(하)·Downtown(상) = K + H + T landmark
+        //   Right (cols 9-11): 산업 W
+        // 지름길 2곳(row 2 col 2-3, row 6 col 2-3; row 2 col 9-10, row 6 col 9-10)이 roadMask에서
+        // road로 변환됐으므로 그 cell들은 '.'로 비움.
         layout.buildingMask = new[]
         {
-            ".............", // row 0
-            ".KKC.XXS.KKC.", // row 1 — K(1), 1x1 C, X(5), 1x1 S, K(9), 1x1 C
-            ".KKS.XXC.KKS.", // row 2 — K/X rows occupied; col 3/7/11 are 1x1 fillers
-            ".SCS.CSC.SCS.", // row 3 — all 1x1 row (K/X cannot anchor here — would overlap row 4 road)
-            ".............", // row 4 (road)
-            ".XXC.KKS.XXC.", // row 5 — mirrored: X, K, X anchors
-            ".XXS.KKC.XXS.", // row 6
-            ".CSC.SCS.CSC.", // row 7 — all 1x1 row
-            ".............", // row 8
+            ".............", // row 0 — edge
+            ".SSS.CCC.WWW.", // row 1 — 교외 / 상업 / 산업 (1x1 filler)
+            ".S...KKC...W.", // row 2 — 지름길(col 2,3 / 9,10) 비움. K anchor (5,2), W col 11
+            ".PPP.KKC.WWW.", // row 3 — P 광장(교외 남서 하단) / K footprint / 산업
+            ".............", // row 4 — road
+            ".SSS.HTH.WWW.", // row 5 — Downtown south (H/T landmark)
+            ".S...HKK...W.", // row 6 — 지름길 + Downtown K anchor (6,6)
+            ".PPP.HKK.WWW.", // row 7 — P 광장(교외 북서 하단) / K footprint / 산업
+            ".............", // row 8 — edge
         };
         var catalogGuids = AssetDatabase.FindAssets("t:BuildingCatalog");
         if (catalogGuids.Length > 0)
             layout.catalog = AssetDatabase.LoadAssetAtPath<BuildingCatalog>(AssetDatabase.GUIDToAssetPath(catalogGuids[0]));
         layout.startCell = new Vector2Int(1, 0);
         layout.startYawDeg = 0f; // facing +X along bottom straight
+        // 7 delivery nodes at major intersections, co-located with district landmarks.
+        // Burnout "종점 집중" + Lynch Node. Count=7 matches Order_C_Risky.pointCount.
         layout.deliveries = new List<TrackLayout.DeliveryCell>
         {
-            new TrackLayout.DeliveryCell { col = 6, row = 0, label = "Delivery_Bottom" },
-            new TrackLayout.DeliveryCell { col = 12, row = 4, label = "Delivery_RightMid" },
-            new TrackLayout.DeliveryCell { col = 6, row = 8, label = "Delivery_Top" },
-            new TrackLayout.DeliveryCell { col = 0, row = 4, label = "Delivery_LeftMid" },
+            new TrackLayout.DeliveryCell { col = 6, row = 4, label = "DowntownHub" },   // Downtown 중앙 교차로 (K 2×2 남쪽)
+            new TrackLayout.DeliveryCell { col = 6, row = 8, label = "NorthGate" },     // 북단 Downtown 위
+            new TrackLayout.DeliveryCell { col = 12, row = 2, label = "FactoryEast" },  // 산업지역 남동
+            new TrackLayout.DeliveryCell { col = 12, row = 6, label = "IndustryNorth" },// 산업지역 북동
+            new TrackLayout.DeliveryCell { col = 0, row = 6, label = "SuburbWest" },    // 교외지역 북서
+            new TrackLayout.DeliveryCell { col = 0, row = 2, label = "SuburbSouth" },   // 교외지역 남서
+            new TrackLayout.DeliveryCell { col = 8, row = 0, label = "SouthGate" },     // 남단 Start 옆
         };
         EditorUtility.SetDirty(layout);
         AssetDatabase.SaveAssets();

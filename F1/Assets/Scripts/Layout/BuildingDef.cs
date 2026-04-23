@@ -18,4 +18,7 @@ public class BuildingDef : ScriptableObject
     public int cellsDeep = 1;
 
     public string category = "suburban";
+
+    [Tooltip("Whether BuildingPlacer should auto-attach MeshColliders. Disable for plaza/decor tiles cars should drive over.")]
+    public bool addCollider = true;
 }

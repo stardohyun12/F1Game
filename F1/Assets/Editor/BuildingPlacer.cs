@@ -111,7 +111,7 @@ public static class BuildingPlacer
                 inst.transform.localPosition = new Vector3(posX, BuildingY, posZ);
                 inst.transform.localRotation = rotation;
                 inst.transform.localScale = Vector3.one * scale;
-                AddColliders(inst);
+                if (def.addCollider) AddColliders(inst);
                 placed++;
             }
         }

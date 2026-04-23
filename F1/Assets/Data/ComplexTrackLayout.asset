@@ -15,48 +15,45 @@ MonoBehaviour:
   roadMask:
   - '#############'
   - '#...#...#...#'
-  - '#...#...#...#'
+  - '#.###...###.#'
   - '#...#...#...#'
   - '#############'
   - '#...#...#...#'
-  - '#...#...#...#'
+  - '#.###...###.#'
   - '#...#...#...#'
   - '#############'
   buildingMask:
   - .............
-  - .KKC.XXS.KKC.
-  - .KKS.XXC.KKS.
-  - .SCS.CSC.SCS.
+  - .SSS.CCC.WWW.
+  - .S...KKC...W.
+  - .PPP.KKC.WWW.
   - .............
-  - .XXC.KKS.XXC.
-  - .XXS.KKC.XXS.
-  - .CSC.SCS.CSC.
+  - .SSS.HTH.WWW.
+  - .S...HKK...W.
+  - .PPP.HKK.WWW.
   - .............
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
-  - col: 3
-    row: 0
-    label: Delivery_S_W
-  - col: 9
-    row: 0
-    label: Delivery_S_E
-  - col: 0
-    row: 2
-    label: Delivery_W_S
-  - col: 12
-    row: 2
-    label: Delivery_E_S
   - col: 6
     row: 4
-    label: Delivery_Center
-  - col: 0
-    row: 6
-    label: Delivery_W_N
+    label: DowntownHub
+  - col: 6
+    row: 8
+    label: NorthGate
+  - col: 12
+    row: 2
+    label: FactoryEast
   - col: 12
     row: 6
-    label: Delivery_E_N
-  - col: 3
-    row: 8
-    label: Delivery_N_W
+    label: IndustryNorth
+  - col: 0
+    row: 6
+    label: SuburbWest
+  - col: 0
+    row: 2
+    label: SuburbSouth
+  - col: 8
+    row: 0
+    label: SouthGate
   startCell: {x: 1, y: 0}
   startYawDeg: 0

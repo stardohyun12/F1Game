@@ -18,3 +18,4 @@ MonoBehaviour:
   cellsWide: 1
   cellsDeep: 1
   category: commercial
+  addCollider: 1
