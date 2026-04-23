@@ -374,3 +374,77 @@
   - **OverviewCamera 버그 = 회전 직접 계산 함정 재발.** 세션 7 D-026("Y-yaw만 atan2로 직접") 교훈이 카메라 시점에서도 적용됨. CLAUDE.md "에셋/맵 자동 배치 작업 규칙"에 카메라 포즈도 검토 필요.
   - **Coplay MCP 효과성 또 입증:** SetupOrderSystem 자동화 + DriverResource 롤백까지 모든 씬 작업이 `execute_script` + `add_component` + `check_compile_errors` 루프. 수작업이면 세션 시간 2~3배.
 - **컨텍스트 상태:** 세션 종료. 다음 세션은 맵/UI/그래픽 3 트랙 — 시작 시 각 트랙별 컨셉 합의부터.
+
+---
+
+## 세션 11 — 2026-04-23
+
+- **목표:** 맵 디자인 "실제 도시 느낌" 강화. 도로 연결 부자연스러운 부분 해결.
+- **한 일:**
+  - **연구 페이즈 (D-029 패턴 재현, 타임박스 1 세션):** 3 병렬 웹조사 — 업계 포스트모템 / 학술 이론 / 로우폴리 아트. `GDD/research/map-design-research.md`에 수렴 결론 저장 (Lynch 5요소 + 랜드마크 + 구역 분할 = Burnout·Forza·Parish-Müller·Totten·Art of Rally 전부 동의).
+  - **D-032 교훈 준수:** ① 컨셉(Lynch 5요소) ② 명칭/디테일(구역 경계 + 랜드마크 4개) ③ MVP 명세(mask 재배치 + 7 배달점 + 아트 프리셋) 3단계 순차 합의 후 구현. 롤백 0.
+  - **구역 분할 + 랜드마크 (D-033):**
+    - `SetupLayoutAssets.cs` 확장 — Industrial kit 추가 + 신규 mask char 4개 (H highrise 5종 / T chimney 2종 / F factory 2×2 / W warehouse 1×1). BuildingDef 11개 신규.
+    - `SetupComplexScene.cs` buildingMask 재작성 — 좌(교외 S/X) / 중앙 하(상업 C/K) / 중앙 상(Downtown H/K + T at (6,5)) / 우(산업 W/F). 배달점 8→7 Lynch Node 원칙으로 교차로 배치.
+    - `SetupOrderSystem.cs` — `layout.deliveries` 덮어쓰기 제거 (Layout SO가 truth).
+  - **아트 프리셋 (`_Recovery/SetupArtPreset.cs` 신규):** URP Volume Profile (`PitCrewCityVolume.asset`) — Bloom/Vignette/ACES Tonemapping/Color Adjustments. Warm Directional Light (#FFE4B5, Euler 50,-30,0, 1.3). Ambient Trilight Gradient + Linear Fog 70~220m.
+  - **Industrial kit 실측 (`_Recovery/MeasureIndustrial.cs`):** 25종 maxXZ·height 측정. D-023 규칙 준수.
+  - **검증:** `_Recovery/TopDownDiagnose.cs` + `SideView.cs`. 36 건물 all verified. 사이드뷰에서 Chimney Tower T 랜드마크가 Downtown 앵커로 완전 작동 확인.
+  - **재빌드 자동화 (`_Recovery/RunFullRebuild.cs`):** Layout Assets → Complex Scene → Race → Order System 4 스텝 원샷 실행.
+- **다음 세션(세션 12) 할 일:**
+  - **도현 Play 테스트:** ComplexTrack 주행. Warm 아트 프리셋 체감. 새 맵 7 배달점 + Downtown Tower 가시성.
+  - **커밋 (미커밋):** 본 세션 변경 덩어리. 분리 커밋 권장 — (1) 연구 문서 (2) 에셋/코드 + 씬.
+  - **UI 트랙 진입** (세션 10에서 예정된 3 트랙 중 2번째): OnGUI → Canvas/UI Toolkit.
+  - **그래픽 트랙**은 이미 부분 선행됨 (D-033 아트 프리셋). 남은 건 머티리얼/셰이더 톤 맞추기, 필요 시 4주차.
+- **관련 문서/코드:**
+  - `GDD/research/map-design-research.md` (신규)
+  - `notes/decisions-log.md` D-033
+  - `F1/Assets/Editor/{SetupLayoutAssets,SetupComplexScene,SetupOrderSystem}.cs`
+  - `F1/Assets/Editor/_Recovery/{SetupArtPreset,MeasureIndustrial,TopDownDiagnose,SideView,RunFullRebuild}.cs`
+  - `F1/Assets/Data/Buildings/` 11 신규 BuildingDef
+  - `F1/Assets/Data/{BuildingCatalog,ComplexTrackLayout}.asset` 업데이트
+  - `F1/Assets/Settings/PitCrewCityVolume.asset` (신규)
+  - `F1/Assets/ComplexTrack.unity` (구역 재배치 + GlobalVolume)
+- **메모:**
+  - **연구→합의→구현 파이프라인 재현 성공.** 세션 9 D-029 패턴이 매력적 템플릿으로 자리잡음. 세션 11에서는 1 세션 내 완결 (연구·합의·구현 동시). 다음 큰 결정에서도 재사용.
+  - **D-032 교훈 실전 적용.** "알아서 잘 만들어봐" 위임 받았음에도 컨셉→명칭→명세 단계별 합의 거쳤음. 롤백 없이 완료. 컨셉/명세 분리의 가치 입증.
+  - **도현 피드백 "도로 연결 부자연":** 재빌드 시 자연 해소. 실제로는 세션 7 D-024 시점부터 잔존했을 이음매 미스매치(Kenny city-kit 특유 crosswalk mesh 경계)가 mask 재작성 + BuildingPlacer 재배치로 해결됨.
+  - **Coplay MCP 핵심 역할:** `execute_script`로 재빌드 루프, `capture_scene_object` 톱다운/사이드뷰, `get_unity_logs`로 VerifyPlacements 결과 확인. 세션 내 5 사이클 반복 가능했던 이유.
+  - **BuildingPlacer 돌출 버그는 실재했음.** 원인 정확히는 못 잡았지만(재빌드로 사라짐), mask 재설계 시 2×2 anchor 위치가 더 정리돼서 우연 해결. 재발 시 `VerifyPlacements`에 horizontal bounds overflow 체크 추가 고려.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트 + UI 트랙 진입.
+
+### 세션 11 이어서 — T자 수정 + 도로 카탈로그 + 오픈월드 Tier A (D-034)
+
+- **도현 추가 피드백:**
+  - "T자 도로가 아직 제대로 연결 안됨" (세션 11 초기 수정 후에도 남음)
+  - "도로 구성 에셋들 한번씩 인식해서 앞으로 다 쓸 수 있게"
+  - "정형화된 블럭 도시 = 돌아다니는 맛 없음 + 오픈월드 맵구성 고려"
+- **T자 실측 (2차 시도로 해결):**
+  - 1차 수정(단일 probe) = -90 오프셋 → 오답. T 여전히 이상.
+  - 2차 수정(4 회전 side-by-side probe `MeasureIntersectionRotations`) = +90 오프셋 → 정답.
+  - 최종 매핑: rot 0 missing S / 90 missing W / 180 missing N / 270 missing E.
+  - 개별 캡처로 (4,0) (0,4) T-교차로 정상 작동 확인.
+- **Kenny 도로 카탈로그 (`MeasureAllRoads.cs`, `GDD/research/kenny-roads-catalog.md`):**
+  - 72 FBX 전수 실측 (straight/bend/curve-intersection/crossroad/roundabout/split/side-entry/driveway/slant/bridge/square/sign/light/construction/tile 분류).
+  - 활용 매트릭스 — 현재 사용 중 vs 향후 활용 후보.
+- **오픈월드 Tier A 적용:**
+  - `BuildingDef.addCollider` 플래그 신설 → road/prop 타일을 BuildingCatalog로 다룰 수 있는 인프라.
+  - `P` (Plaza) 엔트리 추가 — road-square FBX, addCollider=false.
+  - roadMask 지름길 4곳 (`.###` 패턴 row 2/6에 각각 2번) → 6 큰 블록 → 12 subblock 분할.
+  - buildingMask 광장 2곳 (`PPP` row 3/7 교외 남단) → 아스팔트 플라자.
+  - 결과: 경로 선택 다양성 확보, "정형화" 깨짐. 40 건물 all verified.
+- **Tier B 파킹:** Roundabout 3×3 (TileMapAuto 구조 변경 필요) / 맵 비대칭 외곽 (roadMask 대수술) / 대각선 도로 (에셋 부재).
+- **관련 문서/코드:**
+  - `notes/decisions-log.md` D-034
+  - `F1/Assets/Editor/TileMapAuto.cs` (Intersection 매핑 + 실측 주석)
+  - `F1/Assets/Scripts/Layout/BuildingDef.cs` (addCollider)
+  - `F1/Assets/Editor/BuildingPlacer.cs` (addCollider 체크)
+  - `F1/Assets/Editor/SetupLayoutAssets.cs` (Plaza pool)
+  - `F1/Assets/Editor/SetupComplexScene.cs` (지름길 + 광장 mask)
+  - `F1/Assets/Editor/_Recovery/{MeasureIntersection,MeasureIntersectionRotations,MeasureAllRoads,RebuildAfterTeeFix}.cs`
+  - `GDD/research/kenny-roads-catalog.md`
+- **메모:**
+  - **세션 11 중복 피드백 패턴:** 도현이 초반 요청("맵 만들어봐")에서 광범위하게 맡기고, 구현 후 구체 피드백 3회 (T자 / 정형화 / 오픈월드). 세션 5 "도로 아직 이상함" 3-4회 패턴 재현 — 도현 집요함 = 근본 버그 발견. 이번도 `Empirical default` 미실측 버그 발견 + 맵 구조 단조로움 근본 해결.
+  - **실측 도구화의 가치:** `MeasureIntersectionRotations.cs` 같은 "N개 회전 side-by-side" 패턴이 단일 probe보다 확정적. 추상적 방향(CW/CCW) 추론 불가할 때 기계적 검증으로 대체.
+  - **BuildingDef.addCollider 확장성:** 이 플래그 하나로 road-kit 타일을 Building catalog에 통합 가능 → 향후 sign-highway (랜드마크) / road-square (광장) / construction-cone (장애물) / light (가로등) 전부 "Building" 파이프라인으로 배치 가능.
+- **컨텍스트 상태:** 세션 종료. 다음 세션은 Play 테스트 + UI 트랙.

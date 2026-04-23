@@ -47,6 +47,8 @@
 - [x] 배달 시스템 MVP (세션 6) — DeliveryPoint/Manager/HUD + 시작→1→2→3→복귀 루프. 화면 상단 N/3 + 화살표 HUD.
 - [x] **도로 폭 근본 수정 + Layout SO 시스템 + Building Phase 1 (세션 7, D-024/025/026)** — road-bend 교체(도로 폭 완벽 일치), TrackLayout ScriptableObject 외부화, BuildingPlacer (2-layer 마스크, 28 BuildingDefs, verification 내장), ComplexTrack 씬(9×7 더블 루프 + T교차로, 35타일+22건물), 차량 배치 자동화(Race.prefab + FollowCamera).
 - [x] **세션 8 리밸런스 (D-027/028)** — Cell 6m, Race 0.7x, 건물 fit-to-cell, 멀티셀 2×2(K/X) + 자동 MeshCollider, 13×9 3×4 그리드(63타일+36건물), 건물 통과 버그 해결, 드리프트 2회 튜닝.
+- [x] **세션 11 Lynch 5요소 리디자인 (D-033)** — 구역 분할(교외/상업/Downtown/산업), 랜드마크 4개(K 앵커 + T chimney + F×2 factory), 신규 mask char H/T/F/W, 배달점 7개 Node 배치, Industrial kit 11 BuildingDef 신규, URP 아트 프리셋(Bloom/Vignette/ACES/Fog/Warm Light). 36건물 all verified.
+- [x] **세션 11 후반 T자 수정 + 도로 카탈로그 + 오픈월드 Tier A (D-034)** — Intersection 회전 매핑 실측 수정(rot 0→S/90→W/180→N/270→E). Kenny 도로 72 FBX 전수 카탈로그(GDD/research/kenny-roads-catalog.md). BuildingDef.addCollider 플래그 + Plaza 'P' 카탈로그. 지름길 4곳 + 광장 2곳 → 6 blocks → 12 subblocks 분할. 40 건물 all verified.
 - [~] 30분 이상 직접 플레이 — 맵 복잡도/드리프트 톤 추가 조정 필요. 세션 9에서 기획 재검토 후 판정.
 - [ ] 자문: "계속 놀고 싶나?"
 

@@ -323,3 +323,90 @@
   - "집중력"이라는 명칭·구체 트리거(고속 4분/드리프트 2분/근접 -5%)는 도현 합의 없이 내가 임의로 채움. 도현이 "어디서 나왔지?" 질문할 만한 비약
   - 다음에 큰 시스템 도입 시: ① 컨셉 합의 → ② 명칭/디테일 합의 → ③ MVP 명세 합의 → ④ 구현. 단계 합치지 말 것
 - **D-030 부스트 시스템 다시 활성:** `boost.md` 정본 복귀.
+
+
+---
+
+## 2026-04-23 — 세션 11 (맵 디자인 Lynch 5요소 적용)
+
+### D-033. 맵 디자인 "실제 도시 느낌" — Lynch 5요소 + 구역 분할 + 랜드마크 + 아트 프리셋
+
+- **결정:** ComplexTrack 레이아웃을 Kevin Lynch 5요소(Path/Edge/District/Node/Landmark) 프레임으로 재설계. TrackLayout SO + BuildingCatalog 재배치 + 신규 랜드마크 BuildingDef + URP 아트 프리셋. **신규 시스템/코드 추가 없이** 기존 인프라 재활용.
+- **리서치 근거 (세션 11 웹조사 3 병렬, `GDD/research/map-design-research.md`):**
+  - 업계(Burnout/Forza/Crazy Taxi) · 학술(Lynch·Parish-Müller·Totten·Spence) · 아트(Art of Rally·Hotshot Racing) 3 방향 모두 동일 결론: **도시 느낌 부족의 1차 원인은 에셋 부족이 아니라 정보 설계 부재 (랜드마크+구역+스카이라인 위계)**.
+- **구역 분할 (13×9 3×4 그리드, 6블록):**
+  - 좌측 2블록(col 1-3): 교외지구 (S 1×1 + X 2×2 suburban)
+  - 중앙 2블록(col 5-7): 하단=상업(C/K), 상단=**Downtown** (H highrise + K skyscraper + T chimney 랜드마크)
+  - 우측 2블록(col 9-11): 산업지구 (W 1×1 + F 2×2 industrial)
+  - 외곽 1줄: Edge (empty → Fog로 자연 페이드아웃, Lynch Edge 규칙)
+- **신규 mask 문자 4개 (`BuildingCatalog` entries):**
+  - `H` = 1×1 Skyscraper (5종) — 기존 C 풀에서 분리, Downtown 집중
+  - `T` = Chimney Tower (2종 chimney-large/medium, Industrial kit)
+  - `F` = 2×2 Factory (2종 building-l/c, Industrial kit)
+  - `W` = 1×1 Warehouse (3종 building-f/e/g, Industrial kit)
+- **랜드마크 4개 배치:**
+  1. Downtown 중앙 K 2×2 skyscraper anchor at (6,6) — 맵 앵커
+  2. T chimney tower at (6,5) — Downtown 남쪽 경계 랜드마크 (맵 어디서든 보임)
+  3. F 2×2 factory anchor at (9,2) — Bottom-right 산업 시그니처
+  4. F 2×2 factory anchor at (9,6) — Top-right 산업 시그니처
+- **배달점 8→7 축소 (Burnout "종점 집중" + Lynch Node):** 모두 주요 교차로에 배치. Order_C_Risky(pointCount=7) 호환 유지.
+- **아트 프리셋 (Warm 오후):**
+  - URP Volume (`Assets/Settings/PitCrewCityVolume.asset`): Bloom 0.8/thr 0.9/warm tint, Vignette 0.3, Tonemapping ACES, Color Adjustments(post-exp +0.3, Sat +10, Contrast +15)
+  - Directional Light: Euler(50,-30,0), #FFE4B5 Moccasin, Intensity 1.3, Soft Shadows
+  - Ambient Trilight Gradient: Sky #87CEEB / Equator #C8B89C / Ground #4A4030
+  - Fog Linear 70~220m, color #C8C8CC (soft gray-blue, Sky 하단 매칭)
+- **CLAUDE.md 규칙 3 예외 근거:** "비주얼 폴리싱은 4주차 이후"의 예외 조건 = 리서치 결과가 "맵 정보 설계는 타일 배치와 동일한 ROI"라 명시. 30분짜리 아트 프리셋 설정은 폴리싱이 아니라 "정보 설계 동급" 작업으로 분류.
+- **해결된 문제:**
+  - 도로 연결 부자연 (세션 7 D-024 잔존 이슈): 재빌드로 자연 해소 (36 건물 all verified — 돌출·기울어짐 0)
+  - 기존 레이아웃 "모든 블록 동일" 단조로움 → 3 구역 시각적 구분 확연
+- **파킹 (4주차 이후):**
+  - 디테일 프롭 pass (가로수/벤치/가로등 인도 배치)
+  - 건물 높이 지터·MaterialPropertyBlock 컬러 변이
+  - 주도로/골목 도로 위계 (TileMapAuto 메타데이터 재설계 = 세션 7 시행착오 재발 위험)
+  - 미니맵 구역-only allocentric 설계
+- **GDD 반영:** `GDD/research/map-design-research.md` (Lynch 체크리스트 + 3 조사 결론 + 파킹 목록)
+- **코드/데이터 변경:**
+  - `SetupLayoutAssets.cs`: Industrial 후보 + H/T/F/W 4 카탈로그 엔트리 추가
+  - `SetupComplexScene.cs`: buildingMask 구역 분할 재작성, 배달점 7개 랜드마크 인접 배치
+  - `SetupOrderSystem.cs`: layout.deliveries 덮어쓰기 제거 (Layout SO가 truth)
+  - `_Recovery/SetupArtPreset.cs` (신규): URP Volume + Light + Fog 일괄 설정
+  - `_Recovery/MeasureIndustrial.cs` (신규): Industrial kit 실측 (D-023 규칙 준수)
+  - `_Recovery/{TopDownDiagnose,SideView,RunFullRebuild}.cs` (신규)
+  - `Data/Buildings/`: highrise/tower/factory/warehouse BuildingDef 신규 11개
+  - `Settings/PitCrewCityVolume.asset` (신규)
+- **검증:** BuildingPlacer VerifyPlacements 36 건물 all verified. 톱다운 + 사이드뷰 캡처로 Downtown Chimney Tower 앵커 + 구역 색 분리 + 도로 매끈함 확인.
+- **도현 패턴 9번째 관찰:** "알아서 잘 만들어봐" 위임 모드. 연구 결과 믿고 auto mode로 진행 OK 판단. D-032 교훈대로 컨셉 합의(Lynch 5요소) + 명칭 합의(구역·랜드마크 수치) 단계 통과 후 구현 — 롤백 없이 한 번에 완료.
+
+### D-034. T자 교차로 회전 실측 수정 + 도로 카탈로그 전수 측정 + 오픈월드 Tier A
+
+- **결정:** (1) Intersection(T) 회전 매핑을 실측 기반으로 수정. (2) kenney_city-kit-roads 72 타일 전수 측정해 `GDD/research/kenny-roads-catalog.md`로 문서화. (3) 오픈월드 체감 Tier A 적용 — BuildingDef에 `addCollider` 플래그 신설, `P` (Plaza) 카탈로그 엔트리 추가, roadMask에 지름길 4곳 + buildingMask에 광장 2곳.
+- **T자 회전 실측 (D-022 "Empirical default" 교정):**
+  - `_Recovery/MeasureIntersectionRotations.cs` — road-intersection.fbx를 0/90/180/270 yaw 4개 동시 배치 + 톱다운 캡처.
+  - 실측 결과: rot 0 → missing S / rot 90 → missing W / rot 180 → missing N / rot 270 → missing E
+  - TileMapAuto 매핑 재작성. 세션 11 내 2회 시행착오 (세션 6 원본 → -90 오프셋 수정(오답) → +90 오프셋 수정(정답)) 후 전 T 정상 정렬.
+- **도로 카탈로그 (향후 활용 인프라):**
+  - `_Recovery/MeasureAllRoads.cs` — kenney_city-kit-roads 72 FBX 실측. bounds + maxXZ + 분류.
+  - `GDD/research/kenny-roads-catalog.md` — 활용 매트릭스: Roundabout (3×3, Downtown 허브 후보) / Split (Y분기) / Side-entry/exit / Slant (언덕) / Bridge / Tile-high-low-slant (경사) / Signs (랜드마크) / Lights (디테일 프롭).
+  - 향후 맵 세션에서 **재측정 없이 BuildingDef/TileMapAuto NativeSize에 직접 사용 가능**.
+- **오픈월드 Tier A 적용:**
+  - **지름길 4곳** — roadMask row 2, 6의 col 2-3, 9-10을 `.` → `#`. 각 3×3 블록이 2×3 + 1×3 subblock으로 분할. "블록 내부 관통" 경로 생성 → 경로 선택 다양성 (Lynch Path 위계 + Parish-Müller 블록 크기 다양화).
+  - **광장 2곳** — buildingMask row 3, 7의 교외 남단 3칸을 `PPP`로. road-square FBX를 Building 트랙으로 배치 (addCollider=false로 차량 통과 가능).
+  - **Plaza 인프라:** `BuildingDef.addCollider` 플래그 신설. BuildingPlacer가 false면 MeshCollider 스킵. road/prop 계열 타일을 Building catalog로 다룰 수 있게 됨 (향후 roundabout/sign-highway 등 확장 기반).
+  - **스코프 선택 (Tier B 파킹):** road-roundabout(3×3)은 TileMapAuto 구조 변경 필요 → 파킹. Map 비대칭 외곽(L-돌출) → 파킹. 대각선 도로 → Kenny 에셋 부재, 영구 파킹.
+- **해결된 문제 (세션 11 도현 피드백):**
+  - "T자 도로가 잘 연결 안됨" → 실측 기반 매핑 수정으로 해결
+  - "정형화된 블럭 도시" → 지름길 4곳으로 블록 분할, 광장으로 open space 도입
+  - "돌아다니는 맛 없음" → 경로 선택 다양성 확보 (교외/산업 블록 각각 2~3 경로 옵션)
+- **코드/데이터 변경:**
+  - `TileMapAuto.cs`: Intersection 회전 매핑 수정 (실측 주석 포함)
+  - `BuildingDef.cs`: `addCollider` 필드 신규
+  - `BuildingPlacer.cs`: addCollider false 시 collider 스킵
+  - `SetupLayoutAssets.cs`: Plaza 풀 + addCollider=false 설정
+  - `SetupComplexScene.cs`: roadMask 지름길 2줄 / buildingMask 광장 + mask 재조정
+  - `_Recovery/{MeasureIntersection,MeasureIntersectionRotations,MeasureAllRoads,RebuildAfterTeeFix}.cs` 신규
+  - `GDD/research/kenny-roads-catalog.md` 신규 (72 entries)
+- **검증:** BuildingPlacer 40 건물 all verified. T-교차로 (4,0)/(0,4) 개별 클로즈업 캡처 = 모두 3 leg 중앙선 매끈, missing leg sidewalk 정상.
+- **교훈 (세션 11 2회 오진 과정):**
+  - D-022에서 "Empirical default — adjust after first capture if wrong" 주석으로 남겨둔 것을 실제로는 실측 생략한 채 사용. **주석은 "나중에 검증"의 대체물이 될 수 없음** — 실측 없이 배포된 empirical default는 끝까지 틀린 채로 남음.
+  - 단일 회전 probe (MeasureIntersection)만으로는 회전 방향(CW vs CCW) 혼동 가능. **4 rotation side-by-side** 방식이 확정적. 향후 다른 타일 회전 검증 시 같은 패턴.
+  - 도현 "아직도 연결 안됨" 재피드백 → 첫 수정 후 재검증 생략 가설 검증. "all verified"는 건물 기울어짐만 체크 (BuildingPlacer.VerifyPlacements). **도로 타일 회전 검증 도구가 없음** — 향후 `TileMapAuto.VerifyRoadTiles()` 추가 고려 (각 intersection cell이 실제로 열린 방향과 mask의 exits 일치하는지).
