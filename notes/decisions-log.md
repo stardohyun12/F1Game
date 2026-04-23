@@ -442,3 +442,58 @@
 - **USP 매핑:** USP ③ "운전감(Burnout급)" 보조 — HUD 품질이 **몰입을 깨지 않는 수준**까지 올라옴. USP 자체를 강화하지는 않지만 보조 게이트(가시성/가독성) 충족.
 - **세션 11→12 이관 이유:** D-032 교훈 "장시간 후 판단력 저하 회피". 세션 11이 맵 트랙 완료로 이미 컨텍스트가 두꺼워졌고, UI 트랙 진입은 컨셉/에셋/코드 3축이 동시에 움직이는 작업이라 새 세션에서 시작하는 게 실수 감소.
 - **다음 (Tier 2):** DeliveryHUD(화살표) / OrderBoard(A/B/C 카드) / ResultPanel(정산) 같은 패턴으로 이관. Order 카드는 UGUI Button + Kenney click/confirmation 효과음. 세션 13 후보.
+
+---
+
+## 2026-04-24 — 세션 13
+
+### D-036. 맵 확장 15×9 + 도로 시각 변종 (Crossing/Dead-end) + 동쪽 L 돌출
+
+- **결정:** 13×9 → 15×9 확장. 동쪽 cols 13-14에 ㅗ자 L 돌출. Straight 일부를 Pedestrian Crossing으로 시각 변종. road-end.fbx → road-end-round.fbx 교체.
+- **근거:**
+  - 도현 피드백: "맵이 단조롭다, 좀 더 넓게 + 높낮이 + 배치 단조로움 해결".
+  - 높낮이/배치 UX는 스코프 초과 → ideas-parking.md "v1 MVP 이후 고도화 파이프라인" H1~H5로 이관.
+  - 맵 확장 + 도로 다양성은 **TileMapAuto의 `#` mask char 체계 안에서 해결 가능** → 저비용으로 즉시 실행.
+- **mask char 체계 확장:**
+  - `#` 일반 도로 (기존)
+  - `X` pedestrian crossing (Straight 시각 변종, 연결성 동일)
+  - `D` driveway 진입로 (End 변종, 1 exit 강제)
+  - IsRoad()가 세 char를 전부 road로 취급 → 이웃 탐색 정상. Kind 결정 후 char 기반 override.
+- **새 Kind 등록:** `Kind.Crossing`(road-crossing.fbx) / `Kind.Driveway`(road-driveway-single.fbx). Dead-end `Kind.End`는 기존이지만 source를 `road-end-round.fbx`로 교체 — 교외 분위기 round cap.
+- **맵 15×9 구조:**
+  - 동쪽 L 돌출 (cols 13-14, rows 3-5): row 4에서 main road가 동쪽으로 1칸 뻗은 뒤(`col 13 row 4`) 북/남 분기(`col 14 rows 3/5` dead-end). "ㅗ자" = Intersection at (14,4) + End at (14,3), (14,5).
+  - Crossing 9개 (cols 1/5/9 × rows 0/4/8) — 남/중/북 main horizontal 각 3개.
+  - 지름길 유지 (row 2, 6 shortcut, D-034 Tier A).
+- **배달점 7개 재배치:** `FactoryEast(12,2)` / `EastBranchEnd(14,4)` 신규(L 돌출 T 교차점) / `NorthGate(6,8)` / `DowntownHub(6,4)` / `SouthGate(8,0)` / `SuburbWest(0,6)` / `SuburbSouth(0,2)`. 이전 `IndustryNorth(12,6)`를 EastBranchEnd로 교체 — 맵 확장을 배달 동선에 반영.
+- **RunFullRebuild에 SetupUIScene.Execute 추가:** SetupComplexScene이 새 씬을 만들면서 UIRoot 날리는 문제를 자동으로 해결 — Step 5 단계로 FuelHUD/GearHUD GameObject 재생성.
+- **검증 결과 (계층):**
+  - `Tile_Crossing_{1,5,9}_{0,4,8}_r0` 9개 ✓
+  - `Tile_Intersection_14_4_r270` ✓ (east L T)
+  - `Tile_End_14_3_r270` + `Tile_End_14_5_r90` ✓ (dead-ends)
+  - `Tile_Straight_13_4_r0` ✓ (main → L 연결)
+  - 동쪽 확장 건물 8개 (S_13_1, S_14_1, S_13_2, S_14_2, H_13_6, H_14_6, H_13_7, H_14_7) 배치 ✓
+- **USP 매핑:** USP ② "경로 계획 결정 밀도" 보조 — dead-end = 왕복 비용, crossing = 시각 랜드마크로 경로 기억 돕기. USP ③ "운전감"은 맵 다양성으로 주행 반복성 완화.
+- **트레이드오프:**
+  - **+** 비대칭 L 돌출로 "완벽 격자" 느낌 탈피. Dead-end 2개는 "막다른 골목 = 경로 실수 비용" 체감 유도.
+  - **+** Crossing 9개가 주행 중 "여긴 어디쯤" 시각 앵커 역할. Kenney crossing FBX는 straight와 정확히 동일 footprint → 이음매 깨짐 0.
+  - **−** 15 cols × 9 rows = 90m × 54m. 이전 78m × 54m보다 11m만 확장 (체감 크지 않을 수 있음). 필요 시 17×11로 추가 확장 (세션 14 후보).
+- **파킹된 대안들 (ideas-parking.md H4~H5 + 신규):**
+  - **맵 높낮이**: ideas-parking H4. 3주차 경로 계획 단계로.
+  - **Roundabout 3×3**: ideas-parking H5. TileMapAuto 멀티셀 지원 필요.
+  - **Split Y분기 (road-split, 1×2)**: 기록 안 된 파킹 — TileMapAuto 2셀 앵커 로직 필요. 세션 14 이후 검토.
+  - **비대칭 외곽 (L-돌출 더 과감한 버전)**: 이번 세션은 2-cell 범위로만. 추가 확장은 재미 검증 후.
+
+### D-037. v1 MVP 이후 고도화 파이프라인 명문화
+
+- **결정:** 도현의 세션 13 제안(화물 배치 UX + Shock 물리 고도화 + 허브 씬) 4개를 `ideas-parking.md`에 **"v1 MVP 이후 고도화 파이프라인"** 섹션 H1~H5로 통합 기록.
+- **근거:**
+  - 제안들이 전부 MVP 스코프 초과이지만 **서로 맞물리는 시스템 군** (허브 씬 = 배치 UX의 무대 = Shock 고도화의 피드백 공간). 개별 파킹보다 **묶음 파이프라인**으로 관리가 명확.
+  - D-031 철회 교훈: 큰 시스템 군을 MVP 중간에 끼워넣지 말 것. 대신 v2 레이어로 명시적 약속.
+- **H1~H5 요약:**
+  - H1. 허브 씬 (별도 씬) — 4주차 "허브 → 런 → 허브" 메타 루프와 통합
+  - H2. 차량 내부 화물 공간 + 배치 UX — Pacific Drive 스타일 Tetris-like
+  - H3. Shock 물리 고도화 — Rigidbody + Collider 실시간 시뮬
+  - H4. 맵 높낮이 — 3주차 경로 계획에 자연 편입
+  - H5. Roundabout 3×3 — Downtown Hub 시각 앵커
+- **언제 재검토:** MVP 완성 후 (5주차 시작). 그 시점에 유저 피드백(내부 테스트) + 상대적 우선순위로 재평가.
+- **이번 세션 선택:** 도현이 "맵 단조로움"만 지금 해결 요청 → 저비용 확장(D-036)만 실행. H1~H5는 기록만.

@@ -519,3 +519,61 @@
   - **CountdownHUD가 RunRoot에 남아있어도 문제 없음.** Awake에서 Canvas 부모 탐색 → 없으면 UIRoot로 이동. 씬 편집 없이 마이그레이션 완료.
   - **D-032 교훈 지속 적용.** 세션 11 말미에 UI 트랙 컨셉/명세를 먼저 합의하고 구현은 새 세션으로 분리 → 이번 세션은 단일 트랙 집중으로 롤백 0 + 컨텍스트 유지.
 - **컨텍스트 상태:** 세션 종료. 미커밋 변경 있음 (TMP + UI 인프라 + HUD 전환 + 씬 업데이트). 다음 세션 오프닝 첫 작업으로 분리 커밋.
+
+---
+
+## 세션 13 — 2026-04-23 ~ 2026-04-24
+
+- **목표:** 세션 12 UI Tier 1 검증 후 런타임 에러 2건(CountdownHUD CanvasGroup / 폰트 글자 깨짐) 해결. 도현 "맵 단조롭다" 피드백 기반 맵 확장 + 도로 다양성.
+- **한 일 (2 블록):**
+
+### 블록 A — UI Tier 1 hotfix (세션 12 D-035 이어서)
+
+  - **CountdownHUD MissingComponentException (CanvasGroup):**
+    - 원인: `EnsureCanvasParent`가 RunRoot(일반 GameObject, 하위에 RunController/OrderBoard 공존) 전체를 UIRoot로 옮기려 함. `SetParent` 직후 Awake 나머지에서 CanvasGroup 참조 불안정.
+    - 수정: HUD 3종의 `EnsureCanvasParent`를 "부모 없는 루트일 때만 SetParent, 부모 있는데 Canvas 밖이면 경고 + enabled=false"로 제한. SetupOrderSystem에서 CountdownHUD를 RunRoot 대신 UIRoot 하위 독립 GameObject로 생성. `[RequireComponent(RectTransform, CanvasGroup)]` 추가. `??` 연산자를 `TryGetComponent`로 교체 (Unity fake-null 이슈 회피). MigrateCountdownHUD.cs 에디터 스크립트로 기존 씬 마이그레이션.
+  - **Kenney 폰트 글자 깨짐:**
+    - 원인: `AtlasPopulationMode.Dynamic`이 Play stop 시 atlas 초기화 → Play 재진입 시 글리프 누락 → 깨진 렌더.
+    - 수정: `RebuildKenneyFontAssets.cs` 개편 — CreateAsset 후 `TryAddCharacters`로 ASCII 0x20-0x7E pre-populate → `atlasTextures`/`material`을 asset 서브에셋으로 편입 → `atlasPopulationMode = Static` 전환 → `ReadFontAssetDefinition` + `SaveAssets`. sampling 90→64 (atlas 여유), padding 9→5.
+  - **검증:** Play 모드 UI 캡처에서 "FUEL 100%"(녹색 9-slice) + "GEAR N" 선명, 콘솔 에러 0건. 커밋 `e9eb61c`.
+
+### 블록 B — 맵 확장 + 도로 다양성 (D-036)
+
+  - **도현 피드백 분류:** 맵 넓히기 / 높낮이 / 화물 배치 UX / 시스템 고도화.
+  - **스코프 체크 결과:**
+    - MVP 범위 유지: 맵 평지 확장 + 도로 다양성
+    - v2로 이관: 높낮이(H4) / 배치 UX(H2) / Shock 물리(H3) / 허브 씬(H1) / Roundabout(H5)
+  - **ideas-parking.md 확장 (D-037):** "v1 MVP 이후 고도화 파이프라인" 섹션 추가, H1~H5 명문화. 개별 파킹보다 묶음 관리 — D-031 철회 교훈 반영.
+  - **TileMapAuto Kind 확장:**
+    - `Kind.Crossing` — `road-crossing.fbx` (Straight 시각 변종)
+    - `Kind.Driveway` — `road-driveway-single.fbx` (End 변종, 배달 진입로용. 이번 세션 실 배치는 0개 — mask char 'D' 사용 처 없음)
+    - mask char 체계: `#` 일반 / `X` crossing / `D` driveway. IsRoad/CellChar 분리. Kind 결정 후 char 기반 override.
+    - `Kind.End`의 source를 `road-end.fbx` → `road-end-round.fbx`로 교체 (교외 분위기 round cap).
+  - **15×9 맵 (D-036):**
+    - 동쪽 cols 13-14에 ㅗ자 L 돌출: main road(row 4)에서 1칸 뻗은 뒤(col 13) 북/남 분기(col 14 rows 3/5 dead-end).
+    - Crossing 9개 (cols 1/5/9 × rows 0/4/8). 이음매 손상 0 (crossing 1×1 = straight 1×1).
+    - 지름길 row 2/6 유지 (D-034 Tier A).
+    - buildingMask 동쪽 확장 8칸 (S/H districts).
+  - **배달점 재배치:** 7개 고정 유지, `EastBranchEnd(14,4)` 신규로 `IndustryNorth(12,6)` 대체. 맵 확장을 배달 동선에 반영.
+  - **RunFullRebuild Step 5 추가:** SetupUIScene.Execute. 새 씬 생성 시 UIRoot/FuelHUD/GearHUD 자동 복구. SetupComplexScene이 UI를 날리던 문제 자동화 해결.
+  - **연결 버그 1회 시행착오:** row 4 첫 작성 시 `"#X###X###X###.#"` (col 13='.') → 동쪽 L이 main과 단절된 고립 세로선. 수정 `"#X###X###X#####"` (col 13='#') → main과 정상 연결. `Tile_Intersection_14_4_r270` 생성 확인으로 검증.
+- **다음 세션(세션 14) 할 일:**
+  - **커밋 (미커밋):** D-036/037 + 세션 13 변경. 2 분리 권장 — (1) feat 맵+도로, (2) docs.
+  - **도현 Play 테스트:** 새 맵 15×9 주행 체감. Crossing 시각 효과. Dead-end 왕복 비용 감각.
+  - **UI Tier 2 이관 (세션 12→13 이월분):** DeliveryHUD(화살표) / OrderBoard(A/B/C 카드) / ResultPanel(정산) UGUI 전환. Kenney click/confirmation SFX 연결.
+  - **재미 검증 1차 (Day 7 체크포인트):** 1주차 "차 몰기 자체가 재밌는가" 판정 아직 안 됨. Play 15분 이상 후 YES/그럭저럭/NO 기록.
+- **관련 문서/코드:**
+  - `notes/decisions-log.md` D-036, D-037
+  - `notes/ideas-parking.md` "v1 MVP 이후 고도화 파이프라인" H1~H5 섹션
+  - `F1/Assets/Editor/TileMapAuto.cs` — Crossing/Driveway Kind + mask char 분기
+  - `F1/Assets/Editor/SetupComplexScene.cs` — 15×9 masks + 배달점 재배치
+  - `F1/Assets/Editor/_Recovery/RunFullRebuild.cs` — Step 5 SetupUIScene 추가
+  - `F1/Assets/Editor/_Recovery/{MigrateCountdownHUD, RebuildKenneyFontAssets}.cs` (블록 A)
+  - `F1/Assets/Scripts/{FuelHUD, GearHUD}.cs` + `F1/Assets/Scripts/Order/CountdownHUD.cs` (블록 A 방어)
+- **메모:**
+  - **도현 제안을 "묶음 파이프라인(H1~H5)"으로 정리한 게 적중.** 개별 파킹이면 다음에 다시 "지금 넣을까" 유혹 반복. "v2 레이어"라는 상위 컨테이너로 묶으니 "4주 끝난 뒤 한 번에 재검토"가 명확.
+  - **마스크 1회 실수 (L 단절)는 TileMapAuto 특성상 즉시 감지 가능:** hierarchy 리스트에서 `Tile_Intersection_14_4_r270` 없고 `Tile_Straight_14_4_r90`만 있으면 "L이 main과 단절됨" 신호. 세션 11 "실측 도구화" 원칙 재현 — 계층 이름으로 검증.
+  - **CountdownHUD 문제의 진짜 원인은 `EnsureCanvasParent`의 과도한 일반화였음.** HUD 3종이 전부 "부모 이동 가능" 전제였지만 실제로는 CountdownHUD만 공존 GameObject에 붙는 특이 케이스. 향후 HUD 추가 시 기본값은 "독립 GameObject"로 가정.
+  - **`??` 연산자 + Unity UnityEngine.Object 이슈 재확인.** Unity C# 표준 교재에도 자주 등장하는 주제. 앞으로 GetComponent 관련은 `TryGetComponent` 우선.
+  - **세션 12→13 이관이 옳았다.** UI 트랙 세부 디버깅은 컨텍스트 긴 상황에서 판단력 감소. D-032 교훈 적용 연속 성공.
+- **컨텍스트 상태:** 세션 종료. 미커밋 변경 있음 (블록 B). 다음 세션 오프닝 첫 작업으로 분리 커밋.
