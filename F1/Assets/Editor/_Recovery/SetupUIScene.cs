@@ -16,6 +16,7 @@ public static class SetupUIScene
         Debug.Log("[UIScene] UIRoot ready: " + rootT.name);
 
         EnsureHUD<FuelHUD>("FuelHUD", rootT);
+        EnsureHUD<IntegrityHUD>("IntegrityHUD", rootT);
         EnsureHUD<GearHUD>("GearHUD", rootT);
         EnsureHUD<SpeedometerHUD>("SpeedometerHUD", rootT);
         EnsureHUD<DeliveryProgressHUD>("DeliveryProgressHUD", rootT);

@@ -38,6 +38,10 @@ public static class SetupRaceInScene
         inst.transform.position = new Vector3(layout.startCell.x * 6f, 1f, layout.startCell.y * 6f);
         inst.transform.rotation = Quaternion.Euler(0f, layout.startYawDeg, 0f);
 
+        // D-040 세션 14: 차량에 CargoBox 자동 부착 (이미 있으면 스킵).
+        if (inst.GetComponent<CargoBox>() == null)
+            inst.AddComponent<CargoBox>();
+
         // 5. Swap camera to FollowCamera targeting the car.
         var camGO = GameObject.Find("Main Camera");
         if (camGO != null)
