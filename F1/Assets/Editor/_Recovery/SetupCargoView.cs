@@ -25,47 +25,52 @@ public static class SetupCargoView
         root.transform.position = SimWorldPos;
         root.transform.rotation = Quaternion.identity;
 
-        // 2. Box — Kenney box.fbx
+        // 2. Box — Primitive Cube + 갈색 material (Kenney에 crate/pallet prop 부재).
+        // 매 실행마다 재생성(force recreate)해서 튜닝 변경 즉시 반영.
         Transform boxT = root.transform.Find("Box");
-        if (boxT == null)
-        {
-            var fbx = AssetDatabase.LoadAssetAtPath<GameObject>(BoxFbxPath);
-            if (fbx == null) { Debug.LogError("[CargoView] box.fbx 없음: " + BoxFbxPath); return; }
-            var inst = (GameObject)PrefabUtility.InstantiatePrefab(fbx);
-            if (inst == null) inst = Object.Instantiate(fbx);
-            inst.name = "Box";
-            inst.transform.SetParent(root.transform, false);
-            inst.transform.localPosition = Vector3.zero;
-            inst.transform.localRotation = Quaternion.identity;
-            inst.transform.localScale = Vector3.one * 2f;
-            boxT = inst.transform;
-            Debug.Log("[CargoView] Box 배치 완료.");
-        }
+        if (boxT != null) Object.DestroyImmediate(boxT.gameObject);
 
-        // 3. SimCam
+        var boxGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        boxGO.name = "Box";
+        boxGO.transform.SetParent(root.transform, false);
+        boxGO.transform.localPosition = Vector3.zero;
+        boxGO.transform.localRotation = Quaternion.identity;
+        boxGO.transform.localScale = new Vector3(0.9f, 0.65f, 0.6f); // 배송박스 비율
+        var boxCol = boxGO.GetComponent<Collider>();
+        if (boxCol != null) Object.DestroyImmediate(boxCol);        // 시뮬 전용, 물리 불필요
+
+        var shader = Shader.Find("Universal Render Pipeline/Lit");
+        if (shader == null) shader = Shader.Find("Standard");
+        var boxMat = new Material(shader) { name = "CargoBoxMat" };
+        boxMat.color = new Color(0.62f, 0.42f, 0.22f);              // 골판지 갈색
+        boxGO.GetComponent<MeshRenderer>().sharedMaterial = boxMat;
+        boxT = boxGO.transform;
+        Debug.Log("[CargoView] Cube Box 배치 (갈색 골판지).");
+
+        // 3. SimCam — 매번 tuning 값 덮어쓰기.
         Transform camT = root.transform.Find("SimCam");
+        GameObject camGO;
         if (camT == null)
         {
-            var camGO = new GameObject("SimCam", typeof(Camera));
+            camGO = new GameObject("SimCam", typeof(Camera));
             camGO.transform.SetParent(root.transform, false);
-            camGO.transform.localPosition = new Vector3(0f, 1.2f, -2.8f);
-            camGO.transform.localRotation = Quaternion.Euler(18f, 0f, 0f);
-            var cam = camGO.GetComponent<Camera>();
-            cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.backgroundColor = new Color(0.08f, 0.08f, 0.10f, 1f);
-            cam.fieldOfView = 42f;
-            cam.nearClipPlane = 0.3f;
-            cam.farClipPlane = 20f;
-            cam.depth = -2f;
-            cam.targetTexture = rt;
             camT = camGO.transform;
-            Debug.Log("[CargoView] SimCam 생성 + RT 연결.");
+            Debug.Log("[CargoView] SimCam 생성.");
         }
         else
         {
-            var cam = camT.GetComponent<Camera>();
-            if (cam != null && cam.targetTexture != rt) cam.targetTexture = rt;
+            camGO = camT.gameObject;
         }
+        camT.localPosition = new Vector3(0f, 0.9f, -2.2f);
+        camT.localRotation = Quaternion.Euler(14f, 0f, 0f);
+        var simCam = camGO.GetComponent<Camera>();
+        simCam.clearFlags = CameraClearFlags.SolidColor;
+        simCam.backgroundColor = new Color(0.10f, 0.10f, 0.12f, 1f);
+        simCam.fieldOfView = 48f;
+        simCam.nearClipPlane = 0.3f;
+        simCam.farClipPlane = 20f;
+        simCam.depth = -2f;
+        simCam.targetTexture = rt;
 
         // 4. SimLight — Point (격리용)
         Transform lightT = root.transform.Find("SimLight");
