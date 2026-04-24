@@ -101,7 +101,8 @@ public class ArcadeCarController : MonoBehaviour
         smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, steerLag);
         smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, throttleLag);
 
-        isGrounded = true;
+        // TOP 2: 접지 복원 (기존 하드코딩 제거)
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
         IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
 
         if (IsDrifting && !wasDrifting)
@@ -131,7 +132,9 @@ public class ArcadeCarController : MonoBehaviour
     {
         if (forwardSpeed <= 0.1f) return;
         float speedNorm = Mathf.Clamp01(forwardSpeed / maxSpeedMps);
-        rb.AddForce(-transform.forward * (forwardSpeed * airDrag * speedNorm), ForceMode.Acceleration);
+        // TOP 2: 공중(점프/언덕)에서 drag 2배 — 자연스러운 감속감
+        float drag = isGrounded ? airDrag : airDrag * 2f;
+        rb.AddForce(-transform.forward * (forwardSpeed * drag * speedNorm), ForceMode.Acceleration);
     }
 
     void ApplyDriftDrag(float forwardSpeed)
@@ -158,7 +161,9 @@ public class ArcadeCarController : MonoBehaviour
             if (forwardSpeed < maxSpeedMps)
             {
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
-                rb.AddForce(transform.forward * (accelForce * t * throttleScale), ForceMode.Force);
+                // TOP 2: 저속 램프 — 0~10 km/h(2.8 m/s)에서 가속력 50%→100% 램프 (무게감)
+                float lowSpeedRamp = Mathf.Lerp(0.5f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 2.8f));
+                rb.AddForce(transform.forward * (accelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
             }
         }
         else if (t < -0.01f)
