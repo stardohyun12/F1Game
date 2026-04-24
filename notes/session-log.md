@@ -610,4 +610,26 @@
   - 1주차 Day 7 체크포인트가 "컨셉 재편"까지 트리거한 첫 사례. CLAUDE.md 규칙 2의 본래 의도 실현.
   - 리서치 병렬(4 에이전트) 패턴은 세션 11 D-033(3 병렬) 성공 경험의 스케일업. 트랙 0(에셋 카탈로그)이 A/B/C 3트랙의 공통 인풋 역할.
   - 컨셉 전환은 "단번에 컨셉 합의 완료"가 아니라 "1주차 재미 검증 실패 → 방향 전환"의 자연스러운 결과. Day 7 게이트가 정말로 작동.
-- **컨텍스트 상태:** 진행 중. 에이전트 4 백그라운드 실행 중. 완료 통지 대기.
+- **세션 14 실제 구현 (리서치 완료 후):**
+  - **화물 Shock 시스템 MVP** — `F1/Assets/Scripts/Cargo/CargoBox.cs`. 박스 HP 100, 종G+횡G 2축 (linearVelocity 변화를 차 local frame 투영), 피크 윈도우 0.2s + 누적 윈도우 1s 병존. 데미지 공식: (peak-0.6)·10 종G / (peak-0.7)·8 횡G / (impact-10)·0.8 충돌 / (avg-0.6)·0.5 누적. `OnIntegrityChanged/OnImpact/OnTotaled` 이벤트.
+  - **IntegrityHUD** — `F1/Assets/Scripts/IntegrityHUD.cs` (FuelHUD 패턴 복제). 좌하단 Fuel 위 stack (anchoredPos y=152). 80/50/20 단계 sprite 스왑 + 20% blink + 0% "CARGO TOTALED".
+  - **SetupRaceInScene 수정** — Race prefab 인스턴스화 직후 CargoBox AddComponent (멱등).
+  - **SetupUIScene 수정** — IntegrityHUD EnsureHUD 체인 추가.
+  - **CargoAndHUDSetup.cs (신규 Editor)** — 메뉴 `PitCrew/Cargo/Setup Cargo + IntegrityHUD`. Race prefab에 CargoBox 영구 부착 + SetupUIScene.Execute 연쇄.
+  - **검증:** Coplay `check_compile_errors` "No compile errors" + `execute_script` 성공 + Unity 로그 `CargoSetup/UIScene` 정상 + Play 모드 UI 캡처에서 "CARGO 100%"(녹색 9-slice) 좌하단 Fuel 위 정상 stack.
+- **세션 14 커밋 3개 (모두 main fast-forward 완료):**
+  - `e248fa9` docs(session-14): 리서치 4트랙 산출물
+  - `8fe9857` docs(session-14): 컨셉 전환 D-040 + 부스트 철회 D-039
+  - `8254918` feat(session-14): 화물 Shock 시스템 MVP + IntegrityHUD (D-040)
+- **다음 세션(세션 15) 진입 조건:**
+  - **맵 디테일 패스** (도현 세션 14 요청 "맵은 언제 할꺼") — Suburban props 19종 (울타리 9 + 나무 2 + 진입로/석길 7 + planter) BuildingCatalog 편입 + mask char 신규 + buildingMask 재배치. 저비용 고효과.
+  - 화물 Shock 튜닝 — 도현 실제 Play 30분 후 임계값(longWarnG/latWarnG/damageMul) 조정. 목표 "안전 95+ / 평소 80~90 / 공격 50~70".
+  - 신호등 프로토타입 1교차로 (리서치 B Top2).
+  - UI 4-Zone 재정리 + TMP Glow/Outline (리서치 B+C 착수).
+- **세션 14 총괄 메모:**
+  - **리서치 → 기획 결정 → 구현 싱글 세션 완결.** 세션 11 D-033 패턴(3 병렬) 스케일업 → 4 에이전트 병렬 성공. 트랙 0(에셋) 산출물이 A/B/C 3트랙 리서치의 공통 인풋 역할 수행.
+  - **Day 7 재미 판정이 컨셉 재편까지 트리거한 첫 사례.** CLAUDE.md 규칙 2 본래 의도 실현. 수치 튜닝 도피 없이 D-040 방향 전환.
+  - **도현 "한 문장 일상어" 피드백 memory 저장** — `~/.claude/projects/C--Users-stard-GameDevelope-PitCrew/memory/feedback_communication_style.md`. 결정 질문 스타일 즉시 개선.
+  - **D-032 교훈 4단계 분리 지속 적용:** (1) 리서치 4트랙 → (2) 도현 결정 3건(열차 v2/차량 보류/허브 편입) → (3) 명세(리서치 B) → (4) 화물 구현. 롤백 0.
+  - **맵 디테일은 세션 15 이관** — 세션 14 컨텍스트 관리 + D-032 "큰 작업 장시간 후 판단력 저하 회피" 원칙. 도현 auto mode 허락에도 세션 경계 유지.
+- **컨텍스트 상태:** 세션 종료. 모든 변경 커밋 + main fast-forward 완료.

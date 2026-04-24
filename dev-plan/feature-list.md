@@ -75,7 +75,7 @@
   - `Order/OverviewCamera.cs` 탑다운 ↔ 팔로우 전환
   - `Order/RunController.cs` + `ResultPanel.cs` 정산
   - `Order/CountdownHUD.cs` 시간제한 카운트다운
-- [ ] **화물 Shock 시스템 + IntegrityHUD** (D-040 최우선, 세션 14 트랙 B — 박스 HP 100, 종G+횡G, 0.6g/0.7g 경고, 피크 0.2s + 누적 1s)
+- [x] **화물 Shock 시스템 + IntegrityHUD** (D-040, 세션 14 완료) — 박스 HP 100, 종G+횡G + 피크 0.2s + 누적 1s + 충돌(impact_kmh 기반). Play 모드 UI 캡처 검증(CARGO 100% 녹색 9-slice). 튜닝은 세션 15 Play 후.
 - [ ] **UI 4-Zone 재정리 + TMP Glow/Outline** (세션 14 트랙 B+C — "게임 같은 태")
 - [ ] **UIEffect / PrimeTween 도입** (세션 14 트랙 C, 무료 OSS — HUD 이징 + 카드 폴리싱)
 - [ ] 신호등 + 교차로 규칙 프로토타입 (D-040, 1교차로 먼저)
