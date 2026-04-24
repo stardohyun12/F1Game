@@ -617,10 +617,20 @@
   - **SetupUIScene 수정** — IntegrityHUD EnsureHUD 체인 추가.
   - **CargoAndHUDSetup.cs (신규 Editor)** — 메뉴 `PitCrew/Cargo/Setup Cargo + IntegrityHUD`. Race prefab에 CargoBox 영구 부착 + SetupUIScene.Execute 연쇄.
   - **검증:** Coplay `check_compile_errors` "No compile errors" + `execute_script` 성공 + Unity 로그 `CargoSetup/UIScene` 정상 + Play 모드 UI 캡처에서 "CARGO 100%"(녹색 9-slice) 좌하단 Fuel 위 정상 stack.
-- **세션 14 커밋 3개 (모두 main fast-forward 완료):**
+- **세션 14 커밋 5개 (모두 main fast-forward 완료):**
   - `e248fa9` docs(session-14): 리서치 4트랙 산출물
   - `8fe9857` docs(session-14): 컨셉 전환 D-040 + 부스트 철회 D-039
   - `8254918` feat(session-14): 화물 Shock 시스템 MVP + IntegrityHUD (D-040)
+  - `acf185a` docs(session-14): 실제 구현 결과 + 화물 Shock 체크 + 세션 15 진입 조건
+  - `cc082b0` feat(session-14): 트렁크 CCTV — 외딴 박스 + 전용 카메라 + RawImage HUD
+  - `1482aa7` fix(session-14): CCTV 박스 모델 교체 (Cube primitive + 갈색) + 카메라 튜닝
+- **트렁크 CCTV 구현 (도현 피드백 "차에 박스 붙이면 거추장" 반영):**
+  - 월드 외딴 (y=-500) CargoSimRoot + Primitive Cube(갈색 골판지) + SimCam + Point Light
+  - CargoBox에 SignedLongG/SignedLatG 노출
+  - CargoShakeSimulator: 가속=뒤기움/제동=앞기움/우회전=왼쪽기움/좌회전=오른쪽기움 lerp
+  - CargoView HUD: UIRoot 자가구성 + RawImage (512×384 RenderTexture 런타임 참조)
+  - 메뉴: `PitCrew/Cargo/Setup Cargo View (CCTV)` — 멱등 + Box/Cam tuning 매 실행 덮어쓰기
+  - 검증 Play 캡처: 우상단 TRUNK CAM 창에 갈색 배송박스 선명. 흔들림은 실주행 필요(정지상태는 static). Kenney에 crate/pallet prop 부재 확인 → Cube primitive 채택이 합리.
 - **다음 세션(세션 15) 진입 조건:**
   - **맵 디테일 패스** (도현 세션 14 요청 "맵은 언제 할꺼") — Suburban props 19종 (울타리 9 + 나무 2 + 진입로/석길 7 + planter) BuildingCatalog 편입 + mask char 신규 + buildingMask 재배치. 저비용 고효과.
   - 화물 Shock 튜닝 — 도현 실제 Play 30분 후 임계값(longWarnG/latWarnG/damageMul) 조정. 목표 "안전 95+ / 평소 80~90 / 공격 50~70".
