@@ -21,6 +21,12 @@ public class ArcadeCarController : MonoBehaviour
         AnimationCurve.Linear(0f, 1f, 1f, 0.35f);
     [SerializeField] private float minSpeedForSteer = 0.5f;
 
+    [Header("Input Smoothing (세션 14 리서치 TOP 1)")]
+    [Tooltip("조향 입력 SmoothDamp 지연. 0=즉각, 0.12=자연 무게감.")]
+    [SerializeField] private float steerLag = 0.12f;
+    [Tooltip("스로틀 입력 SmoothDamp 지연. 0=즉각, 0.08=관성감.")]
+    [SerializeField] private float throttleLag = 0.08f;
+
     [Header("Grip")]
     [SerializeField] private float sideGripDamping = 6f;
     [SerializeField] private Vector3 centerOfMassOffset = new Vector3(0f, -0.3f, 0f);
@@ -42,7 +48,9 @@ public class ArcadeCarController : MonoBehaviour
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction handbrakeAction;
-    private Vector2 moveInput;
+    private Vector2 moveInput;       // raw input (OnMove 즉시 반영)
+    private Vector2 smoothedMove;    // smoothed (FixedUpdate에서 SmoothDamp)
+    private Vector2 smoothVel;       // SmoothDamp 내부 velocity 상태
     private float maxSpeedMps;
     private float reverseMaxMps;
     private float accelForce;
@@ -52,8 +60,10 @@ public class ArcadeCarController : MonoBehaviour
     public float CurrentSpeedMps => rb != null ? Vector3.Dot(rb.linearVelocity, transform.forward) : 0f;
     public float MaxSpeedMps => maxSpeedMps;
     public bool IsDrifting { get; private set; }
-    public float SteerInput => moveInput.x;
-    public float ThrottleInput => moveInput.y;
+    public float SteerInput => smoothedMove.x;
+    public float ThrottleInput => smoothedMove.y;
+    public float RawSteerInput => moveInput.x;
+    public float RawThrottleInput => moveInput.y;
 
     void Awake()
     {
@@ -87,12 +97,17 @@ public class ArcadeCarController : MonoBehaviour
 
     void FixedUpdate()
     {
+        // TOP 1: 입력 SmoothDamp (세션 14 리서치) — steer/throttle에 자연 지연
+        smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, steerLag);
+        smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, throttleLag);
+
         isGrounded = true;
         IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
 
         if (IsDrifting && !wasDrifting)
         {
             rb.angularDamping = driftAngularDamping;
+            // Drift 진입 impulse는 raw input 방향 (즉각 반응 유지)
             rb.AddTorque(Vector3.up * (driftEntryYawImpulse * Mathf.Sign(moveInput.x == 0 ? 1f : moveInput.x)), ForceMode.VelocityChange);
         }
         else if (!IsDrifting && wasDrifting)
@@ -136,7 +151,7 @@ public class ArcadeCarController : MonoBehaviour
     void ApplyThrottle(float forwardSpeed)
     {
         if (!isGrounded) return;
-        float t = moveInput.y;
+        float t = smoothedMove.y;
 
         if (t > 0.01f)
         {
@@ -174,11 +189,11 @@ public class ArcadeCarController : MonoBehaviour
 
         if (IsDrifting)
         {
-            rb.AddTorque(Vector3.up * (moveInput.x * driftYawTorque * driftYawBoost * response), ForceMode.Acceleration);
+            rb.AddTorque(Vector3.up * (smoothedMove.x * driftYawTorque * driftYawBoost * response), ForceMode.Acceleration);
         }
         else
         {
-            float yaw = maxTurnDegPerSec * moveInput.x * response * Time.fixedDeltaTime;
+            float yaw = maxTurnDegPerSec * smoothedMove.x * response * Time.fixedDeltaTime;
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yaw, 0f));
         }
     }
