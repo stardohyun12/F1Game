@@ -61,31 +61,38 @@ public static class SetupCargoView
         {
             camGO = camT.gameObject;
         }
-        camT.localPosition = new Vector3(0f, 0.9f, -2.2f);
-        camT.localRotation = Quaternion.Euler(14f, 0f, 0f);
+        // 탑다운 시점 — 트렁크 뚜껑 열고 내려다보는 느낌 (78° 틸트로 약간 입체감).
+        camT.localPosition = new Vector3(0f, 2.6f, -0.2f);
+        camT.localRotation = Quaternion.Euler(78f, 0f, 0f);
         var simCam = camGO.GetComponent<Camera>();
         simCam.clearFlags = CameraClearFlags.SolidColor;
-        simCam.backgroundColor = new Color(0.10f, 0.10f, 0.12f, 1f);
-        simCam.fieldOfView = 48f;
+        simCam.backgroundColor = new Color(0.08f, 0.08f, 0.09f, 1f); // 어두운 트렁크 내부
+        simCam.fieldOfView = 55f;
         simCam.nearClipPlane = 0.3f;
         simCam.farClipPlane = 20f;
         simCam.depth = -2f;
         simCam.targetTexture = rt;
 
-        // 4. SimLight — Point (격리용)
+        // 4. SimLight — Point (격리용). 매 실행 tuning 덮어쓰기.
         Transform lightT = root.transform.Find("SimLight");
+        GameObject lightGO;
         if (lightT == null)
         {
-            var lightGO = new GameObject("SimLight", typeof(Light));
+            lightGO = new GameObject("SimLight", typeof(Light));
             lightGO.transform.SetParent(root.transform, false);
-            lightGO.transform.localPosition = new Vector3(0.6f, 1.0f, -1.2f);
-            var l = lightGO.GetComponent<Light>();
-            l.type = LightType.Point;
-            l.range = 6f;
-            l.intensity = 3.5f;
-            l.color = new Color(1f, 0.95f, 0.85f);
-            Debug.Log("[CargoView] Point Light 배치.");
+            lightT = lightGO.transform;
+            Debug.Log("[CargoView] Point Light 생성.");
         }
+        else
+        {
+            lightGO = lightT.gameObject;
+        }
+        lightT.localPosition = new Vector3(0.3f, 2.0f, 0.1f); // 탑다운 시점에 맞춰 박스 위쪽
+        var simLight = lightGO.GetComponent<Light>();
+        simLight.type = LightType.Point;
+        simLight.range = 7f;
+        simLight.intensity = 4f;
+        simLight.color = new Color(1f, 0.95f, 0.85f);
 
         // 5. Shake Simulator
         if (root.GetComponent<CargoShakeSimulator>() == null)

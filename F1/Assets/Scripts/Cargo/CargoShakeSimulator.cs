@@ -17,17 +17,17 @@ public class CargoShakeSimulator : MonoBehaviour
     [SerializeField] CargoBox cargo;
     [SerializeField] Transform boxTransform;
 
-    [Header("Rotation Response (deg per 1G)")]
-    [SerializeField] float degPerLongG = 18f;
-    [SerializeField] float degPerLatG = 22f;
-    [SerializeField] float maxRotDeg = 30f;
-    [SerializeField] float rotLerp = 8f;
+    [Header("Rotation — 트렁크 벽에 갇힌 느낌, 회전 최소")]
+    [SerializeField] float degPerLongG = 3f;
+    [SerializeField] float degPerLatG = 3f;
+    [SerializeField] float maxRotDeg = 8f;
+    [SerializeField] float rotLerp = 3f;
 
-    [Header("Position Response (meters per 1G)")]
-    [SerializeField] float posPerLongG = 0.15f;
-    [SerializeField] float posPerLatG = 0.15f;
-    [SerializeField] float maxPosOffset = 0.3f;
-    [SerializeField] float posLerp = 10f;
+    [Header("Position — 미끄러지는 관성감, 복귀 느긋")]
+    [SerializeField] float posPerLongG = 0.3f;
+    [SerializeField] float posPerLatG = 0.3f;
+    [SerializeField] float maxPosOffset = 0.5f;
+    [SerializeField] float posLerp = 4f;
 
     Vector3 restPos;
     Quaternion restRot;
