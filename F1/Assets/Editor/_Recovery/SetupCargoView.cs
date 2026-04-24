@@ -61,13 +61,13 @@ public static class SetupCargoView
         {
             camGO = camT.gameObject;
         }
-        // 탑다운 시점 — 트렁크 뚜껑 열고 내려다보는 느낌 (78° 틸트로 약간 입체감).
-        camT.localPosition = new Vector3(0f, 2.6f, -0.2f);
+        // 탑다운 시점 — 트렁크 뚜껑 열고 내려다보는 느낌. 박스 크게 보이도록 가까이.
+        camT.localPosition = new Vector3(0f, 1.7f, -0.15f);
         camT.localRotation = Quaternion.Euler(78f, 0f, 0f);
         var simCam = camGO.GetComponent<Camera>();
         simCam.clearFlags = CameraClearFlags.SolidColor;
         simCam.backgroundColor = new Color(0.08f, 0.08f, 0.09f, 1f); // 어두운 트렁크 내부
-        simCam.fieldOfView = 55f;
+        simCam.fieldOfView = 42f;
         simCam.nearClipPlane = 0.3f;
         simCam.farClipPlane = 20f;
         simCam.depth = -2f;
