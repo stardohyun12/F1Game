@@ -624,6 +624,12 @@
   - `acf185a` docs(session-14): 실제 구현 결과 + 화물 Shock 체크 + 세션 15 진입 조건
   - `cc082b0` feat(session-14): 트렁크 CCTV — 외딴 박스 + 전용 카메라 + RawImage HUD
   - `1482aa7` fix(session-14): CCTV 박스 모델 교체 (Cube primitive + 갈색) + 카메라 튜닝
+  - `5544e89` / `496f546` / `b991866` — CCTV 탑다운 시점 + 박스 크기 조정 + H6 기획 파킹
+  - `8364657` → `f05d8bc` revert: 차량 무게감 v1 (도현 "되돌려놓자" 요청)
+  - `ff8fc2d` feat: **카고 패턴 B** — velocity 기억 + 정지/운동 마찰 + AABB + wall bounce (갈대 제거)
+  - `6a661b8` feat: **차량 TOP 1** — 입력 SmoothDamp (steer 0.12s / throttle 0.08s)
+  - `1695ecf` feat: **차량 TOP 2** — 접지 raycast 복원 + 공중 drag 2배 + 저속 램프 (0~10km/h 50%→100%)
+  - `faf814c` → `8e52cd8` fix: **차량 TOP 3** — Visual body rig (CarVisualLean 루트 부착, nested prefab 구조 유지)
 - **트렁크 CCTV 구현 (도현 피드백 "차에 박스 붙이면 거추장" 반영):**
   - 월드 외딴 (y=-500) CargoSimRoot + Primitive Cube(갈색 골판지) + SimCam + Point Light
   - CargoBox에 SignedLongG/SignedLatG 노출
