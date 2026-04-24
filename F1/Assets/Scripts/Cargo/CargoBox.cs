@@ -57,6 +57,9 @@ public class CargoBox : MonoBehaviour
     public bool IsTotaled => integrityHP <= 0f;
     public float CurrentLongG => curLongG;
     public float CurrentLatG => curLatG;
+    // Signed: 양수=가속/우회전, 음수=제동/좌회전. 흔들림 시뮬레이션용.
+    public float SignedLongG => curSignedLongG;
+    public float SignedLatG => curSignedLatG;
     public float PeakLongG => peakLong;
     public float PeakLatG => peakLat;
 
@@ -75,6 +78,7 @@ public class CargoBox : MonoBehaviour
     readonly Queue<float> latPeakBuffer = new Queue<float>();
     readonly Queue<float> longCumBuffer = new Queue<float>();
     float curLongG, curLatG;
+    float curSignedLongG, curSignedLatG;
     float peakLong, peakLat;
     bool totaledFired;
 
@@ -92,9 +96,11 @@ public class CargoBox : MonoBehaviour
         Vector3 dv = (v - prevVelocity) / Mathf.Max(Time.fixedDeltaTime, 0.0001f);
         prevVelocity = v;
 
-        // 차 local frame 투영 (절대값). G = m/s² / 9.81.
-        curLongG = Mathf.Abs(Vector3.Dot(dv, transform.forward)) / 9.81f;
-        curLatG = Mathf.Abs(Vector3.Dot(dv, transform.right)) / 9.81f;
+        // 차 local frame 투영. signed 먼저 구하고 절대값은 피크·누적·데미지에 사용.
+        curSignedLongG = Vector3.Dot(dv, transform.forward) / 9.81f;
+        curSignedLatG = Vector3.Dot(dv, transform.right) / 9.81f;
+        curLongG = Mathf.Abs(curSignedLongG);
+        curLatG = Mathf.Abs(curSignedLatG);
 
         // 피크 버퍼 (0.2초)
         EnqueueBounded(longPeakBuffer, curLongG, peakWindowFrames);
