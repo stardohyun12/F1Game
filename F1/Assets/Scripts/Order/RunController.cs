@@ -44,9 +44,29 @@ public class RunController : MonoBehaviour
 
     void OpenBoard()
     {
+        // 세션 14 fix: OrderBoard가 씬에 없으면 정지하지 말고 디폴트 job으로 즉시 BeginRun.
+        // 도현 "운전 안됨" 원인 — Time.timeScale=0이 영구 고정되던 문제.
+        if (orderBoard == null)
+        {
+            Time.timeScale = 1f;
+            BeginRun(MakeFallbackJob());
+            return;
+        }
+
         Time.timeScale = 0f;
         if (overviewCam != null && !overviewCam.IsInOverview) overviewCam.GoToOverview();
-        if (orderBoard != null) orderBoard.Open();
+        orderBoard.Open();
+    }
+
+    static OrderJob MakeFallbackJob()
+    {
+        var j = ScriptableObject.CreateInstance<OrderJob>();
+        j.name = "FallbackJob";
+        j.pointCount = 7;
+        j.timeLimitSec = 0f; // 무제한
+        j.baseReward = 0;
+        j.timeBonus = 0;
+        return j;
     }
 
     public void BeginRun(OrderJob job)

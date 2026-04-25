@@ -102,7 +102,11 @@ public class ArcadeCarController : MonoBehaviour
         smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, throttleLag);
 
         // TOP 2: 접지 복원 (기존 하드코딩 제거)
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+        // 세션 14 fix: transform.position이 BoxCollider 바닥과 같은 높이라 raycast origin이
+        // ground 표면 위/아래 경계에 걸려 자기 collider 무시 후에도 ground 못 잡음.
+        // 0.5m 위에서 쏘고 distance 보정 (+0.5).
+        Vector3 groundOrigin = transform.position + Vector3.up * 0.5f;
+        isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer);
         IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
 
         if (IsDrifting && !wasDrifting)
