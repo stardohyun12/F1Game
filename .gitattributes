@@ -1,0 +1,122 @@
+# PIT CREW — git attributes
+# 산업 표준 Unity 프로젝트 설정 (참고: github/gitignore Unity, Unity Manual `Smart Merge`).
+#
+# 정책
+# - Unity YAML(.unity/.prefab/.asset/.mat/.anim/.controller/.meta) → 텍스트 + Smart Merge.
+# - 소스(.cs/.shader/.json 등) → 텍스트, eol=lf 강제 (CRLF/LF 지옥 방지).
+# - 바이너리(.fbx/.png/.wav 등) → Git LFS (신규 커밋부터). 기존 자산은 Conservative 정책으로 보존,
+#   필요 시 4주차 후 `git lfs migrate import` 일괄 변환.
+#
+# Smart Merge 활성화 절차 (1회, 사용자 환경)
+#   git config merge.unityyamlmerge.name "Unity SmartMerge"
+#   git config merge.unityyamlmerge.driver "'C:/Program Files/Unity/Hub/Editor/6000.3.9f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p %O %B %A %A"
+#   git config merge.unityyamlmerge.recursive binary
+
+# === 기본 ===
+* text=auto
+
+# === Unity YAML — Smart Merge ===
+*.unity            merge=unityyamlmerge eol=lf
+*.prefab           merge=unityyamlmerge eol=lf
+*.asset            merge=unityyamlmerge eol=lf
+*.meta             merge=unityyamlmerge eol=lf
+*.mat              merge=unityyamlmerge eol=lf
+*.anim             merge=unityyamlmerge eol=lf
+*.controller       merge=unityyamlmerge eol=lf
+*.physicMaterial   merge=unityyamlmerge eol=lf
+*.physicsMaterial2D merge=unityyamlmerge eol=lf
+*.lighting         merge=unityyamlmerge eol=lf
+*.terrainlayer     merge=unityyamlmerge eol=lf
+*.mixer            merge=unityyamlmerge eol=lf
+*.preset           merge=unityyamlmerge eol=lf
+*.signal           merge=unityyamlmerge eol=lf
+*.signalasset      merge=unityyamlmerge eol=lf
+*.guiskin          merge=unityyamlmerge eol=lf
+*.flare            merge=unityyamlmerge eol=lf
+*.fontsettings     merge=unityyamlmerge eol=lf
+*.giparams         merge=unityyamlmerge eol=lf
+*.spriteatlas      merge=unityyamlmerge eol=lf
+*.spriteatlasv2    merge=unityyamlmerge eol=lf
+*.brush            merge=unityyamlmerge eol=lf
+
+# === 소스 코드 ===
+*.cs       text eol=lf diff=csharp
+*.shader   text eol=lf
+*.cginc    text eol=lf
+*.hlsl     text eol=lf
+*.compute  text eol=lf
+*.uss      text eol=lf
+*.uxml     text eol=lf
+*.asmdef   text eol=lf
+*.asmref   text eol=lf
+*.json     text eol=lf
+*.md       text eol=lf
+*.txt      text eol=lf
+*.xml      text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+
+# === 바이너리 — Git LFS ===
+# 3D 모델
+*.fbx          filter=lfs diff=lfs merge=lfs -text
+*.blend        filter=lfs diff=lfs merge=lfs -text
+*.obj          filter=lfs diff=lfs merge=lfs -text
+*.dae          filter=lfs diff=lfs merge=lfs -text
+*.3ds          filter=lfs diff=lfs merge=lfs -text
+*.ma           filter=lfs diff=lfs merge=lfs -text
+*.mb           filter=lfs diff=lfs merge=lfs -text
+
+# 텍스처/이미지
+*.png          filter=lfs diff=lfs merge=lfs -text
+*.jpg          filter=lfs diff=lfs merge=lfs -text
+*.jpeg         filter=lfs diff=lfs merge=lfs -text
+*.tga          filter=lfs diff=lfs merge=lfs -text
+*.tif          filter=lfs diff=lfs merge=lfs -text
+*.tiff         filter=lfs diff=lfs merge=lfs -text
+*.psd          filter=lfs diff=lfs merge=lfs -text
+*.exr          filter=lfs diff=lfs merge=lfs -text
+*.hdr          filter=lfs diff=lfs merge=lfs -text
+*.bmp          filter=lfs diff=lfs merge=lfs -text
+*.gif          filter=lfs diff=lfs merge=lfs -text
+*.iff          filter=lfs diff=lfs merge=lfs -text
+*.pict         filter=lfs diff=lfs merge=lfs -text
+
+# 오디오
+*.wav          filter=lfs diff=lfs merge=lfs -text
+*.mp3          filter=lfs diff=lfs merge=lfs -text
+*.ogg          filter=lfs diff=lfs merge=lfs -text
+*.aif          filter=lfs diff=lfs merge=lfs -text
+*.aiff         filter=lfs diff=lfs merge=lfs -text
+*.flac         filter=lfs diff=lfs merge=lfs -text
+*.mod          filter=lfs diff=lfs merge=lfs -text
+*.it           filter=lfs diff=lfs merge=lfs -text
+*.s3m          filter=lfs diff=lfs merge=lfs -text
+*.xm           filter=lfs diff=lfs merge=lfs -text
+
+# 비디오
+*.mp4          filter=lfs diff=lfs merge=lfs -text
+*.mov          filter=lfs diff=lfs merge=lfs -text
+*.webm         filter=lfs diff=lfs merge=lfs -text
+*.avi          filter=lfs diff=lfs merge=lfs -text
+
+# 폰트
+*.ttf          filter=lfs diff=lfs merge=lfs -text
+*.otf          filter=lfs diff=lfs merge=lfs -text
+
+# 압축
+*.zip          filter=lfs diff=lfs merge=lfs -text
+*.7z           filter=lfs diff=lfs merge=lfs -text
+*.rar          filter=lfs diff=lfs merge=lfs -text
+*.gz           filter=lfs diff=lfs merge=lfs -text
+
+# Unity 패키지/RT
+*.unitypackage     filter=lfs diff=lfs merge=lfs -text
+*.renderTexture    filter=lfs diff=lfs merge=lfs -text
+*.cubemap          filter=lfs diff=lfs merge=lfs -text
+
+# 기타 바이너리
+*.dll          filter=lfs diff=lfs merge=lfs -text
+*.pdb          filter=lfs diff=lfs merge=lfs -text
+*.exe          filter=lfs diff=lfs merge=lfs -text
