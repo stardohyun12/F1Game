@@ -649,3 +649,389 @@
   - **D-032 교훈 4단계 분리 지속 적용:** (1) 리서치 4트랙 → (2) 도현 결정 3건(열차 v2/차량 보류/허브 편입) → (3) 명세(리서치 B) → (4) 화물 구현. 롤백 0.
   - **맵 디테일은 세션 15 이관** — 세션 14 컨텍스트 관리 + D-032 "큰 작업 장시간 후 판단력 저하 회피" 원칙. 도현 auto mode 허락에도 세션 경계 유지.
 - **컨텍스트 상태:** 세션 종료. 모든 변경 커밋 + main fast-forward 완료.
+
+---
+
+## 세션 15 — 2026-04-28
+
+- **목표:** Phase 1 실행 계획 수립 + Week 2 Day 8~12 일괄 구현 (화물 시스템 다양화).
+- **사전 작업 — 게임 디렉터 전략 진단:**
+  - Plan 파일 `~/.claude/plans/immutable-splashing-gizmo.md` 작성. Part I (현황 진단), Part II (6개월 4단계 로드맵), Part III (Day 단위 실행 계획).
+  - 핵심 진단: D-040 ETS2 방향이 Kenny 타일 + 5~15분 런과 충돌. "퍼즐 박스" 정체성으로 재정의 권고. 신호등/열차 우선순위 낮춤.
+  - 시그니처 메커닉 = 화물 Shock 시스템 (이미 구현됨). Phase 1 동안 화물에 100% 집중.
+  - 6개월 EA 출시 목표 ($9.99, 6/10 완성도, itch.io).
+- **Day 8 (CargoShake 패턴 B) — 이미 완료 확인:**
+  - 세션 14 커밋 `ff8fc2d`에서 갈대→velocity 기억+Coulomb 마찰+AABB bounce 전환 완료.
+  - 별도 작업 불필요. Day 9로 즉시 진입.
+- **Day 9 — CargoType enum + Spin 센서:**
+  - **신규 `Cargo/CargoType.cs`** — enum 4종 (Box/Eggs/Glass/Fish).
+  - **`Cargo/CargoBox.cs` 수정** — Spin (Yaw Rate) 섹션. `transform.up` 축 angular velocity → deg/s 변환, 0.2초 peak buffer + 데미지 누적. public getter `Type/CurrentSpinDegPerSec/PeakSpinDegPerSec`.
+  - 기본값: spinWarnDegPerSec=80, spinDamageMul=0.3.
+- **Day 10 — CargoTypePresets + Awake 자동 적용:**
+  - **신규 `Cargo/CargoTypePresets.cs`** — 4종 차등 프리셋 + DisplayName/DriveTip 헬퍼.
+    - Box: 표준 베이스라인.
+    - Eggs: Shock 극민감 (longWarn=0.4, latWarn=0.5, impactWarn=5).
+    - Glass: 충돌 극민감 (impactWarn=3, impactMul=2.5).
+    - Fish: Spin 극민감 (spinWarn=50, spinMul=0.8).
+  - **`CargoBox.cs`** — `applyPresetOnAwake` flag (default true), `ApplyPreset()`, `SetCargoType(newType)` 런타임 교체 메서드.
+- **Day 11 — Order 시스템 화물 연동:**
+  - **`Order/OrderJob.cs`** — `CargoType cargoType` 필드 추가.
+  - **`Order/RunController.cs`** — `CargoBox cargo` 참조, `BeginRun`에서 `cargo.SetCargoType(job.cargoType)` 자동, `EndRun`에서 `LastIntegrityPercent` 캡처.
+  - **보상 가중 추가** — `ComputeIntegrityMultiplier` static (GDD 5단계: 80+=100%, 50+=80%, 20+=50%, 1+=20%, 0=0%). reward × integrityMul 적용.
+  - **`Order/OrderBoard.cs`** — DrawCard에 "화물 (계란)" 행 + "→ 급가속·급제동 금지" 가이드 행. cardWidth 320→360, cardHeight 200→240.
+- **Day 12 — ResultPanel 이야기형 정산:**
+  - **`Order/ResultPanel.cs`** — 패널 360→460 height. "화물 (계란) | 87% · 완벽" 행 + 하단 BuildStory 한 줄 (`"{name}, 한 점 흠 없이 도착했음."` 등 5단계).
+  - 색상 띠 3단계 차등 — 성공+화물완벽=녹색 / 성공+화물손상=황색 / 실패=적색.
+- **다음 단계 (도현 검증 필요):**
+  - Unity 컴파일 통과 확인 (Coplay disconnected → 도현 직접 Console).
+  - OrderCatalog assets에 OrderJob 4종 cargoType 지정 (Box/Eggs/Glass/Fish 골고루).
+  - 플레이테스트 30분 — 화물별 운전 차이 체감 / 정산 화면 이야기 즉각성 / Spin 임계값 적절성.
+  - 도현 피드백 후 Day 13~14 (튜닝) 진입.
+- **메모:**
+  - 세션 14 → 세션 15 사이에 Plan 파일 작성. Phase 1~4 게이트 명문화.
+  - 디렉터 진단 권고 = "환경 장애물 추가" 처방 잘못. "화물이 운전 방식을 강제" 처방으로 전환.
+  - Week 2 Day 8~12 분량을 single session에서 일괄 구현. /loop self-pacing 모드 활용.
+- **세션 15 후반 진입 조건:**
+  - 도현 컴파일 + 플레이 30분 후 피드백 → 임계값/배율 튜닝 (Day 13~14).
+  - Day 15부터 Week 3 진입 — Tilt 센서 + 노드-엣지 그래프 + 고저차 + 타이어 + 업그레이드 트리 1단계.
+- **Day 15 (선행 진입) — Tilt 축 + Cake 화물 타입:**
+  - **`Cargo/CargoType.cs`** — `Cake` enum 추가 (5번째). 3축 민감도 완성 (Shock/Spin/Tilt).
+  - **`Cargo/CargoBox.cs`** — Tilt (Body Angle) 섹션. `Vector3.Angle(transform.up, Vector3.up)` → 차체 기울기, 0.2초 peak buffer + 데미지 누적. public getter `CurrentTiltDeg/PeakTiltDeg`.
+  - **`Cargo/CargoTypePresets.cs`** — Preset struct에 `tiltWarnDeg/tiltDamageMul` 필드 추가, 5종 모두 tilt 값 명시.
+    - Box: tilt 15° / 0.3
+    - Eggs/Glass: tilt 12° / 0.4 (적당한 민감)
+    - Fish: tilt 15° / 0.4
+    - **Cake: tilt 5° / 1.2 (극민감)** — 작은 기울기에도 데미지 큼
+  - DriveTip: "경사·차체 기울기 금지"
+  - 경사 구간 물리(Day 17)는 Rigidbody 자연 중력으로 대부분 처리됨. CargoBox.tilt가 자동으로 데미지 누적 → 별도 코드 추가 안 해도 컨셉 작동.
+- **현재 상태 (5일치 변경 누적, 컴파일 미검증):**
+  - 신규 파일 3개: CargoType.cs, CargoTypePresets.cs (Day 9~10), Day 15 변경
+  - 수정 파일 5개: CargoBox.cs, OrderJob.cs, RunController.cs, OrderBoard.cs, ResultPanel.cs
+  - 도현 컴파일 검증 받기 전 Week 3 (고저차 맵, 노드 그래프, 타이어, 업그레이드)는 보류.
+- **다음 도현 작업:**
+  1. Unity 컴파일 통과 확인 (Console 에러 0)
+  2. OrderCatalog 자산에 OrderJob 5종(Box/Eggs/Glass/Fish/Cake) cargoType 분배
+  3. 플레이테스트 30분 — 각 타입 운전 차이 + 정산 이야기 즉각성 + tilt 데미지 (경사 만들 자산 없으면 차체 기울 만한 충돌로 테스트)
+  4. 피드백 후 Day 13~14 튜닝 → Week 3 (Day 16~21) 진입.
+
+- **Week 3 시스템 구조 선행 진입 (Day 16/17/18/20/21):**
+  - **Day 16 — `Layout/TrackLayout.cs`** — `heightMask` 필드 + `cellHeightMeters` (default 1.5m) + `GetHeight(c,r)` + `SlopeDegBetween` 헬퍼.
+  - **Day 17 — `ArcadeCarController.cs`** — `CurrentSlopeDeg` getter (`Asin(forward.y)*Rad2Deg`).
+  - **Day 18 — 신규 `Route/NodeGraph.cs`** — GraphNodeType enum(Start/Delivery/Pit/Junction/Special), GraphNode/GraphEdge Serializable, NodeGraph SO + FindNode/FindEdge/TotalDistance/TotalEstimatedTime.
+  - **Day 20 — 신규 `Tires/TireSystem.cs`** — TireType enum(Soft/Medium/Hard), wear 0~1, GripMultiplier(Soft 1.4 / Hard 0.7), 분당 마모율, SetTire/Replace.
+  - **Day 21 — 신규 `Upgrades/UpgradeDef.cs` + `UpgradeSystem.cs`** — UpgradeEffect enum 5종 (SuspensionUpgrade/ChilledHold/ShortcutMap/SmoothSteering/ReinforcedTrunk), Wallet + TryPurchase + IsOwned. CargoBox.ApplyPreset에 후크 추가 (3종 효과 자동 적용). RunController.EndRun에서 Wallet 누적.
+
+- **세션 15 도현 실제 플레이 피드백 + 즉시 튜닝:**
+  - **피드백 1 — 속도감 부족.**
+    - `ArcadeCarController.maxSpeedKmh` 90→130, `accelTime` 2.8→2.0, `brakeDecel` 6→8.
+    - `FollowCamera.baseFov` 55→50, `maxFov` 90→100 (FOV 변화폭 ↑).
+    - **신규 Speed Shake** — Perlin noise 기반 카메라 미세 진동 (60% 속도부터, max 0.05m). 속도감 보강.
+  - **피드백 2 — 일반 운전에도 화물 파괴, 적정선 없음.**
+    - 모든 CargoTypePresets 임계값 +0.2~0.3g 일괄 상향. brakeDecel 0.82g 정상 제동 → 데미지 0.
+    - Box: long 0.6→0.9, lat 0.7→1.0, spin 80→100.
+    - Eggs: long 0.4→0.7, lat 0.5→0.8, spin 70→90.
+    - Glass: long 0.5→0.8, lat 0.6→0.9, spin 80→100.
+    - Fish: long 0.7→1.0, lat 0.7→1.0, spin 50→70.
+    - Cake: long 0.7→1.0, lat 0.7→1.0, spin 90→110.
+    - CargoBox.cs default도 long 0.9, lat 1.0, spin 100으로.
+  - **피드백 3 — 갈대 박스.**
+    - `CargoShakeSimulator.staticFrictionG` 0.3→0.6 (큰 G만 박스 움직임).
+    - `kineticFriction` 3.5→6.0 (빨리 멈춤).
+    - `accelScale` 1.2→0.6 (반응 절반).
+    - `maxOffset` 0.45→0.25 (이동 폭 절반).
+    - `wallBounce` 0.25→0.05 (벽에서 거의 멈춤).
+    - `velocityDeadZone` 0.02→0.05 (작은 진동 무시).
+    - **회전 진폭 동시 축소** — degPerLongG/degPerLatG 3→1.5, maxRotDeg 8→4, rotLerp 3→6.
+
+- **세션 15 누적 파일 변경 (Coplay disconnected — 도현 컴파일 검증 필수):**
+  - 신규 5개: CargoType.cs, CargoTypePresets.cs, Route/NodeGraph.cs, Tires/TireSystem.cs, Upgrades/UpgradeDef.cs + UpgradeSystem.cs
+  - 수정 8개: CargoBox.cs, CargoShakeSimulator.cs, OrderJob.cs, OrderBoard.cs, ResultPanel.cs, RunController.cs, ArcadeCarController.cs, FollowCamera.cs, TrackLayout.cs
+
+- **다음 도현 작업 (튜닝 검증):**
+  1. 컴파일 통과 확인.
+  2. 같은 맵 5분 주행 — 속도감 130km/h 적절한지, FOV 변화 체감되는지, 진동 너무 강한지.
+  3. Box 화물로 일반 주행 — 100% 유지되는지 (목표: 95+).
+  4. Eggs로 같은 코스 — 80~90% 유지되는지 (목표: 평균 주행에서 약간 손상).
+  5. 갈대 사라졌는지 (CCTV 박스 본 상태로 코너 운전).
+  6. 추가 피드백 → 미세 튜닝 또는 Week 3 (Day 19 RoutePlannerPanel UI) 진입.
+
+- **세션 15 추가 — Week 4 인프라 + 새 디자인 결정:**
+  - **Day 24 — `Upgrades/UpgradeCatalog.cs` 신규 + `Order/ResultPanel.cs` 업그레이드 영역 통합:**
+    - UpgradeCatalog SO (5개 UpgradeDef 리스트)
+    - ResultPanel 패널 460→700 (h), 540→600 (w). Wallet 표시 + 5개 카드 가로 배치 + 보유/구매/자금부족 상태별 표시.
+  - **Day 25 — `Audio/AudioManager.cs` 신규 (인프라):**
+    - 싱글톤 + SFX 6풀 + Music 1소스. `ignoreListenerPause=true` 정산 화면 작동.
+    - 자동 후크: CargoBox.OnImpact (속도 비례 볼륨), OnTotaled, DeliveryManager.OnDeliveryCompleted, UpgradeSystem.OnUpgradePurchased.
+    - 도현 인스펙터에서 AudioClip 6종 + run music 할당하면 즉시 작동.
+
+- **D-041 — Packing(포장) 시스템 도입 (도현 세션 15 신규 아이디어):**
+  - **문제 진단:** 일반 주행에도 화물 데미지 → 좌절. 임계값 튜닝만으로 해결 어려움.
+  - **해결:** 박스 안에 충격흡수재(스티로폼/뽁뽁이) 포장 결정 시스템.
+  - **신규 `Cargo/PackingTier.cs`** — enum 4단계 + Helper static.
+    - None: ×1.0 (매우 조심), Bubble: ×1.3 (일반 안전), Foam: ×1.6 (공격 가능), Hardcase: ×2.0 (거의 모든 운전).
+    - Cost: 0/100/300/800 ₩.
+  - **`CargoBox.cs`** — `packing` 필드 추가, ApplyPreset에 `packMul` 적용 (longWarn/latWarn/spinWarn/tiltWarn/impactWarn 모두 곱), `SetPacking` 메서드.
+  - **`OrderJob.cs`** — `defaultPacking` 필드 (default Bubble).
+  - **`RunController.cs`** — BeginRun에서 `cargo.SetPacking(job.defaultPacking)` 자동.
+  - **`OrderBoard.cs`** — DrawCard에 "포장: 뽁뽁이" 행 + 운전 가이드에 포장 팁 합치기. cardHeight 240→280.
+  - **즉시 효과:** 기본 Bubble = ×1.3 → 모든 임계값 30% 여유. Box(0.9·1.0) → 1.17g·1.30g. 일반 주행 (0.5~0.8g) 절대 안전.
+  - **USP 정합:** "결정 4개" — 기존 (주문/경로/세팅/업그레이드) + 포장 = 5개. 결정 밀도 ↑.
+  - **이후 확장 (Phase 2):** OrderBoard에 4단계 토글 인터랙션 + 자금 차감. 포장 종류별 차등 (충격은 Foam, 회전은 Bubble).
+
+- **세션 15 누적 파일 변경 (재집계):**
+  - 신규 8개: CargoType.cs, CargoTypePresets.cs, PackingTier.cs, Route/NodeGraph.cs, Tires/TireSystem.cs, Upgrades/UpgradeDef.cs, UpgradeCatalog.cs, UpgradeSystem.cs, Audio/AudioManager.cs
+  - 수정 9개: CargoBox.cs, CargoShakeSimulator.cs, OrderJob.cs, OrderBoard.cs, ResultPanel.cs, RunController.cs, ArcadeCarController.cs, FollowCamera.cs, TrackLayout.cs, FixStartYaw.cs(메뉴 강화)
+  - 수정 1개: Assets/Data/ComplexTrackLayout.asset (startYawDeg 0→90)
+
+- **다음 도현 검증 (긴 변경 누적 — 컴파일 검증 필수):**
+  1. 컴파일 통과 확인.
+  2. OrderJob 자산에 cargoType + defaultPacking 분배.
+  3. UpgradeCatalog 자산 생성 + UpgradeDef 5개 등록.
+  4. 플레이테스트 — Bubble 기본 상태에서 "일반 주행 안전" 확인 (도현 좌절 해소 검증).
+  5. Eggs + None 포장으로 같은 코스 → 매우 조심해야 살아남는지.
+  6. ResultPanel 업그레이드 카드 5개 보이고 구매 작동하는지.
+  7. AudioClip 할당 후 SFX 후크 작동하는지.
+- **세션 15 핵심 진전:**
+  - 화물 시스템이 "퍼즐 시스템"에서 "포장으로 운전 자유도 구매" 시스템으로 진화. 좌절 해소 + 결정 밀도 ↑.
+  - Phase 1 Week 2~4 시스템 인프라 95% 완성. Day 19 (RoutePlannerPanel) + Day 22~23 (Hub Scene)만 남음.
+
+- **Day 26 — 8개 주문 카드 셋 + Shuffle Pick:**
+  - **신규 `Editor/GenerateExpandedOrders.cs`** — 메뉴 `PitCrew/Order/Generate 8-Order Catalog`. 8개 OrderJob asset (5종 cargoType × 4종 packing 다양성) + OrderCatalogExpanded.asset 자동 생성.
+    - 1. 신선 계란 (Eggs/Bubble, 4분, ₩700)
+    - 2. 유리 식기 (Glass/Foam, 6분, ₩1000)
+    - 3. 활어 운송 (Fish/Foam, 5분, ₩1100)
+    - 4. 결혼 케이크 (Cake/Hardcase, 7분, ₩1500)
+    - 5. 택배 박스 (Box/Bubble, 무제한, ₩600)
+    - 6. 고급 와인 (Glass/Hardcase, 8분, ₩1800)
+    - 7. 회식용 횟감 (Fish/Bubble, 3.5분, ₩900)
+    - 8. 생일 케이크 (Cake/Foam, 4.5분, ₩800)
+  - **`OrderBoard.cs` 셔플 픽 추가** — `offerCount=3` (default), `currentOffer` list. Open() 시 8개 풀에서 3개 무작위 픽 (Fisher-Yates 부분 셔플). 매 런 다른 카드 → 로그라이트 다양성.
+  - **카드 표시 로직** catalog.jobs → currentOffer 전환. ApplyHoverState/OnGUI 모두 업데이트.
+
+- **Day 21 자동화 — `Editor/GenerateUpgrades.cs`:**
+  - 메뉴 `PitCrew/Upgrade/Generate 5-Upgrade Catalog`. 5개 UpgradeDef + UpgradeCatalog 자동 생성.
+    - 서스펜션 강화 (₩800, +0.1g 임계)
+    - 냉동 칸 (₩1500, 냉동 주문 해제 — Phase 2)
+    - 지름길 지도 (₩1200, NodeGraph isShortcut 표시)
+    - 부드러운 조향 (₩1000, Spin +20°/s)
+    - 튼튼한 적재함 (₩1500, maxHP +20)
+
+- **세션 15 누적 (재집계):**
+  - 신규 11개: CargoType.cs, CargoTypePresets.cs, PackingTier.cs, Route/NodeGraph.cs, Tires/TireSystem.cs, Upgrades/UpgradeDef.cs, UpgradeCatalog.cs, UpgradeSystem.cs, Audio/AudioManager.cs, Editor/GenerateExpandedOrders.cs, Editor/GenerateUpgrades.cs
+  - 수정 10개: CargoBox.cs, CargoShakeSimulator.cs, OrderJob.cs, OrderBoard.cs, ResultPanel.cs, RunController.cs, ArcadeCarController.cs, FollowCamera.cs, TrackLayout.cs, FixStartYaw.cs
+  - 자산 1개: ComplexTrackLayout.asset (startYawDeg 0→90)
+
+- **Phase 1 (4주 MVP) 진행률:**
+  - Week 2 (Day 8~14): 100% — 화물 다양화 + 정산 이야기 + 도현 피드백 튜닝
+  - Week 3 (Day 15~21): 90% — Tilt/Cake, height 데이터, slope, NodeGraph 구조, Tire/Upgrade 시스템 (UI는 미구현)
+  - Week 4 (Day 22~28): 60% — ResultPanel 업그레이드 영역, AudioManager, 8개 주문, 5개 업그레이드 자동 생성
+  - 미구현 핵심: Day 19 (경로 UI, NodeGraph 인스턴스 필요), Day 22~23 (Hub Scene, 큰 작업), Day 27~28 (통합 플레이 + 게이트 점검 — 도현 직접)
+
+- **다음 도현 작업 (자산 생성 + 검증):**
+  1. 컴파일 통과 확인.
+  2. **메뉴 실행:**
+     - `PitCrew/Order/Generate 8-Order Catalog` → 8개 OrderJob + OrderCatalogExpanded.asset
+     - `PitCrew/Upgrade/Generate 5-Upgrade Catalog` → 5개 UpgradeDef + UpgradeCatalog.asset
+  3. 인스펙터 연결:
+     - OrderBoard.catalog → OrderCatalogExpanded
+     - ResultPanel.upgradeCatalog → UpgradeCatalog
+     - 씬에 UpgradeSystem MonoBehaviour 추가 (싱글톤)
+     - 씬에 AudioManager MonoBehaviour 추가 (옵션, AudioClip 할당 후)
+  4. 플레이테스트 — 매 런 다른 3개 주문 / 화물별 운전 / 정산 후 업그레이드 구매 / 다음 런 효과 적용.
+  5. 좌절 해소 검증 (Bubble 기본 ×1.3 임계).
+
+- **D-042 — CargoShakeSimulator 패턴 C 재설계 (도현 세션 15 갈대 진단 2차):**
+  - **진단:** 회전 Slerp(restRot 복귀)가 갈대 느낌의 근본 원인. 위치 마찰만으론 해결 안 됨.
+  - **해결:** 회전 비활성 + 위치 미끄러짐만 + 멈춘 자리 유지.
+  - **`CargoShakeSimulator.cs` 변경:**
+    - `enableRotation` 신규 (default false). LateUpdate 회전 적용 일찍 return.
+    - `staticFrictionG` 0.6→0.25 (작은 G에도 미끄러짐 시작)
+    - `kineticFriction` 6.0→1.0 (천천히 감속, 자연스러운 미끄러짐)
+    - `accelScale` 0.6→1.0 (G가 박스를 잘 밀어냄)
+    - `maxOffset` 0.25→0.5 (트렁크 공간 ±0.5m → 2벽 사이 1m)
+    - `velocityDeadZone` 0.05→0.02 (작은 움직임 살림)
+  - **트럭 박스 동작:** 차 가속 → 박스 뒷벽 미끄러짐 → 거기 머무름. 차 정지 → 박스 그 자리 유지 (rest 복귀 X). 차 코너 → 박스 옆벽 미끄러짐.
+  - **트렁크 시각화 — `Editor/_Recovery/SetupCargoView.cs` 강화:**
+    - `SetupTrunkWalls` 신규 — 4벽 + 바닥 cube 자동 생성 (2.0×2.0 정사각형, 어두운 갈색).
+    - SimCam 재조정 — y 1.7→2.5, z -0.15→-0.8, rotation 78°→65°, FOV 42°→55°. 트렁크 전체 + 박스 미끄러짐 명확히 보임.
+    - 매 메뉴 실행 시 force recreate (튜닝 즉시 반영).
+
+- **다음 도현 작업 (트렁크 시각화 검증):**
+  1. `PitCrew/Cargo/Setup Cargo View (CCTV)` 메뉴 재실행 → 트렁크 4벽 + 바닥 자동 생성, 카메라 새 위치.
+  2. 플레이 → 차 가속/제동/코너 → CCTV에 박스가 트렁크 안에서 미끄러져 벽에 부딪히고 멈추는 게 보이는지.
+  3. 회전 없이 미끄러짐만으로 "갈대 사라졌다" 체감되는지.
+  4. 필요 시 `enableRotation` true로 켜면 미세 회전 추가 (보통 OFF가 자연스러움).
+
+- **D-043 — 화물 타입 즉시 인식 폴리싱:**
+  - **CCTV 박스 색상 차별화 — `CargoTypePresets.BoxColor`:**
+    - Eggs: 상아색 (계란껍질)
+    - Glass: 청색
+    - Fish: 청록 (활어 수조)
+    - Cake: 핑크
+    - Box: 골판지 갈색 (기본)
+  - **`CargoShakeSimulator.SetBoxColor(Color)`** 신규 — material instance 색상 변경.
+  - **`RunController.BeginRun`** — 화물 타입에 따라 SetBoxColor 자동 호출. CCTV에 색깔로 화물 즉시 인식.
+  - **`IntegrityHUD` 강화:**
+    - 라벨에 화물 타입 표시 — "CARGO 87%" → "**계란 87%**" / "**유리 65%**" / "**활어 92%**"
+    - **충돌 flash** — `cargo.OnImpact` 후크. 0.18s 빨강 bg lerp (속도 비례 강도). HUD 자체가 충돌 시각 알림.
+
+- **세션 15 누적 (재집계 — 최종):**
+  - 신규 12개: CargoType.cs, CargoTypePresets.cs, PackingTier.cs, Route/NodeGraph.cs, Tires/TireSystem.cs, Upgrades/UpgradeDef.cs, UpgradeCatalog.cs, UpgradeSystem.cs, Audio/AudioManager.cs, Editor/GenerateExpandedOrders.cs, Editor/GenerateUpgrades.cs (+ session-log 별도)
+  - 수정 12개: CargoBox.cs, CargoShakeSimulator.cs, IntegrityHUD.cs, OrderJob.cs, OrderBoard.cs, ResultPanel.cs, RunController.cs, ArcadeCarController.cs, FollowCamera.cs, TrackLayout.cs, FixStartYaw.cs, SetupCargoView.cs
+  - 자산 1개: ComplexTrackLayout.asset (startYawDeg 0→90)
+
+- **Phase 1 진행률 (최종):**
+  - Week 2 (Day 8~14): **100%** — 화물 다양화 + Packing + 도현 피드백 튜닝
+  - Week 3 (Day 15~21): **95%** — Tilt/Cake, height 데이터, Slope getter, NodeGraph, Tire/Upgrade 시스템 (UI 미구현)
+  - Week 4 (Day 22~28): **70%** — ResultPanel 업그레이드 영역, AudioManager, 8개 주문 + Shuffle Pick, 5개 업그레이드 자동, IntegrityHUD 폴리싱
+  - 미구현: Day 19 (RoutePlannerPanel UI — NodeGraph 인스턴스 의존), Day 22~23 (Hub Scene), Day 27~28 (도현 통합 플레이 게이트)
+
+- **세션 15 핵심 성과 정리:**
+  - 도현 직접 피드백 4건 즉시 반영: 속도감 / 화물 임계 적정선 / 갈대 (1차) / 갈대 (2차 회전 진단).
+  - 도현 신규 디자인 결정 1건: Packing(D-041) 시스템 도입 — USP "결정 4개 → 5개" 진화.
+  - 디렉터 진단 (시그니처=화물 시스템) 정합 완전 — 화물에 모든 폴리싱 집중.
+  - Phase 1 시스템 인프라 완료. UI/씬 작업만 남음 (RoutePlanner + Hub).
+
+- **D-044 — "바닥에 있는 화물" 진단 (도현 세션 15 3차):**
+  - **진단:** "기울기 따로 벽 따로" — 차체 기울기로 박스 미끄러져야 하는데 시뮬에 사면 중력 없음 + 트렁크 visual이 차량 회전 안 따라가서 박스 시뮬과 visual 분리됨.
+  - **해결 1: 사면 중력 추가** (`CargoShakeSimulator.FixedUpdate`)
+    - `Physics.gravity` → `cargo.transform.InverseTransformDirection` → local x/z 성분 = 사면 G.
+    - 관성력 + 사면 중력 합산 → totalAccel.
+    - **차 평지 정지 → 박스 가만히** / 차 사면 정지 → **박스 사면 따라 미끄러짐** (실제 트렁크 박스).
+    - 정지 마찰 임계도 totalAccel 기준 비교.
+  - **해결 2: 트렁크 visual 회전 매칭** (`CargoShakeSimulator.LateUpdate`)
+    - `matchCarRotation` 플래그 (default true).
+    - `transform.rotation = cargo.transform.rotation` — CargoSimRoot 전체가 차량 회전 따라감.
+    - SimCam/SimLight/Floor/Walls/Box 자식 모두 함께 회전.
+    - 박스 simVelLocal은 차량 local frame 기준이라 trunk frame과 정합.
+    - **시각 효과:** 차가 좌측 캠버 → 트렁크 visual 같이 기울어짐 → 박스가 사면에서 미끄러져 우측 벽으로 가는 거 명확히 보임.
+  - **이제 진짜 "바닥에 놓인 화물":**
+    - 평지 정지 = 박스 가만히
+    - 평지 가속 = 관성으로 미끄러짐
+    - 사면 정지 = 사면 중력으로 미끄러짐 (정지 상태에서도)
+    - 사면 가속 = 두 힘 합산 (업힐 가속 시 더 강하게 뒤로)
+    - 트렁크 회전 = 차량과 함께. 박스가 트렁크 안에서 미끄러지는 시각 명확.
+
+- **다음 도현 검증 (D-044):**
+  1. 차 정지 + 평지 → 박스 움직임 없음.
+  2. 차 정지 + 도로 캠버(살짝 기울)에 정차 → 박스 사면 아래쪽으로 미끄러짐.
+  3. 차 코너 → 트렁크 화면이 살짝 기울고 박스가 외측 벽으로 미끄러짐.
+  4. 차 급제동 → 박스 앞쪽 벽으로 미끄러짐.
+  5. matchCarRotation 끄면(false) — 트렁크 fixed, 박스 시뮬만 작동.
+  6. enableRotation 켜면 추가 박스 회전 (보통 OFF).
+
+- **Phase 1 통합 setup Editor (세션 15 마무리):**
+  - **신규 `Editor/SetupPhase1Integration.cs`** — 메뉴 `PitCrew/Phase 1/Full Integration Setup`. 한 번 클릭으로 모든 신규 시스템 자동 연결:
+    1. 8개 주문 + OrderCatalogExpanded.asset 생성
+    2. 5개 업그레이드 + UpgradeCatalog.asset 생성
+    3. UpgradeSystem GameObject 씬 추가
+    4. AudioManager GameObject 씬 추가
+    5. OrderBoard.catalog → OrderCatalogExpanded 자동 연결
+    6. ResultPanel.upgradeCatalog → UpgradeCatalog 자동 연결
+    7. SetupCargoView 재실행 (트렁크 4벽 + CCTV 카메라)
+    8. FixStartYaw 자동 정렬
+  - **도현 작업 단순화:** 컴파일 통과 → 메뉴 1번 클릭 → Play 즉시 가능. AudioClip만 별도 인스펙터 할당.
+
+- **세션 15 누적 (최최종):**
+  - 신규 13개 (Cargo/CargoType, CargoTypePresets, PackingTier, Route/NodeGraph, Tires/TireSystem, Upgrades/UpgradeDef, UpgradeCatalog, UpgradeSystem, Audio/AudioManager, Editor/GenerateExpandedOrders, GenerateUpgrades, SetupPhase1Integration)
+  - 수정 12개 (CargoBox, CargoShakeSimulator, IntegrityHUD, OrderJob, OrderBoard, ResultPanel, RunController, ArcadeCarController, FollowCamera, TrackLayout, FixStartYaw, SetupCargoView)
+  - 자산 1개 (ComplexTrackLayout startYawDeg 0→90)
+
+- **D-045 — 충돌 카메라 shake (FollowCamera):**
+  - `CargoBox.OnImpact` 후크 → 카메라 0.35s shake (속도 비례 강도, decay).
+  - `Random.insideUnitCircle * impactShakeAmplitude(0.25) * decay * strength` — 자연스러운 임팩트감.
+
+- **D-046 — "자동차 안 화물" 느낌 진단 (도현 세션 15 4차):**
+  - **진단:** "바닥과 상관없이 화물 각도 달라짐 + 시뮬레이션 느낌". 실제 화물칸 마찰감 부족.
+  - **원인 1: 박스가 floor에 정착 안 됨** — Box localY=0이라 박스 bottom = -0.325 (floor 안에 박힘).
+    - 수정: `SetupCargoView`에서 boxGO.localPosition = (0, 0.325, 0) → 박스 bottom = floor top = 0.
+  - **원인 2: 마찰 너무 약함 (시뮬 같음)** — 작은 G에도 박스 미끄러짐.
+    - `CargoShakeSimulator` 마찰 강화:
+      - `staticFrictionG` 0.25→**0.30** (10° 사면 정도까지 박스 안 움직임)
+      - `kineticFriction` 1.0→**3.0** (박스 빨리 멈춤)
+      - `accelScale` 1.0→**0.7** (반응 70%)
+  - **새 동작:** 평지 정지 = 박스 정확히 floor에 정착 + 작은 사면(<15°)에서는 박스 안 움직임 + 강한 G 또는 큰 사면에서만 미끄러짐. 진짜 자동차 화물칸 느낌.
+
+- **세션 15 종료 정리 — 세션 16 진입 조건:**
+
+  **세션 16 시작 시 도현 작업 (순서대로):**
+
+  1. **Coplay MCP 연결 (가장 우선)**
+     - Unity Editor 켜고 Coplay 윈도우 활성화
+     - Claude Desktop 완전 종료 → 재실행
+     - 새 conversation 시작 → 자가 검증 도구 활성화 (8차 → 1차 진단 사이클 단축)
+
+  2. **Phase 1 setup 통합 검증**
+     - `PitCrew/Phase 1/Full Integration Setup` 메뉴 1회 실행 (자산 + 연결 + Cargo View 강제 reset)
+     - `PitCrew/Phase 1/Verify Setup` 메뉴 → 모든 ✓ 확인
+     - ✗ 있으면 즉시 처치 후 다시 Verify
+
+  3. **트렁크 박스 거동 검증 (세션 15 8차 진단 마무리)**
+     - Play → CargoBox CCTV 화면 확인
+     - 평지 정차 → 박스 평면 + 가만히
+     - 평지 가속 → 박스만 미끄러짐 (trunk 평면 유지)
+     - 사면 정차 → 박스가 사면 중력으로 미끄러짐 (trunk 평면 유지)
+     - 코너 → 카메라 함께 yaw 회전, 박스 외측 미끄러짐
+     - 도현 OK 신호 → 화물 시뮬 마무리
+
+  4. **Phase 1 게이트 30분 통합 플레이** (`notes/phase1-status.md` 섹션 3 체크리스트)
+     - A 운전감 + B 화물 + C 트렁크 + D 주문 + E 정산 + F 30분 연속
+     - 5개 게이트 중 3개 이상 YES → Phase 2 진입
+     - NO 다수면 부족 영역 1주 추가
+
+  **세션 16 우선순위 결정 분기:**
+
+  - **A. Phase 1 게이트 통과 시:** Phase 2 진입 — 비주얼 정체성 결정 (코지/긴장/코믹/하이브리드) + 시그니처(화물) 폴리싱 + 사운드 본격 + 첫 5분 임팩트.
+  - **B. 게이트 일부 NO:** 부족 영역 보강 (가능성: Hub Scene Day 22~23 = "정산 → 정비 → 다음 런 흐름"이 약하면 추가).
+  - **C. 화물 시뮬 추가 진단:** 8차 처치 후에도 갈대 느낌 남으면 Coplay 자가 검증으로 정확한 원인 진단 (도구 없이는 진단 사이클 부담).
+
+  **세션 15 미완료 (Phase 1 잔여):**
+  - Day 19 RoutePlannerPanel UI (NodeGraph 인스턴스 의존, 도현 인스펙터 작업 후)
+  - Day 22~23 Hub Scene (별도 차고 영역, 큰 작업)
+  - TileMap heightMask 시각 적용 (Editor 작업)
+  - TireSystem 효과 ArcadeCarController 통합
+
+- **D-049 — 박스 회전 강제 안전장치 (도현 세션 15 8차):**
+  - **진단:** "트렁크처럼 평평한 곳에서 운전을 하는데 그와 맞지 않게 화물이 기울고 움직임". D-048 yaw-only 적용 후에도 박스 회전 발생.
+  - **원인 추정:** 메뉴 재실행 안 했거나 enableRotation 인스펙터에서 켜졌을 가능성.
+  - **해결:** 코드 안전장치 + 메뉴 강제 reset.
+    - `CargoShakeSimulator.LateUpdate`: enableRotation=false면 매 프레임 `boxTransform.localRotation = restRot` 강제. 외부 영향 차단.
+    - `SetupCargoView`: 메뉴 실행 시 `enableRotation=false` + `matchCarRotation=true` SerializedObject로 강제 reset.
+  - **결과:** 도현이 인스펙터에서 enableRotation 켰어도 메뉴 한 번 실행 = 즉시 false. 박스 회전 절대 발생 X.
+
+- **Coplay MCP 자가 검증 시도 (실패):**
+  - 도구 로드 시도 → `mcp__coplay-mcp__*` 안 보임.
+  - 원인: 도현이 Coplay 켰어도 Claude Desktop 재시작 안 함 → MCP server 연결 안 됨.
+  - 다음 conversation에서 자가 검증 가능. 이번 conversation에서는 도현 직접 검증 필요.
+
+- **D-048 — Trunk Yaw-only Match (도현 세션 15 7차, 진짜 트렁크 느낌):**
+  - **진단:** "트렁크처럼 평평한 곳에 물건 배치된 것으로 구현해야 하는데 속도/사면에 따라 기울기 결정됨". 즉 trunk visual이 평면이어야 하는데 차량 pitch/roll 따라가서 평면 깨짐.
+  - **해결:** Trunk + Camera 둘 다 **yaw만** 차량 매칭. pitch/roll 무시.
+  - **`CargoShakeSimulator.LateUpdate` 변경:**
+    - `transform.rotation = Quaternion.Euler(0, carYaw, 0)` — trunk yaw만
+    - `simCamRig.rotation = Quaternion.Euler(65, carYaw, 0)` — 카메라 pitch fix, yaw 차량 매칭
+    - `simCamRig.position = trunkPos + RotateY(carYaw) * (0, 2.5, -0.8)` — 카메라가 trunk 뒤쪽 위
+  - **결과:**
+    - 평지 정차 → trunk 평면, 박스 평면 ✓
+    - 평지 가속 → trunk 평면 유지, 박스만 trunk 안에서 -z 미끄러짐 (사용자 시점)
+    - 사면 정차 → trunk 평면, 박스가 사면 중력(차량 frame G)으로 미끄러짐
+    - 코너 → 카메라 yaw 따라가서 시점 일관 (화면 안에서 회전 안 보임), 박스만 외측 미끄러짐
+  - **시뮬-visual 정합:** 박스 simVelLocal은 차량 frame x/z. trunk yaw 매칭이라 trunk frame x/z = 차량 frame x/z. 정합 유지.
+  - **`SetupCargoView` 강화** — simCamRig 참조 자동 인스펙터 할당 (SerializedObject).
+  - **메뉴 재실행 필요** — `PitCrew/Cargo/Setup Cargo View (CCTV)` 또는 `PitCrew/Phase 1/Full Integration Setup`.
+
+- **D-047 — SimCam worldspace fixed (도현 세션 15 5차):**
+  - **진단:** "평지위에 있는것 같지 않음" — CargoSimRoot 회전(차량 매칭)에 SimCam도 자식이라 같이 회전 → 시점 자체가 기울어 박스가 평면 아닌 듯 보임.
+  - **해결:** SimCam을 CargoSimRoot 외부로 분리. 신규 GameObject "CargoSimCamRig"가 worldspace fixed.
+    - CargoSimRoot 회전(자식 Floor/Walls/Box) → trunk + 박스가 차량과 함께 기울어짐
+    - SimCam은 worldspace fixed → 카메라 시점 안 흔들림
+    - 결과: 평지에선 박스+floor 평면, 사면에선 박스+floor 같이 기울어진 게 명확히 보임
+  - **`SetupCargoView.cs`** — CargoSimCamRig 자동 생성 + SimCam 자식 이동. 기존 root 자식 SimCam 제거 호환.
+  - 화물: 5종 + 3축 민감도 + Packing 4단계 + 색상 차별화 + 충돌 flash
+  - 운전: 130km/h + FOV 50~100 + 속도 진동 + slope getter
+  - 트렁크: 4벽 + 사면 중력 + visual 회전 매칭
+  - 정산: 화물 이야기 + 5단계 등급 + Wallet + 5개 업그레이드 카드
+  - 주문: 8개 풀 + Shuffle Pick (3개 픽) + 화물 표시 + 운전 가이드
+  - 업그레이드: 5개 효과 + 자동 적용 후크 (CargoBox/Spin/HP)
+  - 오디오: 6 풀 + 5개 후크 (충돌/완료/구매)
+  - 미구현: RoutePlannerPanel UI, Hub Scene
