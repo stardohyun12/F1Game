@@ -77,7 +77,7 @@ public class DeliveryProgressHUD : MonoBehaviour
             labelText.raycastTarget = false;
             labelText.alignment = TextAlignmentOptions.MidlineLeft;
             labelText.fontSize = 24;
-            labelText.enableWordWrapping = false; // 한 줄 강제
+            labelText.textWrappingMode = TextWrappingModes.NoWrap; // 한 줄 강제
             labelText.overflowMode = TextOverflowModes.Ellipsis;
             if (theme != null) { if (theme.fontCondensed != null) labelText.font = theme.fontCondensed; labelText.color = theme.colorText; }
             var r = labelText.rectTransform;

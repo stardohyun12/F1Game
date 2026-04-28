@@ -68,7 +68,7 @@ public class SpeedometerHUD : MonoBehaviour
             speedText.raycastTarget = false;
             speedText.alignment = TextAlignmentOptions.MidlineRight;
             speedText.fontSize = 76; speedText.fontStyle = FontStyles.Bold;
-            speedText.enableWordWrapping = false;
+            speedText.textWrappingMode = TextWrappingModes.NoWrap;
             speedText.overflowMode = TextOverflowModes.Overflow;
             if (theme != null) { if (theme.fontPrimary != null) speedText.font = theme.fontPrimary; speedText.color = theme.colorText; }
             var r = speedText.rectTransform;
@@ -87,7 +87,7 @@ public class SpeedometerHUD : MonoBehaviour
             unitText.text = "km/h";
             unitText.alignment = TextAlignmentOptions.MidlineLeft;
             unitText.fontSize = 24;
-            unitText.enableWordWrapping = false;
+            unitText.textWrappingMode = TextWrappingModes.NoWrap;
             if (theme != null) { if (theme.fontCondensed != null) unitText.font = theme.fontCondensed; unitText.color = theme.colorTextMuted; }
             var r = unitText.rectTransform;
             r.anchorMin = new Vector2(1, 0); r.anchorMax = new Vector2(1, 1);

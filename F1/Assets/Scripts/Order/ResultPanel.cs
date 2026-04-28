@@ -260,11 +260,11 @@ public class ResultPanel : MonoBehaviour
             // name
             card.name = CreateText(cardGO.transform, "Name", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -36), new Vector2(0, 40), 22, FontStyles.Bold, TextAlignmentOptions.Center);
-            card.name.enableWordWrapping = true;
+            card.name.textWrappingMode = TextWrappingModes.Normal;
             // desc
             card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -90), new Vector2(0, 70), 18, FontStyles.Normal, TextAlignmentOptions.Top);
-            card.desc.enableWordWrapping = true;
+            card.desc.textWrappingMode = TextWrappingModes.Normal;
             // cost — 도현 #2-9: 카드 안 cost 라인이 buy 버튼과 겹침. -160→-140.
             card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -140), new Vector2(0, 30), 22, FontStyles.Bold, TextAlignmentOptions.Center);
@@ -486,7 +486,7 @@ public class ResultPanel : MonoBehaviour
         t.fontSize = fontSize;
         t.fontStyle = style;
         t.alignment = align;
-        t.enableWordWrapping = false;
+        t.textWrappingMode = TextWrappingModes.NoWrap;
         var theme = UITheme.Active;
         if (theme != null)
         {

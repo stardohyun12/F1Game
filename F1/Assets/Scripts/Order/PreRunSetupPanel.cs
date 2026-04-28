@@ -201,7 +201,7 @@ public class PreRunSetupPanel : MonoBehaviour
             // 설명 — 카드 안에서 word wrap. 도현 #2-9: 영역 ↑ 80→120, fontSize 22→20.
             card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -140), new Vector2(-20, 120), 20, FontStyles.Normal, TextAlignmentOptions.Top);
-            card.desc.enableWordWrapping = true;
+            card.desc.textWrappingMode = TextWrappingModes.Normal;
             card.desc.overflowMode = TMPro.TextOverflowModes.Truncate;
             // 가격
             card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 0), new Vector2(1, 0),
@@ -321,7 +321,7 @@ public class PreRunSetupPanel : MonoBehaviour
         t.fontSize = fontSize;
         t.fontStyle = style;
         t.alignment = align;
-        t.enableWordWrapping = false;
+        t.textWrappingMode = TextWrappingModes.NoWrap;
         var theme = UITheme.Active;
         if (theme != null) { if (theme.fontPrimary != null) t.font = theme.fontPrimary; t.color = theme.colorText; }
         return t;

@@ -115,7 +115,7 @@ public static class PlaceTrafficLight
         col.isTrigger = true;
         var area = areaGo.AddComponent<TrafficLightArea>();
         var areaSO = new SerializedObject(area);
-        var lightProp = areaSO.FindProperty("light");
+        var lightProp = areaSO.FindProperty("trafficLight");
         if (lightProp != null) { lightProp.objectReferenceValue = light; areaSO.ApplyModifiedProperties(); }
     }
 }

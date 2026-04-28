@@ -17,7 +17,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class TrafficLightArea : MonoBehaviour
 {
-    [SerializeField] private TrafficLight light;
+    [SerializeField] private TrafficLight trafficLight;
     [Tooltip("이 속도 이상으로 Red 진입 시 위반 (km/h).")]
     [SerializeField] private float minSpeedKmhForViolation = 8f;
     [Tooltip("위반 시 적용할 화물 데미지.")]
@@ -30,13 +30,13 @@ public class TrafficLightArea : MonoBehaviour
     {
         trigger = GetComponent<BoxCollider>();
         trigger.isTrigger = true;
-        if (light == null) light = GetComponent<TrafficLight>();
-        if (light == null) light = GetComponentInParent<TrafficLight>();
+        if (trafficLight == null) trafficLight = GetComponent<TrafficLight>();
+        if (trafficLight == null) trafficLight = GetComponentInParent<TrafficLight>();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (light == null) return;
+        if (trafficLight == null) return;
         if (Time.time - lastViolationTime < 1.0f) return;     // chatter 방지
 
         var cargo = other.GetComponentInParent<CargoBox>();
@@ -45,7 +45,7 @@ public class TrafficLightArea : MonoBehaviour
         if (rb == null) return;
 
         float speedKmh = rb.linearVelocity.magnitude * 3.6f;
-        var state = light.CurrentState;
+        var state = trafficLight.CurrentState;
 
         if (state == TrafficLight.State.Red && speedKmh > minSpeedKmhForViolation)
         {
@@ -70,7 +70,7 @@ public class TrafficLightArea : MonoBehaviour
     {
         var c = GetComponent<BoxCollider>();
         if (c == null) return;
-        Gizmos.color = light != null && light.CurrentState == TrafficLight.State.Red
+        Gizmos.color = trafficLight != null && trafficLight.CurrentState == TrafficLight.State.Red
             ? new Color(1f, 0.2f, 0.2f, 0.35f)
             : new Color(0.2f, 0.7f, 1f, 0.25f);
         Gizmos.matrix = transform.localToWorldMatrix;

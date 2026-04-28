@@ -42,6 +42,11 @@ public class CarVisualLean : MonoBehaviour
     void Awake()
     {
         if (cargo == null) cargo = GetComponent<CargoBox>();
+        BuildParts();
+    }
+
+    void BuildParts()
+    {
         parts = new PartRef[VisualNames.Length];
         for (int i = 0; i < VisualNames.Length; i++)
         {
@@ -56,6 +61,10 @@ public class CarVisualLean : MonoBehaviour
 
     void LateUpdate()
     {
+        // 도현 #2-13: NRE 방어 — parts null이면 lazy init.
+        // Awake 못 돌았거나 Apply 메뉴로 GameObject 동적 변경됐을 때 안전.
+        if (parts == null) BuildParts();
+
         if (cargo == null)
         {
             cargo = GetComponent<CargoBox>();
