@@ -218,11 +218,29 @@ public class OrderBoard : MonoBehaviour
 
         if (prevHover != hoveredIndex) ApplyHoverState();
 
-        // 클릭 처리
+        // 클릭 처리 — 세션 16 B3: BeginRun 직접 X. PreRunSetupPanel(화물·포장 선택) 거침.
         if (Event.current.type == EventType.MouseDown && hoveredIndex >= 0)
         {
             lastSelectedJob = currentOffer[hoveredIndex];
-            if (runController != null) runController.BeginRun(lastSelectedJob);
+            // 보드 닫고 setup 패널 띄움 (timeScale=0 유지)
+            isOpen = false;
+            if (allMarkers != null && lastSelectedJob != null)
+            {
+                for (int i = 0; i < allMarkers.Count; i++)
+                {
+                    if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
+                }
+            }
+            var setup = FindFirstObjectByType<PreRunSetupPanel>();
+            if (setup != null)
+            {
+                setup.Show(lastSelectedJob);
+            }
+            else if (runController != null)
+            {
+                // 폴백: setup 패널 없으면 기존 흐름.
+                runController.BeginRun(lastSelectedJob);
+            }
         }
 
         // 좌하단 안내

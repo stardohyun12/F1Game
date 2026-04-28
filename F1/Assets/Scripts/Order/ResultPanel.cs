@@ -197,7 +197,7 @@ public class ResultPanel : MonoBehaviour
         btnRT.sizeDelta = new Vector2(280, 70);
         var btnImg = btnGO.GetComponent<Image>();
         btnImg.color = theme != null ? theme.colorAccent : new Color(0.20f, 0.55f, 0.85f);
-        if (theme?.panelBright != null) { btnImg.sprite = theme.panelLight; btnImg.type = Image.Type.Sliced; }
+        if (theme?.panelBright != null) { btnImg.sprite = theme.panelBright; btnImg.type = Image.Type.Sliced; }
         restartBtn = btnGO.GetComponent<Button>();
         restartBtn.onClick.AddListener(OnRestartClicked);
 
@@ -267,7 +267,7 @@ public class ResultPanel : MonoBehaviour
             card.buyBtn = btnGO.GetComponent<Button>();
             var btnImg = btnGO.GetComponent<Image>();
             btnImg.color = new Color(0.20f, 0.55f, 0.85f);
-            if (theme?.panelBright != null) { btnImg.sprite = theme.panelLight; btnImg.type = Image.Type.Sliced; }
+            if (theme?.panelBright != null) { btnImg.sprite = theme.panelBright; btnImg.type = Image.Type.Sliced; }
             card.buyText = CreateText(btnGO.transform, "Text", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(-16, 38), 22, FontStyles.Bold, TextAlignmentOptions.Center);
             card.buyText.text = "구매";
