@@ -101,6 +101,10 @@ public static class SetupPhase1Integration
         EnsureUIChild<CargoWarningHUD>("CargoWarningHUD");
         Debug.Log("[Phase1] (9/9) CargoWarningHUD 추가 — 화물 위험 경고 (코너/스핀/경사/급제동).");
 
+        // 10. PreRunSetupPanel (B3 — 화물·포장 선택 UI)
+        EnsureSingletonGO<PreRunSetupPanel>("PreRunSetupPanel");
+        Debug.Log("[Phase1] (10/10) PreRunSetupPanel 추가 — OrderBoard → 포장 선택 → BeginRun 흐름.");
+
         // 씬 저장
         var scene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(scene);
