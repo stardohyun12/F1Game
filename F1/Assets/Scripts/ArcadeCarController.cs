@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    // 세션 16 #1-3 도현 "너무 빠름". 130→110 km/h, accelTime 1.0→1.6 (가속은 즉각이되 도달 시간 ↑).
-    [SerializeField] private float maxSpeedKmh = 110f;
-    [SerializeField] private float accelTime = 1.6f;
+    // 세션 16 #1-4 "여전히 너무 빠름". 110→85, accelTime 1.6→2.2 (배달 게임 톤에 맞춤).
+    [SerializeField] private float maxSpeedKmh = 85f;
+    [SerializeField] private float accelTime = 2.2f;
     [SerializeField] private float brakeDecel = 8f;
     [SerializeField] private float reverseMaxKmh = 25f;
     [SerializeField] private float coastDrag = 0.8f;
@@ -40,7 +40,7 @@ public class ArcadeCarController : MonoBehaviour
     [SerializeField] private float driftYawBoost = 1.25f;              // 1.5→1.25 (회전 boost 완화)
     [SerializeField] private float driftBrakeThrottleScale = 0.95f;    // 0.9→0.95 (스로틀 거의 보존)
     [SerializeField] private float driftLongitudinalDrag = 0.6f;       // 0→0.6 (드리프트 중 자연 감속)
-    [SerializeField] private float driftMaxSpeedKmh = 85f;             // 90→85
+    [SerializeField] private float driftMaxSpeedKmh = 65f;             // base 85에 맞춰 비례 인하
     [SerializeField] private float driftAngularDamping = 0.5f;         // 0.3→0.5 (회전 lock 완화)
     [SerializeField] private float driftEntryYawImpulse = 2.5f;        // 4→2.5 (진입 톡 줄임)
     [SerializeField] private float driftYawTorque = 11f;               // 15→11 (지속 토크 완화)

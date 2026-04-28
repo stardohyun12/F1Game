@@ -34,26 +34,34 @@ public static class SetupKoreanFallback
     {
         Debug.Log("[KoreanFallback] === 한글 fallback 설정 시작 ===");
 
-        // 1. Windows 한글 폰트 찾기
+        // 1. Windows 한글 폰트 찾기 — malgun.ttf 우선 (Variable Font 호환성 문제 회피, 도현 #2-3).
         string windowsFontsDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts);
         string srcPath = null;
         string srcName = null;
-        if (File.Exists(Path.Combine(windowsFontsDir, "NotoSansKR-VF.ttf")))
-        {
-            srcPath = Path.Combine(windowsFontsDir, "NotoSansKR-VF.ttf");
-            srcName = "NotoSansKR-VF.ttf";
-            Debug.Log("[KoreanFallback] (1/4) NotoSansKR-VF (OFL) 사용 — 배포 안전.");
-        }
-        else if (File.Exists(Path.Combine(windowsFontsDir, "malgun.ttf")))
+        if (File.Exists(Path.Combine(windowsFontsDir, "malgun.ttf")))
         {
             srcPath = Path.Combine(windowsFontsDir, "malgun.ttf");
             srcName = "malgun.ttf";
-            Debug.LogWarning("[KoreanFallback] (1/4) malgun.ttf 사용 — MS 권한, 개인 빌드만. 배포 전 OFL 폰트로 교체 필요.");
+            Debug.Log("[KoreanFallback] (1/4) malgun.ttf 사용 — 정적 TTF, TMP dynamic atlas 안정. 배포 전 OFL 폰트 교체 필요.");
+        }
+        else if (File.Exists(Path.Combine(windowsFontsDir, "NotoSansKR-VF.ttf")))
+        {
+            srcPath = Path.Combine(windowsFontsDir, "NotoSansKR-VF.ttf");
+            srcName = "NotoSansKR-VF.ttf";
+            Debug.LogWarning("[KoreanFallback] (1/4) NotoSansKR-VF (Variable Font) 사용 — TMP 호환 불안정 가능.");
         }
         else
         {
-            Debug.LogError("[KoreanFallback] (1/4) 한글 TTF 없음. C:/Windows/Fonts/에 NotoSansKR-VF.ttf 또는 malgun.ttf 필요.");
+            Debug.LogError("[KoreanFallback] (1/4) 한글 TTF 없음.");
             return;
+        }
+
+        // 1.5. 기존 KoreanFallback SDF 강제 삭제 (도현 #2-3 — 재생성으로 stale atlas 제거).
+        var existingAsset = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(KoreanFontAssetPath);
+        if (existingAsset != null)
+        {
+            AssetDatabase.DeleteAsset(KoreanFontAssetPath);
+            Debug.Log("[KoreanFallback] (1.5/4) 기존 KoreanFallback SDF 삭제 — 재생성 강제.");
         }
 
         // 2. 프로젝트로 복사 (TMP는 Library에 있는 OS 폰트 직접 못 읽음 — Assets로 import 필요)

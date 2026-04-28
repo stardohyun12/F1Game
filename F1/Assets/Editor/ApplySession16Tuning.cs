@@ -34,6 +34,9 @@ public static class ApplySession16Tuning
 
         Debug.Log("[Session16] === 세션 16 일괄 튜닝 적용 시작 ===");
 
+        // 한글 fallback 재생성 (도현 #2-3 — 여전히 깨짐, malgun으로 교체 + 기존 atlas 제거)
+        SetupKoreanFallback.Execute();
+
         ApplyArcadeCarController();
         ApplyAudioManager();
         ApplyEngineAudio();
@@ -49,6 +52,11 @@ public static class ApplySession16Tuning
             PlaceSuburbanProps.Execute();
             PlaceTrafficLight.Execute();
         }
+
+        // 기존 TMP_Text 강제 새로고침 — fallback 추가 후 stale 렌더 방지.
+        var allTexts = Object.FindObjectsByType<TMPro.TMP_Text>(FindObjectsSortMode.None);
+        foreach (var t in allTexts) { if (t != null) t.ForceMeshUpdate(true); }
+        Debug.Log($"[Session16] TMP_Text {allTexts.Length}개 ForceMeshUpdate — Korean fallback 즉시 반영.");
 
         var scene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(scene);
@@ -69,8 +77,8 @@ public static class ApplySession16Tuning
         var ctrl = Object.FindFirstObjectByType<ArcadeCarController>();
         if (ctrl == null) { Debug.LogWarning("[Session16] ArcadeCarController 없음."); return; }
         var so = new SerializedObject(ctrl);
-        Set(so, "maxSpeedKmh", 110f);              // #1-3: 130→110
-        Set(so, "accelTime", 1.6f);                // #1-3: 1.0→1.6
+        Set(so, "maxSpeedKmh", 85f);               // #1-4: 130 → 110 → 85
+        Set(so, "accelTime", 2.2f);                // #1-4: 1.0 → 1.6 → 2.2
         Set(so, "maxTurnDegPerSec", 135f);
         Set(so, "steerLag", 0.025f);
         Set(so, "throttleLag", 0.01f);
@@ -79,7 +87,7 @@ public static class ApplySession16Tuning
         Set(so, "driftYawBoost", 1.25f);
         Set(so, "driftBrakeThrottleScale", 0.95f);
         Set(so, "driftLongitudinalDrag", 0.6f);
-        Set(so, "driftMaxSpeedKmh", 85f);
+        Set(so, "driftMaxSpeedKmh", 65f);
         Set(so, "driftAngularDamping", 0.5f);
         Set(so, "driftEntryYawImpulse", 2.5f);
         Set(so, "driftYawTorque", 11f);
