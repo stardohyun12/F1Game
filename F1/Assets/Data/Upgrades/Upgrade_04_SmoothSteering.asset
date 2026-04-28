@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca53171f0ff4ee94fbb7ef72bd837f65, type: 3}
+  m_Name: Upgrade_04_SmoothSteering
+  m_EditorClassIdentifier: PitCrew::UpgradeDef
+  effect: 3
+  displayName: "\uBD80\uB4DC\uB7EC\uC6B4 \uC870\uD5A5"
+  description: "Spin(yaw rate) \uC784\uACC4\uAC12 +20\xB0/s. \uD65C\uC5B4/\uC561\uCCB4
+    \uC548\uC804."
+  cost: 1000
+  tintColor: {r: 0.85, g: 0.55, b: 1, a: 1}
