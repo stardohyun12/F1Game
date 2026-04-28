@@ -1035,3 +1035,49 @@
   - 업그레이드: 5개 효과 + 자동 적용 후크 (CargoBox/Spin/HP)
   - 오디오: 6 풀 + 5개 후크 (충돌/완료/구매)
   - 미구현: RoutePlannerPanel UI, Hub Scene
+
+---
+
+## 세션 16 — 2026-04-28 (이어 진행)
+
+- **목표:** Coplay MCP 연결 후 Phase 1 자가 검증 + 도현 플레이 피드백 즉시 처치 + 4영역 기획.
+- **컨텍스트:** Coplay 자가 검증 도구 활성화. /loop 자체 페이싱 모드로 다회 라운드 진행.
+- **한 일 (커밋 시간순):**
+  - **인프라 (단계 1+2):**
+    - 워크트리 `claude/angry-montalcini-14cd06` → main 머지 (`--no-ff`). 세션 15 작업 4 커밋 통합 — D-046~D-049 화물 시뮬 fix 포함.
+    - `.gitattributes` + Git LFS 정책 (Conservative — 신규부터): FBX/PNG/WAV/TTF 등 LFS, Unity YAML smart merge.
+    - asmdef 2개 — `PitCrew.asmdef` (Runtime) + `PitCrew.Editor.asmdef` (Editor only). InputSystem/TMP/URP/Core 참조.
+    - `notes/conventions.md` — 폴더 구조, 네이밍, asmdef 정책, Git 워크플로우, LFS, Smart Merge, 자산 추가 체크리스트.
+    - 문서: feature-list.md 갱신 (Phase 1 완료 항목 체크).
+  - **자가 검증 (Coplay):**
+    - `PitCrew/Phase 1/Full Integration Setup` 메뉴 — 8개 주문/5 업그레이드/UpgradeSystem/AudioManager 자동 wire + CargoView 재실행 + FixStartYaw.
+    - `PitCrew/Phase 1/Verify Setup` — 처음 29 OK / 0 FAIL → TireSystem/CargoWarningHUD 추가 후 31 OK / 0 FAIL.
+  - **Day 20 — TireSystem 통합:** ArcadeCarController에 자동 연결 + `EffectiveMaxSpeedMps` (Soft +5%, Hard −5%) + `ApplySideGrip` 그립 배율 (Soft 1.4 / Hard 0.7). null guard로 기존 동작 보존. SetupPhase1Integration에 TireSystem singleton 추가.
+  - **Day 24 — CargoWarningHUD:** 4 위험 소스(Long/Lat/Spin/Tilt) 중 가장 임박 표시. 위험도 0.7+ 노랑 → 1.0+ 빨강 깜박. signed로 방향(◀코너/코너▶ 등). UIRoot 자동 부착 EnsureUIChild 헬퍼 신설.
+  - **도현 1차 플레이 피드백 #1·#2·#3 (즉시 처치):**
+    - #1 컨트롤 묵직 → accelTime 2.0→1.4, steerLag 0.12→0.06, throttleLag 0.08→0.03, lowSpeedRamp 0.5→0.8.
+    - #2 한글 깨짐 → SetupKoreanFallback editor 메뉴 신설. NotoSansKR-VF (OFL) → KoreanFallback SDF dynamic atlas → KenneyFuture SDF/Narrow fallback 등록.
+    - #3 맵 단조 → PlaceSuburbanProps (도로 인접 빈 셀 55%, collider 없음) + Traffic 시스템 (TrafficLight + TrafficLightArea + 4-way 자동 배치 메뉴).
+  - **도현 2차 플레이 피드백 #1-2·#2-2·#3-2·#4 (즉시 처치):**
+    - #1-2 여전히 뻑뻑 → accelTime 1.4→1.0, lag 0.025/0.01, maxTurnDegPerSec 110→135, lowSpeedRamp 0.95.
+    - #2-2 UI 너무 작음 → 5 HUD 사이즈/폰트 ~45% 확대 + 좌하단 스택 좌표 재배치.
+    - #3-2 소리 큼/실제같음 → music 0.4→0.18, sfxMaster 1.0→0.55, EngineAudio idle 0.35→0.16, max 0.9→0.42.
+    - #4 드리프트 → yawTorque 15→11, entryYawImpulse 4→2.5, longitudinalDrag 0→0.6, gripMul 0.02→0.05, max 90→85.
+  - **ApplySession16Tuning 통합 메뉴:** SerializeField 기본값 변경이 기존 씬 인스턴스에 자동 반영 안 됨 — 한 번 클릭으로 모든 SerializedObject 강제 적용 + HUD 자식 삭제(다음 Play에서 새 fontSize로 재빌드) + Korean fallback 재생성 + props/traffic 자동 배치 + TMP_Text ForceMeshUpdate. Play 모드 가드 포함.
+  - **도현 3차 #1-3 → 4차 #1-4 속도 재인하:**
+    - 110→85 km/h, accelTime 1.6→2.2, lowRamp 0.85, driftMaxSpeedKmh 65 (비례).
+    - 한글 fallback malgun.ttf로 교체 (NotoSansKR-VF 호환성 회피, dynamic atlas 안정성 ↑).
+  - **CargoBox.ApplyExternalDamage public API:** TrafficLightArea 등 외부 페널티 진입점. OnImpact 동시 발동 (HUD flash + 충돌음 후크).
+- **누적 main 19 커밋:**
+  - 머지 1, pre-merge WIP 1, 인프라 4 (`.gitattributes`/asmdef/conventions/feature-list), 게임 코드 13 (TireSystem 통합/CargoWarningHUD/컨트롤 4차 튜닝/한글 fallback 2회/Suburban props/Traffic system/CargoBox API/HUD 사이즈/오디오 인하/드리프트/Apply 통합/scene 갱신 등).
+- **다음 세션 (도현 복귀 후):**
+  1. **Plan B 영역 1 — PreRunSetupPanel** (화물·포장 선택 UI). 데미지 감소 시스템은 이미 작동, UI만 추가.
+  2. **Plan B 영역 2 — 한글 fallback 강제 등록** (`fallbackFontAssetTable` 직렬화 누락 가능성, ForceRegisterKoreanFallback editor 메뉴).
+  3. **Plan B 영역 3 — ResultPanel IMGUI → UGUI 전환 + 1200×800 확대** (한글 안정 + 데미지 분석 막대 + 타이어 마모 표시).
+  4. **Plan B 영역 4 — 도로 마스크 확장** (Kenney curve/end/roundabout 신규 maskChar 'C/E/O/T').
+- **메모:**
+  - 세션 13의 "Coplay disconnected" 한계 해소. 자가 검증 사이클 8차→1차 단축.
+  - SerializeField 기본값 변경 자동 반영 함정 발견 → ApplySession16Tuning 패턴 정착.
+  - VF(Variable Font)는 TMP dynamic atlas와 호환성 약함 → 정적 TTF 우선 정책.
+  - /loop dynamic 모드 8 tick 진행. 도현 직접 Play 평가 사이 자동 보강.
+- **컨텍스트 상태:** ~70% 사용. 세션 17 신규 진입 권장 — Plan B 영역 1+3 본격 구현 (60~150분 분량).

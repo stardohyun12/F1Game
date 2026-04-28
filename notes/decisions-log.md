@@ -639,3 +639,89 @@
 ---
 
 **세션 15 결정 클러스터:** D-040 컨셉 전환 후 화물 시스템 (Phase 1 시그니처) 풀 구현 + 도현 직접 피드백 8차 진단 처치.
+
+---
+
+## D-050 — 산업 표준 인프라 도입 (.gitattributes + asmdef + conventions, 세션 16)
+
+- **결정:** 워크트리 → main 머지 + Git LFS(Conservative) + asmdef 2개(Runtime/Editor) + 자산/코드 관리 규약 1장(`notes/conventions.md`).
+- **이유:** "스크립트·에셋 많이 들어올 텐데 산업계 방식으로 관리". 4주 MVP 안에서 수용 가능한 최소 단위로.
+- **구현:**
+  - `.gitattributes`: Unity YAML → Smart Merge driver(`merge=unityyamlmerge`). 바이너리(FBX/PNG/WAV/TTF) → LFS. 텍스트 eol=lf.
+  - `git config merge.unityyamlmerge.driver` 1회 등록 (사용자 환경, `UnityYAMLMerge.exe`).
+  - `PitCrew.asmdef` (InputSystem + TMP 참조) + `PitCrew.Editor.asmdef` (Editor 전용 + URP/Core 참조). 컴파일 5~10s 단축, Editor → Runtime 단방향 의존.
+  - `notes/conventions.md` — 폴더 구조 / 네이밍 / 워크플로우 / 자산 추가 체크리스트.
+- **결과:** 기존 자산 24MB 보존(Conservative migrate 보류). 신규 바이너리 자동 LFS 진입. asmdef 컴파일 통과 (URP Volume/VolumeProfile 참조 1회 fix).
+- **교차참조:** 4주차 후 LFS migrate import + asmdef 세분화(Cargo/Vehicle/UI 분리) 검토.
+
+## D-051 — TireSystem ArcadeCarController 통합 (Day 20, 세션 16)
+
+- **결정:** ArcadeCarController가 씬 TireSystem 자동 참조 → `EffectiveMaxSpeedMps` (Soft +5%, Hard −5%) + `ApplySideGrip` 그립 배율 (Soft ×1.4, Medium ×1.0, Hard ×0.7) + 마모 반영.
+- **이유:** TireSystem.cs 클래스 단독 존재했지만 controller에 효과 미적용 = 죽은 시스템. 세션 15 잔여 중 가장 즉시 처치 가능.
+- **구현:** Awake에서 `GetComponent<TireSystem>() ?? FindFirstObjectByType<TireSystem>()` null 허용. `ApplyAirDrag/ApplyThrottle/ApplySteering`에 `EffectiveMaxSpeedMps` 사용. SetupPhase1Integration에 TireSystem singleton 자동 추가 + Verify 추가.
+- **교차참조:** 다음 단계 — 출발 전 타이어 선택 UI (PreRunSetupPanel과 통합 후보).
+
+## D-052 — CargoWarningHUD 반응형 경고 (Day 24, 도현 #3 게임플레이 처치)
+
+- **결정:** 4 화물 데미지 소스(Long G / Lat G / Spin / Tilt) 중 가장 위험도 높은 것 표시. 위험도 = current / warnThreshold. 0.7+ 노랑 → 1.0+ 빨강 깜박. signed로 방향(◀코너 / 코너▶ / 급제동 / 급가속 / 스핀 / 경사).
+- **이유:** "맵 단조" 피드백 게임플레이 측면 1차 처치. 예측형(NodeGraph 기반)은 리스크 큼 → 반응형으로 시작.
+- **위치:** 화면 상단 중앙 속도계 아래.
+- **결과:** 코너·사면 진입 시 즉각 노랑 신호. 일반 주행 중엔 숨김 (HUD clutter X).
+- **교차참조:** Phase 2 — 예측형 (NodeGraph 다음 노드 곡률·경사 기반 사전 경고).
+
+## D-053 — 컨트롤 4차 튜닝 (도현 1·2·3·4차 피드백 누적 인하)
+
+- **결정:** 130km/h → 110 → 85 km/h. accelTime 2.0 → 1.4 → 1.0 → 1.6 → 2.2. steerLag 0.12 → 0.06 → 0.025. throttleLag 0.08 → 0.03 → 0.01. lowSpeedRamp 0.5/2.8m → 0.8/1.5m → 0.95/1.0m → 0.85/1.5m. maxTurnDegPerSec 110 → 135. driftMaxSpeedKmh 90 → 85 → 65 (비례).
+- **이유:** "묵직 → 너무 빠름" 양 끝 사이 균형. 세션 15 130km/h는 도현 "속도감 부족"에 대한 응답이었지만 전체 톤(배달 게임, 정밀 운전, 화물 손상도) 대비 과함.
+- **결과 (4차 도달):** 즉각 응답(거의 0 lag) + 실제 속도 85km/h(맵 사이즈에 적합) + 정지 출발 무게감 약간(0.85 ramp).
+- **교차참조:** D-038(세션 14 "운전 안됨") 이후 운전감 6번째 튜닝 라운드.
+
+## D-054 — 한글 폰트 Fallback (NotoSansKR-VF 실패 → malgun)
+
+- **결정:** TMP_FontAsset.fallbackFontAssetTable에 한글 SDF 등록. 1차 NotoSansKR-VF.ttf (OFL) → Variable Font 호환성 문제로 실패 → 2차 malgun.ttf로 재생성.
+- **이유:** 도현 #2 "UI 한글 깨짐" + #2-3 "여전히 안 보임". KenneyFuture SDF는 영어만, 한글 글리프 없으면 □ 표시.
+- **구현:** `SetupKoreanFallback.cs` editor 메뉴. `Windows/Fonts/`에서 자동 탐지 → 프로젝트 import → `TMP_FontAsset.CreateFontAsset(Dynamic, 4096, multi-atlas)` → `KenneyFuture SDF` + `KenneyFutureNarrow SDF`의 `fallbackFontAssetTable.Add(koreanFallback)`. ApplySession16Tuning이 자동 호출 + `TMP_Text.ForceMeshUpdate` 강제.
+- **잔여 의심 (Plan B1 처치 대상):** `EditorUtility.SetDirty + SaveAssets` 강제 호출 누락 가능성 → 직렬화 안 됨. 신규 `ForceRegisterKoreanFallback` 메뉴로 강제 + Verify 검사 추가 예정.
+- **라이선스:** malgun.ttf (MS 권한, 개인 빌드만) — 배포 전 OFL 폰트(NotoSansKR-Regular static) 교체 필요.
+
+## D-055 — Suburban Props 자동 배치 (도현 #3 시각 처치)
+
+- **결정:** 기존 TrackLayout 변경 X. 별도 "Props" GameObject root에 도로 인접 빈 셀 55% 확률로 결정론적 배치. Pool: tree-large/small/planter/fence/path-stones.
+- **이유:** "맵 단조" 시각 측면. props 없는 맨 셀이 단조함의 큰 비중.
+- **구현:** `PlaceSuburbanProps.cs` editor 메뉴. `(c, r) hash`로 deterministic seed → 재실행 시 동일. Collider 제거 (차량 통과 자유, gameplay 영향 X). 기존 Buildings 점유 셀 자동 회피 (이름 패턴 `B_{ch}_{c}_{r}_{w}x{d}` 파싱).
+- **결과:** 빈 셀이 풍경으로 채워짐. Layout SO 변경 없어 다른 맵에 동일 메뉴 재사용 가능.
+
+## D-056 — TrafficLight 시스템 (Day 25, 도현 #3 게임플레이 처치)
+
+- **결정:** 1교차로 단순화로 시작 (D-040 트리거 방안 1). Red 5s → Yellow 1s → Green 5s 사이클. 4-way 교차로 자동 검출 후 최대 2개 배치.
+- **이유:** D-040 컨셉 전환 시 "신호등/열차" 논의됐지만 1교차로 제한으로 흐름 끊김 회피. 위반 시 `ApplyExternalDamage(15)` → 게임플레이 결정 추가.
+- **구현:** `Traffic/TrafficLight.cs` (자식 sphere 3개 자동 생성 + emission 토글) + `Traffic/TrafficLightArea.cs` (BoxCollider trigger, Red + 8km/h 초과 = 위반). `CargoBox.ApplyExternalDamage(dmg, flashSpeedKmh)` public API 신설 — TrafficLightArea + 미래 페널티 진입점.
+- **위치:** Editor `PlaceTrafficLight.cs` — TrackLayout roadMask 4-way 자동 검출, idx 짝수 Red 시작 / 홀수 Green 시작 (직교 신호 시뮬).
+- **도현 후속 결정:** "신호등 기능 지금은 필요없음" — Plan 폐기, 코드만 보존(ApplyExternalDamage API는 미래 사용 가능).
+
+## D-057 — ApplySession16Tuning 통합 메뉴
+
+- **결정:** SerializeField 기본값 변경이 기존 씬 인스턴스에 자동 반영 안 됨. 한 번 클릭으로 모든 처치 일괄 적용하는 통합 메뉴.
+- **이유:** 도현 #1·#2 처치 후 Play해도 변경 안 보였음. 코드만 변경 → 이미 저장된 GameObject는 옛 값 유지하는 Unity 직렬화 패턴.
+- **구현:** `Assets/Editor/ApplySession16Tuning.cs` (`PitCrew/Phase 1/Apply Session 16 Tuning`).
+  1. ArcadeCarController 17 필드 SerializedObject 강제 설정 (속도/lag/조향/드리프트)
+  2. AudioManager + EngineAudio 볼륨
+  3. 5 HUD 자식 삭제 → 다음 Play에서 새 fontSize로 BuildIfNeeded 재실행
+  4. SetupKoreanFallback (D-054) 자동 호출
+  5. PlaceSuburbanProps + PlaceTrafficLight 자동 호출
+  6. TMP_Text 전부 `ForceMeshUpdate(true)` (한글 fallback 즉시 반영)
+  7. Play 모드 가드 (시작 시 isPlaying ⇒ 거절)
+- **결과:** 도현 워크플로 단순화 — ▶ 종료 → 메뉴 1번 → ▶ 시작.
+- **교훈:** 코드 변경 시 SerializedObject 반영 패턴을 표준으로 채택. 향후 튜닝 라운드도 이 메뉴에 추가만 하면 됨.
+
+## D-058 — `/loop` 자체 페이싱 모드 운영 (세션 16)
+
+- **결정:** Coplay 자가 검증 + 도현 직접 Play 평가 + 즉시 처치를 단일 세션에서 다회 라운드 진행. 사용자 "계속 단계 진행해봐" 트리거로 8 tick 자동 실행.
+- **이유:** 도현 ↔ Claude 핸드오프 비용 누적. 한 라운드(처치 + 검증 + 다음 단계 결정)를 자체 페이싱으로 압축.
+- **구현 패턴:** ScheduleWakeup 270~600s. tick마다 Unity 응답 시도 → 응답 시 메뉴 실행 → 결과 verify → 커밋. 응답 없으면 wakeup 갱신.
+- **결과:** 도현 입력 1회당 평균 3~5 작업 단위 진행. 단순 튜닝 ↔ 검증 사이클은 자동.
+- **한계:** Unity 메인 스레드 점유 시 MCP 타임아웃 (60s) → 다음 tick 대기 필요.
+
+---
+
+**세션 16 결정 클러스터:** Coplay 자가 검증 활성화 + Phase 1 통합 검증(31 OK / 0 FAIL) + 도현 4 라운드 플레이 피드백 처치(컨트롤·UI·오디오·드리프트·한글) + 산업 인프라(.gitattributes/asmdef/conventions) + 잔여 시스템(TireSystem 통합/CargoWarningHUD/Traffic) 일괄 처치.
