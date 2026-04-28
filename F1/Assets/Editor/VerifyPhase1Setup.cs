@@ -32,6 +32,7 @@ public static class VerifyPhase1Setup
         // 2. 신규 시스템 (Phase 1 후반)
         Check(report, ref ok, ref fail, "UpgradeSystem", UpgradeSystem.Instance != null || Object.FindFirstObjectByType<UpgradeSystem>() != null);
         Check(report, ref ok, ref fail, "AudioManager", Object.FindFirstObjectByType<AudioManager>() != null);
+        Check(report, ref ok, ref fail, "TireSystem (Day 20 통합)", Object.FindFirstObjectByType<TireSystem>() != null);
         Check(report, ref ok, ref fail, "CargoShakeSimulator", Object.FindFirstObjectByType<CargoShakeSimulator>() != null);
 
         // 3. 트렁크 시각 setup

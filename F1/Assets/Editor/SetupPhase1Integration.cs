@@ -45,6 +45,10 @@ public static class SetupPhase1Integration
         EnsureSingletonGO<AudioManager>("AudioManager");
         Debug.Log("[Phase1] (4/8) AudioManager 씬 추가 (AudioClip은 별도 할당 필요).");
 
+        // 4.5. TireSystem 씬에 추가 (Day 20 통합 — ArcadeCarController에서 자동 참조)
+        EnsureSingletonGO<TireSystem>("TireSystem");
+        Debug.Log("[Phase1] (4.5/8) TireSystem 씬 추가 — Medium 기본, ArcadeCarController가 자동 연결.");
+
         // 5. OrderBoard.catalog 자동 연결
         var orderCatalog = AssetDatabase.LoadAssetAtPath<OrderCatalog>(OrderCatalogPath);
         var orderBoard = Object.FindFirstObjectByType<OrderBoard>();

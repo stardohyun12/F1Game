@@ -49,6 +49,7 @@ public class ArcadeCarController : MonoBehaviour
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction handbrakeAction;
+    private TireSystem tireSystem;
     private Vector2 moveInput;       // raw input (OnMove 즉시 반영)
     private Vector2 smoothedMove;    // smoothed (FixedUpdate에서 SmoothDamp)
     private Vector2 smoothVel;       // SmoothDamp 내부 velocity 상태
@@ -83,8 +84,19 @@ public class ArcadeCarController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         if (playerInput != null && playerInput.actions != null)
             handbrakeAction = playerInput.actions.FindAction("Handbrake", throwIfNotFound: false);
+        // Day 20: TireSystem 자동 연결 — 같은 GO 우선, 없으면 씬 단일 인스턴스.
+        // null 허용(없으면 1.0 배율 = 기존 동작 그대로).
+        tireSystem = GetComponent<TireSystem>();
+        if (tireSystem == null) tireSystem = FindFirstObjectByType<TireSystem>();
         RecalculateForces();
     }
+
+    /// <summary>
+    /// 타이어 보정이 적용된 최대 속도(m/s). Soft 타이어 +5%, Hard −5%.
+    /// throttle 컷오프, brake 정규화, drag 정규화, 조향 곡선 normalize에 모두 사용.
+    /// </summary>
+    private float EffectiveMaxSpeedMps =>
+        maxSpeedMps * (tireSystem != null ? tireSystem.SpeedMultiplier : 1f);
 
     void OnValidate()
     {
@@ -145,7 +157,7 @@ public class ArcadeCarController : MonoBehaviour
     void ApplyAirDrag(float forwardSpeed)
     {
         if (forwardSpeed <= 0.1f) return;
-        float speedNorm = Mathf.Clamp01(forwardSpeed / maxSpeedMps);
+        float speedNorm = Mathf.Clamp01(forwardSpeed / EffectiveMaxSpeedMps);
         // TOP 2: 공중(점프/언덕)에서 drag 2배 — 자연스러운 감속감
         float drag = isGrounded ? airDrag : airDrag * 2f;
         rb.AddForce(-transform.forward * (forwardSpeed * drag * speedNorm), ForceMode.Acceleration);
@@ -172,7 +184,7 @@ public class ArcadeCarController : MonoBehaviour
 
         if (t > 0.01f)
         {
-            if (forwardSpeed < maxSpeedMps)
+            if (forwardSpeed < EffectiveMaxSpeedMps)
             {
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
                 // TOP 2: 저속 램프 — 0~10 km/h(2.8 m/s)에서 가속력 50%→100% 램프 (무게감)
@@ -184,7 +196,7 @@ public class ArcadeCarController : MonoBehaviour
         {
             if (forwardSpeed > 0.2f)
             {
-                float brakeSpeedNorm = Mathf.Clamp01(forwardSpeed / maxSpeedMps);
+                float brakeSpeedNorm = Mathf.Clamp01(forwardSpeed / EffectiveMaxSpeedMps);
                 float brakeMult = brakeStrengthBySpeed.Evaluate(brakeSpeedNorm);
                 rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult), ForceMode.Force);
             }
@@ -203,7 +215,7 @@ public class ArcadeCarController : MonoBehaviour
         float speedMag = Mathf.Abs(forwardSpeed);
         if (speedMag < minSpeedForSteer) return;
 
-        float speedNorm = Mathf.Clamp01(speedMag / maxSpeedMps);
+        float speedNorm = Mathf.Clamp01(speedMag / EffectiveMaxSpeedMps);
         float response = turnResponseBySpeed.Evaluate(speedNorm);
 
         if (IsDrifting)
@@ -221,6 +233,8 @@ public class ArcadeCarController : MonoBehaviour
     {
         if (!isGrounded) return;
         float grip = IsDrifting ? sideGripDamping * driftGripMultiplier : sideGripDamping;
+        // Day 20: 타이어 그립 배율 — Soft ×1.4, Medium ×1.0, Hard ×0.7. 마모 시 점진 감소.
+        if (tireSystem != null) grip *= tireSystem.GripMultiplier;
         rb.AddForce(-transform.right * (sideSpeed * grip), ForceMode.Acceleration);
     }
 }
