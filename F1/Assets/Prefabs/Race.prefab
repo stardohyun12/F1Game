@@ -10081,6 +10081,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 934473438500580793}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3136773584004004698}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8269071862197276808}
   m_SourcePrefab: {fileID: 100100000, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
 --- !u!1 &8380733253417130255 stripped
 GameObject:
@@ -10097,7 +10103,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 100
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 2.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -10177,7 +10183,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  angularDamping: 1.5
+  angularDamping: 2.5
   maxTurnDegPerSec: 110
   turnResponseBySpeed:
     serializedVersion: 2
@@ -10204,6 +10210,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   minSpeedForSteer: 0.5
+  steerLag: 0.12
+  throttleLag: 0.08
   sideGripDamping: 9
   centerOfMassOffset: {x: 0, y: -0.3, z: 0}
   driftGripMultiplier: 0.3
@@ -10424,6 +10432,47 @@ MonoBehaviour:
   hysteresis: 0.04
   useNeutral: 1
   neutralSpeedThreshold: 0.03
+--- !u!114 &3136773584004004698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380733253417130255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42d9653634b1ac641beda7be01be596f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CargoBox
+  integrityHP: 100
+  maxHP: 100
+  longWarnG: 0.6
+  longDamageMul: 10
+  latWarnG: 0.7
+  latDamageMul: 8
+  impactWarnKmh: 10
+  impactDamageMul: 0.8
+  cumulativeMul: 0.5
+  peakWindowFrames: 10
+  cumulativeWindowFrames: 50
+--- !u!114 &8269071862197276808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380733253417130255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469dee0c1c193b94792ff55627e5b5b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarVisualLean
+  cargo: {fileID: 0}
+  pitchPerLongG: 4
+  maxPitchDeg: 6
+  rollPerLatG: 5
+  maxRollDeg: 6
+  lerpSpeed: 6
 --- !u!4 &9152872249828246453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
