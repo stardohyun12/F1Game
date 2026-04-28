@@ -1081,3 +1081,36 @@
   - VF(Variable Font)는 TMP dynamic atlas와 호환성 약함 → 정적 TTF 우선 정책.
   - /loop dynamic 모드 8 tick 진행. 도현 직접 Play 평가 사이 자동 보강.
 - **컨텍스트 상태:** ~70% 사용. 세션 17 신규 진입 권장 — Plan B 영역 1+3 본격 구현 (60~150분 분량).
+
+---
+
+## 세션 16 후반 — 2026-04-28 (러닝 + 통합 라운드)
+
+- **목표:** Plan B (B1~B4) 본격 구현 + 도현 추가 플레이 피드백 처치.
+- **컨텍스트:** 도현 러닝 다녀오는 동안 Auto 모드로 Plan A(문서) + Plan B 4영역 구현. 복귀 후 직접 Play 평가 라운드 다회.
+- **한 일 (커밋 시간순, 추가 14 커밋):**
+  - **Plan A:** D-050~D-058 결정 이력 + 세션 16 블록 (`f629010`).
+  - **Plan B1 한글 fallback 강제 등록** (`4bc1cac`): `ForceRegisterKoreanFallback` editor 메뉴 — m_FallbackFontAssetTable에 직접 SerializedObject 추가 + SetDirty + SaveAssets. Verify 강화 (36 항목).
+  - **Plan B2 ResultPanel IMGUI → UGUI 전환** (`1e4a764`): 600×460→1200×800→1600×1000 확대. TMP_Text 사용 → 한글 fallback 자동. 타이어 마모 막대, 포장 효과, 시간 보너스, 화물 이야기 추가.
+  - **Plan B3 PreRunSetupPanel** (`2b39e33`, `fc49592`): 화물·포장 4 카드 선택 모달 (None/Bubble/Foam/Hardcase). OrderBoard.PickOffer → PreRunSetupPanel.Show → CargoBox.SetPacking → BeginRun. SetupPhase1Integration 자동 등록.
+  - **Plan B4 도로 마스크 확장 + 가로등** (`7f3b476`): TileMapAuto에 'B' = Bridge. PlaceStreetLights — 도로 모서리 30% 확률 light-curved/square 자동 배치.
+  - **#2-5/2-6 한글 atlas 깨짐 진짜 처치** (`6219e78`, `bc4044b`): SetupKoreanFallback에 `AddObjectToAsset` 누락 → MissingReferenceException 발견. atlas texture/material을 sub-asset으로 명시 추가. 또한 매번 재생성 시 KenneyFuture fallback table에 null 누적 → ForceRegister에서 일괄 정리. UITheme.fontPrimary → KoreanFallback SDF 직접 교체 (B5 우회). Korean SDF는 malgun.ttf 기반 (NotoSansKR-VF Variable Font 호환성 회피).
+  - **#2-7 속도계 텍스트 겹침** (`bc4044b`): "0/km/h" 한글 SDF 폭 ↑ → speedText offsetMax -74→-110, unit sizeDelta 66→96.
+  - **#2-11 EventSystem 부재 → 다시 버튼 안 눌림** (`1abbe70`): 씬에 EventSystem GameObject 없어 UGUI 버튼 클릭 디스패치 안 됨. ApplySession16Tuning + ResultPanel/PreRunSetupPanel.Awake에 자동 보장. InputSystem 1.18 호환 위해 InputSystemUIInputModule 사용. ResultPanel stat row Y 방향 반전 fix (+ → -). 카드 cost/btn 겹침 처치.
+  - **#2-13 NRE CarVisualLean.cs:70** (`69aca61`): `parts` 배열 null → LateUpdate에서 lazy init 방어. obsolete API 정리 (textWrappingMode, trafficLight rename).
+  - **#2-14 미사용 필드 경고 정리** (`afd0088`): isOpen → public IsOpen, midSpeedNorm/sep 제거.
+  - **#2-15 화물 손상도 입력 spike 완화** (`85ed648`): 도현 "입력 따라 손상도 → 초반 컨트롤 극복 어려움" 진단. dv 저역필터 (0.30 smoothing) + 저속 0~30km/h lowSpeedRelief +0.3g. 일반 가속·제동·코너 데미지 거의 0, 진짜 급격한 입력만 손상.
+  - **#2-16 OrderBoard 카드 가독성** (`85ed648`): cardWidth 360→480, cardHeight 280→320, 배경 alpha 0.55→0.88, 글자색 흰→노란 강조 (statValueStyle), fontSize ↑, tipStyle 별도 노란 + 2줄 분리.
+  - **3D 회전 포장 단계 미래 요구** (PreRunSetupPanel docstring): 도현 "물건을 선택하고 포장하는 단계가 따로 있어서 완충제를 어떻게 싸고 뭘 쓸지 물건을 3D로 돌려가면서 포장해야함". Phase 2/3 별도 PackingStage 신설 권장. ideas-parking 등록.
+- **누적 main 33 커밋** (세션 15 머지 + 세션 16 인프라/시스템/UI/튜닝/Plan B/도현 다회 라운드).
+- **검증 (Coplay 자가 검증):**
+  - Phase 1 Verify 36 OK / 0 FAIL (한글 fallback / Props / TrafficLights / StreetLights / EventSystem / 컨트롤 4차 튜닝 등 추가 검사).
+  - Play 캡처 — "상자 100%" 한글 정상, 정산 화면 1600×1000, 다시 버튼 노란.
+- **남은 미해결:**
+  - 3D 회전 포장 단계 (PackingStage 신설) — Phase 2/3.
+  - 30분 통합 플레이 (사람 작업, Phase 1 게이트 평가).
+- **다음 세션 (세션 17):**
+  1. 도현 30분 통합 플레이 → Phase 1 게이트 5개 평가.
+  2. 결과에 따라 Phase 2 진입 vs 부족 영역 보강.
+  3. 후속: PackingStage 3D 모달 / Hub Scene H1 / 맵 고저차 H4 / 타이어 선택 UI.
+- **컨텍스트 상태:** 80%+ 사용. 세션 17 신규 시작 강력 권장.

@@ -725,3 +725,62 @@
 ---
 
 **세션 16 결정 클러스터:** Coplay 자가 검증 활성화 + Phase 1 통합 검증(31 OK / 0 FAIL) + 도현 4 라운드 플레이 피드백 처치(컨트롤·UI·오디오·드리프트·한글) + 산업 인프라(.gitattributes/asmdef/conventions) + 잔여 시스템(TireSystem 통합/CargoWarningHUD/Traffic) 일괄 처치.
+
+---
+
+## D-059 — Plan B 4영역 일괄 구현 (세션 16 후반)
+
+- **결정:** 도현 러닝 동안 Auto 모드로 Plan A(문서) + Plan B 4영역(B1~B4) 일괄 구현.
+- **B1 한글 fallback 강제 등록:** `ForceRegisterKoreanFallback.cs` editor 메뉴. SerializedObject로 m_FallbackFontAssetTable에 직접 추가 + SetDirty + SaveAssets. Verify 36항목으로 강화.
+- **B2 ResultPanel IMGUI → UGUI:** 600×460 → 1600×1000. TMP_Text 사용 → 한글 fallback 자동. 타이어 마모 막대 + 포장 효과 + 시간 보너스 + 화물 이야기.
+- **B3 PreRunSetupPanel:** 화물·포장 4 카드 선택 모달. OrderBoard.PickOffer → 모달 → CargoBox.SetPacking → BeginRun. UI 신설, 데미지 감소 로직(packMul)은 이미 작동.
+- **B4 도로 마스크 확장:** TileMapAuto Kind.Bridge('B') + PlaceStreetLights (도로 모서리 30% 확률 가로등).
+- **결과:** main 33 커밋, Plan B 모두 코드 완료.
+
+## D-060 — 한글 Atlas Texture sub-asset 처치 (도현 #2-6)
+
+- **결정:** TMP_FontAsset.CreateFontAsset 결과의 atlas texture/material을 명시적으로 sub-asset 추가 (AssetDatabase.AddObjectToAsset).
+- **이유:** 누락 시 .asset 파일이 dangling reference 보유 → Console "MissingReferenceException: m_AtlasTextures... reassign". TMP가 fallback chain에서 한글 glyph render 못 함.
+- **추가 발견:** Apply가 매번 KoreanFallback SDF를 삭제·재생성 → KenneyFuture SDF의 fallback table에 등록된 참조가 missing(null)으로 남음. 첫 fallback이 null이면 chain 끊김. → ForceRegister에서 null 일괄 정리 + UITheme.fontPrimary 직접 교체 (B5 우회).
+- **라이선스:** malgun.ttf (MS 권한, 개인 빌드만) — 배포 전 NotoSansKR-Regular 정적 OFL 폰트로 교체 필요.
+- **결과:** Play 캡처 "상자 100%" 한글 정상 렌더링.
+
+## D-061 — EventSystem 자동 보장 (도현 #2-11)
+
+- **결정:** ApplySession16Tuning + ResultPanel/PreRunSetupPanel.Awake 모두에서 EventSystem 자동 추가.
+- **이유:** 씬에 EventSystem GameObject 없어 UGUI 버튼 클릭 디스패치 안 됨. 도현 "다시 버튼 안 눌림". 기존 OrderBoard는 IMGUI(OnGUI)라 EventSystem 없어도 동작했지만 신규 ResultPanel/PreRunSetupPanel은 UGUI라 필수.
+- **구현:** UnityEngine.InputSystem.UI.InputSystemUIInputModule 사용 (프로젝트가 InputSystem 1.18 사용 → StandaloneInputModule 비호환).
+- **교차참조:** Verify에 EventSystem 검사 추가.
+
+## D-062 — 화물 손상도 입력 Spike 완화 (도현 #2-15)
+
+- **결정:** CargoBox.FixedUpdate dv 계산을 저역필터(smoothing 0.30) + 저속 lowSpeedRelief 적용.
+- **이유:** 도현 "화물 손상도가 차량 속도 아니라 플레이어 입력에 따라 결정 → 초반 돈 없을 때 컨트롤로 극복 어려움". throttleLag 0.01s 즉각 반응 + 정지 출발 = 큰 dv → 큰 G → 데미지.
+- **구현:**
+  - `smoothedDv = Lerp(smoothedDv, dvRaw, 0.30)` — 5프레임 평균. 단발 spike 흡수.
+  - `lowSpeedRelief = Lerp(0.3, 0, speedKmh / 30)` — 0~30km/h 구간 G 임계 +0.3g 헤드룸.
+- **결과:** 일반 가속·제동·코너 데미지 거의 0, 진짜 급격한 입력만 손상. 초반 운전 학습 보호.
+
+## D-063 — 3D 회전 포장 단계 미래 요구 (도현 #2-12)
+
+- **결정:** Phase 1 PreRunSetupPanel은 단순 4 카드 모달 유지. Phase 2/3에 별도 PackingStage scene/panel 신설.
+- **이유:** 도현 "물건을 선택하고 포장하는 단계가 따로 있어서 완충제를 어떻게 싸고 뭘 쓸지 물건을 3D로 돌려가면서 포장해야함".
+- **설계 (Phase 2/3 진입 시):**
+  - 화물 prefab 3D 표시 (RenderTexture isolated camera).
+  - 마우스 드래그 회전, 줌.
+  - 완충제 layer 토글/이동 (반투명 mesh overlay로 Bubble wrap 시각화).
+  - 적용 후 BeginRun.
+- **현재 구현:** PreRunSetupPanel docstring에 미래 요구 명시. ideas-parking 등록.
+
+## D-064 — OrderBoard 카드 가독성 (도현 #2-16)
+
+- **결정:** cardWidth 360→480, height 280→320, 배경 alpha 0.55→0.88, 글자색 강한 대비 + fontSize ↑.
+- **이유:** "글자가 패널을 벗어나고 패널과 글자 색이 똑같아 잘 보이지 않음".
+- **구현:**
+  - statValueStyle 색 흰→노란 (1, 0.92, 0.40) 강조 — 보상/지점/시간 등 수치 즉시 인식.
+  - tipStyle 별도 노란 + word wrap + 2줄 분리 (화물 가이드 / 포장 가이드).
+  - 색상 띠 8px→12px + hover시 우측 6px 보조 띠.
+
+---
+
+**세션 16 후반 결정 클러스터 (D-059~D-064):** Plan B 4영역 일괄 구현 + 도현 다회 플레이 피드백 처치 + UGUI 인프라(EventSystem) 정착 + 화물 손상 모델 개선(저역필터+저속 보호) + 미래 3D 포장 단계 설계 보존.
