@@ -1,196 +1,429 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
-/// 정산 화면. RunController.EndRun이 Show, "다시" 버튼으로 RestartFromBoard.
-/// Day 24 — 업그레이드 영역 통합 (정산 → 구매 → 다음 런 흐름 완성).
+/// 정산 화면 (UGUI/TMP). 세션 16 B2 — IMGUI에서 UGUI로 재작성.
+///
+/// 변경 (도현 #2 "한글 안보임" + #3-2 정산 UI 확대):
+/// - IMGUI(OnGUI) → UGUI 자가구성 (BuildIfNeeded). TMP_Text 사용 → KenneyFuture SDF + 한글 fallback 자동.
+/// - 사이즈 600×460(700) → 1200×800.
+/// - 신규: 타이어 마모, 포장 효과 피드백, 시간 보너스.
+/// - 동일 public API: Show(controller), Hide(), upgradeCatalog SerializeField.
+///
+/// 호출자 (RunController.EndRun) 변경 없음.
 /// </summary>
 public class ResultPanel : MonoBehaviour
 {
-    [Header("Day 24 — 업그레이드")]
     [SerializeField] private UpgradeCatalog upgradeCatalog;
 
     bool isOpen;
     RunController controller;
+    bool built;
 
-    Texture2D pixel;
-    GUIStyle titleStyle, statStyle, statValStyle, btnStyle;
-    GUIStyle upgradeNameStyle, upgradeDescStyle, upgradeCostStyle, upgradeBtnStyle, walletStyle;
+    // UGUI 루트
+    Canvas canvas;
+    GameObject backdrop;
+    RectTransform panelRT;
+    Image panelBg;
+    Image colorStrip;
+    TMP_Text titleText;
+    TMP_Text rewardLabel, rewardVal;
+    TMP_Text timeLabel, timeVal;
+    TMP_Text orderLabel, orderVal;
+    TMP_Text completedLabel, completedVal;
+    TMP_Text cargoLabel, cargoVal;
+    TMP_Text storyText;
+    TMP_Text tireLabel, tireVal;
+    Image tireFillBg, tireFill;
+    TMP_Text packingFeedback;
+    TMP_Text walletLabel, walletVal;
+    Button restartBtn;
+    TMP_Text restartBtnText;
+    readonly List<UpgradeCardUI> cards = new();
+
+    class UpgradeCardUI
+    {
+        public RectTransform rt;
+        public Image bg;
+        public Image strip;
+        public TMP_Text name;
+        public TMP_Text desc;
+        public TMP_Text cost;
+        public Button buyBtn;
+        public TMP_Text buyText;
+        public UpgradeDef def;
+    }
 
     public void Show(RunController ctrl)
     {
         controller = ctrl;
         isOpen = true;
+        EnsureBuilt();
+        if (canvas != null) canvas.gameObject.SetActive(true);
+        Refresh();
     }
 
-    public void Hide() { isOpen = false; }
-
-    void EnsureStyles()
+    public void Hide()
     {
-        if (pixel == null)
-        {
-            pixel = new Texture2D(1, 1);
-            pixel.SetPixel(0, 0, Color.white);
-            pixel.Apply();
-        }
-        if (titleStyle == null)
-        {
-            titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 36, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = Color.white } };
-            statStyle = new GUIStyle(GUI.skin.label) { fontSize = 18, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(0.85f, 0.85f, 0.85f) } };
-            statValStyle = new GUIStyle(GUI.skin.label) { fontSize = 22, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleRight, normal = { textColor = Color.white } };
-            btnStyle = new GUIStyle(GUI.skin.button) { fontSize = 22, fontStyle = FontStyle.Bold };
-            // Day 24 업그레이드 스타일
-            upgradeNameStyle = new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.UpperCenter, normal = { textColor = Color.white }, wordWrap = true };
-            upgradeDescStyle = new GUIStyle(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.UpperCenter, normal = { textColor = new Color(0.75f, 0.75f, 0.75f) }, wordWrap = true };
-            upgradeCostStyle = new GUIStyle(GUI.skin.label) { fontSize = 12, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, 0.95f, 0.5f) } };
-            upgradeBtnStyle = new GUIStyle(GUI.skin.button) { fontSize = 12, fontStyle = FontStyle.Bold };
-            walletStyle = new GUIStyle(GUI.skin.label) { fontSize = 18, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleRight, normal = { textColor = new Color(1f, 0.95f, 0.5f) } };
-        }
+        isOpen = false;
+        if (canvas != null) canvas.gameObject.SetActive(false);
     }
 
-    void OnGUI()
+    void Awake()
     {
-        if (!isOpen || controller == null) return;
-        EnsureStyles();
+        EnsureBuilt();
+        if (canvas != null) canvas.gameObject.SetActive(false);     // 시작 시 숨김
+    }
 
-        // 전체 어둡게
-        GUI.color = new Color(0, 0, 0, 0.55f);
-        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), pixel);
-        GUI.color = Color.white;
+    void EnsureBuilt()
+    {
+        if (built) return;
+        built = true;
 
-        // 패널 (Day 24: 업그레이드 영역 추가로 height 460→700)
-        bool hasUpgrades = upgradeCatalog != null && upgradeCatalog.upgrades != null && upgradeCatalog.upgrades.Count > 0 && UpgradeSystem.Instance != null;
-        float w = 600f, h = hasUpgrades ? 700f : 460f;
-        var panelRect = new Rect((Screen.width - w) / 2f, (Screen.height - h) / 2f, w, h);
-        GUI.color = new Color(0.12f, 0.12f, 0.14f, 0.95f);
-        GUI.DrawTexture(panelRect, pixel);
-        GUI.color = Color.white;
+        // 별도 루트 Canvas (Screen Space Overlay, 가장 앞)
+        var rootGO = new GameObject("ResultPanelCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        rootGO.transform.SetParent(transform, false);
+        canvas = rootGO.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 200;     // OrderBoard(100) 위
+        var scaler = rootGO.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920, 1080);
+        scaler.matchWidthOrHeight = 0.5f;
 
-        // 색상 띠 (성공/실패) — Day 12: 화물 무결성도 반영
-        bool perfectCargo = controller.LastIntegrityPercent >= 0.8f;
-        Color stripCol = controller.LastRunSuccess && perfectCargo ? new Color(0.4f, 0.95f, 0.4f)
-                       : controller.LastRunSuccess                  ? new Color(0.95f, 0.85f, 0.3f)
-                                                                    : new Color(1f, 0.5f, 0.4f);
-        GUI.color = stripCol;
-        GUI.DrawTexture(new Rect(panelRect.x, panelRect.y, panelRect.width, 8f), pixel);
-        GUI.color = Color.white;
+        var theme = UITheme.Active;
 
-        // 제목
-        var titleRect = new Rect(panelRect.x, panelRect.y + 30, panelRect.width, 50);
-        GUI.Label(titleRect, controller.LastRunSuccess ? "배달 완료!" : "시간 초과", titleStyle);
+        // Backdrop (전체 어둡게)
+        backdrop = new GameObject("Backdrop", typeof(RectTransform), typeof(Image));
+        backdrop.transform.SetParent(rootGO.transform, false);
+        var bdRT = backdrop.GetComponent<RectTransform>();
+        bdRT.anchorMin = Vector2.zero; bdRT.anchorMax = Vector2.one;
+        bdRT.offsetMin = Vector2.zero; bdRT.offsetMax = Vector2.zero;
+        var bdImg = backdrop.GetComponent<Image>();
+        bdImg.color = new Color(0, 0, 0, 0.65f);
+        bdImg.raycastTarget = true;     // 배경 클릭 차단
 
-        // 스탯
-        float rowH = 36f;
-        float rowsStartY = panelRect.y + 100;
-        var job = controller.CurrentJob;
-        string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
-        int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);
-        string integrityGrade = RunController.IntegrityGrade(controller.LastIntegrityPercent);
+        // Panel (1200×800, 중앙)
+        var panelGO = new GameObject("Panel", typeof(RectTransform), typeof(Image));
+        panelGO.transform.SetParent(rootGO.transform, false);
+        panelRT = panelGO.GetComponent<RectTransform>();
+        panelRT.anchorMin = new Vector2(0.5f, 0.5f);
+        panelRT.anchorMax = new Vector2(0.5f, 0.5f);
+        panelRT.pivot = new Vector2(0.5f, 0.5f);
+        panelRT.sizeDelta = new Vector2(1200, 800);
+        panelBg = panelGO.GetComponent<Image>();
+        panelBg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.96f);
+        if (theme?.panelDark != null) { panelBg.sprite = theme.panelDark; panelBg.type = Image.Type.Sliced; }
 
-        DrawRow(panelRect, rowsStartY + 0 * rowH, "주문", job != null ? job.displayName : "-");
-        DrawRow(panelRect, rowsStartY + 1 * rowH, "완료", $"{controller.CompletedCount}/{(job != null ? job.pointCount : 0)}곳");
-        DrawRow(panelRect, rowsStartY + 2 * rowH, "소요 시간", FormatTime(controller.LastElapsed));
-        DrawRow(panelRect, rowsStartY + 3 * rowH, $"화물 ({cargoName})", $"{integrityInt}% · {integrityGrade}");
-        DrawRow(panelRect, rowsStartY + 4 * rowH, "보상", $"₩{controller.LastReward:N0}");
+        // 색상 띠 (top 12px)
+        var stripGO = new GameObject("ColorStrip", typeof(RectTransform), typeof(Image));
+        stripGO.transform.SetParent(panelGO.transform, false);
+        var stripRT = stripGO.GetComponent<RectTransform>();
+        stripRT.anchorMin = new Vector2(0, 1);
+        stripRT.anchorMax = new Vector2(1, 1);
+        stripRT.pivot = new Vector2(0.5f, 1);
+        stripRT.sizeDelta = new Vector2(0, 12);
+        colorStrip = stripGO.GetComponent<Image>();
+        colorStrip.color = new Color(0.4f, 0.95f, 0.4f);
 
-        // 화물 이야기 한 줄 (Day 12)
-        var storyRect = new Rect(panelRect.x + 30, rowsStartY + 5 * rowH + 8, panelRect.width - 60, 30);
-        GUI.Label(storyRect, BuildStory(job, controller.LastIntegrityPercent), statStyle);
+        // Title
+        titleText = CreateText(panelGO.transform, "Title", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+            new Vector2(0, -75), new Vector2(800, 80), 64, FontStyles.Bold, TextAlignmentOptions.Center);
 
-        // Day 24: 업그레이드 영역 (catalog 있을 때만)
-        if (hasUpgrades)
-        {
-            DrawUpgradeSection(panelRect, rowsStartY + 5 * rowH + 50);
-        }
+        // Stats — 좌측 컬럼 (라벨 + 값) 5개
+        float statY = -180f;
+        float rowH = 56f;
+        (orderLabel, orderVal) = CreateStatRow(panelGO.transform, "Order", statY + 0 * rowH, "주문");
+        (completedLabel, completedVal) = CreateStatRow(panelGO.transform, "Completed", statY + 1 * rowH, "완료");
+        (timeLabel, timeVal) = CreateStatRow(panelGO.transform, "Time", statY + 2 * rowH, "소요 시간");
+        (cargoLabel, cargoVal) = CreateStatRow(panelGO.transform, "Cargo", statY + 3 * rowH, "화물");
+        (rewardLabel, rewardVal) = CreateStatRow(panelGO.transform, "Reward", statY + 4 * rowH, "보상");
+
+        // 화물 이야기 (전 너비 한 줄)
+        storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+            new Vector2(0, -480), new Vector2(1100, 50), 32, FontStyles.Italic, TextAlignmentOptions.Center);
+        if (UITheme.Active != null) storyText.color = UITheme.Active.colorTextMuted;
+
+        // 타이어 마모 (좌하단)
+        tireLabel = CreateText(panelGO.transform, "TireLabel", new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(60, 230), new Vector2(180, 36), 28, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+        tireLabel.text = "타이어 마모";
+        var tireBgGO = new GameObject("TireFillBG", typeof(RectTransform), typeof(Image));
+        tireBgGO.transform.SetParent(panelGO.transform, false);
+        var tireBgRT = tireBgGO.GetComponent<RectTransform>();
+        tireBgRT.anchorMin = new Vector2(0, 0); tireBgRT.anchorMax = new Vector2(0, 0);
+        tireBgRT.pivot = new Vector2(0, 0.5f);
+        tireBgRT.anchoredPosition = new Vector2(245, 248);
+        tireBgRT.sizeDelta = new Vector2(280, 24);
+        tireFillBg = tireBgGO.GetComponent<Image>();
+        tireFillBg.color = new Color(0.10f, 0.10f, 0.12f, 1f);
+
+        var tireFillGO = new GameObject("TireFill", typeof(RectTransform), typeof(Image));
+        tireFillGO.transform.SetParent(tireBgGO.transform, false);
+        var tireFillRT = tireFillGO.GetComponent<RectTransform>();
+        tireFillRT.anchorMin = new Vector2(0, 0); tireFillRT.anchorMax = new Vector2(0, 1);
+        tireFillRT.pivot = new Vector2(0, 0.5f);
+        tireFillRT.offsetMin = new Vector2(2, 2); tireFillRT.offsetMax = new Vector2(2, -2);
+        tireFill = tireFillGO.GetComponent<Image>();
+        tireFill.color = new Color(0.5f, 0.85f, 1f);
+
+        tireVal = CreateText(panelGO.transform, "TireVal", new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(540, 230), new Vector2(280, 36), 24, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+
+        // 포장 피드백 (우하단)
+        packingFeedback = CreateText(panelGO.transform, "PackingFeedback", new Vector2(1, 0), new Vector2(1, 0),
+            new Vector2(-60, 230), new Vector2(450, 60), 26, FontStyles.Normal, TextAlignmentOptions.MidlineRight);
+
+        // Wallet 표시 (업그레이드 영역 위)
+        walletLabel = CreateText(panelGO.transform, "WalletLabel", new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(60, 180), new Vector2(180, 36), 26, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+        walletLabel.text = "보유 자금";
+        walletVal = CreateText(panelGO.transform, "WalletVal", new Vector2(0, 0), new Vector2(0, 0),
+            new Vector2(245, 180), new Vector2(280, 36), 30, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+        if (UITheme.Active != null) walletVal.color = UITheme.Active.colorAccent;
+
+        // 업그레이드 카드 5개 (가로)
+        BuildUpgradeCards(panelGO.transform);
 
         // 다시 버튼
-        var btnRect = new Rect(panelRect.x + panelRect.width / 2f - 90, panelRect.y + panelRect.height - 70, 180, 50);
-        if (GUI.Button(btnRect, "다시", btnStyle))
-        {
-            controller.RestartFromBoard();
-        }
+        var btnGO = new GameObject("RestartBtn", typeof(RectTransform), typeof(Image), typeof(Button));
+        btnGO.transform.SetParent(panelGO.transform, false);
+        var btnRT = btnGO.GetComponent<RectTransform>();
+        btnRT.anchorMin = new Vector2(0.5f, 0); btnRT.anchorMax = new Vector2(0.5f, 0);
+        btnRT.pivot = new Vector2(0.5f, 0);
+        btnRT.anchoredPosition = new Vector2(0, 30);
+        btnRT.sizeDelta = new Vector2(280, 70);
+        var btnImg = btnGO.GetComponent<Image>();
+        btnImg.color = theme != null ? theme.colorAccent : new Color(0.20f, 0.55f, 0.85f);
+        if (theme?.panelBright != null) { btnImg.sprite = theme.panelLight; btnImg.type = Image.Type.Sliced; }
+        restartBtn = btnGO.GetComponent<Button>();
+        restartBtn.onClick.AddListener(OnRestartClicked);
+
+        restartBtnText = CreateText(btnGO.transform, "Text", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+            Vector2.zero, new Vector2(280, 70), 38, FontStyles.Bold, TextAlignmentOptions.Center);
+        restartBtnText.text = "다시";
+        restartBtnText.color = Color.white;
     }
 
-    /// <summary>Day 24 — 업그레이드 5개 가로 카드 + Wallet.</summary>
-    void DrawUpgradeSection(Rect panel, float startY)
+    void BuildUpgradeCards(Transform parent)
     {
-        var ups = UpgradeSystem.Instance;
-        if (ups == null || upgradeCatalog == null) return;
-
-        // Wallet 표시
-        var walletRect = new Rect(panel.x + 20, startY, panel.width - 40, 28);
-        GUI.Label(new Rect(walletRect.x, walletRect.y, 100, 28), "보유 자금", statStyle);
-        GUI.Label(new Rect(walletRect.x + 100, walletRect.y, walletRect.width - 100, 28), $"₩{ups.Wallet:N0}", walletStyle);
-
-        // 5개 카드 가로 배치
-        var list = upgradeCatalog.upgrades;
-        int n = Mathf.Min(5, list.Count);
-        if (n == 0) return;
-        float cardSpacing = 6f;
-        float cardW = (panel.width - 40 - cardSpacing * (n - 1)) / n;
-        float cardH = 140f;
-        float cardY = startY + 38;
-
+        var theme = UITheme.Active;
+        cards.Clear();
+        int n = 5;
+        float panelW = 1200f;
+        float pad = 60f;
+        float spacing = 12f;
+        float available = panelW - pad * 2 - spacing * (n - 1);
+        float cardW = available / n;
+        float cardH = 220f;
+        float cardY = 110f;     // bottom 기준 30(btn) + 70(btn) + 30(margin) ≈ 130
+        cardY = 120f;
         for (int i = 0; i < n; i++)
         {
-            var def = list[i];
-            if (def == null) continue;
-            var cardRect = new Rect(panel.x + 20 + i * (cardW + cardSpacing), cardY, cardW, cardH);
-            DrawUpgradeCard(cardRect, def, ups);
+            var card = new UpgradeCardUI();
+            var cardGO = new GameObject($"Upgrade_{i}", typeof(RectTransform), typeof(Image));
+            cardGO.transform.SetParent(parent, false);
+            card.rt = cardGO.GetComponent<RectTransform>();
+            card.rt.anchorMin = new Vector2(0, 0); card.rt.anchorMax = new Vector2(0, 0);
+            card.rt.pivot = new Vector2(0, 0);
+            card.rt.anchoredPosition = new Vector2(pad + i * (cardW + spacing), cardY);
+            card.rt.sizeDelta = new Vector2(cardW, cardH);
+            card.bg = cardGO.GetComponent<Image>();
+            if (theme?.panelDark != null) { card.bg.sprite = theme.panelDark; card.bg.type = Image.Type.Sliced; }
+            card.bg.color = new Color(0.16f, 0.18f, 0.22f, 0.95f);
+
+            // strip
+            var stripGO = new GameObject("Strip", typeof(RectTransform), typeof(Image));
+            stripGO.transform.SetParent(cardGO.transform, false);
+            var sRT = stripGO.GetComponent<RectTransform>();
+            sRT.anchorMin = new Vector2(0, 1); sRT.anchorMax = new Vector2(1, 1);
+            sRT.pivot = new Vector2(0.5f, 1);
+            sRT.sizeDelta = new Vector2(0, 6);
+            card.strip = stripGO.GetComponent<Image>();
+            card.strip.color = Color.white;
+
+            // name
+            card.name = CreateText(cardGO.transform, "Name", new Vector2(0, 1), new Vector2(1, 1),
+                new Vector2(0, -36), new Vector2(0, 40), 22, FontStyles.Bold, TextAlignmentOptions.Center);
+            card.name.enableWordWrapping = true;
+            // desc
+            card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
+                new Vector2(0, -90), new Vector2(0, 70), 18, FontStyles.Normal, TextAlignmentOptions.Top);
+            card.desc.enableWordWrapping = true;
+            // cost
+            card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 1), new Vector2(1, 1),
+                new Vector2(0, -160), new Vector2(0, 30), 22, FontStyles.Bold, TextAlignmentOptions.Center);
+            if (theme != null) card.cost.color = theme.colorAccent;
+            // buy btn
+            var btnGO = new GameObject("BuyBtn", typeof(RectTransform), typeof(Image), typeof(Button));
+            btnGO.transform.SetParent(cardGO.transform, false);
+            var bRT = btnGO.GetComponent<RectTransform>();
+            bRT.anchorMin = new Vector2(0, 0); bRT.anchorMax = new Vector2(1, 0);
+            bRT.pivot = new Vector2(0.5f, 0);
+            bRT.anchoredPosition = new Vector2(0, 8);
+            bRT.sizeDelta = new Vector2(-16, 38);
+            card.buyBtn = btnGO.GetComponent<Button>();
+            var btnImg = btnGO.GetComponent<Image>();
+            btnImg.color = new Color(0.20f, 0.55f, 0.85f);
+            if (theme?.panelBright != null) { btnImg.sprite = theme.panelLight; btnImg.type = Image.Type.Sliced; }
+            card.buyText = CreateText(btnGO.transform, "Text", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                Vector2.zero, new Vector2(-16, 38), 22, FontStyles.Bold, TextAlignmentOptions.Center);
+            card.buyText.text = "구매";
+            card.buyText.color = Color.white;
+            int captured = i;
+            card.buyBtn.onClick.AddListener(() => OnUpgradeClick(captured));
+
+            cards.Add(card);
         }
     }
 
-    void DrawUpgradeCard(Rect r, UpgradeDef def, UpgradeSystem ups)
+    void Refresh()
     {
-        bool owned = ups.IsOwned(def.effect);
-        bool affordable = ups.Wallet >= def.cost;
+        if (controller == null) return;
+        var theme = UITheme.Active;
+        var job = controller.CurrentJob;
+        bool perfect = controller.LastIntegrityPercent >= 0.8f;
 
-        // 배경 (보유=어두운 녹색 / 구매가능=짙은 회색 / 자금부족=더 어두움)
-        Color bg = owned ? new Color(0.2f, 0.45f, 0.25f, 0.85f)
-                : affordable ? new Color(0.18f, 0.20f, 0.25f, 0.95f)
-                : new Color(0.10f, 0.10f, 0.12f, 0.95f);
-        GUI.color = bg;
-        GUI.DrawTexture(r, pixel);
+        // Title + 색상 띠
+        titleText.text = controller.LastRunSuccess ? "배달 완료!" : "시간 초과";
+        Color stripCol = controller.LastRunSuccess && perfect ? new Color(0.4f, 0.95f, 0.4f)
+                       : controller.LastRunSuccess              ? new Color(0.95f, 0.85f, 0.3f)
+                                                                : new Color(1f, 0.5f, 0.4f);
+        colorStrip.color = stripCol;
 
-        // 색상 띠 (UpgradeDef.tintColor)
-        GUI.color = def.tintColor;
-        GUI.DrawTexture(new Rect(r.x, r.y, r.width, 4f), pixel);
+        // 스탯
+        orderVal.text = job != null ? job.displayName : "-";
+        completedVal.text = $"{controller.CompletedCount}/{(job != null ? job.pointCount : 0)}곳";
+        timeVal.text = FormatTimeWithBonus(controller.LastElapsed, job);
+        string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
+        int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);
+        cargoLabel.text = $"화물 ({cargoName})";
+        cargoVal.text = $"{integrityInt}% · {RunController.IntegrityGrade(controller.LastIntegrityPercent)}";
+        rewardVal.text = $"₩{controller.LastReward:N0}";
 
-        GUI.color = Color.white;
+        // 이야기
+        storyText.text = BuildStory(job, controller.LastIntegrityPercent);
 
-        // 이름
-        GUI.Label(new Rect(r.x + 4, r.y + 8, r.width - 8, 30), def.displayName, upgradeNameStyle);
-
-        // 설명
-        GUI.Label(new Rect(r.x + 4, r.y + 36, r.width - 8, 50), def.description, upgradeDescStyle);
-
-        // 가격
-        GUI.Label(new Rect(r.x + 4, r.y + 86, r.width - 8, 18), $"₩{def.cost:N0}", upgradeCostStyle);
-
-        // 상태/버튼
-        var btnRect = new Rect(r.x + 8, r.y + 108, r.width - 16, 26);
-        if (owned)
+        // 타이어 마모
+        var tire = FindFirstObjectByType<TireSystem>();
+        if (tire != null)
         {
-            GUI.Label(btnRect, "✓ 보유", new GUIStyle(GUI.skin.label) { fontSize = 13, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(0.7f, 1f, 0.7f) } });
-        }
-        else if (!affordable)
-        {
-            GUI.color = new Color(1f, 1f, 1f, 0.4f);
-            GUI.Label(btnRect, "자금 부족", new GUIStyle(GUI.skin.label) { fontSize = 12, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, 0.6f, 0.6f) } });
-            GUI.color = Color.white;
+            float wear = tire.Wear;
+            tireFill.fillAmount = 1f;
+            tireFill.rectTransform.sizeDelta = new Vector2(0, 0);
+            // ProgressBar — left anchor 0~1 fillAmount via anchorMax.x
+            var rt = tireFill.rectTransform;
+            rt.anchorMax = new Vector2(Mathf.Clamp01(1f - wear), 1);     // 남은 수명 표시 (1-wear)
+            tireVal.text = $"{Mathf.RoundToInt((1f - wear) * 100f)}% ({TireSystem.DisplayName(tire.Current)})";
+            tireFill.color = wear > 0.7f ? new Color(1f, 0.5f, 0.4f)
+                          : wear > 0.4f ? new Color(0.95f, 0.85f, 0.3f)
+                                         : new Color(0.4f, 0.95f, 0.7f);
+            tireLabel.gameObject.SetActive(true);
+            tireFillBg.gameObject.SetActive(true);
+            tireVal.gameObject.SetActive(true);
         }
         else
         {
-            if (GUI.Button(btnRect, "구매", upgradeBtnStyle))
+            tireLabel.gameObject.SetActive(false);
+            tireFillBg.gameObject.SetActive(false);
+            tireVal.gameObject.SetActive(false);
+        }
+
+        // 포장 피드백
+        var cargoBox = FindFirstObjectByType<CargoBox>();
+        if (cargoBox != null)
+        {
+            float packMul = PackingTierHelper.ThresholdMultiplier(cargoBox.Packing);
+            string tierName = PackingTierHelper.DisplayName(cargoBox.Packing);
+            if (packMul > 1.01f)
+                packingFeedback.text = $"포장: {tierName} (×{packMul:F1} 안전)";
+            else
+                packingFeedback.text = $"포장: {tierName}";
+        }
+        else
+        {
+            packingFeedback.text = "";
+        }
+
+        // 업그레이드 영역
+        var ups = UpgradeSystem.Instance;
+        bool hasUpgrades = upgradeCatalog != null && upgradeCatalog.upgrades != null && upgradeCatalog.upgrades.Count > 0 && ups != null;
+        for (int i = 0; i < cards.Count; i++)
+        {
+            var card = cards[i];
+            if (!hasUpgrades || i >= upgradeCatalog.upgrades.Count)
             {
-                ups.TryPurchase(def);
+                card.rt.gameObject.SetActive(false);
+                continue;
             }
+            card.def = upgradeCatalog.upgrades[i];
+            if (card.def == null) { card.rt.gameObject.SetActive(false); continue; }
+            card.rt.gameObject.SetActive(true);
+            card.name.text = card.def.displayName;
+            card.desc.text = card.def.description;
+            card.cost.text = $"₩{card.def.cost:N0}";
+            card.strip.color = card.def.tintColor;
+
+            bool owned = ups.IsOwned(card.def.effect);
+            bool affordable = ups.Wallet >= card.def.cost;
+            if (owned)
+            {
+                card.bg.color = new Color(0.20f, 0.45f, 0.25f, 0.92f);
+                card.buyBtn.interactable = false;
+                card.buyText.text = "✓ 보유";
+            }
+            else if (!affordable)
+            {
+                card.bg.color = new Color(0.10f, 0.10f, 0.12f, 0.92f);
+                card.buyBtn.interactable = false;
+                card.buyText.text = "자금 부족";
+            }
+            else
+            {
+                card.bg.color = new Color(0.18f, 0.20f, 0.25f, 0.95f);
+                card.buyBtn.interactable = true;
+                card.buyText.text = "구매";
+            }
+        }
+
+        if (ups != null) walletVal.text = $"₩{ups.Wallet:N0}";
+        else walletVal.text = "—";
+    }
+
+    void OnUpgradeClick(int idx)
+    {
+        var ups = UpgradeSystem.Instance;
+        if (ups == null) return;
+        if (idx < 0 || idx >= cards.Count) return;
+        var def = cards[idx].def;
+        if (def == null) return;
+        if (ups.TryPurchase(def))
+        {
+            Refresh();     // 보유 자금 + 카드 상태 갱신
         }
     }
 
-    /// <summary>
-    /// 화물 + 무결성 → 한 줄 이야기. 숫자 대신 감각적 피드백.
-    /// "잘했다/못했다" 즉각 인지가 목적 (Phase 1 게이트 항목).
-    /// </summary>
+    void OnRestartClicked()
+    {
+        if (controller != null) controller.RestartFromBoard();
+    }
+
+    static string FormatTimeWithBonus(float sec, OrderJob job)
+    {
+        int m = Mathf.FloorToInt(sec / 60f);
+        int s = Mathf.FloorToInt(sec % 60f);
+        string baseStr = $"{m}분 {s:D2}초";
+        if (job == null || job.timeLimitSec <= 0f) return baseStr;
+        int limM = Mathf.FloorToInt(job.timeLimitSec / 60f);
+        int limS = Mathf.FloorToInt(job.timeLimitSec % 60f);
+        float bonus = job.timeLimitSec - sec;
+        if (bonus > 0f)
+            return $"{baseStr} / {limM}분 {limS:D2}초 (+{bonus:F0}s 여유)";
+        return $"{baseStr} / {limM}분 {limS:D2}초 (초과)";
+    }
+
     static string BuildStory(OrderJob job, float integrityPercent)
     {
         if (job == null) return string.Empty;
@@ -204,16 +437,49 @@ public class ResultPanel : MonoBehaviour
         return $"\"{name}, 완전히 박살남. 환불 처리.\"";
     }
 
-    void DrawRow(Rect panel, float y, string label, string val)
+    /// <summary>
+    /// 라벨+값 한 행 생성. 패널 좌상단 기준 anchoredPos = (0, statY).
+    /// 라벨 좌측, 값 우측 정렬.
+    /// </summary>
+    (TMP_Text label, TMP_Text val) CreateStatRow(Transform parent, string id, float y, string labelText)
     {
-        GUI.Label(new Rect(panel.x + 50, y, 200, 30), label, statStyle);
-        GUI.Label(new Rect(panel.x + panel.width - 50 - 280, y, 280, 30), val, statValStyle);
+        var label = CreateText(parent, $"{id}_Label", new Vector2(0, 1), new Vector2(0, 1),
+            new Vector2(60, y), new Vector2(380, 50), 32, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+        label.text = labelText;
+        if (UITheme.Active != null) label.color = UITheme.Active.colorTextMuted;
+
+        var val = CreateText(parent, $"{id}_Val", new Vector2(1, 1), new Vector2(1, 1),
+            new Vector2(-60, y), new Vector2(700, 50), 36, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
+        if (UITheme.Active != null) val.color = UITheme.Active.colorText;
+
+        return (label, val);
     }
 
-    static string FormatTime(float sec)
+    /// <summary>panel 자식 TMP_Text 생성 helper.</summary>
+    static TMP_Text CreateText(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax,
+        Vector2 anchoredPos, Vector2 sizeDelta, float fontSize, FontStyles style, TextAlignmentOptions align)
     {
-        int m = Mathf.FloorToInt(sec / 60f);
-        int s = Mathf.FloorToInt(sec % 60f);
-        return $"{m}분 {s:D2}초";
+        var go = new GameObject(name, typeof(RectTransform));
+        go.transform.SetParent(parent, false);
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = anchorMin;
+        rt.anchorMax = anchorMax;
+        rt.pivot = anchorMin;     // anchor 기준 pivot 동일 (편의)
+        if (anchorMin == anchorMax) rt.pivot = anchorMin;
+        rt.anchoredPosition = anchoredPos;
+        rt.sizeDelta = sizeDelta;
+        var t = go.AddComponent<TextMeshProUGUI>();
+        t.raycastTarget = false;
+        t.fontSize = fontSize;
+        t.fontStyle = style;
+        t.alignment = align;
+        t.enableWordWrapping = false;
+        var theme = UITheme.Active;
+        if (theme != null)
+        {
+            if (theme.fontPrimary != null) t.font = theme.fontPrimary;
+            t.color = theme.colorText;
+        }
+        return t;
     }
 }
