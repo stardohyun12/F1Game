@@ -36,6 +36,8 @@ public static class ApplySession16Tuning
 
         // 한글 fallback 재생성 (도현 #2-3 — 여전히 깨짐, malgun으로 교체 + 기존 atlas 제거)
         SetupKoreanFallback.Execute();
+        // B1: fallbackFontAssetTable에 영구 등록 + SaveAssets 강제
+        ForceRegisterKoreanFallback.Execute();
 
         ApplyArcadeCarController();
         ApplyAudioManager();
