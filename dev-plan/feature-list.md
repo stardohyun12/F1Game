@@ -63,8 +63,8 @@
 
 ## 2주차 — "운전에 긴장감이 추가되는가"
 
-- [ ] 단순 화물 시스템 (Shock 민감도만, 박스 1종)
-- [ ] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음)
+- [x] 단순 화물 시스템 (Shock 민감도만, 박스 1종) — `CargoBox.cs` 세션 14 D-040. 세션 15에서 5종 + Packing 4단계로 확장(`CargoType`, `CargoTypePresets`, `PackingTier`).
+- [x] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음) — `Tires/TireSystem.cs` (세션 15). 효과 ArcadeCarController 통합은 잔여.
 - [x] 단순 연료 시스템 (소비 + 고갈 시 정지) — `FuelSystem.cs` (세션 10, 5분 풀탱크)
 - [x] 단순 기어 시스템 (Auto 5단 + HUD) — `GearSystem.cs` + `GearHUD.cs` (세션 10)
 - [x] 간단한 HUD (연료 게이지 + 기어) — `FuelHUD.cs` + `GearHUD.cs` 좌하단/우하단. **세션 12 (D-035) UGUI/TMP 전환** — Kenney Future SDF 폰트 + 9-slice sprite + UITheme SO 중앙화. 자가구성 패턴(`Awake → EnsureCanvasParent → BuildIfNeeded`) 3종 검증. CountdownHUD 동시 전환.
@@ -91,13 +91,13 @@
 ## 3주차 — "경로 계획이 실제로 의미 있는가"
 
 - [ ] **맵 고저차** (H4 파킹 해제, D-040) — TileMapAuto Y offset + road-slant 11종 편입 (세션 14 트랙 0)
-- [ ] 노드-엣지 그래프 데이터 구조 설계
-- [ ] 경로 계획 UI 프로토타입 (드래그로 순서 지정)
+- [x] 노드-엣지 그래프 데이터 구조 설계 — `Route/NodeGraph.cs` (세션 15). RoutePlannerPanel UI는 잔여.
+- [ ] 경로 계획 UI 프로토타입 (드래그로 순서 지정) — Day 19 RoutePlannerPanel 잔여
 - [ ] 실시간 예측 수치 (거리, 시간)
 - [ ] 타이어 3종 (Soft/Medium/Hard)
 - [ ] 피트스탑 구현 (QTE 없이 기본만)
-- [ ] Spin 민감도 추가 (활어 등)
-- [ ] 화물 종류 3~4종
+- [x] Spin 민감도 추가 (활어 등) — `CargoBox.spinWarnDegPerSec` + `tiltDamageMul` (세션 15 D-041). LiveFish 프리셋 spinWarnDegPerSec=70 적용.
+- [x] 화물 종류 3~4종 — 5종(Box/Glass/LiveFish/Cake/Tower) + Packing 4단계 (세션 15 D-041~D-042).
 
 ### 3주차 체크포인트
 - [ ] 계획 vs 즉흥 주행 결과 차이가 나는가?
@@ -107,14 +107,14 @@
 
 ## 4주차 — MVP 완성
 
-- [ ] 주문 선택 보드 (8개 중 3~5개)
-- [ ] 정산 화면
-- [ ] 기본 업그레이드 트리 1단계
+- [x] 주문 선택 보드 (8개 중 3~5개) — 8개 풀에서 Shuffle Pick 3개 (세션 15 D-042 `OrderCatalogExpanded`).
+- [x] 정산 화면 — `ResultPanel.cs` 화물 이야기 + 5단계 등급 + Wallet (세션 15).
+- [x] 기본 업그레이드 트리 1단계 — 5개 효과 + 자동 후크 (`UpgradeCatalog`/`UpgradeDef`/`UpgradeSystem`, 세션 15 D-042).
 - [ ] 서킷 2~3개 (카피/변형으로)
-- [ ] Tilt 민감도 추가
+- [x] Tilt 민감도 추가 — `CargoBox.tiltWarnDeg` + `tiltDamageMul` (세션 15 D-041, Cake/Tower 보수치).
 - [ ] 코너 경고 UI
-- [ ] 기본 사운드 배치 (Kenny Audio)
-- [ ] **허브 씬** (H1 파킹 해제, D-040) — 시작 전 + 정비/정산 공간. 런 반복 메타 루프 (허브 → 런 → 허브) 통합.
+- [x] 기본 사운드 배치 (Kenny Audio) — `Audio/AudioManager.cs` 6 풀 + 5 후크 (세션 15 D-045). AudioClip 할당은 도현 작업.
+- [ ] **허브 씬** (H1 파킹 해제, D-040) — 시작 전 + 정비/정산 공간. 런 반복 메타 루프 (허브 → 런 → 허브) 통합. Day 22~23 잔여.
 
 ### MVP 선언 기준 (전부 ☑ 시 MVP 완성)
 - [ ] 한 런 5~15분 안에 완료된다
