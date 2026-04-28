@@ -17,7 +17,7 @@ public class SpeedometerHUD : MonoBehaviour
     [SerializeField] Vector2 size = new Vector2(320, 110);
 
     [Header("Thresholds (0~1 of maxSpeed)")]
-    [SerializeField] float midSpeedNorm = 0.5f;
+    // midSpeedNorm 제거 (CS0414 미사용). highSpeedNorm은 색상 변화 임계로 사용 중.
     [SerializeField] float highSpeedNorm = 0.85f;
 
     RectTransform rt;

@@ -19,6 +19,7 @@ public class ResultPanel : MonoBehaviour
     [SerializeField] private UpgradeCatalog upgradeCatalog;
 
     bool isOpen;
+    public bool IsOpen => isOpen;
     RunController controller;
     bool built;
 

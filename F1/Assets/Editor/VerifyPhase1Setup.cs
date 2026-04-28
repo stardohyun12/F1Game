@@ -154,7 +154,6 @@ public static class VerifyPhase1Setup
         }
 
         // 결과 출력
-        var sep = "\n  ";
         var summary = $"Phase 1 Verify: {ok} OK / {fail} FAIL\n\n" + string.Join("\n", report);
         Debug.Log("[Phase1 Verify]\n" + summary);
 

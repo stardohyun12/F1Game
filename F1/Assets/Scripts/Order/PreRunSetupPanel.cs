@@ -29,6 +29,7 @@ public class PreRunSetupPanel : MonoBehaviour
     [SerializeField] private RunController runController;
 
     bool isOpen;
+    public bool IsOpen => isOpen;
     OrderJob currentJob;
     PackingTier selectedTier = PackingTier.Bubble;
     bool built;
