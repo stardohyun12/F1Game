@@ -11,9 +11,9 @@ public class OrderBoard : MonoBehaviour
     [SerializeField] private RunController runController;
 
     [Header("Layout")]
-    [SerializeField] private float cardWidth = 360f;
-    // 도현 세션 15: 포장 행 추가로 height 240→280.
-    [SerializeField] private float cardHeight = 280f;
+    // 도현 #2-16: 카드 글자 패널 벗어남 → 폭 360→480 + 높이 280→320 (한글 줄 충분).
+    [SerializeField] private float cardWidth = 480f;
+    [SerializeField] private float cardHeight = 320f;
     [SerializeField] private float cardSpacing = 20f;
     [SerializeField] private float rightMargin = 40f;
 
@@ -169,9 +169,10 @@ public class OrderBoard : MonoBehaviour
         }
         if (titleStyle == null)
         {
-            titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 26, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft, normal = { textColor = Color.white } };
-            statStyle = new GUIStyle(GUI.skin.label) { fontSize = 14, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(0.8f, 0.8f, 0.8f) } };
-            statValueStyle = new GUIStyle(GUI.skin.label) { fontSize = 18, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleRight, normal = { textColor = Color.white } };
+            // 도현 #2-16: 글자가 패널과 색 비슷해서 안 보임 → 강한 대비 + fontSize ↑.
+            titleStyle = new GUIStyle(GUI.skin.label) { fontSize = 30, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(1f, 0.97f, 0.85f) } };
+            statStyle = new GUIStyle(GUI.skin.label) { fontSize = 18, alignment = TextAnchor.MiddleLeft, normal = { textColor = new Color(0.95f, 0.95f, 0.95f) } };
+            statValueStyle = new GUIStyle(GUI.skin.label) { fontSize = 22, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleRight, normal = { textColor = new Color(1f, 0.92f, 0.40f) } };
             helpStyle = new GUIStyle(GUI.skin.label) { fontSize = 18, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, 0.95f, 0.6f) } };
         }
     }
@@ -250,42 +251,55 @@ public class OrderBoard : MonoBehaviour
 
     void DrawCard(Rect r, OrderJob job, bool hovering)
     {
-        // 배경
-        GUI.color = hovering ? new Color(job.color.r, job.color.g, job.color.b, 0.25f) : new Color(0, 0, 0, 0.55f);
+        // 도현 #2-16: 배경 어둡게 강화 (0.55→0.88) + hover시 띠 색 stronger.
+        GUI.color = hovering
+            ? new Color(0.18f, 0.20f, 0.30f, 0.95f)
+            : new Color(0.05f, 0.05f, 0.10f, 0.88f);
         GUI.DrawTexture(r, pixel);
 
-        // 색상 띠 (좌측)
+        // 색상 띠 (좌측, 두껍게 12px)
         GUI.color = job.color;
-        GUI.DrawTexture(new Rect(r.x, r.y, 8f, r.height), pixel);
+        GUI.DrawTexture(new Rect(r.x, r.y, 12f, r.height), pixel);
+
+        // 호버 시 우측 강조 띠
+        if (hovering)
+        {
+            GUI.color = new Color(job.color.r, job.color.g, job.color.b, 0.6f);
+            GUI.DrawTexture(new Rect(r.x + r.width - 6f, r.y, 6f, r.height), pixel);
+        }
 
         GUI.color = Color.white;
 
         // 제목
-        var titleRect = new Rect(r.x + 24, r.y + 12, r.width - 48, 36);
+        var titleRect = new Rect(r.x + 30, r.y + 14, r.width - 60, 40);
         GUI.Label(titleRect, job.displayName, titleStyle);
 
-        // 스탯 5행 (Day 11: 화물 행 추가)
-        float rowH = 28f;
-        float rowY = r.y + 56;
+        // 스탯 6행 (Day 11: 화물 행 추가, Day 15: 포장 행 추가)
+        float rowH = 32f;
+        float rowY = r.y + 64;
         DrawRow(r, rowY + 0 * rowH, "지점", $"{job.pointCount}곳");
         DrawRow(r, rowY + 1 * rowH, "시간", job.timeLimitSec > 0f ? $"{Mathf.RoundToInt(job.timeLimitSec / 60f)}분 {Mathf.RoundToInt(job.timeLimitSec % 60f):D2}초" : "무제한");
         string rewardStr = job.timeBonus > 0
-            ? $"₩{job.baseReward:N0} + 보너스 ₩{job.timeBonus:N0}"
+            ? $"₩{job.baseReward:N0} + ₩{job.timeBonus:N0}"
             : $"₩{job.baseReward:N0}";
         DrawRow(r, rowY + 2 * rowH, "보상", rewardStr);
         DrawRow(r, rowY + 3 * rowH, "무게", job.WeightLabel);
         DrawRow(r, rowY + 4 * rowH, "화물", CargoTypePresets.DisplayName(job.cargoType));
-        // 도현 세션 15: 포장 행 추가
         DrawRow(r, rowY + 5 * rowH, "포장", PackingTierHelper.DisplayName(job.defaultPacking));
 
-        // 화물 운전 가이드 + 포장 가이드 (별도 줄, 폰트 작게)
-        var tipRect = new Rect(r.x + 24, rowY + 6 * rowH + 4, r.width - 48, 22);
-        GUI.Label(tipRect, $"→ {CargoTypePresets.DriveTip(job.cargoType)} · {PackingTierHelper.DriveTip(job.defaultPacking)}", statStyle);
+        // 화물 운전 가이드 + 포장 가이드 (별도 줄, 폰트 작게, 색 노란)
+        var tipStyle = new GUIStyle(statStyle) {
+            fontSize = 16, normal = { textColor = new Color(1f, 0.85f, 0.5f) },
+            wordWrap = true, alignment = TextAnchor.UpperLeft
+        };
+        var tipRect = new Rect(r.x + 30, rowY + 6 * rowH + 8, r.width - 60, 50);
+        GUI.Label(tipRect, $"→ {CargoTypePresets.DriveTip(job.cargoType)}\n→ {PackingTierHelper.DriveTip(job.defaultPacking)}", tipStyle);
     }
 
     void DrawRow(Rect card, float y, string label, string val)
     {
-        GUI.Label(new Rect(card.x + 24, y, 100, 24), label, statStyle);
-        GUI.Label(new Rect(card.x + card.width - 24 - 200, y, 200, 24), val, statValueStyle);
+        // #2-16: 라벨 폭 80→100, 값 폭 200→320 (긴 보상 문자열 수용).
+        GUI.Label(new Rect(card.x + 30, y, 100, 28), label, statStyle);
+        GUI.Label(new Rect(card.x + card.width - 30 - 320, y, 320, 28), val, statValueStyle);
     }
 }

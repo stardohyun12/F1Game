@@ -106,6 +106,7 @@ public class CargoBox : MonoBehaviour
 
     Rigidbody rb;
     Vector3 prevVelocity;
+    Vector3 smoothedDv;     // 도현 #2-15: dv 저역필터 (단발 spike 무시)
     readonly Queue<float> longPeakBuffer = new Queue<float>();
     readonly Queue<float> latPeakBuffer = new Queue<float>();
     readonly Queue<float> longCumBuffer = new Queue<float>();
@@ -195,14 +196,25 @@ public class CargoBox : MonoBehaviour
         if (IsTotaled) return;
 
         Vector3 v = rb.linearVelocity;
-        Vector3 dv = (v - prevVelocity) / Mathf.Max(Time.fixedDeltaTime, 0.0001f);
+        Vector3 dvRaw = (v - prevVelocity) / Mathf.Max(Time.fixedDeltaTime, 0.0001f);
         prevVelocity = v;
+
+        // 도현 #2-15: 입력 spike → 즉각 큰 dv → 손상. 저역필터로 1프레임 spike 무시.
+        // smoothing factor: 60Hz 기준 ~0.15s 시정수. 일반 가속/제동 정상 반영, 스로틀 톡톡 spike만 흡수.
+        float smoothing = 0.30f;
+        smoothedDv = Vector3.Lerp(smoothedDv, dvRaw, smoothing);
+        Vector3 dv = smoothedDv;
 
         // 차 local frame 투영. signed 먼저 구하고 절대값은 피크·누적·데미지에 사용.
         curSignedLongG = Vector3.Dot(dv, transform.forward) / 9.81f;
         curSignedLatG = Vector3.Dot(dv, transform.right) / 9.81f;
-        curLongG = Mathf.Abs(curSignedLongG);
-        curLatG = Mathf.Abs(curSignedLatG);
+
+        // 도현 #2-15: 저속(20km/h 이하)에서는 G 임계 완화 — 초반 운전 학습 구간 보호.
+        // 차 속도 비례 추가 헤드룸. 0km/h에서 +0.3g 여유, 30km/h+ 부터는 0.
+        float speedKmh = v.magnitude * 3.6f;
+        float lowSpeedRelief = Mathf.Lerp(0.3f, 0f, Mathf.Clamp01(speedKmh / 30f));
+        curLongG = Mathf.Max(0f, Mathf.Abs(curSignedLongG) - lowSpeedRelief);
+        curLatG = Mathf.Max(0f, Mathf.Abs(curSignedLatG) - lowSpeedRelief);
 
         // 피크 버퍼 (0.2초)
         EnqueueBounded(longPeakBuffer, curLongG, peakWindowFrames);
