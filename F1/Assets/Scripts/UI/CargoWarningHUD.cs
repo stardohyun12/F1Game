@@ -26,8 +26,9 @@ public class CargoWarningHUD : MonoBehaviour
     [SerializeField] CargoBox cargo;
 
     [Header("Layout (상단 중앙)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(0, -100);
-    [SerializeField] Vector2 size = new Vector2(280, 64);
+    // 도현 #2-2: UI 너무 작음.
+    [SerializeField] Vector2 anchoredPos = new Vector2(0, -120);
+    [SerializeField] Vector2 size = new Vector2(400, 92);
 
     [Header("Thresholds (current / warnThreshold)")]
     [Tooltip("이 비율 미만이면 HUD 숨김.")]
@@ -95,7 +96,7 @@ public class CargoWarningHUD : MonoBehaviour
             label = go.AddComponent<TextMeshProUGUI>();
             label.raycastTarget = false;
             label.alignment = TextAlignmentOptions.Center;
-            label.fontSize = 32;
+            label.fontSize = 46;
             label.fontStyle = FontStyles.Bold;
             if (theme?.fontPrimary != null) label.font = theme.fontPrimary;
             var r = label.rectTransform;

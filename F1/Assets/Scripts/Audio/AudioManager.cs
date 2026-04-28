@@ -31,12 +31,14 @@ public class AudioManager : MonoBehaviour
 
     [Header("Music")]
     [SerializeField] private AudioClip runMusicClip;
-    [SerializeField, Range(0f, 1f)] private float musicVolume = 0.4f;
+    // 도현 #3-2 (세션 16): 소리 너무 큼 + 실제같음. 음악 0.4→0.18.
+    [SerializeField, Range(0f, 1f)] private float musicVolume = 0.18f;
 
     [Header("Pool")]
     [Tooltip("동시에 재생 가능한 SFX 수.")]
     [SerializeField] private int sfxPoolSize = 6;
-    [SerializeField, Range(0f, 1f)] private float sfxMasterVolume = 1.0f;
+    // 도현 #3-2: SFX 1.0→0.55 (전반 인하). 카툰 톤이라 실제 음원 그대로면 위화감.
+    [SerializeField, Range(0f, 1f)] private float sfxMasterVolume = 0.55f;
 
     AudioSource[] sfxSources;
     AudioSource musicSource;
@@ -103,8 +105,8 @@ public class AudioManager : MonoBehaviour
 
     void OnCargoImpact(float speedKmh)
     {
-        // 충돌 속도에 따라 볼륨 스케일.
-        float v = Mathf.Clamp01(speedKmh / 50f) * sfxMasterVolume;
+        // 충돌 속도에 따라 볼륨 스케일. PlayClip 내부에서 다시 sfxMasterVolume 곱 — 여기선 0~1만.
+        float v = Mathf.Clamp01(speedKmh / 50f);
         PlayClip(cargoImpactClip, v);
     }
 

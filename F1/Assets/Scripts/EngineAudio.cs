@@ -12,8 +12,9 @@ public class EngineAudio : MonoBehaviour
     [SerializeField] private float pitchLerpSpeed = 6f;
 
     [Header("Volume")]
-    [SerializeField] private float idleVolume = 0.35f;
-    [SerializeField] private float maxVolume = 0.9f;
+    // 도현 #3-2 (세션 16): 소리 큼 + 실제같음. idle 0.35→0.16, max 0.9→0.42.
+    [SerializeField] private float idleVolume = 0.16f;
+    [SerializeField] private float maxVolume = 0.42f;
     [SerializeField] private float volumeLerpSpeed = 4f;
 
     private AudioSource src;

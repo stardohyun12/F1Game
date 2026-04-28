@@ -12,8 +12,9 @@ public class GearHUD : MonoBehaviour
     [SerializeField] GearSystem gears;
 
     [Header("Layout (우하단 기준)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(-36, 80);
-    [SerializeField] Vector2 size = new Vector2(140, 140);
+    // 도현 #2-2: UI 너무 작음. 140x140 → 200x200.
+    [SerializeField] Vector2 anchoredPos = new Vector2(-40, 100);
+    [SerializeField] Vector2 size = new Vector2(200, 200);
 
     [Header("Flash")]
     [SerializeField] float flashDurationSec = 0.15f;
@@ -72,7 +73,7 @@ public class GearHUD : MonoBehaviour
             title.raycastTarget = false;
             title.text = "GEAR";
             title.alignment = TextAlignmentOptions.Top;
-            title.fontSize = 18; title.fontStyle = FontStyles.UpperCase;
+            title.fontSize = 26; title.fontStyle = FontStyles.UpperCase;
             if (theme != null) { if (theme.fontCondensed != null) title.font = theme.fontCondensed; title.color = theme.colorTextMuted; }
             var r = title.rectTransform;
             r.anchorMin = new Vector2(0, 1); r.anchorMax = new Vector2(1, 1);
@@ -87,7 +88,7 @@ public class GearHUD : MonoBehaviour
             gearText = go.AddComponent<TextMeshProUGUI>();
             gearText.raycastTarget = false;
             gearText.alignment = TextAlignmentOptions.Center;
-            gearText.fontSize = 90; gearText.fontStyle = FontStyles.Bold;
+            gearText.fontSize = 130; gearText.fontStyle = FontStyles.Bold;
             if (theme != null) { if (theme.fontPrimary != null) gearText.font = theme.fontPrimary; gearText.color = theme.colorText; }
             var r = gearText.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;

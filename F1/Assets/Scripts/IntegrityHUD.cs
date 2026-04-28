@@ -15,8 +15,9 @@ public class IntegrityHUD : MonoBehaviour
     [SerializeField] CargoBox cargo;
 
     [Header("Layout (좌하단 기준, Fuel 위)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(36, 152);
-    [SerializeField] Vector2 size = new Vector2(420, 56);
+    // 도현 #2-2 (세션 16): UI 너무 작음. 스택 재배치.
+    [SerializeField] Vector2 anchoredPos = new Vector2(40, 200);
+    [SerializeField] Vector2 size = new Vector2(560, 80);
 
     [Header("Thresholds (0~1)")]
     [Tooltip("이 이하부터 노랑 (80% 구간).")]
@@ -108,7 +109,7 @@ public class IntegrityHUD : MonoBehaviour
             label = go.AddComponent<TextMeshProUGUI>();
             label.raycastTarget = false;
             label.alignment = TextAlignmentOptions.MidlineLeft;
-            label.fontSize = 28; label.fontStyle = FontStyles.Bold;
+            label.fontSize = 40; label.fontStyle = FontStyles.Bold;
             if (theme != null) { if (theme.fontPrimary != null) label.font = theme.fontPrimary; label.color = theme.colorText; }
             var r = label.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);

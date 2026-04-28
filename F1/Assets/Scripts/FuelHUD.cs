@@ -14,8 +14,9 @@ public class FuelHUD : MonoBehaviour
     [SerializeField] FuelSystem fuel;
 
     [Header("Layout (좌하단 기준)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(36, 80);
-    [SerializeField] Vector2 size = new Vector2(420, 56);
+    // 도현 #2-2: UI 너무 작음.
+    [SerializeField] Vector2 anchoredPos = new Vector2(40, 100);
+    [SerializeField] Vector2 size = new Vector2(560, 80);
 
     [Header("Thresholds (0~1)")]
     [SerializeField] float warnThreshold = 0.25f;
@@ -84,7 +85,7 @@ public class FuelHUD : MonoBehaviour
             label = go.AddComponent<TextMeshProUGUI>();
             label.raycastTarget = false;
             label.alignment = TextAlignmentOptions.MidlineLeft;
-            label.fontSize = 28; label.fontStyle = FontStyles.Bold;
+            label.fontSize = 40; label.fontStyle = FontStyles.Bold;
             if (theme != null) { if (theme.fontPrimary != null) label.font = theme.fontPrimary; label.color = theme.colorText; }
             var r = label.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);

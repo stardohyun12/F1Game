@@ -12,8 +12,9 @@ public class SpeedometerHUD : MonoBehaviour
     [SerializeField] ArcadeCarController car;
 
     [Header("Layout (좌하단 기준)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(36, 150);
-    [SerializeField] Vector2 size = new Vector2(220, 76);
+    // 도현 #2-2 (세션 16): UI 너무 작음. 스택 위치도 비례 상향.
+    [SerializeField] Vector2 anchoredPos = new Vector2(40, 280);
+    [SerializeField] Vector2 size = new Vector2(320, 110);
 
     [Header("Thresholds (0~1 of maxSpeed)")]
     [SerializeField] float midSpeedNorm = 0.5f;
@@ -66,7 +67,7 @@ public class SpeedometerHUD : MonoBehaviour
             speedText = g.AddComponent<TextMeshProUGUI>();
             speedText.raycastTarget = false;
             speedText.alignment = TextAlignmentOptions.MidlineRight;
-            speedText.fontSize = 52; speedText.fontStyle = FontStyles.Bold;
+            speedText.fontSize = 76; speedText.fontStyle = FontStyles.Bold;
             speedText.enableWordWrapping = false;
             speedText.overflowMode = TextOverflowModes.Overflow;
             if (theme != null) { if (theme.fontPrimary != null) speedText.font = theme.fontPrimary; speedText.color = theme.colorText; }
@@ -84,7 +85,7 @@ public class SpeedometerHUD : MonoBehaviour
             unitText.raycastTarget = false;
             unitText.text = "km/h";
             unitText.alignment = TextAlignmentOptions.MidlineLeft;
-            unitText.fontSize = 16;
+            unitText.fontSize = 24;
             unitText.enableWordWrapping = false;
             if (theme != null) { if (theme.fontCondensed != null) unitText.font = theme.fontCondensed; unitText.color = theme.colorTextMuted; }
             var r = unitText.rectTransform;

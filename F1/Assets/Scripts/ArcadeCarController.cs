@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    // 도현 피드백 (세션 16): "묵직함". accelTime 2.0→1.4 (가속 즉각).
+    // 도현 피드백 (세션 16 #1·#1-2): 1차 1.4 → 2차 1.0 (여전히 뻑뻑하단 의견).
     [SerializeField] private float maxSpeedKmh = 130f;
-    [SerializeField] private float accelTime = 1.4f;
+    [SerializeField] private float accelTime = 1.0f;
     [SerializeField] private float brakeDecel = 8f;
     [SerializeField] private float reverseMaxKmh = 25f;
     [SerializeField] private float coastDrag = 0.8f;
@@ -17,31 +17,33 @@ public class ArcadeCarController : MonoBehaviour
     [SerializeField] private float angularDamping = 1.5f;
 
     [Header("Steering")]
-    [SerializeField] private float maxTurnDegPerSec = 110f;
+    // 도현 #1-2: 110 → 135 (조향 응답 22%↑).
+    [SerializeField] private float maxTurnDegPerSec = 135f;
     [SerializeField] private AnimationCurve turnResponseBySpeed =
         AnimationCurve.Linear(0f, 1f, 1f, 0.35f);
     [SerializeField] private float minSpeedForSteer = 0.5f;
 
     [Header("Input Smoothing (세션 14 리서치 TOP 1)")]
-    // 도현 피드백 (세션 16): "묵직함". steerLag 0.12→0.06, throttleLag 0.08→0.03.
-    [Tooltip("조향 입력 SmoothDamp 지연. 0=즉각, 0.06=경쾌, 0.12=무거움.")]
-    [SerializeField] private float steerLag = 0.06f;
-    [Tooltip("스로틀 입력 SmoothDamp 지연. 0=즉각, 0.03=경쾌, 0.08=무거움.")]
-    [SerializeField] private float throttleLag = 0.03f;
+    // 세션 16 #1-2: 1차 0.06/0.03 → 2차 0.025/0.01 (거의 즉각).
+    [Tooltip("조향 입력 SmoothDamp 지연. 0=즉각, 0.025=경쾌.")]
+    [SerializeField] private float steerLag = 0.025f;
+    [Tooltip("스로틀 입력 SmoothDamp 지연. 0=즉각, 0.01=경쾌.")]
+    [SerializeField] private float throttleLag = 0.01f;
 
     [Header("Grip")]
     [SerializeField] private float sideGripDamping = 6f;
     [SerializeField] private Vector3 centerOfMassOffset = new Vector3(0f, -0.3f, 0f);
 
-    [Header("Drift")]
-    [SerializeField] private float driftGripMultiplier = 0.02f;
-    [SerializeField] private float driftYawBoost = 1.5f;
-    [SerializeField] private float driftBrakeThrottleScale = 0.9f;
-    [SerializeField] private float driftLongitudinalDrag = 0f;
-    [SerializeField] private float driftMaxSpeedKmh = 90f;
-    [SerializeField] private float driftAngularDamping = 0.3f;
-    [SerializeField] private float driftEntryYawImpulse = 4f;
-    [SerializeField] private float driftYawTorque = 15f;
+    [Header("Drift (세션 16 #4 도현 피드백 — 재튜닝)")]
+    // 기존 너무 공격적이라 차가 휘청. 차분한 슬라이드 + 입력 제어성 ↑.
+    [SerializeField] private float driftGripMultiplier = 0.05f;        // 0.02→0.05 (옆 미끄러짐 약간 줄임)
+    [SerializeField] private float driftYawBoost = 1.25f;              // 1.5→1.25 (회전 boost 완화)
+    [SerializeField] private float driftBrakeThrottleScale = 0.95f;    // 0.9→0.95 (스로틀 거의 보존)
+    [SerializeField] private float driftLongitudinalDrag = 0.6f;       // 0→0.6 (드리프트 중 자연 감속)
+    [SerializeField] private float driftMaxSpeedKmh = 85f;             // 90→85
+    [SerializeField] private float driftAngularDamping = 0.5f;         // 0.3→0.5 (회전 lock 완화)
+    [SerializeField] private float driftEntryYawImpulse = 2.5f;        // 4→2.5 (진입 톡 줄임)
+    [SerializeField] private float driftYawTorque = 11f;               // 15→11 (지속 토크 완화)
 
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 0.6f;
@@ -188,9 +190,8 @@ public class ArcadeCarController : MonoBehaviour
             if (forwardSpeed < EffectiveMaxSpeedMps)
             {
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
-                // 도현 피드백 (세션 16): 저속 램프 시작 0.5→0.8, 도달거리 2.8→1.5 m/s.
-                // 정지 출발 즉각 + 무게감 약간 유지.
-                float lowSpeedRamp = Mathf.Lerp(0.8f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.5f));
+                // 세션 16 #1-2: 정지 출발 거의 즉각. 0.95~1.0 (무게감 거의 X).
+                float lowSpeedRamp = Mathf.Lerp(0.95f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.0f));
                 rb.AddForce(transform.forward * (accelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
             }
         }
