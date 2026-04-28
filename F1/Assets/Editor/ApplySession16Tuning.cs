@@ -69,7 +69,8 @@ public static class ApplySession16Tuning
         var ctrl = Object.FindFirstObjectByType<ArcadeCarController>();
         if (ctrl == null) { Debug.LogWarning("[Session16] ArcadeCarController 없음."); return; }
         var so = new SerializedObject(ctrl);
-        Set(so, "accelTime", 1.0f);
+        Set(so, "maxSpeedKmh", 110f);              // #1-3: 130→110
+        Set(so, "accelTime", 1.6f);                // #1-3: 1.0→1.6
         Set(so, "maxTurnDegPerSec", 135f);
         Set(so, "steerLag", 0.025f);
         Set(so, "throttleLag", 0.01f);

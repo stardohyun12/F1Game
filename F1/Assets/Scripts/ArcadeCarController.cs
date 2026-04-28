@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    // 도현 피드백 (세션 16 #1·#1-2): 1차 1.4 → 2차 1.0 (여전히 뻑뻑하단 의견).
-    [SerializeField] private float maxSpeedKmh = 130f;
-    [SerializeField] private float accelTime = 1.0f;
+    // 세션 16 #1-3 도현 "너무 빠름". 130→110 km/h, accelTime 1.0→1.6 (가속은 즉각이되 도달 시간 ↑).
+    [SerializeField] private float maxSpeedKmh = 110f;
+    [SerializeField] private float accelTime = 1.6f;
     [SerializeField] private float brakeDecel = 8f;
     [SerializeField] private float reverseMaxKmh = 25f;
     [SerializeField] private float coastDrag = 0.8f;
@@ -190,8 +190,8 @@ public class ArcadeCarController : MonoBehaviour
             if (forwardSpeed < EffectiveMaxSpeedMps)
             {
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
-                // 세션 16 #1-2: 정지 출발 거의 즉각. 0.95~1.0 (무게감 거의 X).
-                float lowSpeedRamp = Mathf.Lerp(0.95f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.0f));
+                // 세션 16 #1-3: 너무 빠름 → 저속 약간 무게 복귀 (0.85). 도달 1.5m/s.
+                float lowSpeedRamp = Mathf.Lerp(0.85f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.5f));
                 rb.AddForce(transform.forward * (accelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
             }
         }
