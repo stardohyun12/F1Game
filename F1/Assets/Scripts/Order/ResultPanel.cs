@@ -112,7 +112,8 @@ public class ResultPanel : MonoBehaviour
         panelRT.anchorMin = new Vector2(0.5f, 0.5f);
         panelRT.anchorMax = new Vector2(0.5f, 0.5f);
         panelRT.pivot = new Vector2(0.5f, 0.5f);
-        panelRT.sizeDelta = new Vector2(1200, 800);
+        // 도현 #2-4 "아직도 작음": 1200×800 → 1600×1000 (1920×1080 reference 기준 83%×92%).
+        panelRT.sizeDelta = new Vector2(1600, 1000);
         panelBg = panelGO.GetComponent<Image>();
         panelBg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.96f);
         if (theme?.panelDark != null) { panelBg.sprite = theme.panelDark; panelBg.type = Image.Type.Sliced; }
@@ -143,7 +144,7 @@ public class ResultPanel : MonoBehaviour
 
         // 화물 이야기 (전 너비 한 줄)
         storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0, -480), new Vector2(1100, 50), 32, FontStyles.Italic, TextAlignmentOptions.Center);
+            new Vector2(0, -560), new Vector2(1500, 60), 38, FontStyles.Italic, TextAlignmentOptions.Center);
         if (UITheme.Active != null) storyText.color = UITheme.Active.colorTextMuted;
 
         // 타이어 마모 (좌하단)
@@ -212,9 +213,9 @@ public class ResultPanel : MonoBehaviour
         var theme = UITheme.Active;
         cards.Clear();
         int n = 5;
-        float panelW = 1200f;
+        float panelW = 1600f;     // 도현 #2-4 panel size 동기화
         float pad = 60f;
-        float spacing = 12f;
+        float spacing = 16f;
         float available = panelW - pad * 2 - spacing * (n - 1);
         float cardW = available / n;
         float cardH = 220f;

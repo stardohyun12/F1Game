@@ -4,14 +4,15 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// 한글 fallback 강제 등록 (세션 16 D-054 후속, B1).
+/// 한글 fallback 강제 등록 + UITheme.fontPrimary 직접 교체 (세션 16 D-054 후속, B1+B5).
 ///
-/// 진단: SetupKoreanFallback이 메모리 객체 fallbackFontAssetTable에는 추가하지만
-/// EditorUtility.SetDirty + AssetDatabase.SaveAssets 호출이 누락되어 .asset 파일에 직렬화 안 됨.
-/// → grep 결과 KenneyFuture SDF.asset의 fallbackFontAssetTable이 비어있음.
+/// B1 (fallback 등록):
+///   SetupKoreanFallback이 메모리 객체엔 추가하지만 SaveAssets 누락 가능성 → 강제.
 ///
-/// 처치: 직접 SerializedObject로 fallbackFontAssetTable 배열에 추가 + 명시적 SetDirty + SaveAssets.
-/// 검증: 메뉴 실행 직후 fallback 개수 + 첫 항목 이름 출력.
+/// B5 (도현 #2-4 "아직도 한글 깨짐"):
+///   fallback chain이 작동 안 하면 우회. UITheme.fontPrimary를 KoreanFallback SDF로 직접 교체.
+///   Korean SDF (Malgun)는 Latin 글리프 포함이라 영어/한글 동시 표시 OK.
+///   Kenney Future 스타일은 잃지만 가독성 우선.
 ///
 /// 메뉴: PitCrew/UI/Force Register Korean Fallback
 /// </summary>
@@ -55,25 +56,40 @@ public static class ForceRegisterKoreanFallback
                 continue;
             }
 
-            // 이미 등록됐는지 확인
+            // (도현 #2-5 진단) null 항목 누적 정리 — 이전 Apply 실행 시 KoreanFallback 삭제→재생성으로
+            // 기존 참조가 missing(null)으로 남아 fallback chain 끊김. 첫 항목이 null이면 이후 fallback 검색 안 함.
+            int beforeSize = arr.arraySize;
+            for (int i = arr.arraySize - 1; i >= 0; i--)
+            {
+                var elem = arr.GetArrayElementAtIndex(i);
+                if (elem.objectReferenceValue == null)
+                {
+                    arr.DeleteArrayElementAtIndex(i);
+                }
+            }
+            int cleaned = beforeSize - arr.arraySize;
+            if (cleaned > 0) Debug.Log($"[ForceFallback] {primary.name}: null fallback {cleaned}개 정리.");
+
+            // 이미 (정리 후) 등록됐는지 확인
             bool already = false;
             for (int i = 0; i < arr.arraySize; i++)
             {
                 var elem = arr.GetArrayElementAtIndex(i);
                 if (elem.objectReferenceValue == korean) { already = true; break; }
             }
-            if (already)
+            if (!already)
             {
-                Debug.Log($"[ForceFallback] {primary.name}: 이미 등록됨 ({arr.arraySize}개) — 건너뜀.");
-                continue;
+                arr.InsertArrayElementAtIndex(arr.arraySize);
+                arr.GetArrayElementAtIndex(arr.arraySize - 1).objectReferenceValue = korean;
+                registered++;
+                Debug.Log($"[ForceFallback] {primary.name}: Korean fallback 추가 (총 {arr.arraySize}개).");
             }
-
-            arr.InsertArrayElementAtIndex(arr.arraySize);
-            arr.GetArrayElementAtIndex(arr.arraySize - 1).objectReferenceValue = korean;
+            else
+            {
+                Debug.Log($"[ForceFallback] {primary.name}: Korean fallback 이미 정상 등록됨 (총 {arr.arraySize}개).");
+            }
             so.ApplyModifiedProperties();
             EditorUtility.SetDirty(primary);
-            registered++;
-            Debug.Log($"[ForceFallback] {primary.name}: fallback 추가 (총 {arr.arraySize}개) — Korean SDF 등록 + SetDirty.");
         }
 
         // 명시적 저장 — 핵심
@@ -93,15 +109,45 @@ public static class ForceRegisterKoreanFallback
             Debug.Log($"[ForceFallback] (검증) {primary.name}.fallback = {count}개 (첫 항목: {firstName}).");
         }
 
+        // B5: UITheme.fontPrimary를 KoreanFallback SDF로 직접 교체 (도현 #2-4).
+        // fallback chain 우회 — 어느 HUD든 무조건 한글 렌더.
+        const string UIThemePath = "Assets/Resources/UITheme.asset";
+        var uiTheme = AssetDatabase.LoadAssetAtPath<UITheme>(UIThemePath);
+        if (uiTheme != null)
+        {
+            var soTheme = new SerializedObject(uiTheme);
+            var fontProp = soTheme.FindProperty("fontPrimary");
+            if (fontProp != null)
+            {
+                fontProp.objectReferenceValue = korean;
+                soTheme.ApplyModifiedProperties();
+                EditorUtility.SetDirty(uiTheme);
+                Debug.Log($"[ForceFallback] (B5) UITheme.fontPrimary → KoreanFallback SDF 직접 교체.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[ForceFallback] (B5) {UIThemePath} 없음 — fontPrimary 교체 건너뜀.");
+        }
+        AssetDatabase.SaveAssets();
+
         // TMP_Text 전부 강제 새로고침 (이미 렌더된 한글 □ 갱신)
         var texts = Object.FindObjectsByType<TMP_Text>(FindObjectsSortMode.None);
-        foreach (var t in texts) { if (t != null) t.ForceMeshUpdate(true); }
-        Debug.Log($"[ForceFallback] (3/3) TMP_Text {texts.Length}개 ForceMeshUpdate — 한글 즉시 재렌더.");
+        foreach (var t in texts)
+        {
+            if (t == null) continue;
+            // primary font 자체를 교체 — 즉시 반영 보장
+            if (uiTheme != null && uiTheme.fontPrimary != null)
+                t.font = uiTheme.fontPrimary;
+            t.ForceMeshUpdate(true);
+        }
+        Debug.Log($"[ForceFallback] (3/3) TMP_Text {texts.Length}개 font 교체 + ForceMeshUpdate.");
 
         EditorUtility.DisplayDialog("Force Korean Fallback",
             $"✓ {registered}개 폰트에 한글 fallback 강제 등록.\n" +
-            "✓ AssetDatabase.SaveAssets — .asset 파일 영구 저장.\n" +
-            $"✓ 씬 TMP_Text {texts.Length}개 강제 재렌더.\n\n" +
+            "✓ UITheme.fontPrimary → KoreanFallback SDF 직접 교체 (B5 우회 처치).\n" +
+            "✓ AssetDatabase.SaveAssets.\n" +
+            $"✓ 씬 TMP_Text {texts.Length}개 font 교체 + 재렌더.\n\n" +
             "Play로 한글 표시 확인.",
             "확인");
     }

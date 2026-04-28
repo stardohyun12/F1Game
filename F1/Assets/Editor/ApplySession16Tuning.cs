@@ -34,9 +34,11 @@ public static class ApplySession16Tuning
 
         Debug.Log("[Session16] === 세션 16 일괄 튜닝 적용 시작 ===");
 
-        // 한글 fallback 재생성 (도현 #2-3 — 여전히 깨짐, malgun으로 교체 + 기존 atlas 제거)
-        SetupKoreanFallback.Execute();
-        // B1: fallbackFontAssetTable에 영구 등록 + SaveAssets 강제
+        // 한글 fallback — KoreanFallback SDF 없을 때만 SetupKoreanFallback 호출.
+        // 도현 #2-5: 매번 재생성 시 KenneyFuture fallback table에 null 누적 → chain 끊김.
+        // 이미 있으면 건너뜀, ForceRegister만 호출 (null 정리 + UITheme.fontPrimary 교체).
+        var existingKorean = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/UI/Fonts/Korean/KoreanFallback SDF.asset");
+        if (existingKorean == null) SetupKoreanFallback.Execute();
         ForceRegisterKoreanFallback.Execute();
 
         ApplyArcadeCarController();
