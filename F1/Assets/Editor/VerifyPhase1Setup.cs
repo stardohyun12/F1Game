@@ -28,6 +28,7 @@ public static class VerifyPhase1Setup
         Check(report, ref ok, ref fail, "ArcadeCarController", Object.FindFirstObjectByType<ArcadeCarController>() != null);
         Check(report, ref ok, ref fail, "FollowCamera", Object.FindFirstObjectByType<FollowCamera>() != null);
         Check(report, ref ok, ref fail, "IntegrityHUD", Object.FindFirstObjectByType<IntegrityHUD>() != null);
+        Check(report, ref ok, ref fail, "CargoWarningHUD (Day 24 코너 경고)", Object.FindFirstObjectByType<CargoWarningHUD>() != null);
 
         // 2. 신규 시스템 (Phase 1 후반)
         Check(report, ref ok, ref fail, "UpgradeSystem", UpgradeSystem.Instance != null || Object.FindFirstObjectByType<UpgradeSystem>() != null);

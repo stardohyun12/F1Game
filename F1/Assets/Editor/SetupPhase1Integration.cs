@@ -97,6 +97,10 @@ public static class SetupPhase1Integration
         FixStartYaw.Execute();
         Debug.Log("[Phase1] (8/8) FixStartYaw — 차량 방향 도로 매칭.");
 
+        // 9. CargoWarningHUD (Day 24 — 코너 경고 UI)
+        EnsureUIChild<CargoWarningHUD>("CargoWarningHUD");
+        Debug.Log("[Phase1] (9/9) CargoWarningHUD 추가 — 화물 위험 경고 (코너/스핀/경사/급제동).");
+
         // 씬 저장
         var scene = EditorSceneManager.GetActiveScene();
         EditorSceneManager.MarkSceneDirty(scene);
@@ -123,5 +127,17 @@ public static class SetupPhase1Integration
         var comp = go.GetComponent<T>();
         if (comp == null) comp = go.AddComponent<T>();
         return comp;
+    }
+
+    /// <summary>UIRoot 아래에 RectTransform GameObject + 지정 컴포넌트 부착 (HUD 패턴).</summary>
+    static T EnsureUIChild<T>(string goName) where T : MonoBehaviour
+    {
+        var existing = Object.FindFirstObjectByType<T>();
+        if (existing != null) return existing;
+
+        var uiRoot = UIRoot.Ensure();
+        var go = new GameObject(goName, typeof(RectTransform));
+        go.transform.SetParent(uiRoot, false);
+        return go.AddComponent<T>();
     }
 }

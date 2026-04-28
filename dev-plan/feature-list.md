@@ -64,7 +64,7 @@
 ## 2주차 — "운전에 긴장감이 추가되는가"
 
 - [x] 단순 화물 시스템 (Shock 민감도만, 박스 1종) — `CargoBox.cs` 세션 14 D-040. 세션 15에서 5종 + Packing 4단계로 확장(`CargoType`, `CargoTypePresets`, `PackingTier`).
-- [x] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음) — `Tires/TireSystem.cs` (세션 15). 효과 ArcadeCarController 통합은 잔여.
+- [x] 단순 타이어 시스템 (단일 수명, 바퀴 구분 없음) — `Tires/TireSystem.cs` (세션 15) + ArcadeCarController 통합(세션 16, Day 20). Soft/Medium/Hard ×1.4/×1.0/×0.7 그립 + ±5% 최대속도 + 마모 반영.
 - [x] 단순 연료 시스템 (소비 + 고갈 시 정지) — `FuelSystem.cs` (세션 10, 5분 풀탱크)
 - [x] 단순 기어 시스템 (Auto 5단 + HUD) — `GearSystem.cs` + `GearHUD.cs` (세션 10)
 - [x] 간단한 HUD (연료 게이지 + 기어) — `FuelHUD.cs` + `GearHUD.cs` 좌하단/우하단. **세션 12 (D-035) UGUI/TMP 전환** — Kenney Future SDF 폰트 + 9-slice sprite + UITheme SO 중앙화. 자가구성 패턴(`Awake → EnsureCanvasParent → BuildIfNeeded`) 3종 검증. CountdownHUD 동시 전환.
