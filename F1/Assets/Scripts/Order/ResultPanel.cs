@@ -154,9 +154,9 @@ public class ResultPanel : MonoBehaviour
         (cargoLabel, cargoVal) = CreateStatRow(panelGO.transform, "Cargo", statY - 3 * rowH, "화물");
         (rewardLabel, rewardVal) = CreateStatRow(panelGO.transform, "Reward", statY - 4 * rowH, "보상");
 
-        // 화물 이야기 — 도현 #2-10: stats 끝(-384) 아래 + tire(-540) 위, 충분한 분리.
+        // 화물 이야기 — 도현 #2-12: -460→-450 (보상-story 30px, story-tire 30px 균등).
         storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0, -460), new Vector2(1500, 60), 36, FontStyles.Italic, TextAlignmentOptions.Center);
+            new Vector2(0, -450), new Vector2(1500, 50), 32, FontStyles.Italic, TextAlignmentOptions.Center);
         if (UITheme.Active != null) storyText.color = UITheme.Active.colorTextMuted;
 
         // 타이어 마모 — 도현 #2-8: y=460 (카드 top 340 + 여유)
