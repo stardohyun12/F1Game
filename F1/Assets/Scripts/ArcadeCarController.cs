@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    // 도현 피드백 (세션 15): "속도감 부족". 90→130 km/h, accelTime 2.8→2.0.
+    // 도현 피드백 (세션 16): "묵직함". accelTime 2.0→1.4 (가속 즉각).
     [SerializeField] private float maxSpeedKmh = 130f;
-    [SerializeField] private float accelTime = 2.0f;
+    [SerializeField] private float accelTime = 1.4f;
     [SerializeField] private float brakeDecel = 8f;
     [SerializeField] private float reverseMaxKmh = 25f;
     [SerializeField] private float coastDrag = 0.8f;
@@ -23,10 +23,11 @@ public class ArcadeCarController : MonoBehaviour
     [SerializeField] private float minSpeedForSteer = 0.5f;
 
     [Header("Input Smoothing (세션 14 리서치 TOP 1)")]
-    [Tooltip("조향 입력 SmoothDamp 지연. 0=즉각, 0.12=자연 무게감.")]
-    [SerializeField] private float steerLag = 0.12f;
-    [Tooltip("스로틀 입력 SmoothDamp 지연. 0=즉각, 0.08=관성감.")]
-    [SerializeField] private float throttleLag = 0.08f;
+    // 도현 피드백 (세션 16): "묵직함". steerLag 0.12→0.06, throttleLag 0.08→0.03.
+    [Tooltip("조향 입력 SmoothDamp 지연. 0=즉각, 0.06=경쾌, 0.12=무거움.")]
+    [SerializeField] private float steerLag = 0.06f;
+    [Tooltip("스로틀 입력 SmoothDamp 지연. 0=즉각, 0.03=경쾌, 0.08=무거움.")]
+    [SerializeField] private float throttleLag = 0.03f;
 
     [Header("Grip")]
     [SerializeField] private float sideGripDamping = 6f;
@@ -187,8 +188,9 @@ public class ArcadeCarController : MonoBehaviour
             if (forwardSpeed < EffectiveMaxSpeedMps)
             {
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
-                // TOP 2: 저속 램프 — 0~10 km/h(2.8 m/s)에서 가속력 50%→100% 램프 (무게감)
-                float lowSpeedRamp = Mathf.Lerp(0.5f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 2.8f));
+                // 도현 피드백 (세션 16): 저속 램프 시작 0.5→0.8, 도달거리 2.8→1.5 m/s.
+                // 정지 출발 즉각 + 무게감 약간 유지.
+                float lowSpeedRamp = Mathf.Lerp(0.8f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.5f));
                 rb.AddForce(transform.forward * (accelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
             }
         }
