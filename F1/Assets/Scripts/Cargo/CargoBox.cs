@@ -276,6 +276,17 @@ public class CargoBox : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 외부 시스템(신호등 위반, 이벤트 페널티 등)에서 호출하는 public 데미지 진입점.
+    /// OnImpact 이벤트도 함께 발동해 IntegrityHUD가 빨강 flash 표시 + 충돌음 후크 활용.
+    /// </summary>
+    public void ApplyExternalDamage(float dmg, float flashSpeedKmh = 30f)
+    {
+        if (dmg <= 0f) return;
+        OnImpact?.Invoke(flashSpeedKmh);
+        ApplyDamage(dmg);
+    }
+
     /// <summary>박스를 새것으로 교체 (허브에서 호출).</summary>
     public void Repair()
     {
