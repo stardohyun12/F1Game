@@ -53,6 +53,7 @@ public static class ApplySession16Tuning
         {
             PlaceSuburbanProps.Execute();
             PlaceTrafficLight.Execute();
+            PlaceStreetLights.Execute();     // B4: 가로등 자동 배치
         }
 
         // 기존 TMP_Text 강제 새로고침 — fallback 추가 후 stale 렌더 방지.

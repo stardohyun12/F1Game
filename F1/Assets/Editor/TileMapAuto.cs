@@ -23,7 +23,7 @@ public static class TileMapAuto
     [System.Flags]
     public enum Dir { None = 0, N = 1, S = 2, E = 4, W = 8 }
 
-    public enum Kind { Straight, Curve, Intersection, Crossroad, End, Crossing, Driveway }
+    public enum Kind { Straight, Curve, Intersection, Crossroad, End, Crossing, Driveway, Bridge }
 
     // Lookup: given (kind, exit-set), what rotation places the tile correctly?
     // Built from validated rotation->exits mappings.
@@ -67,6 +67,10 @@ public static class TileMapAuto
         { (Kind.Crossing, Dir.E | Dir.W), 0 },
         { (Kind.Crossing, Dir.N | Dir.S), 90 },
 
+        // Bridge (시각 변종, B4): same exits as Straight. road-bridge.fbx — 약간 높은 다리 외형.
+        { (Kind.Bridge, Dir.E | Dir.W), 0 },
+        { (Kind.Bridge, Dir.N | Dir.S), 90 },
+
         // Driveway (single-car entry): 1 exit. Same rotation semantics as End.
         { (Kind.Driveway, Dir.E), 0 },
         { (Kind.Driveway, Dir.S), 90 },
@@ -83,6 +87,7 @@ public static class TileMapAuto
         { Kind.End, "road-end-round.fbx" },       // 세션 13: 막다른 골목은 round cap 사용 (교외 분위기)
         { Kind.Crossing, "road-crossing.fbx" },   // 세션 13: 횡단보도 straight 대체
         { Kind.Driveway, "road-driveway-single.fbx" }, // 세션 13: 배달점 진입로
+        { Kind.Bridge, "road-bridge.fbx" },        // 세션 16 B4: 다리 변종
     };
 
     // Per-tile native footprint in mesh units (measured via MeasureTiles).
@@ -96,6 +101,7 @@ public static class TileMapAuto
         { Kind.End, 1f },
         { Kind.Crossing, 1f },        // road-crossing = 1x1 (D-034 catalog)
         { Kind.Driveway, 1f },        // road-driveway-single = 1x1
+        { Kind.Bridge, 1f },          // road-bridge = 1x1 (B4)
     };
 
     // ----- Layout (rectangular loop, 7 wide x 5 tall) -----
@@ -164,7 +170,7 @@ public static class TileMapAuto
         {
             if (c < 0 || c >= width || r < 0 || r >= height) return false;
             char ch = mask[r][c];
-            return ch == '#' || ch == 'X' || ch == 'D';
+            return ch == '#' || ch == 'X' || ch == 'D' || ch == 'B';
         }
 
         char CellChar(int c, int r)
@@ -253,6 +259,11 @@ public static class TileMapAuto
                 {
                     if (kind == Kind.End) kind = Kind.Driveway;
                     else Debug.LogWarning($"TileMapAuto: 'D' driveway at ({c},{r}) needs 1 exit, got {kind} {exits}");
+                }
+                else if (ch == 'B')
+                {
+                    if (kind == Kind.Straight) kind = Kind.Bridge;
+                    else Debug.LogWarning($"TileMapAuto: 'B' bridge at ({c},{r}) needs opposite exits, got {kind} {exits}");
                 }
 
                 if (!RotationFor.TryGetValue((kind, exits), out int rot))

@@ -137,6 +137,9 @@ public static class VerifyPhase1Setup
         var traffic = GameObject.Find("TrafficLights");
         Check(report, ref ok, ref fail, $"TrafficLights root [자식 {(traffic != null ? traffic.transform.childCount : 0)}개]",
             traffic != null);
+        var lights = GameObject.Find("StreetLights");
+        Check(report, ref ok, ref fail, $"StreetLights root [자식 {(lights != null ? lights.transform.childCount : 0)}개]",
+            lights != null);
 
         // 10. 컨트롤 4차 튜닝 검증 (도현 #1-4 적용 여부)
         var carCtrl = Object.FindFirstObjectByType<ArcadeCarController>();
