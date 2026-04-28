@@ -25,10 +25,16 @@ public class IntegrityHUD : MonoBehaviour
     [SerializeField] float critThreshold = 0.2f;
     [SerializeField] float critBlinkHz = 4f;
 
+    [Header("Impact Flash (D-043, 도현 세션 15)")]
+    [Tooltip("충돌 시 HUD 빨강 flash 지속 (s).")]
+    [SerializeField] float flashDuration = 0.18f;
+
     RectTransform rt;
     Image bg, fillImg;
     RectTransform fillRt;
     TMP_Text label;
+    float flashEndTime;
+    Color baseBgColor;
 
     void Awake()
     {
@@ -37,6 +43,21 @@ public class IntegrityHUD : MonoBehaviour
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
         BuildIfNeeded();
+        HookCargoEvents();
+    }
+
+    void HookCargoEvents()
+    {
+        if (cargo == null) return;
+        cargo.OnImpact -= OnCargoImpact;
+        cargo.OnImpact += OnCargoImpact;
+    }
+
+    void OnCargoImpact(float speedKmh)
+    {
+        // 충돌 강도에 비례한 flash 길이 (최소 0.1s).
+        float t = Mathf.Clamp01(speedKmh / 40f);
+        flashEndTime = Time.unscaledTime + flashDuration * (0.5f + 0.5f * t);
     }
 
     void EnsureCanvasParent()
@@ -101,13 +122,29 @@ public class IntegrityHUD : MonoBehaviour
         {
             cargo = FindFirstObjectByType<CargoBox>();
             if (cargo == null) return;
+            HookCargoEvents();
         }
         var theme = UITheme.Active;
 
         if (theme != null)
         {
-            if (bg != null) bg.color = theme.colorPanel;
+            if (bg != null) baseBgColor = theme.colorPanel;
             if (label != null) label.color = theme.colorTextOnFill;
+        }
+
+        // Impact flash (D-043) — bg 색상 빨강 lerp.
+        if (bg != null)
+        {
+            float remaining = flashEndTime - Time.unscaledTime;
+            if (remaining > 0f)
+            {
+                float t = Mathf.Clamp01(remaining / flashDuration);
+                bg.color = Color.Lerp(baseBgColor, new Color(1f, 0.25f, 0.25f, 1f), t);
+            }
+            else
+            {
+                bg.color = baseBgColor;
+            }
         }
 
         float level = cargo.IntegrityPercent;
@@ -130,8 +167,10 @@ public class IntegrityHUD : MonoBehaviour
             }
         }
 
+        // D-043: 화물 타입 표시 — "계란 87%", "유리 65%" 등 즉시 인식.
+        string cargoName = CargoTypePresets.DisplayName(cargo.Type);
         label.text = cargo.IsTotaled
-            ? "CARGO TOTALED"
-            : $"CARGO  {Mathf.RoundToInt(level * 100)}%";
+            ? $"{cargoName} 전파"
+            : $"{cargoName}  {Mathf.RoundToInt(level * 100)}%";
     }
 }

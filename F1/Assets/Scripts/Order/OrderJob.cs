@@ -34,4 +34,13 @@ public class OrderJob : ScriptableObject
         1 => "보통",
         _ => "무거움"
     };
+
+    [Header("Cargo (Day 11)")]
+    [Tooltip("이 주문에 실리는 화물 타입. RunController.BeginRun에서 CargoBox에 자동 적용.")]
+    public CargoType cargoType = CargoType.Box;
+
+    [Header("Packing — 충격흡수재 (도현 세션 15)")]
+    [Tooltip("이 주문 기본 포장 등급. 출발 전 OrderBoard에서 변경 가능. " +
+             "기본 Bubble = 일반 주행 안전.")]
+    public PackingTier defaultPacking = PackingTier.Bubble;
 }

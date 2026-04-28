@@ -5,10 +5,11 @@ using UnityEngine.InputSystem;
 public class ArcadeCarController : MonoBehaviour
 {
     [Header("Performance")]
-    [SerializeField] private float maxSpeedKmh = 90f;
-    [SerializeField] private float accelTime = 2.8f;
-    [SerializeField] private float brakeDecel = 6f;
-    [SerializeField] private float reverseMaxKmh = 20f;
+    // 도현 피드백 (세션 15): "속도감 부족". 90→130 km/h, accelTime 2.8→2.0.
+    [SerializeField] private float maxSpeedKmh = 130f;
+    [SerializeField] private float accelTime = 2.0f;
+    [SerializeField] private float brakeDecel = 8f;
+    [SerializeField] private float reverseMaxKmh = 25f;
     [SerializeField] private float coastDrag = 0.8f;
     [SerializeField] private float airDrag = 0.35f;
     [SerializeField] private AnimationCurve brakeStrengthBySpeed =
@@ -64,6 +65,15 @@ public class ArcadeCarController : MonoBehaviour
     public float ThrottleInput => smoothedMove.y;
     public float RawSteerInput => moveInput.x;
     public float RawThrottleInput => moveInput.y;
+    /// <summary>현재 차량 진행 방향의 경사각(deg). 양수=업힐, 음수=다운힐. Day 17 도입.</summary>
+    public float CurrentSlopeDeg
+    {
+        get
+        {
+            Vector3 fwd = transform.forward;
+            return Mathf.Asin(Mathf.Clamp(fwd.y, -1f, 1f)) * Mathf.Rad2Deg;
+        }
+    }
 
     void Awake()
     {

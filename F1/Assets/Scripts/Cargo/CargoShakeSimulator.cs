@@ -1,17 +1,28 @@
 using UnityEngine;
 
 /// <summary>
-/// 트렁크 내 박스 물리 시뮬 — 패턴 B (Kinematic + Custom physics state).
-/// 세션 14 후반, 리서치 `GDD/research/cargo-shake-research.md` 패턴 B.
+/// 트렁크 내 박스 물리 시뮬 — 패턴 C+ (도현 세션 15 — 사면 중력 추가).
 ///
-/// 도현 피드백 "바람에 흔들리는 갈대" 해결:
-/// - rest 복귀 Lerp 제거 → velocity 기억 (관성)
-/// - 정지 마찰 (staticFrictionG) → G 임계 미만은 박스가 움직이지 않음
-/// - 운동 마찰 (kineticFriction) → 일단 미끄러지기 시작하면 서서히 감쇠
-/// - AABB clamp + wall bounce → 벽에 부딪히면 그 자리에서 멈춤 (rest 복귀 X)
+/// 핵심 모델: 박스는 트렁크 **바닥**에 놓여있음.
+/// 작용 힘 2종류:
+///   1. 관성력 (차 가속/제동/코너 시) — 기존
+///   2. **사면 중력** (차체 기울기 시) — D-044 신규
+///      차가 좌측 캠버 → 박스 우측 미끄러짐
+///      차가 다운힐 → 박스 전방 미끄러짐
+///      차가 정지 상태에서도 사면이면 박스 미끄러짐 (실제 차량 박스)
 ///
-/// 회전은 기존 Lerp 방식 유지 — 갈대 문제의 근본은 position이었음.
-/// 회전은 살짝 기울어지는 정도라 rest 복귀가 자연스러움.
+/// 동작:
+/// - 차 평지 정지 → 박스 가만히
+/// - 차 가속/제동/코너 → 관성력으로 미끄러짐
+/// - 차 사면 → 사면 중력으로 미끄러짐 (정지 상태에서도)
+/// - 차 사면 + 가속 → 두 힘 합산
+/// - 회전 X (마찰이 박스 회전 막음)
+///
+/// 파라미터:
+/// - staticFrictionG 0.25 (작은 G에도 미끄러짐 시작 — 사면 작아도 작동)
+/// - kineticFriction 1.0 (천천히 감속)
+/// - accelScale 1.0 (G가 박스 잘 밀어냄)
+/// - maxOffset 0.5 (트렁크 ±0.5m)
 /// </summary>
 [DisallowMultipleComponent]
 public class CargoShakeSimulator : MonoBehaviour
@@ -19,23 +30,34 @@ public class CargoShakeSimulator : MonoBehaviour
     [SerializeField] CargoBox cargo;
     [SerializeField] Transform boxTransform;
 
-    [Header("Rotation (Lerp 유지)")]
-    [SerializeField] float degPerLongG = 3f;
-    [SerializeField] float degPerLatG = 3f;
-    [SerializeField] float maxRotDeg = 8f;
-    [SerializeField] float rotLerp = 3f;
+    [Header("Rotation (도현 세션 15: 기본 OFF — 갈대 제거)")]
+    [Tooltip("박스 회전 적용 여부. false = 트렁크 박스 단단한 느낌. true = 미세 기울기.")]
+    [SerializeField] bool enableRotation = false;
+    [SerializeField] float degPerLongG = 1.5f;
+    [SerializeField] float degPerLatG = 1.5f;
+    [SerializeField] float maxRotDeg = 4f;
+    [SerializeField] float rotLerp = 6f;
 
-    [Header("Position Physics (패턴 B)")]
-    [Tooltip("정지 마찰 임계 G. 이 이하의 관성력은 박스를 움직이지 못함.")]
-    [SerializeField] float staticFrictionG = 0.3f;
-    [Tooltip("운동 마찰 감쇠율 (per sec). 움직이는 박스를 서서히 멈춤.")]
-    [SerializeField] float kineticFriction = 3.5f;
-    [Tooltip("G 1단위를 m/s²로 변환. 낮을수록 박스 반응 약함 (현실 9.81 과잉).")]
-    [SerializeField] float accelScale = 1.2f;
-    [Tooltip("트렁크 내 박스 이동 반경 (local x/z 각각, meters).")]
-    [SerializeField] float maxOffset = 0.45f;
-    [Tooltip("벽 충돌 시 반발 (0=멈춤, 0.5=절반 반발).")]
-    [SerializeField] float wallBounce = 0.25f;
+    [Header("Trunk Visual Match (D-048 — yaw만 매칭)")]
+    [Tooltip("트렁크 yaw만 차량 매칭. pitch/roll 무시 → 트렁크 visual 항상 평면. " +
+             "도현 진단 (D-048): 트렁크는 평평한 곳, 차량 가속/사면에도 평면 유지. " +
+             "박스 시뮬은 차량 frame 그대로 작동 (사면 중력 + 관성).")]
+    [SerializeField] bool matchCarRotation = true;
+    [Tooltip("CargoSimCamRig 자동 추적 (trunk yaw 따라가서 시점 일관 유지).")]
+    [SerializeField] Transform simCamRig;
+
+    [Header("Position Physics (패턴 C+ — 자동차 안 화물 느낌)")]
+    // D-046 (도현 세션 15): "시뮬레이션 느낌" 진단. 마찰 강화 + 반응 줄임.
+    [Tooltip("정지 마찰 임계 G. 일반 사면(10° 이하)에서는 박스 안 움직임.")]
+    [SerializeField] float staticFrictionG = 0.30f;
+    [Tooltip("운동 마찰 감쇠율 (per sec). 박스가 빨리 멈춤 = 자동차 안 화물 느낌.")]
+    [SerializeField] float kineticFriction = 3.0f;
+    [Tooltip("G 1단위를 m/s²로 변환. 0.7 = 박스 반응 70% (실제 마찰 큰 화물칸).")]
+    [SerializeField] float accelScale = 0.7f;
+    [Tooltip("트렁크 내 박스 이동 반경 (local x/z 각각, meters). 트렁크 공간.")]
+    [SerializeField] float maxOffset = 0.5f;
+    [Tooltip("벽 충돌 시 반발 (0=멈춤, 0.5=절반 반발). 0.05 = 거의 멈춤.")]
+    [SerializeField] float wallBounce = 0.05f;
     [Tooltip("velocity 이하이면 정지로 간주 (snap to 0).")]
     [SerializeField] float velocityDeadZone = 0.02f;
 
@@ -77,14 +99,25 @@ public class CargoShakeSimulator : MonoBehaviour
 
         float dt = Time.fixedDeltaTime;
 
-        // 차량 frame에서 박스는 -G 방향 관성력. local x = lateral(우+), local z = longitudinal(앞+).
+        // (1) 관성력: 차 가속/제동/코너 시 박스에 작용. local x = lateral(우+), local z = longitudinal(앞+).
         Vector3 inertialAccel = new Vector3(-cargo.SignedLatG, 0f, -cargo.SignedLongG) * accelScale;
 
+        // (2) 사면 중력 (D-044, 도현 세션 15): 차체 기울어지면 중력의 차 local x/z 성분이 박스를 밀어냄.
+        // "박스가 바닥에 있다" 가정의 핵심 — 정지 상태에서도 사면이면 미끄러짐.
+        Vector3 worldGravity = Physics.gravity;                // (0, -9.81, 0)
+        Vector3 localGravity = cargo.transform.InverseTransformDirection(worldGravity);
+        // localGravity.y는 정상 누름 (-9.81 근처) — 무시.
+        // localGravity.x/z = 사면 G 성분 (deg/s² 단위). G 단위로 변환해 accelScale 적용.
+        Vector3 slopeAccel = new Vector3(localGravity.x, 0f, localGravity.z) / 9.81f * accelScale;
+
+        // 총 가속도 = 관성력 + 사면 중력
+        Vector3 totalAccel = inertialAccel + slopeAccel;
+
         // 정지 마찰: accel 크기가 임계 미만이면 push 없음 (박스 고정)
-        float accelMag = Mathf.Sqrt(inertialAccel.x * inertialAccel.x + inertialAccel.z * inertialAccel.z);
+        float accelMag = Mathf.Sqrt(totalAccel.x * totalAccel.x + totalAccel.z * totalAccel.z);
         if (accelMag >= staticFrictionG * accelScale)
         {
-            simVelLocal += inertialAccel * dt;
+            simVelLocal += totalAccel * dt;
         }
 
         // 운동 마찰: 항상 감쇠 (일단 움직이면 서서히 멈춤)
@@ -118,6 +151,38 @@ public class CargoShakeSimulator : MonoBehaviour
 
     void LateUpdate()
     {
+        // D-048: 트렁크 yaw만 차량 매칭, pitch/roll 무시 → 트렁크 항상 평면.
+        // 도현 진단: 트렁크는 차량의 평평한 부분이라 가정. 차량이 사면/기울기에 있어도
+        // 트렁크 visual은 평면 유지. 박스 시뮬만 사면 중력 + 관성으로 평면 위에서 미끄러짐.
+        if (matchCarRotation && cargo != null)
+        {
+            float carYaw = cargo.transform.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(0f, carYaw, 0f);
+
+            // SimCamRig도 yaw만 차량 매칭 (시점 일관 + position 회전 따라감)
+            if (simCamRig == null)
+            {
+                var rigGO = GameObject.Find("CargoSimCamRig");
+                if (rigGO != null) simCamRig = rigGO.transform;
+            }
+            if (simCamRig != null)
+            {
+                Vector3 trunkPos = transform.position;
+                // CargoSimCamRig의 SetupCargoView default offset (0, 2.5, -0.8)
+                Vector3 offsetLocal = new Vector3(0f, 2.5f, -0.8f);
+                simCamRig.position = trunkPos + Quaternion.Euler(0f, carYaw, 0f) * offsetLocal;
+                simCamRig.rotation = Quaternion.Euler(65f, carYaw, 0f);
+            }
+        }
+
+        // 박스 자체 회전 (도현 세션 15: 회전 복귀가 갈대 느낌. 기본 OFF.)
+        if (!enableRotation)
+        {
+            // D-049 안전장치: 외부 영향 차단 — 박스 회전 매 프레임 restRot 강제.
+            // 어떤 코드가 박스 localRotation 변경해도 즉시 reset.
+            if (boxTransform != null) boxTransform.localRotation = restRot;
+            return;
+        }
         if (cargo == null || boxTransform == null) return;
 
         float pitch = Mathf.Clamp(-cargo.SignedLongG * degPerLongG, -maxRotDeg, maxRotDeg);
@@ -134,5 +199,18 @@ public class CargoShakeSimulator : MonoBehaviour
         boxTransform.localPosition = restPos;
         boxTransform.localRotation = restRot;
         simVelLocal = Vector3.zero;
+    }
+
+    /// <summary>
+    /// 박스 색상 변경 (D-043, 도현 세션 15).
+    /// RunController.BeginRun에서 화물 타입에 따라 자동 호출.
+    /// </summary>
+    public void SetBoxColor(Color c)
+    {
+        if (boxTransform == null) return;
+        var mr = boxTransform.GetComponent<MeshRenderer>();
+        if (mr == null) return;
+        // material instance — sharedMaterial 변경하면 다른 박스에도 영향. material로 instance 생성.
+        mr.material.color = c;
     }
 }
