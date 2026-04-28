@@ -143,12 +143,30 @@ public static class ForceRegisterKoreanFallback
         }
         Debug.Log($"[ForceFallback] (3/3) TMP_Text {texts.Length}개 font 교체 + ForceMeshUpdate.");
 
+        // Korean SDF 정상성 검증 (atlas texture sub-asset 여부)
+        bool atlasOk = korean.atlasTextures != null
+            && korean.atlasTextures.Length > 0
+            && korean.atlasTextures[0] != null
+            && !string.IsNullOrEmpty(AssetDatabase.GetAssetPath(korean.atlasTextures[0]));
+        Debug.Log($"[ForceFallback] (검증) KoreanFallback atlas texture sub-asset: {(atlasOk ? "정상" : "깨짐 — Apply 재실행 필요")}");
+
+        // 다이얼로그 — 명확화 (이미 등록 vs 신규 등록 구분)
+        string statusLine = registered > 0
+            ? $"✓ {registered}개 폰트에 Korean fallback 신규 등록."
+            : "✓ Korean fallback 이미 정상 등록됨 (변경 X).";
+        string atlasLine = atlasOk
+            ? "✓ Korean atlas texture sub-asset 정상."
+            : "⚠ Korean atlas texture 깨짐 — Apply 메뉴 재실행 필요.";
+
         EditorUtility.DisplayDialog("Force Korean Fallback",
-            $"✓ {registered}개 폰트에 한글 fallback 강제 등록.\n" +
-            "✓ UITheme.fontPrimary → KoreanFallback SDF 직접 교체 (B5 우회 처치).\n" +
-            "✓ AssetDatabase.SaveAssets.\n" +
+            $"{statusLine}\n" +
+            $"{atlasLine}\n" +
+            "✓ UITheme.fontPrimary → KoreanFallback SDF 직접 교체.\n" +
             $"✓ 씬 TMP_Text {texts.Length}개 font 교체 + 재렌더.\n\n" +
-            "Play로 한글 표시 확인.",
+            "다음 절차:\n" +
+            "1. Console 빨간 에러 모두 Clear\n" +
+            "2. ▶ Play\n" +
+            "3. HUD/정산 한글 표시 확인",
             "확인");
     }
 }

@@ -101,7 +101,31 @@ public static class SetupKoreanFallback
             );
             koreanAsset.name = "KoreanFallback SDF";
             AssetDatabase.CreateAsset(koreanAsset, KoreanFontAssetPath);
+
+            // 도현 #2-6 핵심 fix: atlas texture + material을 sub-asset으로 저장.
+            // CreateFontAsset 결과의 m_AtlasTextures / m_Material은 메모리 객체. 명시적 AddObjectToAsset
+            // 없이 SaveAssets만 부르면 .asset 파일에 dangling 참조 → Console "MissingReferenceException".
+            if (koreanAsset.atlasTextures != null)
+            {
+                for (int i = 0; i < koreanAsset.atlasTextures.Length; i++)
+                {
+                    var tex = koreanAsset.atlasTextures[i];
+                    if (tex != null && string.IsNullOrEmpty(AssetDatabase.GetAssetPath(tex)))
+                    {
+                        tex.name = $"AtlasTexture_{i}";
+                        AssetDatabase.AddObjectToAsset(tex, koreanAsset);
+                    }
+                }
+            }
+            if (koreanAsset.material != null && string.IsNullOrEmpty(AssetDatabase.GetAssetPath(koreanAsset.material)))
+            {
+                koreanAsset.material.name = "Material";
+                AssetDatabase.AddObjectToAsset(koreanAsset.material, koreanAsset);
+            }
+            EditorUtility.SetDirty(koreanAsset);
             AssetDatabase.SaveAssets();
+            AssetDatabase.ImportAsset(KoreanFontAssetPath);
+            Debug.Log("[KoreanFallback] (3a) atlas texture + material을 sub-asset으로 추가 (MissingReferenceException 처치).");
             Debug.Log("[KoreanFallback] (3/4) Dynamic SDF Font Asset 생성 — atlas 4096, multi-atlas on.");
         }
         else

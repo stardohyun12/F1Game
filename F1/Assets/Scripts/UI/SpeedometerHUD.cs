@@ -74,7 +74,8 @@ public class SpeedometerHUD : MonoBehaviour
             var r = speedText.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(0.5f, 0.5f);
-            r.offsetMin = new Vector2(12, 0); r.offsetMax = new Vector2(-74, 0);
+            // 도현 #2-7: fontSize 76 + 한글 SDF 문자 폭 ↑ → unit 영역 침범 (─76 → ─110).
+            r.offsetMin = new Vector2(12, 0); r.offsetMax = new Vector2(-110, 0);
         }
 
         if (unitText == null)
@@ -91,8 +92,8 @@ public class SpeedometerHUD : MonoBehaviour
             var r = unitText.rectTransform;
             r.anchorMin = new Vector2(1, 0); r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(1, 0.5f);
-            r.sizeDelta = new Vector2(66, 0);
-            r.anchoredPosition = new Vector2(-10, 0);
+            r.sizeDelta = new Vector2(96, 0);
+            r.anchoredPosition = new Vector2(-8, 0);
         }
     }
 
