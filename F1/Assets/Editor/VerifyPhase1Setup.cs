@@ -111,6 +111,43 @@ public static class VerifyPhase1Setup
                 Mathf.Approximately(trackLayout.startYawDeg, 90f));
         }
 
+        // 8. 한글 fallback (D-054 + B1) — 영구 등록 검증
+        var kenneyFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/UI/Fonts/KenneyFuture SDF.asset");
+        if (kenneyFont != null)
+        {
+            int fbCount = kenneyFont.fallbackFontAssetTable != null ? kenneyFont.fallbackFontAssetTable.Count : 0;
+            Check(report, ref ok, ref fail, $"KenneyFuture SDF.fallback ≥1 [현재 {fbCount}]",
+                fbCount >= 1);
+        }
+        var kenneyNarrow = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/UI/Fonts/KenneyFutureNarrow SDF.asset");
+        if (kenneyNarrow != null)
+        {
+            int fbCount = kenneyNarrow.fallbackFontAssetTable != null ? kenneyNarrow.fallbackFontAssetTable.Count : 0;
+            Check(report, ref ok, ref fail, $"KenneyFutureNarrow SDF.fallback ≥1 [현재 {fbCount}]",
+                fbCount >= 1);
+        }
+        var koreanFallback = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/UI/Fonts/Korean/KoreanFallback SDF.asset");
+        Check(report, ref ok, ref fail, "KoreanFallback SDF.asset 존재", koreanFallback != null);
+
+        // 9. 세션 16 신규 시스템
+        var props = GameObject.Find("Props");
+        Check(report, ref ok, ref fail, $"Props root [자식 {(props != null ? props.transform.childCount : 0)}개]",
+            props != null);
+        var traffic = GameObject.Find("TrafficLights");
+        Check(report, ref ok, ref fail, $"TrafficLights root [자식 {(traffic != null ? traffic.transform.childCount : 0)}개]",
+            traffic != null);
+
+        // 10. 컨트롤 4차 튜닝 검증 (도현 #1-4 적용 여부)
+        var carCtrl = Object.FindFirstObjectByType<ArcadeCarController>();
+        if (carCtrl != null)
+        {
+            var so = new SerializedObject(carCtrl);
+            var maxSpd = so.FindProperty("maxSpeedKmh");
+            var accT = so.FindProperty("accelTime");
+            if (maxSpd != null) Check(report, ref ok, ref fail, $"ArcadeCarController.maxSpeedKmh ≤ 95 [현재 {maxSpd.floatValue}]", maxSpd.floatValue <= 95f);
+            if (accT != null) Check(report, ref ok, ref fail, $"ArcadeCarController.accelTime ≥ 1.8 [현재 {accT.floatValue}]", accT.floatValue >= 1.8f);
+        }
+
         // 결과 출력
         var sep = "\n  ";
         var summary = $"Phase 1 Verify: {ok} OK / {fail} FAIL\n\n" + string.Join("\n", report);
