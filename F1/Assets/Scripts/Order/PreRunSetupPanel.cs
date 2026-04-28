@@ -4,15 +4,25 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// 출발 전 화물·포장 선택 패널 (세션 16 B3).
+/// 출발 전 화물·포장 선택 패널 (세션 16 B3 — 1차 단순 모달).
 ///
-/// 흐름
+/// 흐름 (현재)
 ///   OrderBoard 카드 클릭 → PreRunSetupPanel.Show(job)
 ///   → 화물 종류(고정, 표시만) + 포장 4단계 카드(None/Bubble/Foam/Hardcase) 선택
 ///   → 출발 버튼 → CargoBox.SetPacking(tier) + RunController.BeginRun(job)
 ///
 /// 도현 #1: "물건을 어떻게 포장할지에 대한 계획과 포장지에 따른 손상도감소기능"
 /// 데미지 감소 로직은 이미 작동(CargoBox.ApplyPreset의 packMul). UI만 신설.
+///
+/// 도현 #2 미래 요구 (Phase 2/3 별도 단계로 분리, ideas-parking):
+///   "물건을 선택하고 포장하는 단계가 따로 있어서 완충제를 어떻게 싸고 뭘 쓸지
+///    물건을 3D로 돌려가면서 포장해야함"
+/// → PackingStage scene/panel 신설:
+///   - 화물 prefab 3D 표시 (RenderTexture에 isolated camera).
+///   - 마우스 드래그 회전, 줌.
+///   - 완충제 layer 토글/이동 (Bubble wrap 시각화 — 반투명 mesh overlay).
+///   - 적용 후 BeginRun 트리거.
+/// 본 클래스는 단순 모달로 유지, 별도 PackingStage 신설 권장.
 /// </summary>
 public class PreRunSetupPanel : MonoBehaviour
 {
@@ -47,8 +57,19 @@ public class PreRunSetupPanel : MonoBehaviour
     void Awake()
     {
         if (runController == null) runController = FindFirstObjectByType<RunController>();
+        EnsureEventSystem();
         EnsureBuilt();
         if (canvas != null) canvas.gameObject.SetActive(false);
+    }
+
+    /// <summary>UGUI 버튼 클릭 디스패치 — EventSystem 자동 보장 (도현 #2-11).</summary>
+    static void EnsureEventSystem()
+    {
+        if (UnityEngine.EventSystems.EventSystem.current != null) return;
+        var existing = FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+        if (existing != null) return;
+        var go = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem));
+        go.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
     }
 
     public void Show(OrderJob job)
@@ -102,7 +123,8 @@ public class PreRunSetupPanel : MonoBehaviour
         panelRT.anchorMin = new Vector2(0.5f, 0.5f);
         panelRT.anchorMax = new Vector2(0.5f, 0.5f);
         panelRT.pivot = new Vector2(0.5f, 0.5f);
-        panelRT.sizeDelta = new Vector2(1100, 620);
+        // 도현 #2-9: 카드 글자 벗어남 → 패널 1100→1400, 카드별 더 넓은 공간.
+        panelRT.sizeDelta = new Vector2(1400, 680);
         var panelBg = panelGO.GetComponent<Image>();
         panelBg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.96f);
         if (theme?.panelDark != null) { panelBg.sprite = theme.panelDark; panelBg.type = Image.Type.Sliced; }
@@ -123,18 +145,18 @@ public class PreRunSetupPanel : MonoBehaviour
         // 4개 포장 카드 (가로)
         BuildPackingCards(panelGO.transform);
 
-        // 합계 비용 + 출발/취소 버튼
+        // 합계 비용 (좌하단)
         totalCostText = CreateText(panelGO.transform, "TotalCost", new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(60, 50), new Vector2(500, 50), 30, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            new Vector2(60, 50), new Vector2(700, 60), 32, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
 
-        // 취소 버튼 (왼쪽 아래)
-        cancelBtn = CreateButton(panelGO.transform, "CancelBtn", new Vector2(0, 0), new Vector2(220, 70),
-            new Vector2(640, 50), out cancelText, "취소", 32, new Color(0.40f, 0.40f, 0.45f));
+        // 취소 버튼 (가운데 좌)
+        cancelBtn = CreateButton(panelGO.transform, "CancelBtn", new Vector2(0, 0), new Vector2(240, 80),
+            new Vector2(800, 40), out cancelText, "취소", 36, new Color(0.40f, 0.40f, 0.45f));
         cancelBtn.onClick.AddListener(OnCancelClicked);
 
-        // 출발 버튼 (오른쪽 아래)
-        confirmBtn = CreateButton(panelGO.transform, "ConfirmBtn", new Vector2(0, 0), new Vector2(280, 70),
-            new Vector2(880, 50), out confirmText, "출발", 36, theme != null ? theme.colorAccent : new Color(0.95f, 0.65f, 0.15f));
+        // 출발 버튼 (우하단)
+        confirmBtn = CreateButton(panelGO.transform, "ConfirmBtn", new Vector2(0, 0), new Vector2(320, 80),
+            new Vector2(1060, 40), out confirmText, "출발", 40, theme != null ? theme.colorAccent : new Color(0.95f, 0.65f, 0.15f));
         confirmBtn.onClick.AddListener(OnConfirmClicked);
     }
 
@@ -143,9 +165,9 @@ public class PreRunSetupPanel : MonoBehaviour
         var theme = UITheme.Active;
         cards.Clear();
         var tiers = new[] { PackingTier.None, PackingTier.Bubble, PackingTier.Foam, PackingTier.Hardcase };
-        // 4 카드 가로. panel 1100, pad 60 → available 980 / 4 cards / 12 spacing
+        // 4 카드 가로. panel 1400, pad 60, spacing 20 → cardW = (1400-120-60)/4 = 305px (한글 충분).
         int n = tiers.Length;
-        float pad = 60f, spacing = 16f, cardW = (1100 - pad * 2 - spacing * (n - 1)) / n, cardH = 280f;
+        float pad = 60f, spacing = 20f, cardW = (1400 - pad * 2 - spacing * (n - 1)) / n, cardH = 320f;
         for (int i = 0; i < n; i++)
         {
             var card = new PackingCardUI { tier = tiers[i] };
@@ -176,10 +198,11 @@ public class PreRunSetupPanel : MonoBehaviour
             card.mul = CreateText(cardGO.transform, "Mul", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -76), new Vector2(0, 50), 40, FontStyles.Bold, TextAlignmentOptions.Center);
             if (theme != null) card.mul.color = theme.colorAccent;
-            // 설명
+            // 설명 — 카드 안에서 word wrap. 도현 #2-9: 영역 ↑ 80→120, fontSize 22→20.
             card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
-                new Vector2(0, -140), new Vector2(0, 80), 22, FontStyles.Normal, TextAlignmentOptions.Top);
+                new Vector2(0, -140), new Vector2(-20, 120), 20, FontStyles.Normal, TextAlignmentOptions.Top);
             card.desc.enableWordWrapping = true;
+            card.desc.overflowMode = TMPro.TextOverflowModes.Truncate;
             // 가격
             card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 0), new Vector2(1, 0),
                 new Vector2(0, 16), new Vector2(0, 36), 26, FontStyles.Bold, TextAlignmentOptions.Center);

@@ -73,8 +73,19 @@ public class ResultPanel : MonoBehaviour
 
     void Awake()
     {
+        EnsureEventSystem();
         EnsureBuilt();
         if (canvas != null) canvas.gameObject.SetActive(false);     // 시작 시 숨김
+    }
+
+    /// <summary>UGUI 버튼 클릭 디스패치를 위한 EventSystem 자동 보장 (도현 #2-11).</summary>
+    static void EnsureEventSystem()
+    {
+        if (UnityEngine.EventSystems.EventSystem.current != null) return;
+        var existing = FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+        if (existing != null) return;
+        var go = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem));
+        go.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
     }
 
     void EnsureBuilt()
@@ -133,30 +144,31 @@ public class ResultPanel : MonoBehaviour
         titleText = CreateText(panelGO.transform, "Title", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
             new Vector2(0, -75), new Vector2(800, 80), 64, FontStyles.Bold, TextAlignmentOptions.Center);
 
-        // Stats — 좌측 컬럼 (라벨 + 값) 5개
-        float statY = -180f;
+        // Stats — 좌측 컬럼 (라벨 + 값) 5개. 도현 #2-8 fix: + 대신 - (UI Y는 상→하 음수, 행 추가는 더 음수).
+        // #2-10: 이야기 공간 확보 위해 statY -180→-160.
+        float statY = -160f;
         float rowH = 56f;
-        (orderLabel, orderVal) = CreateStatRow(panelGO.transform, "Order", statY + 0 * rowH, "주문");
-        (completedLabel, completedVal) = CreateStatRow(panelGO.transform, "Completed", statY + 1 * rowH, "완료");
-        (timeLabel, timeVal) = CreateStatRow(panelGO.transform, "Time", statY + 2 * rowH, "소요 시간");
-        (cargoLabel, cargoVal) = CreateStatRow(panelGO.transform, "Cargo", statY + 3 * rowH, "화물");
-        (rewardLabel, rewardVal) = CreateStatRow(panelGO.transform, "Reward", statY + 4 * rowH, "보상");
+        (orderLabel, orderVal) = CreateStatRow(panelGO.transform, "Order", statY - 0 * rowH, "주문");
+        (completedLabel, completedVal) = CreateStatRow(panelGO.transform, "Completed", statY - 1 * rowH, "완료");
+        (timeLabel, timeVal) = CreateStatRow(panelGO.transform, "Time", statY - 2 * rowH, "소요 시간");
+        (cargoLabel, cargoVal) = CreateStatRow(panelGO.transform, "Cargo", statY - 3 * rowH, "화물");
+        (rewardLabel, rewardVal) = CreateStatRow(panelGO.transform, "Reward", statY - 4 * rowH, "보상");
 
-        // 화물 이야기 (전 너비 한 줄)
+        // 화물 이야기 — 도현 #2-10: stats 끝(-384) 아래 + tire(-540) 위, 충분한 분리.
         storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0, -560), new Vector2(1500, 60), 38, FontStyles.Italic, TextAlignmentOptions.Center);
+            new Vector2(0, -460), new Vector2(1500, 60), 36, FontStyles.Italic, TextAlignmentOptions.Center);
         if (UITheme.Active != null) storyText.color = UITheme.Active.colorTextMuted;
 
-        // 타이어 마모 (좌하단)
+        // 타이어 마모 — 도현 #2-8: y=460 (카드 top 340 + 여유)
         tireLabel = CreateText(panelGO.transform, "TireLabel", new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(60, 230), new Vector2(180, 36), 28, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
-        tireLabel.text = "타이어 마모";
+            new Vector2(60, 460), new Vector2(220, 36), 28, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+        tireLabel.text = "타이어";
         var tireBgGO = new GameObject("TireFillBG", typeof(RectTransform), typeof(Image));
         tireBgGO.transform.SetParent(panelGO.transform, false);
         var tireBgRT = tireBgGO.GetComponent<RectTransform>();
         tireBgRT.anchorMin = new Vector2(0, 0); tireBgRT.anchorMax = new Vector2(0, 0);
         tireBgRT.pivot = new Vector2(0, 0.5f);
-        tireBgRT.anchoredPosition = new Vector2(245, 248);
+        tireBgRT.anchoredPosition = new Vector2(285, 478);
         tireBgRT.sizeDelta = new Vector2(280, 24);
         tireFillBg = tireBgGO.GetComponent<Image>();
         tireFillBg.color = new Color(0.10f, 0.10f, 0.12f, 1f);
@@ -171,18 +183,18 @@ public class ResultPanel : MonoBehaviour
         tireFill.color = new Color(0.5f, 0.85f, 1f);
 
         tireVal = CreateText(panelGO.transform, "TireVal", new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(540, 230), new Vector2(280, 36), 24, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+            new Vector2(580, 460), new Vector2(300, 36), 24, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
 
-        // 포장 피드백 (우하단)
+        // 포장 피드백 (우 영역)
         packingFeedback = CreateText(panelGO.transform, "PackingFeedback", new Vector2(1, 0), new Vector2(1, 0),
-            new Vector2(-60, 230), new Vector2(450, 60), 26, FontStyles.Normal, TextAlignmentOptions.MidlineRight);
+            new Vector2(-60, 460), new Vector2(500, 60), 26, FontStyles.Normal, TextAlignmentOptions.MidlineRight);
 
-        // Wallet 표시 (업그레이드 영역 위)
+        // Wallet 표시 — 도현 #2-8: 카드 위 (타이어보다 약간 아래 행)
         walletLabel = CreateText(panelGO.transform, "WalletLabel", new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(60, 180), new Vector2(180, 36), 26, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            new Vector2(60, 400), new Vector2(220, 36), 26, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
         walletLabel.text = "보유 자금";
         walletVal = CreateText(panelGO.transform, "WalletVal", new Vector2(0, 0), new Vector2(0, 0),
-            new Vector2(245, 180), new Vector2(280, 36), 30, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+            new Vector2(285, 400), new Vector2(300, 36), 30, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
         if (UITheme.Active != null) walletVal.color = UITheme.Active.colorAccent;
 
         // 업그레이드 카드 5개 (가로)
@@ -253,9 +265,9 @@ public class ResultPanel : MonoBehaviour
             card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -90), new Vector2(0, 70), 18, FontStyles.Normal, TextAlignmentOptions.Top);
             card.desc.enableWordWrapping = true;
-            // cost
+            // cost — 도현 #2-9: 카드 안 cost 라인이 buy 버튼과 겹침. -160→-140.
             card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 1), new Vector2(1, 1),
-                new Vector2(0, -160), new Vector2(0, 30), 22, FontStyles.Bold, TextAlignmentOptions.Center);
+                new Vector2(0, -140), new Vector2(0, 30), 22, FontStyles.Bold, TextAlignmentOptions.Center);
             if (theme != null) card.cost.color = theme.colorAccent;
             // buy btn
             var btnGO = new GameObject("BuyBtn", typeof(RectTransform), typeof(Image), typeof(Button));

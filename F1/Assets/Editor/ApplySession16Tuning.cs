@@ -34,6 +34,10 @@ public static class ApplySession16Tuning
 
         Debug.Log("[Session16] === 세션 16 일괄 튜닝 적용 시작 ===");
 
+        // 도현 #2-11: 다시 버튼 안 눌림 — EventSystem 부재 처치.
+        // 기존 IMGUI HUD/OrderBoard는 EventSystem 없어도 동작. UGUI ResultPanel/PreRunSetupPanel은 필수.
+        EnsureEventSystem();
+
         // 한글 fallback 처리:
         // - SDF 없거나 atlas texture 깨졌으면(도현 #2-6 MissingReferenceException) 재생성
         // - 정상이면 SetupKoreanFallback 호출 X (null 누적 회피, #2-5)
@@ -168,5 +172,20 @@ public static class ApplySession16Tuning
     {
         var p = so.FindProperty(field);
         if (p != null) p.vector2Value = v;
+    }
+
+    /// <summary>UGUI 클릭 디스패치를 위해 EventSystem GameObject 보장.</summary>
+    static void EnsureEventSystem()
+    {
+        var existing = Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>();
+        if (existing != null)
+        {
+            Debug.Log("[Session16] EventSystem 이미 존재 — 건너뜀.");
+            return;
+        }
+        var go = new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem));
+        // 프로젝트 InputSystem(1.18) 사용 — InputSystemUIInputModule이 정합.
+        go.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+        Debug.Log("[Session16] EventSystem 신규 생성 — InputSystemUIInputModule (UGUI 버튼 클릭 활성화).");
     }
 }
