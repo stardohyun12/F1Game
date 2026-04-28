@@ -15,28 +15,28 @@ MonoBehaviour:
   m_Version: 1.1.0
   m_FaceInfo:
     m_FaceIndex: 0
-    m_FamilyName: Noto Sans KR
-    m_StyleName: Thin
+    m_FamilyName: Malgun Gothic
+    m_StyleName: Regular
     m_PointSize: 90
     m_Scale: 1
-    m_UnitsPerEM: 1000
-    m_LineHeight: 108.00001
-    m_AscentLine: 90
-    m_CapLine: 66
-    m_MeanLine: 48
+    m_UnitsPerEM: 2048
+    m_LineHeight: 119.70703
+    m_AscentLine: 97.9541
+    m_CapLine: 65
+    m_MeanLine: 46
     m_Baseline: 0
-    m_DescentLine: -18
-    m_SuperscriptOffset: 90
+    m_DescentLine: -21.75293
+    m_SuperscriptOffset: 97.9541
     m_SuperscriptSize: 0.5
-    m_SubscriptOffset: -18
+    m_SubscriptOffset: -21.75293
     m_SubscriptSize: 0.5
-    m_UnderlineOffset: -13.500001
-    m_UnderlineThickness: 4.5
-    m_StrikethroughOffset: 19.2
-    m_StrikethroughThickness: 4.5
-    m_TabWidth: 20
+    m_UnderlineOffset: -20.170898
+    m_UnderlineThickness: 5.229492
+    m_StrikethroughOffset: 18.4
+    m_StrikethroughThickness: 5.229492
+    m_TabWidth: 32
   m_Material: {fileID: 0}
-  m_SourceFontFileGUID: d523a930f3afaac448ff186eacbce502
+  m_SourceFontFileGUID: 394065cbe3b443446a3dd0b96eeae32d
   m_CreationSettings:
     sourceFontFileName: 
     sourceFontFileGUID: 
@@ -56,7 +56,7 @@ MonoBehaviour:
     fontStyleModifier: 0
     renderMode: 0
     includeFontFeatures: 0
-  m_SourceFontFile: {fileID: 12800000, guid: d523a930f3afaac448ff186eacbce502, type: 3}
+  m_SourceFontFile: {fileID: 12800000, guid: 394065cbe3b443446a3dd0b96eeae32d, type: 3}
   m_SourceFontFilePath: 
   m_AtlasPopulationMode: 1
   InternalDynamicOS: 0
