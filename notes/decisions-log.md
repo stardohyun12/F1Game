@@ -584,3 +584,58 @@
   - D-029/033 "연구→합의→구현" 패턴 재사용. 세션 11 D-033(Lynch) 성공 경험 반복.
   - D-032 교훈 연속 적용: 큰 시스템 전환은 "컨셉 합의 → 리서치 → 명세 → 구현" 4단계 분리.
 - **교차참조:** D-007(아케이드), D-033(Lynch 리서치), D-036(15×9 맵), D-037(v2 파이프라인), D-039(부스트 철회), H1~H5(ideas-parking).
+
+---
+
+## D-041 — Packing(충격흡수재) 시스템 (세션 15, 도현 신규)
+
+- **결정:** 박스 안 충격흡수재 4단계(None/Bubble/Foam/Hardcase) 도입. 임계값 ×1.0/1.3/1.6/2.0.
+- **이유:** 일반 주행에도 화물 데미지 = 좌절. 임계 튜닝만으론 못 풀음. 출발 전 "포장 등급" 결정으로 운전 자유도 구매.
+- **USP 정합:** "결정 밀도 4개 → 5개" (주문/경로/세팅/업그레이드 + 포장).
+- **구현:** `Cargo/PackingTier.cs` enum + Helper, `CargoBox.packing` 필드, `OrderJob.defaultPacking`, RunController 자동 적용.
+- **MVP:** 기본 Bubble (×1.3) — 좌절 즉시 해소.
+
+## D-042 — CargoShake 패턴 C 재설계
+
+- **결정:** 박스 회전 비활성(default) + 마찰 강화 + 사면 중력 추가.
+- **이유:** 회전 Slerp(restRot 복귀)가 갈대 느낌의 근본 원인. 도현 진단 1~3차.
+- **결과:** 회전 X + 위치 미끄러짐만 + 멈춘 자리 유지.
+
+## D-043 — 화물 타입 즉시 인식 폴리싱
+
+- **결정:** CCTV 박스 색상 화물별 차별화 + IntegrityHUD 타입 라벨 + 충돌 flash.
+- **이유:** 도현 시각 인식 강화. 5종 화물 색깔로 구분.
+
+## D-044 — 사면 중력 + Trunk 회전 매칭
+
+- **결정:** 박스 사면 중력 시뮬 추가 (`Physics.gravity` → local frame). Trunk visual이 차량 회전 매칭.
+- **이유:** "바닥에 있는 화물" 느낌 — 차 정지 + 사면이면 박스 사면 따라 미끄러져야.
+
+## D-045 — 충돌 카메라 shake
+
+- **결정:** `CargoBox.OnImpact` → FollowCamera 0.35s shake (속도 비례, decay).
+- **이유:** 충격감 강화.
+
+## D-046 — 박스 Floor 정착 + 마찰 강화
+
+- **결정:** Box localY=0.325 (floor top 정확히), staticFriction 0.30, kinetic 3.0, accelScale 0.7.
+- **이유:** "시뮬레이션 느낌" 진단. 박스가 floor 안에 박혀있고 마찰 약해 자유롭게 미끄러짐.
+
+## D-047 — SimCam Worldspace Fixed
+
+- **결정:** SimCam을 CargoSimRoot 자식에서 분리, `CargoSimCamRig`(worldspace fixed)로 이동.
+- **이유:** trunk가 차량 회전 매칭이라 카메라도 함께 기울어 시점 자체가 기울어짐 → "평지에서도 박스 기울어 보임".
+
+## D-048 — Trunk Yaw-Only Match
+
+- **결정:** Trunk + Camera 둘 다 차량 yaw만 매칭. pitch/roll 무시 → trunk 항상 평면.
+- **이유:** "트렁크처럼 평평한 곳" 진단. 차량 가속/사면에도 trunk visual 평면 유지. 박스만 평면 위에서 미끄러짐.
+
+## D-049 — 박스 회전 강제 안전장치
+
+- **결정:** `CargoShakeSimulator.LateUpdate`에 `if (!enableRotation) boxTransform.localRotation = restRot` 강제. SetupCargoView 메뉴 시 enableRotation/matchCarRotation SerializedObject reset.
+- **이유:** 도현 8차 진단 "여전히 박스 기울어짐". 외부 영향 차단.
+
+---
+
+**세션 15 결정 클러스터:** D-040 컨셉 전환 후 화물 시스템 (Phase 1 시그니처) 풀 구현 + 도현 직접 피드백 8차 진단 처치.

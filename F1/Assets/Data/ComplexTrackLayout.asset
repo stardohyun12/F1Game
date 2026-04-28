@@ -56,4 +56,4 @@ MonoBehaviour:
     row: 0
     label: SouthGate
   startCell: {x: 1, y: 0}
-  startYawDeg: 0
+  startYawDeg: 90

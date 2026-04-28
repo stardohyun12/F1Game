@@ -13,6 +13,7 @@ public class RunController : MonoBehaviour
     [SerializeField] private OrderBoard orderBoard;
     [SerializeField] private ResultPanel resultPanel;
     [SerializeField] private FuelSystem fuel;
+    [SerializeField] private CargoBox cargo;
 
     [Header("State")]
     public OrderJob CurrentJob { get; private set; }
@@ -22,6 +23,8 @@ public class RunController : MonoBehaviour
     public bool LastRunSuccess { get; private set; }
     public int LastReward { get; private set; }
     public float LastElapsed { get; private set; }
+    /// <summary>EndRun 시점에 캡처. ResultPanel "이야기"용 (Day 12).</summary>
+    public float LastIntegrityPercent { get; private set; } = 1f;
 
     public float TimeRemaining => CurrentJob != null && CurrentJob.timeLimitSec > 0f
         ? Mathf.Max(0f, CurrentJob.timeLimitSec - Elapsed)
@@ -34,6 +37,7 @@ public class RunController : MonoBehaviour
         if (orderBoard == null) orderBoard = FindFirstObjectByType<OrderBoard>();
         if (resultPanel == null) resultPanel = FindFirstObjectByType<ResultPanel>();
         if (fuel == null) fuel = FindFirstObjectByType<FuelSystem>();
+        if (cargo == null) cargo = FindFirstObjectByType<CargoBox>();
     }
 
     void Start()
@@ -85,6 +89,21 @@ public class RunController : MonoBehaviour
         // 연료 풀충전
         if (fuel != null) fuel.Refill();
 
+        // 화물 타입 적용 (Day 11). 프리셋 자동 + Repair까지.
+        if (cargo != null)
+        {
+            cargo.SetCargoType(job.cargoType);
+            // 도현 세션 15: 포장 적용 (임계 배율 반영).
+            cargo.SetPacking(job.defaultPacking);
+        }
+
+        // D-043: CCTV 박스 색상 화물별 차별화 (즉시 인식).
+        var shakeSim = FindFirstObjectByType<CargoShakeSimulator>();
+        if (shakeSim != null)
+        {
+            shakeSim.SetBoxColor(CargoTypePresets.BoxColor(job.cargoType));
+        }
+
         // 카메라 팔로우로 + 시간 재개
         if (overviewCam != null) overviewCam.GoToFollow(() => {
             Time.timeScale = 1f;
@@ -129,8 +148,11 @@ public class RunController : MonoBehaviour
         RunActive = false;
         LastRunSuccess = success;
         LastElapsed = Elapsed;
+        LastIntegrityPercent = cargo != null ? cargo.IntegrityPercent : 1f;
 
-        // 보상 계산
+        // 보상 계산 (Day 11: 화물 상태 가중 추가)
+        // GDD systems/cargo.md 5단계: 100~80=100%, 80~50=80%, 50~20=50%, 20~1=20%, 0=0%
+        float integrityMul = ComputeIntegrityMultiplier(LastIntegrityPercent);
         int reward = 0;
         if (success)
         {
@@ -146,11 +168,40 @@ public class RunController : MonoBehaviour
                 : 0f;
             reward = Mathf.RoundToInt(CurrentJob.baseReward * ratio * 0.5f);
         }
+        reward = Mathf.RoundToInt(reward * integrityMul);
         LastReward = reward;
+
+        // Day 21: UpgradeSystem 자금 누적
+        if (UpgradeSystem.Instance != null && reward > 0)
+            UpgradeSystem.Instance.AddReward(reward);
 
         Time.timeScale = 0f;
         if (overviewCam != null) overviewCam.GoToOverview();
         if (resultPanel != null) resultPanel.Show(this);
+    }
+
+    /// <summary>
+    /// 화물 무결성 → 보상 배율 (GDD 5단계).
+    /// </summary>
+    public static float ComputeIntegrityMultiplier(float integrityPercent)
+    {
+        float i = integrityPercent * 100f; // 0~100
+        if (i >= 80f) return 1.0f;   // 완벽
+        if (i >= 50f) return 0.8f;   // 약간 손상
+        if (i >= 20f) return 0.5f;   // 크게 손상
+        if (i > 0f)   return 0.2f;   // 거의 전파
+        return 0f;                   // 전파
+    }
+
+    /// <summary>화물 무결성 → 5단계 라벨 (정산 화면용).</summary>
+    public static string IntegrityGrade(float integrityPercent)
+    {
+        float i = integrityPercent * 100f;
+        if (i >= 80f) return "완벽";
+        if (i >= 50f) return "약간 손상";
+        if (i >= 20f) return "크게 손상";
+        if (i > 0f)   return "거의 전파";
+        return "전파";
     }
 
     public void RestartFromBoard()

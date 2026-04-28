@@ -11,8 +11,9 @@ public class OrderBoard : MonoBehaviour
     [SerializeField] private RunController runController;
 
     [Header("Layout")]
-    [SerializeField] private float cardWidth = 320f;
-    [SerializeField] private float cardHeight = 200f;
+    [SerializeField] private float cardWidth = 360f;
+    // 도현 세션 15: 포장 행 추가로 height 240→280.
+    [SerializeField] private float cardHeight = 280f;
     [SerializeField] private float cardSpacing = 20f;
     [SerializeField] private float rightMargin = 40f;
 
@@ -20,6 +21,11 @@ public class OrderBoard : MonoBehaviour
     int hoveredIndex = -1;
     List<DeliveryPoint> allPoints;
     List<DeliveryPointMarker> allMarkers;
+
+    [Header("Day 26 — Shuffle Pick")]
+    [Tooltip("매 보드 오픈마다 catalog.jobs 풀에서 N개 무작위 노출. 0이면 풀 전체.")]
+    [SerializeField] private int offerCount = 3;
+    readonly List<OrderJob> currentOffer = new List<OrderJob>();
 
     Texture2D pixel;
     GUIStyle titleStyle, statStyle, statValueStyle, helpStyle;
@@ -33,11 +39,36 @@ public class OrderBoard : MonoBehaviour
     {
         isOpen = true;
         hoveredIndex = -1;
+        PickOffer();   // Day 26: 풀에서 무작위 N개 픽
         CacheMarkers();
         // 보드 열린 동안엔 외부 제어 (자동 상태 무시)
         if (allMarkers != null)
             foreach (var m in allMarkers) if (m != null) m.SetExternalControl(true);
         ApplyHoverState();
+    }
+
+    /// <summary>Day 26 — catalog.jobs 풀에서 offerCount개 무작위 픽 (중복 X).</summary>
+    void PickOffer()
+    {
+        currentOffer.Clear();
+        if (catalog == null || catalog.jobs == null || catalog.jobs.Count == 0) return;
+
+        int n = offerCount > 0 ? Mathf.Min(offerCount, catalog.jobs.Count) : catalog.jobs.Count;
+        if (catalog.jobs.Count <= n)
+        {
+            // 풀이 작으면 전체 표시
+            foreach (var j in catalog.jobs) if (j != null) currentOffer.Add(j);
+            return;
+        }
+
+        // Fisher-Yates 부분 셔플 (앞 n개만 셔플)
+        var pool = new List<OrderJob>(catalog.jobs);
+        for (int i = 0; i < n; i++)
+        {
+            int idx = Random.Range(i, pool.Count);
+            (pool[i], pool[idx]) = (pool[idx], pool[i]);
+            currentOffer.Add(pool[i]);
+        }
     }
 
     public void Close()
@@ -84,24 +115,20 @@ public class OrderBoard : MonoBehaviour
 
     void ApplyHoverState()
     {
-        if (catalog == null || allMarkers == null) return;
-
-        // 호버 인덱스에 해당하는 주문의 pointCount만큼 (씬 점 앞에서부터 N개)만 강조
+        if (allMarkers == null) return;
+        // Day 26: currentOffer 기반 (3개)으로 변경
         for (int i = 0; i < allMarkers.Count; i++)
         {
             if (allMarkers[i] == null) continue;
-            // 호버 안 됐을 때: 모든 카드 색상 합쳐 표시 (각 카드 색상 합집합)
-            // 호버 됐을 때: 해당 카드 색상만, 나머지는 dimmed
-            if (hoveredIndex < 0 || hoveredIndex >= catalog.jobs.Count)
+            if (hoveredIndex < 0 || hoveredIndex >= currentOffer.Count)
             {
-                // 모든 점은 가장 큰 주문(C) 색상으로
                 var fallbackJob = GetLargestJob();
                 allMarkers[i].SetColor(fallbackJob != null ? fallbackJob.color : Color.white);
                 allMarkers[i].SetDimmed(false);
             }
             else
             {
-                var job = catalog.jobs[hoveredIndex];
+                var job = currentOffer[hoveredIndex];
                 bool inSet = i < job.pointCount;
                 if (inSet)
                 {
@@ -119,10 +146,17 @@ public class OrderBoard : MonoBehaviour
 
     OrderJob GetLargestJob()
     {
-        if (catalog == null || catalog.jobs.Count == 0) return null;
-        OrderJob largest = catalog.jobs[0];
-        foreach (var j in catalog.jobs) if (j != null && j.pointCount > largest.pointCount) largest = j;
-        return largest;
+        // currentOffer 우선, fallback catalog.jobs 전체
+        if (currentOffer.Count > 0)
+        {
+            OrderJob largest = currentOffer[0];
+            foreach (var j in currentOffer) if (j != null && j.pointCount > largest.pointCount) largest = j;
+            return largest;
+        }
+        if (catalog == null || catalog.jobs == null || catalog.jobs.Count == 0) return null;
+        OrderJob largestPool = catalog.jobs[0];
+        foreach (var j in catalog.jobs) if (j != null && j.pointCount > largestPool.pointCount) largestPool = j;
+        return largestPool;
     }
 
     void EnsureStyles()
@@ -145,7 +179,13 @@ public class OrderBoard : MonoBehaviour
     void OnGUI()
     {
         if (!isOpen) return;
-        if (catalog == null || catalog.jobs.Count == 0) return;
+        // Day 26: currentOffer 기반
+        if (currentOffer.Count == 0)
+        {
+            // fallback — currentOffer 비어있으면 catalog.jobs 직접 사용
+            if (catalog == null || catalog.jobs == null || catalog.jobs.Count == 0) return;
+            currentOffer.AddRange(catalog.jobs);
+        }
         EnsureStyles();
 
         // 상단 헤더
@@ -155,17 +195,18 @@ public class OrderBoard : MonoBehaviour
         GUI.color = Color.white;
         GUI.Label(headerRect, "주문 선택", new GUIStyle(GUI.skin.label) { fontSize = 22, alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, normal = { textColor = Color.white } });
 
-        // 우측 카드 3장
+        // 우측 카드 N장 (Day 26: currentOffer 기반)
         float startX = Screen.width - rightMargin - cardWidth;
-        float totalH = catalog.jobs.Count * cardHeight + (catalog.jobs.Count - 1) * cardSpacing;
+        int count = currentOffer.Count;
+        float totalH = count * cardHeight + (count - 1) * cardSpacing;
         float startY = (Screen.height - totalH) / 2f;
 
         int prevHover = hoveredIndex;
         hoveredIndex = -1;
 
-        for (int i = 0; i < catalog.jobs.Count; i++)
+        for (int i = 0; i < count; i++)
         {
-            var job = catalog.jobs[i];
+            var job = currentOffer[i];
             if (job == null) continue;
 
             var cardRect = new Rect(startX, startY + i * (cardHeight + cardSpacing), cardWidth, cardHeight);
@@ -180,7 +221,7 @@ public class OrderBoard : MonoBehaviour
         // 클릭 처리
         if (Event.current.type == EventType.MouseDown && hoveredIndex >= 0)
         {
-            lastSelectedJob = catalog.jobs[hoveredIndex];
+            lastSelectedJob = currentOffer[hoveredIndex];
             if (runController != null) runController.BeginRun(lastSelectedJob);
         }
 
@@ -205,7 +246,7 @@ public class OrderBoard : MonoBehaviour
         var titleRect = new Rect(r.x + 24, r.y + 12, r.width - 48, 36);
         GUI.Label(titleRect, job.displayName, titleStyle);
 
-        // 스탯 4행
+        // 스탯 5행 (Day 11: 화물 행 추가)
         float rowH = 28f;
         float rowY = r.y + 56;
         DrawRow(r, rowY + 0 * rowH, "지점", $"{job.pointCount}곳");
@@ -215,6 +256,13 @@ public class OrderBoard : MonoBehaviour
             : $"₩{job.baseReward:N0}";
         DrawRow(r, rowY + 2 * rowH, "보상", rewardStr);
         DrawRow(r, rowY + 3 * rowH, "무게", job.WeightLabel);
+        DrawRow(r, rowY + 4 * rowH, "화물", CargoTypePresets.DisplayName(job.cargoType));
+        // 도현 세션 15: 포장 행 추가
+        DrawRow(r, rowY + 5 * rowH, "포장", PackingTierHelper.DisplayName(job.defaultPacking));
+
+        // 화물 운전 가이드 + 포장 가이드 (별도 줄, 폰트 작게)
+        var tipRect = new Rect(r.x + 24, rowY + 6 * rowH + 4, r.width - 48, 22);
+        GUI.Label(tipRect, $"→ {CargoTypePresets.DriveTip(job.cargoType)} · {PackingTierHelper.DriveTip(job.defaultPacking)}", statStyle);
     }
 
     void DrawRow(Rect card, float y, string label, string val)
