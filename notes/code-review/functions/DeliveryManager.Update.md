@@ -13,8 +13,8 @@
 
 ## 호출하는 것 (outgoing)
 
-- 가드: `if (!returning || finished) return;`
-- `FindActiveCar()` — ⚠ 매 프레임 FindFirstObjectByType (개선 후보)
+- 가드: `if (!returning || finished || startReturn == null) return;`
+- `carCache` 사용 (Awake에서 캐시됨) — null이면 fallback `FindActiveCar()` 1회 (cycle 1 Task Y, f960949)
 - `Vector3.Distance(car, startReturn)`
 - 4m 이내면 [[DeliveryManager.Finish]]
 
@@ -32,7 +32,9 @@
 ```csharp
 void Update() {
     if (!returning || finished || startReturn == null) return;
-    var car = FindActiveCar();     // ⚠ 매 프레임 FindFirstObjectByType
+    // simple distance check to return zone
+    if (carCache == null) carCache = FindActiveCar();   // late spawn / respawn fallback
+    var car = carCache;
     if (car == null) return;
     if (Vector3.Distance(car.position, startReturn.position) < 4f) {
         Finish();
@@ -45,28 +47,18 @@ Transform FindActiveCar() {
 }
 ```
 
+`carCache`는 [[DeliveryManager.Awake]]에서 1회 채움. Update는 정상 경로에서 캐시만 사용.
+
 ---
 
-## ⚠ 개선 후보 — FindActiveCar 캐시
+## ✅ 캐시 적용됨 (cycle 1 Task Y, f960949)
 
-`FindFirstObjectByType<ArcadeCarController>()`는 씬 전체 스캔 → 매 프레임 비싼 호출.
-Awake에서 1회 캐시 권장.
+`FindFirstObjectByType<ArcadeCarController>()`는 씬 전체 스캔 → 매 프레임 비싼 호출이었음.
+Awake 캐시(carCache) 도입으로 정상 spawn 순서에서는 매 프레임 scene scan 0건.
 
-```csharp
-Transform carCache;
-void Awake() {
-    var c = FindFirstObjectByType<ArcadeCarController>();
-    if (c != null) carCache = c.transform;
-}
-void Update() {
-    if (!returning || finished || startReturn == null) return;
-    if (carCache == null) carCache = FindActiveCar();
-    if (carCache != null && Vector3.Distance(carCache.position, startReturn.position) < 4f)
-        Finish();
-}
-```
+late spawn (DM Awake → Car Awake) / respawn (Car destroy) 시에는 Update의 `carCache == null` 분기가 fallback으로 `FindActiveCar()`를 호출해 새로 캐시. Unity의 `==/!=` 오버로드가 destroyed Transform을 null로 인식하므로 stale reference 위험 없음.
 
-자세한 의문은 [[../code-review-questions]] 참고.
+검증 walk-through: cycle 2 programmer 리포트 시나리오 A~D 참조.
 
 ---
 
