@@ -27,7 +27,7 @@
 
 ### [[DeliveryManager]]
 - public: [[DeliveryManager.ActivateSubset]] / [[DeliveryManager.OnDeliveryReached]]
-- 내부: [[DeliveryManager.Update]] / [[DeliveryManager.Finish]]
+- 내부: [[DeliveryManager.Awake]] / [[DeliveryManager.Update]] / [[DeliveryManager.Finish]]
 
 ---
 
