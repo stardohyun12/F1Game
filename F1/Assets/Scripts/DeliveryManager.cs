@@ -22,6 +22,13 @@ public class DeliveryManager : MonoBehaviour
     public Transform ReturnTarget => startReturn;
 
     int activeCount = -1; // -1 = 전체 (기본). RunController가 세팅.
+    Transform carCache;
+
+    void Awake()
+    {
+        var c = FindFirstObjectByType<ArcadeCarController>();
+        if (c != null) carCache = c.transform;
+    }
 
     void Start()
     {
@@ -76,7 +83,8 @@ public class DeliveryManager : MonoBehaviour
     {
         if (!returning || finished || startReturn == null) return;
         // simple distance check to return zone
-        var car = FindActiveCar();
+        if (carCache == null) carCache = FindActiveCar();
+        var car = carCache;
         if (car == null) return;
         if (Vector3.Distance(car.position, startReturn.position) < 4f)
         {
