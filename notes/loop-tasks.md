@@ -88,3 +88,4 @@
 | 사이클 | 시각 | 작업 | 커밋 SHA | 상태 |
 |---|---|---|---|---|
 | 1 | 2026-04-30 (인라인) | Task Y FindActiveCar Awake 캐시 | `f960949` (main) | 완료. ⚠ programmer agent가 worktree 브랜치에 0fe9e44로 commit (CWD 오류) → cherry-pick 차단(worktree 머지 금지) → main에 직접 적용. planner 다음 세션 추천: F1 (죽은 조합 UI 가드). designer 신규 발견: 출발 화면 단기 ROI만 노출 (장기 시간축 갭). feedback 권고: 사이클 2 = 검증 (carCache stale 참조 가능성 점검). |
+| 2 | 2026-04-30 (cron 1회) | 검증 전용 — 코드 변경 0 | (없음) | 완료. programmer 정적 검증: Critical 0 / Major 0 / Minor 2. carCache 안전성 OK (Unity null check + late spawn fallback). Obsidian drift 발견 (DeliveryManager.md / Update.md에 Awake 캐시 미반영). designer 신규 발견: 출발 화면 Wallet 표시 옵션 A (도현 결정 영역). feedback 권고: 사이클 3 = Task Z + Obsidian drift 동기화 병행 (분리 commit, `pwd` 자기검사 추가). |
