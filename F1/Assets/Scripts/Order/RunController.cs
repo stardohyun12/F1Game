@@ -75,6 +75,15 @@ public class RunController : MonoBehaviour
 
     public void BeginRun(OrderJob job)
     {
+        BeginRun(job, null);
+    }
+
+    /// <summary>
+    /// 포장 override 받는 BeginRun (세션 16 후속 — PreRunSetupPanel 흐름 버그 수정).
+    /// 기존 BeginRun(job)은 job.defaultPacking 사용. PreRunSetupPanel이 사용자 선택 적용 시 이 오버로드.
+    /// </summary>
+    public void BeginRun(OrderJob job, PackingTier? packingOverride)
+    {
         CurrentJob = job;
         Elapsed = 0f;
         CompletedCount = 0;
@@ -93,8 +102,8 @@ public class RunController : MonoBehaviour
         if (cargo != null)
         {
             cargo.SetCargoType(job.cargoType);
-            // 도현 세션 15: 포장 적용 (임계 배율 반영).
-            cargo.SetPacking(job.defaultPacking);
+            // 도현 세션 15: 포장 적용 (임계 배율 반영). 세션 16: override 우선.
+            cargo.SetPacking(packingOverride ?? job.defaultPacking);
         }
 
         // D-043: CCTV 박스 색상 화물별 차별화 (즉시 인식).
