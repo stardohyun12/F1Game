@@ -87,4 +87,4 @@
 
 | 사이클 | 시각 | 작업 | 커밋 SHA | 상태 |
 |---|---|---|---|---|
-| _(첫 사이클부터 추가)_ | | | | |
+| 1 | 2026-04-30 (인라인) | Task Y FindActiveCar Awake 캐시 | `f960949` (main) | 완료. ⚠ programmer agent가 worktree 브랜치에 0fe9e44로 commit (CWD 오류) → cherry-pick 차단(worktree 머지 금지) → main에 직접 적용. planner 다음 세션 추천: F1 (죽은 조합 UI 가드). designer 신규 발견: 출발 화면 단기 ROI만 노출 (장기 시간축 갭). feedback 권고: 사이클 2 = 검증 (carCache stale 참조 가능성 점검). |
