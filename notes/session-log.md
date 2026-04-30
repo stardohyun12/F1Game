@@ -1114,3 +1114,37 @@
   2. 결과에 따라 Phase 2 진입 vs 부족 영역 보강.
   3. 후속: PackingStage 3D 모달 / Hub Scene H1 / 맵 고저차 H4 / 타이어 선택 UI.
 - **컨텍스트 상태:** 80%+ 사용. 세션 17 신규 시작 강력 권장.
+
+## 세션 17 — 2026-04-29~30 (A 옵션 Canvas 리팩터 + 코드 리뷰 vault + 야간 루프 2회)
+
+- **목표:** 세션 16 후속 — UI는 Scene/Prefab에서 직접 편집 가능하게 (A 옵션). 야간 자율 루프 1회 + main 직접 루프 1회. 코드 리뷰 인지 부담 최소화.
+- **컨텍스트 분기:** worktree(`claude/angry-montalcini-14cd06`)에 어제 야간 루프 4 commit이 inert 상태로 남아있음. 도현이 같은 시간 main에서 PreRunSetupPanel 직접 작성 (procedural Canvas) → 디자인 충돌 (인라인 vs 별도 모달). 도현 결정: **A로 가자, worktree 폐기, main 기준**.
+- **한 일 (커밋 시간순, main 추가 12 커밋):**
+  - **세션 16 후속 Phase 1 — OrderBoard IMGUI → Canvas + Prefab** (`c7566e6`): OrderCardUI.cs 신규 (prefab root 컴포넌트, 카드 sub-elements 인스펙터 노출). OrderBoard.cs 전면 리팩터 — OnGUI 제거, panelRoot/cardsContainer/cardPrefab/headerText/helpText 와이어링, 호버 정적 콜백, 클릭 → PreRunSetupPanel.Show. Coplay execute_script로 OrderCard prefab 자동 빌드 + 씬 와이어링 (BuildOrderCardPrefab.cs, ConvertOrderBoardTextsToTMP.cs 일회용 헬퍼).
+  - **Phase 2 — PreRunSetupPanel procedural → prefab 패턴** (`f948e26`): PackingCardUI.cs 신규. PreRunSetupPanel.cs 전면 재작성 (300줄 → 190줄, 모든 references 인스펙터 노출). RunController에 `BeginRun(OrderJob, PackingTier?)` 오버로드 추가 — **버그 fix**: 이전엔 PSP가 `cargo.SetPacking(selectedTier)` 호출 후 BeginRun이 `cargo.SetPacking(job.defaultPacking)`으로 덮어쓰던 문제. 오버로드로 packingOverride 보존. Coplay BuildPreRunSetupPanel.cs로 1400×680 모달 + 4 PackingCard prefab + RunRoot에 PreRunSetupPanel 컴포넌트 attach + 11개 references 와이어링.
+  - **코드 리뷰 마인드맵 3종** (`e79e35b`): Markmap-friendly architecture.md / Mermaid flows.md / questions.md.
+  - **Obsidian vault 37 노트** (`1486220`): notes/code-review/ 아래 README + scripts(6) + functions(22) + flows(5) + 각 index. `[[wiki-link]]` 양방향 연결, Obsidian 그래프 뷰 활용.
+  - **야간 자율 루프 2 (main 직접)** — 6 사이클 × 30분, cron `c680c0d7`:
+    - Cycle 1: **Task Y** FindActiveCar Awake 캐시 (`f960949`). ⚠ programmer agent CWD 오류로 worktree 브랜치에 잘못 commit (0fe9e44) → cherry-pick 차단(worktree 머지 금지) → main 직접 적용. Cron prompt에 CWD 강제 + `pwd` 자기검사 추가.
+    - Cycle 2: 검증 전용 — carCache 안전성 OK, Obsidian drift 1건 발견.
+    - Cycle 3: **Task Z** 일회용 Editor 헬퍼 3개 제거 (`d1ef227`) + Obsidian drift 동기화 (`664605d` — DeliveryManager.md/Update.md 갱신 + Awake.md 신규).
+    - Cycle 4: 검증 전용 — Task Z 사후검증 잔재 0건, drift 잔재 1건 (functions/index.md Awake 링크 누락).
+    - Cycle 5: drift 잔재 보완 (`a937e5e`) + cycle 6 outline 사전 준비.
+    - Cycle 6: 단순 종료 — `notes/loop-summary-2026-04-30.md` 작성 (~1240단어), cron 정지.
+  - **진행표 갱신 6회** (cycle 1~6): `adbef1f`, `a0d1a27`, `59a3110`, `b8077e0`, `04ac01d`, `a633d04`.
+- **누적 main 45 커밋** (세션 16 + 세션 17 후속).
+- **검증:**
+  - Phase 1: Coplay get_unity_editor_state — 컴파일 에러 0, RunRoot에 OrderBoard/RunController/ResultPanel/PreRunSetupPanel 4 컴포넌트 + 모든 references 와이어링 확인.
+  - 야간 루프: main HEAD `a633d04`, 코드 변경 2개 (Task Y/Z) 모두 동작 동일 또는 dead code 제거. worktree 브랜치 inert (cycle 1 stale 0fe9e44 무시).
+- **남은 미해결:**
+  - **도현 30분 통합 플레이 미실시** — Phase 1 게이트 평가 보류 (세션 16 끝부터 누적).
+  - ResultPanel procedural → prefab 패턴 (도현 별도 세션 영역으로 명시).
+  - F1 (죽은 조합 UI 가드), F3 (무결성 등급 tick), F4 (포장 사전 시뮬), F5 (정산 보상 인과) — designer 누적 발견.
+  - DeliveryManager.OnDeliveryReached처럼 매 프레임 호출 안 되는 함수의 의문은 해소됨.
+- **다음 세션 (세션 18):**
+  1. **`notes/loop-summary-2026-04-30.md` 정독** (도현 30분 진입점, ~1240단어).
+  2. **첫 작업 — PreRunSetupPanel에 Wallet 1줄 추가** (designer 5사이클 합의 P0). ResultPanel.walletVal 패턴 복붙, 5~10분, 가치값 변경 X. "보유 자금 ₩X / 포장비 ₩Y" 노출.
+  3. Phase 1 통합 30분 플레이 → 게이트 평가.
+  4. worktree 브랜치 (`claude/angry-montalcini-14cd06`) 정리 결정 — inert 보존 OK / 삭제(`git branch -D`).
+  5. 후속 P0/P1 처리 (F1·F3·F4·F5 중).
+- **컨텍스트 상태:** 매우 높음 (80%+). 세션 18 신규 시작 강력 권장. Obsidian vault에서 코드 탐색 시작 권장.
