@@ -23,7 +23,7 @@ public static class TileMapAuto
     [System.Flags]
     public enum Dir { None = 0, N = 1, S = 2, E = 4, W = 8 }
 
-    public enum Kind { Straight, Curve, Intersection, Crossroad, End, Crossing, Driveway, Bridge }
+    public enum Kind { Straight, Curve, Intersection, Crossroad, End, Crossing, Driveway, Bridge, Slant, SlantFlat, SlantHigh, SlantFlatHigh }
 
     // Lookup: given (kind, exit-set), what rotation places the tile correctly?
     // Built from validated rotation->exits mappings.
@@ -76,6 +76,18 @@ public static class TileMapAuto
         { (Kind.Driveway, Dir.S), 90 },
         { (Kind.Driveway, Dir.W), 180 },
         { (Kind.Driveway, Dir.N), 270 },
+
+        // Slant (램프) — opposite-exit straight. native FBX는 +Z(북)로 상승.
+        // rotation은 ASCII char에 따라 직접 지정 (auto-infer 어려움). 아래 ChooseSlantRotation 참조.
+        // 여기 RotationFor는 placeholder — 실제는 ChooseSlantRotation에서 결정.
+        { (Kind.Slant, Dir.E | Dir.W), 0 },
+        { (Kind.Slant, Dir.N | Dir.S), 0 },
+        { (Kind.SlantHigh, Dir.E | Dir.W), 0 },
+        { (Kind.SlantHigh, Dir.N | Dir.S), 0 },
+        { (Kind.SlantFlat, Dir.E | Dir.W), 0 },
+        { (Kind.SlantFlat, Dir.N | Dir.S), 90 },
+        { (Kind.SlantFlatHigh, Dir.E | Dir.W), 0 },
+        { (Kind.SlantFlatHigh, Dir.N | Dir.S), 90 },
     };
 
     static readonly Dictionary<Kind, string> SourcePath = new()
@@ -88,6 +100,10 @@ public static class TileMapAuto
         { Kind.Crossing, "road-crossing.fbx" },   // 세션 13: 횡단보도 straight 대체
         { Kind.Driveway, "road-driveway-single.fbx" }, // 세션 13: 배달점 진입로
         { Kind.Bridge, "road-bridge.fbx" },        // 세션 16 B4: 다리 변종
+        { Kind.Slant, "road-slant.fbx" },          // 세션 17: 램프 (1.6m 상승, native FBX +Z 방향)
+        { Kind.SlantHigh, "road-slant-high.fbx" }, // 세션 17: 더 가파른 램프 (3m)
+        { Kind.SlantFlat, "road-slant-flat.fbx" }, // 세션 17: 램프 위 평지 (저)
+        { Kind.SlantFlatHigh, "road-slant-flat-high.fbx" }, // 세션 17: 램프 위 평지 (고)
     };
 
     // Per-tile native footprint in mesh units (measured via MeasureTiles).
@@ -102,6 +118,10 @@ public static class TileMapAuto
         { Kind.Crossing, 1f },        // road-crossing = 1x1 (D-034 catalog)
         { Kind.Driveway, 1f },        // road-driveway-single = 1x1
         { Kind.Bridge, 1f },          // road-bridge = 1x1 (B4)
+        { Kind.Slant, 1f },
+        { Kind.SlantHigh, 1f },
+        { Kind.SlantFlat, 1f },
+        { Kind.SlantFlatHigh, 1f },
     };
 
     // ----- Layout (rectangular loop, 7 wide x 5 tall) -----
@@ -136,15 +156,18 @@ public static class TileMapAuto
     {
         if (layout == null || layout.roadMask == null || layout.roadMask.Length == 0)
         { Debug.LogError("TileMapAuto.BuildFromLayout: layout/roadMask is empty"); return null; }
-        return BuildMaskInternal(layout.roadMask);
+        return BuildMaskInternal(layout.roadMask, layout);
     }
 
     public static void BuildMask(string[] mask)
     {
-        BuildMaskInternal(mask);
+        BuildMaskInternal(mask, null);
     }
 
-    static GameObject BuildMaskInternal(string[] mask)
+    // 세션 17 D-050: heightMask 통합. layout이 null이면 평지 (기존 동작 유지).
+    // layout.GetHeight(c, r)로 셀별 Y offset 추가. 인접 도로 셀의 높이가 다르면 경고 로그
+    // (현재 ramp tile 미통합 — 평지 plateau로만 작성 권장).
+    static GameObject BuildMaskInternal(string[] mask, TrackLayout layout)
     {
         var sources = new Dictionary<Kind, GameObject>();
         foreach (var kv in SourcePath)
@@ -166,11 +189,17 @@ public static class TileMapAuto
         //   'X' = pedestrian crossing (Straight 시각 변종, 연결성 동일)
         //   'D' = driveway 진입로 (End 변종, 1 exit 강제)
         // 전부 IsRoad = true 로 취급해 이웃 탐색에 참여.
+        // 세션 17 elevated road chars:
+        //   'n'/'s'/'e'/'w' = 램프 (저→고, 화살표 가리키는 방향이 높음)
+        //   'N'/'S'/'E'/'W' = 가파른 램프 (slant-high, 3m)
+        //   '=' = 평지 elevated 1.6m (slant-flat)
+        //   '+' = 평지 elevated 3m (slant-flat-high)
+        bool IsSlope(char ch) => "nseworNSEW=+".IndexOf(ch) >= 0;
         bool IsRoad(int c, int r)
         {
             if (c < 0 || c >= width || r < 0 || r >= height) return false;
             char ch = mask[r][c];
-            return ch == '#' || ch == 'X' || ch == 'D' || ch == 'B';
+            return ch == '#' || ch == 'X' || ch == 'D' || ch == 'B' || IsSlope(ch);
         }
 
         char CellChar(int c, int r)
@@ -265,12 +294,48 @@ public static class TileMapAuto
                     if (kind == Kind.Straight) kind = Kind.Bridge;
                     else Debug.LogWarning($"TileMapAuto: 'B' bridge at ({c},{r}) needs opposite exits, got {kind} {exits}");
                 }
+                // 세션 17: 램프/elevated flat 처리
+                int slantRotOverride = -1;  // -1 = no override
+                if (IsSlope(ch))
+                {
+                    if (kind != Kind.Straight)
+                    {
+                        Debug.LogWarning($"TileMapAuto: slope '{ch}' at ({c},{r}) needs Straight (2 opposite exits), got {kind} {exits}");
+                    }
+                    else
+                    {
+                        char low = char.ToLower(ch);
+                        bool isHigh = char.IsUpper(ch);  // N/S/E/W = 가파름
+                        if (low == '=') kind = Kind.SlantFlat;
+                        else if (low == '+') kind = Kind.SlantFlatHigh;
+                        else
+                        {
+                            kind = isHigh ? Kind.SlantHigh : Kind.Slant;
+                            // road-slant.fbx native: rises to +Z (north). rot으로 다른 방향.
+                            // n/N (north 상승): rot 0
+                            // s/S (south 상승): rot 180
+                            // e/E (east 상승): rot 270 (90° CW makes +Z point to -X, but we want +X up — actual: try 270)
+                            // w/W (west 상승): rot 90
+                            switch (low)
+                            {
+                                case 'n': slantRotOverride = 0; break;
+                                case 's': slantRotOverride = 180; break;
+                                case 'e': slantRotOverride = 270; break;
+                                case 'w': slantRotOverride = 90; break;
+                            }
+                        }
+                        // SlantFlat/SlantFlatHigh: rotation은 exits 기반 (E|W=0, N|S=90)
+                        if (low == '=' || low == '+')
+                            slantRotOverride = (exits == (Dir.E | Dir.W)) ? 0 : 90;
+                    }
+                }
 
                 if (!RotationFor.TryGetValue((kind, exits), out int rot))
                 {
                     Debug.LogWarning($"TileMapAuto: no rotation for ({kind}, {exits}) at ({c},{r})");
                     continue;
                 }
+                if (slantRotOverride >= 0) rot = slantRotOverride;
                 if (kind == Kind.Straight) rot = AdjustStraightRotation(c, r, exits, rot);
 
                 if (!sources.TryGetValue(kind, out var src) || src == null)
@@ -279,7 +344,30 @@ public static class TileMapAuto
                     continue;
                 }
 
-                var pos = new Vector3(c * CellSize, TileY, r * CellSize);
+                float yOffset = layout != null ? layout.GetHeight(c, r) : 0f;
+                bool isSlopeKind = kind == Kind.Slant || kind == Kind.SlantHigh ||
+                                   kind == Kind.SlantFlat || kind == Kind.SlantFlatHigh;
+                // 세션 17: slant flat은 ramp 위에 얹히므로 자체 Y 오프셋 적용 (FBX native 두께)
+                if (kind == Kind.SlantFlat) yOffset = 1.62f;        // road-slant 1.62m
+                else if (kind == Kind.SlantFlatHigh) yOffset = 3.12f; // road-slant-high 3.12m
+                // 인접 도로 셀과 높이차가 있으면 경고. slope cell은 의도된 step이라 skip.
+                if (layout != null && layout.heightMask != null && !isSlopeKind)
+                {
+                    int[] dx = { 0, 0, 1, -1 };
+                    int[] dy = { 1, -1, 0, 0 };
+                    for (int k = 0; k < 4; k++)
+                    {
+                        int nc = c + dx[k], nr = r + dy[k];
+                        if (!IsRoad(nc, nr)) continue;
+                        float nh = layout.GetHeight(nc, nr);
+                        if (Mathf.Abs(nh - yOffset) > 0.01f)
+                        {
+                            Debug.LogWarning($"TileMapAuto: road height step at ({c},{r})↔({nc},{nr}) ({yOffset:0.0}m → {nh:0.0}m) — ramp tile 미통합. plateau 단절 권장.");
+                            break;
+                        }
+                    }
+                }
+                var pos = new Vector3(c * CellSize, TileY + yOffset, r * CellSize);
                 var rotQ = Quaternion.Euler(0, rot, 0);
                 float nativeSize = NativeSize.TryGetValue(kind, out var ns) ? ns : 1f;
                 float scale = TileScale / nativeSize;

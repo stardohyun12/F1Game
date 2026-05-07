@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa910892f55bf043b3f656060246425, type: 3}
+  m_Name: OpenWorldLayout
+  m_EditorClassIdentifier: PitCrew::TrackLayout
+  roadMask:
+  - '#################'
+  - '#...#.....#.....#'
+  - '#...#.....#.....#'
+  - '#...#.....#.....#'
+  - '#...#######.....#'
+  - '#...#.....#.....#'
+  - '#################'
+  - '#...#.....#...n.#'
+  - '#...#######...=.#'
+  - '#...#.....#...=.#'
+  - '#...#.....#...s.#'
+  - '#...#.....#...#.#'
+  - '#################'
+  buildingMask:
+  - .................
+  - .SSS.CCCCC.XKXKL.
+  - .SHS.LCKLC.KXKHA.
+  - .SSS.CKCKC.LXLXK.
+  - .SHP...........K.
+  - .PSS.LCKCL.LXLXK.
+  - .................
+  - .IFI.WWIWW.III.I.
+  - .IIT.........W...
+  - .FII.WIWIW.III.W.
+  - .IIN.IFIFI.WWI.W.
+  - .TIF.WIIIW.IIW.I.
+  - .................
+  heightMask:
+  - .................
+  - .................
+  - .................
+  - .................
+  - .................
+  - .................
+  - .................
+  - .222.11111.111.1.
+  - .222.......111.1.
+  - .222.11111.222.2.
+  - .222.22222.222.2.
+  - .222.22222.222.2.
+  - .................
+  cellHeightMeters: 1.5
+  catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
+  deliveries:
+  - col: 4
+    row: 0
+    label: SuburbanGate
+  - col: 12
+    row: 0
+    label: DowntownEntry
+  - col: 4
+    row: 12
+    label: FactoryNorth
+  - col: 14
+    row: 12
+    label: PlateauTop
+  - col: 0
+    row: 6
+    label: WestHub
+  - col: 16
+    row: 6
+    label: EastHub
+  - col: 8
+    row: 6
+    label: CentralCross
+  - col: 4
+    row: 4
+    label: LowerWest
+  startCell: {x: 8, y: 6}
+  startYawDeg: 0

@@ -642,6 +642,38 @@
 
 ---
 
+## 2026-04-30 — 세션 17
+
+### D-050. TileMapAuto/BuildingPlacer heightMask 통합
+
+- **결정:** `TrackLayout.heightMask` 신규 필드 + Slant Kind 4종 + mask char `n/s/e/w/=/+`로 도로 elevation.
+- **이유:** "갈수 있는 길자체 높낮이" 도현 요청. 빌딩 plateau가 아니라 운전 가능한 ramp.
+- **결과:** col 14 N-S 오버패스 4 타일 정확 위치. 단 `road-slant.fbx`가 좁은 wedge라 시각 한계. 다음 세션에 road-bridge + cube ramp 대체안.
+
+### D-051. 컨셉 정정 — F1 복귀 서사 (마이크로 vs 매크로 루프)
+
+- **결정:** 피치 정정. **"망한 F1 팀이 배달로 자금을 벌어 머신을 복원하고 F1 복귀"**. 배달은 수단, F1 복귀가 목적.
+- **이유:** 도현 진술. "Pit Crew" 이름 + `F1/` 폴더 + 빨간 머신 모두 F1 복귀 서사를 향함을 명시. 결정 채널 #7 ("기본 망가진 → 복구") = F1 복원 트리.
+- **결과:** `GDD/overview.md` 피치 + 매크로 루프 섹션 갱신. 매크로(머신 복원) ↔ 마이크로(한 런 5~15분) 직각 관계.
+
+### D-052. 한 런 플로우 정정 — 랩핑이 경로 계획 앞에
+
+- **결정:** 한 런 마이크로 루프 순서를 **주문 선택 → 랩핑 → 경로 계획 → 출발 전 세팅(타이어) → 주행 → 정산 → 업그레이드/F1 복원**으로 정정.
+- **이유:** 도현 진술. 기존 overview는 "출발 전 세팅"에 포장이 묶여 경로 계획 뒤였음. 정정 후 포장 결정이 경로 계획 정보(무게·속도 영향)로 들어감 — 결정 의존 그래프 일관됨.
+- **결과:** `GDD/overview.md` "한 런의 구조" 섹션 갱신. `Order/PreRunSetupPanel.cs`는 이미 화물·포장 선택 패널이라 코드 변경 영향 작음. 다만 RoutePlannerPanel(미구현)이 PreRunSetupPanel **뒤**에 와야 함.
+
+### D-053. 결정 채널 9개 확정
+
+- **결정:** 메타 진행 dial 9개 확정 — 1.속도 / 2.외형 / 3.맵 접근도 / 4.배송물자 종류 / 5.보관박스 크기 / 6.랩핑 / 7.기본 기능(F1 복원 트리) / 8.지도/내비 / 9.연료탱크.
+- **이유:** "역치 빈도 조절 요소" 프레임. #9는 스타듀밸리 스테미나 비유 — 한 런 행동량 상한.
+- **결과:** `GDD/decision-channels.md` 작성. baseline×multiplier×additive 구조가 자연스럽게 SOLID Strategy/Decorator로 매핑 (보류한 리팩터 Phase 3 후크).
+
+---
+
+**세션 17 결정 클러스터 (2026-04-30):** OpenWorld_v2 신규 씬 + heightMask + 컨셉 정정(F1 복귀) + 결정 채널 9개 + 플로우 정정.
+
+---
+
 ## D-050 — 산업 표준 인프라 도입 (.gitattributes + asmdef + conventions, 세션 16)
 
 - **결정:** 워크트리 → main 머지 + Git LFS(Conservative) + asmdef 2개(Runtime/Editor) + 자산/코드 관리 규약 1장(`notes/conventions.md`).

@@ -104,11 +104,21 @@ public static class BuildingPlacer
                 float posZ = (r + (d - 1) * 0.5f) * CellSize;
                 float nativeSize = def.nativeSize > 0.001f ? def.nativeSize : 1f;
                 float scale = (CellSize * Mathf.Min(w, d) * FootprintMargin) / nativeSize;
+                // 세션 17 D-050: heightMask 통합. footprint 평균 높이 사용.
+                float yOffset = 0f;
+                if (layout.heightMask != null)
+                {
+                    float sumH = 0f;
+                    int n = 0;
+                    for (int dr = 0; dr < d; dr++)
+                        for (int dc = 0; dc < w; dc++) { sumH += layout.GetHeight(c + dc, r + dr); n++; }
+                    if (n > 0) yOffset = sumH / n;
+                }
 
                 var inst = (GameObject)PrefabUtility.InstantiatePrefab(def.prefab);
                 inst.name = w == 1 && d == 1 ? $"B_{ch}_{c}_{r}" : $"B_{ch}_{c}_{r}_{w}x{d}";
                 inst.transform.SetParent(root.transform, false);
-                inst.transform.localPosition = new Vector3(posX, BuildingY, posZ);
+                inst.transform.localPosition = new Vector3(posX, BuildingY + yOffset, posZ);
                 inst.transform.localRotation = rotation;
                 inst.transform.localScale = Vector3.one * scale;
                 if (def.addCollider) AddColliders(inst);
@@ -161,9 +171,11 @@ public static class BuildingPlacer
             Bounds b = renderers[0].bounds;
             for (int i = 1; i < renderers.Length; i++) b.Encapsulate(renderers[i].bounds);
 
-            if (b.min.y < -0.05f)
+            // 세션 17: heightMask와 호환 — anchor의 yOffset만큼 임계 완화.
+            float threshold = -0.05f + child.localPosition.y;
+            if (b.min.y < threshold)
             {
-                Debug.LogWarning($"BuildingPlacer VERIFY: {child.name} bounds.min.y={b.min.y:0.00} is below ground — building may be sunk.");
+                Debug.LogWarning($"BuildingPlacer VERIFY: {child.name} bounds.min.y={b.min.y:0.00} below local ground (threshold={threshold:0.00}) — building may be sunk.");
                 problems++;
             }
         }
