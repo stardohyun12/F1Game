@@ -5,15 +5,30 @@ using UnityEngine;
 /// <summary>
 /// 한 런의 진행 추적 + 정산.
 /// OrderBoard → BeginRun(job) → 주행 → 마지막 배달 또는 시간초과 → EndRun → ResultPanel.
+///
+/// Phase 1 리팩터: FindFirstObjectByType 6개 제거. 모든 의존을 Services 경유.
+/// 와이어링 책임은 GameContext (씬에 단 하나).
+/// 학습: GDD/architecture/phase1-dip-service-locator.md
 /// </summary>
 public class RunController : MonoBehaviour
 {
-    [SerializeField] private DeliveryManager deliveryManager;
-    [SerializeField] private OverviewCamera overviewCam;
-    [SerializeField] private OrderBoard orderBoard;
-    [SerializeField] private ResultPanel resultPanel;
-    [SerializeField] private FuelSystem fuel;
-    [SerializeField] private CargoBox cargo;
+    // Phase 1 Before:
+    //   [SerializeField] DeliveryManager deliveryManager;
+    //   void Awake() { if(deliveryManager == null) deliveryManager = FindFirstObjectByType<DeliveryManager>(); }
+    //   ...6 fields, 6 Find calls
+    //
+    // Phase 1 After:
+    //   IDeliveryManager Delivery => Services.Delivery;
+    //   ... 인스펙터 fallback 0, Find 0. 모든 의존 Services 경유.
+
+    IDeliveryManager Delivery => Services.Delivery;
+    IOverviewCamera Overview => Services.Overview;
+    IOrderBoard Board => Services.Board;
+    IResultPanel ResultUI => Services.Result;
+    IFuelSystem Fuel => Services.Fuel;
+    ICargoBox Cargo => Services.Cargo;
+    ICargoShakeSimulator Shake => Services.Shake;
+    IUpgradeSystem Upgrade => Services.Upgrade;
 
     [Header("State")]
     public OrderJob CurrentJob { get; private set; }
@@ -30,27 +45,18 @@ public class RunController : MonoBehaviour
         ? Mathf.Max(0f, CurrentJob.timeLimitSec - Elapsed)
         : -1f; // -1 = 무제한
 
-    void Awake()
-    {
-        if (deliveryManager == null) deliveryManager = FindFirstObjectByType<DeliveryManager>();
-        if (overviewCam == null) overviewCam = FindFirstObjectByType<OverviewCamera>();
-        if (orderBoard == null) orderBoard = FindFirstObjectByType<OrderBoard>();
-        if (resultPanel == null) resultPanel = FindFirstObjectByType<ResultPanel>();
-        if (fuel == null) fuel = FindFirstObjectByType<FuelSystem>();
-        if (cargo == null) cargo = FindFirstObjectByType<CargoBox>();
-    }
+    // Phase 1: Awake의 6개 Find 제거. GameContext가 Services에 등록 보장.
+    // (남은 RunController-only 초기화가 있으면 여기.)
 
     void Start()
     {
-        // 시작 시 보드 오픈
         OpenBoard();
     }
 
     void OpenBoard()
     {
         // 세션 14 fix: OrderBoard가 씬에 없으면 정지하지 말고 디폴트 job으로 즉시 BeginRun.
-        // 도현 "운전 안됨" 원인 — Time.timeScale=0이 영구 고정되던 문제.
-        if (orderBoard == null)
+        if (Board == null)
         {
             Time.timeScale = 1f;
             BeginRun(MakeFallbackJob());
@@ -58,8 +64,8 @@ public class RunController : MonoBehaviour
         }
 
         Time.timeScale = 0f;
-        if (overviewCam != null && !overviewCam.IsInOverview) overviewCam.GoToOverview();
-        orderBoard.Open();
+        if (Overview != null && !Overview.IsInOverview) Overview.GoToOverview();
+        Board.Open();
     }
 
     static OrderJob MakeFallbackJob()
@@ -89,43 +95,33 @@ public class RunController : MonoBehaviour
         CompletedCount = 0;
         RunActive = true;
 
-        // DeliveryManager에 부분집합 활성화
-        if (deliveryManager != null)
-        {
-            deliveryManager.ActivateSubset(job.pointCount);
-        }
+        // DeliveryManager 부분집합 활성화
+        if (Delivery != null) Delivery.ActivateSubset(job.pointCount);
 
         // 연료 풀충전
-        if (fuel != null) fuel.Refill();
+        if (Fuel != null) Fuel.Refill();
 
-        // 화물 타입 적용 (Day 11). 프리셋 자동 + Repair까지.
-        if (cargo != null)
+        // 화물 타입 + 포장 (세션 15: 포장 multiplier, 세션 16: override 우선)
+        if (Cargo != null)
         {
-            cargo.SetCargoType(job.cargoType);
-            // 도현 세션 15: 포장 적용 (임계 배율 반영). 세션 16: override 우선.
-            cargo.SetPacking(packingOverride ?? job.defaultPacking);
+            Cargo.SetCargoType(job.cargoType);
+            Cargo.SetPacking(packingOverride ?? job.defaultPacking);
         }
 
-        // D-043: CCTV 박스 색상 화물별 차별화 (즉시 인식).
-        var shakeSim = FindFirstObjectByType<CargoShakeSimulator>();
-        if (shakeSim != null)
-        {
-            shakeSim.SetBoxColor(CargoTypePresets.BoxColor(job.cargoType));
-        }
+        // D-043: CCTV 박스 색상 화물별 차별화. (Phase 1: Services.Shake 경유, Find 제거)
+        if (Shake != null) Shake.SetBoxColor(CargoTypePresets.BoxColor(job.cargoType));
 
         // 카메라 팔로우로 + 시간 재개
-        if (overviewCam != null) overviewCam.GoToFollow(() => {
-            Time.timeScale = 1f;
-        });
-        if (orderBoard != null) orderBoard.Close();
+        if (Overview != null) Overview.GoToFollow(() => { Time.timeScale = 1f; });
+        if (Board != null) Board.Close();
 
         // DeliveryManager 이벤트 구독
-        if (deliveryManager != null)
+        if (Delivery != null)
         {
-            deliveryManager.OnDeliveryCompleted.RemoveListener(OnDeliveryCompleted);
-            deliveryManager.OnAllCompleted.RemoveListener(OnAllCompleted);
-            deliveryManager.OnDeliveryCompleted.AddListener(OnDeliveryCompleted);
-            deliveryManager.OnAllCompleted.AddListener(OnAllCompleted);
+            Delivery.OnDeliveryCompleted.RemoveListener(OnDeliveryCompleted);
+            Delivery.OnAllCompleted.RemoveListener(OnAllCompleted);
+            Delivery.OnDeliveryCompleted.AddListener(OnDeliveryCompleted);
+            Delivery.OnAllCompleted.AddListener(OnAllCompleted);
         }
     }
 
@@ -157,7 +153,7 @@ public class RunController : MonoBehaviour
         RunActive = false;
         LastRunSuccess = success;
         LastElapsed = Elapsed;
-        LastIntegrityPercent = cargo != null ? cargo.IntegrityPercent : 1f;
+        LastIntegrityPercent = Cargo != null ? Cargo.IntegrityPercent : 1f;
 
         // 보상 계산 (Day 11: 화물 상태 가중 추가)
         // GDD systems/cargo.md 5단계: 100~80=100%, 80~50=80%, 50~20=50%, 20~1=20%, 0=0%
@@ -180,13 +176,12 @@ public class RunController : MonoBehaviour
         reward = Mathf.RoundToInt(reward * integrityMul);
         LastReward = reward;
 
-        // Day 21: UpgradeSystem 자금 누적
-        if (UpgradeSystem.Instance != null && reward > 0)
-            UpgradeSystem.Instance.AddReward(reward);
+        // Day 21: UpgradeSystem 자금 누적 (Phase 1: Services.Upgrade 경유, 싱글톤 직접 접근 제거)
+        if (Upgrade != null && reward > 0) Upgrade.AddReward(reward);
 
         Time.timeScale = 0f;
-        if (overviewCam != null) overviewCam.GoToOverview();
-        if (resultPanel != null) resultPanel.Show(this);
+        if (Overview != null) Overview.GoToOverview();
+        if (ResultUI != null) ResultUI.Show(this);
     }
 
     /// <summary>
@@ -215,8 +210,7 @@ public class RunController : MonoBehaviour
 
     public void RestartFromBoard()
     {
-        // ResultPanel "다시" 버튼이 호출
-        if (resultPanel != null) resultPanel.Hide();
+        if (ResultUI != null) ResultUI.Hide();
         OpenBoard();
     }
 }

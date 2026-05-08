@@ -16,7 +16,7 @@ using UnityEngine;
 /// MVP는 owned set만 관리. 자금 시스템(Wallet)은 RunController.LastReward 누적으로 별도 추가.
 /// </summary>
 [DisallowMultipleComponent]
-public class UpgradeSystem : MonoBehaviour
+public class UpgradeSystem : MonoBehaviour, IUpgradeSystem
 {
     /// <summary>씬 어디서나 접근 가능 (싱글톤). null 가능.</summary>
     public static UpgradeSystem Instance { get; private set; }

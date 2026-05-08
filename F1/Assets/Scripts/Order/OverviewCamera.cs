@@ -6,7 +6,7 @@ using UnityEngine;
 /// 런 중 = 팔로우 (FollowCamera 활성).
 /// </summary>
 [RequireComponent(typeof(Camera))]
-public class OverviewCamera : MonoBehaviour
+public class OverviewCamera : MonoBehaviour, IOverviewCamera
 {
     [Header("Overview Pose")]
     [SerializeField] private Vector3 overviewCenter = new Vector3(36f, 0f, 24f); // 13x9 cell=6m → ~78x54m, 중심

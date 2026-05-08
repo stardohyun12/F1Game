@@ -2,13 +2,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DeliveryManager : MonoBehaviour
+public class DeliveryManager : MonoBehaviour, IDeliveryManager
 {
     [SerializeField] private List<DeliveryPoint> points = new List<DeliveryPoint>();
     [SerializeField] private Transform startReturn; // optional: return zone after last delivery
 
     public UnityEvent OnAllCompleted;
     public UnityEvent<DeliveryPoint> OnDeliveryCompleted;
+
+    // IDeliveryManager 인터페이스 충족용 — 인터페이스는 property를 요구하지만
+    // 기존 호출자(RunController.AddListener 등) 호환 위해 field 그대로 두고 explicit impl로 노출.
+    UnityEvent<DeliveryPoint> IDeliveryManager.OnDeliveryCompleted => OnDeliveryCompleted;
+    UnityEvent IDeliveryManager.OnAllCompleted => OnAllCompleted;
 
     int currentIndex = 0;
     bool returning = false;

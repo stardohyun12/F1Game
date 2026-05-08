@@ -16,7 +16,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 [DisallowMultipleComponent]
-public class CargoBox : MonoBehaviour
+public class CargoBox : MonoBehaviour, ICargoBox
 {
     [Header("Cargo Type (Day 9~10)")]
     [Tooltip("화물 타입. Awake에서 CargoTypePresets로 sensitivities 자동 적용. " +

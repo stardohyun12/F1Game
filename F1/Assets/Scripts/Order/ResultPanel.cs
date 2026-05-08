@@ -14,7 +14,7 @@ using TMPro;
 ///
 /// 호출자 (RunController.EndRun) 변경 없음.
 /// </summary>
-public class ResultPanel : MonoBehaviour
+public class ResultPanel : MonoBehaviour, IResultPanel
 {
     [SerializeField] private UpgradeCatalog upgradeCatalog;
 

@@ -14,7 +14,7 @@ using System;
 /// 부스트는 별도 자원 (boost.md 참조). 연료에서 차감하지 않음.
 /// </summary>
 [RequireComponent(typeof(ArcadeCarController))]
-public class FuelSystem : MonoBehaviour
+public class FuelSystem : MonoBehaviour, IFuelSystem
 {
     [Header("Tank")]
     [Tooltip("풀탱크 = 1.0. 정상 운전에서 ~12분 지속을 시작 튠값으로.")]

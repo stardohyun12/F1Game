@@ -17,7 +17,7 @@ using TMPro;
 ///   headerText      — 상단 헤더 TMP_Text.
 ///   helpText        — 하단 안내 TMP_Text.
 /// </summary>
-public class OrderBoard : MonoBehaviour
+public class OrderBoard : MonoBehaviour, IOrderBoard
 {
     [Header("Data")]
     [SerializeField] private OrderCatalog catalog;

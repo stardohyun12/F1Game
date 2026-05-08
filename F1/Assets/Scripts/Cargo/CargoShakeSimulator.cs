@@ -25,7 +25,7 @@ using UnityEngine;
 /// - maxOffset 0.5 (트렁크 ±0.5m)
 /// </summary>
 [DisallowMultipleComponent]
-public class CargoShakeSimulator : MonoBehaviour
+public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
 {
     [SerializeField] CargoBox cargo;
     [SerializeField] Transform boxTransform;
