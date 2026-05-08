@@ -100,10 +100,12 @@ public static class TileMapAuto
         { Kind.Crossing, "road-crossing.fbx" },   // 세션 13: 횡단보도 straight 대체
         { Kind.Driveway, "road-driveway-single.fbx" }, // 세션 13: 배달점 진입로
         { Kind.Bridge, "road-bridge.fbx" },        // 세션 16 B4: 다리 변종
-        { Kind.Slant, "road-slant.fbx" },          // 세션 17: 램프 (1.6m 상승, native FBX +Z 방향)
+        { Kind.Slant, "road-slant.fbx" },          // 세션 17: 램프 (1.6m 상승, narrow wedge — EnhanceSlopes로 cube 받침 추가)
         { Kind.SlantHigh, "road-slant-high.fbx" }, // 세션 17: 더 가파른 램프 (3m)
-        { Kind.SlantFlat, "road-slant-flat.fbx" }, // 세션 17: 램프 위 평지 (저)
-        { Kind.SlantFlatHigh, "road-slant-flat-high.fbx" }, // 세션 17: 램프 위 평지 (고)
+        // 세션 18 (d): SlantFlat/SlantFlatHigh의 좁은 wedge 한계 → road-bridge로 대체.
+        // road-bridge는 1×1 full-width 도로 슬랩 (높이 0.52). 운전 가능한 평지 elevated.
+        { Kind.SlantFlat, "road-bridge.fbx" },
+        { Kind.SlantFlatHigh, "road-bridge.fbx" },
     };
 
     // Per-tile native footprint in mesh units (measured via MeasureTiles).

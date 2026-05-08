@@ -24,22 +24,40 @@
 
 ---
 
-## 이번 세션 목표 (다음 세션 진입 시 재정의)
+## 이번 세션 한 일 (세션 18, 2026-05-08)
 
-- (진행 중) 컨텍스트 관리 시스템 적용 — 이거 끝나면 갱신
-- 그 다음은 도현이 결정:
-  - (a) OpenWorld 슬로프 시각 한계 해결 (road-bridge + cube ramp)
-  - (b) 도시 디테일 패스 (skybox + 가로수/가로등 자동 배치)
-  - (c) 코드 리팩터 Phase 1 시작 (Composition Root)
-  - (d) 결정 채널 9에 맞춰 MVP 4주 작업 순서 갱신
+- **컨텍스트 시스템** (Memory Bank 패턴) 적용 — CLAUDE.md 슬림 + .claude/rules/ + activeContext + hooks
+- **Phase 1** 코드 리팩터 완료 (Find 36 → 1) — DIP + Service Locator + Composition Root
+- **Phase 2** Template Method (FuelHUD 132→19줄, IntegrityHUD 178→50줄)
+- **Phase 3** Modifier Chain (CargoBox.ApplyPreset OCP 위반 해소 + maxHP 누적 버그 부수 해소)
+- 학습 문서 4개: `GDD/architecture/file-map.md` + `phase1-dip-service-locator.md` + `phase2-template-method.md` + `phase3-modifier-chain.md`
+- 프로젝트 스냅샷: `notes/project-status-2026-05-08.md`
+- GitHub commits: `c064f59` (Phase 1 코어), `d9e6a59` (Phase 1 확장). Phase 2+3 미커밋
+- ⚠ **Coplay MCP 끊김** — Phase 2+3 컴파일/Play 검증 X. 다음 세션 첫 작업: Coplay 복귀 후 검증
 
 ---
 
-## 대기 결정 (도현 답변 필요)
+## 다음 세션 진입 시 (도현 결정 대기)
 
-- **D-?** 도시 디테일 패스 진행 vs 슬로프 한계 우선?
-- **D-?** 리팩터 Phase 1 (Composition Root) 진입 시점?
-- **D-?** notes/ 설계 성격 3건 (ideas-parking, open-questions, conventions) → GDD/로 이동 여부?
+### 첫 우선 — Coplay 복귀 후 검증 (필수)
+1. `check_compile_errors` — Phase 2+3 컴파일 통과 확인
+2. Play 모드 → `[GameContext] 12/12 시스템 등록 완료` + 게임 동작 (Order Board / 주행 / 게이지)
+3. 문제 있으면 디버그
+
+### 이후 작업 후보
+- **(c) 도시 디테일 패스** (4~6h) — skybox + 가로수 + 가로등 자동 배치 (Coplay 필수)
+- **(d) OpenWorld 슬로프 시각 한계** (4~8h) — road-bridge + cube ramp / Unity Terrain (Coplay 필수)
+- **게임플레이 진척**: RoutePlannerPanel / F1 복원 트리 시각화 / 신호등
+- **Phase 4** (선택, 보류 권장) — RunController State 패턴, ResultPanel 분할
+- **Phase 2.5** (선택) — 텍스트 HUD 4개 (`TextHUDBase`) 도입
+
+---
+
+## 잠재 부채 (해소 권장 시점)
+
+- HOT-3: ResultPanel 499라인 God class 분할 (Phase 4 후보, 5~10h)
+- ResultPanel 안 EnsureEventSystem static 메서드의 Find — UI bootstrap 영역, 위험 낮음
+- UIRoot.Instance lazy Find — 문제 없음 (싱글톤 lazy init 정상)
 
 ---
 

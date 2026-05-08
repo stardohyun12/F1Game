@@ -131,48 +131,62 @@ public class CargoBox : MonoBehaviour, ICargoBox
     /// Day 10 도입. 런타임에 화물 타입 교체할 때도 호출 가능 (예: 허브에서 화물 선택).
     /// Day 15에 tilt 필드 추가, Day 21에 UpgradeSystem 효과 후크 추가.
     /// </summary>
+    /// <summary>baseline maxHP — Awake에서 캡처. 매 ApplyPreset이 modifier chain의 reset 기준.</summary>
+    float maxHpBaseline;
+
+    /// <summary>
+    /// Phase 3 — Modifier Chain 패턴.
+    /// Before: 11 필드 baseline + 5 필드 multiplier + 3 if/else upgrade addition (한 통).
+    /// After: ICargoModifier 인스턴스 N개 chain → CargoStats struct 변환 → 필드 복사.
+    /// 새 업그레이드 추가 = UpgradeModifierRegistry에 한 줄. 이 메서드 안 건드림 (OCP).
+    /// 학습: GDD/architecture/phase3-modifier-chain.md
+    /// </summary>
     public void ApplyPreset()
     {
-        var p = CargoTypePresets.Get(cargoType);
-        longWarnG = p.longWarnG;
-        longDamageMul = p.longDamageMul;
-        latWarnG = p.latWarnG;
-        latDamageMul = p.latDamageMul;
-        spinWarnDegPerSec = p.spinWarnDegPerSec;
-        spinDamageMul = p.spinDamageMul;
-        tiltWarnDeg = p.tiltWarnDeg;
-        tiltDamageMul = p.tiltDamageMul;
-        impactWarnKmh = p.impactWarnKmh;
-        impactDamageMul = p.impactDamageMul;
-        cumulativeMul = p.cumulativeMul;
+        // baseline maxHP 한 번만 캡처 (씬 시작 시 인스펙터 값)
+        if (maxHpBaseline <= 0f) maxHpBaseline = maxHP;
 
-        // 도현 세션 15: 포장(충격흡수재) 임계 배율 적용.
-        // 일반 주행 좌절 해소 — 기본 Bubble = ×1.3.
-        float packMul = PackingTierHelper.ThresholdMultiplier(packing);
-        longWarnG *= packMul;
-        latWarnG *= packMul;
-        spinWarnDegPerSec *= packMul;
-        tiltWarnDeg *= packMul;
-        impactWarnKmh *= packMul;
+        // 1. Modifier chain 조립 — 순서: baseline → multiplier → upgrade additives
+        var modifiers = new System.Collections.Generic.List<ICargoModifier>
+        {
+            new CargoTypeModifier(cargoType, maxHpBaseline),
+            new PackingModifier(packing),
+        };
 
-        // Day 21: 업그레이드 효과 적용 (보유 시 임계 완화).
-        var ups = UpgradeSystem.Instance;
+        // 보유 업그레이드 → modifier (Registry가 어떤 효과가 어떤 modifier인지 알고 있음)
+        var ups = Services.Upgrade;
         if (ups != null)
         {
-            if (ups.IsOwned(UpgradeEffect.SuspensionUpgrade))
+            foreach (UpgradeEffect e in System.Enum.GetValues(typeof(UpgradeEffect)))
             {
-                longWarnG += 0.1f;
-                latWarnG += 0.1f;
+                if (!ups.IsOwned(e)) continue;
+                var mod = UpgradeModifierRegistry.Create(e);
+                if (mod != null) modifiers.Add(mod);
             }
-            if (ups.IsOwned(UpgradeEffect.SmoothSteering))
-            {
-                spinWarnDegPerSec += 20f;
-            }
-            if (ups.IsOwned(UpgradeEffect.ReinforcedTrunk))
-            {
-                maxHP += 20f;
-                integrityHP = maxHP;
-            }
+        }
+
+        // 2. Chain 적용 — 빈 stats에서 시작
+        var stats = new CargoStats();
+        foreach (var m in modifiers) m.Apply(ref stats);
+
+        // 3. CargoBox 필드로 복사
+        longWarnG = stats.longWarnG;
+        longDamageMul = stats.longDamageMul;
+        latWarnG = stats.latWarnG;
+        latDamageMul = stats.latDamageMul;
+        spinWarnDegPerSec = stats.spinWarnDegPerSec;
+        spinDamageMul = stats.spinDamageMul;
+        tiltWarnDeg = stats.tiltWarnDeg;
+        tiltDamageMul = stats.tiltDamageMul;
+        impactWarnKmh = stats.impactWarnKmh;
+        impactDamageMul = stats.impactDamageMul;
+        cumulativeMul = stats.cumulativeMul;
+
+        // maxHP 변경 시 integrityHP도 동기 (full repair)
+        if (Mathf.Abs(stats.maxHP - maxHP) > 0.01f)
+        {
+            maxHP = stats.maxHP;
+            integrityHP = maxHP;
         }
     }
 
