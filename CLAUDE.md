@@ -1,93 +1,33 @@
-# PIT CREW — Cowork/Claude 지시서
+# PIT CREW — Claude 진입점
 
-> 매 세션 시작 시 가장 먼저 읽을 문서.
-> 상세 기획: `GDD/` · 일정: `dev-plan/` · 결정: `notes/decisions-log.md`.
+> 이 파일은 매 세션 자동 로드. 분리된 규칙은 아래 `@import`로.
+> 상태(지금 하고 있는 것)는 `.claude/activeContext.md`. 영구 결정·기획은 `GDD/`.
 
----
+## 핵심 설계 원칙 (3줄)
 
-## 세션 시작 프로토콜
+1. **제한이 곧 재미** — Kenny 에셋만, 커스텀 제작 금지.
+2. **계획 → 실행 → 정산** — 3단계 루프 밖 기능 거절.
+3. **매 런 5~15분, 결정 4개** — USP 강화 안 하는 시스템은 `notes/ideas-parking.md` 직행.
 
-1. `notes/session-log.md` 마지막 블록 읽기 (지난 세션 맥락 복원).
-2. `dev-plan/feature-list.md` 읽기 (현재 작업 위치 확인).
-3. 오늘 목표 1줄 확정 후 진입.
+## 컨셉 한 줄
 
----
+> 망한 F1팀이 배달로 자금 → 머신 복원 → F1 그랑프리 복귀.
+> 배달은 수단, F1 복귀가 목적. 마이크로(한 런) ↔ 매크로(머신 복원) 직각 루프.
 
-## 핵심 설계 원칙
-
-1. **제한이 곧 재미** — Kenny 에셋 라인업 안에서만. 커스텀 제작 금지.
-2. **계획 → 실행 → 정산** — 이 3단계 루프 밖의 기능은 거절.
-3. **매 런 5~15분** — 범위 벗어나면 기획 재검토.
-4. **머리 + 손 모두** — 계획과 주행 둘 다 의미 있어야 함.
+상세: `GDD/overview.md`, `GDD/decision-channels.md`
 
 ---
 
-## 스코프 관리 규칙 (절대)
+## 모듈 (자동 로드)
 
-### 규칙 1: MVP는 4주
-- 1~4주차 안에 코어 루프가 굴러야 함.
-- MVP 중 신규 시스템 추가 금지.
-- 새 아이디어는 즉시 `notes/ideas-parking.md`로.
-
-### 규칙 2: 주간 재미 검증
-- **1주차 끝:** 차 몰기 자체가 재밌는가? (NO면 튜닝)
-- **2주차 끝:** 화물 관리가 긴장감을 주는가?
-- **3주차 끝:** 경로 계획이 의미 있는가?
-- **4주차 끝:** 5~15분 한 런이 실제로 굴러가는가?
-
-### 규칙 3: 비주얼 폴리싱은 4주차 이후
-기능이 다 돌아가기 전까지 셰이더/파티클/UI 꾸미기 금지.
-
-### 규칙 4: 추가 제안 시 체크리스트
-- [ ] 이 기능이 없으면 MVP가 재미 없는가?
-- [ ] 3단계 루프(계획/실행/정산) 안에 들어가는가?
-- [ ] 1~4주차 스코프 안에서 가능한가?
-
-**하나라도 NO면 `ideas-parking.md`로 즉시 이동.**
+@.claude/rules/scope.md
+@.claude/rules/asset.md
+@.claude/rules/session.md
+@.claude/rules/communication.md
+@.claude/activeContext.md
 
 ---
 
-## 작업 원칙 (Cowork/Claude 행동 규범)
+## Unity 프로젝트 경로
 
-- **한국어로 응답.**
-- **과도한 이모지·감탄 금지.** 직설적 피드백 선호.
-- **스코프 규칙 항상 체크.** 새 제안은 위 체크리스트 적용.
-- **도현의 과거 패턴 인지.** ExulMundi 때 스코프 부풀림으로 완성 실패한 이력 있음.
-- **제안 전 "MVP / 확장" 분류.** 확장이면 `ideas-parking.md` 직행.
-- **허락 없이 파일 삭제 금지.**
-- **모르면 추측하지 말고 질문.**
-- **작업 중간 방향 임의 전환 금지.**
-
----
-
-## 에셋/맵 자동 배치 작업 규칙 (D-024/D-026 교훈)
-
-- **신규 타일·프리팹 도입 시:** mesh 외곽 bounds만 보고 "정규화 완료" 판정 금지. 기존 타일과 **side-by-side 렌더 + 이음매 클로즈업** 의무 (`_Recovery/PreviewBend.cs` 패턴).
-- **시각 검증은 톱다운 정사영 + 사이드뷰 두 축으로.** 톱다운만 보면 상하 뒤집힘 등 Y축 이슈 못 잡음 (세션 7 건물 땅 속 박힘 사례).
-- **회전은 Y-yaw만 명시적으로 계산.** `Quaternion.FromToRotation(A, -A)`는 180° 축이 여러 해 → Unity가 X축 선택하면 상하 뒤집힘. `atan2(x, z)` 패턴 사용.
-- **자동 배치 스크립트에는 post-build verification 포함 의무.** `BuildingPlacer.VerifyPlacements` 패턴 (euler X/Z 검사 + bounds.min.y 검사). 침묵 실패 방지.
-- **맵 레이아웃은 ScriptableObject (`TrackLayout`)로 관리.** 코드 하드코드 금지. 여러 씬에 각자의 Layout SO.
-- **roadMask 수정 시 `TrackConnectivityVerifier` 자동 실행 필수** (세션 13 D-038). `RunFullRebuild` Step 6에 내장. BFS로 고립/도달불가/End 자동 리포트. 수동: `PitCrew > Verify Track Connectivity`. End 개수가 의도와 다르면 즉시 확인.
-
----
-
-## 현재 상태 (세션 시작 시 체크)
-
-- [x] GDD v0.1 + Q1~Q10 전부 확정 (세션 1, 2026-04-18 · D-006~D-015)
-- [x] 하네스 정비: CLAUDE.md 슬림화 + 세션 관리 파일 (세션 2, 2026-04-18)
-- [x] Unity 6 프로젝트 생성 완료 (폴더명: `F1/`, URP 템플릿, 기본 씬만)
-- [x] git init + 첫 커밋 완료 (2026-04-18 세션 2)
-- [ ] Kenny Car Kit + Road Tiles 임포트 (Day 1 잔여)
-- [ ] 1주차 개발 본격 시작 (Day 2부터: 차량 물리)
-
-> **Unity 프로젝트 경로:** `PitCrew/F1/` (도현이 Day 1 일부를 선행 수행).
-> 이후 문서에서 "Unity 프로젝트"는 이 `F1/` 폴더를 가리킴.
-
----
-
-## 세션 종료 프로토콜
-
-1. `notes/session-log.md`에 오늘 블록 추가 (한 일 / 다음엔 / 메모).
-2. `dev-plan/feature-list.md` 체크박스 갱신.
-3. 중요한 결정은 `notes/decisions-log.md`에 D-XXX로 기록.
-4. git 커밋 (기능 단위, 한 번에 하나).
+`PitCrew/F1/` (Unity 6, URP, Kenney 에셋). 이후 문서에서 "Unity 프로젝트"는 이 폴더.

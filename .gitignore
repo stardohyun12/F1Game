@@ -104,5 +104,6 @@ $RECYCLE.BIN/
 .claude/cache/
 .claude/scheduled_tasks.lock
 .claude/worktrees/
+.claude/settings.local.json
 # F1 폴더 안의 로컬 .claude는 프로젝트 allowlist와 분리 (개인 Unity 작업용)
 F1/.claude/
