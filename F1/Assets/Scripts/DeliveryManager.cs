@@ -31,8 +31,8 @@ public class DeliveryManager : MonoBehaviour, IDeliveryManager
 
     void Awake()
     {
-        var c = FindFirstObjectByType<ArcadeCarController>();
-        if (c != null) carCache = c.transform;
+        // Phase 1: Services 경유. GameContext.Awake가 [DefaultExecutionOrder(-1000)]로 먼저.
+        if (Services.Car != null) carCache = Services.Car.Transform;
     }
 
     void Start()
@@ -107,8 +107,7 @@ public class DeliveryManager : MonoBehaviour, IDeliveryManager
 
     Transform FindActiveCar()
     {
-        var car = GameObject.FindFirstObjectByType<ArcadeCarController>();
-        return car != null ? car.transform : null;
+        return Services.Car?.Transform;
     }
 
     // Editor convenience: register points programmatically (used by setup script)

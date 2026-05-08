@@ -63,6 +63,36 @@ public interface ICargoShakeSimulator
     void SetBoxColor(Color c);
 }
 
+public interface IRunController
+{
+    bool RunActive { get; }
+    float TimeRemaining { get; }
+    void BeginRun(OrderJob job);
+    void BeginRun(OrderJob job, PackingTier? packingOverride);
+}
+
+public interface IArcadeCarController
+{
+    bool IsDrifting { get; }
+    float CurrentSpeedMps { get; }
+    float MaxSpeedMps { get; }
+    Transform Transform { get; }
+}
+
+public interface ITireSystem
+{
+    float Wear { get; }
+    float GripMultiplier { get; }
+    float SpeedMultiplier { get; }
+}
+
+public interface IGearSystem
+{
+    int CurrentGear { get; }
+    string GearLabel { get; }
+    event System.Action<int, int> OnShift;
+}
+
 #endregion
 
 #region Service Locator (정적 레지스트리)
@@ -77,6 +107,10 @@ public static class Services
     public static ICargoBox Cargo { get; internal set; }
     public static IUpgradeSystem Upgrade { get; internal set; }
     public static ICargoShakeSimulator Shake { get; internal set; }
+    public static IRunController Run { get; internal set; }
+    public static IArcadeCarController Car { get; internal set; }
+    public static ITireSystem Tires { get; internal set; }
+    public static IGearSystem Gears { get; internal set; }
 
     public static void Reset()
     {
@@ -88,6 +122,10 @@ public static class Services
         Cargo = null;
         Upgrade = null;
         Shake = null;
+        Run = null;
+        Car = null;
+        Tires = null;
+        Gears = null;
     }
 
     public static T Require<T>(T service, string callerHint = null) where T : class
@@ -116,6 +154,10 @@ public class GameContext : MonoBehaviour
     [SerializeField] private CargoBox cargoBox;
     [SerializeField] private UpgradeSystem upgradeSystem;
     [SerializeField] private CargoShakeSimulator shakeSimulator;
+    [SerializeField] private RunController runController;
+    [SerializeField] private ArcadeCarController carController;
+    [SerializeField] private TireSystem tireSystem;
+    [SerializeField] private GearSystem gearSystem;
 
     [Header("Validation")]
     [SerializeField] private bool autoFindMissingOnAwake = true;
@@ -134,6 +176,10 @@ public class GameContext : MonoBehaviour
         Services.Cargo = cargoBox;
         Services.Upgrade = upgradeSystem;
         Services.Shake = shakeSimulator;
+        Services.Run = runController;
+        Services.Car = carController;
+        Services.Tires = tireSystem;
+        Services.Gears = gearSystem;
 
         if (logRegistration)
         {
@@ -146,7 +192,11 @@ public class GameContext : MonoBehaviour
             if (Services.Cargo != null) registered++;
             if (Services.Upgrade != null) registered++;
             if (Services.Shake != null) registered++;
-            Debug.Log($"[GameContext] {registered}/8 시스템 등록 완료.");
+            if (Services.Run != null) registered++;
+            if (Services.Car != null) registered++;
+            if (Services.Tires != null) registered++;
+            if (Services.Gears != null) registered++;
+            Debug.Log($"[GameContext] {registered}/12 시스템 등록 완료.");
         }
     }
 
@@ -162,6 +212,10 @@ public class GameContext : MonoBehaviour
         if (cargoBox == null) cargoBox = FindFirstObjectByType<CargoBox>();
         if (upgradeSystem == null) upgradeSystem = FindFirstObjectByType<UpgradeSystem>();
         if (shakeSimulator == null) shakeSimulator = FindFirstObjectByType<CargoShakeSimulator>();
+        if (runController == null) runController = FindFirstObjectByType<RunController>();
+        if (carController == null) carController = FindFirstObjectByType<ArcadeCarController>();
+        if (tireSystem == null) tireSystem = FindFirstObjectByType<TireSystem>();
+        if (gearSystem == null) gearSystem = FindFirstObjectByType<GearSystem>();
     }
 }
 

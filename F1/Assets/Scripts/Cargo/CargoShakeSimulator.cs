@@ -68,7 +68,7 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
 
     void Awake()
     {
-        if (cargo == null) cargo = FindFirstObjectByType<CargoBox>();
+        if (cargo == null) cargo = Services.Cargo as CargoBox;
         if (boxTransform == null) boxTransform = transform.Find("Box");
         CaptureRest();
     }
@@ -86,7 +86,7 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     {
         if (cargo == null)
         {
-            cargo = FindFirstObjectByType<CargoBox>();
+            cargo = Services.Cargo as CargoBox;
             if (cargo == null) return;
         }
         if (boxTransform == null)
@@ -160,10 +160,16 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
             transform.rotation = Quaternion.Euler(0f, carYaw, 0f);
 
             // SimCamRig도 yaw만 차량 매칭 (시점 일관 + position 회전 따라감)
+            // Phase 1: GameObject.Find by name 1회 fallback (SerializeField 비어있으면).
+            // 정상 경로는 SetupCargoView가 인스펙터에 할당. fallback 발동 시 경고.
             if (simCamRig == null)
             {
                 var rigGO = GameObject.Find("CargoSimCamRig");
-                if (rigGO != null) simCamRig = rigGO.transform;
+                if (rigGO != null)
+                {
+                    simCamRig = rigGO.transform;
+                    Debug.LogWarning("[CargoShakeSimulator] simCamRig을 GameObject.Find로 fallback 설정. SetupCargoView 메뉴 실행 권장.");
+                }
             }
             if (simCamRig != null)
             {

@@ -30,7 +30,7 @@ public class FuelHUD : MonoBehaviour
 
     void Awake()
     {
-        if (fuel == null) fuel = FindFirstObjectByType<FuelSystem>();
+        if (fuel == null) fuel = Services.Fuel as FuelSystem;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();

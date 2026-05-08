@@ -10,8 +10,10 @@ using UnityEngine;
 /// 와이어링 책임은 GameContext (씬에 단 하나).
 /// 학습: GDD/architecture/phase1-dip-service-locator.md
 /// </summary>
-public class RunController : MonoBehaviour
+public class RunController : MonoBehaviour, IRunController
 {
+    // IArcadeCarController.Transform 충족용 explicit (인터페이스 자체 추가 위함이 아닌 RunController는 IRunController 구현)
+
     // Phase 1 Before:
     //   [SerializeField] DeliveryManager deliveryManager;
     //   void Awake() { if(deliveryManager == null) deliveryManager = FindFirstObjectByType<DeliveryManager>(); }

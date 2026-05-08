@@ -2,8 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ArcadeCarController : MonoBehaviour
+public class ArcadeCarController : MonoBehaviour, IArcadeCarController
 {
+    // IArcadeCarController 충족: Unity의 transform(소문자)을 인터페이스 Transform(대문자)로 노출.
+    Transform IArcadeCarController.Transform => transform;
+
     [Header("Performance")]
     // 세션 16 #1-4 "여전히 너무 빠름". 110→85, accelTime 1.6→2.2 (배달 게임 톤에 맞춤).
     [SerializeField] private float maxSpeedKmh = 85f;
@@ -87,10 +90,10 @@ public class ArcadeCarController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         if (playerInput != null && playerInput.actions != null)
             handbrakeAction = playerInput.actions.FindAction("Handbrake", throwIfNotFound: false);
-        // Day 20: TireSystem 자동 연결 — 같은 GO 우선, 없으면 씬 단일 인스턴스.
+        // Day 20: TireSystem 자동 연결 — 같은 GO 우선, 없으면 Services.
         // null 허용(없으면 1.0 배율 = 기존 동작 그대로).
         tireSystem = GetComponent<TireSystem>();
-        if (tireSystem == null) tireSystem = FindFirstObjectByType<TireSystem>();
+        if (tireSystem == null) tireSystem = Services.Tires as TireSystem;
         RecalculateForces();
     }
 

@@ -26,7 +26,7 @@ public class SpeedometerHUD : MonoBehaviour
 
     void Awake()
     {
-        if (car == null) car = FindFirstObjectByType<ArcadeCarController>();
+        if (car == null) car = Services.Car as ArcadeCarController;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         BuildIfNeeded();

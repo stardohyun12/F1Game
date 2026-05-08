@@ -52,7 +52,7 @@ public class CargoWarningHUD : MonoBehaviour
 
     void Awake()
     {
-        if (cargo == null) cargo = FindFirstObjectByType<CargoBox>();
+        if (cargo == null) cargo = Services.Cargo as CargoBox;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
@@ -109,7 +109,7 @@ public class CargoWarningHUD : MonoBehaviour
     {
         if (cargo == null)
         {
-            cargo = FindFirstObjectByType<CargoBox>();
+            cargo = Services.Cargo as CargoBox;
             if (cargo == null) { SetVisible(false); return; }
         }
 

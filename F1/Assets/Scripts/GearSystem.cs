@@ -17,7 +17,7 @@ using System;
 ///   N: 정차 + 무입력
 /// </summary>
 [RequireComponent(typeof(ArcadeCarController))]
-public class GearSystem : MonoBehaviour
+public class GearSystem : MonoBehaviour, IGearSystem
 {
     [Header("Setup")]
     [SerializeField] private int gearCount = 5;

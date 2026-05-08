@@ -67,7 +67,7 @@ public class PreRunSetupPanel : MonoBehaviour
 
     void Awake()
     {
-        if (runController == null) runController = FindFirstObjectByType<RunController>();
+        if (runController == null) runController = Services.Run as RunController;
         EnsureEventSystem();
         if (panelRoot != null && panelRoot.activeSelf) panelRoot.SetActive(false);
         WireButtons();
@@ -205,7 +205,6 @@ public class PreRunSetupPanel : MonoBehaviour
     void OnCancelClicked()
     {
         Hide();
-        var board = FindFirstObjectByType<OrderBoard>();
-        if (board != null) board.Open();
+        if (Services.Board != null) Services.Board.Open();
     }
 }

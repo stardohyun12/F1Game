@@ -26,7 +26,7 @@ public class GearHUD : MonoBehaviour
 
     void Awake()
     {
-        if (gears == null) gears = FindFirstObjectByType<GearSystem>();
+        if (gears == null) gears = Services.Gears as GearSystem;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();

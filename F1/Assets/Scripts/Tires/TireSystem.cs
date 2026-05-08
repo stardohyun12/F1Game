@@ -21,7 +21,7 @@ public enum TireType
 /// 마모는 Phase 1에선 표시만, Phase 3에 실제 그립 감소 추가 예정.
 /// </summary>
 [DisallowMultipleComponent]
-public class TireSystem : MonoBehaviour
+public class TireSystem : MonoBehaviour, ITireSystem
 {
     [SerializeField] private TireType currentTire = TireType.Medium;
     [Tooltip("현재 타이어 마모도 0~1. 0=새 타이어, 1=완전 마모.")]

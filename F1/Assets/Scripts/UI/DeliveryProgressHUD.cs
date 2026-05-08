@@ -22,7 +22,7 @@ public class DeliveryProgressHUD : MonoBehaviour
 
     void Awake()
     {
-        if (manager == null) manager = FindFirstObjectByType<DeliveryManager>();
+        if (manager == null) manager = Services.Delivery as DeliveryManager;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         BuildIfNeeded();

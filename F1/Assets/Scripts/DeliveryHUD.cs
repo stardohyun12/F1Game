@@ -20,7 +20,8 @@ public class DeliveryHUD : MonoBehaviour
 
     void Awake()
     {
-        if (manager == null) manager = FindFirstObjectByType<DeliveryManager>();
+        // Phase 1: Services 경유. SerializeField 비어있으면 Services에서.
+        if (manager == null) manager = Services.Delivery as DeliveryManager;
         if (cam == null) cam = Camera.main;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();

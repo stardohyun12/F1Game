@@ -113,8 +113,8 @@ public class FollowCamera : MonoBehaviour
 
     void Start()
     {
-        // D-045: CargoBox.OnImpact 후크 (충돌 시 카메라 shake).
-        var cargo = FindFirstObjectByType<CargoBox>();
+        // D-045: CargoBox.OnImpact 후크. Phase 1: Services 경유.
+        var cargo = Services.Cargo as CargoBox;
         if (cargo != null)
         {
             cargo.OnImpact -= OnCargoImpact;

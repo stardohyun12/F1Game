@@ -60,7 +60,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
     void Awake()
     {
-        if (runController == null) runController = FindFirstObjectByType<RunController>();
+        if (runController == null) runController = Services.Run as RunController;
         _hoverTarget = this;
         if (panelRoot != null && panelRoot.activeSelf) panelRoot.SetActive(false);
         if (helpText != null) helpText.text = "카드에 마우스 올리면 맵에 배달지가 표시됨 · 클릭으로 출발";
@@ -207,7 +207,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             }
         }
 
-        var setup = FindFirstObjectByType<PreRunSetupPanel>();
+        var setup = FindFirstObjectByType<PreRunSetupPanel>(); // Phase 1: PreRunSetupPanel 미등록 — 인터페이스 추가는 후속
         if (setup != null)
         {
             setup.Show(lastSelectedJob);
@@ -223,7 +223,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
     void CacheMarkers()
     {
-        var mgr = FindFirstObjectByType<DeliveryManager>();
+        var mgr = Services.Delivery as DeliveryManager;
         allMarkers = new List<DeliveryPointMarker>();
         if (mgr == null) return;
 

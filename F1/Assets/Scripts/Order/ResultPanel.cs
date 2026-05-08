@@ -321,7 +321,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         storyText.text = BuildStory(job, controller.LastIntegrityPercent);
 
         // 타이어 마모
-        var tire = FindFirstObjectByType<TireSystem>();
+        var tire = Services.Tires as TireSystem;
         if (tire != null)
         {
             float wear = tire.Wear;
@@ -346,7 +346,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         }
 
         // 포장 피드백
-        var cargoBox = FindFirstObjectByType<CargoBox>();
+        var cargoBox = Services.Cargo as CargoBox;
         if (cargoBox != null)
         {
             float packMul = PackingTierHelper.ThresholdMultiplier(cargoBox.Packing);

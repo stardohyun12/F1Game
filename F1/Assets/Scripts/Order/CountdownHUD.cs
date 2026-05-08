@@ -23,7 +23,7 @@ public class CountdownHUD : MonoBehaviour
 
     void Awake()
     {
-        if (controller == null) controller = FindFirstObjectByType<RunController>();
+        if (controller == null) controller = Services.Run as RunController;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();

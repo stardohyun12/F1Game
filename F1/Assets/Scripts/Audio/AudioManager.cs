@@ -85,18 +85,18 @@ public class AudioManager : MonoBehaviour
 
     void HookEvents()
     {
-        var cargo = FindFirstObjectByType<CargoBox>();
+        // Phase 1: Find 3개 → Services. 이벤트 풍부한 API 필요한 부분만 concrete cast.
+        var cargo = Services.Cargo as CargoBox;
         if (cargo != null)
         {
             cargo.OnImpact += OnCargoImpact;
             cargo.OnTotaled += OnCargoTotaled;
         }
-        var dm = FindFirstObjectByType<DeliveryManager>();
-        if (dm != null)
+        if (Services.Delivery != null)
         {
-            dm.OnDeliveryCompleted.AddListener(_ => PlayClip(deliveryClip));
+            Services.Delivery.OnDeliveryCompleted.AddListener(_ => PlayClip(deliveryClip));
         }
-        var ups = UpgradeSystem.Instance;
+        var ups = Services.Upgrade as UpgradeSystem;
         if (ups != null)
         {
             ups.OnUpgradePurchased += _ => PlayClip(upgradeBoughtClip);
