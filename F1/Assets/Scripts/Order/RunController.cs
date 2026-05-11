@@ -92,39 +92,55 @@ public class RunController : MonoBehaviour, IRunController
     /// </summary>
     public void BeginRun(OrderJob job, PackingTier? packingOverride)
     {
+        InitRunState(job);
+        ActivateDeliveryPoints(job);
+        if (Fuel != null) Fuel.Refill();
+        ApplyCargoSetup(job, packingOverride);
+        UpdateShakeSimColor(job);
+        StartFollowCameraAndCloseBoard();
+        SubscribeDeliveryEvents();
+    }
+
+    void InitRunState(OrderJob job)
+    {
         CurrentJob = job;
         Elapsed = 0f;
         CompletedCount = 0;
         RunActive = true;
+    }
 
-        // DeliveryManager 부분집합 활성화
+    void ActivateDeliveryPoints(OrderJob job)
+    {
         if (Delivery != null) Delivery.ActivateSubset(job.pointCount);
+    }
 
-        // 연료 풀충전
-        if (Fuel != null) Fuel.Refill();
+    /// <summary>화물 타입 + 포장 적용 (세션 15: 포장 multiplier, 세션 16: override 우선).</summary>
+    void ApplyCargoSetup(OrderJob job, PackingTier? packingOverride)
+    {
+        if (Cargo == null) return;
+        Cargo.SetCargoType(job.cargoType);
+        Cargo.SetPacking(packingOverride ?? job.defaultPacking);
+    }
 
-        // 화물 타입 + 포장 (세션 15: 포장 multiplier, 세션 16: override 우선)
-        if (Cargo != null)
-        {
-            Cargo.SetCargoType(job.cargoType);
-            Cargo.SetPacking(packingOverride ?? job.defaultPacking);
-        }
-
-        // D-043: CCTV 박스 색상 화물별 차별화. (Phase 1: Services.Shake 경유, Find 제거)
+    /// <summary>D-043: CCTV 박스 색상 화물별 차별화 (즉시 인식).</summary>
+    void UpdateShakeSimColor(OrderJob job)
+    {
         if (Shake != null) Shake.SetBoxColor(CargoTypePresets.BoxColor(job.cargoType));
+    }
 
-        // 카메라 팔로우로 + 시간 재개
+    void StartFollowCameraAndCloseBoard()
+    {
         if (Overview != null) Overview.GoToFollow(() => { Time.timeScale = 1f; });
         if (Board != null) Board.Close();
+    }
 
-        // DeliveryManager 이벤트 구독
-        if (Delivery != null)
-        {
-            Delivery.OnDeliveryCompleted.RemoveListener(OnDeliveryCompleted);
-            Delivery.OnAllCompleted.RemoveListener(OnAllCompleted);
-            Delivery.OnDeliveryCompleted.AddListener(OnDeliveryCompleted);
-            Delivery.OnAllCompleted.AddListener(OnAllCompleted);
-        }
+    void SubscribeDeliveryEvents()
+    {
+        if (Delivery == null) return;
+        Delivery.OnDeliveryCompleted.RemoveListener(OnDeliveryCompleted);
+        Delivery.OnAllCompleted.RemoveListener(OnAllCompleted);
+        Delivery.OnDeliveryCompleted.AddListener(OnDeliveryCompleted);
+        Delivery.OnAllCompleted.AddListener(OnAllCompleted);
     }
 
     void OnDeliveryCompleted(DeliveryPoint p)

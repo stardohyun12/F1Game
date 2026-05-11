@@ -21,20 +21,18 @@ PitCrew/
 
 ## F1/Assets/Scripts/ — 게임 코드 (카테고리별)
 
-### 1. Core (Phase 1 신규) — 와이어링 + 추상화
+### 1. Core (Phase 1 적용 완료) — 와이어링 + 추상화
 | 파일 | 책임 |
 |---|---|
-| `Core/IGameSystems.cs` | 8개 시스템 인터페이스 (DIP) |
-| `Core/Services.cs` | 정적 Service Locator |
-| `Core/GameContext.cs` | Composition Root MonoBehaviour (씬 시작 시 와이어링) |
+| `Core/Core.cs` | 단일 파일에 통합: 인터페이스 12개 (DIP), `Services` 정적 레지스트리, `GameContext` Composition Root MonoBehaviour. AssetDatabase 부분 import 회피용 단일화 (세션 18). |
 
 ### 2. Core Loop — 한 런의 진행
 | 파일 | 책임 | 라인수 |
 |---|---|---|
-| `Order/RunController.cs` | 런 시작·종료·보상 | 222 |
+| `Order/RunController.cs` | 런 시작·종료·보상. `BeginRun` 7개 명명 메서드로 분해 (2026-05-11). | ~250 |
 | `Order/OrderBoard.cs` | 주문 카드 풀, 호버, 클릭 | 283 |
 | `Order/PreRunSetupPanel.cs` | 화물·포장 선택 | 211 |
-| `Order/ResultPanel.cs` | 정산 + 업그레이드 카드 (G d class) | 499 |
+| `Order/ResultPanel.cs` | 정산 + 업그레이드 카드 (UGUI 전환 완료) | ~500 |
 | `DeliveryManager.cs` | 배달지 활성·진행 추적 | 115 |
 | `DeliveryPoint.cs` | 트리거 + 라벨 | 50 |
 | `Order/OverviewCamera.cs` | 오버뷰↔팔로우 카메라 트랜지션 | 119 |
@@ -46,7 +44,7 @@ PitCrew/
 | 파일 | 책임 |
 |---|---|
 | `ArcadeCarController.cs` | 입력→힘 적용, 드리프트, 속도 노출 |
-| `Cargo/CargoBox.cs` | G·spin·tilt 측정, 무결성 HP, 데미지 (HOT-2 OCP 위반) |
+| `Cargo/CargoBox.cs` | G·spin·tilt 측정, 무결성 HP, 데미지. Phase 3 modifier-chain 적용 (`Cargo/Modifiers/`). |
 | `FuelSystem.cs` | 연료 소비/재충전 |
 | `GearSystem.cs` | 속도→기어 매핑 |
 | `Tires/TireSystem.cs` | 그립·스피드 배율 + 마모 |
