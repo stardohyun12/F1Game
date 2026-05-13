@@ -17,6 +17,13 @@ namespace PitCrew.Packing
 
         bool _loggedFirstInput;
 
+        void Awake()
+        {
+            // Editor Game View가 포커스를 잃어도 InputSystem이 키 상태 리셋 안 하도록.
+            // 기본값 ResetAndDisableNonBackgroundDevices면 WASD가 무반응이 됨.
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+        }
+
         void Update()
         {
             if (Screen == null) return;
