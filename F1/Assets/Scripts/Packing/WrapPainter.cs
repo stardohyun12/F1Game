@@ -19,6 +19,8 @@ namespace PitCrew.Packing
         bool stroking;
         Vector2 lastUV;
 
+        const float k_RaycastRange = 100f;
+
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
         public void SetMaterial(WrapMaterialDef def) { currentMat = def; }
 
@@ -47,6 +49,7 @@ namespace PitCrew.Packing
 
         public void BeginStroke(Vector2 screenPos)
         {
+            if (stroking) EndStroke();  // 이전 stroke 암묵적 종료
             if (TryRaycastUV(screenPos, out var uv)) { lastUV = uv; stroking = true; }
         }
 
@@ -65,8 +68,9 @@ namespace PitCrew.Packing
         bool TryRaycastUV(Vector2 screenPos, out Vector2 uv)
         {
             uv = default;
+            if (packingCamera == null || targetCollider == null) return false;
             var ray = packingCamera.ScreenPointToRay(screenPos);
-            if (!targetCollider.Raycast(ray, out var hit, 100f)) return false;
+            if (!targetCollider.Raycast(ray, out var hit, k_RaycastRange)) return false;
             uv = hit.textureCoord;
             return true;
         }
