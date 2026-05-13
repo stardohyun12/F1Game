@@ -29,7 +29,7 @@ public static class VerifyPhase1Setup
         Check(report, ref ok, ref fail, "FollowCamera", Object.FindFirstObjectByType<FollowCamera>() != null);
         Check(report, ref ok, ref fail, "IntegrityHUD", Object.FindFirstObjectByType<IntegrityHUD>() != null);
         Check(report, ref ok, ref fail, "CargoWarningHUD (Day 24 코너 경고)", Object.FindFirstObjectByType<CargoWarningHUD>() != null);
-        Check(report, ref ok, ref fail, "PreRunSetupPanel (B3 화물·포장 선택)", Object.FindFirstObjectByType<PreRunSetupPanel>() != null);
+        // PreRunSetupPanel: Task 14에서 제거됨 (3D PackingScreen으로 대체)
         Check(report, ref ok, ref fail, "EventSystem (UGUI 클릭 디스패치)", Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() != null);
 
         // 2. 신규 시스템 (Phase 1 후반)

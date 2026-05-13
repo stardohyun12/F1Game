@@ -48,7 +48,6 @@ public interface ICargoBox
 {
     float IntegrityPercent { get; }
     void SetCargoType(CargoType newType);
-    void SetPacking(PackingTier tier);
 }
 
 public interface IUpgradeSystem
@@ -68,7 +67,6 @@ public interface IRunController
     bool RunActive { get; }
     float TimeRemaining { get; }
     void BeginRun(OrderJob job);
-    void BeginRun(OrderJob job, PackingTier? packingOverride);
     void BeginRun(OrderJob job, System.Collections.Generic.List<UnityEngine.GameObject> packedItems);
 }
 

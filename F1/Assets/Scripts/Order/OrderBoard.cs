@@ -6,7 +6,7 @@ using TMPro;
 /// <summary>
 /// 시작 / 재시작 시 뜨는 주문 보드 (세션 16 후속 — IMGUI → Canvas 전환).
 ///
-/// 역할: 우측 세로 카드 N장, 호버 시 해당 주문 배달지 마커만 강조, 클릭 시 PreRunSetupPanel.Show(job).
+/// 역할: 우측 세로 카드 N장, 호버 시 해당 주문 배달지 마커만 강조, 클릭 시 PackingScreen.Show(job).
 /// 시각 디자인은 Scene/Prefab에서 직접. 이 스크립트는 데이터 바인딩 + 마커 상태 + 클릭 흐름만.
 ///
 /// 인스펙터 와이어링 (Required):

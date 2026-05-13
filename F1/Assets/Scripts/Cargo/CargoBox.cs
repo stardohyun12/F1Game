@@ -26,11 +26,6 @@ public class CargoBox : MonoBehaviour, ICargoBox
              "false면 아래 SerializeField 값 그대로 사용 (수동 튜닝 모드).")]
     [SerializeField] private bool applyPresetOnAwake = true;
 
-    [Header("Packing — 충격흡수재 (도현 세션 15 신규)")]
-    [Tooltip("포장 등급. 임계값 배율 ↑. 출발 전 OrderBoard에서 선택. " +
-             "기본 Bubble = 일반 주행 안전 (좌절 해소).")]
-    [SerializeField] private PackingTier packing = PackingTier.Bubble;
-
     [Header("Integrity")]
     [Tooltip("박스 HP. 100 = 완벽, 0 = 전파.")]
     [SerializeField] private float integrityHP = 100f;
@@ -78,7 +73,6 @@ public class CargoBox : MonoBehaviour, ICargoBox
     [SerializeField] private int cumulativeWindowFrames = 50;
 
     public CargoType Type => cargoType;
-    public PackingTier Packing => packing;
     public float IntegrityHP => integrityHP;
     public float MaxHP => maxHP;
     public float IntegrityPercent => maxHP > 0f ? Mathf.Clamp01(integrityHP / maxHP) : 0f;
@@ -150,7 +144,6 @@ public class CargoBox : MonoBehaviour, ICargoBox
         var modifiers = new System.Collections.Generic.List<ICargoModifier>
         {
             new CargoTypeModifier(cargoType, maxHpBaseline),
-            new PackingModifier(packing),
         };
 
         // 보유 업그레이드 → modifier (Registry가 어떤 효과가 어떤 modifier인지 알고 있음)
@@ -190,13 +183,6 @@ public class CargoBox : MonoBehaviour, ICargoBox
         }
     }
 
-    /// <summary>런타임에 포장 등급 변경. 즉시 임계값 재계산.</summary>
-    public void SetPacking(PackingTier tier)
-    {
-        packing = tier;
-        ApplyPreset();
-    }
-
     /// <summary>런타임에 화물 타입 교체. 프리셋 자동 적용 + Repair.</summary>
     public void SetCargoType(CargoType newType)
     {
@@ -214,8 +200,8 @@ public class CargoBox : MonoBehaviour, ICargoBox
         prevVelocity = v;
 
         // 도현 #2-15: 입력 spike → 즉각 큰 dv → 손상. 저역필터로 1프레임 spike 무시.
-        // smoothing factor: 60Hz 기준 ~0.15s 시정수. 일반 가속/제동 정상 반영, 스로틀 톡톡 spike만 흡수.
-        float smoothing = 0.30f;
+        // 콜라이더 미세 진동에서 오는 spike도 흡수해야 해서 smoothing 강화 (0.30 → 0.15).
+        float smoothing = 0.15f;
         smoothedDv = Vector3.Lerp(smoothedDv, dvRaw, smoothing);
         Vector3 dv = smoothedDv;
 
@@ -224,9 +210,9 @@ public class CargoBox : MonoBehaviour, ICargoBox
         curSignedLatG = Vector3.Dot(dv, transform.right) / 9.81f;
 
         // 도현 #2-15: 저속(20km/h 이하)에서는 G 임계 완화 — 초반 운전 학습 구간 보호.
-        // 차 속도 비례 추가 헤드룸. 0km/h에서 +0.3g 여유, 30km/h+ 부터는 0.
+        // 차 속도 비례 추가 헤드룸. 0km/h에서 +0.6g 여유, 30km/h+ 부터는 0.
         float speedKmh = v.magnitude * 3.6f;
-        float lowSpeedRelief = Mathf.Lerp(0.3f, 0f, Mathf.Clamp01(speedKmh / 30f));
+        float lowSpeedRelief = Mathf.Lerp(0.6f, 0f, Mathf.Clamp01(speedKmh / 30f));
         curLongG = Mathf.Max(0f, Mathf.Abs(curSignedLongG) - lowSpeedRelief);
         curLatG = Mathf.Max(0f, Mathf.Abs(curSignedLatG) - lowSpeedRelief);
 
@@ -258,9 +244,9 @@ public class CargoBox : MonoBehaviour, ICargoBox
         float dt = Time.fixedDeltaTime;
         float dmg = 0f;
 
-        // 피크 초과분 (지속적)
-        dmg += Mathf.Max(0f, peakLong - longWarnG) * longDamageMul * dt;
-        dmg += Mathf.Max(0f, peakLat - latWarnG) * latDamageMul * dt;
+        // 피크 G→damage 직결 제거 (세션 20, 도현 피드백): 박스 슬라이드→trunk 벽 박음을
+        // 경유하도록 인과 변경. CargoShakeSimulator가 박스 벽 충돌 시 ApplyExternalDamage 호출.
+        // peakLong/peakLat은 HUD/시뮬용으로 유지, 직접 damage는 0.
 
         // Spin 초과분 — Day 9
         dmg += Mathf.Max(0f, peakSpin - spinWarnDegPerSec) * spinDamageMul * dt;
@@ -284,6 +270,7 @@ public class CargoBox : MonoBehaviour, ICargoBox
 
         float dmg = (speedKmh - impactWarnKmh) * impactDamageMul;
         OnImpact?.Invoke(speedKmh);
+        AudioCueBus.Publish(AudioCueId.CargoImpact, speedKmh);
         ApplyDamage(dmg);
     }
 
@@ -299,6 +286,7 @@ public class CargoBox : MonoBehaviour, ICargoBox
         {
             totaledFired = true;
             OnTotaled?.Invoke();
+            AudioCueBus.Publish(AudioCueId.CargoTotaled);
         }
     }
 
@@ -310,6 +298,7 @@ public class CargoBox : MonoBehaviour, ICargoBox
     {
         if (dmg <= 0f) return;
         OnImpact?.Invoke(flashSpeedKmh);
+        AudioCueBus.Publish(AudioCueId.CargoImpact, flashSpeedKmh);
         ApplyDamage(dmg);
     }
 

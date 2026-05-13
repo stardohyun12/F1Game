@@ -345,21 +345,9 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             tireVal.gameObject.SetActive(false);
         }
 
-        // 포장 피드백
-        var cargoBox = Services.Cargo as CargoBox;
-        if (cargoBox != null)
-        {
-            float packMul = PackingTierHelper.ThresholdMultiplier(cargoBox.Packing);
-            string tierName = PackingTierHelper.DisplayName(cargoBox.Packing);
-            if (packMul > 1.01f)
-                packingFeedback.text = $"포장: {tierName} (×{packMul:F1} 안전)";
-            else
-                packingFeedback.text = $"포장: {tierName}";
-        }
-        else
-        {
+        // 포장 피드백 — Task 14: PackingTier 폐기. WrapState 기반으로 대체 예정 (Task 17).
+        if (packingFeedback != null)
             packingFeedback.text = "";
-        }
 
         // 업그레이드 영역
         var ups = UpgradeSystem.Instance;
