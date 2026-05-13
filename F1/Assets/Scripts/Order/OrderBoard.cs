@@ -47,29 +47,14 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     readonly List<OrderCardUI> spawnedCards = new List<OrderCardUI>();
     OrderJob lastSelectedJob;
 
-    // ---- OrderCardUI → OrderBoard 호버 통지 ----
-    static OrderBoard _hoverTarget;
-    public static void NotifyHoverEnter(int cardIndex)
-    {
-        if (_hoverTarget != null) _hoverTarget.OnCardHoverEnter(cardIndex);
-    }
-    public static void NotifyHoverExit(int cardIndex)
-    {
-        if (_hoverTarget != null) _hoverTarget.OnCardHoverExit(cardIndex);
-    }
+    // Phase 6(A3): 정적 _hoverTarget 라우터 제거. 호버 콜백은 클릭과 동일하게 Bind 시 주입.
 
     void Awake()
     {
         if (runController == null) runController = Services.Run as RunController;
-        _hoverTarget = this;
         if (panelRoot != null && panelRoot.activeSelf) panelRoot.SetActive(false);
         if (helpText != null) helpText.text = "카드에 마우스 올리면 맵에 배달지가 표시됨 · 클릭으로 출발";
         if (headerText != null) headerText.text = "주문 선택";
-    }
-
-    void OnDestroy()
-    {
-        if (_hoverTarget == this) _hoverTarget = null;
     }
 
     public void Open()
@@ -162,7 +147,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
                 Destroy(go);
                 continue;
             }
-            card.Bind(i, job, OnCardClicked);
+            card.Bind(i, job, OnCardClicked, OnCardHoverEnter, OnCardHoverExit);
             spawnedCards.Add(card);
         }
     }
@@ -207,14 +192,13 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             }
         }
 
-        var setup = FindFirstObjectByType<PreRunSetupPanel>(); // Phase 1: PreRunSetupPanel 미등록 — 인터페이스 추가는 후속
-        if (setup != null)
+        if (Services.Packing != null)
         {
-            setup.Show(lastSelectedJob);
+            Services.Packing.Show(lastSelectedJob);
         }
         else if (runController != null)
         {
-            // 폴백: setup 패널 없으면 직접 BeginRun.
+            // 폴백: PackingScreen 없으면 직접 BeginRun.
             runController.BeginRun(lastSelectedJob);
         }
     }

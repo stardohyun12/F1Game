@@ -101,6 +101,18 @@ public class RunController : MonoBehaviour, IRunController
         BeginRun(job);
     }
 
+    /// <summary>
+    /// Task 13: PackingScreen에서 wrap된 화물 GameObject 인계.
+    /// Task 15에서 CargoShakeSimulator/cargo prefab 통합 시 packedItems 활용 예정.
+    /// 현재는 디버그 로그 + 기존 BeginRun(job) 위임.
+    /// </summary>
+    public void BeginRun(OrderJob job, System.Collections.Generic.List<GameObject> packedItems)
+    {
+        if (packedItems != null)
+            Debug.Log($"[RunController] BeginRun w/ {packedItems.Count} packed items");
+        BeginRun(job);
+    }
+
     void InitRunState(OrderJob job)
     {
         CurrentJob = job;

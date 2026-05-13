@@ -69,6 +69,7 @@ public interface IRunController
     float TimeRemaining { get; }
     void BeginRun(OrderJob job);
     void BeginRun(OrderJob job, PackingTier? packingOverride);
+    void BeginRun(OrderJob job, System.Collections.Generic.List<UnityEngine.GameObject> packedItems);
 }
 
 public interface IArcadeCarController
@@ -95,6 +96,8 @@ public interface IGearSystem
 
 #endregion
 
+// IPackingScreen은 PitCrew.Packing 네임스페이스에 정의됨 (Packing/IPackingScreen.cs)
+
 #region Service Locator (정적 레지스트리)
 
 public static class Services
@@ -111,6 +114,7 @@ public static class Services
     public static IArcadeCarController Car { get; internal set; }
     public static ITireSystem Tires { get; internal set; }
     public static IGearSystem Gears { get; internal set; }
+    public static PitCrew.Packing.IPackingScreen Packing { get; internal set; }
 
     public static void Reset()
     {
@@ -126,6 +130,7 @@ public static class Services
         Car = null;
         Tires = null;
         Gears = null;
+        Packing = null;
     }
 
     public static T Require<T>(T service, string callerHint = null) where T : class
@@ -140,83 +145,7 @@ public static class Services
 
 #endregion
 
-#region GameContext (Composition Root)
-
-[DefaultExecutionOrder(-1000)]
-public class GameContext : MonoBehaviour
-{
-    [Header("Core Systems — 인스펙터에 드래그")]
-    [SerializeField] private DeliveryManager deliveryManager;
-    [SerializeField] private OverviewCamera overviewCamera;
-    [SerializeField] private OrderBoard orderBoard;
-    [SerializeField] private ResultPanel resultPanel;
-    [SerializeField] private FuelSystem fuelSystem;
-    [SerializeField] private CargoBox cargoBox;
-    [SerializeField] private UpgradeSystem upgradeSystem;
-    [SerializeField] private CargoShakeSimulator shakeSimulator;
-    [SerializeField] private RunController runController;
-    [SerializeField] private ArcadeCarController carController;
-    [SerializeField] private TireSystem tireSystem;
-    [SerializeField] private GearSystem gearSystem;
-
-    [Header("Validation")]
-    [SerializeField] private bool autoFindMissingOnAwake = true;
-    [SerializeField] private bool logRegistration = true;
-
-    void Awake()
-    {
-        Services.Reset();
-        if (autoFindMissingOnAwake) AutoFindMissing();
-
-        Services.Delivery = deliveryManager;
-        Services.Overview = overviewCamera;
-        Services.Board = orderBoard;
-        Services.Result = resultPanel;
-        Services.Fuel = fuelSystem;
-        Services.Cargo = cargoBox;
-        Services.Upgrade = upgradeSystem;
-        Services.Shake = shakeSimulator;
-        Services.Run = runController;
-        Services.Car = carController;
-        Services.Tires = tireSystem;
-        Services.Gears = gearSystem;
-
-        if (logRegistration)
-        {
-            int registered = 0;
-            if (Services.Delivery != null) registered++;
-            if (Services.Overview != null) registered++;
-            if (Services.Board != null) registered++;
-            if (Services.Result != null) registered++;
-            if (Services.Fuel != null) registered++;
-            if (Services.Cargo != null) registered++;
-            if (Services.Upgrade != null) registered++;
-            if (Services.Shake != null) registered++;
-            if (Services.Run != null) registered++;
-            if (Services.Car != null) registered++;
-            if (Services.Tires != null) registered++;
-            if (Services.Gears != null) registered++;
-            Debug.Log($"[GameContext] {registered}/12 시스템 등록 완료.");
-        }
-    }
-
-    void OnDestroy() => Services.Reset();
-
-    void AutoFindMissing()
-    {
-        if (deliveryManager == null) deliveryManager = FindFirstObjectByType<DeliveryManager>();
-        if (overviewCamera == null) overviewCamera = FindFirstObjectByType<OverviewCamera>();
-        if (orderBoard == null) orderBoard = FindFirstObjectByType<OrderBoard>();
-        if (resultPanel == null) resultPanel = FindFirstObjectByType<ResultPanel>();
-        if (fuelSystem == null) fuelSystem = FindFirstObjectByType<FuelSystem>();
-        if (cargoBox == null) cargoBox = FindFirstObjectByType<CargoBox>();
-        if (upgradeSystem == null) upgradeSystem = FindFirstObjectByType<UpgradeSystem>();
-        if (shakeSimulator == null) shakeSimulator = FindFirstObjectByType<CargoShakeSimulator>();
-        if (runController == null) runController = FindFirstObjectByType<RunController>();
-        if (carController == null) carController = FindFirstObjectByType<ArcadeCarController>();
-        if (tireSystem == null) tireSystem = FindFirstObjectByType<TireSystem>();
-        if (gearSystem == null) gearSystem = FindFirstObjectByType<GearSystem>();
-    }
-}
-
-#endregion
+// GameContext는 Core/GameContext.cs로 분리 (세션 19, 2026-05-12).
+// Unity는 한 .cs 파일의 첫 번째 타입만 MonoScript로 인식 → MonoBehaviour 클래스가
+// 다른 타입(인터페이스 등)과 한 파일에 있으면 GUID resolve 실패 → m_Script broken.
+// 인터페이스 12 + Services static은 한 파일 OK이지만 GameContext는 분리 필수.

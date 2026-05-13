@@ -464,8 +464,12 @@ namespace PitCrew.Packing
         void OnGoClicked()
         {
             Debug.Log($"[PackingScreen] OnGoClicked — job={currentJob?.displayName} items={spawnedItems.Count}");
+            // 아이템을 PackingScreen 컨텍스트에서 분리 — RunController로 인계
+            foreach (var go in spawnedItems) if (go != null) go.transform.SetParent(null, true);
+            var itemsCopy = new System.Collections.Generic.List<GameObject>(spawnedItems);
+            spawnedItems.Clear(); // ClearItems in Hide()가 Destroy 안 하도록 먼저 비움
             Hide();
-            // TODO Task 13: Services.Run.BeginRun(currentJob, spawnedItems);
+            if (Services.Run != null) Services.Run.BeginRun(currentJob, itemsCopy);
         }
 
         // =========================================================
