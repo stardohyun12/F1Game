@@ -89,13 +89,15 @@ namespace PitCrew.Packing
 
     float SampleAbsorptionAtUV(Vector2 uv)
     {
-        // 1픽셀 readback (4×4 영역 평균)
-        int x = Mathf.Clamp(Mathf.RoundToInt(uv.x * textureSize), 2, textureSize - 3);
-        int y = Mathf.Clamp(Mathf.RoundToInt(uv.y * textureSize), 2, textureSize - 3);
-        var tex = new Texture2D(4, 4, TextureFormat.RGBA32, false);
+        // queryRadiusUV → 픽셀 반경. 0.05 × 256 ≈ 13 → 27×27 region.
+        int r = Mathf.Max(1, Mathf.RoundToInt(queryRadiusUV * textureSize));
+        int size = r * 2;
+        int x = Mathf.Clamp(Mathf.RoundToInt(uv.x * textureSize), r, textureSize - r - 1);
+        int y = Mathf.Clamp(Mathf.RoundToInt(uv.y * textureSize), r, textureSize - r - 1);
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
         var prev = RenderTexture.active;
         RenderTexture.active = WrapRT;
-        tex.ReadPixels(new Rect(x - 2, y - 2, 4, 4), 0, 0);
+        tex.ReadPixels(new Rect(x - r, y - r, size, size), 0, 0);
         RenderTexture.active = prev;
 
         var pixels = tex.GetPixels();
