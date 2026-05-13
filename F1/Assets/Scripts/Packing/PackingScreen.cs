@@ -67,8 +67,11 @@ namespace PitCrew.Packing
             go.name = $"PackingItem_{idx}";
             if (cargoSpawnPoint != null) go.transform.SetParent(cargoSpawnPoint, false);
             go.transform.localPosition = Vector3.zero;
-            go.AddComponent<WrapState>();
-            go.AddComponent<WrapPainter>();
+            var state = go.AddComponent<WrapState>();
+            var painter = go.AddComponent<WrapPainter>();
+            // TODO Task 9/10: painter.Init(state) + packingCamera + MeshCollider 주입.
+            //   현재는 wiring 없어 painter는 동작 안 함 (compile/spawn 검증 용도).
+            _ = state; _ = painter;
             go.SetActive(false);
             spawnedItems.Add(go);
         }
