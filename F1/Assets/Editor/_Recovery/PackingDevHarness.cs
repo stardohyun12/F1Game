@@ -40,6 +40,18 @@ namespace PitCrew.Editor
             Selection.activeGameObject = go;
         }
 
+        [MenuItem("PitCrew/Packing/Apply Overlay Material To Cube")]
+        public static void ApplyOverlay()
+        {
+            var go = GameObject.Find("WrapTestCube");
+            if (go == null) { Debug.LogError("Cube 없음"); return; }
+            var state = go.GetComponent<PitCrew.Packing.WrapState>();
+            var rend = go.GetComponent<Renderer>();
+            var mat = new Material(Shader.Find("PitCrew/WrapOverlay"));
+            mat.SetTexture("_WrapTex", state.WrapRT);
+            rend.sharedMaterial = mat;
+        }
+
         [MenuItem("PitCrew/Packing/Paint Test Strip on Cube")]
         public static void PaintStrip()
         {
