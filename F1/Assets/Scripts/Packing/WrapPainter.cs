@@ -24,6 +24,8 @@ namespace PitCrew.Packing
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
         public void SetMaterial(WrapMaterialDef def) { currentMat = def; }
 
+        public System.Action<WrapState> OnStrokeEnded;
+
         void Awake()
         {
             blitMat = new Material(Shader.Find("PitCrew/WrapStripBlit"));
@@ -55,7 +57,11 @@ namespace PitCrew.Packing
             if (TryRaycastUV(screenPos, out var uv)) { lastUV = uv; stroking = true; }
         }
 
-        public void EndStroke() { stroking = false; }
+        public void EndStroke()
+        {
+            if (stroking) OnStrokeEnded?.Invoke(targetState);
+            stroking = false;
+        }
 
         public void UpdateStroke(Vector2 screenPos)
         {

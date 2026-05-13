@@ -463,8 +463,9 @@ namespace PitCrew.Packing
         // =========================================================
         void OnGoClicked()
         {
+            Debug.Log($"[PackingScreen] OnGoClicked — job={currentJob?.displayName} items={spawnedItems.Count}");
             Hide();
-            // Task 11: Services.Run.BeginRun(currentJob, spawnedItems)
+            // TODO Task 13: Services.Run.BeginRun(currentJob, spawnedItems);
         }
 
         // =========================================================
@@ -527,9 +528,36 @@ namespace PitCrew.Packing
             var col = item.GetComponent<MeshCollider>();
             if (col == null) col = item.AddComponent<MeshCollider>();
             painter.Init(state, packingCamera, col);
+            painter.OnStrokeEnded = OnStrokeCompleted;
+        }
+
+        void OnStrokeCompleted(WrapState state)
+        {
+            if (state == null) return;
+            float cov = state.ComputeCoverage();
+            if (coverageText != null) coverageText.text = $"평균 커버  {Mathf.RoundToInt(cov * 100)}%";
+            if (coverageBarFill != null) coverageBarFill.fillAmount = cov;
         }
 
         public GameObject ActiveItem => spawnedItems.Count == 0 ? null : spawnedItems[activeItemIndex];
+
+        // =========================================================
+        //  LateUpdate — 실시간 비용 라벨 갱신
+        // =========================================================
+        void LateUpdate()
+        {
+            if (!IsVisible) return;
+            var w = ActiveItem != null ? ActiveItem.GetComponent<WrapState>() : null;
+            if (w == null) return;
+            var mats = GetMaterials();
+            for (int i = 0; i < 3; i++)
+            {
+                if (costPerMaterialText[i] == null) continue;
+                var matName = i < mats.Length ? mats[i].displayName : (i < kDefaultNames.Length ? kDefaultNames[i] : $"M{i}");
+                costPerMaterialText[i].text = $"{matName}  ₩{Mathf.RoundToInt(w.CostByChannel[i])}";
+            }
+            if (totalCostText != null) totalCostText.text = $"합계  ₩{Mathf.RoundToInt(w.TotalCost)}";
+        }
 
         // =========================================================
         //  Accent color helper
