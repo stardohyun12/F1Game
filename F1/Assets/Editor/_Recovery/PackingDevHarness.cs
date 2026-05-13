@@ -46,8 +46,11 @@ namespace PitCrew.Editor
             var go = GameObject.Find("WrapTestCube");
             if (go == null) { Debug.LogError("Cube 없음"); return; }
             var state = go.GetComponent<PitCrew.Packing.WrapState>();
+            if (state == null) { Debug.LogError("WrapState 없음. Spawn 먼저."); return; }
+            var shader = Shader.Find("PitCrew/WrapOverlay");
+            if (shader == null) { Debug.LogError("WrapOverlay 셰이더 못 찾음"); return; }
             var rend = go.GetComponent<Renderer>();
-            var mat = new Material(Shader.Find("PitCrew/WrapOverlay"));
+            var mat = new Material(shader);
             mat.SetTexture("_WrapTex", state.WrapRT);
             rend.sharedMaterial = mat;
         }
