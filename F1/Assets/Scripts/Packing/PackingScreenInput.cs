@@ -15,9 +15,13 @@ namespace PitCrew.Packing
         public WrapPainter Painter { get; set; }
         public PackingScreen Screen { get; set; }
 
+        bool _loggedFirstInput;
+
         void Update()
         {
-            if (Screen == null || !Screen.IsVisible || RotateTarget == null) return;
+            if (Screen == null) return;
+            if (!Screen.IsVisible) return;
+            if (RotateTarget == null) return;
 
             var kb = Keyboard.current;
             if (kb != null)
@@ -28,6 +32,12 @@ namespace PitCrew.Packing
                 if (kb.dKey.isPressed) yaw += 1;
                 if (kb.wKey.isPressed) pitch -= 1;
                 if (kb.sKey.isPressed) pitch += 1;
+
+                if (Mathf.Abs(yaw) > 0.01f || Mathf.Abs(pitch) > 0.01f)
+                {
+                    // 입력이 도달했음 — 첫 프레임에만 로그 (스팸 방지)
+                    if (!_loggedFirstInput) { Debug.Log($"[PackingScreenInput] WASD detected (yaw={yaw} pitch={pitch})"); _loggedFirstInput = true; }
+                }
                 RotateTarget.Rotate(Vector3.up, yaw * yawSpeedDegPerSec * Time.deltaTime, Space.World);
                 RotateTarget.Rotate(Vector3.right, pitch * pitchSpeedDegPerSec * Time.deltaTime, Space.World);
                 if (kb.rKey.wasPressedThisFrame) RotateTarget.rotation = Quaternion.identity;
