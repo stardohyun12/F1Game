@@ -22,10 +22,11 @@ namespace PitCrew.Packing
         WrapMaterialDef currentMat;
         bool stroking;
 
-        // 고무줄 상태
+        // 고무줄 상태 — 시작점은 큐브 local 좌표로 저장. WASD로 회전해도 자동 따라감.
         Vector2 startScreenPos;
         Vector2 startUV;
-        RaycastHit startHit;
+        Vector3 startLocalPos;
+        Vector3 startLocalNormal;
         LineRenderer rubberBand;
 
         // 메테리얼 캐시
@@ -99,7 +100,10 @@ namespace PitCrew.Packing
 
             startScreenPos = screenPos;
             startUV = uv;
-            startHit = hit;
+            // hit.point/normal은 world 좌표. 큐브가 WASD로 회전하므로 local로 저장.
+            var t = targetCollider.transform;
+            startLocalPos = t.InverseTransformPoint(hit.point);
+            startLocalNormal = t.InverseTransformDirection(hit.normal);
             stroking = true;
             AudioCueBus.Publish(AudioCueId.PackingStrokeStart);
 
@@ -108,20 +112,37 @@ namespace PitCrew.Packing
             UpdateRubberBandPolyline(initPts);
         }
 
+        // 현재 큐브 회전 기준 시작점 world 좌표
+        Vector3 CurrentStartWorld()
+        {
+            return targetCollider != null
+                ? targetCollider.transform.TransformPoint(startLocalPos)
+                : startLocalPos;
+        }
+        Vector3 CurrentStartNormal()
+        {
+            return targetCollider != null
+                ? targetCollider.transform.TransformDirection(startLocalNormal)
+                : startLocalNormal;
+        }
+
         public void UpdateStroke(Vector2 screenPos)
         {
             if (!stroking) return;
             // 시작점 → 마우스 사이를 N개 sample로 raycast.
-            // 각 sample이 표면에 닿은 점들로 polyline 만들면 모서리에서 자연스럽게 꺾임.
-            // 표면을 빗나간 sample은 건너뜀 → 마우스가 큐브 밖으로 가도 가장 멀리 닿은 점까지만 표시.
+            // 큐브가 WASD로 회전했을 수 있으니 시작점을 현재 화면 좌표로 재투영.
+            var startWorld = CurrentStartWorld();
+            var startScreenNow = packingCamera.WorldToScreenPoint(startWorld);
+            Vector2 s0 = new Vector2(startScreenNow.x, startScreenNow.y);
+
             var pts = new System.Collections.Generic.List<Vector3>(previewSampleCount + 1);
-            pts.Add(startHit.point);
+            pts.Add(startWorld);
 
             int n = Mathf.Max(2, previewSampleCount);
             for (int i = 1; i <= n; i++)
             {
                 float t = (float)i / n;
-                var s = Vector2.Lerp(startScreenPos, screenPos, t);
+                var s = Vector2.Lerp(s0, screenPos, t);
                 if (TryRaycastUV(s, out _, out var hit)) pts.Add(hit.point);
             }
             UpdateRubberBandPolyline(pts);
@@ -131,7 +152,9 @@ namespace PitCrew.Packing
         {
             if (!stroking) return;
             Vector2 endScreenPos = GetLastMouseScreen();
-            CommitStripPolyline(startScreenPos, endScreenPos);
+            var startWorld = CurrentStartWorld();
+            var startScreenNow = packingCamera.WorldToScreenPoint(startWorld);
+            CommitStripPolyline(new Vector2(startScreenNow.x, startScreenNow.y), endScreenPos);
             OnStrokeEnded?.Invoke(targetState);
             AudioCueBus.Publish(AudioCueId.PackingStrokeEnd);
             HideRubberBand();
@@ -167,8 +190,8 @@ namespace PitCrew.Packing
             var ribbon = ribbonGO.AddComponent<WrapRibbon>();
             ribbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 3.0f);
 
-            // 시작점은 BeginStroke가 잡은 startHit 사용
-            ribbon.AddSample(startHit.point, startHit.normal);
+            // 시작점은 큐브 회전 반영한 현재 world 좌표 사용
+            ribbon.AddSample(CurrentStartWorld(), CurrentStartNormal());
             Vector2 prevUV = startUV;
             bool hasPrev = true;
             int hitCount = 1;
