@@ -42,8 +42,8 @@ Shader "PitCrew/WrapStripBlit"
                 fixed4 src = tex2D(_MainTex, i.uv);
                 float d = distSegment(i.uv, _UVPrev.xy, _UVCurr.xy);
                 float inside = step(d, _Width * 0.5);
-                // active channel: set to 1 inside the strip; other channels preserved
-                return lerp(src, src + (_ChannelMask * inside), inside);
+                // active 채널을 1로 채움(이미 1이면 그대로). RT 포맷에 무관하게 안전.
+                return fixed4(src.rgb + (1.0 - src.rgb) * _ChannelMask.rgb * inside, src.a);
             }
             ENDCG
         }
