@@ -93,15 +93,45 @@ public class RunController : MonoBehaviour, IRunController
     }
 
     /// <summary>
-    /// Task 13: PackingScreen에서 wrap된 화물 GameObject 인계.
-    /// Task 15에서 CargoShakeSimulator/cargo prefab 통합 시 packedItems 활용 예정.
-    /// 현재는 디버그 로그 + 기존 BeginRun(job) 위임.
+    /// PackingScreen에서 wrap된 화물 GameObject들을 받아 cargo prefab에 핸드오프.
+    /// 데모 단순화: packedItems[0]의 WrapState만 cargo의 Box 하위로 이관.
+    /// 다물건(1~3) 지원은 후속. items[1+]은 폐기.
     /// </summary>
     public void BeginRun(OrderJob job, System.Collections.Generic.List<GameObject> packedItems)
     {
-        if (packedItems != null)
-            Debug.Log($"[RunController] BeginRun w/ {packedItems.Count} packed items");
+        TransferWrapStateToCargo(packedItems);
         BeginRun(job);
+    }
+
+    void TransferWrapStateToCargo(System.Collections.Generic.List<GameObject> packedItems)
+    {
+        var cargoMono = Cargo as MonoBehaviour;
+        if (cargoMono == null) { Debug.LogWarning("[RunController] Cargo가 MonoBehaviour 아님 — wrap 핸드오프 스킵"); return; }
+
+        var boxT = cargoMono.transform.Find("Box");
+        if (boxT == null) boxT = cargoMono.transform;
+
+        var cargoWrap = boxT.GetComponent<PitCrew.Packing.WrapState>();
+        if (cargoWrap == null) cargoWrap = boxT.gameObject.AddComponent<PitCrew.Packing.WrapState>();
+        cargoWrap.ClearAll();
+        // 비용 누적 리셋 (이전 잡 잔재 제거)
+        for (int i = 0; i < cargoWrap.CostByChannel.Length; i++) cargoWrap.CostByChannel[i] = 0f;
+
+        if (packedItems != null && packedItems.Count > 0 && packedItems[0] != null)
+        {
+            var srcWrap = packedItems[0].GetComponent<PitCrew.Packing.WrapState>();
+            if (srcWrap != null && srcWrap.WrapRT != null && cargoWrap.WrapRT != null)
+            {
+                Graphics.Blit(srcWrap.WrapRT, cargoWrap.WrapRT);
+                for (int i = 0; i < srcWrap.CostByChannel.Length; i++)
+                    cargoWrap.CostByChannel[i] = srcWrap.CostByChannel[i];
+                Debug.Log($"[RunController] wrap 핸드오프: items[0] → cargo.Box (cost={cargoWrap.TotalCost:F0})");
+            }
+        }
+
+        // 모든 packed items 폐기 (인계 끝)
+        if (packedItems != null)
+            foreach (var go in packedItems) if (go != null) UnityEngine.Object.Destroy(go);
     }
 
     void InitRunState(OrderJob job)
