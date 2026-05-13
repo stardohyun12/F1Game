@@ -522,7 +522,8 @@ namespace PitCrew.Packing
             var state = item.GetComponent<WrapState>();
             var painter = item.GetComponent<WrapPainter>();
             if (state == null || painter == null) return;
-            // MeshCollider가 없으면 추가 (BoxCollider는 textureCoord를 제공하지 않음)
+            var box = item.GetComponent<BoxCollider>();
+            if (box != null) DestroyImmediate(box);
             var col = item.GetComponent<MeshCollider>();
             if (col == null) col = item.AddComponent<MeshCollider>();
             painter.Init(state, packingCamera, col);

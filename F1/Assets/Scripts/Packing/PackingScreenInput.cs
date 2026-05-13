@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace PitCrew.Packing
 {
@@ -18,29 +19,34 @@ namespace PitCrew.Packing
         {
             if (Screen == null || !Screen.IsVisible || RotateTarget == null) return;
 
-            // WASD 회전
-            float yaw = 0, pitch = 0;
-            if (Input.GetKey(KeyCode.A)) yaw -= 1;
-            if (Input.GetKey(KeyCode.D)) yaw += 1;
-            if (Input.GetKey(KeyCode.W)) pitch -= 1;
-            if (Input.GetKey(KeyCode.S)) pitch += 1;
-            RotateTarget.Rotate(Vector3.up, yaw * yawSpeedDegPerSec * Time.deltaTime, Space.World);
-            RotateTarget.Rotate(Vector3.right, pitch * pitchSpeedDegPerSec * Time.deltaTime, Space.World);
-            if (Input.GetKeyDown(KeyCode.R)) RotateTarget.rotation = Quaternion.identity;
-
-            // 재료 전환
-            if (Input.GetKeyDown(KeyCode.Alpha1)) Screen.SelectMaterialByChannel(0);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) Screen.SelectMaterialByChannel(1);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) Screen.SelectMaterialByChannel(2);
-
-            // 마우스 입력
-            if (Painter != null)
+            var kb = Keyboard.current;
+            if (kb != null)
             {
-                if (Input.GetMouseButtonDown(0)) Painter.BeginStroke(Input.mousePosition);
-                else if (Input.GetMouseButton(0)) Painter.UpdateStroke(Input.mousePosition);
-                else if (Input.GetMouseButtonUp(0)) Painter.EndStroke();
+                // WASD 회전
+                float yaw = 0, pitch = 0;
+                if (kb.aKey.isPressed) yaw -= 1;
+                if (kb.dKey.isPressed) yaw += 1;
+                if (kb.wKey.isPressed) pitch -= 1;
+                if (kb.sKey.isPressed) pitch += 1;
+                RotateTarget.Rotate(Vector3.up, yaw * yawSpeedDegPerSec * Time.deltaTime, Space.World);
+                RotateTarget.Rotate(Vector3.right, pitch * pitchSpeedDegPerSec * Time.deltaTime, Space.World);
+                if (kb.rKey.wasPressedThisFrame) RotateTarget.rotation = Quaternion.identity;
 
-                float wheel = Input.mouseScrollDelta.y;
+                // 재료 전환
+                if (kb.digit1Key.wasPressedThisFrame) Screen.SelectMaterialByChannel(0);
+                if (kb.digit2Key.wasPressedThisFrame) Screen.SelectMaterialByChannel(1);
+                if (kb.digit3Key.wasPressedThisFrame) Screen.SelectMaterialByChannel(2);
+            }
+
+            var mouse = Mouse.current;
+            if (mouse != null && Painter != null)
+            {
+                Vector2 screenPos = mouse.position.ReadValue();
+                if (mouse.leftButton.wasPressedThisFrame) Painter.BeginStroke(screenPos);
+                else if (mouse.leftButton.isPressed) Painter.UpdateStroke(screenPos);
+                else if (mouse.leftButton.wasReleasedThisFrame) Painter.EndStroke();
+
+                float wheel = mouse.scroll.ReadValue().y;
                 if (Mathf.Abs(wheel) > 0.01f)
                     Painter.StripWidthUV = Mathf.Clamp(Painter.StripWidthUV + wheel * wheelStep, minWidthUV, maxWidthUV);
             }
