@@ -14,7 +14,8 @@ namespace PitCrew.Packing
 
         [Header("Painting")]
         [SerializeField] private float stripWidthUV = 0.06f;
-        [SerializeField] private int snapSampleCount = 12; // 떼었을 때 strip을 만들 sample 수
+        [SerializeField] private int snapSampleCount = 24;       // 떼었을 때 strip을 만들 sample 수
+        [SerializeField] private int previewSampleCount = 24;    // 누르는 동안 고무줄 표시용 sample 수
 
         Material blitMat;
         RenderTexture scratch;
@@ -103,32 +104,34 @@ namespace PitCrew.Packing
             AudioCueBus.Publish(AudioCueId.PackingStrokeStart);
 
             EnsureRubberBand();
-            UpdateRubberBand(hit.point, hit.point);
+            var initPts = new System.Collections.Generic.List<Vector3> { hit.point };
+            UpdateRubberBandPolyline(initPts);
         }
 
         public void UpdateStroke(Vector2 screenPos)
         {
             if (!stroking) return;
-            // 끝점: 마우스 위치를 표면에 raycast. 표면 빗나가면 카메라에서 일정 거리의 공중점 사용.
-            Vector3 endWorld;
-            if (TryRaycastUV(screenPos, out _, out var endHit))
-                endWorld = endHit.point;
-            else
-                endWorld = packingCamera.ScreenPointToRay(screenPos).GetPoint(3f);
+            // 시작점 → 마우스 사이를 N개 sample로 raycast.
+            // 각 sample이 표면에 닿은 점들로 polyline 만들면 모서리에서 자연스럽게 꺾임.
+            // 표면을 빗나간 sample은 건너뜀 → 마우스가 큐브 밖으로 가도 가장 멀리 닿은 점까지만 표시.
+            var pts = new System.Collections.Generic.List<Vector3>(previewSampleCount + 1);
+            pts.Add(startHit.point);
 
-            UpdateRubberBand(startHit.point, endWorld);
+            int n = Mathf.Max(2, previewSampleCount);
+            for (int i = 1; i <= n; i++)
+            {
+                float t = (float)i / n;
+                var s = Vector2.Lerp(startScreenPos, screenPos, t);
+                if (TryRaycastUV(s, out _, out var hit)) pts.Add(hit.point);
+            }
+            UpdateRubberBandPolyline(pts);
         }
 
         public void EndStroke()
         {
             if (!stroking) return;
-            // 떼는 순간 마우스 위치 raycast → 끝점 결정 후 strip 한 줄로 commit
             Vector2 endScreenPos = GetLastMouseScreen();
-            if (TryRaycastUV(endScreenPos, out var endUV, out var endHit))
-            {
-                CommitStrip(startScreenPos, endScreenPos, startUV, endUV, startHit, endHit);
-            }
-            // 떼면 RT 갱신 + 콜백
+            CommitStripPolyline(startScreenPos, endScreenPos);
             OnStrokeEnded?.Invoke(targetState);
             AudioCueBus.Publish(AudioCueId.PackingStrokeEnd);
             HideRubberBand();
@@ -153,40 +156,42 @@ namespace PitCrew.Packing
                 : startScreenPos;
         }
 
-        // 시작/끝 사이 화면 좌표를 N분할해 raycast — 표면을 따라 strip 생성
-        void CommitStrip(Vector2 s0, Vector2 s1, Vector2 uv0, Vector2 uv1, RaycastHit hit0, RaycastHit hit1)
+        // 시작 화면 좌표 → 끝 화면 좌표 사이를 N분할해 raycast.
+        // 표면 닿은 sample들로 ribbon mesh + RT 페인트 (모서리에서 자연스럽게 꺾임).
+        void CommitStripPolyline(Vector2 s0, Vector2 s1)
         {
             int n = Mathf.Max(2, snapSampleCount);
 
-            // 3D 리본 메쉬
             var ribbonGO = new GameObject($"Ribbon_{currentMat.displayName}");
             ribbonGO.transform.SetParent(targetCollider != null ? targetCollider.transform : transform, false);
             var ribbon = ribbonGO.AddComponent<WrapRibbon>();
             ribbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 3.0f);
-            ribbon.AddSample(hit0.point, hit0.normal);
 
-            Vector2 prevUV = uv0;
-            bool anyMid = false;
-            for (int i = 1; i < n; i++)
+            // 시작점은 BeginStroke가 잡은 startHit 사용
+            ribbon.AddSample(startHit.point, startHit.normal);
+            Vector2 prevUV = startUV;
+            bool hasPrev = true;
+            int hitCount = 1;
+
+            for (int i = 1; i <= n; i++)
             {
-                float t = (float)i / (n - 1);
-                Vector2 s = Vector2.Lerp(s0, s1, t);
-
-                if (TryRaycastUV(s, out var uvMid, out var hitMid))
+                float t = (float)i / n;
+                var s = Vector2.Lerp(s0, s1, t);
+                if (TryRaycastUV(s, out var uv, out var hit))
                 {
-                    ribbon.AddSample(hitMid.point, hitMid.normal);
-                    if (i > 1 || (uvMid - prevUV).sqrMagnitude > 1e-8f)
-                    {
-                        DrawStrip(prevUV, uvMid, currentMat);
-                        prevUV = uvMid;
-                        anyMid = true;
-                    }
+                    ribbon.AddSample(hit.point, hit.normal);
+                    if (hasPrev) DrawStrip(prevUV, uv, currentMat);
+                    prevUV = uv;
+                    hasPrev = true;
+                    hitCount++;
+                }
+                else
+                {
+                    // 화면이 큐브 밖으로 나간 sample은 polyline 단절 — 다음 hit 때 새 segment 시작
+                    hasPrev = false;
                 }
             }
-            // 끝점 보장
-            ribbon.AddSample(hit1.point, hit1.normal);
-            if (!anyMid) DrawStrip(uv0, uv1, currentMat);
-            else DrawStrip(prevUV, uv1, currentMat);
+            if (hitCount < 2) return; // strip 무효
         }
 
         bool TryRaycastUV(Vector2 screenPos, out Vector2 uv) => TryRaycastUV(screenPos, out uv, out _);
@@ -212,23 +217,23 @@ namespace PitCrew.Packing
             go.transform.SetParent(transform, false);
             rubberBand = go.AddComponent<LineRenderer>();
             rubberBand.useWorldSpace = true;
-            rubberBand.positionCount = 2;
+            rubberBand.positionCount = 0;
             rubberBand.startWidth = 0.04f;
             rubberBand.endWidth = 0.04f;
             rubberBand.numCapVertices = 4;
-            rubberBand.numCornerVertices = 2;
-            // URP 호환 단순 머티리얼
+            rubberBand.numCornerVertices = 6;
+            rubberBand.alignment = LineAlignment.View;
             var shader = Shader.Find("Unlit/Color") ?? Shader.Find("Sprites/Default");
             var mat = new Material(shader);
             mat.color = currentMat != null ? currentMat.displayColor : Color.white;
             rubberBand.material = mat;
         }
 
-        void UpdateRubberBand(Vector3 a, Vector3 b)
+        void UpdateRubberBandPolyline(System.Collections.Generic.List<Vector3> pts)
         {
             if (rubberBand == null) return;
-            rubberBand.SetPosition(0, a);
-            rubberBand.SetPosition(1, b);
+            rubberBand.positionCount = pts.Count;
+            for (int i = 0; i < pts.Count; i++) rubberBand.SetPosition(i, pts[i]);
             if (currentMat != null && rubberBand.material != null) rubberBand.material.color = currentMat.displayColor;
         }
 
