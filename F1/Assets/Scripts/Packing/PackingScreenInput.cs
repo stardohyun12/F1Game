@@ -87,8 +87,8 @@ namespace PitCrew.Packing
                     Debug.Log($"[PackingScreenInput] WASD detected wasd={wasd}");
                     _loggedFirstInput = true;
                 }
-                RotateTarget.Rotate(Vector3.up, wasd.x * yawSpeedDegPerSec * Time.deltaTime, Space.World);
-                RotateTarget.Rotate(Vector3.right, -wasd.y * pitchSpeedDegPerSec * Time.deltaTime, Space.World);
+                RotateTarget.Rotate(Vector3.up, wasd.x * yawSpeedDegPerSec * Time.unscaledDeltaTime, Space.World);
+                RotateTarget.Rotate(Vector3.right, -wasd.y * pitchSpeedDegPerSec * Time.unscaledDeltaTime, Space.World);
             }
 
             if (_resetAction != null && _resetAction.WasPressedThisFrame()) RotateTarget.rotation = Quaternion.identity;

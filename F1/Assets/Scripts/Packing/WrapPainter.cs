@@ -73,8 +73,11 @@ namespace PitCrew.Packing
                 var shader = Shader.Find("PitCrew/WrapRibbon");
                 var mat = new Material(shader);
                 var col = def.displayColor;
-                col.a = 0.7f;
+                col.a = 1.0f;
                 mat.SetColor("_BaseColor", col);
+                mat.SetColor("_RimColor", Color.white);
+                mat.SetFloat("_RimPower", 2.5f);
+                mat.SetFloat("_EdgeBoost", 0.55f);
                 ribbonMaterialsByChannel[idx] = mat;
             }
             return ribbonMaterialsByChannel[idx];
@@ -94,7 +97,9 @@ namespace PitCrew.Packing
             var ribbonGO = new GameObject($"Ribbon_{currentMat.displayName}");
             ribbonGO.transform.SetParent(targetCollider != null ? targetCollider.transform : transform, false);
             currentRibbon = ribbonGO.AddComponent<WrapRibbon>();
-            currentRibbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 1.5f);
+            // 폭은 stripWidthUV(0~0.25 UV 단위) × 큐브 한 변 m 길이 × 보강 factor.
+            // 큐브 기본 1m → stripWidthUV 0.06 × 3.0 = 0.18m (18cm). 시각적으로 충분히 두꺼움.
+            currentRibbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 3.0f);
             currentRibbon.AddSample(hit.point, hit.normal);
         }
 
