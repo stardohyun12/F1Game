@@ -106,10 +106,8 @@ public class PreRunSetupPanel : MonoBehaviour
         WireButtons();
         SpawnCardsIfNeeded();
 
-        // 기본 선택: order의 defaultPacking이 유효하면 그것, 없으면 Bubble.
-        selectedTier = job != null && System.Enum.IsDefined(typeof(PackingTier), (int)job.defaultPacking)
-            ? job.defaultPacking
-            : PackingTier.Bubble;
+        // Task 14: defaultPacking 필드 삭제됨 → 항상 Bubble 기본값.
+        selectedTier = PackingTier.Bubble;
 
         if (panelRoot != null) panelRoot.SetActive(true);
         Refresh();

@@ -83,22 +83,22 @@ public class RunController : MonoBehaviour, IRunController
 
     public void BeginRun(OrderJob job)
     {
-        BeginRun(job, null);
-    }
-
-    /// <summary>
-    /// 포장 override 받는 BeginRun (세션 16 후속 — PreRunSetupPanel 흐름 버그 수정).
-    /// 기존 BeginRun(job)은 job.defaultPacking 사용. PreRunSetupPanel이 사용자 선택 적용 시 이 오버로드.
-    /// </summary>
-    public void BeginRun(OrderJob job, PackingTier? packingOverride)
-    {
         InitRunState(job);
         ActivateDeliveryPoints(job);
         if (Fuel != null) Fuel.Refill();
-        ApplyCargoSetup(job, packingOverride);
+        ApplyCargoSetup(job);
         UpdateShakeSimColor(job);
         StartFollowCameraAndCloseBoard();
         SubscribeDeliveryEvents();
+    }
+
+    /// <summary>
+    /// Task 14: packingOverride 무시. 3D 포장 시스템으로 갈아치워짐.
+    /// </summary>
+    public void BeginRun(OrderJob job, PackingTier? packingOverride)
+    {
+        // Task 14: packingOverride 무시. 3D 포장 시스템으로 갈아치워짐.
+        BeginRun(job);
     }
 
     void InitRunState(OrderJob job)
@@ -114,12 +114,12 @@ public class RunController : MonoBehaviour, IRunController
         if (Delivery != null) Delivery.ActivateSubset(job.pointCount);
     }
 
-    /// <summary>화물 타입 + 포장 적용 (세션 15: 포장 multiplier, 세션 16: override 우선).</summary>
-    void ApplyCargoSetup(OrderJob job, PackingTier? packingOverride)
+    /// <summary>화물 타입 적용. Task 14: SetPacking 제거 (PackingTier 폐기).</summary>
+    void ApplyCargoSetup(OrderJob job)
     {
         if (Cargo == null) return;
         Cargo.SetCargoType(job.cargoType);
-        Cargo.SetPacking(packingOverride ?? job.defaultPacking);
+        // Task 14: SetPacking removed (PackingTier 폐기)
     }
 
     /// <summary>D-043: CCTV 박스 색상 화물별 차별화 (즉시 인식).</summary>

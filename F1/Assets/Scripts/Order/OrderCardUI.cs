@@ -29,7 +29,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Title")]
     public TMP_Text titleText;
 
-    [Header("Stat Rows (6) — 순서: 지점/시간/보상/무게/화물/포장")]
+    [Header("Stat Rows (6) — 순서: 지점/시간/보상/무게/화물/물건")]
     public OrderCardStatRow[] statRows = new OrderCardStatRow[6];
 
     [Header("Tip — 운전 가이드 + 포장 가이드 (멀티라인)")]
@@ -46,13 +46,24 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     int cardIndex;
     OrderJob job;
     Action<int> onCardClicked;
+    Action<int> onCardHoverEnter;
+    Action<int> onCardHoverExit;
 
-    /// <summary>OrderBoard.Open에서 호출. 데이터 바인딩.</summary>
-    public void Bind(int cardIndex, OrderJob job, Action<int> onCardClicked)
+    /// <summary>OrderBoard.Open에서 호출. 데이터 + 콜백 4종 바인딩.</summary>
+    /// <remarks>
+    /// Phase 6(A3): 호버도 클릭과 동일한 콜백 패턴으로 통일. 이전엔 호버만 정적 dispatch
+    /// (`OrderBoard.NotifyHoverEnter`)로 흘러 일관성이 깨졌고 멀티 보드를 불가능하게 했음.
+    /// </remarks>
+    public void Bind(int cardIndex, OrderJob job,
+        Action<int> onCardClicked,
+        Action<int> onCardHoverEnter = null,
+        Action<int> onCardHoverExit = null)
     {
         this.cardIndex = cardIndex;
         this.job = job;
         this.onCardClicked = onCardClicked;
+        this.onCardHoverEnter = onCardHoverEnter;
+        this.onCardHoverExit = onCardHoverExit;
 
         if (titleText != null) titleText.text = job.displayName;
         if (colorStrip != null) colorStrip.color = job.color;
@@ -73,12 +84,9 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         SetStatRow(2, "보상", rewardStr);
         SetStatRow(3, "무게", job.WeightLabel);
         SetStatRow(4, "화물", CargoTypePresets.DisplayName(job.cargoType));
-        SetStatRow(5, "포장", PackingTierHelper.DisplayName(job.defaultPacking));
+        SetStatRow(5, "물건", $"{job.itemCount}개");
 
-        if (tipText != null)
-        {
-            tipText.text = $"→ {CargoTypePresets.DriveTip(job.cargoType)}\n→ {PackingTierHelper.DriveTip(job.defaultPacking)}";
-        }
+        if (tipText != null) tipText.text = $"→ {CargoTypePresets.DriveTip(job.cargoType)}";
     }
 
     public void SetHovering(bool hovering)
@@ -107,12 +115,12 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // ---- Pointer events ----
     public void OnPointerEnter(PointerEventData eventData)
     {
-        OrderBoard.NotifyHoverEnter(cardIndex);
+        onCardHoverEnter?.Invoke(cardIndex);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OrderBoard.NotifyHoverExit(cardIndex);
+        onCardHoverExit?.Invoke(cardIndex);
     }
 
     public void OnPointerClick(PointerEventData eventData)

@@ -17,8 +17,8 @@ public class OrderJob : ScriptableObject
     [Range(1, 3)] public int itemCount = 1;
 
     [Header("Difficulty")]
-    [Tooltip("이 작업이 사용할 배달지 개수. 씬의 DeliveryPoint 풀에서 앞에서부터 N개 (또는 시드 기반 무작위).")]
-    public int pointCount = 3;
+    [Tooltip("배달 목적지 수. 현 디자인: 1 (D-070 결정).")]
+    public int pointCount = 1;
 
     [Tooltip("시간제한(초). 0이면 무제한.")]
     public float timeLimitSec = 0f;
@@ -43,8 +43,4 @@ public class OrderJob : ScriptableObject
     [Tooltip("이 주문에 실리는 화물 타입. RunController.BeginRun에서 CargoBox에 자동 적용.")]
     public CargoType cargoType = CargoType.Box;
 
-    [Header("Packing — 충격흡수재 (도현 세션 15)")]
-    [Tooltip("이 주문 기본 포장 등급. 출발 전 OrderBoard에서 변경 가능. " +
-             "기본 Bubble = 일반 주행 안전.")]
-    public PackingTier defaultPacking = PackingTier.Bubble;
 }

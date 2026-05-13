@@ -101,7 +101,7 @@ public static class GenerateExpandedOrders
         job.baseReward = baseReward;
         job.timeBonus = timeBonus;
         job.cargoType = cargo;
-        job.defaultPacking = packing;
+        // Task 14: defaultPacking 필드 삭제됨 (PackingTier 폐기). packing 파라미터는 Task 14에서 제거.
         job.weightTier = weight;
         EditorUtility.SetDirty(job);
         return job;
