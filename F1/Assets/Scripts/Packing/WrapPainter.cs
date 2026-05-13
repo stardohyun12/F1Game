@@ -19,6 +19,10 @@ namespace PitCrew.Packing
         bool stroking;
         Vector2 lastUV;
 
+        // 3D ribbon
+        WrapRibbon currentRibbon;
+        Material[] ribbonMaterialsByChannel;
+
         const float k_RaycastRange = 100f;
 
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
@@ -49,36 +53,78 @@ namespace PitCrew.Packing
             scratch.Create();
         }
 
-        void OnDestroy() { if (scratch != null) scratch.Release(); if (blitMat != null) Destroy(blitMat); }
+        void OnDestroy()
+        {
+            if (scratch != null) scratch.Release();
+            if (blitMat != null) Destroy(blitMat);
+            if (ribbonMaterialsByChannel != null)
+            {
+                foreach (var m in ribbonMaterialsByChannel)
+                    if (m != null) Destroy(m);
+            }
+        }
+
+        Material GetOrCreateRibbonMaterial(WrapMaterialDef def)
+        {
+            if (ribbonMaterialsByChannel == null) ribbonMaterialsByChannel = new Material[3];
+            int idx = Mathf.Clamp(def.channelIndex, 0, 2);
+            if (ribbonMaterialsByChannel[idx] == null)
+            {
+                var shader = Shader.Find("PitCrew/WrapRibbon");
+                var mat = new Material(shader);
+                var col = def.displayColor;
+                col.a = 0.7f;
+                mat.SetColor("_BaseColor", col);
+                ribbonMaterialsByChannel[idx] = mat;
+            }
+            return ribbonMaterialsByChannel[idx];
+        }
 
         public void BeginStroke(Vector2 screenPos)
         {
             if (stroking) EndStroke();  // 이전 stroke 암묵적 종료
-            if (TryRaycastUV(screenPos, out var uv)) { lastUV = uv; stroking = true; AudioCueBus.Publish(AudioCueId.PackingStrokeStart); }
+            if (currentMat == null) return;
+            if (!TryRaycastUV(screenPos, out var uv, out var hit)) return;
+
+            lastUV = uv;
+            stroking = true;
+            AudioCueBus.Publish(AudioCueId.PackingStrokeStart);
+
+            // 3D 리본 GameObject를 큐브의 자식으로 생성
+            var ribbonGO = new GameObject($"Ribbon_{currentMat.displayName}");
+            ribbonGO.transform.SetParent(targetCollider != null ? targetCollider.transform : transform, false);
+            currentRibbon = ribbonGO.AddComponent<WrapRibbon>();
+            currentRibbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 1.5f);
+            currentRibbon.AddSample(hit.point, hit.normal);
         }
 
         public void EndStroke()
         {
             if (stroking) { OnStrokeEnded?.Invoke(targetState); AudioCueBus.Publish(AudioCueId.PackingStrokeEnd); }
             stroking = false;
+            currentRibbon = null; // ribbon GameObject는 cargo 자식으로 유지
         }
 
         public void UpdateStroke(Vector2 screenPos)
         {
             if (!stroking || currentMat == null) return;
-            if (!TryRaycastUV(screenPos, out var uv)) return;
+            if (!TryRaycastUV(screenPos, out var uv, out var hit)) return;
             if ((uv - lastUV).sqrMagnitude < minSampleDistUV * minSampleDistUV) return;
 
             DrawStrip(lastUV, uv, currentMat);
             lastUV = uv;
+
+            if (currentRibbon != null) currentRibbon.AddSample(hit.point, hit.normal);
         }
 
-        bool TryRaycastUV(Vector2 screenPos, out Vector2 uv)
+        bool TryRaycastUV(Vector2 screenPos, out Vector2 uv) => TryRaycastUV(screenPos, out uv, out _);
+
+        bool TryRaycastUV(Vector2 screenPos, out Vector2 uv, out RaycastHit hit)
         {
-            uv = default;
+            uv = default; hit = default;
             if (packingCamera == null || targetCollider == null) return false;
             var ray = packingCamera.ScreenPointToRay(screenPos);
-            if (!targetCollider.Raycast(ray, out var hit, k_RaycastRange)) return false;
+            if (!targetCollider.Raycast(ray, out hit, k_RaycastRange)) return false;
             uv = hit.textureCoord;
             return true;
         }

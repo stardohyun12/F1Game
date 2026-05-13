@@ -562,20 +562,10 @@ namespace PitCrew.Packing
             go.name = $"PackingItem_{idx}";
             if (cargoSpawnPoint != null) go.transform.SetParent(cargoSpawnPoint, false);
             go.transform.localPosition = Vector3.zero;
-            var state = go.AddComponent<WrapState>();
+            go.AddComponent<WrapState>();
             go.AddComponent<WrapPainter>();
             // painter.Init은 ActivateItem → WirePainterFor에서 처리
-
-            // 표면에 wrap 무늬 시각화 — WrapOverlay 셰이더 + WrapState.WrapRT 바인딩
-            var rend = go.GetComponent<Renderer>();
-            var shader = Shader.Find("PitCrew/WrapOverlay");
-            if (rend != null && shader != null)
-            {
-                var mat = new Material(shader);
-                // WrapState.Awake가 RT 생성 → 다음 프레임 적용 위해 컴포넌트 자체를 트리거
-                mat.SetTexture("_WrapTex", state.WrapRT);
-                rend.sharedMaterial = mat;
-            }
+            // 큐브는 기본 URP/Lit 머티리얼 유지 — 3D 리본이 표면 위에 올라탐
 
             go.SetActive(false);
             spawnedItems.Add(go);
