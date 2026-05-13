@@ -87,6 +87,8 @@ namespace PitCrew.Packing
                     Debug.Log($"[PackingScreenInput] WASD detected wasd={wasd}");
                     _loggedFirstInput = true;
                 }
+                // 드래그 중 회전 시작하면 현재 stroke 취소 — 회전 도중에는 새 strip 안 만듦
+                if (Painter != null) Painter.CancelStroke();
                 RotateTarget.Rotate(Vector3.up, wasd.x * yawSpeedDegPerSec * Time.unscaledDeltaTime, Space.World);
                 RotateTarget.Rotate(Vector3.right, -wasd.y * pitchSpeedDegPerSec * Time.unscaledDeltaTime, Space.World);
             }
