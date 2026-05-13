@@ -31,9 +31,11 @@ namespace PitCrew.Packing
         }
 
         /// <summary>targetState가 직렬화로 연결되지 않은 경우(예: 런타임 AddComponent) 수동으로 호출.</summary>
-        public void Init(WrapState state)
+        public void Init(WrapState state, Camera cam = null, MeshCollider col = null)
         {
             targetState = state;
+            if (cam != null) packingCamera = cam;
+            if (col != null) targetCollider = col;
             if (blitMat == null) blitMat = new Material(Shader.Find("PitCrew/WrapStripBlit"));
             InitRT();
         }

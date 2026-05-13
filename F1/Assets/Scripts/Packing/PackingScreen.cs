@@ -18,6 +18,9 @@ namespace PitCrew.Packing
         List<GameObject> spawnedItems = new();
         int activeItemIndex;
 
+        // Input handler (Task 10)
+        PackingScreenInput input;
+
         // UI refs (filled in BuildSidePanels)
         TMP_Text titleText, totalCostText, coverageText;
         Image coverageBarFill;
@@ -51,7 +54,6 @@ namespace PitCrew.Packing
             int n = Mathf.Clamp(job.itemCount, 1, 3);
             for (int i = 0; i < n; i++) SpawnItem(i);
             ActivateItem(0);
-            RefreshTitle();
             if (panelRoot != null) panelRoot.SetActive(true);
             if (packingCamera != null) packingCamera.gameObject.SetActive(true);
         }
@@ -435,7 +437,6 @@ namespace PitCrew.Packing
             if (spawnedItems.Count == 0) return;
             int next = (activeItemIndex - 1 + spawnedItems.Count) % spawnedItems.Count;
             ActivateItem(next);
-            RefreshTitle();
         }
 
         void OnNextItem()
@@ -443,7 +444,6 @@ namespace PitCrew.Packing
             if (spawnedItems.Count == 0) return;
             int next = (activeItemIndex + 1) % spawnedItems.Count;
             ActivateItem(next);
-            RefreshTitle();
         }
 
         void RefreshTitle()
@@ -482,10 +482,9 @@ namespace PitCrew.Packing
             go.name = $"PackingItem_{idx}";
             if (cargoSpawnPoint != null) go.transform.SetParent(cargoSpawnPoint, false);
             go.transform.localPosition = Vector3.zero;
-            var state   = go.AddComponent<WrapState>();
-            var painter = go.AddComponent<WrapPainter>();
-            // TODO Task 10: painter.Init(state) + packingCamera + MeshCollider 주입.
-            _ = state; _ = painter;
+            go.AddComponent<WrapState>();
+            go.AddComponent<WrapPainter>();
+            // painter.Init은 ActivateItem → WirePainterFor에서 처리
             go.SetActive(false);
             spawnedItems.Add(go);
         }
@@ -494,6 +493,39 @@ namespace PitCrew.Packing
         {
             for (int i = 0; i < spawnedItems.Count; i++) spawnedItems[i].SetActive(i == idx);
             activeItemIndex = idx;
+            RefreshTitle();
+
+            EnsureInput();
+            var item = ActiveItem;
+            if (item != null)
+            {
+                input.RotateTarget = item.transform;
+                input.Painter = item.GetComponent<WrapPainter>();
+                WirePainterFor(item);
+            }
+        }
+
+        void EnsureInput()
+        {
+            if (input == null) input = gameObject.AddComponent<PackingScreenInput>();
+            input.Screen = this;
+        }
+
+        public void SelectMaterialByChannel(int ch)
+        {
+            var mats = GetMaterials();
+            foreach (var m in mats) if (m.channelIndex == ch) { SelectMaterial(m); break; }
+        }
+
+        void WirePainterFor(GameObject item)
+        {
+            var state = item.GetComponent<WrapState>();
+            var painter = item.GetComponent<WrapPainter>();
+            if (state == null || painter == null) return;
+            // MeshCollider가 없으면 추가 (BoxCollider는 textureCoord를 제공하지 않음)
+            var col = item.GetComponent<MeshCollider>();
+            if (col == null) col = item.AddComponent<MeshCollider>();
+            painter.Init(state, packingCamera, col);
         }
 
         public GameObject ActiveItem => spawnedItems.Count == 0 ? null : spawnedItems[activeItemIndex];
