@@ -1560,16 +1560,13 @@ git commit -m "docs: D-070 + activeContext 갱신 — 3D 포장 완료"
 
 ---
 
-## 도현 검토 항목 (실행 전 확인)
+## 결정 (2026-05-13 도현 승인)
 
-1. **PackingScreen의 화물 prefab 인계** — 위 Gap. 두 선택지:
-   - A. PackingScreen이 wrap한 GameObject를 그대로 RunController로 넘김. RunController는 cargo prefab 생성 대신 인계받은 GO 사용.
-   - B. wrap 상태 (RenderTexture 또는 직렬화한 byte[])만 넘기고 RunController가 cargo prefab spawn 후 RenderTexture 복원.
-   - 권장 A — 단순. 단 cargo prefab의 다른 컴포넌트(Rigidbody, collider 등)도 wrap 화면용 primitive에 미리 부착돼 있어야 함.
+1. **포장 화물 인계 = A안.** PackingScreen이 wrap한 GameObject를 그대로 RunController로 넘김. 포장 화면 박스에 Rigidbody·콜라이더 등 운전 화면에서 필요한 컴포넌트 미리 부착. **Task 13에서 RunController.BeginRun 시그니처를 `BeginRun(OrderJob job, List<GameObject> packedItems)`로 확장.**
 
-2. **`Services` 네임스페이스/멤버 확장** — Task 13에서 `Services.Packing` 추가. 기존 Service Locator 패턴(`Core.cs:100`)과 정합되는 방식 OK인지.
+2. **`Services.Packing` 등록 = 기존 패턴 따라.** `GameContext.Awake()`에서 12개 등록 옆에 한 줄 추가. PackingScreen이 자기 등록하지 않음. **Task 13 Step 1 그대로.**
 
-3. **AudioCueBus cue 식별자 컨벤션** — `Packing.MaterialSwitch` 같은 점 표기가 기존 cue 컨벤션과 맞는지 (Phase 4 문서 확인 필요).
+3. **AudioCueBus cue 이름 = 기존 따라.** Task 16의 첫 step으로 "AudioCueBus 코드 + 기존 cue 식별자 grep해서 컨벤션 확인" 추가. 추측한 `Packing.MaterialSwitch` 점 표기는 컨벤션 맞으면 유지, 아니면 일괄 교체.
 
 ---
 
