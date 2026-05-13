@@ -54,12 +54,12 @@ namespace PitCrew.Packing
         public void BeginStroke(Vector2 screenPos)
         {
             if (stroking) EndStroke();  // 이전 stroke 암묵적 종료
-            if (TryRaycastUV(screenPos, out var uv)) { lastUV = uv; stroking = true; }
+            if (TryRaycastUV(screenPos, out var uv)) { lastUV = uv; stroking = true; AudioCueBus.Publish(AudioCueId.PackingStrokeStart); }
         }
 
         public void EndStroke()
         {
-            if (stroking) OnStrokeEnded?.Invoke(targetState);
+            if (stroking) { OnStrokeEnded?.Invoke(targetState); AudioCueBus.Publish(AudioCueId.PackingStrokeEnd); }
             stroking = false;
         }
 

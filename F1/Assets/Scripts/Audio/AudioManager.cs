@@ -1,18 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 게임 전역 오디오 매니저 (Day 25, Phase 1 Week 4).
+/// 게임 전역 오디오 매니저 (Phase 4 — AudioCueBus 디커플링 적용).
 ///
-/// 인프라만 + 후크 자동 등록. 도현은 인스펙터에서 AudioClip 4종(+) 할당하면 작동.
+/// 인프라만 + AudioCueBus 구독. 도현은 인스펙터에서 AudioClip 6종 할당하면 작동.
 ///
-/// 후크 (이벤트 → SFX):
-/// - CargoBox.OnImpact     → impactClip (volume=속도 비례)
-/// - CargoBox.OnTotaled    → totaledClip
-/// - DeliveryManager.OnDeliveryCompleted → deliveryClip
-/// - UpgradeSystem.OnUpgradePurchased    → upgradeBoughtClip
-/// - RunController.LastRunSuccess(true)  → resultSuccessClip
-/// - LastRunSuccess(false)               → resultFailClip
+/// 후크 (AudioCueId → SFX):
+/// - CargoImpact       → cargoImpactClip   (volume = clamp01(speedKmh / 50))
+/// - CargoTotaled      → cargoTotaledClip
+/// - DeliveryCompleted → deliveryClip
+/// - UpgradePurchased  → upgradeBoughtClip
+/// - RunResultSuccess  → resultSuccessClip
+/// - RunResultFail     → resultFailClip
+///
+/// AudioManager는 시스템(CargoBox/Delivery/Upgrade)을 직접 알지 않는다.
+/// 새 SFX = enum 항목 + 발행 한 줄 + Subscribe 한 줄.
 ///
 /// timeScale=0(정산 화면)에서도 작동. AudioSource.ignoreListenerPause=true.
 /// </summary>
@@ -69,12 +73,13 @@ public class AudioManager : MonoBehaviour
         musicSource.playOnAwake = false;
         musicSource.volume = musicVolume;
 
-        // 후크 자동 등록
-        HookEvents();
+        // AudioCueBus 구독
+        SubscribeCues();
     }
 
     void OnDestroy()
     {
+        UnsubscribeCues();
         if (Instance == this) Instance = null;
     }
 
@@ -83,38 +88,55 @@ public class AudioManager : MonoBehaviour
         if (runMusicClip != null) PlayMusic(runMusicClip);
     }
 
-    void HookEvents()
+    // cue 핸들러는 Unsubscribe를 위해 필드로 보존(람다 캡처 문제 회피).
+    Action<float> _cargoImpactH, _cargoTotaledH, _deliveryH, _upgradeH, _resultSuccessH, _resultFailH;
+    // Packing cue 핸들러 (W5 폴리시 때 clip 할당 예정 — 현재 no-op)
+    Action<float> _packingMaterialH, _packingStrokeStartH, _packingStrokeEndH, _packingConfirmH;
+
+    void SubscribeCues()
     {
-        // Phase 1: Find 3개 → Services. 이벤트 풍부한 API 필요한 부분만 concrete cast.
-        var cargo = Services.Cargo as CargoBox;
-        if (cargo != null)
-        {
-            cargo.OnImpact += OnCargoImpact;
-            cargo.OnTotaled += OnCargoTotaled;
-        }
-        if (Services.Delivery != null)
-        {
-            Services.Delivery.OnDeliveryCompleted.AddListener(_ => PlayClip(deliveryClip));
-        }
-        var ups = Services.Upgrade as UpgradeSystem;
-        if (ups != null)
-        {
-            ups.OnUpgradePurchased += _ => PlayClip(upgradeBoughtClip);
-        }
+        _cargoImpactH    = v => PlayClip(cargoImpactClip, Mathf.Clamp01(v / 50f));
+        _cargoTotaledH   = _ => PlayClip(cargoTotaledClip);
+        _deliveryH       = _ => PlayClip(deliveryClip);
+        _upgradeH        = _ => PlayClip(upgradeBoughtClip);
+        _resultSuccessH  = _ => PlayClip(resultSuccessClip);
+        _resultFailH     = _ => PlayClip(resultFailClip);
+
+        // TODO W5 polish: 클립 할당 후 아래 no-op 교체
+        _packingMaterialH    = _ => { /* TODO W5: assign material-select click clip */ };
+        _packingStrokeStartH = _ => { /* TODO W5: assign stroke-start click clip */ };
+        _packingStrokeEndH   = _ => { /* TODO W5: assign stroke-end click clip */ };
+        _packingConfirmH     = _ => { /* TODO W5: assign confirm clip */ };
+
+        AudioCueBus.Subscribe(AudioCueId.CargoImpact,          _cargoImpactH);
+        AudioCueBus.Subscribe(AudioCueId.CargoTotaled,         _cargoTotaledH);
+        AudioCueBus.Subscribe(AudioCueId.DeliveryCompleted,    _deliveryH);
+        AudioCueBus.Subscribe(AudioCueId.UpgradePurchased,     _upgradeH);
+        AudioCueBus.Subscribe(AudioCueId.RunResultSuccess,     _resultSuccessH);
+        AudioCueBus.Subscribe(AudioCueId.RunResultFail,        _resultFailH);
+        AudioCueBus.Subscribe(AudioCueId.PackingMaterialSelect, _packingMaterialH);
+        AudioCueBus.Subscribe(AudioCueId.PackingStrokeStart,   _packingStrokeStartH);
+        AudioCueBus.Subscribe(AudioCueId.PackingStrokeEnd,     _packingStrokeEndH);
+        AudioCueBus.Subscribe(AudioCueId.PackingConfirm,       _packingConfirmH);
     }
 
-    void OnCargoImpact(float speedKmh)
+    void UnsubscribeCues()
     {
-        // 충돌 속도에 따라 볼륨 스케일. PlayClip 내부에서 다시 sfxMasterVolume 곱 — 여기선 0~1만.
-        float v = Mathf.Clamp01(speedKmh / 50f);
-        PlayClip(cargoImpactClip, v);
+        AudioCueBus.Unsubscribe(AudioCueId.CargoImpact,          _cargoImpactH);
+        AudioCueBus.Unsubscribe(AudioCueId.CargoTotaled,         _cargoTotaledH);
+        AudioCueBus.Unsubscribe(AudioCueId.DeliveryCompleted,    _deliveryH);
+        AudioCueBus.Unsubscribe(AudioCueId.UpgradePurchased,     _upgradeH);
+        AudioCueBus.Unsubscribe(AudioCueId.RunResultSuccess,     _resultSuccessH);
+        AudioCueBus.Unsubscribe(AudioCueId.RunResultFail,        _resultFailH);
+        AudioCueBus.Unsubscribe(AudioCueId.PackingMaterialSelect, _packingMaterialH);
+        AudioCueBus.Unsubscribe(AudioCueId.PackingStrokeStart,   _packingStrokeStartH);
+        AudioCueBus.Unsubscribe(AudioCueId.PackingStrokeEnd,     _packingStrokeEndH);
+        AudioCueBus.Unsubscribe(AudioCueId.PackingConfirm,       _packingConfirmH);
     }
-
-    void OnCargoTotaled() => PlayClip(cargoTotaledClip);
 
     public void PlayResultSfx(bool success)
     {
-        PlayClip(success ? resultSuccessClip : resultFailClip);
+        AudioCueBus.Publish(success ? AudioCueId.RunResultSuccess : AudioCueId.RunResultFail);
     }
 
     public void PlayClip(AudioClip clip, float volume = 1f)

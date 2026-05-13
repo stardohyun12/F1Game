@@ -175,6 +175,7 @@ namespace PitCrew.Packing
         void BuildMaterialCard(Transform parent, int idx, string matName, Color swatchColor,
             string keyBadge, float anchoredY, WrapMaterialDef[] mats)
         {
+            // TODO Task 16/W5 polish: hover outline on material cards (Image color tint on PointerEnter/Exit)
             // 카드 배경
             var card = MakePanel(parent, $"MatCard_{idx}",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -463,6 +464,7 @@ namespace PitCrew.Packing
         // =========================================================
         void OnGoClicked()
         {
+            AudioCueBus.Publish(AudioCueId.PackingConfirm);
             Debug.Log($"[PackingScreen] OnGoClicked — job={currentJob?.displayName} items={spawnedItems.Count}");
             // 아이템을 PackingScreen 컨텍스트에서 분리 — RunController로 인계
             foreach (var go in spawnedItems) if (go != null) go.transform.SetParent(null, true);
@@ -519,7 +521,7 @@ namespace PitCrew.Packing
         public void SelectMaterialByChannel(int ch)
         {
             var mats = GetMaterials();
-            foreach (var m in mats) if (m.channelIndex == ch) { SelectMaterial(m); break; }
+            foreach (var m in mats) if (m.channelIndex == ch) { SelectMaterial(m); AudioCueBus.Publish(AudioCueId.PackingMaterialSelect, ch); break; }
         }
 
         void WirePainterFor(GameObject item)
