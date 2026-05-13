@@ -9,8 +9,10 @@ namespace PitCrew.Packing
         [SerializeField] private int textureSize = 256;
         [SerializeField] private Renderer targetRenderer;
 
+        /// <summary>wrap 상태 텍스처. OnDestroy 후 null. 외부 접근 전 null 체크 필수.</summary>
         public RenderTexture WrapRT { get; private set; }
         public int Size => textureSize;
+        public Renderer TargetRenderer => targetRenderer;
 
         void Awake()
         {
