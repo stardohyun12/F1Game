@@ -85,7 +85,7 @@ namespace PitCrew.Packing
 
         static void EnsureEventSystem()
         {
-            if (Object.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() != null) return;
+            if (Object.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() != null) return;
             new GameObject("EventSystem",
                 typeof(UnityEngine.EventSystems.EventSystem),
                 typeof(UnityEngine.EventSystems.StandaloneInputModule));
