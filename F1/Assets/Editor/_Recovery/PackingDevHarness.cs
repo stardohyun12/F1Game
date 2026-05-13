@@ -39,5 +39,29 @@ namespace PitCrew.Editor
             go.AddComponent<PitCrew.Packing.WrapState>();
             Selection.activeGameObject = go;
         }
+
+        [MenuItem("PitCrew/Packing/Paint Test Strip on Cube")]
+        public static void PaintStrip()
+        {
+            var go = GameObject.Find("WrapTestCube");
+            if (go == null) { Debug.LogError("WrapTestCube 없음. Spawn 먼저."); return; }
+            var col = go.GetComponent<MeshCollider>() ?? go.AddComponent<MeshCollider>();
+            var state = go.GetComponent<PitCrew.Packing.WrapState>();
+            if (state == null) { Debug.LogError("WrapState 없음. Spawn 먼저."); return; }
+            // WrapState.Awake가 exec 컨텍스트에서 AddComponent 시 즉시 호출 안 됨 — 강제 실행.
+            if (state.WrapRT == null)
+                typeof(PitCrew.Packing.WrapState).GetMethod("Awake", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.Invoke(state, null);
+            var painterType = typeof(PitCrew.Packing.WrapPainter);
+            var painter = go.GetComponent<PitCrew.Packing.WrapPainter>() ?? go.AddComponent<PitCrew.Packing.WrapPainter>();
+            // Init()으로 명시적 초기화 (targetState null 안전).
+            painter.Init(state);
+            var bubble = UnityEngine.Resources.Load<PitCrew.Packing.WrapMaterialDef>("WrapMaterials/Bubble");
+            if (bubble == null) { Debug.LogError("WrapMaterials/Bubble 로드 실패. Create WrapMaterial Assets 먼저."); return; }
+            // 직접 strip 그리기 (마우스 입력 없이) — 셰이더 동작 확인용
+            painterType
+                .GetMethod("DrawStrip", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(painter, new object[] { new Vector2(0.2f, 0.5f), new Vector2(0.8f, 0.5f), bubble });
+            Debug.Log("strip drawn");
+        }
     }
 }
