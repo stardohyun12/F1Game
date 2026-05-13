@@ -25,9 +25,15 @@ namespace PitCrew.Packing
         TMP_Text titleText, totalCostText, coverageText;
         Image coverageBarFill;
         TMP_Text[] costPerMaterialText = new TMP_Text[3];
+        Image[] materialCardImages = new Image[3];
         Button goButton;
         TMP_Text widthLabel;
         WrapMaterialDef currentMaterial;
+
+        // Show/Hide 시 메인 카메라 / 커서 상태 복원용
+        Camera previousMainCamera;
+        CursorLockMode previousCursorLock;
+        bool previousCursorVisible;
 
         // ── 테마 폴백 색상 ──────────────────────────────────────────────
         static readonly Color kBg     = new Color(0.08f, 0.08f, 0.10f, 0.95f);
@@ -49,20 +55,63 @@ namespace PitCrew.Packing
         public void Show(OrderJob job)
         {
             currentJob = job;
+            EnsurePackingCamera();
             BuildUIIfNeeded();
             ClearItems();
             int n = Mathf.Clamp(job.itemCount, 1, 3);
             for (int i = 0; i < n; i++) SpawnItem(i);
             ActivateItem(0);
-            if (panelRoot != null) panelRoot.SetActive(true);
+
+            // 첫 재료 자동 선택 (안 그러면 페인트 안 됨)
+            var firstMat = GetMaterials();
+            if (firstMat != null && firstMat.Length > 0) SelectMaterial(firstMat[0]);
+
+            // 메인 카메라 끄고 포장 카메라 켜기
+            previousMainCamera = Camera.main;
+            if (previousMainCamera != null) previousMainCamera.gameObject.SetActive(false);
             if (packingCamera != null) packingCamera.gameObject.SetActive(true);
+
+            // 커서 해제
+            previousCursorLock = Cursor.lockState;
+            previousCursorVisible = Cursor.visible;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            if (panelRoot != null) panelRoot.SetActive(true);
         }
 
         public void Hide()
         {
             if (panelRoot != null) panelRoot.SetActive(false);
             if (packingCamera != null) packingCamera.gameObject.SetActive(false);
+            if (previousMainCamera != null) previousMainCamera.gameObject.SetActive(true);
+            Cursor.lockState = previousCursorLock;
+            Cursor.visible = previousCursorVisible;
             ClearItems();
+        }
+
+        void EnsurePackingCamera()
+        {
+            if (packingCamera != null) return;
+            var camGO = new GameObject("PackingCamera", typeof(Camera));
+            // 월드에서 멀리 떨어진 공간(Y=200)을 작업대로 사용 — 메인 씬과 분리
+            camGO.transform.position = new Vector3(0, 200, -3);
+            camGO.transform.LookAt(new Vector3(0, 200, 0));
+            packingCamera = camGO.GetComponent<Camera>();
+            packingCamera.clearFlags = CameraClearFlags.SolidColor;
+            packingCamera.backgroundColor = new Color(0.12f, 0.12f, 0.14f, 1f);
+            packingCamera.depth = 5;
+            packingCamera.cullingMask = ~0;
+            packingCamera.fieldOfView = 35f;
+            camGO.SetActive(false);
+
+            // cargoSpawnPoint도 같이 만들어 두기 (Y=200 작업대 위치)
+            if (cargoSpawnPoint == null)
+            {
+                var spawnGO = new GameObject("PackingCargoSpawn");
+                spawnGO.transform.position = new Vector3(0, 200, 0);
+                cargoSpawnPoint = spawnGO.transform;
+            }
         }
 
         // =========================================================
@@ -175,7 +224,6 @@ namespace PitCrew.Packing
         void BuildMaterialCard(Transform parent, int idx, string matName, Color swatchColor,
             string keyBadge, float anchoredY, WrapMaterialDef[] mats)
         {
-            // TODO Task 16/W5 polish: hover outline on material cards (Image color tint on PointerEnter/Exit)
             // 카드 배경
             var card = MakePanel(parent, $"MatCard_{idx}",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -183,6 +231,7 @@ namespace PitCrew.Packing
                 new Vector2(0, -anchoredY),
                 new Vector2(220, 112));
             card.color = new Color(0.14f, 0.14f, 0.18f, 0.95f);
+            if (idx >= 0 && idx < materialCardImages.Length) materialCardImages[idx] = card;
 
             var t = card.transform;
 
@@ -428,6 +477,20 @@ namespace PitCrew.Packing
             if (item != null)
                 foreach (var p in item.GetComponents<WrapPainter>())
                     p.SetMaterial(m);
+            HighlightActiveCard(m);
+        }
+
+        void HighlightActiveCard(WrapMaterialDef m)
+        {
+            if (m == null) return;
+            var idle = new Color(0.14f, 0.14f, 0.18f, 0.95f);
+            var active = new Color(0.30f, 0.30f, 0.36f, 1.0f);
+            int activeIdx = m.channelIndex;
+            for (int i = 0; i < materialCardImages.Length; i++)
+            {
+                if (materialCardImages[i] == null) continue;
+                materialCardImages[i].color = (i == activeIdx) ? active : idle;
+            }
         }
 
         // =========================================================
