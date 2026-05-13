@@ -48,18 +48,24 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
 
     [Header("Position Physics (패턴 C+ — 자동차 안 화물 느낌)")]
     // D-046 (도현 세션 15): "시뮬레이션 느낌" 진단. 마찰 강화 + 반응 줄임.
-    [Tooltip("정지 마찰 임계 G. 일반 사면(10° 이하)에서는 박스 안 움직임.")]
-    [SerializeField] float staticFrictionG = 0.30f;
-    [Tooltip("운동 마찰 감쇠율 (per sec). 박스가 빨리 멈춤 = 자동차 안 화물 느낌.")]
-    [SerializeField] float kineticFriction = 3.0f;
-    [Tooltip("G 1단위를 m/s²로 변환. 0.7 = 박스 반응 70% (실제 마찰 큰 화물칸).")]
-    [SerializeField] float accelScale = 0.7f;
+    [Tooltip("정지 마찰 임계 G. 낮을수록 작은 G에도 미끄러짐.")]
+    [SerializeField] float staticFrictionG = 0.12f;
+    [Tooltip("운동 마찰 감쇠율 (per sec). 낮을수록 오래 미끄러짐.")]
+    [SerializeField] float kineticFriction = 1.0f;
+    [Tooltip("G 1단위를 m/s²로 변환. 높을수록 박스가 강하게 밀려나감.")]
+    [SerializeField] float accelScale = 1.5f;
     [Tooltip("트렁크 내 박스 이동 반경 (local x/z 각각, meters). 트렁크 공간.")]
     [SerializeField] float maxOffset = 0.5f;
     [Tooltip("벽 충돌 시 반발 (0=멈춤, 0.5=절반 반발). 0.05 = 거의 멈춤.")]
     [SerializeField] float wallBounce = 0.05f;
     [Tooltip("velocity 이하이면 정지로 간주 (snap to 0).")]
     [SerializeField] float velocityDeadZone = 0.02f;
+
+    [Header("Box Wall Impact → CargoBox Damage (세션 20)")]
+    [Tooltip("trunk 벽 박을 때 박스 속도(m/s)당 데미지. 박스 충돌이 진짜 손상 인과.")]
+    [SerializeField] float boxWallDamageMul = 8f;
+    [Tooltip("이 속도(m/s) 이하 벽 충돌은 무시 (미세 진동 흡수).")]
+    [SerializeField] float boxWallSpeedThreshold = 0.15f;
 
     Vector3 restPos;
     Quaternion restRot;
@@ -133,16 +139,23 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         Vector3 offset = boxTransform.localPosition - restPos;
         offset += simVelLocal * dt;
 
-        // AABB clamp + wall bounce
+        // AABB clamp + wall bounce + damage 전파.
+        // 박스 슬라이드 → trunk 벽 박음 → 박스 손상 (도현 세션 20 — 인과 정정).
         if (Mathf.Abs(offset.x) > maxOffset)
         {
+            float impactSpeed = Mathf.Abs(simVelLocal.x);
+            Vector3 dir = new Vector3(Mathf.Sign(offset.x), 0f, 0f);
             offset.x = Mathf.Sign(offset.x) * maxOffset;
             simVelLocal.x = -simVelLocal.x * wallBounce;
+            TryApplyBoxImpactDamage(impactSpeed, dir);
         }
         if (Mathf.Abs(offset.z) > maxOffset)
         {
+            float impactSpeed = Mathf.Abs(simVelLocal.z);
+            Vector3 dir = new Vector3(0f, 0f, Mathf.Sign(offset.z));
             offset.z = Mathf.Sign(offset.z) * maxOffset;
             simVelLocal.z = -simVelLocal.z * wallBounce;
+            TryApplyBoxImpactDamage(impactSpeed, dir);
         }
         offset.y = 0f;
 
@@ -196,6 +209,27 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         Quaternion targetRot = restRot * Quaternion.Euler(pitch, 0f, roll);
         float rotT = 1f - Mathf.Exp(-rotLerp * Time.deltaTime);
         boxTransform.localRotation = Quaternion.Slerp(boxTransform.localRotation, targetRot, rotT);
+    }
+
+    void TryApplyBoxImpactDamage(float speed, Vector3 impactDirLocal)
+    {
+        if (cargo == null) return;
+        if (speed < boxWallSpeedThreshold) return;
+        float raw = (speed - boxWallSpeedThreshold) * boxWallDamageMul;
+        if (raw <= 0f) return;
+
+        // 충격 흡수율 적용 — WrapState가 있으면 그 부위의 wrap 상태로 계산
+        float absorption = 0f;
+        var wrap = cargo.GetComponentInChildren<PitCrew.Packing.WrapState>();
+        if (wrap != null && boxTransform != null)
+        {
+            Vector3 worldHit = boxTransform.position;
+            Vector3 worldDir = boxTransform.TransformDirection(impactDirLocal).normalized;
+            absorption = wrap.QueryAbsorption(worldHit, worldDir);
+        }
+
+        float dmg = raw * (1f - absorption);
+        if (dmg > 0.01f) cargo.ApplyExternalDamage(dmg, flashSpeedKmh: speed * 3.6f);
     }
 
     /// <summary>허브에서 박스 교체/Repair 시 호출.</summary>
