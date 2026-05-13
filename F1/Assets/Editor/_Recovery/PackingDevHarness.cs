@@ -78,5 +78,30 @@ namespace PitCrew.Editor
                 ?.Invoke(painter, new object[] { new Vector2(0.2f, 0.5f), new Vector2(0.8f, 0.5f), bubble });
             Debug.Log("strip drawn");
         }
+
+        [MenuItem("PitCrew/Packing/Add PackingScreen To Active Scene")]
+        public static void AddPackingScreenToScene()
+        {
+            var existing = Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+            if (existing != null)
+            {
+                Debug.Log($"[Packing] 이미 씬에 PackingScreen 있음: {existing.gameObject.name}");
+                Selection.activeGameObject = existing.gameObject;
+                return;
+            }
+
+            var go = new GameObject("PackingScreen");
+            go.transform.position = Vector3.zero;
+            go.AddComponent<PitCrew.Packing.PackingScreen>();
+
+            // packingCamera fallback: 메인 카메라 그대로 (전용 카메라는 후속)
+            // cargoSpawnPoint fallback: PackingScreen 자기 자신 transform (Show 시 cube 부착됨)
+
+            var scene = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
+            UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene);
+            Selection.activeGameObject = go;
+            Debug.Log($"[Packing] PackingScreen 추가 + {scene.name} 저장 완료.");
+        }
     }
 }
