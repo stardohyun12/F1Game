@@ -12,6 +12,10 @@ public class OrderJob : ScriptableObject
     [Tooltip("UI 카드/맵 마커 색상.")]
     public Color color = Color.green;
 
+    [Header("Items")]
+    [Tooltip("이 잡에서 포장할 물건 수 (1~3)")]
+    [Range(1, 3)] public int itemCount = 1;
+
     [Header("Difficulty")]
     [Tooltip("이 작업이 사용할 배달지 개수. 씬의 DeliveryPoint 풀에서 앞에서부터 N개 (또는 시드 기반 무작위).")]
     public int pointCount = 3;
