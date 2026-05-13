@@ -47,7 +47,6 @@ namespace PitCrew.Packing
             var prev = RenderTexture.active;
             RenderTexture.active = WrapRT;
             tex.ReadPixels(new Rect(0, 0, textureSize, textureSize), 0, 0);
-            tex.Apply();
             RenderTexture.active = prev;
             int covered = 0;
             var px = tex.GetPixels();
