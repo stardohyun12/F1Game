@@ -91,6 +91,11 @@ namespace PitCrew.Packing
 
             Graphics.Blit(src, scratch, blitMat);
             Graphics.Blit(scratch, src);
+
+            // 비용 추정: 띠 길이(UV 거리) × 폭 × 텍스처 면적 × 단가
+            float lenUV = (curr - prev).magnitude;
+            float pixelArea = lenUV * stripWidthUV * targetState.Size * targetState.Size;
+            targetState.AccumulateCost(mat.channelIndex, pixelArea * mat.costPerPixel);
         }
     }
 }
