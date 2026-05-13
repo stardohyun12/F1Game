@@ -30,8 +30,7 @@ namespace PitCrew.Packing
         TMP_Text widthLabel;
         WrapMaterialDef currentMaterial;
 
-        // Show/Hide 시 메인 카메라 / 커서 상태 복원용
-        Camera previousMainCamera;
+        // Show/Hide 시 커서 상태 복원용
         CursorLockMode previousCursorLock;
         bool previousCursorVisible;
 
@@ -66,9 +65,7 @@ namespace PitCrew.Packing
             var firstMat = GetMaterials();
             if (firstMat != null && firstMat.Length > 0) SelectMaterial(firstMat[0]);
 
-            // 메인 카메라 끄고 포장 카메라 켜기
-            previousMainCamera = Camera.main;
-            if (previousMainCamera != null) previousMainCamera.gameObject.SetActive(false);
+            // 포장 카메라 켜기 (depth=5라 메인 카메라 위에 그려짐)
             if (packingCamera != null) packingCamera.gameObject.SetActive(true);
 
             // 커서 해제
@@ -78,13 +75,17 @@ namespace PitCrew.Packing
             Cursor.visible = true;
 
             if (panelRoot != null) panelRoot.SetActive(true);
+
+            // 디버그 — 큐브가 카메라 view 안에 있는지 확인용
+            var item = ActiveItem;
+            if (item != null)
+                Debug.Log($"[PackingScreen] Show: cube={item.transform.position} cam={packingCamera.transform.position} active={item.activeSelf}");
         }
 
         public void Hide()
         {
             if (panelRoot != null) panelRoot.SetActive(false);
             if (packingCamera != null) packingCamera.gameObject.SetActive(false);
-            if (previousMainCamera != null) previousMainCamera.gameObject.SetActive(true);
             Cursor.lockState = previousCursorLock;
             Cursor.visible = previousCursorVisible;
             ClearItems();
@@ -103,6 +104,8 @@ namespace PitCrew.Packing
             packingCamera.depth = 5;
             packingCamera.cullingMask = ~0;
             packingCamera.fieldOfView = 35f;
+            packingCamera.nearClipPlane = 0.1f;
+            packingCamera.farClipPlane = 50f;
             camGO.SetActive(false);
 
             // cargoSpawnPoint도 같이 만들어 두기 (Y=200 작업대 위치)
@@ -112,6 +115,17 @@ namespace PitCrew.Packing
                 spawnGO.transform.position = new Vector3(0, 200, 0);
                 cargoSpawnPoint = spawnGO.transform;
             }
+
+            // 작업대 조명 (Y=200 공간이 어둡지 않게)
+            var lightGO = new GameObject("PackingKeyLight");
+            lightGO.transform.position = new Vector3(2, 202, -2);
+            lightGO.transform.rotation = Quaternion.Euler(45, -30, 0);
+            var light = lightGO.AddComponent<Light>();
+            light.type = LightType.Directional;
+            light.intensity = 1.2f;
+            light.color = new Color(1f, 0.96f, 0.88f);
+            // 카메라의 자식으로 두면 camGO.SetActive(true) 시 같이 켜짐
+            lightGO.transform.SetParent(camGO.transform, true);
         }
 
         // =========================================================
@@ -275,82 +289,78 @@ namespace PitCrew.Packing
         // ── Right Panel ──────────────────────────────────────────────────
         void BuildRightPanel(Transform canvas)
         {
+            // 패널 크기 키움 (550) + 안쪽 패딩 충분히
             var panel = MakePanel(canvas, "RightPanel",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
                 new Vector2(1, 0.5f),
                 new Vector2(0, 0),
-                new Vector2(280, 500));
+                new Vector2(300, 560));
 
             var mats = GetMaterials();
+            var t = panel.transform;
 
-            // 재료별 비용 행
-            float rowY = 220f;
-            float rowH = 40f;
-
-            var header = MakeLabel(panel.transform, "CostHeader", "포장 비용",
+            // 상단부터 아래로 한 줄씩 — 간격 충분히
+            // 헤더
+            MakeLabel(t, "CostHeader", "포장 비용",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0, -20), new Vector2(240, 40), 22, FontStyles.Bold,
+                new Vector2(0, -30), new Vector2(260, 40), 22, FontStyles.Bold,
                 TextAlignmentOptions.Center);
-            _ = header;
 
+            // 3 재료 비용 행 (y = -80, -130, -180)
             for (int i = 0; i < 3; i++)
             {
-                float y = rowY - i * (rowH + 4);
+                float y = -(80f + i * 50f);
                 string matName = i < mats.Length ? mats[i].displayName : kDefaultNames[i];
 
-                MakeLabel(panel.transform, $"MatCostLabel_{i}", matName,
+                MakeLabel(t, $"MatCostLabel_{i}", matName,
                     new Vector2(0, 1f), new Vector2(0, 1f),
-                    new Vector2(16, -(rowY - (rowH + 4) * i)), new Vector2(120, rowH),
+                    new Vector2(20, y), new Vector2(130, 40),
                     18, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
 
-                costPerMaterialText[i] = MakeLabel(panel.transform, $"MatCostVal_{i}", "₩0",
+                costPerMaterialText[i] = MakeLabel(t, $"MatCostVal_{i}", "₩0",
                     new Vector2(1, 1f), new Vector2(1, 1f),
-                    new Vector2(-16, -(rowY - (rowH + 4) * i)), new Vector2(120, rowH),
+                    new Vector2(-20, y), new Vector2(130, 40),
                     18, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
             }
 
-            // 구분선
-            MakePanel(panel.transform, "Divider",
-                new Vector2(0.1f, 1f), new Vector2(0.9f, 1f),
+            // 구분선 (y = -240)
+            MakePanel(t, "Divider",
+                new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0.5f, 1f),
-                new Vector2(0, -(rowY - 3 * (rowH + 4) + 8)),
-                new Vector2(0, 2)).color = kMuted;
+                new Vector2(0, -240), new Vector2(240, 2)).color = kMuted;
 
-            // 합계
-            float totalY = rowY - 3 * (rowH + 4) + 18;
-            MakeLabel(panel.transform, "TotalLabel", "합계",
+            // 합계 (y = -290)
+            MakeLabel(t, "TotalLabel", "합계",
                 new Vector2(0, 1f), new Vector2(0, 1f),
-                new Vector2(16, -(totalY + 10)), new Vector2(100, 44), 20, FontStyles.Bold,
+                new Vector2(20, -290), new Vector2(100, 44), 22, FontStyles.Bold,
                 TextAlignmentOptions.MidlineLeft);
 
-            totalCostText = MakeLabel(panel.transform, "TotalVal", "₩0",
+            totalCostText = MakeLabel(t, "TotalVal", "₩0",
                 new Vector2(1, 1f), new Vector2(1, 1f),
-                new Vector2(-16, -(totalY + 10)), new Vector2(140, 44), 24, FontStyles.Bold,
+                new Vector2(-20, -290), new Vector2(160, 44), 24, FontStyles.Bold,
                 TextAlignmentOptions.MidlineRight);
             if (UITheme.Active != null) totalCostText.color = UITheme.Active.colorAccent;
             else totalCostText.color = kAccent;
 
-            // 커버리지 레이블
-            float covLabelY = totalY + 62;
-            MakeLabel(panel.transform, "CovLabel", "평균 커버",
+            // 커버리지 헤더 (y = -370)
+            MakeLabel(t, "CovLabel", "평균 커버",
                 new Vector2(0, 1f), new Vector2(0, 1f),
-                new Vector2(16, -(covLabelY)), new Vector2(120, 36), 18, FontStyles.Normal,
+                new Vector2(20, -370), new Vector2(140, 36), 18, FontStyles.Normal,
                 TextAlignmentOptions.MidlineLeft);
 
-            coverageText = MakeLabel(panel.transform, "CovPercent", "0%",
+            coverageText = MakeLabel(t, "CovPercent", "0%",
                 new Vector2(1, 1f), new Vector2(1, 1f),
-                new Vector2(-16, -(covLabelY)), new Vector2(80, 36), 18, FontStyles.Bold,
+                new Vector2(-20, -370), new Vector2(100, 36), 20, FontStyles.Bold,
                 TextAlignmentOptions.MidlineRight);
 
-            // 커버리지 바 트랙
-            float barY = covLabelY + 42;
-            var barTrack = MakePanel(panel.transform, "CovBarTrack",
+            // 커버리지 바 (y = -420, 두께 24)
+            var barTrack = MakePanel(t, "CovBarTrack",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0.5f, 1f),
-                new Vector2(0, -(barY)), new Vector2(240, 20));
-            barTrack.color = new Color(0.2f, 0.2f, 0.22f, 1f);
+                new Vector2(0, -420), new Vector2(260, 24));
+            barTrack.color = new Color(0.18f, 0.18f, 0.20f, 1f);
 
-            // 커버리지 바 필 (Filled Image)
+            // 커버리지 바 필
             var fillGO = new GameObject("CovBarFill", typeof(RectTransform), typeof(Image));
             fillGO.transform.SetParent(barTrack.transform, false);
             var fillRT = fillGO.GetComponent<RectTransform>();
@@ -359,7 +369,7 @@ namespace PitCrew.Packing
             fillRT.offsetMin = Vector2.zero;
             fillRT.offsetMax = Vector2.zero;
             coverageBarFill = fillGO.GetComponent<Image>();
-            coverageBarFill.color = new Color(0.3f, 0.9f, 0.5f, 1f);
+            coverageBarFill.color = new Color(0.30f, 0.85f, 0.45f, 1f);
             coverageBarFill.type = Image.Type.Filled;
             coverageBarFill.fillMethod = Image.FillMethod.Horizontal;
             coverageBarFill.fillOrigin = (int)Image.OriginHorizontal.Left;
