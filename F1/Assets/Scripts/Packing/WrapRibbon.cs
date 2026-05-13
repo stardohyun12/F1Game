@@ -7,8 +7,8 @@ namespace PitCrew.Packing
     public sealed class WrapRibbon : MonoBehaviour
     {
         [SerializeField] private float widthMeters = 0.15f;
-        [SerializeField] private float surfaceOffsetMeters = 0.01f;
-        [SerializeField] private float minSampleDistMeters = 0.015f;
+        [SerializeField] private float surfaceOffsetMeters = 0.003f;  // 3mm — 더 표면에 붙어 보임
+        [SerializeField] private float minSampleDistMeters = 0.008f;
 
         MeshFilter mf;
         MeshRenderer mr;
@@ -21,6 +21,7 @@ namespace PitCrew.Packing
 
         Vector3 lastLocalPos;
         Vector3 lastLocalNormal;
+        Vector3 lastLat;  // 직전 segment의 lateral — 모서리 넘어갈 때 strip flip 방지
         bool hasLast;
         float uAccum;
 
@@ -59,6 +60,10 @@ namespace PitCrew.Packing
             var lat = Vector3.Cross(localNormal, dir);
             if (lat.sqrMagnitude < 1e-6f) lat = Vector3.Cross(Vector3.up, dir);
             lat = lat.normalized;
+
+            // 직전 lateral과 방향 일치시키기 — 모서리 넘어가도 strip flip 안 함
+            if (verts.Count > 0 && Vector3.Dot(lat, lastLat) < 0f) lat = -lat;
+            lastLat = lat;
 
             float w = widthMeters * 0.5f;
             float o = surfaceOffsetMeters;
