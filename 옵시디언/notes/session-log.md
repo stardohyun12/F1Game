@@ -1277,3 +1277,39 @@
    - 채널 8 (내비) 새 시스템 — 미니맵 + 화살표.
 3. 포장 시연 manual 테스트 (계속 미해결).
 4. 화물 손상 인과 (D-068) Play 테스트.
+
+---
+
+## 세션 24 (2026-05-14) — 하네스 점검 + 버그 5건 + W2 채널 8
+
+### 한 일
+
+**1. 하네스 점검 (UI / 게임플레이)** — unity-cli로 전체 루프 (주문→포장→운전→정산) 검증.
+
+**2. 버그 5건 수정 (기능 단위 묶음 → 이후 개별 커밋):**
+- 차 스폰이 CentralCross 배달마커와 겹침 (6m 기둥이 차 관통) → 옆 도로칸 (42,36)로 이동.
+- 포장 큐브 concave MeshCollider 에러 → SetParent **전**에 DestroyImmediate.
+- IntegrityHUD·CargoView가 모든 화면에 표시 → `BarHUDBase.ShouldShow()` 훅 + RunActive 게이팅.
+- **포장한 물건 ≠ 트렁크 CCTV 물건** — RunController가 큐브를 차(Race)에 붙였는데 SimCam은 CargoSimRoot 다이오라마를 비춤. `CargoShakeSimulator.MountWrappedItem`로 SimCam이 비추는 Box 자리에 마운트.
+- PreRunSetupPanel 빈 오브젝트 (세션 21 스크립트 삭제 잔재) 삭제.
+
+**3. 세션 18~24 일괄 커밋** (`0a39d66`) — .gitignore에 생성물 제외 추가. 이후 기능 단위 커밋 전환.
+
+**4. W2 채널 8 (지도/내비):**
+- MiniMapHUD (`606ce2e`) — 좌상단 top-down 미니맵, 직교 카메라 + RT, 차 추적.
+- DirectionArrow (`06c6c3a`) — 차 위 월드 화살표, 목표 방향 yaw.
+
+**5. 하네스 (B축):** AI 약점 2건 `incidents.md` 기록 — Step() 부작용 오진 / probe 출력 오독. draft-rules에 신규 패턴 후보.
+
+### 검증
+- 컴파일 0 에러. 각 수정 Play 검증 (unity-cli step).
+- 미니맵·화살표 런 중 표시 / 비런 숨김 확인.
+
+### 미해결 — 도현
+- **🔴 채널 5 (박스 크기) 차단됨** — 다물건 잡 작동 안 함. 다물건 설계 결정 필요 (n개 트렁크 배치·흔들림·손상).
+- 세션 24 수정 5건 도현 manual play 검증 필요 (특히 트렁크 CCTV에 포장 큐브 — 실제 페인팅 후).
+
+### 다음 세션 (세션 25)
+1. 도현 manual play — 수정 5건.
+2. 채널 5 다물건 설계 결정 → 빌드.
+3. W3 차고/부품 결정.

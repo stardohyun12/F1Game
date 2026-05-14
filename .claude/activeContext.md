@@ -11,7 +11,8 @@
 - 세션 19 (2026-05-11~12): Phase 4 AudioCueBus + Phase 5 TireTypePresets + Phase 6 Peer Review 6건. 미커밋.
 - 세션 20 (2026-05-12~13): Unity 검증 도구 Coplay MCP → **unity-cli** 전환. Obsidian vault `옵시디언/` 분리. `_Recovery/` 솎아냄 (108→15). 차/도로 부유·기울임·z-fight 해결. 한글 폰트 atlas/material sub-asset 복구. **화물 손상 인과 변경** (차 G→박스 슬라이드→trunk 박음→손상). 알림 사운드 hook. Superpowers 플러그인 설치. 기획서 .pptx 생성. **Vertical Slice 데모 6주 결정 (D-069)**.
 - 세션 21 (2026-05-13): 기획서 W1~W6 폐기, 3D 포장 미니게임 17 Task 구현 (Subagent-driven). D-070 결정. wrap 핸드오프까지 완료 (`RunController.TransferWrapStateToCargo`). 다물건(1~3) items[1+] 폐기는 후속.
-- **세션 23 (2026-05-14, 자율 2시간 루프)**: CaptureFullScreen.cs 작성 (overlay UI 포함 PNG). **W1 채널 3 (맵 해금) 완료** — `Zone`/`ZoneRegistry` SO (+tintColor), `ZoneUnlockSystem` MonoBehaviour (wallet 차감, OnZoneUnlocked 이벤트, GetZoneOf 역참조), `ZoneUnlockPanel`/`ZoneUnlockCard` UI (자동 refresh on wallet change), `OrderBoard.PickOffer` ZoneUnlockSystem 우선 (catalog 폴백), `OrderCardUI`에 zone 라벨/tint 배지. Seed: Zone_Downtown(₩0, 3 jobs, cyan) + Zone_Harbor(₩1,000, 3 jobs, orange) + Zone_Industrial(₩2,500, 2 jobs, olive). 씬 와이어링 자동화 (`PitCrew/W1/Wire Scene (Zones)`, 우하단 위치). 컴파일 0 에러. W2 brainstorm doc 작성 (`옵시디언/dev-plan/2026-05-14-w2-brainstorm.md`). 미커밋.
+- **세션 23 (2026-05-14, 자율 2시간 루프)**: CaptureFullScreen.cs. **W1 채널 3 (맵 해금) 완료** — `Zone`/`ZoneRegistry` SO, `ZoneUnlockSystem` (wallet 차감·auto-unlock·GetZoneOf), `OrderBoard.PickOffer` ZoneUnlockSystem 우선, `OrderCardUI` zone 라벨/tint. Seed: Downtown/Harbor/Industrial. ZoneUnlockPanel UI는 **도현 요청으로 제거** → autoUnlockOnAffordable. W2 brainstorm doc 작성.
+- **세션 24 (2026-05-14)**: 하네스 점검 (UI/게임플레이) + 버그 5건 수정. **세션 18~24 일괄 커밋** (`0a39d66`) 후 기능 단위 커밋 전환. 버그: 차 스폰↔배달마커 겹침 / concave MeshCollider 에러 / IntegrityHUD·CargoView 전 화면 표시 (BarHUDBase.ShouldShow 훅) / **포장 물건 ≠ 트렁크 CCTV 물건** (CargoShakeSimulator.MountWrappedItem — 포장 큐브를 SimCam이 비추는 Box 자리에 마운트) / PreRunSetupPanel 빈 오브젝트. **W2 채널 8 완료**: MiniMapHUD (`606ce2e`) + DirectionArrow (`06c6c3a`). AI 약점 2건 incidents.md 기록.
 
 ---
 
@@ -34,21 +35,26 @@
 
 ---
 
-## 다음 세션 (세션 24) — 첫 작업
+## 다음 세션 (세션 25) — 첫 작업
 
-1. **W1 채널 3 도현 manual 검증** — Play 진입 → 우하단 ZoneUnlockPanel 보이는지 / 잡 선택 → 출발 → 정산에서 wallet 충전 → OrderBoard 재오픈 시 항구 카드 affordable color 되는지 / 클릭 → 잡 풀 4→8 확장 시연.
-2. **포장 시연 Play 모드 manual 테스트** — 잡 선택 → 포장 (마우스 드래그, WASD 회전, 1/2/3 재료, 휠 폭) → 출발 → 운전에서 충격 → 정산 손상값이 wrap 정도에 따라 다른지.
-3. **W1 polish (선택)**: OrderCard에 zone 라벨 배지, Zone별 카드 컬러 차이, ZoneUnlockCard prefab 디자인.
-4. **W2 시작 (5/20~)**: 채널 5 (박스 크기 capacity 2→4) + 채널 8 (지도/내비). 일단 채널 5 브레인스토밍 — capacity 업그레이드는 UpgradeDef 1~2개 추가로 끝날 수도.
-5. **차고/부품 시스템 결정** — 도현이 구체 결정 알려준 후 별도 spec 진입 (W3 작업).
-6. 다물건 잡(1~3) items[1+] 활용 후속 결정 (현 구현은 items[0]만 cargo에 이관, 나머지 폐기).
-7. 화물 손상 인과 변경 (D-068) Play 테스트.
+1. **도현 manual play — 세션 24 수정 5건 확인** (지금까지 unity-cli 자동 step 검증만 함, 직접 플레이 필요):
+   - 차 스폰: CentralCross 마커 안 겹치고 도로 위인지.
+   - 포장 → 출발 → **트렁크 CCTV에 내가 포장한 큐브(리본 포함)가 보이는지** (핵심 — 실제 페인팅 후 확인).
+   - IntegrityHUD("상자 100%")·트렁크캠이 주문/포장/정산 화면에서 숨고 런 중에만 보이는지.
+   - 미니맵(좌상단)·방향 화살표(차 위) 런 중 표시, 비런 숨김.
+2. **🔴 채널 5 (박스 크기) — 도현 결정 필요 (W2 차단됨)**: "한 잡당 동시 화물 수 cap"인데 **다물건 잡이 실제로 작동 안 함** (RunController가 items[0]만 마운트, CargoShakeSimulator는 박스 1개, itemCount Range(1,3)). 결정해야 빌드 가능:
+   - 다물건 n개가 트렁크에서 어떻게? (나란히 / 쌓기 / 각자 흔들림·손상?)
+   - 각 물건 따로 wrap? 손상 합산 방식?
+   - 결정 나면 채널 5는 UpgradeEffect.BoxCapacity + UpgradeDef 2개 + OrderCard 회색표시로 마무리 (1~2일).
+3. **W3 차고/부품 시스템 결정** — 도현 구체 결정 후 spec 진입.
+4. 화물 손상 인과 변경 (D-068) Play 테스트 — 박스 충돌 빈도 확인 후 boxWallDamageMul 튜닝.
 
-### W1 미해결 사항
+### 미해결 / 메모
 
-- ZoneUnlockPanel 위치는 우하단으로 옮겼지만 prefab 디자인 안 됐음 (런타임 폴백 카드 사용). prefab 만들면 더 멋짐.
-- Screenshot pipeline에서 timeScale=0/Canvas refresh stale frame 가끔 발생. 내부 state는 정확함.
-- ResultPanel과 ZoneUnlockPanel 분리됨 — 같은 자리에 안 보이지만 사용자 흐름상(정산→OrderBoard) 자연스러움.
+- 미니맵: 현재 월드 그대로 비춤 (도로/건물/마커 점). 배달 **목표** 마커가 다른 마커와 구분 안 됨 — 폴리시 때 강조 고려 (W4+).
+- ResultPanel 라벨↔값 간격 큼 — 의도면 OK, 아니면 좁히기 (도현 눈으로 확인).
+- 포장 박스가 밋밋한 회색 큐브 — 폴리시 (W4+).
+- Screenshot pipeline: timeScale=0 화면은 stale frame 가끔. `EditorApplication.Step()`은 에디터를 멈춤 → 런타임 거동 검증 전 frameCount 확인 ([[feedback-unity-step-pauses]]).
 
 ---
 
@@ -61,20 +67,10 @@
 
 ---
 
-## 미커밋 (모두)
+## 미커밋
 
-세션 18~20 작업 전부:
-- Phase 4/5/6 코드 + 학습 문서
-- Unity-cli 워크플로 (settings.json, rules, memory)
-- Obsidian vault 분리 (옵시디언/) + 경로 갱신
-- `_Recovery/` 정리 (93 archive 이동)
-- 차/도로 fix 시리즈 (FixFloatingCarAndRoad, AlignBaseHorizon, RemoveFlatGrassCubes, RaiseRoadTiles, FixRoadAsphaltZFight)
-- 한글 폰트 복구 (FixKoreanFontAtlas)
-- 화물 손상 인과 변경 (CargoBox + CargoShakeSimulator)
-- TuneCargoShake 인스턴스 값
-- 알림 사운드 hook (~/.claude/settings.json)
-- 기획서 .pptx + 생성 스크립트
-- Vertical Slice spec + 결정 D-069 + session log
+없음 — 세션 24에 전부 커밋 완료. 다음부터 기능 단위 커밋.
+최근 커밋: `0a39d66` (세션 18~24 일괄) → `606ce2e` (미니맵) → `06c6c3a` (방향 화살표).
 
 ---
 
