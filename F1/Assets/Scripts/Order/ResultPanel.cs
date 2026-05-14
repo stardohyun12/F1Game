@@ -225,7 +225,10 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     {
         var theme = UITheme.Active;
         cards.Clear();
-        int n = 5;
+        // 카탈로그 개수만큼 카드 생성 (채널 5: 적재함 업그레이드 2개 추가로 5→7).
+        int n = (upgradeCatalog != null && upgradeCatalog.upgrades != null && upgradeCatalog.upgrades.Count > 0)
+            ? upgradeCatalog.upgrades.Count
+            : 5;
         float panelW = 1600f;     // 도현 #2-4 panel size 동기화
         float pad = 60f;
         float spacing = 16f;

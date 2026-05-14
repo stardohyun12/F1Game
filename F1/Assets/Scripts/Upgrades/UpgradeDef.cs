@@ -25,6 +25,10 @@ public enum UpgradeEffect
     SmoothSteering,
     /// <summary>화물 maxHP +20.</summary>
     ReinforcedTrunk,
+    /// <summary>채널 5 — 적재함 +1칸 (기본 1 → 2). 다물건 잡 해금.</summary>
+    TrunkExpand1,
+    /// <summary>채널 5 — 적재함 +1칸 더 (→ 3). TrunkExpand1과 합산.</summary>
+    TrunkExpand2,
 }
 
 /// <summary>

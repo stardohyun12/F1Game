@@ -55,6 +55,8 @@ public interface IUpgradeSystem
     int Wallet { get; }
     bool IsOwned(UpgradeEffect effect);
     void AddReward(int amount);
+    /// <summary>채널 5 — 적재함 칸 수 (기본 1, 업그레이드로 최대 3).</summary>
+    int BoxCapacity { get; }
 }
 
 public interface ICargoShakeSimulator

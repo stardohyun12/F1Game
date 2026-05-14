@@ -30,6 +30,11 @@ public class UpgradeSystem : MonoBehaviour, IUpgradeSystem
     public IReadOnlyList<UpgradeEffect> Owned => ownedList;
     public int Wallet => wallet;
 
+    /// <summary>채널 5 — 적재함 칸 수. 기본 1, TrunkExpand1/2 보유 시 합산 (최대 3).</summary>
+    public int BoxCapacity =>
+        1 + (IsOwned(UpgradeEffect.TrunkExpand1) ? 1 : 0)
+          + (IsOwned(UpgradeEffect.TrunkExpand2) ? 1 : 0);
+
     public event Action<UpgradeEffect> OnUpgradePurchased;
     public event Action<int> OnWalletChanged;
 

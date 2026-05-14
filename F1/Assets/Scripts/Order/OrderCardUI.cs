@@ -42,9 +42,13 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] Color hoverBgColor = new Color(0.18f, 0.20f, 0.30f, 0.95f);
     [Tooltip("호버 시 hoverStrip 알파 (job.color에 곱).")]
     [SerializeField] float hoverStripAlpha = 0.6f;
+    [Tooltip("적재함 부족으로 잠긴 카드 배경 색.")]
+    [SerializeField] Color lockedBgColor = new Color(0.04f, 0.04f, 0.05f, 0.92f);
 
     int cardIndex;
     OrderJob job;
+    // 채널 5 — 적재함 부족이면 잠김. 클릭 무시 + 회색 표시.
+    bool locked;
     Action<int> onCardClicked;
     Action<int> onCardHoverEnter;
     Action<int> onCardHoverExit;
@@ -99,13 +103,46 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (tipText != null) tipText.text = $"→ {CargoTypePresets.DriveTip(job.cargoType)}";
     }
 
+    /// <summary>
+    /// 채널 5 — 적재함 칸 부족으로 잠금/해제. 잠기면 회색 + 클릭 무시 + 사유 표시.
+    /// OrderBoard가 Bind 직후 호출 (job.itemCount &gt; 현재 적재함 칸).
+    /// </summary>
+    public void SetLocked(bool isLocked, int requiredCapacity, int currentCapacity)
+    {
+        locked = isLocked;
+        float a = isLocked ? 0.4f : 1f;
+
+        if (bg != null) bg.color = isLocked ? lockedBgColor : baseBgColor;
+        if (colorStrip != null && job != null)
+            colorStrip.color = isLocked ? Color.Lerp(job.color, Color.gray, 0.75f) : job.color;
+
+        SetAlpha(titleText, a);
+        SetAlpha(tipText, a);
+        for (int i = 0; i < statRows.Length; i++)
+        {
+            if (statRows[i] == null) continue;
+            SetAlpha(statRows[i].label, a);
+            SetAlpha(statRows[i].value, a);
+        }
+
+        if (isLocked && tipText != null)
+            tipText.text = $"잠김 — 적재함 {requiredCapacity}칸 필요 (현재 {currentCapacity}칸)";
+    }
+
+    static void SetAlpha(TMP_Text t, float a)
+    {
+        if (t == null) return;
+        var c = t.color; c.a = a; t.color = c;
+    }
+
     public void SetHovering(bool hovering)
     {
+        // 잠긴 카드는 호버 배경색 변화 없음 (배달 마커 강조는 OrderBoard가 별도 처리).
         if (bg != null)
         {
-            bg.color = hovering ? hoverBgColor : baseBgColor;
+            bg.color = locked ? lockedBgColor : (hovering ? hoverBgColor : baseBgColor);
         }
-        if (hoverStrip != null && job != null)
+        if (hoverStrip != null && job != null && !locked)
         {
             var c = job.color;
             c.a = hovering ? hoverStripAlpha : 0f;
@@ -135,6 +172,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (locked) return; // 적재함 부족 — 클릭 무시
         onCardClicked?.Invoke(cardIndex);
     }
 }

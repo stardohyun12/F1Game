@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f271fe002b5584a8bbcaa42cab620b, type: 3}
   m_Name: Order_C_Risky
   m_EditorClassIdentifier: Assembly-CSharp::OrderJob
-  displayName: "C. \uB3C4\uC804 \uBC30\uB2EC"
+  displayName: "\uB300\uB7C9 \uBC30\uC1A1"
   color: {r: 1, g: 0.4, b: 0.4, a: 1}
   itemCount: 3
   pointCount: 7

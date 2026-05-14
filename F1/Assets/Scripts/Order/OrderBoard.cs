@@ -183,9 +183,15 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
                 continue;
             }
             card.Bind(i, job, OnCardClicked, OnCardHoverEnter, OnCardHoverExit);
+            // 채널 5 — 적재함 칸보다 물건이 많으면 카드 잠금 (회색 + 클릭 무시).
+            int cap = BoxCapacity;
+            card.SetLocked(job.itemCount > cap, job.itemCount, cap);
             spawnedCards.Add(card);
         }
     }
+
+    /// <summary>현재 적재함 칸 수 (채널 5). UpgradeSystem 미등록이면 1.</summary>
+    int BoxCapacity => Services.Upgrade != null ? Services.Upgrade.BoxCapacity : 1;
 
     // ---- OrderCardUI 콜백 ----
 
@@ -214,6 +220,8 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     {
         if (!isOpen) return;
         if (cardIndex < 0 || cardIndex >= currentOffer.Count) return;
+        // 채널 5 — 적재함 부족 잡은 무시 (OrderCardUI도 클릭 막지만 방어).
+        if (currentOffer[cardIndex].itemCount > BoxCapacity) return;
         lastSelectedJob = currentOffer[cardIndex];
 
         // 보드 닫고 setup 패널 띄움 (timeScale=0 유지).
