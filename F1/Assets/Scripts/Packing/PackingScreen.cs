@@ -34,6 +34,18 @@ namespace PitCrew.Packing
         // 다물건 nav — itemCount>1일 때만 표시 (현 데모는 다 1)
         Button prevBtn, nextBtn;
 
+        // ── 채널 5 Plan 2 — 트렁크 배치 단계 ───────────────────────────
+        // 흐름: 포장(Wrapping) → 배치(Placement) → 출발.
+        enum PackingPhase { Wrapping, Placement }
+        PackingPhase phase;
+        GameObject leftPanel, rightPanel;   // 배치 단계에서 숨김
+        TMP_Text goButtonLabel;             // "배치하기" ↔ "출발" 토글
+        Transform trunkRoot;                // CargoSimRoot — 배치할 실제 트렁크
+        CargoShakeSimulator trunkSim;
+        float trunkFloorWorldY, trunkLim;   // 드래그 평면 / 클램프 한계
+        GameObject draggedItem;
+        Vector3 grabOffsetWorld;            // 잡은 지점 ↔ 큐브 중심 오프셋
+
         // Show/Hide 시 커서 상태 복원용
         CursorLockMode previousCursorLock;
         bool previousCursorVisible;
@@ -44,6 +56,9 @@ namespace PitCrew.Packing
         // 트렁크 CCTV HUD (RawImage) — rig 꺼도 마지막 프레임이 남으므로 같이 숨김
         GameObject cargoViewHUD;
         bool cargoViewWasActive;
+        // 운전용 배달 HUD — 포장/배치 중엔 무관 → 숨김 (배치 단계에 화살표가 비쳐 보임)
+        GameObject deliveryHUD;
+        bool deliveryHUDWasActive;
 
         // ── 테마 폴백 색상 ──────────────────────────────────────────────
         static readonly Color kBg     = new Color(0.08f, 0.08f, 0.10f, 0.95f);
@@ -67,6 +82,16 @@ namespace PitCrew.Packing
             currentJob = job;
             EnsurePackingCamera();
             BuildUIIfNeeded();
+
+            // 포장 단계로 리셋 — 카메라를 작업대로 복귀 (지난 런 배치 단계에서 트렁크로 옮겼을 수 있음)
+            phase = PackingPhase.Wrapping;
+            draggedItem = null;
+            if (packingCamera != null)
+            {
+                packingCamera.transform.position = new Vector3(0, 200, -3);
+                packingCamera.transform.LookAt(new Vector3(0, 200, 0));
+            }
+
             ClearItems();
             int n = Mathf.Clamp(job.itemCount, 1, 3);
             for (int i = 0; i < n; i++) SpawnItem(i);
@@ -103,6 +128,17 @@ namespace PitCrew.Packing
                 cargoViewWasActive = cargoViewHUD.activeSelf;
                 cargoViewHUD.SetActive(false);
             }
+            // 운전용 배달 HUD 숨김 — 배치 단계에서 화살표가 트렁크 위로 비쳐 보임.
+            if (deliveryHUD == null)
+            {
+                var dh = GameObject.Find("DeliveryHUD");
+                if (dh != null) deliveryHUD = dh;
+            }
+            if (deliveryHUD != null)
+            {
+                deliveryHUDWasActive = deliveryHUD.activeSelf;
+                deliveryHUD.SetActive(false);
+            }
 
             // 커서 해제
             previousCursorLock = Cursor.lockState;
@@ -132,10 +168,14 @@ namespace PitCrew.Packing
                 for (int i = 0; i < costPerMaterialText.Length; i++) costPerMaterialText[i] = null;
                 for (int i = 0; i < materialCardImages.Length; i++) materialCardImages[i] = null;
                 goButton = prevBtn = nextBtn = null;
+                goButtonLabel = null;
+                leftPanel = rightPanel = null;
             }
+            draggedItem = null; // trunkRoot/trunkSim는 씬 객체 — 캐시 유지
             if (packingCamera != null) packingCamera.gameObject.SetActive(false);
             if (trunkCamRig != null && trunkCamWasActive) trunkCamRig.SetActive(true);
             if (cargoViewHUD != null && cargoViewWasActive) cargoViewHUD.SetActive(true);
+            if (deliveryHUD != null && deliveryHUDWasActive) deliveryHUD.SetActive(true);
             Cursor.lockState = previousCursorLock;
             Cursor.visible = previousCursorVisible;
             ClearItems();
@@ -248,12 +288,13 @@ namespace PitCrew.Packing
                 new Vector2(-60, 0), new Vector2(80, 60));
             nextBtn.onClick.AddListener(OnNextItem);
 
-            // 출발하기 버튼 (우측)
-            goButton = MakeButton(panel.transform, "BtnGo", "출발하기",
+            // 진행 버튼 (우측) — 포장 단계 "배치하기" → 배치 단계 "출발"
+            goButton = MakeButton(panel.transform, "BtnGo", "배치하기",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
                 new Vector2(-160, 0), new Vector2(200, 56));
             goButton.onClick.AddListener(OnGoClicked);
-            // 출발 버튼 강조색
+            goButtonLabel = goButton.GetComponentInChildren<TMP_Text>();
+            // 진행 버튼 강조색
             var goBg = goButton.GetComponent<Image>();
             if (goBg != null) goBg.color = Accent();
         }
@@ -267,6 +308,7 @@ namespace PitCrew.Packing
                 new Vector2(0, 0.5f),
                 new Vector2(0, 0),
                 new Vector2(240, 500));
+            leftPanel = panel.gameObject;
 
             var mats = GetMaterials();
 
@@ -352,6 +394,7 @@ namespace PitCrew.Packing
                 new Vector2(1, 0),
                 new Vector2(-20, 40),
                 new Vector2(360, 580));
+            rightPanel = panel.gameObject;
 
             var mats = GetMaterials();
             var t = panel.transform;
@@ -593,15 +636,136 @@ namespace PitCrew.Packing
         // =========================================================
         void OnGoClicked()
         {
+            // 포장 단계 → 배치 단계 진입
+            if (phase == PackingPhase.Wrapping)
+            {
+                EnterPlacement();
+                return;
+            }
+
+            // 배치 단계 → 실제 출발. 큐브들은 이미 trunkRoot(CargoSimRoot) 자식 →
+            // MountWrappedItem이 그 위치를 보존한다 (SetParent(null) 안 함).
             AudioCueBus.Publish(AudioCueId.PackingConfirm);
-            Debug.Log($"[PackingScreen] OnGoClicked — job={currentJob?.displayName} items={spawnedItems.Count}");
-            // 아이템을 PackingScreen 컨텍스트에서 분리 — RunController로 인계
-            foreach (var go in spawnedItems) if (go != null) go.transform.SetParent(null, true);
+            Debug.Log($"[PackingScreen] OnGoClicked(출발) — job={currentJob?.displayName} items={spawnedItems.Count}");
             var itemsCopy = new System.Collections.Generic.List<GameObject>(spawnedItems);
             spawnedItems.Clear(); // ClearItems in Hide()가 Destroy 안 하도록 먼저 비움
             Hide();
             if (Services.Run != null) Services.Run.BeginRun(currentJob, itemsCopy);
         }
+
+        // =========================================================
+        //  채널 5 Plan 2 — 트렁크 배치 단계
+        // =========================================================
+        /// <summary>포장 끝 → 트렁크 위 탑다운 뷰로 전환, 큐브를 트렁크 자식으로 옮김.</summary>
+        void EnterPlacement()
+        {
+            // 트렁크(CargoSimRoot) 찾기 — 1회 캐시
+            if (trunkRoot == null)
+            {
+                var rootGO = GameObject.Find("CargoSimRoot");
+                if (rootGO != null)
+                {
+                    trunkRoot = rootGO.transform;
+                    trunkSim = rootGO.GetComponent<CargoShakeSimulator>();
+                }
+            }
+            if (trunkRoot == null || trunkSim == null)
+            {
+                // 트렁크 없음(폴백 씬) — 배치 건너뛰고 바로 출발.
+                Debug.LogWarning("[PackingScreen] CargoSimRoot 못 찾음 — 배치 단계 건너뜀, 바로 출발");
+                phase = PackingPhase.Placement;
+                OnGoClicked();
+                return;
+            }
+
+            phase = PackingPhase.Placement;
+            AudioCueBus.Publish(AudioCueId.PackingConfirm);
+
+            trunkSim.HidePlaceholder();
+
+            float scale = trunkSim.ItemScale;
+            float floorY = trunkSim.FloorY;
+            trunkLim = trunkSim.TrunkHalfExtent - scale * 0.5f;
+            trunkFloorWorldY = trunkRoot.position.y + floorY; // CargoSimRoot scale=1 가정
+
+            // 큐브들을 트렁크 자식으로 옮기고 기본 일렬 배치 (플레이어가 드래그로 조정).
+            float[] slotX = { -0.5f, 0f, 0.5f };
+            for (int i = 0; i < spawnedItems.Count; i++)
+            {
+                var go = spawnedItems[i];
+                if (go == null) continue;
+                go.SetActive(true); // 포장 단계에서 비활성이던 아이템도 모두 표시
+                go.transform.SetParent(trunkRoot, false);
+                go.transform.localRotation = Quaternion.identity;
+                go.transform.localScale = Vector3.one * scale;
+                float sx = i < slotX.Length ? slotX[i] : 0f;
+                go.transform.localPosition = new Vector3(sx, floorY, 0f);
+                var painter = go.GetComponent<WrapPainter>();
+                if (painter != null) painter.enabled = false; // 배치 중엔 페인트 차단
+            }
+
+            // 카메라를 트렁크 위로 (위에서 내려다봄). 트렁크 yaw에 맞춰 축 정렬.
+            float carYaw = trunkRoot.eulerAngles.y;
+            packingCamera.transform.position = trunkRoot.position + new Vector3(0, 4.5f, 0);
+            packingCamera.transform.rotation = Quaternion.Euler(90f, carYaw, 0f);
+
+            // UI — 포장용 패널 숨기고 안내 갱신.
+            if (leftPanel != null) leftPanel.SetActive(false);
+            if (rightPanel != null) rightPanel.SetActive(false);
+            if (prevBtn != null) prevBtn.gameObject.SetActive(false);
+            if (nextBtn != null) nextBtn.gameObject.SetActive(false);
+            if (titleText != null) titleText.text = "트렁크에 배치 — 드래그";
+            if (goButtonLabel != null) goButtonLabel.text = "출발";
+        }
+
+        /// <summary>배치 단계 여부 — PackingScreenInput이 입력 분기에 사용.</summary>
+        public bool IsPlacing => phase == PackingPhase.Placement;
+
+        /// <summary>마우스 ray가 큐브를 잡으면 드래그 시작.</summary>
+        public void BeginTrunkDrag(Vector2 screenPos)
+        {
+            if (packingCamera == null) return;
+            // EnterPlacement에서 큐브를 옮긴 직후 클릭하면 collider가 아직 stale —
+            // raycast 전에 물리 표현을 transform과 동기화.
+            Physics.SyncTransforms();
+            var ray = packingCamera.ScreenPointToRay(screenPos);
+            if (!Physics.Raycast(ray, out var hit, 50f)) return;
+
+            // hit이 어느 큐브인지 — 부모 체인 따라 확인 (리본 메시 자식 hit 대비).
+            GameObject picked = null;
+            for (var t = hit.collider.transform; t != null; t = t.parent)
+                if (spawnedItems.Contains(t.gameObject)) { picked = t.gameObject; break; }
+            if (picked == null) return;
+
+            draggedItem = picked;
+            // 잡은 지점 ↔ 큐브 중심 월드 오프셋 (잡은 느낌 유지).
+            var plane = new Plane(Vector3.up, new Vector3(0, trunkFloorWorldY, 0));
+            if (plane.Raycast(ray, out float enter))
+            {
+                grabOffsetWorld = draggedItem.transform.position - ray.GetPoint(enter);
+                grabOffsetWorld.y = 0f;
+            }
+            else grabOffsetWorld = Vector3.zero;
+        }
+
+        /// <summary>드래그 중 — 마우스 ray를 트렁크 바닥 평면에 투영, 벽 안으로 클램프.</summary>
+        public void UpdateTrunkDrag(Vector2 screenPos)
+        {
+            if (draggedItem == null || packingCamera == null || trunkRoot == null) return;
+            var ray = packingCamera.ScreenPointToRay(screenPos);
+            var plane = new Plane(Vector3.up, new Vector3(0, trunkFloorWorldY, 0));
+            if (!plane.Raycast(ray, out float enter)) return;
+
+            Vector3 desiredWorld = ray.GetPoint(enter) + grabOffsetWorld;
+            Vector3 local = trunkRoot.InverseTransformPoint(desiredWorld);
+            local.x = Mathf.Clamp(local.x, -trunkLim, trunkLim);
+            local.z = Mathf.Clamp(local.z, -trunkLim, trunkLim);
+            local.y = trunkSim != null ? trunkSim.FloorY : local.y;
+            draggedItem.transform.localPosition = local;
+        }
+
+        /// <summary>드래그 종료.</summary>
+        public void EndTrunkDrag() => draggedItem = null;
 
         // =========================================================
         //  Item spawning

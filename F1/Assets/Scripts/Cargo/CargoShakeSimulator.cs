@@ -82,12 +82,21 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     // =========================================================
     //  마운트 / 청소
     // =========================================================
+    /// <summary>
+    /// 포장 큐브 1개를 트렁크에 마운트. 채널 5 Plan 2:
+    /// 큐브가 이미 CargoSimRoot(=this.transform)의 자식이면 PackingScreen 배치 단계에서
+    /// 플레이어가 끌어다 놓은 것 → 그 위치 유지. 아니면 자동 그리드 (폴백).
+    /// </summary>
     public void MountWrappedItem(GameObject cube)
     {
         if (cube == null) return;
         EnsurePlaceholderHidden();
 
-        cube.transform.SetParent(transform, false);    // CargoSimRoot 직속
+        // 배치 단계에서 플레이어가 트렁크에 직접 놓았으면 이미 자식이다.
+        bool alreadyPlaced = cube.transform.parent == transform;
+        Vector3 placedLocal = cube.transform.localPosition;
+
+        cube.transform.SetParent(transform, false);    // CargoSimRoot 직속 (이미 자식이면 localPos 유지)
         cube.transform.localRotation = Quaternion.identity;
         cube.transform.localScale = Vector3.one * itemScale;
 
@@ -100,10 +109,18 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         };
         items.Add(item);
 
-        // 자동 그리드 배치 — 추가된 순서대로 슬롯. (Plan 2: 플레이어 드래그로 대체)
-        int slot = items.Count - 1;
-        float sx = slot < kSlotX.Length ? kSlotX[slot] : 0f;
-        cube.transform.localPosition = new Vector3(sx, kFloorY, 0f);
+        if (alreadyPlaced)
+        {
+            // 플레이어가 놓은 위치 유지 — 바닥 Y만 보정.
+            cube.transform.localPosition = new Vector3(placedLocal.x, kFloorY, placedLocal.z);
+        }
+        else
+        {
+            // 폴백 자동 그리드 — 추가된 순서대로 슬롯 (배치 단계 없이 들어온 경우).
+            int slot = items.Count - 1;
+            float sx = slot < kSlotX.Length ? kSlotX[slot] : 0f;
+            cube.transform.localPosition = new Vector3(sx, kFloorY, 0f);
+        }
     }
 
     public void ClearMountedItems()
@@ -120,6 +137,16 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         if (box != null) { var mr = box.GetComponent<MeshRenderer>(); if (mr != null) mr.enabled = false; }
         placeholderHidden = true;
     }
+
+    // ── 배치 단계(PackingScreen Plan 2)용 노출 ────────────────────────
+    /// <summary>배치 단계 진입 시 placeholder Box 미리 숨김.</summary>
+    public void HidePlaceholder() => EnsurePlaceholderHidden();
+    /// <summary>아이템 마운트 시 균일 스케일 (m).</summary>
+    public float ItemScale => itemScale;
+    /// <summary>트렁크 내벽 기준 아이템 중심 이동 한계 (local, m).</summary>
+    public float TrunkHalfExtent => trunkHalfExtent;
+    /// <summary>아이템이 놓이는 트렁크 바닥 local Y.</summary>
+    public float FloorY => kFloorY;
 
     // =========================================================
     //  물리 — 아이템별 slide + 벽 충돌 + 아이템 간 충돌

@@ -76,6 +76,20 @@ namespace PitCrew.Packing
         {
             if (Screen == null) return;
             if (!Screen.IsVisible) return;
+
+            // 채널 5 Plan 2 — 배치 단계: 마우스 드래그로 트렁크에 물건 놓기 (포장 입력 차단).
+            if (Screen.IsPlacing)
+            {
+                if (_mouseClickAction != null && _mousePosAction != null)
+                {
+                    Vector2 sp = _mousePosAction.ReadValue<Vector2>();
+                    if (_mouseClickAction.WasPressedThisFrame()) Screen.BeginTrunkDrag(sp);
+                    else if (_mouseClickAction.IsPressed()) Screen.UpdateTrunkDrag(sp);
+                    else if (_mouseClickAction.WasReleasedThisFrame()) Screen.EndTrunkDrag();
+                }
+                return;
+            }
+
             if (RotateTarget == null) return;
 
             // WASD 회전
