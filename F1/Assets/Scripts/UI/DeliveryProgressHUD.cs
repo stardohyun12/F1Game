@@ -20,6 +20,12 @@ public class DeliveryProgressHUD : MonoBehaviour
     Image bg;
     TMP_Text countText, labelText;
 
+    // Phase 6 perf(B3): 매 프레임 string interpolation 회피. 상태/인덱스/타겟 변경 시만 갱신.
+    enum DisplayState { None, Finished, Returning, Normal }
+    DisplayState lastState = DisplayState.None;
+    int lastIdx = -1, lastTotal = -1;
+    string lastTargetLabel = null;
+
     void Awake()
     {
         if (manager == null) manager = Services.Delivery as DeliveryManager;
@@ -98,22 +104,44 @@ public class DeliveryProgressHUD : MonoBehaviour
 
         if (manager.Finished)
         {
-            countText.text = "✓";
+            if (lastState != DisplayState.Finished)
+            {
+                lastState = DisplayState.Finished;
+                countText.text = "✓";
+                labelText.text = "COMPLETE";
+            }
             countText.color = theme != null ? theme.colorOkText : Color.green;
-            labelText.text = "COMPLETE";
         }
         else if (manager.Returning)
         {
-            countText.text = $"{manager.TotalCount}/{manager.TotalCount}";
+            int total = manager.TotalCount;
+            if (lastState != DisplayState.Returning || lastTotal != total)
+            {
+                lastState = DisplayState.Returning;
+                lastTotal = total;
+                countText.text = $"{total}/{total}";
+                labelText.text = "RETURN TO START";
+            }
             countText.color = theme != null ? theme.colorWarnText : Color.yellow;
-            labelText.text = "RETURN TO START";
         }
         else
         {
-            countText.text = $"{manager.CurrentIndex + 1}/{manager.TotalCount}";
-            countText.color = theme != null ? theme.colorAccent : Color.yellow;
+            int idx = manager.CurrentIndex;
+            int total = manager.TotalCount;
             var target = manager.CurrentTarget;
-            labelText.text = target != null ? target.Label : "...";
+            string targetLabel = target != null ? target.Label : "...";
+            if (lastState != DisplayState.Normal || lastIdx != idx || lastTotal != total)
+            {
+                lastState = DisplayState.Normal;
+                lastIdx = idx; lastTotal = total;
+                countText.text = $"{idx + 1}/{total}";
+            }
+            if (!ReferenceEquals(lastTargetLabel, targetLabel))
+            {
+                lastTargetLabel = targetLabel;
+                labelText.text = targetLabel;
+            }
+            countText.color = theme != null ? theme.colorAccent : Color.yellow;
         }
     }
 }

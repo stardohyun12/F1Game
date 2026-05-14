@@ -3,8 +3,9 @@ using UnityEngine;
 namespace PitCrew.Packing
 {
     /// <summary>
-    /// 마우스 누름 = 시작점 고정 + 고무줄 선 표시.
-    /// 떼면 = 시작점부터 끝점까지 표면을 따라 strip 한 줄을 한 번에 생성.
+    /// 누른 채 끌면 표면에 실시간으로 ribbon 감김.
+    /// 위치별 coverage grid가 페인트 횟수 누적 → 같은 자리 다시 감으면 lift 커져서 부풀어 오름.
+    /// 적응 raycast 분할로 큐브뿐 아니라 볼록한 모양 전반에서 표면을 따라감.
     /// </summary>
     public sealed class WrapPainter : MonoBehaviour
     {
@@ -14,22 +15,27 @@ namespace PitCrew.Packing
 
         [Header("Painting")]
         [SerializeField] private float stripWidthUV = 0.06f;
-        [SerializeField] private int snapSampleCount = 24;       // 떼었을 때 strip을 만들 sample 수
-        [SerializeField] private int previewSampleCount = 24;    // 누르는 동안 고무줄 표시용 sample 수
+        [SerializeField] private float baseLiftMeters = 0.06f;         // 첫 layer 솟음 6cm — cross-section 거의 반원
+        [SerializeField] private float liftPerOverlapMeters = 0.025f;  // overlap 횟수당 +2.5cm
+        [SerializeField] private float maxLiftMeters = 0.18f;
+        [SerializeField] private float edgeNormalThresholdDeg = 45f;
+        [SerializeField] private int maxSubdivideDepth = 1;
 
         Material blitMat;
         RenderTexture scratch;
         WrapMaterialDef currentMat;
+
+        const int CovRes = 64;
+        int[,] coverageGrid;
+
         bool stroking;
+        WrapRibbon activeRibbon;
+        float currentStrokeLift;
+        Vector2 lastUV;
+        Vector3 lastHitLocalPos;
+        Vector3 lastHitLocalNormal;
+        bool hasLastHit;
 
-        // 고무줄 상태 — 시작점은 큐브 local 좌표로 저장. WASD로 회전해도 자동 따라감.
-        Vector2 startScreenPos;
-        Vector2 startUV;
-        Vector3 startLocalPos;
-        Vector3 startLocalNormal;
-        LineRenderer rubberBand;
-
-        // 메테리얼 캐시
         Material[] ribbonMaterialsByChannel;
 
         const float k_RaycastRange = 100f;
@@ -58,13 +64,13 @@ namespace PitCrew.Packing
             if (scratch != null) scratch.Release();
             scratch = new RenderTexture(targetState.Size, targetState.Size, 0, RenderTextureFormat.ARGB32);
             scratch.Create();
+            coverageGrid = new int[CovRes, CovRes];
         }
 
         void OnDestroy()
         {
             if (scratch != null) scratch.Release();
             if (blitMat != null) Destroy(blitMat);
-            if (rubberBand != null) Destroy(rubberBand.gameObject);
             if (ribbonMaterialsByChannel != null)
                 foreach (var m in ribbonMaterialsByChannel)
                     if (m != null) Destroy(m);
@@ -81,16 +87,48 @@ namespace PitCrew.Packing
                 var col = def.displayColor; col.a = 1.0f;
                 mat.SetColor("_BaseColor", col);
                 mat.SetColor("_RimColor", Color.white);
-                mat.SetFloat("_RimPower", 2.5f);
-                mat.SetFloat("_EdgeBoost", 0.55f);
+                mat.SetFloat("_RimPower", 3.0f);
+                mat.SetFloat("_EdgeBoost", 0.4f);
+                mat.SetFloat("_BaseAlpha", 0.45f);
+                mat.SetFloat("_SpecPower", 90f);
+                mat.SetFloat("_SpecStrength", 1.8f);
                 ribbonMaterialsByChannel[idx] = mat;
             }
             return ribbonMaterialsByChannel[idx];
         }
 
-        // ---------------------------------------------------------------
-        // 입력 핸들러: 누름 → 끄는 동안 고무줄 → 떼면 strip 한 줄 생성
-        // ---------------------------------------------------------------
+        float ComputeLift(Vector2 uv)
+        {
+            if (coverageGrid == null) return baseLiftMeters;
+            int x = Mathf.Clamp((int)(uv.x * CovRes), 0, CovRes - 1);
+            int y = Mathf.Clamp((int)(uv.y * CovRes), 0, CovRes - 1);
+            int c = coverageGrid[x, y];
+            return Mathf.Min(maxLiftMeters, baseLiftMeters + c * liftPerOverlapMeters);
+        }
+
+        void BumpCoverage(Vector2 prev, Vector2 curr)
+        {
+            if (coverageGrid == null) return;
+            int radius = Mathf.Max(1, Mathf.CeilToInt(stripWidthUV * CovRes * 0.5f));
+            float dUV = (curr - prev).magnitude;
+            int steps = Mathf.Max(2, Mathf.CeilToInt(dUV * CovRes * 2f));
+            for (int i = 0; i <= steps; i++)
+            {
+                float t = (float)i / steps;
+                var uv = Vector2.Lerp(prev, curr, t);
+                int cx = (int)(uv.x * CovRes);
+                int cy = (int)(uv.y * CovRes);
+                for (int dy = -radius; dy <= radius; dy++)
+                {
+                    int y = cy + dy; if (y < 0 || y >= CovRes) continue;
+                    for (int dx = -radius; dx <= radius; dx++)
+                    {
+                        int x = cx + dx; if (x < 0 || x >= CovRes) continue;
+                        coverageGrid[x, y]++;
+                    }
+                }
+            }
+        }
 
         public void BeginStroke(Vector2 screenPos)
         {
@@ -98,126 +136,95 @@ namespace PitCrew.Packing
             if (currentMat == null) return;
             if (!TryRaycastUV(screenPos, out var uv, out var hit)) return;
 
-            startScreenPos = screenPos;
-            startUV = uv;
-            // hit.point/normal은 world 좌표. 큐브가 WASD로 회전하므로 local로 저장.
+            var ribbonGO = new GameObject($"Ribbon_{currentMat.displayName}");
+            ribbonGO.transform.SetParent(targetCollider != null ? targetCollider.transform : transform, false);
+            activeRibbon = ribbonGO.AddComponent<WrapRibbon>();
+            activeRibbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 4.0f);
+
+            currentStrokeLift = ComputeLift(uv);
+            activeRibbon.AddSample(hit.point, hit.normal, currentStrokeLift);
+
             var t = targetCollider.transform;
-            startLocalPos = t.InverseTransformPoint(hit.point);
-            startLocalNormal = t.InverseTransformDirection(hit.normal);
+            lastUV = uv;
+            lastHitLocalPos = t.InverseTransformPoint(hit.point);
+            lastHitLocalNormal = t.InverseTransformDirection(hit.normal);
+            hasLastHit = true;
             stroking = true;
             AudioCueBus.Publish(AudioCueId.PackingStrokeStart);
-
-            EnsureRubberBand();
-            var initPts = new System.Collections.Generic.List<Vector3> { hit.point };
-            UpdateRubberBandPolyline(initPts);
-        }
-
-        // 현재 큐브 회전 기준 시작점 world 좌표
-        Vector3 CurrentStartWorld()
-        {
-            return targetCollider != null
-                ? targetCollider.transform.TransformPoint(startLocalPos)
-                : startLocalPos;
-        }
-        Vector3 CurrentStartNormal()
-        {
-            return targetCollider != null
-                ? targetCollider.transform.TransformDirection(startLocalNormal)
-                : startLocalNormal;
         }
 
         public void UpdateStroke(Vector2 screenPos)
         {
-            if (!stroking) return;
-            // 시작점 → 마우스 사이를 N개 sample로 raycast.
-            // 큐브가 WASD로 회전했을 수 있으니 시작점을 현재 화면 좌표로 재투영.
-            var startWorld = CurrentStartWorld();
-            var startScreenNow = packingCamera.WorldToScreenPoint(startWorld);
-            Vector2 s0 = new Vector2(startScreenNow.x, startScreenNow.y);
-
-            var pts = new System.Collections.Generic.List<Vector3>(previewSampleCount + 1);
-            pts.Add(startWorld);
-
-            int n = Mathf.Max(2, previewSampleCount);
-            for (int i = 1; i <= n; i++)
+            if (!stroking || activeRibbon == null) return;
+            if (!TryRaycastUV(screenPos, out var uv, out var hit))
             {
-                float t = (float)i / n;
-                var s = Vector2.Lerp(s0, screenPos, t);
-                if (TryRaycastUV(s, out _, out var hit)) pts.Add(hit.point);
+                hasLastHit = false;
+                return;
             }
-            UpdateRubberBandPolyline(pts);
+
+            var t = targetCollider.transform;
+
+            if (hasLastHit)
+            {
+                // 큐브 회전(WASD) 반영 — 직전 hit을 현재 frame world/screen으로 재투영.
+                Vector3 lastWorldNow = t.TransformPoint(lastHitLocalPos);
+                Vector3 lastNormalWorldNow = t.TransformDirection(lastHitLocalNormal);
+                Vector3 lastScreen3 = packingCamera.WorldToScreenPoint(lastWorldNow);
+                Vector2 lastScreenNow = new Vector2(lastScreen3.x, lastScreen3.y);
+
+                SubdivideAndAdd(lastScreenNow, screenPos,
+                                lastWorldNow, lastNormalWorldNow, lastUV,
+                                hit.point, hit.normal, uv, 0);
+            }
+            else
+            {
+                activeRibbon.AddSample(hit.point, hit.normal, currentStrokeLift);
+            }
+
+            DrawStrip(lastUV, uv, currentMat);
+            BumpCoverage(lastUV, uv);
+
+            lastUV = uv;
+            lastHitLocalPos = t.InverseTransformPoint(hit.point);
+            lastHitLocalNormal = t.InverseTransformDirection(hit.normal);
+            hasLastHit = true;
+        }
+
+        void SubdivideAndAdd(Vector2 sA, Vector2 sB,
+                             Vector3 pA, Vector3 nA, Vector2 uA,
+                             Vector3 pB, Vector3 nB, Vector2 uB, int depth)
+        {
+            if (depth < maxSubdivideDepth && Vector3.Angle(nA, nB) > edgeNormalThresholdDeg)
+            {
+                var sM = (sA + sB) * 0.5f;
+                if (TryRaycastUV(sM, out var uM, out var hM))
+                {
+                    SubdivideAndAdd(sA, sM, pA, nA, uA, hM.point, hM.normal, uM, depth + 1);
+                    SubdivideAndAdd(sM, sB, hM.point, hM.normal, uM, pB, nB, uB, depth + 1);
+                    return;
+                }
+            }
+            activeRibbon.AddSample(pB, nB, currentStrokeLift);
         }
 
         public void EndStroke()
         {
             if (!stroking) return;
-            Vector2 endScreenPos = GetLastMouseScreen();
-            var startWorld = CurrentStartWorld();
-            var startScreenNow = packingCamera.WorldToScreenPoint(startWorld);
-            CommitStripPolyline(new Vector2(startScreenNow.x, startScreenNow.y), endScreenPos);
             OnStrokeEnded?.Invoke(targetState);
             AudioCueBus.Publish(AudioCueId.PackingStrokeEnd);
-            HideRubberBand();
             stroking = false;
+            activeRibbon = null;
+            hasLastHit = false;
         }
 
         public void CancelStroke()
         {
             if (!stroking) return;
-            HideRubberBand();
+            if (activeRibbon != null && !activeRibbon.HasGeometry) Destroy(activeRibbon.gameObject);
             stroking = false;
+            activeRibbon = null;
+            hasLastHit = false;
         }
-
-        // 입력 폴링 안 하므로 마지막 화면 좌표는 RubberBand의 끝점에서 역추적
-        Vector2 GetLastMouseScreen()
-        {
-            // 마우스 현재 위치는 PackingScreenInput이 ReadValue로 보내는 게 정석이지만,
-            // EndStroke는 input이 호출하는 흐름이라 마지막 UpdateStroke의 screenPos를 그대로 쓰는 게 맞음.
-            // 그러나 시그니처상 screenPos를 인자로 안 받으므로 InputSystem에서 직접 읽음.
-            return UnityEngine.InputSystem.Mouse.current != null
-                ? UnityEngine.InputSystem.Mouse.current.position.ReadValue()
-                : startScreenPos;
-        }
-
-        // 시작 화면 좌표 → 끝 화면 좌표 사이를 N분할해 raycast.
-        // 표면 닿은 sample들로 ribbon mesh + RT 페인트 (모서리에서 자연스럽게 꺾임).
-        void CommitStripPolyline(Vector2 s0, Vector2 s1)
-        {
-            int n = Mathf.Max(2, snapSampleCount);
-
-            var ribbonGO = new GameObject($"Ribbon_{currentMat.displayName}");
-            ribbonGO.transform.SetParent(targetCollider != null ? targetCollider.transform : transform, false);
-            var ribbon = ribbonGO.AddComponent<WrapRibbon>();
-            ribbon.Init(GetOrCreateRibbonMaterial(currentMat), stripWidthUV * 3.0f);
-
-            // 시작점은 큐브 회전 반영한 현재 world 좌표 사용
-            ribbon.AddSample(CurrentStartWorld(), CurrentStartNormal());
-            Vector2 prevUV = startUV;
-            bool hasPrev = true;
-            int hitCount = 1;
-
-            for (int i = 1; i <= n; i++)
-            {
-                float t = (float)i / n;
-                var s = Vector2.Lerp(s0, s1, t);
-                if (TryRaycastUV(s, out var uv, out var hit))
-                {
-                    ribbon.AddSample(hit.point, hit.normal);
-                    if (hasPrev) DrawStrip(prevUV, uv, currentMat);
-                    prevUV = uv;
-                    hasPrev = true;
-                    hitCount++;
-                }
-                else
-                {
-                    // 화면이 큐브 밖으로 나간 sample은 polyline 단절 — 다음 hit 때 새 segment 시작
-                    hasPrev = false;
-                }
-            }
-            if (hitCount < 2) return; // strip 무효
-        }
-
-        bool TryRaycastUV(Vector2 screenPos, out Vector2 uv) => TryRaycastUV(screenPos, out uv, out _);
 
         bool TryRaycastUV(Vector2 screenPos, out Vector2 uv, out RaycastHit hit)
         {
@@ -228,46 +235,6 @@ namespace PitCrew.Packing
             uv = hit.textureCoord;
             return true;
         }
-
-        // ---------------------------------------------------------------
-        // 고무줄 LineRenderer
-        // ---------------------------------------------------------------
-
-        void EnsureRubberBand()
-        {
-            if (rubberBand != null) { rubberBand.enabled = true; return; }
-            var go = new GameObject("RubberBand");
-            go.transform.SetParent(transform, false);
-            rubberBand = go.AddComponent<LineRenderer>();
-            rubberBand.useWorldSpace = true;
-            rubberBand.positionCount = 0;
-            rubberBand.startWidth = 0.04f;
-            rubberBand.endWidth = 0.04f;
-            rubberBand.numCapVertices = 4;
-            rubberBand.numCornerVertices = 6;
-            rubberBand.alignment = LineAlignment.View;
-            var shader = Shader.Find("Unlit/Color") ?? Shader.Find("Sprites/Default");
-            var mat = new Material(shader);
-            mat.color = currentMat != null ? currentMat.displayColor : Color.white;
-            rubberBand.material = mat;
-        }
-
-        void UpdateRubberBandPolyline(System.Collections.Generic.List<Vector3> pts)
-        {
-            if (rubberBand == null) return;
-            rubberBand.positionCount = pts.Count;
-            for (int i = 0; i < pts.Count; i++) rubberBand.SetPosition(i, pts[i]);
-            if (currentMat != null && rubberBand.material != null) rubberBand.material.color = currentMat.displayColor;
-        }
-
-        void HideRubberBand()
-        {
-            if (rubberBand != null) rubberBand.enabled = false;
-        }
-
-        // ---------------------------------------------------------------
-        // RT 페인트 (비용/커버리지 계산용 — 시각은 ribbon이 담당)
-        // ---------------------------------------------------------------
 
         void DrawStrip(Vector2 prev, Vector2 curr, WrapMaterialDef mat)
         {

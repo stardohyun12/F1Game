@@ -3,12 +3,16 @@ using UnityEngine;
 
 namespace PitCrew.Packing
 {
-    /// <summary>한 stroke = 한 ribbon. 마우스 드래그 경로의 sample 받아 mesh strip 생성.</summary>
+    /// <summary>
+    /// 한 stroke = 한 ribbon. 단면이 베개형 (L=surface, M=lift, R=surface).
+    /// lift는 AddSample마다 다르게 — 같은 자리 두 번 감으면 두 번째 stroke이 더 솟음.
+    /// </summary>
     public sealed class WrapRibbon : MonoBehaviour
     {
-        [SerializeField] private float widthMeters = 0.15f;
-        [SerializeField] private float surfaceOffsetMeters = 0.003f;  // 3mm — 더 표면에 붙어 보임
-        [SerializeField] private float minSampleDistMeters = 0.008f;
+        [SerializeField] private float widthMeters = 0.18f;
+        [SerializeField] private float minSampleDistMeters = 0.012f;
+
+        const int CrossN = 5;  // 단면 vertex 수 — 반원형 베개 단면
 
         MeshFilter mf;
         MeshRenderer mr;
@@ -21,7 +25,8 @@ namespace PitCrew.Packing
 
         Vector3 lastLocalPos;
         Vector3 lastLocalNormal;
-        Vector3 lastLat;  // 직전 segment의 lateral — 모서리 넘어갈 때 strip flip 방지
+        Vector3 lastLat;
+        float lastLift;
         bool hasLast;
         float uAccum;
 
@@ -38,7 +43,7 @@ namespace PitCrew.Packing
             mf.sharedMesh = mesh;
         }
 
-        public void AddSample(Vector3 worldPos, Vector3 worldNormal)
+        public void AddSample(Vector3 worldPos, Vector3 worldNormal, float lift)
         {
             var localPos = transform.parent != null ? transform.parent.InverseTransformPoint(worldPos) : worldPos;
             var localNormal = transform.parent != null ? transform.parent.InverseTransformDirection(worldNormal).normalized : worldNormal.normalized;
@@ -47,52 +52,55 @@ namespace PitCrew.Packing
             {
                 lastLocalPos = localPos;
                 lastLocalNormal = localNormal;
+                lastLift = lift;
                 hasLast = true;
                 return;
             }
 
+            AppendSegment(localPos, localNormal, lift);
+        }
+
+        void AppendSegment(Vector3 localPos, Vector3 localNormal, float lift)
+        {
             var delta = localPos - lastLocalPos;
             float dist = delta.magnitude;
             if (dist < minSampleDistMeters) return;
             var dir = delta / dist;
 
-            // Lateral perpendicular to drag direction AND surface normal
             var lat = Vector3.Cross(localNormal, dir);
             if (lat.sqrMagnitude < 1e-6f) lat = Vector3.Cross(Vector3.up, dir);
             lat = lat.normalized;
 
-            // 직전 lateral과 방향 일치시키기 — 모서리 넘어가도 strip flip 안 함
             if (verts.Count > 0 && Vector3.Dot(lat, lastLat) < 0f) lat = -lat;
             lastLat = lat;
 
-            float w = widthMeters * 0.5f;
-            float o = surfaceOffsetMeters;
+            // 현재 cross-section의 기준 normal도 직전과 보간 — 모서리 음영 자연스럽게.
+            Vector3 smoothedNormal = (verts.Count == 0)
+                ? localNormal
+                : Vector3.Slerp(lastLocalNormal, localNormal, 0.5f).normalized;
 
-            // If first segment, add prev endpoint
+            float w = widthMeters * 0.5f;
+
             if (verts.Count == 0)
             {
-                verts.Add(lastLocalPos + lat * w + lastLocalNormal * o);
-                verts.Add(lastLocalPos - lat * w + lastLocalNormal * o);
-                normals.Add(lastLocalNormal);
-                normals.Add(lastLocalNormal);
-                uvs.Add(new Vector2(0f, 0f));
-                uvs.Add(new Vector2(0f, 1f));
+                EmitCross(lastLocalPos, lastLocalNormal, lat, lastLift, w, 0f);
             }
 
             uAccum += dist;
-            verts.Add(localPos + lat * w + localNormal * o);
-            verts.Add(localPos - lat * w + localNormal * o);
-            normals.Add(localNormal);
-            normals.Add(localNormal);
-            uvs.Add(new Vector2(uAccum, 0f));
-            uvs.Add(new Vector2(uAccum, 1f));
+            EmitCross(localPos, smoothedNormal, lat, lift, w, uAccum);
 
-            int currR = verts.Count - 1;
-            int currL = verts.Count - 2;
-            int prevR = verts.Count - 3;
-            int prevL = verts.Count - 4;
-            tris.Add(prevL); tris.Add(currL); tris.Add(prevR);
-            tris.Add(prevR); tris.Add(currL); tris.Add(currR);
+            int total = verts.Count;
+            int prevBase = total - 2 * CrossN;
+            int curBase = total - CrossN;
+            for (int i = 0; i < CrossN - 1; i++)
+            {
+                int pi  = prevBase + i;
+                int pi1 = prevBase + i + 1;
+                int ci  = curBase + i;
+                int ci1 = curBase + i + 1;
+                tris.Add(pi);  tris.Add(ci);  tris.Add(pi1);
+                tris.Add(pi1); tris.Add(ci);  tris.Add(ci1);
+            }
 
             mesh.Clear();
             mesh.SetVertices(verts);
@@ -103,6 +111,24 @@ namespace PitCrew.Packing
 
             lastLocalPos = localPos;
             lastLocalNormal = localNormal;
+            lastLift = lift;
+        }
+
+        void EmitCross(Vector3 pos, Vector3 nrm, Vector3 lat, float lift, float halfW, float u)
+        {
+            // 반원형 단면 — 위치는 lat 방향, 높이는 cos, 법선은 회전
+            for (int i = 0; i < CrossN; i++)
+            {
+                float f = (2f * i / (CrossN - 1)) - 1f;  // -1..+1
+                float a = f * (Mathf.PI * 0.5f);          // -π/2 .. +π/2
+                float c = Mathf.Cos(a);
+                float s = Mathf.Sin(a);
+                var v = pos + lat * (f * halfW) + nrm * (lift * c);
+                verts.Add(v);
+                var n = (nrm * c + lat * s).normalized;
+                normals.Add(n);
+                uvs.Add(new Vector2(u, (float)i / (CrossN - 1)));
+            }
         }
 
         public bool HasGeometry => verts.Count > 0;

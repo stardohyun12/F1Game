@@ -65,7 +65,17 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.onCardHoverEnter = onCardHoverEnter;
         this.onCardHoverExit = onCardHoverExit;
 
-        if (titleText != null) titleText.text = job.displayName;
+        // 채널 3 — 잡이 속한 zone 라벨을 작게 위에 표시.
+        if (titleText != null)
+        {
+            Zone zone = ZoneUnlockSystem.Instance != null ? ZoneUnlockSystem.Instance.GetZoneOf(job) : null;
+            if (zone != null)
+            {
+                string hex = ColorUtility.ToHtmlStringRGB(zone.tintColor);
+                titleText.text = $"<size=60%><color=#{hex}>{zone.displayName}</color></size>\n{job.displayName}";
+            }
+            else titleText.text = job.displayName;
+        }
         if (colorStrip != null) colorStrip.color = job.color;
         if (bg != null) bg.color = baseBgColor;
         if (hoverStrip != null)

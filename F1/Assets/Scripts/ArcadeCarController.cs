@@ -134,7 +134,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         // ground 표면 위/아래 경계에 걸려 자기 collider 무시 후에도 ground 못 잡음.
         // 0.5m 위에서 쏘고 distance 보정 (+0.5).
         Vector3 groundOrigin = transform.position + Vector3.up * 0.5f;
-        isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer);
+        // 트리거(DeliveryPoint SphereCollider 등) 무시 — 트리거 위에서 grounded 오판 차단.
+        isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
         IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
 
         if (IsDrifting && !wasDrifting)

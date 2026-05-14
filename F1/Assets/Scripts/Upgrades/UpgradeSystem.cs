@@ -59,6 +59,14 @@ public class UpgradeSystem : MonoBehaviour, IUpgradeSystem
         OnWalletChanged?.Invoke(wallet);
     }
 
+    /// <summary>포장 비용 등 일반 지출. 잔액 부족이어도 음수까지 차감 허용 (데모 단순화).</summary>
+    public void Spend(int amount)
+    {
+        if (amount <= 0) return;
+        wallet -= amount;
+        OnWalletChanged?.Invoke(wallet);
+    }
+
     /// <summary>업그레이드 구매. 자금 부족/이미 보유면 false.</summary>
     public bool TryPurchase(UpgradeDef def)
     {
@@ -69,6 +77,7 @@ public class UpgradeSystem : MonoBehaviour, IUpgradeSystem
         ownedList.Add(def.effect);
         OnWalletChanged?.Invoke(wallet);
         OnUpgradePurchased?.Invoke(def.effect);
+        AudioCueBus.Publish(AudioCueId.UpgradePurchased);
         return true;
     }
 

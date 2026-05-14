@@ -107,3 +107,17 @@ $RECYCLE.BIN/
 .claude/settings.local.json
 # F1 폴더 안의 로컬 .claude는 프로젝트 allowlist와 분리 (개인 Unity 작업용)
 F1/.claude/
+
+# === 세션 24 추가 — 생성물/스크래치 ===
+# Unity 검증용 생성 스크린샷 (unity-cli screenshot / CaptureFullScreen)
+F1/Captures/
+F1/Screenshots/
+# 루트 자동 생성 솔루션 (F1/*.sln은 이미 무시, 루트는 별도)
+/PitCrew.sln
+# 루트에 잘못 생긴 Obsidian 설정 (실제 vault는 옵시디언/)
+/.obsidian/
+# Obsidian workspace 상태 — 개인별·노이즈
+옵시디언/.obsidian/workspace.json
+# 스크래치/프로브
+_probe.txt
+/files/

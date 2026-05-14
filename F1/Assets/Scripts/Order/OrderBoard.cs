@@ -57,6 +57,10 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (headerText != null) headerText.text = "주문 선택";
     }
 
+    // CCTV HUD 토글 (주문 보드 열려 있는 동안 트렁크 캠 안 보이게)
+    GameObject cachedCargoViewHUD;
+    bool cargoViewWasActive;
+
     public void Open()
     {
         isOpen = true;
@@ -70,12 +74,31 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
         if (panelRoot != null) panelRoot.SetActive(true);
         ApplyHoverState();
+
+        // 채널 3 — 보드 열 때마다 잠금 패널도 갱신 (자금 변동으로 affordable 바뀌었을 수 있음).
+        var zup = FindFirstObjectByType<ZoneUnlockPanel>(FindObjectsInactive.Include);
+        if (zup != null) zup.RefreshExternal();
+
+        // 트렁크 CCTV 잠시 숨김 (도현 요청 — 주문 화면에는 필요 없음)
+        if (cachedCargoViewHUD == null)
+        {
+            var cv = Object.FindFirstObjectByType<CargoView>(FindObjectsInactive.Include);
+            if (cv != null) cachedCargoViewHUD = cv.gameObject;
+        }
+        if (cachedCargoViewHUD != null)
+        {
+            cargoViewWasActive = cachedCargoViewHUD.activeSelf;
+            cachedCargoViewHUD.SetActive(false);
+        }
     }
 
     public void Close()
     {
         isOpen = false;
         if (panelRoot != null) panelRoot.SetActive(false);
+
+        // CCTV 복원 (런 시작과 함께 다시 보여야 함)
+        if (cachedCargoViewHUD != null && cargoViewWasActive) cachedCargoViewHUD.SetActive(true);
 
         // 카드 destroy.
         foreach (var c in spawnedCards) if (c != null) Destroy(c.gameObject);
@@ -100,20 +123,32 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
     // ---- 내부 ----
 
-    /// <summary>Day 26 — catalog.jobs 풀에서 offerCount개 무작위 픽 (중복 X).</summary>
+    /// <summary>Day 26 — 풀에서 offerCount개 무작위 픽 (중복 X). W1: ZoneUnlockSystem 있으면 해금 zone 풀, 없으면 catalog 폴백.</summary>
     void PickOffer()
     {
         currentOffer.Clear();
-        if (catalog == null || catalog.jobs == null || catalog.jobs.Count == 0) return;
 
-        int n = offerCount > 0 ? Mathf.Min(offerCount, catalog.jobs.Count) : catalog.jobs.Count;
-        if (catalog.jobs.Count <= n)
+        List<OrderJob> source;
+        if (ZoneUnlockSystem.Instance != null)
         {
-            foreach (var j in catalog.jobs) if (j != null) currentOffer.Add(j);
+            source = ZoneUnlockSystem.Instance.GetAvailableJobs();
+        }
+        else if (catalog != null && catalog.jobs != null)
+        {
+            source = catalog.jobs;
+        }
+        else return;
+
+        if (source.Count == 0) return;
+
+        int n = offerCount > 0 ? Mathf.Min(offerCount, source.Count) : source.Count;
+        if (source.Count <= n)
+        {
+            foreach (var j in source) if (j != null) currentOffer.Add(j);
             return;
         }
 
-        var pool = new List<OrderJob>(catalog.jobs);
+        var pool = new List<OrderJob>(source);
         for (int i = 0; i < n; i++)
         {
             int idx = Random.Range(i, pool.Count);

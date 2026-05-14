@@ -20,12 +20,14 @@ public class CargoView : MonoBehaviour
     Image bg;
     RawImage view;
     TMP_Text label;
+    CanvasGroup group;
 
     void Awake()
     {
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+        if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         TryLoadRT();
         BuildIfNeeded();
     }
@@ -100,6 +102,12 @@ public class CargoView : MonoBehaviour
         {
             TryLoadRT();
             if (renderTexture != null) view.texture = renderTexture;
+        }
+        // 트렁크 CCTV는 런 중에만 표시 (주문/포장/정산 화면에선 숨김).
+        if (group != null)
+        {
+            var run = Services.Run as RunController;
+            group.alpha = (run != null && run.RunActive) ? 1f : 0f;
         }
     }
 }

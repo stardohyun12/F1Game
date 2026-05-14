@@ -93,9 +93,8 @@ public class RunController : MonoBehaviour, IRunController
     }
 
     /// <summary>
-    /// PackingScreen에서 wrap된 화물 GameObject들을 받아 cargo prefab에 핸드오프.
-    /// 데모 단순화: packedItems[0]의 WrapState만 cargo의 Box 하위로 이관.
-    /// 다물건(1~3) 지원은 후속. items[1+]은 폐기.
+    /// PackingScreen에서 wrap된 화물 GameObject들을 받아 트렁크 시뮬에 핸드오프.
+    /// 데모 단순화: packedItems[0]만 트렁크 Box 자리에 마운트. items[1+]은 폐기 (다물건 후속).
     /// </summary>
     public void BeginRun(OrderJob job, System.Collections.Generic.List<GameObject> packedItems)
     {
@@ -103,35 +102,54 @@ public class RunController : MonoBehaviour, IRunController
         BeginRun(job);
     }
 
+    /// <summary>
+    /// 포장한 cube를 트렁크 시뮬(CargoShakeSimulator)의 Box 자리에 마운트.
+    /// 버그 수정 (세션 24): 이전엔 cube를 차(Race)에 붙였는데, 트렁크 CCTV(SimCam)는
+    /// CargoSimRoot 다이오라마를 비추므로 — 포장한 물건 ≠ 트렁크에 보이는 물건이었음.
+    /// 이제 Shake.MountWrappedItem으로 SimCam이 비추는 Box 자리에 붙인다.
+    /// </summary>
     void TransferWrapStateToCargo(System.Collections.Generic.List<GameObject> packedItems)
     {
-        var cargoMono = Cargo as MonoBehaviour;
-        if (cargoMono == null) { Debug.LogWarning("[RunController] Cargo가 MonoBehaviour 아님 — wrap 핸드오프 스킵"); return; }
+        if (packedItems == null || packedItems.Count == 0 || packedItems[0] == null)
+            return; // 포장 안 함 (폴백 잡 등) — placeholder Box 그대로 둠.
 
-        var boxT = cargoMono.transform.Find("Box");
-        if (boxT == null) boxT = cargoMono.transform;
+        var cube = packedItems[0];
+        var srcWrap = cube.GetComponent<PitCrew.Packing.WrapState>();
 
-        var cargoWrap = boxT.GetComponent<PitCrew.Packing.WrapState>();
-        if (cargoWrap == null) cargoWrap = boxT.gameObject.AddComponent<PitCrew.Packing.WrapState>();
-        cargoWrap.ClearAll();
-        // 비용 누적 리셋 (이전 잡 잔재 제거)
-        for (int i = 0; i < cargoWrap.CostByChannel.Length; i++) cargoWrap.CostByChannel[i] = 0f;
-
-        if (packedItems != null && packedItems.Count > 0 && packedItems[0] != null)
+        // 지갑에서 wrap 비용 차감
+        if (srcWrap != null)
         {
-            var srcWrap = packedItems[0].GetComponent<PitCrew.Packing.WrapState>();
-            if (srcWrap != null && srcWrap.WrapRT != null && cargoWrap.WrapRT != null)
-            {
-                Graphics.Blit(srcWrap.WrapRT, cargoWrap.WrapRT);
-                for (int i = 0; i < srcWrap.CostByChannel.Length; i++)
-                    cargoWrap.CostByChannel[i] = srcWrap.CostByChannel[i];
-                Debug.Log($"[RunController] wrap 핸드오프: items[0] → cargo.Box (cost={cargoWrap.TotalCost:F0})");
-            }
+            int wrapCost = Mathf.RoundToInt(srcWrap.TotalCost);
+            if (wrapCost > 0 && UpgradeSystem.Instance != null) UpgradeSystem.Instance.Spend(wrapCost);
         }
 
-        // 모든 packed items 폐기 (인계 끝)
-        if (packedItems != null)
-            foreach (var go in packedItems) if (go != null) UnityEngine.Object.Destroy(go);
+        // 페인팅 차단 (출발 후 추가 wrap 불가)
+        var painter = cube.GetComponent<PitCrew.Packing.WrapPainter>();
+        if (painter != null) painter.enabled = false;
+
+        // 포장 큐브의 Collider 제거 — paint raycast용 MeshCollider, 운전 중엔 불필요.
+        // DestroyImmediate로 즉시 제거 (Destroy는 프레임 끝 처리라 부모 바뀌는 틈에 물리 경고 위험).
+        foreach (var col in cube.GetComponentsInChildren<Collider>(true))
+            UnityEngine.Object.DestroyImmediate(col);
+
+        cube.name = "WrappedItem";
+
+        // 트렁크 시뮬의 Box 자리에 마운트 — SimCam(트렁크 CCTV)이 이걸 비춤.
+        if (Shake != null)
+        {
+            Shake.MountWrappedItem(cube);
+        }
+        else
+        {
+            Debug.LogWarning("[RunController] Shake 미등록 — 포장 큐브 둘 데 없어 폐기");
+            UnityEngine.Object.Destroy(cube);
+        }
+
+        // items[1+] 폐기 (다물건 미지원)
+        for (int i = 1; i < packedItems.Count; i++)
+            if (packedItems[i] != null) UnityEngine.Object.Destroy(packedItems[i]);
+
+        Debug.Log($"[RunController] 포장 큐브 → 트렁크 시뮬 마운트 (cost={(srcWrap != null ? srcWrap.TotalCost : 0):F0})");
     }
 
     void InitRunState(OrderJob job)

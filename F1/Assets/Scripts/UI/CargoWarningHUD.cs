@@ -48,6 +48,12 @@ public class CargoWarningHUD : MonoBehaviour
     Image bg;
     TMP_Text label;
 
+    // Phase 6 perf(B4/R3): 매 프레임 new Color 회피 + 0-divide 가드 매직넘버 통일.
+    static readonly Color WarnYellow = new Color(1f, 0.85f, 0.20f, 1f);
+    static readonly Color CritRed    = new Color(1f, 0.25f, 0.25f, 1f);
+    static readonly Color WarnBgBase = new Color(0.18f, 0.14f, 0.05f, 0.85f);
+    const float SafeEpsilon = 0.0001f;
+
     enum Source { None, BrakeAccel, Corner, Spin, Slope }
 
     void Awake()
@@ -114,10 +120,10 @@ public class CargoWarningHUD : MonoBehaviour
         }
 
         // 4 소스 중 가장 위험도 높은 것 선택.
-        float longRatio = cargo.CurrentLongG / Mathf.Max(0.0001f, fallbackLongWarnG);
-        float latRatio = cargo.CurrentLatG / Mathf.Max(0.0001f, fallbackLatWarnG);
-        float spinRatio = cargo.CurrentSpinDegPerSec / Mathf.Max(0.0001f, fallbackSpinWarnDegPerSec);
-        float tiltRatio = cargo.CurrentTiltDeg / Mathf.Max(0.0001f, fallbackTiltWarnDeg);
+        float longRatio = cargo.CurrentLongG / Mathf.Max(SafeEpsilon, fallbackLongWarnG);
+        float latRatio = cargo.CurrentLatG / Mathf.Max(SafeEpsilon, fallbackLatWarnG);
+        float spinRatio = cargo.CurrentSpinDegPerSec / Mathf.Max(SafeEpsilon, fallbackSpinWarnDegPerSec);
+        float tiltRatio = cargo.CurrentTiltDeg / Mathf.Max(SafeEpsilon, fallbackTiltWarnDeg);
 
         Source src = Source.None;
         float maxRatio = 0f;
@@ -140,22 +146,20 @@ public class CargoWarningHUD : MonoBehaviour
         };
         label.text = txt;
 
-        // 색상: warn(노랑) → crit(빨강 깜박)
-        Color warnYellow = new Color(1f, 0.85f, 0.20f, 1f);
-        Color critRed = new Color(1f, 0.25f, 0.25f, 1f);
+        // 색상: warn(노랑) → crit(빨강 깜박). 매 프레임 new Color 회피.
         Color labelColor;
         Color bgColor;
         if (maxRatio >= critThreshold)
         {
             float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * critBlinkHz * Mathf.PI * 2f);
             labelColor = Color.white;
-            bgColor = Color.Lerp(critRed * 0.6f, critRed, t);
+            bgColor = Color.Lerp(CritRed * 0.6f, CritRed, t);
         }
         else
         {
             float warnT = Mathf.InverseLerp(showThreshold, critThreshold, maxRatio);
-            labelColor = Color.Lerp(Color.white, Color.white, warnT);
-            bgColor = Color.Lerp(new Color(0.18f, 0.14f, 0.05f, 0.85f), warnYellow * 0.7f, warnT);
+            labelColor = Color.white;
+            bgColor = Color.Lerp(WarnBgBase, WarnYellow * 0.7f, warnT);
             bgColor.a = 0.85f;
         }
         if (label != null) label.color = labelColor;

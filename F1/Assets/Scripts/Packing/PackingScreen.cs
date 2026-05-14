@@ -18,6 +18,8 @@ namespace PitCrew.Packing
         List<GameObject> spawnedItems = new();
         int activeItemIndex;
 
+        // 미니뷰 폐기 (도현 요청) — 필드 제거
+
         // Input handler (Task 10)
         PackingScreenInput input;
 
@@ -29,10 +31,19 @@ namespace PitCrew.Packing
         Button goButton;
         TMP_Text widthLabel;
         WrapMaterialDef currentMaterial;
+        // 다물건 nav — itemCount>1일 때만 표시 (현 데모는 다 1)
+        Button prevBtn, nextBtn;
 
         // Show/Hide 시 커서 상태 복원용
         CursorLockMode previousCursorLock;
         bool previousCursorVisible;
+
+        // 포장 중 잠시 끄는 트렁크 시뮬 카메라
+        GameObject trunkCamRig;
+        bool trunkCamWasActive;
+        // 트렁크 CCTV HUD (RawImage) — rig 꺼도 마지막 프레임이 남으므로 같이 숨김
+        GameObject cargoViewHUD;
+        bool cargoViewWasActive;
 
         // ── 테마 폴백 색상 ──────────────────────────────────────────────
         static readonly Color kBg     = new Color(0.08f, 0.08f, 0.10f, 0.95f);
@@ -61,12 +72,37 @@ namespace PitCrew.Packing
             for (int i = 0; i < n; i++) SpawnItem(i);
             ActivateItem(0);
 
+            // 다물건 nav 토글 — itemCount==1이면 ◀▶ + "1/1" 거짓말 제거
+            bool multi = n > 1;
+            if (prevBtn != null) prevBtn.gameObject.SetActive(multi);
+            if (nextBtn != null) nextBtn.gameObject.SetActive(multi);
+            if (titleText != null) titleText.text = multi ? $"물건 1/{n}" : "포장";
+
             // 첫 재료 자동 선택 (안 그러면 페인트 안 됨)
             var firstMat = GetMaterials();
             if (firstMat != null && firstMat.Length > 0) SelectMaterial(firstMat[0]);
 
             // 포장 카메라 켜기 (depth=5라 메인 카메라 위에 그려짐)
             if (packingCamera != null) packingCamera.gameObject.SetActive(true);
+
+            // 트렁크 시뮬 캠 잠시 끔 — 포장 중엔 차/박스 안 보임
+            if (trunkCamRig == null) trunkCamRig = GameObject.Find("CargoSimCamRig");
+            if (trunkCamRig != null)
+            {
+                trunkCamWasActive = trunkCamRig.activeSelf;
+                trunkCamRig.SetActive(false);
+            }
+            // CCTV HUD RawImage도 같이 숨김 — 안 그러면 마지막 프레임이 남음
+            if (cargoViewHUD == null)
+            {
+                var cv = Object.FindFirstObjectByType<CargoView>(FindObjectsInactive.Include);
+                if (cv != null) cargoViewHUD = cv.gameObject;
+            }
+            if (cargoViewHUD != null)
+            {
+                cargoViewWasActive = cargoViewHUD.activeSelf;
+                cargoViewHUD.SetActive(false);
+            }
 
             // 커서 해제
             previousCursorLock = Cursor.lockState;
@@ -84,8 +120,22 @@ namespace PitCrew.Packing
 
         public void Hide()
         {
-            if (panelRoot != null) panelRoot.SetActive(false);
+            // panelRoot를 Destroy해서 잔재 보장 차단 (도현 보고: 운전 중 포장 UI 잔재).
+            // 다음 Show에서 BuildUIIfNeeded가 다시 만듦.
+            if (panelRoot != null)
+            {
+                Destroy(panelRoot);
+                panelRoot = null;
+                // UI 캐시 참조 초기화 — 죽은 객체 참조 방지
+                titleText = totalCostText = coverageText = widthLabel = null;
+                coverageBarFill = null;
+                for (int i = 0; i < costPerMaterialText.Length; i++) costPerMaterialText[i] = null;
+                for (int i = 0; i < materialCardImages.Length; i++) materialCardImages[i] = null;
+                goButton = prevBtn = nextBtn = null;
+            }
             if (packingCamera != null) packingCamera.gameObject.SetActive(false);
+            if (trunkCamRig != null && trunkCamWasActive) trunkCamRig.SetActive(true);
+            if (cargoViewHUD != null && cargoViewWasActive) cargoViewHUD.SetActive(true);
             Cursor.lockState = previousCursorLock;
             Cursor.visible = previousCursorVisible;
             ClearItems();
@@ -116,6 +166,8 @@ namespace PitCrew.Packing
                 cargoSpawnPoint = spawnGO.transform;
             }
 
+            // EnsurePreviewCamera 폐기 — 다른 각도 미니뷰 제거 (도현 요청)
+
             // 작업대 조명 (Y=200 공간이 어둡지 않게)
             var lightGO = new GameObject("PackingKeyLight");
             lightGO.transform.position = new Vector3(2, 202, -2);
@@ -127,6 +179,8 @@ namespace PitCrew.Packing
             // 카메라의 자식으로 두면 camGO.SetActive(true) 시 같이 켜짐
             lightGO.transform.SetParent(camGO.transform, true);
         }
+
+        // EnsurePreviewCamera/BuildPreviewPanel 폐기 (도현 요청 — 미니뷰 불필요)
 
         // =========================================================
         //  BuildUI
@@ -141,7 +195,9 @@ namespace PitCrew.Packing
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             var scaler = canvasGO.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920, 1080);
+            // 1280x720 = 1920x1080의 ≈1.5x 크기. matchHeight=1 (높이 우선) — 와이드 모니터에서도 일관.
+            scaler.referenceResolution = new Vector2(1280, 720);
+            scaler.matchWidthOrHeight = 1f;
             panelRoot = canvasGO;
 
             EnsureEventSystem();
@@ -161,6 +217,7 @@ namespace PitCrew.Packing
             BuildTopBar(canvas);
             BuildLeftPanel(canvas);
             BuildRightPanel(canvas);
+            // 미니뷰 폐기 (도현 요청, 다른 각도 필요 없음)
         }
 
         // ── Top Bar ─────────────────────────────────────────────────────
@@ -173,20 +230,20 @@ namespace PitCrew.Packing
                 new Vector2(0, -0),
                 new Vector2(0, 80));
 
-            // ◀ 이전 버튼
-            var prevBtn = MakeButton(panel.transform, "BtnPrev", "◀",
+            // ◀ 이전 버튼 (itemCount>1일 때만 표시)
+            prevBtn = MakeButton(panel.transform, "BtnPrev", "◀",
                 new Vector2(0, 0.5f), new Vector2(0, 0.5f),
                 new Vector2(60, 0), new Vector2(80, 60));
             prevBtn.onClick.AddListener(OnPrevItem);
 
-            // 물건 N/M 타이틀
-            titleText = MakeLabel(panel.transform, "TitleLabel", "물건 1/1",
+            // 물건 N/M 타이틀 — itemCount==1이면 "포장"으로 갱신됨 (Show)
+            titleText = MakeLabel(panel.transform, "TitleLabel", "포장",
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(400, 60), 28, FontStyles.Bold,
                 TextAlignmentOptions.Center);
 
-            // ▶ 다음 버튼
-            var nextBtn = MakeButton(panel.transform, "BtnNext", "▶",
+            // ▶ 다음 버튼 (itemCount>1일 때만 표시)
+            nextBtn = MakeButton(panel.transform, "BtnNext", "▶",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
                 new Vector2(-60, 0), new Vector2(80, 60));
             nextBtn.onClick.AddListener(OnNextItem);
@@ -289,75 +346,74 @@ namespace PitCrew.Packing
         // ── Right Panel ──────────────────────────────────────────────────
         void BuildRightPanel(Transform canvas)
         {
-            // 패널 크기 키움 (550) + 안쪽 패딩 충분히
+            // 미니뷰가 우상단 (-100 ~ -420) 차지 → cost 패널은 화면 우측 하단 정렬.
             var panel = MakePanel(canvas, "RightPanel",
-                new Vector2(1, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(1, 0.5f),
-                new Vector2(0, 0),
-                new Vector2(300, 560));
+                new Vector2(1, 0), new Vector2(1, 0),
+                new Vector2(1, 0),
+                new Vector2(-20, 40),
+                new Vector2(360, 580));
 
             var mats = GetMaterials();
             var t = panel.transform;
 
-            // 상단부터 아래로 한 줄씩 — 간격 충분히
             // 헤더
             MakeLabel(t, "CostHeader", "포장 비용",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0, -30), new Vector2(260, 40), 22, FontStyles.Bold,
+                new Vector2(0, -40), new Vector2(320, 50), 30, FontStyles.Bold,
                 TextAlignmentOptions.Center);
 
-            // 3 재료 비용 행 (y = -80, -130, -180)
+            // 3 재료 비용 행 (y = -110, -170, -230)
             for (int i = 0; i < 3; i++)
             {
-                float y = -(80f + i * 50f);
+                float y = -(110f + i * 60f);
                 string matName = i < mats.Length ? mats[i].displayName : kDefaultNames[i];
 
                 MakeLabel(t, $"MatCostLabel_{i}", matName,
                     new Vector2(0, 1f), new Vector2(0, 1f),
-                    new Vector2(20, y), new Vector2(130, 40),
-                    18, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+                    new Vector2(24, y), new Vector2(180, 50),
+                    24, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
 
                 costPerMaterialText[i] = MakeLabel(t, $"MatCostVal_{i}", "₩0",
                     new Vector2(1, 1f), new Vector2(1, 1f),
-                    new Vector2(-20, y), new Vector2(130, 40),
-                    18, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
+                    new Vector2(-24, y), new Vector2(180, 50),
+                    26, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
             }
 
-            // 구분선 (y = -240)
+            // 구분선
             MakePanel(t, "Divider",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0.5f, 1f),
-                new Vector2(0, -240), new Vector2(240, 2)).color = kMuted;
+                new Vector2(0, -310), new Vector2(310, 2)).color = kMuted;
 
-            // 합계 (y = -290)
+            // 합계
             MakeLabel(t, "TotalLabel", "합계",
                 new Vector2(0, 1f), new Vector2(0, 1f),
-                new Vector2(20, -290), new Vector2(100, 44), 22, FontStyles.Bold,
+                new Vector2(24, -370), new Vector2(150, 56), 30, FontStyles.Bold,
                 TextAlignmentOptions.MidlineLeft);
 
             totalCostText = MakeLabel(t, "TotalVal", "₩0",
                 new Vector2(1, 1f), new Vector2(1, 1f),
-                new Vector2(-20, -290), new Vector2(160, 44), 24, FontStyles.Bold,
+                new Vector2(-24, -370), new Vector2(200, 56), 38, FontStyles.Bold,
                 TextAlignmentOptions.MidlineRight);
             if (UITheme.Active != null) totalCostText.color = UITheme.Active.colorAccent;
             else totalCostText.color = kAccent;
 
-            // 커버리지 헤더 (y = -370)
+            // 커버리지 헤더
             MakeLabel(t, "CovLabel", "평균 커버",
                 new Vector2(0, 1f), new Vector2(0, 1f),
-                new Vector2(20, -370), new Vector2(140, 36), 18, FontStyles.Normal,
+                new Vector2(24, -450), new Vector2(180, 44), 24, FontStyles.Normal,
                 TextAlignmentOptions.MidlineLeft);
 
             coverageText = MakeLabel(t, "CovPercent", "0%",
                 new Vector2(1, 1f), new Vector2(1, 1f),
-                new Vector2(-20, -370), new Vector2(100, 36), 20, FontStyles.Bold,
+                new Vector2(-24, -450), new Vector2(140, 44), 28, FontStyles.Bold,
                 TextAlignmentOptions.MidlineRight);
 
-            // 커버리지 바 (y = -420, 두께 24)
+            // 커버리지 바
             var barTrack = MakePanel(t, "CovBarTrack",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
                 new Vector2(0.5f, 1f),
-                new Vector2(0, -420), new Vector2(260, 24));
+                new Vector2(0, -510), new Vector2(310, 32));
             barTrack.color = new Color(0.18f, 0.18f, 0.20f, 1f);
 
             // 커버리지 바 필
@@ -524,7 +580,7 @@ namespace PitCrew.Packing
         {
             if (titleText == null || currentJob == null) return;
             int total = Mathf.Clamp(currentJob.itemCount, 1, 3);
-            titleText.text = $"물건 {activeItemIndex + 1}/{total}";
+            titleText.text = total > 1 ? $"물건 {activeItemIndex + 1}/{total}" : "포장";
         }
 
         void OnMaterialCardClick(int idx, WrapMaterialDef[] mats)
@@ -616,7 +672,7 @@ namespace PitCrew.Packing
         {
             if (state == null) return;
             float cov = state.ComputeCoverage();
-            if (coverageText != null) coverageText.text = $"평균 커버  {Mathf.RoundToInt(cov * 100)}%";
+            if (coverageText != null) coverageText.text = $"{Mathf.RoundToInt(cov * 100)}%";
             if (coverageBarFill != null) coverageBarFill.fillAmount = cov;
         }
 
@@ -634,10 +690,9 @@ namespace PitCrew.Packing
             for (int i = 0; i < 3; i++)
             {
                 if (costPerMaterialText[i] == null) continue;
-                var matName = i < mats.Length ? mats[i].displayName : (i < kDefaultNames.Length ? kDefaultNames[i] : $"M{i}");
-                costPerMaterialText[i].text = $"{matName}  ₩{Mathf.RoundToInt(w.CostByChannel[i])}";
+                costPerMaterialText[i].text = $"₩{Mathf.RoundToInt(w.CostByChannel[i])}";
             }
-            if (totalCostText != null) totalCostText.text = $"합계  ₩{Mathf.RoundToInt(w.TotalCost)}";
+            if (totalCostText != null) totalCostText.text = $"₩{Mathf.RoundToInt(w.TotalCost)}";
         }
 
         // =========================================================

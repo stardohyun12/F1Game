@@ -20,6 +20,7 @@ public class CountdownHUD : MonoBehaviour
     Image bg;
     TMP_Text timeText;
     CanvasGroup group;
+    int lastWholeSecond = int.MinValue; // Phase 6 perf(B2): 초가 바뀔 때만 string alloc.
 
     void Awake()
     {
@@ -91,8 +92,11 @@ public class CountdownHUD : MonoBehaviour
             if (timeText != null) timeText.color = theme.colorText;
         }
 
-        int m = Mathf.FloorToInt(remaining / 60f);
-        int s = Mathf.FloorToInt(remaining % 60f);
-        timeText.text = $"{m}:{s:D2}";
+        int totalSec = Mathf.Max(0, Mathf.FloorToInt(remaining));
+        if (totalSec != lastWholeSecond)
+        {
+            lastWholeSecond = totalSec;
+            timeText.text = $"{totalSec / 60}:{totalSec % 60:D2}";
+        }
     }
 }

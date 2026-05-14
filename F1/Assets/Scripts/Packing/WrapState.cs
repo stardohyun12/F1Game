@@ -72,19 +72,25 @@ namespace PitCrew.Packing
 
     WrapMaterialDef[] LoadMats() => cachedMats ??= Resources.LoadAll<WrapMaterialDef>("WrapMaterials");
 
-    /// <summary>충격 점 world position 받아 흡수율 0~1 반환.</summary>
-    public float QueryAbsorption(Vector3 worldHitPoint, Vector3 incomingDir)
+    /// <summary>
+    /// 충격이 박스의 어떤 면에 떨어졌는지 — outwardImpactDir는 박스 중심에서 충격 벽 쪽 방향.
+    /// 그 벽 바깥에서 안쪽으로 raycast해 충격 면의 UV를 얻음. 박스 크기 무관.
+    /// </summary>
+    public float QueryAbsorption(Vector3 worldHitPoint, Vector3 outwardImpactDir)
     {
         var col = targetRenderer != null ? targetRenderer.GetComponent<MeshCollider>() : null;
         if (col == null) col = GetComponentInChildren<MeshCollider>();
         if (col == null) return 0f;
 
-        // 충격 방향의 반대 방향에서 raycast해 표면 UV 추출
-        var origin = worldHitPoint - incomingDir.normalized * 0.5f;
-        if (!col.Raycast(new Ray(origin, incomingDir.normalized), out var hit, 1f)) return 0f;
+        Vector3 dir = outwardImpactDir.normalized;
+        var b = targetRenderer != null ? targetRenderer.bounds : col.bounds;
+        float r = Mathf.Max(0.5f, b.extents.magnitude * 1.5f);
 
-        var uv = hit.textureCoord;
-        return SampleAbsorptionAtUV(uv);
+        // 충격 벽 바깥에서 시작 → 박스 안쪽 방향으로 ray → 첫 hit = 충격 면.
+        var origin = worldHitPoint + dir * r;
+        if (!col.Raycast(new Ray(origin, -dir), out var hit, r * 2f)) return 0f;
+
+        return SampleAbsorptionAtUV(hit.textureCoord);
     }
 
     float SampleAbsorptionAtUV(Vector2 uv)

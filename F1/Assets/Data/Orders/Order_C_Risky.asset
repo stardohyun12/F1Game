@@ -19,3 +19,5 @@ MonoBehaviour:
   baseReward: 1800
   timeBonus: 500
   weightTier: 2
+  cargoType: 0
+  defaultPacking: 1

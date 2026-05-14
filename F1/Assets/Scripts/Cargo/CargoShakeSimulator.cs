@@ -71,6 +71,8 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     Quaternion restRot;
     Vector3 simVelLocal;
     bool captured;
+    // 포장한 화물 큐브 — boxTransform(placeholder Box) 자식으로 마운트됨. null이면 placeholder 사용.
+    Transform mountedItem;
 
     void Awake()
     {
@@ -218,9 +220,10 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         float raw = (speed - boxWallSpeedThreshold) * boxWallDamageMul;
         if (raw <= 0f) return;
 
-        // 충격 흡수율 적용 — WrapState가 있으면 그 부위의 wrap 상태로 계산
+        // 충격 흡수율 적용 — WrapState가 있으면 그 부위의 wrap 상태로 계산.
+        // 포장 큐브는 boxTransform 자식으로 마운트됨 (MountWrappedItem) → 거기서 찾음.
         float absorption = 0f;
-        var wrap = cargo.GetComponentInChildren<PitCrew.Packing.WrapState>();
+        var wrap = boxTransform != null ? boxTransform.GetComponentInChildren<PitCrew.Packing.WrapState>() : null;
         if (wrap != null && boxTransform != null)
         {
             Vector3 worldHit = boxTransform.position;
@@ -229,6 +232,8 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         }
 
         float dmg = raw * (1f - absorption);
+        if (absorption > 0.01f)
+            Debug.Log($"[CargoShake] 충격 흡수 {absorption * 100f:F0}% (raw {raw:F1} → {dmg:F1})");
         if (dmg > 0.01f) cargo.ApplyExternalDamage(dmg, flashSpeedKmh: speed * 3.6f);
     }
 
@@ -244,13 +249,41 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     /// <summary>
     /// 박스 색상 변경 (D-043, 도현 세션 15).
     /// RunController.BeginRun에서 화물 타입에 따라 자동 호출.
+    /// 포장 큐브가 마운트돼 있으면 그 base material을, 아니면 placeholder Box를 색칠.
     /// </summary>
     public void SetBoxColor(Color c)
     {
-        if (boxTransform == null) return;
-        var mr = boxTransform.GetComponent<MeshRenderer>();
+        var target = mountedItem != null ? mountedItem : boxTransform;
+        if (target == null) return;
+        var mr = target.GetComponent<MeshRenderer>();
         if (mr == null) return;
         // material instance — sharedMaterial 변경하면 다른 박스에도 영향. material로 instance 생성.
         mr.material.color = c;
+    }
+
+    /// <summary>
+    /// 포장한 화물 큐브를 트렁크 시뮬의 Box 자리에 마운트.
+    /// placeholder Box의 자식으로 붙어서 — 시뮬레이터가 Box를 흔들면 큐브도 같이 흔들리고,
+    /// SimCam(트렁크 CCTV)이 placeholder 대신 이 큐브를 비춘다.
+    /// 버그 수정 (세션 24): 이전엔 RunController가 큐브를 차(Race)에 붙여서
+    /// 트렁크 캠엔 placeholder Box만 보였음 (포장한 물건 ≠ 트렁크 물건).
+    /// </summary>
+    public void MountWrappedItem(GameObject cube)
+    {
+        if (boxTransform == null) boxTransform = transform.Find("Box");
+        if (boxTransform == null || cube == null) return;
+
+        // 이전 런의 마운트 제거 (멱등)
+        if (mountedItem != null) Destroy(mountedItem.gameObject);
+
+        cube.transform.SetParent(boxTransform, false);
+        cube.transform.localPosition = Vector3.zero;
+        cube.transform.localRotation = Quaternion.identity;
+        cube.transform.localScale = Vector3.one; // boxTransform scale 상속 → placeholder Box 크기와 동일
+        mountedItem = cube.transform;
+
+        // placeholder Box mesh 숨김 — 포장한 큐브가 그 자리를 대신 (컴포넌트·시뮬은 그대로).
+        var ph = boxTransform.GetComponent<MeshRenderer>();
+        if (ph != null) ph.enabled = false;
     }
 }

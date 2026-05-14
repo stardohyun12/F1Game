@@ -9996,19 +9996,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.55
+      value: 0.16929999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalRotation.x
@@ -10016,7 +10016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       propertyPath: m_LocalRotation.z
@@ -10065,9 +10065,6 @@ PrefabInstance:
       addedObject: {fileID: 5094000627798262811}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 816772868152005437}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6246249705684340049}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       insertIndex: -1
@@ -10087,6 +10084,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8269071862197276808}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7228287588265654062}
   m_SourcePrefab: {fileID: 100100000, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}
 --- !u!1 &8380733253417130255 stripped
 GameObject:
@@ -10119,7 +10119,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &333221348542454333
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10127,7 +10127,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8380733253417130255}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: af714502d0670f74db16a371dd2761d8, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -10139,8 +10139,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.3, y: 0.73, z: 2.56}
-  m_Center: {x: 0, y: 0.366, z: 0}
+  m_Size: {x: 1.3, y: 0.60245156, z: 2.56}
+  m_Center: {x: -3.8805202e-16, y: 0.42977548, z: -2.7674121e-17}
 --- !u!114 &5094000627798262811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10213,7 +10213,7 @@ MonoBehaviour:
   steerLag: 0.12
   throttleLag: 0.08
   sideGripDamping: 9
-  centerOfMassOffset: {x: 0, y: -0.3, z: 0}
+  centerOfMassOffset: {x: 0, y: 0.12845, z: 0}
   driftGripMultiplier: 0.3
   driftYawBoost: 0.8
   driftBrakeThrottleScale: 0.9
@@ -10226,36 +10226,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &816772868152005437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8380733253417130255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &6246249705684340049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10444,12 +10414,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d9653634b1ac641beda7be01be596f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CargoBox
+  cargoType: 0
+  applyPresetOnAwake: 1
+  packing: 1
   integrityHP: 100
   maxHP: 100
-  longWarnG: 0.6
-  longDamageMul: 10
-  latWarnG: 0.7
-  latDamageMul: 8
+  longWarnG: 1.5
+  longDamageMul: 5
+  latWarnG: 1.8
+  latDamageMul: 4
+  spinWarnDegPerSec: 100
+  spinDamageMul: 0.3
+  tiltWarnDeg: 10
+  tiltDamageMul: 0.5
   impactWarnKmh: 10
   impactDamageMul: 0.8
   cumulativeMul: 0.5
@@ -10473,6 +10450,36 @@ MonoBehaviour:
   rollPerLatG: 5
   maxRollDeg: 6
   lerpSpeed: 6
+--- !u!114 &7228287588265654062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380733253417130255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &9152872249828246453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a42b610839ba2c47aa6de434f97ab82, type: 3}

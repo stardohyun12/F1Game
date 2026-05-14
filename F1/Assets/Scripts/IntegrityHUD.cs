@@ -21,6 +21,13 @@ public class IntegrityHUD : BarHUDBase
 
     protected override bool HasDependency() => cargo != null;
 
+    // 화물 무결성 HUD는 런 중에만 표시 (주문/포장/정산 화면에선 숨김).
+    protected override bool ShouldShow()
+    {
+        var run = Services.Run as RunController;
+        return run != null && run.RunActive;
+    }
+
     protected override void OnPostAwake() => HookCargoEvents();
 
     void HookCargoEvents()

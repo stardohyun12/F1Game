@@ -17,6 +17,7 @@ public class DeliveryHUD : MonoBehaviour
     RectTransform rt;
     RectTransform arrowRt;
     Image arrowImg;
+    Canvas cachedCanvas;  // Phase 6 perf(B1): Update의 GetComponentInParent 매 프레임 호출 → Awake 1회 캐시.
 
     void Awake()
     {
@@ -25,6 +26,7 @@ public class DeliveryHUD : MonoBehaviour
         if (cam == null) cam = Camera.main;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
+        cachedCanvas = GetComponentInParent<Canvas>();
         BuildIfNeeded();
     }
 
@@ -111,7 +113,8 @@ public class DeliveryHUD : MonoBehaviour
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
         }
 
-        var canvas = GetComponentInParent<Canvas>();
+        var canvas = cachedCanvas;
+        if (canvas == null) return;
         Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, finalScreenPos, canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, out localPos);
         arrowRt.anchoredPosition = localPos;

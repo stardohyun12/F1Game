@@ -42,24 +42,13 @@ public class TireSystem : MonoBehaviour, ITireSystem
     {
         get
         {
-            float baseMul = currentTire switch
-            {
-                TireType.Soft => 1.4f,
-                TireType.Hard => 0.7f,
-                _ => 1.0f,
-            };
             // 마모도 1에 도달하면 그립 50% (Phase 3에서 점진 감소 추가).
-            return baseMul * Mathf.Lerp(1f, 0.5f, wear);
+            return TireTypePresets.Get(currentTire).grip * Mathf.Lerp(1f, 0.5f, wear);
         }
     }
 
     /// <summary>최대 속도 배율. 타이어가 가속도/최대속도에 미치는 영향.</summary>
-    public float SpeedMultiplier => currentTire switch
-    {
-        TireType.Soft => 1.05f,    // 살짝 빠름
-        TireType.Hard => 0.95f,    // 살짝 느림
-        _ => 1.0f,
-    };
+    public float SpeedMultiplier => TireTypePresets.Get(currentTire).speed;
 
     public event Action<TireType> OnTireChanged;
     public event Action<float> OnWearChanged;
@@ -79,29 +68,26 @@ public class TireSystem : MonoBehaviour, ITireSystem
     void Update()
     {
         // 마모 누적 (분당 비율). Phase 1 = 표시만, 그립에 영향 줌.
-        float rate = currentTire switch
-        {
-            TireType.Soft => wearRateSoft,
-            TireType.Hard => wearRateHard,
-            _ => wearRateMedium,
-        };
+        float rate = CurrentWearRate();
         float prev = wear;
         wear = Mathf.Clamp01(wear + rate * Time.deltaTime / 60f);
         if (Mathf.Abs(wear - prev) > 0.001f)
             OnWearChanged?.Invoke(wear);
     }
 
-    public static string DisplayName(TireType t) => t switch
+    // wearRate는 인스펙터 튜닝 SerializeField라 TireTypePresets에 안 넣음.
+    // switch는 한 곳으로 모아 5중 중복을 없앤다.
+    float CurrentWearRate()
     {
-        TireType.Soft => "Soft",
-        TireType.Hard => "Hard",
-        _ => "Medium",
-    };
+        switch (currentTire)
+        {
+            case TireType.Soft: return wearRateSoft;
+            case TireType.Hard: return wearRateHard;
+            default:            return wearRateMedium;
+        }
+    }
 
-    public static string Description(TireType t) => t switch
-    {
-        TireType.Soft => "그립↑↑ · 빠른 마모 · 고속 코너",
-        TireType.Hard => "그립↓ · 느린 마모 · 장거리",
-        _ => "균형 · 표준",
-    };
+    // Phase 5: 표시 데이터는 TireTypePresets로 이동. 호출부 호환 위해 얇은 위임만 남김.
+    public static string DisplayName(TireType t) => TireTypePresets.DisplayName(t);
+    public static string Description(TireType t) => TireTypePresets.Description(t);
 }

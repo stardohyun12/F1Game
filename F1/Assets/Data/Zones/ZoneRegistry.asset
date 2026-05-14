@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e35267dfe7e9c468ac5ecf665bfd40, type: 3}
+  m_Name: ZoneRegistry
+  m_EditorClassIdentifier: PitCrew::ZoneRegistry
+  allZones:
+  - {fileID: 11400000, guid: 48feaa9637841e74da0c71da3c1e8113, type: 2}
+  - {fileID: 11400000, guid: 0b28ba7c07fb2e0418be2a22f88f4379, type: 2}
+  - {fileID: 11400000, guid: cb0c079d8c049a249b77a0c634bb0f1f, type: 2}

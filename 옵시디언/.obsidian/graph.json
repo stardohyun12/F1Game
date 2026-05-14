@@ -1,0 +1,79 @@
+{
+  "collapse-filter": false,
+  "search": "-path:GDD/research -path:notes/session-log -path:_archive -path:.obsidian -path:.claude -path:dev-plan",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:\"🗺 Maps\"",
+      "color": {
+        "a": 1,
+        "rgb": 15158588
+      }
+    },
+    {
+      "query": "path:code/",
+      "color": {
+        "a": 1,
+        "rgb": 3447003
+      }
+    },
+    {
+      "query": "path:GDD/systems",
+      "color": {
+        "a": 1,
+        "rgb": 2600544
+      }
+    },
+    {
+      "query": "path:GDD/architecture",
+      "color": {
+        "a": 1,
+        "rgb": 1483397
+      }
+    },
+    {
+      "query": "path:notes/decisions-log",
+      "color": {
+        "a": 1,
+        "rgb": 15105314
+      }
+    },
+    {
+      "query": "path:GDD/research",
+      "color": {
+        "a": 1,
+        "rgb": 8359053
+      }
+    },
+    {
+      "query": "path:notes/",
+      "color": {
+        "a": 1,
+        "rgb": 15844367
+      }
+    },
+    {
+      "query": "tag:#archive",
+      "color": {
+        "a": 1,
+        "rgb": 3426398
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.518,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.7132754626224351,
+  "close": true
+}

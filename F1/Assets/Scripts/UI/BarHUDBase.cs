@@ -25,6 +25,7 @@ public abstract class BarHUDBase : MonoBehaviour
     protected Image bg, fillImg;
     protected RectTransform fillRt;
     protected TMP_Text label;
+    protected CanvasGroup group;
 
     // Template Method — 골격 (수정 금지). 변하는 부분만 자식이 hook으로 끼움.
     void Awake()
@@ -33,6 +34,7 @@ public abstract class BarHUDBase : MonoBehaviour
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+        if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
         OnPostAwake();
     }
@@ -44,6 +46,10 @@ public abstract class BarHUDBase : MonoBehaviour
             OnAcquireDependency();
             if (!HasDependency()) return;
         }
+        // 표시 조건 (자식이 override) — 런 중에만 보이는 HUD 등.
+        bool show = ShouldShow();
+        if (group != null) group.alpha = show ? 1f : 0f;
+        if (!show) return;
         var theme = UITheme.Active;
         if (theme != null)
         {
@@ -91,6 +97,9 @@ public abstract class BarHUDBase : MonoBehaviour
 
     /// <summary>Awake 마지막 hook (이벤트 구독 등). 기본 no-op.</summary>
     protected virtual void OnPostAwake() { }
+
+    /// <summary>HUD 표시 조건. false면 CanvasGroup alpha 0 + Update 본문 skip. 기본 항상 표시.</summary>
+    protected virtual bool ShouldShow() => true;
 
     /// <summary>Update에서 BG 색상 등 추가 효과. 기본 no-op.</summary>
     protected virtual void OnApplyEffects() { }

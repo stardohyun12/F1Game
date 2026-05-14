@@ -70,6 +70,7 @@ public class DeliveryManager : MonoBehaviour, IDeliveryManager
 
         p.SetCompleted();
         OnDeliveryCompleted?.Invoke(p);
+        AudioCueBus.Publish(AudioCueId.DeliveryCompleted);
         currentIndex++;
 
         int limit = activeCount > 0 ? activeCount : points.Count;
