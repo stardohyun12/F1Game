@@ -1,4 +1,7 @@
-# 세션 프로토콜
+# 세션 프로토콜 [project]
+
+> unity-cli 섹션은 Unity 프로젝트 공통 → universal 승격 후보.
+> 현재 경로(`C:/Users/...`)가 환경 특정이라 project 유지.
 
 ## 세션 시작 (자동 — SessionStart hook이 체크리스트 주입)
 
@@ -25,7 +28,7 @@
 
 자주 쓰는 패턴:
 - 상태: `unity-cli status`
-- 콘솔: `unity-cli console --errors` / `--warnings` / `--logs`
+- 콘솔: `unity-cli console --type error` / `--type warning` / `--type log` (콤마 조합 가능, default는 셋 다)
 - C# 즉시 실행: `unity-cli exec "return ...;"` (return으로 결과 받기)
 - 메뉴 트리거: `unity-cli menu "PitCrew/Fix/Diagnose Floating"`
 - **재컴파일 (블록 끝까지)**: `unity-cli editor refresh --compile` ← 이거 쓰면 sleep + 포트 변경 fail 안 남

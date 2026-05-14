@@ -106,4 +106,22 @@ harness-core/                    ← 별도 repo, F1 외 프로젝트와 공유
 
 ---
 
+## 10. 자동 로드 모듈 [project]
+
+Claude Code가 세션 시작 시 자동 로드하는 이 프로젝트의 룰·상태 모듈.
+
+@project_rules/scope.md
+@project_rules/asset.md
+@project_rules/session.md
+@project_rules/communication.md
+@project_rules/REJECTED_IDEAS.md
+@.claude/activeContext.md
+
+universal 룰 (별도 repo `harness-core` — 텍스트 참조, 자동 로드 아님):
+
+- `harness-core/rules/universal/ai-blindspots.md` — AI 약점 회피 10개
+- `harness-core/rules/universal/working-norms.md` — 의사결정·안전 규범
+
+---
+
 버전: v0.1 (2026-05-14)
