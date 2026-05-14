@@ -60,8 +60,10 @@ public interface IUpgradeSystem
 public interface ICargoShakeSimulator
 {
     void SetBoxColor(Color c);
-    /// <summary>포장한 화물 큐브를 트렁크 시뮬의 Box 자리에 마운트. SimCam(트렁크 CCTV)이 이걸 비춤.</summary>
+    /// <summary>포장한 화물 큐브 1개를 트렁크에 마운트 (additive — 여러 번 호출 = 여러 개). SimCam(트렁크 CCTV)이 비춤.</summary>
     void MountWrappedItem(UnityEngine.GameObject cube);
+    /// <summary>마운트된 화물 전부 제거 (런 시작 시 이전 잔재 청소).</summary>
+    void ClearMountedItems();
 }
 
 public interface IRunController

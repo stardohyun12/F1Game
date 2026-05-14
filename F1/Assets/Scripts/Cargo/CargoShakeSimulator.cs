@@ -1,50 +1,40 @@
 using UnityEngine;
 
 /// <summary>
-/// 트렁크 내 박스 물리 시뮬 — 패턴 C+ (도현 세션 15 — 사면 중력 추가).
+/// 트렁크 내 화물 물리 시뮬 — 채널 5 (다물건). 단일 박스 → N개 아이템.
 ///
-/// 핵심 모델: 박스는 트렁크 **바닥**에 놓여있음.
-/// 작용 힘 2종류:
-///   1. 관성력 (차 가속/제동/코너 시) — 기존
-///   2. **사면 중력** (차체 기울기 시) — D-044 신규
-///      차가 좌측 캠버 → 박스 우측 미끄러짐
-///      차가 다운힐 → 박스 전방 미끄러짐
-///      차가 정지 상태에서도 사면이면 박스 미끄러짐 (실제 차량 박스)
+/// 핵심 모델: N개(1~3) 화물 큐브가 트렁크 **바닥**에 놓여있고, 각자 슬라이드.
+/// 작용 힘 2종류 (모든 아이템 공통):
+///   1. 관성력 (차 가속/제동/코너 시)
+///   2. 사면 중력 (차체 기울기 시) — D-044
+/// 추가:
+///   - 아이템 간 충돌 (2D AABB 밀어내기) — 잘 배치하면 서로 안 부딪힘
+///   - 아이템별 벽 충돌 손상 — 각 아이템 자기 WrapState로 흡수 (각자 따로 포장)
+///   - 공유 CargoBox HP 풀 (흡수만 아이템별 차등)
 ///
 /// 동작:
-/// - 차 평지 정지 → 박스 가만히
-/// - 차 가속/제동/코너 → 관성력으로 미끄러짐
-/// - 차 사면 → 사면 중력으로 미끄러짐 (정지 상태에서도)
-/// - 차 사면 + 가속 → 두 힘 합산
-/// - 회전 X (마찰이 박스 회전 막음)
+/// - 차 평지 정지 → 아이템 가만히
+/// - 차 가속/제동/코너/사면 → 관성·사면 중력으로 미끄러짐
+/// - 미끄러진 아이템이 트렁크 벽 or 다른 아이템에 부딪힘 → 손상
 ///
-/// 파라미터:
-/// - staticFrictionG 0.25 (작은 G에도 미끄러짐 시작 — 사면 작아도 작동)
-/// - kineticFriction 1.0 (천천히 감속)
-/// - accelScale 1.0 (G가 박스 잘 밀어냄)
-/// - maxOffset 0.5 (트렁크 ±0.5m)
+/// 초기 배치는 그리드 자동 (임시 — Plan 2에서 플레이어 드래그 배치로 대체).
 /// </summary>
 [DisallowMultipleComponent]
 public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
 {
     [SerializeField] CargoBox cargo;
-    [SerializeField] Transform boxTransform;
-
-    [Header("Rotation (도현 세션 15: 기본 OFF — 갈대 제거)")]
-    [Tooltip("박스 회전 적용 여부. false = 트렁크 박스 단단한 느낌. true = 미세 기울기.")]
-    [SerializeField] bool enableRotation = false;
-    [SerializeField] float degPerLongG = 1.5f;
-    [SerializeField] float degPerLatG = 1.5f;
-    [SerializeField] float maxRotDeg = 4f;
-    [SerializeField] float rotLerp = 6f;
 
     [Header("Trunk Visual Match (D-048 — yaw만 매칭)")]
-    [Tooltip("트렁크 yaw만 차량 매칭. pitch/roll 무시 → 트렁크 visual 항상 평면. " +
-             "도현 진단 (D-048): 트렁크는 평평한 곳, 차량 가속/사면에도 평면 유지. " +
-             "박스 시뮬은 차량 frame 그대로 작동 (사면 중력 + 관성).")]
+    [Tooltip("트렁크 yaw만 차량 매칭. pitch/roll 무시 → 트렁크 visual 항상 평면.")]
     [SerializeField] bool matchCarRotation = true;
     [Tooltip("CargoSimCamRig 자동 추적 (trunk yaw 따라가서 시점 일관 유지).")]
     [SerializeField] Transform simCamRig;
+
+    [Header("Trunk Bounds")]
+    [Tooltip("트렁크 내벽 기준 아이템 중심 이동 한계 (CargoSimRoot local, m). 벽 ±1.0.")]
+    [SerializeField] float trunkHalfExtent = 1.0f;
+    [Tooltip("마운트 시 아이템 균일 스케일 (m). 3개가 트렁크에 들어가는 크기.")]
+    [SerializeField] float itemScale = 0.5f;
 
     [Header("Position Physics (패턴 C+ — 자동차 안 화물 느낌)")]
     // D-046 (도현 세션 15): "시뮬레이션 느낌" 진단. 마찰 강화 + 반응 줄임.
@@ -52,238 +42,238 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     [SerializeField] float staticFrictionG = 0.12f;
     [Tooltip("운동 마찰 감쇠율 (per sec). 낮을수록 오래 미끄러짐.")]
     [SerializeField] float kineticFriction = 1.0f;
-    [Tooltip("G 1단위를 m/s²로 변환. 높을수록 박스가 강하게 밀려나감.")]
+    [Tooltip("G 1단위를 m/s²로 변환. 높을수록 아이템이 강하게 밀려나감.")]
     [SerializeField] float accelScale = 1.5f;
-    [Tooltip("트렁크 내 박스 이동 반경 (local x/z 각각, meters). 트렁크 공간.")]
-    [SerializeField] float maxOffset = 0.5f;
     [Tooltip("벽 충돌 시 반발 (0=멈춤, 0.5=절반 반발). 0.05 = 거의 멈춤.")]
     [SerializeField] float wallBounce = 0.05f;
     [Tooltip("velocity 이하이면 정지로 간주 (snap to 0).")]
     [SerializeField] float velocityDeadZone = 0.02f;
 
     [Header("Box Wall Impact → CargoBox Damage (세션 20)")]
-    [Tooltip("trunk 벽 박을 때 박스 속도(m/s)당 데미지. 박스 충돌이 진짜 손상 인과.")]
+    [Tooltip("trunk 벽 박을 때 아이템 속도(m/s)당 데미지. 충돌이 진짜 손상 인과.")]
     [SerializeField] float boxWallDamageMul = 8f;
     [Tooltip("이 속도(m/s) 이하 벽 충돌은 무시 (미세 진동 흡수).")]
     [SerializeField] float boxWallSpeedThreshold = 0.15f;
 
-    Vector3 restPos;
-    Quaternion restRot;
-    Vector3 simVelLocal;
-    bool captured;
-    // 포장한 화물 큐브 — boxTransform(placeholder Box) 자식으로 마운트됨. null이면 placeholder 사용.
-    Transform mountedItem;
+    // 트렁크에 마운트된 화물 1개의 slide 상태.
+    class TrunkItem
+    {
+        public Transform t;
+        public Vector3 velLocal;                       // CargoSimRoot local frame 속도
+        public PitCrew.Packing.WrapState wrap;         // 이 아이템의 포장 상태 (손상 흡수용). null 가능.
+        public float halfExtent;                       // XZ 충돌·clamp용 반경 (m)
+    }
+
+    readonly System.Collections.Generic.List<TrunkItem> items = new();
+
+    // 아이템이 트렁크 바닥에 놓이는 local Y (placeholder Box localPos.y와 동일).
+    const float kFloorY = 0.33f;
+
+    // 그리드 자동 배치 슬롯 X (Plan 2에서 플레이어 드래그로 대체).
+    static readonly float[] kSlotX = { -0.5f, 0f, 0.5f };
+
+    bool placeholderHidden;
 
     void Awake()
     {
         if (cargo == null) cargo = Services.Cargo as CargoBox;
-        if (boxTransform == null) boxTransform = transform.Find("Box");
-        CaptureRest();
     }
 
-    void CaptureRest()
+    // =========================================================
+    //  마운트 / 청소
+    // =========================================================
+    public void MountWrappedItem(GameObject cube)
     {
-        if (boxTransform == null) return;
-        restPos = boxTransform.localPosition;
-        restRot = boxTransform.localRotation;
-        simVelLocal = Vector3.zero;
-        captured = true;
+        if (cube == null) return;
+        EnsurePlaceholderHidden();
+
+        cube.transform.SetParent(transform, false);    // CargoSimRoot 직속
+        cube.transform.localRotation = Quaternion.identity;
+        cube.transform.localScale = Vector3.one * itemScale;
+
+        var item = new TrunkItem
+        {
+            t = cube.transform,
+            velLocal = Vector3.zero,
+            wrap = cube.GetComponentInChildren<PitCrew.Packing.WrapState>(),
+            halfExtent = itemScale * 0.5f,
+        };
+        items.Add(item);
+
+        // 자동 그리드 배치 — 추가된 순서대로 슬롯. (Plan 2: 플레이어 드래그로 대체)
+        int slot = items.Count - 1;
+        float sx = slot < kSlotX.Length ? kSlotX[slot] : 0f;
+        cube.transform.localPosition = new Vector3(sx, kFloorY, 0f);
     }
 
+    public void ClearMountedItems()
+    {
+        foreach (var it in items) if (it.t != null) Destroy(it.t.gameObject);
+        items.Clear();
+    }
+
+    // placeholder Box는 1회만 숨김 (포장 큐브가 그 자리 대신).
+    void EnsurePlaceholderHidden()
+    {
+        if (placeholderHidden) return;
+        var box = transform.Find("Box");
+        if (box != null) { var mr = box.GetComponent<MeshRenderer>(); if (mr != null) mr.enabled = false; }
+        placeholderHidden = true;
+    }
+
+    // =========================================================
+    //  물리 — 아이템별 slide + 벽 충돌 + 아이템 간 충돌
+    // =========================================================
     void FixedUpdate()
     {
-        if (cargo == null)
-        {
-            cargo = Services.Cargo as CargoBox;
-            if (cargo == null) return;
-        }
-        if (boxTransform == null)
-        {
-            boxTransform = transform.Find("Box");
-            if (boxTransform == null) return;
-            CaptureRest();
-        }
-        if (!captured) CaptureRest();
+        if (cargo == null) { cargo = Services.Cargo as CargoBox; if (cargo == null) return; }
+        if (items.Count == 0) return;
 
         float dt = Time.fixedDeltaTime;
 
-        // (1) 관성력: 차 가속/제동/코너 시 박스에 작용. local x = lateral(우+), local z = longitudinal(앞+).
+        // 두 힘은 모든 아이템 공통 (차 G + 사면 중력) — 1회 계산.
+        // (1) 관성력: local x = lateral(우+), local z = longitudinal(앞+).
         Vector3 inertialAccel = new Vector3(-cargo.SignedLatG, 0f, -cargo.SignedLongG) * accelScale;
-
-        // (2) 사면 중력 (D-044, 도현 세션 15): 차체 기울어지면 중력의 차 local x/z 성분이 박스를 밀어냄.
-        // "박스가 바닥에 있다" 가정의 핵심 — 정지 상태에서도 사면이면 미끄러짐.
-        Vector3 worldGravity = Physics.gravity;                // (0, -9.81, 0)
-        Vector3 localGravity = cargo.transform.InverseTransformDirection(worldGravity);
-        // localGravity.y는 정상 누름 (-9.81 근처) — 무시.
-        // localGravity.x/z = 사면 G 성분 (deg/s² 단위). G 단위로 변환해 accelScale 적용.
+        // (2) 사면 중력 (D-044): 차체 기울면 중력의 차 local x/z 성분이 아이템을 밀어냄.
+        Vector3 localGravity = cargo.transform.InverseTransformDirection(Physics.gravity);
         Vector3 slopeAccel = new Vector3(localGravity.x, 0f, localGravity.z) / 9.81f * accelScale;
-
-        // 총 가속도 = 관성력 + 사면 중력
         Vector3 totalAccel = inertialAccel + slopeAccel;
-
-        // 정지 마찰: accel 크기가 임계 미만이면 push 없음 (박스 고정)
         float accelMag = Mathf.Sqrt(totalAccel.x * totalAccel.x + totalAccel.z * totalAccel.z);
-        if (accelMag >= staticFrictionG * accelScale)
-        {
-            simVelLocal += totalAccel * dt;
-        }
-
-        // 운동 마찰: 항상 감쇠 (일단 움직이면 서서히 멈춤)
         float dampFactor = Mathf.Max(0f, 1f - kineticFriction * dt);
-        simVelLocal.x *= dampFactor;
-        simVelLocal.z *= dampFactor;
 
-        // velocity dead zone
-        if (simVelLocal.sqrMagnitude < velocityDeadZone * velocityDeadZone)
-            simVelLocal = Vector3.zero;
-
-        // 위치 적분 (local offset 기준)
-        Vector3 offset = boxTransform.localPosition - restPos;
-        offset += simVelLocal * dt;
-
-        // AABB clamp + wall bounce + damage 전파.
-        // 박스 슬라이드 → trunk 벽 박음 → 박스 손상 (도현 세션 20 — 인과 정정).
-        if (Mathf.Abs(offset.x) > maxOffset)
+        foreach (var it in items)
         {
-            float impactSpeed = Mathf.Abs(simVelLocal.x);
-            Vector3 dir = new Vector3(Mathf.Sign(offset.x), 0f, 0f);
-            offset.x = Mathf.Sign(offset.x) * maxOffset;
-            simVelLocal.x = -simVelLocal.x * wallBounce;
-            TryApplyBoxImpactDamage(impactSpeed, dir);
-        }
-        if (Mathf.Abs(offset.z) > maxOffset)
-        {
-            float impactSpeed = Mathf.Abs(simVelLocal.z);
-            Vector3 dir = new Vector3(0f, 0f, Mathf.Sign(offset.z));
-            offset.z = Mathf.Sign(offset.z) * maxOffset;
-            simVelLocal.z = -simVelLocal.z * wallBounce;
-            TryApplyBoxImpactDamage(impactSpeed, dir);
-        }
-        offset.y = 0f;
+            if (it.t == null) continue;
 
-        boxTransform.localPosition = restPos + offset;
+            // 정지 마찰: accel 크기가 임계 미만이면 push 없음.
+            if (accelMag >= staticFrictionG * accelScale) it.velLocal += totalAccel * dt;
+
+            // 운동 마찰: 항상 감쇠.
+            it.velLocal.x *= dampFactor;
+            it.velLocal.z *= dampFactor;
+            if (it.velLocal.sqrMagnitude < velocityDeadZone * velocityDeadZone) it.velLocal = Vector3.zero;
+
+            // 위치 적분.
+            Vector3 p = it.t.localPosition + it.velLocal * dt;
+            float lim = trunkHalfExtent - it.halfExtent;
+
+            // 벽 충돌 (절대 트렁크 AABB) + 손상 전파.
+            if (Mathf.Abs(p.x) > lim)
+            {
+                float impactSpeed = Mathf.Abs(it.velLocal.x);
+                p.x = Mathf.Sign(p.x) * lim;
+                it.velLocal.x = -it.velLocal.x * wallBounce;
+                TryApplyBoxImpactDamage(it, impactSpeed, new Vector3(Mathf.Sign(p.x), 0f, 0f));
+            }
+            if (Mathf.Abs(p.z) > lim)
+            {
+                float impactSpeed = Mathf.Abs(it.velLocal.z);
+                p.z = Mathf.Sign(p.z) * lim;
+                it.velLocal.z = -it.velLocal.z * wallBounce;
+                TryApplyBoxImpactDamage(it, impactSpeed, new Vector3(0f, 0f, Mathf.Sign(p.z)));
+            }
+            p.y = kFloorY; // 바닥 고정
+            it.t.localPosition = p;
+        }
+
+        ResolveItemCollisions();
     }
 
-    void LateUpdate()
+    /// <summary>아이템 간 충돌 — XZ 평면 AABB 겹침 검사 + 밀어내기 (MTV).</summary>
+    void ResolveItemCollisions()
     {
-        // D-048: 트렁크 yaw만 차량 매칭, pitch/roll 무시 → 트렁크 항상 평면.
-        // 도현 진단: 트렁크는 차량의 평평한 부분이라 가정. 차량이 사면/기울기에 있어도
-        // 트렁크 visual은 평면 유지. 박스 시뮬만 사면 중력 + 관성으로 평면 위에서 미끄러짐.
-        if (matchCarRotation && cargo != null)
+        for (int i = 0; i < items.Count; i++)
+        for (int j = i + 1; j < items.Count; j++)
         {
-            float carYaw = cargo.transform.eulerAngles.y;
-            transform.rotation = Quaternion.Euler(0f, carYaw, 0f);
+            var a = items[i]; var b = items[j];
+            if (a.t == null || b.t == null) continue;
 
-            // SimCamRig도 yaw만 차량 매칭 (시점 일관 + position 회전 따라감)
-            // Phase 1: GameObject.Find by name 1회 fallback (SerializeField 비어있으면).
-            // 정상 경로는 SetupCargoView가 인스펙터에 할당. fallback 발동 시 경고.
-            if (simCamRig == null)
+            Vector3 pa = a.t.localPosition, pb = b.t.localPosition;
+            float minDist = a.halfExtent + b.halfExtent;
+            float dx = pb.x - pa.x, dz = pb.z - pa.z;
+            float overlapX = minDist - Mathf.Abs(dx);
+            float overlapZ = minDist - Mathf.Abs(dz);
+            if (overlapX <= 0f || overlapZ <= 0f) continue; // 안 겹침
+
+            // 더 얕게 겹친 축으로 분리 (AABB MTV) — 각 아이템 절반씩.
+            if (overlapX < overlapZ)
             {
-                var rigGO = GameObject.Find("CargoSimCamRig");
-                if (rigGO != null)
-                {
-                    simCamRig = rigGO.transform;
-                    Debug.LogWarning("[CargoShakeSimulator] simCamRig을 GameObject.Find로 fallback 설정. SetupCargoView 메뉴 실행 권장.");
-                }
+                float push = (dx >= 0f ? 1f : -1f) * overlapX * 0.5f;
+                pa.x -= push; pb.x += push;
+                float avg = (a.velLocal.x + b.velLocal.x) * 0.5f;
+                a.velLocal.x = avg * 0.5f; b.velLocal.x = avg * 0.5f; // 충돌 감쇠
             }
-            if (simCamRig != null)
+            else
             {
-                Vector3 trunkPos = transform.position;
-                // CargoSimCamRig의 SetupCargoView default offset (0, 2.5, -0.8)
-                Vector3 offsetLocal = new Vector3(0f, 2.5f, -0.8f);
-                simCamRig.position = trunkPos + Quaternion.Euler(0f, carYaw, 0f) * offsetLocal;
-                simCamRig.rotation = Quaternion.Euler(65f, carYaw, 0f);
+                float push = (dz >= 0f ? 1f : -1f) * overlapZ * 0.5f;
+                pa.z -= push; pb.z += push;
+                float avg = (a.velLocal.z + b.velLocal.z) * 0.5f;
+                a.velLocal.z = avg * 0.5f; b.velLocal.z = avg * 0.5f;
             }
+            a.t.localPosition = pa; b.t.localPosition = pb;
         }
-
-        // 박스 자체 회전 (도현 세션 15: 회전 복귀가 갈대 느낌. 기본 OFF.)
-        if (!enableRotation)
-        {
-            // D-049 안전장치: 외부 영향 차단 — 박스 회전 매 프레임 restRot 강제.
-            // 어떤 코드가 박스 localRotation 변경해도 즉시 reset.
-            if (boxTransform != null) boxTransform.localRotation = restRot;
-            return;
-        }
-        if (cargo == null || boxTransform == null) return;
-
-        float pitch = Mathf.Clamp(-cargo.SignedLongG * degPerLongG, -maxRotDeg, maxRotDeg);
-        float roll = Mathf.Clamp(cargo.SignedLatG * degPerLatG, -maxRotDeg, maxRotDeg);
-        Quaternion targetRot = restRot * Quaternion.Euler(pitch, 0f, roll);
-        float rotT = 1f - Mathf.Exp(-rotLerp * Time.deltaTime);
-        boxTransform.localRotation = Quaternion.Slerp(boxTransform.localRotation, targetRot, rotT);
     }
 
-    void TryApplyBoxImpactDamage(float speed, Vector3 impactDirLocal)
+    void TryApplyBoxImpactDamage(TrunkItem it, float speed, Vector3 impactDirLocal)
     {
-        if (cargo == null) return;
-        if (speed < boxWallSpeedThreshold) return;
+        if (cargo == null || speed < boxWallSpeedThreshold) return;
         float raw = (speed - boxWallSpeedThreshold) * boxWallDamageMul;
         if (raw <= 0f) return;
 
-        // 충격 흡수율 적용 — WrapState가 있으면 그 부위의 wrap 상태로 계산.
-        // 포장 큐브는 boxTransform 자식으로 마운트됨 (MountWrappedItem) → 거기서 찾음.
+        // 충격 흡수율 — 이 아이템 자기 WrapState로 계산 (각자 따로 포장).
         float absorption = 0f;
-        var wrap = boxTransform != null ? boxTransform.GetComponentInChildren<PitCrew.Packing.WrapState>() : null;
-        if (wrap != null && boxTransform != null)
+        if (it.wrap != null && it.t != null)
         {
-            Vector3 worldHit = boxTransform.position;
-            Vector3 worldDir = boxTransform.TransformDirection(impactDirLocal).normalized;
-            absorption = wrap.QueryAbsorption(worldHit, worldDir);
+            Vector3 worldHit = it.t.position;
+            Vector3 worldDir = it.t.TransformDirection(impactDirLocal).normalized;
+            absorption = it.wrap.QueryAbsorption(worldHit, worldDir);
         }
-
         float dmg = raw * (1f - absorption);
         if (absorption > 0.01f)
             Debug.Log($"[CargoShake] 충격 흡수 {absorption * 100f:F0}% (raw {raw:F1} → {dmg:F1})");
         if (dmg > 0.01f) cargo.ApplyExternalDamage(dmg, flashSpeedKmh: speed * 3.6f);
     }
 
-    /// <summary>허브에서 박스 교체/Repair 시 호출.</summary>
-    public void ResetBoxPosition()
+    // =========================================================
+    //  트렁크 visual yaw 매칭 + SimCamRig 추적 (D-048)
+    // =========================================================
+    void LateUpdate()
     {
-        if (boxTransform == null) return;
-        boxTransform.localPosition = restPos;
-        boxTransform.localRotation = restRot;
-        simVelLocal = Vector3.zero;
+        if (!matchCarRotation || cargo == null) return;
+
+        float carYaw = cargo.transform.eulerAngles.y;
+        transform.rotation = Quaternion.Euler(0f, carYaw, 0f);
+
+        // SimCamRig도 yaw만 차량 매칭. SerializeField 비어있으면 1회 fallback.
+        if (simCamRig == null)
+        {
+            var rigGO = GameObject.Find("CargoSimCamRig");
+            if (rigGO != null)
+            {
+                simCamRig = rigGO.transform;
+                Debug.LogWarning("[CargoShakeSimulator] simCamRig을 GameObject.Find로 fallback 설정. SetupCargoView 메뉴 실행 권장.");
+            }
+        }
+        if (simCamRig != null)
+        {
+            Vector3 trunkPos = transform.position;
+            Vector3 offsetLocal = new Vector3(0f, 2.5f, -0.8f); // SetupCargoView default offset
+            simCamRig.position = trunkPos + Quaternion.Euler(0f, carYaw, 0f) * offsetLocal;
+            simCamRig.rotation = Quaternion.Euler(65f, carYaw, 0f);
+        }
     }
 
     /// <summary>
-    /// 박스 색상 변경 (D-043, 도현 세션 15).
-    /// RunController.BeginRun에서 화물 타입에 따라 자동 호출.
-    /// 포장 큐브가 마운트돼 있으면 그 base material을, 아니면 placeholder Box를 색칠.
+    /// 화물 색상 변경 (D-043). RunController.BeginRun에서 화물 타입에 따라 자동 호출.
+    /// 마운트된 모든 아이템의 base material을 색칠.
     /// </summary>
     public void SetBoxColor(Color c)
     {
-        var target = mountedItem != null ? mountedItem : boxTransform;
-        if (target == null) return;
-        var mr = target.GetComponent<MeshRenderer>();
-        if (mr == null) return;
-        // material instance — sharedMaterial 변경하면 다른 박스에도 영향. material로 instance 생성.
-        mr.material.color = c;
-    }
-
-    /// <summary>
-    /// 포장한 화물 큐브를 트렁크 시뮬의 Box 자리에 마운트.
-    /// placeholder Box의 자식으로 붙어서 — 시뮬레이터가 Box를 흔들면 큐브도 같이 흔들리고,
-    /// SimCam(트렁크 CCTV)이 placeholder 대신 이 큐브를 비춘다.
-    /// 버그 수정 (세션 24): 이전엔 RunController가 큐브를 차(Race)에 붙여서
-    /// 트렁크 캠엔 placeholder Box만 보였음 (포장한 물건 ≠ 트렁크 물건).
-    /// </summary>
-    public void MountWrappedItem(GameObject cube)
-    {
-        if (boxTransform == null) boxTransform = transform.Find("Box");
-        if (boxTransform == null || cube == null) return;
-
-        // 이전 런의 마운트 제거 (멱등)
-        if (mountedItem != null) Destroy(mountedItem.gameObject);
-
-        cube.transform.SetParent(boxTransform, false);
-        cube.transform.localPosition = Vector3.zero;
-        cube.transform.localRotation = Quaternion.identity;
-        cube.transform.localScale = Vector3.one; // boxTransform scale 상속 → placeholder Box 크기와 동일
-        mountedItem = cube.transform;
-
-        // placeholder Box mesh 숨김 — 포장한 큐브가 그 자리를 대신 (컴포넌트·시뮬은 그대로).
-        var ph = boxTransform.GetComponent<MeshRenderer>();
-        if (ph != null) ph.enabled = false;
+        foreach (var it in items)
+        {
+            if (it.t == null) continue;
+            var mr = it.t.GetComponent<MeshRenderer>();
+            if (mr != null) mr.material.color = c;
+        }
     }
 }
