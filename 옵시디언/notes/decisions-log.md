@@ -861,3 +861,17 @@ D-069 의의: MVP 4주 룰의 자연스러운 후속. ExulMundi 회피 = "데모
 **Follow-up (Task 17 미완료):**
 - PackingScreen이 wrap한 GameObject → cargo prefab 인계가 미구현. RunController.BeginRun(job, items)는 items 받지만 cargo prefab에 WrapState 전달 안 함. 결과: 실 런 중 QueryAbsorption은 항상 0 반환 → 포장 보호도가 손상 계산에 반영 안 됨.
 - 다음 세션 첫 작업.
+
+---
+
+## D-071 — 하네스 운영: 규칙 즉시 발효 + B 트랙 평가 분리 (2026-05-14)
+
+**결정:** AI 약점 패턴이 incidents 3건+로 검증되면 해당 draft-rule을 `project_rules/`·`CLAUDE.md`에 **즉시 발효** (이전 "형 검토 후 발효" 합의 뒤집음 — 옵션 가). 규칙의 적절성 평가·정리·형 검토는 **B 트랙(하네스, "다른 팀")이 사후로** 담당. A 트랙(게임 작업)은 평가를 기다리지 않음.
+
+**Why:** 하네스는 멈춰 있는 게 아니라 게임 개발과 나란히 계속 굴러가야 함 (도현). "보류 = 정지" 프레이밍이 그 정신과 어긋났음. 빨리 "기록"에서 "예방"으로 넘어가려면 발효를 게이팅하면 안 됨. 잘못된 규칙 위험은 B 트랙 사후 평가가 거름.
+
+**How:**
+- `project_rules/session.md`에 "B 트랙 — 하네스" 섹션 추가 (게임 작업 중 트리거 / B 트랙 평가 분리).
+- 세션 종료 절차에 하네스 패스(harness-usage-log 블록) 추가.
+
+**관련:** `옵시디언/하네스/incidents.md`, `draft-rules.md`, `harness-usage-log.md`.
