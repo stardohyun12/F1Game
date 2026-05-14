@@ -1,0 +1,34 @@
+# PIT CREW — Claude 진입점
+
+> 이 파일은 매 세션 자동 로드. 분리된 규칙은 아래 `@import`로.
+> 상태(지금 하고 있는 것)는 `.claude/activeContext.md`. 영구 결정·기획은 `옵시디언/GDD/`.
+
+## 핵심 설계 원칙 (3줄)
+
+1. **제한이 곧 재미** — Kenny 에셋만, 커스텀 제작 금지.
+2. **계획 → 실행 → 정산** — 3단계 루프 밖 기능 거절.
+3. **매 런 5~15분, 결정 4개** — USP 강화 안 하는 시스템은 `옵시디언/notes/ideas-parking.md` 직행.
+
+## 컨셉 한 줄
+
+> 망한 F1팀이 배달로 자금 → 머신 복원 → F1 그랑프리 복귀.
+> 배달은 수단, F1 복귀가 목적. 마이크로(한 런) ↔ 매크로(머신 복원) 직각 루프.
+
+상세: `옵시디언/GDD/overview.md`, `옵시디언/GDD/decision-channels.md`
+
+---
+
+## 모듈 (자동 로드)
+
+@.claude/rules/scope.md
+@.claude/rules/asset.md
+@.claude/rules/session.md
+@.claude/rules/communication.md
+@.claude/rules/ai-blindspots.md
+@.claude/activeContext.md
+
+---
+
+## Unity 프로젝트 경로
+
+`PitCrew/F1/` (Unity 6, URP, Kenney 에셋). 이후 문서에서 "Unity 프로젝트"는 이 폴더.

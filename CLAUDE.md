@@ -1,33 +1,109 @@
-# PIT CREW — Claude 진입점
+# CLAUDE.md — F1 게임 프로젝트
 
-> 이 파일은 매 세션 자동 로드. 분리된 규칙은 아래 `@import`로.
-> 상태(지금 하고 있는 것)는 `.claude/activeContext.md`. 영구 결정·기획은 `GDD/`.
-
-## 핵심 설계 원칙 (3줄)
-
-1. **제한이 곧 재미** — Kenny 에셋만, 커스텀 제작 금지.
-2. **계획 → 실행 → 정산** — 3단계 루프 밖 기능 거절.
-3. **매 런 5~15분, 결정 4개** — USP 강화 안 하는 시스템은 `notes/ideas-parking.md` 직행.
-
-## 컨셉 한 줄
-
-> 망한 F1팀이 배달로 자금 → 머신 복원 → F1 그랑프리 복귀.
-> 배달은 수단, F1 복귀가 목적. 마이크로(한 런) ↔ 매크로(머신 복원) 직각 루프.
-
-상세: `GDD/overview.md`, `GDD/decision-channels.md`
+> `harness-core/CLAUDE_TEMPLATE.md` v0.1 기반.
+> `[project]` 부분은 이 프로젝트에 맞춰 채움.
+> `[universal]` 부분은 템플릿 그대로 유지.
 
 ---
 
-## 모듈 (자동 로드)
+## 0. 이 프로젝트 정보 [project]
 
-@.claude/rules/scope.md
-@.claude/rules/asset.md
-@.claude/rules/session.md
-@.claude/rules/communication.md
-@.claude/activeContext.md
+- **프로젝트 이름**: F1 게임 (가칭)
+- **장르 / 도메인**: F1 레이싱 시뮬레이션
+- **Unity 버전**: 6000.3.9f1
+- **GitHub repo**: https://github.com/stardohyun12/F1Game.git
+- **시작일**: 2026-05-14
+- **목표**: 모두창업 산출물 (A축) + 하네스 검증 사례 (B축)
 
 ---
 
-## Unity 프로젝트 경로
+## 1. 두 축
 
-`PitCrew/F1/` (Unity 6, URP, Kenney 에셋). 이후 문서에서 "Unity 프로젝트"는 이 폴더.
+### A축: F1 게임 자체
+- 자체 그래픽 스타일 (기존 F1 게임 모방 아님)
+- 자체 UI 구성
+- 실제 플레이 가능 목표
+
+### B축: 하네스 검증
+- `harness-core`의 첫 번째 적용 사례
+- 작업 중 발견된 빈틈은 `harness-core/REJECTED_IDEAS.md` 또는 새 룰로 반영
+- **F1 콘텐츠는 하네스에 박지 않음**
+
+---
+
+## 2~5번은 템플릿과 동일
+
+`harness-core/CLAUDE_TEMPLATE.md` 2~5번 참조. 변경 없음.
+
+요점만:
+- 태그 시스템: `[universal]` / `[project]`, AI 제안 + 도현 확정
+- 룰셋 v0.1: #1 시각 컨텍스트, #2 참조 필수, #3 검증 후 푸시, #4 작업 단위 커밋, #5 백로그 큐잉, #6 컨텍스트 분할, #7 태그 제안
+- 관찰자 시스템: `harness-core/observer/prompt.md`
+
+---
+
+## 6. 운영 환경
+
+### 인프라 [project]
+- **본가 데탑 24시간 가동** — 메인 작업 머신
+- **Tailscale** — 비상시 원격 접속용
+- **메인 컴퓨터** — 도현이 외부에서 git으로 진행 관찰
+- 하이브리드: 평소엔 git 확인, 막힘 감지되거나 도현 개입 필요 시 Tailscale
+
+### 작업 흐름
+```
+본가 데탑:
+  Claude Code (이 가이드) → unity-cli → Unity 에디터
+            ↓
+       git commit + push (작업 단위)
+            ↓
+도현 (외부):
+  GitHub diff + 스크린샷
+  관찰자 보고 별도
+```
+
+---
+
+## 7. 폴더 구조
+
+```
+f1-game/
+├── CLAUDE.md                    ← 이 파일
+├── backlog.md                   ← AI가 관리하는 작업 큐
+├── session_handoff.md           ← 세션 인계 (있을 때만)
+├── Assets/                      ← Unity 프로젝트
+├── references/
+│   ├── external/                ← F1 23, F1 Manager 등 참조 [project]
+│   └── internal/                ← 이 게임 자체 스크린샷 [project]
+│       ├── good/                ← 도현이 마음에 든 결과
+│       └── bad/                 ← 피해야 할 패턴
+├── project_rules/               ← F1 한정 룰 [project]
+│   ├── REJECTED_IDEAS.md
+│   └── ...
+└── .ai_logs/                    ← 작업 캡처/로그
+```
+
+별도 위치:
+```
+harness-core/                    ← 별도 repo, F1 외 프로젝트와 공유
+```
+
+---
+
+## 8. 살아있는 문서
+
+- 작업 중 발견 패턴 → 룰 추가
+- `[universal]` 룰은 `harness-core` repo로 PR
+- `[project]` 룰은 이 repo `project_rules/` 에
+- 수정 권한: 도현
+
+---
+
+## 9. 거절된 접근
+
+- **하네스 공통**: `harness-core/REJECTED_IDEAS.md` 참조
+- **F1 한정**: `project_rules/REJECTED_IDEAS.md` 참조
+
+---
+
+버전: v0.1 (2026-05-14)
