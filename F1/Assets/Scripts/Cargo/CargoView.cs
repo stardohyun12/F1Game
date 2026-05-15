@@ -14,7 +14,7 @@ public class CargoView : MonoBehaviour
 
     [Header("Layout (우측 상단 앵커)")]
     [SerializeField] Vector2 anchoredPos = new Vector2(-36, -220);
-    [SerializeField] Vector2 size = new Vector2(520, 360);
+    [SerializeField] Vector2 size = new Vector2(720, 500);
 
     RectTransform rt;
     Image bg;
