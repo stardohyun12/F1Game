@@ -110,7 +110,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             for (int i = 0; i < allMarkers.Count; i++)
             {
                 if (allMarkers[i] == null) continue;
-                bool inSet = i < lastSelectedJob.pointCount;
+                bool inSet = i < lastSelectedJob.itemCount;
                 allMarkers[i].SetVisible(inSet);
                 if (inSet)
                 {
@@ -279,7 +279,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             else
             {
                 var job = currentOffer[hoveredIndex];
-                bool inSet = i < job.pointCount;
+                bool inSet = i < job.itemCount;
                 if (inSet)
                 {
                     allMarkers[i].SetColor(job.color);
@@ -299,12 +299,12 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (currentOffer.Count > 0)
         {
             OrderJob largest = currentOffer[0];
-            foreach (var j in currentOffer) if (j != null && j.pointCount > largest.pointCount) largest = j;
+            foreach (var j in currentOffer) if (j != null && j.itemCount > largest.itemCount) largest = j;
             return largest;
         }
         if (catalog == null || catalog.jobs == null || catalog.jobs.Count == 0) return null;
         OrderJob largestPool = catalog.jobs[0];
-        foreach (var j in catalog.jobs) if (j != null && j.pointCount > largestPool.pointCount) largestPool = j;
+        foreach (var j in catalog.jobs) if (j != null && j.itemCount > largestPool.itemCount) largestPool = j;
         return largestPool;
     }
 }

@@ -97,7 +97,8 @@ public static class GenerateExpandedOrders
         var job = LoadOrCreate<OrderJob>(path);
         job.displayName = displayName;
         job.color = color;
-        job.pointCount = pointCount;
+        // 채널 8 (2026-05-15): pointCount 필드 제거. 목적지는 destinationLabels (Channel8RouteSetup이 저작).
+        _ = pointCount; // 시그니처 유지 — 호출처 변경 최소화
         job.timeLimitSec = timeLimit;
         job.baseReward = baseReward;
         job.timeBonus = timeBonus;

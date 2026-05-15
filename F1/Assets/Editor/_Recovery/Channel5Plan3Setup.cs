@@ -47,17 +47,14 @@ public static class Channel5Plan3Setup
             EditorUtility.SetDirty(cat);
         }
 
-        // 3. Order_05_StandardBox itemCount 1→2
-        var box = AssetDatabase.LoadAssetAtPath<OrderJob>(kBoxJobPath);
-        if (box != null) { box.itemCount = 2; EditorUtility.SetDirty(box); }
-        else Debug.LogWarning($"[Channel5Plan3Setup] {kBoxJobPath} 못 찾음");
+        // 3. 채널 8 (2026-05-15): itemCount는 destinationLabels.Count에서 파생됨 → 직접 set 불가.
+        //    Order_05_StandardBox=2개, Order_C_Risky=3개 보장은 Channel8RouteSetup이 destinationLabels로 처리.
 
-        // 4. Order_C_Risky → 다운타운 zone
+        // 4. Order_C_Risky → 다운타운 zone + displayName 정리
         var risky = AssetDatabase.LoadAssetAtPath<OrderJob>(kRiskyJobPath);
         var downtown = AssetDatabase.LoadAssetAtPath<Zone>(kDowntownZonePath);
         if (risky != null)
         {
-            risky.itemCount = 3;
             risky.displayName = "대량 배송";
             EditorUtility.SetDirty(risky);
         }
@@ -73,8 +70,8 @@ public static class Channel5Plan3Setup
 
         int catCount = cat != null ? cat.upgrades.Count : -1;
         int dtCount = downtown != null ? downtown.jobs.Count : -1;
-        Debug.Log($"[Channel5Plan3Setup] 완료 — 카탈로그 {catCount}개, 다운타운 잡 {dtCount}개, " +
-                  $"Order_05 itemCount={(box != null ? box.itemCount : -1)}");
+        Debug.Log($"[Channel5Plan3Setup] 완료 — 카탈로그 {catCount}개, 다운타운 잡 {dtCount}개. " +
+                  "(itemCount은 채널 8에서 destinationLabels 파생.)");
     }
 
     static UpgradeDef LoadOrCreateUpgrade(string path, UpgradeEffect effect,

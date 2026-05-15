@@ -312,7 +312,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
 
         // 스탯
         orderVal.text = job != null ? job.displayName : "-";
-        completedVal.text = $"{controller.CompletedCount}/{(job != null ? job.pointCount : 0)}곳";
+        completedVal.text = $"{controller.CompletedCount}/{(job != null ? job.itemCount : 0)}곳";
         timeVal.text = FormatTimeWithBonus(controller.LastElapsed, job);
         string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
         int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);

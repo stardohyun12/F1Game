@@ -74,7 +74,7 @@ public class RunController : MonoBehaviour, IRunController
     {
         var j = ScriptableObject.CreateInstance<OrderJob>();
         j.name = "FallbackJob";
-        j.pointCount = 7;
+        // 채널 8: pointCount 제거됨. destinationLabels 비어 있어 itemCount=1 → ActivateSubset(1) 폴백.
         j.timeLimitSec = 0f; // 무제한
         j.baseReward = 0;
         j.timeBonus = 0;
@@ -153,7 +153,7 @@ public class RunController : MonoBehaviour, IRunController
 
     void ActivateDeliveryPoints(OrderJob job)
     {
-        if (Delivery != null) Delivery.ActivateSubset(job.pointCount);
+        if (Delivery != null) Delivery.ActivateSubset(job.itemCount);
     }
 
     /// <summary>화물 타입 적용. Task 14: SetPacking 제거 (PackingTier 폐기).</summary>
@@ -228,8 +228,8 @@ public class RunController : MonoBehaviour, IRunController
         else
         {
             // 시간 초과: 완료한 만큼 비례 보상 (절반 가중)
-            float ratio = CurrentJob.pointCount > 0
-                ? (float)CompletedCount / CurrentJob.pointCount
+            float ratio = CurrentJob.itemCount > 0
+                ? (float)CompletedCount / CurrentJob.itemCount
                 : 0f;
             reward = Mathf.RoundToInt(CurrentJob.baseReward * ratio * 0.5f);
         }

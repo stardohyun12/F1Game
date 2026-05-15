@@ -27,7 +27,7 @@ public static class SetupOrderSystem
         var jobA = LoadOrCreate<OrderJob>($"{OrdersDir}/Order_A_Safe.asset");
         jobA.displayName = "A. 안전 배달";
         jobA.color = new Color(0.4f, 0.95f, 0.45f);
-        jobA.pointCount = 3;
+        // 채널 8: pointCount 제거됨 (itemCount 파생). 목적지는 destinationLabels.
         jobA.timeLimitSec = 0f;
         jobA.baseReward = 500;
         jobA.timeBonus = 0;
@@ -37,8 +37,7 @@ public static class SetupOrderSystem
         var jobB = LoadOrCreate<OrderJob>($"{OrdersDir}/Order_B_Balanced.asset");
         jobB.displayName = "B. 균형 배달";
         jobB.color = new Color(0.95f, 0.85f, 0.25f);
-        jobB.pointCount = 5;
-        jobB.timeLimitSec = 300f; // 5분
+        jobB.timeLimitSec = 300f; // 5분 (채널 8: pointCount 제거)
         jobB.baseReward = 900;
         jobB.timeBonus = 200;
         jobB.weightTier = 1;
@@ -47,8 +46,7 @@ public static class SetupOrderSystem
         var jobC = LoadOrCreate<OrderJob>($"{OrdersDir}/Order_C_Risky.asset");
         jobC.displayName = "C. 도전 배달";
         jobC.color = new Color(1f, 0.4f, 0.4f);
-        jobC.pointCount = 7;
-        jobC.timeLimitSec = 360f; // 6분
+        jobC.timeLimitSec = 360f; // 6분 (채널 8: pointCount 제거)
         jobC.baseReward = 1800;
         jobC.timeBonus = 500;
         jobC.weightTier = 2;

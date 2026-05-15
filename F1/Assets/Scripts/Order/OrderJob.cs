@@ -1,8 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// 한 런의 작업 정의. ScriptableObject.
 /// GDD: GDD/core-loop.md (결정 1: 주문 선택), D-030 K4 연계.
+///
+/// 채널 8 (2026-05-15): 잡이 진짜 다른 목적지를 가짐.
+/// `destinationLabels` (씬 DeliveryPoint.Label과 일치)이 source of truth.
+/// `itemCount`는 `destinationLabels.Count`에서 파생 — 물건 1개 = 목적지 1곳.
+/// 옛 `pointCount` 필드는 제거 (D-070 잔재). spec: 2026-05-15-order-route-flow-design.md.
 /// </summary>
 [CreateAssetMenu(menuName = "PitCrew/Order Job", fileName = "Order_New")]
 public class OrderJob : ScriptableObject
@@ -12,14 +18,16 @@ public class OrderJob : ScriptableObject
     [Tooltip("UI 카드/맵 마커 색상.")]
     public Color color = Color.green;
 
-    [Header("Items")]
-    [Tooltip("이 잡에서 포장할 물건 수 (1~3)")]
-    [Range(1, 3)] public int itemCount = 1;
+    [Header("Items / Destinations (채널 8 — 물건 1개 = 목적지 1곳)")]
+    [Tooltip("배달 목적지. 씬 DeliveryPoint.Label과 일치. 개수가 곧 물건 수.")]
+    public List<string> destinationLabels = new List<string>();
+
+    /// <summary>물건 수 = 목적지 수 (1~3 클램프). destinationLabels에서 파생.</summary>
+    public int itemCount => destinationLabels != null
+        ? Mathf.Clamp(destinationLabels.Count, 1, 3)
+        : 1;
 
     [Header("Difficulty")]
-    [Tooltip("배달 목적지 수. 현 디자인: 1 (D-070 결정).")]
-    public int pointCount = 1;
-
     [Tooltip("시간제한(초). 0이면 무제한.")]
     public float timeLimitSec = 0f;
 
@@ -42,5 +50,4 @@ public class OrderJob : ScriptableObject
     [Header("Cargo (Day 11)")]
     [Tooltip("이 주문에 실리는 화물 타입. RunController.BeginRun에서 CargoBox에 자동 적용.")]
     public CargoType cargoType = CargoType.Box;
-
 }

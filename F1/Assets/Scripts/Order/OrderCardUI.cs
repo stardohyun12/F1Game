@@ -88,7 +88,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             hoverStrip.color = c;
         }
 
-        SetStatRow(0, "지점", $"{job.pointCount}곳");
+        SetStatRow(0, "지점", $"{job.itemCount}곳");
         SetStatRow(1, "시간", job.timeLimitSec > 0f
             ? $"{Mathf.RoundToInt(job.timeLimitSec / 60f)}분 {Mathf.RoundToInt(job.timeLimitSec % 60f):D2}초"
             : "무제한");
