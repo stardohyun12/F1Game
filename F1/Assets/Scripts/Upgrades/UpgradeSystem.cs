@@ -30,10 +30,13 @@ public class UpgradeSystem : MonoBehaviour, IUpgradeSystem
     public IReadOnlyList<UpgradeEffect> Owned => ownedList;
     public int Wallet => wallet;
 
-    /// <summary>채널 5 — 적재함 칸 수. 기본 1, TrunkExpand1/2 보유 시 합산 (최대 3).</summary>
+    /// <summary>채널 5 — 적재함 칸 수. 데모 기본 2, TrunkExpand2 보유 시 3 (최대).</summary>
+    /// <remarks>
+    /// 2026-05-15: 데모 시연 편의를 위해 기본 2로 상향. TrunkExpand1은 이제 무효 (기본값에 포함됨),
+    /// 대신 후속 W3 차고/부품 시스템 도입 시 기본 1로 복귀하고 일반 업그레이드 트리에 다시 묶을 예정.
+    /// </remarks>
     public int BoxCapacity =>
-        1 + (IsOwned(UpgradeEffect.TrunkExpand1) ? 1 : 0)
-          + (IsOwned(UpgradeEffect.TrunkExpand2) ? 1 : 0);
+        2 + (IsOwned(UpgradeEffect.TrunkExpand2) ? 1 : 0);
 
     public event Action<UpgradeEffect> OnUpgradePurchased;
     public event Action<int> OnWalletChanged;
