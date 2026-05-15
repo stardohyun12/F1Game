@@ -301,18 +301,28 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         if (controller == null) return;
         var theme = UITheme.Active;
         var job = controller.CurrentJob;
+        int orderCount = controller.CurrentOrders != null ? controller.CurrentOrders.Count : 0;
         bool perfect = controller.LastIntegrityPercent >= 0.8f;
 
-        // Title + 색상 띠
-        titleText.text = controller.LastRunSuccess ? "배달 완료!" : "시간 초과";
+        // Title — 다물건이면 N건 부기
+        string baseTitle = controller.LastRunSuccess ? "배달 완료!" : "시간 초과";
+        titleText.text = orderCount > 1 ? $"{baseTitle}  ({orderCount}건)" : baseTitle;
         Color stripCol = controller.LastRunSuccess && perfect ? new Color(0.4f, 0.95f, 0.4f)
                        : controller.LastRunSuccess              ? new Color(0.95f, 0.85f, 0.3f)
                                                                 : new Color(1f, 0.5f, 0.4f);
         colorStrip.color = stripCol;
 
-        // 스탯
-        orderVal.text = job != null ? job.displayName : "-";
-        completedVal.text = $"{controller.CompletedCount}/{(job != null ? job.itemCount : 0)}곳";
+        // 스탯 — 다물건이면 주문 이름들 콤마 결합 (긴 경우 ellipsis로 잘림)
+        if (orderCount > 1)
+        {
+            var names = new System.Collections.Generic.List<string>();
+            foreach (var o in controller.CurrentOrders) if (o != null) names.Add(o.displayName);
+            orderVal.text = string.Join(", ", names);
+        }
+        else orderVal.text = job != null ? job.displayName : "-";
+        // 완료 — 다물건이면 분모 = 주문 수 (각 주문 1곳).
+        int totalSpots = orderCount > 0 ? orderCount : (job != null ? job.itemCount : 0);
+        completedVal.text = $"{controller.CompletedCount}/{totalSpots}곳";
         timeVal.text = FormatTimeWithBonus(controller.LastElapsed, job);
         string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
         int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);
@@ -448,13 +458,20 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     /// </summary>
     (TMP_Text label, TMP_Text val) CreateStatRow(Transform parent, string id, float y, string labelText)
     {
+        // 2026-05-16: 라벨↔값 간격이 너무 큰 도현 피드백 — val 영역 700→520으로 좁힘.
+        // 라벨은 좌측에 280 폭(60~340), val은 우측에 520 폭으로 우측 정렬.
         var label = CreateText(parent, $"{id}_Label", new Vector2(0, 1), new Vector2(0, 1),
-            new Vector2(60, y), new Vector2(380, 50), 32, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
+            new Vector2(60, y), new Vector2(280, 50), 30, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
         label.text = labelText;
         if (UITheme.Active != null) label.color = UITheme.Active.colorTextMuted;
 
         var val = CreateText(parent, $"{id}_Val", new Vector2(1, 1), new Vector2(1, 1),
-            new Vector2(-60, y), new Vector2(700, 50), 36, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
+            new Vector2(-60, y), new Vector2(520, 50), 32, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
+        // 다물건 주문명 결합 시 길어지면 자동 축소 (잘림 대신 폰트 줄임).
+        val.enableAutoSizing = true;
+        val.fontSizeMin = 18;
+        val.fontSizeMax = 32;
+        val.overflowMode = TMPro.TextOverflowModes.Ellipsis;
         if (UITheme.Active != null) val.color = UITheme.Active.colorText;
 
         return (label, val);
