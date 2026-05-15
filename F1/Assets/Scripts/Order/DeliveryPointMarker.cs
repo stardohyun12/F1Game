@@ -1,8 +1,10 @@
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// 배달지 시각 마커 (런타임 가시). 기둥 + 상단 구체.
 /// OrderBoard가 호버 시 색/투명도 제어.
+/// 채널 8 (2026-05-15): RoutePlanScreen이 SetRouteOrder/ClearRouteOrder로 순번 배지 표시.
 /// </summary>
 [RequireComponent(typeof(DeliveryPoint))]
 public class DeliveryPointMarker : MonoBehaviour
@@ -24,6 +26,13 @@ public class DeliveryPointMarker : MonoBehaviour
     Material sphereMat;
     DeliveryPoint dp;
     bool useAutoState = true; // false면 OrderBoard가 외부 제어
+
+    // 채널 8 — 경로 순번 배지 (RoutePlanScreen용)
+    GameObject orderBadge;
+    TextMeshPro orderBadgeText;
+
+    /// <summary>채널 8 — OrderJob.destinationLabels와 매칭용. DeliveryPoint.Label 노출.</summary>
+    public string Label => dp != null ? dp.Label : null;
 
     void Awake()
     {
@@ -157,5 +166,63 @@ public class DeliveryPointMarker : MonoBehaviour
         m.DisableKeyword("_ALPHABLEND_ON");
         m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         m.renderQueue = -1;
+    }
+
+    // ── 채널 8 — 경로 순번 배지 ─────────────────────────────────
+
+    /// <summary>RoutePlanScreen이 플레이어가 정한 순서 번호를 표시.</summary>
+    public void SetRouteOrder(int n)
+    {
+        EnsureOrderBadge();
+        orderBadge.SetActive(true);
+        orderBadgeText.text = n.ToString();
+    }
+
+    /// <summary>배지 숨김 (RoutePlan 닫힘 또는 재설정).</summary>
+    public void ClearRouteOrder()
+    {
+        if (orderBadge != null) orderBadge.SetActive(false);
+    }
+
+    void EnsureOrderBadge()
+    {
+        if (orderBadge != null) return;
+        orderBadge = new GameObject("OrderBadge");
+        orderBadge.transform.SetParent(transform, false);
+        orderBadge.transform.localPosition = new Vector3(0f, pillarHeight + sphereRadius * 2f + 1.2f, 0f);
+        orderBadgeText = orderBadge.AddComponent<TextMeshPro>();
+        orderBadgeText.fontSize = 8f;
+        orderBadgeText.alignment = TextAlignmentOptions.Center;
+        orderBadgeText.color = Color.white;
+        orderBadgeText.fontStyle = FontStyles.Bold;
+        // 작은 검정 배경 — 가독성
+        var bg = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        bg.name = "BadgeBG";
+        bg.transform.SetParent(orderBadge.transform, false);
+        bg.transform.localScale = new Vector3(2.4f, 2.4f, 1f);
+        bg.transform.localPosition = new Vector3(0f, 0f, 0.01f); // 텍스트 뒤
+        var c = bg.GetComponent<Collider>();
+        if (c != null) Destroy(c);
+        var mr = bg.GetComponent<MeshRenderer>();
+        var mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+        mat.color = new Color(0f, 0f, 0f, 0.7f);
+        // 투명 설정
+        mat.SetFloat("_Surface", 1);
+        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        mat.SetInt("_ZWrite", 0);
+        mat.renderQueue = 3000;
+        mr.sharedMaterial = mat;
+    }
+
+    void LateUpdate()
+    {
+        // 순번 배지를 메인 카메라 향해 빌보드
+        if (orderBadge == null || !orderBadge.activeSelf) return;
+        var cam = Camera.main;
+        if (cam == null) return;
+        Vector3 toCam = orderBadge.transform.position - cam.transform.position;
+        if (toCam.sqrMagnitude > 0.0001f)
+            orderBadge.transform.rotation = Quaternion.LookRotation(toCam);
     }
 }
