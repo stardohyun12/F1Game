@@ -153,7 +153,11 @@ public class RunController : MonoBehaviour, IRunController
 
     void ActivateDeliveryPoints(OrderJob job)
     {
-        if (Delivery != null) Delivery.ActivateSubset(job.itemCount);
+        if (Delivery == null) return;
+        // 채널 8: RoutePlanScreen이 이미 ActivateRoute로 경로 세팅했으면 그대로. 아니면 폴백.
+        var mgr = Delivery as DeliveryManager;
+        if (mgr != null && mgr.HasPlannedRoute) return;
+        Delivery.ActivateSubset(job.itemCount);
     }
 
     /// <summary>화물 타입 적용. Task 14: SetPacking 제거 (PackingTier 폐기).</summary>
