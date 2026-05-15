@@ -29,6 +29,8 @@ public enum AudioCueId
     PackingStrokeStart,     // 마우스 좌클릭 다운 (BeginStroke)
     PackingStrokeEnd,       // 마우스 좌클릭 업 (EndStroke)
     PackingConfirm,         // "출발하기" 버튼
+    // Channel 8 board cues
+    OrderBoardSelect,       // 주문 카드 선택/해제 토글
 }
 
 public static class AudioCueBus

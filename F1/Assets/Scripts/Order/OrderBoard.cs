@@ -46,6 +46,11 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     readonly List<OrderJob> currentOffer = new List<OrderJob>();
     readonly List<OrderCardUI> spawnedCards = new List<OrderCardUI>();
     OrderJob lastSelectedJob;
+    // 채널 8 정정 — 여러 주문 동시 픽 (capacity까지). 카드 클릭 = 토글.
+    readonly List<int> selectedIndices = new List<int>();
+    // 출발 버튼 (프로그램으로 생성, 패널 하단).
+    UnityEngine.UI.Button boardGoButton;
+    TMPro.TMP_Text boardGoButtonLabel;
 
     // Phase 6(A3): 정적 _hoverTarget 라우터 제거. 호버 콜백은 클릭과 동일하게 Bind 시 주입.
 
@@ -189,11 +194,12 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
                 continue;
             }
             card.Bind(i, job, OnCardClicked, OnCardHoverEnter, OnCardHoverExit);
-            // 채널 5 — 적재함 칸보다 물건이 많으면 카드 잠금 (회색 + 클릭 무시).
-            int cap = BoxCapacity;
-            card.SetLocked(job.itemCount > cap, job.itemCount, cap);
             spawnedCards.Add(card);
         }
+        selectedIndices.Clear();
+        UpdateCardStates();
+        EnsureBoardGoButton();
+        UpdateGoButton();
     }
 
     /// <summary>현재 적재함 칸 수 (채널 5). UpgradeSystem 미등록이면 1.</summary>
@@ -226,37 +232,117 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     {
         if (!isOpen) return;
         if (cardIndex < 0 || cardIndex >= currentOffer.Count) return;
-        // 채널 5 — 적재함 부족 잡은 무시 (OrderCardUI도 클릭 막지만 방어).
-        if (currentOffer[cardIndex].itemCount > BoxCapacity) return;
-        lastSelectedJob = currentOffer[cardIndex];
 
-        // 보드 닫고 다음 화면 띄움 (timeScale=0 유지).
+        // 채널 8 정정 — 카드 클릭 = 선택 토글. 출발은 별도 버튼.
+        if (selectedIndices.Contains(cardIndex))
+        {
+            selectedIndices.Remove(cardIndex);
+        }
+        else
+        {
+            // 적재함 가득이면 추가 X (UpdateCardStates가 lock 처리하지만 방어)
+            if (selectedIndices.Count >= BoxCapacity) return;
+            selectedIndices.Add(cardIndex);
+        }
+        UpdateCardStates();
+        UpdateGoButton();
+        AudioCueBus.Publish(AudioCueId.OrderBoardSelect);
+        return;
+    }
+
+    /// <summary>채널 8 — 우측 패널 하단 "출발" 버튼 (프로그램 생성, 멱등).</summary>
+    void EnsureBoardGoButton()
+    {
+        if (boardGoButton != null) return;
+        if (panelRoot == null) return;
+
+        var goGO = new GameObject("BoardGoButton",
+            typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button));
+        goGO.transform.SetParent(panelRoot.transform, false);
+        var rt = goGO.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(1, 0);
+        rt.pivot = new Vector2(0.5f, 0f);
+        rt.anchoredPosition = new Vector2(0, 20);
+        rt.sizeDelta = new Vector2(-20, 56);
+        var img = goGO.GetComponent<UnityEngine.UI.Image>();
+        img.color = new Color(0.88f, 0.04f, 0f, 1f);
+        boardGoButton = goGO.GetComponent<UnityEngine.UI.Button>();
+        boardGoButton.onClick.AddListener(OnBoardGoClicked);
+
+        var txtGO = new GameObject("Label", typeof(RectTransform));
+        txtGO.transform.SetParent(goGO.transform, false);
+        var trt = txtGO.GetComponent<RectTransform>();
+        trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one;
+        trt.offsetMin = trt.offsetMax = Vector2.zero;
+        boardGoButtonLabel = txtGO.AddComponent<TMPro.TextMeshProUGUI>();
+        boardGoButtonLabel.raycastTarget = false;
+        boardGoButtonLabel.fontSize = 22;
+        boardGoButtonLabel.fontStyle = TMPro.FontStyles.Bold;
+        boardGoButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
+        boardGoButtonLabel.color = Color.white;
+        boardGoButtonLabel.text = "출발 (0)";
+    }
+
+    void UpdateGoButton()
+    {
+        if (boardGoButton == null) return;
+        int n = selectedIndices.Count;
+        boardGoButton.interactable = n >= 1;
+        if (boardGoButtonLabel != null)
+            boardGoButtonLabel.text = n > 0 ? $"출발 ({n})" : "주문을 골라줘";
+    }
+
+    void UpdateCardStates()
+    {
+        int cap = BoxCapacity;
+        bool full = selectedIndices.Count >= cap;
+        for (int i = 0; i < spawnedCards.Count; i++)
+        {
+            var card = spawnedCards[i]; if (card == null) continue;
+            bool sel = selectedIndices.Contains(i);
+            card.SetSelected(sel);
+            // 잠금: 적재함 가득 + 이 카드 미선택 → 더 못 고름. 선택된 카드는 잠그지 않음(해제 가능).
+            if (!sel && full) card.SetLocked(true, $"적재함 가득 — 다른 주문 빼기 ({cap}/{cap})");
+            else card.SetLocked(false, null);
+        }
+    }
+
+    void OnBoardGoClicked()
+    {
+        if (!isOpen) return;
+        if (selectedIndices.Count == 0) return;
+
+        // 채널 8 정정 — 픽한 주문들 → RoutePlan 또는 Packing 또는 BeginRun
+        var pickedOrders = new List<OrderJob>(selectedIndices.Count);
+        foreach (var idx in selectedIndices)
+            if (idx >= 0 && idx < currentOffer.Count && currentOffer[idx] != null)
+                pickedOrders.Add(currentOffer[idx]);
+        if (pickedOrders.Count == 0) return;
+        lastSelectedJob = pickedOrders[0]; // primary (Close 마커 복원에 사용)
+
+        // 보드 닫고 다음 화면 띄움.
         isOpen = false;
         if (panelRoot != null) panelRoot.SetActive(false);
         HideStartMarkerAndLine();
-
-        // 채널 8 — RoutePlanScreen이 마커 외부 제어 인계받음. 여기서 끄지 않는다.
+        if (boardGoButton != null) boardGoButton.gameObject.SetActive(false);
 
         if (Services.RoutePlan != null)
         {
-            // 채널 8: 잡 → 경로 계획 → 포장 → 출발 흐름.
-            Services.RoutePlan.Show(lastSelectedJob);
+            Services.RoutePlan.Show(pickedOrders);
         }
         else if (Services.Packing != null)
         {
-            // 폴백: RoutePlan 없으면 바로 포장으로.
             if (allMarkers != null)
                 for (int i = 0; i < allMarkers.Count; i++)
                     if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
-            Services.Packing.Show(lastSelectedJob);
+            Services.Packing.Show(pickedOrders);
         }
         else if (runController != null)
         {
-            // 최종 폴백: 둘 다 없으면 직접 BeginRun.
             if (allMarkers != null)
                 for (int i = 0; i < allMarkers.Count; i++)
                     if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
-            runController.BeginRun(lastSelectedJob);
+            runController.BeginRun(pickedOrders, null);
         }
     }
 

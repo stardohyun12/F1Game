@@ -44,11 +44,15 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] float hoverStripAlpha = 0.6f;
     [Tooltip("적재함 부족으로 잠긴 카드 배경 색.")]
     [SerializeField] Color lockedBgColor = new Color(0.04f, 0.04f, 0.05f, 0.92f);
+    [Tooltip("선택된 카드 배경 색 (채널 8 다중 선택).")]
+    [SerializeField] Color selectedBgColor = new Color(0.25f, 0.30f, 0.38f, 1.0f);
 
     int cardIndex;
     OrderJob job;
     // 채널 5 — 적재함 부족이면 잠김. 클릭 무시 + 회색 표시.
     bool locked;
+    // 채널 8 정정 — 여러 주문 픽 (OrderBoard 다중 선택).
+    bool selected;
     Action<int> onCardClicked;
     Action<int> onCardHoverEnter;
     Action<int> onCardHoverExit;
@@ -109,10 +113,16 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     /// </summary>
     public void SetLocked(bool isLocked, int requiredCapacity, int currentCapacity)
     {
+        SetLocked(isLocked, isLocked ? $"잠김 — 적재함 {requiredCapacity}칸 필요 (현재 {currentCapacity}칸)" : null);
+    }
+
+    /// <summary>채널 8 — 자유로운 잠금 사유. reason==null이면 본래 tipText 복원(drive tip).</summary>
+    public void SetLocked(bool isLocked, string reason)
+    {
         locked = isLocked;
         float a = isLocked ? 0.4f : 1f;
 
-        if (bg != null) bg.color = isLocked ? lockedBgColor : baseBgColor;
+        ApplyBgColor();
         if (colorStrip != null && job != null)
             colorStrip.color = isLocked ? Color.Lerp(job.color, Color.gray, 0.75f) : job.color;
 
@@ -125,8 +135,30 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             SetAlpha(statRows[i].value, a);
         }
 
-        if (isLocked && tipText != null)
-            tipText.text = $"잠김 — 적재함 {requiredCapacity}칸 필요 (현재 {currentCapacity}칸)";
+        if (tipText != null)
+        {
+            if (isLocked && !string.IsNullOrEmpty(reason)) tipText.text = reason;
+            else if (!isLocked && job != null) tipText.text = $"→ {CargoTypePresets.DriveTip(job.cargoType)}";
+        }
+    }
+
+    /// <summary>채널 8 정정 — 다중 픽 선택 상태. 클릭으로 토글.</summary>
+    public void SetSelected(bool sel)
+    {
+        selected = sel;
+        ApplyBgColor();
+        // colorStrip은 선택 시 더 진하게 (job.color 그대로 + alpha 1 유지)
+        if (colorStrip != null && job != null && !locked) colorStrip.color = job.color;
+    }
+
+    public bool IsSelected => selected;
+
+    void ApplyBgColor()
+    {
+        if (bg == null) return;
+        if (locked) bg.color = lockedBgColor;
+        else if (selected) bg.color = selectedBgColor;
+        else bg.color = baseBgColor;
     }
 
     static void SetAlpha(TMP_Text t, float a)
@@ -137,10 +169,12 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void SetHovering(bool hovering)
     {
-        // 잠긴 카드는 호버 배경색 변화 없음 (배달 마커 강조는 OrderBoard가 별도 처리).
+        // 잠긴 카드는 호버 배경색 변화 없음. 선택된 카드는 selectedBg 유지.
         if (bg != null)
         {
-            bg.color = locked ? lockedBgColor : (hovering ? hoverBgColor : baseBgColor);
+            if (locked) bg.color = lockedBgColor;
+            else if (selected) bg.color = selectedBgColor;
+            else bg.color = hovering ? hoverBgColor : baseBgColor;
         }
         if (hoverStrip != null && job != null && !locked)
         {
