@@ -869,15 +869,9 @@ namespace PitCrew.Packing
         // =========================================================
         //  LateUpdate — 실시간 비용 라벨 갱신
         // =========================================================
-        void Update()
-        {
-            // 다물건 키보드 네비 — ◀/▶ 알아채기 어려운 도현 피드백.
-            if (!IsVisible) return;
-            if (phase != PackingPhase.Wrapping) return;
-            if (spawnedItems.Count <= 1) return;
-            if (Input.GetKeyDown(KeyCode.LeftArrow)) OnPrevItem();
-            else if (Input.GetKeyDown(KeyCode.RightArrow)) OnNextItem();
-        }
+        // 2026-05-15: 키보드 좌/우 네비를 잠시 넣었으나 이 프로젝트는 Input System 패키지 모드 →
+        // UnityEngine.Input API 호출이 InvalidOperationException. 일단 제거. ◀/▶ 버튼 명시화로 대체.
+        // 추후 Input System actions 라우팅 필요 시 별도 작업.
 
         void LateUpdate()
         {
