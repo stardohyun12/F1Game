@@ -45,20 +45,29 @@ public class DeliveryPointMarker : MonoBehaviour
         // 런 중 상태 자동 반영 (OrderBoard가 close에서 SetExternalControl(false) 호출)
         if (!useAutoState || dp == null) return;
 
+        // 베이스 sphere scale (BuildVisuals에서 고정값). Active일 때만 1.6배.
+        if (sphere != null)
+        {
+            float mul = dp.IsActive && !dp.IsCompleted ? 1.6f : 1f;
+            sphere.transform.localScale = Vector3.one * sphereRadius * 2f * mul;
+        }
+
         if (dp.IsCompleted)
         {
+            // 완료 — 어둡게 dim
             ApplyColor(new Color(0.4f, 0.4f, 0.4f), 0.4f);
         }
         else if (dp.IsActive)
         {
-            // 현재 목표 — 밝게 펄스
-            float pulse = 0.7f + 0.3f * Mathf.Sin(Time.unscaledTime * 4f);
-            ApplyColor(baseColor, 1f, pulse);
+            // 현재 목표 — 강렬한 노랑+빨강 펄스 (대기 마커와 명확히 구분; 미니맵에서도 잘 보이게)
+            float pulse = 0.6f + 0.4f * Mathf.Sin(Time.unscaledTime * 4f);
+            var hot = Color.Lerp(new Color(1f, 0.85f, 0.20f), new Color(1f, 0.30f, 0.10f), pulse);
+            ApplyColor(hot, 1f, 2.5f);
         }
         else
         {
-            // 대기 중 (이번 런에 포함됐지만 아직 차례 안 됨)
-            ApplyColor(baseColor, 0.85f, 0.6f);
+            // 대기 중 (이번 런에 포함됐지만 아직 차례 안 됨) — 차분한 baseColor
+            ApplyColor(baseColor, 0.7f, 0.4f);
         }
     }
 

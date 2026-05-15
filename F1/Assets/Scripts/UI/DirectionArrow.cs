@@ -90,7 +90,21 @@ public class DirectionArrow : MonoBehaviour
         // 목표 방향으로 수평 yaw
         Vector3 dir = targetPos - carT.position;
         dir.y = 0f;
+        float dist = dir.magnitude;
         if (dir.sqrMagnitude > 0.0001f)
             transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+
+        // 거리 시각 피드백 — 멀면 노랑, 가까우면(< 15m) 녹색으로 보간 + 약한 펄스.
+        if (sr != null)
+        {
+            float k = Mathf.Clamp01((15f - dist) / 15f); // 0..1 (가까울수록 1)
+            var far = new Color(1f, 0.82f, 0.25f, 1f);
+            var near = new Color(0.30f, 1f, 0.40f, 1f);
+            var c = Color.Lerp(far, near, k);
+            // 가까우면 펄스
+            if (k > 0f) c *= 0.85f + 0.15f * Mathf.Sin(Time.unscaledTime * 6f);
+            c.a = 1f;
+            sr.color = c;
+        }
     }
 }

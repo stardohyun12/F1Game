@@ -96,7 +96,7 @@ public class CargoView : MonoBehaviour
             label.alignment = TextAlignmentOptions.Top;
             label.fontSize = 20; label.fontStyle = FontStyles.Bold;
             if (theme != null) { if (theme.fontPrimary != null) label.font = theme.fontPrimary; label.color = theme.colorTextMuted; }
-            label.text = "TRUNK CAM (드래그 이동 / 우하단 모서리 크기조정)";
+            label.text = "TRUNK CAM";
             var r = label.rectTransform;
             r.anchorMin = new Vector2(0, 1); r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(0.5f, 1);
