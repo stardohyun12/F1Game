@@ -3,13 +3,10 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// 채널 8 — 잡별 destinationLabels 저작. 물건 1개 = 목적지 1곳 (spec).
-/// 9개 잡(Pool 8 + Order_C)에 씬 DeliveryPoint label 배분. 멱등.
+/// 채널 8 — 주문별 destinationLabels 저작. 정정된 모델: **주문 1장 = 목적지 1곳**.
+/// 9개 주문(Pool 8 + Order_C)에 씬 DeliveryPoint label 1개씩 배분. 멱등.
 ///
-/// 채널 5에서 정한 itemCount 유지하도록 그 수만큼 label 부여:
-/// - Order_05_StandardBox: 2개 → 서로 다른 2곳
-/// - Order_C_Risky: 3개 → 흩어진 3곳
-/// - 나머지 Pool 7개: 각 1개 → 서로 다른 단일 목적지
+/// 한 런의 다중 목적지는 OrderBoard에서 **여러 주문을 픽**해서 얻음(채널 5 capacity).
 /// </summary>
 public static class Channel8RouteSetup
 {
@@ -23,29 +20,31 @@ public static class Channel8RouteSetup
     const string WestHub       = "WestHub";
     const string PlateauTop    = "PlateauTop";
 
-    [MenuItem("PitCrew/Channel8/Route Setup — 잡별 destinationLabels")]
+    [MenuItem("PitCrew/Channel8/Route Setup — 주문별 destinationLabels")]
     public static void Run()
     {
-        // 1물건 잡 7개 — 서로 다른 단일 목적지 (도시 전역 분산)
+        // 9개 주문 — 각자 단일 목적지. 도시 전역 분산. 일부 중복 허용(8 지점 < 9 주문).
         AssignLabels("Assets/Data/Orders/Pool/Order_01_Eggs.asset",         new[] { CentralCross });
         AssignLabels("Assets/Data/Orders/Pool/Order_02_Glass.asset",        new[] { EastHub });
         AssignLabels("Assets/Data/Orders/Pool/Order_03_Fish.asset",         new[] { DowntownEntry });
         AssignLabels("Assets/Data/Orders/Pool/Order_04_WeddingCake.asset",  new[] { PlateauTop });
+        AssignLabels("Assets/Data/Orders/Pool/Order_05_StandardBox.asset",  new[] { FactoryNorth });
         AssignLabels("Assets/Data/Orders/Pool/Order_06_PremiumWine.asset",  new[] { WestHub });
         AssignLabels("Assets/Data/Orders/Pool/Order_07_SashimiTray.asset",  new[] { LowerWest });
         AssignLabels("Assets/Data/Orders/Pool/Order_08_BirthdayCake.asset", new[] { SuburbanGate });
-
-        // 2물건 잡 (택배 박스) — 떨어진 2곳
-        AssignLabels("Assets/Data/Orders/Pool/Order_05_StandardBox.asset",
-            new[] { DowntownEntry, FactoryNorth });
-
-        // 3물건 잡 (대량 배송) — 흩어진 3곳
-        AssignLabels("Assets/Data/Orders/Order_C_Risky.asset",
-            new[] { WestHub, CentralCross, PlateauTop });
+        // Order_C_Risky: 1차 구현에서 "대량 배송" 3곳이었지만 모델 정정 → 단일 목적지.
+        // displayName도 단일 주문 의미로 다듬는다.
+        AssignLabels("Assets/Data/Orders/Order_C_Risky.asset", new[] { EastHub });
+        var risky = AssetDatabase.LoadAssetAtPath<OrderJob>("Assets/Data/Orders/Order_C_Risky.asset");
+        if (risky != null && risky.displayName == "대량 배송")
+        {
+            risky.displayName = "급송 의뢰";
+            EditorUtility.SetDirty(risky);
+        }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("[Channel8RouteSetup] 완료 — 9개 잡 destinationLabels 저작.");
+        Debug.Log("[Channel8RouteSetup] 완료 — 9개 주문 destinationLabels 저작 (각 1곳).");
     }
 
     static void AssignLabels(string path, string[] labels)

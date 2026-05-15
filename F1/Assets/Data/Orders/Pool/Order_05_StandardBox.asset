@@ -15,7 +15,6 @@ MonoBehaviour:
   displayName: "\uD0DD\uBC30 \uBC15\uC2A4"
   color: {r: 0.7, g: 0.5, b: 0.3, a: 1}
   destinationLabels:
-  - DowntownEntry
   - FactoryNorth
   timeLimitSec: 0
   baseReward: 600
