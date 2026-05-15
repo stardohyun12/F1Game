@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::OrderJob
   displayName: "\uC0DD\uC77C \uCF00\uC774\uD06C"
   color: {r: 0.95, g: 0.6, b: 0.85, a: 1}
-  pointCount: 3
+  destinationLabels:
+  - SuburbanGate
   timeLimitSec: 270
   baseReward: 800
   timeBonus: 250
   weightTier: 1
   cargoType: 4
-  defaultPacking: 2

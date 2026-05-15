@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::OrderJob
   displayName: "\uD65C\uC5B4 \uC6B4\uC1A1"
   color: {r: 0.4, g: 0.7, b: 0.95, a: 1}
-  pointCount: 5
+  destinationLabels:
+  - DowntownEntry
   timeLimitSec: 300
   baseReward: 1100
   timeBonus: 400
   weightTier: 1
   cargoType: 3
-  defaultPacking: 2

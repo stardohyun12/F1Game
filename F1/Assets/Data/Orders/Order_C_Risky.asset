@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderJob
   displayName: "\uB300\uB7C9 \uBC30\uC1A1"
   color: {r: 1, g: 0.4, b: 0.4, a: 1}
-  itemCount: 3
-  pointCount: 7
+  destinationLabels:
+  - WestHub
+  - CentralCross
+  - PlateauTop
   timeLimitSec: 360
   baseReward: 1800
   timeBonus: 500
