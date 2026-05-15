@@ -74,12 +74,16 @@ public interface IRunController
     float TimeRemaining { get; }
     void BeginRun(OrderJob job);
     void BeginRun(OrderJob job, System.Collections.Generic.List<UnityEngine.GameObject> packedItems);
+    /// <summary>채널 8 정정 — 다중 주문 + 포장 핸드오프.</summary>
+    void BeginRun(System.Collections.Generic.List<OrderJob> orders, System.Collections.Generic.List<UnityEngine.GameObject> packedItems);
 }
 
 public interface IRoutePlanScreen
 {
     bool IsVisible { get; }
     void Show(OrderJob job);
+    /// <summary>채널 8 정정 — 다중 주문.</summary>
+    void Show(System.Collections.Generic.List<OrderJob> orders);
     void Hide();
 }
 

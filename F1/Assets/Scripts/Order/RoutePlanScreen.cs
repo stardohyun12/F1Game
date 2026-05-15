@@ -19,15 +19,19 @@ using UnityEngine.InputSystem;
 public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
 {
     GameObject panelRoot;
+    // 채널 8 정정: 한 런 = 여러 주문. currentJob은 primary(=orders[0]) — title 색상 등 호환.
     OrderJob currentJob;
+    readonly List<OrderJob> currentOrders = new();
     Camera mapCamera;
     DeliveryManager dm;
     Transform startPoint;
     GameObject startMarker;
     LineRenderer routeLine;
 
-    // 이 잡의 목적지 마커들 (강조 대상)
+    // 이 런의 목적지 마커들 (강조 대상). jobMarkers[i] ↔ currentOrders[i] 평행.
     readonly List<DeliveryPointMarker> jobMarkers = new();
+    // 마커 → 주문 역매핑 (확정 시 orderedOrders 만들기 위해).
+    readonly Dictionary<DeliveryPoint, OrderJob> markerToOrder = new();
     // 플레이어가 클릭 순서대로 쌓는 경로
     readonly List<DeliveryPoint> orderedRoute = new();
 
@@ -42,7 +46,19 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
     // =========================================================
     public void Show(OrderJob job)
     {
-        currentJob = job;
+        Show(new List<OrderJob> { job });
+    }
+
+    /// <summary>채널 8 정정 — 여러 주문 동시 경로 계획.</summary>
+    public void Show(List<OrderJob> orders)
+    {
+        if (orders == null || orders.Count == 0)
+        {
+            Debug.LogWarning("[RoutePlanScreen] Show: orders 비어있음"); return;
+        }
+        currentOrders.Clear();
+        currentOrders.AddRange(orders);
+        currentJob = currentOrders[0]; // primary (title 색상 등)
         EnsureRefs();
         BuildUI();
         ResolveJobMarkers();
@@ -91,23 +107,27 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
     void ResolveJobMarkers()
     {
         jobMarkers.Clear();
-        if (currentJob == null || dm == null) return;
-        if (currentJob.destinationLabels == null) return;
+        markerToOrder.Clear();
+        if (dm == null || currentOrders.Count == 0) return;
 
-        foreach (var label in currentJob.destinationLabels)
+        // 채널 8 정정 — 각 주문이 1개 destinationLabel을 가짐. 주문별로 마커 해석.
+        foreach (var order in currentOrders)
         {
+            if (order == null || order.destinationLabels == null || order.destinationLabels.Count == 0) continue;
+            var label = order.destinationLabels[0];
             var dp = dm.FindByLabel(label);
             if (dp == null) continue;
             var m = dp.GetComponent<DeliveryPointMarker>();
             if (m == null) continue;
             m.SetExternalControl(true);
             m.SetVisible(true);
-            m.SetColor(currentJob.color);
+            m.SetColor(order.color); // 주문별 색상
             m.SetDimmed(false);
             m.ClearRouteOrder();
-            jobMarkers.Add(m);
+            if (!jobMarkers.Contains(m)) jobMarkers.Add(m); // 같은 마커에 여러 주문 X (정상 케이스)
+            markerToOrder[dp] = order;
         }
-        // 잡에 없는 다른 마커들은 dim
+        // 이 런 외의 다른 마커들은 dim
         var allMarkers = UnityEngine.Object.FindObjectsByType<DeliveryPointMarker>(FindObjectsSortMode.None);
         foreach (var am in allMarkers)
         {
@@ -231,10 +251,17 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         if (orderedRoute.Count != jobMarkers.Count || orderedRoute.Count == 0) return;
         if (dm == null) dm = Services.Delivery as DeliveryManager;
         if (dm != null) dm.ActivateRoute(new List<DeliveryPoint>(orderedRoute));
-        var job = currentJob;
+
+        // 채널 8 정정 — orderedRoute의 순서에 맞춰 orders도 재정렬해서 핸드오프
+        // (PackingScreen이 각 주문 1개씩 큐브를 만들고, 운전에서 1→2→3 순으로 배달됨).
+        var orderedOrders = new List<OrderJob>(orderedRoute.Count);
+        foreach (var dp in orderedRoute)
+        {
+            if (markerToOrder.TryGetValue(dp, out var o) && o != null) orderedOrders.Add(o);
+        }
         Hide();
-        if (Services.Packing != null) Services.Packing.Show(job);
-        else if (Services.Run != null) Services.Run.BeginRun(job);
+        if (Services.Packing != null) Services.Packing.Show(orderedOrders);
+        else if (Services.Run != null) Services.Run.BeginRun(orderedOrders, null);
     }
 
     void ClearOrderBadges()

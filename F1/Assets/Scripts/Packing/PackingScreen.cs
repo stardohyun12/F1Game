@@ -15,6 +15,8 @@ namespace PitCrew.Packing
         public bool IsVisible => panelRoot != null && panelRoot.activeSelf;
 
         OrderJob currentJob;
+        // 채널 8 정정: 한 런 = 여러 주문. currentJob은 primary(=orders[0]) — UI 호환.
+        List<OrderJob> currentOrders = new List<OrderJob>();
         List<GameObject> spawnedItems = new();
         int activeItemIndex;
 
@@ -79,7 +81,20 @@ namespace PitCrew.Packing
         // =========================================================
         public void Show(OrderJob job)
         {
-            currentJob = job;
+            Show(new List<OrderJob> { job });
+        }
+
+        /// <summary>채널 8 정정 — 여러 주문 동시 포장. 큐브 개수 = orders.Count.</summary>
+        public void Show(List<OrderJob> orders)
+        {
+            if (orders == null || orders.Count == 0)
+            {
+                Debug.LogWarning("[PackingScreen] Show: orders 비어있음");
+                return;
+            }
+            currentOrders = new List<OrderJob>(orders);
+            currentJob = currentOrders[0]; // primary (UI 호환)
+
             EnsurePackingCamera();
             BuildUIIfNeeded();
 
@@ -93,11 +108,11 @@ namespace PitCrew.Packing
             }
 
             ClearItems();
-            int n = Mathf.Clamp(job.itemCount, 1, 3);
+            int n = Mathf.Clamp(currentOrders.Count, 1, 3);
             for (int i = 0; i < n; i++) SpawnItem(i);
             ActivateItem(0);
 
-            // 다물건 nav 토글 — itemCount==1이면 ◀▶ + "1/1" 거짓말 제거
+            // 다물건 nav 토글 — n==1이면 ◀▶ + "1/1" 거짓말 제거
             bool multi = n > 1;
             if (prevBtn != null) prevBtn.gameObject.SetActive(multi);
             if (nextBtn != null) nextBtn.gameObject.SetActive(multi);
@@ -621,8 +636,8 @@ namespace PitCrew.Packing
 
         void RefreshTitle()
         {
-            if (titleText == null || currentJob == null) return;
-            int total = Mathf.Clamp(currentJob.itemCount, 1, 3);
+            if (titleText == null) return;
+            int total = Mathf.Clamp(currentOrders != null ? currentOrders.Count : 0, 1, 3);
             titleText.text = total > 1 ? $"물건 {activeItemIndex + 1}/{total}" : "포장";
         }
 
@@ -646,11 +661,12 @@ namespace PitCrew.Packing
             // 배치 단계 → 실제 출발. 큐브들은 이미 trunkRoot(CargoSimRoot) 자식 →
             // MountWrappedItem이 그 위치를 보존한다 (SetParent(null) 안 함).
             AudioCueBus.Publish(AudioCueId.PackingConfirm);
-            Debug.Log($"[PackingScreen] OnGoClicked(출발) — job={currentJob?.displayName} items={spawnedItems.Count}");
+            Debug.Log($"[PackingScreen] OnGoClicked(출발) — orders={currentOrders.Count} items={spawnedItems.Count}");
             var itemsCopy = new System.Collections.Generic.List<GameObject>(spawnedItems);
+            var ordersCopy = new System.Collections.Generic.List<OrderJob>(currentOrders);
             spawnedItems.Clear(); // ClearItems in Hide()가 Destroy 안 하도록 먼저 비움
             Hide();
-            if (Services.Run != null) Services.Run.BeginRun(currentJob, itemsCopy);
+            if (Services.Run != null) Services.Run.BeginRun(ordersCopy, itemsCopy);
         }
 
         // =========================================================
