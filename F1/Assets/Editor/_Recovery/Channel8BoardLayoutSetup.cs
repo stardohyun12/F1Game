@@ -65,9 +65,12 @@ public static class Channel8BoardLayoutSetup
             vlg.spacing = 8f;
             vlg.padding = new RectOffset(8, 8, 8, 8);
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            // 2026-05-15: 카드 prefab의 fixed height(320)가 누적되어 컨테이너를 넘쳐 출발 버튼과 겹치던 버그.
+            // VLG가 컨테이너 rect를 clipping mask로 안 쓰는 Unity 기본 동작 + childControlHeight=false 조합.
+            // 카드 높이를 컨테이너에 맞춰 N등분 (3장이면 약 280px). LayoutElement 없는 prefab도 안전.
+            vlg.childControlHeight = true;
             vlg.childForceExpandWidth = true;
-            vlg.childForceExpandHeight = false;
+            vlg.childForceExpandHeight = true;
             EditorUtility.SetDirty(vlg);
         }
 

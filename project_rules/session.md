@@ -35,6 +35,21 @@
 - 형 검토는 여기에 사후로 들어옴.
 - A 트랙(게임 작업)은 평가를 기다리지 않음 — 켜고 계속 간다.
 
+## 자기 검증 3종 — 코드 변경 commit 전 매번 (D-071 즉시 발효, 2026-05-15)
+
+> 메모리에 self-verify 룰만 박고 같은 세션 내 4회 위반 → incident 등재 → 즉시 발효.
+> 메모리는 다음 세션용 보조. 작업 루프 안에 강제 점검 단계가 있어야 한다.
+
+코드 변경 후 commit 전 셋 다 통과해야 "동작함" 보고 가능:
+
+1. **컴파일 클린**: `unity-cli editor refresh --compile` 후 `unity-cli console --type error,warning` 결과 0건.
+2. **런타임 클린**: `unity-cli editor play --wait` 후 `unity-cli console --type error --since 10s` 결과 0건. 컴파일 통과해도 Input System ↔ UnityEngine.Input 같이 런타임에만 터지는 함정 흔함.
+3. **시각/수치 검증**: 시각 변경이면 `unity-cli exec`로 RectTransform sizeDelta·worldCorners·LayoutGroup 옵션 등 수치 측정. ScreenSpaceOverlay UI는 screenshot 못 잡으므로 수치로 검증.
+
+셋 중 하나라도 빠뜨리면 자체 발견 못 한다 (실제 사례: 출발 버튼 inset만 박고 "OK" 보고 → 카드 overflow는 수치 확인 안 했음).
+
+큰 구조 변경(레이아웃·UI 시스템·다중 컴포넌트 상호작용)은 subagent dispatch로 진단 분리 권장 — 작성자가 못 본 것을 못 본다. 이번 출발 버튼 겹침이 그 사례 (`VLG.childControlHeight=false`로 컨테이너 rect가 clipping mask 안 되는 Unity 기본 동작).
+
 ## Unity 검증 — unity-cli (Editor 켠 채로) 필수
 
 씬/컴파일/물리/로그/Play 검증은 항상 `unity-cli`(`C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe`)로 한다. **Editor 켜둔 상태에서 실시간 통신** — Editor 닫기 요청 금지, batch 사용 금지.

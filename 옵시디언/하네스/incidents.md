@@ -62,3 +62,18 @@
 - 새 incident 발견 → 위 형식으로 한 블록 추가. AI에게 "incident 기록" 한 마디면 충분.
 - 같은 패턴 3건째면 patterns 파일에 사례 누적 (예: `patterns/06`에 "PitCrew: 물건 1/3 거짓말 (2026-05-13)" 한 줄).
 - 정기 정리는 안 함. 컨펌 시점에 한 번에 추출.
+
+## 2026-05-15 — 자기 검증 룰 메모리에 박고 같은 세션 내 4회 반복 위반
+
+- **무슨 일**: 한 세션 안에서 동일한 자기검증 누락 패턴 4회. (1) 트렁크캠 SerializeField 직렬화 함정 — 코드 default만 바꾸고 시각 검증 안 함. (2) Input System 패키지 모드인데 UnityEngine.Input.GetKeyDown 박음 — 컴파일만 보고 Play console 안 봄. (3) 출발 버튼 inset만 박고 "동작함" 결론 — 실제 시각 결과는 카드 overflow로 여전히 겹침. (4) [[feedback-self-verify-loop]] 메모리를 만든 직후 30분 안에 (2)(3) 다시 반복.
+- **AI 어떻게 잘못함**: 메모리 박는 행위 ≠ 같은 세션 적용. 메모리는 다음 세션 SessionStart에서 로드되므로 작성 직후엔 anchoring 없이 그냥 작업 흐름 그대로 흘러감. 작업 루프 안에 강제 점검 단계가 없으면 룰은 종이짝.
+- **어떻게 잡았나**: 도현이 "이런 경우가 없어야 되는데 팀 2개로 객관적 평가가 진행되고 있는 게 맞음?" 직접 문제 제기. AI가 self-check 못 함을 시인 + B 트랙 실제 안 굴러감 시인. 그 후 subagent dispatch로 출발 버튼 진짜 원인(VLG childControlHeight) 추적해서 해결.
+- **관련 패턴**: `new` — "메모리에 룰 박는 것을 룰 발효로 착각". 회피책: 같은 세션 내 즉시 발효시키려면 (a) 작업 직후 별도 subagent로 검증 dispatch, (b) Play+console+visual 3종을 매 commit 전 강제, (c) draft-rules.md/CLAUDE.md에 즉시 발효 (메모리는 보조).
+- **검증됨? 즉시 발효?**: 동일 세션 4회 = D-071 기준 즉시 발효. 아래 룰을 project_rules/session.md에 추가:
+
+  > **자기 검증 3종 — 코드 변경 commit 전 매번**
+  > 1. `editor refresh --compile` 후 `console --type error,warning` 검사 (0건 확인)
+  > 2. `editor play --wait` 후 `console --type error --since 10s` 검사 (런타임 에러 0건)
+  > 3. 시각 변경이면 `screenshot` 또는 unity-cli exec로 의도한 결과 측정 (sizeDelta·worldCorner·LayoutGroup 등 수치 검증)
+  >
+  > 셋 다 통과 안 하면 "동작함" 보고 금지. 메모리에 룰 박는 것으로 대체 불가.

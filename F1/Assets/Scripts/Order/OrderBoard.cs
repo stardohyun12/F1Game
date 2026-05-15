@@ -258,16 +258,23 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (boardGoButton != null) return;
         if (panelRoot == null) return;
 
-        // 카드 컨테이너 하단을 출발 버튼 영역만큼 띄움 (안 그러면 마지막 카드와 겹침).
+        // 카드 컨테이너 하단을 출발 버튼 영역만큼 띄움.
         // 버튼 영역 = anchoredPosition.y(24) + size.y(72) + 여유(20) = 116.
+        // + VLG가 카드 높이를 컨테이너에 맞추도록 강제 — Unity UI는 컨테이너 rect를 clipping mask로
+        //   안 써서 카드 누적 높이 > 컨테이너 높이면 overflow → 출발 버튼 침범. (2026-05-15 subagent 진단)
         if (cardsContainer != null)
         {
             var cc = cardsContainer;
-            // stretch anchor일 때만 offsetMin.y로 보정. 다른 anchor면 디자이너 의도 존중.
             if (Mathf.Approximately(cc.anchorMin.y, 0f) && Mathf.Approximately(cc.anchorMax.y, 1f))
             {
                 var min = cc.offsetMin;
                 if (min.y < 116f) { min.y = 116f; cc.offsetMin = min; }
+            }
+            var vlg = cc.GetComponent<UnityEngine.UI.VerticalLayoutGroup>();
+            if (vlg != null)
+            {
+                vlg.childControlHeight = true;
+                vlg.childForceExpandHeight = true;
             }
         }
 
