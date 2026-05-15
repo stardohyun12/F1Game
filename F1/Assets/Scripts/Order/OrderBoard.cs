@@ -104,18 +104,18 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         foreach (var c in spawnedCards) if (c != null) Destroy(c.gameObject);
         spawnedCards.Clear();
 
-        // 런 중에도 마커는 보임. 자동 상태로.
-        if (allMarkers != null && lastSelectedJob != null)
+        // 채널 8: 런 중 마커는 lastSelectedJob.destinationLabels 기반으로 표시.
+        if (allMarkers != null && lastSelectedJob != null && lastSelectedJob.destinationLabels != null)
         {
             for (int i = 0; i < allMarkers.Count; i++)
             {
-                if (allMarkers[i] == null) continue;
-                bool inSet = i < lastSelectedJob.itemCount;
-                allMarkers[i].SetVisible(inSet);
+                var marker = allMarkers[i]; if (marker == null) continue;
+                bool inSet = lastSelectedJob.destinationLabels.Contains(marker.Label);
+                marker.SetVisible(inSet);
                 if (inSet)
                 {
-                    allMarkers[i].SetColor(lastSelectedJob.color);
-                    allMarkers[i].SetExternalControl(false);
+                    marker.SetColor(lastSelectedJob.color);
+                    marker.SetExternalControl(false);
                 }
             }
         }
@@ -267,31 +267,53 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     void ApplyHoverState()
     {
         if (allMarkers == null) return;
+
+        bool hovering = hoveredIndex >= 0 && hoveredIndex < currentOffer.Count;
+        var hoverJob = hovering ? currentOffer[hoveredIndex] : null;
+
         for (int i = 0; i < allMarkers.Count; i++)
         {
-            if (allMarkers[i] == null) continue;
-            if (hoveredIndex < 0 || hoveredIndex >= currentOffer.Count)
+            var marker = allMarkers[i]; if (marker == null) continue;
+            string lbl = marker.Label;
+
+            if (hovering && hoverJob != null
+                && hoverJob.destinationLabels != null
+                && hoverJob.destinationLabels.Contains(lbl))
             {
-                var fallbackJob = GetLargestJob();
-                allMarkers[i].SetColor(fallbackJob != null ? fallbackJob.color : Color.white);
-                allMarkers[i].SetDimmed(false);
+                // 호버한 잡의 목적지 — 그 잡 색으로 선명하게
+                marker.SetVisible(true);
+                marker.SetColor(hoverJob.color);
+                marker.SetDimmed(false);
             }
             else
             {
-                var job = currentOffer[hoveredIndex];
-                bool inSet = i < job.itemCount;
-                if (inSet)
+                // 다른 잡들의 목적지가 있나? — 있으면 그 잡 색으로 dim 표시 (동시 비교)
+                var owner = FirstOfferJobUsingLabel(lbl);
+                if (owner != null)
                 {
-                    allMarkers[i].SetColor(job.color);
-                    allMarkers[i].SetDimmed(false);
+                    marker.SetVisible(true);
+                    marker.SetColor(owner.color);
+                    marker.SetDimmed(true);
                 }
                 else
                 {
-                    allMarkers[i].SetColor(Color.gray);
-                    allMarkers[i].SetDimmed(true);
+                    marker.SetVisible(false);
                 }
             }
         }
+    }
+
+    /// <summary>현재 offered 잡 중 이 label을 destinationLabels에 가진 첫 잡 (없으면 null).</summary>
+    OrderJob FirstOfferJobUsingLabel(string lbl)
+    {
+        if (string.IsNullOrEmpty(lbl)) return null;
+        for (int i = 0; i < currentOffer.Count; i++)
+        {
+            var j = currentOffer[i];
+            if (j != null && j.destinationLabels != null && j.destinationLabels.Contains(lbl))
+                return j;
+        }
+        return null;
     }
 
     OrderJob GetLargestJob()
