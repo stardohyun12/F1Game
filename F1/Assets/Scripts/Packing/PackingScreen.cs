@@ -820,6 +820,14 @@ namespace PitCrew.Packing
                 input.RotateTarget = item.transform;
                 input.Painter = item.GetComponent<WrapPainter>();
                 WirePainterFor(item);
+                // 2026-05-15 도현 피드백 — ▶로 2번째 큐브 가면 포장지(material) 안 나옴.
+                // SelectMaterial은 ActiveItem painter에만 박혀서, 새 active로 옮기면
+                // 이 painter엔 material 없음. 현재 선택된 currentMaterial을 다시 적용.
+                if (currentMaterial != null)
+                {
+                    var p = item.GetComponent<WrapPainter>();
+                    if (p != null) p.SetMaterial(currentMaterial);
+                }
             }
         }
 
