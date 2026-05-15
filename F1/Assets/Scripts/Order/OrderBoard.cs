@@ -61,6 +61,10 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     GameObject cachedCargoViewHUD;
     bool cargoViewWasActive;
 
+    // 채널 8 — 차고(시작점) 마커 + 호버 시 경로선 미리보기
+    GameObject startMarker;
+    LineRenderer previewLine;
+
     public void Open()
     {
         isOpen = true;
@@ -73,6 +77,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         SpawnCards();
 
         if (panelRoot != null) panelRoot.SetActive(true);
+        EnsureStartMarkerAndLine();
         ApplyHoverState();
 
         // 채널 3 — 보드 열 때마다 잠금 패널도 갱신 (자금 변동으로 affordable 바뀌었을 수 있음).
@@ -96,6 +101,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     {
         isOpen = false;
         if (panelRoot != null) panelRoot.SetActive(false);
+        HideStartMarkerAndLine();
 
         // CCTV 복원 (런 시작과 함께 다시 보여야 함)
         if (cachedCargoViewHUD != null && cargoViewWasActive) cachedCargoViewHUD.SetActive(true);
@@ -271,6 +277,10 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         bool hovering = hoveredIndex >= 0 && hoveredIndex < currentOffer.Count;
         var hoverJob = hovering ? currentOffer[hoveredIndex] : null;
 
+        // 채널 8 — 호버한 잡의 경로선 미리보기 (호버 안 하면 클리어)
+        if (hoverJob != null) DrawPreviewLineFor(hoverJob);
+        else if (previewLine != null) previewLine.positionCount = 0;
+
         for (int i = 0; i < allMarkers.Count; i++)
         {
             var marker = allMarkers[i]; if (marker == null) continue;
@@ -314,6 +324,70 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
                 return j;
         }
         return null;
+    }
+
+    // ── 채널 8 — 차고 마커 + 경로선 미리보기 ─────────────────────────
+
+    void EnsureStartMarkerAndLine()
+    {
+        if (startMarker == null)
+        {
+            var race = GameObject.Find("Race");
+            if (race != null)
+            {
+                startMarker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                startMarker.name = "OrderBoard_StartMarker";
+                DestroyImmediate(startMarker.GetComponent<Collider>());
+                startMarker.transform.position = race.transform.position + Vector3.up * 1.5f;
+                startMarker.transform.localScale = new Vector3(2f, 3f, 2f);
+                var mr = startMarker.GetComponent<MeshRenderer>();
+                var mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+                mat.color = new Color(1f, 0.9f, 0.2f, 1f);
+                mr.sharedMaterial = mat;
+            }
+        }
+        if (startMarker != null) startMarker.SetActive(true);
+
+        if (previewLine == null)
+        {
+            var lrGO = new GameObject("OrderBoard_PreviewLine");
+            previewLine = lrGO.AddComponent<LineRenderer>();
+            previewLine.material = new Material(Shader.Find("Sprites/Default"));
+            previewLine.startWidth = 0.4f; previewLine.endWidth = 0.4f;
+            previewLine.positionCount = 0;
+            previewLine.useWorldSpace = true;
+        }
+    }
+
+    void HideStartMarkerAndLine()
+    {
+        if (startMarker != null) startMarker.SetActive(false);
+        if (previewLine != null) previewLine.positionCount = 0;
+    }
+
+    void DrawPreviewLineFor(OrderJob job)
+    {
+        if (previewLine == null) EnsureStartMarkerAndLine();
+        if (previewLine == null || job == null) return;
+        if (job.destinationLabels == null || job.destinationLabels.Count == 0)
+        {
+            previewLine.positionCount = 0;
+            return;
+        }
+        var race = GameObject.Find("Race");
+        if (race == null) { previewLine.positionCount = 0; return; }
+        var dm = Services.Delivery as DeliveryManager;
+        if (dm == null) { previewLine.positionCount = 0; return; }
+
+        previewLine.startColor = job.color; previewLine.endColor = job.color;
+        var pts = new List<Vector3> { race.transform.position + Vector3.up * 0.5f };
+        foreach (var lbl in job.destinationLabels)
+        {
+            var p = dm.FindByLabel(lbl);
+            if (p != null) pts.Add(p.transform.position + Vector3.up * 0.5f);
+        }
+        previewLine.positionCount = pts.Count;
+        for (int i = 0; i < pts.Count; i++) previewLine.SetPosition(i, pts[i]);
     }
 
     OrderJob GetLargestJob()
