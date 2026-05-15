@@ -76,6 +76,13 @@ public interface IRunController
     void BeginRun(OrderJob job, System.Collections.Generic.List<UnityEngine.GameObject> packedItems);
 }
 
+public interface IRoutePlanScreen
+{
+    bool IsVisible { get; }
+    void Show(OrderJob job);
+    void Hide();
+}
+
 public interface IArcadeCarController
 {
     bool IsDrifting { get; }
@@ -115,6 +122,7 @@ public static class Services
     public static IUpgradeSystem Upgrade { get; internal set; }
     public static ICargoShakeSimulator Shake { get; internal set; }
     public static IRunController Run { get; internal set; }
+    public static IRoutePlanScreen RoutePlan { get; internal set; }
     public static IArcadeCarController Car { get; internal set; }
     public static ITireSystem Tires { get; internal set; }
     public static IGearSystem Gears { get; internal set; }
@@ -131,6 +139,7 @@ public static class Services
         Upgrade = null;
         Shake = null;
         Run = null;
+        RoutePlan = null;
         Car = null;
         Tires = null;
         Gears = null;
