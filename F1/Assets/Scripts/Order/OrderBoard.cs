@@ -258,6 +258,19 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (boardGoButton != null) return;
         if (panelRoot == null) return;
 
+        // 카드 컨테이너 하단을 출발 버튼 영역만큼 띄움 (안 그러면 마지막 카드와 겹침).
+        // 버튼 영역 = anchoredPosition.y(24) + size.y(72) + 여유(20) = 116.
+        if (cardsContainer != null)
+        {
+            var cc = cardsContainer;
+            // stretch anchor일 때만 offsetMin.y로 보정. 다른 anchor면 디자이너 의도 존중.
+            if (Mathf.Approximately(cc.anchorMin.y, 0f) && Mathf.Approximately(cc.anchorMax.y, 1f))
+            {
+                var min = cc.offsetMin;
+                if (min.y < 116f) { min.y = 116f; cc.offsetMin = min; }
+            }
+        }
+
         var goGO = new GameObject("BoardGoButton",
             typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button));
         goGO.transform.SetParent(panelRoot.transform, false);
