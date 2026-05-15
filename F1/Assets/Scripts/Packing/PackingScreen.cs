@@ -285,22 +285,22 @@ namespace PitCrew.Packing
                 new Vector2(0, -0),
                 new Vector2(0, 80));
 
-            // ◀ 이전 버튼 (itemCount>1일 때만 표시)
-            prevBtn = MakeButton(panel.transform, "BtnPrev", "◀",
+            // ◀ 이전 물건 (itemCount>1일 때만 표시) — 키우고 텍스트 명시
+            prevBtn = MakeButton(panel.transform, "BtnPrev", "◀ 이전 물건",
                 new Vector2(0, 0.5f), new Vector2(0, 0.5f),
-                new Vector2(60, 0), new Vector2(80, 60));
+                new Vector2(110, 0), new Vector2(180, 80));
             prevBtn.onClick.AddListener(OnPrevItem);
 
             // 물건 N/M 타이틀 — itemCount==1이면 "포장"으로 갱신됨 (Show)
             titleText = MakeLabel(panel.transform, "TitleLabel", "포장",
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
-                Vector2.zero, new Vector2(400, 60), 28, FontStyles.Bold,
+                Vector2.zero, new Vector2(500, 60), 32, FontStyles.Bold,
                 TextAlignmentOptions.Center);
 
-            // ▶ 다음 버튼 (itemCount>1일 때만 표시)
-            nextBtn = MakeButton(panel.transform, "BtnNext", "▶",
+            // ▶ 다음 물건 (itemCount>1일 때만 표시) — 키우고 텍스트 명시
+            nextBtn = MakeButton(panel.transform, "BtnNext", "다음 물건 ▶",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(-60, 0), new Vector2(80, 60));
+                new Vector2(-110, 0), new Vector2(180, 80));
             nextBtn.onClick.AddListener(OnNextItem);
 
             // 진행 버튼 (우측) — 포장 단계 "배치하기" → 배치 단계 "출발"
@@ -861,6 +861,16 @@ namespace PitCrew.Packing
         // =========================================================
         //  LateUpdate — 실시간 비용 라벨 갱신
         // =========================================================
+        void Update()
+        {
+            // 다물건 키보드 네비 — ◀/▶ 알아채기 어려운 도현 피드백.
+            if (!IsVisible) return;
+            if (phase != PackingPhase.Wrapping) return;
+            if (spawnedItems.Count <= 1) return;
+            if (Input.GetKeyDown(KeyCode.LeftArrow)) OnPrevItem();
+            else if (Input.GetKeyDown(KeyCode.RightArrow)) OnNextItem();
+        }
+
         void LateUpdate()
         {
             if (!IsVisible) return;

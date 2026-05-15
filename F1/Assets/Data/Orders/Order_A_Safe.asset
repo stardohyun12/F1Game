@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderJob
   displayName: "A. \uC548\uC804 \uBC30\uB2EC"
   color: {r: 0.4, g: 0.95, b: 0.45, a: 1}
-  pointCount: 3
+  destinationLabels:
+  - SuburbanGate
   timeLimitSec: 0
   baseReward: 500
   timeBonus: 0
   weightTier: 0
   cargoType: 0
-  defaultPacking: 1

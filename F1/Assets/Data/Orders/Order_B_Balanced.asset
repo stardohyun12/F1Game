@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderJob
   displayName: "B. \uADE0\uD615 \uBC30\uB2EC"
   color: {r: 0.95, g: 0.85, b: 0.25, a: 1}
-  pointCount: 5
+  destinationLabels:
+  - PlateauTop
   timeLimitSec: 300
   baseReward: 900
   timeBonus: 200
   weightTier: 1
   cargoType: 0
-  defaultPacking: 1

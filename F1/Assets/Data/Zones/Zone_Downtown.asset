@@ -17,7 +17,14 @@ MonoBehaviour:
   unlockCost: 0
   tintColor: {r: 0.55, g: 0.85, b: 0.95, a: 1}
   jobs:
-  - {fileID: 11400000, guid: d9ba7774f5588bb45bcd3f0db807b803, type: 2}
-  - {fileID: 11400000, guid: 6e2df82138450fc4b83b1a706fce943a, type: 2}
-  - {fileID: 11400000, guid: ab12a425e882707478837cc839c30b5a, type: 2}
+  - {fileID: 11400000, guid: dce4399c0327f334d8abffe37d4d397c, type: 2}
+  - {fileID: 11400000, guid: 97b1cb93a3a9a984eba7212dca9cb42c, type: 2}
   - {fileID: 11400000, guid: b378626396afc1549bbab23d03464284, type: 2}
+  - {fileID: 11400000, guid: ab12a425e882707478837cc839c30b5a, type: 2}
+  - {fileID: 11400000, guid: d6f6542a9cc08454ebfce7b540936a2d, type: 2}
+  - {fileID: 11400000, guid: 5f903e27d71c1eb4893ee035c84148f9, type: 2}
+  - {fileID: 11400000, guid: 59c2ad7c4ea17c24a837bbb243edb029, type: 2}
+  - {fileID: 11400000, guid: d9ba7774f5588bb45bcd3f0db807b803, type: 2}
+  - {fileID: 11400000, guid: 9e03a5664768a7d40852e0af748ddc7b, type: 2}
+  - {fileID: 11400000, guid: 93586d1c0dc042f4c96e19dd5e568c36, type: 2}
+  - {fileID: 11400000, guid: 6e2df82138450fc4b83b1a706fce943a, type: 2}
