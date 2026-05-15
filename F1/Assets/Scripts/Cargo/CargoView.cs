@@ -13,8 +13,10 @@ public class CargoView : MonoBehaviour
     [SerializeField] RenderTexture renderTexture;
 
     [Header("Layout (우측 상단 앵커)")]
-    [SerializeField] Vector2 anchoredPos = new Vector2(-36, -220);
-    [SerializeField] Vector2 size = new Vector2(720, 500);
+    // SerializeField 제거 — scene/prefab에 직렬화된 옛 값이 코드 default를 덮어쓰던 함정 제거.
+    // 크기 조정은 이 상수로만.
+    static readonly Vector2 anchoredPos = new Vector2(-36, -220);
+    static readonly Vector2 size = new Vector2(720, 500);
 
     RectTransform rt;
     Image bg;

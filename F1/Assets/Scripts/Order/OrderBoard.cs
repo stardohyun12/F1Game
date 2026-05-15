@@ -199,6 +199,8 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         selectedIndices.Clear();
         UpdateCardStates();
         EnsureBoardGoButton();
+        // 두 번째 런: OnBoardGoClicked가 SetActive(false) 해둔 버튼을 다시 켬.
+        if (boardGoButton != null) boardGoButton.gameObject.SetActive(true);
         UpdateGoButton();
     }
 

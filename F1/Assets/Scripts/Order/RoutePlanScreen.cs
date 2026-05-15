@@ -31,7 +31,8 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
     // 이 런의 목적지 마커들 (강조 대상). jobMarkers[i] ↔ currentOrders[i] 평행.
     readonly List<DeliveryPointMarker> jobMarkers = new();
     // 마커 → 주문 역매핑 (확정 시 orderedOrders 만들기 위해).
-    readonly Dictionary<DeliveryPoint, OrderJob> markerToOrder = new();
+    // 1:N — 여러 주문이 같은 destination을 공유할 수 있음 (Order_C_Risky+Order_02_Glass 둘 다 EastHub 같은 케이스).
+    readonly Dictionary<DeliveryPoint, List<OrderJob>> markerToOrder = new();
     // 플레이어가 클릭 순서대로 쌓는 경로
     readonly List<DeliveryPoint> orderedRoute = new();
 
@@ -124,8 +125,13 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
             m.SetColor(order.color); // 주문별 색상
             m.SetDimmed(false);
             m.ClearRouteOrder();
-            if (!jobMarkers.Contains(m)) jobMarkers.Add(m); // 같은 마커에 여러 주문 X (정상 케이스)
-            markerToOrder[dp] = order;
+            if (!jobMarkers.Contains(m)) jobMarkers.Add(m); // 같은 마커 1번만 강조
+            if (!markerToOrder.TryGetValue(dp, out var list))
+            {
+                list = new List<OrderJob>();
+                markerToOrder[dp] = list;
+            }
+            list.Add(order);
         }
         // 이 런 외의 다른 마커들은 dim
         var allMarkers = UnityEngine.Object.FindObjectsByType<DeliveryPointMarker>(FindObjectsSortMode.None);
@@ -257,7 +263,9 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         var orderedOrders = new List<OrderJob>(orderedRoute.Count);
         foreach (var dp in orderedRoute)
         {
-            if (markerToOrder.TryGetValue(dp, out var o) && o != null) orderedOrders.Add(o);
+            // 1:N — 같은 마커에 묶인 모든 주문을 그 순서 자리에서 펼침
+            if (markerToOrder.TryGetValue(dp, out var list) && list != null)
+                foreach (var o in list) if (o != null) orderedOrders.Add(o);
         }
         Hide();
         if (Services.Packing != null) Services.Packing.Show(orderedOrders);
