@@ -264,11 +264,19 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         var rt = goGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(1, 0);
         rt.pivot = new Vector2(0.5f, 0f);
-        rt.anchoredPosition = new Vector2(0, 20);
-        rt.sizeDelta = new Vector2(-20, 56);
+        rt.anchoredPosition = new Vector2(0, 24);
+        rt.sizeDelta = new Vector2(-24, 72);
         var img = goGO.GetComponent<UnityEngine.UI.Image>();
-        img.color = new Color(0.88f, 0.04f, 0f, 1f);
+        img.color = goBtnReadyColor;
         boardGoButton = goGO.GetComponent<UnityEngine.UI.Button>();
+        // Button.targetGraphic + colors transition으로 interactable=false 시 회색 dim 자동
+        boardGoButton.targetGraphic = img;
+        var colors = boardGoButton.colors;
+        colors.normalColor = goBtnReadyColor;
+        colors.highlightedColor = new Color(1.00f, 0.20f, 0.10f, 1f);
+        colors.pressedColor = new Color(0.70f, 0.02f, 0.00f, 1f);
+        colors.disabledColor = new Color(0.30f, 0.30f, 0.34f, 1f);
+        boardGoButton.colors = colors;
         boardGoButton.onClick.AddListener(OnBoardGoClicked);
 
         var txtGO = new GameObject("Label", typeof(RectTransform));
@@ -278,20 +286,27 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         trt.offsetMin = trt.offsetMax = Vector2.zero;
         boardGoButtonLabel = txtGO.AddComponent<TMPro.TextMeshProUGUI>();
         boardGoButtonLabel.raycastTarget = false;
-        boardGoButtonLabel.fontSize = 22;
+        boardGoButtonLabel.fontSize = 28;
         boardGoButtonLabel.fontStyle = TMPro.FontStyles.Bold;
         boardGoButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
         boardGoButtonLabel.color = Color.white;
-        boardGoButtonLabel.text = "출발 (0)";
+        boardGoButtonLabel.text = "주문을 골라주세요";
     }
+
+    static readonly Color goBtnReadyColor = new Color(0.88f, 0.04f, 0f, 1f);
 
     void UpdateGoButton()
     {
         if (boardGoButton == null) return;
         int n = selectedIndices.Count;
+        int cap = BoxCapacity;
         boardGoButton.interactable = n >= 1;
         if (boardGoButtonLabel != null)
-            boardGoButtonLabel.text = n > 0 ? $"출발 ({n})" : "주문을 골라줘";
+        {
+            if (n == 0) boardGoButtonLabel.text = $"주문을 골라주세요 (최대 {cap}개)";
+            else if (n < cap) boardGoButtonLabel.text = $"출발 ({n}/{cap})";
+            else boardGoButtonLabel.text = $"출발 ({n}/{cap}) — 적재함 가득";
+        }
     }
 
     void UpdateCardStates()

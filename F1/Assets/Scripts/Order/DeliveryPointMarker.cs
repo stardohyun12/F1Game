@@ -176,6 +176,28 @@ public class DeliveryPointMarker : MonoBehaviour
         EnsureOrderBadge();
         orderBadge.SetActive(true);
         orderBadgeText.text = n.ToString();
+        // 시각 피드백 — 짧은 펄스 (클릭 순간 알아채기 쉽게).
+        if (sphere != null && gameObject.activeInHierarchy)
+        {
+            StopCoroutine("PulseSphere");
+            StartCoroutine("PulseSphere");
+        }
+    }
+
+    System.Collections.IEnumerator PulseSphere()
+    {
+        float t = 0f, dur = 0.35f;
+        Vector3 baseScale = Vector3.one * sphereRadius * 2f;
+        while (t < dur)
+        {
+            t += Time.unscaledDeltaTime;
+            float k = t / dur;
+            // 1.0 → 1.45 → 1.0 (sin curve, 한 번 부풀고 복귀)
+            float bump = 1f + 0.45f * Mathf.Sin(k * Mathf.PI);
+            sphere.transform.localScale = baseScale * bump;
+            yield return null;
+        }
+        sphere.transform.localScale = baseScale;
     }
 
     /// <summary>배지 숨김 (RoutePlan 닫힘 또는 재설정).</summary>

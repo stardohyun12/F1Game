@@ -44,8 +44,10 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] float hoverStripAlpha = 0.6f;
     [Tooltip("적재함 부족으로 잠긴 카드 배경 색.")]
     [SerializeField] Color lockedBgColor = new Color(0.04f, 0.04f, 0.05f, 0.92f);
-    [Tooltip("선택된 카드 배경 색 (채널 8 다중 선택).")]
+    [Tooltip("선택된 카드 배경 — job.color를 어둡게 섞은 진한 톤 (런타임 계산).")]
     [SerializeField] Color selectedBgColor = new Color(0.25f, 0.30f, 0.38f, 1.0f);
+    [Tooltip("선택 시 job.color를 더 진하게 (Lerp 비율 0~1; 1=job.color 그대로).")]
+    [SerializeField, Range(0f, 1f)] float selectedTintLerp = 0.55f;
 
     int cardIndex;
     OrderJob job;
@@ -157,7 +159,17 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         if (bg == null) return;
         if (locked) bg.color = lockedBgColor;
-        else if (selected) bg.color = selectedBgColor;
+        else if (selected)
+        {
+            // job.color 가용 시 그 색을 어둡게 섞어서 직관적 (어떤 주문 골랐는지 색으로 한눈에).
+            if (job != null)
+            {
+                var dark = new Color(0.05f, 0.05f, 0.08f, 1f);
+                bg.color = Color.Lerp(dark, job.color, selectedTintLerp);
+                bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, 1f);
+            }
+            else bg.color = selectedBgColor;
+        }
         else bg.color = baseBgColor;
     }
 
