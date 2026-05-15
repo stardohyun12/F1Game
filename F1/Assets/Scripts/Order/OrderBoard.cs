@@ -306,10 +306,17 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         trt.offsetMin = trt.offsetMax = Vector2.zero;
         boardGoButtonLabel = txtGO.AddComponent<TMPro.TextMeshProUGUI>();
         boardGoButtonLabel.raycastTarget = false;
+        // 자동 크기: 좁아질 때 라벨 잘림/오버플로 방지
+        boardGoButtonLabel.enableAutoSizing = true;
+        boardGoButtonLabel.fontSizeMin = 14;
+        boardGoButtonLabel.fontSizeMax = 28;
         boardGoButtonLabel.fontSize = 28;
         boardGoButtonLabel.fontStyle = TMPro.FontStyles.Bold;
         boardGoButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
         boardGoButtonLabel.color = Color.white;
+        boardGoButtonLabel.textWrappingMode = TMPro.TextWrappingModes.NoWrap; // 한 줄 유지 + autoSize로 줄임
+        boardGoButtonLabel.overflowMode = TMPro.TextOverflowModes.Ellipsis;
+        boardGoButtonLabel.margin = new Vector4(12, 4, 12, 4); // 좌우 패딩
         boardGoButtonLabel.text = "주문을 골라주세요";
     }
 

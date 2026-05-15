@@ -116,7 +116,7 @@ namespace PitCrew.Packing
             bool multi = n > 1;
             if (prevBtn != null) prevBtn.gameObject.SetActive(multi);
             if (nextBtn != null) nextBtn.gameObject.SetActive(multi);
-            if (titleText != null) titleText.text = multi ? $"물건 1/{n}" : "포장";
+            // title은 ActivateItem→RefreshTitle이 진행표시 포함해 설정 — 여기서 덮어쓰지 않음.
 
             // 첫 재료 자동 선택 (안 그러면 페인트 안 됨)
             var firstMat = GetMaterials();
@@ -285,28 +285,29 @@ namespace PitCrew.Packing
                 new Vector2(0, -0),
                 new Vector2(0, 80));
 
-            // ◀ 이전 물건 (itemCount>1일 때만 표시) — 키우고 텍스트 명시
+            // 레이아웃 (좌→우): ◀(좌) ··· 타이틀(중앙) ··· ▶(우측 안쪽) ··· 배치하기(우측 끝)
+            // 폭/위치 충돌 회피 — 이전 배치는 ▶와 배치하기가 70px 겹쳤음.
             prevBtn = MakeButton(panel.transform, "BtnPrev", "◀ 이전 물건",
                 new Vector2(0, 0.5f), new Vector2(0, 0.5f),
-                new Vector2(110, 0), new Vector2(180, 80));
+                new Vector2(110, 0), new Vector2(180, 60));
             prevBtn.onClick.AddListener(OnPrevItem);
 
-            // 물건 N/M 타이틀 — itemCount==1이면 "포장"으로 갱신됨 (Show)
             titleText = MakeLabel(panel.transform, "TitleLabel", "포장",
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
-                Vector2.zero, new Vector2(500, 60), 32, FontStyles.Bold,
+                Vector2.zero, new Vector2(400, 60), 30, FontStyles.Bold,
                 TextAlignmentOptions.Center);
+            titleText.enableAutoSizing = true; titleText.fontSizeMin = 18; titleText.fontSizeMax = 32;
 
-            // ▶ 다음 물건 (itemCount>1일 때만 표시) — 키우고 텍스트 명시
+            // ▶ 다음 물건 — 배치하기 왼쪽으로 충분히 띄움 (-340 ± 90 → x: -430~-250)
             nextBtn = MakeButton(panel.transform, "BtnNext", "다음 물건 ▶",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(-110, 0), new Vector2(180, 80));
+                new Vector2(-340, 0), new Vector2(180, 60));
             nextBtn.onClick.AddListener(OnNextItem);
 
-            // 진행 버튼 (우측) — 포장 단계 "배치하기" → 배치 단계 "출발"
+            // 배치하기/출발 — 우측 끝 (-110 ± 100 → x: -210~-10)
             goButton = MakeButton(panel.transform, "BtnGo", "배치하기",
                 new Vector2(1, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(-160, 0), new Vector2(200, 56));
+                new Vector2(-110, 0), new Vector2(200, 60));
             goButton.onClick.AddListener(OnGoClicked);
             goButtonLabel = goButton.GetComponentInChildren<TMP_Text>();
             // 진행 버튼 강조색
@@ -573,6 +574,13 @@ namespace PitCrew.Packing
             txt.fontSize  = 22;
             txt.fontStyle = FontStyles.Bold;
             txt.alignment = TextAlignmentOptions.Center;
+            // 라벨 자동 크기 + ellipsis — 버튼 폭에 맞춰 글자가 벗어나지 않게.
+            txt.enableAutoSizing = true;
+            txt.fontSizeMin = 12;
+            txt.fontSizeMax = 22;
+            txt.textWrappingMode = TextWrappingModes.NoWrap;
+            txt.overflowMode = TextOverflowModes.Ellipsis;
+            txt.margin = new Vector4(8, 4, 8, 4); // 좌우 패딩
             var theme = UITheme.Active;
             if (theme != null)
             {
@@ -638,7 +646,19 @@ namespace PitCrew.Packing
         {
             if (titleText == null) return;
             int total = Mathf.Clamp(currentOrders != null ? currentOrders.Count : 0, 1, 3);
-            titleText.text = total > 1 ? $"물건 {activeItemIndex + 1}/{total}" : "포장";
+            if (total <= 1) { titleText.text = "포장"; return; }
+            // 진행 표시 — ●(현재) ○(미완) ✓(커버리지 50%+)
+            var sb = new System.Text.StringBuilder();
+            sb.Append($"물건 {activeItemIndex + 1}/{total}   ");
+            for (int i = 0; i < total && i < spawnedItems.Count; i++)
+            {
+                var ws = spawnedItems[i] != null ? spawnedItems[i].GetComponent<WrapState>() : null;
+                bool wrapped = ws != null && ws.ComputeCoverage() >= 0.5f;
+                if (i == activeItemIndex) sb.Append("● ");
+                else if (wrapped) sb.Append("<color=#88EE88>✓</color> ");
+                else sb.Append("○ ");
+            }
+            titleText.text = sb.ToString();
         }
 
         void OnMaterialCardClick(int idx, WrapMaterialDef[] mats)
