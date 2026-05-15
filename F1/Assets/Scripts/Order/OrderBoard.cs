@@ -230,24 +230,32 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (currentOffer[cardIndex].itemCount > BoxCapacity) return;
         lastSelectedJob = currentOffer[cardIndex];
 
-        // 보드 닫고 setup 패널 띄움 (timeScale=0 유지).
+        // 보드 닫고 다음 화면 띄움 (timeScale=0 유지).
         isOpen = false;
         if (panelRoot != null) panelRoot.SetActive(false);
-        if (allMarkers != null && lastSelectedJob != null)
-        {
-            for (int i = 0; i < allMarkers.Count; i++)
-            {
-                if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
-            }
-        }
+        HideStartMarkerAndLine();
 
-        if (Services.Packing != null)
+        // 채널 8 — RoutePlanScreen이 마커 외부 제어 인계받음. 여기서 끄지 않는다.
+
+        if (Services.RoutePlan != null)
         {
+            // 채널 8: 잡 → 경로 계획 → 포장 → 출발 흐름.
+            Services.RoutePlan.Show(lastSelectedJob);
+        }
+        else if (Services.Packing != null)
+        {
+            // 폴백: RoutePlan 없으면 바로 포장으로.
+            if (allMarkers != null)
+                for (int i = 0; i < allMarkers.Count; i++)
+                    if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
             Services.Packing.Show(lastSelectedJob);
         }
         else if (runController != null)
         {
-            // 폴백: PackingScreen 없으면 직접 BeginRun.
+            // 최종 폴백: 둘 다 없으면 직접 BeginRun.
+            if (allMarkers != null)
+                for (int i = 0; i < allMarkers.Count; i++)
+                    if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);
             runController.BeginRun(lastSelectedJob);
         }
     }
