@@ -17,6 +17,10 @@ public class TrackLayout : ScriptableObject
              "Day 16 도입 (Phase 1 Week 3). null이면 전 셀 평지로 간주.")]
     public string[] heightMask;
 
+    [Tooltip("Zone mask rows (bottom-to-top). 'H'=Harbor, 'D'=Downtown, 'I'=Industrial, '.'=무소속. " +
+             "R1 도입 — 런타임 zone 조회 (minimap tint, escalation 등). 비워도 정상 동작.")]
+    public string[] zoneMask;
+
     [Tooltip("heightMask 1단계당 Y 상승 (m). 기본 1.5m = Cell 6m × 0.25 경사.")]
     public float cellHeightMeters = 1.5f;
 
@@ -50,6 +54,14 @@ public class TrackLayout : ScriptableObject
         if (buildingMask == null || r < 0 || r >= buildingMask.Length) return '.';
         if (c < 0 || c >= buildingMask[r].Length) return '.';
         return buildingMask[r][c];
+    }
+
+    /// <summary>해당 셀의 zone 문자 ('H'/'D'/'I'/'.'). zoneMask 비어있거나 범위 밖이면 '.'.</summary>
+    public char GetZoneChar(int c, int r)
+    {
+        if (zoneMask == null || r < 0 || r >= zoneMask.Length) return '.';
+        if (c < 0 || c >= zoneMask[r].Length) return '.';
+        return zoneMask[r][c];
     }
 
     /// <summary>
