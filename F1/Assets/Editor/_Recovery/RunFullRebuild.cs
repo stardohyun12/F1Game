@@ -5,6 +5,7 @@ using UnityEngine;
 // Rebuilds Data SOs, the ComplexTrack scene, car placement, and delivery/order wiring.
 public static class RunFullRebuild
 {
+    [MenuItem("PitCrew/Run Full Rebuild")]
     public static void Execute()
     {
         Debug.Log("[RunFullRebuild] Step 1 — SetupLayoutAssets.Run");
