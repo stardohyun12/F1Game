@@ -13,7 +13,15 @@
 - 세션 21 (2026-05-13): 기획서 W1~W6 폐기, 3D 포장 미니게임 17 Task 구현 (Subagent-driven). D-070 결정. wrap 핸드오프까지 완료 (`RunController.TransferWrapStateToCargo`). 다물건(1~3) items[1+] 폐기는 후속.
 - **세션 23 (2026-05-14, 자율 2시간 루프)**: CaptureFullScreen.cs. **W1 채널 3 (맵 해금) 완료** — `Zone`/`ZoneRegistry` SO, `ZoneUnlockSystem` (wallet 차감·auto-unlock·GetZoneOf), `OrderBoard.PickOffer` ZoneUnlockSystem 우선, `OrderCardUI` zone 라벨/tint. Seed: Downtown/Harbor/Industrial. ZoneUnlockPanel UI는 **도현 요청으로 제거** → autoUnlockOnAffordable. W2 brainstorm doc 작성.
 - **세션 24 (2026-05-14~15)**: 하네스 점검 + 버그 5건 수정 (차 스폰 겹침 / concave collider / HUD 전화면 표시 / **포장 물건≠트렁크 물건** / PreRunSetupPanel). 세션 18~24 일괄 커밋 (`0a39d66`) 후 기능 단위 전환. **W2 채널 8 완료** — MiniMapHUD + DirectionArrow. **D-071 하네스 운영 확정** — 규칙 3건+ 검증 시 즉시 발효, 평가는 B 트랙 사후 (`session.md`에 B 트랙 섹션 추가). **채널 5 Plan 1 완료** (`bd53ea2`) — 다물건 트렁크 물리: N개 큐브 각자 슬라이드·충돌·손상 (CargoShakeSimulator 단일 박스→N 아이템). 채널 5 설계 결정: 따로 포장 / 최대 3개 / 플레이어 드래그 배치. AI 약점 2건 incidents.md 기록.
-- **세션 25 (2026-05-15)**: **채널 5 Plan 2** (트렁크 자유 배치 — 포장→배치→출발 흐름, 마우스 드래그로 트렁크 바닥에 큐브 놓기, `714d489`). **채널 5 Plan 3** (적재함 크기 업그레이드 — TrunkExpand1/2, BoxCapacity 파생, OrderCard 회색 잠금, ResultPanel 5→7 카드, `a0c5a92`). **채널 5 전체 완료** (Plan 1·2·3). 그 다음 도현 결정: "오더보드/차고 시스템은 기획을 조금 더" → brainstorming 진입. 차고/부품 시스템은 레퍼런스 리서치 (`옵시디언/research/garage-parts-reference.md` 완료) 후 후속, OrderBoard 개편 spec/plan 작성 + 인라인 구현. **채널 8 (주문→경로 계획 흐름) 완료** — `OrderJob.destinationLabels` 데이터 모델, `DeliveryManager.ActivateRoute` 경로 기반, `RoutePlanScreen` 신규 (맵 클릭 시퀀스 + 추천 순서 + 거리 표시), `OrderBoard` 맵 중심 레이아웃 A (카드 우측 스트립, 차고 마커, 호버 시 경로선 미리보기). D-070(목적지 1개) 부활 — 잡마다 진짜 다른 목적지(1~3). spec/plan: `2026-05-15-order-route-flow-{design,plan}.md`. PushNotification 도구 + 비주얼 컴패니언(superpowers brainstorming) 사용.
+- **세션 25 (2026-05-15)**: **채널 5 Plan 2** (트렁크 자유 배치 — 포장→배치→출발 흐름, 마우스 드래그로 트렁크 바닥에 큐브 놓기, `714d489`). **채널 5 Plan 3** (적재함 크기 업그레이드 — TrunkExpand1/2, BoxCapacity 파생, OrderCard 회색 잠금, ResultPanel 5→7 카드, `a0c5a92`). **채널 5 전체 완료** (Plan 1·2·3). 그 다음 도현 결정: "오더보드/차고 시스템은 기획을 조금 더" → brainstorming 진입. 차고/부품 시스템은 레퍼런스 리서치 (`옵시디언/research/garage-parts-reference.md` 완료) 후 후속, OrderBoard 개편 spec/plan 작성 + 인라인 구현. **채널 8 (주문→경로 계획 흐름) 완료** — `OrderJob.destinationLabels` 데이터 모델, `DeliveryManager.ActivateRoute` 경로 기반, `RoutePlanScreen` 신규, `OrderBoard` 맵 중심 레이아웃 A. D-070(목적지 1개) 부활.
+- **세션 26 (2026-05-15~16)**: manual play 피드백 폭주 → fix·polish 사이클.
+  - **모델 정정** — 1잡=1곳 (`9578bea` `ea2946a` `ae69ca2`). OrderBoard 다중선택 UI + 출발 버튼.
+  - **자기검증 3종 즉시 발효** (D-071, `f7d48dd`) — `project_rules/session.md` 코드 변경 commit 전 compile/runtime/visual 셋 다 통과 의무. 같은 세션 4회 반복 → incidents.md 등재. 메모리 [[feedback-self-verify-loop]] + [[reference-input-system-mode]].
+  - **폴리시 4영역 완료** — 보드/경로 (`5b60634` `39389f6`), 포장 (`02cd082`), 트렁크캠+미니맵+화살표 (`69c09b9`), 정산 다물건 (`a48cedc`). subagent dispatch 1회 (출발 버튼 overflow 진짜 원인 = VLG childControlHeight).
+  - **status audit + 기획서 14슬라이드 현행화** (`83286df` `efb20c7`).
+  - **수치 audit 시스템** (`0f1a577`) — RunMetricsRecorder + CSV. 3런 측정 결과 **한 런 8~12초 / 거리 49~110m**. 데모 목표 5~15분과 200~900배 갭. **도시 78×54m 너무 작음이 본질** → 다음 세션 "맵 넓히기" 결정.
+  - 배치 단계 Q/E 회전 (`c056910`).
+  - 도현 메타 자각: 결단 회피 → 정리/audit/리서치로 회피 패턴. 해법은 작게 쪼개기.
 
 ---
 
@@ -36,15 +44,28 @@
 
 ---
 
-## 다음 세션 (세션 26) — 첫 작업
+## 다음 세션 (세션 27) — 첫 작업
 
-1. **🟡 도현 manual play — 누적 검증 빚** (전부 unity-cli 자동 검증만):
-   - 채널 5 Plan 1/2/3 — 포장 → 배치(드래그) → 적재함 잠금 카드.
-   - **채널 8 풀 흐름** — 주문 보드(맵 메인, 우측 카드, 차고 마커, 호버 경로선 미리보기) → 카드 클릭 → 경로 계획 화면(마커 클릭 시퀀스/추천 순서/확정) → 포장 → 출발 → DM이 정한 순서대로 배달 진행. 스크린샷: `flow_1_board_hover_risky.png` / `flow_2_routeplan_suggested.png`.
-   - 채널 8 UX 손맛: 마커 클릭 raycast 정확도 / 추천 순서 적절성 / 거리 표시 의미.
-2. **W3 차고/부품 시스템** — 레퍼런스 리서치 완료 (`옵시디언/research/garage-parts-reference.md`). 다음: 브레인스토밍(시스템 카테고리·UI·트리거 결정) → spec → 구현. 권고 요점: 별도 차고 화면, 부품 6 카테고리 골격(데모 2 복원), 복원=서사+약한 패시브, 기존 UpgradeSystem 안 건드림.
-3. 화물 손상 인과 변경 (D-068) Play 테스트 — 박스 충돌 빈도 확인 후 boxWallDamageMul 튜닝.
-4. 채널 8 폴리시 (W5+): 추천 순서 시각 표시 강화, 호버 외 클릭 시 마커 위치 강조 등.
+**도현 결정: 맵 넓히기 진입.** 세션 26 수치 audit에서 도시 78×54m 너무 작음 = 한 런 8~12초 (목표 5~15분의 1/30) 근본 원인 발견. 거리 확장이 escalation/차고/페이싱 다른 결정의 선결조건.
+
+1. **🔴 맵 확장 (세션 27 핵심)** — 도시 17배 (78×54 → ~330×230 어림). 큰 작업이라 brainstorm 한 라운드 후 진입 권장:
+   - zone 3개 (다운타운/항구/공업) 영역 어떻게 분할
+   - 도로 자동 배치 (`Assets/Editor/_Recovery/` 의 BuildingPlacer/RoadBuilder 패턴, asset.md 규칙 준수)
+   - 배달지 8개 → 더 멀게 재배치 + zone별 분포
+   - 마커 간 평균 거리 목표: ~500m (한 잡 1~2분)
+   - roadMask 수정 → `TrackConnectivityVerifier` 자동 실행 의무 (asset.md)
+   - heightMask 도입 시 slope tile만 사용 (D-050)
+2. 맵 확장 후 reward/잡/zone unlock cost 모두 재튜닝 필요 (현재 8초 기준이라 17배 시간이면 보상도 비례).
+3. **다시 RunMetricsRecorder 측정** — 맵 넓힌 후 5런. 한 런이 1~2분으로 늘면 그 다음에 escalation 박을 시간 생김.
+4. **이후 순서 (도현 직관 기반)**: 맵 → 측정 → escalation brainstorm → 차고/부품 → 화물 비주얼.
+
+### 미해결 / 메모
+
+- **세션 26 manual play 빚 (여전히)**: 채널 5 Plan 1/2/3 + 채널 8 풀 흐름 + 폴리시 4영역 + Q/E 회전. 맵 넓히기 전 한 번 굴려보면 더 정확한 base.
+- **데모 컨셉 갭**: 한 런 8~12초 vs 목표 5~15분. 200~900배 차이. **거리 확장 + escalation 둘 다 필요** (거리만으론 부족).
+- 도현 결단 회피 패턴 — 큰 결정을 1시간 prototype으로 쪼개기. 맵 확장도 "33×23 → 일단 절반 (160×110) → 측정 → 더 늘림" 단계로.
+- 채널 5 슬라이드 튜닝, 미니맵 목표 강조 (영역 3에서 일부 처리됨), 화물 비주얼 회색 큐브 — 세션 26 status audit 참조.
+- `EditorApplication.Step()`은 에디터를 멈춤 → 런타임 거동 검증 전 frameCount 확인 ([[feedback-unity-step-pauses]]).
 
 ### 미해결 / 메모
 
@@ -67,8 +88,8 @@
 
 ## 미커밋
 
-없음 — 전부 기능 단위로 커밋됨.
-최근: `0a39d66` 세션18~24 일괄 → `606ce2e` 미니맵 → `06c6c3a` 방향화살표 → `16f28c7` 세션24 docs → `baf7fd4` D-071+채널5 plan → `bd53ea2` 채널5 Plan1.
+없음.
+세션 26 최근: `f7d48dd` 자기검증3종 즉시발효 → `02cd082` 폴리시 영역2 → `69c09b9` 영역3 → `a48cedc` 영역4 → `83286df` audit → `efb20c7` 기획서 → `0f1a577` metrics → `c056910` Q/E 회전.
 
 ---
 
