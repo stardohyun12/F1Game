@@ -22,6 +22,8 @@ namespace PitCrew.Packing
         InputAction _mouseClickAction;
         InputAction _mousePosAction;
         InputAction _wheelAction;
+        // 채널 5 — 배치 단계 회전 (Q/E 90도 스냅, R도 시계 90도)
+        InputAction _rotLeftAction, _rotRightAction;
 
         bool _loggedFirstInput;
 
@@ -58,6 +60,10 @@ namespace PitCrew.Packing
 
             _wheelAction = new InputAction("wheel", binding: "<Mouse>/scroll/y");
             _wheelAction.Enable();
+
+            _rotLeftAction = new InputAction("rotL", binding: "<Keyboard>/q");
+            _rotRightAction = new InputAction("rotR", binding: "<Keyboard>/e");
+            _rotLeftAction.Enable(); _rotRightAction.Enable();
         }
 
         void OnDisable()
@@ -70,6 +76,8 @@ namespace PitCrew.Packing
             _mouseClickAction?.Disable(); _mouseClickAction?.Dispose();
             _mousePosAction?.Disable(); _mousePosAction?.Dispose();
             _wheelAction?.Disable(); _wheelAction?.Dispose();
+            _rotLeftAction?.Disable(); _rotLeftAction?.Dispose();
+            _rotRightAction?.Disable(); _rotRightAction?.Dispose();
         }
 
         void Update()
@@ -86,6 +94,13 @@ namespace PitCrew.Packing
                     if (_mouseClickAction.WasPressedThisFrame()) Screen.BeginTrunkDrag(sp);
                     else if (_mouseClickAction.IsPressed()) Screen.UpdateTrunkDrag(sp);
                     else if (_mouseClickAction.WasReleasedThisFrame()) Screen.EndTrunkDrag();
+                }
+                // 채널 5 — 드래그 중 큐브 Y축 90도 회전. Q 좌, E 우, R도 우(reset이 배치 단계엔 무의미).
+                if (Screen.IsDraggingTrunkItem)
+                {
+                    if (_rotLeftAction != null && _rotLeftAction.WasPressedThisFrame()) Screen.RotateDraggedItem(-90f);
+                    if (_rotRightAction != null && _rotRightAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
+                    if (_resetAction != null && _resetAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
                 }
                 return;
             }

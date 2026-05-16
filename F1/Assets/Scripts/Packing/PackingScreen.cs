@@ -750,7 +750,7 @@ namespace PitCrew.Packing
             if (rightPanel != null) rightPanel.SetActive(false);
             if (prevBtn != null) prevBtn.gameObject.SetActive(false);
             if (nextBtn != null) nextBtn.gameObject.SetActive(false);
-            if (titleText != null) titleText.text = "트렁크에 배치 — 드래그";
+            if (titleText != null) titleText.text = "트렁크에 배치 — 드래그 · Q/E 회전";
             if (goButtonLabel != null) goButtonLabel.text = "출발";
         }
 
@@ -802,6 +802,16 @@ namespace PitCrew.Packing
 
         /// <summary>드래그 종료.</summary>
         public void EndTrunkDrag() => draggedItem = null;
+
+        /// <summary>현재 드래그 중인 큐브 있는지 (Input이 회전 키 처리할 때 가드).</summary>
+        public bool IsDraggingTrunkItem => draggedItem != null;
+
+        /// <summary>채널 5 — 배치 단계 회전. Y축 90도 스냅이 적재함 정렬에 직관적.</summary>
+        public void RotateDraggedItem(float deltaYDeg)
+        {
+            if (draggedItem == null) return;
+            draggedItem.transform.Rotate(0f, deltaYDeg, 0f, Space.World);
+        }
 
         // =========================================================
         //  Item spawning
