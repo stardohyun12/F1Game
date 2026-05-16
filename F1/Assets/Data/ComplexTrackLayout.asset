@@ -107,26 +107,38 @@ MonoBehaviour:
   cellHeightMeters: 1.5
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
-  - col: 6
-    row: 4
-    label: DowntownHub
-  - col: 6
-    row: 8
-    label: NorthGate
-  - col: 12
+  - col: 0
     row: 2
-    label: FactoryEast
-  - col: 14
-    row: 4
-    label: EastBranchEnd
+    label: PierEnd
   - col: 0
     row: 6
-    label: SuburbWest
-  - col: 0
-    row: 2
-    label: SuburbSouth
-  - col: 8
+    label: CargoShip
+  - col: 12
     row: 0
-    label: SouthGate
+    label: Warehouse
+  - col: 0
+    row: 10
+    label: OfficeCornerS
+  - col: 16
+    row: 5
+    label: OfficeCornerN
+  - col: 0
+    row: 16
+    label: CentralPlaza
+  - col: 13
+    row: 16
+    label: MainStation
+  - col: 16
+    row: 21
+    label: FactoryGateA
+  - col: 29
+    row: 16
+    label: FactoryGateB
+  - col: 29
+    row: 12
+    label: MotorDepot
+  - col: 18
+    row: 16
+    label: ContainerYard
   startCell: {x: 12, y: 10}
   startYawDeg: 90
