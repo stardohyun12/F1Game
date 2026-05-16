@@ -147,12 +147,17 @@ public static class SetupOrderSystem
         so.FindProperty("catalog").objectReferenceValue = catalog;
         so.ApplyModifiedProperties();
 
-        // RunController 와이어링
-        var soCtrl = new SerializedObject(ctrl);
-        soCtrl.FindProperty("deliveryManager").objectReferenceValue = mgr;
-        soCtrl.FindProperty("orderBoard").objectReferenceValue = board;
-        soCtrl.FindProperty("resultPanel").objectReferenceValue = result;
-        soCtrl.ApplyModifiedProperties();
+        // RunController 와이어링 — 세션 19+ 부터 Services DI 패턴으로 전환됨.
+        // 옛 SerializeField (deliveryManager/orderBoard/resultPanel) 제거됨.
+        // GameContext.AutoFindMissing가 FindFirstObjectByType으로 Services에 주입.
+        // 이 함수는 GameContext만 보장하면 됨.
+        var gc = Object.FindFirstObjectByType<GameContext>(FindObjectsInactive.Include);
+        if (gc == null)
+        {
+            var gcGo = new GameObject("GameContext");
+            gcGo.AddComponent<GameContext>();
+            Undo.RegisterCreatedObjectUndo(gcGo, "Setup Order System");
+        }
 
         // 5. Main Camera 에 OverviewCamera
         var mainCam = Camera.main;
@@ -178,10 +183,8 @@ public static class SetupOrderSystem
                 soOv.ApplyModifiedProperties();
             }
 
-            // RunController.overviewCam 와이어링
-            var soCtrl2 = new SerializedObject(ctrl);
-            soCtrl2.FindProperty("overviewCam").objectReferenceValue = ov;
-            soCtrl2.ApplyModifiedProperties();
+            // RunController.overviewCam 옛 SerializeField 제거됨 (Services DI).
+            // OverviewCamera는 GameContext.AutoFindMissing이 FindFirstObjectByType으로 주입.
         }
 
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
