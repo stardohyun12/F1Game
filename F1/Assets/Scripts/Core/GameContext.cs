@@ -40,6 +40,9 @@ public class GameContext : MonoBehaviour
         Services.Reset();
         if (autoFindMissingOnAwake) AutoFindMissing();
 
+        // 2026-05-16 수치 audit — 모든 런 자동 측정
+        RunMetricsRecorder.EnsureExists();
+
         Services.Delivery = deliveryManager;
         Services.Overview = overviewCamera;
         Services.Board = orderBoard;

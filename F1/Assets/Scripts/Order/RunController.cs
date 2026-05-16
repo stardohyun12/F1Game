@@ -155,7 +155,11 @@ public class RunController : MonoBehaviour, IRunController
         Elapsed = 0f;
         CompletedCount = 0;
         RunActive = true;
+        OnRunStarted?.Invoke(this);
     }
+
+    /// <summary>BeginRun 직후 발화. RunMetricsRecorder가 거리 누적 시작.</summary>
+    public event System.Action<RunController> OnRunStarted;
 
     void ActivateDeliveryPoints()
     {
@@ -252,10 +256,16 @@ public class RunController : MonoBehaviour, IRunController
 
         if (Upgrade != null && reward > 0) Upgrade.AddReward(reward);
 
+        // 2026-05-16 수치 audit — RunMetricsRecorder가 구독해서 CSV 기록.
+        OnRunEnded?.Invoke(this);
+
         Time.timeScale = 0f;
         if (Overview != null) Overview.GoToOverview();
         if (ResultUI != null) ResultUI.Show(this);
     }
+
+    /// <summary>EndRun 직후 발화. RunMetricsRecorder가 구독해 CSV 기록.</summary>
+    public event System.Action<RunController> OnRunEnded;
 
     public static float ComputeIntegrityMultiplier(float integrityPercent)
     {
