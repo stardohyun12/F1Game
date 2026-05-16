@@ -17,6 +17,13 @@ public static class SetupComplexScene
     {
         // 1. Layout SO
         var layout = LoadOrCreate<TrackLayout>(LayoutPath);
+        // R1 guard (세션 27, 2026-05-16): 이미 확장 layout이 박혀 있으면 15×9 하드코딩 덮어쓰기 skip.
+        // R1에서 30×22로 확장 후 이 함수 다시 돌면 layout 파괴 발생 — Width>=20 이면 skip.
+        if (layout.Width >= 20)
+        {
+            Debug.Log($"[SetupComplexScene] 기존 layout Width={layout.Width} 감지 — 15×9 하드코딩 skip, scene만 재생성.");
+            goto SkipLayoutWrite;
+        }
         // 15x9 grid — 세션 13 확장.
         //  - 동쪽 2 col(13-14) 추가: ㅗ자 dead-end 돌출 (격자 단조 해결)
         //  - 'X' = pedestrian crossing (straight 시각 변종). 남/북/중앙 main road에 각 3개
@@ -78,6 +85,7 @@ public static class SetupComplexScene
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
+        SkipLayoutWrite:
         // 2. New scene
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
