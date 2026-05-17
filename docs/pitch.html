@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>PIT CREW — 게임 기획서</title>
+<style>
+  :root {
+    --bg:#0a0b0e; --panel:#14161c; --panel2:#1a1d26; --line:#272b36;
+    --text:#f3f4f8; --muted:#9097a8;
+    --accent:#ff2d2d; --accent2:#ffb800; --ok:#22c55e; --info:#60a5fa;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;
+    font-size:15px; line-height:1.65; }
+  .wrap { max-width:1100px; margin:auto; padding:0 24px 80px; }
+
+  /* HERO */
+  .hero { position:relative; padding:80px 24px 60px; text-align:center;
+    background:radial-gradient(ellipse at center top, #1e0a0a 0%, var(--bg) 70%);
+    border-bottom:1px solid var(--line); margin-bottom:40px; }
+  .hero .logo { font-size:64px; font-weight:900; letter-spacing:-2px; line-height:1;
+    margin-bottom:8px; }
+  .hero .logo .red { color:var(--accent); }
+  .hero .tagline { font-size:20px; color:var(--text); max-width:760px; margin:18px auto 4px;
+    font-weight:500; line-height:1.5; }
+  .hero .tagline b { color:var(--accent2); }
+  .hero .sub { color:var(--muted); font-size:14px; margin-top:10px; }
+  .hero .meta { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:26px; }
+  .hero .meta span { background:var(--panel); border:1px solid var(--line); padding:6px 14px;
+    border-radius:20px; font-size:12px; color:var(--muted); }
+  .hero .meta span b { color:var(--text); margin-right:6px; }
+
+  /* SECTIONS */
+  h2 { font-size:28px; font-weight:800; margin:60px 0 6px; letter-spacing:-0.5px; }
+  h2 .num { color:var(--accent); margin-right:12px; font-size:22px; font-weight:700; }
+  h2 + .lead { color:var(--muted); font-size:15px; margin-bottom:24px; }
+  h3 { font-size:18px; margin:18px 0 6px; color:var(--info); font-weight:600; }
+
+  /* WHAT IS IT */
+  .what { background:var(--panel); border-radius:16px; padding:32px 36px; font-size:17px;
+    line-height:1.75; border-left:4px solid var(--accent); }
+  .what p { margin-bottom:14px; }
+  .what p:last-child { margin-bottom:0; }
+  .what b { color:var(--accent2); }
+
+  /* USP CARDS */
+  .usp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+  .usp { background:var(--panel); border-radius:12px; padding:22px 22px 20px;
+    border-top:3px solid var(--accent); }
+  .usp .num { font-size:11px; color:var(--accent); font-weight:700; letter-spacing:2px; }
+  .usp h3 { color:var(--text); font-size:19px; margin:6px 0 8px; }
+  .usp p { color:var(--muted); font-size:14px; line-height:1.55; }
+  .usp.b2 { border-top-color:var(--accent2); }
+  .usp.b2 .num { color:var(--accent2); }
+  .usp.b3 { border-top-color:var(--info); }
+  .usp.b3 .num { color:var(--info); }
+  .usp.b4 { border-top-color:var(--ok); }
+  .usp.b4 .num { color:var(--ok); }
+
+  /* LOOP */
+  .loop { display:flex; align-items:stretch; gap:8px; overflow-x:auto; padding-bottom:8px; }
+  .step { flex:1 1 0; min-width:140px; background:var(--panel); border-radius:10px;
+    padding:18px 14px; text-align:center; border:1px solid var(--line); }
+  .step .ico { font-size:32px; margin-bottom:8px; display:block; }
+  .step .name { font-weight:700; font-size:14px; margin-bottom:4px; }
+  .step .desc { font-size:11px; color:var(--muted); line-height:1.4; }
+  .arrow { display:flex; align-items:center; color:var(--accent); font-size:20px; }
+
+  /* SYSTEMS */
+  .sys-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+  .sys { background:var(--panel); border-radius:12px; overflow:hidden; }
+  .sys .img { background:#0c0d10; height:160px; display:flex; align-items:center; justify-content:center;
+    color:#4a4f5d; font-size:13px; border-bottom:1px solid var(--line);
+    background-image:linear-gradient(135deg,#181a22 25%,transparent 25%,transparent 50%,#181a22 50%,#181a22 75%,transparent 75%);
+    background-size:18px 18px; }
+  .sys .body { padding:18px 20px; }
+  .sys h3 { color:var(--text); margin:0 0 6px; font-size:16px; }
+  .sys p { color:var(--muted); font-size:13px; line-height:1.55; }
+  .sys .tag { display:inline-block; background:var(--panel2); padding:2px 8px; border-radius:10px;
+    font-size:10px; color:var(--accent2); margin-top:8px; font-weight:600; letter-spacing:0.5px; }
+
+  /* COMPARE TABLE */
+  table.compare { width:100%; border-collapse:separate; border-spacing:0;
+    background:var(--panel); border-radius:12px; overflow:hidden; font-size:13px; }
+  table.compare th, table.compare td { padding:12px 14px; text-align:center;
+    border-bottom:1px solid var(--line); }
+  table.compare th { background:#1c2028; color:var(--muted); font-weight:600; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.6px; }
+  table.compare tbody td:first-child { text-align:left; font-weight:600; }
+  table.compare tr.us { background:rgba(255,45,45,0.06); }
+  table.compare tr.us td:first-child { color:var(--accent); }
+  table.compare tr:last-child td { border-bottom:none; }
+
+  /* NARRATIVE */
+  .narrative { background:linear-gradient(135deg, #1a0a0a 0%, var(--panel) 100%);
+    border-radius:14px; padding:32px 36px; border:1px solid var(--line); }
+  .arc { display:flex; justify-content:space-between; align-items:center; margin:24px 0 4px;
+    gap:8px; flex-wrap:wrap; }
+  .arc .stage { flex:1 1 0; min-width:110px; text-align:center; padding:14px 8px;
+    background:var(--panel2); border-radius:8px; font-size:12px; }
+  .arc .stage b { display:block; color:var(--accent2); font-size:13px; margin-bottom:4px; }
+  .arc .stage.cur { background:rgba(255,45,45,0.15); border:1px solid var(--accent); }
+  .arc .step-arrow { color:var(--accent); font-size:14px; }
+
+  /* TIMELINE */
+  .timeline { display:flex; flex-direction:column; gap:8px; }
+  .tl { background:var(--panel); padding:14px 18px; border-radius:8px; display:flex;
+    align-items:center; gap:14px; border-left:3px solid var(--line); font-size:14px; }
+  .tl.done { border-left-color:var(--ok); }
+  .tl.now { border-left-color:var(--accent); background:rgba(255,45,45,0.05); }
+  .tl.future { border-left-color:var(--info); opacity:0.85; }
+  .tl .when { color:var(--muted); font-size:12px; min-width:80px; }
+  .tl .what { flex:1; }
+  .tl .status { font-size:11px; padding:3px 8px; border-radius:10px; font-weight:600; }
+  .tl.done .status { background:rgba(34,197,94,0.18); color:var(--ok); }
+  .tl.now .status { background:rgba(255,45,45,0.18); color:var(--accent); }
+  .tl.future .status { background:rgba(96,165,250,0.18); color:var(--info); }
+
+  /* FOOTER INFO */
+  .info-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+  .info { background:var(--panel); border-radius:10px; padding:18px 20px; }
+  .info h3 { color:var(--text); font-size:14px; margin:0 0 8px; }
+  .info p { color:var(--muted); font-size:13px; line-height:1.55; }
+  .info b { color:var(--accent2); }
+
+  /* INTERNAL SECTION */
+  .internal { margin-top:80px; padding:24px 28px; background:var(--panel2);
+    border:1px dashed var(--line); border-radius:10px; }
+  .internal h2 { font-size:18px; margin:0 0 4px; color:var(--muted); }
+  .internal h2 .num { color:var(--muted); }
+  .internal .lead { color:var(--muted); font-size:12px; margin-bottom:14px; }
+  .internal table { width:100%; font-size:12px; border-collapse:collapse; }
+  .internal table td, .internal table th { padding:5px 8px; border-bottom:1px solid var(--line); text-align:left; }
+  .internal table th { color:var(--muted); font-weight:600; }
+  .internal .small-link { color:var(--info); font-size:11px; text-decoration:none; }
+  .internal .small-link:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<!-- =================== HERO =================== -->
+<div class="hero">
+  <div class="logo">PIT <span class="red">CREW</span></div>
+  <div class="tagline">
+    망한 F1 팀이 <b>배달로 자금을 벌어 머신을 복원하고</b><br>
+    다시 그랑프리에 복귀하는 5~15분 짜리 한 런 레이싱 게임.
+  </div>
+  <div class="sub">아케이드 드리프트 × 화물 관리 × 경로 퍼즐 × 로그라이트 메타</div>
+  <div class="meta">
+    <span><b>장르</b>레이싱·배달·로그라이트</span>
+    <span><b>플랫폼</b>Steam (Windows)</span>
+    <span><b>플레이</b>1인 / 키보드·게임패드</span>
+    <span><b>한 런</b>5~15분</span>
+    <span><b>출시 (데모)</b>2026-06-24</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- =================== WHAT IS IT =================== -->
+<h2><span class="num">01</span>이게 어떤 게임?</h2>
+<div class="what">
+  <p>
+    당신은 <b>망한 F1 팀의 마지막 멤버</b>다. 차고에는 망가진 머신만 남았다.
+    돈을 벌어야 부품을 복원할 수 있다. 그래서 잠시 <b>배달 운전사</b>가 된다.
+  </p>
+  <p>
+    한 런은 5~15분. 도시에서 주문 카드를 고르고, 화물을 직접 트렁크에 포장·배치하고,
+    경로를 짜고, 차를 몰아 배달한다. 운전이 거칠면 화물이 깨진다.
+    완주하면 정산금이 들어오고, 그 돈으로 <b>F1 부품을 한 조각씩 복원</b>한다.
+  </p>
+  <p>
+    엔진이 돌아오고, 변속기가 살아나고, 마침내 머신이 가동되면 — 그랑프리로 복귀한다.
+    <b>배달은 수단, F1 복귀가 목적</b>이다.
+  </p>
+</div>
+
+<!-- =================== USP =================== -->
+<h2><span class="num">02</span>왜 이 게임인가</h2>
+<div class="lead">시장에 이 4가지를 동시에 만족하는 게임이 없다.</div>
+<div class="usp-grid">
+  <div class="usp">
+    <div class="num">USP 1</div>
+    <h3>한 런 5~15분</h3>
+    <p>커피 한 잔, 출퇴근 한 정거장. 90분짜리 Pacific Drive도, 무제한 EDC도 아닌 <b>딱 한 결정 단위</b>. 결과까지 보고 닫는다.</p>
+  </div>
+  <div class="usp b2">
+    <div class="num">USP 2</div>
+    <h3>한 런에 결정 4개</h3>
+    <p>주문 / 포장 / 경로 / 업그레이드. Crazy Taxi는 0~1개. 카드 로그라이트(Slay the Spire)급 결정 밀도를 운전 게임에.</p>
+  </div>
+  <div class="usp b3">
+    <div class="num">USP 3</div>
+    <h3>Burnout급 운전감</h3>
+    <p>아케이드 드리프트, 즉각 피드백. 시뮬레이션 아님. 운전 자체가 재미. "조작감만으로도 한 시간 굴림"이 1주차 검증 통과 조건이었다.</p>
+  </div>
+  <div class="usp b4">
+    <div class="num">USP 4</div>
+    <h3>매 런이 다른 빌드</h3>
+    <p>로그라이트 정산. 업그레이드가 <b>다음 런 감각</b>을 바꿈. EDC같은 단방향 진보 아님. 매번 새로 짠다.</p>
+  </div>
+</div>
+
+<!-- =================== CORE LOOP =================== -->
+<h2><span class="num">03</span>한 런이 이렇게 흘러간다</h2>
+<div class="lead">5~15분, 7단계. 모든 단계가 결정 또는 실행.</div>
+<div class="loop">
+  <div class="step"><span class="ico">📋</span><div class="name">주문 보드</div><div class="desc">N개 잡 카드 중 골라잡기</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">📦</span><div class="name">3D 포장</div><div class="desc">Bubble/Foam/Hardcase 4채널</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">🛻</span><div class="name">트렁크 배치</div><div class="desc">마우스 드래그 + Q/E 회전</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">🗺️</span><div class="name">경로 계획</div><div class="desc">배달지 순서 + 미니맵</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">🏎️</span><div class="name">주행</div><div class="desc">아케이드 드리프트, 5~10분</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">💰</span><div class="name">정산</div><div class="desc">수익 · 손상 · 평판</div></div>
+  <div class="arrow">→</div>
+  <div class="step"><span class="ico">🔧</span><div class="name">차고 / 복원</div><div class="desc">F1 부품 한 조각씩</div></div>
+</div>
+
+<!-- =================== SYSTEMS =================== -->
+<h2><span class="num">04</span>핵심 시스템</h2>
+<div class="lead">단순한 메커니즘 9개. 조합으로 깊이 발생.</div>
+<div class="sys-grid">
+
+  <div class="sys">
+    <div class="img">[ 3D 포장 화면 — Bubble/Foam/Hardcase 진행 ]</div>
+    <div class="body">
+      <h3>3D 포장 미니게임</h3>
+      <p>화물마다 4채널 포장. 클릭·드래그로 직접 감싸기. 깨지기 쉬운 와인병은 풀세트, 무거운 박스는 minimal. 비용·시간·보호 사이 trade-off.</p>
+      <div class="tag">✅ 구현 완료</div>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div class="img">[ 트렁크 배치 화면 — 큐브 N개 드래그 ]</div>
+    <div class="body">
+      <h3>트렁크 자유 배치</h3>
+      <p>1~3개 화물을 직접 트렁크 바닥에 놓는다. Q/E/R로 90도 회전. 빈 공간 = 화물 슬라이드 위험. 빽빽이 채우면 충돌 적지만 시간 ↑.</p>
+      <div class="tag">✅ 구현 완료</div>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div class="img">[ 운전 + 화물 슬라이드 데모 ]</div>
+    <div class="body">
+      <h3>아케이드 드리프트 + 화물 물리</h3>
+      <p>Burnout 풍 운전. 급제동·코너에서 화물이 트렁크 안에서 미끄러진다. 충돌 누적 → 화물 손상 → 정산금 ↓.</p>
+      <div class="tag">✅ 구현 완료</div>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div class="img">[ 도시 + 미니맵 + 화살표 ]</div>
+    <div class="body">
+      <h3>도시 · zone 해금 · 내비</h3>
+      <p>다운타운에서 시작. 자금이 모이면 항구·공업 zone 자동 해금. 미니맵·방향 화살표로 헤매지 않음.</p>
+      <div class="tag">✅ 구현 완료 · 맵 확장 진행중</div>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div class="img">[ 차고 + F1 머신 부품 진행도 ]</div>
+    <div class="body">
+      <h3>F1 머신 복원 (메타 게임)</h3>
+      <p>정산금으로 부품 한 조각씩 구매. 엔진 → 변속기 → 서스 → 에어로 → 타이어 → 도색. 부품마다 차 감각 변화. 완전 복원 → 그랑프리 모드 해금.</p>
+      <div class="tag">🔴 핵심 진행 작업 (이번 주)</div>
+    </div>
+  </div>
+
+  <div class="sys">
+    <div class="img">[ 정산 화면 — 7카드 결과 ]</div>
+    <div class="body">
+      <h3>로그라이트 정산</h3>
+      <p>한 런 끝마다 7카드: 수익 · 거리 · 손상 · 보너스 · 평판 · 연료 · 시간. 합산 자금으로 다음 런 결정.</p>
+      <div class="tag">✅ 구현 완료</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== COMPARE =================== -->
+<h2><span class="num">05</span>비슷한 게임과 무엇이 다른가</h2>
+<div class="lead">시장의 빈 칸을 채운다.</div>
+<table class="compare">
+  <thead>
+    <tr>
+      <th>게임</th>
+      <th>한 런 길이</th>
+      <th>결정 / 런</th>
+      <th>정산 → 다음 런</th>
+      <th>운전감</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Easy Delivery Co.</td><td>무제한 (총 5h)</td><td>낮음</td><td>단방향</td><td>가벼움</td></tr>
+    <tr><td>Crazy Taxi</td><td>라운드 짧음</td><td>1</td><td>없음</td><td>아케이드</td></tr>
+    <tr><td>Burnout Paradise</td><td>이벤트 짧음</td><td>0</td><td>차량 잠금</td><td>아케이드 ⓞ</td></tr>
+    <tr><td>Pacific Drive</td><td>90분+</td><td>높음</td><td>로그라이트</td><td>시뮬</td></tr>
+    <tr class="us"><td>PIT CREW</td><td>5~15분</td><td>4</td><td>로그라이트 + 서사</td><td>아케이드 ⓞ</td></tr>
+  </tbody>
+</table>
+<div class="lead" style="margin-top:14px;">위 어느 게임도 <b>5~15분 + 결정 밀도 + 로그라이트 + 아케이드 운전감 + F1 복귀 서사</b>를 동시에 만족하지 않는다.</div>
+
+<!-- =================== NARRATIVE =================== -->
+<h2><span class="num">06</span>메타 서사 — F1 복귀의 길</h2>
+<div class="narrative">
+  <p style="color:var(--muted); font-size:14px;">
+    이 게임의 매크로 루프. 단순 스탯 트리가 아니라 <b style="color:var(--accent2);">하나의 이야기</b>다.
+  </p>
+  <div class="arc">
+    <div class="stage cur">
+      <b>0%</b>
+      <div>망가진 머신</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">엔진 죽음<br>차고 텅 빔</div>
+    </div>
+    <div class="step-arrow">▶</div>
+    <div class="stage">
+      <b>25%</b>
+      <div>엔진 살아남</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">시동 컷씬<br>"Engine ON"</div>
+    </div>
+    <div class="step-arrow">▶</div>
+    <div class="stage">
+      <b>50%</b>
+      <div>구동계 복원</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">변속기 + 서스</div>
+    </div>
+    <div class="step-arrow">▶</div>
+    <div class="stage">
+      <b>75%</b>
+      <div>주행 가능</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">시범 주행 해금</div>
+    </div>
+    <div class="step-arrow">▶</div>
+    <div class="stage">
+      <b>100%</b>
+      <div>그랑프리 복귀</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">엔드 시퀀스</div>
+    </div>
+  </div>
+  <p style="margin-top:18px; color:var(--muted); font-size:14px;">
+    배달 한 번은 작은 자금. 5~10번 모이면 부품 하나. 부품 6개로 머신 복원. <b style="color:var(--accent);">매 부품마다 차 감각이 바뀐다</b> — 이게 USP #4 "매 런이 다른 빌드".
+  </p>
+</div>
+
+<!-- =================== ROADMAP =================== -->
+<h2><span class="num">07</span>개발 진척 + 출시 일정</h2>
+<div class="lead">2026년 4월 기획 시작, 6월 24일 Steam 데모 출시 목표.</div>
+<div class="timeline">
+  <div class="tl done">
+    <div class="when">4월</div>
+    <div class="what">컨셉 확립 (USP 4 · 결정 채널 9 정의)</div>
+    <div class="status">완료</div>
+  </div>
+  <div class="tl done">
+    <div class="when">5월 W1</div>
+    <div class="what">맵 zone 해금 시스템 (다운타운/항구/공업)</div>
+    <div class="status">완료</div>
+  </div>
+  <div class="tl done">
+    <div class="when">5월 W2</div>
+    <div class="what">3D 포장 · 트렁크 자유 배치 · 미니맵 · 경로 계획</div>
+    <div class="status">완료</div>
+  </div>
+  <div class="tl now">
+    <div class="when">5월 W3</div>
+    <div class="what"><b>차고 · F1 부품 복원 시스템 — USP 핵심</b></div>
+    <div class="status">지금</div>
+  </div>
+  <div class="tl future">
+    <div class="when">6월 W4</div>
+    <div class="what">정산→복원 연결 + 데모 시나리오 3런</div>
+    <div class="status">대기</div>
+  </div>
+  <div class="tl future">
+    <div class="when">6월 W5</div>
+    <div class="what">사운드 · 화물 비주얼 · 첫 30초 인트로</div>
+    <div class="status">대기</div>
+  </div>
+  <div class="tl future">
+    <div class="when">6월 W6</div>
+    <div class="what">QA + Steam 페이지 자산 (스샷·GIF·트레일러)</div>
+    <div class="status">대기</div>
+  </div>
+  <div class="tl future">
+    <div class="when">6월 24일</div>
+    <div class="what"><b>Steam 데모 출시</b></div>
+    <div class="status">목표</div>
+  </div>
+</div>
+
+<!-- =================== TEAM / TECH =================== -->
+<h2><span class="num">08</span>개발</h2>
+<div class="info-grid">
+  <div class="info">
+    <h3>팀</h3>
+    <p>1인 개발 · 도현. 디자인 · 코드 · 통합 단일 책임. AI 보조 (Claude Code)로 구현 속도 가속.</p>
+  </div>
+  <div class="info">
+    <h3>기술 스택</h3>
+    <p><b>Unity 6000.3.9f1</b>. 에셋 <b>Kenney City Kit</b> (라이선스 무료). 사운드 ElevenLabs / 무료 라이브러리. Steam 배포.</p>
+  </div>
+  <div class="info">
+    <h3>이전 작업</h3>
+    <p>ExulMundi (Unity 2D 탄막 덱빌딩 로그라이트, 스코프 부풀어 미완성). <b>PIT CREW = "완성 가능한 프로젝트"</b> 우선 원칙.</p>
+  </div>
+  <div class="info">
+    <h3>출시 계획</h3>
+    <p><b>2026-06-24</b> Steam 데모. 풀게임 출시는 데모 반응 본 후 결정 (3~6개월 후 가정).</p>
+  </div>
+</div>
+
+<!-- =================== INTERNAL — 도현 내부용 =================== -->
+<div class="internal">
+  <h2><span class="num">▾</span>내부 운영 (외부 공개 X)</h2>
+  <div class="lead">대시보드는 별도 — <a href="dashboard.html" class="small-link">docs/dashboard.html</a> · 마스터 플랜 <a class="small-link">옵시디언/GDD/master-plan-2026-05-17.md</a></div>
+
+  <table>
+    <tr><th>결정 ID</th><th>주제</th><th>추천</th><th>상태</th></tr>
+    <tr><td>D-072</td><td>맵 R2 진입 시점</td><td>A. R1 측정 먼저</td><td>대기</td></tr>
+    <tr><td>D-073</td><td>F1 복원 트리 깊이</td><td>B. 6 부품 × 1 티어</td><td>대기 (W3 진입 전)</td></tr>
+    <tr><td>D-074</td><td>escalation 시스템</td><td>D. 셋 다 약하게</td><td>대기</td></tr>
+    <tr><td>D-075</td><td>차고 시각 디자인</td><td>A. 사이드뷰 분해도</td><td>대기 (W3)</td></tr>
+    <tr><td>D-076</td><td>데모 한 줄 카피</td><td>A. 직설형</td><td>대기</td></tr>
+  </table>
+</div>
+
+<div style="margin-top:48px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; text-align:center;">
+  PIT CREW · 2026 · 1인 개발 · 마지막 갱신 2026-05-17
+</div>
+
+</div>
+</body>
+</html>
