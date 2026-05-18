@@ -66,6 +66,8 @@ public interface ICargoShakeSimulator
     void MountWrappedItem(UnityEngine.GameObject cube);
     /// <summary>마운트된 화물 전부 제거 (런 시작 시 이전 잔재 청소).</summary>
     void ClearMountedItems();
+    /// <summary>런 진입 직후 N초간 화물 손상 무효 (진입 순간 자동 손상 방지).</summary>
+    void StartGracePeriod(float seconds);
 }
 
 public interface IRunController

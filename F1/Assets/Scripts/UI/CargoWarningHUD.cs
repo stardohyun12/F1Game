@@ -113,6 +113,10 @@ public class CargoWarningHUD : MonoBehaviour
 
     void Update()
     {
+        // 운전 단계에만 표시.
+        var rc = Services.Run as RunController;
+        if (rc == null || rc.CurrentStage != RunStage.Driving) { SetVisible(false); return; }
+
         if (cargo == null)
         {
             cargo = Services.Cargo as CargoBox;

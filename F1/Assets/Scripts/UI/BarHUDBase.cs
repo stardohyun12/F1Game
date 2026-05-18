@@ -98,8 +98,12 @@ public abstract class BarHUDBase : MonoBehaviour
     /// <summary>Awake 마지막 hook (이벤트 구독 등). 기본 no-op.</summary>
     protected virtual void OnPostAwake() { }
 
-    /// <summary>HUD 표시 조건. false면 CanvasGroup alpha 0 + Update 본문 skip. 기본 항상 표시.</summary>
-    protected virtual bool ShouldShow() => true;
+    /// <summary>HUD 표시 조건. false면 CanvasGroup alpha 0 + Update 본문 skip. 기본: Driving 단계일 때만.</summary>
+    protected virtual bool ShouldShow()
+    {
+        var rc = Services.Run as RunController;
+        return rc != null && rc.CurrentStage == RunStage.Driving;
+    }
 
     /// <summary>Update에서 BG 색상 등 추가 효과. 기본 no-op.</summary>
     protected virtual void OnApplyEffects() { }

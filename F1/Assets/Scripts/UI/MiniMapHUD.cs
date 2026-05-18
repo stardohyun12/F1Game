@@ -108,9 +108,9 @@ public class MiniMapHUD : MonoBehaviour
 
     void LateUpdate()
     {
-        // 런 중에만 표시 (주문/포장/정산 화면에선 숨김).
+        // 운전 단계에만 표시.
         var run = Services.Run as RunController;
-        bool show = run != null && run.RunActive;
+        bool show = run != null && run.CurrentStage == RunStage.Driving;
         if (group != null) group.alpha = show ? 1f : 0f;
         if (!show) return;
 

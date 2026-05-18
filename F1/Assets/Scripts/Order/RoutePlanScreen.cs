@@ -268,7 +268,11 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
                 foreach (var o in list) if (o != null) orderedOrders.Add(o);
         }
         Hide();
-        if (Services.Packing != null) Services.Packing.Show(orderedOrders);
+        if (Services.Packing != null)
+        {
+            (Services.Run as RunController)?.EnterPacking();
+            Services.Packing.Show(orderedOrders);
+        }
         else if (Services.Run != null) Services.Run.BeginRun(orderedOrders, null);
     }
 

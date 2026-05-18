@@ -73,6 +73,13 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     static readonly float[] kSlotX = { -0.5f, 0f, 0.5f };
 
     bool placeholderHidden;
+    float graceUntil = -1f;
+
+    /// <summary>런 진입 직후 N초간 화물 손상 무효 (진입 순간 자동 손상 방지).</summary>
+    public void StartGracePeriod(float seconds = 1.0f)
+    {
+        graceUntil = Time.time + seconds;
+    }
 
     void Awake()
     {
@@ -243,6 +250,7 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
 
     void TryApplyBoxImpactDamage(TrunkItem it, float speed, Vector3 impactDirLocal)
     {
+        if (Time.time < graceUntil) return; // grace period — 런 진입 직후 손상 무시
         if (cargo == null || speed < boxWallSpeedThreshold) return;
         float raw = (speed - boxWallSpeedThreshold) * boxWallDamageMul;
         if (raw <= 0f) return;

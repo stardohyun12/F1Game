@@ -384,10 +384,12 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
         if (Services.RoutePlan != null)
         {
+            (Services.Run as RunController)?.EnterRouting();
             Services.RoutePlan.Show(pickedOrders);
         }
         else if (Services.Packing != null)
         {
+            (Services.Run as RunController)?.EnterPacking();
             if (allMarkers != null)
                 for (int i = 0; i < allMarkers.Count; i++)
                     if (allMarkers[i] != null) allMarkers[i].SetExternalControl(false);

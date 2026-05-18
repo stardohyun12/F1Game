@@ -19,6 +19,8 @@ public class DeliveryHUD : MonoBehaviour
     Image arrowImg;
     Canvas cachedCanvas;  // Phase 6 perf(B1): Update의 GetComponentInParent 매 프레임 호출 → Awake 1회 캐시.
 
+    CanvasGroup group;
+
     void Awake()
     {
         // Phase 1: Services 경유. SerializeField 비어있으면 Services에서.
@@ -27,6 +29,7 @@ public class DeliveryHUD : MonoBehaviour
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         cachedCanvas = GetComponentInParent<Canvas>();
+        if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
     }
 
@@ -64,6 +67,11 @@ public class DeliveryHUD : MonoBehaviour
     void Update()
     {
         if (manager == null || cam == null || arrowImg == null) return;
+        // 운전 단계에만 표시.
+        var rc = Services.Run as RunController;
+        bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
+        if (group != null) { group.alpha = driving ? 1f : 0f; group.blocksRaycasts = driving; }
+        if (!driving) { if (arrowImg != null) arrowImg.enabled = false; return; }
 
         Vector3 worldTarget = Vector3.zero;
         bool hasTarget = false;

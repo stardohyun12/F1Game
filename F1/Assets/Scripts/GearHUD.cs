@@ -30,6 +30,8 @@ public class GearHUD : MonoBehaviour
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
         if (rt == null) rt = gameObject.AddComponent<RectTransform>();
+        if (!TryGetComponent<CanvasGroup>(out _))
+            gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
     }
 
@@ -99,6 +101,12 @@ public class GearHUD : MonoBehaviour
     void Update()
     {
         if (gears == null) return;
+        // 운전 단계에만 표시.
+        var rc = Services.Run as RunController;
+        bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
+        var grp = GetComponent<CanvasGroup>();
+        if (grp != null) { grp.alpha = driving ? 1f : 0f; grp.blocksRaycasts = driving; }
+        if (!driving) return;
         if (flashT > 0f) flashT -= Time.unscaledDeltaTime;
 
         var theme = UITheme.Active;

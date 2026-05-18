@@ -26,11 +26,14 @@ public class DeliveryProgressHUD : MonoBehaviour
     int lastIdx = -1, lastTotal = -1;
     string lastTargetLabel = null;
 
+    CanvasGroup group;
+
     void Awake()
     {
         if (manager == null) manager = Services.Delivery as DeliveryManager;
         EnsureCanvasParent();
         rt = GetComponent<RectTransform>();
+        if (!TryGetComponent(out group)) group = gameObject.AddComponent<CanvasGroup>();
         BuildIfNeeded();
     }
 
@@ -95,6 +98,11 @@ public class DeliveryProgressHUD : MonoBehaviour
     void Update()
     {
         if (manager == null) return;
+        // 운전 단계에만 표시.
+        var rc = Services.Run as RunController;
+        bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
+        if (group != null) { group.alpha = driving ? 1f : 0f; group.blocksRaycasts = driving; }
+        if (!driving) return;
         var theme = UITheme.Active;
         if (theme != null)
         {

@@ -125,6 +125,18 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
 
     void FixedUpdate()
     {
+        // Stage gating: 운전 단계가 아니면 입력/물리 모두 차단.
+        var stageRc = Services.Run as RunController;
+        if (stageRc == null || stageRc.CurrentStage != RunStage.Driving)
+        {
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            return;
+        }
+
         // TOP 1: 입력 SmoothDamp (세션 14 리서치) — steer/throttle에 자연 지연
         smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, steerLag);
         smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, throttleLag);

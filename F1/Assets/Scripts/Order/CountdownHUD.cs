@@ -77,7 +77,8 @@ public class CountdownHUD : MonoBehaviour
     void Update()
     {
         if (group == null) return;
-        if (controller == null || !controller.RunActive) { group.alpha = 0f; return; }
+        // 운전 단계에만 표시 (시간 제한 있는 경우).
+        if (controller == null || controller.CurrentStage != RunStage.Driving) { group.alpha = 0f; return; }
         float remaining = controller.TimeRemaining;
         if (remaining < 0f) { group.alpha = 0f; return; }
         group.alpha = 1f;

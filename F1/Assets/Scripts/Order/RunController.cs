@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>단계: 보드 → 경로 → 포장 → 운전 → 정산.</summary>
+public enum RunStage { Board, Routing, Packing, Driving, Result }
+
 /// <summary>
 /// 한 런의 진행 추적 + 정산.
 /// OrderBoard → (RoutePlan →) PackingScreen → BeginRun(orders) → 주행 →
@@ -24,6 +27,25 @@ public class RunController : MonoBehaviour, IRunController
     ICargoBox Cargo => Services.Cargo;
     ICargoShakeSimulator Shake => Services.Shake;
     IUpgradeSystem Upgrade => Services.Upgrade;
+
+    // =========================================================
+    //  Stage
+    // =========================================================
+    RunStage stage = RunStage.Board;
+    public RunStage CurrentStage => stage;
+    public event System.Action<RunStage> OnStageChanged;
+
+    void SetStage(RunStage s)
+    {
+        if (stage == s) return;
+        stage = s;
+        OnStageChanged?.Invoke(s);
+    }
+
+    /// <summary>OrderBoard → 경로 화면 진입 시 호출.</summary>
+    public void EnterRouting() => SetStage(RunStage.Routing);
+    /// <summary>경로 확정 → 포장 화면 진입 시 호출.</summary>
+    public void EnterPacking() => SetStage(RunStage.Packing);
 
     [Header("State")]
     /// <summary>이번 런의 주문들 (1~capacity). 채널 8 정정.</summary>
@@ -67,6 +89,7 @@ public class RunController : MonoBehaviour, IRunController
 
     void OpenBoard()
     {
+        SetStage(RunStage.Board);
         if (Board == null)
         {
             Time.timeScale = 1f;
@@ -110,12 +133,14 @@ public class RunController : MonoBehaviour, IRunController
             Debug.LogWarning("[RunController] BeginRun: orders 비어있음 — 폴백 잡으로 진입");
             orders = new List<OrderJob> { MakeFallbackJob() };
         }
+        SetStage(RunStage.Driving);
         TransferWrapStateToCargo(packedItems);
         InitRunState(orders);
         ActivateDeliveryPoints();
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색
+        if (Shake != null) Shake.StartGracePeriod(1.0f);
         StartFollowCameraAndCloseBoard();
         SubscribeDeliveryEvents();
     }
@@ -225,6 +250,7 @@ public class RunController : MonoBehaviour, IRunController
 
     void EndRun(bool success)
     {
+        SetStage(RunStage.Result);
         RunActive = false;
         LastRunSuccess = success;
         LastElapsed = Elapsed;
