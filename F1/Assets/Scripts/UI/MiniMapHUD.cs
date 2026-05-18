@@ -17,13 +17,13 @@ public class MiniMapHUD : MonoBehaviour
 {
     [Header("Layout (좌상단 앵커)")]
     [SerializeField] Vector2 anchoredPos = new Vector2(36, -36);
-    [SerializeField] Vector2 size = new Vector2(240, 240);
+    [SerializeField] Vector2 size = new Vector2(280, 280);
 
     [Header("Camera")]
     [Tooltip("미니맵 카메라가 차 위로 올라가는 높이 (m).")]
-    [SerializeField] float camHeight = 60f;
-    [Tooltip("직교 투영 크기 (절반 높이, m). 클수록 넓게 보임. 맵이 78x54m라 32면 64m 창.")]
-    [SerializeField] float orthoSize = 34f;
+    [SerializeField] float camHeight = 120f;
+    [Tooltip("직교 투영 크기 (절반 높이, m). 클수록 넓게 보임. R1 도시 180×132m → 70이면 140m 창.")]
+    [SerializeField] float orthoSize = 70f;
     [Tooltip("RenderTexture 한 변 해상도 (px).")]
     [SerializeField] int rtResolution = 256;
 

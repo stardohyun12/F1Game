@@ -187,7 +187,10 @@ public class RunController : MonoBehaviour, IRunController
 
     void StartFollowCameraAndCloseBoard()
     {
-        if (Overview != null) Overview.GoToFollow(() => { Time.timeScale = 1f; });
+        // 세션 27 fix — Overview 없거나 콜백 안 터지면 게임이 timeScale=0으로 멈춤.
+        // 무조건 즉시 timeScale=1, Overview는 옵션으로.
+        Time.timeScale = 1f;
+        if (Overview != null) Overview.GoToFollow(null);
         if (Board != null) Board.Close();
     }
 

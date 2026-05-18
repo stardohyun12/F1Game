@@ -3434,10 +3434,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f93da13bf11e6d4b9a4fc33c756295f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OverviewCamera
-  overviewCenter: {x: 42, y: 0, z: 24}
-  overviewHeight: 95
-  overviewPitchDeg: 75
-  overviewFov: 55
+  overviewCenter: {x: 87, y: 0, z: 63}
+  overviewHeight: 180
+  overviewPitchDeg: 70
+  overviewFov: 65
   transitionDuration: 0.8
 --- !u!114 &146730293
 MonoBehaviour:
@@ -52873,17 +52873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad2a17077775dd44cb3597b66745ec2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::PreRunSetupPanel
-  runController: {fileID: 2053950130}
-  panelRoot: {fileID: 1925547915}
-  titleText: {fileID: 842190092}
-  cargoText: {fileID: 1326116212}
-  cargoTipText: {fileID: 10445348}
-  totalCostText: {fileID: 1877103847}
-  cardsParent: {fileID: 63177614}
-  packingCardPrefab: {fileID: 7619870931323072717, guid: 8c07f6a760ee4054288a17b36c567b3c, type: 3}
-  confirmBtn: {fileID: 500052102}
-  confirmText: {fileID: 1994963318}
-  cancelBtn: {fileID: 1551004936}
 --- !u!1001 &2054388350
 PrefabInstance:
   m_ObjectHideFlags: 0
