@@ -169,36 +169,64 @@
   .sysmap .info { color:var(--info); }
   .sysmap .acc { color:var(--accent); }
 
-  /* SYSTEM MAP — HTML 다이어그램 (ASCII 대체) */
+  /* SYSTEM MAP — flowchart 스타일 (한글 안전) */
   .smap { background:var(--panel); border-radius:14px; padding:24px; }
-  .smap .root { background:var(--accent); color:white; padding:10px 16px;
-    border-radius:8px; font-weight:700; text-align:center; max-width:280px;
-    margin:0 auto 8px; }
-  .smap .down { text-align:center; color:var(--accent); font-size:20px; line-height:1; margin:4px 0; }
+  .smap .root { background:var(--accent); color:white; padding:8px 16px;
+    border-radius:8px; font-weight:700; text-align:center; max-width:260px;
+    margin:0 auto 6px; font-size:14px; }
+  .smap .down { text-align:center; color:var(--accent); font-size:22px;
+    line-height:1; margin:2px 0; }
   .smap .services { background:#3a1f1f; border:2px solid var(--accent); color:white;
-    padding:10px 16px; border-radius:8px; font-weight:600; text-align:center;
-    margin:0 auto 16px; max-width:480px; }
+    padding:8px 16px; border-radius:8px; font-weight:600; text-align:center;
+    margin:0 auto 22px; max-width:460px; font-size:13px; }
   .smap .services small { display:block; font-weight:400; color:#ffb8b8;
     font-size:11px; margin-top:2px; }
-  .smap .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
-  .smap .col { background:var(--panel2); border-radius:8px; padding:12px 14px; }
-  .smap .col h4 { font-size:11px; color:var(--info); text-transform:uppercase;
-    letter-spacing:1px; margin:0 0 8px; font-weight:700; border-bottom:1px solid var(--line);
-    padding-bottom:6px; }
-  .smap .col.input h4 { color:var(--info); }
-  .smap .col.gameplay h4 { color:var(--accent); }
-  .smap .col.output h4 { color:var(--ok); }
-  .smap .col.data h4 { color:var(--accent2); }
-  .smap .col ul { list-style:none; padding:0; margin:0; font-size:12px; color:var(--text); }
-  .smap .col li { padding:3px 0; display:flex; align-items:center; gap:6px; }
-  .smap .col li::before { content:'▸'; color:var(--muted); font-size:10px; }
-  .smap .col .note { color:var(--muted); font-size:10px; font-style:italic;
-    margin-left:14px; line-height:1.3; display:block; }
-  .smap .below { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:12px; margin-top:16px; }
-  .smap .below .col { border-top:2px solid var(--accent); }
-  .smap .legend { color:var(--muted); font-size:11px; text-align:center; margin-top:14px;
-    padding-top:10px; border-top:1px dashed var(--line); }
+
+  /* MAIN FLOW — 4 단계 가로 */
+  .flow-row { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto;
+    margin-bottom:22px; }
+  .flow-box { flex:1 1 0; min-width:170px; background:var(--panel2); border-radius:10px;
+    padding:14px 14px; border-top:3px solid var(--info); }
+  .flow-box.b2 { border-top-color:var(--accent); background:#1f1416; }
+  .flow-box.b3 { border-top-color:var(--ok); }
+  .flow-box.b4 { border-top-color:var(--accent2); }
+  .flow-box h4 { font-size:12px; color:var(--text); margin:0 0 8px; font-weight:700;
+    display:flex; align-items:center; gap:6px; }
+  .flow-box .step-num { background:var(--info); color:white; width:20px; height:20px;
+    border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; }
+  .flow-box.b2 .step-num { background:var(--accent); }
+  .flow-box.b3 .step-num { background:var(--ok); }
+  .flow-box.b4 .step-num { background:var(--accent2); color:#1a1a1a; }
+  .flow-box ul { list-style:none; padding:0; margin:0; font-size:12px; color:var(--text); }
+  .flow-box li { padding:2px 0; }
+  .flow-arrow { flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+    padding:0 8px; color:var(--accent); font-size:24px; font-weight:700;
+    line-height:1; min-width:30px; }
+
+  /* META loop back */
+  .flow-loopback { text-align:center; color:var(--muted); font-size:12px; margin:-10px 0 22px;
+    padding:8px; background:var(--panel2); border-radius:6px;
+    border:1px dashed var(--line); }
+  .flow-loopback b { color:var(--accent); }
+
+  /* SUPPORT — 데이터·HUD·인프라 (옆에서 받쳐주는 시스템들) */
+  .support-label { color:var(--muted); font-size:11px; text-align:center;
+    text-transform:uppercase; letter-spacing:2px; margin:0 0 8px; font-weight:600; }
+  .support-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:12px; }
+  .support-box { background:var(--panel2); border-radius:8px; padding:12px 14px;
+    border-left:3px solid var(--muted); }
+  .support-box h4 { font-size:11px; color:var(--text); margin:0 0 6px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.5px; display:flex; justify-content:space-between;
+    align-items:center; }
+  .support-box .feeds { font-size:10px; color:var(--accent); font-weight:600;
+    background:rgba(255,45,45,0.1); padding:2px 6px; border-radius:8px; }
+  .support-box ul { list-style:none; padding:0; margin:0; font-size:12px; color:var(--text); }
+  .support-box li { padding:2px 0; color:var(--muted); }
+  .support-box li b { color:var(--text); font-weight:600; }
+  .support-box .note { color:var(--accent); font-size:10px; font-style:italic;
+    margin-top:4px; display:block; }
 
   /* SYSTEM TABLE */
   table.sys-list { width:100%; border-collapse:separate; border-spacing:0;
@@ -632,11 +660,12 @@
 
   <div class="root">GameContext (Composition Root)</div>
   <div class="down">▼</div>
-  <div class="services">Services (static DI 컨테이너)<small>Awake 시 14 시스템 주입</small></div>
+  <div class="services">Services (static DI 컨테이너)<small>Awake 시 14 시스템 주입 — 모든 클래스가 여기서 의존성 받음</small></div>
 
-  <div class="cols">
-    <div class="col input">
-      <h4>① 입력 / 주행</h4>
+  <!-- MAIN FLOW: 한 런 흐름 ① 입력 → ② 게임플레이 → ③ 정산 → ④ 메타 -->
+  <div class="flow-row">
+    <div class="flow-box">
+      <h4><span class="step-num">1</span>입력 / 주행</h4>
       <ul>
         <li>ArcadeCarController</li>
         <li>TireSystem (4종)</li>
@@ -646,20 +675,24 @@
       </ul>
     </div>
 
-    <div class="col gameplay">
-      <h4>② 게임플레이 루프</h4>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-box b2">
+      <h4><span class="step-num">2</span>게임플레이 루프</h4>
       <ul>
         <li><b>RunController</b> (상태머신)</li>
         <li>OrderBoard</li>
         <li>PackingScreen</li>
         <li>RoutePlanScreen</li>
         <li>DeliveryManager</li>
-        <li>DeliveryPoint × N</li>
+        <li>CargoShakeSimulator</li>
       </ul>
     </div>
 
-    <div class="col output">
-      <h4>③ 출력 / 정산</h4>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-box b3">
+      <h4><span class="step-num">3</span>정산</h4>
       <ul>
         <li>ResultPanel (7카드)</li>
         <li>RunMetricsRecorder</li>
@@ -667,63 +700,62 @@
       </ul>
     </div>
 
-    <div class="col data">
-      <h4>④ 데이터 (SO)</h4>
-      <ul>
-        <li>TrackLayout</li>
-        <li>OrderCatalog (잡 9~11)</li>
-        <li>ZoneRegistry (3 zone)</li>
-        <li>CargoTypePresets (5종)</li>
-        <li>BuildingCatalog</li>
-      </ul>
-    </div>
-  </div>
+    <div class="flow-arrow">→</div>
 
-  <div class="below">
-    <div class="col input">
-      <h4>⑤ 물리 / 화물</h4>
-      <ul>
-        <li>CargoBox</li>
-        <li>CargoShakeSimulator</li>
-        <li>CargoView</li>
-        <li>Modifier Chain</li>
-      </ul>
-    </div>
-
-    <div class="col gameplay">
-      <h4>⑥ 카메라 / HUD</h4>
-      <ul>
-        <li>FollowCamera</li>
-        <li>OverviewCamera</li>
-        <li>MiniMapHUD + Arrow</li>
-        <li>Fuel/Gear/Integrity HUD</li>
-        <li>CountdownHUD</li>
-      </ul>
-    </div>
-
-    <div class="col output">
-      <h4>⑦ 메타 / 진척</h4>
+    <div class="flow-box b4">
+      <h4><span class="step-num">4</span>메타 / 진척</h4>
       <ul>
         <li>UpgradeSystem (지갑)</li>
         <li>ZoneUnlockSystem</li>
-        <li><i>차고 / PartRestore</i><br><span class="note">W3 미구현 (USP 핵심)</span></li>
-      </ul>
-    </div>
-
-    <div class="col data">
-      <h4>⑧ 인프라</h4>
-      <ul>
-        <li>AudioCueBus (7 cue)</li>
-        <li>TileMapAuto (도로)</li>
-        <li>BuildingPlacer</li>
-        <li>TrackConnectivityVerifier</li>
+        <li><i>차고 / PartRestore</i><span class="note" style="color:var(--accent);">W3 미구현</span></li>
       </ul>
     </div>
   </div>
 
-  <div class="legend">
-    화살표 흐름: ①→② 입력으로 주행 / ②→③ 한 런 끝나면 정산 / ③→⑦ 자금이 메타 진척에<br>
-    데이터 흐름: ④ SO → ② 시스템에서 읽기 / ⑦ 메타 변동 → ④ Zone 해금 반영
+  <div class="flow-loopback">
+    ↑ <b>다음 런</b>은 변화된 메타 상태로 ② 게임플레이 루프 재진입 (zone 해금 / 업그레이드 적용)
+  </div>
+
+  <!-- SUPPORT 1: 데이터 SO -->
+  <div class="support-label">▾ 데이터 진리원 — ② 게임플레이가 읽어오는 ScriptableObject들</div>
+  <div class="support-row">
+    <div class="support-box" style="border-left-color:var(--accent2);">
+      <h4>TrackLayout <span class="feeds">→ ② 맵</span></h4>
+      <ul><li>roadMask · buildingMask · zoneMask · heightMask · deliveries</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--accent2);">
+      <h4>OrderCatalog <span class="feeds">→ ② 보드</span></h4>
+      <ul><li>9~11 OrderJob (A/B/C 등급) + destinationLabels</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--accent2);">
+      <h4>ZoneRegistry <span class="feeds">→ ④ 해금</span></h4>
+      <ul><li>3 Zone (Harbor/Downtown/Industrial) + unlockCost</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--accent2);">
+      <h4>CargoTypePresets <span class="feeds">→ ② 물리</span></h4>
+      <ul><li>5종 화물 baseline (G threshold · damage curve)</li></ul>
+    </div>
+  </div>
+
+  <!-- SUPPORT 2: HUD/카메라 -->
+  <div class="support-label" style="margin-top:18px;">▾ 보조 시스템 — 모든 단계를 시각화 / 사운드화</div>
+  <div class="support-row">
+    <div class="support-box" style="border-left-color:var(--info);">
+      <h4>카메라 <span class="feeds">전 단계</span></h4>
+      <ul><li>FollowCamera (주행)</li><li>OverviewCamera (보드)</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--info);">
+      <h4>HUD <span class="feeds">전 단계</span></h4>
+      <ul><li>MiniMap + DirectionArrow</li><li>Fuel · Gear · Integrity · Countdown</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--info);">
+      <h4>AudioCueBus <span class="feeds">이벤트</span></h4>
+      <ul><li>7 cue (Drift · OrderSelect · Damage · Pickup ...)</li></ul>
+    </div>
+    <div class="support-box" style="border-left-color:var(--info);">
+      <h4>Editor 인프라 <span class="feeds">빌드 타임</span></h4>
+      <ul><li>TileMapAuto · BuildingPlacer · TrackConnectivityVerifier</li></ul>
+    </div>
   </div>
 </div>
 
