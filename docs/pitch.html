@@ -58,6 +58,30 @@
   .usp.b4 { border-top-color:var(--ok); }
   .usp.b4 .num { color:var(--ok); }
 
+  /* PERSONA */
+  .persona-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; }
+  .persona { background:var(--panel); border-radius:12px; padding:20px 22px; }
+  .persona .who { font-size:11px; color:var(--info); font-weight:700;
+    letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
+  .persona h3 { font-size:17px; color:var(--text); margin:0 0 10px; font-weight:700; }
+  .persona p { color:var(--muted); font-size:13px; line-height:1.55; margin-bottom:8px; }
+  .persona .hook { color:var(--accent2); font-size:13px; font-weight:600;
+    padding-top:8px; border-top:1px dashed var(--line); margin-top:8px; }
+
+  /* STORY MOMENTS */
+  .story-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+  .story { background:var(--panel); border-radius:10px; padding:16px 18px;
+    border-left:3px solid var(--accent2); }
+  .story .label { font-size:11px; color:var(--accent2); font-weight:700;
+    letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .story .quote { font-size:14px; color:var(--text); font-style:italic;
+    line-height:1.55; margin-bottom:6px; }
+  .story .quote::before { content:'"'; color:var(--accent); margin-right:2px; }
+  .story .quote::after { content:'"'; color:var(--accent); margin-left:2px; }
+  .story .who { font-size:12px; color:var(--muted); }
+  .story .mech { font-size:11px; color:var(--info); margin-top:6px;
+    padding-top:6px; border-top:1px dashed var(--line); }
+
   /* LOOP */
   .loop { display:flex; align-items:stretch; gap:8px; overflow-x:auto; padding-bottom:8px; }
   .step { flex:1 1 0; min-width:140px; background:var(--panel); border-radius:10px;
@@ -202,8 +226,43 @@
   </div>
 </div>
 
+<!-- =================== PERSONA =================== -->
+<h2><span class="num">03</span>이런 사람이 산다</h2>
+<div class="lead">코어 타겟 4그룹. 모두 Steam 인디 게임 정기 구매자.</div>
+<div class="persona-grid">
+
+  <div class="persona">
+    <div class="who">PERSONA 01</div>
+    <h3>출퇴근 게이머</h3>
+    <p>지하철 한 정거장, 카페 한 잔, 점심 후 15분. <b>"5분만 더"가 가능한 한 런 단위</b>를 찾는 직장인. Vampire Survivors / Slay the Spire를 정기 구매.</p>
+    <div class="hook">PitCrew: 한 런 5~15분 = 딱 그 사람들 시간 단위.</div>
+  </div>
+
+  <div class="persona">
+    <div class="who">PERSONA 02</div>
+    <h3>모터스포츠 팬</h3>
+    <p>F1 시즌 매주 챙겨봄. F1 Manager / Forza에 관심은 있지만 시뮬은 부담. <b>"F1 분위기는 있는데 가볍게 즐기는"</b> 게임을 찾는 사람.</p>
+    <div class="hook">PitCrew: F1 머신 복원 = 모터스포츠 정서 + 아케이드 부담 없음.</div>
+  </div>
+
+  <div class="persona">
+    <div class="who">PERSONA 03</div>
+    <h3>배달/물류 시뮬 애호</h3>
+    <p>Easy Delivery Co. / Mail Time / Death Stranding 같은 <b>"운송이 주제"</b>인 게임 좋아함. 비전투 게임에 친화. 코지하지만 약간의 긴장은 원함.</p>
+    <div class="hook">PitCrew: 배달 + 화물 깨질까 걱정 = 정확히 그 정서.</div>
+  </div>
+
+  <div class="persona">
+    <div class="who">PERSONA 04</div>
+    <h3>로그라이트 빌더</h3>
+    <p>매 런 다른 빌드 짜는 재미. Slay the Spire / Hades / Balatro 코어 팬. <b>"정산 → 다음 런 감각 변화"</b>가 메인 동기.</p>
+    <div class="hook">PitCrew: 부품 복원이 차 감각 바꿈 = 로그라이트 정산 직격.</div>
+  </div>
+
+</div>
+
 <!-- =================== CORE LOOP =================== -->
-<h2><span class="num">03</span>한 런이 이렇게 흘러간다</h2>
+<h2><span class="num">04</span>한 런이 이렇게 흘러간다</h2>
 <div class="lead">5~15분, 7단계. 모든 단계가 결정 또는 실행.</div>
 <div class="loop">
   <div class="step"><span class="ico">📋</span><div class="name">주문 보드</div><div class="desc">N개 잡 카드 중 골라잡기</div></div>
@@ -222,7 +281,7 @@
 </div>
 
 <!-- =================== SYSTEMS =================== -->
-<h2><span class="num">04</span>핵심 시스템</h2>
+<h2><span class="num">05</span>핵심 시스템</h2>
 <div class="lead">단순한 메커니즘 9개. 조합으로 깊이 발생.</div>
 <div class="sys-grid">
 
@@ -283,7 +342,7 @@
 </div>
 
 <!-- =================== COMPARE =================== -->
-<h2><span class="num">05</span>비슷한 게임과 무엇이 다른가</h2>
+<h2><span class="num">06</span>비슷한 게임과 무엇이 다른가</h2>
 <div class="lead">시장의 빈 칸을 채운다.</div>
 <table class="compare">
   <thead>
@@ -306,7 +365,7 @@
 <div class="lead" style="margin-top:14px;">위 어느 게임도 <b>5~15분 + 결정 밀도 + 로그라이트 + 아케이드 운전감 + F1 복귀 서사</b>를 동시에 만족하지 않는다.</div>
 
 <!-- =================== NARRATIVE =================== -->
-<h2><span class="num">06</span>메타 서사 — F1 복귀의 길</h2>
+<h2><span class="num">07</span>메타 서사 — F1 복귀의 길</h2>
 <div class="narrative">
   <p style="color:var(--muted); font-size:14px;">
     이 게임의 매크로 루프. 단순 스탯 트리가 아니라 <b style="color:var(--accent2);">하나의 이야기</b>다.
@@ -347,8 +406,74 @@
   </p>
 </div>
 
+<!-- =================== STORY MOMENTS =================== -->
+<h2><span class="num">08</span>소소한 이야기들</h2>
+<div class="lead">큰 서사 옆에, <b>매 배달마다 1줄짜리 작은 이야기</b>. 잡 카드·도착 NPC·정산 한 줄. 한 런이 단순 배달이 아니라 <b>도시 안의 짧은 순간들</b>이 됨.</div>
+<div class="story-grid">
+
+  <div class="story">
+    <div class="label">잡 카드 — Harbor</div>
+    <div class="quote">손녀 생일 케이크입니다. 7시까지만요. 흔들지 말아 주세요.</div>
+    <div class="who">— 부두 빵집 사장</div>
+    <div class="mech">→ 시간 제한 + 손상 감수도 ↑</div>
+  </div>
+
+  <div class="story">
+    <div class="label">잡 카드 — Industrial</div>
+    <div class="quote">엔진 부품. 무겁지만 안 깨집니다. 빨리만 와요.</div>
+    <div class="who">— 공장장</div>
+    <div class="mech">→ 무게 ↑ · 손상 감수도 ↓ · 보상 ↑</div>
+  </div>
+
+  <div class="story">
+    <div class="label">잡 카드 — Downtown</div>
+    <div class="quote">와인 12병. 결혼식이에요. 한 병이라도 깨지면 끝장.</div>
+    <div class="who">— 호텔 매니저</div>
+    <div class="mech">→ 다물건 + 손상 페널티 극심</div>
+  </div>
+
+  <div class="story">
+    <div class="label">도착 NPC — 완벽 배달</div>
+    <div class="quote">와... 케이크 봐주세요, 흠집 하나 없어요. 보너스 드릴게요.</div>
+    <div class="who">— 손녀</div>
+    <div class="mech">→ 평판 +1 · 다음 잡 카드 가격 ↑</div>
+  </div>
+
+  <div class="story">
+    <div class="label">도착 NPC — 손상 배달</div>
+    <div class="quote">...괜찮아요. 그래도 와 줬으니까.</div>
+    <div class="who">— 손녀 (실망)</div>
+    <div class="mech">→ 평판 -1 · 보상 절반</div>
+  </div>
+
+  <div class="story">
+    <div class="label">차고 — 부품 복원</div>
+    <div class="quote">엔진이 돌아왔다. 시동 소리가 살아있다.</div>
+    <div class="who">— 너 (혼잣말)</div>
+    <div class="mech">→ 짧은 컷씬 · 다음 런부터 차 가속 ↑</div>
+  </div>
+
+  <div class="story">
+    <div class="label">잡 카드 — 비밀</div>
+    <div class="quote">묻지 마세요. 그냥 가져가 주세요.</div>
+    <div class="who">— ???</div>
+    <div class="mech">→ 보상 ↑↑ · 평판 변동 알 수 없음</div>
+  </div>
+
+  <div class="story">
+    <div class="label">정산 — 한 런 마지막</div>
+    <div class="quote">오늘은 잘했다. 부품 하나는 살 수 있겠네.</div>
+    <div class="who">— 너 (혼잣말)</div>
+    <div class="mech">→ 차고 화면 자동 진입</div>
+  </div>
+
+</div>
+<div class="lead" style="margin-top:14px;">
+  <b>왜 이게 중요한가</b>: 단순 "케이크 배달 #14"가 아니라 <b>"손녀 생일 케이크"</b>가 되는 순간 — 플레이어가 화물을 신경 쓴다. 데미지 시스템이 진짜로 작동하기 시작한다. <span style="color:var(--accent2);">개발자도 카드 쓰는 게 재밌어진다.</span>
+</div>
+
 <!-- =================== ROADMAP =================== -->
-<h2><span class="num">07</span>개발 진척 + 출시 일정</h2>
+<h2><span class="num">09</span>개발 진척 + 출시 일정</h2>
 <div class="lead">2026년 4월 기획 시작, 6월 24일 Steam 데모 출시 목표.</div>
 <div class="timeline">
   <div class="tl done">
@@ -394,7 +519,7 @@
 </div>
 
 <!-- =================== TEAM / TECH =================== -->
-<h2><span class="num">08</span>개발</h2>
+<h2><span class="num">10</span>개발</h2>
 <div class="info-grid">
   <div class="info">
     <h3>팀</h3>
