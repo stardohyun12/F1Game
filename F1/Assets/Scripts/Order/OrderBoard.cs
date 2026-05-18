@@ -249,6 +249,18 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         UpdateCardStates();
         UpdateGoButton();
         AudioCueBus.Publish(AudioCueId.OrderBoardSelect);
+
+        // 세션 27 — 클릭한 카드 destination preview 즉시 표시 (호버 안 해도)
+        if (selectedIndices.Count > 0)
+        {
+            int lastIdx = selectedIndices[selectedIndices.Count - 1];
+            if (lastIdx >= 0 && lastIdx < currentOffer.Count)
+                DrawPreviewLineFor(currentOffer[lastIdx]);
+        }
+        else
+        {
+            HideStartMarkerAndLine();
+        }
         return;
     }
 
