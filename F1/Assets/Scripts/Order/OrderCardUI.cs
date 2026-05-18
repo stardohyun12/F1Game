@@ -94,7 +94,15 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             hoverStrip.color = c;
         }
 
-        SetStatRow(0, "지점", $"{job.itemCount}곳");
+        // 세션 27 — 어디로 배달할지 직접 표시 (단순 N곳 → 실제 라벨).
+        string destStr;
+        if (job.destinationLabels != null && job.destinationLabels.Count > 0)
+        {
+            if (job.destinationLabels.Count == 1) destStr = job.destinationLabels[0];
+            else destStr = string.Join(" → ", job.destinationLabels);
+        }
+        else destStr = $"{job.itemCount}곳";
+        SetStatRow(0, "행선지", destStr);
         SetStatRow(1, "시간", job.timeLimitSec > 0f
             ? $"{Mathf.RoundToInt(job.timeLimitSec / 60f)}분 {Mathf.RoundToInt(job.timeLimitSec % 60f):D2}초"
             : "무제한");

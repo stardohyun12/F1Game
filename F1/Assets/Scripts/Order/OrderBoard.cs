@@ -491,16 +491,47 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             var lrGO = new GameObject("OrderBoard_PreviewLine");
             previewLine = lrGO.AddComponent<LineRenderer>();
             previewLine.material = new Material(Shader.Find("Sprites/Default"));
-            previewLine.startWidth = 0.4f; previewLine.endWidth = 0.4f;
+            // 세션 27 R1 — 카메라 180m에서도 잘 보이도록 두께 ↑ (0.4 → 3.0)
+            previewLine.startWidth = 3.0f; previewLine.endWidth = 3.0f;
             previewLine.positionCount = 0;
             previewLine.useWorldSpace = true;
         }
+    }
+
+    // 세션 27 — 호버 시 도착지 위에 큰 라벨 띄움
+    GameObject destLabelGO;
+    TMPro.TextMeshPro destLabelText;
+
+    void ShowDestLabel(Vector3 worldPos, string label, Color color)
+    {
+        if (destLabelGO == null)
+        {
+            destLabelGO = new GameObject("OrderBoard_DestLabel");
+            destLabelText = destLabelGO.AddComponent<TMPro.TextMeshPro>();
+            destLabelText.fontSize = 14f;
+            destLabelText.alignment = TMPro.TextAlignmentOptions.Center;
+            destLabelText.fontStyle = TMPro.FontStyles.Bold;
+            destLabelGO.transform.localScale = Vector3.one * 0.8f;
+        }
+        destLabelGO.SetActive(true);
+        destLabelGO.transform.position = worldPos + Vector3.up * 8f;
+        // 카메라 향해 — 매 프레임 LookAt도 좋지만 일단 한 번
+        if (Camera.main != null)
+            destLabelGO.transform.rotation = Quaternion.LookRotation(destLabelGO.transform.position - Camera.main.transform.position);
+        destLabelText.text = label;
+        destLabelText.color = color;
+    }
+
+    void HideDestLabel()
+    {
+        if (destLabelGO != null) destLabelGO.SetActive(false);
     }
 
     void HideStartMarkerAndLine()
     {
         if (startMarker != null) startMarker.SetActive(false);
         if (previewLine != null) previewLine.positionCount = 0;
+        HideDestLabel();
     }
 
     void DrawPreviewLineFor(OrderJob job)
@@ -519,13 +550,19 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
         previewLine.startColor = job.color; previewLine.endColor = job.color;
         var pts = new List<Vector3> { race.transform.position + Vector3.up * 0.5f };
+        DeliveryPoint lastDest = null;
+        string firstLabel = null;
         foreach (var lbl in job.destinationLabels)
         {
             var p = dm.FindByLabel(lbl);
-            if (p != null) pts.Add(p.transform.position + Vector3.up * 0.5f);
+            if (p != null) { pts.Add(p.transform.position + Vector3.up * 0.5f); lastDest = p; if (firstLabel == null) firstLabel = lbl; }
         }
         previewLine.positionCount = pts.Count;
         for (int i = 0; i < pts.Count; i++) previewLine.SetPosition(i, pts[i]);
+
+        // 세션 27 — 도착지 위 큰 라벨
+        if (lastDest != null && firstLabel != null)
+            ShowDestLabel(lastDest.transform.position, firstLabel, job.color);
     }
 
     OrderJob GetLargestJob()
