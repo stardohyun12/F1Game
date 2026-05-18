@@ -148,6 +148,47 @@
   .info p { color:var(--muted); font-size:13px; line-height:1.55; }
   .info b { color:var(--accent2); }
 
+  /* TABS */
+  .tabs { display:flex; gap:4px; justify-content:center; margin:-30px auto 20px;
+    max-width:600px; background:var(--panel); border-radius:30px; padding:4px;
+    border:1px solid var(--line); position:relative; z-index:10; }
+  .tab-btn { flex:1; padding:10px 20px; border:none; background:transparent; color:var(--muted);
+    font-size:14px; font-weight:600; cursor:pointer; border-radius:26px;
+    transition:all 0.15s; font-family:inherit; }
+  .tab-btn:hover { color:var(--text); }
+  .tab-btn.active { background:var(--accent); color:white; }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  /* SYSTEM DESIGN — diagram */
+  .sysmap { background:var(--panel); border-radius:14px; padding:24px; overflow-x:auto;
+    font-family:'JetBrains Mono','Consolas',monospace; font-size:12px; line-height:1.7;
+    color:var(--muted); white-space:pre; }
+  .sysmap b { color:var(--accent2); font-weight:600; }
+  .sysmap .ok { color:var(--ok); }
+  .sysmap .info { color:var(--info); }
+  .sysmap .acc { color:var(--accent); }
+
+  /* SYSTEM TABLE */
+  table.sys-list { width:100%; border-collapse:separate; border-spacing:0;
+    background:var(--panel); border-radius:10px; overflow:hidden; font-size:13px; }
+  table.sys-list th, table.sys-list td { padding:10px 14px; text-align:left;
+    border-bottom:1px solid var(--line); vertical-align:top; }
+  table.sys-list th { background:#1c2028; color:var(--muted); font-weight:600;
+    font-size:11px; text-transform:uppercase; letter-spacing:0.6px; }
+  table.sys-list tr:last-child td { border-bottom:none; }
+  table.sys-list code { background:#0c0d10; color:var(--info); padding:2px 6px;
+    border-radius:4px; font-size:12px; }
+  table.sys-list .role { color:var(--muted); font-size:12px; line-height:1.5; }
+
+  /* PARAM CARDS */
+  .param-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+  .param { background:var(--panel); border-radius:8px; padding:12px 14px; }
+  .param .pname { font-size:11px; color:var(--info); font-weight:600;
+    text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+  .param .pval { font-size:18px; color:var(--accent2); font-weight:700; font-family:monospace; }
+  .param .pdesc { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.4; }
+
   /* INTERNAL SECTION */
   .internal { margin-top:80px; padding:24px 28px; background:var(--panel2);
     border:1px dashed var(--line); border-radius:10px; }
@@ -180,7 +221,16 @@
   </div>
 </div>
 
+<!-- =================== TABS =================== -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('concept')">컨셉</button>
+  <button class="tab-btn" onclick="switchTab('system')">시스템 디자인</button>
+</div>
+
 <div class="wrap">
+
+<!-- ================ TAB: CONCEPT ================ -->
+<div id="tab-concept" class="tab-pane active">
 
 <!-- =================== WHAT IS IT =================== -->
 <h2><span class="num">01</span>이게 어떤 게임?</h2>
@@ -539,6 +589,295 @@
   </div>
 </div>
 
+</div><!-- /tab-concept -->
+
+
+<!-- ================ TAB: SYSTEM DESIGN ================ -->
+<div id="tab-system" class="tab-pane">
+
+<h2><span class="num">S1</span>시스템 맵 한 눈에</h2>
+<div class="lead">15개 핵심 컴포넌트. 단일 책임 + 의존성 주입. Unity MonoBehaviour + ScriptableObject 데이터.</div>
+<div class="sysmap">
+                    <b>[GameContext]</b> ── Composition Root
+                          │ Awake에서 Services에 14 시스템 주입
+                          ▼
+        ┌─────────────────<b>[Services]</b> (static DI 컨테이너)──────────────┐
+        │                                                                  │
+   <span class="info">┌─ INPUT ─┐</span>     <span class="info">┌── GAMEPLAY LOOP ──┐</span>     <span class="info">┌─ OUTPUT ─┐</span>     <span class="info">┌─ DATA ─┐</span>
+   │ Arcade  │     │ RunController     │     │ Result   │     │ Track  │
+   │ Car     │ ──▶ │  ├─ OrderBoard    │ ──▶ │ Panel    │     │ Layout │
+   │ Ctrlr   │     │  ├─ PackingScreen │     │          │     │ (SO)   │
+   └─────────┘     │  ├─ RoutePlan     │     ├──────────┤     ├────────┤
+                   │  └─ BeginRun()    │     │ Run      │     │ Order  │
+   <span class="info">┌─ PHYSICS ┐</span>    │       │           │     │ Metrics  │     │ Catalog│
+   │ CargoBox │    │       ▼           │     │ Recorder │     │ (SO)   │
+   │ Shake    │ ◀──┼─ DeliveryManager  │ ──▶ │ → CSV    │     ├────────┤
+   │ Sim      │    │       │           │     └──────────┘     │ Zone   │
+   └──────────┘    │       ▼           │                      │ Reg    │
+                   │   DeliveryPoint   │                      │ (SO)   │
+   <span class="info">┌─ HUDs ───┐</span>    │   × N             │                      └────────┘
+   │ Mini Map │ ◀──┘       │           │
+   │ Arrow    │            ▼           │   <span class="info">┌─ META ──┐</span>
+   │ Fuel/    │       <span class="acc">[배달 완료]</span>     │   │ Upgrade │
+   │ Gear/HP  │            │           │   │ System  │ ◀─ 자금
+   │ CCTV     │            ▼           │   │ Zone    │
+   └──────────┘    <span class="acc">[정산 ResultPanel]</span>──┼──▶│ Unlock  │
+                                       │   └─────────┘
+                                       │
+                                       │   <span class="info">┌─ SOUND ─┐</span>
+                                       └──▶│ Audio   │
+                                           │ CueBus  │
+                                           └─────────┘
+</div>
+
+<h2><span class="num">S2</span>핵심 클래스 — 책임 매트릭스</h2>
+<div class="lead">각 클래스 한 줄 책임 + 의존성 + 결정 채널 매핑.</div>
+<h3>입력 / 주행</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>ArcadeCarController</code></td><td class="role">Burnout 아케이드 운전 — 가속·브레이크·드리프트 곡선</td><td>Rigidbody, TireSystem</td><td>1, 3</td></tr>
+<tr><td><code>TireSystem</code></td><td class="role">타이어 4종 (Soft/Medium/Hard/Wet) 그립·내구도</td><td>—</td><td>1</td></tr>
+<tr><td><code>GearSystem</code></td><td class="role">5단 수동 기어 + 자동 전환 옵션</td><td>—</td><td>1</td></tr>
+<tr><td><code>FuelSystem</code></td><td class="role">연료 소모 (가속 비례) + 주유소 충전</td><td>—</td><td>9</td></tr>
+<tr><td><code>DriftVfxController</code></td><td class="role">드리프트 파티클 + 마찰음 트리거</td><td>ArcadeCar</td><td>3</td></tr>
+</table>
+
+<h3>화물 / 포장</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>CargoBox</code></td><td class="role">화물 N개 (1~3) 컨테이너. damage·integrity 합산</td><td>CargoType, CargoView</td><td>4, 5</td></tr>
+<tr><td><code>CargoShakeSimulator</code></td><td class="role">N개 화물 각자 슬라이드·충돌·손상 물리 (per-item)</td><td>CargoBox, Rigidbody</td><td>5</td></tr>
+<tr><td><code>CargoTypePresets</code></td><td class="role">5종 화물 baseline (G threshold, damage curve)</td><td>—</td><td>4</td></tr>
+<tr><td><code>PackingScreen</code></td><td class="role">3D 포장 미니게임 (Bubble/Foam/Hardcase 4채널)</td><td>CargoType, ModifierChain</td><td>6</td></tr>
+<tr><td><code>TrunkLayout</code> (in Packing)</td><td class="role">N개 큐브 자유 배치 — 마우스 드래그 + Q/E/R 회전</td><td>—</td><td>5</td></tr>
+</table>
+
+<h3>주문 / 경로</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>OrderJob</code> (SO)</td><td class="role">잡 데이터 — reward, timeLimit, weightTier, destinationLabels</td><td>—</td><td>3, 4</td></tr>
+<tr><td><code>OrderCatalog</code> (SO)</td><td class="role">전체 잡 풀 (A/B/C 등급, 9~11잡)</td><td>OrderJob[]</td><td>3</td></tr>
+<tr><td><code>OrderBoard</code></td><td class="role">잡 카드 UI N장 + 호버 마커 강조 + 다중선택 + 출발</td><td>OrderCatalog, ZoneUnlock</td><td>3</td></tr>
+<tr><td><code>RoutePlanScreen</code></td><td class="role">선택 잡들의 배달지 순서 결정 + 미니맵 미리보기</td><td>DeliveryManager</td><td>8</td></tr>
+<tr><td><code>RunController</code></td><td class="role">한 런 상태 머신 (Board → Pack → Route → Run → Result)</td><td>모든 Services</td><td>—</td></tr>
+</table>
+
+<h3>맵 / 도시</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>TrackLayout</code> (SO)</td><td class="role">roadMask·buildingMask·zoneMask·heightMask·deliveries 데이터 진리원</td><td>BuildingCatalog</td><td>3</td></tr>
+<tr><td><code>TileMapAuto</code></td><td class="role">roadMask → 도로 타일 자동 배치 (직선/코너/T/X/슬로프)</td><td>TrackLayout</td><td>3</td></tr>
+<tr><td><code>BuildingPlacer</code></td><td class="role">buildingMask → 건물 자동 배치 (S/C/H/T/F/W/K/P)</td><td>BuildingCatalog</td><td>3</td></tr>
+<tr><td><code>TrackConnectivityVerifier</code></td><td class="role">BFS로 isolated 도로 / 도달불가 End 자동 검출</td><td>TrackLayout</td><td>3</td></tr>
+<tr><td><code>Zone / ZoneRegistry</code> (SO)</td><td class="role">zone 3개 (Harbor/Downtown/Industrial) + 잡 풀 + unlock 비용</td><td>OrderJob[]</td><td>3</td></tr>
+<tr><td><code>ZoneUnlockSystem</code></td><td class="role">wallet 차감 + auto-unlock + zone 잡 풀 결합</td><td>ZoneRegistry, Upgrade</td><td>3</td></tr>
+</table>
+
+<h3>배달 / 정산 / 메타</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>DeliveryManager</code></td><td class="role">N개 DeliveryPoint 관리, 다음 목적지 트리거, 완료 이벤트</td><td>DeliveryPoint[]</td><td>—</td></tr>
+<tr><td><code>DeliveryPoint</code></td><td class="role">월드 마커 (트리거 콜라이더) + activate/deactivate 시각</td><td>—</td><td>—</td></tr>
+<tr><td><code>ResultPanel</code></td><td class="role">정산 7카드 (수익/거리/손상/보너스/평판/연료/시간) UI</td><td>UpgradeSystem</td><td>—</td></tr>
+<tr><td><code>UpgradeSystem</code></td><td class="role">wallet 보관 + 업그레이드 5카드 구매 + 자금 변동 이벤트</td><td>—</td><td>7</td></tr>
+<tr><td><code>RunMetricsRecorder</code></td><td class="role">매 런 자동 측정 (시간/거리/잡 수) → CSV 기록</td><td>RunController</td><td>—</td></tr>
+</table>
+
+<h3>HUD / 카메라 / 사운드</h3>
+<table class="sys-list">
+<tr><th>클래스</th><th>책임</th><th>의존</th><th>채널</th></tr>
+<tr><td><code>FollowCamera</code></td><td class="role">3인칭 쇼울더 차량 추적 — smoothing + look-ahead</td><td>ArcadeCar</td><td>—</td></tr>
+<tr><td><code>OverviewCamera</code></td><td class="role">잡 보드 진입 시 정사영 도시 뷰 (보드 호버 마커 보임)</td><td>TrackLayout</td><td>—</td></tr>
+<tr><td><code>MiniMapHUD</code></td><td class="role">월드 마커들을 미니맵에 투영 + 차 위치 + 회전</td><td>DeliveryManager</td><td>8</td></tr>
+<tr><td><code>DirectionArrow</code></td><td class="role">화면 가장자리 화살표 — 다음 목적지 방향</td><td>DeliveryManager</td><td>8</td></tr>
+<tr><td><code>AudioCueBus</code></td><td class="role">7 cue (Drift, OrderSelect, Damage, Pickup, UpgradePurchased, ...) 단일 채널</td><td>—</td><td>—</td></tr>
+</table>
+
+
+<h2><span class="num">S3</span>한 런 — 데이터 흐름 시퀀스</h2>
+<div class="lead">RunController가 상태 머신. 각 단계가 다음 단계에 데이터 핸드오프.</div>
+<div class="sysmap">
+<b>1. Open</b> ─────────────────────────────────────────────
+   RunController.Start()
+     → Time.timeScale = 0
+     → OverviewCamera.GoToOverview()
+     → OrderBoard.Open()
+         pickOffer() = ZoneUnlockSystem.GetAvailableJobs() (zone 해금된 풀)
+         SpawnCards(N)
+
+<b>2. Pick</b> ──────────────────────────────────────────────
+   User clicks card
+     → selectedJobs.Add(job)
+     → boardGoButton 활성화
+   User clicks 출발
+     → RoutePlanScreen.Show(selectedJobs)
+         배달지 순서 결정 UI (현재: 단일 잡 = single dest)
+
+<b>3. Pack</b> ──────────────────────────────────────────────
+   RoutePlan 확정
+     → PackingScreen.Show(selectedJobs)
+         화물별 4채널 포장 (Bubble/Foam/Hardcase)
+         다물건 ◀▶ 전환
+         배치 단계: 마우스 드래그 + Q/E/R 회전
+   User 완료
+     → wrap state 핸드오프
+         RunController.TransferWrapStateToCargo(packedCubes)
+
+<b>4. Run</b> ───────────────────────────────────────────────
+   RunController.BeginRun(jobs, packedCubes)
+     → Time.timeScale = 1
+     → CargoBox.Init(items)
+     → DeliveryManager.ActivateRoute(destinations)
+     → CountdownHUD 3-2-1-GO
+   <span class="acc">주행 루프 (5~15분)</span>
+     ArcadeCar.Update() — 입력 → 토크/조향 → Rigidbody
+     CargoShakeSimulator — per-item 슬라이드 → 충돌 → damage
+     FuelSystem.Tick() — 가속 비례 소모
+     DeliveryPoint.OnTriggerEnter — 도착 트리거
+       → DeliveryManager.OnDeliver(point) → 다음 마커 activate
+     RunMetricsRecorder.Sample()
+
+<b>5. Result</b> ────────────────────────────────────────────
+   모든 잡 완료 OR 시간 종료 OR 연료 0
+     → RunController.EndRun()
+         정산 계산 (reward × integrity - damage - timeBonus)
+     → ResultPanel.Show(stats)
+         7카드 슬라이드 인 (수익/거리/손상/보너스/평판/연료/시간)
+     → UpgradeSystem.Add(reward)
+         OnWalletChanged → ZoneUnlockSystem auto-unlock 체크
+     → RunMetricsRecorder.Commit() → CSV append
+
+<b>6. Loop</b> ──────────────────────────────────────────────
+   User Continue → RunController.Restart() → step 1
+   User Garage → (W3 미구현) → 차고 화면 → 부품 복원
+</div>
+
+
+<h2><span class="num">S4</span>결정 채널 9 × 시스템 매핑</h2>
+<div class="lead">컨셉의 dial 9개가 코드에 어디 박혀 있는가.</div>
+<table class="sys-list">
+<tr><th>#</th><th>채널</th><th>실제 시스템</th><th>튜닝 포인트</th></tr>
+<tr><td>1</td><td>속도</td><td><code>ArcadeCarController</code> + <code>TireSystem</code></td><td>maxSpeed, longWarnG, 타이어 그립 곡선</td></tr>
+<tr><td>2</td><td>외형</td><td>미구현 (Material swap 예정)</td><td>(데모 포기)</td></tr>
+<tr><td>3</td><td>맵 접근도</td><td><code>ZoneUnlockSystem</code> + <code>TrackLayout.zoneMask</code></td><td>zone unlockCost, autoUnlockOnAffordable</td></tr>
+<tr><td>4</td><td>화물 5종</td><td><code>CargoTypePresets</code></td><td>damage curve, baseline G threshold</td></tr>
+<tr><td>5</td><td>박스 크기</td><td><code>CargoBox.capacity</code> + <code>UpgradeSystem.TrunkExpand1/2</code></td><td>capacity 1~3</td></tr>
+<tr><td>6</td><td>포장</td><td><code>PackingScreen</code> + <code>Modifiers/</code> chain</td><td>threshold multiplier 1.0~2.0</td></tr>
+<tr><td>7</td><td>업그레이드 / F1 복원</td><td><code>UpgradeSystem</code> (현재) + <b>차고/PartRestore (미구현)</b></td><td><b>W3 핵심 작업</b></td></tr>
+<tr><td>8</td><td>지도·내비</td><td><code>MiniMapHUD</code> + <code>DirectionArrow</code> + <code>RoutePlanScreen</code></td><td>zoom, arrow 강조 우선순위</td></tr>
+<tr><td>9</td><td>연료</td><td><code>FuelSystem</code></td><td>tank size, accel 소모 곡선, refuel cost</td></tr>
+</table>
+
+
+<h2><span class="num">S5</span>핵심 튜닝 파라미터</h2>
+<div class="lead">밸런스 dial. 데모 페이싱 잡을 때 가장 자주 손대는 값들.</div>
+<div class="param-grid">
+  <div class="param"><div class="pname">cell size</div><div class="pval">6.0 m</div><div class="pdesc">맵 타일 1칸 실세계 크기</div></div>
+  <div class="param"><div class="pname">city size (R1)</div><div class="pval">30 × 22</div><div class="pdesc">180×132m. 목표는 17배 (R2+)</div></div>
+  <div class="param"><div class="pname">한 런 길이</div><div class="pval">5~15 min</div><div class="pdesc">현재 측정 8~12초 → escalation 필요</div></div>
+  <div class="param"><div class="pname">deliveries</div><div class="pval">11 개</div><div class="pdesc">zone당 H3/D4/I4</div></div>
+  <div class="param"><div class="pname">box capacity</div><div class="pval">1~3</div><div class="pdesc">데모 기본 2, TrunkExpand 업그레이드</div></div>
+  <div class="param"><div class="pname">cargo types</div><div class="pval">5</div><div class="pdesc">Eggs/Glass/Cake/Fish/Wine</div></div>
+  <div class="param"><div class="pname">slide deadzone</div><div class="pval">0.02</div><div class="pdesc">⚠ 약한 사면(25°) 안 미끄러짐 — 0.005로 튜닝 예정</div></div>
+  <div class="param"><div class="pname">accelScale</div><div class="pval">1.0</div><div class="pdesc">슬라이드 가속 → 1.5로 튜닝 예정</div></div>
+  <div class="param"><div class="pname">box wall damage</div><div class="pval">×?</div><div class="pdesc">boxWallDamageMul — manual play 후 결정 (D-068)</div></div>
+  <div class="param"><div class="pname">fuel tank</div><div class="pval">5 min 풀탱</div><div class="pdesc">한 런 단위 = 한 탱크 — 의미 강화 필요 (D-074)</div></div>
+  <div class="param"><div class="pname">order job 등급</div><div class="pval">A/B/C</div><div class="pdesc">A 안전 500₩ · B 균형 900₩ · C 위험 1800₩</div></div>
+  <div class="param"><div class="pname">zone unlock</div><div class="pval">auto</div><div class="pdesc">wallet ≥ cost 시 자동 해금 (UI 없음, 도현 결정)</div></div>
+</div>
+
+
+<h2><span class="num">S6</span>아키텍처 원칙</h2>
+<div class="lead">왜 이렇게 짰는가. 다음 시스템 추가할 때 따라야 할 패턴.</div>
+<div class="info-grid">
+  <div class="info">
+    <h3>Services DI (Composition Root)</h3>
+    <p><code>GameContext.Awake</code>에서 14 시스템을 <code>Services</code> static 컨테이너에 주입. 각 시스템은 인터페이스로 상호 참조. <b>singletons 없음, 테스트 가능.</b> 세션 18~19 리팩토링.</p>
+  </div>
+  <div class="info">
+    <h3>ScriptableObject = 데이터 진리원</h3>
+    <p><code>TrackLayout</code>, <code>OrderJob</code>, <code>ZoneRegistry</code>, <code>CargoTypePresets</code>는 모두 SO. <b>코드 하드코드 금지</b> (asset.md). 새 잡 = 새 SO 1개, 코드 변경 0.</p>
+  </div>
+  <div class="info">
+    <h3>Modifier Chain (Phase 3)</h3>
+    <p>화물 baseline → 포장 multiplier → 업그레이드 additive 합성. 각 modifier는 단일 클래스. <b>새 채널 추가 = chain에 modifier 1개 추가.</b></p>
+  </div>
+  <div class="info">
+    <h3>Template Method (Phase 2)</h3>
+    <p>화물 손상 계산이 모든 화물 종류에 공통 흐름. <code>CargoType.OnImpact</code>가 templateMethod, 종류별 override가 frame-by-frame.</p>
+  </div>
+  <div class="info">
+    <h3>AudioCueBus (단일 채널)</h3>
+    <p>모든 사운드 트리거가 <code>AudioCueId</code> enum + <code>AudioCueBus.Publish()</code>로 통과. <b>호출처에서 AudioSource 직접 안 쓴다.</b> clip swap 한 곳에서.</p>
+  </div>
+  <div class="info">
+    <h3>Editor 자동 빌드</h3>
+    <p><code>TileMapAuto</code> / <code>BuildingPlacer</code> / <code>SetupOrderSystem</code>가 SO 변경 시 씬을 자동 재구성. <b>씬 manual 편집 최소.</b> <code>RunFullRebuild</code>로 일괄.</p>
+  </div>
+  <div class="info">
+    <h3>검증 자동화</h3>
+    <p><code>TrackConnectivityVerifier</code> BFS, <code>BuildingPlacer.VerifyPlacements</code> bounds 검사. 자동 빌드마다 실행. <b>침묵 실패 방지.</b></p>
+  </div>
+  <div class="info">
+    <h3>RunMetricsRecorder</h3>
+    <p>매 런 자동 측정 (시간·거리·잡·결과) → CSV. <b>밸런스 결정의 근거는 추측 아닌 데이터.</b> 세션 26 도입.</p>
+  </div>
+</div>
+
+
+<h2><span class="num">S7</span>확장 포인트 — 어디로 늘어날까</h2>
+<div class="lead">풀게임에서 시스템이 자라날 가능한 방향.</div>
+<table class="sys-list">
+<tr><th>방향</th><th>현재 (데모)</th><th>확장 후 (풀게임)</th><th>건드릴 시스템</th></tr>
+<tr><td>도시 수</td><td>1 (180×132m, R1)</td><td>3~5 도시, 각자 zone 3</td><td><code>TrackLayout</code> SO 여러 개 + 도시 선택 UI</td></tr>
+<tr><td>화물 종류</td><td>5종</td><td>15~20종 (온도민감/생명체/누적손상)</td><td><code>CargoType</code> 새 preset + Modifier 추가</td></tr>
+<tr><td>차량</td><td>1대 (배달 트럭)</td><td>다양 차량 (스포츠/픽업/F1 시범)</td><td><code>ArcadeCarController</code> + tuning preset SO</td></tr>
+<tr><td>부품 트리</td><td>2개 복원 (W3 데모)</td><td>6 부품 × 3 티어 = 18단계</td><td>차고 + PartRestore 시스템</td></tr>
+<tr><td>NPC / 스토리</td><td>플레이버 텍스트만 (08 섹션)</td><td>이름 있는 단골 + 메인 스토리 아크</td><td>새 시스템 (NPCRegistry, StoryArc)</td></tr>
+<tr><td>AI 차량</td><td>없음</td><td>교통 + 경쟁자 배달원</td><td>새 시스템 (TrafficAI, RivalDeliverer)</td></tr>
+<tr><td>이벤트</td><td>없음</td><td>동적 (교통체증, 사고, 비)</td><td><code>RunController</code> 이벤트 훅 + WeatherSystem</td></tr>
+<tr><td>그랑프리 모드</td><td>해금만</td><td>실제 F1 레이스 모드 (배달 X, 순수 레이싱)</td><td>새 씬 + 새 RunController 변종</td></tr>
+</table>
+
+
+<h2><span class="num">S8</span>저장 / 진척 / 데이터</h2>
+<div class="lead">메타 진척이 핵심이므로 save가 중요. 현재 미구현, W4~W5 작업.</div>
+<div class="info-grid">
+  <div class="info">
+    <h3>저장 대상 (계획)</h3>
+    <p>지갑 자금 · 해금된 zone · 구매한 업그레이드 카드 · 복원된 F1 부품 · 평판 · 누적 런 통계 (RunMetricsRecorder)</p>
+  </div>
+  <div class="info">
+    <h3>저장 방식 (계획)</h3>
+    <p>JSON 파일 → <code>%AppData%/PitCrew/save.json</code>. <b>Steam Cloud sync 친화.</b> 손쉬운 디버그 (텍스트로 열어 수정 가능).</p>
+  </div>
+  <div class="info">
+    <h3>현재 (세션 27)</h3>
+    <p>저장 X — 매번 빈 지갑. <code>RunMetricsRecorder</code>만 CSV 누적. <b>데모는 한 세션 = 한 플레이.</b> W4 저장 시스템 추가.</p>
+  </div>
+  <div class="info">
+    <h3>버전 호환</h3>
+    <p>저장 schema에 version 필드. 미래 변경 시 migration 함수. 데모는 v1만.</p>
+  </div>
+</div>
+
+
+<h2><span class="num">S9</span>알려진 기술 부채</h2>
+<div class="lead">언젠가 정리해야 할 것들. 데모 일정 안에선 안 건드림.</div>
+<table class="sys-list">
+<tr><th>부채</th><th>위치</th><th>영향</th><th>해결 시기</th></tr>
+<tr><td><code>IRunController</code> 추상화 새는 곳</td><td><code>as RunController</code> 캐스팅 4~5곳</td><td>인터페이스 의미 약화</td><td>Phase 7 (포스트 데모)</td></tr>
+<tr><td><code>UpgradeSystem.Instance</code> 직접 접근</td><td><code>ResultPanel.cs:365,411</code></td><td>Services DI 우회</td><td>Phase 7</td></tr>
+<tr><td><code>ResultPanel</code> God class</td><td>499 라인</td><td>W3 차고 추가 시 분할 자연스러움</td><td>W3 인터리브</td></tr>
+<tr><td>4 HUD 중복</td><td>Fuel/Gear/Integrity/Countdown</td><td>TextHUDBase로 통합 가능</td><td>W5 폴리시 인터리브</td></tr>
+<tr><td>SetupComplexScene 하드코딩</td><td>15×9 mask 박혀 있음</td><td>R1 guard로 우회 (Width≥20 skip)</td><td>R2 시점에 fix</td></tr>
+<tr><td>저장 시스템 없음</td><td>—</td><td>한 세션 = 한 플레이</td><td>W4 핵심 작업</td></tr>
+</table>
+
+
+</div><!-- /tab-system -->
+
+
 <!-- =================== INTERNAL — 도현 내부용 =================== -->
 <div class="internal">
   <h2><span class="num">▾</span>내부 운영 (외부 공개 X)</h2>
@@ -559,5 +898,15 @@
 </div>
 
 </div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+</script>
 </body>
 </html>
