@@ -160,7 +160,7 @@
   .tab-pane { display:none; }
   .tab-pane.active { display:block; }
 
-  /* SYSTEM DESIGN — diagram */
+  /* SYSTEM DESIGN — sequence (ASCII OK, 단순) */
   .sysmap { background:var(--panel); border-radius:14px; padding:24px; overflow-x:auto;
     font-family:'JetBrains Mono','Consolas',monospace; font-size:12px; line-height:1.7;
     color:var(--muted); white-space:pre; }
@@ -168,6 +168,37 @@
   .sysmap .ok { color:var(--ok); }
   .sysmap .info { color:var(--info); }
   .sysmap .acc { color:var(--accent); }
+
+  /* SYSTEM MAP — HTML 다이어그램 (ASCII 대체) */
+  .smap { background:var(--panel); border-radius:14px; padding:24px; }
+  .smap .root { background:var(--accent); color:white; padding:10px 16px;
+    border-radius:8px; font-weight:700; text-align:center; max-width:280px;
+    margin:0 auto 8px; }
+  .smap .down { text-align:center; color:var(--accent); font-size:20px; line-height:1; margin:4px 0; }
+  .smap .services { background:#3a1f1f; border:2px solid var(--accent); color:white;
+    padding:10px 16px; border-radius:8px; font-weight:600; text-align:center;
+    margin:0 auto 16px; max-width:480px; }
+  .smap .services small { display:block; font-weight:400; color:#ffb8b8;
+    font-size:11px; margin-top:2px; }
+  .smap .cols { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+  .smap .col { background:var(--panel2); border-radius:8px; padding:12px 14px; }
+  .smap .col h4 { font-size:11px; color:var(--info); text-transform:uppercase;
+    letter-spacing:1px; margin:0 0 8px; font-weight:700; border-bottom:1px solid var(--line);
+    padding-bottom:6px; }
+  .smap .col.input h4 { color:var(--info); }
+  .smap .col.gameplay h4 { color:var(--accent); }
+  .smap .col.output h4 { color:var(--ok); }
+  .smap .col.data h4 { color:var(--accent2); }
+  .smap .col ul { list-style:none; padding:0; margin:0; font-size:12px; color:var(--text); }
+  .smap .col li { padding:3px 0; display:flex; align-items:center; gap:6px; }
+  .smap .col li::before { content:'▸'; color:var(--muted); font-size:10px; }
+  .smap .col .note { color:var(--muted); font-size:10px; font-style:italic;
+    margin-left:14px; line-height:1.3; display:block; }
+  .smap .below { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px; margin-top:16px; }
+  .smap .below .col { border-top:2px solid var(--accent); }
+  .smap .legend { color:var(--muted); font-size:11px; text-align:center; margin-top:14px;
+    padding-top:10px; border-top:1px dashed var(--line); }
 
   /* SYSTEM TABLE */
   table.sys-list { width:100%; border-collapse:separate; border-spacing:0;
@@ -596,38 +627,104 @@
 <div id="tab-system" class="tab-pane">
 
 <h2><span class="num">S1</span>시스템 맵 한 눈에</h2>
-<div class="lead">15개 핵심 컴포넌트. 단일 책임 + 의존성 주입. Unity MonoBehaviour + ScriptableObject 데이터.</div>
-<div class="sysmap">
-                    <b>[GameContext]</b> ── Composition Root
-                          │ Awake에서 Services에 14 시스템 주입
-                          ▼
-        ┌─────────────────<b>[Services]</b> (static DI 컨테이너)──────────────┐
-        │                                                                  │
-   <span class="info">┌─ INPUT ─┐</span>     <span class="info">┌── GAMEPLAY LOOP ──┐</span>     <span class="info">┌─ OUTPUT ─┐</span>     <span class="info">┌─ DATA ─┐</span>
-   │ Arcade  │     │ RunController     │     │ Result   │     │ Track  │
-   │ Car     │ ──▶ │  ├─ OrderBoard    │ ──▶ │ Panel    │     │ Layout │
-   │ Ctrlr   │     │  ├─ PackingScreen │     │          │     │ (SO)   │
-   └─────────┘     │  ├─ RoutePlan     │     ├──────────┤     ├────────┤
-                   │  └─ BeginRun()    │     │ Run      │     │ Order  │
-   <span class="info">┌─ PHYSICS ┐</span>    │       │           │     │ Metrics  │     │ Catalog│
-   │ CargoBox │    │       ▼           │     │ Recorder │     │ (SO)   │
-   │ Shake    │ ◀──┼─ DeliveryManager  │ ──▶ │ → CSV    │     ├────────┤
-   │ Sim      │    │       │           │     └──────────┘     │ Zone   │
-   └──────────┘    │       ▼           │                      │ Reg    │
-                   │   DeliveryPoint   │                      │ (SO)   │
-   <span class="info">┌─ HUDs ───┐</span>    │   × N             │                      └────────┘
-   │ Mini Map │ ◀──┘       │           │
-   │ Arrow    │            ▼           │   <span class="info">┌─ META ──┐</span>
-   │ Fuel/    │       <span class="acc">[배달 완료]</span>     │   │ Upgrade │
-   │ Gear/HP  │            │           │   │ System  │ ◀─ 자금
-   │ CCTV     │            ▼           │   │ Zone    │
-   └──────────┘    <span class="acc">[정산 ResultPanel]</span>──┼──▶│ Unlock  │
-                                       │   └─────────┘
-                                       │
-                                       │   <span class="info">┌─ SOUND ─┐</span>
-                                       └──▶│ Audio   │
-                                           │ CueBus  │
-                                           └─────────┘
+<div class="lead">25+ 핵심 컴포넌트. 단일 책임 + 의존성 주입. Unity MonoBehaviour + ScriptableObject 데이터.</div>
+<div class="smap">
+
+  <div class="root">GameContext (Composition Root)</div>
+  <div class="down">▼</div>
+  <div class="services">Services (static DI 컨테이너)<small>Awake 시 14 시스템 주입</small></div>
+
+  <div class="cols">
+    <div class="col input">
+      <h4>① 입력 / 주행</h4>
+      <ul>
+        <li>ArcadeCarController</li>
+        <li>TireSystem (4종)</li>
+        <li>GearSystem</li>
+        <li>FuelSystem</li>
+        <li>DriftVfxController</li>
+      </ul>
+    </div>
+
+    <div class="col gameplay">
+      <h4>② 게임플레이 루프</h4>
+      <ul>
+        <li><b>RunController</b> (상태머신)</li>
+        <li>OrderBoard</li>
+        <li>PackingScreen</li>
+        <li>RoutePlanScreen</li>
+        <li>DeliveryManager</li>
+        <li>DeliveryPoint × N</li>
+      </ul>
+    </div>
+
+    <div class="col output">
+      <h4>③ 출력 / 정산</h4>
+      <ul>
+        <li>ResultPanel (7카드)</li>
+        <li>RunMetricsRecorder</li>
+        <li>→ CSV 누적</li>
+      </ul>
+    </div>
+
+    <div class="col data">
+      <h4>④ 데이터 (SO)</h4>
+      <ul>
+        <li>TrackLayout</li>
+        <li>OrderCatalog (잡 9~11)</li>
+        <li>ZoneRegistry (3 zone)</li>
+        <li>CargoTypePresets (5종)</li>
+        <li>BuildingCatalog</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="below">
+    <div class="col input">
+      <h4>⑤ 물리 / 화물</h4>
+      <ul>
+        <li>CargoBox</li>
+        <li>CargoShakeSimulator</li>
+        <li>CargoView</li>
+        <li>Modifier Chain</li>
+      </ul>
+    </div>
+
+    <div class="col gameplay">
+      <h4>⑥ 카메라 / HUD</h4>
+      <ul>
+        <li>FollowCamera</li>
+        <li>OverviewCamera</li>
+        <li>MiniMapHUD + Arrow</li>
+        <li>Fuel/Gear/Integrity HUD</li>
+        <li>CountdownHUD</li>
+      </ul>
+    </div>
+
+    <div class="col output">
+      <h4>⑦ 메타 / 진척</h4>
+      <ul>
+        <li>UpgradeSystem (지갑)</li>
+        <li>ZoneUnlockSystem</li>
+        <li><i>차고 / PartRestore</i><br><span class="note">W3 미구현 (USP 핵심)</span></li>
+      </ul>
+    </div>
+
+    <div class="col data">
+      <h4>⑧ 인프라</h4>
+      <ul>
+        <li>AudioCueBus (7 cue)</li>
+        <li>TileMapAuto (도로)</li>
+        <li>BuildingPlacer</li>
+        <li>TrackConnectivityVerifier</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="legend">
+    화살표 흐름: ①→② 입력으로 주행 / ②→③ 한 런 끝나면 정산 / ③→⑦ 자금이 메타 진척에<br>
+    데이터 흐름: ④ SO → ② 시스템에서 읽기 / ⑦ 메타 변동 → ④ Zone 해금 반영
+  </div>
 </div>
 
 <h2><span class="num">S2</span>핵심 클래스 — 책임 매트릭스</h2>
