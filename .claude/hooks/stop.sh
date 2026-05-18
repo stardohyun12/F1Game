@@ -15,9 +15,21 @@ if [ -x "$UNITY_CLI" ]; then
   ERRORS_RAW=$(timeout 5 "$UNITY_CLI" console --type error 2>/dev/null || true)
 fi
 
-# unity-cli 정상 출력의 noise 한 줄 제거 (HTTP server started 메시지)
-# 진짜 에러만 남는지 검사
-ERRORS_TRIMMED=$(echo "$ERRORS_RAW" | grep -v "HTTP server started" | grep -v "ProcessInitializeOnLoadAttributes" | grep -v '^\[$' | grep -v '^\]$' | grep -v '^\s*"\s*$' | tr -d '[:space:]' || true)
+# 무시할 noise 패턴:
+#  - unity-cli 시작 메시지
+#  - Unity Connect / Auth / TokenExchange — 네트워크 noise, 우리 코드 무관
+#  - 존재 안 하는 메뉴 실행 (no menu named) — exec 실패는 stderr로 잡힘
+ERRORS_TRIMMED=$(echo "$ERRORS_RAW" \
+  | grep -v "HTTP server started" \
+  | grep -v "ProcessInitializeOnLoadAttributes" \
+  | grep -v "UnityConnectWebRequestException" \
+  | grep -v "TokenExchange" \
+  | grep -v "UnityEditor.Connect" \
+  | grep -v "ServiceToken" \
+  | grep -v "no menu named" \
+  | grep -v "ExecuteMenuItem failed" \
+  | grep -v '^\[$' | grep -v '^\]$' | grep -v '^\s*"\s*$' \
+  | tr -d '[:space:]' || true)
 
 if [ -n "$ERRORS_TRIMMED" ] && [ "$ERRORS_TRIMMED" != "[]" ]; then
   # 진짜 에러 — block
