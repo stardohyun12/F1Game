@@ -22566,6 +22566,54 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2066283601509773235, guid: 6330503e6311dd44595fa226df29c7e2, type: 3}
+--- !u!1 &859400965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 859400967}
+  - component: {fileID: 859400966}
+  m_Layer: 0
+  m_Name: PackingScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &859400966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859400965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c0d75b68e9fde41854d7316708880c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::PitCrew.Packing.PackingScreen
+  panelRoot: {fileID: 0}
+  packingCamera: {fileID: 0}
+  cargoSpawnPoint: {fileID: 0}
+  materials: []
+--- !u!4 &859400967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859400965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &866267944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52793,7 +52841,6 @@ GameObject:
   - component: {fileID: 2053950131}
   - component: {fileID: 2053950130}
   - component: {fileID: 2053950129}
-  - component: {fileID: 2053950133}
   m_Layer: 0
   m_Name: RunRoot
   m_TagString: Untagged
@@ -52861,18 +52908,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2053950133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053950128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad2a17077775dd44cb3597b66745ec2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: PitCrew::PreRunSetupPanel
 --- !u!1001 &2054388350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55000,3 +55035,4 @@ SceneRoots:
   - {fileID: 390692963}
   - {fileID: 710647939}
   - {fileID: 1425724944}
+  - {fileID: 859400967}

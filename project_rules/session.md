@@ -50,6 +50,34 @@
 
 큰 구조 변경(레이아웃·UI 시스템·다중 컴포넌트 상호작용)은 subagent dispatch로 진단 분리 권장 — 작성자가 못 본 것을 못 본다. 이번 출발 버튼 겹침이 그 사례 (`VLG.childControlHeight=false`로 컨테이너 rect가 clipping mask 안 되는 Unity 기본 동작).
 
+## 검증 서브에이전트 — 씬/시스템 wiring 변경 시 매번 (D-073, 즉시 발효 2026-05-18)
+
+> 세션 27 사례: 맵 R1 작업 중 GameContext 누락 / OrderBoard.panelRoot 누락 / PackingScreen 누락 / OrderJob-DeliveryPoint 라벨 미스매치 등 5건 연속 발생. 도현이 manual play 해서 알려줘야 발견. 자체 발견 0건.
+>
+> 원인: "fix 1줄 → commit → 다음" 루프로 속도 내며 도현에게 검증 부담 떠넘김.
+
+**언제 dispatch**:
+- 씬 GameObject 추가/삭제/wiring 변경
+- ScriptableObject 데이터 변경 (자산 라벨/참조 등)
+- 새 시스템 추가 또는 시스템 wiring 재구성
+- Editor 스크립트 실행 (RunFullRebuild·SetupOrderSystem 등)
+
+**dispatch 패턴** (fresh subagent, haiku/sonnet):
+```
+prompt: |
+  Editor 켜져 있고 Play 가능 상태. 다음 시스템 wiring·데이터 정합 검증:
+  1. unity-cli exec로 Services.* 14개 모두 set 여부
+  2. 핵심 컴포넌트 prefab/SerializeField wiring (OrderBoard.panelRoot, cardsContainer, cardPrefab / DeliveryHUD.manager / GameContext.* / 등)
+  3. 데이터 정합: OrderJob.destinationLabels ↔ DeliveryPoint.Label 매칭
+  4. unity-cli editor play --wait → 콘솔 에러 0건
+  5. OrderBoard·RoutePlanScreen·OnConfirm reflection sim → orderedRoute.Count > 0, RC.RunActive=True
+  결과 표 + 깨진 항목 좌표.
+```
+
+**작성자(나)는 OK 가정으로 commit 금지. 서브에이전트 보고 받고 fix → 재 dispatch → 클린 후 commit.**
+
+작성자(나)와 검증자(서브) 분리 — 같은 사람이 자기 코드 검증 못 한다는 게 일관된 사례.
+
 ## Unity 검증 — unity-cli (Editor 켠 채로) 필수
 
 씬/컴파일/물리/로그/Play 검증은 항상 `unity-cli`(`C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe`)로 한다. **Editor 켜둔 상태에서 실시간 통신** — Editor 닫기 요청 금지, batch 사용 금지.
