@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "A. \uC548\uC804 \uBC30\uB2EC"
   color: {r: 0.4, g: 0.95, b: 0.45, a: 1}
   destinationLabels:
-  - SuburbanGate
+  - ContainerYard
   timeLimitSec: 0
   baseReward: 500
   timeBonus: 0

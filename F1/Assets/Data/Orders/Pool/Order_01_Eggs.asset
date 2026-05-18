@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uC2E0\uC120 \uACC4\uB780"
   color: {r: 0.95, g: 0.9, b: 0.5, a: 1}
   destinationLabels:
-  - CentralCross
+  - Warehouse
   timeLimitSec: 240
   baseReward: 700
   timeBonus: 200

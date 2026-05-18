@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: CargoShip
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -3706,7 +3706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: ContainerYard
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -9002,7 +9002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: MainStation
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -13250,7 +13250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: OfficeCornerS
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -24364,7 +24364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: CentralPlaza
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -33792,7 +33792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: Warehouse
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -34993,7 +34993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: OfficeCornerN
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -44525,7 +44525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: PierEnd
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -47423,7 +47423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: MotorDepot
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -48965,7 +48965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: FactoryGateB
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}
@@ -50812,7 +50812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37f5db119f2255458534cdf698ec667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::DeliveryPoint
-  label: 
+  label: FactoryGateA
   radius: 3
   activeColor: {r: 0.2, g: 1, b: 0.4, a: 0.6}
   inactiveColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.3}

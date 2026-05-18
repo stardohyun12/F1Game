@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "B. \uADE0\uD615 \uBC30\uB2EC"
   color: {r: 0.95, g: 0.85, b: 0.25, a: 1}
   destinationLabels:
-  - PlateauTop
+  - FactoryGateA
   timeLimitSec: 300
   baseReward: 900
   timeBonus: 200
