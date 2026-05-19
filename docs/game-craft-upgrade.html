@@ -72,7 +72,7 @@
   <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
   <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
   <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
-  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 메타 + M8~M11 · <span class="dot"></span> iter 4 M12 + 도현측 + 초안 · <span class="dot"></span> iter 5 nav + 매트릭스 + "1개부터"</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1~5 진행 · <span class="dot"></span> iter 6 self-review + 최종 한 줄 + 내가 확신 못 하는 것</div>
   <nav style="margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px">
     <a href="#tldr" style="padding:4px 10px;background:#1c1d10;color:var(--gold);border-radius:4px;text-decoration:none">⚡ TL;DR</a>
     <a href="#one" style="padding:4px 10px;background:#0d2818;color:var(--ok);border-radius:4px;text-decoration:none">🎯 1개만</a>
@@ -88,6 +88,21 @@
 </header>
 
 <main>
+
+<!-- ──────────── iter 6: 최종 한 줄 ──────────── -->
+<section id="final" style="margin-top:0">
+  <div class="card pop" style="border:2px solid var(--gold);background:linear-gradient(135deg,#1a1709 0%,#161b22 100%)">
+    <h2 style="color:var(--gold);margin-bottom:6px">📍 도현 일어났을 때 — 최종 한 줄</h2>
+    <p style="font-size:15px;line-height:1.7;margin:8px 0 14px">
+      <strong>"내가 commit body에 <code style="font-size:14px">One-thing-still-feels-off:</code> 한 줄 박기 시작하는 데 OK 해주는 거"</strong> — 그것만으로도 시작.<br>
+      나머지는 일주일 동안 점진적으로 박을 수 있음.
+    </p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:13px">
+      <span style="padding:4px 12px;background:#0d2818;color:var(--ok);border-radius:4px"><strong>OK라고만 답하면</strong> → 다음 commit부터 M12-mini 발효</span>
+      <span style="padding:4px 12px;background:#1c1d10;color:var(--gold);border-radius:4px"><strong>"조합 C" 답하면</strong> → 1일 sprint 시작</span>
+    </div>
+  </div>
+</section>
 
 <!-- ──────────── iter 4: TL;DR 최상단 ──────────── -->
 <section id="tldr">
@@ -957,9 +972,53 @@ exit 0</pre>
   </ul>
 </section>
 
+<!-- ──────────── iter 6: 내가 확신 못 하는 것 ──────────── -->
+<section style="margin-top:40px">
+  <h2>🤔 내가 확신 못 하는 것 <span class="subt">iter 6 · 메타 정직</span></h2>
+  <p class="lede">이 페이지 다 좋아 보일 수 있지만 다음은 자체 의심.</p>
+  <div class="grid grid-2">
+    <div class="card">
+      <h4 style="color:var(--warn)">❓ M12 효과가 진짜일지</h4>
+      <p style="font-size:13px">"One-thing-still-feels-off" 필드 의무화한다고 내가 진짜 잘 찾아낼까? 형식만 채우고 "어색한 거 없음 → 색깔이 좀 칙칙함" 같은 빈약한 답으로 빠져나갈 위험. 측정해봐야 알 일.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warn)">❓ 메커니즘 12개 중복</h4>
+      <p style="font-size:13px">M5와 M12 둘 다 self-eval. M5는 5문항, M12는 1문항. 둘 다 박으면 noise. <strong>실제로는 M12만 박고 M5는 합쳐도 됨.</strong></p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warn)">❓ Stop hook 복잡도</h4>
+      <p style="font-size:13px">M1 (screenshot 의무 hook) 추가하면 도현이 다른 마이크 변경 commit할 때도 차단됨. UX 짜증날 수 있음. 한 commit에 한 변경 (U5) 원칙이 깨지면 즉시 마찰.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warn)">❓ Codex/M6 ROI</h4>
+      <p style="font-size:13px">UX reviewer subagent를 별도 모델로 두는 게 진짜 다른 시야인지 확신 없음. 같은 Claude로 페르소나 분리만 해도 비슷할 수 있음. 측정 전엔 모름.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--crit)">❌ M4 Ghost Player 비용 과대 예상</h4>
+      <p style="font-size:13px">"4시간" 추정인데 onCardClicked event 호출 reflection 안 되는 거 보면 InputSimulator 단순 적용 어려움. 실제로 8~12시간 들 수 있음. <strong>추정 보정 필요</strong>.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--crit)">❌ 측정 베이스라인 정확도</h4>
+      <p style="font-size:13px">"세션 27 UX incident 6건"은 내가 머릿속 카운트. incidents.md 실제 카운트랑 다를 수 있음. <strong>다음 세션 시작 시 정확 카운트 의무</strong>.</p>
+    </div>
+  </div>
+
+  <h3>가지치기 추천 (도현이 OK 하면)</h3>
+  <ul class="dense" style="font-size:13.5px">
+    <li><strong>M5 흡수</strong> → M12로 통합. 5문항 중 핵심 1개 (변경 전/후 비교)만 남기고 나머지는 ergo SO가 정량 검사.</li>
+    <li><strong>M8 Design Diary 보류</strong> → 효과 측정 어려움. 일단 commit body trailer만으로 충분.</li>
+    <li><strong>M4 Ghost Player 분해</strong> → "운전 단계 시뮬" 부분만 먼저 (그게 진짜 막힘 — onCardClicked event). M11 시나리오는 일단 도현 manual play로 대체.</li>
+    <li><strong>U1~U6 우선순위 압축</strong> → U1(reference 1장) + U5(commit 한 가지) 2개만. 나머지는 자연스럽게 따라옴.</li>
+  </ul>
+
+  <div class="pick" style="margin-top:14px;border-left-color:var(--accent)">
+    <strong>핵심</strong>: 12개 다 박는 게 목표 X. <strong>M12-mini 1개부터 측정하면서 효과 확인된 것만 추가</strong>가 진짜 패턴.
+  </div>
+</section>
+
 <div class="footer">
   생성: 2026-05-20 · 세션 27 후속 · <code>docs/game-craft-upgrade.html</code><br>
-  매 /loop iteration마다 갱신 — 도현은 한 페이지 새로고침으로 최신 보면 됨.
+  iter 6까지 누적. 다음 iter는 도현 깨면 그 답 받아 실제 박기 시작.
 </div>
 
 </main>
