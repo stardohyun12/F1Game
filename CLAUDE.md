@@ -114,6 +114,7 @@ Claude Code가 세션 시작 시 자동 로드하는 이 프로젝트의 룰·�
 @project_rules/asset.md
 @project_rules/session.md
 @project_rules/communication.md
+@project_rules/no-compromise.md
 @project_rules/REJECTED_IDEAS.md
 @.claude/activeContext.md
 
