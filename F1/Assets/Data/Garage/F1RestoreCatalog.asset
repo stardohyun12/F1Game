@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8b0e596c5b3294c89f1330701799b3, type: 3}
+  m_Name: F1RestoreCatalog
+  m_EditorClassIdentifier: PitCrew::PitCrew.Garage.F1RestoreCatalog
+  parts:
+  - {fileID: 11400000, guid: 3841f8cc9634ca742beef4b3511993ce, type: 2}
+  - {fileID: 11400000, guid: 923bebc78217dc44abcd87100f4ea35b, type: 2}
+  - {fileID: 11400000, guid: b9e378751f0235643a47983e347319ca, type: 2}
+  - {fileID: 11400000, guid: ab862b6b771b7b143b70519bc4cd2dfa, type: 2}
+  - {fileID: 11400000, guid: e36a8146f049b1d4298091a2f63fae50, type: 2}
+  - {fileID: 11400000, guid: 836ef8783050e00489a817a7bbc2ea7c, type: 2}
