@@ -7,6 +7,14 @@ $pidFile = Join-Path $PSScriptRoot 'notify.pid'
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Audible alarm — play system sound 3 times so user notices
+try {
+    for ($i = 0; $i -lt 3; $i++) {
+        [System.Media.SystemSounds]::Exclamation.Play()
+        Start-Sleep -Milliseconds 400
+    }
+} catch {}
+
 $notif = New-Object System.Windows.Forms.NotifyIcon
 $notif.Icon = [System.Drawing.SystemIcons]::Information
 $notif.Text = 'Claude Code: click to dismiss'
