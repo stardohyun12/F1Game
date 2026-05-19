@@ -43,7 +43,39 @@ EOF
   exit 0
 fi
 
-# 2) 이번 turn .cs 변경 체크 (git diff)
+# 2) 최근 commit 중 verifier 흔적 없는 시스템 변경 commit 검출 (D-073 강제)
+# .cs / .unity / .asset 파일 건드린 commit인데 message에 'verifier'/'verified'
+# 흔적 없으면 block. 사소한 docs/markdown/hook commit은 skip.
+if command -v git >/dev/null 2>&1; then
+  UNVERIFIED=""
+  while IFS='|' read -r SHA SUBJECT; do
+    [ -z "$SHA" ] && continue
+    # 이 commit이 건드린 파일 — 시스템 변경 (.cs/.unity/.asset) 있나?
+    SYS_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null | grep -E '\.(cs|unity|asset)$' || true)
+    [ -z "$SYS_FILES" ] && continue
+    # commit body에 'verifier' / 'verified' / 'Verified-By' 키워드 있나?
+    BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+    if ! echo "$BODY" | grep -qiE 'verifier|verified|verify'; then
+      # skip 옵션: commit message에 '[skip-verifier]' 명시되어 있으면 OK
+      if ! echo "$BODY" | grep -qi 'skip-verifier'; then
+        UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80}\n"
+      fi
+    fi
+  done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+
+  if [ -n "$UNVERIFIED" ]; then
+    REASON="최근 30분 시스템 변경(.cs/.unity/.asset) commit 중 verifier 흔적 없음 (D-073 위반):\\n${UNVERIFIED}\\n→ 조치: (a) verifier subagent dispatch 후 commit body에 'Verified-By: <findings>' 추가 (git commit --amend), 또는 (b) 단순 fix면 commit message에 '[skip-verifier]' 명시."
+    cat <<EOF
+{
+  "decision": "block",
+  "reason": "${REASON}"
+}
+EOF
+    exit 0
+  fi
+fi
+
+# 3) 이번 turn .cs 변경 체크 (uncommitted) — 도현 manual play reminder
 CS_CHANGED=0
 if command -v git >/dev/null 2>&1; then
   CS_CHANGED=$(git diff --name-only 2>/dev/null | grep -c "\.cs$" || true)
@@ -56,7 +88,7 @@ if [ "$CS_CHANGED" -gt 0 ]; then
 {
   "hookSpecificOutput": {
     "hookEventName": "Stop",
-    "additionalContext": ".cs 파일 ${CS_CHANGED}개 변경됨. ai-blindspots 룰 1: manual play 또는 screenshot 확인 안 했으면 도현에게 직접 실행 요청. 시각·UI·카메라·머티리얼 관련 변경이면 특히 의무."
+    "additionalContext": ".cs 파일 ${CS_CHANGED}개 변경됨 (미커밋). manual play 또는 verifier subagent dispatch 권장."
   }
 }
 EOF
