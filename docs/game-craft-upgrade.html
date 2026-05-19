@@ -72,13 +72,25 @@
   <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
   <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
   <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
-  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 메타 + M8~M11 · <span class="dot"></span> iter 4 M12 + 도현측 개선 + M6/M11 초안</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 메타 + M8~M11 · <span class="dot"></span> iter 4 M12 + 도현측 + 초안 · <span class="dot"></span> iter 5 nav + 매트릭스 + "1개부터"</div>
+  <nav style="margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px">
+    <a href="#tldr" style="padding:4px 10px;background:#1c1d10;color:var(--gold);border-radius:4px;text-decoration:none">⚡ TL;DR</a>
+    <a href="#one" style="padding:4px 10px;background:#0d2818;color:var(--ok);border-radius:4px;text-decoration:none">🎯 1개만</a>
+    <a href="#matrix" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">📊 매트릭스</a>
+    <a href="#diag" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">🩺 게임 진단</a>
+    <a href="#mecha" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">🛠️ M1~M11</a>
+    <a href="#m12" style="padding:4px 10px;background:#2a1818;color:var(--text);border-radius:4px;text-decoration:none">🧬 M12</a>
+    <a href="#user" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">↔️ 도현측 U1~U6</a>
+    <a href="#priority" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">📋 우선순위</a>
+    <a href="#draft" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">📐 코드 초안</a>
+    <a href="#cases" style="padding:4px 10px;background:#1c232d;color:var(--text);border-radius:4px;text-decoration:none">📸 before/after</a>
+  </nav>
 </header>
 
 <main>
 
 <!-- ──────────── iter 4: TL;DR 최상단 ──────────── -->
-<section>
+<section id="tldr">
   <h2>⚡ TL;DR <span class="subt">iter 4 · 1분 안에 픽</span></h2>
   <div class="grid grid-2">
     <div class="card pop" style="border-color:var(--gold)">
@@ -105,6 +117,97 @@
   </div>
 </section>
 
+<!-- ──────────── iter 5: 1개만 박는다면 ──────────── -->
+<section id="one">
+  <h2>🎯 1개만 박는다면 <span class="subt">iter 5 · 가장 작은 진입</span></h2>
+  <div class="pick" style="border-left-color:var(--ok)">
+    <strong>5분 안에 박을 수 있는 단 1개: M12의 "One-thing-still-feels-off:" 필드만.</strong><br>
+    no-compromise.md에 한 줄 추가하고 끝. 다음 commit부터 즉시 발효.
+  </div>
+  <div class="grid grid-3">
+    <div class="card pop" style="border-color:var(--ok)">
+      <h4 style="color:var(--ok)">🥇 가장 작은 1개</h4>
+      <div style="font-size:13.5px;line-height:1.7">
+        <strong>M12-mini</strong>: commit body에 <code>One-thing-still-feels-off:</code> 필드 의무.<br>
+        빈칸이면 commit 거부.
+      </div>
+      <div style="margin-top:10px;font-size:12.5px;color:var(--muted)">
+        <strong>비용</strong>: 5분 (룰 한 줄)<br>
+        <strong>효과</strong>: 모든 commit에서 1개 어색함 자체발견 의무 — "다 좋음" 보고 불가
+      </div>
+    </div>
+    <div class="card">
+      <h4>🥈 다음 박을 1개</h4>
+      <div style="font-size:13.5px;line-height:1.7">
+        <strong>M5</strong>: 5문항 룰.<br>
+        UI 변경 commit에만 적용.
+      </div>
+      <div style="margin-top:10px;font-size:12.5px;color:var(--muted)">
+        <strong>비용</strong>: 30분 (룰 박기 + 1회 dry-run)<br>
+        <strong>효과</strong>: visual 변경에 자기검증 의무
+      </div>
+    </div>
+    <div class="card">
+      <h4>🥉 3번째</h4>
+      <div style="font-size:13.5px;line-height:1.7">
+        <strong>M3</strong>: ErgoConstraints SO.<br>
+        Marker/Button OnValidate.
+      </div>
+      <div style="margin-top:10px;font-size:12.5px;color:var(--muted)">
+        <strong>비용</strong>: 1시간<br>
+        <strong>효과</strong>: 핀 hover/버튼 size 같은 정량 결핍 자동 검출
+      </div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:12px">
+    피곤한 상태에서 깼으면 🥇 1개만 OK 해도 됨. 30분 + α 단위로 점진적 박기 가능.
+  </p>
+</section>
+
+<!-- ──────────── iter 5: 메커니즘 × 결핍 매트릭스 ──────────── -->
+<section id="matrix">
+  <h2>📊 매트릭스 <span class="subt">iter 5 · 메커니즘 × 결핍 커버리지</span></h2>
+  <p class="lede">각 메커니즘이 5축 결핍 중 어디를 커버하는지 한눈에. 결핍별 커버 수가 적으면 보강 필요.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th width="60">M#</th><th width="160">메커니즘</th>
+        <th width="80">#1 시각</th><th width="80">#2 ref</th><th width="80">#3 자기</th><th width="80">#4 시뮬</th><th width="80">#5 에르고</th>
+        <th width="80">우선</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>M1</td><td>Play+screenshot hook</td><td style="color:var(--ok)">●</td><td></td><td style="color:var(--ok)">●</td><td></td><td></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>M2</td><td>Reference Library</td><td></td><td style="color:var(--ok)">●</td><td></td><td></td><td></td><td><span class="pill p2">P2</span></td></tr>
+      <tr><td>M3</td><td>ErgoConstraints SO</td><td></td><td></td><td></td><td></td><td style="color:var(--ok)">●</td><td><span class="pill p0">P0</span></td></tr>
+      <tr><td>M4</td><td>Ghost Player</td><td style="color:var(--ok)">●</td><td></td><td></td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p2">P2</span></td></tr>
+      <tr><td>M5</td><td>자기비판 5문항</td><td style="color:var(--ok)">●</td><td></td><td style="color:var(--ok)">●</td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p0">P0</span></td></tr>
+      <tr><td>M6</td><td>UX Reviewer subagent</td><td></td><td style="color:var(--ok)">●</td><td style="color:var(--ok)">●</td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>M7</td><td>incident 자동 stub</td><td></td><td></td><td style="color:var(--ok)">●</td><td></td><td></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>M8</td><td>Design Diary</td><td></td><td></td><td style="color:var(--ok)">●</td><td></td><td></td><td><span class="pill p2">P2</span></td></tr>
+      <tr><td>M9</td><td>Constraint Negotiation</td><td></td><td></td><td style="color:var(--ok)">●</td><td></td><td></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>M10</td><td>Player Persona Cards</td><td></td><td style="color:var(--ok)">●</td><td></td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>M11</td><td>"처음 30초" 시나리오</td><td style="color:var(--ok)">●</td><td></td><td></td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p0">P0</span></td></tr>
+      <tr><td>M12</td><td><strong>Reward Function (One-thing-feels-off)</strong></td><td style="color:var(--ok)">●</td><td></td><td style="color:var(--ok)">●</td><td style="color:var(--ok)">●</td><td></td><td><span class="pill p0">P0</span></td></tr>
+      <tr style="background:#1c1d10">
+        <td colspan="2"><strong>커버 합계</strong></td>
+        <td><strong>5</strong></td>
+        <td><strong>3</strong></td>
+        <td><strong>7</strong></td>
+        <td><strong>6</strong></td>
+        <td style="color:var(--warn)"><strong>1</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pick" style="margin-top:14px">
+    <strong>관찰</strong>: 결핍 <strong>#5 에르고 본능은 M3 1개만 커버</strong> — 가장 약한 자리. M3 박지 않으면 핀 hover/버튼 size 같은 정량 결핍은 영원히 미발견. <strong>M3 강추</strong>.<br>
+    반대로 <strong>#3 자기 비판은 7개 메커니즘이 커버</strong> — 가장 두꺼움. M5+M12만 박아도 충분.
+  </div>
+</section>
+
 <!-- ──────────── 도현이 일어나면 봐야 할 것 ──────────── -->
 <section>
   <h2>📍 더 자세히 — 일어나서 30초 안에 결정할 것</h2>
@@ -120,7 +223,7 @@
 </section>
 
 <!-- ──────────── iter 2: 게임 현 상태 진단 결과 ──────────── -->
-<section>
+<section id="diag">
   <h2>🩺 게임 현 상태 진단 <span class="subt">iter 2 · Team A subagent 결과 · 2026-05-20</span></h2>
   <p class="lede">Team A가 컴파일·런타임·씬 wiring·수치·screenshot 5단계 진단. <strong>컴파일 0 / 런타임 에러 0 / 차 박힘 X / 핵심 wiring 다 set</strong>. 하지만 다음 이슈 발견 — <strong>각 이슈마다 어떤 메커니즘이 있었으면 잡혔을지 매핑</strong>.</p>
 
@@ -223,7 +326,7 @@
 </section>
 
 <!-- ──────────── 메커니즘 7개 ──────────── -->
-<section>
+<section id="mecha">
   <h2>🛠️ 메커니즘 7개 <span class="subt">각자 결핍 1~2개 메움</span></h2>
   <p class="lede">7개 다 박으면 ~9시간 sprint. 1~3개만 먼저 박는 게 합리적. <strong>비용 S/M/L</strong>, <strong>P0(즉효)/P1/P2</strong>.</p>
 
@@ -377,7 +480,7 @@
 </section>
 
 <!-- ──────────── iter 4: M12 Reward Function Rewrite ──────────── -->
-<section>
+<section id="m12">
   <h2>🧬 M12 · Reward Function Rewrite <span class="subt">iter 4 · 가장 깊은 근본</span></h2>
   <div class="pick" style="border-left-color:var(--crit)">
     <strong>진짜 문제는 도구나 룰이 아니라 "내가 속으로 '완료'라고 부르는 기준 자체"</strong>가 도현 기준과 다름.
@@ -437,7 +540,7 @@ Verified-By: compile=0 runtime=0 screenshot=docs/auto/abc1234.png</pre>
 </section>
 
 <!-- ──────────── iter 4: 도현이 나를 더 잘 쓰는 법 ──────────── -->
-<section>
+<section id="user">
   <h2>↔️ 도현이 나를 더 잘 쓰는 법 <span class="subt">iter 4 · 방향 반전 — 사용자측 개선</span></h2>
   <p class="lede">"내가 못 하는 것"의 절반은 도현이 정보를 안 줘서. 한 줄 추가로 결과물이 크게 달라지는 패턴들.</p>
 
@@ -491,7 +594,7 @@ Verified-By: compile=0 runtime=0 screenshot=docs/auto/abc1234.png</pre>
 </section>
 
 <!-- ──────────── iter 4: M6 / M11 초안 ──────────── -->
-<section>
+<section id="draft">
   <h2>📐 M6 · M11 실제 초안 <span class="subt">iter 4 · 박을 준비 완료</span></h2>
 
   <h3>M6 · UX Reviewer subagent 시스템 prompt 초안</h3>
@@ -710,7 +813,7 @@ exit 0</pre>
 </section>
 
 <!-- ──────────── 우선순위 권장 ──────────── -->
-<section>
+<section id="priority">
   <h2>🎯 우선순위 권장 <span class="subt">"먼저 박을 1~3개"</span></h2>
 
   <table>
@@ -738,7 +841,7 @@ exit 0</pre>
 </section>
 
 <!-- ──────────── before/after 사례 ──────────── -->
-<section>
+<section id="cases">
   <h2>📸 사례 비교 <span class="subt">세션 27에서 이 룰이 있었으면</span></h2>
   <p class="lede">실제 발생한 incident 3개에 대해 "M3·M5가 있었으면 어떻게 잡혔을지" 시뮬레이션.</p>
 
