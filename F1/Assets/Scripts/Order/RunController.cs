@@ -274,7 +274,19 @@ public class RunController : MonoBehaviour, IRunController
     void HandlePuncture()
     {
         if (!RunActive) return;
-        Debug.LogWarning("[RunController] PUNCTURE → EndRun(success=false)");
+        Debug.LogWarning("[RunController] PUNCTURE → 슬로모 → EndRun(success=false)");
+        StartCoroutine(PunctureSlowMoThenEnd());
+    }
+
+    System.Collections.IEnumerator PunctureSlowMoThenEnd()
+    {
+        // Day 4: 펑크 = 슬로모 0.5초 (실시간 0.5초) → 정산 직행
+        float originalScale = Time.timeScale;
+        Time.timeScale = 0.25f;
+        Time.fixedDeltaTime = 0.02f * 0.25f;
+        yield return new WaitForSecondsRealtime(0.5f);
+        Time.timeScale = originalScale;
+        Time.fixedDeltaTime = 0.02f;
         EndRun(success: false);
     }
 
