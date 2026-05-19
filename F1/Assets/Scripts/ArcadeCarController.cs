@@ -116,7 +116,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     /// throttle 컷오프, brake 정규화, drag 정규화, 조향 곡선 normalize에 모두 사용.
     /// </summary>
     private float EffectiveMaxSpeedMps =>
-        maxSpeedMps * (tireSystem != null ? tireSystem.SpeedMultiplier : 1f) * engineMaxSpeedMul;
+        maxSpeedMps * (tireSystem != null ? tireSystem.SpeedMultiplier : 1f) * engineMaxSpeedMul
+        * ((Services.Boost?.IsActive ?? false) ? 1.50f : 1f);
 
     void OnValidate()
     {
@@ -214,7 +215,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     {
         if (!isGrounded) return;
         float t = smoothedMove.y;
-        float effectiveAccelForce = accelForce * Mathf.Max(0.01f, engineAccelMul);
+        float boostMul = (Services.Boost?.IsActive ?? false) ? 1.50f : 1f;
+        float effectiveAccelForce = accelForce * Mathf.Max(0.01f, engineAccelMul) * boostMul;
 
         if (t > 0.01f)
         {

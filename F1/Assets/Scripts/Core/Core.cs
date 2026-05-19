@@ -140,6 +140,7 @@ public static class Services
     public static IGearSystem Gears { get; internal set; }
     public static PitCrew.Packing.IPackingScreen Packing { get; internal set; }
     public static PitCrew.Garage.IF1RestoreSystem Restore { get; internal set; }
+    public static PitCrew.Garage.IBoostSystem Boost { get; internal set; }
 
     public static void Reset()
     {
@@ -158,6 +159,7 @@ public static class Services
         Gears = null;
         Packing = null;
         Restore = null;
+        Boost = null;
     }
 
     public static T Require<T>(T service, string callerHint = null) where T : class

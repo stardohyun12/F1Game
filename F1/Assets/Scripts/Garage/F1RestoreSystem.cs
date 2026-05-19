@@ -50,7 +50,9 @@ namespace PitCrew.Garage
                     break;
                 case F1PartId.Tires:      break;
                 case F1PartId.Suspension: break;
-                case F1PartId.Aero:       break;
+                case F1PartId.Aero:
+                    Services.Boost?.SetUnlocked(true);
+                    break;
                 case F1PartId.Paint:      break;
             }
         }
