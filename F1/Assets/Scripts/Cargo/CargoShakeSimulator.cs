@@ -39,15 +39,15 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     [Header("Position Physics (패턴 C+ — 자동차 안 화물 느낌)")]
     // D-046 (도현 세션 15): "시뮬레이션 느낌" 진단. 마찰 강화 + 반응 줄임.
     [Tooltip("정지 마찰 임계 G. 낮을수록 작은 G에도 미끄러짐.")]
-    [SerializeField] float staticFrictionG = 0.06f;
+    [SerializeField] float staticFrictionG = 0.10f;
     [Tooltip("운동 마찰 감쇠율 (per sec). 낮을수록 오래 미끄러짐.")]
-    [SerializeField] float kineticFriction = 0.5f;
+    [SerializeField] float kineticFriction = 0.8f;
     [Tooltip("G 1단위를 m/s²로 변환. 높을수록 아이템이 강하게 밀려나감.")]
-    [SerializeField] float accelScale = 3.5f;
+    [SerializeField] float accelScale = 2.0f;
     [Tooltip("벽 충돌 시 반발 (0=멈춤, 0.5=절반 반발). 0.05 = 거의 멈춤.")]
     [SerializeField] float wallBounce = 0.05f;
     [Tooltip("velocity 이하이면 정지로 간주 (snap to 0).")]
-    [SerializeField] float velocityDeadZone = 0.005f;
+    [SerializeField] float velocityDeadZone = 0.02f;
 
     [Header("Box Wall Impact → CargoBox Damage (세션 20)")]
     [Tooltip("trunk 벽 박을 때 아이템 속도(m/s)당 데미지. 충돌이 진짜 손상 인과.")]

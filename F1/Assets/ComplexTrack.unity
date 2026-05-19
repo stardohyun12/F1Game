@@ -19225,11 +19225,11 @@ MonoBehaviour:
   simCamRig: {fileID: 212957135}
   trunkHalfExtent: 1
   itemScale: 0.5
-  staticFrictionG: 0.06
-  kineticFriction: 0.5
-  accelScale: 3.5
+  staticFrictionG: 0.1
+  kineticFriction: 0.8
+  accelScale: 2
   wallBounce: 0.25
-  velocityDeadZone: 0.005
+  velocityDeadZone: 0.02
   boxWallDamageMul: 8
   boxWallSpeedThreshold: 0.15
 --- !u!4 &633181198
@@ -34204,11 +34204,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9152872249828246453, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 72
+      value: 78
       objectReference: {fileID: 0}
     - target: {fileID: 9152872249828246453, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9152872249828246453, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_LocalPosition.z

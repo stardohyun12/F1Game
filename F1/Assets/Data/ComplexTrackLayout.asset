@@ -140,5 +140,5 @@ MonoBehaviour:
   - col: 18
     row: 16
     label: ContainerYard
-  startCell: {x: 12, y: 10}
+  startCell: {x: 13, y: 10}
   startYawDeg: 90
