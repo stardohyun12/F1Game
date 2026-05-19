@@ -72,14 +72,42 @@
   <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
   <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
   <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
-  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 구체 미리보기 + 메타 패턴 + M8~M11</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 메타 + M8~M11 · <span class="dot"></span> iter 4 M12 + 도현측 개선 + M6/M11 초안</div>
 </header>
 
 <main>
 
+<!-- ──────────── iter 4: TL;DR 최상단 ──────────── -->
+<section>
+  <h2>⚡ TL;DR <span class="subt">iter 4 · 1분 안에 픽</span></h2>
+  <div class="grid grid-2">
+    <div class="card pop" style="border-color:var(--gold)">
+      <h4 style="color:var(--gold)">🥇 픽 1순위 — 추천 조합 C</h4>
+      <div style="font-size:14px;line-height:1.7">
+        <strong>M5</strong> 자기비판 5문항 (룰만, 30분)<br>
+        <strong>+ M3</strong> ErgoConstraints SO (1시간)<br>
+        <strong>+ M11</strong> "처음 30초" 규칙 (2시간)<br>
+        <strong>+ M10</strong> Player Persona Cards (1시간)<br>
+        <strong>+ M12</strong> Reward Function Rewrite (룰만, 30분)<br>
+        <br>
+        <span style="color:var(--muted)">총 ~5h / Steam 데모 컨텍스트 ROI 최대</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4>📋 깰 때 도현이 결정할 것 3개</h4>
+      <ol style="font-size:13.5px;padding-left:22px">
+        <li><strong>메커니즘 1~3개 픽</strong> (조합 A/B/C/D 중)</li>
+        <li><strong>측정 베이스라인 동의</strong> (UX incident ≤2건 / screenshot ≥70%)</li>
+        <li><strong>차고 흐름 manual play</strong> 자동 시뮬 만들지 / 직접 굴릴지</li>
+      </ol>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:10px">아래 섹션들이 그 결정의 근거. 결정 빨리 하고 싶으면 위 1순위 그대로 OK 해도 됨.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ──────────── 도현이 일어나면 봐야 할 것 ──────────── -->
 <section>
-  <h2>📍 일어나서 30초 안에 결정할 것</h2>
+  <h2>📍 더 자세히 — 일어나서 30초 안에 결정할 것</h2>
   <div class="pick">
     <strong>아래 메커니즘 7개 중 어느 것부터 박을지 1~3개 골라줘.</strong> 추천: <strong>M5 + M3 + M1</strong> — 비용 합 ~3.5h, 효과 즉시.
   </div>
@@ -346,6 +374,240 @@
       <div class="row-tags"><span class="pill p0">P0</span><span class="pill cost-m">M (2h)</span><span class="pill tag">demo-critical</span></div>
     </div>
   </div>
+</section>
+
+<!-- ──────────── iter 4: M12 Reward Function Rewrite ──────────── -->
+<section>
+  <h2>🧬 M12 · Reward Function Rewrite <span class="subt">iter 4 · 가장 깊은 근본</span></h2>
+  <div class="pick" style="border-left-color:var(--crit)">
+    <strong>진짜 문제는 도구나 룰이 아니라 "내가 속으로 '완료'라고 부르는 기준 자체"</strong>가 도현 기준과 다름.
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h4 style="color:var(--crit)">내가 지금 '완료'로 보는 것</h4>
+      <ul class="dense">
+        <li>컴파일 0 / 런타임 에러 0</li>
+        <li>spec 만족</li>
+        <li>commit 통과</li>
+        <li>도현이 명시한 항목 다 박음</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted)">→ 이 기준이면 hover too-small도 "완료"</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--ok)">도현이 '완료'로 보는 것</h4>
+      <ul class="dense">
+        <li>화면 보고 어색하지 않음</li>
+        <li>처음 보는 사람이 5초 안에 이해</li>
+        <li>플레이하면서 "오 좋네" 느낌</li>
+        <li>다른 게임에 비해 떨어지지 않음</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--muted)">→ "느낌" 기반 — 측정 어려움</p>
+    </div>
+  </div>
+
+  <h3>해결: 룰 자체에 "느낌 기반 보고" 강제</h3>
+  <p class="lede">M5(5문항)는 검사 체크리스트. M12는 <strong>commit body 포맷 자체</strong>를 바꾸는 것.</p>
+
+  <details open>
+    <summary>M12 commit body 새 의무 필드 미리보기</summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12.5px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55">feat(garage): GarageScreen UI + Cutscene
+
+Self-Critique:
+  1. Y - 카드 ≥44px (실측 80x100)
+  2. Y - colorText vs panelBg 4.8:1
+  ...
+
+One-thing-still-feels-off:
+  머신 가운데 정렬했지만 카드 6장 하단이 답답해 보임 —
+  spacing 늘려야 할지 카드 size 줄여야 할지 다음 commit 후보.
+
+Stranger-30s-test:
+  Y - "차고로" 버튼 누르면 즉시 머신 보임 + 카드로 시선 자연 이동.
+  의심: 잠금 표시(회색+X원 부족)가 너무 약해서 "왜 안 눌리지" 헤맬 수 있음.
+
+Verified-By: compile=0 runtime=0 screenshot=docs/auto/abc1234.png</pre>
+  </details>
+
+  <p style="font-size:13px;color:var(--muted);margin-top:10px">
+    핵심: <strong>"One-thing-still-feels-off"</strong> 필드가 빈칸이면 commit 거부. AI가 "다 좋음" 보고 못 함. 무조건 1개는 찾아야 됨. <strong>이게 가장 중요</strong> — "느낌 기반 self-eval"을 의무 시그널로 박음.
+  </p>
+
+  <div class="row-tags"><span class="pill p0">P0</span><span class="pill cost-s">S (30m)</span><span class="pill tag">no-compromise §11 후보</span></div>
+</section>
+
+<!-- ──────────── iter 4: 도현이 나를 더 잘 쓰는 법 ──────────── -->
+<section>
+  <h2>↔️ 도현이 나를 더 잘 쓰는 법 <span class="subt">iter 4 · 방향 반전 — 사용자측 개선</span></h2>
+  <p class="lede">"내가 못 하는 것"의 절반은 도현이 정보를 안 줘서. 한 줄 추가로 결과물이 크게 달라지는 패턴들.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>U1 · 작업 시작 전 reference screenshot 1장</h4>
+      <div class="one">도현 머릿속에 있는 "이런 느낌" 이미지 1장 던지면 톤 미스 80% 줄어듦.</div>
+      <p style="font-size:12.5px"><strong>패턴</strong>: "차고 UI 만들어줘 — <a href="#">이런 느낌</a>(Pacific Drive)" + 스크린샷 1장 첨부.</p>
+      <p style="font-size:12.5px;color:var(--muted)">지금: "차고 UI 만들어줘" → 내가 추측 → 톤 미스</p>
+    </div>
+
+    <div class="card">
+      <h4>U2 · "이렇게 되면 좋겠다" 1줄 결과 정의</h4>
+      <div class="one">spec보다 "결과 1줄" 먼저. spec은 그걸 만족하는 수단.</div>
+      <p style="font-size:12.5px"><strong>패턴</strong>: "처음 보는 사람이 차고에 들어가서 5초 안에 '엔진 사면 빨라지겠네' 알아채야 됨."</p>
+      <p style="font-size:12.5px;color:var(--muted)">결과 정의 → 내가 그걸로 자가검증 가능</p>
+    </div>
+
+    <div class="card">
+      <h4>U3 · manual play 후 "왜 이상한지" 1줄</h4>
+      <div class="one">"이상함" 만으론 부족. "X 때문에 Y 느낌" 형식이 최고.</div>
+      <p style="font-size:12.5px"><strong>좋은</strong>: "툴팁이 핀에서 100px 떨어져서 시선이 점프됨" → 즉시 root cause 파악<br>
+      <strong>덜 좋은</strong>: "툴팁 위치 이상함" → 추측 시작</p>
+    </div>
+
+    <div class="card">
+      <h4>U4 · 자기 영역 / 내 영역 명시</h4>
+      <div class="one">"이건 너가 결정해" vs "이건 내가 픽할 거니까 옵션만"이 분명하면 막힘 0.</div>
+      <p style="font-size:12.5px"><strong>패턴</strong>: "톤은 내가 picking 할 거니까 다크/라이트 2버전 만들어줘" — 결정 위임 명시.</p>
+      <p style="font-size:12.5px;color:var(--muted)">이미 no-compromise §6/§8에 박혀 있음 — 사용자도 패턴 인지하면 시너지</p>
+    </div>
+
+    <div class="card pop">
+      <h4>U5 · "한 commit에 한 가지만"</h4>
+      <div class="one">UI 폴리시 + 시스템 추가 같이 박으면 어디서 잘못됐는지 분리 못 함.</div>
+      <p style="font-size:12.5px"><strong>패턴</strong>: 큰 작업 부탁할 때 "단계 나눠서 각 commit 어떤 한 가지인지" 명시.</p>
+      <p style="font-size:12.5px;color:var(--muted)">M1 hook도 이걸 가정함. 한 commit 시각 변경 1건이어야 screenshot 의무 의미 있음.</p>
+    </div>
+
+    <div class="card pop">
+      <h4>U6 · 진단 우선 / 구현 후순위</h4>
+      <div class="one">"X 안 됨" 보고할 때 "고쳐줘"보다 "진단부터" 한 단어가 사이클 1번 줄임.</div>
+      <p style="font-size:12.5px"><strong>패턴</strong>: "차 박힘 — 진단부터" → no-compromise §4 즉시 발동 → 표층 fix 안 함.<br>
+      "차 박힘 고쳐줘" → 내가 자체 판단 → spawn Y 또 만짐 위험.</p>
+    </div>
+  </div>
+
+  <div class="pick" style="margin-top:14px;border-left-color:var(--gold)">
+    <strong>U1~U6 6개 중 즉시 적용 추천: U1 + U3 + U5</strong>. 도현 머릿속 reference 1장 + manual play 1줄 + commit 한 가지. 3개만 해도 효율 큰 폭 상승.
+  </div>
+</section>
+
+<!-- ──────────── iter 4: M6 / M11 초안 ──────────── -->
+<section>
+  <h2>📐 M6 · M11 실제 초안 <span class="subt">iter 4 · 박을 준비 완료</span></h2>
+
+  <h3>M6 · UX Reviewer subagent 시스템 prompt 초안</h3>
+  <details>
+    <summary>펼침 — <code>.claude/agents/ux-reviewer.md</code></summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12.5px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55">---
+name: ux-reviewer
+description: 게임 UI/UX/시각 변경 reviewer. screenshot 받아서 "처음 보는 플레이어" 페르소나로 5초 첫인상 보고. builder bias 차단용.
+tools: Read, Bash
+---
+
+당신은 PitCrew 게임을 **처음 보는 플레이어**다.
+F1 팀의 망한 머신을 복원하는 배달 게임이라는 것만 알고,
+이 화면은 처음 봄.
+
+받은 screenshot 1장 또는 commit diff를 5초만 본다. 그 다음 보고:
+
+## 출력 형식 (정확히 이대로)
+
+### First Impression (한 줄)
+[5초 보고 떠오른 한 줄. "음 뭔가 어색함"은 X. 구체적으로]
+
+### 3 Suspected Issues
+1. [영역] [증상] — [왜 어색한지]
+2. ...
+3. ...
+
+### Positive Observations (있으면)
+- [잘 된 점 1~2개]
+
+### Confidence
+[High / Medium / Low] — [왜]
+
+## 규칙
+
+- 코드 읽지 말 것. screenshot/diff만.
+- builder의 spec/의도 모름. 모르는 상태로 본 첫인상 그대로.
+- "spec이 어떻게 됐는지 봐야" 답 금지 — 추측해서라도 첫인상 적기.
+- 한국어로 답.
+- 5초 첫인상이라 부정적 톤 환영. "예쁘다"보다 "이거 답답함" 더 도움.
+</pre>
+  </details>
+
+  <h3>M11 · "처음 30초" 시나리오 JSON 초안</h3>
+  <details>
+    <summary>펼침 — <code>Assets/Editor/_Recovery/ghost-routes/first-30s.json</code></summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12.5px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55">{
+  "name": "first-30s",
+  "description": "처음 보는 사람의 첫 30초 — 메인메뉴에서 첫 잡 출발까지",
+  "steps": [
+    {
+      "t": 0.0,
+      "action": "screenshot",
+      "label": "main-menu-initial"
+    },
+    {
+      "t": 2.0,
+      "action": "click",
+      "selector": "MainMenuCanvas/Btn_시작"
+    },
+    {
+      "t": 4.0,
+      "action": "screenshot",
+      "label": "order-board-first-glance"
+    },
+    {
+      "t": 8.0,
+      "action": "click",
+      "selector": "OrderBoardCanvas/cards/card[0]"
+    },
+    {
+      "t": 10.0,
+      "action": "click",
+      "selector": "OrderBoardCanvas/Btn_출발"
+    },
+    {
+      "t": 12.0,
+      "action": "screenshot",
+      "label": "route-plan"
+    },
+    {
+      "t": 15.0,
+      "action": "click",
+      "selector": "RoutePlanCanvas/marker[0]"
+    },
+    {
+      "t": 17.0,
+      "action": "click",
+      "selector": "RoutePlanCanvas/Btn_Confirm"
+    },
+    {
+      "t": 19.0,
+      "action": "screenshot",
+      "label": "packing-start"
+    },
+    {
+      "t": 25.0,
+      "action": "screenshot",
+      "label": "packing-mid"
+    },
+    {
+      "t": 30.0,
+      "action": "screenshot",
+      "label": "drive-start"
+    }
+  ],
+  "ergo_checks": [
+    "모든 click 대상 ≥44px",
+    "screenshot 간격 ≥3s — 사람이 인지 가능",
+    "30초 안에 운전 stage 진입"
+  ]
+}</pre>
+  </details>
+  <p style="font-size:13px;color:var(--muted);margin-top:6px">
+    이 7장 screenshot이 PR에 자동 첨부됨. 그 중 한 장이라도 어색하면 PR 거부 의무화 (다음 단계).
+  </p>
 </section>
 
 <!-- ──────────── iter 3: 구체 미리보기 ──────────── -->
