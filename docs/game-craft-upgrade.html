@@ -72,7 +72,7 @@
   <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
   <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
   <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
-  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 결과 추가 · iter 3~ 후속</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 · <span class="dot"></span> iter 3 구체 미리보기 + 메타 패턴 + M8~M11</div>
 </header>
 
 <main>
@@ -279,6 +279,174 @@
   </div>
 </section>
 
+<!-- ──────────── iter 3: 메타 패턴 ──────────── -->
+<section>
+  <h2>💡 메타 패턴 발견 <span class="subt">iter 3 · 7개 메커니즘 공통점</span></h2>
+  <p class="lede">M1~M7 작성하면서 발견 — 모두 같은 패턴.</p>
+  <div class="pick" style="border-left-color:var(--accent)">
+    <strong>"AI에게 느끼라" X / "안 보면 안 되는 artifact를 강제 생성" O</strong>
+  </div>
+  <table>
+    <thead><tr><th>메커니즘</th><th>강제 생성하는 artifact</th><th>artifact가 강제하는 행동</th></tr></thead>
+    <tbody>
+      <tr><td>M1</td><td>screenshot PNG (commit별 자동)</td><td>commit 직전 사진 보고 어색하면 멈춤</td></tr>
+      <tr><td>M3</td><td>Console ErgoWarning 라인</td><td>warning 0건 되도록 수치 맞춤</td></tr>
+      <tr><td>M4</td><td>Ghost replay screenshot 10장</td><td>10장 중 어색한 컷 발견하면 fix</td></tr>
+      <tr><td>M5</td><td>commit body 5문항 답</td><td>답 못 하면 commit X — 자각 강제</td></tr>
+      <tr><td>M6</td><td>reviewer subagent의 "첫인상 한 줄"</td><td>외부 시야 텍스트가 builder bias 깨뜨림</td></tr>
+      <tr><td>M7</td><td>incident.md stub (도현 키워드 트리거)</td><td>"missing heuristic" 필드 채우기 강제</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:13px;margin-top:10px">
+    이 패턴이 보편화되면 다른 결핍에도 적용 가능. 예: 사운드 부재 결핍 → "feature commit에 audio cue 라인 의무" artifact. 데이터 무결성 결핍 → "schema diff JSON 자동 생성" artifact.
+  </p>
+</section>
+
+<!-- ──────────── iter 3: 추가 메커니즘 M8~M11 ──────────── -->
+<section>
+  <h2>➕ 추가 메커니즘 <span class="subt">iter 3 · 더 짜낸 결과</span></h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h4>M8 · Design Diary 자동 누적</h4>
+      <div class="one">feature commit마다 3문장 "왜 이 결정을 했나" 자동 누적 markdown.</div>
+      <div><strong>해결</strong>: 한 달 후 "왜 이렇게 만들었지" 추적 불가 문제. 작은 결정의 의도 망각.</div>
+      <div><strong>구현</strong>: Stop hook commit body에서 <code>Design-Diary:</code> trailer 추출 → <code>옵시디언/notes/design-diary.md</code> append.</div>
+      <div class="row-tags"><span class="pill p2">P2</span><span class="pill cost-s">S (1h)</span></div>
+    </div>
+
+    <div class="card">
+      <h4>M9 · Constraint Negotiation</h4>
+      <div class="one">새 feature 추가 spec 작성 시 "지금 spec에서 2개 빼라" 강제. 무한 추가 차단.</div>
+      <div><strong>해결</strong>: 스코프 팽창 (도현 ExulMundi 패턴 함정). brainstorming 끝에 자연스러운 "트림" 단계 누락.</div>
+      <div><strong>구현</strong>: writing-plans 스킬 self-review 7번째 step으로 "trim 2 items".</div>
+      <div class="row-tags"><span class="pill p1">P1</span><span class="pill cost-s">S (30m)</span></div>
+    </div>
+
+    <div class="card pop">
+      <h4>M10 · Player Persona Cards</h4>
+      <div class="one">3 페르소나(speed-runner / casual / completionist) 각자 시야로 새 feature 평가 한 줄.</div>
+      <div><strong>해결</strong>: "개발자 시야" 단일 채널. 결핍 #4 보강.</div>
+      <div><strong>구현</strong>: <code>references/personas.md</code> 3장 + M5 5문항 옆에 페르소나 평가 칸 추가.</div>
+      <div><strong>예시</strong>:
+      <ul class="dense" style="font-size:12.5px">
+        <li>Speedrunner: "Boost 1회 1초는 너무 짧음 → cooldown skip 옵션 없으면 답답"</li>
+        <li>Casual: "K/L 변속 강제는 부담 — 자동 모드 없으면 진입 못 함"</li>
+        <li>Completionist: "Tier 1 6개 끝나면 다음 콘텐츠 없음 → 동기 사라짐"</li>
+      </ul>
+      </div>
+      <div class="row-tags"><span class="pill p1">P1</span><span class="pill cost-s">S (1h)</span><span class="pill tag">시야 보강</span></div>
+    </div>
+
+    <div class="card pop">
+      <h4>M11 · "처음 30초" 규칙</h4>
+      <div class="one">feature의 첫 30초가 설명 없이 작동하는지 강제 — screenshot 0s/10s/20s/30s 4장.</div>
+      <div><strong>해결</strong>: onboarding 사각지대. Steam 데모 핵심 — 첫 30초.</div>
+      <div><strong>구현</strong>: M4 Ghost Player의 기본 시나리오로 박음. 첫 진입 → 30초 screenshot 4장 의무.</div>
+      <div><strong>가치</strong>: Steam 데모 출시 직전 가장 중요한 검증. 데모 화룡점정.</div>
+      <div class="row-tags"><span class="pill p0">P0</span><span class="pill cost-m">M (2h)</span><span class="pill tag">demo-critical</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── iter 3: 구체 미리보기 ──────────── -->
+<section>
+  <h2>📝 구체 미리보기 <span class="subt">iter 3 · 추천 3개(M5/M3/M1) 실제 코드/룰</span></h2>
+  <p class="lede">박기 전에 "어떤 모양인지" 미리 보기. 도현 OK 하면 그대로 박음.</p>
+
+  <h3>M5 · no-compromise.md §10에 박을 룰 (룰 텍스트)</h3>
+  <details open>
+    <summary>미리보기 펼침</summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12.5px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55">## 10. UI/카메라/플레이어 변경 commit 직전 5문항
+
+코드 변경에 UI Canvas / RectTransform / Camera / 입력·Marker
+연관 파일이 1개라도 포함되면, commit body에 다음 5문항 답을
+의무로 기록한다. 답 못 하면 commit X.
+
+1. 클릭 영역 손가락 안 들어갈 만큼 작지 않나? (≥44px or ≥3 world units)
+2. 텍스트와 배경 contrast 충분? (UITheme.colorText vs panel bg)
+3. 처음 보는 사람이 "뭐 해야 되지" 5초 안에 알 수 있나?
+4. 변경 전/후 screenshot 옆에 놓고 봤을 때 후가 명확히 나아 보이나?
+5. 변경 안 한 다른 부분이 이 변경 때문에 더 이상해 보이진 않나?
+
+trailer 형식:
+  Self-Critique:
+    1. Y - hover collider radius=3 (≥3 OK)
+    2. Y - colorTextMuted vs panelBgDark, 4.8:1
+    3. Y - 카드 위 "출발" 버튼 가시
+    4. Y - docs/screenshots/auto/abc1234-card.png 비교 OK
+    5. Y - 다른 영역 영향 없음
+
+NO 답 1건 이상 → 그 항목 fix 후 재 commit.</pre>
+  </details>
+
+  <h3>M3 · ErgoConstraints.cs 미리보기</h3>
+  <details>
+    <summary>코드 펼침</summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55">// F1/Assets/Scripts/UI/ErgoConstraints.cs
+using UnityEngine;
+
+[CreateAssetMenu(menuName="PitCrew/UI/ErgoConstraints")]
+public class ErgoConstraints : ScriptableObject {
+    [Header("Click target (Apple HIG 기준)")]
+    public float minClickTargetPx = 44f;
+    public float minWorldHoverRadius = 3f;  // DeliveryPointMarker 등
+
+    [Header("Tooltip")]
+    public float minTooltipDistancePx = 12f;
+    public float maxTooltipDistancePx = 40f;
+
+    [Header("Text")]
+    public float minContrastRatio = 4.5f;     // WCAG AA
+    public float minTextSize = 14f;
+
+    [Header("Color tone")]
+    public float maxVignetteForDay = 0.25f;   // 데이 톤이면 ≤0.25
+    public float minExposure = 0.0f;          // 너무 어두우면 음수
+}
+
+// 사용 예: DeliveryPointMarker.cs OnValidate()
+void OnValidate() {
+    var ergo = Resources.Load&lt;ErgoConstraints&gt;("ErgoConstraints");
+    if (ergo == null) return;
+    var hover = GetComponentInChildren&lt;SphereCollider&gt;();
+    if (hover != null &amp;&amp; hover.radius &lt; ergo.minWorldHoverRadius) {
+        Debug.LogWarning(
+          $"[Ergo] {name} hover radius {hover.radius:F2} &lt; min {ergo.minWorldHoverRadius:F2}",
+          this);
+    }
+}</pre>
+  </details>
+
+  <h3>M1 · Stop hook 패턴 미리보기</h3>
+  <details>
+    <summary>PowerShell 펼침</summary>
+    <pre style="background:#0d1117;padding:14px;border-radius:6px;font-size:12px;color:#a9b9ce;white-space:pre-wrap;line-height:1.55"># .claude/hooks/stop-screenshot-check.ps1
+$staged = git diff --cached --name-only
+
+# UI/Camera/Marker 파일 변경 감지
+$visualKeywords = 'UI/|Camera|Marker|Canvas|HUD|Screen\.cs|Tooltip'
+$visualChanged = $staged | Where-Object { $_ -match $visualKeywords }
+
+if ($visualChanged) {
+    # 직전 1시간 안에 docs/screenshots/auto/ 에 PNG 있는지 확인
+    $cutoff = (Get-Date).AddHours(-1)
+    $hasShot = Get-ChildItem 'docs/screenshots/auto/*.png' -EA SilentlyContinue |
+               Where-Object { $_.LastWriteTime -gt $cutoff }
+
+    if (-not $hasShot) {
+        Write-Error @"
+M1 위반: visual 파일 변경에 최근 screenshot 없음.
+변경 파일: $($visualChanged -join ', ')
+unity-cli editor play --wait → screenshot → 다시 commit.
+"@
+        exit 2  # block commit
+    }
+}
+
+exit 0</pre>
+  </details>
+</section>
+
 <!-- ──────────── 우선순위 권장 ──────────── -->
 <section>
   <h2>🎯 우선순위 권장 <span class="subt">"먼저 박을 1~3개"</span></h2>
@@ -298,8 +466,12 @@
 
   <div class="pick" style="margin-top:14px">
     <strong>추천 조합 A (즉효 3개 ~3.5h)</strong>: M5 + M3 + M1. 다음 세션 즉시 측정 가능.<br>
-    <strong>추천 조합 B (전체 1~5번 ~5.5h)</strong>: M5 + M3 + M1 + M7 + M6. 한 sprint(1일).<br>
-    <strong>추천 조합 C (도현 영역 포함, 다음 세션)</strong>: A 조합 + 도현이 자산 5장 모아주면 M2 시드.
+    <strong>추천 조합 B (전체 핵심 ~5.5h)</strong>: M5 + M3 + M1 + M7 + M6. 한 sprint(1일).<br>
+    <strong>추천 조합 C — Steam 데모 핵심 (~5h)</strong>: M5 + M3 + M11("처음 30초") + M10(페르소나). 데모 직전 가장 큰 ROI.<br>
+    <strong>추천 조합 D — 도현 영역 포함 (다음 세션)</strong>: A 조합 + 도현이 자산 5장 모아주면 M2 시드.
+  </div>
+  <div class="pick" style="border-left-color:var(--ok);margin-top:10px">
+    <strong>iter 3 추천 변경</strong>: 원래 A 추천이었지만 데모 6주 컨텍스트면 <strong>C (M5+M3+M11+M10)</strong>가 가장 ROI 높음. M11 "처음 30초"는 Steam 데모 페이지 트레일러에도 그대로 쓰임.
   </div>
 </section>
 
