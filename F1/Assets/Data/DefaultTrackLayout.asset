@@ -24,6 +24,9 @@ MonoBehaviour:
   - .S...S.
   - .SCCCS.
   - .......
+  heightMask: []
+  zoneMask: []
+  cellHeightMeters: 1.5
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
   - col: 3

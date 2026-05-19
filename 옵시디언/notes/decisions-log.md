@@ -917,3 +917,12 @@ W3 1주는 골조까지. 폴리시는 후속.
 - 기획 캔버스: `옵시디언/dev-plan/2026-05-19-garage-realtime-planning.md`
 - 밸런싱: `옵시디언/dev-plan/2026-05-19-restore-economy.md`
 - 리서치: `옵시디언/research/garage-parts-reference.md`
+
+### D-083 — 자금 carryover = **완전 누적**
+런 사이 자금 유지, 재시작에도 유지. Hades 패턴, 메타 진행 필수.
+
+### D-084 — 소비 페널티 = **정산액 비례 감소**
+화물 깨진 비율만큼 정산 ↓. 자연 페이스 조절. 현재 ResultPanel 구현과 호환.
+
+### D-085 — 정산→차고 흐름 = **Yes/No prompt**
+ResultPanel 닫은 후 "차고 가시겠어요?" 선택. 자동 강제 X. 살 게 없을 땐 닫기.

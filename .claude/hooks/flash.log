@@ -1,0 +1,69 @@
+[11:48:09] called
+  cmd=0 fg=2687652 isBg=False
+  balloon: OK
+[11:48:41] called
+  cmd=0 fg=132412 isBg=False
+  balloon: OK
+[11:49:46] called
+  cmd=0 fg=132412 isBg=False
+  balloon: OK
+[11:51:06] called
+  cmd=0 fg=132412 isBg=False
+  balloon: OK
+[11:52:22] called
+  cmd=0 fg=590696 isBg=False
+  balloon: OK
+[11:53:31] flash called
+  spawned notify pid=47608
+[11:54:07] flash called
+  killed old notify pid=47608
+  spawned notify pid=25200
+[11:55:09] flash called
+  spawned notify pid=44756
+[12:03:36] flash called
+  spawned notify pid=49956
+[12:04:40] flash called
+  killed old notify pid=49956
+  spawned notify pid=39348
+[12:36:08] flash called
+  spawned notify pid=35092
+[12:37:10] flash called
+  spawned notify pid=50492
+[12:48:47] flash called
+  spawned notify pid=41536
+[12:49:49] flash called
+  killed old notify pid=41536
+  spawned notify pid=46396
+[12:56:35] flash called
+  killed old notify pid=46396
+  spawned notify pid=37256
+[12:57:38] flash called
+  killed old notify pid=37256
+  spawned notify pid=49968
+[13:01:18] flash called
+  killed old notify pid=49968
+  spawned notify pid=39456
+[13:02:21] flash called
+  killed old notify pid=39456
+  spawned notify pid=39772
+[13:07:50] flash called
+  killed old notify pid=39772
+  spawned notify pid=37968
+[13:13:53] flash called
+  killed old notify pid=37968
+  spawned notify pid=14872
+[13:14:55] flash called
+  killed old notify pid=14872
+  spawned notify pid=36820
+[14:13:36] flash called
+  killed old notify pid=36820
+  spawned notify pid=50260
+[14:14:38] flash called
+  killed old notify pid=50260
+  spawned notify pid=13188
+[14:19:09] flash called
+  killed old notify pid=13188
+  spawned notify pid=54180
+[14:20:35] flash called
+  killed old notify pid=54180
+  spawned notify pid=39340
