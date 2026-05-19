@@ -42,7 +42,9 @@ namespace PitCrew.Garage
         {
             switch (p.id)
             {
-                case F1PartId.Engine:     break;
+                case F1PartId.Engine:
+                    Services.Car?.ApplyEngineRestore(1.20f, 1.30f);
+                    break;
                 case F1PartId.Gearbox:    break;
                 case F1PartId.Tires:      break;
                 case F1PartId.Suspension: break;

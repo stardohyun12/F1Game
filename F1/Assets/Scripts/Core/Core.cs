@@ -98,6 +98,7 @@ public interface IArcadeCarController
     float CurrentSpeedMps { get; }
     float MaxSpeedMps { get; }
     Transform Transform { get; }
+    void ApplyEngineRestore(float maxSpeedMul, float accelMul);
 }
 
 public interface ITireSystem

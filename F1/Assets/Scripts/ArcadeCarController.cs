@@ -48,6 +48,20 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [SerializeField] private float driftEntryYawImpulse = 2.5f;        // 4→2.5 (진입 톡 줄임)
     [SerializeField] private float driftYawTorque = 11f;               // 15→11 (지속 토크 완화)
 
+    [Header("Engine Restore (D-089)")]
+    [SerializeField] private float engineMaxSpeedMul = 1.0f;   // 1.20 after restore
+    [SerializeField] private float engineAccelMul = 1.0f;       // 1.30 after restore
+
+    public float EngineMaxSpeedMul => engineMaxSpeedMul;
+    public float EngineAccelMul => engineAccelMul;
+
+    public void ApplyEngineRestore(float maxSpeedMul = 1.20f, float accelMul = 1.30f)
+    {
+        engineMaxSpeedMul = maxSpeedMul;
+        engineAccelMul = accelMul;
+        Debug.Log($"[ArcadeCarController] Engine restored: maxSpeedMul={maxSpeedMul:F2} accelMul={accelMul:F2}");
+    }
+
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 1.5f;
     [SerializeField] private LayerMask groundLayer = ~0;
@@ -102,7 +116,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     /// throttle 컷오프, brake 정규화, drag 정규화, 조향 곡선 normalize에 모두 사용.
     /// </summary>
     private float EffectiveMaxSpeedMps =>
-        maxSpeedMps * (tireSystem != null ? tireSystem.SpeedMultiplier : 1f);
+        maxSpeedMps * (tireSystem != null ? tireSystem.SpeedMultiplier : 1f) * engineMaxSpeedMul;
 
     void OnValidate()
     {
@@ -200,6 +214,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     {
         if (!isGrounded) return;
         float t = smoothedMove.y;
+        float effectiveAccelForce = accelForce * Mathf.Max(0.01f, engineAccelMul);
 
         if (t > 0.01f)
         {
@@ -208,7 +223,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
                 // 세션 16 #1-3: 너무 빠름 → 저속 약간 무게 복귀 (0.85). 도달 1.5m/s.
                 float lowSpeedRamp = Mathf.Lerp(0.85f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.5f));
-                rb.AddForce(transform.forward * (accelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
+                rb.AddForce(transform.forward * (effectiveAccelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
             }
         }
         else if (t < -0.01f)
@@ -220,7 +235,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
                 rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult), ForceMode.Force);
             }
             else if (forwardSpeed > -reverseMaxMps)
-                rb.AddForce(transform.forward * (accelForce * t * 0.5f), ForceMode.Force);
+                rb.AddForce(transform.forward * (effectiveAccelForce * t * 0.5f), ForceMode.Force);
         }
         else
         {
