@@ -109,7 +109,8 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         HideStartMarkerAndLine();
 
         // CCTV 복원 (런 시작과 함께 다시 보여야 함)
-        if (cachedCargoViewHUD != null && cargoViewWasActive) cachedCargoViewHUD.SetActive(true);
+        // Fix 2: cargoViewWasActive 가드 제거 — 씬에서 비활성으로 저장됐어도 무조건 켬.
+        if (cachedCargoViewHUD != null) cachedCargoViewHUD.SetActive(true);
 
         // 카드 destroy.
         foreach (var c in spawnedCards) if (c != null) Destroy(c.gameObject);
@@ -287,12 +288,18 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             {
                 vlg.childControlHeight = true;
                 vlg.childForceExpandHeight = true;
+                // Fix 1-B: MiddleCenter → UpperCenter (카드가 위에서부터 채워짐)
+                vlg.childAlignment = UnityEngine.TextAnchor.UpperCenter;
             }
         }
 
         var goGO = new GameObject("BoardGoButton",
             typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button));
-        goGO.transform.SetParent(panelRoot.transform, false);
+        // Fix 1-A: panelRoot(fullscreen) 자식 → cardsContainer.parent(우측 띠) 자식으로 이동.
+        // cardsContainer가 있으면 그 부모(= 우측 띠 패널)를 GoButton의 부모로 사용.
+        Transform parentForBtn = cardsContainer != null ? cardsContainer.parent : panelRoot.transform;
+        if (parentForBtn == null) parentForBtn = panelRoot.transform;
+        goGO.transform.SetParent(parentForBtn, false);
         var rt = goGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(1, 0);
         rt.pivot = new Vector2(0.5f, 0f);
