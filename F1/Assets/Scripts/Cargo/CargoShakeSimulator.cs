@@ -107,6 +107,17 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         cube.transform.localRotation = Quaternion.identity;
         cube.transform.localScale = Vector3.one * itemScale;
 
+        // Day 5 (2026-05-19): CargoType별 색 적용 (placeholder visual).
+        // 후속: Kenney prop pack 자산으로 mesh swap.
+        if (cargo != null)
+        {
+            var mr = cube.GetComponent<MeshRenderer>() ?? cube.GetComponentInChildren<MeshRenderer>();
+            if (mr != null && mr.material != null)
+            {
+                mr.material.color = CargoTypePresets.BoxColor(cargo.Type);
+            }
+        }
+
         var item = new TrunkItem
         {
             t = cube.transform,
