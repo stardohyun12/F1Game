@@ -24,8 +24,9 @@ try {
     $notif.BalloonTipText = 'Waiting for your input or confirmation'
     $notif.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
     $notif.Visible = $true
-    $notif.ShowBalloonTip(4000)
-    Start-Sleep -Milliseconds 4500
+    # 15초 — Windows 설정에 따라 실제 표시 시간 다를 수 있음 (접근성 > 알림 표시 시간)
+    $notif.ShowBalloonTip(15000)
+    Start-Sleep -Milliseconds 15500
     $notif.Visible = $false
     $notif.Dispose()
     Add-Content -Path $logPath -Value "  balloon: OK" -ErrorAction SilentlyContinue
