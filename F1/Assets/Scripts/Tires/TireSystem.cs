@@ -8,11 +8,13 @@ using UnityEngine;
 public enum TireType
 {
     /// <summary>Soft — 그립 매우 높음, 빠른 마모. 짧은 고속 코너 코스용.</summary>
-    Soft,
+    Soft = 0,
     /// <summary>Medium — 균형. 표준 베이스라인.</summary>
-    Medium,
+    Medium = 1,
     /// <summary>Hard — 그립 낮음, 느린 마모. 장거리 안정 주행용.</summary>
-    Hard,
+    Hard = 2,
+    /// <summary>Wet (D-091) — 우천/저속 코너 안정용. 그립↑·최고속↓·화물 손상 ↓.</summary>
+    Wet = 3,
 }
 
 /// <summary>

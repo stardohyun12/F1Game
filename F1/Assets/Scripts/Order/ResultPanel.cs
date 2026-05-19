@@ -434,12 +434,11 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         if (ups != null) walletVal.text = $"₩{ups.Wallet:N0}";
         else walletVal.text = "—";
 
-        // 차고로 버튼 활성 조건 (D-085): 최저 부품 구매 가능 자금 + 복원 카탈로그 존재
+        // 차고로 버튼 활성 조건 (D-085): 카탈로그 있으면 항상 진입 가능
+        // (자금 부족하면 차고 안에서 회색+부족 태그로 표시 — D-087)
         if (_garageBtn != null)
         {
-            int wallet = Services.Upgrade?.Wallet ?? 0;
-            _garageBtn.interactable = wallet >= 1000
-                && Services.Restore != null
+            _garageBtn.interactable = Services.Restore != null
                 && Services.Restore.Catalog != null;
         }
     }

@@ -52,6 +52,15 @@ public static class TireTypePresets
                     description = "그립↓ · 느린 마모 · 장거리",
                 };
 
+            case TireType.Wet:
+                // D-091: 그립 ↑, 최고속 ↓, 화물 안전. 우천/좁은 다운타운.
+                return new Preset
+                {
+                    grip = 1.25f, speed = 0.95f,
+                    displayName = "Wet",
+                    description = "그립↑ · 안전 · 우천 / 좁은 길",
+                };
+
             case TireType.Medium:
             default:
                 return new Preset
@@ -76,6 +85,7 @@ public static class TireTypePresets
         {
             case TireType.Soft:   return 1.5f;
             case TireType.Hard:   return 0.5f;
+            case TireType.Wet:    return 0.8f;
             case TireType.Medium:
             default:              return 1.0f;
         }

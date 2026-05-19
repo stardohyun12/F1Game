@@ -33,6 +33,7 @@ namespace PitCrew.Garage
             { TireType.Soft,   800 },
             { TireType.Medium, 500 },
             { TireType.Hard,   600 },
+            { TireType.Wet,    500 },  // D-091: 안전 운전용
         };
 
         readonly Dictionary<TireType, float> _wear = new Dictionary<TireType, float>();
