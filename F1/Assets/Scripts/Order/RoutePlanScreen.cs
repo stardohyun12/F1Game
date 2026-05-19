@@ -215,8 +215,9 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
             var dp = hit.collider.GetComponentInParent<DeliveryPoint>();
             if (dp != null)
             {
+                // 2026-05-19 v3 (도현): 미선택 마커도 hover 허용. tooltip은 label만 X 잡 정보 매핑.
                 var m = dp.GetComponent<DeliveryPointMarker>();
-                if (m != null && jobMarkers.Contains(m)) hitMarker = m;
+                if (m != null) hitMarker = m;
             }
         }
 
@@ -269,34 +270,21 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
 
     void UpdateTooltipPosition(Vector2 screenPos)
     {
-        if (_tooltipGO == null || panelRoot == null) return;
+        if (_tooltipGO == null) return;
         var rt = _tooltipGO.GetComponent<RectTransform>();
         if (rt == null) return;
-        // 2026-05-19 v2 (도현): tooltip 위치 어긋남 fix.
-        // panelRoot의 RectTransform 좌하단(0,0) 기준 local 변환. Canvas Overlay이면 worldCamera=null OK.
-        var canvas = panelRoot.GetComponentInParent<Canvas>();
-        var camRef = (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : (canvas != null ? canvas.worldCamera : null);
-        var panelRT = panelRoot.GetComponent<RectTransform>();
-        if (panelRT != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(panelRT, screenPos, camRef, out var local))
-        {
-            // 마우스 우측 위 + 화면 가장자리 보정 (tooltip 240x90)
-            Vector2 offset = new Vector2(18f, 18f);
-            Vector2 target = local + offset;
-            // 우측 잘림 보정
-            var panelSize = panelRT.rect.size;
-            // panelRT.pivot에 따라 panel local 좌표 범위 다름 — pivot(0.5,0.5) 가정 시 -panelSize/2 ~ +panelSize/2
-            var half = panelSize * 0.5f;
-            var pivot = panelRT.pivot;
-            float minX = -panelSize.x * pivot.x;
-            float maxX = panelSize.x * (1f - pivot.x) - rt.sizeDelta.x;
-            float minY = -panelSize.y * pivot.y;
-            float maxY = panelSize.y * (1f - pivot.y) - rt.sizeDelta.y;
-            // tooltip이 화면 우측 끝이면 마우스 좌측으로 flip
-            if (target.x > maxX) target.x = local.x - rt.sizeDelta.x - 18f;
-            target.x = Mathf.Clamp(target.x, minX, maxX);
-            target.y = Mathf.Clamp(target.y, minY, maxY);
-            rt.anchoredPosition = target;
-        }
+        // 2026-05-19 v3 (도현): Canvas Overlay에선 RectTransform.position == screen position 1:1.
+        // ScreenPointToLocalPointInRectangle은 panel pivot 좌표계, _tooltipGO anchor 좌표계와 충돌 → 멀리 떨어짐.
+        // 직접 position 박는 방식이 가장 안전.
+        Vector2 offset = new Vector2(18f, -18f);  // 마우스 우측 + 살짝 아래
+        Vector2 target = screenPos + offset;
+        // 화면 가장자리 보정 — 우측 잘리면 좌측으로 flip
+        var size = rt.sizeDelta;
+        if (target.x + size.x > Screen.width) target.x = screenPos.x - size.x - 18f;
+        if (target.y - size.y < 0f) target.y = screenPos.y + size.y + 18f;
+        target.x = Mathf.Clamp(target.x, 0f, Mathf.Max(0f, Screen.width - size.x));
+        target.y = Mathf.Clamp(target.y, size.y, Screen.height);
+        rt.position = new Vector3(target.x, target.y, 0f);
     }
 
     void EnsureTooltip()
