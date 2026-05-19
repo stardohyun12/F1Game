@@ -104,16 +104,27 @@ public class DeliveryPointMarker : MonoBehaviour
         pillarMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         prend.sharedMaterial = pillarMat;
 
-        // Sphere — collider 유지 (RoutePlanScreen hover raycast용)
+        // Sphere — visual만 (hover collider는 별도 hoverArea로)
         sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.name = "Sphere";
         sphere.transform.SetParent(transform, false);
         sphere.transform.localPosition = new Vector3(0f, pillarHeight + sphereRadius * 0.5f, 0f);
         sphere.transform.localScale = Vector3.one * sphereRadius * 2f;
-        // collider는 제거하지 않음 — hover raycast용으로 남김
+        var sphereVisualCol = sphere.GetComponent<Collider>();
+        if (sphereVisualCol != null) Destroy(sphereVisualCol);  // visual collider 제거
         var srend = sphere.GetComponent<Renderer>();
         sphereMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         srend.sharedMaterial = sphereMat;
+
+        // 도현 2026-05-19 v2: hover 인식 범위 확대 — 별도 큰 trigger collider (visual X)
+        // sphere visual 3m radius 위 pillar 끝에 정확히 마우스 올려야 hover 잡혔음.
+        // hoverArea는 sphere의 2배 (radius 6m local = 12m world) + pillar 전체 cover.
+        var hoverGO = new GameObject("HoverArea");
+        hoverGO.transform.SetParent(transform, false);
+        hoverGO.transform.localPosition = new Vector3(0f, pillarHeight * 0.5f + sphereRadius, 0f);
+        var hoverCol = hoverGO.AddComponent<SphereCollider>();
+        hoverCol.radius = Mathf.Max(pillarHeight * 0.5f + sphereRadius, sphereRadius * 2f);
+        hoverCol.isTrigger = true;
 
         ApplyColor(baseColor, 1f);
     }

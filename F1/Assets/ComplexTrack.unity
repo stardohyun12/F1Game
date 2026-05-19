@@ -19270,11 +19270,11 @@ MonoBehaviour:
   simCamRig: {fileID: 212957135}
   trunkHalfExtent: 1
   itemScale: 0.5
-  staticFrictionG: 0.15
-  kineticFriction: 1.5
-  accelScale: 1
+  staticFrictionG: 0.08
+  kineticFriction: 1
+  accelScale: 1.5
   wallBounce: 0.25
-  velocityDeadZone: 0.05
+  velocityDeadZone: 0.025
   boxWallDamageMul: 8
   boxWallSpeedThreshold: 0.15
 --- !u!4 &633181198

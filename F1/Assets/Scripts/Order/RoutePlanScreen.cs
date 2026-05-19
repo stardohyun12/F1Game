@@ -272,14 +272,30 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         if (_tooltipGO == null || panelRoot == null) return;
         var rt = _tooltipGO.GetComponent<RectTransform>();
         if (rt == null) return;
-        // 화면 우상단 오프셋 (+20, +20)으로 마우스 옆에 배치
-        // CanvasScaler가 ScaleWithScreenSize이므로 screenPos를 그대로 anchoredPosition에 쓰기보다
-        // RectTransformUtility로 변환
-        var canvas = panelRoot.GetComponent<Canvas>();
-        if (canvas != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            panelRoot.GetComponent<RectTransform>(), screenPos, canvas.worldCamera, out var local))
+        // 2026-05-19 v2 (도현): tooltip 위치 어긋남 fix.
+        // panelRoot의 RectTransform 좌하단(0,0) 기준 local 변환. Canvas Overlay이면 worldCamera=null OK.
+        var canvas = panelRoot.GetComponentInParent<Canvas>();
+        var camRef = (canvas != null && canvas.renderMode == RenderMode.ScreenSpaceOverlay) ? null : (canvas != null ? canvas.worldCamera : null);
+        var panelRT = panelRoot.GetComponent<RectTransform>();
+        if (panelRT != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(panelRT, screenPos, camRef, out var local))
         {
-            rt.anchoredPosition = local + new Vector2(20f, 20f);
+            // 마우스 우측 위 + 화면 가장자리 보정 (tooltip 240x90)
+            Vector2 offset = new Vector2(18f, 18f);
+            Vector2 target = local + offset;
+            // 우측 잘림 보정
+            var panelSize = panelRT.rect.size;
+            // panelRT.pivot에 따라 panel local 좌표 범위 다름 — pivot(0.5,0.5) 가정 시 -panelSize/2 ~ +panelSize/2
+            var half = panelSize * 0.5f;
+            var pivot = panelRT.pivot;
+            float minX = -panelSize.x * pivot.x;
+            float maxX = panelSize.x * (1f - pivot.x) - rt.sizeDelta.x;
+            float minY = -panelSize.y * pivot.y;
+            float maxY = panelSize.y * (1f - pivot.y) - rt.sizeDelta.y;
+            // tooltip이 화면 우측 끝이면 마우스 좌측으로 flip
+            if (target.x > maxX) target.x = local.x - rt.sizeDelta.x - 18f;
+            target.x = Mathf.Clamp(target.x, minX, maxX);
+            target.y = Mathf.Clamp(target.y, minY, maxY);
+            rt.anchoredPosition = target;
         }
     }
 
@@ -417,8 +433,22 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         }
         if (distanceText != null) distanceText.text = $"총 거리 약 {total:F0}m";
 
-        // 도현 요청 2026-05-19: 목적지 끼리 연결선 제거. 마커 가시성으로 대체.
-        if (routeLine != null) routeLine.positionCount = 0;
+        // 도현 2026-05-19 v2: 미선택 마커끼리는 연결 X, 선택한 순서대로만 줄 이어주기.
+        EnsureRouteLine();
+        if (routeLine != null)
+        {
+            routeLine.startColor = routeLine.endColor =
+                currentJob != null ? currentJob.color : Color.yellow;
+            routeLine.positionCount = orderedRoute.Count + (orderedRoute.Count > 0 ? 1 : 0);
+            int idx = 0;
+            if (orderedRoute.Count > 0)
+            {
+                Vector3 sp = startPoint != null ? startPoint.position + Vector3.up * 0.5f : Vector3.zero;
+                routeLine.SetPosition(idx++, sp);
+                foreach (var d in orderedRoute)
+                    routeLine.SetPosition(idx++, d.transform.position + Vector3.up * 0.5f);
+            }
+        }
 
         if (confirmBtn != null)
             confirmBtn.interactable = (orderedRoute.Count == jobMarkers.Count && orderedRoute.Count > 0);
