@@ -67,3 +67,14 @@
 [14:20:35] flash called
   killed old notify pid=54180
   spawned notify pid=39340
+[14:22:32] flash called
+  killed old notify pid=39340
+  spawned notify pid=47052
+[14:25:27] flash called
+  killed old notify pid=47052
+  spawned notify pid=50540
+[14:27:31] flash called
+  spawned notify pid=24140
+[14:29:16] flash called
+  killed old notify pid=24140
+  spawned notify pid=44828
