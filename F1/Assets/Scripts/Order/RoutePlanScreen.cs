@@ -79,10 +79,10 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         ClearOrderBadges();
         ShowStartMarker(false);
         if (routeLine != null) routeLine.positionCount = 0;
-        // 잡 마커들 외부 제어 해제 (자동 상태로 복귀)
-        foreach (var m in jobMarkers) if (m != null) m.SetExternalControl(false);
+        // 잡 마커들 외부 제어 해제 (자동 상태로 복귀) + outline 비활성
+        foreach (var m in jobMarkers) if (m != null) { m.SetRoutePlanActive(false); m.SetExternalControl(false); }
         var all = UnityEngine.Object.FindObjectsByType<DeliveryPointMarker>(FindObjectsSortMode.None);
-        foreach (var m in all) if (m != null) m.SetExternalControl(false);
+        foreach (var m in all) if (m != null) { m.SetRoutePlanActive(false); m.SetExternalControl(false); }
         jobMarkers.Clear();
         orderedRoute.Clear();
         HideTooltip();
@@ -129,6 +129,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
             var m = dp.GetComponent<DeliveryPointMarker>();
             if (m == null) continue;
             m.SetExternalControl(true);
+            m.SetRoutePlanActive(true); // outline ring 표시 (미선택 강조)
             m.SetVisible(true);
             m.SetColor(order.color); // 주문별 색상
             m.SetDimmed(false);

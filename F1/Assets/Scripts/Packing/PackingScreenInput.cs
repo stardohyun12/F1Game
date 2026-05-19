@@ -22,8 +22,7 @@ namespace PitCrew.Packing
         InputAction _mouseClickAction;
         InputAction _mousePosAction;
         InputAction _wheelAction;
-        // 채널 5 — 배치 단계 회전 (Q/E 90도 스냅, R도 시계 90도)
-        InputAction _rotLeftAction, _rotRightAction;
+        // 채널 5 — 배치 단계 회전 (WASD/QE 직접 폴링으로 대체, InputAction 불필요)
 
         bool _loggedFirstInput;
 
@@ -61,9 +60,7 @@ namespace PitCrew.Packing
             _wheelAction = new InputAction("wheel", binding: "<Mouse>/scroll/y");
             _wheelAction.Enable();
 
-            _rotLeftAction = new InputAction("rotL", binding: "<Keyboard>/q");
-            _rotRightAction = new InputAction("rotR", binding: "<Keyboard>/e");
-            _rotLeftAction.Enable(); _rotRightAction.Enable();
+            // Q/E/A/D 회전은 Keyboard.current 직접 폴링 (Update에서 처리)
         }
 
         void OnDisable()
@@ -76,8 +73,7 @@ namespace PitCrew.Packing
             _mouseClickAction?.Disable(); _mouseClickAction?.Dispose();
             _mousePosAction?.Disable(); _mousePosAction?.Dispose();
             _wheelAction?.Disable(); _wheelAction?.Dispose();
-            _rotLeftAction?.Disable(); _rotLeftAction?.Dispose();
-            _rotRightAction?.Disable(); _rotRightAction?.Dispose();
+            // Q/E/A/D 직접 폴링 — dispose 불필요
         }
 
         void Update()
@@ -96,19 +92,19 @@ namespace PitCrew.Packing
                     else if (_mouseClickAction.WasReleasedThisFrame()) Screen.EndTrunkDrag();
                 }
                         // 채널 5 — 드래그 중 큐브 회전.
-                // Q/E = Y축 90도 스냅 (yaw), W/S = X축 90도 스냅 (pitch),
-                // 마우스 우클릭 드래그 = 자유 회전 (3D 표준).
+                // W/S = X축 90도 스냅 (pitch), A/D = Y축 90도 스냅 (yaw),
+                // Q/E = Z축 90도 스냅 (roll), 마우스 우클릭 드래그 = 자유 회전 (3D 표준).
                 if (Screen.IsDraggingTrunkItem)
                 {
-                    if (_rotLeftAction != null && _rotLeftAction.WasPressedThisFrame()) Screen.RotateDraggedItem(-90f);
-                    if (_rotRightAction != null && _rotRightAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
-                    if (_resetAction != null && _resetAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
-
-                    // W/S = X축 pitch (위아래)
+                    // W/S = X축 pitch (위아래), A/D = Y축 yaw (좌우), Q/E = Z축 roll
                     if (Keyboard.current != null)
                     {
                         if (Keyboard.current.wKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, -90f);
                         if (Keyboard.current.sKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, 90f);
+                        if (Keyboard.current.aKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, -90f);
+                        if (Keyboard.current.dKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, 90f);
+                        if (Keyboard.current.qKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.forward, -90f);
+                        if (Keyboard.current.eKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.forward, 90f);
                     }
 
                     // 마우스 우클릭 드래그 = 자유 회전

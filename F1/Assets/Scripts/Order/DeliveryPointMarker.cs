@@ -15,7 +15,7 @@ public class DeliveryPointMarker : MonoBehaviour
     [SerializeField] private float pillarRadius = 0.35f;
 
     [Header("Sphere")]
-    [SerializeField] private float sphereRadius = 1.5f; // 기본 크기 키움 (이전 1.0)
+    [SerializeField] private float sphereRadius = 2.0f; // 1.5 → 2.0 (마커 가시성 강화)
 
     [Header("Colors")]
     [SerializeField] private Color baseColor = new Color(0.4f, 1f, 0.5f);
@@ -23,10 +23,13 @@ public class DeliveryPointMarker : MonoBehaviour
 
     GameObject pillar;
     GameObject sphere;
+    GameObject outlineRing;        // RoutePlan 단계 — 미선택 마커에 반투명 outline
     Material pillarMat;
     Material sphereMat;
+    Material outlineMat;
     DeliveryPoint dp;
     bool useAutoState = true; // false면 OrderBoard가 외부 제어
+    bool _routePlanActive;    // SetExternalControl(true) 시 true → outline 표시
 
     // 채널 8 — 경로 순번 배지 (RoutePlanScreen용)
     GameObject orderBadge;
@@ -78,6 +81,15 @@ public class DeliveryPointMarker : MonoBehaviour
         useAutoState = !external;
     }
 
+    /// <summary>RoutePlanScreen 이 열릴 때 true — 미선택 마커에 outline ring 표시.</summary>
+    public void SetRoutePlanActive(bool active)
+    {
+        _routePlanActive = active;
+        EnsureOutline();
+        if (outlineRing != null)
+            outlineRing.SetActive(active);
+    }
+
     void BuildVisuals()
     {
         // Pillar
@@ -106,6 +118,24 @@ public class DeliveryPointMarker : MonoBehaviour
         ApplyColor(baseColor, 1f);
     }
 
+    void EnsureOutline()
+    {
+        if (sphere == null || outlineRing != null) return;
+        outlineRing = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        outlineRing.name = "OutlineRing";
+        // collider 제거 — hover raycast가 outline에 막히지 않도록
+        var col = outlineRing.GetComponent<Collider>();
+        if (col != null) Destroy(col);
+        outlineRing.transform.SetParent(sphere.transform, false);
+        outlineRing.transform.localPosition = Vector3.zero;
+        outlineRing.transform.localScale = Vector3.one * 1.5f; // sphere의 1.5배 (= sphereRadius * 3.0)
+        outlineMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        outlineMat.color = new Color(1f, 1f, 1f, 0.3f);
+        SetTransparent(outlineMat);
+        outlineRing.GetComponent<Renderer>().sharedMaterial = outlineMat;
+        outlineRing.SetActive(false); // 기본 숨김 — SetRoutePlanActive(true) 시 표시
+    }
+
     public void SetColor(Color c)
     {
         baseColor = c;
@@ -121,6 +151,9 @@ public class DeliveryPointMarker : MonoBehaviour
     {
         if (pillar != null) pillar.SetActive(visible);
         if (sphere != null) sphere.SetActive(visible);
+        // outlineRing은 sphere 자식이므로 sphere SetActive와 연동되지만,
+        // RoutePlan 활성 여부도 반영해 명시적으로 제어
+        if (outlineRing != null) outlineRing.SetActive(visible && _routePlanActive);
     }
 
     void ApplyColor(Color c, float alpha, float emissionScale = 1.5f)
@@ -199,6 +232,8 @@ public class DeliveryPointMarker : MonoBehaviour
         EnsureOrderBadge();
         orderBadge.SetActive(true);
         orderBadgeText.text = n.ToString();
+        // 선택됐으므로 outline 숨김 (이미 펄스 + 배지로 강조)
+        if (outlineRing != null) outlineRing.SetActive(false);
         // 시각 피드백 — 짧은 펄스 (클릭 순간 알아채기 쉽게).
         if (sphere != null && gameObject.activeInHierarchy)
         {
@@ -227,6 +262,8 @@ public class DeliveryPointMarker : MonoBehaviour
     public void ClearRouteOrder()
     {
         if (orderBadge != null) orderBadge.SetActive(false);
+        // RoutePlan 활성 상태면 outline 다시 보임 (미선택 복귀)
+        if (outlineRing != null) outlineRing.SetActive(_routePlanActive);
     }
 
     void EnsureOrderBadge()
@@ -269,5 +306,13 @@ public class DeliveryPointMarker : MonoBehaviour
         Vector3 toCam = orderBadge.transform.position - cam.transform.position;
         if (toCam.sqrMagnitude > 0.0001f)
             orderBadge.transform.rotation = Quaternion.LookRotation(toCam);
+    }
+
+    void OnDestroy()
+    {
+        // new Material 누수 방지
+        if (pillarMat != null) Destroy(pillarMat);
+        if (sphereMat != null) Destroy(sphereMat);
+        if (outlineMat != null) Destroy(outlineMat);
     }
 }
