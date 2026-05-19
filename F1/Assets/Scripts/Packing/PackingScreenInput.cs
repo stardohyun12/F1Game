@@ -97,25 +97,13 @@ namespace PitCrew.Packing
                 if (Screen.IsDraggingTrunkItem)
                 {
                     // W/S = X축 pitch (위아래), A/D = Y축 yaw (좌우), Q/E = Z축 roll
+                    // WASD 회전만 (Q/E roll · 마우스 우클릭 자유 회전 제거 — 도현 요청)
                     if (Keyboard.current != null)
                     {
                         if (Keyboard.current.wKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, -90f);
                         if (Keyboard.current.sKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, 90f);
                         if (Keyboard.current.aKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, -90f);
                         if (Keyboard.current.dKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, 90f);
-                        if (Keyboard.current.qKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.forward, -90f);
-                        if (Keyboard.current.eKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.forward, 90f);
-                    }
-
-                    // 마우스 우클릭 드래그 = 자유 회전
-                    if (Mouse.current != null && Mouse.current.rightButton.isPressed)
-                    {
-                        float mx = Mouse.current.delta.x.ReadValue();
-                        float my = Mouse.current.delta.y.ReadValue();
-                        if (Mathf.Abs(mx) > 0.01f || Mathf.Abs(my) > 0.01f)
-                        {
-                            Screen.RotateDraggedItemFree(mx, my);
-                        }
                     }
                 }
                 return;
