@@ -3,14 +3,20 @@ $logPath = Join-Path $PSScriptRoot 'flash.log'
 $ts = Get-Date -Format 'HH:mm:ss'
 Add-Content -Path $logPath -Value "[$ts] flash called" -ErrorAction SilentlyContinue
 
-# Kill existing notify process so we don't pile up
+# If notify already active (not dismissed), skip — prevents multiple sounds
+# when several hooks (Notification + PreToolUse + Stop) trigger near-simultaneously.
 $pidFile = Join-Path $PSScriptRoot 'notify.pid'
 if (Test-Path $pidFile) {
     try {
         $oldPid = [int](Get-Content $pidFile -ErrorAction Stop)
-        Stop-Process -Id $oldPid -Force -ErrorAction SilentlyContinue
+        $proc = Get-Process -Id $oldPid -ErrorAction SilentlyContinue
+        if ($proc) {
+            Add-Content -Path $logPath -Value "  already active pid=$oldPid, skip new spawn" -ErrorAction SilentlyContinue
+            exit 0
+        }
+        # PID file stale (process died without cleanup) — remove and proceed
         Remove-Item $pidFile -ErrorAction SilentlyContinue
-        Add-Content -Path $logPath -Value "  killed old notify pid=$oldPid" -ErrorAction SilentlyContinue
+        Add-Content -Path $logPath -Value "  stale pid file cleaned" -ErrorAction SilentlyContinue
     } catch {}
 }
 
