@@ -42,6 +42,8 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     TMP_Text walletLabel, walletVal;
     Button restartBtn;
     TMP_Text restartBtnText;
+    Button _garageBtn;
+    TMP_Text _garageBtnTxt;
     readonly List<UpgradeCardUI> cards = new();
 
     class UpgradeCardUI
@@ -201,13 +203,13 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // 업그레이드 카드 5개 (가로)
         BuildUpgradeCards(panelGO.transform);
 
-        // 다시 버튼
+        // 다시 버튼 (좌측으로 이동 — 차고로 버튼과 나란히)
         var btnGO = new GameObject("RestartBtn", typeof(RectTransform), typeof(Image), typeof(Button));
         btnGO.transform.SetParent(panelGO.transform, false);
         var btnRT = btnGO.GetComponent<RectTransform>();
         btnRT.anchorMin = new Vector2(0.5f, 0); btnRT.anchorMax = new Vector2(0.5f, 0);
         btnRT.pivot = new Vector2(0.5f, 0);
-        btnRT.anchoredPosition = new Vector2(0, 30);
+        btnRT.anchoredPosition = new Vector2(-160f, 30);
         btnRT.sizeDelta = new Vector2(280, 70);
         var btnImg = btnGO.GetComponent<Image>();
         btnImg.color = theme != null ? theme.colorAccent : new Color(0.20f, 0.55f, 0.85f);
@@ -219,6 +221,32 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             Vector2.zero, new Vector2(280, 70), 38, FontStyles.Bold, TextAlignmentOptions.Center);
         restartBtnText.text = "다시";
         restartBtnText.color = Color.white;
+
+        // "차고로" 버튼 (D-085 — 다시 버튼 우측)
+        var garageBtnGo = new GameObject("GarageBtn", typeof(RectTransform), typeof(Image), typeof(Button));
+        garageBtnGo.transform.SetParent(panelGO.transform, false);
+        var gbRT = garageBtnGo.GetComponent<RectTransform>();
+        gbRT.anchorMin = new Vector2(0.5f, 0); gbRT.anchorMax = new Vector2(0.5f, 0);
+        gbRT.pivot = new Vector2(0.5f, 0);
+        gbRT.anchoredPosition = new Vector2(160f, 30);
+        gbRT.sizeDelta = new Vector2(280, 70);
+        var gbImg = garageBtnGo.GetComponent<Image>();
+        gbImg.color = new Color(0.35f, 0.40f, 0.65f);
+        _garageBtn = garageBtnGo.GetComponent<Button>();
+        _garageBtn.onClick.AddListener(OnGarageClicked);
+
+        var gbTxtGo = new GameObject("Txt", typeof(RectTransform));
+        gbTxtGo.transform.SetParent(garageBtnGo.transform, false);
+        _garageBtnTxt = gbTxtGo.AddComponent<TextMeshProUGUI>();
+        _garageBtnTxt.text = "차고로";
+        _garageBtnTxt.alignment = TextAlignmentOptions.Center;
+        _garageBtnTxt.color = Color.white;
+        _garageBtnTxt.fontSize = 38;
+        _garageBtnTxt.fontStyle = FontStyles.Bold;
+        if (theme?.fontPrimary != null) _garageBtnTxt.font = theme.fontPrimary;
+        var gbtRT = gbTxtGo.GetComponent<RectTransform>();
+        gbtRT.anchorMin = Vector2.zero; gbtRT.anchorMax = Vector2.one;
+        gbtRT.offsetMin = Vector2.zero; gbtRT.offsetMax = Vector2.zero;
     }
 
     void BuildUpgradeCards(Transform parent)
@@ -405,6 +433,15 @@ public class ResultPanel : MonoBehaviour, IResultPanel
 
         if (ups != null) walletVal.text = $"₩{ups.Wallet:N0}";
         else walletVal.text = "—";
+
+        // 차고로 버튼 활성 조건 (D-085): 최저 부품 구매 가능 자금 + 복원 카탈로그 존재
+        if (_garageBtn != null)
+        {
+            int wallet = Services.Upgrade?.Wallet ?? 0;
+            _garageBtn.interactable = wallet >= 1000
+                && Services.Restore != null
+                && Services.Restore.Catalog != null;
+        }
     }
 
     void OnUpgradeClick(int idx)
@@ -423,6 +460,14 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     void OnRestartClicked()
     {
         if (controller != null) controller.RestartFromBoard();
+    }
+
+    void OnGarageClicked()
+    {
+        Hide();
+        var garage = UnityEngine.Object.FindFirstObjectByType<PitCrew.Garage.GarageScreen>();
+        if (garage != null) garage.Show();
+        else Debug.LogWarning("[ResultPanel] GarageScreen 없음 — Task 11 wiring 필요");
     }
 
     static string FormatTimeWithBonus(float sec, OrderJob job)
