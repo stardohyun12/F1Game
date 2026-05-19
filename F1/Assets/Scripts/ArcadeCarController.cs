@@ -49,7 +49,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [SerializeField] private float driftYawTorque = 11f;               // 15→11 (지속 토크 완화)
 
     [Header("Ground Check")]
-    [SerializeField] private float groundCheckDistance = 0.6f;
+    [SerializeField] private float groundCheckDistance = 1.5f;
     [SerializeField] private LayerMask groundLayer = ~0;
 
     private Rigidbody rb;
