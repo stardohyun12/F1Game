@@ -52,6 +52,18 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   }
 }

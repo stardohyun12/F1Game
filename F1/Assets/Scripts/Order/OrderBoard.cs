@@ -171,8 +171,14 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
     void SpawnCards()
     {
-        // 기존 카드 정리.
-        foreach (var c in spawnedCards) if (c != null) Destroy(c.gameObject);
+        // 기존 카드 정리. spawnedCards는 자기 spawn 것만 추적하므로
+        // cardsContainer의 모든 자식을 제거 (인스펙터 placeholder · 외부 추가 카드 포함).
+        // (세션 27: placeholder 3 + spawned 3 = 6장 보이던 버그)
+        if (cardsContainer != null)
+        {
+            for (int i = cardsContainer.childCount - 1; i >= 0; i--)
+                DestroyImmediate(cardsContainer.GetChild(i).gameObject);
+        }
         spawnedCards.Clear();
 
         if (cardPrefab == null || cardsContainer == null)
