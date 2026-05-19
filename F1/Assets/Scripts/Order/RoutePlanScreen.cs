@@ -36,6 +36,11 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
     // 플레이어가 클릭 순서대로 쌓는 경로
     readonly List<DeliveryPoint> orderedRoute = new();
 
+    // Hover 툴팁 UI
+    DeliveryPointMarker _hoveredMarker;
+    GameObject _tooltipGO;
+    TMP_Text _tooltipText;
+
     // UI 참조
     TMP_Text titleText, listText, distanceText;
     Button confirmBtn, suggestBtn, resetBtn;
@@ -80,7 +85,10 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         foreach (var m in all) if (m != null) m.SetExternalControl(false);
         jobMarkers.Clear();
         orderedRoute.Clear();
+        HideTooltip();
+        _hoveredMarker = null;
         if (panelRoot != null) { Destroy(panelRoot); panelRoot = null; }
+        _tooltipGO = null; _tooltipText = null;
         // 참조 초기화
         titleText = listText = distanceText = null;
         confirmBtn = suggestBtn = resetBtn = null;
@@ -185,13 +193,118 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
 
 #if ENABLE_INPUT_SYSTEM
         if (Mouse.current == null) return;
+        Vector2 sp = Mouse.current.position.ReadValue();
+        // Hover 처리 (매 프레임 raycast)
+        HandleHover(sp);
+        // 클릭
         if (!Mouse.current.leftButton.wasPressedThisFrame) return;
         // UI 위 클릭은 무시 (버튼 처리 보호)
         var es = UnityEngine.EventSystems.EventSystem.current;
         if (es != null && es.IsPointerOverGameObject()) return;
-        Vector2 sp = Mouse.current.position.ReadValue();
         HandleMapClick(sp);
 #endif
+    }
+
+    void HandleHover(Vector2 screenPos)
+    {
+        var ray = mapCamera.ScreenPointToRay(screenPos);
+        DeliveryPointMarker hitMarker = null;
+        if (Physics.Raycast(ray, out var hit, 500f, ~0, QueryTriggerInteraction.Collide))
+        {
+            var dp = hit.collider.GetComponentInParent<DeliveryPoint>();
+            if (dp != null)
+            {
+                var m = dp.GetComponent<DeliveryPointMarker>();
+                if (m != null && jobMarkers.Contains(m)) hitMarker = m;
+            }
+        }
+
+        if (hitMarker != _hoveredMarker)
+        {
+            if (_hoveredMarker != null) _hoveredMarker.SetHovered(false);
+            _hoveredMarker = hitMarker;
+            if (_hoveredMarker != null)
+            {
+                // 이 마커에 묶인 첫 번째 주문
+                OrderJob job = null;
+                var dpComp = _hoveredMarker.GetComponent<DeliveryPoint>();
+                if (dpComp != null && markerToOrder.TryGetValue(dpComp, out var list) && list.Count > 0)
+                    job = list[0];
+                _hoveredMarker.SetHovered(true, job);
+                ShowTooltip(_hoveredMarker, job, screenPos);
+            }
+            else
+            {
+                HideTooltip();
+            }
+        }
+        else if (_hoveredMarker != null && _tooltipGO != null)
+        {
+            // 툴팁 위치 마우스 따라 이동
+            UpdateTooltipPosition(screenPos);
+        }
+    }
+
+    void ShowTooltip(DeliveryPointMarker marker, OrderJob job, Vector2 screenPos)
+    {
+        EnsureTooltip();
+        if (_tooltipText != null && job != null)
+        {
+            string timeStr = job.timeLimitSec > 0 ? $"\n제한 {job.timeLimitSec:F0}초" : "";
+            _tooltipText.text = $"<b>{job.displayName}</b>\n화물 {job.itemCount}개  보상 ¥{job.baseReward:N0}{timeStr}";
+        }
+        else if (_tooltipText != null && marker != null)
+        {
+            _tooltipText.text = marker.Label ?? "배달지";
+        }
+        if (_tooltipGO != null) _tooltipGO.SetActive(true);
+        UpdateTooltipPosition(screenPos);
+    }
+
+    void HideTooltip()
+    {
+        if (_tooltipGO != null) _tooltipGO.SetActive(false);
+    }
+
+    void UpdateTooltipPosition(Vector2 screenPos)
+    {
+        if (_tooltipGO == null || panelRoot == null) return;
+        var rt = _tooltipGO.GetComponent<RectTransform>();
+        if (rt == null) return;
+        // 화면 우상단 오프셋 (+20, +20)으로 마우스 옆에 배치
+        // CanvasScaler가 ScaleWithScreenSize이므로 screenPos를 그대로 anchoredPosition에 쓰기보다
+        // RectTransformUtility로 변환
+        var canvas = panelRoot.GetComponent<Canvas>();
+        if (canvas != null && RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            panelRoot.GetComponent<RectTransform>(), screenPos, canvas.worldCamera, out var local))
+        {
+            rt.anchoredPosition = local + new Vector2(20f, 20f);
+        }
+    }
+
+    void EnsureTooltip()
+    {
+        if (_tooltipGO != null) return;
+        if (panelRoot == null) return;
+
+        _tooltipGO = new GameObject("HoverTooltip", typeof(RectTransform), typeof(Image));
+        _tooltipGO.transform.SetParent(panelRoot.transform, false);
+        var rt = _tooltipGO.GetComponent<RectTransform>();
+        rt.anchorMin = rt.anchorMax = Vector2.zero;
+        rt.pivot = new Vector2(0f, 1f);
+        rt.sizeDelta = new Vector2(240, 90);
+        _tooltipGO.GetComponent<Image>().color = new Color(0.05f, 0.05f, 0.08f, 0.90f);
+
+        var txtGO = new GameObject("Text", typeof(RectTransform));
+        txtGO.transform.SetParent(_tooltipGO.transform, false);
+        var trt = txtGO.GetComponent<RectTransform>();
+        trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one;
+        trt.offsetMin = new Vector2(8, 6); trt.offsetMax = new Vector2(-8, -6);
+        _tooltipText = txtGO.AddComponent<TextMeshProUGUI>();
+        _tooltipText.raycastTarget = false;
+        _tooltipText.fontSize = 14; _tooltipText.color = Color.white;
+        _tooltipText.alignment = TextAlignmentOptions.TopLeft;
+        _tooltipGO.SetActive(false);
     }
 
     void HandleMapClick(Vector2 screenPos)

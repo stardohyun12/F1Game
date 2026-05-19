@@ -95,12 +95,32 @@ namespace PitCrew.Packing
                     else if (_mouseClickAction.IsPressed()) Screen.UpdateTrunkDrag(sp);
                     else if (_mouseClickAction.WasReleasedThisFrame()) Screen.EndTrunkDrag();
                 }
-                // 채널 5 — 드래그 중 큐브 Y축 90도 회전. Q 좌, E 우, R도 우(reset이 배치 단계엔 무의미).
+                        // 채널 5 — 드래그 중 큐브 회전.
+                // Q/E = Y축 90도 스냅 (yaw), W/S = X축 90도 스냅 (pitch),
+                // 마우스 우클릭 드래그 = 자유 회전 (3D 표준).
                 if (Screen.IsDraggingTrunkItem)
                 {
                     if (_rotLeftAction != null && _rotLeftAction.WasPressedThisFrame()) Screen.RotateDraggedItem(-90f);
                     if (_rotRightAction != null && _rotRightAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
                     if (_resetAction != null && _resetAction.WasPressedThisFrame()) Screen.RotateDraggedItem(90f);
+
+                    // W/S = X축 pitch (위아래)
+                    if (Keyboard.current != null)
+                    {
+                        if (Keyboard.current.wKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, -90f);
+                        if (Keyboard.current.sKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, 90f);
+                    }
+
+                    // 마우스 우클릭 드래그 = 자유 회전
+                    if (Mouse.current != null && Mouse.current.rightButton.isPressed)
+                    {
+                        float mx = Mouse.current.delta.x.ReadValue();
+                        float my = Mouse.current.delta.y.ReadValue();
+                        if (Mathf.Abs(mx) > 0.01f || Mathf.Abs(my) > 0.01f)
+                        {
+                            Screen.RotateDraggedItemFree(mx, my);
+                        }
+                    }
                 }
                 return;
             }

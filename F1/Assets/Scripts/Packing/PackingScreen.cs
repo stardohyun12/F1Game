@@ -813,6 +813,22 @@ namespace PitCrew.Packing
             draggedItem.transform.Rotate(0f, deltaYDeg, 0f, Space.World);
         }
 
+        /// <summary>배치 단계 — 임의 축 90도 스냅 회전 (W/S pitch용).</summary>
+        public void RotateDraggedItemAxis(Vector3 axis, float deltaDeg)
+        {
+            if (draggedItem == null) return;
+            draggedItem.transform.Rotate(axis, deltaDeg, Space.World);
+        }
+
+        /// <summary>배치 단계 — 마우스 우클릭 드래그 자유 회전 (3D 표준).</summary>
+        public void RotateDraggedItemFree(float mouseDeltaX, float mouseDeltaY)
+        {
+            if (draggedItem == null) return;
+            const float sensitivity = 0.5f; // deg per pixel delta
+            draggedItem.transform.Rotate(Vector3.up, mouseDeltaX * sensitivity, Space.World);
+            draggedItem.transform.Rotate(Vector3.right, -mouseDeltaY * sensitivity, Space.World);
+        }
+
         // =========================================================
         //  Item spawning
         // =========================================================

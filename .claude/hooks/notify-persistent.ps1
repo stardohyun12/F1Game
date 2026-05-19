@@ -24,15 +24,9 @@ $notif.add_Click($dismiss)
 $notif.add_BalloonTipClicked($dismiss)
 $notif.add_DoubleClick($dismiss)
 
-# Re-show balloon every 30s so user notices if they missed it
-$lastShow = Get-Date
 while (-not $script:done) {
     [System.Windows.Forms.Application]::DoEvents()
     Start-Sleep -Milliseconds 200
-    if (((Get-Date) - $lastShow).TotalSeconds -gt 30) {
-        $notif.ShowBalloonTip(10000)
-        $lastShow = Get-Date
-    }
 }
 
 $notif.Visible = $false

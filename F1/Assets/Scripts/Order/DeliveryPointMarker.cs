@@ -5,6 +5,7 @@ using TMPro;
 /// 배달지 시각 마커 (런타임 가시). 기둥 + 상단 구체.
 /// OrderBoard가 호버 시 색/투명도 제어.
 /// 채널 8 (2026-05-15): RoutePlanScreen이 SetRouteOrder/ClearRouteOrder로 순번 배지 표시.
+/// Hover 툴팁 (2026-05-19): RoutePlanScreen이 SetTooltipJob으로 잡 정보 표시 요청.
 /// </summary>
 [RequireComponent(typeof(DeliveryPoint))]
 public class DeliveryPointMarker : MonoBehaviour
@@ -14,7 +15,7 @@ public class DeliveryPointMarker : MonoBehaviour
     [SerializeField] private float pillarRadius = 0.35f;
 
     [Header("Sphere")]
-    [SerializeField] private float sphereRadius = 1.0f;
+    [SerializeField] private float sphereRadius = 1.5f; // 기본 크기 키움 (이전 1.0)
 
     [Header("Colors")]
     [SerializeField] private Color baseColor = new Color(0.4f, 1f, 0.5f);
@@ -91,14 +92,13 @@ public class DeliveryPointMarker : MonoBehaviour
         pillarMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         prend.sharedMaterial = pillarMat;
 
-        // Sphere
+        // Sphere — collider 유지 (RoutePlanScreen hover raycast용)
         sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.name = "Sphere";
         sphere.transform.SetParent(transform, false);
         sphere.transform.localPosition = new Vector3(0f, pillarHeight + sphereRadius * 0.5f, 0f);
         sphere.transform.localScale = Vector3.one * sphereRadius * 2f;
-        var scol = sphere.GetComponent<Collider>();
-        if (scol != null) Destroy(scol);
+        // collider는 제거하지 않음 — hover raycast용으로 남김
         var srend = sphere.GetComponent<Renderer>();
         sphereMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         srend.sharedMaterial = sphereMat;
@@ -175,6 +175,20 @@ public class DeliveryPointMarker : MonoBehaviour
         m.DisableKeyword("_ALPHABLEND_ON");
         m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         m.renderQueue = -1;
+    }
+
+    // ── Hover 툴팁 (2026-05-19) ──────────────────────────────────
+
+    // RoutePlanScreen이 이 마커의 sphere collider에 hover할 때 호출.
+    // job == null이면 숨김. ScreenSpaceOverlay 좌표는 RoutePlanScreen이 직접 그림.
+    public OrderJob TooltipJob { get; private set; }
+    bool _hovered;
+
+    /// <summary>RoutePlanScreen이 hover 진입/탈출 시 호출.</summary>
+    public void SetHovered(bool hovered, OrderJob job = null)
+    {
+        _hovered = hovered;
+        TooltipJob = hovered ? job : null;
     }
 
     // ── 채널 8 — 경로 순번 배지 ─────────────────────────────────
