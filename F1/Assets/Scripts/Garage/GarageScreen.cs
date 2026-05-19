@@ -2,11 +2,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using PitCrew.Core;
 
 namespace PitCrew.Garage
 {
     public sealed class GarageScreen : MonoBehaviour
     {
+        // Day 2 UI 톤 통일 helper
+        static void ApplyTextTheme(TMP_Text t, Color color, float size)
+        {
+            var th = UITheme.Active;
+            if (th != null && th.fontPrimary != null) t.font = th.fontPrimary;
+            t.color = color;
+            t.fontSize = size;
+        }
+        static Color ThemePanel => UITheme.Active != null ? UITheme.Active.colorPanel : new Color(0.12f,0.14f,0.18f,0.92f);
+        static Color ThemeText => UITheme.Active != null ? UITheme.Active.colorText : Color.white;
+        static Color ThemeAccent => UITheme.Active != null ? UITheme.Active.colorAccent : new Color(1f,0.82f,0.25f,1f);
+        static Color ThemeMuted => UITheme.Active != null ? UITheme.Active.colorTextMuted : new Color(0.72f,0.74f,0.78f,1f);
+        static Color ThemeOk => UITheme.Active != null ? UITheme.Active.colorOkText : new Color(0.55f,0.95f,0.60f,1f);
+        static Color ThemeCrit => UITheme.Active != null ? UITheme.Active.colorCritText : new Color(1f,0.45f,0.42f,1f);
+
         [SerializeField] private GarageRestoreCutscene cutscene;
 
         Canvas _canvas;
@@ -63,7 +79,7 @@ namespace PitCrew.Garage
             var walletGo = new GameObject("Wallet", typeof(RectTransform));
             walletGo.transform.SetParent(go.transform, false);
             _walletText = walletGo.AddComponent<TextMeshProUGUI>();
-            _walletText.fontSize = 36; _walletText.color = Color.white; _walletText.alignment = TextAlignmentOptions.TopLeft;
+            ApplyTextTheme(_walletText, ThemeAccent, 36); _walletText.alignment = TextAlignmentOptions.TopLeft;
             var wrt = _walletText.rectTransform; wrt.anchorMin = new Vector2(0.02f,0.92f); wrt.anchorMax = new Vector2(0.4f,0.98f); wrt.offsetMin = Vector2.zero; wrt.offsetMax = Vector2.zero;
 
             // Close
@@ -75,7 +91,7 @@ namespace PitCrew.Garage
             var closeTxtGo = new GameObject("Txt", typeof(RectTransform));
             closeTxtGo.transform.SetParent(closeGo.transform, false);
             var closeTxt = closeTxtGo.AddComponent<TextMeshProUGUI>();
-            closeTxt.text = "닫기"; closeTxt.alignment = TextAlignmentOptions.Center; closeTxt.color = Color.white; closeTxt.fontSize = 28;
+            closeTxt.text = "닫기"; closeTxt.alignment = TextAlignmentOptions.Center; ApplyTextTheme(closeTxt, ThemeText, 28);
             var ctxRt = closeTxt.rectTransform; ctxRt.anchorMin = Vector2.zero; ctxRt.anchorMax = Vector2.one; ctxRt.offsetMin = Vector2.zero; ctxRt.offsetMax = Vector2.zero;
             _closeBtn.onClick.AddListener(Hide);
 
@@ -87,7 +103,7 @@ namespace PitCrew.Garage
             var labelGo = new GameObject("Label", typeof(RectTransform));
             labelGo.transform.SetParent(carPanelGo.transform, false);
             var label = labelGo.AddComponent<TextMeshProUGUI>();
-            label.text = "[ F1 머신 사이드뷰 ]"; label.alignment = TextAlignmentOptions.Center; label.color = new Color(0.5f,0.5f,0.55f); label.fontSize = 32;
+            label.text = "[ F1 머신 사이드뷰 ]"; label.alignment = TextAlignmentOptions.Center; ApplyTextTheme(label, ThemeMuted, 32);
             var lrt = label.rectTransform; lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one; lrt.offsetMin = Vector2.zero; lrt.offsetMax = Vector2.zero;
 
             // Detail panel
@@ -99,19 +115,19 @@ namespace PitCrew.Garage
             var titleGo = new GameObject("Title", typeof(RectTransform));
             titleGo.transform.SetParent(detailGo.transform, false);
             _detailTitle = titleGo.AddComponent<TextMeshProUGUI>();
-            _detailTitle.fontSize = 28; _detailTitle.color = Color.white; _detailTitle.alignment = TextAlignmentOptions.TopLeft;
+            ApplyTextTheme(_detailTitle, ThemeText, 28); _detailTitle.alignment = TextAlignmentOptions.TopLeft;
             var dtrt = _detailTitle.rectTransform; dtrt.anchorMin = new Vector2(0.02f, 0.5f); dtrt.anchorMax = new Vector2(0.6f, 1f); dtrt.offsetMin = Vector2.zero; dtrt.offsetMax = Vector2.zero;
 
             var descGo = new GameObject("Desc", typeof(RectTransform));
             descGo.transform.SetParent(detailGo.transform, false);
             _detailDesc = descGo.AddComponent<TextMeshProUGUI>();
-            _detailDesc.fontSize = 20; _detailDesc.color = new Color(0.8f,0.8f,0.85f); _detailDesc.alignment = TextAlignmentOptions.TopLeft;
+            ApplyTextTheme(_detailDesc, ThemeMuted, 20); _detailDesc.alignment = TextAlignmentOptions.TopLeft;
             var ddrt = _detailDesc.rectTransform; ddrt.anchorMin = new Vector2(0.02f, 0f); ddrt.anchorMax = new Vector2(0.6f, 0.5f); ddrt.offsetMin = Vector2.zero; ddrt.offsetMax = Vector2.zero;
 
             var costGo = new GameObject("Cost", typeof(RectTransform));
             costGo.transform.SetParent(detailGo.transform, false);
             _detailCost = costGo.AddComponent<TextMeshProUGUI>();
-            _detailCost.fontSize = 24; _detailCost.color = Color.yellow; _detailCost.alignment = TextAlignmentOptions.TopRight;
+            ApplyTextTheme(_detailCost, ThemeAccent, 24); _detailCost.alignment = TextAlignmentOptions.TopRight;
             var dcrt = _detailCost.rectTransform; dcrt.anchorMin = new Vector2(0.6f, 0.5f); dcrt.anchorMax = new Vector2(0.78f, 1f); dcrt.offsetMin = Vector2.zero; dcrt.offsetMax = Vector2.zero;
 
             var restoreGo = new GameObject("Restore", typeof(RectTransform));
@@ -122,7 +138,7 @@ namespace PitCrew.Garage
             var rbTxtGo = new GameObject("Txt", typeof(RectTransform));
             rbTxtGo.transform.SetParent(restoreGo.transform, false);
             var rbTxt = rbTxtGo.AddComponent<TextMeshProUGUI>();
-            rbTxt.text = "복원"; rbTxt.alignment = TextAlignmentOptions.Center; rbTxt.color = Color.white; rbTxt.fontSize = 28;
+            rbTxt.text = "복원"; rbTxt.alignment = TextAlignmentOptions.Center; ApplyTextTheme(rbTxt, ThemeText, 28);
             var rbtRt = rbTxt.rectTransform; rbtRt.anchorMin = Vector2.zero; rbtRt.anchorMax = Vector2.one; rbtRt.offsetMin = Vector2.zero; rbtRt.offsetMax = Vector2.zero;
             _restoreBtn.onClick.AddListener(OnRestoreClicked);
 
@@ -191,18 +207,18 @@ namespace PitCrew.Garage
                 var name = nameGo.AddComponent<TextMeshProUGUI>();
                 name.text = part.displayName;
                 name.alignment = TextAlignmentOptions.Center;
-                name.color = owned ? Color.white : (afford ? Color.white : new Color(0.6f,0.6f,0.62f));
-                name.fontSize = 24;
+                ApplyTextTheme(name, owned ? ThemeText : (afford ? ThemeText : ThemeMuted), 24);
                 var nrt = name.rectTransform; nrt.anchorMin = new Vector2(0f, 0.55f); nrt.anchorMax = new Vector2(1f, 0.95f); nrt.offsetMin = Vector2.zero; nrt.offsetMax = Vector2.zero;
 
                 var costGo = new GameObject("Cost", typeof(RectTransform));
                 costGo.transform.SetParent(cardGo.transform, false);
                 var cost = costGo.AddComponent<TextMeshProUGUI>();
-                if (owned) { cost.text = "✓ 복원됨"; cost.color = Color.white; }
-                else if (afford) { cost.text = $"₩{part.restoreCost}"; cost.color = Color.yellow; }
-                else { int shortAmt = part.restoreCost - (Services.Upgrade?.Wallet ?? 0); cost.text = $"₩{shortAmt} 부족"; cost.color = new Color(0.85f,0.4f,0.4f); }
+                Color costCol;
+                if (owned) { cost.text = "✓ 복원됨"; costCol = ThemeOk; }
+                else if (afford) { cost.text = $"₩{part.restoreCost}"; costCol = ThemeAccent; }
+                else { int shortAmt = part.restoreCost - (Services.Upgrade?.Wallet ?? 0); cost.text = $"₩{shortAmt} 부족"; costCol = ThemeCrit; }
                 cost.alignment = TextAlignmentOptions.Center;
-                cost.fontSize = 18;
+                ApplyTextTheme(cost, costCol, 18);
                 var crt = cost.rectTransform; crt.anchorMin = new Vector2(0f, 0.10f); crt.anchorMax = new Vector2(1f, 0.50f); crt.offsetMin = Vector2.zero; crt.offsetMax = Vector2.zero;
 
                 _cardGos.Add(cardGo);

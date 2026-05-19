@@ -37,7 +37,9 @@ namespace PitCrew.Garage
             _flavor = flavorGo.AddComponent<TextMeshProUGUI>();
             _flavor.alignment = TextAlignmentOptions.Center;
             _flavor.fontSize = 48;
-            _flavor.color = Color.white;
+            var th = UITheme.Active;
+            if (th != null && th.fontPrimary != null) _flavor.font = th.fontPrimary;
+            _flavor.color = th != null ? th.colorText : Color.white;
             var frt = (RectTransform)flavorGo.transform;
             frt.anchorMin = new Vector2(0.1f, 0.4f); frt.anchorMax = new Vector2(0.9f, 0.6f);
             frt.offsetMin = Vector2.zero; frt.offsetMax = Vector2.zero;
