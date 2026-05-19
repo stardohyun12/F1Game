@@ -72,7 +72,7 @@
   <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
   <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
   <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
-  <div class="iter-bar"><span class="dot"></span> iter 1 (이 페이지 생성) · iter 2~ 후속 추가 예정</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1 페이지 생성 · <span class="dot"></span> iter 2 게임 진단 결과 추가 · iter 3~ 후속</div>
 </header>
 
 <main>
@@ -81,11 +81,100 @@
 <section>
   <h2>📍 일어나서 30초 안에 결정할 것</h2>
   <div class="pick">
-    <strong>아래 메커니즘 7개 중 어느 것부터 박을지 1~3개 골라줘.</strong> 각자 효과·비용 표 아래 정리. 추천: <strong>M5(자기비판 5문항) + M3(에르고 SO) + M1(자동 screenshot)</strong> — 비용 합 ~3.5h, 효과 즉시.
+    <strong>아래 메커니즘 7개 중 어느 것부터 박을지 1~3개 골라줘.</strong> 추천: <strong>M5 + M3 + M1</strong> — 비용 합 ~3.5h, 효과 즉시.
   </div>
   <div class="pick">
-    <strong>측정 동의도 필요해.</strong> "다음 세션 UX incident ≤2건 / commit screenshot 첨부 ≥70%" 베이스라인 OK?
+    <strong>측정 동의</strong>: "다음 세션 UX incident ≤2건 / commit screenshot 첨부 ≥70%" 베이스라인 OK?
   </div>
+  <div class="pick">
+    <strong>iter 2 추가 결정</strong>: Team A 진단 결과 P0/P1 이슈 6건 발견 — <strong>그 중 차고 흐름 manual play(P0)는 도현 자고 일어났을 때 가장 먼저</strong>. 자동 시뮬 만들지 vs 도현이 직접 굴릴지?
+  </div>
+</section>
+
+<!-- ──────────── iter 2: 게임 현 상태 진단 결과 ──────────── -->
+<section>
+  <h2>🩺 게임 현 상태 진단 <span class="subt">iter 2 · Team A subagent 결과 · 2026-05-20</span></h2>
+  <p class="lede">Team A가 컴파일·런타임·씬 wiring·수치·screenshot 5단계 진단. <strong>컴파일 0 / 런타임 에러 0 / 차 박힘 X / 핵심 wiring 다 set</strong>. 하지만 다음 이슈 발견 — <strong>각 이슈마다 어떤 메커니즘이 있었으면 잡혔을지 매핑</strong>.</p>
+
+  <table>
+    <thead><tr><th width="50">P</th><th width="180">영역</th><th>증상</th><th width="180">추정 원인</th><th width="120">잡혔을 메커니즘</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill p0">P0</span></td>
+        <td><strong>UI 디버그 막힘</strong></td>
+        <td>ScreenSpaceOverlay UI 4개 모두 <code>unity-cli screenshot</code>으로 캡처 안 됨 — 시각 검증 워크플로 자체가 끊김</td>
+        <td>Unity 기본 동작 — overlay는 <code>ScreenCapture.CaptureScreenshot()</code> API만 잡음</td>
+        <td>도구 자체 fix 필요 — Editor 메뉴 <code>PitCrew/Capture/Overlay</code> 추가</td>
+      </tr>
+      <tr>
+        <td><span class="pill p0">P0</span></td>
+        <td><strong>차고 흐름 manual play 0회</strong></td>
+        <td>정산 → 차고 → 부품 복원 → 재출발 전체 흐름을 세션 27 13 Task 다 박았는데 한 번도 안 굴림</td>
+        <td>자동 시뮬레이션이 <code>onCardClicked</code> event 기반 → reflection으론 못 호출</td>
+        <td><strong>M4 Ghost Player</strong> — 입력 시퀀스 JSON으로 전 흐름 자동 굴림</td>
+      </tr>
+      <tr>
+        <td><span class="pill p1">P1</span></td>
+        <td>DeliveryManager.startReturn=NULL</td>
+        <td>운전 후 복귀 마커 wiring 누락 가능</td>
+        <td>씬 inspector에 미할당 — Awake fallback 없음</td>
+        <td><strong>M3 ErgoConstraints</strong> 변형 — SerializeField null 검사 SO</td>
+      </tr>
+      <tr>
+        <td><span class="pill p1">P1</span></td>
+        <td>CargoShakeSimulator velocityDeadZone=0.025</td>
+        <td>약슬로프(25° 미만)에서 화물 안 미끄러짐 — feel 이슈 (도현 사전 메모)</td>
+        <td>선재(先在) 튜닝 — Plan 1 때 안 건드림</td>
+        <td><strong>M4 Ghost Player</strong> — 경사 시나리오 자동 굴림 + cargo Δposition 측정</td>
+      </tr>
+      <tr>
+        <td><span class="pill p1">P1</span></td>
+        <td>OrderBoard.runController=NULL (Edit 시점)</td>
+        <td>Awake에서 채울 가능 / 잠재적 race condition</td>
+        <td>inspector wiring 누락 + fallback 불명확</td>
+        <td><strong>M3</strong> — Service 의존 자동 fallback 강제</td>
+      </tr>
+      <tr>
+        <td><span class="pill p2">P2</span></td>
+        <td>맵 크기 audit 불일치</td>
+        <td>activeContext 78×54 / 측정 174×126</td>
+        <td>R1 일부 이미 적용됐을 수 있음 — 추적 안 됨</td>
+        <td>activeContext 갱신 + RunMetricsRecorder 5런</td>
+      </tr>
+      <tr>
+        <td><span class="pill p2">P2</span></td>
+        <td>MiniMap 활성 목적지 강조 X</td>
+        <td>활성 마커가 일반 마커와 같은 색</td>
+        <td>구분 로직 부재</td>
+        <td><strong>M5 5문항 #3</strong> "처음 보는 사람이 뭐 해야 되지 5초 안에 알 수 있나" → 즉시 잡힘</td>
+      </tr>
+      <tr>
+        <td><span class="pill p2">P2</span></td>
+        <td>DeliveryHUD.cam inspector 미할당</td>
+        <td>Camera.main fallback 있어 동작은 함 — 명시 wiring 권장</td>
+        <td>SerializeField 미할당</td>
+        <td>M3 변형</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pick" style="margin-top:14px">
+    <strong>가장 중요한 관찰</strong>: 진단 표 8개 중 <strong>visual로만 잡히는 게 3개 (P0 UI 캡처 / P2 미니맵 / P0 차고흐름)</strong>. 나머지 5개는 수치 검증으로 잡힘. <strong>즉 수치 검증은 이미 잘 되고 있고, visual·feel 검증이 부재 → M1·M4·M5가 진짜 빈자리</strong>.
+  </div>
+
+  <details>
+    <summary>건강 지표 (subagent raw 수치)</summary>
+    <ul class="dense">
+      <li>컴파일 error 0 / warning 0</li>
+      <li>Play 진입 에러 0건 (5초 측정)</li>
+      <li>차 pos=(72, 0.50, 60), grounded distGround=0.50 정상</li>
+      <li>Services 17개 모두 SET (Play 시)</li>
+      <li>Canvas sortOrder: MainMenu=6000 / Garage=4000 / Result=200 / UIRoot=10 — 정상</li>
+      <li>OrderBoard VLG: childControlHeight=True, spacing=20 — 세션 26 폴리시 반영</li>
+      <li>DeliveryPoint 11개 — radius=3, isTrigger=true (Awake setup 후)</li>
+    </ul>
+    <p style="margin-top:8px"><strong>스크린샷 저장 위치</strong>: <code>docs/screenshots/diagnosis/diag-1~3.png</code></p>
+  </details>
 </section>
 
 <!-- ──────────── 진단 ──────────── -->
