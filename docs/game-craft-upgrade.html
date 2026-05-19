@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>PitCrew · Game Craft Upgrade — AI가 "이상함을 느끼게" 만드는 법</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --border:#2a323d;
+    --text:#e6edf3; --muted:#8b949e; --dim:#6e7681;
+    --accent:#f0b429; --gold:#ffd664; --ok:#3fb950; --warn:#d29922; --crit:#f85149; --link:#58a6ff;
+    --p0:#f85149; --p1:#d29922; --p2:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',Roboto,'Apple SD Gothic Neo',sans-serif;line-height:1.6}
+  header{padding:36px 40px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#13181f 0%,#0e1116 100%)}
+  header h1{margin:0;font-size:28px;letter-spacing:-0.02em}
+  header .tag{display:inline-block;padding:3px 10px;border-radius:999px;background:#3d2c11;color:var(--gold);font-size:11px;margin-left:8px;vertical-align:middle}
+  header .sub{color:var(--muted);font-size:14px;margin-top:8px;max-width:880px}
+  header .meta{margin-top:12px;font-size:12px;color:var(--dim)}
+  main{max-width:1280px;margin:0 auto;padding:32px 40px 80px}
+  section{margin-top:28px}
+  h2{font-size:20px;letter-spacing:-0.015em;color:var(--accent);margin:0 0 6px}
+  h2 .subt{font-size:13px;color:var(--muted);font-weight:400;margin-left:8px;letter-spacing:0}
+  h3{font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin:20px 0 10px}
+  p.lede{color:var(--muted);font-size:14px;max-width:860px;margin:0 0 16px}
+  .grid{display:grid;gap:16px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+  .card.pop{background:var(--panel2);border-color:#3a4654}
+  .card h4{margin:0 0 6px;font-size:15px}
+  .card .one{color:var(--muted);font-size:13px;margin:0 0 12px}
+  .row-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;border:1px solid var(--border);color:var(--muted)}
+  .pill.p0{color:#fff;background:var(--p0);border-color:var(--p0)}
+  .pill.p1{color:#1a1208;background:var(--p1);border-color:var(--p1)}
+  .pill.p2{color:#fff;background:var(--p2);border-color:var(--p2)}
+  .pill.cost-s{color:var(--ok);border-color:#234d2a}
+  .pill.cost-m{color:var(--warn);border-color:#5a4516}
+  .pill.cost-l{color:var(--crit);border-color:#5d2424}
+  .pill.tag{color:var(--gold);border-color:#5a4516}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em}
+  code{background:#0d1117;padding:2px 6px;border-radius:4px;font-size:12.5px;color:var(--gold)}
+  .kpi{display:flex;align-items:baseline;gap:10px}
+  .kpi .n{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums}
+  .kpi .u{font-size:13px;color:var(--muted)}
+  ul.dense{margin:6px 0;padding-left:18px}
+  ul.dense li{margin:5px 0}
+  .pick{padding:10px 14px;background:#1c1d10;border-left:3px solid var(--gold);border-radius:0 6px 6px 0;color:var(--text);font-size:13.5px;margin:8px 0}
+  .pick strong{color:var(--gold)}
+  .compare-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
+  .compare-col{padding:14px;border-radius:8px;background:#0d1117;border:1px solid var(--border)}
+  .compare-col.bad{border-color:#5d2424}
+  .compare-col.good{border-color:#234d2a}
+  .compare-col h5{margin:0 0 6px;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted)}
+  .compare-col.bad h5{color:var(--crit)}
+  .compare-col.good h5{color:var(--ok)}
+  .footer{margin-top:50px;font-size:12px;color:var(--dim);text-align:center;border-top:1px solid var(--border);padding-top:20px}
+  details{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin:8px 0}
+  details summary{cursor:pointer;font-size:13px;color:var(--muted)}
+  details[open] summary{color:var(--text);margin-bottom:8px}
+  .iter-bar{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin-top:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block}
+  @media (max-width:900px){.grid-2,.grid-3,.compare-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 Game Craft Upgrade <span class="tag">/loop 누적 보고</span></h1>
+  <div class="sub">AI(Claude)가 게임 만들 때 <strong>사람이 자연스럽게 느끼는 어색함</strong>을 놓치는 문제 — 진단 + 메커니즘 + 우선순위. 도현이 자고 일어나서 <strong>"어떤 방법이 가장 좋은지 비교"</strong> 가능하게 정리.</div>
+  <div class="meta">생성: 2026-05-20 · 세션 27 후속 · 매 /loop iteration마다 갱신</div>
+  <div class="iter-bar"><span class="dot"></span> iter 1 (이 페이지 생성) · iter 2~ 후속 추가 예정</div>
+</header>
+
+<main>
+
+<!-- ──────────── 도현이 일어나면 봐야 할 것 ──────────── -->
+<section>
+  <h2>📍 일어나서 30초 안에 결정할 것</h2>
+  <div class="pick">
+    <strong>아래 메커니즘 7개 중 어느 것부터 박을지 1~3개 골라줘.</strong> 각자 효과·비용 표 아래 정리. 추천: <strong>M5(자기비판 5문항) + M3(에르고 SO) + M1(자동 screenshot)</strong> — 비용 합 ~3.5h, 효과 즉시.
+  </div>
+  <div class="pick">
+    <strong>측정 동의도 필요해.</strong> "다음 세션 UX incident ≤2건 / commit screenshot 첨부 ≥70%" 베이스라인 OK?
+  </div>
+</section>
+
+<!-- ──────────── 진단 ──────────── -->
+<section>
+  <h2>🔬 진단 <span class="subt">왜 자연스럽게 못 느끼는가</span></h2>
+  <p class="lede">세션 27 UX·feel incident 6건 공통 패턴: spec/컴파일 만족 → "완료" 본능. screenshot 0회 / 비교 대상 0개. 결핍을 5축으로 분해.</p>
+
+  <table>
+    <thead><tr><th width="40">#</th><th width="180">결핍</th><th>사람이 자연스럽게 하는 것</th><th>내가 빠뜨리는 것</th><th width="200">사례 (세션 27)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>시각 루프</strong></td><td>변경 후 즉시 보고 어색하면 다시 만짐</td><td>spec 만족 → 끝</td><td>차 박힘 5번 fix하면서 screenshot 0회</td></tr>
+      <tr><td>2</td><td><strong>Reference DB</strong></td><td>좋은 게임 100개 본 누적 감각</td><td>비교 대상이 머릿속에 없음</td><td>PostFX "공포 게임" 톤</td></tr>
+      <tr><td>3</td><td><strong>자기 비판</strong></td><td>자기 결과물 보면 즉시 이상함 발견</td><td>"값 정상" 보고 끝</td><td>tooltip 100px 떨어짐 — reflection은 통과</td></tr>
+      <tr><td>4</td><td><strong>플레이어 시뮬</strong></td><td>"처음 보는 사람이면" 자동 가동</td><td>개발자 시야로만 봄</td><td>핀 hover 영역 좁음 — 개발자는 정확히 클릭</td></tr>
+      <tr><td>5</td><td><strong>에르고 본능</strong></td><td>"버튼 작다, 텍스트 안 보인다" 본능</td><td>spec에 없으면 무시</td><td>ResultPanel 라벨 간격</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ──────────── 메커니즘 7개 ──────────── -->
+<section>
+  <h2>🛠️ 메커니즘 7개 <span class="subt">각자 결핍 1~2개 메움</span></h2>
+  <p class="lede">7개 다 박으면 ~9시간 sprint. 1~3개만 먼저 박는 게 합리적. <strong>비용 S/M/L</strong>, <strong>P0(즉효)/P1/P2</strong>.</p>
+
+  <div class="grid grid-2">
+
+    <div class="card pop">
+      <h4>M1 · Mandatory Play Loop</h4>
+      <div class="one">UI/카메라/플레이어 변경 → commit 전 자동 Play 10초 + screenshot 의무.</div>
+      <div><strong>메우는 결핍</strong>: #1 시각 루프, #3 자기 비판</div>
+      <div><strong>구현</strong>: Stop hook에 검사 추가. 변경 파일 키워드 매칭 시 최근 screenshot artifact 존재 확인. 없으면 commit 차단.</div>
+      <div><strong>효과</strong>: hover too-small / tooltip far / car embedded 같은 결정적 시각 버그 사전 차단.</div>
+      <div class="row-tags"><span class="pill p1">P1</span><span class="pill cost-m">M (2h)</span><span class="pill tag">hook</span></div>
+    </div>
+
+    <div class="card">
+      <h4>M2 · Reference Library</h4>
+      <div class="one">각 시스템마다 "good" 3장 + "bad" 3장 screenshot 매핑. 변경 전 의무 Read.</div>
+      <div><strong>메우는 결핍</strong>: #2 Reference DB</div>
+      <div><strong>구현</strong>: <code>references/{internal,external}/&lt;system&gt;/</code>. Pacific Drive 트렁크 / Snowrunner 미니맵 / Hades 메타 등.</div>
+      <div><strong>효과</strong>: PostFX 톤 미스, UI 레이아웃 어색함 사전 감지.</div>
+      <div class="row-tags"><span class="pill p2">P2</span><span class="pill cost-l">L (도현 영역)</span><span class="pill tag">asset</span></div>
+    </div>
+
+    <div class="card pop">
+      <h4>M3 · ErgoConstraints SO</h4>
+      <div class="one">모든 UI/Marker가 통과해야 하는 ScriptableObject 규준 (clickTarget≥44px, hover≥X, tooltip≤Y).</div>
+      <div><strong>메우는 결핍</strong>: #5 에르고 본능</div>
+      <div><strong>구현</strong>: <code>UI/ErgoConstraints.cs</code> + 각 UI의 <code>OnValidate</code>에서 비교. 어기면 LogWarning. unity-cli verifier에 "ErgoWarning 0건" 추가.</div>
+      <div><strong>효과</strong>: 핀 hover radius=0.45 같은 결정적 결핍 자동 검출.</div>
+      <div class="row-tags"><span class="pill p0">P0</span><span class="pill cost-s">S (1h)</span><span class="pill tag">SO</span><span class="pill tag">OnValidate</span></div>
+    </div>
+
+    <div class="card">
+      <h4>M4 · Ghost Player Replay</h4>
+      <div class="one">빅 feature 끝에 30~60초 자동 입력 시나리오 + 5초마다 screenshot 10장. PR에 첨부 의무.</div>
+      <div><strong>메우는 결핍</strong>: #4 플레이어 시뮬</div>
+      <div><strong>구현</strong>: <code>Editor/_Recovery/GhostPlayer.cs</code> + 입력 JSON. Play 시작 → 입력 주입 → 자동 screenshot.</div>
+      <div><strong>효과</strong>: 1잡 풀 흐름 어디가 어색한지 자동 발견. 새 플레이어 시야 시뮬.</div>
+      <div class="row-tags"><span class="pill p2">P2</span><span class="pill cost-l">L (4h)</span><span class="pill tag">editor-tool</span></div>
+    </div>
+
+    <div class="card pop">
+      <h4>M5 · 자기비판 5문항</h4>
+      <div class="one">commit 직전 "처음 보는 사람이 5초 안에 어색하다고 느낄 게 뭔가" 5문항 자가질의 강제.</div>
+      <div><strong>메우는 결핍</strong>: #3 자기 비판, #4 플레이어 시뮬</div>
+      <div><strong>구현</strong>: <code>no-compromise.md §10</code>으로 추가. 5문항 다 답 못 하면 commit X.</div>
+      <ul class="dense">
+        <li>① 클릭 영역 손가락 안 들어갈 만큼 작지 않나?</li>
+        <li>② 텍스트 contrast 충분?</li>
+        <li>③ 처음 보는 사람이 "뭐 해야 되지" 5초 안에 알 수 있나?</li>
+        <li>④ 변경 전/후 screenshot 비교했을 때 후가 명확히 나아 보이나?</li>
+        <li>⑤ 다른 부분이 이 변경 때문에 더 이상해 보이진 않나?</li>
+      </ul>
+      <div class="row-tags"><span class="pill p0">P0</span><span class="pill cost-s">S (30m)</span><span class="pill tag">rule-only</span></div>
+    </div>
+
+    <div class="card">
+      <h4>M6 · UX Reviewer Subagent (Codex 자리)</h4>
+      <div class="one">시각/UX 변경 시 별도 reviewer subagent로 검토 분리. "당신은 처음 보는 플레이어다, 5초 보고 첫인상 한 줄."</div>
+      <div><strong>메우는 결핍</strong>: #2 #3 #4 보강</div>
+      <div><strong>구현</strong>: <code>subagents/ux-reviewer.md</code> 별도 시스템 prompt. screenshot + 한 줄 첫인상 + 이슈 3개.</div>
+      <div><strong>효과</strong>: builder(나) bias 차단. <strong>도현이 물었던 Codex 자리 = 여기</strong>.</div>
+      <div class="row-tags"><span class="pill p1">P1</span><span class="pill cost-s">S (1h)</span><span class="pill tag">subagent</span><span class="pill tag">codex-slot</span></div>
+    </div>
+
+    <div class="card">
+      <h4>M7 · "왜 못 봤지" 자동 포스트모르템</h4>
+      <div class="one">도현 manual play 피드백 키워드 감지 → incident 템플릿 자동 + "missing heuristic" 필드 강제.</div>
+      <div><strong>메우는 결핍</strong>: 학습 루프 자체</div>
+      <div><strong>구현</strong>: Stop hook에 "이상함/안됨/왜이래" 키워드 매칭. 매칭 시 incident.md 항목 자동 stub.</div>
+      <div><strong>효과</strong>: 패턴 누적 → 룰 승격 자동화. 같은 실수 반복 차단.</div>
+      <div class="row-tags"><span class="pill p1">P1</span><span class="pill cost-s">S (1h)</span><span class="pill tag">hook</span></div>
+    </div>
+
+    <div class="card">
+      <h4>+ 추가 슬롯</h4>
+      <div class="one">/loop 다음 iteration에서 추가 메커니즘 발견 시 여기.</div>
+      <div style="color:var(--dim);font-size:12px">아이디어: 디자인 토큰 통일(Color/Spacing), 신규 UI 자동 Audit 메뉴, Diff-only commit 분리, 자가 코드 리뷰 prompt…</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────── 우선순위 권장 ──────────── -->
+<section>
+  <h2>🎯 우선순위 권장 <span class="subt">"먼저 박을 1~3개"</span></h2>
+
+  <table>
+    <thead><tr><th width="40">#</th><th width="200">메커니즘</th><th>왜 먼저</th><th width="100">비용</th><th width="90">P</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>M5 자기비판 5문항</strong></td><td>룰만 박으면 됨. 즉시 다음 commit부터 발효. 도구 0개.</td><td><span class="pill cost-s">30m</span></td><td><span class="pill p0">P0</span></td></tr>
+      <tr><td>2</td><td><strong>M3 ErgoConstraints SO</strong></td><td>한 번 박으면 모든 Marker/Button 자동 검사. 핀 hover 같은 버그 결정적 차단.</td><td><span class="pill cost-s">1h</span></td><td><span class="pill p0">P0</span></td></tr>
+      <tr><td>3</td><td><strong>M1 Play+screenshot Hook</strong></td><td>UI/카메라 변경 시 commit 차단. screenshot 첨부 비율 곧바로 측정 가능.</td><td><span class="pill cost-m">2h</span></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>4</td><td>M7 incident 자동화</td><td>도현 피드백마다 자동 stub. 학습 루프 닫힘.</td><td><span class="pill cost-s">1h</span></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>5</td><td>M6 UX Reviewer</td><td>builder bias 차단. Codex 옵션 검증.</td><td><span class="pill cost-s">1h</span></td><td><span class="pill p1">P1</span></td></tr>
+      <tr><td>6</td><td>M4 Ghost Player</td><td>빅 feature 끝에만 발효 — 자주 안 씀.</td><td><span class="pill cost-l">4h</span></td><td><span class="pill p2">P2</span></td></tr>
+      <tr><td>7</td><td>M2 Reference Library</td><td>도현이 자산 모으는 영역 — AI 단독 불가.</td><td><span class="pill cost-l">도현</span></td><td><span class="pill p2">P2</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="pick" style="margin-top:14px">
+    <strong>추천 조합 A (즉효 3개 ~3.5h)</strong>: M5 + M3 + M1. 다음 세션 즉시 측정 가능.<br>
+    <strong>추천 조합 B (전체 1~5번 ~5.5h)</strong>: M5 + M3 + M1 + M7 + M6. 한 sprint(1일).<br>
+    <strong>추천 조합 C (도현 영역 포함, 다음 세션)</strong>: A 조합 + 도현이 자산 5장 모아주면 M2 시드.
+  </div>
+</section>
+
+<!-- ──────────── before/after 사례 ──────────── -->
+<section>
+  <h2>📸 사례 비교 <span class="subt">세션 27에서 이 룰이 있었으면</span></h2>
+  <p class="lede">실제 발생한 incident 3개에 대해 "M3·M5가 있었으면 어떻게 잡혔을지" 시뮬레이션.</p>
+
+  <h3>① 핀 hover 영역 너무 좁음 (radius 0.45)</h3>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h5>지금 (룰 없음)</h5>
+      구현 → reflection으로 SphereCollider 존재 확인 → commit → 도현 manual play → "범위 조정도 안 됨" → 진단 dispatch → fix
+      <div style="margin-top:6px;color:var(--muted)">총 ~30분 + 도현 시간</div>
+    </div>
+    <div class="compare-col good">
+      <h5>M3가 있었으면</h5>
+      구현 시도 → <code>OnValidate</code>에서 ErgoConstraints.minHoverRadius=2.0 위반 → LogWarning → 즉시 fix → commit
+      <div style="margin-top:6px;color:var(--muted)">총 ~5분 / 도현 0</div>
+    </div>
+  </div>
+
+  <h3>② Tooltip 100px 떨어져 뜸</h3>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h5>지금</h5>
+      ScreenPointToLocalPointInRectangle 좌표계 버그 → reflection 통과 → commit → 도현 발견
+    </div>
+    <div class="compare-col good">
+      <h5>M5가 있었으면</h5>
+      commit 직전 5문항 ④번 "변경 전/후 screenshot 비교" → screenshot 찍기 → 100px 떨어진 게 즉시 보임 → fix
+    </div>
+  </div>
+
+  <h3>③ PostFX 공포게임 톤</h3>
+  <div class="compare-row">
+    <div class="compare-col bad">
+      <h5>지금</h5>
+      Vignette 0.42 / Exposure 낮음 → spec("PostFX 적용") 만족 → commit → 도현 "왜 어두워?" → 톤 다운 fix
+    </div>
+    <div class="compare-col good">
+      <h5>M2 + M6이 있었으면</h5>
+      reference good/bad screenshot 비교 → bad 톤에 가까움 발견 → 톤 다운 후 UX reviewer subagent에 "첫인상 한 줄" → "약간 어두움" 피드백 → 추가 톤 조정
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── 측정 베이스라인 ──────────── -->
+<section>
+  <h2>📊 측정 <span class="subt">이게 효과 있는지 어떻게 알까</span></h2>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <h4>선행 지표</h4>
+      <ul class="dense">
+        <li>commit당 screenshot 첨부 비율</li>
+        <li>자가 5문항 답변 비율</li>
+        <li>ErgoWarning 발생 → 해소 시간</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>후행 지표 (한 세션 후)</h4>
+      <ul class="dense">
+        <li>도현 manual play 후 "왜 이렇게" 빈도</li>
+        <li>incidents.md UX/feel 라벨 건수</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>베이스라인 vs 목표</h4>
+      <table>
+        <tbody>
+          <tr><td>세션 27 UX incident</td><td><strong>6건</strong></td></tr>
+          <tr><td>세션 27 screenshot/commit</td><td><strong>3/57 (5%)</strong></td></tr>
+          <tr><td>다음 세션 UX incident</td><td style="color:var(--ok)"><strong>≤2건</strong></td></tr>
+          <tr><td>다음 세션 screenshot/commit</td><td style="color:var(--ok)"><strong>≥70%</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── Codex 활용 ──────────── -->
+<section>
+  <h2>🤝 Codex/2nd AI <span class="subt">도현 질문 답</span></h2>
+  <p class="lede">"Codex 섞어 쓰면 더 잘하나?" 결론: <strong>같은 자리 모델 2개 X, 다른 역할 모델 2개 O</strong>. M6 (UX Reviewer)에 정확히 맞음.</p>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <h4 style="color:var(--crit)">❌ 안 좋은 흐름</h4>
+      <ul class="dense">
+        <li>Claude로 코드 짜기 → Codex로 같은 코드 검토 → "잘 했음" 양쪽 OK 사인 →  bias 합산</li>
+        <li>둘 다 builder 시야 → 둘 다 같은 결핍 (시각 루프 부재) → 0 개선</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--ok)">✅ 좋은 흐름 (M6)</h4>
+      <ul class="dense">
+        <li>Claude = builder (지금 하던 것)</li>
+        <li>Codex = "처음 보는 플레이어" 페르소나 reviewer</li>
+        <li>diff + screenshot만 받음 — 코드 전체 X</li>
+        <li>같은 룰셋(<code>project_rules/</code>) 읽음</li>
+        <li>출력: 첫인상 한 줄 + 의심 이슈 3개</li>
+        <li>의견 불일치 → 도현이 결정</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── 다음 iteration 계획 ──────────── -->
+<section>
+  <h2>🔄 다음 /loop iteration 계획</h2>
+  <ul class="dense">
+    <li><strong>iter 2</strong> (25분 후): Team A 진단 subagent 결과 도착 — 게임 진단 표 추가. M5 5문항을 <code>no-compromise.md §10</code>으로 시제품화.</li>
+    <li><strong>iter 3</strong>: M3 ErgoConstraints SO 실제 코드 stub 추가. <code>OnValidate</code> 패턴 코드 블록 첨부.</li>
+    <li><strong>iter 4</strong>: M1 Stop hook 패턴 PowerShell 코드 첨부.</li>
+    <li><strong>iter 5</strong>: M6 ux-reviewer subagent 시스템 prompt 초안.</li>
+    <li>도현 일어나면 이 페이지 보고 추천 조합 A/B/C 중 픽 → 그 자리에서 박기 시작.</li>
+  </ul>
+</section>
+
+<div class="footer">
+  생성: 2026-05-20 · 세션 27 후속 · <code>docs/game-craft-upgrade.html</code><br>
+  매 /loop iteration마다 갱신 — 도현은 한 페이지 새로고침으로 최신 보면 됨.
+</div>
+
+</main>
+</body>
+</html>
