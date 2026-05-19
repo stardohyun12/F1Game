@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// 기어 시스템 MVP — Auto만 (2주차 baseline).
@@ -31,6 +32,19 @@ public class GearSystem : MonoBehaviour, IGearSystem
     [SerializeField] private bool useNeutral = true;
     [SerializeField] private float neutralSpeedThreshold = 0.03f;
 
+    [Header("Manual Mode (D-089)")]
+    [SerializeField] private bool manualUnlocked = false;
+    [SerializeField] private int minGear = -1;
+    [SerializeField] private int maxGear = 5;
+
+    public bool ManualUnlocked => manualUnlocked;
+
+    public void SetManualUnlocked(bool v)
+    {
+        manualUnlocked = v;
+        Debug.Log($"[GearSystem] ManualUnlocked={v}");
+    }
+
     /// <summary>현재 기어. -1 = R, 0 = N, 1~N = 정상 기어.</summary>
     public int CurrentGear { get; private set; } = 0;
 
@@ -57,12 +71,32 @@ public class GearSystem : MonoBehaviour, IGearSystem
 
     void FixedUpdate()
     {
+        if (manualUnlocked) return;
         int newGear = ComputeGear();
         if (newGear != CurrentGear)
         {
             int prev = CurrentGear;
             CurrentGear = newGear;
             OnShift?.Invoke(prev, newGear);
+        }
+    }
+
+    void Update()
+    {
+        if (!manualUnlocked) return;
+        var kb = Keyboard.current;
+        if (kb == null) return;
+        if (kb.kKey.wasPressedThisFrame)
+        {
+            int prev = CurrentGear;
+            CurrentGear = Mathf.Max(minGear, CurrentGear - 1);
+            if (CurrentGear != prev) OnShift?.Invoke(prev, CurrentGear);
+        }
+        if (kb.lKey.wasPressedThisFrame)
+        {
+            int prev = CurrentGear;
+            CurrentGear = Mathf.Min(maxGear, CurrentGear + 1);
+            if (CurrentGear != prev) OnShift?.Invoke(prev, CurrentGear);
         }
     }
 

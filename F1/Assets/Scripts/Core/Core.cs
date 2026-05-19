@@ -113,6 +113,8 @@ public interface IGearSystem
     int CurrentGear { get; }
     string GearLabel { get; }
     event System.Action<int, int> OnShift;
+    bool ManualUnlocked { get; }
+    void SetManualUnlocked(bool v);
 }
 
 #endregion
