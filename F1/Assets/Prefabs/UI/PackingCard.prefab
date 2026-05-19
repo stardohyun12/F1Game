@@ -498,7 +498,6 @@ GameObject:
   - component: {fileID: 6590848124643276424}
   - component: {fileID: 1552518662877872393}
   - component: {fileID: 8087535326664312638}
-  - component: {fileID: 7369927321574142033}
   m_Layer: 0
   m_Name: PackingCard
   m_TagString: Untagged
@@ -612,27 +611,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7369927321574142033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7619870931323072717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31d22e5cc21ae264d8165219fbfa3bcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: PitCrew::PackingCardUI
-  bg: {fileID: 1552518662877872393}
-  colorStrip: {fileID: 9019655680094047082}
-  nameText: {fileID: 2346357617739812480}
-  multiplierText: {fileID: 8324370396020748248}
-  descText: {fileID: 5858765064930703831}
-  costText: {fileID: 8694487894262931999}
-  button: {fileID: 8087535326664312638}
-  selectedColor: {r: 0.3, g: 0.45, b: 0.65, a: 0.95}
-  normalColor: {r: 0.16, g: 0.18, b: 0.22, a: 0.92}
 --- !u!1 &9171853162760097798
 GameObject:
   m_ObjectHideFlags: 0
