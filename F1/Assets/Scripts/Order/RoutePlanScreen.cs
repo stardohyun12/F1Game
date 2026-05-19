@@ -417,22 +417,8 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         }
         if (distanceText != null) distanceText.text = $"총 거리 약 {total:F0}m";
 
-        // 라인
-        EnsureRouteLine();
-        if (routeLine != null)
-        {
-            routeLine.startColor = routeLine.endColor =
-                currentJob != null ? currentJob.color : Color.yellow;
-            routeLine.positionCount = orderedRoute.Count + (orderedRoute.Count > 0 ? 1 : 0);
-            int idx = 0;
-            if (orderedRoute.Count > 0)
-            {
-                Vector3 sp = startPoint != null ? startPoint.position + Vector3.up * 0.5f : Vector3.zero;
-                routeLine.SetPosition(idx++, sp);
-                foreach (var d in orderedRoute)
-                    routeLine.SetPosition(idx++, d.transform.position + Vector3.up * 0.5f);
-            }
-        }
+        // 도현 요청 2026-05-19: 목적지 끼리 연결선 제거. 마커 가시성으로 대체.
+        if (routeLine != null) routeLine.positionCount = 0;
 
         if (confirmBtn != null)
             confirmBtn.interactable = (orderedRoute.Count == jobMarkers.Count && orderedRoute.Count > 0);

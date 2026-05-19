@@ -11,11 +11,11 @@ using TMPro;
 public class DeliveryPointMarker : MonoBehaviour
 {
     [Header("Pillar")]
-    [SerializeField] private float pillarHeight = 6f;
-    [SerializeField] private float pillarRadius = 0.35f;
+    [SerializeField] private float pillarHeight = 9f;       // 6 → 9 (멀리서 가시성)
+    [SerializeField] private float pillarRadius = 0.45f;    // 0.35 → 0.45
 
     [Header("Sphere")]
-    [SerializeField] private float sphereRadius = 2.0f; // 1.5 → 2.0 (마커 가시성 강화)
+    [SerializeField] private float sphereRadius = 3.0f;     // 2.0 → 3.0 (도현 요청 2026-05-19: 목적지 확실히)
 
     [Header("Colors")]
     [SerializeField] private Color baseColor = new Color(0.4f, 1f, 0.5f);

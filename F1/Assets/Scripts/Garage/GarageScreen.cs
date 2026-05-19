@@ -154,6 +154,9 @@ namespace PitCrew.Garage
         {
             if (_canvas != null) _canvas.enabled = false;
             IsOpen = false;
+            // D-085: 차고 닫으면 다음 잡 선택 화면(OrderBoard)로. 빈 맵 방지.
+            var run = Services.Run as RunController;
+            if (run != null) run.RestartFromBoard();
         }
 
         void RefreshWallet()
