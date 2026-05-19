@@ -283,6 +283,9 @@ public class CargoBox : MonoBehaviour, ICargoBox
     {
         if (dmg <= 0f) return;
         if (Time.time < graceUntil) return; // 초기 settle 무시
+        // D-091: 타이어 종류별 화물 손상 배율
+        float tireMul = Services.Tires?.CargoDamageMul ?? 1f;
+        dmg *= tireMul;
         float prev = integrityHP;
         integrityHP = Mathf.Max(0f, integrityHP - dmg);
         if (!Mathf.Approximately(integrityHP, prev))

@@ -37,6 +37,15 @@ public class TireSystem : MonoBehaviour, ITireSystem
     public TireType Current => currentTire;
     public float Wear => wear;
 
+    [Header("Selection Unlock (D-091)")]
+    [Tooltip("F1 복원: Tires 복원 시 true. GarageScreen에서 타이어 종류 선택 가능.")]
+    [SerializeField] private bool selectionUnlocked = false;
+    public bool SelectionUnlocked => selectionUnlocked;
+    public void SetSelectionUnlocked(bool v) { selectionUnlocked = v; }
+
+    /// <summary>화물 손상 배율. Soft=1.5, Hard=0.5, Medium=1.0.</summary>
+    public float CargoDamageMul => TireTypePresets.GetCargoDamageMul(currentTire);
+
     /// <summary>그립 배율. ArcadeCarController.sideGripDamping에 곱함.</summary>
     public float GripMultiplier
     {

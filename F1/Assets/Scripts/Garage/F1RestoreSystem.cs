@@ -48,7 +48,9 @@ namespace PitCrew.Garage
                 case F1PartId.Gearbox:
                     Services.Gears?.SetManualUnlocked(true);
                     break;
-                case F1PartId.Tires:      break;
+                case F1PartId.Tires:
+                    Services.Tires?.SetSelectionUnlocked(true);
+                    break;
                 case F1PartId.Suspension: break;
                 case F1PartId.Aero:
                     Services.Boost?.SetUnlocked(true);

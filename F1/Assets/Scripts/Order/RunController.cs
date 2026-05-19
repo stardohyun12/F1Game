@@ -47,6 +47,10 @@ public class RunController : MonoBehaviour, IRunController
     /// <summary>경로 확정 → 포장 화면 진입 시 호출.</summary>
     public void EnterPacking() => SetStage(RunStage.Packing);
 
+    // D-091: 타이어 마모 + 펑크 추적
+    float _distanceTraveledMeters;
+    float _punctureRollTimer;
+
     [Header("State")]
     /// <summary>이번 런의 주문들 (1~capacity). 채널 8 정정.</summary>
     public List<OrderJob> CurrentOrders { get; private set; } = new List<OrderJob>();
@@ -136,6 +140,14 @@ public class RunController : MonoBehaviour, IRunController
         SetStage(RunStage.Driving);
         TransferWrapStateToCargo(packedItems);
         InitRunState(orders);
+        // D-091: 거리/펑크 추적 초기화
+        _distanceTraveledMeters = 0f;
+        _punctureRollTimer = 0f;
+        if (Services.TireWear != null)
+        {
+            Services.TireWear.OnPunctured -= HandlePuncture;
+            Services.TireWear.OnPunctured += HandlePuncture;
+        }
         ActivateDeliveryPoints();
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
@@ -247,10 +259,38 @@ public class RunController : MonoBehaviour, IRunController
         Elapsed += Time.deltaTime;
         float lim = EffectiveTimeLimit;
         if (lim > 0f && Elapsed >= lim) EndRun(success: false);
+
+        // D-091: 거리 누적 + 매 초 펑크 롤
+        _distanceTraveledMeters += Time.deltaTime * (Services.Car?.CurrentSpeedMps ?? 0f);
+        _punctureRollTimer += Time.deltaTime;
+        if (_punctureRollTimer >= 1f)
+        {
+            _punctureRollTimer = 0f;
+            if (Services.TireWear != null && Services.Tires != null)
+                Services.TireWear.RollPuncture(Services.Tires.Current);
+        }
+    }
+
+    void HandlePuncture()
+    {
+        if (!RunActive) return;
+        Debug.LogWarning("[RunController] PUNCTURE → EndRun(success=false)");
+        EndRun(success: false);
     }
 
     void EndRun(bool success)
     {
+        // D-091: 마모 기록 + 이벤트 구독 해제
+        if (Services.TireWear != null)
+        {
+            if (Services.Tires != null)
+            {
+                float peakG = (Services.Cargo as CargoBox)?.PeakLongG ?? 0f;
+                Services.TireWear.RecordJobUsage(Services.Tires.Current, _distanceTraveledMeters, peakG);
+            }
+            Services.TireWear.OnPunctured -= HandlePuncture;
+        }
+
         SetStage(RunStage.Result);
         RunActive = false;
         LastRunSuccess = success;

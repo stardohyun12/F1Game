@@ -103,9 +103,13 @@ public interface IArcadeCarController
 
 public interface ITireSystem
 {
+    TireType Current { get; }
     float Wear { get; }
     float GripMultiplier { get; }
     float SpeedMultiplier { get; }
+    bool SelectionUnlocked { get; }
+    void SetSelectionUnlocked(bool v);
+    float CargoDamageMul { get; }
 }
 
 public interface IGearSystem
@@ -141,6 +145,7 @@ public static class Services
     public static PitCrew.Packing.IPackingScreen Packing { get; internal set; }
     public static PitCrew.Garage.IF1RestoreSystem Restore { get; internal set; }
     public static PitCrew.Garage.IBoostSystem Boost { get; internal set; }
+    public static PitCrew.Garage.ITireWearStore TireWear { get; internal set; }
 
     public static void Reset()
     {
@@ -160,6 +165,7 @@ public static class Services
         Packing = null;
         Restore = null;
         Boost = null;
+        TireWear = null;
     }
 
     public static T Require<T>(T service, string callerHint = null) where T : class

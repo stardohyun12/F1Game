@@ -65,4 +65,19 @@ public static class TireTypePresets
 
     public static string DisplayName(TireType t) => Get(t).displayName;
     public static string Description(TireType t) => Get(t).description;
+
+    /// <summary>
+    /// 타이어 종류별 화물 손상 배율 (D-091, Task 7).
+    /// Soft=진동 많음→1.5, Hard=안정적→0.5, Medium=기준.
+    /// </summary>
+    public static float GetCargoDamageMul(TireType t)
+    {
+        switch (t)
+        {
+            case TireType.Soft:   return 1.5f;
+            case TireType.Hard:   return 0.5f;
+            case TireType.Medium:
+            default:              return 1.0f;
+        }
+    }
 }
