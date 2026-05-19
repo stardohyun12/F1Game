@@ -48,6 +48,8 @@ public interface ICargoBox
 {
     float IntegrityPercent { get; }
     void SetCargoType(CargoType newType);
+    /// <summary>런 진입 직후 N초간 손상 무효 (Spin/Tilt/누적G/충돌 모든 경로 차단).</summary>
+    void StartGracePeriod(float seconds);
 }
 
 public interface IUpgradeSystem

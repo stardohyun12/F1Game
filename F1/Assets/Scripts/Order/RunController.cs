@@ -141,6 +141,7 @@ public class RunController : MonoBehaviour, IRunController
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색
         if (Shake != null) Shake.StartGracePeriod(1.0f);
+        if (Cargo != null) Cargo.StartGracePeriod(1.0f); // 세션 27 — CargoBox FixedUpdate/OnCollisionEnter도 막음
         StartFollowCameraAndCloseBoard();
         SubscribeDeliveryEvents();
     }

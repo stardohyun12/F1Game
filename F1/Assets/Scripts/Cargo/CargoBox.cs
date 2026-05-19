@@ -274,9 +274,15 @@ public class CargoBox : MonoBehaviour, ICargoBox
         ApplyDamage(dmg);
     }
 
+    // 세션 27 — BeginRun 직후 grace period. 차/화물 초기 settle 시 자동 손상 방지.
+    // RunController가 BeginRun 끝에 StartGracePeriod 호출. 모든 damage 경로 단일 진입점에서 차단.
+    float graceUntil = -1f;
+    public void StartGracePeriod(float seconds = 1.0f) { graceUntil = Time.time + seconds; }
+
     void ApplyDamage(float dmg)
     {
         if (dmg <= 0f) return;
+        if (Time.time < graceUntil) return; // 초기 settle 무시
         float prev = integrityHP;
         integrityHP = Mathf.Max(0f, integrityHP - dmg);
         if (!Mathf.Approximately(integrityHP, prev))
