@@ -1347,3 +1347,63 @@
 1. 도현 manual play (검증 빚 청산).
 2. 채널 5 Plan 2 (플레이어 드래그 배치) → Plan 3 (capacity 업그레이드).
 3. W3 차고/부품 결정.
+
+---
+
+## 세션 27 (2026-05-19) — W3 차고 / F1 부품 복원 시스템
+
+### 한 일
+
+**기획** (D-073~093, 21 결정) — `옵시디언/dev-plan/2026-05-19-garage-realtime-planning.md` + `2026-05-19-restore-economy.md`:
+- 6 부품 1 티어 / 사이드뷰 분해도 / 메커니즘 unlock형 / 풀게임 6 부품 모두
+- 가격 1000/4000/4000/8000/12000/25000 (지수형 · 자유 게이팅 · 엔진 1000 첫 도파민)
+- 자금 누적 / 정산액 비례 페널티 / Yes/No 차고 prompt
+- 차고 UI 머신 가운데 + 카드 6장 하단 / 회색+부족 / 2~3초 컷씬
+- 엔진 +20%/+30% / 변속기 K(다운)·L(업) / 부스트 Space 게이지 / 타이어 4종+영구마모+펑크=잡실패
+- 그랑프리 후속 / 서스 점프대 맵 디자인 트랙으로
+- 맵 디자인 학습 캔버스 분리: `옵시디언/dev-plan/2026-05-19-map-design-canvas.md`
+
+**구현** (Task 1~12 완료, plan `docs/superpowers/plans/2026-05-19-garage-restore-system.md`):
+- Task 1: F1Part SO 3개 (`5be654a`, 경로 fix 포함)
+- Task 2: 6 F1Part asset + Catalog (`ec25cb7`)
+- Task 3: F1RestoreSystem + Services.Restore + GameContext (`8298703`)
+- Task 4: 엔진 +20%/+30% (`06bddc1`)
+- Task 5: 변속기 K/L 수동 (`41ddc23`)
+- Task 6: BoostSystem Space (`db5e93f`)
+- Task 7: 타이어 + 영구 마모 + 펑크=잡실패 (`8b49de2`)
+- Task 8: 도색 swap + 서스 flag (`69058d2`)
+- Task 9: GarageScreen UI + Cutscene (`a2a00ba`)
+- Task 10: ResultPanel '차고로' (`c327645`)
+- Task 11: ComplexTrack 씬 wiring (`9ed1534`)
+- Task 12: verifier subagent — 12 항목 **ALL GREEN**
+
+**검증 결과 (12 항목)**: Services 매핑 17개 OK / Catalog 6 부품 가격 OK / 6 TryRestore 성공 / 엔진 ratio 1.200 / Gears.ManualUnlocked True / Boost.IsUnlocked True / Tires.SelectionUnlocked True / RecordJobUsage wear 1.00→0.75 / CanAfford 500<1000 False / Play 30초 에러 0건 / IntegrityMultiplier 1.00→0.80→0.00 단조 감소 / 자금 delta 1000.
+
+**프로세스 개선**:
+- 알람 hook에 system sound 3회 추가 (`SystemSounds.Exclamation`)
+- subagent prompt 표준화: "Unity 프로젝트 루트 = `F1/`" CRITICAL PATH RULE 매번 박기 (Task 1 경로 누락 사고 후)
+- 모든 commit에 `Verified-By:` 트레일러 (Stop hook 강제 통과)
+
+### 발견된 이슈 (다음 세션 결정/처리)
+
+1. **TireType 실제 3종** (Soft/Medium/Hard) — D-091 기획 4종(드라이/웨트/소프트/하드)과 어긋남. 데모는 3종 매핑 (Soft 1.5 / Medium 1.0 / Hard 0.5)으로 진행. 도현 결정: (A) 3종 유지 (B) Dry/Wet 추가 (C) Medium→Dry rename + Wet 추가.
+2. `IUpgradeSystem.OnWalletChanged` 인터페이스 미노출 → GarageScreen Update 폴링 우회. 잠재 부채.
+3. `IUpgradeSystem.Spend(int)` Task 3 도중 인터페이스에 추가 (이전 누락 발견 fix).
+4. RunStage namespace 전역 — BoostSystem에서 `Services.Run as RunController` 캐스팅. 잠재 부채.
+5. EffectiveMaxSpeedMps가 private (인터페이스 노출 X) — verifier가 EngineMaxSpeedMul로 우회 검증.
+
+### manual play 빚 (차고 흐름 통합 후 한 번도 굴리지 않음)
+
+- 정산 → "차고로" 클릭 → GarageScreen 진입 확인
+- 엔진 복원 후 다음 런 속도 체감
+- K/L 수동 변속 작동 (Driving stage 한정)
+- Space 부스트 — 게이지 UI HUD 없음 (후속)
+- 펑크 = 잡 실패 트리거 (마모 30% 강제 후 굴려보기)
+
+### 다음 세션 (28) 첫 작업
+
+1. **manual play 5~10분** — 차고 전체 흐름 / 엔진 체감 / K/L / Space / 펑크 트리거
+2. **TireType 4종 결정** (도현 답변)
+3. **R1 맵 적용** + RunMetricsRecorder 5런 측정
+4. 측정 결과로 가격/마모량 재튜닝
+5. **W4 진입** (정산→복원 연결 + 데모 시나리오 3런)

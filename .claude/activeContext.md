@@ -44,11 +44,64 @@
 
 ---
 
-## 다음 세션 (세션 27) — 첫 작업
+## 세션 27 진행 상태 (2026-05-19, 도현 외출로 일시 정지)
 
-**도현 결정: 맵 넓히기 진입.** 세션 26 수치 audit에서 도시 78×54m 너무 작음 = 한 런 8~12초 (목표 5~15분의 1/30) 근본 원인 발견. 거리 확장이 escalation/차고/페이싱 다른 결정의 선결조건.
+**경로 전환**: 맵 넓히기 brainstorm → W3 차고 시스템으로 피벗 (도현 결정). R1 맵은 측정 단계에서 적용 예정.
 
-1. **🔴 맵 확장 (세션 27 핵심)** — 도시 17배 (78×54 → ~330×230 어림). 큰 작업이라 brainstorm 한 라운드 후 진입 권장:
+**기획 마감 (D-073~093, 21개 결정)** — `옵시디언/dev-plan/2026-05-19-garage-realtime-planning.md` + `2026-05-19-restore-economy.md`:
+- 6 부품 1 티어, 사이드뷰 분해도, 메커니즘 unlock형
+- 가격 1000/4000/4000/8000/12000/25000 (지수형, 자유 게이팅, 엔진 1000 첫 도파민)
+- 자금 누적 / 정산액 비례 페널티 / Yes/No 차고 prompt
+- UI: 머신 가운데 + 카드 6장 하단 / 회색+부족 / 2~3초 컷씬
+- 엔진 +20%/+30% / 변속기 K(다운)/L(업) / 부스트 Space / 타이어 4종+영구마모+펑크=잡실패
+- 그랑프리 후속 / 서스 점프대 맵 디자인 트랙으로
+
+**구현 진행 (Task 1~11/13 완료, plan: `docs/superpowers/plans/2026-05-19-garage-restore-system.md`)**:
+- Task 1: F1Part SO + Catalog + F1PartId (`5be654a`, 경로 fix 포함)
+- Task 2: 6 F1Part asset + Catalog asset (`ec25cb7`)
+- Task 3: F1RestoreSystem + Services.Restore + GameContext (`8298703`)
+- Task 4: 엔진 효과 +20%/+30% (`06bddc1`)
+- Task 5: 변속기 K/L 수동 모드 (`41ddc23`)
+- Task 6: 에어로 BoostSystem Space (`db5e93f`)
+- Task 7: 타이어 + 영구 마모 + 펑크=잡실패 (`8b49de2`)
+- Task 8: 도색 머티리얼 swap + 서스 flag (`69058d2`)
+- Task 9: GarageScreen UI + Cutscene (`a2a00ba`)
+- Task 10: ResultPanel '차고로' 버튼 (`c327645`)
+- Task 11: ComplexTrack 씬 wiring — 4 GameObject + GameContext (`9ed1534`) — `Services.Restore=True Boost=True TireWear=True` ALL GREEN
+
+**남은 Task (다음 세션 첫 작업)**:
+- **Task 12**: 통합 verifier subagent — 12 항목 검증 (Services 매핑·6 부품 TryRestore·엔진 ratio·Gears.ManualUnlocked·Boost.IsUnlocked·Tires.SelectionUnlocked·TireWearStore 동작·CanAfford·Play 에러 0·integrity·자금 carryover)
+- **Task 13**: session-log + activeContext 갱신 (이 파일)
+
+**발견된 이슈 (다음 세션 결정 필요)**:
+1. **TireType 실제 3종** (Soft/Medium/Hard) — D-091 기획 4종(드라이/웨트/소프트/하드)과 어긋남. Subagent가 3종으로 매핑 (Soft 1.5 / Medium 1.0 / Hard 0.5). 결정: (A) 3종 유지 (B) Dry/Wet 추가 (C) Medium→Dry rename + Wet 추가.
+2. `IUpgradeSystem.OnWalletChanged` 인터페이스 미노출 → GarageScreen Update 폴링 우회. 잠재 부채.
+3. `IUpgradeSystem.Spend(int)` Task 3 도중 인터페이스에 추가 (이전 누락).
+4. Task 4: 코드 변수 `accelForce`라 plan `effectiveAccelTime` → `effectiveAccelForce`로 적응. +30% 가속 달성.
+5. RunStage namespace 전역 — BoostSystem에서 `Services.Run as RunController` 캐스팅. 잠재 부채.
+
+**manual play 빚 (차고 흐름 한 번도 안 굴림)**:
+- 정산 → "차고로" 클릭 → GarageScreen 진입
+- 엔진 복원 후 다음 런 속도 체감
+- K/L 수동 변속 작동
+- Space 부스트 (게이지 UI HUD 없음 — 후속)
+- 펑크 = 잡 실패 트리거 (마모 30% 강제 후 굴려보기)
+
+**다음 세션 첫 행동**:
+1. Task 12 dispatch (verifier subagent) — ALL GREEN 확인
+2. Task 13 (session-log + activeContext)
+3. manual play 5~10분 — 차고 전체 흐름
+4. TireType 4종 결정 (도현 답변)
+5. R1 맵 적용 + RunMetricsRecorder 5런
+6. 측정 결과 보고 가격 재튜닝 여부
+
+---
+
+## (구) 다음 세션 첫 작업 — 맵 넓히기
+
+세션 27이 차고로 피벗했음. 맵은 측정 단계에서 적용 (이미 R1 spec 완료: `docs/superpowers/specs/2026-05-16-map-expansion-r1-design.md`).
+
+1. **R1 맵 적용** — 도시 17배 (78×54 → ~330×230 어림). 큰 작업이라 brainstorm 한 라운드 후 진입 권장:
    - zone 3개 (다운타운/항구/공업) 영역 어떻게 분할
    - 도로 자동 배치 (`Assets/Editor/_Recovery/` 의 BuildingPlacer/RoadBuilder 패턴, asset.md 규칙 준수)
    - 배달지 8개 → 더 멀게 재배치 + zone별 분포
