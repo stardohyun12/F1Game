@@ -30,6 +30,7 @@ public class GameContext : MonoBehaviour
     [SerializeField] private GearSystem gearSystem;
     [SerializeField] private PitCrew.Packing.PackingScreen packingScreen;
     [SerializeField] private RoutePlanScreen routePlanScreen;
+    [SerializeField] private PitCrew.Garage.F1RestoreSystem restoreSystem;
 
     [Header("Validation")]
     [SerializeField] private bool autoFindMissingOnAwake = true;
@@ -57,6 +58,7 @@ public class GameContext : MonoBehaviour
         Services.Gears = gearSystem;
         Services.Packing = packingScreen;
         Services.RoutePlan = routePlanScreen;
+        Services.Restore = restoreSystem;
 
         if (logRegistration)
         {
@@ -75,7 +77,8 @@ public class GameContext : MonoBehaviour
             if (Services.Gears != null) registered++;
             if (Services.Packing != null) registered++;
             if (Services.RoutePlan != null) registered++;
-            Debug.Log($"[GameContext] {registered}/14 시스템 등록 완료.");
+            if (Services.Restore != null) registered++;
+            Debug.Log($"[GameContext] {registered}/15 시스템 등록 완료.");
         }
     }
 
@@ -96,6 +99,7 @@ public class GameContext : MonoBehaviour
         if (tireSystem == null) tireSystem = FindFirstObjectByType<TireSystem>();
         if (gearSystem == null) gearSystem = FindFirstObjectByType<GearSystem>();
         if (packingScreen == null) packingScreen = FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+        if (restoreSystem == null) restoreSystem = FindFirstObjectByType<PitCrew.Garage.F1RestoreSystem>();
         // 채널 8: RoutePlanScreen은 씬에 없으면 자동 생성 (런타임에서 자체 구축)
         if (routePlanScreen == null)
         {

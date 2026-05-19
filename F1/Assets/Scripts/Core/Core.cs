@@ -59,6 +59,7 @@ public interface IUpgradeSystem
     void AddReward(int amount);
     /// <summary>채널 5 — 적재함 칸 수 (기본 1, 업그레이드로 최대 3).</summary>
     int BoxCapacity { get; }
+    void Spend(int amount);
 }
 
 public interface ICargoShakeSimulator
@@ -135,6 +136,7 @@ public static class Services
     public static ITireSystem Tires { get; internal set; }
     public static IGearSystem Gears { get; internal set; }
     public static PitCrew.Packing.IPackingScreen Packing { get; internal set; }
+    public static PitCrew.Garage.IF1RestoreSystem Restore { get; internal set; }
 
     public static void Reset()
     {
@@ -152,6 +154,7 @@ public static class Services
         Tires = null;
         Gears = null;
         Packing = null;
+        Restore = null;
     }
 
     public static T Require<T>(T service, string callerHint = null) where T : class
