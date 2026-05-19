@@ -51,11 +51,24 @@ namespace PitCrew.Garage
                 case F1PartId.Tires:
                     Services.Tires?.SetSelectionUnlocked(true);
                     break;
-                case F1PartId.Suspension: break;
+                case F1PartId.Suspension:
+                    Debug.Log("[Garage] 서스 복원. 점프대·험지 활성 — heightMask cell은 맵 디자인 트랙에서 배치 예정 (D-093).");
+                    break;
                 case F1PartId.Aero:
                     Services.Boost?.SetUnlocked(true);
                     break;
-                case F1PartId.Paint:      break;
+                case F1PartId.Paint:
+                    var carRoot = Services.Car?.Transform?.gameObject;
+                    if (carRoot != null)
+                    {
+                        foreach (var mr in carRoot.GetComponentsInChildren<Renderer>())
+                        {
+                            if (mr.material != null)
+                                mr.material.color = new Color(0.85f, 0.10f, 0.10f); // F1 레드
+                        }
+                    }
+                    Debug.Log("[Garage] 도색 완료. 그랑프리 복귀 준비가 끝났다. (D-092: 모드 unlock은 후속)");
+                    break;
             }
         }
     }
