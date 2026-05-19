@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>PitCrew · 하네스 엔지니어링 대시보드</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --border:#2a323d; --text:#e6edf3; --muted:#8b949e;
+    --accent:#f0b429; --ok:#3fb950; --warn:#d29922; --crit:#f85149; --link:#58a6ff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',Roboto,'Apple SD Gothic Neo',sans-serif;line-height:1.55}
+  header{padding:32px 40px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#0e1116 0%,#0e1116 70%,#0e1116cc 100%);}
+  header h1{margin:0;font-size:28px;letter-spacing:-0.02em}
+  header .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  header .meta{margin-top:12px;font-size:12px;color:var(--muted)}
+  main{max-width:1280px;margin:0 auto;padding:32px 40px 80px}
+  .grid{display:grid;gap:20px}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px}
+  .card h2{margin:0 0 12px;font-size:16px;letter-spacing:-0.01em;color:var(--accent)}
+  .card h3{margin:14px 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+  .kpi{display:flex;align-items:baseline;gap:8px}
+  .kpi .n{font-size:34px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+  .kpi .u{font-size:13px;color:var(--muted)}
+  .kpi .d{font-size:12px;color:var(--ok);margin-left:4px}
+  .pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;border:1px solid var(--border);color:var(--muted);margin-right:4px}
+  .pill.ok{color:var(--ok);border-color:#2a4d2f}
+  .pill.warn{color:var(--warn);border-color:#5a4516}
+  .pill.crit{color:var(--crit);border-color:#5d2424}
+  .pill.acc{color:var(--accent);border-color:#5a4516}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);vertical-align:top}
+  th{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em}
+  td code{background:#0d1117;padding:2px 5px;border-radius:4px;font-size:12px;color:var(--accent)}
+  ul.dense{margin:0;padding-left:18px}
+  ul.dense li{margin:4px 0}
+  .tl{position:relative;margin-top:8px}
+  .tl .row{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:8px 0;border-bottom:1px dashed var(--border)}
+  .tl .row .when{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+  .tl .row .what strong{color:var(--text)}
+  .tl .row .what .tag{font-size:11px;color:var(--muted);margin-left:4px}
+  .footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
+  .bar{height:6px;background:#1f262e;border-radius:3px;overflow:hidden;margin-top:4px}
+  .bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--ok),var(--accent));}
+  .legend{font-size:11px;color:var(--muted);margin-top:6px}
+  .codeblock{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:#a9b9ce;white-space:pre-wrap;line-height:1.5}
+  @media (max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🛠️ PitCrew · 하네스 엔지니어링 대시보드</h1>
+  <div class="sub">B 트랙 — AI 게임개발 하네스 검증 사례 · 게임 작업과 나란히 진행</div>
+  <div class="meta">기준: 세션 27 (2026-05-19) · 도현 ↔ Claude Opus 4.7 / 1M ctx · session27-map-expansion 브랜치</div>
+</header>
+
+<main>
+
+<!-- ──────────── KPI 행 ──────────── -->
+<section class="grid grid-3">
+  <div class="card">
+    <h3>룰 발효</h3>
+    <div class="kpi"><span class="n">12</span><span class="u">개 §</span><span class="d">+9 (오늘)</span></div>
+    <div class="legend"><code>project_rules/no-compromise.md</code> + <code>session.md</code></div>
+  </div>
+  <div class="card">
+    <h3>Incident 누적</h3>
+    <div class="kpi"><span class="n">11</span><span class="u">건</span><span class="d">+3 (오늘)</span></div>
+    <div class="legend">헛짚음·룰 위반 — <code>옵시디언/하네스/incidents.md</code></div>
+  </div>
+  <div class="card">
+    <h3>커밋 (이번 세션)</h3>
+    <div class="kpi"><span class="n">57</span><span class="u">개</span></div>
+    <div class="legend">2026-05-19 00:00 이후</div>
+  </div>
+</section>
+
+<!-- ──────────── 룰 진화 ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>📐 no-compromise.md — 발효 중인 룰 9 §</h2>
+  <p style="color:var(--muted);font-size:13px;margin:0 0 12px">도현 메타 교정 "타협 금지" → 표층 fix 반복·도구 미점검·진단 분해 부재 등 패턴 차단용. CLAUDE.md 자동 로드.</p>
+  <table>
+    <thead><tr><th width="40">§</th><th>룰</th><th width="160">트리거 사례</th><th width="100">상태</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>fix 완료 = compile + runtime + screenshot 셋 다 통과</td><td>spawn Y 5번 헛수고</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>2</td><td>"안 됨" 보고 금지 — 우회·분해</td><td>subagent 12분 hang</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>3</td><td>도구 점검 의무 (<code>unity-cli list</code> + screenshot)</td><td>screenshot 0회 사용</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>4</td><td>표층 fix 2회 실패 = root cause 진단 강제</td><td>spawn Y 4번 후 진단 X</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>5</td><td>진단 분해 — 큰 dispatch 1회 → 작은 5회</td><td>큰 prompt subagent hang</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>6</td><td>물어볼 것 vs 결정할 것 구분</td><td>옵션 ABC 결정 회피</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>7</td><td>commit·답변 직전 7항목 체크리스트</td><td>—</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>8</td><td>자체 진행 sprint — 영역 구분 (자산 다운로드 = 도현)</td><td>도현 운동 중 sprint</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>9</td><td>매 단계 끝 = B 트랙 한 블록 (incident or success)</td><td>—</td><td><span class="pill ok">발효</span></td></tr>
+      <tr><td>10</td><td>(후보) SO sub-asset = AddObjectToAsset 명시 + 디스크 라인 grep</td><td>URP VolumeProfile 사고</td><td><span class="pill warn">후보</span></td></tr>
+      <tr><td>11</td><td>(후보) GameObject hierarchy + Collider/Visual offset 첫 셋업 시 측정·기록</td><td>차 박힘 5번 fix</td><td><span class="pill warn">후보</span></td></tr>
+      <tr><td>12</td><td>(후보) 자산 GUID 변경 = grep + 사용처 매핑</td><td>PackingCard missing</td><td><span class="pill warn">후보</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ──────────── 패턴 (universal) ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>🧠 AI 게임개발 약점 패턴 10종 (universal)</h2>
+  <p style="color:var(--muted);font-size:13px;margin:0 0 12px"><code>옵시디언/하네스/patterns/01..10</code> — PitCrew 외 게임 일반에 적용. 메모리 <code>[[reference-harness-patterns]]</code></p>
+  <div class="grid grid-2">
+    <ul class="dense">
+      <li><strong>01.</strong> Visual blindness — 수치만 보고 화면 안 봄</li>
+      <li><strong>02.</strong> Scene inspector wiring 누락 사후 발견</li>
+      <li><strong>03.</strong> Asset opacity — meta/prefab/SO 안 보임</li>
+      <li><strong>04.</strong> Physics 튜닝 feel — 수치만으론 못 잡음</li>
+      <li><strong>05.</strong> "재미" 판단 회피</li>
+    </ul>
+    <ul class="dense">
+      <li><strong>06.</strong> Multi-instance 엣지 케이스</li>
+      <li><strong>07.</strong> System boundary 핸드오프 사고</li>
+      <li><strong>08.</strong> Perf 예산 없음</li>
+      <li><strong>09.</strong> Input feel ignore</li>
+      <li><strong>10.</strong> Default to Add (새 시스템 추가만 함)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ──────────── 최근 Incident ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>🚨 최근 Incident (11건)</h2>
+  <table>
+    <thead><tr><th width="100">날짜</th><th>제목</th><th width="140">패턴</th></tr></thead>
+    <tbody>
+      <tr><td>05-13</td><td>Stop hook false positive (<code>--errors</code> 존재 안 함)</td><td>03 asset opacity</td></tr>
+      <tr><td>05-13</td><td>트렁크 캠/wrap/UI 3개 manual play 없이 발견</td><td>01 visual blind</td></tr>
+      <tr><td>05-13</td><td>UI "물건 1/3" 거짓말 (다물건 잡 폐기)</td><td>06 multi-instance</td></tr>
+      <tr><td>05-13</td><td>`new Material` 누수 위험 (wrap overlay)</td><td>—</td></tr>
+      <tr><td>05-14</td><td>`EditorApplication.Step()` 부작용을 카메라 버그로 오진</td><td>04 physics feel</td></tr>
+      <tr><td>05-14</td><td>자기 생성 probe 출력 포맷 3회 오독</td><td>01 visual blind</td></tr>
+      <tr><td>05-15</td><td>자기 검증 룰 메모리에 박고 같은 세션 4회 위반</td><td>07 system handoff</td></tr>
+      <tr><td>05-19 Day 2</td><td>namespace 추측 fail (<code>PitCrew.Core</code> 존재 X)</td><td>02 wiring</td></tr>
+      <tr><td>05-19 Day 7</td><td>URP VolumeProfile sub-asset 저장 패턴 (디스크 미반영)</td><td>03 asset opacity</td></tr>
+      <tr><td>05-19 Day 7</td><td>잘 작동한 룰 (success log)</td><td>—</td></tr>
+      <tr><td>05-19 v3</td><td>Hover 작동했으나 jobMarkers.Contains 차단 / Tooltip 좌표계 충돌</td><td>01 visual blind</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ──────────── 성공 사이클 ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>🎯 룰 적용 효과 — 차 박힘 case study</h2>
+  <p style="color:var(--muted);font-size:13px;margin:0 0 12px"><code>옵시디언/하네스/patterns/success-2026-05-19-root-cause-layered.md</code> — 룰 박기 전 vs 후 비교. 형 검토용 측정 사례.</p>
+  <div class="grid grid-2">
+    <div>
+      <h3 style="color:var(--crit)">룰 박기 전</h3>
+      <table>
+        <thead><tr><th width="40">#</th><th>진단</th><th width="100">결과</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>raycast hit y=2.108 → Y=2.2</td><td>박힘</td></tr>
+          <tr><td>2</td><td>hit y=0.17 → Y=0.3</td><td>박힘</td></tr>
+          <tr><td>3</td><td>hit y=0.808 (Race=차자신) → Y=1.5</td><td>박힘</td></tr>
+          <tr><td>4</td><td>hit y=3.01 → Y=2.5</td><td>박힘</td></tr>
+          <tr><td>5</td><td>subagent 거꾸로 roadMask 해석 → startCell 이동</td><td>굴뚝 안 박힘</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3 style="color:var(--ok)">룰 박은 후 (한 사이클)</h3>
+      <ul class="dense">
+        <li>① <code>unity-cli list</code> 도구 점검 — <code>screenshot</code> 발견</li>
+        <li>② 차 hierarchy + Collider 측정 — wheels 0.086m 아래</li>
+        <li>③ 도로 Raycast — Ground(y=0) + Race(차자신), 도로 tile 0 collider</li>
+        <li>④ 도로 tile 252개 모두 y=0.05 발견</li>
+        <li>⑤ screenshot 3장 — 박힘 직접 시각 확인</li>
+        <li>⑥ Fix 2 layer 동시: 도로 0.05→0 + 차 자식 +0.086</li>
+        <li>⑦ Screenshot 재확인 — 박힘 X</li>
+      </ul>
+      <div class="bar"><span style="width:100%"></span></div>
+      <div class="legend">5 사이클 실패 → 1 사이클 성공</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────── 세션 27 타임라인 ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>📅 세션 27 타임라인 (2026-05-19)</h2>
+  <div class="tl">
+    <div class="row"><div class="when">기획</div><div class="what"><strong>D-073~093</strong> 차고/F1 부품 시스템 21 결정 <span class="tag">A 트랙</span></div></div>
+    <div class="row"><div class="when">Task 1~12</div><div class="what">F1RestoreSystem + 6 부품 효과 + GarageScreen + 통합 ALL GREEN <span class="tag">A 트랙</span></div></div>
+    <div class="row"><div class="when">manual play</div><div class="what">spawn Y 5번 표층 fix → 도현 메타 교정 "타협 금지" <span class="tag">B 트랙</span></div></div>
+    <div class="row"><div class="when">룰 박음</div><div class="what"><strong>no-compromise §1~7</strong> 7 항목 + CLAUDE.md 자동 로드 <span class="tag">B 트랙</span></div></div>
+    <div class="row"><div class="when">근본 fix</div><div class="what">차 박힘 root — wheels/collider offset + 도로 +5cm 2 layer 동시 <span class="tag">A 트랙</span></div></div>
+    <div class="row"><div class="when">Sprint 룰</div><div class="what"><strong>§8 §9 추가</strong> — 자체 진행 영역 / B 트랙 매 단계 한 블록 <span class="tag">B 트랙</span></div></div>
+    <div class="row"><div class="when">7-day polish</div><div class="what">PostFX / UI theme / 이펙트 / 화물 색 / 메인 메뉴 — 도현 운동 중 자체 진행 <span class="tag">A 트랙</span></div></div>
+    <div class="row"><div class="when">verifier</div><div class="what">Day 7 통합 검증 — PostFX sub-asset 디스크 0 발견 → fix <span class="tag">B 트랙</span></div></div>
+    <div class="row"><div class="when">v3 fix</div><div class="what">hover jobMarkers 차단 + tooltip 좌표계 충돌 — 진단 분해로 root <span class="tag">A 트랙</span></div></div>
+  </div>
+</section>
+
+<!-- ──────────── 메모리 ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>🧷 운영 메모리 (다음 세션 자동 로드)</h2>
+  <p style="color:var(--muted);font-size:13px;margin:0 0 12px"><code>~/.claude/projects/.../memory/</code> + <code>MEMORY.md</code> 인덱스. 매 세션 시작 시 자동 주입.</p>
+  <div class="codeblock">- 결정 질문 스타일 — 한 문장 + 일상어
+- Unity 화면 = unity-cli (Coplay MCP 폐기)
+- 워크트리 ≠ main 단정 금지
+- 학습 모드 설명 스타일 — 비유/일상어
+- 한글 자연스럽게 — 깨진 음절 금지
+- 완료 보고 전 manual play 요청
+- UI N/M = 코드 N 일치
+- Material 누수 방지
+- unity-cli screenshot overlay 못 잡음 ⚠
+- "막힘" 보고 전 검색·우회
+- Step()은 에디터 멈춤
+- 컨텍스트 가정 금지
+- 자기 검증 4단
+- Input System 패키지 모드
+- ★ Root cause layered 진단 성공 패턴 (오늘 추가)</div>
+</section>
+
+<!-- ──────────── 다음 ──────────── -->
+<section class="card" style="margin-top:20px">
+  <h2>🎯 다음 단계</h2>
+  <ul class="dense">
+    <li><strong>형 검토 트리거</strong>: §10 §11 §12 후보 룰을 발효로 승격할지 결정</li>
+    <li><strong>universal 승격 후보</strong>: §1 §3 §4 §5는 PitCrew 외 적용 가능 → <code>harness-core</code> repo 이관 검토</li>
+    <li><strong>case study 추가 측정</strong>: 룰 적용 N+1번째 사이클 효과 추적 (현재 N=1: 차 박힘만)</li>
+    <li><strong>도구 추가</strong>: visual regression (이전 screenshot vs 현재 diff), 자동 시나리오 1버튼 (Play 30s + 측정)</li>
+  </ul>
+</section>
+
+<div class="footer">생성: 2026-05-19 · <a href="https://github.com/stardohyun12/F1Game" style="color:var(--link)">repo</a> · 세션 27 · 갱신: AI가 매 큰 단계 끝마다</div>
+
+</main>
+</body>
+</html>
