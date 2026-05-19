@@ -77,3 +77,26 @@
   > 3. 시각 변경이면 `screenshot` 또는 unity-cli exec로 의도한 결과 측정 (sizeDelta·worldCorner·LayoutGroup 등 수치 검증)
   >
   > 셋 다 통과 안 하면 "동작함" 보고 금지. 메모리에 룰 박는 것으로 대체 불가.
+
+## 2026-05-19 Day 2 — namespace 추측 fail
+
+- **상황**: GarageScreen에 `using PitCrew.Core;` 추가. Services 접근 위해.
+- **헛짚음**: PitCrew.Core namespace 존재 안 함. Services는 전역.
+- **결과**: commit fc183a1 컴파일 에러. 후속 9643e49 hotfix.
+- **원인**: 룰 §1 위반 — commit 전 `refresh --compile` 안 돌림. 추측으로 using 박음.
+- **개선**: §7 체크리스트 항목에 "commit body 작성 전 unity-cli console --type error 결과 0건 확인" 명시 추가 후보.
+
+## 2026-05-19 Day 7 — URP VolumeProfile sub-asset 저장 패턴
+
+- **상황**: PitCrewPostFX.asset에 Bloom/Vignette/ColorAdjustments 추가. `profile.Add<T>(true)` + `EditorUtility.SetDirty` + `AssetDatabase.SaveAssets` 호출.
+- **헛짚음**: 디스크에 sub-asset 안 저장됨. profile.components 메모리는 3, 디스크 .asset 18라인 (component 0).
+- **결과**: verifier가 발견 (도현 manual play 전). Day 1 PostFX 효과 미적용 상태였음 (이전 'PostFX 적용됨' 보고는 메모리만 검증).
+- **원인**: URP 17 / Unity 6에서 `profile.Add<T>()` API가 메모리만 처리. sub-asset 디스크 영구화는 `AssetDatabase.AddObjectToAsset` 별도 호출 필요.
+- **개선**: no-compromise §3 도구 점검 룰에 "ScriptableObject sub-asset 변경 시 `AddObjectToAsset` 명시 + 디스크 라인 수 grep 검증" 후보.
+
+## 2026-05-19 Day 7 — 잘 작동한 룰 (success log)
+
+- **상황**: Day 1~6 sprint 자체 진행. 매 Day 끝 commit + verifier 호출.
+- **잘 된 점**: §1 검증 셋 통과 의무 → verifier가 Day 1 PostFX FAIL 자체 발견. 도현 manual play 전 잡음.
+- **잘 된 점 2**: §5 진단 분해 → 디스크 라인 수 grep으로 sub-asset 저장 실패 즉시 확인. 6 commit (Day 1 fix 1 + Day 2 hotfix 1 + Day 1~6 본 작업 + PostFX fix) 작은 단위.
+- **잘 된 점 3**: §8 영역 구분 → 자산 다운로드 부분(F1 머신·폰트·prop)은 자체 결정 X, polish-asset-candidates.md에 후보 정리만.
