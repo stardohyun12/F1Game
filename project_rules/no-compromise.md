@@ -129,3 +129,19 @@ Feels-off: <지금 이 변경에서 아직 어색하거나 아쉬운 점 1개 �
 - 사소한 docs/markdown/hook-only commit은 해당 X (`[skip-verifier]`와 별개로 화면 파일 안 건드리면 자동 면제).
 
 **왜 이게 핵심**: 매 화면 commit마다 자기 결과물을 한 번씩 강제로 째려보게 만드는 게 목적. 검증 셋(§1)이 "통과/실패"라면 §10은 "더 나아질 여지"를 항상 1개 끌어낸다.
+
+### §10-③ 스크린샷 강제 (game-craft-upgrade ③, 2026-05-20)
+
+화면 변경 commit은 `Feels-off:`에 더해 **실제 스크린샷 1장**도 의무. "적어"보다 강한 "보게 만들기".
+
+**방법**:
+1. Play 중 `unity-cli menu "PitCrew/Capture/Auto Screenshot"` 실행 → `docs/screenshots/auto/auto_XXXX.png` 생성 (ScreenCapture라 overlay UI까지 잡힘).
+2. commit body에 경로 명시:
+   ```
+   Screenshot: docs/screenshots/auto/auto_20260520_103000.png
+   ```
+3. Stop hook이 경로 누락 또는 파일 부재 시 block.
+
+**왜 메뉴인가**: `unity-cli screenshot`은 ScreenSpaceOverlay UI를 못 잡음 ([[reference-unity-screenshot-overlay]]). ScreenCapture.CaptureScreenshot만 인게임+UI 둘 다 잡음. Play 중에 찍어야 의미 있음.
+
+**찍고 끝이 아님**: 찍은 png를 실제로 열어 보고, 어색하면 §10 `Feels-off:`에 반영. 사진은 보라고 찍는 것.

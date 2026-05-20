@@ -104,6 +104,36 @@ EOF
   fi
 fi
 
+# 2.6) 화면 변경 commit에 스크린샷 강제 (game-craft-upgrade ③)
+# 화면 파일 건드린 commit은 body에 'Screenshot: <경로>' + 그 파일이 실제 존재해야 함.
+# 목적: 화면 바꾸면 결과를 눈으로 보게 강제 (PitCrew/Capture/Auto Screenshot 메뉴로 캡처).
+if command -v git >/dev/null 2>&1; then
+  MISSING_SHOT=""
+  while IFS='|' read -r SHA SUBJECT; do
+    [ -z "$SHA" ] && continue
+    VISUAL_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null \
+      | grep -E '\.(unity|prefab)$|.*(UI|Camera|Marker|Canvas|HUD|Screen|Tooltip).*\.cs$' || true)
+    [ -z "$VISUAL_FILES" ] && continue
+    BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+    # 'Screenshot:' 줄에서 경로 추출
+    SHOT_PATH=$(echo "$BODY" | grep -ioE 'Screenshot:[[:space:]]*[^[:space:]]+' | head -1 | sed -E 's/.*Screenshot:[[:space:]]*//I' || true)
+    if [ -z "$SHOT_PATH" ] || [ ! -f "$SHOT_PATH" ]; then
+      MISSING_SHOT="${MISSING_SHOT}- ${SHA:0:7} ${SUBJECT:0:70} (경로='${SHOT_PATH:-없음}')\n"
+    fi
+  done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+
+  if [ -n "$MISSING_SHOT" ]; then
+    REASON="최근 30분 화면 변경 commit에 스크린샷 누락 (no-compromise §10 ③ 위반):\\n${MISSING_SHOT}\\n→ 조치: Play 중 'unity-cli menu \"PitCrew/Capture/Auto Screenshot\"' 실행 → docs/screenshots/auto/ 에 png 생성 → commit body에 'Screenshot: docs/screenshots/auto/auto_XXXX.png' 추가 (git commit --amend). 경로의 파일이 실제 존재해야 통과."
+    cat <<EOF
+{
+  "decision": "block",
+  "reason": "${REASON}"
+}
+EOF
+    exit 0
+  fi
+fi
+
 # 3) 이번 turn .cs 변경 체크 (uncommitted) — 도현 manual play reminder
 CS_CHANGED=0
 if command -v git >/dev/null 2>&1; then

@@ -124,3 +124,6 @@ _probe.txt
 
 # Superpowers brainstorming visual companion
 .superpowers/
+
+# game-craft-upgrade ③ 자동 스크린샷 — 로컬 검증용, repo 미포함
+docs/screenshots/auto/
