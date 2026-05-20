@@ -15,4 +15,4 @@ MonoBehaviour:
   entries:
   - cargoType: 2
     modelPrefab: {fileID: 4531764011094968627, guid: acc665a77fe93f8469c86e8a91c51e3a, type: 3}
-    uniformScale: 0.5
+    uniformScale: 1

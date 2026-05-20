@@ -80,7 +80,7 @@ public static class CargoCatalogSetup
         var el = prop.GetArrayElementAtIndex(0);
         el.FindPropertyRelative("cargoType").enumValueIndex = (int)CargoType.Glass;
         el.FindPropertyRelative("modelPrefab").objectReferenceValue = prefab;
-        el.FindPropertyRelative("uniformScale").floatValue = 0.5f;
+        el.FindPropertyRelative("uniformScale").floatValue = 1.0f; // 작업대 = 옛 큐브 크기(1유닛). 트렁크는 ItemScale로 별도.
         so.ApplyModifiedProperties();
         EditorUtility.SetDirty(cat);
 
