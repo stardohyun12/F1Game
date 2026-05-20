@@ -849,8 +849,10 @@ namespace PitCrew.Packing
             // painter.Init은 ActivateItem → WirePainterFor에서 처리
             // 회색 큐브 → 프로시저럴 카드보드 택배 박스 (2026-05-20). 메시·콜라이더 동일,
             // 머티리얼만 교체 — 3D 리본이 이 표면 위에 올라탐.
+            var ctype = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
+                ? currentOrders[idx].cargoType : CargoType.Box;
             var rend = go.GetComponent<MeshRenderer>();
-            if (rend != null) rend.sharedMaterial = CargoBoxAppearance.CardboardMaterial();
+            if (rend != null) rend.sharedMaterial = CargoBoxAppearance.CardboardMaterial(ctype);
 
             go.SetActive(false);
             spawnedItems.Add(go);
