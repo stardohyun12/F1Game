@@ -111,7 +111,7 @@ namespace PitCrew.Garage
             go.transform.SetParent(transform, false);
             _canvas = go.AddComponent<Canvas>();
             _canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            _canvas.sortingOrder = 4000;
+            _canvas.sortingOrder = 7000; // MainMenu(6000)·Result(200)·UIRoot(10)보다 위 — 차고가 항상 최상단
             go.AddComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             go.AddComponent<GraphicRaycaster>();
             _cg = go.AddComponent<CanvasGroup>();
