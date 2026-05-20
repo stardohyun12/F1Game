@@ -125,6 +125,8 @@ public class DeliveryPointMarker : MonoBehaviour
         var hoverCol = hoverGO.AddComponent<SphereCollider>();
         hoverCol.radius = Mathf.Max(pillarHeight * 0.5f + sphereRadius, sphereRadius * 2f);
         hoverCol.isTrigger = true;
+        // 크기 자동 검사 (game-craft-upgrade ②) — 너무 좁으면 Console 경고
+        Ergo.CheckWorldHoverRadius(hoverCol.radius, $"DeliveryPointMarker({Label})", this);
 
         ApplyColor(baseColor, 1f);
     }
