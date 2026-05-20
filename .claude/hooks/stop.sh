@@ -75,6 +75,35 @@ EOF
   fi
 fi
 
+# 2.5) 화면(UI/카메라/마커) 변경 commit에 'Feels-off:' 한 줄 강제 (game-craft-upgrade ①)
+# 화면 파일: .cs (UI/Camera/Marker/Canvas/HUD/Screen/Tooltip 경로) / .unity / .prefab
+if command -v git >/dev/null 2>&1; then
+  MISSING_FEELS=""
+  while IFS='|' read -r SHA SUBJECT; do
+    [ -z "$SHA" ] && continue
+    # 이 commit이 건드린 화면 파일 있나?
+    VISUAL_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null \
+      | grep -E '\.(unity|prefab)$|.*(UI|Camera|Marker|Canvas|HUD|Screen|Tooltip).*\.cs$' || true)
+    [ -z "$VISUAL_FILES" ] && continue
+    # commit body에 'Feels-off:' 있나?
+    BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+    if ! echo "$BODY" | grep -qi 'Feels-off:'; then
+      MISSING_FEELS="${MISSING_FEELS}- ${SHA:0:7} ${SUBJECT:0:80}\n"
+    fi
+  done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+
+  if [ -n "$MISSING_FEELS" ]; then
+    REASON="최근 30분 화면(UI/카메라/마커/.unity/.prefab) 변경 commit에 'Feels-off:' 누락 (no-compromise §10 위반):\\n${MISSING_FEELS}\\n→ 조치: commit body에 'Feels-off: <아직 어색한 점 1개>' 추가 (git commit --amend). '다 좋음'/'없음' 금지 — 무조건 구체적으로 1개."
+    cat <<EOF
+{
+  "decision": "block",
+  "reason": "${REASON}"
+}
+EOF
+    exit 0
+  fi
+fi
+
 # 3) 이번 turn .cs 변경 체크 (uncommitted) — 도현 manual play reminder
 CS_CHANGED=0
 if command -v git >/dev/null 2>&1; then
