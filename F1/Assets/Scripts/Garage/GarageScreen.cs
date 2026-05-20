@@ -23,6 +23,9 @@ namespace PitCrew.Garage
         static Color ThemeCrit => UITheme.Active != null ? UITheme.Active.colorCritText : new Color(1f,0.45f,0.42f,1f);
 
         [SerializeField] private GarageRestoreCutscene cutscene;
+        [Header("머신 디스플레이 (비우면 텍스트 placeholder로 폴백)")]
+        [SerializeField] private GameObject machineModelPrefab;
+        [SerializeField] private float machineSpinSpeed = 18f;
 
         Canvas _canvas;
         CanvasGroup _cg;
@@ -32,6 +35,11 @@ namespace PitCrew.Garage
         Button _restoreBtn, _closeBtn;
         F1Part _selected;
         readonly List<GameObject> _cardGos = new List<GameObject>();
+
+        // 머신 스테이지 (3D 차 → RenderTexture)
+        Transform _stageRoot, _machineModel;
+        Camera _stageCam;
+        RenderTexture _machineRT;
 
         public bool IsOpen { get; private set; }
 
@@ -51,8 +59,49 @@ namespace PitCrew.Garage
         void Update()
         {
             if (!IsOpen) return;
+            if (_machineModel != null) _machineModel.Rotate(0f, machineSpinSpeed * Time.deltaTime, 0f, Space.Self);
             int w = Services.Upgrade?.Wallet ?? 0;
             if (w != _lastWallet) { _lastWallet = w; RefreshWallet(); RefreshCards(); }
+        }
+
+        // 3D 머신을 메인 카메라가 못 보는 먼 곳에 세우고 전용 카메라로 RenderTexture에 렌더
+        void BuildMachineStage()
+        {
+            if (machineModelPrefab == null) return;
+
+            _stageRoot = new GameObject("GarageMachineStage").transform;
+            _stageRoot.position = new Vector3(10000f, 10000f, 10000f);
+
+            _machineModel = Instantiate(machineModelPrefab, _stageRoot).transform;
+            _machineModel.localPosition = Vector3.zero;
+            _machineModel.localRotation = Quaternion.Euler(0f, -120f, 0f); // 3/4 사이드뷰 시작
+
+            var lightGo = new GameObject("StageLight");
+            lightGo.transform.SetParent(_stageRoot, false);
+            var lt = lightGo.AddComponent<Light>();
+            lt.type = LightType.Directional;
+            lt.transform.rotation = Quaternion.Euler(35f, -140f, 0f);
+            lt.intensity = 1.3f; lt.color = new Color(1f, 0.97f, 0.9f);
+
+            _machineRT = new RenderTexture(1024, 640, 16) { name = "MachineRT" };
+            var camGo = new GameObject("StageCamera");
+            camGo.transform.SetParent(_stageRoot, false);
+            _stageCam = camGo.AddComponent<Camera>();
+            _stageCam.targetTexture = _machineRT;
+            _stageCam.clearFlags = CameraClearFlags.SolidColor;
+            _stageCam.backgroundColor = new Color(0.10f, 0.11f, 0.14f, 0f); // 패널 톤, 알파0(투명)
+            _stageCam.fieldOfView = 26f;
+            _stageCam.nearClipPlane = 0.05f; _stageCam.farClipPlane = 50f;
+            _stageCam.transform.localPosition = new Vector3(0f, 1.1f, -5f);
+            _stageCam.transform.LookAt(_stageRoot.position + Vector3.up * 0.35f);
+            _stageCam.enabled = false; // 차고 열릴 때만 렌더
+        }
+
+        void OnDestroy()
+        {
+            if (_stageCam != null) _stageCam.targetTexture = null;
+            if (_machineRT != null) { _machineRT.Release(); Destroy(_machineRT); _machineRT = null; }
+            if (_stageRoot != null) Destroy(_stageRoot.gameObject);
         }
 
         void EnsureBuilt()
@@ -71,7 +120,7 @@ namespace PitCrew.Garage
             var bgGo = new GameObject("BG", typeof(RectTransform));
             bgGo.transform.SetParent(go.transform, false);
             var bg = bgGo.AddComponent<Image>();
-            bg.color = new Color(0.05f, 0.05f, 0.07f, 0.95f);
+            bg.color = new Color(0.05f, 0.05f, 0.07f, 1f); // 불투명 — 뒤 화면(보드 등) 비침 방지
             var bgrt = bg.rectTransform; bgrt.anchorMin = Vector2.zero; bgrt.anchorMax = Vector2.one; bgrt.offsetMin = Vector2.zero; bgrt.offsetMax = Vector2.zero;
 
             // Wallet
@@ -94,16 +143,29 @@ namespace PitCrew.Garage
             var ctxRt = closeTxt.rectTransform; ctxRt.anchorMin = Vector2.zero; ctxRt.anchorMax = Vector2.one; ctxRt.offsetMin = Vector2.zero; ctxRt.offsetMax = Vector2.zero;
             _closeBtn.onClick.AddListener(Hide);
 
-            // 머신 자리 placeholder
+            // 머신 디스플레이 — 3D 차를 RenderTexture에 렌더해서 패널에 표시
             var carPanelGo = new GameObject("CarPanel", typeof(RectTransform));
             carPanelGo.transform.SetParent(go.transform, false);
-            var carImg = carPanelGo.AddComponent<Image>(); carImg.color = new Color(0.12f,0.12f,0.15f);
+            var carImg = carPanelGo.AddComponent<Image>(); carImg.color = new Color(0.10f,0.11f,0.14f);
             var crt = carImg.rectTransform; crt.anchorMin = new Vector2(0.15f,0.35f); crt.anchorMax = new Vector2(0.85f,0.85f); crt.offsetMin = Vector2.zero; crt.offsetMax = Vector2.zero;
-            var labelGo = new GameObject("Label", typeof(RectTransform));
-            labelGo.transform.SetParent(carPanelGo.transform, false);
-            var label = labelGo.AddComponent<TextMeshProUGUI>();
-            label.text = "[ F1 머신 사이드뷰 ]"; label.alignment = TextAlignmentOptions.Center; ApplyTextTheme(label, ThemeMuted, 32);
-            var lrt = label.rectTransform; lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one; lrt.offsetMin = Vector2.zero; lrt.offsetMax = Vector2.zero;
+
+            BuildMachineStage();
+            if (_machineRT != null)
+            {
+                var viewGo = new GameObject("MachineView", typeof(RectTransform));
+                viewGo.transform.SetParent(carPanelGo.transform, false);
+                var raw = viewGo.AddComponent<RawImage>();
+                raw.texture = _machineRT;
+                var vrt = raw.rectTransform; vrt.anchorMin = Vector2.zero; vrt.anchorMax = Vector2.one; vrt.offsetMin = Vector2.zero; vrt.offsetMax = Vector2.zero;
+            }
+            else
+            {
+                var labelGo = new GameObject("Label", typeof(RectTransform));
+                labelGo.transform.SetParent(carPanelGo.transform, false);
+                var label = labelGo.AddComponent<TextMeshProUGUI>();
+                label.text = "[ F1 머신 ]"; label.alignment = TextAlignmentOptions.Center; ApplyTextTheme(label, ThemeMuted, 32);
+                var lrt = label.rectTransform; lrt.anchorMin = Vector2.zero; lrt.anchorMax = Vector2.one; lrt.offsetMin = Vector2.zero; lrt.offsetMax = Vector2.zero;
+            }
 
             // Detail panel
             var detailGo = new GameObject("Detail", typeof(RectTransform));
@@ -159,6 +221,7 @@ namespace PitCrew.Garage
             EnsureBuilt();
             _canvas.enabled = true;
             IsOpen = true;
+            if (_stageCam != null) _stageCam.enabled = true;
             RefreshWallet();
             RefreshCards();
             _selected = null;
@@ -168,6 +231,7 @@ namespace PitCrew.Garage
         public void Hide()
         {
             if (_canvas != null) _canvas.enabled = false;
+            if (_stageCam != null) _stageCam.enabled = false;
             IsOpen = false;
             // D-085: 차고 닫으면 다음 잡 선택 화면(OrderBoard)로. 빈 맵 방지.
             var run = Services.Run as RunController;
