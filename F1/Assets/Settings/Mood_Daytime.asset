@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc46e964d2eaf1746b2a4e031d3d1a61, type: 3}
+  m_Name: Mood_Daytime
+  m_EditorClassIdentifier: PitCrew::MoodProfile
+  sunRotationEuler: {x: 48, y: -35, z: 0}
+  sunColor: {r: 1, g: 0.95, b: 0.84, a: 1}
+  sunIntensity: 1.5
+  castShadows: 1
+  shadowStrength: 0.9
+  ambientMode: 3
+  ambientColor: {r: 0.4, g: 0.44, b: 0.52, a: 1}
+  ambientIntensity: 0.55
+  fog: 1
+  fogMode: 3
+  fogColor: {r: 0.74, g: 0.82, b: 0.9, a: 1}
+  fogDensity: 0.0035
+  skybox: {fileID: 0}
+  postProfile: {fileID: 0}
