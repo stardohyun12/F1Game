@@ -847,7 +847,10 @@ namespace PitCrew.Packing
             go.AddComponent<WrapState>();
             go.AddComponent<WrapPainter>();
             // painter.Init은 ActivateItem → WirePainterFor에서 처리
-            // 큐브는 기본 URP/Lit 머티리얼 유지 — 3D 리본이 표면 위에 올라탐
+            // 회색 큐브 → 프로시저럴 카드보드 택배 박스 (2026-05-20). 메시·콜라이더 동일,
+            // 머티리얼만 교체 — 3D 리본이 이 표면 위에 올라탐.
+            var rend = go.GetComponent<MeshRenderer>();
+            if (rend != null) rend.sharedMaterial = CargoBoxAppearance.CardboardMaterial();
 
             go.SetActive(false);
             spawnedItems.Add(go);
