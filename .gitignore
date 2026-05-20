@@ -127,3 +127,9 @@ _probe.txt
 
 # game-craft-upgrade ③ 자동 스크린샷 — 로컬 검증용, repo 미포함
 docs/screenshots/auto/
+
+# AI 생성 API 키 — 로컬 전용, 절대 커밋 금지
+.env.local
+.env
+*.key
+secrets/

@@ -7,6 +7,15 @@
 
 ## 지난 세션 요약
 
+- **세션 28 (2026-05-20): 혼자검증 + W3 차고 마무리 + 비주얼 폴리시 시작 + AI 자산 파이프라인.**
+  - git 노이즈 264파일(.meta 재직렬화 등) 청소 + 누락 meta 보완(`e156826`).
+  - **차고 검증**: verifier subagent 12/12 ALL GREEN. 헤더 겹침·잘림 수정(`139fb8e`). 차고 캔버스 "안 보임"은 **내 인위적 테스트(MainMenu 캔버스 살린 채 Show)+ScreenCapture 다음프레임 타이밍** 문제 — 실제 플로우(정산→차고로)에선 정상(서브에이전트 확인). order 4000→7000 안전망(`faf7fc2`). 교훈 [[feedback-test-real-flow-not-reflection-harness]] / [[feedback-clean-replay-before-services-diag]].
+  - **비주얼 폴리시 진단**: "진짜 게임 느낌" = 에셋 아니라 **아트디렉션**. 라이팅 shadows=None/Default-Skybox/ambient1.0/fog off가 평평함 80%.
+  - **낮 무드 시스템**(`1fa1da1`): MoodProfile SO + MoodController(Awake 적용, [ExecuteAlways]). 그림자+따뜻한 태양+Flat앰비언트 대비+fog+포스트 그레이딩. "황혼/야간 나중에 다"는 SO 복제로 가능.
+  - **그라데이션 스카이박스**(`0152e8e`): GradientSky.shader 자가 작성(URP HLSL 3색).
+  - **차고 F1 머신**(`f008d25`): placeholder 텍스트 → Kenney race.fbx RenderTexture 렌더 + 회전. 메인캠 못 보는 먼 곳 스테이지.
+  - **카드보드 화물**(`5ce021a`): 회색 큐브 → 프로시저럴 카드보드 박스(CargoBoxAppearance, 텍스처 코드 생성). 메시·콜라이더 불변→포장 무관.
+  - **AI 자산 파이프라인**: Meshy API 키 연결(`.env.local`, gitignore됨, 잔액 2080). **교훈: Meshy 등 AI-3D는 각진 박스에 흐물 → Kenney/프로시저럴이 우월. 유기적 hero만.** 2D 아이콘은 gpt-image-1(키 미설정). OpenAI 키 받으면 부품·화물·UI 아이콘 세트.
 - 세션 18 (2026-05-08): Phase 1 DIP/Service Locator + Phase 2 Template Method + Phase 3 Modifier Chain.
 - 세션 19 (2026-05-11~12): Phase 4 AudioCueBus + Phase 5 TireTypePresets + Phase 6 Peer Review 6건. 미커밋.
 - 세션 20 (2026-05-12~13): Unity 검증 도구 Coplay MCP → **unity-cli** 전환. Obsidian vault `옵시디언/` 분리. `_Recovery/` 솎아냄 (108→15). 차/도로 부유·기울임·z-fight 해결. 한글 폰트 atlas/material sub-asset 복구. **화물 손상 인과 변경** (차 G→박스 슬라이드→trunk 박음→손상). 알림 사운드 hook. Superpowers 플러그인 설치. 기획서 .pptx 생성. **Vertical Slice 데모 6주 결정 (D-069)**.
@@ -142,7 +151,14 @@
 ## 미커밋
 
 없음.
-세션 26 최근: `f7d48dd` 자기검증3종 즉시발효 → `02cd082` 폴리시 영역2 → `69c09b9` 영역3 → `a48cedc` 영역4 → `83286df` audit → `efb20c7` 기획서 → `0f1a577` metrics → `c056910` Q/E 회전.
+세션 28 최근: `e156826` meta → `139fb8e` 차고헤더 → `1fa1da1` 낮무드 → `0152e8e` 스카이박스 → `f008d25` 차고머신 → `faf7fc2` 차고order → `5ce021a` 카드보드화물.
+
+**다음 세션 첫 작업 후보 (비주얼 폴리시 이어서)**:
+- A. 화물 종류별 구분 (와인/케이크/계란 색·스티커 — 지금 다 같은 카드보드)
+- B. 포장 플로우 실제 검증 (정산→포장 박스+리본)
+- C. 카드보드 면별 텍스처 분리 (테이프/라벨 6면 반복 → 윗면 이음새·한 면 라벨)
+- D. 무료 음식팩(Kenney Food/Quaternius) 조사 — 유기적 hero 화물
+- 대기: **OpenAI 키** 받으면 2D 아이콘 세트 (부품·화물·UI). Meshy 키는 연결됨(유기 hero용).
 
 ---
 
