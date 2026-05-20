@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4d6ca791063fab45ad9cbfae5d918c0, type: 3}
+  m_Name: CargoModelCatalog
+  m_EditorClassIdentifier: PitCrew::CargoModelCatalog
+  entries:
+  - cargoType: 2
+    modelPrefab: {fileID: 4531764011094968627, guid: acc665a77fe93f8469c86e8a91c51e3a, type: 3}
+    uniformScale: 0.5

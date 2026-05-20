@@ -37,13 +37,14 @@ public static class AssetPreviewTool
             // ── 자산 인스턴스 (정규화: 최대변 1.0 단위) ──
             var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, root.transform);
             int tris = 0;
-            Bounds bounds = default; bool boundsInit = false;
             foreach (var mf in go.GetComponentsInChildren<MeshFilter>())
+                if (mf.sharedMesh != null) tris += mf.sharedMesh.triangles.Length / 3;
+            // Renderer.bounds = 월드 AABB(transform 스케일 반영) → fbx(스케일1)·정규화 프리팹 둘 다 정확.
+            Bounds bounds = default; bool boundsInit = false;
+            foreach (var r in go.GetComponentsInChildren<MeshRenderer>())
             {
-                if (mf.sharedMesh == null) continue;
-                tris += mf.sharedMesh.triangles.Length / 3;
-                if (!boundsInit) { bounds = mf.sharedMesh.bounds; boundsInit = true; }
-                else bounds.Encapsulate(mf.sharedMesh.bounds);
+                if (!boundsInit) { bounds = r.bounds; boundsInit = true; }
+                else bounds.Encapsulate(r.bounds);
             }
             float maxD = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
             if (maxD <= 0f) maxD = 1f;
