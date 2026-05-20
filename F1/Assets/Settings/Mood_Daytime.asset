@@ -24,5 +24,5 @@ MonoBehaviour:
   fogMode: 3
   fogColor: {r: 0.74, g: 0.82, b: 0.9, a: 1}
   fogDensity: 0.0035
-  skybox: {fileID: 0}
+  skybox: {fileID: 2100000, guid: cfb560f0514a3244581cfc6967d40172, type: 2}
   postProfile: {fileID: 0}
