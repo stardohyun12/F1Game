@@ -55,7 +55,12 @@ public class MainMenuScreen : MonoBehaviour
         var title = titleGo.AddComponent<TextMeshProUGUI>();
         title.text = "PIT CREW";
         title.alignment = TextAlignmentOptions.Center;
-        title.fontSize = 144;
+        // 캔버스 기준 해상도(800x600)에서 고정 144는 rect(640x90)를 넘쳐 두 줄로 쏟아짐.
+        // auto-size + 한 줄 고정 → rect 안에 맞게 자동 축소 (다른 화면 비율에도 안전).
+        title.enableWordWrapping = false;
+        title.enableAutoSizing = true;
+        title.fontSizeMin = 24f;
+        title.fontSizeMax = 144f;
         title.fontStyle = FontStyles.Bold;
         if (th != null && th.fontPrimary != null) title.font = th.fontPrimary;
         title.color = th != null ? th.colorAccent : new Color(1f, 0.82f, 0.25f, 1f);
