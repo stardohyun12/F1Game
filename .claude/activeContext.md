@@ -148,17 +148,32 @@
 
 ---
 
+## 세션 29 (2026-05-20~21): 화물 원물화 B안 — 와인 파일럿 GREEN
+
+**문제(도현)**: 화물이 포장 전부터 카드보드 박스라 포장이 무의미. → **원물(깨지기 쉬운)이 보이고 버블랩으로 싸는 게 보여야** 의미.
+**결정**: B안(원물 유지+랩핑) / Meshy 생성 / 버블랩 / 1번 파일럿(와인) 먼저, UV 엉키면 2번(숨긴 프록시) 폴백.
+spec `docs/superpowers/specs/2026-05-20-cargo-raw-goods-design.md`, plan `docs/superpowers/plans/2026-05-20-cargo-raw-goods-wine-pilot.md`.
+
+**커밋**:
+- `36cac5c` CargoModelCatalog SO (CargoType→원물, Box/미스=큐브 폴백)
+- `c4fb963` Meshy 와인병(refine→remesh 27k) + `scripts/meshy-generate.ps1` + **AssetPreviewTool**(중립 배경 1줄 렌더, Kenney side-by-side — [[feedback-asset-review-before-integration]])
+- `88bd787` Cargo_Glass 프리팹(초록 유리 #0C4721, root→정규화 자식) + 카탈로그 와이어
+- `bab5125` SpawnItem 카탈로그 조회 + WirePainterFor 자식 메시 콜라이더
+- `0cca578` 작업대 와인병 크기 0.5→1.0
+
+**검증**: UV 프로브(앞0.38/뒤0.14 분리=겹침無→폴백불필요) + **검증 서브에이전트 PILOT GREEN 6/6**(병 스폰 17610v / 커버리지8.7% / 흡수 칠한0.25·안칠한0.0 / Play에러0 / 배치 CargoSimRoot).
+
+**아트 교훈**: Meshy 사실적(흰 100k)은 Kenney 로우폴리 월드와 결 안 맞음 → remesh 저폴리 + **쨍한 단색**이 톤 맞춤 핵심. "유기물=Meshy" 가정은 화물(Kenney 옆)엔 재검토 필요. [[feedback-asset-review-before-integration]] / [[feedback-one-decision-surface]].
+
+**남은 것 (다음)**:
+- **버블랩이 병에 감기는 시각 확인** — 기능 GREEN인데 wrap 리본이 곡면에 붙은 모습은 manual play로 봐야(브러시 스트로크). **도현 manual play 1순위**.
+- 포장 작업대 **받침 plane**(병이 허공에 뜸 — 0cca578 Feels-off).
+- 나머지 3종(Eggs 계란판 / Fish 생선 / Cake 케이크) Meshy 생성→카탈로그 엔트리 복제 (`meshy-generate.ps1` 재사용, art 교훈 적용: 로우폴리+단색).
+- 텍스처(현재 단색) 라벨/유리 질감은 후속. Meshy 잔액 ~2070.
+
 ## 미커밋
 
 없음.
-세션 28 최근: `e156826` meta → `139fb8e` 차고헤더 → `1fa1da1` 낮무드 → `0152e8e` 스카이박스 → `f008d25` 차고머신 → `faf7fc2` 차고order → `5ce021a` 카드보드화물.
-
-**다음 세션 첫 작업 후보 (비주얼 폴리시 이어서)**:
-- A. 화물 종류별 구분 (와인/케이크/계란 색·스티커 — 지금 다 같은 카드보드)
-- B. 포장 플로우 실제 검증 (정산→포장 박스+리본)
-- C. 카드보드 면별 텍스처 분리 (테이프/라벨 6면 반복 → 윗면 이음새·한 면 라벨)
-- D. 무료 음식팩(Kenney Food/Quaternius) 조사 — 유기적 hero 화물
-- 대기: **OpenAI 키** 받으면 2D 아이콘 세트 (부품·화물·UI). Meshy 키는 연결됨(유기 hero용).
 
 ---
 
