@@ -78,19 +78,19 @@ namespace PitCrew.Garage
             var walletGo = new GameObject("Wallet", typeof(RectTransform));
             walletGo.transform.SetParent(go.transform, false);
             _walletText = walletGo.AddComponent<TextMeshProUGUI>();
-            ApplyTextTheme(_walletText, ThemeAccent, 36); _walletText.alignment = TextAlignmentOptions.TopLeft;
-            var wrt = _walletText.rectTransform; wrt.anchorMin = new Vector2(0.02f,0.92f); wrt.anchorMax = new Vector2(0.4f,0.98f); wrt.offsetMin = Vector2.zero; wrt.offsetMax = Vector2.zero;
+            ApplyTextTheme(_walletText, ThemeAccent, 30); _walletText.alignment = TextAlignmentOptions.TopLeft;
+            var wrt = _walletText.rectTransform; wrt.anchorMin = new Vector2(0.02f,0.92f); wrt.anchorMax = new Vector2(0.32f,0.98f); wrt.offsetMin = Vector2.zero; wrt.offsetMax = Vector2.zero;
 
             // Close
             var closeGo = new GameObject("Close", typeof(RectTransform));
             closeGo.transform.SetParent(go.transform, false);
             var closeImg = closeGo.AddComponent<Image>(); closeImg.color = new Color(0.2f,0.2f,0.25f);
             _closeBtn = closeGo.AddComponent<Button>();
-            var closeRt = closeImg.rectTransform; closeRt.anchorMin = new Vector2(0.92f,0.92f); closeRt.anchorMax = new Vector2(0.98f,0.98f); closeRt.offsetMin = Vector2.zero; closeRt.offsetMax = Vector2.zero;
+            var closeRt = closeImg.rectTransform; closeRt.anchorMin = new Vector2(0.905f,0.905f); closeRt.anchorMax = new Vector2(0.985f,0.965f); closeRt.offsetMin = Vector2.zero; closeRt.offsetMax = Vector2.zero;
             var closeTxtGo = new GameObject("Txt", typeof(RectTransform));
             closeTxtGo.transform.SetParent(closeGo.transform, false);
             var closeTxt = closeTxtGo.AddComponent<TextMeshProUGUI>();
-            closeTxt.text = "닫기"; closeTxt.alignment = TextAlignmentOptions.Center; ApplyTextTheme(closeTxt, ThemeText, 28);
+            closeTxt.text = "닫기"; closeTxt.alignment = TextAlignmentOptions.Center; ApplyTextTheme(closeTxt, ThemeText, 22);
             var ctxRt = closeTxt.rectTransform; ctxRt.anchorMin = Vector2.zero; ctxRt.anchorMax = Vector2.one; ctxRt.offsetMin = Vector2.zero; ctxRt.offsetMax = Vector2.zero;
             _closeBtn.onClick.AddListener(Hide);
 
@@ -109,7 +109,7 @@ namespace PitCrew.Garage
             var detailGo = new GameObject("Detail", typeof(RectTransform));
             detailGo.transform.SetParent(go.transform, false);
             var detailImg = detailGo.AddComponent<Image>(); detailImg.color = new Color(0.08f,0.08f,0.10f,0.9f);
-            var drt = detailImg.rectTransform; drt.anchorMin = new Vector2(0.20f,0.85f); drt.anchorMax = new Vector2(0.80f,0.94f); drt.offsetMin = Vector2.zero; drt.offsetMax = Vector2.zero;
+            var drt = detailImg.rectTransform; drt.anchorMin = new Vector2(0.34f,0.85f); drt.anchorMax = new Vector2(0.88f,0.94f); drt.offsetMin = Vector2.zero; drt.offsetMax = Vector2.zero;
 
             var titleGo = new GameObject("Title", typeof(RectTransform));
             titleGo.transform.SetParent(detailGo.transform, false);
