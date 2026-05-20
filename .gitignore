@@ -133,3 +133,6 @@ docs/screenshots/auto/
 .env
 *.key
 secrets/
+
+# 자산 카탈로그 HTML — base64 임베드라 무거움, 로컬 뷰어용 (md는 추적)
+docs/asset-catalog-*.html
