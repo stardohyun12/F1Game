@@ -17,6 +17,12 @@ namespace PitCrew.Packing
         OrderJob currentJob;
         // 채널 8 정정: 한 런 = 여러 주문. currentJob은 primary(=orders[0]) — UI 호환.
         List<OrderJob> currentOrders = new List<OrderJob>();
+
+        // B안 (2026-05-20) — 원물 모델 카탈로그. 미스/Box면 큐브+카드보드 폴백.
+        CargoModelCatalog modelCatalog;
+        CargoModelCatalog Catalog =>
+            modelCatalog != null ? modelCatalog
+            : (modelCatalog = Resources.Load<CargoModelCatalog>("CargoModels/CargoModelCatalog"));
         List<GameObject> spawnedItems = new();
         int activeItemIndex;
 
@@ -840,19 +846,30 @@ namespace PitCrew.Packing
 
         void SpawnItem(int idx)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var ctype = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
+                ? currentOrders[idx].cargoType : CargoType.Box;
+
+            GameObject go;
+            if (Catalog != null && Catalog.TryGet(ctype, out var prefab, out var scale))
+            {
+                // 원물 모델 (B안) — 정규화 프리팹 인스턴스. 메시는 자식, 자체 머티리얼 보유.
+                go = Object.Instantiate(prefab);
+                go.transform.localScale = Vector3.one * scale;
+            }
+            else
+            {
+                // 폴백 — 회색 큐브 → 프로시저럴 카드보드 (Box / 카탈로그 미스).
+                go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                var rend = go.GetComponent<MeshRenderer>();
+                if (rend != null) rend.sharedMaterial = CargoBoxAppearance.CardboardMaterial(ctype);
+            }
+
             go.name = $"PackingItem_{idx}";
             if (cargoSpawnPoint != null) go.transform.SetParent(cargoSpawnPoint, false);
             go.transform.localPosition = Vector3.zero;
             go.AddComponent<WrapState>();
             go.AddComponent<WrapPainter>();
-            // painter.Init은 ActivateItem → WirePainterFor에서 처리
-            // 회색 큐브 → 프로시저럴 카드보드 택배 박스 (2026-05-20). 메시·콜라이더 동일,
-            // 머티리얼만 교체 — 3D 리본이 이 표면 위에 올라탐.
-            var ctype = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
-                ? currentOrders[idx].cargoType : CargoType.Box;
-            var rend = go.GetComponent<MeshRenderer>();
-            if (rend != null) rend.sharedMaterial = CargoBoxAppearance.CardboardMaterial(ctype);
+            // painter.Init은 ActivateItem → WirePainterFor에서 처리 (3D 리본이 표면 위에 올라탐)
 
             go.SetActive(false);
             spawnedItems.Add(go);
@@ -899,10 +916,18 @@ namespace PitCrew.Packing
             var state = item.GetComponent<WrapState>();
             var painter = item.GetComponent<WrapPainter>();
             if (state == null || painter == null) return;
-            var box = item.GetComponent<BoxCollider>();
+
+            // 페인트 대상 = 실제 메시를 가진 GameObject (큐브=자기 자신, fbx 원물=자식).
+            // WrapState.targetRenderer도 같은 GameObject(GetComponentInChildren<Renderer>)라
+            // QueryAbsorption의 MeshCollider 조회와 일치한다.
+            var rend = item.GetComponentInChildren<MeshRenderer>();
+            var meshGO = rend != null ? rend.gameObject : item;
+
+            var box = meshGO.GetComponent<BoxCollider>();
             if (box != null) DestroyImmediate(box);
-            var col = item.GetComponent<MeshCollider>();
-            if (col == null) col = item.AddComponent<MeshCollider>();
+            var col = meshGO.GetComponent<MeshCollider>();
+            if (col == null) col = meshGO.AddComponent<MeshCollider>();
+
             painter.Init(state, packingCamera, col);
             painter.OnStrokeEnded = OnStrokeCompleted;
         }
