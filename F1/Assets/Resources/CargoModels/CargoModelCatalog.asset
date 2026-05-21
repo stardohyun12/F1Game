@@ -16,3 +16,12 @@ MonoBehaviour:
   - cargoType: 2
     modelPrefab: {fileID: 4531764011094968627, guid: acc665a77fe93f8469c86e8a91c51e3a, type: 3}
     uniformScale: 1
+  - cargoType: 1
+    modelPrefab: {fileID: 2278144270821636234, guid: 13d9678635e99314db7e5b578408c20f, type: 3}
+    uniformScale: 1
+  - cargoType: 3
+    modelPrefab: {fileID: 6759839232600216812, guid: aca89666373e7464fbbbb38d529f18c7, type: 3}
+    uniformScale: 1
+  - cargoType: 4
+    modelPrefab: {fileID: 1764185122471937478, guid: 90adc6c2d9484244aacad408dc34fa85, type: 3}
+    uniformScale: 1
