@@ -108,3 +108,11 @@
 - **어떻게 잡았나**: 도현 manual play. AI 자체 검증(서브에이전트 포함) 못 잡음 — 우회 경로로 통과.
 - **Missing-heuristic**: ① 인터랙티브 시스템은 **실제 입력 메서드**(BeginStroke/UpdateStroke)를 시뮬+스샷으로 검증, 우회 호출(DrawStrip) 금지. ② transform-scale에 의존하는 시스템(리본 metric)이 있을 때 자산 **스케일 정규화는 transform이 아니라 import scale로** (부모 lossyScale≈1 유지).
 - **관련 패턴**: `patterns/01-visual-blindness` + new(verifier 우회 경로 false-green)
+
+## 2026-05-21 — 화물 작업대 위로 뜨고/잘림 + 회전 중심 안 맞음 (피벗 불일치)
+
+- **무슨 일**: 케이크 등 화물이 포장 작업대에서 화면 위로 떠 잘리고, 배치 단계 회전 시 중심이 안 맞고 빙 돎. 도현 manual play.
+- **AI 어떻게 잘못함**: 프리팹 정규화 시 피벗을 **바닥-중심**(`-b.min.y`)에 둠. 근데 포장 카메라는 spawn(=피벗)을 바라보고 회전(`transform.Rotate`)도 피벗 기준 → 바닥-중심이면 객체가 위로 뻗어 프레임 이탈 + 회전이 0.5유닛 궤도. 시스템이 설계된 **유닛 큐브(중심 피벗)** 가정과 불일치. 와인병(세로 길쭉)만 봐서 안 드러남, 납작한 케이크에서 폭발.
+- **어떻게 잡았나**: 도현 manual play. AI는 큐브로만 검증해 피벗 불일치 못 봄.
+- **Missing-heuristic**: 기존 시스템이 암묵 가정(pivot=중심, scale=1유닛 큐브) 위에 설계됐으면 **새 자산을 그 가정에 정확히 맞춰야**. 자산 교체 시 배치·회전 등 transform 거동을 새 자산으로 재현 테스트(특히 모양 비율 다른 것).
+- **관련 패턴**: `patterns/01-visual-blindness` + (자산이 시스템 암묵 가정 위반)

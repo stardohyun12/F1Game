@@ -76,7 +76,10 @@ public static class CargoCatalogSetup
                 float maxD = Mathf.Max(b.size.x, Mathf.Max(b.size.y, b.size.z));
                 if (maxD <= 0f) maxD = 1f;
                 inst.transform.localScale = Vector3.one / maxD;
-                inst.transform.localPosition = new Vector3(-b.center.x, -b.min.y, -b.center.z) / maxD;
+                // 피벗 = 기하 중심 (유닛 큐브와 동일) — 포장 카메라가 spawn=피벗을 보고 회전도
+                // 피벗 기준이라, 중심 피벗이어야 프레임 중앙 + 제자리 회전. 바닥-중심이면 위로 떠 잘리고
+                // 회전이 궤도를 그림 (incident 2026-05-21).
+                inst.transform.localPosition = -b.center / maxD;
 
                 foreach (var r in inst.GetComponentsInChildren<MeshRenderer>()) r.sharedMaterial = mat;
                 PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
