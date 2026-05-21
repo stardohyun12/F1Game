@@ -161,15 +161,14 @@ spec `docs/superpowers/specs/2026-05-20-cargo-raw-goods-design.md`, plan `docs/s
 - `bab5125` SpawnItem 카탈로그 조회 + WirePainterFor 자식 메시 콜라이더
 - `0cca578` 작업대 와인병 크기 0.5→1.0
 
-**검증**: UV 프로브(앞0.38/뒤0.14 분리=겹침無→폴백불필요) + **검증 서브에이전트 PILOT GREEN 6/6**(병 스폰 17610v / 커버리지8.7% / 흡수 칠한0.25·안칠한0.0 / Play에러0 / 배치 CargoSimRoot).
+**검증/버그fix**: 검증 서브에이전트 6/6 통과했으나 **false-GREEN** — DrawStrip(RT 우회)만 봐서 실제 브러시 리본 미검증. 도현 manual play로 "포장 안 됨" 발견. root cause: 프리팹 정규화를 **메시 52x transform 스케일**로 박아 WrapRibbon 미터 임계(부모-로컬=큐브1:1 가정) 깨짐→리본 0. fix(`a139609`): import scale로 메시 1유닛 baking(globalScale 0.523), CargoCatalogSetup에 NormalizeImportScale 멱등 추가. **실제 BeginStroke 경로 재검증 GREEN**(colLossyScale 1.0 / ribbonVerts 525 / 버블랩 병에 감김 스샷 confirm). 도현 OK. incidents.md 등재(verifier 우회=false-green 패턴).
 
-**아트 교훈**: Meshy 사실적(흰 100k)은 Kenney 로우폴리 월드와 결 안 맞음 → remesh 저폴리 + **쨍한 단색**이 톤 맞춤 핵심. "유기물=Meshy" 가정은 화물(Kenney 옆)엔 재검토 필요. [[feedback-asset-review-before-integration]] / [[feedback-one-decision-surface]].
+**아트 교훈**: Meshy 사실적(흰 100k)은 Kenney 로우폴리 월드와 결 안 맞음 → remesh 저폴리 + **쨍한 단색**이 톤 핵심. "유기물=Meshy"는 화물(Kenney 옆)엔 재검토. 자산은 통합 전 중립 검수(AssetPreviewTool). [[feedback-asset-review-before-integration]] / [[feedback-one-decision-surface]].
 
 **남은 것 (다음)**:
-- **버블랩이 병에 감기는 시각 확인** — 기능 GREEN인데 wrap 리본이 곡면에 붙은 모습은 manual play로 봐야(브러시 스트로크). **도현 manual play 1순위**.
-- 포장 작업대 **받침 plane**(병이 허공에 뜸 — 0cca578 Feels-off).
-- 나머지 3종(Eggs 계란판 / Fish 생선 / Cake 케이크) Meshy 생성→카탈로그 엔트리 복제 (`meshy-generate.ps1` 재사용, art 교훈 적용: 로우폴리+단색).
-- 텍스처(현재 단색) 라벨/유리 질감은 후속. Meshy 잔액 ~2070.
+- 나머지 3종(Eggs 계란판 / Fish 생선 / Cake 케이크) Meshy 생성→remesh→카탈로그 엔트리 복제. `meshy-generate.ps1` + `PitCrew/Cargo/Build Model Catalog`(import scale 자동 정규화) 재사용. 각 생성마다 도현 룩 승인 게이트. **Meshy 잔액 ~2070**.
+- 포장 작업대 **받침 plane**(병이 허공에 뜸).
+- 버블랩 질감(올록볼록 노멀)·병 어깨 곡면 리본 벌어짐·텍스처(라벨/유리)는 후속 폴리시.
 
 ## 미커밋
 
