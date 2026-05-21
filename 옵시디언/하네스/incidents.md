@@ -100,3 +100,11 @@
 - **잘 된 점**: §1 검증 셋 통과 의무 → verifier가 Day 1 PostFX FAIL 자체 발견. 도현 manual play 전 잡음.
 - **잘 된 점 2**: §5 진단 분해 → 디스크 라인 수 grep으로 sub-asset 저장 실패 즉시 확인. 6 commit (Day 1 fix 1 + Day 2 hotfix 1 + Day 1~6 본 작업 + PostFX fix) 작은 단위.
 - **잘 된 점 3**: §8 영역 구분 → 자산 다운로드 부분(F1 머신·폰트·prop)은 자체 결정 X, polish-asset-candidates.md에 후보 정리만.
+
+## 2026-05-21 — 와인병 버블랩 리본 안 보임 (verifier false-GREEN)
+
+- **무슨 일**: 화물 원물화(와인병) 후 도현 manual play — "유리병 포장 이상함 잘 안 됨". 브러시로 싸도 버블랩 3D 리본이 병에 안 생김(리본 정점 0). RT 커버리지·손상 흡수는 됨.
+- **AI 어떻게 잘못함**: (1) 프리팹 정규화를 메시에 **52x 스케일 래퍼**로 박음 → WrapRibbon의 미터 임계(minSampleDist 0.012·width 0.18·lift, 전부 **부모-로컬 기준 = 큐브 1:1 가정**)가 52배 어긋남 → 스트로크 전체가 한 샘플 거리도 안 돼 세그먼트 0개. (2) 검증 서브에이전트가 `DrawStrip`(RT 직접 blit)+ComputeCoverage/QueryAbsorption만 봐서 GREEN — **실제 입력 경로 BeginStroke→3D 리본은 우회**. PILOT GREEN이 false였음.
+- **어떻게 잡았나**: 도현 manual play. AI 자체 검증(서브에이전트 포함) 못 잡음 — 우회 경로로 통과.
+- **Missing-heuristic**: ① 인터랙티브 시스템은 **실제 입력 메서드**(BeginStroke/UpdateStroke)를 시뮬+스샷으로 검증, 우회 호출(DrawStrip) 금지. ② transform-scale에 의존하는 시스템(리본 metric)이 있을 때 자산 **스케일 정규화는 transform이 아니라 import scale로** (부모 lossyScale≈1 유지).
+- **관련 패턴**: `patterns/01-visual-blindness` + new(verifier 우회 경로 false-green)
