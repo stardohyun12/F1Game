@@ -165,10 +165,15 @@ spec `docs/superpowers/specs/2026-05-20-cargo-raw-goods-design.md`, plan `docs/s
 
 **아트 교훈**: Meshy 사실적(흰 100k)은 Kenney 로우폴리 월드와 결 안 맞음 → remesh 저폴리 + **쨍한 단색**이 톤 핵심. "유기물=Meshy"는 화물(Kenney 옆)엔 재검토. 자산은 통합 전 중립 검수(AssetPreviewTool). [[feedback-asset-review-before-integration]] / [[feedback-one-decision-surface]].
 
-**남은 것 (다음)**:
-- 나머지 3종(Eggs 계란판 / Fish 생선 / Cake 케이크) Meshy 생성→remesh→카탈로그 엔트리 복제. `meshy-generate.ps1` + `PitCrew/Cargo/Build Model Catalog`(import scale 자동 정규화) 재사용. 각 생성마다 도현 룩 승인 게이트. **Meshy 잔액 ~2070**.
-- 포장 작업대 **받침 plane**(병이 허공에 뜸).
-- 버블랩 질감(올록볼록 노멀)·병 어깨 곡면 리본 벌어짐·텍스처(라벨/유리)는 후속 폴리시.
+**4종 완성** (`a1feb87`): Glass 와인병 / Eggs 계란판 / Fish 생선 / Cake 케이크 — 다 Meshy→remesh→import정규화→단색→프리팹→카탈로그. Box는 폴백(큐브). CargoCatalogSetup 데이터 테이블(`b7e8e5e`), meshy-generate.ps1 remesh 포함. 3종 다 실제 브러시 경로로 wrap 검증(verts>0). 도현 룩 승인.
+
+**남은 것 (후속 폴리시)**:
+- 계란판 흐물흐물(Meshy 구조물 약) — 교체 후보.
+- 생선 작업대 정면뜸 — 모델 기본 yaw 90도.
+- 포장 작업대 **받침 plane**(원물이 허공에 뜸).
+- 버블랩 질감(올록볼록 노멀)·병 어깨 리본 벌어짐·텍스처(라벨/유리).
+- 트렁크 배치/운전 중 원물 실제 굴러가는 거 manual play(채널5 다물건).
+- **Meshy 잔액 ~2050**.
 
 ## 미커밋
 
