@@ -15,8 +15,12 @@ $dday  = [int](([datetime]"2026-06-24") - $today).TotalDays
 $statusStr = $today.ToString("yyyy-MM-dd") + " | D-" + $dday
 
 $commits = git log --oneline -5 --no-decorate
+# 친화적이게: `type(scope):` 접두어와 [skip-verifier] 꼬리표 떼고 설명만.
 $activityLines = ($commits | ForEach-Object {
-  "- ``" + $_.Substring(0,7) + "`` " + $_.Substring(8)
+  $msg = $_.Substring(8)
+  $msg = $msg -replace '^\w+(\([^)]*\))?:\s*',''      # feat(cargo): 제거
+  $msg = ($msg -replace '\s*\[skip-verifier\]\s*$','') # 꼬리표 제거
+  "- " + $msg
 }) -join "`n"
 
 $utf8 = New-Object System.Text.UTF8Encoding $false
