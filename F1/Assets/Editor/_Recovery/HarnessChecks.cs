@@ -74,6 +74,9 @@ public static class HarnessChecks
     /// Kenney 로우폴리 월드(박스 ~12 tris)에 Meshy 원본(2.7만~7.5만)이 안 깎인 채
     /// 들어오면 결이 깨지고 성능도 샌다. hero 화물도 ~3000이면 충분(CargoDecimator로 깎음).
     /// (2026-05-23: Eggs 53k/Glass 27k/Fish 75k/Cake 54k 발견 — 전부 미가공 Meshy)
+    /// 가정: 화물 프리팹은 단일 mesh 구조(LOD 그룹 없음). 다중 LOD면 모든 LOD를 합산하므로
+    ///       과대 카운트됨 — 그땐 lod0만 세도록 보강 필요. catalog/prefab null은 SKIP이며,
+    ///       회귀 스크립트가 SKIP을 끝에 크게 집계하므로(조용히 안 넘김) 누락이 드러난다.
     /// </summary>
     public static string CheckCargoPolyBudget(int budgetTris = 3000)
     {

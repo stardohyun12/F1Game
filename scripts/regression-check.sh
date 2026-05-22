@@ -3,7 +3,19 @@
 # 우리가 실제로 겪은 버그(엔진음 잔류·맵 fog·화물 피벗)가 되살아나면 FAIL.
 # 사용: bash scripts/regression-check.sh   (Editor 켜져 있어야)
 UCLI="C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe"
-say() { "$UCLI" exec "$1" 2>/dev/null | grep -vE "Update available|unity-cli update|^$"; }
+# 각 단언 결과를 출력 + 집계. FAIL/SKIP을 조용히 넘기지 않고 끝에 크게 요약.
+# (검증자 지적: 출력만 하고 FAIL/SKIP 자동 감지가 없으면 false-green 빠져나감)
+PASSES=0; FAILS=0; SKIPS=0
+say() {
+  local out
+  out=$("$UCLI" exec "$1" 2>/dev/null | grep -vE "Update available|unity-cli update|^$")
+  echo "$out"
+  case "$out" in
+    *FAIL*) FAILS=$((FAILS+1)) ;;
+    *SKIP*) SKIPS=$((SKIPS+1)) ;;
+    *PASS*) PASSES=$((PASSES+1)) ;;
+  esac
+}
 
 echo "=== PitCrew 회귀 점검 ==="
 "$UCLI" editor play --wait >/dev/null 2>&1
@@ -42,4 +54,7 @@ say "return HarnessChecks.CheckEngineMute(true);"
 say "return HarnessChecks.CheckFog(false);"
 
 "$UCLI" editor stop >/dev/null 2>&1
-echo "=== 끝 (FAIL 있으면 회귀) ==="
+echo "=== 결과: ${PASSES} PASS / ${FAILS} FAIL / ${SKIPS} SKIP ==="
+[ "$FAILS" -gt 0 ] && echo "⚠ 회귀 ${FAILS}건 — 위 FAIL 확인 (완료 보고 금지)"
+[ "$SKIPS" -gt 0 ] && echo "⚠ SKIP ${SKIPS}건 — 검증 못 한 항목 있음 (조용히 넘기지 마라)"
+exit $([ "$FAILS" -gt 0 ] && echo 1 || echo 0)
