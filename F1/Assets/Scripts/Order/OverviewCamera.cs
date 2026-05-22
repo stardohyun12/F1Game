@@ -17,6 +17,10 @@ public class OverviewCamera : MonoBehaviour, IOverviewCamera
     [Header("Transition")]
     [SerializeField] private float transitionDuration = 0.8f;
 
+    [Header("Fog")]
+    [Tooltip("오버뷰(주문 선택)에선 fog를 꺼 맵을 또렷하게. 주행 복귀 시 이 값으로 복원.")]
+    [SerializeField] private bool restoreFogOnDrive = true;
+
     Camera cam;
     FollowCamera follow;
     Vector3 followStartPos;
@@ -37,6 +41,8 @@ public class OverviewCamera : MonoBehaviour, IOverviewCamera
 
         // 즉시 오버뷰 포즈
         ApplyOverviewPose();
+        // 오버뷰는 95m 상공 탑다운 — fog가 켜져 있으면 도시 전체가 뿌옇게(흐릿) 됨. 끔. (2026-05-22 도현 보고)
+        RenderSettings.fog = false;
     }
 
     void ApplyOverviewPose()
@@ -97,6 +103,7 @@ public class OverviewCamera : MonoBehaviour, IOverviewCamera
 
     public void GoToOverview(System.Action onDone = null)
     {
+        RenderSettings.fog = false; // 오버뷰 = 또렷한 맵
         if (follow != null) follow.enabled = false;
         followStartPos = transform.position;
         followStartRot = transform.rotation;
@@ -110,6 +117,7 @@ public class OverviewCamera : MonoBehaviour, IOverviewCamera
     public void GoToFollow(System.Action onDone = null)
     {
         // 즉시 follow로 (팔로우 카메라가 자체 smoothdamp로 따라옴)
+        RenderSettings.fog = restoreFogOnDrive; // 주행 = 무드 fog 복원
         if (follow != null) follow.enabled = true;
         IsInOverview = false;
         toOverview = false;

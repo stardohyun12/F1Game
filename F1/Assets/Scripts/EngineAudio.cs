@@ -41,10 +41,14 @@ public class EngineAudio : MonoBehaviour
 
     void Update()
     {
-        if (src == null || src.clip == null || car == null) return;
+        if (src == null || src.clip == null) return;
 
-        // 게임 일시정지 (주문 보드 / 정산 화면) 중엔 엔진 즉시 무음 (mute로 확실히 차단)
-        if (Time.timeScale < 0.01f)
+        // 엔진은 "실제 런 주행 중"에만 소리. 보드/정산/차고(런 비활성) 또는 일시정지면 무음.
+        // (이전엔 timeScale만 봤는데, 런 후 보드 등에서 timeScale 경로가 새서 소리 잔류 — 2026-05-22 도현 보고)
+        bool driving = Time.timeScale >= 0.01f
+                       && car != null
+                       && Services.Run != null && Services.Run.RunActive;
+        if (!driving)
         {
             src.mute = true;
             return;
