@@ -70,6 +70,28 @@ public static class HarnessChecks
     }
 
     /// <summary>
+    /// 화물 카탈로그의 각 메시 tri 수가 예산 안에 드는지 단언 — 고폴리 자산 침투 검출.
+    /// Kenney 로우폴리 월드(박스 ~12 tris)에 Meshy 원본(2.7만~7.5만)이 안 깎인 채
+    /// 들어오면 결이 깨지고 성능도 샌다. hero 화물도 ~3000이면 충분(CargoDecimator로 깎음).
+    /// (2026-05-23: Eggs 53k/Glass 27k/Fish 75k/Cake 54k 발견 — 전부 미가공 Meshy)
+    /// </summary>
+    public static string CheckCargoPolyBudget(int budgetTris = 3000)
+    {
+        var cat = Resources.Load<CargoModelCatalog>("CargoModels/CargoModelCatalog");
+        if (cat == null) return "SKIP: 카탈로그 없음";
+        string fails = "";
+        foreach (CargoType ct in System.Enum.GetValues(typeof(CargoType)))
+        {
+            if (!cat.TryGet(ct, out var prefab, out _) || prefab == null) continue;
+            int tris = 0;
+            foreach (var mf in prefab.GetComponentsInChildren<MeshFilter>())
+                if (mf.sharedMesh != null) tris += mf.sharedMesh.triangles.Length / 3;
+            if (tris > budgetTris) fails += $"{ct}({tris}tris) ";
+        }
+        return fails == "" ? $"PASS: 모든 화물 ≤{budgetTris}tris" : $"FAIL: 예산({budgetTris}) 초과 — {fails}(CargoDecimator로 깎아 카탈로그에 먹일 것)";
+    }
+
+    /// <summary>
     /// 포장 wrap을 **실제 입력경로(BeginStroke→UpdateStroke)**로 구동해 3D 리본이 실제로
     /// 생기는지(geometry>0) 단언. 지름길(DrawStrip 등) 우회 금지 — false-green 종류 박멸.
     /// (2026-05-21 와인병 리본 false-green: 검증이 DrawStrip만 봐서 GREEN, 실제 경로는 0)

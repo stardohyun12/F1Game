@@ -16,6 +16,7 @@ echo "[BOARD 주문보드]"
 say "return HarnessChecks.CheckFog(false);"
 say "return HarnessChecks.CheckRunInactiveSilent();"
 say "return HarnessChecks.CheckCargoPivots();"
+say "return HarnessChecks.CheckCargoPolyBudget();"
 
 # 포장 화면 — 실제 입력경로(BeginStroke)로 wrap 생성되는지 (false-green 종류 검출)
 "$UCLI" exec "var j=ScriptableObject.CreateInstance<OrderJob>(); j.cargoType=CargoType.Glass; j.destinationLabels=new System.Collections.Generic.List<string>{\"T\"}; var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>(); if(ps==null){ ps=new GameObject(\"PackingScreen\").AddComponent<PitCrew.Packing.PackingScreen>(); } ps.Show(j); return \"pack\";" >/dev/null 2>&1
