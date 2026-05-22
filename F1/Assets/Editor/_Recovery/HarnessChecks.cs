@@ -68,4 +68,47 @@ public static class HarnessChecks
         }
         return fails == "" ? "PASS: 모든 화물 피벗 중심" : $"FAIL: 피벗 어긋남 {fails}";
     }
+
+    /// <summary>
+    /// 포장 wrap을 **실제 입력경로(BeginStroke→UpdateStroke)**로 구동해 3D 리본이 실제로
+    /// 생기는지(geometry>0) 단언. 지름길(DrawStrip 등) 우회 금지 — false-green 종류 박멸.
+    /// (2026-05-21 와인병 리본 false-green: 검증이 DrawStrip만 봐서 GREEN, 실제 경로는 0)
+    /// 호출 전 PackingScreen.Show(잡)로 화물이 떠 있어야. 호출자가 Show.
+    /// </summary>
+    public static string CheckWrapRealPath()
+    {
+        var ps = Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+        if (ps == null) return "SKIP: PackingScreen 없음";
+        var item = ps.ActiveItem;
+        if (item == null) return "SKIP: ActiveItem 없음 (Show 먼저)";
+        var painter = item.GetComponent<PitCrew.Packing.WrapPainter>();
+        if (painter == null) return "SKIP: WrapPainter 없음";
+
+        var BF = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+        var cam = ps.GetType().GetField("packingCamera", BF)?.GetValue(ps) as Camera;
+        var col = painter.GetType().GetField("targetCollider", BF)?.GetValue(painter) as Collider;
+        if (cam == null || col == null) return "SKIP: 카메라/콜라이더 미배선";
+
+        Physics.SyncTransforms();
+        // 객체의 실제 화면 bounds 안에서 세로 스트로크 (모양 무관 hit 보장)
+        var b = col.bounds; var c = b.center;
+        Vector3 topW = c + new Vector3(0, b.extents.y * 0.7f, 0);
+        Vector3 botW = c - new Vector3(0, b.extents.y * 0.7f, 0);
+        Vector2 top = cam.WorldToScreenPoint(topW);
+        Vector2 bot = cam.WorldToScreenPoint(botW);
+        painter.BeginStroke(top);
+        for (int i = 1; i <= 16; i++) painter.UpdateStroke(Vector2.Lerp(top, bot, i / 16f));
+        painter.EndStroke();
+
+        int verts = 0;
+        foreach (Transform t in col.transform)
+            if (t.name.Contains("Ribbon"))
+            {
+                var mf = t.GetComponent<MeshFilter>();
+                if (mf != null && mf.sharedMesh != null) verts += mf.sharedMesh.vertexCount;
+            }
+        return verts > 0
+            ? $"PASS: 실제 입력경로 랩 생성됨 verts={verts}"
+            : "FAIL: BeginStroke로 랩 geometry 0 — false-green 종류 (지름길은 통과해도 진짜 경로 깨짐)";
+    }
 }
