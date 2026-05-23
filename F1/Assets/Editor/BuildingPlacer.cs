@@ -16,6 +16,26 @@ public static class BuildingPlacer
     const float FootprintMargin = 0.9f;
     const float BuildingY = 0f;
 
+    // 지붕색 변주 (suburban) — variation 텍스처 3장으로 머티리얼 3개만 사전생성 후 hash로 선택.
+    // 메시·UV·콜라이더 불변(텍스처만 swap). 3개만 만들어 재사용 → 누수 0 (CLAUDE.md Material 룰).
+    static Material[] _variantMats;
+    const string SuburbTexDir = "Assets/Model/kenney_city-kit-suburban_20/Models/Textures/";
+
+    static void EnsureVariants(Renderer sample)
+    {
+        if (_variantMats != null || sample == null || sample.sharedMaterial == null) return;
+        var names = new[] { "variation-a.png", "variation-b.png", "variation-c.png" };
+        string key = sample.sharedMaterial.HasProperty("_BaseMap") ? "_BaseMap" : "_MainTex";
+        _variantMats = new Material[names.Length];
+        for (int i = 0; i < names.Length; i++)
+        {
+            var tex = AssetDatabase.LoadAssetAtPath<Texture>(SuburbTexDir + names[i]);
+            var m = new Material(sample.sharedMaterial);
+            if (tex != null) m.SetTexture(key, tex);
+            _variantMats[i] = m;
+        }
+    }
+
     public static GameObject Build(TrackLayout layout)
     {
         if (layout == null) { Debug.LogError("BuildingPlacer: layout null"); return null; }
@@ -122,6 +142,16 @@ public static class BuildingPlacer
                 inst.transform.localRotation = rotation;
                 inst.transform.localScale = Vector3.one * scale;
                 if (def.addCollider) AddColliders(inst);
+                // 지붕색 변주: suburban 건물만 cell hash로 3색 중 하나 (단조로운 초록 단일 깨기).
+                if (def.category == "suburban")
+                {
+                    foreach (var rend in inst.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        EnsureVariants(rend);
+                        if (_variantMats != null)
+                            rend.sharedMaterial = _variantMats[Mathf.Abs(hash) % _variantMats.Length];
+                    }
+                }
                 placed++;
             }
         }
