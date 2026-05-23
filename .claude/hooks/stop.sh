@@ -9,9 +9,37 @@ set -euo pipefail
 
 UNITY_CLI="C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe"
 
-# 1) Unity 컴파일 에러 체크 (timeout 5s)
-ERRORS_RAW=""
+# 0) Editor 도달성 확인 — 검증 가능 여부를 먼저 안다 (false-green 방지).
+# unity-cli status 가 5s 안에 정상 응답하면 1, 아니면 0.
+UNITY_REACHABLE=0
 if [ -x "$UNITY_CLI" ]; then
+  if timeout 5 "$UNITY_CLI" status >/dev/null 2>&1; then
+    UNITY_REACHABLE=1
+  fi
+fi
+
+# 0.5) 이번 turn 시스템 파일(.cs/.unity/.asset) 변경 여부 (uncommitted + staged)
+SYS_DIRTY=0
+if command -v git >/dev/null 2>&1; then
+  SYS_DIRTY=$( { git diff --name-only 2>/dev/null; git diff --cached --name-only 2>/dev/null; } \
+    | grep -cE '\.(cs|unity|asset)$' || true)
+fi
+
+# Editor 미연결인데 시스템 변경 있음 → 검증 불가 = false-green 위험. 크게 경고 (block 아님).
+if [ "$UNITY_REACHABLE" -eq 0 ] && [ "$SYS_DIRTY" -gt 0 ]; then
+  cat <<EOF
+{
+  "hookSpecificOutput": {
+    "hookEventName": "Stop",
+    "additionalContext": "⚠⚠ 검증 불가 (false-green 위험): Editor 미연결(unity-cli status 무응답)인데 시스템 파일(.cs/.unity/.asset) ${SYS_DIRTY}개 변경됨. 컴파일/런타임 검증이 이번 turn에 한 번도 안 돌았다. 완료 보고 금지. → Editor 켜고 'unity-cli editor refresh --compile' + 'bash scripts/regression-check.sh'로 회귀 점검 후 마무리."
+  }
+}
+EOF
+fi
+
+# 1) Unity 컴파일 에러 체크 (timeout 5s) — Editor 연결됐을 때만 의미 있음
+ERRORS_RAW=""
+if [ "$UNITY_REACHABLE" -eq 1 ]; then
   ERRORS_RAW=$(timeout 5 "$UNITY_CLI" console --type error 2>/dev/null || true)
 fi
 
@@ -53,18 +81,31 @@ if command -v git >/dev/null 2>&1; then
     # 이 commit이 건드린 파일 — 시스템 변경 (.cs/.unity/.asset) 있나?
     SYS_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null | grep -E '\.(cs|unity|asset)$' || true)
     [ -z "$SYS_FILES" ] && continue
-    # commit body에 'verifier' / 'verified' / 'Verified-By' 키워드 있나?
     BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
-    if ! echo "$BODY" | grep -qiE 'verifier|verified|verify'; then
-      # skip 옵션: commit message에 '[skip-verifier]' 명시되어 있으면 OK
-      if ! echo "$BODY" | grep -qi 'skip-verifier'; then
-        UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80}\n"
-      fi
+    # skip 옵션: '[skip-verifier]' 명시되면 통과 (단순 fix)
+    if echo "$BODY" | grep -qi 'skip-verifier'; then
+      continue
+    fi
+    # 형식 말고 결과 검증 (D-073): 'Verified-By:' 줄 뒤에 실질 내용이 있어야 통과.
+    #   - 'Verified-By:' 줄이 없으면 위반.
+    #   - 있어도 뒤 내용이 공허("OK"/"통과" 등 한 단어)거나 12자 미만이면 위반.
+    VLINE=$(echo "$BODY" | grep -iE '^[[:space:]]*Verified-By:' | head -1 || true)
+    if [ -z "$VLINE" ]; then
+      UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By: 줄 없음)\n"
+      continue
+    fi
+    EVIDENCE=$(echo "$VLINE" | sed -E 's/^[[:space:]]*Verified-By:[[:space:]]*//I')
+    EVID_TRIM=$(echo "$EVIDENCE" | tr -d '[:space:]')
+    # 공허한 한 단어 (대소문자 무시)
+    if echo "$EVID_TRIM" | grep -qiE '^(ok|통과|done|pass|passed|yes|완료|확인|green|allgreen)$'; then
+      UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By 내용 공허: '${EVIDENCE}')\n"
+    elif [ "${#EVID_TRIM}" -lt 12 ]; then
+      UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By 내용 너무 짧음: '${EVIDENCE}')\n"
     fi
   done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
 
   if [ -n "$UNVERIFIED" ]; then
-    REASON="최근 30분 시스템 변경(.cs/.unity/.asset) commit 중 verifier 흔적 없음 (D-073 위반):\\n${UNVERIFIED}\\n→ 조치: (a) verifier subagent dispatch 후 commit body에 'Verified-By: <findings>' 추가 (git commit --amend), 또는 (b) 단순 fix면 commit message에 '[skip-verifier]' 명시."
+    REASON="최근 30분 시스템 변경(.cs/.unity/.asset) commit의 검증 증거 부실 (D-073, 형식 아닌 결과 검증):\\n${UNVERIFIED}\\n→ 조치: (a) verifier subagent dispatch 또는 'bash scripts/regression-check.sh' 실행 후, commit body에 'Verified-By: <실제 측정/단언 결과 12자 이상>' 추가 (git commit --amend). 'OK'/'통과' 같은 한 단어 금지 — 무엇을 어떻게 확인했는지. 또는 (b) 단순 fix면 commit message에 '[skip-verifier]' 명시."
     cat <<EOF
 {
   "decision": "block",
