@@ -37,27 +37,27 @@ MonoBehaviour:
   - '..............##..............'
   buildingMask:
   - ..............................
-  - .TTTWWWWWWWWW..H..H..HC.H..C..
-  - .TTTWWWWWWWWW..H......C.H..C..
-  - .WWWWWWWWWWWW..H.CH...C.H..C..
-  - .WWWWWWWWWWWW..H.CH...C.H..C..
+  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
+  - .WTWTWTW.WTWTW..TWTWTW.WTWTWT.
+  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
+  - .WTWTWTW.WTWTW..TWTWTW.WTWTWT.
+  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
   - ..............................
-  - .WWW.WWW.WWW.W.H.C...HC.H..C..
-  - .WWW.WWW.WWW.W.H.C...HC.H..C..
-  - .WWW.....WWW.....C...HC.H..C..
-  - .WWW.WWW.WWW.W.H.C...HC.H..C..
-  - ..CH..HC.H.....H.C...HC.H..C..
-  - ..CH.....H.......C...HC.H..C..
-  - ..CH..HC.H....WT.W.WWTWWTWWTW.
-  - ..CH..HC.H....WT.W.WWTF.TWF.W.
-  - ..CH.....H.......W.WWT..TW..W.
-  - ..CH..HC.H....WT.W.WWTWWTWWTW.
   - ..............................
-  - ..CH..HC.H..C.F.WWF.WTF.TWF.W.
-  - ..CH..HC.H..C...WW..WT..TW..W.
-  - ..CH..HC.H..C.WTWWTWWTWWTWWTW.
-  - ..CH..........WTWWTWWTWWTWWTW.
+  - .HC.CH.HC.CH.H..CH.HC.CH.HC.C.
+  - .CH.HC.CH.HC.C..HC.CH.HC.CH.H.
   - ..............................
+  - ..............................
+  - .HC.CH.HC.CH.H..CH.HC.CH.HC.C.
+  - .CH.HC.CH.HC.C..HC.CH.HC.CH.H.
+  - ..............................
+  - ..............................
+  - .WSW.WSWS.SW.W..SWSWSWSWSWSWS.
+  - .SWS.SWSW.WS.S..WSWSWSWSWSWSW.
+  - .WSW.WSWS.SW.W..SWSWSWSWSWSWS.
+  - .SWS.SWSW.WS.S..WSWSWSWSWSWSW.
+  - .WSWSWSWSWSWSW..SWSWSWSWSWSWS.
+  - WSWSWSWSWSWSWS..WSWSWSWSWSWSWS
   heightMask:
   - ..............................
   - ..............................
@@ -82,63 +82,63 @@ MonoBehaviour:
   - ..............................
   - ..............................
   zoneMask:
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHDDDDDDDDDDDDDDDD'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
   - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
   - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDIIIIIIIIIIIIIIII'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
   cellHeightMeters: 1.5
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
-  - col: 0
-    row: 2
+  - col: 10
+    row: 15
     label: PierEnd
-  - col: 0
-    row: 6
-    label: CargoShip
-  - col: 12
-    row: 0
+  - col: 20
+    row: 15
+    label: CargoDock
+  - col: 4
+    row: 16
     label: Warehouse
-  - col: 0
-    row: 10
-    label: OfficeCornerS
-  - col: 16
-    row: 5
-    label: OfficeCornerN
-  - col: 0
-    row: 16
-    label: CentralPlaza
-  - col: 13
-    row: 16
-    label: MainStation
-  - col: 16
-    row: 21
-    label: FactoryGateA
   - col: 29
-    row: 16
-    label: FactoryGateB
-  - col: 29
-    row: 12
-    label: MotorDepot
-  - col: 18
-    row: 16
+    row: 18
+    label: FishMarket
+  - col: 15
+    row: 11
+    label: CityHall
+  - col: 12
+    row: 14
+    label: Plaza
+  - col: 2
+    row: 14
+    label: Station
+  - col: 28
+    row: 11
+    label: Mall
+  - col: 9
+    row: 0
+    label: FactoryA
+  - col: 12
+    row: 6
+    label: Depot
+  - col: 16
+    row: 0
     label: ContainerYard
   startCell: {x: 12, y: 10}
   startYawDeg: 90
