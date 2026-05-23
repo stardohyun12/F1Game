@@ -1,0 +1,33 @@
+{
+  "title": "PITCREW STUDIO",
+  "focus": "스튜디오 대시보드 완성 — 게임(맵)으로 복귀 대기",
+  "updatedAt": "2026-05-23T23:25:00",
+  "pm": { "doing": "대시보드 완성·검증 끝. 다음: 맵 디자인 마무리(중앙 랜드마크 제거 반영)" },
+  "departments": [
+    {
+      "name": "기획",
+      "icon": "📐",
+      "status": "idle",
+      "note": "brainstorm·spec·수치·리서치",
+      "desks": [
+        { "role": "리서치", "name": "맵 구조", "task": "지구개성 우선·중앙 랜드마크 불필요 결론", "status": "done" }
+      ]
+    },
+    {
+      "name": "프로그래밍",
+      "icon": "💻",
+      "status": "idle",
+      "note": "구현·검증·하네스",
+      "desks": [
+        { "role": "구현", "name": "스튜디오 대시보드", "task": "Python 서버+HTML, 작동 검증 완료", "status": "done" }
+      ]
+    },
+    {
+      "name": "아트",
+      "icon": "🎨",
+      "status": "idle",
+      "note": "맵 룩·화물·UI 시각",
+      "desks": []
+    }
+  ]
+}
