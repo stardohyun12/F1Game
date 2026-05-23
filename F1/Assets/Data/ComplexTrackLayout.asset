@@ -37,27 +37,27 @@ MonoBehaviour:
   - '..............##..............'
   buildingMask:
   - ..............................
-  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
-  - .WTWTWTW.WTWTW..TWTWTW.WTWTWT.
-  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
-  - .WTWTWTW.WTWTW..TWTWTW.WTWTWT.
-  - .TWTWTWT.TWTWT..WTWTWT.TWTWTW.
+  - .FSF.SW..WWSFF...W.F.S.WTWTFW.
+  - .TFWWTWW..WSFT..TSW.W..WWWWS..
+  - .W.FW.FW...WTS....W.FF.F.WWWW.
+  - .F.SS..T.SFF.W...FT.W..W..FWS.
+  - .FWWTW.S..WWTW..TSSWF..SF...S.
   - ..............................
   - ..............................
-  - .HC.CH.HC.CH.H..CH.HC.CH.HC.C.
-  - .CH.HC.CH.HC.C..HC.CH.HC.CH.H.
+  - .SH.SC..H.HH.H..CS.HH.HC.SH.H.
+  - .HH.S..H..HC.H..CS.CC.CH.CH.C.
   - ..............................
   - ..............................
-  - .HC.CH.HC.CH.H..CH.HC.CH.HC.C.
-  - .CH.HC.CH.HC.C..HC.CH.HC.CH.H.
+  - .CC....HC.HH.....H.HH.C...H...
+  - .CC.HH.HH.SH.H..CC.CH.HH.H..H.
   - ..............................
   - ..............................
-  - .WSW.WSWS.SW.W..SWSWSWSWSWSWS.
-  - .SWS.SWSW.WS.S..WSWSWSWSWSWSW.
-  - .WSW.WSWS.SW.W..SWSWSWSWSWSWS.
-  - .SWS.SWSW.WS.S..WSWSWSWSWSWSW.
-  - .WSWSWSWSWSWSW..SWSWSWSWSWSWS.
-  - WSWSWSWSWSWSWS..WSWSWSWSWSWSWS
+  - .CWW.W.SS.SW.W...SCCSSWSWCCCS.
+  - .C.C.CSC..CC.C..C...SSSWSW.W..
+  - .W....WS..WC.S..S.CC.SCSWWS.W.
+  - ..WW.SS.W..W.W...WSS..CS...WW.
+  - ..............................
+  - ..............................
   heightMask:
   - ..............................
   - ..............................
