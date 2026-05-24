@@ -12,7 +12,8 @@ using UnityEngine.SceneManagement;
 public static class PlaceRoadLines
 {
     const float CellSize = 6f;
-    const float LineY = 0.19f;       // 아스팔트(0.17) 살짝 위
+    const float LineY = 0.02f;       // 도로 표면(땅=0 정렬 후 ~0.01) 위 1cm. AlignMapToGround와 일치.
+                                     // (옛 0.19는 연석 꼭대기 0.17을 잘못 기준 삼아 도로면 위로 떠 있었음)
     const float DashLen = 3.2f;      // 셀당 점선 길이 (나머지는 간격 → 점선)
     const float LineWidth = 0.18f;
     const string MatPath = "Assets/Materials/RoadLine.mat";
