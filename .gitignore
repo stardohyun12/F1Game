@@ -139,6 +139,7 @@ docs/asset-catalog-*.html
 
 # 스튜디오 대시보드 런타임 로그 (state.json·server.py는 추적)
 tools/studio-dashboard/server.log
+tools/studio-dashboard/activity.jsonl
 
 # 스튜디오 허브 페이지(생성된 목업)·로그 — 추적 안 함
 tools/studio-dashboard/pages/

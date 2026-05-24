@@ -15,9 +15,26 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 PORT = 7878
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = os.path.join(HERE, "state.json")
+ACTIVITY = os.path.join(HERE, "activity.jsonl")
 PAGES_DIR = os.path.join(HERE, "pages")
 SESSIONS = os.path.expanduser("~/.claude/sessions")
 os.makedirs(PAGES_DIR, exist_ok=True)
+
+
+def read_activity(n=14):
+    """activity.jsonl 마지막 n줄 (hook이 자동 적재). 최신이 위로."""
+    try:
+        with open(ACTIVITY, encoding="utf-8") as f:
+            lines = f.readlines()[-n:]
+        out = []
+        for ln in lines:
+            try:
+                out.append(json.loads(ln))
+            except Exception:
+                pass
+        return list(reversed(out))
+    except Exception:
+        return []
 
 
 def read_state():
@@ -85,6 +102,8 @@ class H(BaseHTTPRequestHandler):
         elif path == "/api/state":
             d = read_state(); d["session"] = session_activity()
             self._send(json.dumps(d, ensure_ascii=False), "application/json; charset=utf-8")
+        elif path == "/api/activity":
+            self._send(json.dumps(read_activity(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/pages":
             self._send(json.dumps(list_pages(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/view/team":
@@ -158,13 +177,35 @@ TEAM_PAGE = r"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><titl
  .b-working{background:#fff0cf;color:#9a6b00}.b-done{background:#d6f0d8;color:#2c7a39}.b-idle{background:#e8e8e8;color:#888}
  .empty{font-size:11px;color:#9aa0a8;padding:9px 12px}
  .foot{padding:0 20px 18px;font-size:11px;color:#8a909a}
+ .feed{margin:14px 20px;background:#1b212a;border-radius:10px;padding:8px 6px;max-height:188px;overflow:hidden}
+ .feed .fh{font-size:11px;color:#aebcc4;letter-spacing:1px;padding:2px 12px 8px}
+ .fitem{display:flex;align-items:center;gap:9px;padding:6px 12px;font-size:12px;border-left:3px solid #3a3f47;margin:2px 6px;background:#222b35;border-radius:6px;animation:slidein .45s ease}
+ .fitem.k-start{border-left-color:#e0a83b} .fitem.k-done{border-left-color:#5aa469} .fitem.k-turn{border-left-color:#5b7186}
+ .fitem .fi{font-size:14px;flex:none}
+ .fitem .fw{font-weight:700;color:#cdd4db;flex:none}
+ .fitem .ft{color:#9aa6b0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .fitem .fa{font-size:10px;color:#6a727c;flex:none}
+ @keyframes slidein{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+ @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+ .b-working{animation:pulse 1.1s ease-in-out infinite}
 </style></head><body>
  <div class="top"><h1>🏢 <span id="title">PITCREW STUDIO</span></h1><span id="light" class="light off">…</span></div>
  <div class="pm"><div class="r">👔 PM (나/Claude)</div><div class="d" id="pm">—</div></div>
+ <div class="feed"><div class="fh">📋 활동 피드 (hook 자동 기록 · 최신순)</div><div id="feed"></div></div>
  <div class="deps" id="deps"></div>
  <div class="foot">읽기 전용 · 3초 갱신 · <span id="focus"></span></div>
 <script>
 const IC={working:"🟢",done:"✅",idle:"💤"};
+const FIC={start:"🚀",done:"✅",turn:"💬"};
+function ago(ts){const d=Math.max(0,Math.floor(Date.now()/1000-ts));
+  if(d<60)return d+"초 전";if(d<3600)return Math.floor(d/60)+"분 전";return Math.floor(d/3600)+"시간 전";}
+let lastFeedTop=0;
+async function feed(){try{
+  const a=await (await fetch('/api/activity?_='+Date.now())).json();
+  const f=document.getElementById('feed');
+  if(!a.length){f.innerHTML='<div class="fitem"><span class="ft">아직 활동 없음 — 에이전트 띄우면 여기 흐름</span></div>';return;}
+  f.innerHTML=a.map(r=>`<div class="fitem k-${r.kind}"><span class="fi">${FIC[r.kind]||'·'}</span><span class="fw">${r.who||''}</span><span class="ft">${r.text||''}</span><span class="fa">${ago(r.ts)}</span></div>`).join('');
+}catch(e){}}
 async function tick(){try{
   const s=await (await fetch('/api/state?_='+Date.now())).json();
   document.getElementById('title').textContent=s.title||'PITCREW STUDIO';
@@ -179,7 +220,7 @@ async function tick(){try{
     el.innerHTML=`<h2>${d.icon||''} ${d.name}실 ${d.status==='active'?'● 활성':'○ 대기'}</h2><div class="note">${d.note||''}</div>${dk}`;
     w.appendChild(el);});
 }catch(e){document.getElementById('pm').textContent='상태 못 읽음: '+e;}}
-tick();setInterval(tick,3000);
+tick();feed();setInterval(tick,3000);setInterval(feed,3000);
 </script></body></html>"""
 
 

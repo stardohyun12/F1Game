@@ -35,7 +35,24 @@
           },
           {
             "type": "command",
+            "command": "python .claude/hooks/activity-log.py",
+            "timeout": 10
+          },
+          {
+            "type": "command",
             "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/activity-log.py",
             "timeout": 10
           }
         ]
@@ -60,6 +77,16 @@
           {
             "type": "command",
             "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/activity-log.py",
             "timeout": 10
           }
         ]
