@@ -25,6 +25,7 @@ sleep 1
 sleep 2
 
 echo "[BOARD 주문보드]"
+say "return HarnessChecks.CheckCoreServicesPresent();"
 say "return HarnessChecks.CheckOrderBoardWiring();"
 say "return HarnessChecks.CheckOrderDestinationsResolve();"
 say "return HarnessChecks.CheckFog(false);"

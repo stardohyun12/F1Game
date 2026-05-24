@@ -133,6 +133,29 @@ public static class HarnessChecks
     }
 
     /// <summary>
+    /// 풀 게임루프 시스템이 Services에 전부 등록됐는지 단언 — 씬 리빌드가 시스템 GameObject를
+    /// 조용히 누락시키면(2026-05-25: 맵 리빌드로 8시스템 유실, 포장·차고 흐름 통째로 죽음)
+    /// 에러 없이 단계가 빠진다. 도현이 manual play로 발견해야 알던 걸 자동 검출.
+    /// Play 중 호출(GameContext.AutoFindMissing이 런타임에 씬 인스턴스로 등록하므로).
+    /// </summary>
+    public static string CheckCoreServicesPresent()
+    {
+        string missing = "";
+        if (Services.Run == null) missing += "Run ";
+        if (Services.Delivery == null) missing += "Delivery ";
+        if (Services.Packing == null) missing += "Packing ";
+        if (Services.Restore == null) missing += "Restore ";
+        if (Services.Boost == null) missing += "Boost ";
+        if (Services.TireWear == null) missing += "TireWear ";
+        if (Services.Tires == null) missing += "Tires ";
+        if (Services.Upgrade == null) missing += "Upgrade ";
+        if (Services.Shake == null) missing += "Shake ";
+        return missing == ""
+            ? "PASS: 풀 루프 시스템 9개 전부 Services 등록됨"
+            : $"FAIL: Services 누락(단계 죽음) — {missing}(씬에 GameObject 유실. WireGarageSceneObjects/WireCoreSingletons/Add PackingScreen/Setup Cargo View 재실행 필요)";
+    }
+
+    /// <summary>
     /// 모든 OrderJob의 목적지 라벨이 씬 DeliveryPoint와 매칭되는지 단언 — 매칭 안 되면
     /// RoutePlanScreen이 마커를 0개 만들어 "경로 설정 안됨"이 됨. 도현이 manual play로
     /// 발견해야 알던 D-073 라벨 미스매치 재발(세션27·세션32)을 자동 검출.
