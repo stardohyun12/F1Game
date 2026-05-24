@@ -14,48 +14,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrackLayout
   roadMask:
   - '##############################'
-  - '#.......#.....##......#......#'
-  - '#.......#.....##......#......#'
-  - '#.......#.....##......#......#'
-  - '#.......#.....##......#......#'
-  - '#.......#.....##......#......#'
+  - '#......#......##......#......#'
+  - '#......#......##......#......#'
+  - '#......#......##......#......#'
+  - '#......#......##......#......#'
+  - '#......#......##......#......#'
   - '##############################'
   - '##############################'
-  - '...#.....#....##..#.....#.....'
-  - '...#.....#....##..#.....#.....'
+  - ..#..#..#..#..##..#..#..#..#..
+  - ..#..#..#..#..##..#..#..#..#..
   - '##############################'
   - '##############################'
-  - '.....#.....#..###.....#....#..'
-  - '.....#.....#..###.....#....#..'
+  - ..#..#..#..#..##..#..#..#..#..
+  - ..#..#..#..#..##..#..#..#..#..
   - '##############################'
   - '##############################'
-  - '#...#....#..#.##.............#'
-  - '#...#....#..#.##.............#'
-  - '#...#....#..#.##.............#'
-  - '#...#....#..#.##.............#'
-  - '#.............##.............#'
-  - '..............##..............'
+  - ....#.....#...##......#.......
+  - ....#.....#...##......#.......
+  - ....#.....#...##......#.......
+  - ..............##..............
+  - ..............................
+  - ..............................
   buildingMask:
   - ..............................
-  - .......W.S..S....W.WW..WS.S.S.
-  - .WS.W..S........W.SWSS..SST.T.
-  - ..SWS.S.....S...SWW....TW...S.
-  - .SWWW..S.....W...WSW....WS..S.
-  - .S..WS....WW.S...WS.SW..W.SS..
+  - ..TWFF..FFT.FF...FTWF..WFF.WF.
+  - .F.TWFF.WFFT.F..W.FTWF.TWFF.W.
+  - .WF.TWF..WFFT...TW.FTW..TWFF..
+  - .TWF.TW.F.WFFT..FTW.FT.F.TWFF.
+  - .FTWF.T.FF.WFF..FFTW.F.WF.TWF.
   - ..............................
   - ..............................
-  - .SS.S..SS.S......K..........S.
-  - .SS.SS....SS.S..S..SS.SS.SS...
+  - HK..H.CH.KC.H...HK.HH.C..KC..K
+  - HH.C..KC..K.HH..HH..H.KC.HK.H.
   - ..............................
   - ..............................
-  - .S..SS.S..SS....KS.SS.....S.S.
-  - .S...S.S..SS.S..SS.....S.S..S.
+  - HK.HH.C..KC..K..H..HH..H.KC.HK
+  - HH..H.KC.HK.H...HH.CH.K..HK..H
   - ..............................
   - ..............................
-  - .SS..S.W...S.......W......S...
-  - .SS.....S.SS.W..SWS.......S.S.
-  - ..WS.WSS........SWSS.....S..W.
-  - ...W.S.SS.......S.S....S.S.S..
+  - W.TW.T.WTW..WW...TWWT..TWW.WWT
+  - WT.W.WW.WW.W.T..T.WTWW.WWTW.TW
+  - TWW..WTW.T.WT...WW.WWT..TWWT.W
+  - ..............................
   - ..............................
   - ..............................
   heightMask:
@@ -82,28 +82,28 @@ MonoBehaviour:
   - ..............................
   - ..............................
   zoneMask:
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
-  - 'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH'
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - IIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+  - HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
   cellHeightMeters: 1.5
   catalog: {fileID: 11400000, guid: 485d2b10fac253040b14b3f882ea028f, type: 2}
   deliveries:
@@ -116,8 +116,8 @@ MonoBehaviour:
   - col: 4
     row: 16
     label: Warehouse
-  - col: 29
-    row: 18
+  - col: 22
+    row: 17
     label: FishMarket
   - col: 15
     row: 11
