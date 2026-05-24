@@ -21,9 +21,9 @@ public static class PlaceSuburbanProps
     const float PropsY = 0f;
     const string SuburbanFbxRoot = "Assets/Model/kenney_city-kit-suburban_20/Models/FBX format";
 
-    // 배치 확률 (도로 인접 + 빈 셀 중). 빈칸 자체가 적어(블록이 집으로 꽉 참)
-    // 거의 다 채워야 거리서 녹지가 보인다 → 0.9.
-    const float PlaceProbability = 0.9f;
+    // 배치 확률. 도로변을 가로수로 줄지어 채워야(리뷰어 1순위) 도로 끝단의
+    // "맨 잔디에 뚝 끊김" 모형 티가 가려진다 → 거의 다 채움.
+    const float PlaceProbability = 0.97f;
 
     [MenuItem("PitCrew/Track/Auto-Place Suburban Props")]
     public static void Execute()
@@ -86,12 +86,14 @@ public static class PlaceSuburbanProps
 
                 var prop = propPool[Mathf.Abs(hash) % propPool.Count];
 
-                // 도로 방향으로 약간 치우친 셀 안 위치 (정중앙 X, prop 풍성)
+                // 인접 도로 쪽으로 밀어 연석에 줄세움(가로수). 도로 평행 방향으로만 약간 흩음.
+                int rdx = layout.IsRoad(c + 1, r) ? 1 : layout.IsRoad(c - 1, r) ? -1 : 0;
+                int rdy = (rdx == 0 && layout.IsRoad(c, r + 1)) ? 1 : (rdx == 0 && layout.IsRoad(c, r - 1)) ? -1 : 0;
                 int subHash = (c * 31 + r) * 17;
-                float jitterX = ((subHash % 71) / 71f - 0.5f) * (CellSize * 0.6f);
-                float jitterZ = (((subHash / 71) % 53) / 53f - 0.5f) * (CellSize * 0.6f);
-                float posX = c * CellSize + jitterX;
-                float posZ = r * CellSize + jitterZ;
+                float along = ((subHash % 71) / 71f - 0.5f) * (CellSize * 0.5f); // 도로 평행 흩기
+                float curb = 2.1f; // 연석까지 밀기
+                float posX = c * CellSize + (rdx != 0 ? rdx * curb : along);
+                float posZ = r * CellSize + (rdy != 0 ? rdy * curb : along);
 
                 // 회전: 도로 방향에 등 돌리기 (정원 fence/tree 자연스러움)
                 float yaw = ((Mathf.Abs(hash) / 1000) % 4) * 90f;
