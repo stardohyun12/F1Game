@@ -57,7 +57,11 @@ public static class PlaceSuburbanProps
             Debug.LogError("[Props] FBX prop 없음 — Suburban kit 임포트 확인.");
             return;
         }
-        Debug.Log($"[Props] (1/3) {propPool.Count}개 prop FBX 로드.");
+        // 블록 안쪽 마당용 = 나무만 (path-stones/fence/planter 제외)
+        var treePool = new List<GameObject>();
+        foreach (var g in propPool)
+            if (g.name.Contains("tree")) treePool.Add(g);
+        Debug.Log($"[Props] (1/3) {propPool.Count}개 prop / {treePool.Count}개 tree FBX 로드.");
 
         // 2. 기존 Props 루트 제거 (재실행 안전)
         var existing = GameObject.Find("Props");
@@ -77,23 +81,39 @@ public static class PlaceSuburbanProps
                 if (layout.IsRoad(c, r)) continue;
                 if (layout.BuildingChar(c, r) != '.') continue;       // 건물 마스크 셀 회피
                 if (buildingsOccupied[c, r]) continue;                 // 실제 배치된 건물 회피
-                if (!IsAdjacentToRoad(layout, c, r)) continue;
+
+                bool adjRoad = IsAdjacentToRoad(layout, c, r);
 
                 // 결정론적 hash
                 int hash = c * 73856093 ^ r * 19349663;
                 float roll = Mathf.Abs((hash % 1000)) / 1000f;
-                if (roll > PlaceProbability) continue;
+                // 도로변은 가로수로 거의 다 채움. 블록 안쪽(비도로)은 마당 나무로 좀 더 성기게.
+                float prob = adjRoad ? PlaceProbability : 0.6f;
+                if (roll > prob) continue;
 
-                var prop = propPool[Mathf.Abs(hash) % propPool.Count];
+                // 안쪽 빈칸은 나무 위주(마당), 도로변은 풀 풀.
+                var prop = adjRoad ? propPool[Mathf.Abs(hash) % propPool.Count]
+                                   : (treePool.Count > 0 ? treePool[Mathf.Abs(hash) % treePool.Count]
+                                                         : propPool[Mathf.Abs(hash) % propPool.Count]);
 
-                // 인접 도로 쪽으로 밀어 연석에 줄세움(가로수). 도로 평행 방향으로만 약간 흩음.
+                // 도로변: 연석에 줄세움. 안쪽: 셀 안 자연 산포.
                 int rdx = layout.IsRoad(c + 1, r) ? 1 : layout.IsRoad(c - 1, r) ? -1 : 0;
                 int rdy = (rdx == 0 && layout.IsRoad(c, r + 1)) ? 1 : (rdx == 0 && layout.IsRoad(c, r - 1)) ? -1 : 0;
                 int subHash = (c * 31 + r) * 17;
-                float along = ((subHash % 71) / 71f - 0.5f) * (CellSize * 0.5f); // 도로 평행 흩기
-                float curb = 2.1f; // 연석까지 밀기
-                float posX = c * CellSize + (rdx != 0 ? rdx * curb : along);
-                float posZ = r * CellSize + (rdy != 0 ? rdy * curb : along);
+                float along = ((subHash % 71) / 71f - 0.5f) * (CellSize * 0.5f);
+                float jitZ = (((subHash / 71) % 53) / 53f - 0.5f) * (CellSize * 0.5f);
+                float curb = 2.1f;
+                float posX, posZ;
+                if (adjRoad)
+                {
+                    posX = c * CellSize + (rdx != 0 ? rdx * curb : along);
+                    posZ = r * CellSize + (rdy != 0 ? rdy * curb : along);
+                }
+                else // 블록 안쪽 마당
+                {
+                    posX = c * CellSize + along;
+                    posZ = r * CellSize + jitZ;
+                }
 
                 // 회전: 도로 방향에 등 돌리기 (정원 fence/tree 자연스러움)
                 float yaw = ((Mathf.Abs(hash) / 1000) % 4) * 90f;
