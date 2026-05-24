@@ -62,9 +62,82 @@ def session_activity():
     return {"busy": busy, "ageSec": round(age) if age is not None else None}
 
 
+CONTROL_MD = os.path.join(os.path.dirname(os.path.dirname(HERE)), "docs", "CONTROL.md")
+
+
+def md_to_html(md):
+    """의존성 0 미니 마크다운 — 헤더/표/리스트/볼드/hr/인용. CONTROL.md 정리뷰용."""
+    import html as _h
+    out, i, lines = [], 0, md.split("\n")
+    while i < len(lines):
+        ln = lines[i]
+        s = ln.strip()
+        if not s:
+            i += 1; continue
+        if s.startswith("```"):  # 코드블록 통째로
+            i += 1; buf = []
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                buf.append(_h.escape(lines[i])); i += 1
+            i += 1; out.append("<pre>" + "\n".join(buf) + "</pre>"); continue
+        if re.match(r"^#{1,6}\s", s):
+            n = len(s) - len(s.lstrip("#")); out.append(f"<h{n}>{inline(s[n:].strip())}</h{n}>"); i += 1; continue
+        if re.match(r"^(---+|\*\*\*+)$", s):
+            out.append("<hr>"); i += 1; continue
+        if s.startswith(">"):
+            out.append(f"<blockquote>{inline(s[1:].strip())}</blockquote>"); i += 1; continue
+        if "|" in s and i + 1 < len(lines) and re.match(r"^\s*\|?[\s:|-]+\|?\s*$", lines[i + 1]):
+            rows = []
+            while i < len(lines) and "|" in lines[i]:
+                rows.append(lines[i]); i += 1
+            out.append(render_table(rows)); continue
+        if re.match(r"^[-*]\s", s):
+            out.append("<ul>")
+            while i < len(lines) and re.match(r"^\s*[-*]\s", lines[i]):
+                out.append(f"<li>{inline(lines[i].strip()[2:])}</li>"); i += 1
+            out.append("</ul>"); continue
+        out.append(f"<p>{inline(s)}</p>"); i += 1
+    return "\n".join(out)
+
+
+def inline(t):
+    import html as _h
+    t = _h.escape(t)
+    t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+    t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
+    return t
+
+
+def render_table(rows):
+    def cells(r):
+        return [c.strip() for c in r.strip().strip("|").split("|")]
+    head = cells(rows[0]); body = rows[2:]
+    h = "".join(f"<th>{inline(c)}</th>" for c in head)
+    b = "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in cells(r)) + "</tr>" for r in body)
+    return f"<table><thead><tr>{h}</tr></thead><tbody>{b}</tbody></table>"
+
+
+def control_page():
+    try:
+        with open(CONTROL_MD, encoding="utf-8") as f:
+            body = md_to_html(f.read())
+    except Exception as e:
+        body = f"<p>CONTROL.md 못 읽음: {e}</p>"
+    return ("<!DOCTYPE html><html lang='ko'><head><meta charset='utf-8'><style>"
+            "body{margin:0;padding:20px 28px;background:#fbf8f1;color:#2b313a;"
+            "font-family:system-ui,'Malgun Gothic',sans-serif;line-height:1.55;max-width:900px}"
+            "h1{font-size:22px;border-bottom:2px solid #5aa469;padding-bottom:6px}"
+            "h2{font-size:17px;margin-top:26px;color:#2d3b45}h3{font-size:14px;color:#4a5560}"
+            "table{border-collapse:collapse;margin:10px 0;font-size:13px}"
+            "th,td{border:1px solid #cfc7b4;padding:5px 9px;text-align:left}th{background:#e6e1d6}"
+            "code{background:#eceadf;padding:1px 5px;border-radius:4px;font-size:12px}"
+            "blockquote{border-left:3px solid #9c6f64;margin:8px 0;padding:2px 12px;color:#6a7280;background:#f1ede2}"
+            "hr{border:0;border-top:1px solid #d8d2c2;margin:18px 0}pre{background:#2d3b45;color:#e6e1d6;padding:12px;border-radius:8px;overflow:auto;font-size:12px}"
+            "ul{margin:6px 0}</style></head><body>" + body + "</body></html>")
+
+
 def list_pages():
-    """좌측 nav 목록: 팀(내장) + pages/*.html (파일의 첫 <h2>를 제목으로)."""
-    out = [{"id": "team", "title": "🏢 팀"}]
+    """좌측 nav 목록: 팀(내장) + 관제탑 + pages/*.html (파일의 첫 <h2>를 제목으로)."""
+    out = [{"id": "team", "title": "🏢 팀"}, {"id": "control", "title": "📋 관제탑"}]
     for p in sorted(glob.glob(os.path.join(PAGES_DIR, "*.html"))):
         stem = os.path.splitext(os.path.basename(p))[0]
         title = stem
@@ -108,6 +181,8 @@ class H(BaseHTTPRequestHandler):
             self._send(json.dumps(list_pages(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/view/team":
             self._send(TEAM_PAGE)
+        elif path == "/view/control":
+            self._send(control_page())
         elif path.startswith("/view/page/"):
             name = path[len("/view/page/"):]
             if not SAFE.match(name):
@@ -147,7 +222,8 @@ async function loadNav(){
     const b=document.createElement('button');b.textContent=p.title;
     b.className=(('page:'.length&&p.id===cur)||p.id===cur)?'active':'';
     b.onclick=()=>{cur=p.id;
-      document.getElementById('frame').src = p.id==='team' ? '/view/team' : '/view/page/'+p.id.slice(5);
+      const src = p.id==='team' ? '/view/team' : (p.id==='control' ? '/view/control' : '/view/page/'+p.id.slice(5));
+      document.getElementById('frame').src = src;
       [...t.children].forEach(c=>c.className='');b.className='active';};
     t.appendChild(b);
   });
