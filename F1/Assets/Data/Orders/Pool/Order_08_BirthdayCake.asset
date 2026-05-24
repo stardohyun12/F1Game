@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uC0DD\uC77C \uCF00\uC774\uD06C"
   color: {r: 0.95, g: 0.6, b: 0.85, a: 1}
   destinationLabels:
-  - OfficeCornerN
+  - CityHall
   timeLimitSec: 270
   baseReward: 800
   timeBonus: 250

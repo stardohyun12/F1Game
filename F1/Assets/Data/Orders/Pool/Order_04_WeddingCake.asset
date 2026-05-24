@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uACB0\uD63C \uCF00\uC774\uD06C"
   color: {r: 1, g: 0.7, b: 0.85, a: 1}
   destinationLabels:
-  - MainStation
+  - Station
   timeLimitSec: 420
   baseReward: 1500
   timeBonus: 500

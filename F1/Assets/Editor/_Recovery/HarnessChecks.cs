@@ -133,6 +133,37 @@ public static class HarnessChecks
     }
 
     /// <summary>
+    /// 모든 OrderJob의 목적지 라벨이 씬 DeliveryPoint와 매칭되는지 단언 — 매칭 안 되면
+    /// RoutePlanScreen이 마커를 0개 만들어 "경로 설정 안됨"이 됨. 도현이 manual play로
+    /// 발견해야 알던 D-073 라벨 미스매치 재발(세션27·세션32)을 자동 검출.
+    /// 보드에 실제 뜨는 주문(OrderCatalog)뿐 아니라 풀(t:OrderJob) 전체를 검사.
+    /// Play 불필요 — 저장된 자산/씬 상태 검사.
+    /// </summary>
+    public static string CheckOrderDestinationsResolve()
+    {
+        var points = Object.FindObjectsByType<DeliveryPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (points.Length == 0) return "SKIP: 씬에 DeliveryPoint 없음";
+        // 런타임엔 DeliveryPoint.Label이 GameObject 이름으로 채워짐(Awake). 에디트 모드에선
+        // 직렬화 label이 비어 있으므로 name으로 폴백 — 두 모드 모두에서 동작.
+        var labels = new System.Collections.Generic.HashSet<string>();
+        foreach (var p in points) labels.Add(string.IsNullOrEmpty(p.Label) ? p.name : p.Label);
+
+        string bad = "";
+        int chec_ = 0;
+        foreach (var guid in AssetDatabase.FindAssets("t:OrderJob"))
+        {
+            var job = AssetDatabase.LoadAssetAtPath<OrderJob>(AssetDatabase.GUIDToAssetPath(guid));
+            if (job == null || job.destinationLabels == null || job.destinationLabels.Count == 0) continue;
+            chec_++;
+            var label = job.destinationLabels[0];
+            if (!labels.Contains(label)) bad += $"{job.name}→'{label}' ";
+        }
+        return bad == ""
+            ? $"PASS: 주문 {chec_}개 목적지 전부 씬 DeliveryPoint와 매칭"
+            : $"FAIL: 목적지 미매칭(경로설정 불가) — {bad}(FixOrderDestinations 또는 라벨 정합 필요)";
+    }
+
+    /// <summary>
     /// 포장 wrap을 **실제 입력경로(BeginStroke→UpdateStroke)**로 구동해 3D 리본이 실제로
     /// 생기는지(geometry>0) 단언. 지름길(DrawStrip 등) 우회 금지 — false-green 종류 박멸.
     /// (2026-05-21 와인병 리본 false-green: 검증이 DrawStrip만 봐서 GREEN, 실제 경로는 0)

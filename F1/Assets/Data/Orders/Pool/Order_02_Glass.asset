@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uC720\uB9AC \uC2DD\uAE30"
   color: {r: 0.6, g: 0.85, b: 1, a: 1}
   destinationLabels:
-  - CentralPlaza
+  - Plaza
   timeLimitSec: 360
   baseReward: 1000
   timeBonus: 300

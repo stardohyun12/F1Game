@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: "\uD68C\uC2DD\uC6A9 \uD69F\uAC10"
   color: {r: 0.4, g: 0.85, b: 0.5, a: 1}
   destinationLabels:
-  - CargoShip
+  - CargoDock
   timeLimitSec: 210
   baseReward: 900
   timeBonus: 300
