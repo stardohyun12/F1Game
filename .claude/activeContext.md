@@ -5,7 +5,27 @@
 
 ---
 
+## 다음 세션 첫 작업 (세션 32) — 우선순위
+
+> 맵은 플레이어 운전시점에서 6/10. 색·도로(중앙선) OK. 남은 것:
+
+1. **교차로 "네모 블럭" 진단 (도현 발견, 미해결)**. 2칸폭 간선이 만드는 2x2 crossroad 클러스터(`Tile_Crossroad_14_10/15_10/14_11/15_11`) 중앙에 어두운 네모들이 떠 보임. **road-square 메시 swap 시도→실패(이음매만 늘어 git revert함). crossroad 중앙패드 오진**. 진짜 원인 미상 — **다음 단서로 처음부터 진단**: ① 타일 이음매(seam)/AO인지 (인접 타일 Y·간격 측정) ② road-crossroad/intersection 메시의 실제 geometry(중앙 pad 높이 측정, nothing>0.25였음→낮은 pad?) ③ 단색 아스팔트 머티리얼이 geometry 음영을 드러낸 건지 ④ 1칸 교차로(단일 crossroad)도 같은 블럭인지 비교. **진단 먼저, 표층 swap 금지**(2회 실패=root cause dispatch, no-compromise §4).
+2. **OrderBoard wiring 자동 가드** — panelRoot/cardsContainer/cardPrefab NULL이 **재발**(세션 27 D-073, 세션 31 또). HarnessChecks에 `CheckOrderBoardWiring` 단언 추가 → "도현 말 안해도" 자동 검출. 왜 끊기는지(씬 리버트?)도 추적.
+3. **맵 구성(도현 #3 "아쉬움")** — 미착수. 지구 구분/랜드마크/흐름 중 뭔지 먼저 확인.
+4. 매 검증에 **실제 Play 포함**(UI·주행) — 정적 스샷만으론 UI-loss 못 잡음. [[feedback-qa-review-full-loop]] [[feedback-test-real-flow-not-reflection-harness]].
+
+**맵 룩 재적용 메뉴**(리빌드 시 룩 날아감 → 순서대로 재실행): `Build Everything From Layout` → `Plain Asphalt Roads` → `Place Road Center Lines` → `Auto-Place Sidewalks` → `Auto-Place Suburban Props` → `Auto-Place Street Furniture` → `Auto-Place Street Vehicles` → `Apply Warm Grade`. (현재 씬엔 다 적용+커밋됨, 리빌드 안 하면 유지.)
+
+---
+
 ## 지난 세션 요약
+
+- **세션 31 (2026-05-24~25): 하네스 엔지니어링 + 사용자환경 + 맵 플레이어시점 재설계 + UI 복구.**
+  - **하네스 (B 트랙)**: 활동 피드(`89db39c`) — hook(`activity-log.py`)이 에이전트 start/done/turn을 `activity.jsonl`에 자동 적재 → studio-dashboard 팀 탭에 흐름(state.json 수동갱신 대체). Windows cp949 stdin 함정=raw bytes UTF-8 디코드. **외부 눈 UX 리뷰어**(`b561ab5`, `docs/harness/ux-reviewer-prompt.md`) — 컨텍스트 0 에이전트가 스샷만 보고 판정, `--post`로 피드 게시(👁). 대시보드 **관제탑(CONTROL.md) 탭**(`11dcf33`, server.py mini-markdown). **D-074**(`185a8c4`, session.md) — 멀티에이전트 트리거 규칙(화면commit→리뷰어/wiring→D-073/독립2개+→병렬), "혼자가 편해서 안 켜는 것 금지". 메모리 [[feedback-external-eye-reviewer]] [[feedback-orchestrator-mode]] 갱신.
+  - **사용자 환경**: 도현 cmd 휑함 → VS Code 확장 + Simple Browser로 7878 도킹 결정. 대시보드가 정리+에이전트+맵 한 화면.
+  - **맵 재설계 (판정기준=플레이어 운전시점, 부감 폐기)**: 리뷰어 4→6/10. 격자깨기 roadMask(`185a8c4`후 별도, Python BFS 사전검증+TrackConnectivityVerifier) / 절차적 보도 362(`PlaceSidewalks`) / **도로 중앙선**(`PlaceRoadLines`, "일반도로 같지않음" 해결) / 민무늬 아스팔트(`PlainAsphaltRoads`, 횡단보도 마킹 텍스처라 단색머티리얼로 제거) / 따뜻 그레이딩+잔디색(`ApplyWarmGrade`) / 차량·가로등·가로수·마당나무 placer. **교훈: scatter는 4→5 천장, 진짜 레버는 도로 외형. width는 내 과장카메라(size15) 탓—실제 추적캠(차뒤6m FOV50)선 비례 합리적, 도현 맞음.**
+  - **UI 복구**(`fix(ui)` 커밋, ComplexTrack.unity): manual play "UI 안뜸" → 내가 Play해서 잡음. **OrderBoard.panelRoot/cardsContainer/cardPrefab 등 전부 NULL**(재발 D-073 wiring 손실). `FixOrderBoardWiring`(_archive, exec 호출)+`Channel8BoardLayoutSetup`(우측스트립)로 복구, Play+ScreenCapture 검증(카드 3장 렌더).
+  - **도현 manual play 피드백**: ①색감 좋음 ②도로 "일반도로 같지않음"=중앙선으로 해결 ③맵 구성 아쉬움(미착수). + **교차로 네모블럭** + UI안뜸(고침). "이런거 말 안해도 되게"=내가 Play테스트로 잡아야.
 
 - **세션 28 (2026-05-20): 혼자검증 + W3 차고 마무리 + 비주얼 폴리시 시작 + AI 자산 파이프라인.**
   - git 노이즈 264파일(.meta 재직렬화 등) 청소 + 누락 meta 보완(`e156826`).
