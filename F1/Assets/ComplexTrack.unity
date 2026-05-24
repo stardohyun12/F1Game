@@ -2238,7 +2238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PitCrew::OrderBoard
   catalog: {fileID: 11400000, guid: 1929d15dbc4bce24cb2c673984cdd403, type: 2}
-  runController: {fileID: 0}
+  runController: {fileID: 36553270}
   panelRoot: {fileID: 292251457}
   cardsContainer: {fileID: 1514908912}
   cardPrefab: {fileID: 4706940572848275009, guid: b6592971af6054b40a40b5d8b414eee2, type: 3}

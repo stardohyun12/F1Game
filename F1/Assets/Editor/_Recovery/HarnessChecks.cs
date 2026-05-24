@@ -95,6 +95,44 @@ public static class HarnessChecks
     }
 
     /// <summary>
+    /// OrderBoard의 SerializeField 와이어링(panelRoot/cardsContainer/cardPrefab + catalog/runController)이
+    /// 전부 채워졌는지 단언 — 도현이 manual play로 "주문 UI 안 뜸"을 발견해야 알던 재발 버그를 자동 검출.
+    /// (2026-05-15 D-073, 2026-05-24 세션31, 둘 다 wiring NULL 재발 → 도현 의존)
+    /// cardPrefab엔 OrderCardUI 컴포넌트가 있어야 함도 확인.
+    /// Play 불필요 — 저장된 씬 상태를 그대로 검사하므로 "런타임에만 고쳐지고 씬엔 NULL" 재발 루프가 드러난다.
+    /// (FindObjectsInactive.Include: panelRoot 토글로 보드가 꺼져 있어도 OrderBoard 자체는 잡아야)
+    /// </summary>
+    public static string CheckOrderBoardWiring()
+    {
+        var ob = Object.FindFirstObjectByType<OrderBoard>(FindObjectsInactive.Include);
+        if (ob == null) return "SKIP: OrderBoard 없음 (이 씬엔 주문 보드가 없음)";
+
+        var BF = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+        string[] fields = { "panelRoot", "cardsContainer", "cardPrefab", "catalog", "runController" };
+        string nulls = "";
+        object cardPrefabVal = null;
+        foreach (var f in fields)
+        {
+            var fi = typeof(OrderBoard).GetField(f, BF);
+            if (fi == null) { nulls += $"{f}(필드없음) "; continue; }
+            var v = fi.GetValue(ob);
+            // UnityEngine.Object는 "fake null" 처리 위해 명시 캐스팅 비교
+            bool isNull = v == null || (v is Object uo && uo == null);
+            if (isNull) nulls += $"{f} ";
+            if (f == "cardPrefab") cardPrefabVal = v;
+        }
+
+        if (nulls != "")
+            return $"FAIL: OrderBoard 와이어링 NULL — {nulls.Trim()} (FixOrderBoardWiring + SaveScene 필요. 런타임만 고치면 재발)";
+
+        var prefab = cardPrefabVal as GameObject;
+        if (prefab != null && prefab.GetComponent<OrderCardUI>() == null)
+            return "FAIL: cardPrefab에 OrderCardUI 컴포넌트 없음 (카드 데이터 바인딩 안 됨)";
+
+        return "PASS: OrderBoard 와이어링 5필드 + cardPrefab.OrderCardUI 정상";
+    }
+
+    /// <summary>
     /// 포장 wrap을 **실제 입력경로(BeginStroke→UpdateStroke)**로 구동해 3D 리본이 실제로
     /// 생기는지(geometry>0) 단언. 지름길(DrawStrip 등) 우회 금지 — false-green 종류 박멸.
     /// (2026-05-21 와인병 리본 false-green: 검증이 DrawStrip만 봐서 GREEN, 실제 경로는 0)
