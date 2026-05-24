@@ -5,16 +5,37 @@
 
 ---
 
-## 다음 세션 첫 작업 (세션 32) — 우선순위
+## ⭐ 운영 모델 전환 (세션 32, 도현 결정 — 최우선 숙지)
+
+**역할 분리 + 자동검사 유지** (`project_rules/roles.md`, 커밋 `5238b4e`). 룰은 행동 못 바꿈이 증명돼서 **게이트**로 전환:
+- **코딩(나)은 기획 에이전트 + 그래픽 에이전트가 통과시키기 전엔 "됐다"도 커밋도 못 한다.** 컨텍스트 0 외부 눈 = 작성자≠판정자 구조화.
+- 도현 진단 3종(이 모델이 막는 것): ①목표만 보고 주변 헤집음 ②게임 기본흐름 무시 ③혼자 과대평가 "됐다".
+- 작동 증명된 자동검사(회귀 하네스)는 유지·확장. 안 지켜지던 룰(D-074 트리거 등)은 게이트로 대체.
+- [[feedback-orchestrator-mode]] 갱신됨(룰→게이트). **"혼자 빨리"가 떠오르면 = 게이트 안 건 신호.**
+
+## 다음 세션 첫 작업 (세션 33) — 우선순위 (도현 판단 필요, 야간 자율로 안 건든 것)
+
+> 세션32에 풀 게임루프 복원·정렬 끝. 남은 건 대부분 도현 시각/기획 영역:
+> 1. **경로계획 경로선** — 도로 안 따라가고 차→목적지 직선으로 건물 위 관통(그래픽게이트 지적). 단순 방향선 설계 유지 vs 도로추종 구현 — **도현 판단**.
+> 2. **화물 고폴리**(CargoPolyBudget FAIL, 회귀 유일 red) — Eggs53k/Glass27k/Fish75k/Cake54k. CargoDecimator로 깎되 도현 승인한 룩 망칠 위험(세션21 케이크 속뚫림 전례) → **도현 시각 영역**, 깎고 그래픽게이트.
+> 3. **포장 화면** — 빈 상태(₩0/0%) "멈춘 듯", 좌하단 '랩 폭' 라벨 잘림(그래픽게이트 사소). UI 폴리시.
+> 4. **맵 구성(도현 #3 "아쉬움")** — 미착수. 지구/랜드마크/흐름 중 뭔지 확인.
+> 5. 배치(트렁크 적재) 단계 런타임 검증 — 기획게이트가 코드OK 확인했으나 실제 진입 미검증.
+
+---
+
+## (세션 32 완료 기록) 우선순위 결과
 
 > 맵은 플레이어 운전시점에서 6/10. 색·도로(중앙선) OK. 남은 것:
 
-1. **교차로 "네모 블럭" 진단 (도현 발견, 미해결)**. 2칸폭 간선이 만드는 2x2 crossroad 클러스터(`Tile_Crossroad_14_10/15_10/14_11/15_11`) 중앙에 어두운 네모들이 떠 보임. **road-square 메시 swap 시도→실패(이음매만 늘어 git revert함). crossroad 중앙패드 오진**. 진짜 원인 미상 — **다음 단서로 처음부터 진단**: ① 타일 이음매(seam)/AO인지 (인접 타일 Y·간격 측정) ② road-crossroad/intersection 메시의 실제 geometry(중앙 pad 높이 측정, nothing>0.25였음→낮은 pad?) ③ 단색 아스팔트 머티리얼이 geometry 음영을 드러낸 건지 ④ 1칸 교차로(단일 crossroad)도 같은 블럭인지 비교. **진단 먼저, 표층 swap 금지**(2회 실패=root cause dispatch, no-compromise §4).
-2. **OrderBoard wiring 자동 가드** — panelRoot/cardsContainer/cardPrefab NULL이 **재발**(세션 27 D-073, 세션 31 또). HarnessChecks에 `CheckOrderBoardWiring` 단언 추가 → "도현 말 안해도" 자동 검출. 왜 끊기는지(씬 리버트?)도 추적.
+1. ~~**교차로 "네모 블럭"**~~ **✅ 해결 (세션 32, `926234c`)**. root cause = Kenney junction 타일(crossroad/intersection)의 **4 코너 6cm 솟은 연석**(corner localY=0.020 vs 도로면 0.010). 2x2 클러스터에서 안쪽 코너 4개가 도로 중앙에서 만나 솟은 사각 패드 → 민무늬 아스팔트(c0cea6a)로 텍스처 맥락 사라져 어두운 네모로 드러남 (clue ③ 적중). fix: `FlattenJunctionCurbs` 메뉴 — 같은 메시 유지, 솟은 verts만 0.010으로 클램프(외곽/UV 불변=새 이음매 0, 이전 swap 실패와 다름). 206 타일 평탄화, before(네모 9+)→after(0) 스샷+Play 에러0 검증. **교훈: 표층 swap 2회 실패 후 geometry 측정→시각 둘 다로 root cause 적중(no-compromise §4 준수). 단일 진단 루프로 30분.**
+2. ~~**OrderBoard wiring 자동 가드**~~ **✅ 해결 (세션 32, `ac1250b`)**. `HarnessChecks.CheckOrderBoardWiring()` 추가(reflection 5필드 + cardPrefab.OrderCardUI 단언, Play 불필요=저장씬 검사) → regression-check.sh BOARD 섹션에 박음. **재발 원인 정체: runController가 NULL이었음** — 세션31이 panelRoot 등은 저장했지만 runController는 런타임 auto-find로 카드만 뜨고 씬엔 안 박힘. RunRoot 할당+SaveScene으로 영구화, 재확인 PASS. 회귀 10 PASS/1 FAIL(기존 CargoPolyBudget만). **루프 정체 = 런타임 fix를 씬에 영구 저장 안 한 것.**
 3. **맵 구성(도현 #3 "아쉬움")** — 미착수. 지구 구분/랜드마크/흐름 중 뭔지 먼저 확인.
 4. 매 검증에 **실제 Play 포함**(UI·주행) — 정적 스샷만으론 UI-loss 못 잡음. [[feedback-qa-review-full-loop]] [[feedback-test-real-flow-not-reflection-harness]].
 
-**맵 룩 재적용 메뉴**(리빌드 시 룩 날아감 → 순서대로 재실행): `Build Everything From Layout` → `Plain Asphalt Roads` → `Place Road Center Lines` → `Auto-Place Sidewalks` → `Auto-Place Suburban Props` → `Auto-Place Street Furniture` → `Auto-Place Street Vehicles` → `Apply Warm Grade`. (현재 씬엔 다 적용+커밋됨, 리빌드 안 하면 유지.)
+**맵 룩 재적용 메뉴**(리빌드 시 룩 날아감 → 순서대로 재실행): `Build Everything From Layout` → `Plain Asphalt Roads` → `Flatten Junction Curbs` → `Place Road Center Lines` → `Auto-Place Sidewalks` → `Auto-Place Suburban Props` → `Auto-Place Street Furniture` → `Auto-Place Street Vehicles` → `Apply Warm Grade` → **`PitCrew/Map/Align Map To Ground`**(땅=0 정렬, 마지막). (현재 씬엔 다 적용+커밋됨, 리빌드 안 하면 유지.)
+
+**시스템 복원 체인** (세션32 발견: 맵 리빌드가 8개 시스템 GameObject를 조용히 날림 → 포장/차고 흐름 죽음). 리빌드 후 순서대로: `PitCrew/Cargo/Setup Cargo View (CCTV)` → `PitCrew/Packing/Add PackingScreen To Active Scene` → `PitCrew/Garage/Wire Scene Objects` → `PitCrew/Restore/Wire Core Singletons`(UpgradeSystem/TireSystem). 검증: 회귀의 `CheckCoreServicesPresent`가 9개 다 등록됐는지 자동 단언 — 하나라도 빠지면 FAIL. (Phase1 통합 메뉴는 부작용 커서 회피.)
 
 ---
 
