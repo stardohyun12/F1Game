@@ -19,7 +19,7 @@
 > 1. **경로계획 경로선** — 야간 조사 결과 **버그 아님, 도현 본인 설계**(2026-05-19 "선택 순서대로 줄 잇기"). 코드(RoutePlanScreen.cs:432-437): start(차)+0.5y → 선택 목적지들 직선 LineRenderer. 건물 위 관통은 직선 웨이포인트선의 본질. **결정만 하면 됨**: (A) 현 직선 유지(방향 힌트로 충분) (B) 도로추종 A* 페이브 구현(중간 공수, 사실적) (C) 점선/화살표로 "방향 힌트"임을 명확히(소공수). 추천=C(저비용으로 "드라이브 경로 오해" 해소). **도현 판단**.
 > 2. **화물 고폴리**(CargoPolyBudget FAIL, 회귀 유일 red) — Eggs53k/Glass27k/Fish75k/Cake54k. CargoDecimator로 깎되 도현 승인한 룩 망칠 위험(세션21 케이크 속뚫림 전례) → **도현 시각 영역**, 깎고 그래픽게이트.
 > 3. **포장 화면** — 빈 상태(₩0/0%) "멈춘 듯"(그래픽게이트 사소). 폴리시. ('랩 폭' 라벨 잘림은 세션32 야간에 **측정 결과 안 잘림**=게이트 false-positive, 라벨 Y195-255 vs 패널 165-915. 장식 "▬▬▬"+muted색 오판. 추격 불필요.)
-> 4. **맵 구성(도현 #3 "아쉬움")** — 세션32 야간 분석 에이전트로 정체 잡음. **"아쉬움" 원인 Top3**: ①(최유력) **지구 정체성 시각 0** — zoneMask는 공업/다운타운/항구 3분할인데 buildingMask가 전 지구 똑같은 교외주택(S) → 어딜 가나 같은 동네. ②배달지 11곳이 **시각 메시 없는 빈 비콘**(CityHall인데 건물 없음). ③균일 격자+전부 저층 → 단조·스카이라인 평평. **이미 미실행 plan 있음**: `docs/superpowers/plans/2026-05-24-map-structure-redesign.md`(6 Task, 새 자산 0·기존 Kenney/카탈로그만). **결정 옵션**(공수 순): (A 최저비용·최대체감) buildingMask를 zone별로 — 다운타운=H고층+C상업 / 공업=F공장+W창고+T굴뚝 / 항구=W창고+바다쿼드 (데이터 편집만). (B) 랜드마크 메시 자동배치 `PlaceLandmarks.cs` 신규(역=train-kit 기차/선로, 항구=컨테이너스택, 공업=굴뚝/탱크 — plan에 빠진 Task, 추가 필요). (C) roadMask 지구별 리듬 재작성(plan Task1, TrackConnectivityVerifier 의무). **⚠ 주의: Run Full Rebuild는 복원한 룩+8시스템 다 날림 → 리빌드 후 룩 재적용+시스템 복원 체인 재실행 필수.** **도현 방향 결정 필요**(A부터 점진 추천).
+> 4. **맵 구성(도현 #3)** — **구조 재설계 1차 완료(`2ee9ffd`, plan C-all)**: 3지구 roadMask 리듬+지구별 건물+항구바다+배달지 재배치, 리빌드+전체 재적용, 회귀 12 PASS. **단 그래픽 게이트 5/10** — 남은 아트(도현 방향 필요): ①**항구 바다 prominence**(현재 얇은 띠/프레임처럼, HarborSea.cs scale/pos 키우기 — 거의 손댈 뻔함) ②**항구·다운타운이 같은 녹색 격자**(공업 갈색만 구분됨) → 지구별 ground 톤 or 고층(H/C 2x2가 일부 skip돼 다운타운 고층 약함) ③운전시점 건물이 디테일 없는 단색 박스벽 ④"PIER END" 청록 막다른 벽이 바다 아님. **다음 세션: 바다 키우기(소공수)부터 + 지구 톤 차별화. (이하 야간 분석은 참고)** **"아쉬움" 원인 Top3**: ①(최유력) **지구 정체성 시각 0** — zoneMask는 공업/다운타운/항구 3분할인데 buildingMask가 전 지구 똑같은 교외주택(S) → 어딜 가나 같은 동네. ②배달지 11곳이 **시각 메시 없는 빈 비콘**(CityHall인데 건물 없음). ③균일 격자+전부 저층 → 단조·스카이라인 평평. **이미 미실행 plan 있음**: `docs/superpowers/plans/2026-05-24-map-structure-redesign.md`(6 Task, 새 자산 0·기존 Kenney/카탈로그만). **결정 옵션**(공수 순): (A 최저비용·최대체감) buildingMask를 zone별로 — 다운타운=H고층+C상업 / 공업=F공장+W창고+T굴뚝 / 항구=W창고+바다쿼드 (데이터 편집만). (B) 랜드마크 메시 자동배치 `PlaceLandmarks.cs` 신규(역=train-kit 기차/선로, 항구=컨테이너스택, 공업=굴뚝/탱크 — plan에 빠진 Task, 추가 필요). (C) roadMask 지구별 리듬 재작성(plan Task1, TrackConnectivityVerifier 의무). **⚠ 주의: Run Full Rebuild는 복원한 룩+8시스템 다 날림 → 리빌드 후 룩 재적용+시스템 복원 체인 재실행 필수.** **도현 방향 결정 필요**(A부터 점진 추천).
 > 5. 배치(트렁크 적재) 단계 런타임 검증 — 기획게이트가 코드OK 확인했으나 실제 진입 미검증.
 
 ---
@@ -35,7 +35,10 @@
 
 **맵 룩 재적용 메뉴**(리빌드 시 룩 날아감 → 순서대로 재실행): `Build Everything From Layout` → `Plain Asphalt Roads` → `Flatten Junction Curbs` → `Place Road Center Lines` → `Auto-Place Sidewalks` → `Auto-Place Suburban Props` → `Auto-Place Street Furniture` → `Auto-Place Street Vehicles` → `Apply Warm Grade` → **`PitCrew/Map/Align Map To Ground`**(땅=0 정렬, 마지막). (현재 씬엔 다 적용+커밋됨, 리빌드 안 하면 유지.)
 
-**시스템 복원 체인** (세션32 발견: 맵 리빌드가 8개 시스템 GameObject를 조용히 날림 → 포장/차고 흐름 죽음). 리빌드 후 순서대로: `PitCrew/Cargo/Setup Cargo View (CCTV)` → `PitCrew/Packing/Add PackingScreen To Active Scene` → `PitCrew/Garage/Wire Scene Objects` → `PitCrew/Restore/Wire Core Singletons`(UpgradeSystem/TireSystem). 검증: 회귀의 `CheckCoreServicesPresent`가 9개 다 등록됐는지 자동 단언 — 하나라도 빠지면 FAIL. (Phase1 통합 메뉴는 부작용 커서 회피.)
+**시스템 복원 체인** (세션32 발견: 맵 리빌드가 8개 시스템 GameObject + OrderBoard 배선을 조용히 날림 → 포장/차고 흐름 죽음 + 주문 UI 안뜸). 리빌드 후 순서대로:
+1. `PitCrew/Cargo/Setup Cargo View (CCTV)` → 2. `PitCrew/Packing/Add PackingScreen To Active Scene` → 3. `PitCrew/Garage/Wire Scene Objects` → 4. `PitCrew/Restore/Wire Core Singletons`(UpgradeSystem/TireSystem)
+5. `PitCrew/Channel8/Board Layout — 카드 우측 스트립` → 6. exec `FixOrderBoardWiring.Execute()`(panelRoot/cardsContainer/cardPrefab) → 7. exec로 OrderBoard.runController=RunRoot 할당 + SaveScene.
+검증: 회귀의 `CheckCoreServicesPresent`(9 시스템) + `CheckOrderBoardWiring`(5필드) 자동 단언 — 빠지면 FAIL. (Phase1 통합 메뉴는 부작용 커서 회피.) **세션32 맵 리빌드 때 5~7 빠뜨려 OrderBoard NULL 재발→가드가 잡음.** 다음엔 이 7단계 다.
 
 ---
 
