@@ -10,6 +10,9 @@ studio-dashboard가 이 파일을 tail 해서 "흐르는 활동 피드"로 보�
   Stop         matcher "*"          → 내(PM) 턴 끝 "turn" 한 줄
 
 절대 block 안 함 — 무슨 일이 있어도 exit 0.
+
+CLI 직접 게시 (hook 아닌 이벤트 — 예: 외부 눈 UX 리뷰어 판정):
+  python activity-log.py --post --kind review --who UX리뷰어 --text "한 줄 판정"
 """
 import sys, os, json, time
 
@@ -17,6 +20,38 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))  # repo root
 LOG = os.path.join(ROOT, "tools", "studio-dashboard", "activity.jsonl")
 CAP = 300  # 마지막 N줄만 유지
+
+
+def write_rec(rec):
+    # 깨진 서로게이트 등 인코딩 불가 문자 제거 (파일 쓰기 침묵 실패 방지)
+    rec["text"] = str(rec.get("text", "")).encode("utf-8", "ignore").decode("utf-8")[:120]
+    rec["who"] = str(rec.get("who", "")).encode("utf-8", "ignore").decode("utf-8")[:40]
+    rec["ts"] = int(time.time())
+    try:
+        os.makedirs(os.path.dirname(LOG), exist_ok=True)
+        lines = []
+        if os.path.exists(LOG):
+            with open(LOG, encoding="utf-8") as f:
+                lines = f.readlines()
+        lines.append(json.dumps(rec, ensure_ascii=False) + "\n")
+        lines = lines[-CAP:]
+        with open(LOG, "w", encoding="utf-8") as f:
+            f.writelines(lines)
+    except Exception:
+        pass
+
+
+def cli_post(argv):
+    """--post --kind X --who Y --text Z 로 피드에 직접 한 줄."""
+    kv = {}
+    i = 0
+    while i < len(argv):
+        if argv[i].startswith("--") and i + 1 < len(argv):
+            kv[argv[i][2:]] = argv[i + 1]
+            i += 2
+        else:
+            i += 1
+    write_rec({"kind": kv.get("kind", "review"), "who": kv.get("who", "리뷰어"), "text": kv.get("text", "")})
 
 
 def main():
@@ -43,25 +78,12 @@ def main():
 
     if rec is None:
         return
-
-    # 깨진 서로게이트 등 인코딩 불가 문자 제거 (파일 쓰기 침묵 실패 방지)
-    rec["text"] = str(rec.get("text", "")).encode("utf-8", "ignore").decode("utf-8")[:80]
-    rec["who"] = str(rec.get("who", "")).encode("utf-8", "ignore").decode("utf-8")[:40]
-    rec["ts"] = int(time.time())
-    try:
-        os.makedirs(os.path.dirname(LOG), exist_ok=True)
-        lines = []
-        if os.path.exists(LOG):
-            with open(LOG, encoding="utf-8") as f:
-                lines = f.readlines()
-        lines.append(json.dumps(rec, ensure_ascii=False) + "\n")
-        lines = lines[-CAP:]
-        with open(LOG, "w", encoding="utf-8") as f:
-            f.writelines(lines)
-    except Exception:
-        pass
+    write_rec(rec)
 
 
 if __name__ == "__main__":
-    main()
+    if "--post" in sys.argv:
+        cli_post(sys.argv[1:])
+    else:
+        main()
     sys.exit(0)

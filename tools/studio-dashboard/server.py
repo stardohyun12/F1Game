@@ -181,6 +181,7 @@ TEAM_PAGE = r"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><titl
  .feed .fh{font-size:11px;color:#aebcc4;letter-spacing:1px;padding:2px 12px 8px}
  .fitem{display:flex;align-items:center;gap:9px;padding:6px 12px;font-size:12px;border-left:3px solid #3a3f47;margin:2px 6px;background:#222b35;border-radius:6px;animation:slidein .45s ease}
  .fitem.k-start{border-left-color:#e0a83b} .fitem.k-done{border-left-color:#5aa469} .fitem.k-turn{border-left-color:#5b7186}
+ .fitem.k-review{border-left-color:#c75b5b;background:#2e2329}
  .fitem .fi{font-size:14px;flex:none}
  .fitem .fw{font-weight:700;color:#cdd4db;flex:none}
  .fitem .ft{color:#9aa6b0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -196,7 +197,7 @@ TEAM_PAGE = r"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><titl
  <div class="foot">읽기 전용 · 3초 갱신 · <span id="focus"></span></div>
 <script>
 const IC={working:"🟢",done:"✅",idle:"💤"};
-const FIC={start:"🚀",done:"✅",turn:"💬"};
+const FIC={start:"🚀",done:"✅",turn:"💬",review:"👁"};
 function ago(ts){const d=Math.max(0,Math.floor(Date.now()/1000-ts));
   if(d<60)return d+"초 전";if(d<3600)return Math.floor(d/60)+"분 전";return Math.floor(d/3600)+"시간 전";}
 let lastFeedTop=0;
