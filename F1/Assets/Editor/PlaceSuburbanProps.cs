@@ -21,8 +21,9 @@ public static class PlaceSuburbanProps
     const float PropsY = 0f;
     const string SuburbanFbxRoot = "Assets/Model/kenney_city-kit-suburban_20/Models/FBX format";
 
-    // 배치 확률 (도로 인접 + 빈 셀 중). 0.55 = 약 55%.
-    const float PlaceProbability = 0.55f;
+    // 배치 확률 (도로 인접 + 빈 셀 중). 빈칸 자체가 적어(블록이 집으로 꽉 참)
+    // 거의 다 채워야 거리서 녹지가 보인다 → 0.9.
+    const float PlaceProbability = 0.9f;
 
     [MenuItem("PitCrew/Track/Auto-Place Suburban Props")]
     public static void Execute()
@@ -40,8 +41,12 @@ public static class PlaceSuburbanProps
         Debug.Log($"[Props] === Suburban Props 배치 시작 (layout={layout.name}) ===");
 
         // 1. Prop FBX 로드
+        // 나무 비중을 높임 (녹지가 거리서 보이게). 중복 추가 = 가중치.
         var propPool = new List<GameObject>();
         AddIfExists(propPool, "tree-large.fbx");
+        AddIfExists(propPool, "tree-large.fbx");
+        AddIfExists(propPool, "tree-large.fbx");
+        AddIfExists(propPool, "tree-small.fbx");
         AddIfExists(propPool, "tree-small.fbx");
         AddIfExists(propPool, "planter.fbx");
         AddIfExists(propPool, "fence.fbx");
@@ -100,7 +105,8 @@ public static class PlaceSuburbanProps
 
                 // Kenney prop들은 native ~1m. cell 6m 안에서 자연 크기 유지 (1.0 그대로).
                 // tree-large는 살짝 키워줌.
-                float scale = prop.name.Contains("tree-large") ? 1.4f
+                float scale = prop.name.Contains("tree-large") ? 1.9f
+                            : prop.name.Contains("tree-small") ? 1.3f
                             : prop.name.Contains("path-stones-long") ? 0.8f
                             : 1.0f;
                 inst.transform.localScale = Vector3.one * scale;
@@ -118,13 +124,9 @@ public static class PlaceSuburbanProps
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         EditorSceneManager.SaveScene(SceneManager.GetActiveScene());
         Debug.Log($"[Props] (3/3) 씬 저장 완료. 메뉴 재실행 = 동일 결과 (deterministic hash).");
-
-        EditorUtility.DisplayDialog("Suburban Props",
-            $"✓ {placed}개 prop 배치.\n\n" +
-            $"풀: tree(L/S), planter, fence(L/S), path-stones.\n" +
-            $"위치: 도로 인접 빈 셀, {PlaceProbability * 100:F0}% 확률.\n" +
-            "Collider 없음 = 차량 통과 자유 (시각 첨가만).",
-            "확인");
+        // 주의: EditorUtility.DisplayDialog 금지 — unity-cli menu 자동 호출 시 모달이
+        // 메인 스레드를 막아 모든 후속 명령이 timeout 됨 (2026-05-24 실제로 막힘).
+        Debug.Log($"[Props] ✓ {placed}개 배치 (도로 인접 빈 셀 {PlaceProbability * 100:F0}%, 나무 위주, collider 없음).");
     }
 
     static void AddIfExists(List<GameObject> pool, string fbxName)
