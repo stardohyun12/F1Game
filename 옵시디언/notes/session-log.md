@@ -1456,3 +1456,15 @@
 **B트랙 교훈**: ①야간 자율 시 "도현 영역"을 너무 넓게 잡아 홀딩 → "키워봐"를 못 살림. 도현 부재+게이트 모델 있으면 시각작업도 시도 가능. ②리빌드 재적용 체인에 OrderBoard 배선(Channel8+FixOrderBoardWiring+runController) 빠뜨림 → 가드가 커버. activeContext 체인 7단계로 보강.
 
 **다음(세션33)**: 맵 아트 차별화(항구 바다 키우기 소공수 먼저 / 지구 톤·고층) — 도현 방향. + 화물 폴리(도현). activeContext 세션33 참조.
+
+## 세션 32 (VS Code 이전 후, 2026-05-25 저녁) — 가시성 + 맵 아트 계속
+
+**가시성 (도현 요청: 멀티에이전트+비주얼 더 잘 보이게, 터미널서도)**:
+- 대시보드 라이브 뷰 탭(`/api/latest-image` + pages/live.html): 최신 스샷 자동 표시 + 활동 피드 + "지금 실행 중" 배너. 커밋 `dec0bc4`.
+- 터미널 statusLine(user statusline-combined.js): running.json 읽어 "🟢 에이전트 N개 실행 중" 하단줄. activity-log.py에 running stack(start push/SubagentStop pop) + done 이름 표시. server.py `/api/running`. 커밋 `c1431be`.
+- **솔직한 미스(도현 지적)**: `claude agents`(내장 Agent View)를 먼저 안 권하고 내 statusLine/대시보드부터 만듦 = "있는 거 안 쓰고 내 거 만드는" 습관. 인정·정정. claude agents=background 세션 풀뷰(단 서브에이전트는 메인세션 행에 묻힘→그게 statusLine/대시보드로 보완하는 이유).
+- **개념 정정(도현 질문)**: 내 멀티에이전트는 진짜 독립 인스턴스(컨텍스트0 별개 Claude)임 — "가짜로 여러 목소리" 아님. 내장 Agent 기능=멀티에이전트의 유일·진짜 메커니즘. 작성자≠판정자 구조 실제 작동(그래픽게이트가 내 작업 6/10으로 깜).
+
+**맵 아트 3차**: 지구 톤(PlaceZoneGround). 그래픽게이트 6/10 — 공업↔다운타운 톤 분리 개선, 항구 ground 얼룩+바다 맞닿음 미해결(다음). 커밋 `ac496cd`.
+
+**다음**: 항구 ground 균일 모래톤 재칠 + 바다 맞닿음 + 공업 채도↑. activeContext 세션33 #4.
