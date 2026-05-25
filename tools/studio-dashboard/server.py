@@ -63,6 +63,16 @@ def session_activity():
 
 
 CONTROL_MD = os.path.join(os.path.dirname(os.path.dirname(HERE)), "docs", "CONTROL.md")
+SHOTS_DIR = os.path.join(os.path.dirname(os.path.dirname(HERE)), "docs", "screenshots")
+
+
+def newest_shot():
+    """docs/screenshots 하위(재귀) 최신 .png 경로. 내가 작업하며 찍는 스샷이 자동 반영."""
+    try:
+        files = glob.glob(os.path.join(SHOTS_DIR, "**", "*.png"), recursive=True)
+        return max(files, key=os.path.getmtime) if files else None
+    except Exception:
+        return None
 
 
 def md_to_html(md):
@@ -179,6 +189,16 @@ class H(BaseHTTPRequestHandler):
             self._send(json.dumps(read_activity(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/pages":
             self._send(json.dumps(list_pages(), ensure_ascii=False), "application/json; charset=utf-8")
+        elif path == "/api/latest-image":
+            fp = newest_shot()
+            if not fp:
+                return self._send("no image", code=404)
+            with open(fp, "rb") as f:
+                self._send(f.read(), "image/png")
+        elif path == "/api/latest-image-info":
+            fp = newest_shot()
+            info = {"name": os.path.basename(fp), "mtime": os.path.getmtime(fp)} if fp else {"name": None, "mtime": 0}
+            self._send(json.dumps(info, ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/view/team":
             self._send(TEAM_PAGE)
         elif path == "/view/control":
