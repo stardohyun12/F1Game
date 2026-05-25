@@ -195,6 +195,16 @@ class H(BaseHTTPRequestHandler):
                 return self._send("no image", code=404)
             with open(fp, "rb") as f:
                 self._send(f.read(), "image/png")
+        elif path == "/api/running":
+            try:
+                with open(os.path.join(HERE, "running.json"), encoding="utf-8") as f:
+                    stack = json.load(f)
+            except Exception:
+                stack = []
+            # 10분 넘은 stale 항목 제거(짝 못 맞춘 done 방지)
+            now = time.time()
+            stack = [x for x in stack if now - x.get("ts", 0) < 600]
+            self._send(json.dumps(stack, ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/latest-image-info":
             fp = newest_shot()
             info = {"name": os.path.basename(fp), "mtime": os.path.getmtime(fp)} if fp else {"name": None, "mtime": 0}

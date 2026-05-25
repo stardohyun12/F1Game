@@ -19,7 +19,39 @@ import sys, os, json, time
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))  # repo root
 LOG = os.path.join(ROOT, "tools", "studio-dashboard", "activity.jsonl")
+RUNNING = os.path.join(ROOT, "tools", "studio-dashboard", "running.json")  # 지금 도는 에이전트 stack
 CAP = 300  # 마지막 N줄만 유지
+
+
+def push_running(who):
+    """에이전트 start 시 이름을 stack에 쌓음 (대시보드 '지금 실행 중' + done 이름 짝)."""
+    try:
+        stack = []
+        if os.path.exists(RUNNING):
+            with open(RUNNING, encoding="utf-8") as f:
+                stack = json.load(f)
+        stack.append({"who": who, "ts": int(time.time())})
+        with open(RUNNING, "w", encoding="utf-8") as f:
+            json.dump(stack[-20:], f, ensure_ascii=False)
+    except Exception:
+        pass
+
+
+def pop_running():
+    """SubagentStop 시 가장 최근 start 이름을 꺼냄 (done에 이름 싣기)."""
+    try:
+        if not os.path.exists(RUNNING):
+            return None
+        with open(RUNNING, encoding="utf-8") as f:
+            stack = json.load(f)
+        if not stack:
+            return None
+        who = stack.pop()["who"]
+        with open(RUNNING, "w", encoding="utf-8") as f:
+            json.dump(stack, f, ensure_ascii=False)
+        return who
+    except Exception:
+        return None
 
 
 def write_rec(rec):
@@ -70,9 +102,11 @@ def main():
         ti = data.get("tool_input", {}) or {}
         who = ti.get("subagent_type") or "에이전트"
         desc = ti.get("description") or ti.get("prompt", "")[:40]
+        push_running(who)
         rec = {"kind": "start", "who": who, "text": desc}
     elif event == "SubagentStop":
-        rec = {"kind": "done", "who": "에이전트", "text": "작업 완료"}
+        who = pop_running() or "에이전트"
+        rec = {"kind": "done", "who": who, "text": "작업 완료"}
     elif event == "Stop":
         rec = {"kind": "turn", "who": "PM", "text": "응답 완료"}
 
