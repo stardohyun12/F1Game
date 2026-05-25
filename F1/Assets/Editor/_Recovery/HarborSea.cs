@@ -20,10 +20,11 @@ public static class HarborSea
             go.name = NAME;
             Object.DestroyImmediate(go.GetComponent<Collider>()); // 주행 방해 X
         }
-        // 맵 월드: X=열(~0~177), Z=행(~0~130), 항구=높은 Z 가장자리.
-        // 바다는 도시 밖(Z 130 너머)에만 — 건물 위 안 덮이게. 근접 가장자리 ≈ Z130.
-        go.transform.position = new Vector3(90f, -0.15f, 205f);
-        go.transform.localScale = new Vector3(24f, 1f, 15f); // Plane 10유닛 → X240, Z150 → Z 130~280
+        // 맵 월드: X=열(~0~177), Z=행(~0~126), 항구=높은 Z 가장자리(rows15~21).
+        // rows20~21(z~120+)은 도로·건물 없는 빈 행(바다 의도) → 거기서부터 물.
+        // 잔디 평면(z~173까지)이 덮지 않도록 바다를 잔디 위(y=0.03)로 올림. 넓게 깔아 수변 강조.
+        go.transform.position = new Vector3(88f, 0.03f, 215f);
+        go.transform.localScale = new Vector3(30f, 1f, 20f); // Plane 10유닛 → X300,Z200 → 근접 z115, x -62~238
         go.transform.rotation = Quaternion.identity;
 
         var mr = go.GetComponent<MeshRenderer>();
