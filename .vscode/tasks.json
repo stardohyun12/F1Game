@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "스튜디오 대시보드 켜기",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-Command",
+        "if (-not (Get-NetTCPConnection -LocalPort 7878 -State Listen -ErrorAction SilentlyContinue)) { Start-Process python -ArgumentList '${workspaceFolder}\\tools\\studio-dashboard\\server.py' -WindowStyle Hidden; Write-Host '대시보드 시작됨' } else { Write-Host '대시보드 이미 켜져 있음' }; Write-Host 'http://localhost:7878'"
+      ],
+      "presentation": { "reveal": "silent", "panel": "shared", "clear": false },
+      "runOptions": { "runOn": "folderOpen" },
+      "problemMatcher": []
+    }
+  ]
+}
