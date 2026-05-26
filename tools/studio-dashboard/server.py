@@ -92,6 +92,23 @@ def read_roster():
     return out
 
 
+BUS = os.path.join(PROJECT, "docs", "studio", "bus.md")
+
+
+def read_bus(n=40):
+    """docs/studio/bus.md 메시지 로그 파싱. 형식: '- [시각] 보낸이→받는이: 내용'. 최신이 아래."""
+    msgs = []
+    try:
+        with open(BUS, encoding="utf-8") as f:
+            for ln in f:
+                m = re.match(r"^-\s*\[(.*?)\]\s*(.+?)\s*→\s*(.+?)\s*:\s*(.*)$", ln.strip())
+                if m:
+                    msgs.append({"ts": m.group(1), "frm": m.group(2), "to": m.group(3), "text": m.group(4)})
+    except Exception:
+        pass
+    return msgs[-n:]
+
+
 def read_activity(n=14):
     """activity.jsonl 마지막 n줄 (hook이 자동 적재). 최신이 위로."""
     try:
@@ -264,6 +281,8 @@ class H(BaseHTTPRequestHandler):
             self._send(json.dumps(read_backlog(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/roster":
             self._send(json.dumps(read_roster(), ensure_ascii=False), "application/json; charset=utf-8")
+        elif path == "/api/bus":
+            self._send(json.dumps(read_bus(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/latest-image":
             fp = newest_shot()
             if not fp:
