@@ -18,7 +18,45 @@ STATE = os.path.join(HERE, "state.json")
 ACTIVITY = os.path.join(HERE, "activity.jsonl")
 PAGES_DIR = os.path.join(HERE, "pages")
 SESSIONS = os.path.expanduser("~/.claude/sessions")
+PROJECT = os.path.dirname(os.path.dirname(HERE))  # tools/studio-dashboard -> 프로젝트 루트
+BACKLOG = os.path.join(PROJECT, "backlog.md")
 os.makedirs(PAGES_DIR, exist_ok=True)
+
+
+def read_backlog():
+    """backlog.md(PM 소유)를 칸별로 파싱. 파이프라인 패널이 씀.
+    형식: '## <칸>' 아래 '- [태그] 제목 — brief: ready|todo (커밋)'."""
+    cols, cur = [], None
+    try:
+        with open(BACKLOG, encoding="utf-8") as f:
+            for ln in f:
+                s = ln.rstrip("\n")
+                if s.startswith("## "):
+                    cur = {"name": s[3:].strip(), "items": []}
+                    cols.append(cur)
+                elif cur is not None and s.lstrip().startswith("- "):
+                    body = s.lstrip()[2:]
+                    tag = ""
+                    mt = re.match(r"\[(.+?)\]\s*(.*)", body)
+                    if mt:
+                        tag, body = mt.group(1), mt.group(2)
+                    brief = "ready" if re.search(r"brief:\s*ready", body) else ("todo" if re.search(r"brief:\s*todo", body) else "")
+                    commit = ""
+                    mc = re.search(r"\(([0-9a-f]{6,40})\)\s*$", body)
+                    if mc:
+                        commit = mc.group(1)
+                    title = re.sub(r"\s*—\s*brief:.*$", "", body)
+                    title = re.sub(r"\s*\([0-9a-f]{6,40}\)\s*$", "", title).strip()
+                    cur["items"].append({"tag": tag, "title": title, "brief": brief, "commit": commit})
+    except Exception:
+        pass
+    # "다음 작업 브리프 준비됨?" = 대기 칸 첫 항목 brief==ready
+    next_ready = False
+    for c in cols:
+        if "대기" in c["name"] and c["items"]:
+            next_ready = c["items"][0]["brief"] == "ready"
+            break
+    return {"columns": cols, "nextReady": next_ready}
 
 
 def read_activity(n=14):
@@ -189,6 +227,8 @@ class H(BaseHTTPRequestHandler):
             self._send(json.dumps(read_activity(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/pages":
             self._send(json.dumps(list_pages(), ensure_ascii=False), "application/json; charset=utf-8")
+        elif path == "/api/backlog":
+            self._send(json.dumps(read_backlog(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/latest-image":
             fp = newest_shot()
             if not fp:
