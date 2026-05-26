@@ -59,6 +59,39 @@ def read_backlog():
     return {"columns": cols, "nextReady": next_ready}
 
 
+ROLES = [
+    ("PM", "프로듀서", "pm"),
+    ("메인", "리드 프로그래머", None),
+    ("디자이너", "게임 디자이너 (Phase2)", "game-designer"),
+    ("아트", "아트 디렉터 (Phase2)", "art-director"),
+    ("기획게이트", "흐름·무결성 판정", None),
+    ("그래픽게이트", "시각 판정", None),
+    ("QA", "풀루프 검증 (Phase3)", "qa"),
+    ("하네스", "운영체계 발전 (Phase3)", "harness-engineer"),
+]
+
+
+def read_roster():
+    """직원 명단: 각 직군의 마지막 활동(activity.jsonl) + 메모리 파일 mtime."""
+    mem_dir = os.path.join(PROJECT, "docs", "studio", "memory")
+    acts = read_activity(200)
+    out = []
+    for who, role, mem in ROLES:
+        last_act = next((a for a in acts if a.get("who") == who), None)
+        mtime = 0
+        if mem:
+            mp = os.path.join(mem_dir, mem + ".md")
+            if os.path.exists(mp):
+                mtime = os.path.getmtime(mp)
+        out.append({
+            "who": who, "role": role,
+            "lastText": (last_act or {}).get("text", ""),
+            "lastTs": (last_act or {}).get("ts", 0),
+            "memMtime": mtime,
+        })
+    return out
+
+
 def read_activity(n=14):
     """activity.jsonl 마지막 n줄 (hook이 자동 적재). 최신이 위로."""
     try:
@@ -229,6 +262,8 @@ class H(BaseHTTPRequestHandler):
             self._send(json.dumps(list_pages(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/backlog":
             self._send(json.dumps(read_backlog(), ensure_ascii=False), "application/json; charset=utf-8")
+        elif path == "/api/roster":
+            self._send(json.dumps(read_roster(), ensure_ascii=False), "application/json; charset=utf-8")
         elif path == "/api/latest-image":
             fp = newest_shot()
             if not fp:
