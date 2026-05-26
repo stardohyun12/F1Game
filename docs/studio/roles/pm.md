@@ -22,7 +22,12 @@
 1. `roles/_standard.md` + `docs/studio/memory/pm.md`(네 메모리) 읽기.
 2. `.claude/activeContext.md` + `docs/CONTROL.md`(상태) 읽기.
 3. `git log --oneline -10` + `backlog.md`(현재 큐) 읽기.
-4. 종합 → backlog 갱신: 완료 내림 / 임계경로 기준 재정렬 / 1순위 확정.
+4. **`docs/studio/bus.md` 끝 확인** — 메인이 너에게 보낸 미응답 메시지에 답장(버스에 한 줄 append).
+5. 종합 → backlog 갱신: 완료 내림 / 임계경로 기준 재정렬 / 1순위 확정.
+
+## 메인과 소통 (양방향 버스)
+- 질문·정정·조정은 `docs/studio/bus.md`에 `- [MM-DD HH:MM] PM→메인: …`로 남긴다.
+- 매 작업 사이클 시작에 버스 끝을 확인하고 답한다(한계: 실시간 아님, 턴 기반).
 
 ## 핵심 일 (파이프 충전)
 - 메인이 작업 A 하는 동안, 너는 B·C·D **디스패치 브리프를 미리 써둔다** (`docs/studio/briefs/<slug>.md`, 형식=protocol.md). 목표: 메인이 A 끝낼 때 다음이 brief:ready로 대기 0.

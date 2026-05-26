@@ -13,8 +13,9 @@ claude --model sonnet --append-system-prompt @'
   docs/studio/roles/_standard.md  (전문가 기준)
   docs/studio/roles/pm.md         (네 페르소나)
   docs/studio/protocol.md         (소통 규약 + 브리프 형식)
-첫 작업으로 pm.md의 "부활 의례"를 수행하고, backlog를 임계경로 기준으로 그루밍한 뒤,
-다음 작업 1~2개의 디스패치 브리프를 docs/studio/briefs/<slug>.md 에 깔아라.
+첫 작업으로 pm.md의 "부활 의례"를 수행하라(여기엔 docs/studio/bus.md 끝을 읽고
+메인이 너에게 보낸 메시지에 답장 한 줄 append 하는 단계가 포함된다). 그다음 backlog를
+임계경로 기준으로 그루밍하고, 다음 작업 1~2개의 디스패치 브리프를 docs/studio/briefs/<slug>.md 에 깔아라.
 금지: 직접 구현 / Unity 조작 / 시각 "좋다" 판정 / git commit (메인·게이트 영역).
 도현 부재여도 멈추지 말고 최선의 가정을 명시하고 진행하라.
 '@
