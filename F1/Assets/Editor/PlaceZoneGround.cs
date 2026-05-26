@@ -17,21 +17,17 @@ public static class PlaceZoneGround
     const float CELL = 6f;
 
     // (이름, row시작, row끝, 색) — zoneMask: I rows0-6 / D 7-14 / H 15-21
-    // 도현 결정(2026-05-26): 다운타운=잔디 유지(쿼드 X, 고층 건물로만 차별화) / 항구=따뜻한 베이지 / 공업=조금 더 진한 갈색.
     static readonly (string name, int r0, int r1, Color col)[] Zones =
     {
-        ("ZoneGround_Industrial", 0,  6,  new Color(0.35f, 0.26f, 0.16f)), // 갈색 흙, 채도 조금 ↑
-        ("ZoneGround_Harbor",     15, 19, new Color(0.64f, 0.55f, 0.40f)), // 따뜻한 베이지 모래 (rows20-21은 바다)
-        // 다운타운(rows7-14)은 쿼드 없음 — 기존 잔디 노출, 고층 건물 실루엣으로만 구분.
+        ("ZoneGround_Industrial", 0,  6,  new Color(0.33f, 0.29f, 0.23f)), // 갈색 흙/콘크리트
+        ("ZoneGround_Downtown",   7,  14, new Color(0.26f, 0.31f, 0.23f)), // 머튼 그린(도시 잔디)
+        ("ZoneGround_Harbor",     15, 19, new Color(0.42f, 0.39f, 0.31f)), // 모래/부두 탄 (rows20-21은 바다)
     };
 
     [MenuItem("PitCrew/Map/Place Zone Ground Tones")]
     public static void Execute()
     {
         var root = GameObject.Find("ZoneGrounds") ?? new GameObject("ZoneGrounds");
-        // 도현 결정으로 빠진 다운타운 쿼드가 이전 실행으로 남아있으면 제거(잔디 노출).
-        var stale = GameObject.Find("ZoneGround_Downtown");
-        if (stale != null) Object.DestroyImmediate(stale);
         foreach (var z in Zones)
         {
             var go = GameObject.Find(z.name);
