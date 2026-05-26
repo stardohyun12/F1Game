@@ -8,7 +8,8 @@
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.RenderPipelines.Core.Runtime",
         "Unity.Recorder.Editor",
-        "Unity.Recorder.Base"
+        "Unity.Recorder.Base",
+        "Whinarn.UnityMeshSimplifier.Runtime"
     ],
     "includePlatforms": [
         "Editor"

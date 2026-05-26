@@ -1,33 +1,35 @@
 {
-  "title": "PITCREW STUDIO",
-  "focus": "스튜디오 대시보드 완성 — 게임(맵)으로 복귀 대기",
-  "updatedAt": "2026-05-23T23:25:00",
-  "pm": { "doing": "대시보드 완성·검증 끝. 다음: 맵 디자인 마무리(중앙 랜드마크 제거 반영)" },
+  "title": "PITCREW STUDIO · 야간 마감",
+  "focus": "🌙→☀ 밤작업 완료 — 허브 'wake-up' 탭 보세요",
+  "updatedAt": "2026-05-24T04:50:00",
+  "pm": { "doing": "맵 6조사 종합 + 소도시 v1→v3(3.5→5.0, 비평루프). 레시피·결정거리 wake-up 페이지에. 깨우면 마을만들기(랜드마크·나무) 이어감." },
   "departments": [
     {
       "name": "기획",
       "icon": "📐",
       "status": "idle",
-      "note": "brainstorm·spec·수치·리서치",
+      "note": "맵 방향 종합",
       "desks": [
-        { "role": "리서치", "name": "맵 구조", "task": "지구개성 우선·중앙 랜드마크 불필요 결론", "status": "done" }
-      ]
-    },
-    {
-      "name": "프로그래밍",
-      "icon": "💻",
-      "status": "idle",
-      "note": "구현·검증·하네스",
-      "desks": [
-        { "role": "구현", "name": "스튜디오 대시보드", "task": "Python 서버+HTML, 작동 검증 완료", "status": "done" }
+        { "role": "종합", "name": "맵 방향 6조사", "task": "17배폐기·런길이=잡수·양식화·소도시→도시. 문서 완료", "status": "done" }
       ]
     },
     {
       "name": "아트",
       "icon": "🎨",
       "status": "idle",
-      "note": "맵 룩·화물·UI 시각",
-      "desks": []
+      "note": "소도시 룩",
+      "desks": [
+        { "role": "빌드", "name": "소도시 v1→v3", "task": "저층화+지붕색변주. 비평 5.0/10(마을만들기 남음)", "status": "done" }
+      ]
+    },
+    {
+      "name": "프로그래밍",
+      "icon": "💻",
+      "status": "idle",
+      "note": "구현·검증",
+      "desks": [
+        { "role": "구현", "name": "색변주 패치+커밋", "task": "BuildingPlacer variation, 전 작업 커밋", "status": "done" }
+      ]
     }
   ]
 }
