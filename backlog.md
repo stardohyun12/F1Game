@@ -10,7 +10,8 @@
 ## 대기 (임계경로 순)
 
 ### 1순위 — 데모를 막는 진짜 블로커
-- [시스템] 맵 넓히기 — 한 런 8~12초 vs 5~15분 갭 (200~900배) — brief: ready (`docs/studio/briefs/map-run-duration-gap.md`)
+- [시스템] 맵 넓히기 — 한 런 8~12초 vs 5~15분 갭 (200~900배) — brief: ready, **도현 결정 3건 대기** (`docs/studio/briefs/map-run-duration-gap.md`)
+  - ① 항구 바닥 색온도 ② 공업 갈색 채도 수위 ③ 다운타운 바닥(콘크리트 vs 잔디 유지) — 버스 PM→도현 [05-26 15:00]
 - [시스템] 차고 Task 12 통합 verifier — 구현 완료, 검증 0건 — brief: ready (`docs/studio/briefs/garage-task12-verifier.md`)
 
 ### 2순위 — 맵/차고 안정 후
