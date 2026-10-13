@@ -143,3 +143,6 @@ tools/studio-dashboard/activity.jsonl
 
 # 스튜디오 허브 페이지(생성된 목업)·로그 — 추적 안 함
 tools/studio-dashboard/pages/
+*.blend1
+captures/art/
+tools/studio-dashboard/running.json

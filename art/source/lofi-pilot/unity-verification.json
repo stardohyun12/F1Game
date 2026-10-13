@@ -1,0 +1,154 @@
+{
+    "assets": [
+        {
+            "name": "CoastalHouse",
+            "triangles": 602,
+            "size": {
+                "x": 5.539999961853027,
+                "y": 6.599999904632568,
+                "z": 5.305000305175781
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalTree",
+            "triangles": 252,
+            "size": {
+                "x": 2.795300006866455,
+                "y": 4.037499904632568,
+                "z": 2.0083515644073488
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CornerShop",
+            "triangles": 898,
+            "size": {
+                "x": 6.539999961853027,
+                "y": 6.800000190734863,
+                "z": 6.329999923706055
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "Crate",
+            "triangles": 12,
+            "size": {
+                "x": 0.6000000238418579,
+                "y": 0.41999998688697817,
+                "z": 0.44999998807907107
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "DeliveryBag",
+            "triangles": 84,
+            "size": {
+                "x": 0.6800000071525574,
+                "y": 0.699999988079071,
+                "z": 0.47999998927116396
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "Parcel",
+            "triangles": 12,
+            "size": {
+                "x": 0.47999998927116396,
+                "y": 0.4300000071525574,
+                "z": 0.4000000059604645
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "RepairGarage",
+            "triangles": 534,
+            "size": {
+                "x": 6.940000057220459,
+                "y": 4.150000095367432,
+                "z": 6.0
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "Road7x8",
+            "triangles": 96,
+            "size": {
+                "x": 7.0,
+                "y": 0.18000000715255738,
+                "z": 8.0
+            },
+            "bottom": -0.18000000715255738,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "Sidewalk2x4",
+            "triangles": 32,
+            "size": {
+                "x": 2.0,
+                "y": 0.20000000298023225,
+                "z": 4.0
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "TireStack",
+            "triangles": 288,
+            "size": {
+                "x": 0.7599999904632568,
+                "y": 0.6700000166893005,
+                "z": 0.7599999904632568
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "UtilityPole",
+            "triangles": 156,
+            "size": {
+                "x": 1.5,
+                "y": 6.5,
+                "z": 0.2749999761581421
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "Wall3m",
+            "triangles": 32,
+            "size": {
+                "x": 3.0999999046325685,
+                "y": 1.3700000047683716,
+                "z": 0.4000000059604645
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        }
+    ],
+    "placements": 60,
+    "physicsGroundChecks": 27,
+    "issues": [],
+    "shaderErrors": [],
+    "sourceScene": "Assets/ComplexTrack.unity",
+    "sourceDirty": false
+}

@@ -1,0 +1,22 @@
+PASS new run starts worn
+PASS visual adds no collider
+PASS controller accelerates
+PASS vehicle moves
+PASS wheel rotation follows travel
+PASS steering input reaches visual rig
+PASS paint purchase succeeds
+PASS paint restores body
+PASS paint preserves tires and cargo
+PASS duplicate restoration does not charge
+PASS restore Engine
+PASS restore Gearbox
+PASS restore Tires
+PASS restore Suspension
+PASS restore Aero
+PASS all restored groups use clean material
+PASS reinforced trunk purchase
+PASS cargo upgrade changes bag only
+PASS re-enable resynchronizes owned upgrades
+MaxSpeedMps=3.745629
+Distance=7.775234
+SUCCESS

@@ -1,0 +1,13 @@
+Mesh triangles=4856
+Bounds=Center: (0.00, 0.54, 0.14), Extents: (0.98, 0.54, 1.89)
+Independent wheels=4
+Shader errors=0
+Source scene=Assets/ComplexTrack.unity dirty=False
+wheel_front_left pivot=(-0.79, 0.35, 1.20) bottom=0
+wheel_front_right pivot=(0.79, 0.35, 1.20) bottom=0
+wheel_rear_left pivot=(-0.79, 0.38, -1.10) bottom=0
+wheel_rear_right pivot=(0.79, 0.38, -1.10) bottom=0
+wheel_front_left rotation-center=5.960464E-08
+wheel_front_right rotation-center=8.42937E-08
+wheel_rear_left rotation-center=5.960464E-08
+wheel_rear_right rotation-center=5.960464E-08

@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a39bd44f57a32941ac037428ec778cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew.Editor::PitCrew.ArtPilot.LofiPilotLayout
+  placements:
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: -8}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 0}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 8}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 16}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 32}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Road7x8
+    position: {x: 0, y: 0, z: 40}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: -10}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: -10}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: -6}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: -6}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: -2}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: -2}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 2}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 2}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 6}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 10}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 10}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 14}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 14}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 18}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 18}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 22}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 22}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 26}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 26}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 30}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 34}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 34}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: -4.5, y: 0, z: 38}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Sidewalk2x4
+    position: {x: 4.5, y: 0, z: 38}
+    yaw: 180
+    scale: {x: 1, y: 1, z: 1}
+  - asset: CornerShop
+    position: {x: -8.95, y: 0.15, z: 9}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: RepairGarage
+    position: {x: -8.6, y: 0.15, z: 23}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: CoastalHouse
+    position: {x: 8, y: 0.15, z: 12}
+    yaw: -90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: CoastalHouse
+    position: {x: 8, y: 0.15, z: 28}
+    yaw: -90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: CoastalHouse
+    position: {x: -8.5, y: 0.15, z: 38}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 1}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 5}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 19}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 23}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 35}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Wall3m
+    position: {x: 5.7, y: 0.15, z: 39}
+    yaw: 90
+    scale: {x: 1, y: 1, z: 1}
+  - asset: UtilityPole
+    position: {x: 4.95, y: 0.2, z: -1}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: UtilityPole
+    position: {x: 4.95, y: 0.2, z: 19}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: UtilityPole
+    position: {x: 4.95, y: 0.2, z: 35}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: CoastalTree
+    position: {x: -6, y: 0.15, z: -1}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: CoastalTree
+    position: {x: 6, y: 0.15, z: 3}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: CoastalTree
+    position: {x: -6, y: 0.15, z: 32}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: CoastalTree
+    position: {x: 6, y: 0.15, z: 37}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: CoastalTree
+    position: {x: -12, y: 0.15, z: 17}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: CoastalTree
+    position: {x: 12, y: 0.15, z: 20}
+    yaw: 0
+    scale: {x: 1.25, y: 1.25, z: 1.25}
+  - asset: Crate
+    position: {x: -5.5, y: 0.15, z: 6}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Crate
+    position: {x: -5.5, y: 0.57, z: 6}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Crate
+    position: {x: -5.5, y: 0.99, z: 6}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Parcel
+    position: {x: -5.65, y: 0.15, z: 11}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: TireStack
+    position: {x: -5.95, y: 0.15, z: 20}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Parcel
+    position: {x: -5.85, y: 0.15, z: 25}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  - asset: Parcel
+    position: {x: -5.85, y: 0.58, z: 25}
+    yaw: 0
+    scale: {x: 1, y: 1, z: 1}
+  cameraPosition: {x: 0, y: 3.7, z: -7}
+  cameraTarget: {x: 0, y: 1.25, z: 5}
+  fieldOfView: 55

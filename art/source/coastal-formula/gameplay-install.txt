@@ -1,0 +1,7 @@
+Source=Assets/ComplexTrack.unity
+VisualScale=0.6632653
+ColliderCenter=(0.00, 0.43, 0.00)
+ColliderSize=(1.30, 0.60, 2.56)
+Mass=100
+Wheel bottoms align with existing collider. Existing physics unchanged.
+Renderers=10

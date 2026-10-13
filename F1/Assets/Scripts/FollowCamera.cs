@@ -7,6 +7,7 @@ public class FollowCamera : MonoBehaviour
 
     [Header("Follow")]
     [SerializeField] private Vector3 offset = new Vector3(0f, 3f, -6f);
+    [SerializeField] private float lookHeight = 1.2f;
     [SerializeField] private float positionSmoothTime = 0.15f;
     [SerializeField] private float rotationLerpSpeed = 8f;
 
@@ -59,7 +60,7 @@ public class FollowCamera : MonoBehaviour
         Vector3 desiredPos = target.position + yawRot * offset;
         transform.position = Vector3.SmoothDamp(transform.position, desiredPos, ref posVelocity, positionSmoothTime);
 
-        Quaternion lookRot = Quaternion.LookRotation(target.position + Vector3.up * 1.2f - transform.position, Vector3.up);
+        Quaternion lookRot = Quaternion.LookRotation(target.position + Vector3.up * lookHeight - transform.position, Vector3.up);
         Vector3 e = lookRot.eulerAngles;
 
         float targetRoll = 0f;

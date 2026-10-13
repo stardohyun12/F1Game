@@ -1,0 +1,2104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6e406f84e141904a80ac2c10a0fca98, type: 3}
+  m_Name: TownLayout
+  m_EditorClassIdentifier: PitCrew::CoastalTownLayout
+  streets: {fileID: 11400000, guid: be8e546906607f2438e093b331e28409, type: 2}
+  placements:
+  - asset: RepairGarage
+    position: {x: 6, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 12, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 14.15, y: 0, z: 6.9}
+    yaw: 27
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 18, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: TireStack
+    position: {x: 16.8, y: 0, z: 3.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 24, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 26.4, y: 0, z: 6.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 30, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 32.15, y: 0, z: 6.9}
+    yaw: 138
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 36, y: 0, z: 6}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 48, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 50.15, y: 0, z: 6.9}
+    yaw: 249
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 54, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 56.4, y: 0, z: 6.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 60, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 66, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 68.15, y: 0, z: 6.9}
+    yaw: 0
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 64.8, y: 0, z: 3.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 72, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 78, y: 0, z: 6}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 96, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 104.15, y: 0, z: 6.9}
+    yaw: 222
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 108, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 114, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 112.8, y: 0, z: 3.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 116.4, y: 0, z: 6.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 122.15, y: 0, z: 6.9}
+    yaw: 333
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 126, y: 0, z: 6}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 138, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 140.15, y: 0, z: 6.9}
+    yaw: 84
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 136.8, y: 0, z: 3.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 144, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 146.4, y: 0, z: 6.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 150, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 158.15, y: 0, z: 6.9}
+    yaw: 195
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 162, y: 0, z: 6}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: TireStack
+    position: {x: 160.8, y: 0, z: 3.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 168, y: 0, z: 6}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 12}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 6.9, y: 0, z: 9.85}
+    yaw: 303
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 12, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 18, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 24, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 30, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 36, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 38.55, y: 0, z: 10.8}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 48, y: 0, z: 12}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 54, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 60, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 66, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 72, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 78, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 77.1, y: 0, z: 14.15}
+    yaw: 27
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 12}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 96.9, y: 0, z: 9.85}
+    yaw: 138
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 102, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 108, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 120, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 126, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 138, y: 0, z: 12}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 144, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 156, y: 0, z: 12}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 162, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 168, y: 0, z: 12}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 167.1, y: 0, z: 14.15}
+    yaw: 222
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 12, y: 0, z: 18}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 24, y: 0, z: 18}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 36, y: 0, z: 18}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 35.1, y: 0, z: 20.15}
+    yaw: 81
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 35.4, y: 0, z: 20.4}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 48, y: 0, z: 18}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 60, y: 0, z: 18}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 72, y: 0, z: 18}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 96, y: 0, z: 18}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 96.6, y: 0, z: 15.6}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 108, y: 0, z: 18}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 120, y: 0, z: 18}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 144, y: 0, z: 18}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 156, y: 0, z: 18}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 168, y: 0, z: 18}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 6, y: 0, z: 24}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 12, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 18, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 24, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 30, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 36, y: 0, z: 24}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 48, y: 0, z: 24}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 48.9, y: 0, z: 21.85}
+    yaw: 108
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 45.45, y: 0, z: 25.2}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 54, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 60, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 66, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 72, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 78, y: 0, z: 24}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 96, y: 0, z: 24}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 93.45, y: 0, z: 25.2}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 108, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 114, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 126, y: 0, z: 24}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 138, y: 0, z: 24}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 138.9, y: 0, z: 21.85}
+    yaw: 303
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 144, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 150, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 162, y: 0, z: 24}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 168, y: 0, z: 24}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 170.55, y: 0, z: 22.8}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 3.85, y: 0, z: 29.1}
+    yaw: 162
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 12, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 18, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 19.2, y: 0, z: 32.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 15.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 24, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 21.85, y: 0, z: 29.1}
+    yaw: 273
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 30, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 36, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 48, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 45.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 54, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 60, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 57.85, y: 0, z: 29.1}
+    yaw: 135
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 66, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: TireStack
+    position: {x: 67.2, y: 0, z: 32.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 72, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 78, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 75.85, y: 0, z: 29.1}
+    yaw: 246
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 75.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 93.85, y: 0, z: 29.1}
+    yaw: 357
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 102, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 108, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 105.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 111.85, y: 0, z: 29.1}
+    yaw: 108
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 115.2, y: 0, z: 32.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 120, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 126, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: RepairGarage
+    position: {x: 138, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: TireStack
+    position: {x: 139.2, y: 0, z: 32.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 135.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 144, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 147.85, y: 0, z: 29.1}
+    yaw: 330
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: RepairGarage
+    position: {x: 156, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: RepairGarage
+    position: {x: 162, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: TireStack
+    position: {x: 163.2, y: 0, z: 32.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 168, y: 0, z: 30}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 165.85, y: 0, z: 29.1}
+    yaw: 81
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 165.6, y: 0, z: 29.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 0, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: -1.2, y: 0, z: 45.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 5.1, y: 0, z: 50.15}
+    yaw: 21
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 5.4, y: 0, z: 50.4}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 18, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 24, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 23.1, y: 0, z: 50.15}
+    yaw: 132
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 26.55, y: 0, z: 46.8}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 36, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 38.4, y: 0, z: 48.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 42, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 41.1, y: 0, z: 50.15}
+    yaw: 243
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 60, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 59.1, y: 0, z: 50.15}
+    yaw: 354
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 72, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: 70.8, y: 0, z: 45.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 78, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 77.1, y: 0, z: 50.15}
+    yaw: 105
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 98.15, y: 0, z: 48.9}
+    yaw: 216
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 94.8, y: 0, z: 45.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 98.4, y: 0, z: 48.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 116.15, y: 0, z: 48.9}
+    yaw: 327
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: 122.55, y: 0, z: 46.8}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 132, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 134.15, y: 0, z: 48.9}
+    yaw: 78
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 138, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 152.15, y: 0, z: 48.9}
+    yaw: 189
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 48}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 155.4, y: 0, z: 50.4}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 168, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 170.15, y: 0, z: 48.9}
+    yaw: 300
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 166.8, y: 0, z: 45.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 48}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 0, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: -2.15, y: 0, z: 53.1}
+    yaw: 297
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 24, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 36, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 33.85, y: 0, z: 53.1}
+    yaw: 159
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 60, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 72, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 69.85, y: 0, z: 53.1}
+    yaw: 21
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 69.6, y: 0, z: 53.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 132, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 129.6, y: 0, z: 53.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 168, y: 0, z: 54}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 72}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 18, y: 0, z: 72}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 20.15, y: 0, z: 72.9}
+    yaw: 267
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 42, y: 0, z: 72}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 72}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 56.15, y: 0, z: 72.9}
+    yaw: 129
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 78, y: 0, z: 72}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CornerShop
+    position: {x: 102, y: 0, z: 72}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 72}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 138, y: 0, z: 72}
+    yaw: 90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 72}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 152.4, y: 0, z: 72.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 72}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 0, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 3.6, y: 0, z: 77.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 18, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: Crate
+    position: {x: 19.2, y: 0, z: 80.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 24, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 36, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 33.6, y: 0, z: 77.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 42, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: 43.2, y: 0, z: 80.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 60, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 72, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CornerShop
+    position: {x: 78, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 93.6, y: 0, z: 77.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 99.85, y: 0, z: 77.1}
+    yaw: 18
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: 115.2, y: 0, z: 80.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 117.85, y: 0, z: 77.1}
+    yaw: 129
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 132, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CornerShop
+    position: {x: 138, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 135.85, y: 0, z: 77.1}
+    yaw: 240
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 139.2, y: 0, z: 80.55}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 153.85, y: 0, z: 77.1}
+    yaw: 351
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 153.6, y: 0, z: 77.4}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 168, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 78}
+    yaw: 0
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 171.85, y: 0, z: 77.1}
+    yaw: 102
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 0, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: -1.2, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 6, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 12, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 14.15, y: 0, z: 96.9}
+    yaw: 42
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 18, y: 0, z: 96}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 30, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 32.15, y: 0, z: 96.9}
+    yaw: 153
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 36, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 42, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 48, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 50.15, y: 0, z: 96.9}
+    yaw: 264
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 46.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 96}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 53.4, y: 0, z: 98.4}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 66, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 68.15, y: 0, z: 96.9}
+    yaw: 15
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 72, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: 70.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 78, y: 0, z: 96}
+    yaw: 90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CornerShop
+    position: {x: 96, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: Crate
+    position: {x: 94.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 104.15, y: 0, z: 96.9}
+    yaw: 237
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 108, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 116.4, y: 0, z: 96.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 122.15, y: 0, z: 96.9}
+    yaw: 348
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Crate
+    position: {x: 118.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 126, y: 0, z: 96}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 138, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 140.15, y: 0, z: 96.9}
+    yaw: 99
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 144, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: 142.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 146.4, y: 0, z: 96.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CornerShop
+    position: {x: 156, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 158.15, y: 0, z: 96.9}
+    yaw: 210
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 162, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 168, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: 166.8, y: 0, z: 93.45}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 96}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 176.15, y: 0, z: 96.9}
+    yaw: 321
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 176.4, y: 0, z: 96.6}
+    yaw: 270
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 0, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 12, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 18, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Crate
+    position: {x: 20.55, y: 0, z: 100.8}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 30, y: 0, z: 102}
+    yaw: -90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Wall3m
+    position: {x: 30.6, y: 0, z: 99.6}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 36, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CornerShop
+    position: {x: 42, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 48, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 66, y: 0, z: 102}
+    yaw: -90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: 63.45, y: 0, z: 103.2}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 72, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 78, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 77.1, y: 0, z: 104.15}
+    yaw: 42
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 96, y: 0, z: 102}
+    yaw: -90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 96.9, y: 0, z: 99.85}
+    yaw: 153
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 102, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 108, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 120, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 126, y: 0, z: 102}
+    yaw: 90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 138, y: 0, z: 102}
+    yaw: -90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: Crate
+    position: {x: 135.45, y: 0, z: 103.2}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 144, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 156, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CornerShop
+    position: {x: 162, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 168, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 102}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 6, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CornerShop
+    position: {x: 18, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 17.1, y: 0, z: 110.15}
+    yaw: 345
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 30, y: 0, z: 108}
+    yaw: -90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 42, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 54, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 53.1, y: 0, z: 110.15}
+    yaw: 207
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 66, y: 0, z: 108}
+    yaw: -90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: Wall3m
+    position: {x: 66.6, y: 0, z: 105.6}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 78, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 102, y: 0, z: 108}
+    yaw: -90
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 114, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 126, y: 0, z: 108}
+    yaw: 90
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalTree
+    position: {x: 125.1, y: 0, z: 110.15}
+    yaw: 291
+    scale: {x: 0.78, y: 0.78, z: 0.78}
+    palette: 0
+  - asset: Wall3m
+    position: {x: 125.4, y: 0, z: 110.4}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: CornerShop
+    position: {x: 138, y: 0, z: 108}
+    yaw: -90
+    scale: {x: 0.64, y: 0.64, z: 0.64}
+    palette: 2
+  - asset: CoastalHouse
+    position: {x: 150, y: 0, z: 108}
+    yaw: 180
+    scale: {x: 0.65500003, y: 0.65500003, z: 0.65500003}
+    palette: 1
+  - asset: CoastalHouse
+    position: {x: 162, y: 0, z: 108}
+    yaw: 180
+    scale: {x: 0.62, y: 0.62, z: 0.62}
+    palette: 0
+  - asset: CoastalHouse
+    position: {x: 174, y: 0, z: 108}
+    yaw: 180
+    scale: {x: 0.69, y: 0.69, z: 0.69}
+    palette: 2
+  - asset: UtilityPole
+    position: {x: 0, y: 0.12, z: -2.64}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 24, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 48, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 72, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 96, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 120, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 144, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 168, y: 0.12, z: 2.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 44.64, y: 0.12, z: 6}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 92.64, y: 0.12, z: 6}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 81.36, y: 0.12, z: 12}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 134.64, y: 0.12, z: 12}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 176.64, y: 0.12, z: 18}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 2.64, y: 0.12, z: 24}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 44.64, y: 0.12, z: 30}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 92.64, y: 0.12, z: 30}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 12, y: 0.12, z: 33.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 36, y: 0.12, z: 33.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 60, y: 0.12, z: 33.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 108, y: 0.12, z: 33.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 156, y: 0.12, z: 33.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 6, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 54, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 78, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 102, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 150, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 174, y: 0.12, z: 44.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 50.64, y: 0.12, z: 48}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 146.64, y: 0.12, z: 48}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 68.64, y: 0.12, z: 54}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 92.64, y: 0.12, z: 54}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 164.64, y: 0.12, z: 54}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 36, y: 0.12, z: 57.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 60, y: 0.12, z: 57.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 132, y: 0.12, z: 57.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 156, y: 0.12, z: 57.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 6, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 54, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 78, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 102, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 150, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 174, y: 0.12, z: 68.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 50.64, y: 0.12, z: 72}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 146.64, y: 0.12, z: 72}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 68.64, y: 0.12, z: 78}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 92.64, y: 0.12, z: 78}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 164.64, y: 0.12, z: 78}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 36, y: 0.12, z: 81.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 60, y: 0.12, z: 81.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 132, y: 0.12, z: 81.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 156, y: 0.12, z: 81.36}
+    yaw: 180
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 6, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 30, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 54, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 78, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 102, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 126, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 150, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 174, y: 0.12, z: 92.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 26.64, y: 0.12, z: 96}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 92.64, y: 0.12, z: 102}
+    yaw: 90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 60, y: 0.12, z: 110.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 81.36, y: 0.12, z: 108}
+    yaw: -90
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  - asset: UtilityPole
+    position: {x: 132, y: 0.12, z: 110.64}
+    yaw: 0
+    scale: {x: 0.65, y: 0.65, z: 0.65}
+    palette: 0
+  cellSize: 6
+  cameraOffset: {x: 0, y: 2, z: -3.5}
+  cameraLookHeight: 0.45

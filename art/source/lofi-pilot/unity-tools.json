@@ -1,0 +1,309 @@
+{
+  "success": true,
+  "message": "Available tools",
+  "data": [
+    {
+      "name": "screenshot",
+      "description": "Capture a screenshot of the Unity editor. Views: scene, game.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "view",
+          "type": "String",
+          "description": "View to capture: scene (default), game",
+          "required": false
+        },
+        {
+          "name": "width",
+          "type": "Int32",
+          "description": "Override width (default 1920)",
+          "required": false
+        },
+        {
+          "name": "height",
+          "type": "Int32",
+          "description": "Override height (default 1080)",
+          "required": false
+        },
+        {
+          "name": "output_path",
+          "type": "String",
+          "description": "Output file path, absolute or relative to project root (default: Screenshots/screenshot.png)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "exec",
+      "description": "Execute arbitrary C# code at runtime. Full access to Unity and all loaded assemblies.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "code",
+          "type": "String",
+          "description": "C# code to execute. Use 'return' for output.",
+          "required": true
+        },
+        {
+          "name": "usings",
+          "type": "String[]",
+          "description": "Additional using directives (comma-separated, e.g. Unity.Entities,Unity.Mathematics)",
+          "required": false
+        },
+        {
+          "name": "csc",
+          "type": "String",
+          "description": "Path to csc compiler (csc.dll or csc.exe). Auto-detected if omitted.",
+          "required": false
+        },
+        {
+          "name": "dotnet",
+          "type": "String",
+          "description": "Path to dotnet runtime. Auto-detected if omitted.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "description": "Execute a Unity menu item by path.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "menu_path",
+          "type": "String",
+          "description": "Unity menu item path to execute (e.g. File/Save Project)",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "manage_editor",
+      "description": "Controls Unity editor state. Actions: play, stop, pause, refresh, set_active_tool, add_tag, remove_tag, add_layer, remove_layer.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "action",
+          "type": "String",
+          "description": "Action to perform: play, stop, pause, refresh, set_active_tool, add_tag, remove_tag, add_layer, remove_layer",
+          "required": true
+        },
+        {
+          "name": "wait_for_completion",
+          "type": "Boolean",
+          "description": "Wait for action to complete before responding",
+          "required": false
+        },
+        {
+          "name": "tool_name",
+          "type": "String",
+          "description": "Tool name (required for set_active_tool action)",
+          "required": false
+        },
+        {
+          "name": "tag_name",
+          "type": "String",
+          "description": "Tag name (required for add_tag/remove_tag actions)",
+          "required": false
+        },
+        {
+          "name": "layer_name",
+          "type": "String",
+          "description": "Layer name (required for add_layer/remove_layer actions)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "profiler",
+      "description": "Control Unity Profiler. Actions: hierarchy, enable, disable, status, clear.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "action",
+          "type": "String",
+          "description": "Action: hierarchy, enable, disable, status, or clear",
+          "required": true
+        },
+        {
+          "name": "frame",
+          "type": "Int32",
+          "description": "Frame index. -1 or omit = last captured frame.",
+          "required": false
+        },
+        {
+          "name": "from",
+          "type": "Int32",
+          "description": "Start frame index for range average.",
+          "required": false
+        },
+        {
+          "name": "to",
+          "type": "Int32",
+          "description": "End frame index for range average.",
+          "required": false
+        },
+        {
+          "name": "frames",
+          "type": "Int32",
+          "description": "Number of recent frames to average (shortcut for range).",
+          "required": false
+        },
+        {
+          "name": "thread",
+          "type": "Int32",
+          "description": "Thread index. 0 = main thread.",
+          "required": false
+        },
+        {
+          "name": "parent",
+          "type": "Int32",
+          "description": "Parent item ID to drill into. Omit for root level.",
+          "required": false
+        },
+        {
+          "name": "root",
+          "type": "String",
+          "description": "Find item by name and use as root. Substring match.",
+          "required": false
+        },
+        {
+          "name": "min",
+          "type": "Single",
+          "description": "Minimum total time (ms) filter.",
+          "required": false
+        },
+        {
+          "name": "sort",
+          "type": "String",
+          "description": "Sort column: 'total', 'self', or 'calls'. Default 'total'.",
+          "required": false
+        },
+        {
+          "name": "max",
+          "type": "Int32",
+          "description": "Max children per level. Default 30.",
+          "required": false
+        },
+        {
+          "name": "depth",
+          "type": "Int32",
+          "description": "Recursive depth. 1 = one level (default), 0 = unlimited.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "console",
+      "description": "Read or clear Unity console logs.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "type",
+          "type": "String",
+          "description": "Comma-separated log types: error, warning, log. Default: error,warning,log",
+          "required": false
+        },
+        {
+          "name": "lines",
+          "type": "Int32",
+          "description": "Maximum number of log entries to return",
+          "required": false
+        },
+        {
+          "name": "stacktrace",
+          "type": "String",
+          "description": "Stack trace mode: none (first line), user (user code frames only), full (raw). Default: user",
+          "required": false
+        },
+        {
+          "name": "clear",
+          "type": "Boolean",
+          "description": "Clear console",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "refresh_unity",
+      "description": "Refresh Unity assets and optionally request script compilation.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "mode",
+          "type": "String",
+          "description": "Refresh mode: if_dirty (default) or force",
+          "required": false
+        },
+        {
+          "name": "force",
+          "type": "Boolean",
+          "description": "Allow refresh while the editor is in or entering play mode.",
+          "required": false
+        },
+        {
+          "name": "scope",
+          "type": "String",
+          "description": "Scope: all (default) or specific path",
+          "required": false
+        },
+        {
+          "name": "compile",
+          "type": "String",
+          "description": "Compile mode: none (default) or request",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "reserialize",
+      "description": "Force reserialize Unity assets. No params = entire project.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "path",
+          "type": "String",
+          "description": "Single asset path to reserialize",
+          "required": false
+        },
+        {
+          "name": "paths",
+          "type": "String[]",
+          "description": "Multiple asset paths to reserialize",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "run_tests",
+      "description": "Run Unity EditMode or PlayMode tests and return results.",
+      "group": "",
+      "parameters": [
+        {
+          "name": "mode",
+          "type": "String",
+          "description": "Test mode: EditMode or PlayMode",
+          "required": true
+        },
+        {
+          "name": "filter",
+          "type": "String",
+          "description": "Filter by namespace, class, or full test name",
+          "required": false
+        },
+        {
+          "name": "allow_dirty_scenes",
+          "type": "Boolean",
+          "description": "Run tests even when open scenes have unsaved changes",
+          "required": false
+        },
+        {
+          "name": "auto_save_scenes",
+          "type": "Boolean",
+          "description": "Save dirty open scenes before running tests",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

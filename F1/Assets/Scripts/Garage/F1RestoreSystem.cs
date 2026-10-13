@@ -59,7 +59,12 @@ namespace PitCrew.Garage
                     break;
                 case F1PartId.Paint:
                     var carRoot = Services.Car?.Transform?.gameObject;
-                    if (carRoot != null)
+                    var appearance = carRoot != null ? carRoot.GetComponentInChildren<FormulaVehicleVisual>() : null;
+                    if (appearance != null)
+                    {
+                        appearance.Refresh();
+                    }
+                    else if (carRoot != null)
                     {
                         foreach (var mr in carRoot.GetComponentsInChildren<Renderer>())
                         {
