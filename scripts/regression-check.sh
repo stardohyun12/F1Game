@@ -2,7 +2,8 @@
 # PitCrew 회귀 점검 — Play 흐름의 각 상태에서 HarnessChecks 단언 호출.
 # 우리가 실제로 겪은 버그(엔진음 잔류·맵 fog·화물 피벗)가 되살아나면 FAIL.
 # 사용: bash scripts/regression-check.sh   (Editor 켜져 있어야)
-UCLI="C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe"
+# 머신별 분기(본가 데탑 exe / 노트북 HTTP 대체)는 scripts/ucli.sh 가 한다. 2026-10-12
+UCLI="$(cd "$(dirname "$0")" && pwd)/ucli.sh"
 # 각 단언 결과를 출력 + 집계. FAIL/SKIP을 조용히 넘기지 않고 끝에 크게 요약.
 # (검증자 지적: 출력만 하고 FAIL/SKIP 자동 감지가 없으면 false-green 빠져나감)
 PASSES=0; FAILS=0; SKIPS=0

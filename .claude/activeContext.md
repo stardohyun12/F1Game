@@ -5,6 +5,26 @@
 
 ---
 
+## 세션 34 (2026-10-13) — Codex 줄기 채택(D-096) + 에이전트 팀 가동
+
+- **아트 스타일 최종 = Codex "따뜻한 로파이 해안"(D-096).** 어제 제 플랫 Alba 줄기(D-094)는 접음. 비례·밀도 규칙(D-095)은 유지.
+- **Codex 산출물이 저장된 ComplexTrack 에 설치돼 있음**: `CoastalTown`(417 배치, Buildings/Props/StreetFurniture 비활성), 플레이어 차 = `FormulaGameplayVisual.prefab`(낡음/복원 재질, `FormulaVehicleVisual`), 백업 `F1/Assets/Art/CoastalFormula/ComplexTrack.before-formula.unity`. 재생성: `tools/asset-gen/lofi_pilot.py`, `coastal_formula.py`; 설치 메뉴 `PitCrew/Art/Coastal Town/Install`, `Coastal Formula/Install Gameplay Vehicle`; 스모크 `CoastalTownSmoke.Run()`(배달 경로 라벨 버그 고침 → 8/8).
+- **에이전트 팀**(`.claude/agents/`): graphic-gate(외부 눈, sonnet) · design-gate(기획, sonnet) · verifier(계측, sonnet). 판정은 `docs/gates/YYYY-MM-DD.md` 한 줄씩. Stop 훅은 그 기록이 변경 코드보다 새로우면 조용함. 팀 구성 대화 미완: "기획이 합격 기준 5줄을 먼저 쓸지" 도현 답 대기. asset-maker(아트 손) 파일 미작성.
+- **첫 게이트 결과**: verifier PASS / graphic-gate FAIL 4/10 → 다음 손: 건물당 소품·비례·톤 통일(로파이 규칙 안에서).
+- **미커밋 큰 덩어리**: Codex 작업 전부(씬 5만 줄·Art/·Editor 9개·tools) + 제 도구들 + 에이전트 파일. 커밋은 도현 허락 뒤 기능 단위로.
+
+## 세션 33 (2026-10-12, 4.5개월 공백 뒤 재개) — 아트 스타일 결정
+
+- **도현 결정: 아트 스타일 = A+C ("Kenney 플랫 로우폴리" 바탕 + "미니어처 디오라마" 한 겹).** 보드 6종 → A+C 선택 → Unity 실측 v1/v2/v3.
+  - 보드·캡처: `art/concept/style-board-2026-10-12/` (`style_board.png` 6결, `unity_diorama_v2.png`, `unity_palette_v3.png`, `unity_palette_v3_zones.png`). 케이크 파일럿: `art/concept/cake-pilot-2026-10-12/`.
+  - 메뉴(에디터, 씬 저장 안 함): `PitCrew/Art/Apply Diorama Look`(세션28 무드 보장 + 그레이딩·원경 흐림·비네트) / `Apply Zone Palette`(건물 137채 colormap 을 구역별 변형으로 교체) / 각각 Revert. 캡처: `ArtCapture.CaptureSet` / `CaptureChaseAt`.
+  - 팔레트 데이터 = `tools/asset-gen/palette_colormap.py`(구역별 목표색) → `F1/Assets/Rendering/Palette/colormap_<kit>_<zone>.png`.
+  - **다음 결정 대기**: 팔레트 v3 를 씬에 **저장**할지(지금은 미저장·되돌림 상태), 도로색(거의 검정 → 따뜻한 회색) / 땅 톤 / 가로수 밀도 조정, `art/STYLE.md` 한 장 작성.
+- **환경 (이 노트북)**: Unity 6000.3.19f1 로 열림(원 6000.3.9f1 미설치). `com.unity.pipeline` 추가. Blender 5.2 `D:\Tools\Blender`. ComfyUI 는 `C:\Users\rtx40\ComfyUI` 만 뜸, Hunyuan3D 체크포인트는 D 드라이브. `tools/asset-gen/README.md`.
+- **하네스 수정**: `scripts/ucli.sh` 디스패처(본가 exe 없으면 `ucli-http.sh` 로 connector HTTP 직접 호출). stop.sh / regression-check.sh 가 이걸 씀. 이 머신에서 회귀 12 PASS / 1 FAIL(기존 CargoPolyBudget).
+- **리포 손상 수습**: 미커밋 .meta 12개 커밋(`1d0630d`) — 새 체크아웃 도로 자홍색 원인. ComplexTrack 씬엔 MoodController 가 없어 그림자·안개·하늘이 꺼진 상태가 "기본"이다.
+- **미커밋**: tools/asset-gen, Editor 스크립트 3개(ApplyDioramaLook/ArtCapture/ApplyZonePalette), scripts/ucli*.sh, 훅 수정, art/ 보드, Rendering/Palette, Packages/manifest.json.
+
 ## ⭐ 운영 모델 전환 (세션 32, 도현 결정 — 최우선 숙지)
 
 **역할 분리 + 자동검사 유지** (`project_rules/roles.md`, 커밋 `5238b4e`). 룰은 행동 못 바꿈이 증명돼서 **게이트**로 전환:

@@ -7,13 +7,14 @@
 
 set -euo pipefail
 
-UNITY_CLI="C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe"
+# 머신별 분기는 scripts/ucli.sh 가 한다 (본가 데탑 exe / 노트북 HTTP 대체). 2026-10-12
+UNITY_CLI="$(cd "$(dirname "$0")/../.." && pwd)/scripts/ucli.sh"
 
 # 0) Editor 도달성 확인 — 검증 가능 여부를 먼저 안다 (false-green 방지).
 # unity-cli status 가 5s 안에 정상 응답하면 1, 아니면 0.
 UNITY_REACHABLE=0
-if [ -x "$UNITY_CLI" ]; then
-  if timeout 5 "$UNITY_CLI" status >/dev/null 2>&1; then
+if [ -f "$UNITY_CLI" ]; then
+  if timeout 5 bash "$UNITY_CLI" status >/dev/null 2>&1; then
     UNITY_REACHABLE=1
   fi
 fi
@@ -40,7 +41,7 @@ fi
 # 1) Unity 컴파일 에러 체크 (timeout 5s) — Editor 연결됐을 때만 의미 있음
 ERRORS_RAW=""
 if [ "$UNITY_REACHABLE" -eq 1 ]; then
-  ERRORS_RAW=$(timeout 5 "$UNITY_CLI" console --type error 2>/dev/null || true)
+  ERRORS_RAW=$(timeout 5 bash "$UNITY_CLI" console --type error 2>/dev/null || true)
 fi
 
 # 무시할 noise 패턴:
@@ -183,7 +184,19 @@ if command -v git >/dev/null 2>&1; then
   CS_CHANGED=$((CS_CHANGED + CS_STAGED))
 fi
 
-if [ "$CS_CHANGED" -gt 0 ]; then
+# 2026-10-13: 게이트 기록(docs/gates/오늘.md)이 변경된 .cs 보다 새로우면 이미 검증된 것 — 매 stop 마다 반복 알림 안 함.
+GATE_FILE="$(cd "$(dirname "$0")/../.." && pwd)/docs/gates/$(date +%Y-%m-%d).md"
+GATED=0
+if [ "$CS_CHANGED" -gt 0 ] && [ -f "$GATE_FILE" ]; then
+  NEWEST_CS=0
+  for f in $( { git diff --name-only; git diff --cached --name-only; } 2>/dev/null | grep "\.cs$"); do
+    m=$(stat -c %Y "$f" 2>/dev/null || echo 0); [ "$m" -gt "$NEWEST_CS" ] && NEWEST_CS=$m
+  done
+  GATE_M=$(stat -c %Y "$GATE_FILE" 2>/dev/null || echo 0)
+  [ "$GATE_M" -ge "$NEWEST_CS" ] && GATED=1
+fi
+
+if [ "$CS_CHANGED" -gt 0 ] && [ "$GATED" -eq 0 ]; then
   cat <<EOF
 {
   "hookSpecificOutput": {
