@@ -1,5 +1,5 @@
 PASS 01_ingame_neighborhood movement
-PASS 01_ingame_neighborhood grounded bottom=-9.23872E-06
+PASS 01_ingame_neighborhood grounded bottom=-9.179115E-06
 PASS 02_ingame_outer_road movement
 PASS 02_ingame_outer_road grounded bottom=-9.179115E-06
 PASS 03_ingame_harbor movement

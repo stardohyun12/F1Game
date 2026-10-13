@@ -26,7 +26,10 @@ pal = [
  ('asphalt','#666c70'),('grass','#777f51'),('leaves','#68734a'),('tire','#343b3b'),
  ('mart','#456d69'),('service','#b8ac91'),('shelf','#4d4c3d'),('crate','#5a7873'),
  ('shutter','#858a81'),('stripe','#99874e'),('carton','#a88858'),('water','#6e9caa'),
- ('moss','#636e4a'),('brick','#97755e'),('paintred','#b34f3f'),('slate','#76878b')]
+ ('moss','#636e4a'),('brick','#97755e'),('paintred','#b34f3f'),('slate','#76878b'),
+ # --- 2026-10-13 Claude: 소품·도로 디테일용 추가 칸 (기존 칸 뒤에만 붙여 기존 UV·rng 순서 보존) ---
+ ('awning','#d5c9a8'),('sign_tea','#426963'),('sign_ice','#b64935'),('sign_rest','#80684c'),
+ ('zebra','#666c70'),('grate','#293337'),('terracotta','#b5674a'),('cloth','#d5c9a8')]
 
 def rgb(h): return tuple(int(h[i:i+2],16)/255 for i in (1,3,5))
 def rect(tile,x,y,w,h,c):
@@ -98,6 +101,23 @@ for i,(name,hexv) in enumerate(pal):
         rect(i,29,0,7,64,(.7,.59,.41));rect(i,5,18,17,12,(.73,.68,.54))
     if name=='tire':
         for xx in range(3,64,8):rect(i,xx,0,1,64,(.16,.19,.19))
+    # --- 추가 칸 무늬 ---
+    if name=='awning':   # 크림 바탕 + 청록 세로 줄무늬 (차양)
+        for xx in range(4,64,12):rect(i,xx,0,6,64,(.26,.41,.39))
+    if name in ('sign_tea','sign_ice','sign_rest'):
+        rect(i,2,2,60,60,tuple(v*.9 for v in c));rect(i,4,4,56,56,c)
+        word(i,{'sign_tea':'TEA','sign_ice':'ICE','sign_rest':'REST'}[name],26,2,(.9,.87,.76))
+        rect(i,6,50,52,2,(.9,.87,.76));rect(i,6,12,52,2,(.9,.87,.76))
+    if name=='zebra':    # 횡단보도: 아스팔트 위 크림 띠 (살짝 닳음)
+        for xx in range(2,64,16):
+            rect(i,xx,0,9,64,(.8,.77,.64))
+            for k in range(6):rect(i,xx+rng.randrange(0,8),rng.randrange(0,60),2,3,(.64,.66,.6))
+    if name=='grate':    # 배수구 쇠살
+        for yy in range(6,64,10):rect(i,4,yy,56,3,(.45,.49,.5))
+    if name=='terracotta':
+        for yy in (14,30,46):rect(i,0,yy,64,2,tuple(v*.85 for v in c))
+    if name=='cloth':    # 빨래: 흰·빨강·청록 조각
+        rect(i,4,10,16,44,(.91,.88,.8));rect(i,24,14,16,40,(.71,.29,.21));rect(i,44,8,16,46,(.3,.45,.43))
 img=bpy.data.images.new('LofiAtlas',width=N,height=N,alpha=True)
 img.pixels.foreach_set(pixels);img.filepath_raw=str(out/'LofiAtlas.png');img.file_format='PNG';img.save()
 mat=bpy.data.materials.new('LofiAtlas');mat.use_nodes=True
@@ -218,8 +238,52 @@ def tree():
 def road():box(0,0,-.18,7,8,.18,'asphalt')
 def sidewalk():box(0,0,0,2,4,.15,'concrete');box(-.94,0,0,.12,4,.2,'cream')
 
+# ---------- 2026-10-13 Claude: 생활 소품 + 도로 디테일 (브리프 2026-10-13-town-density) ----------
+# 전부 원점=바닥 중심(z=0), 앞=-y. 벽걸이(차양·실외기·벽등)는 설치기가 높이를 준다.
+def awning():
+    # 경사 차양 1.6×0.9 + 쇠막대 2 — 벽에 붙는 면이 +y
+    pts=[(-.8,.45,0),(.8,.45,0),(.8,-.45,-.32),(-.8,-.45,-.32)]
+    face(pts,'awning');face(list(reversed(pts)),'awning')
+    face([(-.8,.45,0),(-.8,-.45,-.32),(-.8,-.45,-.42)],'cream');face([(.8,-.45,-.42),(.8,-.45,-.32),(.8,.45,0)],'cream')
+    box(0,-.45,-.42,1.6,.03,.1,'cream')
+    for x in (-.7,.7):box(x,.0,-.38,.03,.9,.03,'metal')
+def planter():
+    box(0,0,0,.95,.36,.38,'wood');box(0,0,.38,.9,.3,.06,'moss')
+    for x in (-.3,0,.3):box(x,0,.42,.22,.22,.2,'leaves')
+def pots():
+    for x,r,h in ((-.32,.16,.3),(.05,.2,.36),(.38,.13,.26)):
+        cylinder(x,0,0,r,h,'terracotta',6);cylinder(x,0,h,r*.9,.22,'leaves',6)
+def bench():
+    for z in (.0,):
+        box(0,0,.4,1.4,.42,.05,'wood');box(0,.19,.45,1.4,.05,.4,'wood')
+        for x in (-.6,.6):box(x,0,0,.05,.4,.4,'metal')
+def barrel():
+    cylinder(0,0,0,.28,.78,'metal',8);box(0,0,.26,.6,.6,.03,'dark');box(0,0,.52,.6,.6,.03,'dark')
+def acunit():
+    box(0,.15,0,.7,.3,.5,'metal');box(0,-.01,.05,.6,.02,.4,'grate');box(0,.05,-.08,.74,.5,.04,'metal')
+def walllamp():
+    box(0,.08,0,.08,.16,.08,'metal');box(0,-.06,-.1,.22,.2,.2,'warmglass');box(0,-.06,.1,.26,.24,.03,'metal')
+def clothesline():
+    # 벽(+y 쪽)에서 밖으로 2.4m, 끝에 막대. 빨래 3장.
+    box(0,0,0,.06,.06,2.3,'wood');box(0,1.2,2.25,.02,2.4,.02,'dark')
+    for y,w in ((.35,.5),(1.05,.6),(1.8,.45)):box(0,y,1.6,.035,w,.62,'cloth')
+def signpost():
+    box(0,0,0,.09,.09,2.2,'wood');box(0,-.06,1.35,.95,.04,.8,'sign_tea')
+def signpost2():
+    box(0,0,0,.09,.09,2.2,'wood');box(0,-.06,1.35,.95,.04,.8,'sign_ice')
+def signpost3():
+    box(0,0,0,.09,.09,2.2,'wood');box(0,-.06,1.35,.95,.04,.8,'sign_rest')
+def bollard():cylinder(0,0,0,.12,.65,'concrete',6);box(0,0,.65,.26,.26,.05,'cream')
+def cratestack():
+    box(-.3,0,0,.6,.45,.42,'crate');box(.35,0,0,.6,.45,.42,'crate');box(0,.02,.42,.6,.45,.42,'crate')
+def crosswalk():box(0,0,0,3.4,2.2,.012,'zebra')
+def manhole():cylinder(0,0,0,.34,.012,'metal',10);cylinder(0,0,.012,.26,.006,'dark',10)
+def drain():box(0,0,0,.6,.26,.012,'grate');box(0,0,0,.7,.34,.006,'dark')
+
 manifest=[]
-for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',house),('Wall3m',wall),('Crate',crate),('Parcel',carton),('DeliveryBag',bag),('UtilityPole',pole),('TireStack',tires),('CoastalTree',tree),('Road7x8',road),('Sidewalk2x4',sidewalk)]:
+for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',house),('Wall3m',wall),('Crate',crate),('Parcel',carton),('DeliveryBag',bag),('UtilityPole',pole),('TireStack',tires),('CoastalTree',tree),('Road7x8',road),('Sidewalk2x4',sidewalk),
+                ('Awning',awning),('Planter',planter),('Pots',pots),('Bench',bench),('Barrel',barrel),('AcUnit',acunit),('WallLamp',walllamp),('Clothesline',clothesline),
+                ('SignTea',signpost),('SignIce',signpost2),('SignRest',signpost3),('Bollard',bollard),('CrateStack',cratestack),('Crosswalk',crosswalk),('Manhole',manhole),('Drain',drain)]:
     verts.clear();faces.clear();uvs.clear();fn()
     mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update()
     uv=mesh.uv_layers.new(name='UVMap')

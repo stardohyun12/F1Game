@@ -15,7 +15,7 @@ public static class CoastalTownSmoke
  static Vector3 start;
  static OrderJob testJob;
  static string Output=>Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town"));
- static CoastalTownSmoke(){EditorApplication.update+=Tick;EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&SessionState.GetBool(Key,false)){since=EditorApplication.timeSinceStartup;phase=0;log="";}};}
+ static CoastalTownSmoke(){EditorApplication.update+=Tick;EditorApplication.playModeStateChanged+=s=>{if(s==PlayModeStateChange.EnteredPlayMode&&SessionState.GetBool(Key,false)){Application.runInBackground=true;/* 에디터가 뒤에 있으면 Update 가 멈춰 frame=1 에서 고정 → 차가 스폰 공중(바닥 0.34)에 떠 있는 채 '움직임' 판정이 틀어진다 (2026-10-13) */since=EditorApplication.timeSinceStartup;phase=0;log="";}};}
  public static void Run(){if(EditorApplication.isPlaying)throw new Exception("Start from edit mode");SessionState.SetBool(Key,true);EditorApplication.isPlaying=true;}
  static void Input(ArcadeCarController car,Vector2 value)=>typeof(ArcadeCarController).GetField("moveInput",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(car,value);
  static void Place(ArcadeCarController car,Vector3 p,float yaw){var rb=car.GetComponent<Rigidbody>();rb.position=p;rb.rotation=Quaternion.Euler(0,yaw,0);rb.linearVelocity=Vector3.zero;rb.angularVelocity=Vector3.zero;start=p;Input(car,new Vector2(0,.45f));}

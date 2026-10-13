@@ -42,9 +42,16 @@ public static class CoastalTownInstaller
    float scale=asset=="RepairGarage"?.64f:(asset=="CornerShop"?.64f:.62f+hash%3*.035f);
    Add(asset,p,yaw,scale,hash%3);
    if(distance==1&&hash%3==0){Add("CoastalTree",p-right*2.15f-face*.9f,hash%360,.78f);}
-   if(distance==1&&hash%4==0){Add(asset=="RepairGarage"?"TireStack":"Crate",p+face*2.55f+right*1.2f,yaw,.65f);}
    if(distance==1&&hash%5==1){Add("Wall3m",p-right*2.4f-face*.6f,yaw+90,.65f);}
+   // 2026-10-13 Claude(브리프 town-density ①): 건물당 생활 소품 5개 안팎. 옆이 도로/건물이 아닐 때만 옆 소품.
+   if(distance==1){
+    Vector2Int rd=new Vector2Int((int)Mathf.Round(right.x),(int)Mathf.Round(right.z));
+    bool rightOpen=!map.IsRoad(c+rd.x,r+rd.y)&&map.BuildingChar(c+rd.x,r+rd.y)=='.';
+    bool leftOpen=!map.IsRoad(c-rd.x,r-rd.y)&&map.BuildingChar(c-rd.x,r-rd.y)=='.';
+    CoastalTownDensity.ForBuilding((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),asset,p,face,right,scale,hash,zone,rightOpen,leftOpen);
+   }
   }
+  CoastalTownDensity.ForRoads((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map);   // ②: 횡단보도·맨홀·배수구 데칼
   for(int r=0;r<map.Height;r++)for(int c=0;c<map.Width;c++)
   {
    if(!map.IsRoad(c,r)||(c+r)%4!=0)continue;
@@ -52,6 +59,10 @@ public static class CoastalTownInstaller
   }
   data.placements=list.ToArray();AssetDatabase.CreateAsset(data,Dir+"/TownLayout.asset");return data;
  }
+ /// <summary>레이아웃 캐시(TownLayout.asset)를 버리고 규칙대로 다시 만든 뒤 설치. 소품 규칙 바꿨을 때 이걸 쓴다.</summary>
+ [MenuItem("PitCrew/Art/Coastal Town/Rebuild Layout + Install")]
+ public static void RebuildAndInstall(){AssetDatabase.DeleteAsset(Dir+"/TownLayout.asset");Install();}
+
  [MenuItem("PitCrew/Art/Coastal Town/Install")]
  public static void Install()
  {
@@ -71,7 +82,7 @@ public static class CoastalTownInstaller
     foreach(var col in go.GetComponentsInChildren<Collider>())UnityEngine.Object.DestroyImmediate(col);
     var trunk=go.AddComponent<CapsuleCollider>();trunk.radius=.15f;trunk.height=2.6f;trunk.center=new Vector3(0,1.3f,0);
    }
-   var b=Bounds(go);if(Mathf.Abs(b.min.y-p.position.y)>.03f)issues.Add(go.name+" base "+b.min.y);
+   var b=Bounds(go);if(!CoastalTownDensity.Mounted.Contains(p.asset)&&Mathf.Abs(b.min.y-p.position.y)>.03f)issues.Add(go.name+" base "+b.min.y);
    if(p.asset=="UtilityPole")poles.Add(go.transform);
   }
   // Connections only between nearby aligned poles, with a modest hanging curve.
