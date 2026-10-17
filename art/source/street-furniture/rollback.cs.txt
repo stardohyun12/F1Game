@@ -1,0 +1,19 @@
+if(UnityEditor.EditorApplication.isPlaying) throw new System.Exception("Exit play first");
+var before=UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Material>("Assets/Art/StreetFurniture/BeforeAsphalt.mat");
+var road=UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Material>("Assets/Art/CoastalTown/Asphalt.mat");
+road.shader=before.shader;road.CopyPropertiesFromMaterial(before);UnityEditor.EditorUtility.SetDirty(road);
+var shared=UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Material>("Assets/Art/LofiPilot/LofiShared.mat");
+foreach(var name in new[]{"Bench","Bin"}) {
+ var go=new UnityEngine.GameObject(name);
+ var model=(UnityEngine.GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.GameObject>("Assets/Art/LofiPilot/"+name+".fbx"));
+ model.transform.SetParent(go.transform,false);
+ foreach(var r in go.GetComponentsInChildren<UnityEngine.MeshRenderer>())r.sharedMaterials=new[]{shared};
+ if(name=="Bin") {var rr=go.GetComponentsInChildren<UnityEngine.Renderer>();var b=rr[0].bounds;foreach(var r in rr)b.Encapsulate(r.bounds);var c=go.AddComponent<UnityEngine.BoxCollider>();c.center=b.center;c.size=b.size;}
+ else foreach(var mf in go.GetComponentsInChildren<UnityEngine.MeshFilter>())mf.gameObject.AddComponent<UnityEngine.MeshCollider>().sharedMesh=mf.sharedMesh;
+ UnityEditor.PrefabUtility.SaveAsPrefabAsset(go,"Assets/Art/LofiPilot/"+name+".prefab");UnityEngine.Object.DestroyImmediate(go);
+}
+UnityEditor.AssetDatabase.SaveAssets();
+System.IO.File.Copy("D:/Github/F1Game/art/source/street-furniture/ComplexTrack.before-street.unity","D:/Github/F1Game/F1/Assets/ComplexTrack.unity",true);
+UnityEditor.AssetDatabase.ImportAsset("Assets/ComplexTrack.unity",UnityEditor.ImportAssetOptions.ForceSynchronousImport);
+UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/ComplexTrack.unity");
+return "Restored scene snapshot, old road material, original Bench/Bin models and colliders.";

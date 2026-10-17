@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "units": "metres, unscaled prefab local coordinates",
+  "origin": "body footprint centre at ground; Blender front -Y, Unity front +Z",
+  "dimensionMeaning": "w/d describe body, excluding roofs, porch, display racks and furniture",
+  "mountedBand": [1.9, 2.5],
+  "densityIntegration": "CoastalTownDensity.Body must consume variant dimensions; density source intentionally unchanged in this pass.",
+  "buildings": [
+    {"name":"CoastalHouse", "w":5, "d":4.8, "floors":2, "frontDoorX":0, "maxProjection":0.35},
+    {"name":"CoastalHouseB", "w":5, "d":4.8, "floors":2, "frontDoorX":0, "maxProjection":0.35},
+    {"name":"CoastalHouseC", "w":5, "d":4.8, "floors":2, "frontDoorX":0, "maxProjection":0.35},
+    {"name":"CoastalHouseD", "w":4, "d":4.8, "floors":3, "frontDoorX":0, "roof":"steep clay gable", "maxProjection":0.35},
+    {"name":"CoastalHouseE", "w":6, "d":4.4, "floors":1, "frontDoorX":0, "roof":"large grey hip", "maxProjection":1.0, "notes":"cantilever porch; roof overhang 0.55 m"},
+    {"name":"CoastalHouseF", "w":6, "d":6, "floors":2, "frontDoorX":-1.2, "roof":"green single pitch", "maxProjection":0.35,
+     "footprintBlenderXY":[[-3,-3],[0.6,-3],[1,-2.6],[1,-0.6],[3,-0.6],[3,3],[-3,3]], "notes":"L footprint, clipped outer corner, front door on y=-3 wall"},
+    {"name":"CornerShop", "w":6, "d":5.2, "floors":2, "frontDoorX":1.9, "type":"MART", "maxProjection":0.9},
+    {"name":"CornerShopB", "w":6, "d":5.2, "floors":1, "frontDoorX":0, "type":"TEA", "maxProjection":1.5},
+    {"name":"CornerShopC", "w":6, "d":5.2, "floors":1, "frontDoorX":1.9, "type":"BAKERY", "maxProjection":0.7},
+    {"name":"RepairGarage", "w":6.4, "d":5.6, "floors":1, "frontDoorX":0, "maxProjection":0.35},
+    {"name":"RepairGarageB", "w":6.4, "d":5.6, "floors":1, "frontDoorX":0, "maxProjection":0.35}
+  ]
+}

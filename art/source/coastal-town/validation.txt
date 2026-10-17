@@ -1,4 +1,4 @@
-Buildings and props=2053
+Buildings and props=2752
 Road cells=297 reachable=297
 Road collision samples=1554
 Shader errors=0

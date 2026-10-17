@@ -19,17 +19,24 @@ rng = random.Random(413)
 N, T = 512, 64
 pixels = [0.0]*(N*N*4)
 tiles = {}
-pal = [
- ('plaster','#b8ac91'),('concrete','#91958b'),('teal','#426963'),('roof','#505a59'),
+pal = [   # D-101 한낮: plaster 베이지→크림, concrete·water 밝게/채도↑ (2026-10-13)
+ ('plaster','#e8e1cf'),('concrete','#a6a99e'),('teal','#426963'),('roof','#505a59'),
  ('wood','#80684c'),('metal','#697775'),('dark','#293337'),('glass','#394f55'),
  ('warmglass','#b99454'),('orange','#c47c35'),('red','#b64935'),('cream','#d5c9a8'),
- ('asphalt','#666c70'),('grass','#777f51'),('leaves','#68734a'),('tire','#343b3b'),
+ ('asphalt','#8a867c'),('grass','#777f51'),('leaves','#68734a'),('tire','#343b3b'),
  ('mart','#456d69'),('service','#b8ac91'),('shelf','#4d4c3d'),('crate','#5a7873'),
- ('shutter','#858a81'),('stripe','#99874e'),('carton','#a88858'),('water','#6e9caa'),
+ ('shutter','#858a81'),('stripe','#99874e'),('carton','#a88858'),('water','#4a9cb0'),
  ('moss','#636e4a'),('brick','#97755e'),('paintred','#b34f3f'),('slate','#76878b'),
  # --- 2026-10-13 Claude: 소품·도로 디테일용 추가 칸 (기존 칸 뒤에만 붙여 기존 UV·rng 순서 보존) ---
  ('awning','#d5c9a8'),('sign_tea','#426963'),('sign_ice','#b64935'),('sign_rest','#80684c'),
- ('zebra','#666c70'),('grate','#293337'),('terracotta','#b5674a'),('cloth','#d5c9a8')]
+ ('zebra','#666c70'),('grate','#293337'),('terracotta','#b5674a'),('cloth','#d5c9a8'),
+ # --- 2026-10-13 Claude 3차(바닥·원경): 연석·흙·모래·꽃·얼룩·부두석·짙은 잔디 ---
+ ('curb','#8d9492'),('dirt','#8a7658'),('sand','#c2b391'),('flowers','#777f51'),
+ ('stain','#6e716d'),('quaystone','#9a9a8e'),('grass2','#5c683a'),
+ ('asphalt2','#7f7b73'),   # 3차-b: 아스팔트 덩어리 변화(균열·얼룩) — 게이트 1순위 '도로 민무늬'
+ # Building faces: append only; existing tile indices and RNG calls stay intact.
+ ('roof_clay','#956955'),('roof_green','#536b60'),('awning_rust','#c4ac85'),
+ ('tea_board','#80684c'),('bakery','#956955'),('paper','#d5c9a8'),('poster','#c4ac85')]
 
 def rgb(h): return tuple(int(h[i:i+2],16)/255 for i in (1,3,5))
 def rect(tile,x,y,w,h,c):
@@ -48,7 +55,10 @@ font={
  'E':['11111','10000','10000','11110','10000','10000','11111'],
  'V':['10001','10001','10001','10001','10001','01010','00100'],
  'I':['111','010','010','010','010','010','111'],
- 'C':['01111','10000','10000','10000','10000','10000','01111']}
+ 'C':['01111','10000','10000','10000','10000','10000','01111'],
+ 'B':['11110','10001','10001','11110','10001','10001','11110'],
+ 'K':['10001','10010','10100','11000','10100','10010','10001'],
+ 'Y':['10001','10001','01010','00100','00100','00100','00100']}
 def word(tile,text,y,scale=1,c=(.85,.8,.66)):
     width=sum(len(font[ch][0])+1 for ch in text)*scale
     x=(64-width)//2
@@ -118,6 +128,58 @@ for i,(name,hexv) in enumerate(pal):
         for yy in (14,30,46):rect(i,0,yy,64,2,tuple(v*.85 for v in c))
     if name=='cloth':    # 빨래: 흰·빨강·청록 조각
         rect(i,4,10,16,44,(.91,.88,.8));rect(i,24,14,16,40,(.71,.29,.21));rect(i,44,8,16,46,(.3,.45,.43))
+    # --- 3차 칸 무늬 ---
+    if name=='curb':     # 연석: 16px 마다 이음매, 위쪽 밝은 모서리
+        for xx in range(0,64,16):rect(i,xx,0,1,64,tuple(v*.78 for v in c))
+        rect(i,0,60,64,4,tuple(min(1,v*1.08) for v in c))
+    if name in ('dirt','sand'):   # 자갈 점 + 희미한 바큇자국
+        for k in range(26):
+            x,y=rng.randrange(1,62),rng.randrange(1,62);dk=rng.choice([-.07,-.04,.05])
+            rect(i,x,y,2,2,tuple(max(0,min(1,v+dk)) for v in c))
+        if name=='dirt':
+            for yy in (18,22,44,48):rect(i,0,yy,64,1,tuple(v*.9 for v in c))
+    if name=='flowers':  # 잔디 위 꽃 점: 빨강·크림·주황, 잎 짙은 점
+        for k in range(22):
+            x,y=rng.randrange(2,61),rng.randrange(2,61)
+            rect(i,x,y,2,2,rng.choice([(.78,.33,.27),(.86,.8,.62),(.8,.5,.22),(.4,.45,.27)]))
+    if name=='stain':    # 아스팔트 얼룩: 가운데 살짝 짙게 (3차-b: 너무 짙어 '그림자 오류'로 읽혀 톤 올림)
+        rect(i,12,10,40,44,tuple(v*.95 for v in c));rect(i,22,18,22,26,tuple(v*.9 for v in c))
+        for k in range(10):
+            x,y=rng.randrange(4,58),rng.randrange(4,58);rect(i,x,y,5,3,tuple(v*.86 for v in c))
+    if name=='quaystone':  # 큰 석재 블록 32×16, 어긋난 줄눈
+        for yy in range(0,64,16):
+            rect(i,0,yy,64,1,tuple(v*.76 for v in c))
+            for xx in range(16 if (yy//16)%2 else 0,64,32):rect(i,xx,yy,1,16,tuple(v*.76 for v in c))
+        rect(i,0,62,64,2,tuple(v*.7 for v in c))
+    if name=='asphalt2': # 균열 폴리라인 2개 + 밝은 자갈 점 + 짙은 얼룩 1 (칸 1.5m 반복이라 선은 짧게)
+        for (x0,y0,steps) in ((6,4,14),(40,30,11)):
+            x,y=x0,y0
+            for k in range(steps):
+                rect(i,x,y,1,1,tuple(v*.72 for v in c));x+=rng.choice([1,1,2]);y+=rng.choice([0,1,1,2,-1])
+        for k in range(12):
+            x,y=rng.randrange(2,62),rng.randrange(2,62);rect(i,x,y,2,1,tuple(min(1,v*1.12) for v in c))
+        rect(i,20,40,16,10,tuple(v*.9 for v in c))
+    if name=='grass2':   # 짙은 잔디: 성긴 톤 섬 (기존 grass 처럼 약하게)
+        for k in range(14):
+            x,y=rng.randrange(3,57),rng.randrange(3,57);rect(i,x,y,rng.randrange(3,9),rng.randrange(2,6),tuple(v*.93 for v in c))
+    if name in ('roof_clay','roof_green'):
+        for yy in range(4,64,8):rect(i,0,yy,64,1,tuple(v*.82 for v in c))
+    if name=='awning_rust':
+        for xx in range(4,64,12):rect(i,xx,0,6,64,(.60,.32,.24))
+    if name=='tea_board':
+        word(i,'TEA',8,2)
+        # Pixel teapot: belly, lid, knob, spout and hollow handle.
+        for x,y,w,h in [(20,33,25,15),(24,48,17,3),(30,51,5,3),(13,39,9,6),(10,43,7,5),(44,36,9,11)]:
+            rect(i,x,y,w,h,(.85,.8,.66))
+        rect(i,45,39,5,5,rgb(hexv))
+    if name=='bakery':word(i,'BAKERY',26,1)
+    if name=='paper':
+        for x in range(0,64,16):rect(i,x,0,2,64,(.48,.39,.28))
+        for y in range(0,64,16):rect(i,0,y,64,2,(.48,.39,.28))
+    if name=='poster':
+        rect(i,5,5,54,54,(.84,.79,.65));word(i,'MART',45,1,(.28,.42,.35))
+        rect(i,14,18,15,17,(.69,.28,.2));rect(i,33,15,16,20,(.4,.5,.3))
+        rect(i,12,9,40,3,(.4,.36,.29))
 img=bpy.data.images.new('LofiAtlas',width=N,height=N,alpha=True)
 img.pixels.foreach_set(pixels);img.filepath_raw=str(out/'LofiAtlas.png');img.file_format='PNG';img.save()
 mat=bpy.data.materials.new('LofiAtlas');mat.use_nodes=True
@@ -126,8 +188,9 @@ tex=mat.node_tree.nodes.new('ShaderNodeTexImage');tex.image=img;tex.interpolatio
 mat.node_tree.links.new(tex.outputs['Color'],bs.inputs['Base Color'])
 
 verts=[];faces=[];uvs=[]
+building_mode=False
 def face(points,tile,split=True):
-    if split and len(points)==4 and tile in ('plaster','concrete','slate','roof','asphalt','grass','wood','metal','shutter'):
+    if split and len(points)==4 and (tile in ('plaster','concrete','slate','roof','asphalt','grass','wood','metal','shutter','quaystone','curb','dirt','sand') or (building_mode and tile not in ('mart','service','sign_tea','glass','warmglass','shelf','bakery'))):
         p=[Vector(v) for v in points]
         nu=max(1,math.ceil((p[1]-p[0]).length/2.0));nv=max(1,math.ceil((p[3]-p[0]).length/2.0))
         if nu>1 or nv>1:
@@ -138,7 +201,7 @@ def face(points,tile,split=True):
     start=len(verts);verts.extend(points);faces.append(tuple(range(start,start+len(points))))
     i=tiles[tile];x=(i%8)*T;y=(i//8)*T
     # inset inside atlas tile: no neighboring material bleed
-    y0,y1=(23,41) if tile=='mart' else ((4,49) if tile=='service' else (2,62))
+    y0,y1=(23,36) if tile=='bakery' else ((23,41) if tile=='mart' or (building_mode and tile=='sign_tea') else ((4,49) if tile=='service' else (2,62)))
     co=[((x+2)/N,(y+y0)/N),((x+62)/N,(y+y0)/N),((x+62)/N,(y+y1)/N),((x+2)/N,(y+y1)/N)]
     uvs.append(co[:len(points)])
 def box(x,y,z,w,d,h,tile='plaster',front=None):
@@ -151,10 +214,10 @@ def cylinder(x,y,z,r,h,tile,n=8):
     top=[(p[0],p[1],z+h) for p in bot]
     for i in range(n):j=(i+1)%n;face([bot[i],bot[j],top[j],top[i]],tile)
     for i in range(1,n-1):face([bot[0],bot[i+1],bot[i]],tile);face([top[0],top[i],top[i+1]],tile)
-def gable(w,d,z,rise):
+def gable(w,d,z,rise,tile='roof'):
     x=w/2;y=d/2
-    face([(-x,-y,z),(x,-y,z),(x,0,z+rise),(-x,0,z+rise)],'roof')
-    face([(-x,0,z+rise),(x,0,z+rise),(x,y,z),(-x,y,z)],'roof')
+    face([(-x,-y,z),(x,-y,z),(x,0,z+rise),(-x,0,z+rise)],tile)
+    face([(-x,0,z+rise),(x,0,z+rise),(x,y,z),(-x,y,z)],tile)
     face([(-x,y,z),(-x,-y,z),(-x,0,z+rise)],'plaster')
     face([(x,-y,z),(x,y,z),(x,0,z+rise)],'plaster')
 def window(x,y,z,w=1,h=1.2,lit=False):
@@ -167,42 +230,227 @@ def side_window(x,y,z,angle,w=.85,h=1.2):
     c=math.cos(angle);s=math.sin(angle)
     for i in range(start,len(verts)):
         xx,yy,zz=verts[i];verts[i]=(x+xx*c-yy*s,y+xx*s+yy*c,z+zz)
-def shop():
-    box(0,0,0,6,5.2,6.2);box(0,-.02,0,6.06,5.24,.48,'concrete')
-    box(0,-2.64,2.7,6.04,.12,.9,'teal');box(0,-2.72,2.84,3.0,.07,.56,'mart')
-    for x in (-1.9,0,1.9):window(x,-2.65,4.28,.85,1.28,lit=x==0)
-    for x,angle in [(-3.02,-math.pi/2),(3.02,math.pi/2)]:
-        for y in (-1.25,1.25):side_window(x,y,4.28,angle)
-    for x in (-1.8,.02):
-        box(x,-2.68,.65,1.6,.12,1.83,'wood');box(x,-2.76,.74,1.45,.035,1.65,'shelf')
-        box(x,-2.8,.7,.055,.04,1.78,'wood')
-    box(2,-2.69,.05,1.15,.15,2.5,'wood');box(2,-2.78,.55,.91,.035,1.79,'warmglass')
-    box(2.35,-2.82,1.05,.04,.08,.25,'metal')
-    box(0,-3,2.57,6.2,.96,.11,'teal');box(0,-3.46,2.38,6.2,.09,.22,'teal')
-    for x in (-2.7,2.7):box(x,-3.22,2.18,.05,.05,.45,'metal')
-    box(0,-2.9,0,6.1,.6,.08,'concrete');gable(6.45,5.65,6.2,.6)
-    for x in (-1.7,1.7):window(x,2.62,3.9,.8,1.1)
-def garage():
-    # actual open mouth: no solid wall behind opening
+def facade(w,d,side,fn):
+    """Build at local front (-Y), rotate to front/right/back/left."""
+    start=len(verts);fn()
+    angle=side*math.pi/2;c=math.cos(angle);s=math.sin(angle)
+    ox,oy=((0,-d/2),(w/2,0),(0,d/2),(-w/2,0))[side]
+    for i in range(start,len(verts)):
+        x,y,z=verts[i];verts[i]=(ox+x*c-y*s,oy+x*s+y*c,z)
+
+def facade_panel(x,z,w,h,tile,depth=.001):
+    face([(x-w/2,-depth,z),(x+w/2,-depth,z),(x+w/2,-depth,z+h),(x-w/2,-depth,z+h)],tile)
+
+def facade_window(x,z,w=.9,h=1.08,shutters=False,lit=False):
+    window(x,-.01,z,w,h,lit)
+    box(x,-.12,z+h*.58,w,.05,.055,'wood')
+    box(x,-.045,z+h+.17,w+.22,.12,.08,'cream')
+    if shutters:
+        for dx in (-1,1):
+            box(x+dx*(w/2+.23),-.065,z+.08,.27,.075,h,'teal')
+            for dz in (.2,.5,.8):box(x+dx*(w/2+.23),-.11,z+dz,.24,.025,.04,'wood')
+
+def wall_courses(w,d,h,split,open_front=False):
+    for side in range(4):
+        width=w if side%2==0 else d
+        def details():
+            if not (open_front and side==0):
+                box(0,-.025,0,width,.05,.5,'quaystone')
+                box(0,-.05,.5,width,.1,.075,'concrete')
+            box(0,-.04,split,width,.08,.18,'concrete')
+            box(0,-.075,split+.18,width,.15,.075,'cream')
+            box(0,-.018,h-.25,width,.036,.15,'dark')
+            box(0,-.065,h-.1,width,.13,.1,'wood')
+            for x in (-width/2+.13,width/2-.13):
+                facade_panel(x,1.9,.26,.6,'concrete')
+                # No raised quoins in the AC/lamp band 1.9--2.5 m.
+                for za,zb in ((.57,1.9),(2.5,h-.25)):
+                    n=math.ceil((zb-za)/.42)
+                    for j in range(n):
+                        step=(zb-za)/n
+                        box(x,-.035,za+j*step,.26 if j%2 else .35,.07,step-.025,'concrete')
+        facade(w,d,side,details)
+
+def shop(variant=0):
+    h=(6.2,3.6,4.1)[variant]
+    box(0,0,0,6,5.2,h);wall_courses(6,5.2,h,3.05 if variant else 3.55)
+    for side in range(4):
+        def windows():
+            for x in (-1.5,1.5):
+                if variant==0:facade_window(x,4.35,.86,1.12)
+                if side!=0:facade_window(x,.65,.95,.97)
+        facade(6,5.2,side,windows)
+    def front():
+        door=1.9 if variant!=1 else 0
+        facade_panel(door,.04,1.7 if variant==0 else 1.05,2.5,'wood')
+        facade_panel(door,.15,1.5 if variant==0 else .86,2.33,'glass' if variant!=1 else 'paper',.002)
+        box(door+.3,-.075,1,.04,.15,.25,'metal')
+        if variant==0:
+            box(0,-.06,2.82,5.7,.12,.64,'teal');box(0,-.13,2.88,3.9,.02,.52,'mart')
+            # Refrigerated case: broad blue glass, low metal plinth and twin frames.
+            facade_panel(-1.05,.55,3.35,1.95,'glass',.002)
+            box(-1.05,-.12,.35,3.5,.24,.2,'metal')
+            for x in (-2.65,-1.05,.55):box(x,-.035,.55,.06,.07,1.28,'cream')
+            for x in (-2.25,-1.05,.15):
+                for z in (.22,.88):
+                    box(x,-.57,z,1.08,.62,.1,'wood')
+                    box(x,-.57,z+.1,1,.58,.23,'crate')
+                    for dx in (-.28,0,.28):
+                        cylinder(x+dx,-.57,z+.32,.13,.12,('red','orange','leaves')[int((x+2.25)/1.2+.1)],6)
+            for x,z in ((-2.55,2.02),(-1.8,2.08),(-1.05,2.02)):
+                facade_panel(x,z,.48,.39,'poster',.002)
+        elif variant==1:
+            for x in (-1.85,1.85):
+                facade_panel(x,.64,1.35,1.15,'wood')
+                facade_panel(x,.72,1.2,1,'paper',.002)
+                box(x,-.065,.58,1.5,.13,.1,'wood')
+                # Two round tables with paired chairs, all below the wall mounting band.
+                cylinder(x,-1.05,0,.09,.7,'wood');cylinder(x,-1.05,.7,.43,.07,'wood',10)
+                for dx in (-.64,.64):
+                    box(x+dx,-1.05,0,.07,.07,.42,'wood');box(x+dx,-1.05,.42,.34,.35,.07,'wood')
+                    box(x+dx,-.91,.49,.34,.06,.38,'wood')
+                cylinder(x,-1.05,.77,.075,.08,'cream',6)
+            box(0,-.35,3.15,6.35,.7,.18,'wood')
+            for x in (-2.2,0,2.2):
+                box(x,-.4,2.95,.04,.04,.24,'dark')
+                cylinder(x,-.4,2.55,.18,.4,'warmglass',8)
+                cylinder(x,-.4,2.51,.2,.04,'dark',8)
+            box(2.65,-.76,2.54,.64,.12,1.05,'wood',front='tea_board')
+        else:
+            box(0,-.06,3.22,4.4,.12,.5,'wood');box(0,-.13,3.25,3.5,.02,.43,'bakery')
+            facade_panel(-.9,.6,3.5,1.89,'glass',.002)
+            for z in (.64,1.2):
+                box(-.9,-.16,z,3.5,.32,.09,'wood')
+                for x in (-2.15,-1.32,-.49,.34):
+                    start=len(verts);cylinder(x,-.19,z+.09,.17,.17,'carton',8)
+                    for k in range(start,len(verts)):
+                        xx,yy,zz=verts[k];verts[k]=(x+(xx-x)*1.65,yy,zz)
+                    for dx in (-.12,.12):box(x+dx,-.31,z+.2,.04,.015,.06,'cream')
+            face([(-2.85,0,3.12),(2.85,0,3.12),(2.85,-.65,2.7),(-2.85,-.65,2.7)],'awning_rust')
+            box(0,-.62,2.57,5.7,.06,.13,'awning_rust')
+    facade(6,5.2,0,front)
+    if variant==1:hip_roof(6.6,5.8,h,1.25,'roof_green')
+    else:gable(6.45,5.65,h,.6 if variant==0 else 1.15,'roof' if variant==0 else 'roof_clay')
+    if variant==2:
+        box(-2,1,4.5,.8,.85,1.85,'brick');box(-2,1,6.35,1,1.05,.16,'concrete')
+
+def garage(variant=0):
+    # Original single-storey workshop, lower windows + upper clerestory row.
     box(-2.95,0,0,.5,5.6,3.8,'slate');box(2.95,0,0,.5,5.6,3.8,'slate')
     box(0,2.65,0,5.5,.3,3.8,'slate');box(0,0,0,5.5,5.6,.08,'concrete')
-    box(0,-2.65,2.8,5.5,.3,1.0,'metal');box(0,-2.84,2.12,5.5,.06,.75,'shutter')
-    box(0,-2.84,3.02,2.3,.06,.58,'service');gable(6.7,6.0,3.8,.35)
-    for x,angle in [(-3.22,-math.pi/2),(3.22,math.pi/2)]:side_window(x,.7,1.9,angle,1.3,.7)
+    box(0,-2.65,2.8,5.5,.3,1,'metal')
+    box(0,-2.765,.08 if variant else 2.55,5.4,.05,2.72 if variant else .25,'shutter')
+    wall_courses(6.4,5.6,3.8,2.65,True)
+    for side in (1,2,3):
+        def windows():
+            for x in ((-1.95,0,1.95) if side==2 else (-1.5,1.5)):
+                facade_window(x,.7,1.04,.92)
+                facade_window(x,3.03,1.04,.36)
+        facade(6.4,5.6,side,windows)
+    def front():
+        for x in (-2.1,2.1):facade_window(x,3.04,.65,.35)
+        if variant==0:box(0,-.065,3.04,2.25,.13,.52,'service')
+        for x in (-2.95,2.95):box(x,-.035,0,.45,.07,.5,'quaystone')
+    facade(6.4,5.6,0,front)
+    if variant:facade(6.4,5.6,1,lambda:box(0,-.075,2.98,1.5,.15,.54,'service'))
+    gable(6.7,6.0,3.8,.35,'roof_clay' if variant else 'roof')
     box(-1.4,1.9,.05,1.5,.65,.9,'paintred');box(-1.4,1.5,.17,1.3,.02,.08,'metal')
     box(-1.4,1.5,.39,1.3,.02,.08,'metal');box(-1.4,1.5,.62,1.3,.02,.08,'metal')
     for x in (.6,2):box(x,2,.08,.07,.6,2,'wood')
     for z in (.3,1,1.7):box(1.3,2,z,1.5,.6,.09,'wood')
     box(.9,2,1.08,.4,.4,.44,'carton');box(1.6,2,.39,.5,.5,.5,'carton')
     box(0,-2.3,2.91,.17,.17,.2,'warmglass')
-def house():
-    box(0,0,0,5,4.8,5.7);box(0,0,0,5.06,4.86,.45,'concrete')
-    for x in (-1.4,1.4):
-        for z in (.9,3.8):window(x,-2.43,z,.9,1.15)
-    box(0,-2.44,.05,.92,.13,2.15,'teal');box(.28,-2.53,1,.05,.05,.22,'metal')
-    for x,angle in [(-2.52,-math.pi/2),(2.52,math.pi/2)]:
-        for z in (.9,3.8):side_window(x,0,z,angle)
-    gable(5.45,5.25,5.7,.9)
+
+def house(variant=0):
+    box(0,0,0,5,4.8,5.7);wall_courses(5,4.8,5.7,2.8)
+    for side in range(4):
+        def windows():
+            for x in ((-1.4,1.4) if side%2==0 else (-1.2,1.2)):
+                facade_window(x,.65,.9,.97)
+                facade_window(x,3.75,.9,1.15,shutters=(variant!=0))
+        facade(5,4.8,side,windows)
+    def front():
+        facade_panel(0,.05,.92,2.15,'teal');box(.28,-.065,1,.05,.13,.22,'metal')
+        box(0,-.065,2.58,1.22,.13,.1,'cream')
+        if variant==1:
+            # Juliet balcony: maximum 0.32 m projection, no walkable extension.
+            box(0,-.16,3.48,3.95,.32,.12,'concrete')
+            box(0,-.28,4.22,3.95,.06,.06,'metal')
+            for x in (-1.92,-1.44,-.96,-.48,0,.48,.96,1.44,1.92):box(x,-.28,3.6,.045,.045,.62,'metal')
+            for x in (-1.95,1.95):box(x,-.14,4.22,.05,.28,.06,'metal')
+    facade(5,4.8,0,front)
+    gable(5.45,5.25,5.7,.9,('roof','roof_clay','roof_green')[variant])
+    if variant in (1,2):
+        box(-1.55,.55,6,.46,.5,1.15,'brick');box(-1.55,.55,7.15,.58,.62,.12,'concrete')
+
+def roof_triangle(points,tile):
+    # New sloped/concave roofs obey the same <=2 m texture patch scale as quads.
+    p=[Vector(v) for v in points]
+    lengths=[(p[(i+1)%3]-p[i]).length for i in range(3)]
+    if max(lengths)>2:
+        i=lengths.index(max(lengths));a,b,c=p[i],p[(i+1)%3],p[(i+2)%3];m=(a+b)/2
+        roof_triangle([a,m,c],tile);roof_triangle([m,b,c],tile)
+    else:face([tuple(v) for v in p],tile)
+
+def hip_roof(w,d,z,rise,tile):
+    x,y=w/2,d/2;r=max(.2,x-y*.65)
+    face([(-x,-y,z),(x,-y,z),(r,0,z+rise),(-r,0,z+rise)],tile)
+    face([(x,y,z),(-x,y,z),(-r,0,z+rise),(r,0,z+rise)],tile)
+    roof_triangle([(x,-y,z),(x,y,z),(r,0,z+rise)],tile)
+    roof_triangle([(-x,y,z),(-x,-y,z),(-r,0,z+rise)],tile)
+
+def new_house(variant):
+    if variant==5:
+        # Concave L footprint with a clipped outer corner and a single-pitch roof.
+        from mathutils.geometry import tessellate_polygon
+        outline=[(-3,-3),(.6,-3),(1,-2.6),(1,-.6),(3,-.6),(3,3),(-3,3)]
+        for i,(x,y) in enumerate(outline):
+            nx,ny=outline[(i+1)%len(outline)]
+            face([(x,y,0),(nx,ny,0),(nx,ny,5.3),(x,y,5.3)],'plaster')
+            face([(x,y,5.3),(nx,ny,5.3),(nx,ny,5.95+.17*nx),(x,y,5.95+.17*x)],'wood')
+            dx,dy=nx-x,ny-y;length=math.hypot(dx,dy)
+            start=len(verts)
+            box(0,-.025,0,length,.05,.5,'quaystone')
+            box(0,-.04,2.85,length,.08,.18,'concrete')
+            box(0,-.045,5.15,length,.09,.1,'wood')
+            if length>1:
+                for t in ((-.26,.26) if length>3 else (0,)):
+                    xx=t*length
+                    if i!=0 or abs((x+nx)/2+xx+1.2)>.65:facade_window(xx,.65,.72,.96)
+                    facade_window(xx,3.7,.72,1.02)
+            for k in range(start,len(verts)):
+                xx,yy,zz=verts[k];verts[k]=((x+nx)/2+xx*dx/length-yy*dy/length,(y+ny)/2+xx*dy/length+yy*dx/length,zz)
+        roof_points=[Vector((x,y,5.97+.17*x)) for x,y in outline]
+        for tri in tessellate_polygon([roof_points]):roof_triangle([tuple(roof_points[p]) for p in tri],'roof_green')
+        facade(6,6,0,lambda:facade_panel(-1.2,.05,.96,2.2,'teal'))
+        return
+    w,d,h=(4,4.8,8.35) if variant==3 else (6,4.4,3.15)
+    box(0,0,0,w,d,h)
+    for side in range(4):
+        width=w if side%2==0 else d
+        def details():
+            box(0,-.025,0,width,.05,.5,'quaystone')
+            box(0,-.045,.5,width,.09,.075,'concrete')
+            box(0,-.055,h-.15,width,.11,.15,'wood')
+            for z in ((2.85,5.65) if variant==3 else ()):
+                box(0,-.035,z,width,.07,.15,'concrete')
+            for z in ((.65,3.5,6.3) if variant==3 else (.65,)):
+                for x in (-width*.28,width*.28):facade_window(x,z,.72 if variant==3 else 1.05,1.0)
+            # Sparse corner stones preserve the adopted style without dense high-rise quoins.
+            for x in (-width/2+.12,width/2-.12):
+                for z in ((.65,1.25,2.6,3.7,4.7,5.8,6.9,7.9) if variant==3 else (.65,1.25,2.6)):
+                    box(x,-.025,z,.24,.05,.25,'concrete')
+        facade(w,d,side,details)
+    facade(w,d,0,lambda:facade_panel(0,.05,1,2.2,'teal' if variant==3 else 'wood'))
+    if variant==3:
+        gable(4.4,5.2,h,2.05,'roof_clay')
+    else:
+        hip_roof(7.1,5.5,h,1.75,'roof')
+        # Cantilevered porch leaves the complete mounting band free.
+        box(0,-d/2-.45,0,2.3,.9,.14,'quaystone')
+        face([(-1.35,-d/2,2.96),(1.35,-d/2,2.96),(1.35,-d/2-1,2.66),(-1.35,-d/2-1,2.66)],'roof')
+        box(0,-d/2-.95,2.57,2.7,.1,.09,'wood')
+
 def wall():
     box(0,0,0,3,.3,1.25,'concrete');box(0,0,1.25,3.1,.4,.12,'cream')
 def crate():box(0,0,0,.6,.45,.42,'crate')
@@ -280,10 +528,62 @@ def crosswalk():box(0,0,0,3.4,2.2,.012,'zebra')
 def manhole():cylinder(0,0,0,.34,.012,'metal',10);cylinder(0,0,.012,.26,.006,'dark',10)
 def drain():box(0,0,0,.6,.26,.012,'grate');box(0,0,0,.7,.34,.006,'dark')
 
+# ---------- 2026-10-13 Claude 3차: 바닥(연석·얼룩·가로등·쓰레기통·가판·소화전·풀·덤불·바위·꽃) + 원경(부두·계류·잔교·배) ----------
+# 원점=바닥 중심, 앞=-y. 긴 쪽은 x.
+def curb():box(0,0,0,6,.16,.14,'curb')
+def streetlamp():
+    cylinder(0,0,0,.14,.22,'dark',6);cylinder(0,0,.22,.06,2.95,'metal',6)
+    box(0,-.3,3.05,.06,.6,.06,'metal');box(0,-.58,2.86,.34,.3,.18,'warmglass');box(0,-.58,3.04,.42,.38,.05,'dark')
+def bin_():
+    cylinder(0,0,0,.26,.82,'teal',8);box(0,0,.82,.58,.58,.06,'dark');box(0,0,.88,.3,.3,.1,'dark')
+def stall():
+    box(0,0,.72,2,.95,.08,'wood')
+    for x in (-.9,.9):
+        for y in (-.4,.4):box(x,y,0,.07,.07,.72,'wood')
+    for x in (-.95,.95):box(x,.42,0,.06,.06,2.1,'wood');box(x,-.5,0,.06,.06,1.85,'wood')
+    pts=[(-1.05,.5,2.1),(1.05,.5,2.1),(1.05,-.6,1.85),(-1.05,-.6,1.85)]
+    face(pts,'awning');face(list(reversed(pts)),'awning')
+    box(-.55,.05,.8,.5,.4,.3,'carton');box(.2,-.1,.8,.45,.45,.36,'crate');box(.7,.15,.8,.3,.3,.25,'terracotta')
+def hydrant():
+    cylinder(0,0,0,.13,.68,'paintred',6);box(0,0,.42,.42,.16,.15,'paintred');cylinder(0,0,.68,.09,.12,'paintred',6)
+def grasstuft():
+    for x,y,h in ((-.22,-.1,.28),(.18,.12,.34),(.02,-.3,.24)):
+        for k in range(4):
+            a0=k*math.tau/4;a1=(k+1)*math.tau/4
+            face([(x+.17*math.cos(a0),y+.17*math.sin(a0),0),(x+.17*math.cos(a1),y+.17*math.sin(a1),0),(x,y,h)],'leaves' if k%2 else 'moss')
+def shrub():
+    box(0,0,0,.95,.8,.62,'leaves');box(.28,.22,.42,.5,.48,.4,'moss');box(-.32,-.12,.48,.46,.44,.32,'leaves')
+def rock():
+    box(0,0,0,.72,.56,.3,'slate');box(.12,.06,.22,.44,.36,.2,'concrete')
+def flowerpatch():box(0,0,0,1.3,.9,.012,'flowers')
+def oilstain():cylinder(0,0,0,.62,.012,'stain',8)
+def patch():box(0,0,0,1.3,.9,.012,'stain')
+def quaysegment():
+    box(0,0,0,12,1.4,.7,'quaystone');box(0,-.6,.7,12,.2,.06,'concrete')
+def mooring():cylinder(0,0,0,.14,.45,'dark',8);box(0,0,.45,.36,.36,.08,'dark')
+def pier():
+    for yy in (-1,-4.5,-8,-11.5,-13.6):
+        for x in (-1.1,1.1):cylinder(x,yy,0,.09,.84,'wood',6)
+    box(0,-7,.84,2.6,14,.12,'wood')
+    for x in (-1.2,1.2):
+        for yy in (-3,-7,-11):box(x,yy,.96,.06,.06,.9,'wood')
+        box(x,-7,1.8,.05,13,.05,'wood')
+def boat():
+    box(0,0,0,1.6,3.6,.62,'paintred');box(0,-2.05,.08,1.0,1.0,.5,'paintred');box(0,2.0,.08,1.3,.5,.5,'paintred')
+    box(0,0,.62,1.7,3.7,.06,'wood');box(0,.55,.68,1.1,1.25,.9,'cream');box(0,.1,1.15,1.12,.4,.3,'glass')
+    box(0,.55,1.58,1.2,1.35,.06,'teal');cylinder(0,-.9,.68,.05,1.6,'wood',6)
+
 manifest=[]
 for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',house),('Wall3m',wall),('Crate',crate),('Parcel',carton),('DeliveryBag',bag),('UtilityPole',pole),('TireStack',tires),('CoastalTree',tree),('Road7x8',road),('Sidewalk2x4',sidewalk),
                 ('Awning',awning),('Planter',planter),('Pots',pots),('Bench',bench),('Barrel',barrel),('AcUnit',acunit),('WallLamp',walllamp),('Clothesline',clothesline),
-                ('SignTea',signpost),('SignIce',signpost2),('SignRest',signpost3),('Bollard',bollard),('CrateStack',cratestack),('Crosswalk',crosswalk),('Manhole',manhole),('Drain',drain)]:
+                ('SignTea',signpost),('SignIce',signpost2),('SignRest',signpost3),('Bollard',bollard),('CrateStack',cratestack),('Crosswalk',crosswalk),('Manhole',manhole),('Drain',drain),
+                ('Curb',curb),('StreetLamp',streetlamp),('Bin',bin_),('Stall',stall),('Hydrant',hydrant),('GrassTuft',grasstuft),('Shrub',shrub),('Rock',rock),('FlowerPatch',flowerpatch),('OilStain',oilstain),('Patch',patch),
+                ('QuaySegment',quaysegment),('Mooring',mooring),('Pier',pier),('Boat',boat),
+                ('CoastalHouseB',lambda:house(1)),('CoastalHouseC',lambda:house(2)),
+                ('CornerShopB',lambda:shop(1)),('RepairGarageB',lambda:garage(1)),
+                ('CoastalHouseD',lambda:new_house(3)),('CoastalHouseE',lambda:new_house(4)),
+                ('CoastalHouseF',lambda:new_house(5)),('CornerShopC',lambda:shop(2))]:
+    building_mode=name.startswith(('CoastalHouse','CornerShop','RepairGarage'))
     verts.clear();faces.clear();uvs.clear();fn()
     mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update()
     uv=mesh.uv_layers.new(name='UVMap')
@@ -293,10 +593,10 @@ for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',hous
     bpy.ops.object.select_all(action='DESELECT');obj.select_set(True);bpy.context.view_layer.objects.active=obj
     bpy.context.view_layer.update()
     tris=sum(len(p.vertices)-2 for p in mesh.polygons)
+    if building_mode:assert tris<=4500,(name,tris)
     bounds=[[min(v.co[i] for v in mesh.vertices),max(v.co[i] for v in mesh.vertices)] for i in range(3)]
     assert all(math.isfinite(v) for p in verts for v in p)
     assert all(p.area>0 for p in mesh.polygons),name
-    bpy.ops.export_scene.fbx(filepath=str(out/(name+'.fbx')),use_selection=True,axis_forward='-Z',axis_up='Y',bake_space_transform=True,apply_scale_options='FBX_SCALE_ALL',add_leaf_bones=False,mesh_smooth_type='FACE',use_mesh_modifiers=True,path_mode='STRIP')
     manifest.append({'name':name,'triangles':tris,'blender_bounds':bounds,'dimensions':[round(b[1]-b[0],3) for b in bounds],'materials':1,'uv_layer':True})
     # Native geometry interchange for independent post-import checks.
     # Blender x,y,z -> Unity x,z,-y (front -y -> +z)
@@ -304,7 +604,11 @@ for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',hous
     for poly in mesh.polygons:
         ids=list(poly.vertices)
         for k in range(1,len(ids)-1):data['triangles']+= [ids[0],ids[k],ids[k+1]]
-    (out/(name+'.mesh.json')).write_text(json.dumps(data),encoding='utf-8')
+    geometry_path=out/(name+'.mesh.json');serialized=json.dumps(data)
+    # Avoid timestamp-only FBX rewrites/reimports of the unchanged prop kit.
+    if not geometry_path.exists() or geometry_path.read_text(encoding='utf-8')!=serialized or not (out/(name+'.fbx')).exists():
+        bpy.ops.export_scene.fbx(filepath=str(out/(name+'.fbx')),use_selection=True,axis_forward='-Z',axis_up='Y',bake_space_transform=True,apply_scale_options='FBX_SCALE_ALL',add_leaf_bones=False,mesh_smooth_type='FACE',use_mesh_modifiers=True,path_mode='STRIP')
+        geometry_path.write_text(serialized,encoding='utf-8')
     obj.location=((len(manifest)-1)%4*9,(len(manifest)-1)//4*9,0)
 (out/'asset-manifest.json').write_text(json.dumps({'seed':413,'atlas':[512,512],'tile_size':64,'assets':manifest},indent=2),encoding='utf-8')
 bpy.ops.wm.save_as_mainfile(filepath=str(source/'LofiCoastalKit.blend'))

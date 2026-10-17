@@ -1,0 +1,762 @@
+diff --git a/F1/Assets/Editor/CoastalPropsBuilder.cs b/F1/Assets/Editor/CoastalPropsBuilder.cs
+index 85401e2..4e34717 100644
+--- a/F1/Assets/Editor/CoastalPropsBuilder.cs
++++ b/F1/Assets/Editor/CoastalPropsBuilder.cs
+@@ -14,9 +14,13 @@ public static class CoastalPropsBuilder
+ {
+     const string Dir = "Assets/Art/LofiPilot";
+     static readonly string[] Names = { "Awning", "Planter", "Pots", "Bench", "Barrel", "AcUnit", "WallLamp", "Clothesline",
+-                                       "SignTea", "SignIce", "SignRest", "Bollard", "CrateStack", "Crosswalk", "Manhole", "Drain" };
+-    public static readonly HashSet<string> NoCollider = new HashSet<string> { "Awning", "AcUnit", "WallLamp", "Crosswalk", "Manhole", "Drain" };
+-    static readonly HashSet<string> BoxCol = new HashSet<string> { "Pots", "Bollard", "CrateStack", "Barrel" };
++                                       "SignTea", "SignIce", "SignRest", "Bollard", "CrateStack", "Crosswalk", "Manhole", "Drain",
++                                       // 3차(바닥·원경)
++                                       "Curb", "StreetLamp", "Bin", "Stall", "Hydrant", "GrassTuft", "Shrub", "Rock", "FlowerPatch", "OilStain", "Patch",
++                                       "QuaySegment", "Mooring", "Pier", "Boat" };
++    public static readonly HashSet<string> NoCollider = new HashSet<string> { "Awning", "AcUnit", "WallLamp", "Crosswalk", "Manhole", "Drain",
++                                       "Curb", "GrassTuft", "FlowerPatch", "OilStain", "Patch", "Boat" };   // 연석은 차가 넘어가게(주행 변화 0)
++    static readonly HashSet<string> BoxCol = new HashSet<string> { "Pots", "Bollard", "CrateStack", "Barrel", "Bin", "Hydrant", "Shrub", "Rock", "Mooring" };
+ 
+     static Bounds Bounds(GameObject go) { var rr = go.GetComponentsInChildren<Renderer>(); var b = rr[0].bounds; foreach (var r in rr) b.Encapsulate(r.bounds); return b; }
+ 
+diff --git a/F1/Assets/Editor/CoastalTownDensity.cs b/F1/Assets/Editor/CoastalTownDensity.cs
+index 51586b2..0645753 100644
+--- a/F1/Assets/Editor/CoastalTownDensity.cs
++++ b/F1/Assets/Editor/CoastalTownDensity.cs
+@@ -4,32 +4,36 @@
+ 
+ /// <summary>
+ /// 2026-10-13 Claude — 브리프 town-density ①②: 건물당 생활 소품 5개 안팎 + 도로 디테일.
+-/// CoastalTownInstaller.Layout() 이 건물을 하나 놓을 때마다 ForBuilding 을, 끝에 ForRoads 를 부른다.
++/// 3차(같은 날, 바닥·원경): 연석·얼룩·가로등·쓰레기통·소화전, 빈 마당의 풀·덤불·바위·꽃, 부두(석축·계류·잔교·배), 마을 밖 나무 띠.
++/// CoastalTownInstaller.Layout() 이 건물을 하나 놓을 때마다 ForBuilding 을, 끝에 ForRoads/ForGround/ForHarbor/ForOutskirts 를 부른다.
+ /// 규칙은 전부 결정적(hash) — 같은 레이아웃이면 같은 결과. 물리·경로·건물 배치는 건드리지 않는다.
+ ///
+-/// 기하: 건물 중심 p, 도로 쪽 단위벡터 face, 오른쪽 right, 설치 스케일 s. 도로 셀 중심까지 6m, 도로 가장자리 3m,
+-/// 보도 1.3m 가 1.7~3.0m 띠. 건물 앞면이 1.5~1.7m 라 앞 소품은 보도 위(1.9~2.5m), 길 가장자리에서 0.5m 이상 띄운다.
++/// 기하(실측 2026-10-13): 도로 셀 6m, 차도 ±1.7m, 보도 1.7~3.0m(높이 0.12), 그 밖 3.0~4.5m 는 잔디 띠, 건물 중심은 도로 중심에서 6m.
++/// 앞 소품은 hd+0.55 → 도로 중심에서 ~3.95m = 잔디 띠. 보도 위 가구(가로등·쓰레기통·소화전)는 2.4~2.6m, y=0.12.
+ /// </summary>
+ public static class CoastalTownDensity
+ {
+     public delegate void Adder(string asset, Vector3 pos, float yaw, float scale, int palette);
+     /// <summary>벽걸이·데칼 — 바닥 높이 검사 제외 대상 (원점이 바닥이 아님)</summary>
+     public static readonly HashSet<string> Mounted = new HashSet<string> { "Awning", "AcUnit", "WallLamp" };
++    const float SidewalkTop = 0.12f, DecalY = 0.013f;
+ 
+     // 건물 몸통 로컬 치수 (lofi_pilot.py 의 box 치수, 돌출부 제외)
+     static (float w, float d) Body(string asset) => asset == "CornerShop" ? (6f, 5.2f) : asset == "RepairGarage" ? (6.4f, 5.6f) : (5f, 4.8f);
++    static float Yaw(Vector3 dir) => Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
++    static int Hash(int c, int r, int salt = 0) => Math.Abs(c * 157 + r * 73 + salt * 31);
+ 
+     public static void ForBuilding(Adder add, string asset, Vector3 p, Vector3 face, Vector3 right, float s, int hash, char zone, bool rightOpen, bool leftOpen)
+     {
+         var (w, d) = Body(asset);
+         float hw = w * s / 2f, hd = d * s / 2f;
+-        float yaw = Mathf.Atan2(face.x, face.z) * Mathf.Rad2Deg;      // 앞면이 도로를 보는 yaw (소품의 앞=+z 가 도로 쪽)
++        float yaw = Yaw(face);                                          // 앞면이 도로를 보는 yaw (소품의 앞=+z 가 도로 쪽)
+         float ps = Mathf.Clamp(s * 1.05f, .6f, .72f);                  // 소품은 건물보다 살짝 크게 — 사람 크기가 읽히게
+         int n = 0;
+-        // ---- 앞(보도): 2~3개. 문 앞은 비우고(집 문 x=0 / 상점 문 x=+2) 좌우로.
++        // ---- 앞(잔디 띠): 2~3개. 문 앞은 비우고(집 문 x=0 / 상점 문 x=+2) 좌우로.
+         float front = hd + 0.55f;
+-        string[] frontPool = asset == "CornerShop" ? new[] { "Planter", "SignTea", "Bench", "CrateStack", "Pots", "SignIce" }
+-                           : asset == "RepairGarage" ? new[] { "Barrel", "CrateStack", "SignRest", "Bollard", "Barrel", "Pots" }
++        string[] frontPool = asset == "CornerShop" ? new[] { "Planter", "SignTea", "Bin", "CrateStack", "Bench", "SignIce" }
++                           : asset == "RepairGarage" ? new[] { "Barrel", "CrateStack", "SignRest", "Bollard", "Barrel", "Hydrant" }
+                            : new[] { "Pots", "Planter", "Bench", "Pots", "Bollard", "Planter" };
+         float doorX = asset == "CornerShop" ? 2f * s : 0f;
+         float[] slots = { -hw + .45f, hw - .45f, (doorX > 0 ? -hw * .35f : hw * .55f) };
+@@ -40,16 +44,18 @@ public static void ForBuilding(Adder add, string asset, Vector3 p, Vector3 face,
+             float x = slots[i]; if (Mathf.Abs(x - doorX) < 0.7f) x += (x < doorX ? -0.6f : 0.6f);
+             add(a, p + face * front + right * x, yaw + (a.StartsWith("Sign") ? 0 : (hash + i) % 3 * 8 - 8), ps, 0); n++;
+         }
+-        // ---- 옆(도로 없는 쪽): 1~2개
++        // ---- 옆(도로 없는 쪽): 1~2개. 상점은 열린 옆에 가판(Stall) 하나.
+         var sides = new List<(Vector3 dir, bool open)> { (right, rightOpen), (-right, leftOpen) };
++        bool stallDone = false;
+         foreach (var (dir, open) in sides)
+         {
+             if (!open) continue;
+             string a = asset == "RepairGarage" ? ((hash & 1) == 0 ? "TireStack" : "Barrel")
+-                     : asset == "CornerShop" ? ((hash & 1) == 0 ? "CrateStack" : "Crate")
++                     : asset == "CornerShop" ? (!stallDone ? "Stall" : ((hash & 1) == 0 ? "CrateStack" : "Crate"))
+                      : ((hash % 3) == 0 ? "Barrel" : "Clothesline");
+-            float sideYaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
++            float sideYaw = Yaw(dir);
+             if (a == "Clothesline") add(a, p + dir * (hw + 2.4f * ps) - face * (hd * .3f), sideYaw, ps, 0);   // 벽끝이 벽에 닿게, 장대는 밖
++            else if (a == "Stall") { add(a, p + dir * (hw + 1.3f) + face * (hd * .5f), yaw, ps, 0); stallDone = true; }   // 가판은 도로를 본다
+             else add(a, p + dir * (hw + .5f) + face * (hd * .2f), sideYaw + 15, ps, 0);
+             n++;
+             if (n >= 4) break;
+@@ -61,34 +67,129 @@ public static void ForBuilding(Adder add, string asset, Vector3 p, Vector3 face,
+             add("Awning", p + face * (hd + .46f) + right * winX, yaw, s, 0); n++;            // 원점=벽 접합 상단, 아래로 드리움
+         }
+         {
+-            var dir = rightOpen ? right : -right; float sgn = rightOpen ? 1 : -1;
+-            add("AcUnit", p + dir * (hw + .16f) + face * (hd * .35f) + Vector3.up * (2.25f * s), Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg, s, 0); n++;
++            var dir = rightOpen ? right : -right;
++            add("AcUnit", p + dir * (hw + .16f) + face * (hd * .35f) + Vector3.up * (2.25f * s), Yaw(dir), s, 0); n++;
+         }
+         add("WallLamp", p + face * (hd + .12f) + right * (doorX + .65f * s) + Vector3.up * (2.15f * s), yaw, s, 0); n++;
+     }
+ 
+-    /// <summary>도로: 교차로 팔마다 횡단보도, 직선 셀에 맨홀·배수구. 충돌 없음(데칼).</summary>
++    static readonly Vector2Int[] Dirs = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
++    static int Degree(TrackLayout map, int c, int r) { int n = 0; foreach (var d in Dirs) if (map.IsRoad(c + d.x, r + d.y)) n++; return n; }
++    static bool Straight(TrackLayout map, int c, int r, out Vector2Int axis)
++    {
++        axis = Vector2Int.zero; if (!map.IsRoad(c, r)) return false;
++        var open = new List<Vector2Int>(); foreach (var d in Dirs) if (map.IsRoad(c + d.x, r + d.y)) open.Add(d);
++        if (open.Count == 2 && open[0] == -open[1]) { axis = open[0]; return true; }
++        return false;
++    }
++
++    /// <summary>
++    /// 도로. 횡단보도는 "직선 셀이 교차로(이웃 3+)로 들어가는 끝"에만 — 2칸 폭 도로는 셀마다 이웃이 3이라 교차로로 잡혀 643개가 깔리던 것(1차)을 고침.
++    /// 맨홀·배수구·얼룩·땜질은 직선 셀. 연석은 도로 셀의 도로 아닌 모든 변(보도 안쪽 모서리 1.7m). 가로등·쓰레기통·소화전은 보도 위.
++    /// </summary>
+     public static void ForRoads(Adder add, TrackLayout map)
+     {
+-        var dirs = new[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+         for (int r = 0; r < map.Height; r++) for (int c = 0; c < map.Width; c++)
+         {
+             if (!map.IsRoad(c, r)) continue;
+-            var open = new List<Vector2Int>(); foreach (var d in dirs) if (map.IsRoad(c + d.x, r + d.y)) open.Add(d);
+-            var center = new Vector3(c * 6, 0.013f, r * 6);
+-            if (open.Count >= 3)
++            var center = new Vector3(c * 6, DecalY, r * 6);
++            int hash = Hash(c, r);
++            // 연석: 도로 아닌 변마다 (보도가 있는 곳)
++            foreach (var d in Dirs)
+             {
+-                foreach (var d in open)
+-                    add("Crosswalk", center + new Vector3(d.x, 0, d.y) * 2.35f, Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg + 90f, 1f, 0);
+-                continue;
++                if (map.IsRoad(c + d.x, r + d.y)) continue;
++                var side = new Vector3(d.x, 0, d.y);
++                add("Curb", new Vector3(c * 6, 0, r * 6) + side * 1.76f, Yaw(side), 1f, 0);   // 긴 쪽(x)이 도로 축
+             }
+-            if (open.Count == 2 && open[0] == -open[1])
++            if (!Straight(map, c, r, out var axisI)) continue;
++            var axis = new Vector3(axisI.x, 0, axisI.y); var sideV = new Vector3(axis.z, 0, -axis.x);
++            float ayaw = Yaw(axis);
++            // 횡단보도: 이 직선 셀의 양 끝 중 교차로로 이어지는 쪽
++            foreach (var e in new[] { axisI, -axisI })
++                if (map.IsRoad(c + e.x, r + e.y) && Degree(map, c + e.x, r + e.y) >= 3)
++                    add("Crosswalk", center + new Vector3(e.x, 0, e.y) * 1.95f, Yaw(new Vector3(e.x, 0, e.y)), 1f, 0);   // 3.4 가 차도 폭을 가로지르고 줄무늬는 도로 방향
++            if ((c + r) % 3 == 0) add("Manhole", center + axis * 1.1f + sideV * .55f, ayaw, 1f, 0);
++            if ((c + r) % 2 == 1) { add("Drain", center + sideV * 1.45f - axis * 1.6f, ayaw, 1f, 0); add("Drain", center - sideV * 1.45f + axis * 1.6f, ayaw, 1f, 0); }
++            if (hash % 4 == 1) add("OilStain", center + axis * ((hash % 5) * .5f - 1f) + sideV * ((hash % 3) * .5f - .5f), hash % 360, .8f + hash % 3 * .2f, 0);
++            if (hash % 5 == 3) add("Patch", center - axis * ((hash % 4) * .4f - .6f) + sideV * ((hash % 2) * .9f - .45f), ayaw + (hash % 2) * 90, 1f, 0);
++            // 보도 가구: 도로 아닌 변에만. 가로등은 4셀마다 전신주와 엇갈리게, 쓰레기통·소화전은 드문드문.
++            foreach (var d in Dirs)
++            {
++                if (map.IsRoad(c + d.x, r + d.y)) continue;
++                if (Mathf.Abs(d.x) == Mathf.Abs(axisI.x) && Mathf.Abs(d.y) == Mathf.Abs(axisI.y)) continue;   // 축 방향 변은 보도 없음
++                var side = new Vector3(d.x, 0, d.y); float faceYaw = Yaw(-side);
++                var walk = new Vector3(c * 6, SidewalkTop, r * 6) + side * 2.5f;
++                int pick = (c + r + (d.x > 0 || d.y < 0 ? 3 : 0)) % 6;
++                if (pick == 2) add("StreetLamp", walk - axis * 1.2f, faceYaw, .95f, 0);
++                else if (pick == 5) add("Bin", walk + axis * 1.4f, faceYaw + hash % 40, .9f, 0);
++                else if (pick == 4 && hash % 2 == 0) add("Hydrant", walk + axis * .3f, faceYaw, .9f, 0);
++            }
++        }
++    }
++
++    /// <summary>빈 마당(도로 아님·건물 없음): 구역별로 풀·꽃·덤불·바위 2~4개. 공업은 바위·드럼통·상자, 항구는 바위·상자·풀, 다운타운은 꽃·풀·덤불.</summary>
++    public static void ForGround(Adder add, TrackLayout map)
++    {
++        for (int r = 0; r < map.Height; r++) for (int c = 0; c < map.Width; c++)
++        {
++            if (map.IsRoad(c, r) || map.BuildingChar(c, r) != '.') continue;
++            if (r * 6 > 116) continue;   // 마지막 두 행(z 120·126)은 바다 — 풀·상자가 물 위에 뜨던 것(3차 첫 캡처)
++            char zone = map.GetZoneChar(c, r); int hash = Hash(c, r, 5);
++            bool nearRoad = Degree(map, c, r) > 0;
++            string[] pool = zone == 'I' ? new[] { "Rock", "GrassTuft", "Barrel", "Rock", "CrateStack", "GrassTuft", "Shrub" }
++                          : zone == 'H' ? new[] { "GrassTuft", "Rock", "Crate", "GrassTuft", "Shrub", "Barrel", "Rock" }
++                          : new[] { "FlowerPatch", "GrassTuft", "Shrub", "GrassTuft", "FlowerPatch", "Rock", "Shrub" };
++            int count = 2 + hash % 3;
++            for (int i = 0; i < count; i++)
+             {
+-                var axis = new Vector3(open[0].x, 0, open[0].y); var side = new Vector3(axis.z, 0, -axis.x);
+-                float ayaw = Mathf.Atan2(axis.x, axis.z) * Mathf.Rad2Deg;
+-                if ((c + r) % 3 == 0) add("Manhole", center + axis * 1.1f + side * .55f, ayaw, 1f, 0);
+-                if ((c + r) % 2 == 1) { add("Drain", center + side * 1.45f - axis * 1.6f, ayaw, 1f, 0); add("Drain", center - side * 1.45f + axis * 1.6f, ayaw, 1f, 0); }
++                int h = Hash(c, r, 11 + i);
++                string a = pool[(h / 7) % pool.Length];
++                // 셀 안 ±2.2m (보도는 도로 셀 쪽 1.7~3.0m 에 있어 빈 셀 전체가 잔디)
++                float ox = (h % 9) * .55f - 2.2f, oz = ((h / 9) % 9) * .55f - 2.2f;
++                var pos = new Vector3(c * 6 + ox, a == "FlowerPatch" ? DecalY : 0f, r * 6 + oz);
++                float sc = a == "Rock" || a == "Shrub" ? .7f + (h % 4) * .15f : .85f + (h % 3) * .15f;
++                add(a, pos, h % 360, sc, 0);
+             }
++            // 도로 옆 빈 셀 셋 중 하나엔 가로수
++            if (nearRoad && hash % 3 == 1) add("CoastalTree", new Vector3(c * 6 + (hash % 5) * .4f - .8f, 0, r * 6 + ((hash / 5) % 5) * .4f - .8f), hash % 360, .72f + (hash % 3) * .06f, 0);
++        }
++    }
++
++    /// <summary>
++    /// 항구 가장자리: 마지막 도로 행(row 19, z=114) 남쪽은 모래 띠, 바다는 z=120 부터. 석축 12m 조각을 z=119.4 에 띠로, 6m 마다 계류 말뚝,
++    /// 잔교 3개(x=36·90·144)가 바다로 14m, 배 5척은 잔교 옆에 떠 있다. 석축엔 MeshCollider 가 있어 차가 바다로 못 떨어진다.
++    /// </summary>
++    public static void ForHarbor(Adder add, TrackLayout map)
++    {
++        float z = 119.4f; float xMin = -9f, xMax = (map.Width - 1) * 6 + 9f;   // 땅 끝과 같은 폭
++        for (float x = xMin + 6f; x <= xMax - 6f + 0.01f; x += 12f)
++        {
++            add("QuaySegment", new Vector3(x, -0.4f, z), 0f, 1f, 0);
++            foreach (float mx in new[] { x - 3f, x + 3f }) add("Mooring", new Vector3(mx, 0.3f, z - .25f), 0f, 1f, 0);
++        }
++        foreach (float px in new[] { 36f, 90f, 144f })
++        {
++            add("Pier", new Vector3(px, -0.5f, z + .7f), 0f, 1f, 0);           // 앞(+z)으로 14m, 바다 쪽
++            int h = Hash((int)px, 0, 3);
++            add("Boat", new Vector3(px + 2.4f, -0.3f, z + 5f + h % 4), 90f + h % 20 - 10, 1f, 0);
++            if (h % 2 == 0) add("Boat", new Vector3(px - 2.6f, -0.3f, z + 9f + h % 3), -90f + h % 16 - 8, .9f, 0);
++            add("CrateStack", new Vector3(px - 3.5f, 0f, z - 2.4f), h % 90, .7f, 0); add("Barrel", new Vector3(px + 3.2f, 0f, z - 2.2f), 0f, .7f, 0);
++        }
++        add("Boat", new Vector3(12f, -0.3f, z + 7f), 70f, 1f, 0);
++        add("Boat", new Vector3(170f, -0.3f, z + 6f), -110f, 1f, 0);
++    }
++
++    /// <summary>마을 밖 나무 띠: 땅 끝(x −9~183, z −9~117) 바깥 10~75m 를 9m 격자로, 셋 중 둘. 바다 쪽(z>117)은 없음. y=-0.06 은 FarGround 높이.</summary>
++    public static void ForOutskirts(Adder add, TrackLayout map)
++    {
++        float xMin = -9f, xMax = (map.Width - 1) * 6 + 9f, zMin = -9f, zMax = 117f;
++        for (float x = xMin - 75f; x <= xMax + 75f; x += 9f) for (float z = zMin - 75f; z <= zMax; z += 9f)
++        {
++            bool inside = x > xMin - 10f && x < xMax + 10f && z > zMin - 10f && z < zMax;
++            if (inside) continue;
++            int h = Hash((int)x, (int)z, 7); if (h % 3 == 0) continue;
++            float jx = (h % 7) * .9f - 2.7f, jz = ((h / 7) % 7) * .9f - 2.7f;
++            add("CoastalTree", new Vector3(x + jx, -0.06f, z + jz), h % 360, .9f + (h % 5) * .1f, 0);
+         }
+     }
+ }
+diff --git a/F1/Assets/Editor/CoastalTownInstaller.cs b/F1/Assets/Editor/CoastalTownInstaller.cs
+index c06f408..15ae575 100644
+--- a/F1/Assets/Editor/CoastalTownInstaller.cs
++++ b/F1/Assets/Editor/CoastalTownInstaller.cs
+@@ -14,12 +14,14 @@ public static class CoastalTownInstaller
+  static string Output=>Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town"));
+  static readonly Vector2Int[] Directions={Vector2Int.up,Vector2Int.right,Vector2Int.down,Vector2Int.left};
+  static Bounds Bounds(GameObject go){var rr=go.GetComponentsInChildren<Renderer>();var b=rr[0].bounds;foreach(var r in rr)b.Encapsulate(r.bounds);return b;}
+- static Material Mat(string name,Color tint,int tile=-1,float repeat=.5f)
++ /// <summary>tile2>=0 이면 WorldSurface 의 덩어리 무늬(_Patch)로 두 번째 칸을 섞는다 (3차: 잔디·흙·모래 변화).</summary>
++ static Material Mat(string name,Color tint,int tile=-1,float repeat=.5f,int tile2=-1,float patch=.55f,float patchScale=.09f)
+  {
+   string path=Dir+"/"+name+".mat";var m=AssetDatabase.LoadAssetAtPath<Material>(path);var shader=Shader.Find(tile>=0?"PitCrew/CoastalTown/WorldSurface":"PitCrew/LofiPilot/Surface");
+   if(!m){m=new Material(shader);AssetDatabase.CreateAsset(m,path);}m.shader=shader;
+   m.SetColor("_Tint",tint);m.SetColor("_Ambient",new Color(1,.99f,.95f));m.SetFloat("_FaceShade",.65f);m.SetFloat("_FogStart",45);m.SetFloat("_FogEnd",165);m.SetColor("_FogColor",new Color(.62f,.73f,.77f));
+-  if(tile>=0){m.SetTexture("_MainTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Kit+"/LofiAtlas.png"));m.SetVector("_Tile",new Vector4(tile%8/8f,tile/8/8f,.125f,.125f));m.SetFloat("_WorldScale",repeat);}
++  if(tile>=0){m.SetTexture("_MainTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Kit+"/LofiAtlas.png"));m.SetVector("_Tile",new Vector4(tile%8/8f,tile/8/8f,.125f,.125f));m.SetFloat("_WorldScale",repeat);
++   if(m.HasProperty("_Patch")){m.SetFloat("_Patch",tile2>=0?1:0);m.SetFloat("_PatchThreshold",patch);m.SetFloat("_PatchScale",patchScale);if(tile2>=0)m.SetVector("_Tile2",new Vector4(tile2%8/8f,tile2/8/8f,.125f,.125f));}}
+   else if(name.StartsWith("Buildings"))m.SetTexture("_MainTex",AssetDatabase.LoadAssetAtPath<Texture2D>(Kit+"/LofiAtlas.png"));
+   EditorUtility.SetDirty(m);return m;
+  }
+@@ -40,7 +42,7 @@ static CoastalTownLayout Layout()
+    char zone=map.GetZoneChar(c,r);
+    string asset=zone=='I'?(hash%3==0?"CoastalHouse":"RepairGarage"):(hash%5==0?"CornerShop":"CoastalHouse");
+    float scale=asset=="RepairGarage"?.64f:(asset=="CornerShop"?.64f:.62f+hash%3*.035f);
+-   Add(asset,p,yaw,scale,hash%3);
++   Add(asset+(asset=="CoastalHouse"?new[]{"","B","C"}[(hash/7)%3]:new[]{"","B"}[(hash/7)%2]),p,yaw,scale,hash%3); // Keep base asset for scale/Body/props; vary only the prefab selection.
+    if(distance==1&&hash%3==0){Add("CoastalTree",p-right*2.15f-face*.9f,hash%360,.78f);}
+    if(distance==1&&hash%5==1){Add("Wall3m",p-right*2.4f-face*.6f,yaw+90,.65f);}
+    // 2026-10-13 Claude(브리프 town-density ①): 건물당 생활 소품 5개 안팎. 옆이 도로/건물이 아닐 때만 옆 소품.
+@@ -51,7 +53,10 @@ static CoastalTownLayout Layout()
+     CoastalTownDensity.ForBuilding((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),asset,p,face,right,scale,hash,zone,rightOpen,leftOpen);
+    }
+   }
+-  CoastalTownDensity.ForRoads((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map);   // ②: 횡단보도·맨홀·배수구 데칼
++  CoastalTownDensity.ForRoads((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map);   // ②: 횡단보도·맨홀·배수구 데칼 + 3차 연석·얼룩·보도 가구
++  CoastalTownDensity.ForGround((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map);  // 3차: 빈 마당 풀·꽃·덤불·바위·가로수
++  CoastalTownDensity.ForHarbor((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map);  // 3차: 석축·계류·잔교·배
++  CoastalTownDensity.ForOutskirts((a2,pos,yw,sc,pal)=>Add(a2,pos,yw,sc,pal),map); // 3차: 마을 밖 나무 띠
+   for(int r=0;r<map.Height;r++)for(int c=0;c<map.Width;c++)
+   {
+    if(!map.IsRoad(c,r)||(c+r)%4!=0)continue;
+@@ -93,22 +98,28 @@ public static void Install()
+    var go=new GameObject("PowerLine");go.transform.SetParent(town.transform);var line=go.AddComponent<LineRenderer>();line.sharedMaterial=cable;line.startWidth=line.endWidth=.014f;line.positionCount=9;
+    for(int n=0;n<9;n++){float t=n/8f;line.SetPosition(n,Vector3.Lerp(a,b,t)-Vector3.up*(Mathf.Sin(t*Mathf.PI)*.35f));}
+   }
+-  Assign(GameObject.Find("Track"),Mat("Asphalt",new Color(.92f,.94f,.97f),12,.65f));
++  Assign(GameObject.Find("Track"),Mat("Asphalt",new Color(.92f,.94f,.97f),12,.65f,43,.5f,.3f));   // 3차-c: 덩어리 11m→3.3m (게이트 "차보다 큰 모자이크") // 3차-b: 아스팔트 + 균열·얼룩 덩어리(asphalt2) — 넓은 면이 민무늬 한 장으로 보이던 것
+   Assign(GameObject.Find("Sidewalks"),Mat("Pavement",new Color(1,.98f,.90f),1,.75f));
+-  Assign(GameObject.Find("Ground"),Mat("Ground",Color.white,13,.45f));
++  Assign(GameObject.Find("Ground"),Mat("Ground",Color.white,13,.45f,42,.56f));   // 잔디 + 짙은 잔디 덩어리
+   // The legacy plane covered only 100x100m while roads span 180x120m.
+   // Extend the existing flat collision floor to include every street and its verge.
+   var floor=GameObject.Find("Ground");var floorBounds=floor.GetComponent<Renderer>().bounds;var floorScale=floor.transform.localScale;
+   floorScale.x*=(map.Width*6+12)/floorBounds.size.x;floorScale.z*=(map.Height*6+12)/floorBounds.size.z;floor.transform.localScale=floorScale;
+   floor.transform.position=new Vector3((map.Width-1)*3,0,(map.Height-1)*3);
+-  var zones=GameObject.Find("ZoneGrounds");if(zones)foreach(Transform z in zones.transform)Assign(z.gameObject,Mat("ZoneGround",Color.white,13,.45f));
++  // 3차: 구역별 바닥 — 공업=흙(풀 덩어리) / 다운타운=잔디(짙은 덩어리) / 항구=모래(흙 덩어리). 경계는 2칸 폭 도로 밑에 숨는다.
++  var zones=GameObject.Find("ZoneGrounds");if(zones)foreach(Transform z in zones.transform)Assign(z.gameObject,
++   z.name.Contains("Industrial")?Mat("ZoneGroundIndustrial",new Color(1,.97f,.92f),37,.45f,42,.62f):z.name.Contains("Harbor")?Mat("ZoneGroundHarbor",Color.white,38,.45f,37,.66f):Mat("ZoneGroundDowntown",Color.white,13,.45f,42,.56f));
++  // 3차: 땅 끝 너머 원경 바닥 — 안개 끝(190m)까지 하늘이 바로 보이지 않게. 충돌 없음, y=-0.06 (나무 띠와 같은 높이).
++  var far=GameObject.CreatePrimitive(PrimitiveType.Plane);far.name="FarGround";far.transform.SetParent(town.transform);UnityEngine.Object.DestroyImmediate(far.GetComponent<Collider>());
++  far.transform.position=new Vector3((map.Width-1)*3,-.06f,-270);far.transform.localScale=new Vector3(140,1,78);   // z ≤ 120: 바다(HarborSea y=-0.15) 는 덮지 않는다
++  Assign(far,Mat("FarGround",new Color(.93f,.97f,1),13,.45f,42,.5f));
+   var lines=GameObject.Find("RoadLines");var lineMat=Mat("RoadPaint",new Color(.80f,.77f,.64f));Assign(lines,lineMat);
+   foreach(Transform dash in lines.transform){var s=dash.localScale;if(s.x>s.z){s.x=1.8f;s.z=.1f;}else{s.z=1.8f;s.x=.1f;}dash.localScale=s;}
+   var vehicles=GameObject.Find("StreetVehicles");if(vehicles)foreach(Transform v in vehicles.transform){if(!v.name.EndsWith("_CoastalSized")){v.localScale*=.78f;v.name+="_CoastalSized";}}
+   var sea=GameObject.Find("HarborSea");if(sea)Assign(sea,Mat("Sea",new Color(.48f,.66f,.71f)));
+   // Background shapes only; no collision or route changes.
+   var water=GameObject.CreatePrimitive(PrimitiveType.Cube);water.name="CoastalWater";water.transform.SetParent(town.transform);water.transform.position=new Vector3(87,-.02f,164);water.transform.localScale=new Vector3(240,.08f,88);UnityEngine.Object.DestroyImmediate(water.GetComponent<Collider>());Assign(water,Mat("Sea",new Color(.48f,.66f,.71f)));
+-  BuildIslands(town.transform);
++  BuildIslands(town.transform);BuildHills(town.transform);
+   var light=scene.GetRootGameObjects().SelectMany(g=>g.GetComponentsInChildren<Light>()).FirstOrDefault(l=>l.type==LightType.Directional);if(light){light.transform.rotation=Quaternion.Euler(48,-35,0);light.color=new Color(1,.96f,.86f);light.intensity=1.05f;light.shadows=LightShadows.Soft;}
+   RenderSettings.ambientLight=new Color(.68f,.72f,.73f);RenderSettings.fog=true;RenderSettings.fogColor=new Color(.62f,.73f,.77f);RenderSettings.fogMode=FogMode.Linear;RenderSettings.fogStartDistance=55;RenderSettings.fogEndDistance=190;
+   var camera=UnityEngine.Object.FindFirstObjectByType<FollowCamera>();var so=new SerializedObject(camera);so.FindProperty("offset").vector3Value=data.cameraOffset;so.FindProperty("lookHeight").floatValue=data.cameraLookHeight;so.ApplyModifiedPropertiesWithoutUndo();
+@@ -135,6 +146,24 @@ static void BuildIslands(Transform parent)
+    var go=new GameObject("Island"+k);go.transform.SetParent(parent);go.transform.position=new Vector3(15+k*27,-.2f,191+k%2*12);go.AddComponent<MeshFilter>().sharedMesh=mesh;go.AddComponent<MeshRenderer>().sharedMaterial=mat;
+   }
+  }
++ /// <summary>3차: 마을 밖 세 방향(서·남·동)에 낮은 언덕 능선 — 02 외곽 캡처에서 땅 끝이 하늘과 바로 만나던 것. 안개(55~190m) 속 실루엣.</summary>
++ static void BuildHills(Transform parent)
++ {
++  var mat=Mat("DistantHills",new Color(.47f,.61f,.66f));
++  var spots=new List<(float x,float z,float rx,float rz,float h)>();
++  foreach(float z in new[]{-70f,-15f,40f,95f})spots.Add((-110f+(z%3)*4,z,62f,40f,16f+(spots.Count%3)*4));
++  foreach(float x in new[]{-60f,10f,80f,150f,220f})spots.Add((x,-100f,70f,42f,14f+(spots.Count%3)*5));
++  foreach(float z in new[]{-70f,-15f,40f,95f})spots.Add((290f,z,62f,40f,15f+(spots.Count%3)*4));
++  int k=0;
++  foreach(var s in spots){
++   var vertices=new List<Vector3>();for(int ring=0;ring<2;ring++)for(int j=0;j<11;j++){float a=j*Mathf.PI*2/11;float rad=ring==0?1:.5f;vertices.Add(new Vector3(Mathf.Cos(a)*s.rx*rad,ring==0?0:s.h*.45f+(j*5+k*3)%4,Mathf.Sin(a)*s.rz*rad));}
++   vertices.Add(new Vector3(s.rx*.1f,s.h,-s.rz*.05f));
++   var tri=new List<int>();for(int j=0;j<11;j++){int n=(j+1)%11;tri.AddRange(new[]{j,11+n,n,j,11+j,11+n,22,11+n,11+j});}
++   var mesh=new Mesh{name="Hill"+k};mesh.SetVertices(vertices);mesh.SetTriangles(tri,0);mesh.RecalculateNormals();
++   string path=Dir+"/Hill"+k+".asset";var old=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(old){EditorUtility.CopySerialized(mesh,old);UnityEngine.Object.DestroyImmediate(mesh);mesh=old;}else AssetDatabase.CreateAsset(mesh,path);
++   var go=new GameObject("Hill"+k);go.transform.SetParent(parent);go.transform.position=new Vector3(s.x,-.3f,s.z);go.AddComponent<MeshFilter>().sharedMesh=mesh;go.AddComponent<MeshRenderer>().sharedMaterial=mat;k++;
++  }
++ }
+  public static void Capture()
+  {
+   Directory.CreateDirectory(Output);ArtCapture.CaptureCar(Output+"/car-street",1200,800);ArtCapture.CaptureChaseAt(Output+"/harbor.png",60,101,0,1200,700);
+diff --git a/F1/Assets/Editor/LofiPilotBuilder.cs b/F1/Assets/Editor/LofiPilotBuilder.cs
+index 5c79b03..58fbf7b 100644
+--- a/F1/Assets/Editor/LofiPilotBuilder.cs
++++ b/F1/Assets/Editor/LofiPilotBuilder.cs
+@@ -18,6 +18,91 @@ public static class LofiPilotBuilder
+     [Serializable] class Report { public ModelResult[] assets; public int placements; public int physicsGroundChecks; public string[] issues; public string[] shaderErrors; public string sourceScene; public bool sourceDirty; }
+     static string Output => Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/lofi-pilot"));
+ 
++    // Building-only refresh: CoastalPropsBuilder owns prop colliders and prefabs.
++    [MenuItem("PitCrew/Art/Lofi Pilot/Build Building Prefabs")]
++    public static void BuildBuildingPrefabs()
++    {
++        if(EditorApplication.isPlaying)throw new Exception("Exit Play mode before building prefabs");
++        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
++        var ti=(TextureImporter)AssetImporter.GetAtPath(Dir+"/LofiAtlas.png");
++        ti.filterMode=FilterMode.Point;ti.wrapMode=TextureWrapMode.Clamp;ti.mipmapEnabled=false;
++        ti.textureCompression=TextureImporterCompression.Uncompressed;ti.SaveAndReimport();
++        var surface=AssetDatabase.LoadAssetAtPath<Material>(Dir+"/LofiShared.mat");
++        if(!surface)throw new Exception("Existing LofiShared material missing");
++        var results=new List<ModelResult>();var issues=new List<string>();
++        foreach(var name in new[]{"CoastalHouse","CoastalHouseB","CoastalHouseC","CornerShop","CornerShopB","RepairGarage","RepairGarageB"})
++        {
++            var g=JsonUtility.FromJson<Geometry>(File.ReadAllText($"{Dir}/{name}.mesh.json"));
++            var imported=AssetDatabase.LoadAssetAtPath<GameObject>($"{Dir}/{name}.fbx");
++            if(!imported)throw new Exception("FBX missing: "+name);
++            var go=new GameObject(name);
++            try
++            {
++                var visual=(GameObject)PrefabUtility.InstantiatePrefab(imported);visual.transform.SetParent(go.transform,false);
++                foreach(var r in visual.GetComponentsInChildren<MeshRenderer>())r.sharedMaterials=new[]{surface};
++                foreach(var mf in visual.GetComponentsInChildren<MeshFilter>())mf.gameObject.AddComponent<MeshCollider>().sharedMesh=mf.sharedMesh;
++                var b=Bounds(go);var expected=new Bounds(g.vertices[0],Vector3.zero);foreach(var v in g.vertices)expected.Encapsulate(v);
++                bool uvValid=g.vertices.Length==g.uv.Length&&g.uv.All(v=>v.x>=0&&v.x<=1&&v.y>=0&&v.y<=1);
++                bool match=Vector3.Distance(b.size,expected.size)<.025f&&Vector3.Distance(b.center,expected.center)<.025f;
++                if(!uvValid||!match||Mathf.Abs(b.min.y)>.025f)issues.Add(name+" UV/bounds/origin mismatch");
++                results.Add(new ModelResult{name=name,triangles=g.triangles.Length/3,size=b.size,bottom=b.min.y,uvValid=uvValid,fbxBoundsMatch=match});
++                PrefabUtility.SaveAsPrefabAsset(go,$"{Dir}/{name}.prefab");
++            }
++            finally{UnityEngine.Object.DestroyImmediate(go);}
++        }
++        var shaderErrors=ShaderUtil.GetShaderMessages(surface.shader).Where(x=>x.severity.ToString()=="Error").Select(x=>x.message).ToArray();
++        var scene=SceneManager.GetActiveScene();
++        string report=Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town/building-faces-unity.json"));
++        File.WriteAllText(report,JsonUtility.ToJson(new Report{assets=results.ToArray(),issues=issues.ToArray(),shaderErrors=shaderErrors,sourceScene=scene.path,sourceDirty=scene.isDirty},true));
++        AssetDatabase.SaveAssets();
++        if(issues.Count>0||shaderErrors.Length>0)throw new Exception("Building validation failed: "+string.Join(";",issues.Concat(shaderErrors)));
++        Debug.Log("LOFI_BUILDINGS_OK: "+results.Count+" building prefabs; prop prefabs untouched");
++    }
++
++    [MenuItem("PitCrew/Art/Lofi Pilot/Capture Building Faces")]
++    public static void CaptureBuildingFaces()
++    {
++        if(EditorApplication.isPlaying)throw new Exception("Capture buildings from edit mode");
++        var scene=SceneManager.GetActiveScene();
++        string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town"));
++        ArtCapture.CaptureChaseAt(output+"/06_downtown_center.png",84,60,0,1600,900);
++        // Isolated asset inspection; the live town's materials/camera are not changed.
++        var reviewScene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
++        SceneManager.SetActiveScene(reviewScene);
++        var stage=new GameObject("TemporaryBuildingFacesReview");
++        var surface=new Material(AssetDatabase.LoadAssetAtPath<Material>(Dir+"/LofiShared.mat"));
++        surface.SetFloat("_FogStart",1000);surface.SetFloat("_FogEnd",2000);
++        var cameraGo=new GameObject("BuildingFacesReviewCamera");var cam=cameraGo.AddComponent<Camera>();
++        cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.62f,.73f,.77f);
++        cam.cullingMask=1<<Layer;cam.nearClipPlane=.1f;cam.farClipPlane=150;cam.orthographic=true;cam.allowHDR=false;cam.allowMSAA=false;
++        try
++        {
++            var origin=new Vector3(400,0,0);
++            GameObject Add(string name,Vector3 position)
++            {
++                var go=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>($"{Dir}/{name}.prefab"));
++                go.transform.SetParent(stage.transform);go.transform.position=origin+position;SetLayer(go);
++                foreach(var r in go.GetComponentsInChildren<Renderer>())r.sharedMaterial=surface;
++                return go;
++            }
++            var house=Add("CoastalHouseB",Vector3.zero);
++            cam.orthographicSize=4.4f;cam.transform.position=origin+new Vector3(8,6,10);cam.transform.LookAt(origin+new Vector3(0,3.5f,0));
++            Capture(cam,output+"/07_house_closeup.png",1400,1100);
++            UnityEngine.Object.DestroyImmediate(house);
++            var names=new[]{"CoastalHouse","CoastalHouseB","CoastalHouseC","CornerShop","CornerShopB","RepairGarage","RepairGarageB"};
++            for(int i=0;i<names.Length;i++)Add(names[i],i<3?new Vector3(4+i*9,0,-12):new Vector3((i-3)*9,0,0));
++            cam.orthographicSize=12.6f;cam.transform.position=origin+new Vector3(31,24,35);cam.transform.LookAt(origin+new Vector3(13,2,-5));
++            Capture(cam,output+"/08_building_variants.png",2000,1200);
++            cam.transform.position=origin+new Vector3(-8,22,-40);cam.transform.LookAt(origin+new Vector3(13,2,-5));
++            Capture(cam,output+"/09_building_rear_faces.png",2000,1200);
++        }
++        finally
++        {
++            UnityEngine.Object.DestroyImmediate(stage);UnityEngine.Object.DestroyImmediate(cameraGo);UnityEngine.Object.DestroyImmediate(surface);
++            EditorSceneManager.CloseScene(reviewScene,true);SceneManager.SetActiveScene(scene);
++        }
++    }
++
+     static T Save<T>(T obj, string path) where T:UnityEngine.Object
+     {
+         var existing=AssetDatabase.LoadAssetAtPath<T>(path);
+diff --git a/tools/asset-gen/lofi_pilot.py b/tools/asset-gen/lofi_pilot.py
+index 6073b74..1e013ab 100644
+--- a/tools/asset-gen/lofi_pilot.py
++++ b/tools/asset-gen/lofi_pilot.py
+@@ -29,7 +29,13 @@ pal = [
+  ('moss','#636e4a'),('brick','#97755e'),('paintred','#b34f3f'),('slate','#76878b'),
+  # --- 2026-10-13 Claude: 소품·도로 디테일용 추가 칸 (기존 칸 뒤에만 붙여 기존 UV·rng 순서 보존) ---
+  ('awning','#d5c9a8'),('sign_tea','#426963'),('sign_ice','#b64935'),('sign_rest','#80684c'),
+- ('zebra','#666c70'),('grate','#293337'),('terracotta','#b5674a'),('cloth','#d5c9a8')]
++ ('zebra','#666c70'),('grate','#293337'),('terracotta','#b5674a'),('cloth','#d5c9a8'),
++ # --- 2026-10-13 Claude 3차(바닥·원경): 연석·흙·모래·꽃·얼룩·부두석·짙은 잔디 ---
++ ('curb','#8d9492'),('dirt','#8a7658'),('sand','#c2b391'),('flowers','#777f51'),
++ ('stain','#5b6165'),('quaystone','#9a9a8e'),('grass2','#5c683a'),
++ ('asphalt2','#61676c'),   # 3차-b: 아스팔트 덩어리 변화(균열·얼룩) — 게이트 1순위 '도로 민무늬'
++ # Building faces: append only; existing tile indices and RNG calls stay intact.
++ ('roof_clay','#956955'),('roof_green','#536b60'),('awning_rust','#c4ac85')]
+ 
+ def rgb(h): return tuple(int(h[i:i+2],16)/255 for i in (1,3,5))
+ def rect(tile,x,y,w,h,c):
+@@ -118,6 +124,44 @@ for i,(name,hexv) in enumerate(pal):
+         for yy in (14,30,46):rect(i,0,yy,64,2,tuple(v*.85 for v in c))
+     if name=='cloth':    # 빨래: 흰·빨강·청록 조각
+         rect(i,4,10,16,44,(.91,.88,.8));rect(i,24,14,16,40,(.71,.29,.21));rect(i,44,8,16,46,(.3,.45,.43))
++    # --- 3차 칸 무늬 ---
++    if name=='curb':     # 연석: 16px 마다 이음매, 위쪽 밝은 모서리
++        for xx in range(0,64,16):rect(i,xx,0,1,64,tuple(v*.78 for v in c))
++        rect(i,0,60,64,4,tuple(min(1,v*1.08) for v in c))
++    if name in ('dirt','sand'):   # 자갈 점 + 희미한 바큇자국
++        for k in range(26):
++            x,y=rng.randrange(1,62),rng.randrange(1,62);dk=rng.choice([-.07,-.04,.05])
++            rect(i,x,y,2,2,tuple(max(0,min(1,v+dk)) for v in c))
++        if name=='dirt':
++            for yy in (18,22,44,48):rect(i,0,yy,64,1,tuple(v*.9 for v in c))
++    if name=='flowers':  # 잔디 위 꽃 점: 빨강·크림·주황, 잎 짙은 점
++        for k in range(22):
++            x,y=rng.randrange(2,61),rng.randrange(2,61)
++            rect(i,x,y,2,2,rng.choice([(.78,.33,.27),(.86,.8,.62),(.8,.5,.22),(.4,.45,.27)]))
++    if name=='stain':    # 아스팔트 얼룩: 가운데 살짝 짙게 (3차-b: 너무 짙어 '그림자 오류'로 읽혀 톤 올림)
++        rect(i,12,10,40,44,tuple(v*.95 for v in c));rect(i,22,18,22,26,tuple(v*.9 for v in c))
++        for k in range(10):
++            x,y=rng.randrange(4,58),rng.randrange(4,58);rect(i,x,y,5,3,tuple(v*.86 for v in c))
++    if name=='quaystone':  # 큰 석재 블록 32×16, 어긋난 줄눈
++        for yy in range(0,64,16):
++            rect(i,0,yy,64,1,tuple(v*.76 for v in c))
++            for xx in range(16 if (yy//16)%2 else 0,64,32):rect(i,xx,yy,1,16,tuple(v*.76 for v in c))
++        rect(i,0,62,64,2,tuple(v*.7 for v in c))
++    if name=='asphalt2': # 균열 폴리라인 2개 + 밝은 자갈 점 + 짙은 얼룩 1 (칸 1.5m 반복이라 선은 짧게)
++        for (x0,y0,steps) in ((6,4,14),(40,30,11)):
++            x,y=x0,y0
++            for k in range(steps):
++                rect(i,x,y,1,1,tuple(v*.72 for v in c));x+=rng.choice([1,1,2]);y+=rng.choice([0,1,1,2,-1])
++        for k in range(12):
++            x,y=rng.randrange(2,62),rng.randrange(2,62);rect(i,x,y,2,1,tuple(min(1,v*1.12) for v in c))
++        rect(i,20,40,16,10,tuple(v*.9 for v in c))
++    if name=='grass2':   # 짙은 잔디: 성긴 톤 섬 (기존 grass 처럼 약하게)
++        for k in range(14):
++            x,y=rng.randrange(3,57),rng.randrange(3,57);rect(i,x,y,rng.randrange(3,9),rng.randrange(2,6),tuple(v*.93 for v in c))
++    if name in ('roof_clay','roof_green'):
++        for yy in range(4,64,8):rect(i,0,yy,64,1,tuple(v*.82 for v in c))
++    if name=='awning_rust':
++        for xx in range(4,64,12):rect(i,xx,0,6,64,(.60,.32,.24))
+ img=bpy.data.images.new('LofiAtlas',width=N,height=N,alpha=True)
+ img.pixels.foreach_set(pixels);img.filepath_raw=str(out/'LofiAtlas.png');img.file_format='PNG';img.save()
+ mat=bpy.data.materials.new('LofiAtlas');mat.use_nodes=True
+@@ -126,8 +170,9 @@ tex=mat.node_tree.nodes.new('ShaderNodeTexImage');tex.image=img;tex.interpolatio
+ mat.node_tree.links.new(tex.outputs['Color'],bs.inputs['Base Color'])
+ 
+ verts=[];faces=[];uvs=[]
++building_mode=False
+ def face(points,tile,split=True):
+-    if split and len(points)==4 and tile in ('plaster','concrete','slate','roof','asphalt','grass','wood','metal','shutter'):
++    if split and len(points)==4 and (tile in ('plaster','concrete','slate','roof','asphalt','grass','wood','metal','shutter','quaystone','curb','dirt','sand') or (building_mode and tile not in ('mart','service','sign_tea','glass','warmglass','shelf'))):
+         p=[Vector(v) for v in points]
+         nu=max(1,math.ceil((p[1]-p[0]).length/2.0));nv=max(1,math.ceil((p[3]-p[0]).length/2.0))
+         if nu>1 or nv>1:
+@@ -138,7 +183,7 @@ def face(points,tile,split=True):
+     start=len(verts);verts.extend(points);faces.append(tuple(range(start,start+len(points))))
+     i=tiles[tile];x=(i%8)*T;y=(i//8)*T
+     # inset inside atlas tile: no neighboring material bleed
+-    y0,y1=(23,41) if tile=='mart' else ((4,49) if tile=='service' else (2,62))
++    y0,y1=(23,41) if tile=='mart' or (building_mode and tile=='sign_tea') else ((4,49) if tile=='service' else (2,62))
+     co=[((x+2)/N,(y+y0)/N),((x+62)/N,(y+y0)/N),((x+62)/N,(y+y1)/N),((x+2)/N,(y+y1)/N)]
+     uvs.append(co[:len(points)])
+ def box(x,y,z,w,d,h,tile='plaster',front=None):
+@@ -151,10 +196,10 @@ def cylinder(x,y,z,r,h,tile,n=8):
+     top=[(p[0],p[1],z+h) for p in bot]
+     for i in range(n):j=(i+1)%n;face([bot[i],bot[j],top[j],top[i]],tile)
+     for i in range(1,n-1):face([bot[0],bot[i+1],bot[i]],tile);face([top[0],top[i],top[i+1]],tile)
+-def gable(w,d,z,rise):
++def gable(w,d,z,rise,tile='roof'):
+     x=w/2;y=d/2
+-    face([(-x,-y,z),(x,-y,z),(x,0,z+rise),(-x,0,z+rise)],'roof')
+-    face([(-x,0,z+rise),(x,0,z+rise),(x,y,z),(-x,y,z)],'roof')
++    face([(-x,-y,z),(x,-y,z),(x,0,z+rise),(-x,0,z+rise)],tile)
++    face([(-x,0,z+rise),(x,0,z+rise),(x,y,z),(-x,y,z)],tile)
+     face([(-x,y,z),(-x,-y,z),(-x,0,z+rise)],'plaster')
+     face([(x,-y,z),(x,y,z),(x,0,z+rise)],'plaster')
+ def window(x,y,z,w=1,h=1.2,lit=False):
+@@ -167,42 +212,120 @@ def side_window(x,y,z,angle,w=.85,h=1.2):
+     c=math.cos(angle);s=math.sin(angle)
+     for i in range(start,len(verts)):
+         xx,yy,zz=verts[i];verts[i]=(x+xx*c-yy*s,y+xx*s+yy*c,z+zz)
+-def shop():
+-    box(0,0,0,6,5.2,6.2);box(0,-.02,0,6.06,5.24,.48,'concrete')
+-    box(0,-2.64,2.7,6.04,.12,.9,'teal');box(0,-2.72,2.84,3.0,.07,.56,'mart')
+-    for x in (-1.9,0,1.9):window(x,-2.65,4.28,.85,1.28,lit=x==0)
+-    for x,angle in [(-3.02,-math.pi/2),(3.02,math.pi/2)]:
+-        for y in (-1.25,1.25):side_window(x,y,4.28,angle)
+-    for x in (-1.8,.02):
+-        box(x,-2.68,.65,1.6,.12,1.83,'wood');box(x,-2.76,.74,1.45,.035,1.65,'shelf')
+-        box(x,-2.8,.7,.055,.04,1.78,'wood')
+-    box(2,-2.69,.05,1.15,.15,2.5,'wood');box(2,-2.78,.55,.91,.035,1.79,'warmglass')
+-    box(2.35,-2.82,1.05,.04,.08,.25,'metal')
+-    box(0,-3,2.57,6.2,.96,.11,'teal');box(0,-3.46,2.38,6.2,.09,.22,'teal')
+-    for x in (-2.7,2.7):box(x,-3.22,2.18,.05,.05,.45,'metal')
+-    box(0,-2.9,0,6.1,.6,.08,'concrete');gable(6.45,5.65,6.2,.6)
+-    for x in (-1.7,1.7):window(x,2.62,3.9,.8,1.1)
+-def garage():
+-    # actual open mouth: no solid wall behind opening
++def facade(w,d,side,fn):
++    """Build at local front (-Y), rotate to front/right/back/left."""
++    start=len(verts);fn()
++    angle=side*math.pi/2;c=math.cos(angle);s=math.sin(angle)
++    ox,oy=((0,-d/2),(w/2,0),(0,d/2),(-w/2,0))[side]
++    for i in range(start,len(verts)):
++        x,y,z=verts[i];verts[i]=(ox+x*c-y*s,oy+x*s+y*c,z)
++
++def facade_panel(x,z,w,h,tile,depth=.001):
++    face([(x-w/2,-depth,z),(x+w/2,-depth,z),(x+w/2,-depth,z+h),(x-w/2,-depth,z+h)],tile)
++
++def facade_window(x,z,w=.9,h=1.08,shutters=False,lit=False):
++    window(x,-.01,z,w,h,lit)
++    box(x,-.12,z+h*.58,w,.05,.055,'wood')
++    box(x,-.045,z+h+.17,w+.22,.12,.08,'cream')
++    if shutters:
++        for dx in (-1,1):
++            box(x+dx*(w/2+.23),-.065,z+.08,.27,.075,h,'teal')
++            for dz in (.2,.5,.8):box(x+dx*(w/2+.23),-.11,z+dz,.24,.025,.04,'wood')
++
++def wall_courses(w,d,h,split,open_front=False):
++    for side in range(4):
++        width=w if side%2==0 else d
++        def details():
++            if not (open_front and side==0):
++                box(0,-.025,0,width,.05,.5,'quaystone')
++                box(0,-.05,.5,width,.1,.075,'concrete')
++            box(0,-.04,split,width,.08,.18,'concrete')
++            box(0,-.075,split+.18,width,.15,.075,'cream')
++            box(0,-.018,h-.25,width,.036,.15,'dark')
++            box(0,-.065,h-.1,width,.13,.1,'wood')
++            for x in (-width/2+.13,width/2-.13):
++                facade_panel(x,1.9,.26,.6,'concrete')
++                # No raised quoins in the AC/lamp band 1.9--2.5 m.
++                for za,zb in ((.57,1.9),(2.5,h-.25)):
++                    n=math.ceil((zb-za)/.42)
++                    for j in range(n):
++                        step=(zb-za)/n
++                        box(x,-.035,za+j*step,.26 if j%2 else .35,.07,step-.025,'concrete')
++        facade(w,d,side,details)
++
++def shop(variant=0):
++    box(0,0,0,6,5.2,6.2);wall_courses(6,5.2,6.2,3.55)
++    for side in range(4):
++        def windows():
++            for x in ((-1.9,0,1.9) if side%2==0 else (-1.35,1.35)):
++                facade_window(x,4.35,.86,1.12,lit=(x==0))
++                if side!=0:facade_window(x,.65,.95,.97)
++        facade(6,5.2,side,windows)
++    def front():
++        box(0,-.035,2.82,5.65,.07,.66,'teal' if variant==0 else 'wood')
++        box(0,-.081,2.88,2.9,.022,.52,'mart' if variant==0 else 'sign_tea')
++        for x in (-1.8,.02):
++            facade_panel(x,.62,1.6,1.98,'wood');facade_panel(x,.73,1.42,1.71,'shelf',.002)
++            box(x,-.07,.6,1.68,.14,.1,'concrete')
++            for dx in (-.78,.78):box(x+dx,-.045,.7,.08,.09,1.18,'wood')
++        facade_panel(2,.05,1.15,2.5,'wood');facade_panel(2,.56,.91,1.79,'warmglass',.002)
++        box(2.35,-.075,1.05,.04,.15,.25,'metal')
++        # Shallow canopy; all raised geometry is above the mounted-prop band.
++        canopy='awning' if variant==0 else 'awning_rust'
++        face([(-2.85,-.015,2.8),(2.85,-.015,2.8),(2.85,-.33,2.66),(-2.85,-.33,2.66)],canopy)
++        box(0,-.315,2.56,5.7,.03,.1,canopy)
++    facade(6,5.2,0,front)
++    gable(6.45,5.65,6.2,.6,'roof' if variant==0 else 'roof_clay')
++
++def garage(variant=0):
++    # Original single-storey workshop, lower windows + upper clerestory row.
+     box(-2.95,0,0,.5,5.6,3.8,'slate');box(2.95,0,0,.5,5.6,3.8,'slate')
+     box(0,2.65,0,5.5,.3,3.8,'slate');box(0,0,0,5.5,5.6,.08,'concrete')
+-    box(0,-2.65,2.8,5.5,.3,1.0,'metal');box(0,-2.84,2.12,5.5,.06,.75,'shutter')
+-    box(0,-2.84,3.02,2.3,.06,.58,'service');gable(6.7,6.0,3.8,.35)
+-    for x,angle in [(-3.22,-math.pi/2),(3.22,math.pi/2)]:side_window(x,.7,1.9,angle,1.3,.7)
++    box(0,-2.65,2.8,5.5,.3,1,'metal')
++    box(0,-2.765,.08 if variant else 2.55,5.4,.05,2.72 if variant else .25,'shutter')
++    wall_courses(6.4,5.6,3.8,2.65,True)
++    for side in (1,2,3):
++        def windows():
++            for x in ((-1.95,0,1.95) if side==2 else (-1.5,1.5)):
++                facade_window(x,.7,1.04,.92)
++                facade_window(x,3.03,1.04,.36)
++        facade(6.4,5.6,side,windows)
++    def front():
++        for x in (-2.1,2.1):facade_window(x,3.04,.65,.35)
++        if variant==0:box(0,-.065,3.04,2.25,.13,.52,'service')
++        for x in (-2.95,2.95):box(x,-.035,0,.45,.07,.5,'quaystone')
++    facade(6.4,5.6,0,front)
++    if variant:facade(6.4,5.6,1,lambda:box(0,-.075,2.98,1.5,.15,.54,'service'))
++    gable(6.7,6.0,3.8,.35)
+     box(-1.4,1.9,.05,1.5,.65,.9,'paintred');box(-1.4,1.5,.17,1.3,.02,.08,'metal')
+     box(-1.4,1.5,.39,1.3,.02,.08,'metal');box(-1.4,1.5,.62,1.3,.02,.08,'metal')
+     for x in (.6,2):box(x,2,.08,.07,.6,2,'wood')
+     for z in (.3,1,1.7):box(1.3,2,z,1.5,.6,.09,'wood')
+     box(.9,2,1.08,.4,.4,.44,'carton');box(1.6,2,.39,.5,.5,.5,'carton')
+     box(0,-2.3,2.91,.17,.17,.2,'warmglass')
+-def house():
+-    box(0,0,0,5,4.8,5.7);box(0,0,0,5.06,4.86,.45,'concrete')
+-    for x in (-1.4,1.4):
+-        for z in (.9,3.8):window(x,-2.43,z,.9,1.15)
+-    box(0,-2.44,.05,.92,.13,2.15,'teal');box(.28,-2.53,1,.05,.05,.22,'metal')
+-    for x,angle in [(-2.52,-math.pi/2),(2.52,math.pi/2)]:
+-        for z in (.9,3.8):side_window(x,0,z,angle)
+-    gable(5.45,5.25,5.7,.9)
++
++def house(variant=0):
++    box(0,0,0,5,4.8,5.7);wall_courses(5,4.8,5.7,2.8)
++    for side in range(4):
++        def windows():
++            for x in ((-1.4,1.4) if side%2==0 else (-1.2,1.2)):
++                facade_window(x,.65,.9,.97)
++                facade_window(x,3.75,.9,1.15,shutters=(variant!=0))
++        facade(5,4.8,side,windows)
++    def front():
++        facade_panel(0,.05,.92,2.15,'teal');box(.28,-.065,1,.05,.13,.22,'metal')
++        box(0,-.065,2.58,1.22,.13,.1,'cream')
++        if variant==1:
++            # Juliet balcony: maximum 0.32 m projection, no walkable extension.
++            box(0,-.16,3.48,3.95,.32,.12,'concrete')
++            box(0,-.28,4.22,3.95,.06,.06,'metal')
++            for x in (-1.92,-1.44,-.96,-.48,0,.48,.96,1.44,1.92):box(x,-.28,3.6,.045,.045,.62,'metal')
++            for x in (-1.95,1.95):box(x,-.14,4.22,.05,.28,.06,'metal')
++    facade(5,4.8,0,front)
++    gable(5.45,5.25,5.7,.9,('roof','roof_clay','roof_green')[variant])
++    if variant in (1,2):
++        box(-1.55,.55,6,.46,.5,1.15,'brick');box(-1.55,.55,7.15,.58,.62,.12,'concrete')
++
+ def wall():
+     box(0,0,0,3,.3,1.25,'concrete');box(0,0,1.25,3.1,.4,.12,'cream')
+ def crate():box(0,0,0,.6,.45,.42,'crate')
+@@ -280,10 +403,60 @@ def crosswalk():box(0,0,0,3.4,2.2,.012,'zebra')
+ def manhole():cylinder(0,0,0,.34,.012,'metal',10);cylinder(0,0,.012,.26,.006,'dark',10)
+ def drain():box(0,0,0,.6,.26,.012,'grate');box(0,0,0,.7,.34,.006,'dark')
+ 
++# ---------- 2026-10-13 Claude 3차: 바닥(연석·얼룩·가로등·쓰레기통·가판·소화전·풀·덤불·바위·꽃) + 원경(부두·계류·잔교·배) ----------
++# 원점=바닥 중심, 앞=-y. 긴 쪽은 x.
++def curb():box(0,0,0,6,.16,.14,'curb')
++def streetlamp():
++    cylinder(0,0,0,.14,.22,'dark',6);cylinder(0,0,.22,.06,2.95,'metal',6)
++    box(0,-.3,3.05,.06,.6,.06,'metal');box(0,-.58,2.86,.34,.3,.18,'warmglass');box(0,-.58,3.04,.42,.38,.05,'dark')
++def bin_():
++    cylinder(0,0,0,.26,.82,'teal',8);box(0,0,.82,.58,.58,.06,'dark');box(0,0,.88,.3,.3,.1,'dark')
++def stall():
++    box(0,0,.72,2,.95,.08,'wood')
++    for x in (-.9,.9):
++        for y in (-.4,.4):box(x,y,0,.07,.07,.72,'wood')
++    for x in (-.95,.95):box(x,.42,0,.06,.06,2.1,'wood');box(x,-.5,0,.06,.06,1.85,'wood')
++    pts=[(-1.05,.5,2.1),(1.05,.5,2.1),(1.05,-.6,1.85),(-1.05,-.6,1.85)]
++    face(pts,'awning');face(list(reversed(pts)),'awning')
++    box(-.55,.05,.8,.5,.4,.3,'carton');box(.2,-.1,.8,.45,.45,.36,'crate');box(.7,.15,.8,.3,.3,.25,'terracotta')
++def hydrant():
++    cylinder(0,0,0,.13,.68,'paintred',6);box(0,0,.42,.42,.16,.15,'paintred');cylinder(0,0,.68,.09,.12,'paintred',6)
++def grasstuft():
++    for x,y,h in ((-.22,-.1,.28),(.18,.12,.34),(.02,-.3,.24)):
++        for k in range(4):
++            a0=k*math.tau/4;a1=(k+1)*math.tau/4
++            face([(x+.17*math.cos(a0),y+.17*math.sin(a0),0),(x+.17*math.cos(a1),y+.17*math.sin(a1),0),(x,y,h)],'leaves' if k%2 else 'moss')
++def shrub():
++    box(0,0,0,.95,.8,.62,'leaves');box(.28,.22,.42,.5,.48,.4,'moss');box(-.32,-.12,.48,.46,.44,.32,'leaves')
++def rock():
++    box(0,0,0,.72,.56,.3,'slate');box(.12,.06,.22,.44,.36,.2,'concrete')
++def flowerpatch():box(0,0,0,1.3,.9,.012,'flowers')
++def oilstain():cylinder(0,0,0,.62,.012,'stain',8)
++def patch():box(0,0,0,1.3,.9,.012,'stain')
++def quaysegment():
++    box(0,0,0,12,1.4,.7,'quaystone');box(0,-.6,.7,12,.2,.06,'concrete')
++def mooring():cylinder(0,0,0,.14,.45,'dark',8);box(0,0,.45,.36,.36,.08,'dark')
++def pier():
++    for yy in (-1,-4.5,-8,-11.5,-13.6):
++        for x in (-1.1,1.1):cylinder(x,yy,0,.09,.84,'wood',6)
++    box(0,-7,.84,2.6,14,.12,'wood')
++    for x in (-1.2,1.2):
++        for yy in (-3,-7,-11):box(x,yy,.96,.06,.06,.9,'wood')
++        box(x,-7,1.8,.05,13,.05,'wood')
++def boat():
++    box(0,0,0,1.6,3.6,.62,'paintred');box(0,-2.05,.08,1.0,1.0,.5,'paintred');box(0,2.0,.08,1.3,.5,.5,'paintred')
++    box(0,0,.62,1.7,3.7,.06,'wood');box(0,.55,.68,1.1,1.25,.9,'cream');box(0,.1,1.15,1.12,.4,.3,'glass')
++    box(0,.55,1.58,1.2,1.35,.06,'teal');cylinder(0,-.9,.68,.05,1.6,'wood',6)
++
+ manifest=[]
+ for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',house),('Wall3m',wall),('Crate',crate),('Parcel',carton),('DeliveryBag',bag),('UtilityPole',pole),('TireStack',tires),('CoastalTree',tree),('Road7x8',road),('Sidewalk2x4',sidewalk),
+                 ('Awning',awning),('Planter',planter),('Pots',pots),('Bench',bench),('Barrel',barrel),('AcUnit',acunit),('WallLamp',walllamp),('Clothesline',clothesline),
+-                ('SignTea',signpost),('SignIce',signpost2),('SignRest',signpost3),('Bollard',bollard),('CrateStack',cratestack),('Crosswalk',crosswalk),('Manhole',manhole),('Drain',drain)]:
++                ('SignTea',signpost),('SignIce',signpost2),('SignRest',signpost3),('Bollard',bollard),('CrateStack',cratestack),('Crosswalk',crosswalk),('Manhole',manhole),('Drain',drain),
++                ('Curb',curb),('StreetLamp',streetlamp),('Bin',bin_),('Stall',stall),('Hydrant',hydrant),('GrassTuft',grasstuft),('Shrub',shrub),('Rock',rock),('FlowerPatch',flowerpatch),('OilStain',oilstain),('Patch',patch),
++                ('QuaySegment',quaysegment),('Mooring',mooring),('Pier',pier),('Boat',boat),
++                ('CoastalHouseB',lambda:house(1)),('CoastalHouseC',lambda:house(2)),
++                ('CornerShopB',lambda:shop(1)),('RepairGarageB',lambda:garage(1))]:
++    building_mode=name.startswith(('CoastalHouse','CornerShop','RepairGarage'))
+     verts.clear();faces.clear();uvs.clear();fn()
+     mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update()
+     uv=mesh.uv_layers.new(name='UVMap')
+@@ -296,7 +469,6 @@ for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',hous
+     bounds=[[min(v.co[i] for v in mesh.vertices),max(v.co[i] for v in mesh.vertices)] for i in range(3)]
+     assert all(math.isfinite(v) for p in verts for v in p)
+     assert all(p.area>0 for p in mesh.polygons),name
+-    bpy.ops.export_scene.fbx(filepath=str(out/(name+'.fbx')),use_selection=True,axis_forward='-Z',axis_up='Y',bake_space_transform=True,apply_scale_options='FBX_SCALE_ALL',add_leaf_bones=False,mesh_smooth_type='FACE',use_mesh_modifiers=True,path_mode='STRIP')
+     manifest.append({'name':name,'triangles':tris,'blender_bounds':bounds,'dimensions':[round(b[1]-b[0],3) for b in bounds],'materials':1,'uv_layer':True})
+     # Native geometry interchange for independent post-import checks.
+     # Blender x,y,z -> Unity x,z,-y (front -y -> +z)
+@@ -304,7 +476,11 @@ for name,fn in [('CornerShop',shop),('RepairGarage',garage),('CoastalHouse',hous
+     for poly in mesh.polygons:
+         ids=list(poly.vertices)
+         for k in range(1,len(ids)-1):data['triangles']+= [ids[0],ids[k],ids[k+1]]
+-    (out/(name+'.mesh.json')).write_text(json.dumps(data),encoding='utf-8')
++    geometry_path=out/(name+'.mesh.json');serialized=json.dumps(data)
++    # Avoid timestamp-only FBX rewrites/reimports of the unchanged prop kit.
++    if not geometry_path.exists() or geometry_path.read_text(encoding='utf-8')!=serialized or not (out/(name+'.fbx')).exists():
++        bpy.ops.export_scene.fbx(filepath=str(out/(name+'.fbx')),use_selection=True,axis_forward='-Z',axis_up='Y',bake_space_transform=True,apply_scale_options='FBX_SCALE_ALL',add_leaf_bones=False,mesh_smooth_type='FACE',use_mesh_modifiers=True,path_mode='STRIP')
++        geometry_path.write_text(serialized,encoding='utf-8')
+     obj.location=((len(manifest)-1)%4*9,(len(manifest)-1)//4*9,0)
+ (out/'asset-manifest.json').write_text(json.dumps({'seed':413,'atlas':[512,512],'tile_size':64,'assets':manifest},indent=2),encoding='utf-8')
+ bpy.ops.wm.save_as_mainfile(filepath=str(source/'LofiCoastalKit.blend'))

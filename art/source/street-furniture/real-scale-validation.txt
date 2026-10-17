@@ -1,0 +1,7 @@
+REAL SCALE PREVIEW ONLY
+Formula bounds (world; rotated 90 degrees): (4.885, 1.072, 1.900)
+Wheelbase=3.400094m; tyre diameter preserved .70/.75m; driver unchanged.
+House entrance=.92 x 2.15m; store entrance=1.5 x 2.33m; house storeys=2.8/2.9m.
+Bench length=1.8m seat=.45m; bin=.952m; human=1.70m.
+Road=6m (2 x 3m), shop sidewalk=2.2m; sedan reference envelope=4.3 x 1.8 x 1.45m.
+Main scene/assets unchanged.

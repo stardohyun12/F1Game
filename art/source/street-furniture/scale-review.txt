@@ -1,0 +1,5 @@
+Preview only; no gameplay changes.
+Previous car: 1.757m long x 0.909m wide (scale 0.464286).
+Proposal: 3.785m long x 1.959m wide (original asset scale 1).
+Bench: 1.800m wide, seat 0.450m high. Bin: 0.952m high.
+This is a stylized proportion proposal, not a homologated F1 dimension claim.

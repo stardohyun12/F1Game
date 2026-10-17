@@ -1,0 +1,5 @@
+Approved furniture=78
+Disabled repeated stains=38
+Car world dimensions=1.96 x 3.785; collider height=.65
+Bench scale=1; Bin scale=1
+Wheel/collider bottoms aligned.

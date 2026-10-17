@@ -1,0 +1,142 @@
+{
+    "assets": [
+        {
+            "name": "CoastalHouse",
+            "triangles": 3154,
+            "size": {
+                "x": 5.519999980926514,
+                "y": 6.599999904632568,
+                "z": 5.320000171661377
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalHouseB",
+            "triangles": 4118,
+            "size": {
+                "x": 5.519999980926514,
+                "y": 7.269999980926514,
+                "z": 5.380000114440918
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalHouseC",
+            "triangles": 3946,
+            "size": {
+                "x": 5.519999980926514,
+                "y": 7.269999980926514,
+                "z": 5.320000171661377
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalHouseD",
+            "triangles": 3130,
+            "size": {
+                "x": 4.519999980926514,
+                "y": 10.399999618530274,
+                "z": 5.320000171661377
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalHouseE",
+            "triangles": 1380,
+            "size": {
+                "x": 7.099999904632568,
+                "y": 4.900000095367432,
+                "z": 5.949999809265137
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CoastalHouseF",
+            "triangles": 2012,
+            "size": {
+                "x": 6.519999980926514,
+                "y": 6.480000019073486,
+                "z": 6.519999980926514
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CornerShop",
+            "triangles": 3736,
+            "size": {
+                "x": 6.519999980926514,
+                "y": 6.800000190734863,
+                "z": 6.340000152587891
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CornerShopB",
+            "triangles": 2540,
+            "size": {
+                "x": 6.599999904632568,
+                "y": 4.849999904632568,
+                "z": 6.958954334259033
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "CornerShopC",
+            "triangles": 2604,
+            "size": {
+                "x": 6.519999980926514,
+                "y": 6.510000228881836,
+                "z": 6.109999656677246
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "RepairGarage",
+            "triangles": 2998,
+            "size": {
+                "x": 6.920000076293945,
+                "y": 4.150000095367432,
+                "z": 6.119999885559082
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        },
+        {
+            "name": "RepairGarageB",
+            "triangles": 3014,
+            "size": {
+                "x": 6.920000076293945,
+                "y": 4.150000095367432,
+                "z": 6.119999885559082
+            },
+            "bottom": 0.0,
+            "uvValid": true,
+            "fbxBoundsMatch": true
+        }
+    ],
+    "placements": 0,
+    "physicsGroundChecks": 0,
+    "issues": [],
+    "shaderErrors": [],
+    "sourceScene": "Assets/ComplexTrack.unity",
+    "sourceDirty": false
+}

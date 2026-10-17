@@ -1,0 +1,536 @@
+{
+  "baseline": "Unmodified generator, seed 413, same Blender; isolated output root only.",
+  "unchangedNonBuildingMeshes": 40,
+  "originalAtlasTilesIdentical": 47,
+  "models": [
+    {
+      "name": "CoastalHouse",
+      "body": [
+        5,
+        4.8
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 3154
+    },
+    {
+      "name": "CoastalHouseB",
+      "body": [
+        5,
+        4.8
+      ],
+      "maxProjection": 0.32,
+      "mountedBandProjection": 0.001,
+      "triangles": 4118
+    },
+    {
+      "name": "CoastalHouseC",
+      "body": [
+        5,
+        4.8
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 3946
+    },
+    {
+      "name": "CoastalHouseD",
+      "body": [
+        4,
+        4.8
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 3130
+    },
+    {
+      "name": "CoastalHouseE",
+      "body": [
+        6,
+        4.4
+      ],
+      "maxProjection": 1.0,
+      "mountedBandProjection": 0.001,
+      "triangles": 1380
+    },
+    {
+      "name": "CoastalHouseF",
+      "body": [
+        6,
+        6
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 2012
+    },
+    {
+      "name": "CornerShop",
+      "body": [
+        6,
+        5.2
+      ],
+      "maxProjection": 0.88,
+      "mountedBandProjection": 0.002,
+      "triangles": 3736
+    },
+    {
+      "name": "CornerShopB",
+      "body": [
+        6,
+        5.2
+      ],
+      "maxProjection": 1.45895,
+      "mountedBandProjection": 0.002,
+      "triangles": 2540
+    },
+    {
+      "name": "CornerShopC",
+      "body": [
+        6,
+        5.2
+      ],
+      "maxProjection": 0.65,
+      "mountedBandProjection": 0.002,
+      "triangles": 2604
+    },
+    {
+      "name": "RepairGarage",
+      "body": [
+        6.4,
+        5.6
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 2998
+    },
+    {
+      "name": "RepairGarageB",
+      "body": [
+        6.4,
+        5.6
+      ],
+      "maxProjection": 0.26,
+      "mountedBandProjection": 0.001,
+      "triangles": 3014
+    }
+  ],
+  "checks": [
+    {
+      "check": "All Awning--Boat function ASTs unchanged",
+      "pass": true
+    },
+    {
+      "check": "CoastalPropsBuilder unchanged",
+      "pass": true
+    },
+    {
+      "check": "CoastalTownDensity unchanged",
+      "pass": true
+    },
+    {
+      "check": "Original palette entries/order preserved",
+      "pass": true
+    },
+    {
+      "check": "All pixels in original atlas tiles identical to baseline",
+      "pass": true
+    },
+    {
+      "check": "Original generator atlas reproduces pre-task atlas byte-for-byte",
+      "pass": true
+    },
+    {
+      "check": "AcUnit.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Awning.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Barrel.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Bench.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Bin.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Boat.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Bollard.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Clothesline.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "CoastalTree.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Crate.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "CrateStack.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Crosswalk.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Curb.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "DeliveryBag.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Drain.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "FlowerPatch.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "GrassTuft.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Hydrant.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Manhole.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Mooring.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "OilStain.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Parcel.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Patch.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Pier.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Planter.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Pots.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "QuaySegment.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Road7x8.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Rock.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Shrub.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Sidewalk2x4.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "SignIce.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "SignRest.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "SignTea.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Stall.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "StreetLamp.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "TireStack.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "UtilityPole.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "Wall3m.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "WallLamp.mesh.json geometry/UV unchanged",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse original house geometry/UV preserved",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB original house geometry/UV preserved",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC original house geometry/UV preserved",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouse valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseB valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseC valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseD within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseD <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseD mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseD ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseD valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseE within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseE <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseE mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseE ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseE valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseF within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseF <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseF mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseF ground origin",
+      "pass": true
+    },
+    {
+      "check": "CoastalHouseF valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CornerShop within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CornerShop <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CornerShop mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CornerShop ground origin",
+      "pass": true
+    },
+    {
+      "check": "CornerShop valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CornerShopB within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CornerShopB <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CornerShopB mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CornerShopB ground origin",
+      "pass": true
+    },
+    {
+      "check": "CornerShopB valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "CornerShopC within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "CornerShopC <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "CornerShopC mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "CornerShopC ground origin",
+      "pass": true
+    },
+    {
+      "check": "CornerShopC valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "RepairGarage within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "RepairGarage <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "RepairGarage mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "RepairGarage ground origin",
+      "pass": true
+    },
+    {
+      "check": "RepairGarage valid atlas UVs",
+      "pass": true
+    },
+    {
+      "check": "RepairGarageB within catalog projection allowance",
+      "pass": true
+    },
+    {
+      "check": "RepairGarageB <=4500 triangles",
+      "pass": true
+    },
+    {
+      "check": "RepairGarageB mounted band flush (<=2 mm decal skin)",
+      "pass": true
+    },
+    {
+      "check": "RepairGarageB ground origin",
+      "pass": true
+    },
+    {
+      "check": "RepairGarageB valid atlas UVs",
+      "pass": true
+    }
+  ],
+  "issues": []
+}

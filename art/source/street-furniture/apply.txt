@@ -1,0 +1,3 @@
+Furniture instances=78
+Disabled repeated road stains=38
+Road topology, car and lighting unchanged.

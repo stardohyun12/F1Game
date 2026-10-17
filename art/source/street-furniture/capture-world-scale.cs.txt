@@ -1,0 +1,41 @@
+var main=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+if(UnityEditor.EditorApplication.isPlaying)throw new System.Exception("Exit play for isolated scale capture");
+var sourceSun=UnityEngine.Object.FindObjectsByType<UnityEngine.Light>(UnityEngine.FindObjectsSortMode.None).First(l=>l.type==UnityEngine.LightType.Directional&&l.enabled);
+var sunColor=sourceSun.color;var sunPower=sourceSun.intensity;var sunRotation=sourceSun.transform.rotation;
+var scene=UnityEditor.SceneManagement.EditorSceneManager.NewScene(UnityEditor.SceneManagement.NewSceneSetup.EmptyScene,UnityEditor.SceneManagement.NewSceneMode.Additive);
+UnityEngine.SceneManagement.SceneManager.SetActiveScene(scene);
+var oldRT=UnityEngine.RenderTexture.active;var oldAsync=UnityEditor.ShaderUtil.allowAsyncCompilation;UnityEditor.ShaderUtil.allowAsyncCompilation=false;
+var temporaryMaterials=new System.Collections.Generic.List<UnityEngine.Material>();
+try {
+ void Layer(UnityEngine.GameObject go){foreach(var t in go.GetComponentsInChildren<UnityEngine.Transform>())t.gameObject.layer=30;}
+ UnityEngine.Material Load(string p)=>UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Material>(p);
+ var pavement=Load("Assets/Art/CoastalTown/Pavement.mat");var road=Load("Assets/Art/StreetFurniture/Asphalt.mat");
+ var building=Load("Assets/Art/CoastalTown/BuildingsSand.mat");
+ var marker=new UnityEngine.Material(UnityEngine.Shader.Find("Universal Render Pipeline/Unlit"));marker.SetColor("_BaseColor",new UnityEngine.Color(.65f,.26f,.13f));temporaryMaterials.Add(marker);
+ UnityEngine.GameObject Primitive(UnityEngine.PrimitiveType kind,string name,UnityEngine.Vector3 p,UnityEngine.Vector3 scale,UnityEngine.Material mat){var g=UnityEngine.GameObject.CreatePrimitive(kind);g.name=name;g.transform.position=p;g.transform.localScale=scale;g.GetComponent<UnityEngine.Renderer>().sharedMaterial=mat;Layer(g);return g;}
+ UnityEngine.GameObject Model(string path,UnityEngine.Vector3 p,float scale){var g=(UnityEngine.GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.GameObject>(path),scene);g.transform.position=p;g.transform.localScale=UnityEngine.Vector3.one*scale;Layer(g);return g;}
+ void Person(float x,float z){float floor=.12f;Primitive(UnityEngine.PrimitiveType.Sphere,"Scale marker head",new UnityEngine.Vector3(x,floor+1.58f,z),new UnityEngine.Vector3(.24f,.24f,.24f),marker);Primitive(UnityEngine.PrimitiveType.Capsule,"Scale marker torso",new UnityEngine.Vector3(x,floor+1.12f,z),new UnityEngine.Vector3(.39f,.31f,.24f),marker);foreach(float side in new[]{-.11f,.11f})Primitive(UnityEngine.PrimitiveType.Capsule,"Scale marker leg",new UnityEngine.Vector3(x+side,floor+.42f,z),new UnityEngine.Vector3(.15f,.42f,.16f),marker);foreach(float side in new[]{-.25f,.25f})Primitive(UnityEngine.PrimitiveType.Capsule,"Scale marker arm",new UnityEngine.Vector3(x+side,floor+1.09f,z),new UnityEngine.Vector3(.11f,.28f,.11f),marker);}
+ Primitive(UnityEngine.PrimitiveType.Cube,"Building foundations",new UnityEngine.Vector3(0,.04f,-5),new UnityEngine.Vector3(26,.16f,10),pavement);
+ Primitive(UnityEngine.PrimitiveType.Cube,"Sidewalk 2.2m",new UnityEngine.Vector3(0,.06f,1.1f),new UnityEngine.Vector3(26,.12f,2.2f),pavement);
+ Primitive(UnityEngine.PrimitiveType.Cube,"Road 5.5m",new UnityEngine.Vector3(0,-.04f,4.95f),new UnityEngine.Vector3(26,.08f,5.5f),road);
+ Primitive(UnityEngine.PrimitiveType.Cube,"Opposite sidewalk",new UnityEngine.Vector3(0,.06f,8.6f),new UnityEngine.Vector3(26,.12f,1.8f),pavement);
+ for(int i=-6;i<=6;i++){var curb=Model("Assets/Art/LofiPilot/Curb.prefab",new UnityEngine.Vector3(i*2,0,2.2f),1);curb.transform.localScale=new UnityEngine.Vector3(1/3f,1,1);}
+ var structures=new System.Collections.Generic.List<UnityEngine.GameObject>();
+ string[] names={"CoastalHouse","CornerShop","RepairGarage"};float[] xs={-7,0,7};
+ for(int i=0;i<3;i++){var g=Model("Assets/Art/LofiPilot/"+names[i]+".prefab",new UnityEngine.Vector3(xs[i],.12f,0),1);foreach(var r in g.GetComponentsInChildren<UnityEngine.Renderer>())r.sharedMaterial=building;structures.Add(g);}
+ void SizeBuildings(float scale){foreach(var g in structures){g.transform.localScale=UnityEngine.Vector3.one*scale;var rr=g.GetComponentsInChildren<UnityEngine.Renderer>();var b=rr[0].bounds;foreach(var r in rr)b.Encapsulate(r.bounds);g.transform.position+=UnityEngine.Vector3.forward*(-.1f-b.max.z);}}
+ var bench=Model("Assets/Art/StreetFurniture/Bench.prefab",new UnityEngine.Vector3(-3.4f,.12f,.65f),1);
+ Model("Assets/Art/StreetFurniture/Bin.prefab",new UnityEngine.Vector3(-2.1f,.12f,.65f),1);
+ var car=Model("Assets/Art/CoastalFormula/FormulaGameplayVisual.prefab",new UnityEngine.Vector3(.7f,0,4.9f),1);car.transform.rotation=UnityEngine.Quaternion.Euler(0,90,0);
+ Person(-5.8f,.7f);Person(1.6f,.6f);
+ var lamp=Model("Assets/Art/LofiPilot/StreetLamp.prefab",new UnityEngine.Vector3(4.5f,.12f,1.7f),1);
+ var sun=new UnityEngine.GameObject("Scale review sun").AddComponent<UnityEngine.Light>();sun.type=UnityEngine.LightType.Directional;sun.intensity=sunPower;sun.color=sunColor;sun.transform.rotation=sunRotation;sun.shadows=UnityEngine.LightShadows.Soft;sun.cullingMask=1<<30;UnityEngine.RenderSettings.sun=sun;
+ var cam=new UnityEngine.GameObject("Scale comparison camera").AddComponent<UnityEngine.Camera>();cam.cullingMask=1<<30;cam.clearFlags=UnityEngine.CameraClearFlags.SolidColor;cam.backgroundColor=new UnityEngine.Color(.76f,.86f,.93f);cam.farClipPlane=100;
+ void Shot(string name,UnityEngine.Vector3 eye,UnityEngine.Vector3 target,bool ortho,float size){cam.orthographic=ortho;cam.orthographicSize=size;cam.fieldOfView=48;cam.transform.position=eye;cam.transform.LookAt(target);var rt=UnityEngine.RenderTexture.GetTemporary(1920,1080,24);cam.targetTexture=rt;try{cam.Render();UnityEngine.RenderTexture.active=rt;var tex=new UnityEngine.Texture2D(1920,1080,UnityEngine.TextureFormat.RGB24,false);tex.ReadPixels(new UnityEngine.Rect(0,0,1920,1080),0,0);tex.Apply();System.IO.File.WriteAllBytes("D:/Github/F1Game/art/source/street-furniture/"+name+".png",tex.EncodeToPNG());UnityEngine.Object.DestroyImmediate(tex);}finally{cam.targetTexture=null;UnityEngine.RenderTexture.active=oldRT;UnityEngine.RenderTexture.ReleaseTemporary(rt);}}
+ SizeBuildings(.64f);
+ Shot("whole_scale_before",new UnityEngine.Vector3(12,11,23),new UnityEngine.Vector3(0,2,-.5f),true,8.6f);
+ SizeBuildings(1f);
+ Shot("whole_scale_proposal",new UnityEngine.Vector3(12,11,23),new UnityEngine.Vector3(0,2,-.5f),true,8.6f);
+ Shot("whole_scale_eye_level",new UnityEngine.Vector3(10,2.7f,14),new UnityEngine.Vector3(0,1.6f,0),false,7.3f);
+ return "Captured whole_scale_before/proposal/eye_level. Orange figures are 1.70m scale markers. Proposed road=5.5m and sidewalk=2.2m in BOTH comparison views; only building scale differs. Main map untouched.";
+}finally{UnityEngine.RenderTexture.active=oldRT;UnityEditor.ShaderUtil.allowAsyncCompilation=oldAsync;UnityEditor.SceneManagement.EditorSceneManager.CloseScene(scene,true);UnityEngine.SceneManagement.SceneManager.SetActiveScene(main);foreach(var m in temporaryMaterials)UnityEngine.Object.DestroyImmediate(m);}

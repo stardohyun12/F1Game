@@ -18,6 +18,118 @@ public static class LofiPilotBuilder
     [Serializable] class Report { public ModelResult[] assets; public int placements; public int physicsGroundChecks; public string[] issues; public string[] shaderErrors; public string sourceScene; public bool sourceDirty; }
     static string Output => Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/lofi-pilot"));
 
+    // Building-only refresh: CoastalPropsBuilder owns prop colliders and prefabs.
+    [MenuItem("PitCrew/Art/Lofi Pilot/Build Building Prefabs")]
+    public static void BuildBuildingPrefabs()
+    {
+        if(EditorApplication.isPlaying)throw new Exception("Exit Play mode before building prefabs");
+        AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+        var ti=(TextureImporter)AssetImporter.GetAtPath(Dir+"/LofiAtlas.png");
+        ti.filterMode=FilterMode.Point;ti.wrapMode=TextureWrapMode.Clamp;ti.mipmapEnabled=false;
+        ti.textureCompression=TextureImporterCompression.Uncompressed;ti.SaveAndReimport();
+        var surface=AssetDatabase.LoadAssetAtPath<Material>(Dir+"/LofiShared.mat");
+        if(!surface)throw new Exception("Existing LofiShared material missing");
+        var results=new List<ModelResult>();var issues=new List<string>();
+        foreach(var name in new[]{"CoastalHouse","CoastalHouseB","CoastalHouseC","CoastalHouseD","CoastalHouseE","CoastalHouseF","CornerShop","CornerShopB","CornerShopC","RepairGarage","RepairGarageB"})
+        {
+            var g=JsonUtility.FromJson<Geometry>(File.ReadAllText($"{Dir}/{name}.mesh.json"));
+            var imported=AssetDatabase.LoadAssetAtPath<GameObject>($"{Dir}/{name}.fbx");
+            if(!imported)throw new Exception("FBX missing: "+name);
+            var go=new GameObject(name);
+            try
+            {
+                var visual=(GameObject)PrefabUtility.InstantiatePrefab(imported);visual.transform.SetParent(go.transform,false);
+                foreach(var r in visual.GetComponentsInChildren<MeshRenderer>())r.sharedMaterials=new[]{surface};
+                foreach(var mf in visual.GetComponentsInChildren<MeshFilter>())mf.gameObject.AddComponent<MeshCollider>().sharedMesh=mf.sharedMesh;
+                var b=Bounds(go);var expected=new Bounds(g.vertices[0],Vector3.zero);foreach(var v in g.vertices)expected.Encapsulate(v);
+                bool uvValid=g.vertices.Length==g.uv.Length&&g.uv.All(v=>v.x>=0&&v.x<=1&&v.y>=0&&v.y<=1);
+                bool match=Vector3.Distance(b.size,expected.size)<.025f&&Vector3.Distance(b.center,expected.center)<.025f;
+                if(!uvValid||!match||Mathf.Abs(b.min.y)>.025f)issues.Add(name+" UV/bounds/origin mismatch");
+                results.Add(new ModelResult{name=name,triangles=g.triangles.Length/3,size=b.size,bottom=b.min.y,uvValid=uvValid,fbxBoundsMatch=match});
+                PrefabUtility.SaveAsPrefabAsset(go,$"{Dir}/{name}.prefab");
+            }
+            finally{UnityEngine.Object.DestroyImmediate(go);}
+        }
+        var shaderErrors=ShaderUtil.GetShaderMessages(surface.shader).Where(x=>x.severity.ToString()=="Error").Select(x=>x.message).ToArray();
+        var scene=SceneManager.GetActiveScene();
+        string report=Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town/building-faces-unity.json"));
+        File.WriteAllText(report,JsonUtility.ToJson(new Report{assets=results.ToArray(),issues=issues.ToArray(),shaderErrors=shaderErrors,sourceScene=scene.path,sourceDirty=scene.isDirty},true));
+        AssetDatabase.SaveAssets();
+        if(issues.Count>0||shaderErrors.Length>0)throw new Exception("Building validation failed: "+string.Join(";",issues.Concat(shaderErrors)));
+        Debug.Log("LOFI_BUILDINGS_OK: "+results.Count+" building prefabs; prop prefabs untouched");
+    }
+
+    [MenuItem("PitCrew/Art/Lofi Pilot/Capture Building Faces")]
+    public static void CaptureBuildingFaces()
+    {
+        if(EditorApplication.isPlaying)throw new Exception("Capture buildings from edit mode");
+        var scene=SceneManager.GetActiveScene();
+        string output=Path.GetFullPath(Path.Combine(Application.dataPath,"../../art/source/coastal-town"));
+        ArtCapture.CaptureChaseAt(output+"/06_downtown_center.png",84,60,0,1600,900);
+        // Isolated asset inspection; the live town's materials/camera are not changed.
+        var reviewScene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
+        SceneManager.SetActiveScene(reviewScene);
+        var stage=new GameObject("TemporaryBuildingFacesReview");
+        var surface=new Material(AssetDatabase.LoadAssetAtPath<Material>(Dir+"/LofiShared.mat"));
+        surface.SetFloat("_FogStart",1000);surface.SetFloat("_FogEnd",2000);
+        var cameraGo=new GameObject("BuildingFacesReviewCamera");var cam=cameraGo.AddComponent<Camera>();
+        cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.62f,.73f,.77f);
+        cam.cullingMask=1<<Layer;cam.nearClipPlane=.1f;cam.farClipPlane=150;cam.orthographic=true;cam.allowHDR=false;cam.allowMSAA=false;
+        try
+        {
+            var origin=new Vector3(400,0,0);
+            GameObject Add(string name,Vector3 position)
+            {
+                var go=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>($"{Dir}/{name}.prefab"));
+                go.transform.SetParent(stage.transform);go.transform.position=origin+position;SetLayer(go);
+                foreach(var r in go.GetComponentsInChildren<Renderer>())r.sharedMaterial=surface;
+                return go;
+            }
+            var house=Add("CoastalHouseB",Vector3.zero);
+            cam.orthographicSize=4.4f;cam.transform.position=origin+new Vector3(8,6,10);cam.transform.LookAt(origin+new Vector3(0,3.5f,0));
+            Capture(cam,output+"/07_house_closeup.png",1400,1100);
+            UnityEngine.Object.DestroyImmediate(house);
+            var names=new[]{"CoastalHouse","CoastalHouseB","CoastalHouseC","CoastalHouseD","CoastalHouseE","CoastalHouseF","CornerShop","CornerShopB","CornerShopC","RepairGarage","RepairGarageB"};
+            for(int i=0;i<names.Length;i++)Add(names[i],new Vector3((i%4)*9,0,-24+(i/4)*12));
+            cam.orthographicSize=19f;cam.transform.position=origin+new Vector3(32,31,42);cam.transform.LookAt(origin+new Vector3(13,3,-12));
+            cam.transform.position=origin+new Vector3(-8,30,-60);cam.transform.LookAt(origin+new Vector3(13,3,-12));
+            Capture(cam,output+"/09_building_rear_faces.png",2000,1200);
+            // Same camera and scale per asset; no building hides another in the catalog sheet.
+            var board=new Texture2D(2000,1500,TextureFormat.RGB24,false);
+            var background=Enumerable.Repeat(cam.backgroundColor,2000*1500).ToArray();board.SetPixels(background);
+            try
+            {
+                for(int i=0;i<names.Length;i++)
+                {
+                    while(stage.transform.childCount>0)UnityEngine.Object.DestroyImmediate(stage.transform.GetChild(0).gameObject);
+                    Add(names[i],Vector3.zero);
+                    cam.orthographicSize=6.3f;cam.transform.position=origin+new Vector3(8,8,12);cam.transform.LookAt(origin+new Vector3(0,4.6f,0));
+                    var rt=new RenderTexture(500,500,24){antiAliasing=1,filterMode=FilterMode.Point};
+                    var tile=new Texture2D(500,500,TextureFormat.RGB24,false);
+                    var previous=RenderTexture.active;var target=cam.targetTexture;
+                    try
+                    {
+                        cam.targetTexture=rt;cam.aspect=1;cam.Render();RenderTexture.active=rt;
+                        tile.ReadPixels(new Rect(0,0,500,500),0,0);tile.Apply();
+                        board.SetPixels((i%4)*500,(2-i/4)*500,500,500,tile.GetPixels());
+                    }
+                    finally{cam.targetTexture=target;RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(tile);rt.Release();UnityEngine.Object.DestroyImmediate(rt);}
+                }
+                board.Apply();File.WriteAllBytes(output+"/08_building_variants.png",board.EncodeToPNG());
+            }
+            finally{UnityEngine.Object.DestroyImmediate(board);}
+            while(stage.transform.childCount>0)UnityEngine.Object.DestroyImmediate(stage.transform.GetChild(0).gameObject);
+            Add("CornerShop",Vector3.zero);Add("CornerShopB",new Vector3(8,0,0));Add("CornerShopC",new Vector3(16,0,0));
+            cam.orthographicSize=5.2f;cam.transform.position=origin+new Vector3(8,6,30);cam.transform.LookAt(origin+new Vector3(8,3,0));
+            Capture(cam,output+"/10_shops_front.png",2400,1000);
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(stage);UnityEngine.Object.DestroyImmediate(cameraGo);UnityEngine.Object.DestroyImmediate(surface);
+            EditorSceneManager.CloseScene(reviewScene,true);SceneManager.SetActiveScene(scene);
+        }
+    }
+
     static T Save<T>(T obj, string path) where T:UnityEngine.Object
     {
         var existing=AssetDatabase.LoadAssetAtPath<T>(path);

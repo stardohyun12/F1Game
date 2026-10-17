@@ -1,0 +1,14 @@
+﻿[
+    {
+        "beforeSha256":  "1241A56F0A29C8F35DA3B88FBD689EE64AFA65840A0167294D8393B8303F6A3B",
+        "afterSha256":  "1241A56F0A29C8F35DA3B88FBD689EE64AFA65840A0167294D8393B8303F6A3B",
+        "unchanged":  true,
+        "file":  "CoastalTownDensity.cs"
+    },
+    {
+        "beforeSha256":  "0BA0890E41DFBA9854DBE7989B72F958E41E3C879177D39C3C8133DF24D52A67",
+        "afterSha256":  "0BA0890E41DFBA9854DBE7989B72F958E41E3C879177D39C3C8133DF24D52A67",
+        "unchanged":  true,
+        "file":  "CoastalPropsBuilder.cs"
+    }
+]

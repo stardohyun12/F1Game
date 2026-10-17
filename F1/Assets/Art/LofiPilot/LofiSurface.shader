@@ -35,8 +35,10 @@ Shader "PitCrew/LofiPilot/Surface"
    half4 frag(Varyings i):SV_Target {
     Light sun=GetMainLight(TransformWorldToShadowCoord(i.pos));
     float diffuse=saturate(dot(normalize(i.normal),sun.direction));
-    float shade=lerp(1,0.55+0.45*diffuse*sun.shadowAttenuation,_FaceShade);
-    half3 col=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv).rgb*_Tint.rgb*_Ambient.rgb*shade;
+    // D-101 v3: 해 색·세기가 면에 실린다 (전엔 0.55~1.0 고정 명암이라 해를 올려도 "햇빛"이 안 생겼다). 그늘 바닥 = _Ambient*0.42 (하늘빛), 양지 = + sun*0.75
+    float3 lit=_Ambient.rgb*0.36+sun.color.rgb*(diffuse*sun.shadowAttenuation)*1.0;   // v4: 양지 1.0·그늘 0.36 → 차이 2배 ("쨍쨍")
+    float3 shade=lerp(float3(1,1,1),lit,_FaceShade);
+    half3 col=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,i.uv).rgb*_Tint.rgb*shade;
     float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
     return half4(lerp(col,_FogColor.rgb,fog),1);
    }

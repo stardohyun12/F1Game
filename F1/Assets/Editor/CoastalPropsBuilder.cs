@@ -14,9 +14,13 @@ public static class CoastalPropsBuilder
 {
     const string Dir = "Assets/Art/LofiPilot";
     static readonly string[] Names = { "Awning", "Planter", "Pots", "Bench", "Barrel", "AcUnit", "WallLamp", "Clothesline",
-                                       "SignTea", "SignIce", "SignRest", "Bollard", "CrateStack", "Crosswalk", "Manhole", "Drain" };
-    public static readonly HashSet<string> NoCollider = new HashSet<string> { "Awning", "AcUnit", "WallLamp", "Crosswalk", "Manhole", "Drain" };
-    static readonly HashSet<string> BoxCol = new HashSet<string> { "Pots", "Bollard", "CrateStack", "Barrel" };
+                                       "SignTea", "SignIce", "SignRest", "Bollard", "CrateStack", "Crosswalk", "Manhole", "Drain",
+                                       // 3차(바닥·원경)
+                                       "Curb", "StreetLamp", "Bin", "Stall", "Hydrant", "GrassTuft", "Shrub", "Rock", "FlowerPatch", "OilStain", "Patch",
+                                       "QuaySegment", "Mooring", "Pier", "Boat" };
+    public static readonly HashSet<string> NoCollider = new HashSet<string> { "Awning", "AcUnit", "WallLamp", "Crosswalk", "Manhole", "Drain",
+                                       "Curb", "GrassTuft", "FlowerPatch", "OilStain", "Patch", "Boat" };   // 연석은 차가 넘어가게(주행 변화 0)
+    static readonly HashSet<string> BoxCol = new HashSet<string> { "Pots", "Bollard", "CrateStack", "Barrel", "Bin", "Hydrant", "Shrub", "Rock", "Mooring" };
 
     static Bounds Bounds(GameObject go) { var rr = go.GetComponentsInChildren<Renderer>(); var b = rr[0].bounds; foreach (var r in rr) b.Encapsulate(r.bounds); return b; }
 

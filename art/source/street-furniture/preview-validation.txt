@@ -1,0 +1,10 @@
+Bench: dimensions=(1.800, 0.879, 0.600) base=0 triangles=1408
+Bin: dimensions=(0.500, 0.952, 0.470) base=0 triangles=584
+
+Shader errors=0
+Side/top/close/seam/context renders captured.
+Main scene not saved or edited.
+
+Shader errors=0
+Side/top/close/seam/context renders captured.
+Main scene not saved or edited.
