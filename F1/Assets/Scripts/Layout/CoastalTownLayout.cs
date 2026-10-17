@@ -15,6 +15,6 @@ public sealed class CoastalTownLayout : ScriptableObject
     public TrackLayout streets;
     public Placement[] placements;
     public float cellSize=6f;
-    public Vector3 cameraOffset=new Vector3(0,2,-3.5f);
-    public float cameraLookHeight=.45f;
+    public Vector3 cameraOffset=new Vector3(0,3.2f,-7f);   // 2026-10-13: 차 3.785m 기준 (다른 세션 승인값). 옛 (0,2,-3.5)
+    public float cameraLookHeight=1.15f;
 }
