@@ -1,0 +1,6 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+function run(agents,teams,selected){const els={};const state={agents,teams};const c=vm.createContext({state,localStorage:{getItem:()=>selected},esc:String,$:s=>els[s]??=( {innerHTML:'',value:'',classList:{toggle(){}}})});vm.runInContext(fs.readFileSync(__dirname+'/web/teams.js','utf8').split('function teamEditor')[0],c);vm.runInContext('renderTeamFilter()',c);return {state,els,visible:vm.runInContext('teamVisibleIds()',c)}}
+test('all assigned opens all and explains fallback',()=>{const r=run([{id:'a'},{id:'b'}],[{id:'t',members:['a','b']}],null);assert.equal(r.state.selectedTeam,'');assert.equal(r.visible,null);assert.match(r.els['#teamFilterNote'].innerHTML,/모든 대화가 팀에 배치/)});
+test('mixed keeps unassigned default',()=>{const r=run([{id:'a'},{id:'b'}],[{id:'t',members:['a']}],null);assert.deepEqual(Array.from(r.visible),['b']);assert.equal(r.state.selectedTeam,'__unassigned')});
+test('empty project does not claim conversations exist',()=>{const r=run([],[],null);assert.equal(r.state.selectedTeam,'__unassigned');assert.ok(!r.state.teamFallback)});
+test('explicit team selection survives',()=>{const r=run([{id:'a'}],[{id:'t',members:['a']}],'t');assert.equal(r.state.selectedTeam,'t');assert.deepEqual(Array.from(r.visible),['a'])});

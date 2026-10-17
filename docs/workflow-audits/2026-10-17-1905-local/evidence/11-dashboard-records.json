@@ -1,0 +1,782 @@
+{
+  "agents": [
+    {
+      "id": "d7ea69ee2acc4b56bab1e52f13471cad",
+      "name": "기획",
+      "provider": "claude",
+      "model": "fable",
+      "actualModel": "claude-sonnet-5-5",
+      "effort": "medium",
+      "mode": "read",
+      "status": "done",
+      "session": "aa35a4a9-dd45-42b7-9320-d4f034c7d2e9",
+      "created": 1791908055.7944686,
+      "updated": 1791999766.1408584
+    },
+    {
+      "id": "9eaa00fe106b437797053faf97c8ddf5",
+      "name": "개발",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "actualModel": "gpt-6-astra",
+      "effort": "low",
+      "mode": "read",
+      "status": "done",
+      "session": "01a1360d-e7fd-7c61-8e0c-dd21c6a56a61",
+      "created": 1791908055.7948546,
+      "updated": 1791910103.9190228
+    },
+    {
+      "id": "ccfebe853bef4b529568281a0a8a66cd",
+      "name": "검토",
+      "provider": "claude",
+      "model": "opus",
+      "actualModel": null,
+      "effort": "",
+      "mode": "work",
+      "status": "idle",
+      "session": null,
+      "created": 1791908055.7952921,
+      "updated": 1792000219.0814197
+    },
+    {
+      "id": "46be78689bc4475aaf9e80638bf63813",
+      "name": "툴 구현",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "actualModel": null,
+      "effort": "",
+      "mode": "full",
+      "status": "error",
+      "session": "01a135f0-3827-7252-910e-afe6c145a13b",
+      "created": 1791908808.4895067,
+      "updated": 1792071101.1943045
+    },
+    {
+      "id": "24da8a657794430780e6052c27399708",
+      "name": "Claude · 기존 팀",
+      "provider": "claude",
+      "model": "claude-fable-5-1",
+      "actualModel": null,
+      "effort": "",
+      "mode": "read",
+      "status": "idle",
+      "session": "a3e29587-ae78-41dd-a321-ea4500e45403",
+      "created": 1791908814.7856505,
+      "updated": 1791920489.60453
+    },
+    {
+      "id": "bd318a59edf241bfa6324d2076808258",
+      "name": "팀원 · verifier-scale",
+      "provider": "claude",
+      "model": "",
+      "actualModel": null,
+      "effort": "",
+      "mode": "read",
+      "status": "observing",
+      "session": null,
+      "created": 1791909540.0716105,
+      "updated": 1791999933.4683242
+    },
+    {
+      "id": "f7048c379a2049ecb683112f45b7bf2e",
+      "name": "기획",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "actualModel": null,
+      "effort": "",
+      "mode": "read",
+      "status": "idle",
+      "session": null,
+      "created": 1792000065.1137435,
+      "updated": 1792000065.113745
+    },
+    {
+      "id": "328d08af2279472b8e57a307ec07b5ad",
+      "name": "게임 아트 방향성 정하기",
+      "provider": "codex",
+      "model": "",
+      "actualModel": null,
+      "effort": "",
+      "mode": "read",
+      "status": "idle",
+      "session": "01a13151-c43a-7e71-aa69-d788509d678c",
+      "created": 1792000167.6564684,
+      "updated": 1792000169.7191076
+    },
+    {
+      "id": "db447dd5b502498ea98b447f0dc1e3c7",
+      "name": "툴 구현",
+      "provider": "claude",
+      "model": "opus",
+      "actualModel": "claude-opus-5-5",
+      "effort": "",
+      "mode": "full",
+      "status": "done",
+      "session": "971b1c4a-fd6c-4ed7-9b4f-99efe440e751",
+      "created": 1792000177.5750246,
+      "updated": 1792198098.1504815
+    },
+    {
+      "id": "33a7a831c55f4440b312d4cab43655e1",
+      "name": "아트",
+      "provider": "claude",
+      "model": "opus",
+      "actualModel": null,
+      "effort": "",
+      "mode": "read",
+      "status": "idle",
+      "session": null,
+      "created": 1792000201.5329928,
+      "updated": 1792000201.532993
+    },
+    {
+      "id": "a39459a67e954373b7a45bfef3885ecc",
+      "name": "툴 구현 · Codex 협업",
+      "provider": "codex",
+      "model": "gpt-6-astra",
+      "actualModel": "gpt-6-astra",
+      "effort": "high",
+      "mode": "full",
+      "status": "running",
+      "session": "01a13b97-47ca-7a92-83ed-e5495a7d2921",
+      "created": 1792001115.846327,
+      "updated": 1792231451.7123067
+    },
+    {
+      "id": "0d3f5ee12e254244b8a593a4be23358f",
+      "name": "리서치 · Haiku",
+      "provider": "claude",
+      "model": "sonnet",
+      "actualModel": "claude-sonnet-5-5",
+      "effort": "medium",
+      "mode": "work",
+      "status": "done",
+      "session": "0b4b5e24-dcca-44d8-80b1-0fe741599b96",
+      "created": 1792005375.429653,
+      "updated": 1792153231.0549095
+    },
+    {
+      "id": "5d872181b31142afa9f446d7bd2e6b28",
+      "name": "리서치 · Luna",
+      "provider": "codex",
+      "model": "gpt-5.6-luna",
+      "actualModel": "gpt-5.6-luna",
+      "effort": "low",
+      "mode": "read",
+      "status": "done",
+      "session": "01a13bd8-acfb-7bb0-b3da-a287af5dca8f",
+      "created": 1792005377.4987736,
+      "updated": 1792132292.2046597
+    },
+    {
+      "id": "d948577ab9a142909e46394ef01ba8cb",
+      "name": "QA · Sonnet",
+      "provider": "claude",
+      "model": "sonnet",
+      "actualModel": "claude-sonnet-5-5",
+      "effort": "medium",
+      "mode": "full",
+      "status": "done",
+      "session": "d5fedd7b-6a90-4998-8fc8-d1b2e46502ed",
+      "created": 1792074247.603485,
+      "updated": 1792133351.1854672
+    },
+    {
+      "id": "99ae616585ba4dd8b004e9ea911b33fe",
+      "name": "QA · Codex",
+      "provider": "codex",
+      "model": "gpt-5.6-luna",
+      "actualModel": "gpt-5.6-luna",
+      "effort": "low",
+      "mode": "read",
+      "status": "done",
+      "session": "01a1403b-7158-7c31-8498-5e03fc8c7a92",
+      "created": 1792074247.672673,
+      "updated": 1792079061.4280567
+    }
+  ],
+  "cycles": [
+    {
+      "id": "b93a5e6db6cd426db8736da761a37357",
+      "goal": "PitCrew 팀 간 소통과 작업 효율 높이기 — 인계·대기 시간을 줄이고, 누가 무엇을 하는지 실시간으로 한눈에 보이게. 방금 만든 사이클·협업 보기·팀 패널도 점검 대상.",
+      "mode": null,
+      "status": "done",
+      "created": 1792074372.108482,
+      "ended": 1792075187.2071323,
+      "round": 2,
+      "untilDone": null,
+      "owner": null,
+      "teams": {
+        "research": "05cda889b8e248fba14a2d44fad34743",
+        "build": "071624589bec4fe1898880be496c98f7",
+        "qa": "758fd3908b7a40c1af8a5a974e61327b"
+      },
+      "stages": [
+        {
+          "id": null,
+          "kind": "research",
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "qa",
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "수정 필요",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "round": 2,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "qa",
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "round": 2,
+          "started": null,
+          "ended": null,
+          "verdict": "수정 필요",
+          "message": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "6977b17e83e04af294666e02b05c5d2b",
+      "goal": "PitCrew 팀 단위 작업과 팀 간 작업 방식 점검 — 이 사이클 자체를 써 보면서 팀장 위임·팀원 보고 근거·대기열 표시·알림 기록이 실제로 편한지 확인하고, 불편한 점을 근거와 함께 찾아 고친다.",
+      "mode": null,
+      "status": "done",
+      "created": 1792078523.3955545,
+      "ended": 1792079344.5420468,
+      "round": 2,
+      "untilDone": null,
+      "owner": null,
+      "teams": {
+        "research": "05cda889b8e248fba14a2d44fad34743",
+        "build": "071624589bec4fe1898880be496c98f7",
+        "qa": "758fd3908b7a40c1af8a5a974e61327b"
+      },
+      "stages": [
+        {
+          "id": null,
+          "kind": "research",
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "qa",
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "수정 필요",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 2,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "qa",
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "round": 2,
+          "started": null,
+          "ended": null,
+          "verdict": "통과",
+          "message": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "cc0edf661b5448c6b0459843e7b8c57d",
+      "goal": "PitCrew 자체 업그레이드 · 팀 목표 첫 적용 · 2026-10-16\n대상은 tools/studio-dashboard만. 기존 작업을 보존하고 현재 상태를 먼저 감사한다. 팀 흐름과 양방향 메시지 출처(G4), UI 완성도(G5), / 명령·팀 목표 상태의 남은 불편을 개선한다. 공개 원본 사례와 기존 round3-goals.md 조사 기록을 확인하고 필요한 조사만 보충한다. 팀장이 팀원에게 구체적인 일을 위임하고 결과를 종합한다. 개발 변경은 Claude 독립 검토를 거친다. 팀장·모델 일괄 변경 금지. 운영 재시작은 모든 실행이 유휴인 때만. 검증 목적의 실제 AI 요청은 사용자 승인됨. .ai_logs/pitcrew-audit/self-upgrade-result.md에 변경·검증·남은 문제를 기록한다.",
+      "mode": null,
+      "status": "done",
+      "created": 1792131857.8571694,
+      "ended": 1792133351.1783946,
+      "round": 1,
+      "untilDone": true,
+      "owner": null,
+      "teams": {
+        "research": "05cda889b8e248fba14a2d44fad34743",
+        "build": "071624589bec4fe1898880be496c98f7",
+        "qa": "758fd3908b7a40c1af8a5a974e61327b"
+      },
+      "stages": [
+        {
+          "id": null,
+          "kind": "research",
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "qa",
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "통과",
+          "message": null,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "22b1564244ad4baab83cef03d5aead37",
+      "goal": "아직 ui/ux적으로 부족한게 많은데 그것들 보완해서 실제 많이 사용하는 앱 급으로 만들어봐 또한 게임제작에 이 툴을 사용한다고 했을 때 충분히 효율적인지 실제 게임 제작 ai툴이 있을 떄 우리가 가져올만한게 있는지 어떻게 구성해야 할지?",
+      "mode": "goal",
+      "status": "paused",
+      "created": 1792148569.733743,
+      "ended": null,
+      "round": 11,
+      "untilDone": true,
+      "owner": "a39459a67e954373b7a45bfef3885ecc",
+      "teams": {},
+      "stages": [
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 1,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 2,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 3,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 4,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 5,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 6,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 7,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 8,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 9,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 10,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        },
+        {
+          "id": null,
+          "kind": "build",
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "round": 11,
+          "started": null,
+          "ended": null,
+          "verdict": "",
+          "message": null,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "message_stats": {
+    "d7ea69ee2acc4b56bab1e52f13471cad": {
+      "count": 2,
+      "roles": {
+        "user": 1,
+        "assistant": 1
+      },
+      "kinds": {
+        "None": 2
+      },
+      "min_ts": 1791908139.7596674,
+      "max_ts": 1791908142.1152558,
+      "usage_records": 0
+    },
+    "9eaa00fe106b437797053faf97c8ddf5": {
+      "count": 2,
+      "roles": {
+        "user": 1,
+        "assistant": 1
+      },
+      "kinds": {
+        "None": 2
+      },
+      "min_ts": 1791908242.7086985,
+      "max_ts": 1791908250.1227174,
+      "usage_records": 0
+    },
+    "db447dd5b502498ea98b447f0dc1e3c7": {
+      "count": 4816,
+      "roles": {
+        "user": 204,
+        "tool": 3820,
+        "system": 2,
+        "assistant": 790
+      },
+      "kinds": {
+        "None": 4816
+      },
+      "min_ts": 1792000310.1120553,
+      "max_ts": 1792198092.0305326,
+      "usage_records": 0
+    },
+    "46be78689bc4475aaf9e80638bf63813": {
+      "count": 2,
+      "roles": {
+        "user": 1,
+        "system": 1
+      },
+      "kinds": {
+        "None": 2
+      },
+      "min_ts": 1792000929.9135094,
+      "max_ts": 1792000930.683095,
+      "usage_records": 0
+    },
+    "a39459a67e954373b7a45bfef3885ecc": {
+      "count": 5328,
+      "roles": {
+        "user": 258,
+        "assistant": 919,
+        "tool": 4151
+      },
+      "kinds": {
+        "None": 5328
+      },
+      "min_ts": 1792001132.3376973,
+      "max_ts": 1792231451.714474,
+      "usage_records": 0
+    },
+    "0d3f5ee12e254244b8a593a4be23358f": {
+      "count": 81,
+      "roles": {
+        "user": 9,
+        "tool": 62,
+        "assistant": 10
+      },
+      "kinds": {
+        "None": 81
+      },
+      "min_ts": 1792005415.5902877,
+      "max_ts": 1792132310.1540406,
+      "usage_records": 0
+    },
+    "5d872181b31142afa9f446d7bd2e6b28": {
+      "count": 19,
+      "roles": {
+        "user": 3,
+        "assistant": 6,
+        "tool": 10
+      },
+      "kinds": {
+        "None": 19
+      },
+      "min_ts": 1792005417.657557,
+      "max_ts": 1792132276.0582633,
+      "usage_records": 0
+    },
+    "d948577ab9a142909e46394ef01ba8cb": {
+      "count": 41,
+      "roles": {
+        "user": 6,
+        "assistant": 6,
+        "tool": 29
+      },
+      "kinds": {
+        "None": 41
+      },
+      "min_ts": 1792074436.709919,
+      "max_ts": 1792133339.9277542,
+      "usage_records": 0
+    },
+    "99ae616585ba4dd8b004e9ea911b33fe": {
+      "count": 9,
+      "roles": {
+        "user": 1,
+        "assistant": 2,
+        "tool": 6
+      },
+      "kinds": {
+        "None": 9
+      },
+      "min_ts": 1792078999.566257,
+      "max_ts": 1792079052.840164,
+      "usage_records": 0
+    }
+  },
+  "last_48h_start_utc": "2026-10-15T10:04:11.944250+00:00",
+  "last_48h_role_counts": [
+    {
+      "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+      "role": "assistant",
+      "count": 592
+    },
+    {
+      "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+      "role": "tool",
+      "count": 2530
+    },
+    {
+      "agent": "a39459a67e954373b7a45bfef3885ecc",
+      "role": "user",
+      "count": 232
+    },
+    {
+      "agent": "a39459a67e954373b7a45bfef3885ecc",
+      "role": "assistant",
+      "count": 811
+    },
+    {
+      "agent": "a39459a67e954373b7a45bfef3885ecc",
+      "role": "tool",
+      "count": 3708
+    },
+    {
+      "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+      "role": "user",
+      "count": 189
+    },
+    {
+      "agent": "0d3f5ee12e254244b8a593a4be23358f",
+      "role": "user",
+      "count": 5
+    },
+    {
+      "agent": "0d3f5ee12e254244b8a593a4be23358f",
+      "role": "tool",
+      "count": 22
+    },
+    {
+      "agent": "0d3f5ee12e254244b8a593a4be23358f",
+      "role": "assistant",
+      "count": 5
+    },
+    {
+      "agent": "d948577ab9a142909e46394ef01ba8cb",
+      "role": "user",
+      "count": 6
+    },
+    {
+      "agent": "d948577ab9a142909e46394ef01ba8cb",
+      "role": "assistant",
+      "count": 6
+    },
+    {
+      "agent": "d948577ab9a142909e46394ef01ba8cb",
+      "role": "tool",
+      "count": 29
+    },
+    {
+      "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+      "role": "system",
+      "count": 1
+    },
+    {
+      "agent": "5d872181b31142afa9f446d7bd2e6b28",
+      "role": "user",
+      "count": 2
+    },
+    {
+      "agent": "5d872181b31142afa9f446d7bd2e6b28",
+      "role": "assistant",
+      "count": 4
+    },
+    {
+      "agent": "5d872181b31142afa9f446d7bd2e6b28",
+      "role": "tool",
+      "count": 6
+    },
+    {
+      "agent": "99ae616585ba4dd8b004e9ea911b33fe",
+      "role": "user",
+      "count": 1
+    },
+    {
+      "agent": "99ae616585ba4dd8b004e9ea911b33fe",
+      "role": "assistant",
+      "count": 2
+    },
+    {
+      "agent": "99ae616585ba4dd8b004e9ea911b33fe",
+      "role": "tool",
+      "count": 6
+    }
+  ],
+  "limits": "Database status is persisted state, not proof a process is alive; timestamps are UTC epoch seconds; no message bodies exported. Activity span is not autonomous active duration."
+}

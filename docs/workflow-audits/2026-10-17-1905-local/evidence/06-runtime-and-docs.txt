@@ -1,0 +1,346 @@
+{"path": "tools/studio-dashboard/runtime.py", "source_sha256": "781d1ed47ac3d2b8577b51f6eeebf0d7198442b8f201b1b977d4db9babdb785e", "git_status": "?? tools/studio-dashboard/runtime.py", "tracked": false, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[21, 81], [83, 147], [148, 176], [225, 260]]}
+21: def descriptor():
+22:     data = json.loads(DESCRIPTOR.read_text(encoding='utf-8'))
+23:     if data.get('protocol') != 1 or not isinstance(data.get('port'), int):
+24:         raise RuntimeError('지원하지 않는 실행 서비스입니다.')
+25:     return data
+26: 
+27: def forward(path, body=None, token=None, timeout=125):
+28:     d = descriptor()
+29:     headers = {'X-PitCrew-Runtime': d['secret']}
+30:     if body is not None:
+31:         headers.update({'Content-Type': 'application/json', 'X-PitCrew-Token': token or ''})
+32:     req = urllib.request.Request(f"http://127.0.0.1:{d['port']}" + path, data=body, headers=headers)
+33:     try:
+34:         with urllib.request.urlopen(req, timeout=timeout) as response:
+35:             return response.status, response.read()
+36:     except urllib.error.HTTPError as error:
+37:         try:
+38:             return error.code, error.read()
+39:         except OSError:
+40:             return error.code, json.dumps({'error': f'실행 서비스가 요청을 거절했습니다 (HTTP {error.code}).'}).encode()
+41:         finally:
+42:             error.close()
+43: 
+44: def health():
+45:     try:
+46:         status, body = forward('/api/hub/runtime-health', timeout=2)
+47:         data = json.loads(body)
+48:         return data if status == 200 and data.get('service') == 'pitcrew-runtime' else None
+49:     except (OSError, ValueError, KeyError, RuntimeError):
+50:         return None
+51: 
+52: def ensure_running():
+53:     existing = health()
+54:     if existing:
+55:         return existing
+56:     DIRECTORY.mkdir(parents=True, exist_ok=True)
+57:     with (DIRECTORY / 'runtime.log').open('ab') as log:
+58:         subprocess.Popen([sys.executable, '-X', 'utf8', str(HERE / 'runtime.py'), '--serve'],
+59:             cwd=HERE.parent.parent, stdin=subprocess.DEVNULL, stdout=log, stderr=log,
+60:             creationflags=(getattr(subprocess, 'CREATE_NO_WINDOW', 0) | getattr(subprocess, 'CREATE_NEW_PROCESS_GROUP', 0)),
+61:             start_new_session=os.name != 'nt')
+62:     deadline = time.monotonic() + 15
+63:     while time.monotonic() < deadline:
+64:         existing = health()
+65:         if existing:
+66:             return existing
+67:         time.sleep(.2)
+68:     raise RuntimeError('실행 서비스 시작을 확인하지 못했습니다. .runtime/runtime.log를 확인하세요.')
+69: 
+70: def stop_running():
+71:     if not health():
+72:         return
+73:     status, body = forward('/internal/shutdown', b'{}', timeout=3)
+74:     if status != 200:
+75:         raise RuntimeError(json.loads(body).get('error', '실행 서비스를 중단하지 못했습니다.'))
+76:     deadline = time.monotonic() + 10
+77:     while time.monotonic() < deadline:
+78:         if not health():
+79:             return
+80:         time.sleep(.1)
+81:     raise RuntimeError('실행 서비스가 아직 종료 중입니다.')
+83: def maintenance_status(hub):
+84:     """Read-only snapshot under the owner's lock, including unopened project stores.
+85: 
+86:     This is a point-in-time observation, not a reservation to shut down later.
+87:     Unopened stores are read without Hub/Store construction (which performs recovery writes).
+88:     """
+89:     import sqlite3
+90:     owner = hub.owner
+91:     with owner.lock:
+92:         rows = owner.projects()
+93:         known = {r['id'] for r in rows}
+94:         rows += [dict(id=pid, name=h.root.name) for pid,h in owner.project_hubs.items() if pid not in known]
+95:         projects = []
+96:         for row in rows:
+97:             pid = row['id']
+98:             h = owner if pid == 'default' else owner.project_hubs.get(pid)
+99:             item = dict(id=pid, name=row['name'], loaded=h is not None, runs=len(h.runs) if h else 0,
+100:                         postRuns=getattr(h,'post_runs',0) if h else 0, runningGoals=[], heldGoals=[],
+101:                         queuedMessages=0, pendingReplies=0, blockers=[])
+102:             cycles, agents = [], []
+103:             try:
+104:                 if h:
+105:                     cycles = h.store.get('cycles', [])
+106:                     agents = h.store.agents(include_archived=True)
+107:                 else:
+108:                     path = owner.directory / 'projects' / pid / 'hub.sqlite3'
+109:                     if path.exists():
+110:                         db = sqlite3.connect(path.resolve().as_uri()+'?mode=ro',uri=True,timeout=.2)
+111:                         try:
+112:                             db.execute('BEGIN')
+113:                             saved = db.execute("SELECT body FROM settings WHERE key='cycles'").fetchone()
+114:                             cycles = json.loads(saved[0]) if saved else []
+115:                             agents = [json.loads(r[0]) for r in db.execute('SELECT body FROM agents')]
+116:                         finally: db.close()
+117:                 item['runningGoals'] = [c['id'] for c in cycles if c.get('status') == 'running']
+118:                 item['heldGoals'] = [c['id'] for c in cycles if c.get('status') == 'paused' and c.get('heldStage')]
+119:                 item['queuedMessages'] = sum(len(a.get('queue') or []) for a in agents)
+120:                 item['pendingReplies'] = sum(len(a.get('pendingReplies') or ([a['pendingReply']] if a.get('pendingReply') else [])) for a in agents)
+121:             except (OSError,sqlite3.Error,ValueError,TypeError,KeyError,AttributeError):
+122:                 item['blockers'].append('state-unreadable')
+123:             for field in ('runs','postRuns','runningGoals','queuedMessages','pendingReplies'):
+124:                 if item[field]: item['blockers'].append(field)
+125:             projects.append(item)
+126:         pending = getattr(owner,'pending_requests',0)
+127:         closing = getattr(owner,'shutting_down',False)
+128:         blockers = (['pendingRequests'] if pending else []) + (['shuttingDown'] if closing else [])
+129:         return dict(ready=not blockers and not any(p['blockers'] for p in projects),
+130:                     observedAt=time.time(), pendingRequests=pending, shuttingDown=closing,
+131:                     blockers=blockers, projects=projects)
+132: 
+133: 
+134: def begin_shutdown(hub):
+135:     """Atomically stop accepting work only after every project's work has settled."""
+136:     hub = hub.owner
+137:     with hub.lock:
+138:         hubs = [hub, *hub.project_hubs.values()]
+139:         # Run.execute transfers runs -> post_runs while holding this same shared lock.
+140:         # after_run may still deliver reports, drain queues, or start the next cycle stage.
+141:         if not maintenance_status(hub)['ready']:
+142:             return False
+143:         for h in hubs:
+144:             h.shutting_down = True
+145:         return True
+146: 
+147: 
+148: def serve():
+149:     # Script execution names this module __main__. Later imports by HTTP handlers
+150:     # must reuse it, not load newer disk code into a second runtime module.
+151:     running_module = sys.modules[__name__]
+152:     if sys.modules.setdefault('runtime', running_module) is not running_module:
+153:         raise RuntimeError('실행 서비스 모듈이 이미 다른 사본으로 적재되어 있습니다.')
+154:     DIRECTORY.mkdir(parents=True, exist_ok=True)
+155:     logging.basicConfig(filename=DIRECTORY / 'lifecycle.log', level=logging.INFO,
+156:         format='%(asctime)s %(levelname)s %(message)s', encoding='utf-8')
+157:     logging.info('runtime starting pid=%s parent=%s', os.getpid(), os.getppid())
+158:     # Keep the lock for the process lifetime; a crash releases it at OS level.
+159:     lock = (DIRECTORY / 'runtime.lock').open('a+b')
+160:     if lock.tell() == 0:
+161:         lock.write(b'0'); lock.flush()
+162:     lock.seek(0)
+163:     try:
+164:         if os.name == 'nt':
+165:             import msvcrt
+166:             msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+167:         else:
+168:             import fcntl
+169:             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+170:     except OSError:
+171:         lock.close()
+172:         return
+173:     import server
+174:     from hub import get_hub
+175:     from http.server import ThreadingHTTPServer
+176:     secret = secrets.token_urlsafe(32)
+225:     def heartbeat():
+226:         while not stopped.wait(60):
+227:             logging.info('runtime alive pid=%s', os.getpid())
+228:     threading.Thread(target=heartbeat, daemon=True).start()
+229:     try:
+230:         service.serve_forever()
+231:     except BaseException:
+232:         logging.exception('runtime failed pid=%s', os.getpid())
+233:         raise
+234:     finally:
+235:         stopped.set()
+236:         logging.info('runtime exiting pid=%s', os.getpid())
+237:         hub.close(); service.server_close(); lock.close()
+238: 
+239: if __name__ == '__main__':
+240:     if '--serve' in sys.argv:
+241:         os.environ['PITCREW_RUNTIME_SERVICE'] = '1'
+242:         serve()
+243:     else:
+244:         if '--stop' in sys.argv or '--restart' in sys.argv:
+245:             stop_running()
+246:         if '--stop' not in sys.argv:
+247:             result = ensure_running()
+248:             print(f"PitCrew 실행 서비스 준비됨 (PID {result['pid']})")
+
+{"path": "tools/studio-dashboard/README.md", "source_sha256": "48669b5f686f503234792d7cc7a2609a23d2d8aa0582af4a348e082b7e7e2b7f", "git_status": "M tools/studio-dashboard/README.md", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 105]]}
+1: # PitCrew — 로컬 AI 팀 워크스페이스
+2: 
+3: Claude Code, Codex, OpenAI 호환 대화 제공자를 역할별로 연결하는 로컬 앱입니다.
+4: **http://localhost:7878/** 에서 사용합니다. 이전 팀 화면·관제탑은 **/legacy** 에 남아 있습니다.
+5: 
+6: ## 실행
+7: 
+8: `PitCrew.cmd`를 더블클릭하거나 프로젝트 루트에서 실행합니다.
+9: 
+10: ```powershell
+11: powershell -NoProfile -File tools/studio-dashboard/start.ps1
+12: # 웹 UI 재시작 (독립 실행 서비스의 작업은 유지)
+13: powershell -NoProfile -File tools/studio-dashboard/start.ps1 -Restart
+14: ```
+15: 
+16: 첫 실행은 Python 가상환경과 고정 버전 의존성을 설치합니다. Python 3.11+와 설치·로그인된
+17: Claude Code / Codex CLI가 필요합니다. 서버는 창을 숨겨 실행하며 브라우저를 닫아도 작업을 계속합니다.
+18: 다른 프로그램이 포트를 점유하면 종료하지 않고 오류를 표시합니다.
+19: 
+20: Windows 로그인 후 자동으로 서버를 켜려면 다음을 한 번 실행합니다. 현재 PC에는 등록되어 있습니다.
+21: 
+22: ```powershell
+23: powershell -NoProfile -File tools/studio-dashboard/install-autostart.ps1
+24: # 자동 실행 해제: 위 명령에 -Remove 추가
+25: ```
+26: 
+27: 로그인 후 같은 주소로 접속하면 됩니다. 저장소를 옮기면 다시 등록하세요.
+28: 
+29: 개발용 별도 포트:
+30: 
+31: ```powershell
+32: $env:PITCREW_PORT='7879'
+33: tools/studio-dashboard/.venv/Scripts/python.exe -X utf8 tools/studio-dashboard/server.py
+34: ```
+35: 
+36: ## 사용하는 흐름
+37: 
+38: 1. 왼쪽에서 기획·개발·검토 역할을 선택합니다. `+`로 역할을 더 만들 수 있습니다.
+39: 2. **설정**에서 제공자, 모델, 추론 강도, 역할 지시와 자료를 저장합니다.
+40:    Codex는 실제 `model/list`의 모델·설명·지원 추론 강도·서비스 티어를 표시합니다.
+41:    Claude는 SDK 초기화 응답의 모델·실제 모델 ID·effort·adaptive thinking 옵션을 표시합니다.
+42:    목록 외 모델 ID는 고급 입력으로 지정할 수 있습니다. 목록은 접근 권한/잔여 한도를 보장하지 않습니다.
+43: 3. 메시지를 보내면 스트리밍 응답과 도구 활동이 표시됩니다. 실행 결과의 보고 모델은 오른쪽에서 확인합니다.
+44: 4. **전체 공통 컨텍스트**는 현재 프로젝트 모든 역할의 다음 입력에, 개별 자료는 해당 역할의 다음 입력에 포함됩니다.
+45: 5. 메시지의 **전달**은 다른 역할의 입력창에 원문을 첨부합니다. 확인 후 보내기를 누릅니다.
+46: 6. **연결한 대화**는 선택한 동료의 최근 대화를 다음 입력마다 첨부합니다. **비교**로 두 대화를 나란히 봅니다.
+47: 7. **대화 가져오기**에서 기존 Claude/Codex 대화와 Claude 서브에이전트 기록을 열람합니다.
+48:    설정에서 표시 이름을 바꿀 수 있습니다. 외부 대화의 맥락을 새 역할로 전달해 계속 작업할 수 있습니다.
+49: 8. **보관**은 삭제가 아닙니다. 왼쪽 **보관된 대화**에서 복원합니다.
+50: 
+51: ## 입력창: `/` 명령·스킬, `@` 참조, 이미지
+52: 
+53: - **`/`** 를 입력하면 이 에이전트가 실제로 실행할 수 있는 명령·스킬이 뜹니다.
+54:   - Claude: 사용자·프로젝트 스킬과 명령(`~/.claude/skills`, `.claude/skills`, `commands`), 첫 실행 뒤에는 Claude Code 가 보고한 전체 목록(내장 `/context`, `/compact` 등 포함). `/이름` 으로 보내면 Claude Code 가 그대로 실행합니다.
+55:   - Codex: `skills/list` 로 받은 스킬이 `$이름` 으로 들어가고, 보낼 때 Codex 의 스킬 입력으로 전달됩니다.
+56:   - PitCrew 동작: `/research`(저비용 리서치), `/handoff`, `/attach`, `/model`, `/find`, `/compare`, `/flow`, `/add-cli`, `/clear-queue`.
+57:   - Claude 는 사용자·프로젝트 설정을 읽어 스킬을 쓰지만 **기존 훅은 꺼서**(`disableAllHooks`) Claude Code 자동화가 두 번 돌지 않습니다.
+58: - **`@`** 로 팀원(그 대화의 최근 내용을 이번 메시지에 참조)이나 프로젝트 파일(경로 참조, 이미지는 이미지로)을 붙입니다.
+59: - **이미지**: 붙여넣기(입력창, 또는 다른 입력칸이 아닌 대화 화면 어디서나 Ctrl+V)·끌어놓기(대화 어디에나)·📎. 보낸 메시지 안에 썸네일로 보이고, 클릭하면 크게 봅니다.
+60:   Claude 는 이미지 블록, Codex 는 `localImage` 입력, ACP 에이전트는 image 블록으로 실제 이미지를 받습니다.
+61:   답변 속 `![](D:/.../x.png)` 같은 로컬 이미지도 대화 안에 표시합니다(프로젝트·PitCrew 폴더 안 파일만).
+62: - 입력창의 **＋** 에 첨부·참조·명령·끝나면 넘기기·리서치가 모여 있습니다. `/` 메뉴 맨 위에는 최근 성공적으로 쓴 명령 3개가 보입니다(브라우저에만 저장).
+63: - 입력창 오른쪽에서 **모델**과 **권한 모드**(읽기/작업/전체 권한)를 바로 바꿉니다. 작업 중에는 잠깁니다.
+64:   읽기 모드는 멈춰서 묻지 않습니다: Claude 는 읽기 도구(+ 이 대화에서 미리 허용한 도구)만, Codex 는 읽기 전용 샌드박스에서 승인 없이 실행합니다.
+65: - 답변에 마우스를 올리면 그 턴의 **모델 · 비용 · 입력(캐시)→출력 토큰**(제공자 보고값)이 보입니다.
+66: - `Ctrl+O` 도구 활동 요약/자세히, 파일 편집은 `+N −N` diff 로 보입니다. 내 메시지의 **다시 사용**은 입력창에 넣기만 합니다.
+67: 
+68: ## 누가 누구에게 넘겼는지
+69: 
+70: - 받은 쪽 메시지에는 출처(← 누구의 인계·리서치·메시지)가, **보낸 쪽 대화에는 그 시점에 ↗ 한 줄**(결과를 넘김·리서치를 맡김·메시지를 전달·참조로 쓰임)이 표시됩니다. 누르면 받은 메시지로 이동합니다.
+71: - 전체 관계는 `/flow`(팀 흐름)에서 종류별로 봅니다. 기록에서 계산하므로 실제로 일어난 관계만 나옵니다.
+72: - 에이전트가 API 로 다른 대화에 보낼 때는 `origin:{agent, name, kind:'message'}` 를 함께 보내면 같은 방식으로 기록됩니다.
+73: 
+74: ## 팀장과 팀원
+75: 
+76: - 팀 설정에서 **팀장**을 고르면(팀원 중 한 명), 사이드바에 `팀장` 배지가 붙습니다.
+77: - **알림은 팀장에게서만**: 팀원의 완료·중단은 팝업·Windows 알림 없이 받은함에만 남습니다. 팀원이 **승인/질문을 기다리거나 실패하면** `팀명 · 팀원` 으로 알립니다.
+78:   팀장이 맡긴 일이 아직 팀원에게 남아 있으면 팀장의 중간 완료도 알리지 않고, 보고가 다 모여 팀장이 끝냈을 때 한 번 알립니다.
+79: - **Claude 팀장은 직접 맡깁니다**: `팀원에게 맡기기`(delegate) 도구로 팀원에게 일을 보내고(권한 확인 없음, 한 턴 최대 8건),
+80:   팀원이 끝나면 그 보고가 팀장 대화로 자동으로 돌아옵니다. 팀장 턴 중이면 대기열에 들어갔다가 이어서 처리됩니다.
+81:   Codex·ACP 팀장은 아직 맡기기 도구가 없어 알림 규칙만 적용됩니다.
+82: - 여러 팀의 팀장이면 그 팀들의 팀원 모두에게 맡길 수 있습니다. 맡긴 일이 **실패·중단되면 그 사실이 팀장에게 보고**되어 팀장 답에 반영됩니다(리서치 요청도 같음).
+83: - 폭주 방지: 사용자 요청 하나에서 시작한 흐름은 순환 위임(맡긴 쪽에게 다시 맡기기) 불가, 최대 4단계, 맡기기 20건까지입니다(실행 서비스 재시작 시 집계 초기화).
+84: - 팀장·팀원은 이번 턴 컨텍스트의 `team` 항목으로 자기 역할과 팀원 목록(또는 팀장 이름)을 받습니다.
+85: 
+86: ## 팀 목표 (리서치 → 개발 → QA)
+87: 
+88: - `/goal` 또는 입력창의 **팀 목표**에서 목표와 완료 기준(한 줄에 하나), 리서치·개발·QA 팀을 정합니다. `/goal 목표 내용`은 내용을 채워 설정 창을 엽니다. `/cycle`도 새 팀 목표를 엽니다.
+89: - 기본은 **목표 완료까지**입니다. 최대 1~3회로 제한할 수도 있으며, 한도에서 기준 미달이면 완료 대신 일시 정지합니다. 실행 실패·재시작으로 끊긴 단계는 재개 전까지 멈춥니다.
+90: - 각 단계는 그 팀의 **팀장**에게 갑니다(팀장이 팀원에게 나눠 맡기면, 팀원 보고가 다 모인 뒤에 단계가 끝납니다). 앞 단계의 보고가 다음 단계의 입력이 됩니다.
+91: - 개발과 QA는 서로 다른 팀장이 맡습니다. QA는 각 기준에 `기준 N: 충족 — 근거` 또는 `기준 N: 미충족 — 이유`, 마지막 줄에 `판정: 통과` / `판정: 수정 필요`를 씁니다. 기준별 근거가 빠지거나 미충족이면 완수하지 않고 수정으로 돌아갑니다.
+92: - 탭 아래 **진행 막대**에 단계별 상태·경과가 실시간으로 보이고, 단계를 누르면 그 대화가 열립니다. **자세히**는 단계별 결과, **중단**은 다음 단계로 넘기지 않게 합니다.
+93: - 목표 칩은 선택한 대화가 속한 팀의 목표를 표시합니다. 상세 화면에 기준별 QA 판정과 근거가 남으며, 과거 기준 없는 실행은 검토 확인이 필요한 것으로 표시합니다.
+94: - `/codex-goal`은 별도의 Codex 자체 목표 조회·설정입니다. 팀 단계나 위임으로 기존 Codex 세션을 재개할 때 자체 목표가 active이면 먼저 일시 정지해 두 실행이 겹치지 않도록 합니다.
+95: - 알림은 사이클이 끝나거나 멈출 때 **한 번**만 옵니다(단계 사이의 인계는 조용합니다). 팀 간 인계는 협업 보기에 주황 화살표로 보입니다.
+96: 
+97: ## 협업 보기와 알림
+98: 
+99: - 대화 머리의 **협업**(또는 `/flow`)을 누르면 팀별 지도가 열립니다. 팀마다 한 열(팀장 위, 팀원 아래, 팀 밖), 카드에 상태와 맡은 일.
+100:   화살표는 누가 누구에게 넘겼는지 — 파랑=맡김, 초록=결과 보고, 보라=리서치. 굵을수록 자주, 점선이 흐르면 지금 진행 중. 오른쪽은 최근 주고받은 것(누르면 그 메시지).
+101: - 위쪽 탭은 **팀별로 묶여** 보이고, 팀 이름을 누르면 그 팀으로 사이드바가 바뀌고 팀장 대화가 열립니다.
+102: - **알림은 사슬이 끝날 때 한 번**: 응답이 필요할 때(승인·질문)는 항상, 완료는 이 대화가 요청한 답이 더 오지 않고 대기열도 비었을 때만.
+103:   결과가 다른 에이전트에게 넘어간 턴(맡긴 일·리뷰)은 알리지 않고, 받은 쪽이 끝낼 때 알립니다.
+104: 
+105: ## 저비용 리서치 (`/research`)
+
+{"path": "tools/studio-dashboard/start.ps1", "source_sha256": "989f0f8e0d05cfb821d49522eace4cd9d9bdfa521a00c967379488c88b2f5d68", "git_status": "?? tools/studio-dashboard/start.ps1", "tracked": false, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 100]]}
+1: param([int]$Port = 7878, [switch]$Restart)
+2: $ErrorActionPreference = 'Stop'
+3: $studioRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+4: $workspaceRoot = Split-Path -Parent (Split-Path -Parent $studioRoot)
+5: $runtimeRoot = Join-Path $studioRoot '.runtime'
+6: $pythonPath = Join-Path $studioRoot '.venv\Scripts\python.exe'
+7: New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null
+8: if (!(Test-Path -LiteralPath $pythonPath)) {
+9:     & python -m venv (Join-Path $studioRoot '.venv')
+10:     if ($LASTEXITCODE -ne 0) { throw 'Python 가상환경 생성 실패' }
+11:     & $pythonPath -m pip install -r (Join-Path $studioRoot 'requirements-lock.txt')
+12:     if ($LASTEXITCODE -ne 0) { throw '의존성 설치 실패' }
+13: }
+14: $listeners = @(Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue)
+15: foreach ($listener in $listeners) {
+16:     $existing = Get-CimInstance Win32_Process -Filter "ProcessId=$($listener.OwningProcess)"
+17:     if ($existing.CommandLine -notmatch 'studio-dashboard[/\\](server|web_host)\.py') {
+18:         throw "포트 $Port 를 다른 프로그램이 사용하고 있습니다. 해당 프로그램을 종료하지 않았습니다."
+19:     }
+20:     if (!$Restart) {
+21:         if (Test-Path -LiteralPath (Join-Path $runtimeRoot 'runtime.json')) {
+22:             & $pythonPath -X utf8 (Join-Path $studioRoot 'runtime.py')
+23:             if ($LASTEXITCODE -ne 0) { throw '실행 서비스 복구 실패' }
+24:         }
+25:         break
+26:     }
+27:     try {
+28:         $snapshot = Invoke-RestMethod "http://127.0.0.1:$Port/api/hub/bootstrap" -TimeoutSec 3
+29:         if (!$snapshot.runtime.independent -and @($snapshot.agents | Where-Object { $_.status -in @('running','waiting','stopping') }).Count) {
+30:             throw '진행 중인 AI 작업이 있습니다. 앱에서 중단하거나 완료를 기다린 뒤 재시작하세요.'
+31:         }
+32:     } catch {
+33:         throw "실행 상태를 확인하지 못했거나 작업이 진행 중입니다. 서버를 종료하지 않았습니다. $($_.Exception.Message)"
+34:     }
+35:     Stop-Process -Id $listener.OwningProcess
+36:     Wait-Process -Id $listener.OwningProcess -Timeout 10 -ErrorAction SilentlyContinue
+37: }
+38: # Start through the Windows WMI service instead of inheriting a temporary
+39: # terminal/tool process tree. The host handles append-only, flushed logs.
+40: $startup = New-CimInstance -ClassName Win32_ProcessStartup -ClientOnly -Property @{ ShowWindow = [uint16]0 }
+41: $stopFile = Join-Path $runtimeRoot "watchdog-$Port.stop"
+42: if (Test-Path -LiteralPath $stopFile) { Remove-Item -LiteralPath $stopFile }
+43: $commandLine = '"{0}" -X utf8 -u "{1}" --port {2}' -f $pythonPath, (Join-Path $studioRoot 'watchdog.py'), $Port
+44: $created = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = $commandLine; CurrentDirectory = $workspaceRoot; ProcessStartupInformation = $startup }
+45: if ($created.ReturnValue -ne 0) { throw "독립 서버 실행 실패 (WMI code $($created.ReturnValue))" }
+46: for ($attempt=0; $attempt -lt 30; $attempt++) {
+47:     try {
+48:         $null = Invoke-RestMethod "http://127.0.0.1:$Port/api/hub/bootstrap" -TimeoutSec 3
+49:         $watchState = Get-Content -LiteralPath (Join-Path $runtimeRoot "watchdog-$Port.json") -Raw | ConvertFrom-Json
+50:         if (([DateTimeOffset]::UtcNow.ToUnixTimeSeconds() - $watchState.checkedAt) -gt 10) { throw '감시 서비스 확인 중' }
+51:         $watchProcess = Get-CimInstance Win32_Process -Filter "ProcessId=$($watchState.pid)"
+52:         if ($watchProcess.CommandLine -notmatch 'studio-dashboard[/\\]watchdog\.py') { throw '감시 서비스 확인 중' }
+53:         Write-Output "PitCrew 실행됨: http://localhost:$Port/ (자동 복구 감시 활성화)"
+54:         exit 0
+55:     } catch { Start-Sleep -Milliseconds 300 }
+56: }
+57: throw '서버 시작을 확인하지 못했습니다. .runtime/server.stderr.log를 확인하세요.'

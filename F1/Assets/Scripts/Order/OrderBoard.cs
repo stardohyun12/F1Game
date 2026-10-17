@@ -58,7 +58,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     {
         if (runController == null) runController = Services.Run as RunController;
         if (panelRoot != null && panelRoot.activeSelf) panelRoot.SetActive(false);
-        if (helpText != null) helpText.text = "카드에 마우스 올리면 맵에 배달지가 표시됨 · 클릭으로 출발";
+        if (helpText != null) helpText.text = "카드 클릭으로 선택·해제 · 주문을 고른 뒤 출발 버튼";
         if (headerText != null) headerText.text = "주문 선택";
     }
 
@@ -277,17 +277,29 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (boardGoButton != null) return;
         if (panelRoot == null) return;
 
-        // 카드 컨테이너 하단을 출발 버튼 영역만큼 띄움.
-        // 버튼 영역 = anchoredPosition.y(24) + size.y(72) + 여유(20) = 116.
+        Transform parentForBtn = cardsContainer != null ? cardsContainer.parent : panelRoot.transform;
+        if (parentForBtn == null) parentForBtn = panelRoot.transform;
+        var parentRect = parentForBtn as RectTransform;
+        float buttonBottom = 24f;
+        // Scene-authored help stays below the action; reserve its actual parent-space bounds.
+        if (helpText != null && helpText.transform.parent == parentForBtn && parentRect != null)
+        {
+            var helpBounds = RectTransformUtility.CalculateRelativeRectTransformBounds(parentForBtn, helpText.rectTransform);
+            buttonBottom = Mathf.Max(buttonBottom, helpBounds.max.y - parentRect.rect.yMin + 12f);
+        }
+        float cardsBottom = buttonBottom + 72f + 20f;
+
+        // 카드 하단을 도움말 + 출발 버튼 + 여유만큼 띄움 (부분 stretch 앵커도 포함).
         // + VLG가 카드 높이를 컨테이너에 맞추도록 강제 — Unity UI는 컨테이너 rect를 clipping mask로
         //   안 써서 카드 누적 높이 > 컨테이너 높이면 overflow → 출발 버튼 침범. (2026-05-15 subagent 진단)
         if (cardsContainer != null)
         {
             var cc = cardsContainer;
-            if (Mathf.Approximately(cc.anchorMin.y, 0f) && Mathf.Approximately(cc.anchorMax.y, 1f))
+            if (parentRect != null && cc.parent == parentForBtn && cc.anchorMax.y > cc.anchorMin.y)
             {
                 var min = cc.offsetMin;
-                if (min.y < 116f) { min.y = 116f; cc.offsetMin = min; }
+                float requiredOffset = cardsBottom - cc.anchorMin.y * parentRect.rect.height;
+                if (min.y < requiredOffset) { min.y = requiredOffset; cc.offsetMin = min; }
             }
             var vlg = cc.GetComponent<UnityEngine.UI.VerticalLayoutGroup>();
             if (vlg != null)
@@ -303,13 +315,11 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             typeof(RectTransform), typeof(UnityEngine.UI.Image), typeof(UnityEngine.UI.Button));
         // Fix 1-A: panelRoot(fullscreen) 자식 → cardsContainer.parent(우측 띠) 자식으로 이동.
         // cardsContainer가 있으면 그 부모(= 우측 띠 패널)를 GoButton의 부모로 사용.
-        Transform parentForBtn = cardsContainer != null ? cardsContainer.parent : panelRoot.transform;
-        if (parentForBtn == null) parentForBtn = panelRoot.transform;
         goGO.transform.SetParent(parentForBtn, false);
         var rt = goGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(1, 0);
         rt.pivot = new Vector2(0.5f, 0f);
-        rt.anchoredPosition = new Vector2(0, 24);
+        rt.anchoredPosition = new Vector2(0, buttonBottom);
         rt.sizeDelta = new Vector2(-24, 72);
         var img = goGO.GetComponent<UnityEngine.UI.Image>();
         img.color = goBtnReadyColor;

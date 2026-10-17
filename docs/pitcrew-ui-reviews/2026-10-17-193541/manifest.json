@@ -1,0 +1,1999 @@
+{
+  "schema_version": 1,
+  "baseline_sha": "906f8994e9533f9953f775d292831f8f8586bf8c",
+  "files": [
+    {
+      "path": "diagnostics/artifact_probe.py",
+      "source": "generated in this audit: diagnostics/artifact_probe.py",
+      "sha256": "955a2cfa7d498ecdafcc1b1b5718a73ee890b9e7e0ee9d9f301c1bc5e6df423c",
+      "bytes": 1388,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/browser.cjs",
+      "source": "generated in this audit: diagnostics/browser.cjs",
+      "sha256": "d9306d06e257214ec288b340cdbcf5101ea04847093e3e271aeab1ff0a212e8e",
+      "bytes": 9345,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/collect.py",
+      "source": "generated in this audit: diagnostics/collect.py",
+      "sha256": "10074278b171c4a47fa73762f2e1d2f796c6c715f3869a5380db36d0446099a5",
+      "bytes": 4544,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/excerpts.py",
+      "source": "generated in this audit: diagnostics/excerpts.py",
+      "sha256": "f02a0fa23ceba2b4845f22160fece10d087d639818acb5d550cd6fa862e49d1d",
+      "bytes": 1628,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/fixture_capture.cjs",
+      "source": "generated in this audit: diagnostics/fixture_capture.cjs",
+      "sha256": "cd80db0f6a597d173a943c5d9942ae93fcaaa3af7c3124d5bc7e4a5881d07e6c",
+      "bytes": 1470,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/live_assets.py",
+      "source": "generated in this audit: diagnostics/live_assets.py",
+      "sha256": "8d244a30307c39881dedf79eb0fa63b66548cc5c36e2ae52e6901d24b229b3d0",
+      "bytes": 999,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/offline_preview.py",
+      "source": "generated in this audit: diagnostics/offline_preview.py",
+      "sha256": "78afcb780ae120c9051331131f9ff274a02362c2911aabbe492333cbacd81978",
+      "bytes": 3980,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "diagnostics/package.py",
+      "source": "generated in this audit: diagnostics/package.py",
+      "sha256": "94d0cdbbb7d09703092b002ece3bdc0d68bae96ff90c56ce01d531b95795f720",
+      "bytes": 5495,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/01-live-workspace.png",
+      "source": "Current production browser UI http://127.0.0.1:7878/; privacy masks applied before screenshot",
+      "sha256": "8b347945dc8504644c6bc39f6cbba56807150dc63e7faf7e775c1d22c15724ba",
+      "bytes": 41267,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/03-live-results.png",
+      "source": "Current production browser UI http://127.0.0.1:7878/; privacy masks applied before screenshot",
+      "sha256": "87fa0786b707f7bb1da332cac80365d4b7fbb1ce838d08ac40329508e002fa2b",
+      "bytes": 60592,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/04-live-mobile.png",
+      "source": "Current production browser UI http://127.0.0.1:7878/; privacy masks applied before screenshot",
+      "sha256": "897d9b088f843cb3da4a1d40f600b2e939fdf0467c04ba427a779369df95b7de",
+      "bytes": 20406,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/05-isolated-link-diagnostic.png",
+      "source": "generated in this audit: evidence/05-isolated-link-diagnostic.png",
+      "sha256": "2e08c58f858a8d9ef43cd3631c9bd3ced3595d7e663afb15a3ecaec170c860f1",
+      "bytes": 36998,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/06-diagnostic-click-404.png",
+      "source": "generated in this audit: evidence/06-diagnostic-click-404.png",
+      "sha256": "e4286fa6d4ebee692729f09043a29ea11d6cbdbc524c241b867d1987a0fb1d99",
+      "bytes": 4772,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/07-fixture-completed-request.png",
+      "source": "generated in this audit: evidence/07-fixture-completed-request.png",
+      "sha256": "426c59558f619e6bf37bc8d73037e229d67530d89bc8a9f3eb06da896fa28f4a",
+      "bytes": 71158,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/08-fixture-request-and-link.png",
+      "source": "generated in this audit: evidence/08-fixture-request-and-link.png",
+      "sha256": "1d17b4252b2509635b72ed41a7c0548ec26916516d710b65d7c79bcd1d40068f",
+      "bytes": 55948,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/09-fixture-results-empty.png",
+      "source": "generated in this audit: evidence/09-fixture-results-empty.png",
+      "sha256": "0a54685f6a65b857c45471d4d335283493cd9a475d66e6acdc7a5f25ce9e7cb3",
+      "bytes": 73418,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/10-fixture-failure-status.png",
+      "source": "generated in this audit: evidence/10-fixture-failure-status.png",
+      "sha256": "d1d7d3dada9e0f0ecca6c38926f3706349d1868c6afe38c5b9ffdcf91819544c",
+      "bytes": 57342,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/artifact-registration-probe.json",
+      "source": "generated in this audit: evidence/artifact-registration-probe.json",
+      "sha256": "26a173c0ff9c321c174d5fea5a210d41bc1d4cca07814f0e77f760aefd2bf1e9",
+      "bytes": 769,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/browser-attempt1-timeout.json",
+      "source": "generated in this audit: evidence/browser-attempt1-timeout.json",
+      "sha256": "e03592c57e3507c200f20a4d9839ca62d10eeab3f538d8d6197e3c9f43d58704",
+      "bytes": 4671,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/browser-attempt2-video-unavailable.json",
+      "source": "generated in this audit: evidence/browser-attempt2-video-unavailable.json",
+      "sha256": "a33f9ab631dc44c073cf9201869b477d8830c4a3181da4cb2d514f371aadd79c",
+      "bytes": 6129,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/browser-results.json",
+      "source": "generated in this audit: evidence/browser-results.json",
+      "sha256": "52ccb1868355325189b5b517edfefaaebf0ee3f2e524f94e3880e932568f31b3",
+      "bytes": 7381,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/download-conversation-excerpts.json",
+      "source": "generated in this audit: evidence/download-conversation-excerpts.json",
+      "sha256": "08480ce1389d2989856c483fa2fc8d8e93ac5a58f977f9c57a70c6b0bb686430",
+      "bytes": 4455,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/downloaded-diagnostic.txt",
+      "source": "generated in this audit: evidence/downloaded-diagnostic.txt",
+      "sha256": "f3301bb76f3ed04287a07fec8e1d4bef8f019943eb75061a1659a6c569877e94",
+      "bytes": 62,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/environment.json",
+      "source": "generated in this audit: evidence/environment.json",
+      "sha256": "7a2f5cfffd11666445124023c16cbd9254968fff4846549005a00b3b2b9ad22a",
+      "bytes": 271,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/final-checks.json",
+      "source": "generated in this audit: evidence/final-checks.json",
+      "sha256": "b95297d37c97b94fc59ffec0ff6e38655e7e61a42788995d47048a2f6cf4cdbf",
+      "bytes": 620,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/fixture-preview-result.json",
+      "source": "generated in this audit: evidence/fixture-preview-result.json",
+      "sha256": "0f25b4a21563573b656e810dc341d3d9747cd3f99c787f6e6ce4a6c3f5859deb",
+      "bytes": 116,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/http-live.json",
+      "source": "generated in this audit: evidence/http-live.json",
+      "sha256": "43d258ca6b685ab332cc0433217fae6dcbe7ca3c6b1ee2bfcdca184ffaa18873",
+      "bytes": 8494,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/listener.json",
+      "source": "generated in this audit: evidence/listener.json",
+      "sha256": "0ddcfcf01bf2093be4fc7e28b72ab3e9ab41c861db2c176c1e6cf1b2258a6c77",
+      "bytes": 98,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/app.css",
+      "source": "HTTP GET http://127.0.0.1:7878/app.css",
+      "sha256": "4c34c43b177dcc3c3f96060db349e34268b20cfc6af36d11c5aba76899c21dd8",
+      "bytes": 22085,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/app.js",
+      "source": "HTTP GET http://127.0.0.1:7878/app.js",
+      "sha256": "aa2c953c6a982d848d2831ce574839cb36c081023acedf002989fa6cdcfcca39",
+      "bytes": 84778,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/attach.js",
+      "source": "HTTP GET http://127.0.0.1:7878/attach.js",
+      "sha256": "9f6f5b0713b59c11f78b866b1e776ad5a7a6e774e29ab417cdbdb316acda7be7",
+      "bytes": 13663,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/composer.js",
+      "source": "HTTP GET http://127.0.0.1:7878/composer.js",
+      "sha256": "547dac8c746bd9af00778c5416085db28b1a49e954ca956489a72e3a9cc60738",
+      "bytes": 152637,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/connection.js",
+      "source": "HTTP GET http://127.0.0.1:7878/connection.js",
+      "sha256": "6d2dbf9c8ee15b09faf8ae1a51a01feb5c542183348ce4caa85f7e31d5341cd6",
+      "bytes": 2299,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/index.html",
+      "source": "HTTP GET http://127.0.0.1:7878/",
+      "sha256": "a4d5872dfb41e7a2e88daf0b3369f5dcccaffc46c2aad2a29db522e9a7325856",
+      "bytes": 7815,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/markdown-it.min.js",
+      "source": "HTTP GET http://127.0.0.1:7878/markdown-it.min.js",
+      "sha256": "c920ffd2e513a13383f5da9a09439a36a1ca17d4e88d40a3294688727cbe5905",
+      "bytes": 115093,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/notify.js",
+      "source": "HTTP GET http://127.0.0.1:7878/notify.js",
+      "sha256": "356f81cb46f22320f427fce88721448324433c08d4ba131c9a1cb02600a5558b",
+      "bytes": 11088,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/organize.js",
+      "source": "HTTP GET http://127.0.0.1:7878/organize.js",
+      "sha256": "5111169eced07b57ccce2ba88d17c5c1704986713865917881720ab6aac6ccd2",
+      "bytes": 80799,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/product.css",
+      "source": "HTTP GET http://127.0.0.1:7878/product.css",
+      "sha256": "eef33dc3e25ee3773ef59893c39fa33e3ea25827ec6931c32171702abe60c44d",
+      "bytes": 143392,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/queue.js",
+      "source": "HTTP GET http://127.0.0.1:7878/queue.js",
+      "sha256": "f825c1e3248543e4823016f99318521119bf9994ac816df578ad046e3504b8f7",
+      "bytes": 11993,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/reader.js",
+      "source": "HTTP GET http://127.0.0.1:7878/reader.js",
+      "sha256": "53393f45e6b6ffd15caae298f56351c4ad5f0a47b36bb0072685d582d8066612",
+      "bytes": 3276,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/teams.js",
+      "source": "HTTP GET http://127.0.0.1:7878/teams.js",
+      "sha256": "936d46415180254e5860e075ac8a5711c45a7b8ae3810d1fe26cebd837f37dca",
+      "bytes": 16045,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/live_web/workspace.js",
+      "source": "HTTP GET http://127.0.0.1:7878/workspace.js",
+      "sha256": "cdb09e17c3881a6dcc782d44124932932e27c0d6340ea9db5a24f784edc26a52",
+      "bytes": 9888,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/original-bundle.json",
+      "source": "generated in this audit: evidence/original-bundle.json",
+      "sha256": "7e571adef2df747831597b157278747bb6a127c8aceb1791981df81465edbcfb",
+      "bytes": 232,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/processes.json",
+      "source": "generated in this audit: evidence/processes.json",
+      "sha256": "ba16ae1716deb5ec989a7eb08290d943ad38066edef8af11df8f6393efe2b37b",
+      "bytes": 3971,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/reader-tests.txt",
+      "source": "generated in this audit: evidence/reader-tests.txt",
+      "sha256": "821afb3cdab0ef5c219248846862880cd6b9413ab16f56d9cd5aec38036fa70b",
+      "bytes": 673,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/repository.json",
+      "source": "generated in this audit: evidence/repository.json",
+      "sha256": "206d77645c10be4ba49dfb4f27912c917ebba64b2e4c0a7ef875df5effb5324f",
+      "bytes": 6958,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/source-provenance.json",
+      "source": "generated in this audit: evidence/source-provenance.json",
+      "sha256": "ab35187b5b88bc0c2977f44a9340ede93e73c923ab89f92e39043f76c7658f66",
+      "bytes": 45135,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "evidence/진단 파일 공백.txt",
+      "source": "generated in this audit: evidence/진단 파일 공백.txt",
+      "sha256": "f3301bb76f3ed04287a07fec8e1d4bef8f019943eb75061a1659a6c569877e94",
+      "bytes": 62,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "README_REVIEW.md",
+      "source": "generated in this audit: README_REVIEW.md",
+      "sha256": "a2d2c5dbeb109c7c1647da917e5760e4d7065866f38e360e1cbe2fe1abd71b97",
+      "bytes": 16693,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": false,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "source/tools/studio-dashboard/acp_mock_agent.py",
+      "source": "tools/studio-dashboard/acp_mock_agent.py",
+      "sha256": "c6e694a3021184f4c4edca1511c108288c4bf0491743142bd659ecd808311e1c",
+      "bytes": 4285,
+      "original_sha256": "c6e694a3021184f4c4edca1511c108288c4bf0491743142bd659ecd808311e1c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/AUTO_RECOVERY.md",
+      "source": "tools/studio-dashboard/AUTO_RECOVERY.md",
+      "sha256": "01daead3c46a70f0743fd01d42d61aeddb36535ac70151d25668c776819e5ef7",
+      "bytes": 4077,
+      "original_sha256": "01daead3c46a70f0743fd01d42d61aeddb36535ac70151d25668c776819e5ef7",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/catalog_probe.py",
+      "source": "tools/studio-dashboard/catalog_probe.py",
+      "sha256": "5f9d275dbbf86c8a948f35fa15ad912f7940ebce55f410f1aec4a462f0d6e5ff",
+      "bytes": 1301,
+      "original_sha256": "5f9d275dbbf86c8a948f35fa15ad912f7940ebce55f410f1aec4a462f0d6e5ff",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/CONNECTION_INCIDENT.md",
+      "source": "tools/studio-dashboard/CONNECTION_INCIDENT.md",
+      "sha256": "9d6826ceb28be40ea053d6760f35b351d1e6a5b89635446bdc5bf1e83b1ca05f",
+      "bytes": 1769,
+      "original_sha256": "9d6826ceb28be40ea053d6760f35b351d1e6a5b89635446bdc5bf1e83b1ca05f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/delegate_bridge.py",
+      "source": "tools/studio-dashboard/delegate_bridge.py",
+      "sha256": "2b86eb114b0c7af824ee9cd6d2506be5491db997e10e5281cc2353958a04baa5",
+      "bytes": 4385,
+      "original_sha256": "2b86eb114b0c7af824ee9cd6d2506be5491db997e10e5281cc2353958a04baa5",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/file_baselines.py",
+      "source": "tools/studio-dashboard/file_baselines.py",
+      "sha256": "d750afba9ea2fc8e2092b1a1e210a0df55cd728f1f815ad30a186103d7d81b86",
+      "bytes": 4881,
+      "original_sha256": "d750afba9ea2fc8e2092b1a1e210a0df55cd728f1f815ad30a186103d7d81b86",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/hub.py",
+      "source": "tools/studio-dashboard/hub.py",
+      "sha256": "7b613b83eed52f0723f1097f2864d19ef226027ad62265220ffba0c341c43fbe",
+      "bytes": 215850,
+      "original_sha256": "7b613b83eed52f0723f1097f2864d19ef226027ad62265220ffba0c341c43fbe",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/install-autostart.ps1",
+      "source": "tools/studio-dashboard/install-autostart.ps1",
+      "sha256": "b95ee30a39db5d5bb86408d1d305df302a37275cd3a911ccac77f5db6f2e3821",
+      "bytes": 1382,
+      "original_sha256": "b95ee30a39db5d5bb86408d1d305df302a37275cd3a911ccac77f5db6f2e3821",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/isolated_process_scope.py",
+      "source": "tools/studio-dashboard/isolated_process_scope.py",
+      "sha256": "ecaa76d04cb0ac745707a5316e5a39bedacb02d5ecbf932c6af9e3e62105064e",
+      "bytes": 7914,
+      "original_sha256": "ecaa76d04cb0ac745707a5316e5a39bedacb02d5ecbf932c6af9e3e62105064e",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/isolated_runtime.py",
+      "source": "tools/studio-dashboard/isolated_runtime.py",
+      "sha256": "1433afa78e83f60518a8e9a656effdc43a02f1949b90f4345cfe15322be9b302",
+      "bytes": 4391,
+      "original_sha256": "1433afa78e83f60518a8e9a656effdc43a02f1949b90f4345cfe15322be9b302",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/live_cancel_check.py",
+      "source": "tools/studio-dashboard/live_cancel_check.py",
+      "sha256": "b857e94224d0ae1c6ba242ecb21aca194980a0d0804b24aede740ab15d52240c",
+      "bytes": 1434,
+      "original_sha256": "b857e94224d0ae1c6ba242ecb21aca194980a0d0804b24aede740ab15d52240c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/live_check.py",
+      "source": "tools/studio-dashboard/live_check.py",
+      "sha256": "26beab8b75a78103965857040b384913dbba4a58a597907956bb6937d5785c09",
+      "bytes": 3882,
+      "original_sha256": "26beab8b75a78103965857040b384913dbba4a58a597907956bb6937d5785c09",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/live_resume_check.py",
+      "source": "tools/studio-dashboard/live_resume_check.py",
+      "sha256": "5a4a971a824c47af96ab14f53845644ceb233a9c950ebc83b0711da4ed8a2586",
+      "bytes": 2545,
+      "original_sha256": "5a4a971a824c47af96ab14f53845644ceb233a9c950ebc83b0711da4ed8a2586",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/live_team_flow_check.py",
+      "source": "tools/studio-dashboard/live_team_flow_check.py",
+      "sha256": "61cc2dbfdcf64f3415fd195038c0ecbd5c81c0e7469bf174b9e0005b2fe91ed0",
+      "bytes": 8009,
+      "original_sha256": "61cc2dbfdcf64f3415fd195038c0ecbd5c81c0e7469bf174b9e0005b2fe91ed0",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/live_watchdog_check.py",
+      "source": "tools/studio-dashboard/live_watchdog_check.py",
+      "sha256": "1cb4a11018a9eebc49ab7e186fcbbec84b095b6732c6553cb25ba0cc18111a2c",
+      "bytes": 4059,
+      "original_sha256": "1cb4a11018a9eebc49ab7e186fcbbec84b095b6732c6553cb25ba0cc18111a2c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/notify-windows.ps1",
+      "source": "tools/studio-dashboard/notify-windows.ps1",
+      "sha256": "f1e852afa3a80ab922e6d276208a5620cd61b345a051db95e23912283842ecd6",
+      "bytes": 1128,
+      "original_sha256": "f1e852afa3a80ab922e6d276208a5620cd61b345a051db95e23912283842ecd6",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/ORGANIZATION_UX.md",
+      "source": "tools/studio-dashboard/ORGANIZATION_UX.md",
+      "sha256": "5f936325b893c56f15b89b4b7b905a95b6c39ee1717c80b4d3b1277e55bb9c42",
+      "bytes": 4019,
+      "original_sha256": "5f936325b893c56f15b89b4b7b905a95b6c39ee1717c80b4d3b1277e55bb9c42",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/PitCrew.cmd",
+      "source": "tools/studio-dashboard/PitCrew.cmd",
+      "sha256": "a633450cda388695667503251943e425fe3bba16bd19003312d4fe86e7894d49",
+      "bytes": 115,
+      "original_sha256": "a633450cda388695667503251943e425fe3bba16bd19003312d4fe86e7894d49",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/probe.py",
+      "source": "tools/studio-dashboard/probe.py",
+      "sha256": "d75bfcbb5b432a00c148b20d5348c38e720cb5b4dcba071dac569f7c5c8c3c09",
+      "bytes": 3801,
+      "original_sha256": "d75bfcbb5b432a00c148b20d5348c38e720cb5b4dcba071dac569f7c5c8c3c09",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/PRODUCT_PLAN.md",
+      "source": "tools/studio-dashboard/PRODUCT_PLAN.md",
+      "sha256": "0cf8e243f255b78db7ab2f0077777ca555d6cf8ea6ea537de301e255d877dd03",
+      "bytes": 47890,
+      "original_sha256": "0cf8e243f255b78db7ab2f0077777ca555d6cf8ea6ea537de301e255d877dd03",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/providers.example.json",
+      "source": "tools/studio-dashboard/providers.example.json",
+      "sha256": "4a6f2d79b6ac79269803c6f530f4fef127ed1a07eaa2fa40471b19b0300bc3cb",
+      "bytes": 214,
+      "original_sha256": "4a6f2d79b6ac79269803c6f530f4fef127ed1a07eaa2fa40471b19b0300bc3cb",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/README.md",
+      "source": "tools/studio-dashboard/README.md",
+      "sha256": "48669b5f686f503234792d7cc7a2609a23d2d8aa0582af4a348e082b7e7e2b7f",
+      "bytes": 27497,
+      "original_sha256": "48669b5f686f503234792d7cc7a2609a23d2d8aa0582af4a348e082b7e7e2b7f",
+      "git_status": "modified/staged: M ",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/RELEASE_UX.md",
+      "source": "tools/studio-dashboard/RELEASE_UX.md",
+      "sha256": "64bd44ae63489eecb3177b86b6393707b6057714505e40032f5f22f0a91e49aa",
+      "bytes": 5239,
+      "original_sha256": "64bd44ae63489eecb3177b86b6393707b6057714505e40032f5f22f0a91e49aa",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/requirements-lock.txt",
+      "source": "tools/studio-dashboard/requirements-lock.txt",
+      "sha256": "71a918cbcbc91638af68ed0fdec6daf867960384b2c9515e650cf3dd05f06c59",
+      "bytes": 603,
+      "original_sha256": "71a918cbcbc91638af68ed0fdec6daf867960384b2c9515e650cf3dd05f06c59",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/requirements.txt",
+      "source": "tools/studio-dashboard/requirements.txt",
+      "sha256": "02feb79a774f8979229de626fe42919ebdfc9e93f0403766675150faca64ede0",
+      "bytes": 26,
+      "original_sha256": "02feb79a774f8979229de626fe42919ebdfc9e93f0403766675150faca64ede0",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/RESILIENCE.md",
+      "source": "tools/studio-dashboard/RESILIENCE.md",
+      "sha256": "39c0f30139fb6fb72ceeff2b702ea99cc4d4470ed799d06cbb43494a29c5ca41",
+      "bytes": 10842,
+      "original_sha256": "39c0f30139fb6fb72ceeff2b702ea99cc4d4470ed799d06cbb43494a29c5ca41",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/runtime.py",
+      "source": "tools/studio-dashboard/runtime.py",
+      "sha256": "781d1ed47ac3d2b8577b51f6eeebf0d7198442b8f201b1b977d4db9babdb785e",
+      "bytes": 11993,
+      "original_sha256": "781d1ed47ac3d2b8577b51f6eeebf0d7198442b8f201b1b977d4db9babdb785e",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/runtime_identity.py",
+      "source": "tools/studio-dashboard/runtime_identity.py",
+      "sha256": "7794d5c098454fd84fd4122be697719a4e66829b944239666e6269878b0912f2",
+      "bytes": 3285,
+      "original_sha256": "7794d5c098454fd84fd4122be697719a4e66829b944239666e6269878b0912f2",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/server.py",
+      "source": "tools/studio-dashboard/server.py",
+      "sha256": "6781e493d9db509363e835cce6efb03a57e4fdc7c2fa29a1e79c825e45f7a59f",
+      "bytes": 36118,
+      "original_sha256": "6781e493d9db509363e835cce6efb03a57e4fdc7c2fa29a1e79c825e45f7a59f",
+      "git_status": "modified/staged: M ",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/SIMPLE_GOALS.md",
+      "source": "tools/studio-dashboard/SIMPLE_GOALS.md",
+      "sha256": "e4df1d370a2b5552c6453770e53f34b43c3f3b7d6b47a0c8ae37118a2ddc3e0f",
+      "bytes": 2688,
+      "original_sha256": "e4df1d370a2b5552c6453770e53f34b43c3f3b7d6b47a0c8ae37118a2ddc3e0f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/start.ps1",
+      "source": "tools/studio-dashboard/start.ps1",
+      "sha256": "989f0f8e0d05cfb821d49522eace4cd9d9bdfa521a00c967379488c88b2f5d68",
+      "bytes": 3880,
+      "original_sha256": "989f0f8e0d05cfb821d49522eace4cd9d9bdfa521a00c967379488c88b2f5d68",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/TEAM_FLOW_VERIFICATION.md",
+      "source": "tools/studio-dashboard/TEAM_FLOW_VERIFICATION.md",
+      "sha256": "39cd1a44afe0c9534ecfed487cfe7edbe84228e1458c64e4efb84e3e6e8d4223",
+      "bytes": 4091,
+      "original_sha256": "39cd1a44afe0c9534ecfed487cfe7edbe84228e1458c64e4efb84e3e6e8d4223",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_accessibility_ui.cjs",
+      "source": "tools/studio-dashboard/test_accessibility_ui.cjs",
+      "sha256": "28c3f80569570a9aa34e618fc52290d9954742cfd19f8341de5f0faaf4632c70",
+      "bytes": 1518,
+      "original_sha256": "28c3f80569570a9aa34e618fc52290d9954742cfd19f8341de5f0faaf4632c70",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_acp.py",
+      "source": "tools/studio-dashboard/test_acp.py",
+      "sha256": "3bcdcdce2a2f2194742ef2c3d0a65a6ecd06478c2c33868087dd07ea785c8ccb",
+      "bytes": 6807,
+      "original_sha256": "3bcdcdce2a2f2194742ef2c3d0a65a6ecd06478c2c33868087dd07ea785c8ccb",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_alert.py",
+      "source": "tools/studio-dashboard/test_alert.py",
+      "sha256": "08ee942fed4a4e18106ddff6d042e34fc9ba22059064e770625f06522c9e82f2",
+      "bytes": 3045,
+      "original_sha256": "08ee942fed4a4e18106ddff6d042e34fc9ba22059064e770625f06522c9e82f2",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_all_assigned_ui.cjs",
+      "source": "tools/studio-dashboard/test_all_assigned_ui.cjs",
+      "sha256": "74062914076d63818bbcc60a51327ac673fdd6e9a7283fa46605c0b0f7b37134",
+      "bytes": 1957,
+      "original_sha256": "24758b0c086c68a41005e69aa205e783b91505abbce268d4672c8d19b2b7fbb7",
+      "git_status": "untracked",
+      "redacted": true,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_approvals.py",
+      "source": "tools/studio-dashboard/test_approvals.py",
+      "sha256": "1c0d0991c64fb0194b5bebdcd46ffdc4201f9d75d5d417d28c031045f8eab1aa",
+      "bytes": 3406,
+      "original_sha256": "1c0d0991c64fb0194b5bebdcd46ffdc4201f9d75d5d417d28c031045f8eab1aa",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_artifact_browser.py",
+      "source": "tools/studio-dashboard/test_artifact_browser.py",
+      "sha256": "6b23168f9e46e48b5e8632ab56c6e7db21d82ff128ea86019637ebb7c0eb24be",
+      "bytes": 8176,
+      "original_sha256": "6b23168f9e46e48b5e8632ab56c6e7db21d82ff128ea86019637ebb7c0eb24be",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_artifact_capture_paths.py",
+      "source": "tools/studio-dashboard/test_artifact_capture_paths.py",
+      "sha256": "0dbd3d83bb660f8ff41d1512031d1a555619681da5cdf61e1ea20593d138d370",
+      "bytes": 6875,
+      "original_sha256": "0dbd3d83bb660f8ff41d1512031d1a555619681da5cdf61e1ea20593d138d370",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_capture_path_boundary.py",
+      "source": "tools/studio-dashboard/test_capture_path_boundary.py",
+      "sha256": "b5cf7c6a418db4d09ce7aa16f53b409f9efbcddb0361582ca1a9e79c5daa0e21",
+      "bytes": 1498,
+      "original_sha256": "b5cf7c6a418db4d09ce7aa16f53b409f9efbcddb0361582ca1a9e79c5daa0e21",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_codex_delegate.py",
+      "source": "tools/studio-dashboard/test_codex_delegate.py",
+      "sha256": "c25cbd9626823e664956f3ae5c3505086b7a1c46c5c547ccf073187715f448bb",
+      "bytes": 4921,
+      "original_sha256": "c25cbd9626823e664956f3ae5c3505086b7a1c46c5c547ccf073187715f448bb",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_codex_events.py",
+      "source": "tools/studio-dashboard/test_codex_events.py",
+      "sha256": "c96ab2bd0cf7f1b80f17dcfdb82671bc1f03d00b4242ac26e058b3102221d36b",
+      "bytes": 4538,
+      "original_sha256": "c96ab2bd0cf7f1b80f17dcfdb82671bc1f03d00b4242ac26e058b3102221d36b",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_connection.cjs",
+      "source": "tools/studio-dashboard/test_connection.cjs",
+      "sha256": "ba95f0f5815dc2ba3c8b981f0101b9c34a6b1095feb9e5a359fd3784ed5429c6",
+      "bytes": 2497,
+      "original_sha256": "ba95f0f5815dc2ba3c8b981f0101b9c34a6b1095feb9e5a359fd3784ed5429c6",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_cycle.py",
+      "source": "tools/studio-dashboard/test_cycle.py",
+      "sha256": "eb9b53481d6db64c2b09451ce0529e14ac3ff72d9ff6d4cd28af2ba417210cc6",
+      "bytes": 15432,
+      "original_sha256": "eb9b53481d6db64c2b09451ce0529e14ac3ff72d9ff6d4cd28af2ba417210cc6",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_cycle_cache.py",
+      "source": "tools/studio-dashboard/test_cycle_cache.py",
+      "sha256": "56fb77a7511fe4adc76854d50211c72cbaaaf7154c952c96bc898bb8abf990cf",
+      "bytes": 6605,
+      "original_sha256": "56fb77a7511fe4adc76854d50211c72cbaaaf7154c952c96bc898bb8abf990cf",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_drag_ui.cjs",
+      "source": "tools/studio-dashboard/test_drag_ui.cjs",
+      "sha256": "b61f56bd87ab2202b502b77eef65fb2ce8cab26a39fffeea77b03cd171bc8c98",
+      "bytes": 5102,
+      "original_sha256": "b61f56bd87ab2202b502b77eef65fb2ce8cab26a39fffeea77b03cd171bc8c98",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_external_sync.py",
+      "source": "tools/studio-dashboard/test_external_sync.py",
+      "sha256": "c3c11eb8f6e13dde76d7d6706810680ed4bbfb7be8565134568e36af57295fd6",
+      "bytes": 1555,
+      "original_sha256": "c3c11eb8f6e13dde76d7d6706810680ed4bbfb7be8565134568e36af57295fd6",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_fault_proxy.py",
+      "source": "tools/studio-dashboard/test_fault_proxy.py",
+      "sha256": "706cde5ba2d9b8047e6c5806d4c69d148608e7b483e7fed509bc2a089c1fc2dc",
+      "bytes": 1732,
+      "original_sha256": "706cde5ba2d9b8047e6c5806d4c69d148608e7b483e7fed509bc2a089c1fc2dc",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_file_baselines.py",
+      "source": "tools/studio-dashboard/test_file_baselines.py",
+      "sha256": "1a90ae45d1828277bc342251dc35621bcc25f4124f6bc680c6c9f5faf30fc5d1",
+      "bytes": 8463,
+      "original_sha256": "1a90ae45d1828277bc342251dc35621bcc25f4124f6bc680c6c9f5faf30fc5d1",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_flow_ui.cjs",
+      "source": "tools/studio-dashboard/test_flow_ui.cjs",
+      "sha256": "add7cd5a72bd1c049942d90ff7f7ddd9911bb6ef5ec0f80e6a57e03abe58b82b",
+      "bytes": 2609,
+      "original_sha256": "add7cd5a72bd1c049942d90ff7f7ddd9911bb6ef5ec0f80e6a57e03abe58b82b",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_full_history.py",
+      "source": "tools/studio-dashboard/test_full_history.py",
+      "sha256": "aefc23417fd6328520866df455af807c46f16d0d1a48a7900c45ec8d8a6639d5",
+      "bytes": 2194,
+      "original_sha256": "aefc23417fd6328520866df455af807c46f16d0d1a48a7900c45ec8d8a6639d5",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal.py",
+      "source": "tools/studio-dashboard/test_goal.py",
+      "sha256": "5ecb474068684950c3a692b84d35e8892709d6e8e53425576a5c429f1fd13a99",
+      "bytes": 1704,
+      "original_sha256": "5ecb474068684950c3a692b84d35e8892709d6e8e53425576a5c429f1fd13a99",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_history.py",
+      "source": "tools/studio-dashboard/test_goal_history.py",
+      "sha256": "5d0709f3f6707d86c072c6cc54425bfa79307e3fba06a68dfdd586653559b4f2",
+      "bytes": 3140,
+      "original_sha256": "5d0709f3f6707d86c072c6cc54425bfa79307e3fba06a68dfdd586653559b4f2",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_hold.py",
+      "source": "tools/studio-dashboard/test_goal_hold.py",
+      "sha256": "af39b170045069361af0ccf466a7fae82c2c967b841a45fd9f9abee53c1c102f",
+      "bytes": 10213,
+      "original_sha256": "af39b170045069361af0ccf466a7fae82c2c967b841a45fd9f9abee53c1c102f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_retry_race.py",
+      "source": "tools/studio-dashboard/test_goal_retry_race.py",
+      "sha256": "2ce22f601b6b8a8a010c490f7635071da4b0b569b5f648d7cc2b91f4d996ba5b",
+      "bytes": 1712,
+      "original_sha256": "2ce22f601b6b8a8a010c490f7635071da4b0b569b5f648d7cc2b91f4d996ba5b",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_start_attachments.py",
+      "source": "tools/studio-dashboard/test_goal_start_attachments.py",
+      "sha256": "29630c48c78d2b188955d16c486d3a1e6019560650320f685383f044ab04bab5",
+      "bytes": 4556,
+      "original_sha256": "29630c48c78d2b188955d16c486d3a1e6019560650320f685383f044ab04bab5",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_start_baseline.py",
+      "source": "tools/studio-dashboard/test_goal_start_baseline.py",
+      "sha256": "f33223afa3a4ad534e0d033f3263e057f48d1bbaa5f24903e6f72a0d2944f6fe",
+      "bytes": 7649,
+      "original_sha256": "f33223afa3a4ad534e0d033f3263e057f48d1bbaa5f24903e6f72a0d2944f6fe",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_start_http.py",
+      "source": "tools/studio-dashboard/test_goal_start_http.py",
+      "sha256": "af2390bc40c557b5716b7d76473efa48159c7c8ea0c098c7751b1927646173c0",
+      "bytes": 23296,
+      "original_sha256": "af2390bc40c557b5716b7d76473efa48159c7c8ea0c098c7751b1927646173c0",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_goal_start_proxy.py",
+      "source": "tools/studio-dashboard/test_goal_start_proxy.py",
+      "sha256": "7e890e1a531b858135f2e8d94cf2102aeacf9902a3639b1fbbf548c152e11fa1",
+      "bytes": 8891,
+      "original_sha256": "7e890e1a531b858135f2e8d94cf2102aeacf9902a3639b1fbbf548c152e11fa1",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_hub.py",
+      "source": "tools/studio-dashboard/test_hub.py",
+      "sha256": "06991e3fa65da78561732d165b17ff4d485ab3166560f502b1a83ade22d31399",
+      "bytes": 14533,
+      "original_sha256": "06991e3fa65da78561732d165b17ff4d485ab3166560f502b1a83ade22d31399",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_isolated_process_scope.py",
+      "source": "tools/studio-dashboard/test_isolated_process_scope.py",
+      "sha256": "3ad2e211ffe962a8ff30c4af0779c4f95b02200735a004eb1a9184ec59da5410",
+      "bytes": 2824,
+      "original_sha256": "3ad2e211ffe962a8ff30c4af0779c4f95b02200735a004eb1a9184ec59da5410",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_isolated_runtime.py",
+      "source": "tools/studio-dashboard/test_isolated_runtime.py",
+      "sha256": "9f5ba0453d299847dfcc2634f4e635e0e9c78c9634a4a62233f5b61ba13c904e",
+      "bytes": 2437,
+      "original_sha256": "9f5ba0453d299847dfcc2634f4e635e0e9c78c9634a4a62233f5b61ba13c904e",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_local_image_boundary.py",
+      "source": "tools/studio-dashboard/test_local_image_boundary.py",
+      "sha256": "4b6a3e19656e991f57af54f0a9c6c83dfc2d7346b649259220fce35045a69a20",
+      "bytes": 5668,
+      "original_sha256": "4b6a3e19656e991f57af54f0a9c6c83dfc2d7346b649259220fce35045a69a20",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_maintenance_status.py",
+      "source": "tools/studio-dashboard/test_maintenance_status.py",
+      "sha256": "75c32ec8382678caee6ebf35f6a2e613935d7b1acc84d3f270f0ad8b7fbd2c03",
+      "bytes": 4353,
+      "original_sha256": "75c32ec8382678caee6ebf35f6a2e613935d7b1acc84d3f270f0ad8b7fbd2c03",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_mcp_tool_images.py",
+      "source": "tools/studio-dashboard/test_mcp_tool_images.py",
+      "sha256": "63b5a7f45c537a2845b8fbe0812dc663350f3b272d8c48f214577cebb64072f6",
+      "bytes": 5189,
+      "original_sha256": "63b5a7f45c537a2845b8fbe0812dc663350f3b272d8c48f214577cebb64072f6",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_organization.cjs",
+      "source": "tools/studio-dashboard/test_organization.cjs",
+      "sha256": "228dbb89b9de8152424b47cefab71b6e251749025db47379d923c3b75dc07b76",
+      "bytes": 2959,
+      "original_sha256": "228dbb89b9de8152424b47cefab71b6e251749025db47379d923c3b75dc07b76",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_project_recovery.py",
+      "source": "tools/studio-dashboard/test_project_recovery.py",
+      "sha256": "e3d415f06bfd5bc910faff2ec60993f8d7786c003f3f65ef33d810ab838eb912",
+      "bytes": 7285,
+      "original_sha256": "e3d415f06bfd5bc910faff2ec60993f8d7786c003f3f65ef33d810ab838eb912",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_queue.py",
+      "source": "tools/studio-dashboard/test_queue.py",
+      "sha256": "1856a5d0f73288ecb8363f61e1d377330408a9c68f8a144b61f214bca05e578c",
+      "bytes": 8695,
+      "original_sha256": "1856a5d0f73288ecb8363f61e1d377330408a9c68f8a144b61f214bca05e578c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_reader.cjs",
+      "source": "tools/studio-dashboard/test_reader.cjs",
+      "sha256": "d25d0765eeca688201723de74d1622ac7c916416e3d3bc2c82d2e9e75bf12d67",
+      "bytes": 3569,
+      "original_sha256": "d25d0765eeca688201723de74d1622ac7c916416e3d3bc2c82d2e9e75bf12d67",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_reader_ui.cjs",
+      "source": "tools/studio-dashboard/test_reader_ui.cjs",
+      "sha256": "1a49ae129faf4c5c430d4bbaa4a27a8d01c041b062a5272507790cdf8de4d990",
+      "bytes": 2050,
+      "original_sha256": "1a49ae129faf4c5c430d4bbaa4a27a8d01c041b062a5272507790cdf8de4d990",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_release_ui.cjs",
+      "source": "tools/studio-dashboard/test_release_ui.cjs",
+      "sha256": "9ecaaff6f9142df5eecfe5ad5b96181ab037cf119eb79839801cf0aac40c8254",
+      "bytes": 8181,
+      "original_sha256": "9ecaaff6f9142df5eecfe5ad5b96181ab037cf119eb79839801cf0aac40c8254",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_research.py",
+      "source": "tools/studio-dashboard/test_research.py",
+      "sha256": "29ed0775d92a16529cdca5bedce7e63a8b9ac45dbfba5ff5e492d394b63294bc",
+      "bytes": 3646,
+      "original_sha256": "29ed0775d92a16529cdca5bedce7e63a8b9ac45dbfba5ff5e492d394b63294bc",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime.py",
+      "source": "tools/studio-dashboard/test_runtime.py",
+      "sha256": "437eaacf870c25932adf959d20887b433e8bd214a28270be3b04f5cace07d05d",
+      "bytes": 7550,
+      "original_sha256": "437eaacf870c25932adf959d20887b433e8bd214a28270be3b04f5cace07d05d",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime_entry.py",
+      "source": "tools/studio-dashboard/test_runtime_entry.py",
+      "sha256": "10199cc60ce3206609e846144c2a9a2209ca46ad7829368071290a10ea4561e9",
+      "bytes": 4554,
+      "original_sha256": "10199cc60ce3206609e846144c2a9a2209ca46ad7829368071290a10ea4561e9",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime_identity.py",
+      "source": "tools/studio-dashboard/test_runtime_identity.py",
+      "sha256": "4a9f425256e2301b33ae6a484a94eb713ae10d2b6e2734d36833cd182aadcca5",
+      "bytes": 3742,
+      "original_sha256": "4a9f425256e2301b33ae6a484a94eb713ae10d2b6e2734d36833cd182aadcca5",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime_restart_cli.py",
+      "source": "tools/studio-dashboard/test_runtime_restart_cli.py",
+      "sha256": "ebb7d0cba3e3ededd5ad8ab94b3d5453f4af164516cc7ce986aaf0a9fd5e3460",
+      "bytes": 12419,
+      "original_sha256": "ebb7d0cba3e3ededd5ad8ab94b3d5453f4af164516cc7ce986aaf0a9fd5e3460",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime_shutdown.py",
+      "source": "tools/studio-dashboard/test_runtime_shutdown.py",
+      "sha256": "07bfd6ae5a0da73d25d360cfd82d69d9325087c0071a31c10df0b7edb796fa09",
+      "bytes": 2997,
+      "original_sha256": "07bfd6ae5a0da73d25d360cfd82d69d9325087c0071a31c10df0b7edb796fa09",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_runtime_upload_shutdown.py",
+      "source": "tools/studio-dashboard/test_runtime_upload_shutdown.py",
+      "sha256": "a203239501d5d3ad8bab30b14b6b56b730e92ef27b075d4a7fbe03e6dff3b499",
+      "bytes": 5325,
+      "original_sha256": "a203239501d5d3ad8bab30b14b6b56b730e92ef27b075d4a7fbe03e6dff3b499",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_send.cjs",
+      "source": "tools/studio-dashboard/test_send.cjs",
+      "sha256": "9a40325935de30a0f6dcd4cd56725dc12e5265ca2a8cbad8af75e4264c48a954",
+      "bytes": 4537,
+      "original_sha256": "9a40325935de30a0f6dcd4cd56725dc12e5265ca2a8cbad8af75e4264c48a954",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_setup_ui.cjs",
+      "source": "tools/studio-dashboard/test_setup_ui.cjs",
+      "sha256": "6e83dcee44839889225d2cab4df1e5e91928ce3c0d4d64dd2d6c3d92cee115e7",
+      "bytes": 2176,
+      "original_sha256": "6e83dcee44839889225d2cab4df1e5e91928ce3c0d4d64dd2d6c3d92cee115e7",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_simple_goal.py",
+      "source": "tools/studio-dashboard/test_simple_goal.py",
+      "sha256": "139a730da92cf0932757130f83577ec759f59873a3fe783683cd457f64cfa543",
+      "bytes": 26870,
+      "original_sha256": "139a730da92cf0932757130f83577ec759f59873a3fe783683cd457f64cfa543",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_stage_report.py",
+      "source": "tools/studio-dashboard/test_stage_report.py",
+      "sha256": "f42139c0ae698fa0b3b9fe2c228ffaf91b3aca2391edbe096c42dff93e9fe8a1",
+      "bytes": 2445,
+      "original_sha256": "f42139c0ae698fa0b3b9fe2c228ffaf91b3aca2391edbe096c42dff93e9fe8a1",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_team_filter.cjs",
+      "source": "tools/studio-dashboard/test_team_filter.cjs",
+      "sha256": "3ff944c8032b2c3d89b0a7796af0590b25e5c25dfe78c7e5bc3a430621f54c56",
+      "bytes": 1383,
+      "original_sha256": "3ff944c8032b2c3d89b0a7796af0590b25e5c25dfe78c7e5bc3a430621f54c56",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_team_goal.py",
+      "source": "tools/studio-dashboard/test_team_goal.py",
+      "sha256": "de5dc6cf3eb151e76bdd73a164a93c1a131c16302532dee271a0a104b87fcc7c",
+      "bytes": 24790,
+      "original_sha256": "de5dc6cf3eb151e76bdd73a164a93c1a131c16302532dee271a0a104b87fcc7c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_team_lead.py",
+      "source": "tools/studio-dashboard/test_team_lead.py",
+      "sha256": "3387f2ae8152f7a011d002e814ef00997607fc3a50a3b30f1bab8bfc782b09c6",
+      "bytes": 14995,
+      "original_sha256": "85c0fa927fb520a8bc1b1228f58be21cba9165919f5053535abae2365b015796",
+      "git_status": "untracked",
+      "redacted": true,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_team_links.py",
+      "source": "tools/studio-dashboard/test_team_links.py",
+      "sha256": "2f3f0da48e9711fc6c190758df84ac9cbe93f2cf43b0010bdac0fbc05b6f238a",
+      "bytes": 2081,
+      "original_sha256": "2f3f0da48e9711fc6c190758df84ac9cbe93f2cf43b0010bdac0fbc05b6f238a",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_team_membership.py",
+      "source": "tools/studio-dashboard/test_team_membership.py",
+      "sha256": "bb06ba04c089e57bcd6c1aea2c8f94d86545f232edfe8092e35950d5bdec61b7",
+      "bytes": 1781,
+      "original_sha256": "bb06ba04c089e57bcd6c1aea2c8f94d86545f232edfe8092e35950d5bdec61b7",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_timeline.py",
+      "source": "tools/studio-dashboard/test_timeline.py",
+      "sha256": "547459fffee99965bfa109af31f2f4e38421f792d2edec20cdcae96c1d85adf4",
+      "bytes": 11288,
+      "original_sha256": "547459fffee99965bfa109af31f2f4e38421f792d2edec20cdcae96c1d85adf4",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_unity_console.py",
+      "source": "tools/studio-dashboard/test_unity_console.py",
+      "sha256": "73c257f0e4bc139d65936e502a651de77c163a3aa885e29db0ea62fb15b0e21f",
+      "bytes": 7363,
+      "original_sha256": "73c257f0e4bc139d65936e502a651de77c163a3aa885e29db0ea62fb15b0e21f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_unity_console_http.py",
+      "source": "tools/studio-dashboard/test_unity_console_http.py",
+      "sha256": "8f2202734bb38e00069106fd38bccbf0f0b168821ef70b1ad6439d2514d0d807",
+      "bytes": 1969,
+      "original_sha256": "8f2202734bb38e00069106fd38bccbf0f0b168821ef70b1ad6439d2514d0d807",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_unity_console_probe.py",
+      "source": "tools/studio-dashboard/test_unity_console_probe.py",
+      "sha256": "1d04e01e31bdaa403d74558f8b917e7ad25091e48d87b864a9e13d6009fef47c",
+      "bytes": 7384,
+      "original_sha256": "1d04e01e31bdaa403d74558f8b917e7ad25091e48d87b864a9e13d6009fef47c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_unity_status.py",
+      "source": "tools/studio-dashboard/test_unity_status.py",
+      "sha256": "4997118b2009a03ae7e54667357e1b3b353017ec7f076d10ad71de4ff1bf3735",
+      "bytes": 25442,
+      "original_sha256": "4997118b2009a03ae7e54667357e1b3b353017ec7f076d10ad71de4ff1bf3735",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_usability.py",
+      "source": "tools/studio-dashboard/test_usability.py",
+      "sha256": "3c97cb9c1974402f8f930bfab689815559ac71f1f7d430828376b9ee32767a4d",
+      "bytes": 3106,
+      "original_sha256": "3c97cb9c1974402f8f930bfab689815559ac71f1f7d430828376b9ee32767a4d",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_usability_ui.cjs",
+      "source": "tools/studio-dashboard/test_usability_ui.cjs",
+      "sha256": "8b268ea3ce402bc28f788a4966995292c3e0a7c29d258c242eb0bb560761b483",
+      "bytes": 3962,
+      "original_sha256": "21bc928b8acaa820bddeb08e2006f3e1b8d3bcd8025219a1edd695b69c31710e",
+      "git_status": "untracked",
+      "redacted": true,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_watchdog.py",
+      "source": "tools/studio-dashboard/test_watchdog.py",
+      "sha256": "1cd42cadb8f0c6d8adce779e3409f47ba966e36ae0c33de555f269087cd3842c",
+      "bytes": 3535,
+      "original_sha256": "1cd42cadb8f0c6d8adce779e3409f47ba966e36ae0c33de555f269087cd3842c",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_workspace.py",
+      "source": "tools/studio-dashboard/test_workspace.py",
+      "sha256": "48608c0b0e7def6d2971aba5d66b3f8fb2ae6fd95a2d2c4a5acfbd1ebf56e485",
+      "bytes": 5640,
+      "original_sha256": "48608c0b0e7def6d2971aba5d66b3f8fb2ae6fd95a2d2c4a5acfbd1ebf56e485",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/test_workspace_changes.py",
+      "source": "tools/studio-dashboard/test_workspace_changes.py",
+      "sha256": "74ea13231beafacdb869800ad12a21539411983e6fc2d757b511fd986aeca339",
+      "bytes": 5734,
+      "original_sha256": "00f4d7705ab30ffd1e033ddda4a76e647692ced160a394aa5b718288a69e65a7",
+      "git_status": "untracked",
+      "redacted": true,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/unity_console.py",
+      "source": "tools/studio-dashboard/unity_console.py",
+      "sha256": "4bd1c596e6e59ad2cc4f1e259344c68cb692315259e8db39ff1a767211d09a10",
+      "bytes": 4882,
+      "original_sha256": "4bd1c596e6e59ad2cc4f1e259344c68cb692315259e8db39ff1a767211d09a10",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/unity_status.py",
+      "source": "tools/studio-dashboard/unity_status.py",
+      "sha256": "a7319fc4f163b336d280e1b9c3d3728d4d6e0e87733e370105ddbeb1bff8a243",
+      "bytes": 17481,
+      "original_sha256": "a7319fc4f163b336d280e1b9c3d3728d4d6e0e87733e370105ddbeb1bff8a243",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/USABILITY_QA.md",
+      "source": "tools/studio-dashboard/USABILITY_QA.md",
+      "sha256": "769acca029191d5c5b0afb26f1c1e5414b2843802ebf950b4440be39c0d059ed",
+      "bytes": 6317,
+      "original_sha256": "769acca029191d5c5b0afb26f1c1e5414b2843802ebf950b4440be39c0d059ed",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/usage.py",
+      "source": "tools/studio-dashboard/usage.py",
+      "sha256": "339c8cf49a472c875518cdbf38c2a5222c22e0aaca774a4ca00f24726e225b3f",
+      "bytes": 6145,
+      "original_sha256": "339c8cf49a472c875518cdbf38c2a5222c22e0aaca774a4ca00f24726e225b3f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/VERIFICATION.md",
+      "source": "tools/studio-dashboard/VERIFICATION.md",
+      "sha256": "f81183e3a1ae33c4003fe5dc21898f6696628e6ed0e93060276dbc663d7315ed",
+      "bytes": 11609,
+      "original_sha256": "f81183e3a1ae33c4003fe5dc21898f6696628e6ed0e93060276dbc663d7315ed",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/watchdog.py",
+      "source": "tools/studio-dashboard/watchdog.py",
+      "sha256": "f597a6a12b3954c4df51fe17d074e2c15c0d955e35610430a2e20ca144ada373",
+      "bytes": 3294,
+      "original_sha256": "f597a6a12b3954c4df51fe17d074e2c15c0d955e35610430a2e20ca144ada373",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/app.css",
+      "source": "tools/studio-dashboard/web/app.css",
+      "sha256": "4c34c43b177dcc3c3f96060db349e34268b20cfc6af36d11c5aba76899c21dd8",
+      "bytes": 22085,
+      "original_sha256": "4c34c43b177dcc3c3f96060db349e34268b20cfc6af36d11c5aba76899c21dd8",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/app.js",
+      "source": "tools/studio-dashboard/web/app.js",
+      "sha256": "e9335b38974614adc665360065f89619eb35ead04d624f2b19c0ede98077df2d",
+      "bytes": 84738,
+      "original_sha256": "e9335b38974614adc665360065f89619eb35ead04d624f2b19c0ede98077df2d",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/attach.js",
+      "source": "tools/studio-dashboard/web/attach.js",
+      "sha256": "3f230ff28eaccd9611d71fce9147521d6a1b769bd51cdf9bdb0d44c5892356d7",
+      "bytes": 13548,
+      "original_sha256": "3f230ff28eaccd9611d71fce9147521d6a1b769bd51cdf9bdb0d44c5892356d7",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/composer.js",
+      "source": "tools/studio-dashboard/web/composer.js",
+      "sha256": "6ec05245b22064f21ba27db052ad780e9f4fefe0d022693666ed3df60598d133",
+      "bytes": 152494,
+      "original_sha256": "6ec05245b22064f21ba27db052ad780e9f4fefe0d022693666ed3df60598d133",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/connection.js",
+      "source": "tools/studio-dashboard/web/connection.js",
+      "sha256": "4e203f2e59342401b46d372e382a5f9e207e34013ce168eec65aba0927233742",
+      "bytes": 2266,
+      "original_sha256": "4e203f2e59342401b46d372e382a5f9e207e34013ce168eec65aba0927233742",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/index.html",
+      "source": "tools/studio-dashboard/web/index.html",
+      "sha256": "a4d5872dfb41e7a2e88daf0b3369f5dcccaffc46c2aad2a29db522e9a7325856",
+      "bytes": 7815,
+      "original_sha256": "a4d5872dfb41e7a2e88daf0b3369f5dcccaffc46c2aad2a29db522e9a7325856",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/lucide.LICENSE",
+      "source": "tools/studio-dashboard/web/lucide.LICENSE",
+      "sha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096",
+      "bytes": 3251,
+      "original_sha256": "6fc5b7332939dd5c61af3a5f97450f7bc05d4a396dd0bc21ac341716b3b05096",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/markdown-it.LICENSE",
+      "source": "tools/studio-dashboard/web/markdown-it.LICENSE",
+      "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "bytes": 1073,
+      "original_sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/markdown-it.min.js",
+      "source": "tools/studio-dashboard/web/markdown-it.min.js",
+      "sha256": "635972b985228e8af9f0143647c68616b7a3bb09f6946e7e4a52e43dcf5e7be5",
+      "bytes": 115080,
+      "original_sha256": "635972b985228e8af9f0143647c68616b7a3bb09f6946e7e4a52e43dcf5e7be5",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/notify.js",
+      "source": "tools/studio-dashboard/web/notify.js",
+      "sha256": "3d63ed4e0be463594eb3cb9b82cc9c67f6679712913d46ea86681d3b3a65f9f1",
+      "bytes": 11078,
+      "original_sha256": "3d63ed4e0be463594eb3cb9b82cc9c67f6679712913d46ea86681d3b3a65f9f1",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/organize.js",
+      "source": "tools/studio-dashboard/web/organize.js",
+      "sha256": "b1cfac08272a12c21cbe0d22046f9949d38fc25710c558c9c662dbe98e0bdd21",
+      "bytes": 80798,
+      "original_sha256": "b1cfac08272a12c21cbe0d22046f9949d38fc25710c558c9c662dbe98e0bdd21",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/product.css",
+      "source": "tools/studio-dashboard/web/product.css",
+      "sha256": "6d288ec1e0bd09dc8fbdb3f2d4f4fc269d3d1615538a13d91d395106079c1e55",
+      "bytes": 143030,
+      "original_sha256": "6d288ec1e0bd09dc8fbdb3f2d4f4fc269d3d1615538a13d91d395106079c1e55",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/queue.js",
+      "source": "tools/studio-dashboard/web/queue.js",
+      "sha256": "aff6c5e5d98ecac238bd0bb8e11ebabcbc3a353ce840431cbb3265c8cde60057",
+      "bytes": 11992,
+      "original_sha256": "aff6c5e5d98ecac238bd0bb8e11ebabcbc3a353ce840431cbb3265c8cde60057",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/reader.js",
+      "source": "tools/studio-dashboard/web/reader.js",
+      "sha256": "3956c6d212ff520dbc310cc222f3596094fce0ed2820a6ac7d517b3487a286ee",
+      "bytes": 3226,
+      "original_sha256": "3956c6d212ff520dbc310cc222f3596094fce0ed2820a6ac7d517b3487a286ee",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/teams.js",
+      "source": "tools/studio-dashboard/web/teams.js",
+      "sha256": "936d46415180254e5860e075ac8a5711c45a7b8ae3810d1fe26cebd837f37dca",
+      "bytes": 16045,
+      "original_sha256": "936d46415180254e5860e075ac8a5711c45a7b8ae3810d1fe26cebd837f37dca",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/THIRD_PARTY_NOTICES.txt",
+      "source": "tools/studio-dashboard/web/THIRD_PARTY_NOTICES.txt",
+      "sha256": "5c09aec6e27b5ea651b307ba720d772e092717e64ecf26aaf590730bf8402563",
+      "bytes": 14355,
+      "original_sha256": "5c09aec6e27b5ea651b307ba720d772e092717e64ecf26aaf590730bf8402563",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/vendor-manifest.json",
+      "source": "tools/studio-dashboard/web/vendor-manifest.json",
+      "sha256": "e0058a783160850b565bf6bf23c7eb77ba48ea954cbab1eb4c429acbe4bb890f",
+      "bytes": 466,
+      "original_sha256": "e0058a783160850b565bf6bf23c7eb77ba48ea954cbab1eb4c429acbe4bb890f",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web/workspace.js",
+      "source": "tools/studio-dashboard/web/workspace.js",
+      "sha256": "89fc97bc60313cab1940be7c1373ea84a20c682db0e1675299e9461159f87d6b",
+      "bytes": 9883,
+      "original_sha256": "89fc97bc60313cab1940be7c1373ea84a20c682db0e1675299e9461159f87d6b",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/web_host.py",
+      "source": "tools/studio-dashboard/web_host.py",
+      "sha256": "add5aa2422e04478b17f5588ee6cf7e2dad7daa884947ef3d79bdfb937462283",
+      "bytes": 1416,
+      "original_sha256": "add5aa2422e04478b17f5588ee6cf7e2dad7daa884947ef3d79bdfb937462283",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "source/tools/studio-dashboard/workspace_changes.py",
+      "source": "tools/studio-dashboard/workspace_changes.py",
+      "sha256": "debfe293c5648880d685cdf5f607234d55bd95fa79f34fa98879d9bab98c418b",
+      "bytes": 3969,
+      "original_sha256": "debfe293c5648880d685cdf5f607234d55bd95fa79f34fa98879d9bab98c418b",
+      "git_status": "untracked",
+      "redacted": false,
+      "verification": "original-byte SHA + exported SHA"
+    },
+    {
+      "path": "workflow_context/evidence/01-repository.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/01-repository.json",
+      "sha256": "845f735ac070c8a92af5a405674c404858e3171b551ff3e0d69ba9d66b8327f6",
+      "bytes": 23424,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/02-project-rules.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/02-project-rules.txt",
+      "sha256": "8faec222bf57604dfbdbaeaf1f7efaea66cf6cb9ba9b4372f788b5b57046bd0e",
+      "bytes": 35290,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/03-regression-and-connection.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/03-regression-and-connection.txt",
+      "sha256": "62a667cb1a6c43debdb4e20df9c8bb2bf3c1abceec8d60ac2ccb12631dfb11e5",
+      "bytes": 8321,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/04-hooks-gates.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/04-hooks-gates.txt",
+      "sha256": "2288fa81e8286dc4091405e6b5bbb37df5eae0c6c525fe17d07dfb7b2691cd63",
+      "bytes": 24264,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/05-hub-orchestration.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/05-hub-orchestration.txt",
+      "sha256": "b1ca648326ea0bdf24330047d3ffabcd690551d5efa33cdc228d1382b95ff70a",
+      "bytes": 45744,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/06-runtime-and-docs.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/06-runtime-and-docs.txt",
+      "sha256": "122909cf8754b98be27da6be8f699e5dbad1d9569d07ef8cbe17637e62c82978",
+      "bytes": 25374,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/07-art-pipeline.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/07-art-pipeline.txt",
+      "sha256": "88dc6c4f78476e135b40f5c219647775a0bb262d6fd80351c8e9a2639689f8d0",
+      "bytes": 29559,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/08-game-gate-record.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/08-game-gate-record.txt",
+      "sha256": "9b08cdbb330ff2e2e6314d920f68b9e840c88a686f17361deb8814fe7168034a",
+      "bytes": 12114,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/09-codex-task-records.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/09-codex-task-records.txt",
+      "sha256": "d0b0fb464f65e2c67cdf93d24197244c2d1fdbd5f7dd6f05c8c3a828abdaac33",
+      "bytes": 3239,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/10-environment-config.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/10-environment-config.json",
+      "sha256": "f22731a46f307ba3271149004cf9c09b1440d8aeb415abcbcb6a149d5420b381",
+      "bytes": 5049,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/11-dashboard-records.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/11-dashboard-records.json",
+      "sha256": "a2f591ee61e619c1542465d2e8400b948ec67ab540ddfd1a7a45490cd1af77b5",
+      "bytes": 21958,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/12-art-validation-records.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/12-art-validation-records.json",
+      "sha256": "8dacf90c826e805a0c2297f32a8ec95c53cc3f694fc2314811fad0d4008b2a37",
+      "bytes": 23442,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/13-codex-session-evidence.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/13-codex-session-evidence.json",
+      "sha256": "1cf4641a218caa5503e435dc746b514d57d4433ef4338ab78155e0b5d69fe3f7",
+      "bytes": 19134,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/14-claude-session-evidence.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/14-claude-session-evidence.json",
+      "sha256": "4978f9fd032f257e6da63f2868d2182d138f0b8f2602e32bfdbee29564430bab",
+      "bytes": 42554,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/15-regression-isolated-reproduction.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/15-regression-isolated-reproduction.json",
+      "sha256": "1794a92d1f7de853c5d9f4c401d55d638e4f7a18fc998a843747e62410e4fbf1",
+      "bytes": 3512,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/16-installed-tools.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/16-installed-tools.json",
+      "sha256": "b25b6149f4711ddb72033f79bb1f35097d3b69c12ae5ed4c9dc6e82b7d810799",
+      "bytes": 2098,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/17-supplement-code.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/17-supplement-code.txt",
+      "sha256": "8cb2efbf4155783eb4da225ab1a41e0cf1fbc8acf4fc38ff633a9bf28d45e224",
+      "bytes": 44013,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/18-live-readonly-observation.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/18-live-readonly-observation.json",
+      "sha256": "42f1f58b19933b8a529cb0158868a8f69d93d0fdb9022adcf986f74855eae37d",
+      "bytes": 1679,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/19-warmgrade-verifier-results.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/19-warmgrade-verifier-results.json",
+      "sha256": "e4c1537382e6d1202ad0e5d817c9bb397bbc73965e5887e81b190f90331bc16c",
+      "bytes": 1627,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/20-cycle-timestamps.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/20-cycle-timestamps.json",
+      "sha256": "ef0eee8cb57a7fc5e57bfabd455293bb91c8bf581e268e6a4044679eb782e37a",
+      "bytes": 13150,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/21-image-generation-history.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/21-image-generation-history.json",
+      "sha256": "1ab25a17aef9d8c5712ccc5c85e67f235efcc48e1814d0f3021f83dde8cac0ed",
+      "bytes": 12217,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/22-density-brief.txt",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/22-density-brief.txt",
+      "sha256": "5b69d9eb67b7465427607a30b92e14149715cc63171d0a508e3a3e1e9080f6a6",
+      "bytes": 3309,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence/23-commit-and-protected-files.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence/23-commit-and-protected-files.json",
+      "sha256": "513e599e9b6502b4fd4d1b06aa00b34b09e92f819cfd245d9b4b8210d37f9d52",
+      "bytes": 3157,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/evidence_manifest.json",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/evidence_manifest.json",
+      "sha256": "0eb780653cc1354ed1a096759fe1fcda5e3f136c1465c2a3578af6d12b68c7d1",
+      "bytes": 31791,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    },
+    {
+      "path": "workflow_context/WORKFLOW_HANDOFF.md",
+      "source": "docs/workflow-audits/2026-10-17-1905-local/WORKFLOW_HANDOFF.md",
+      "sha256": "7435ec7106d3daa18e27c9f4eac6d66305fc263277a759ef43652010573474c9",
+      "bytes": 47519,
+      "original_sha256": null,
+      "git_status": "new audit artifact / earlier local audit copy",
+      "redacted": true,
+      "verification": "SHA-256 of included file; provenance/scope in README"
+    }
+  ],
+  "manifest_self_hash": "not embedded; the whole ZIP SHA is recorded externally in delivery-receipt.json",
+  "exclusions": [
+    {
+      "pattern": ".runtime/, *.sqlite3, full session JSONL",
+      "reason": "raw conversations and runtime credentials"
+    },
+    {
+      "pattern": ".env, providers.local.json, auth/cookies/global config",
+      "reason": "credentials and private settings"
+    },
+    {
+      "pattern": "game Assets/Library/Temp, node_modules, .venv, .git",
+      "reason": "large unrelated/generated/dependency data"
+    },
+    {
+      "pattern": "diagnostics/target-agent.local",
+      "reason": "local-only conversation selector"
+    },
+    {
+      "pattern": "__pycache__, archive itself, delivery receipt",
+      "reason": "generated cache / circular archive hash"
+    }
+  ]
+}

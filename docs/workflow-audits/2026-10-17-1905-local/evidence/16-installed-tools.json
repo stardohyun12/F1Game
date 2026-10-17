@@ -1,0 +1,84 @@
+{
+  "versions": [
+    {
+      "command": [
+        "C:\\Users\\<USER>\\.local\\bin\\claude.exe",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "2.1.293 (Claude Code)"
+    },
+    {
+      "command": [
+        "powershell",
+        "-NoProfile",
+        "-Command",
+        "codex --version"
+      ],
+      "exit_code": 0,
+      "stdout": "codex-cli 0.154.0"
+    },
+    {
+      "command": [
+        "D:/Tools/Blender/blender.exe",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:37:04"
+    },
+    {
+      "command": [
+        "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe",
+        "-c",
+        "import importlib.metadata as m; print(m.version(\"claude-agent-sdk\"))"
+      ],
+      "exit_code": 0,
+      "stdout": "0.2.165"
+    }
+  ],
+  "Unity_descriptors": [
+    {
+      "source": "C:\\Users\\<USER>\\.unity-cli\\instances\\d3e0535abf93fc4d.json",
+      "descriptor": {
+        "projectPath": "D:/Github/F1Game/F1",
+        "unityVersion": "6000.3.19f1",
+        "state": "ready",
+        "port": 8090,
+        "pid": 3536
+      },
+      "note": "Saved descriptor alone is not liveness evidence; no editor request made"
+    }
+  ],
+  "Unity_connector_packages": [
+    {
+      "path": "F1\\Library\\PackageCache\\com.youngwoocho02.unity-cli-connector@fbc0d1057e5f\\package.json",
+      "name": "com.youngwoocho02.unity-cli-connector",
+      "version": "0.3.18"
+    }
+  ],
+  "Claude_MCP_allowlist": [
+    {
+      "scope": "global",
+      "name": "comfyui",
+      "command": "cmd",
+      "url_configured": false,
+      "env_presence": {
+        "COMFYUI_URL": true
+      }
+    },
+    {
+      "scope": "global",
+      "name": "knowledge-keeper",
+      "command": "node",
+      "url_configured": false,
+      "env_presence": {}
+    },
+    {
+      "scope": "global",
+      "name": "unity-editor-mcp",
+      "command": "unity",
+      "url_configured": false,
+      "env_presence": {}
+    }
+  ]
+}

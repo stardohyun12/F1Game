@@ -1,0 +1,34 @@
+{
+  "commit": "906f8994e9533f9953f775d292831f8f8586bf8c",
+  "commit_body_without_identity_trailers": "feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)\n\nCodex 가 못 마친 town-density 브리프를 Claude 가 수행한 비교용 산출물 (D-096 로파이 규칙 안).\n- lofi_pilot.py: 아틀라스 칸 8개·소품 함수 16개 추가(기존 칸·rng 순서 보존). 차양·화분·벤치·드럼통·실외기·벽등·빨랫줄·간판3·볼라드·상자더미·횡단보도·맨홀·배수구.\n- CoastalPropsBuilder: 16종 프리팹(바닥=MeshCollider, 작은 것=Box, 데칼·벽걸이=없음).\n- CoastalTownDensity: 건물당 앞 2~3 + 옆 1~2 + 벽걸이(차양/실외기/벽등), hash 결정적. 교차로 팔마다 횡단보도, 직선 셀 맨홀 1/3·배수구 1/2.\n- CoastalTownInstaller: Codex hash%4 상자 규칙 → 밀도 훅, 벽걸이는 바닥높이 검사 제외, 메뉴 \"Rebuild Layout + Install\".\n- CoastalTownSmoke: 배달 라벨 ActivateRoute(더미 런 route 잔존 버그), runInBackground(에디터 뒤에 있으면 frame 1 고정으로 바닥 0.34 오판).\n\nVerified-By: verifier 18:36 PASS — 컴파일 0, 회귀 12 PASS / 1 FAIL(기존 CargoPolyBudget), Play 예외 0, CoastalTownSmoke 8/8 SUCCESS, validation.txt 도로 297/297·바닥 샘플 1554 이상 없음. graphic-gate 18:36 FAIL 5/10 (Codex 1차 4/10) — 7 미만이라 \"됐다\" 아님, 비교 기록용 커밋.\nFeels-off: 도로·보도·잔디가 여전히 넓고 빈 평면 — 연석·얼룩·균열, 가로수·가로등·쓰레기통이 없어 소품이 건물 벽에만 붙어 있고 바닥은 그대로 민무늬. 02 외곽은 하늘·잔디 경계가 끊겨 원경이 허공.\nScreenshot: art/source/coastal-town/01_ingame_neighborhood.png\n",
+  "changed_file_count": 134,
+  "changed_code_and_record_files": [
+    ".ai_logs/codex-town-density-2026-10-13.log",
+    "F1/Assets/ComplexTrack.unity",
+    "F1/Assets/Editor/CoastalPropsBuilder.cs",
+    "F1/Assets/Editor/CoastalTownDensity.cs",
+    "F1/Assets/Editor/CoastalTownInstaller.cs",
+    "F1/Assets/Editor/CoastalTownSmoke.cs",
+    "art/source/coastal-town/README.md",
+    "art/source/coastal-town/play-verification.txt",
+    "art/source/coastal-town/validation.txt",
+    "docs/gates/2026-10-13.md",
+    "tools/asset-gen/lofi_pilot.py"
+  ],
+  "protected_file_current_comparison": [
+    {
+      "path": "F1\\Assets\\Editor\\CoastalTownDensity.cs",
+      "historical_after_sha256": "1241a56f0a29c8f35da3b88fbd689ee64afa65840a0167294d8393b8303f6a3b",
+      "current_sha256": "38b076a08efc3f413ec80c1f383bf2c94da4ceb7061b14f1bed06d4fadae6ba4",
+      "matches_historical": false
+    },
+    {
+      "path": "F1\\Assets\\Editor\\CoastalPropsBuilder.cs",
+      "historical_after_sha256": "0ba0890e41dfba9854dbe7989b72f958e41e3c879177d39c3c8133df24d52a67",
+      "current_sha256": "0ba0890e41dfba9854dbe7989b72f958e41e3c879177d39c3c8133df24d52a67",
+      "matches_historical": true
+    }
+  ],
+  "current_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+  "current_staged_stat": ""
+}

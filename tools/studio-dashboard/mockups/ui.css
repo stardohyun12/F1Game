@@ -1,0 +1,81 @@
+/* PitCrew 작업실 — 한 벌 스타일. 기준: Claude Code 데스크톱·Codex 앱의 어두운 화면 (선 대신 면, 라벨은 보통 글씨, 강조색 하나) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap');
+:root{
+  --bg:#141414;--side:#101010;--sur:#1c1c1c;--sur2:#242424;--sur3:#2c2c2c;
+  --line:rgba(255,255,255,.06);--line2:rgba(255,255,255,.11);
+  --ink:#ececec;--ink2:#b9b9b9;--mute:#8a8a8a;--dim:#5a5a5a;
+  --acc:#d9a26b;--ok:#79c99e;--run:#7fb2f0;--warn:#e6b45c;--err:#e5736d;
+  --sans:"Inter","Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono","Cascadia Mono",ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.6 var(--sans);-webkit-font-smoothing:antialiased;display:grid;grid-template-rows:48px 1fr;height:100vh;overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.mono{font-family:var(--mono);font-size:12px}
+.mute{color:var(--mute)}.dim{color:var(--dim)}.small{font-size:12.5px}
+.lbl{font-size:12px;color:var(--mute);margin-bottom:4px}
+
+/* 상단 */
+.top{display:flex;align-items:center;gap:6px;padding:0 16px;border-bottom:1px solid var(--line)}
+.top .brand{font-weight:600;letter-spacing:.01em;margin-right:14px;display:flex;align-items:center;gap:8px}
+.top .brand i{width:8px;height:8px;border-radius:50%;background:var(--acc);display:inline-block}
+.top .tab{padding:6px 12px;border-radius:8px;color:var(--mute);font-weight:500}
+.top .tab.on{color:var(--ink);background:var(--sur2)}
+.top .sp{flex:1}
+.top .proj{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:var(--sur);color:var(--ink2);font-size:13px}
+.top .proj:after{content:"⌄";color:var(--mute)}
+.top .st{display:flex;align-items:center;gap:7px;color:var(--mute);font-size:12.5px;margin-left:14px}
+.top .st i{width:7px;height:7px;border-radius:50%;background:var(--run);display:inline-block}
+
+/* 점·태그 */
+.dot{width:7px;height:7px;border-radius:50%;background:var(--dim);display:inline-block;flex:none}
+.dot.run{background:var(--run);box-shadow:0 0 0 3px rgba(127,178,240,.18)}.dot.wait{background:var(--warn)}.dot.ok{background:var(--ok)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:2px 8px;border-radius:999px;background:var(--sur3);color:var(--ink2)}
+.pill.ok{color:var(--ok);background:rgba(121,201,158,.12)}.pill.run{color:var(--run);background:rgba(127,178,240,.12)}.pill.warn{color:var(--warn);background:rgba(230,180,92,.12)}.pill.acc{color:#1a1a1a;background:var(--acc)}
+
+/* 면 */
+.card{background:var(--sur);border-radius:12px;padding:14px 16px}
+.card.sel{box-shadow:0 0 0 1.5px var(--acc)}
+.card.ghost{background:transparent;box-shadow:inset 0 0 0 1px var(--line2);color:var(--mute)}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+
+/* 입력창 (Claude Code 꼴) */
+.compose{background:var(--sur);border-radius:14px;box-shadow:inset 0 0 0 1px var(--line2)}
+.compose textarea{width:100%;background:none;border:0;color:var(--ink);font:14px/1.6 var(--sans);padding:14px 16px 6px;resize:none;outline:none;height:70px}
+.compose textarea::placeholder{color:var(--dim)}
+.compose .row{display:flex;align-items:center;gap:4px;padding:4px 10px 10px}
+.compose .row .sp{flex:1}
+.ib{width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:var(--mute);font-size:15px}
+.ib:hover{background:var(--sur2);color:var(--ink)}
+.sel-chip{padding:5px 10px;border-radius:8px;color:var(--ink2);font-size:12.5px}
+.sel-chip:after{content:" ⌄";color:var(--mute)}
+.send{width:32px;height:32px;border-radius:9px;background:var(--acc);color:#1a1a1a;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+
+/* 메시지 */
+.me{align-self:flex-end;max-width:76%;background:var(--sur2);border-radius:16px 16px 4px 16px;padding:10px 14px}
+.ai{max-width:100%}
+.ai .who{font-size:12px;color:var(--mute);margin-bottom:6px;display:flex;gap:8px;align-items:center}
+.ai .who b{color:var(--ink2);font-weight:500}
+.ai p{margin:0 0 10px}
+.tool{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:13px;padding:3px 0}
+.tool .c{width:14px;color:var(--dim);font-size:10px}
+.tool b{font-weight:500;color:var(--ink2)}
+.tool .path{font-family:var(--mono);font-size:12px;color:var(--mute)}
+.tool .plus{color:var(--ok)}.tool .minus{color:var(--err)}
+.tool.open .c{transform:rotate(90deg)}
+.diff{margin:4px 0 8px 22px;padding:8px 12px;border-radius:8px;background:var(--side);font-family:var(--mono);font-size:12px;color:var(--mute);white-space:pre}
+.diff .p{color:var(--ok)}
+.thumb{display:inline-block;width:168px;height:94px;border-radius:8px;background:linear-gradient(135deg,#1a3a52,#4a9cb0 60%,#c7d9e2);vertical-align:middle;margin:2px 8px 6px 0}
+.thumb.warm{background:linear-gradient(135deg,#52301a,#c0663a 60%,#f0d8b8)}
+.fileCard{display:inline-flex;align-items:center;gap:10px;background:var(--sur);border-radius:10px;padding:8px 12px;margin:2px 8px 6px 0}
+.fileCard .ic{width:30px;height:30px;border-radius:7px;background:var(--sur3);display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--ink2)}
+.fileCard small{display:block;color:var(--mute);font-size:11.5px}
+.foot{font-size:11.5px;color:var(--dim);margin-top:4px}
+.link{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mute);padding:6px 0}
+.link b{color:var(--acc);font-weight:500}
+.link .arrow{color:var(--dim)}
+.ask{background:rgba(230,180,92,.08);border-radius:12px;padding:12px 14px;box-shadow:inset 0 0 0 1px rgba(230,180,92,.25)}
+.ask .lbl{color:var(--warn)}
+.ask .btns{display:flex;gap:6px;margin-top:10px}
+.ask .btns button{padding:5px 12px;border-radius:8px;background:var(--sur2);font-size:13px}
+.ask .btns button.y{background:var(--warn);color:#1a1a1a;font-weight:500}

@@ -1,0 +1,72 @@
+﻿[
+    {
+        "pid":  10596,
+        "parentPid":  11548,
+        "executable":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe",
+        "startedUtc":  "2026-10-15T02:42:01.3937190Z",
+        "command":  "\"D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe\" -X utf8 \"D:\\Github\\F1Game\\tools\\studio-dashboard\\watchdog.py\" --port 7878"
+    },
+    {
+        "pid":  22608,
+        "parentPid":  10596,
+        "executable":  "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\pythonw.exe",
+        "startedUtc":  "2026-10-15T02:42:01.4449010Z",
+        "command":  "\"D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe\" -X utf8 \"D:\\Github\\F1Game\\tools\\studio-dashboard\\watchdog.py\" --port 7878"
+    },
+    {
+        "pid":  7408,
+        "parentPid":  37392,
+        "executable":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe",
+        "startedUtc":  "2026-10-15T03:43:59.5276910Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    },
+    {
+        "pid":  38576,
+        "parentPid":  7408,
+        "executable":  "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "startedUtc":  "2026-10-15T03:43:59.5459230Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    },
+    {
+        "pid":  34964,
+        "parentPid":  43476,
+        "executable":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe",
+        "startedUtc":  "2026-10-15T15:26:37.3320260Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    },
+    {
+        "pid":  37144,
+        "parentPid":  34964,
+        "executable":  "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "startedUtc":  "2026-10-15T15:26:37.3834210Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    },
+    {
+        "pid":  33248,
+        "parentPid":  22608,
+        "executable":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe",
+        "startedUtc":  "2026-10-15T15:49:21.8665170Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe -X utf8 -u D:\\Github\\F1Game\\tools\\studio-dashboard\\web_host.py --port 7878"
+    },
+    {
+        "pid":  39668,
+        "parentPid":  33248,
+        "executable":  "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\pythonw.exe",
+        "startedUtc":  "2026-10-15T15:49:21.8856240Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\pythonw.exe -X utf8 -u D:\\Github\\F1Game\\tools\\studio-dashboard\\web_host.py --port 7878"
+    },
+    {
+        "pid":  35348,
+        "parentPid":  11596,
+        "executable":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe",
+        "startedUtc":  "2026-10-16T10:54:43.5397350Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    },
+    {
+        "pid":  19020,
+        "parentPid":  35348,
+        "executable":  "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "startedUtc":  "2026-10-16T10:54:43.5900070Z",
+        "command":  "D:\\Github\\F1Game\\tools\\studio-dashboard\\.venv\\Scripts\\python.exe -X utf8 D:\\Github\\F1Game\\tools\\studio-dashboard\\runtime.py --serve"
+    }
+]

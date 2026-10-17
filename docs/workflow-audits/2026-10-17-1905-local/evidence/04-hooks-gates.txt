@@ -1,0 +1,436 @@
+{"path": ".claude/hooks/stop.sh", "source_sha256": "2f2d4141bbb198928b9edabf730fdff56eab0325312013c835ede9c16d1ebc63", "git_status": "M .claude/hooks/stop.sh", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 250]]}
+1: #!/usr/bin/env bash
+2: # PitCrew Stop hook
+3: # Claude turn 종료 직전 자동 검증:
+4: #   1) unity-cli console --type error — 컴파일 에러 있으면 block (Claude 다시 진입해서 fix)
+5: #   2) 이번 turn에 .cs 변경 있으면 manual play 검증 reminder (block 아님)
+6: # Editor 안 켜졌으면 unity-cli timeout — silent skip.
+7: 
+8: set -euo pipefail
+9: 
+10: # 머신별 분기는 scripts/ucli.sh 가 한다 (본가 데탑 exe / 노트북 HTTP 대체). 2026-10-12
+11: UNITY_CLI="$(cd "$(dirname "$0")/../.." && pwd)/scripts/ucli.sh"
+12: 
+13: # 0) Editor 도달성 확인 — 검증 가능 여부를 먼저 안다 (false-green 방지).
+14: # unity-cli status 가 5s 안에 정상 응답하면 1, 아니면 0.
+15: UNITY_REACHABLE=0
+16: if [ -f "$UNITY_CLI" ]; then
+17:   if timeout 5 bash "$UNITY_CLI" status >/dev/null 2>&1; then
+18:     UNITY_REACHABLE=1
+19:   fi
+20: fi
+21: 
+22: # 0.5) 이번 turn 시스템 파일(.cs/.unity/.asset) 변경 여부 (uncommitted + staged)
+23: SYS_DIRTY=0
+24: if command -v git >/dev/null 2>&1; then
+25:   SYS_DIRTY=$( { git diff --name-only 2>/dev/null; git diff --cached --name-only 2>/dev/null; } \
+26:     | grep -cE '\.(cs|unity|asset)$' || true)
+27: fi
+28: 
+29: # Editor 미연결인데 시스템 변경 있음 → 검증 불가 = false-green 위험. 크게 경고 (block 아님).
+30: if [ "$UNITY_REACHABLE" -eq 0 ] && [ "$SYS_DIRTY" -gt 0 ]; then
+31:   cat <<EOF
+32: {
+33:   "hookSpecificOutput": {
+34:     "hookEventName": "Stop",
+35:     "additionalContext": "⚠⚠ 검증 불가 (false-green 위험): Editor 미연결(unity-cli status 무응답)인데 시스템 파일(.cs/.unity/.asset) ${SYS_DIRTY}개 변경됨. 컴파일/런타임 검증이 이번 turn에 한 번도 안 돌았다. 완료 보고 금지. → Editor 켜고 'unity-cli editor refresh --compile' + 'bash scripts/regression-check.sh'로 회귀 점검 후 마무리."
+36:   }
+37: }
+38: EOF
+39: fi
+40: 
+41: # 1) Unity 컴파일 에러 체크 (timeout 5s) — Editor 연결됐을 때만 의미 있음
+42: ERRORS_RAW=""
+43: if [ "$UNITY_REACHABLE" -eq 1 ]; then
+44:   ERRORS_RAW=$(timeout 5 bash "$UNITY_CLI" console --type error 2>/dev/null || true)
+45: fi
+46: 
+47: # 무시할 noise 패턴:
+48: #  - unity-cli 시작 메시지
+49: #  - Unity Connect / Auth / TokenExchange — 네트워크 noise, 우리 코드 무관
+50: #  - 존재 안 하는 메뉴 실행 (no menu named) — exec 실패는 stderr로 잡힘
+51: ERRORS_TRIMMED=$(echo "$ERRORS_RAW" \
+52:   | grep -v "HTTP server started" \
+53:   | grep -v "ProcessInitializeOnLoadAttributes" \
+54:   | grep -v "UnityConnectWebRequestException" \
+55:   | grep -v "TokenExchange" \
+56:   | grep -v "UnityEditor.Connect" \
+57:   | grep -v "ServiceToken" \
+58:   | grep -v "no menu named" \
+59:   | grep -v "ExecuteMenuItem failed" \
+60:   | grep -v '^\[$' | grep -v '^\]$' | grep -v '^\s*"\s*$' \
+61:   | tr -d '[:space:]' || true)
+62: 
+63: if [ -n "$ERRORS_TRIMMED" ] && [ "$ERRORS_TRIMMED" != "[]" ]; then
+64:   # 진짜 에러 — block
+65:   ERRORS_ESCAPED=$(echo "$ERRORS_RAW" | sed 's/"/\\"/g' | tr '\n' ' ')
+66:   cat <<EOF
+67: {
+68:   "decision": "block",
+69:   "reason": "Unity 컴파일 에러 — 완료 보고 전 fix 필요: ${ERRORS_ESCAPED}"
+70: }
+71: EOF
+72:   exit 0
+73: fi
+74: 
+75: # 2) 최근 commit 중 verifier 흔적 없는 시스템 변경 commit 검출 (D-073 강제)
+76: # .cs / .unity / .asset 파일 건드린 commit인데 message에 'verifier'/'verified'
+77: # 흔적 없으면 block. 사소한 docs/markdown/hook commit은 skip.
+78: if command -v git >/dev/null 2>&1; then
+79:   UNVERIFIED=""
+80:   while IFS='|' read -r SHA SUBJECT; do
+81:     [ -z "$SHA" ] && continue
+82:     # 이 commit이 건드린 파일 — 시스템 변경 (.cs/.unity/.asset) 있나?
+83:     SYS_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null | grep -E '\.(cs|unity|asset)$' || true)
+84:     [ -z "$SYS_FILES" ] && continue
+85:     BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+86:     # skip 옵션: '[skip-verifier]' 명시되면 통과 (단순 fix)
+87:     if echo "$BODY" | grep -qi 'skip-verifier'; then
+88:       continue
+89:     fi
+90:     # 형식 말고 결과 검증 (D-073): 'Verified-By:' 줄 뒤에 실질 내용이 있어야 통과.
+91:     #   - 'Verified-By:' 줄이 없으면 위반.
+92:     #   - 있어도 뒤 내용이 공허("OK"/"통과" 등 한 단어)거나 12자 미만이면 위반.
+93:     VLINE=$(echo "$BODY" | grep -iE '^[[:space:]]*Verified-By:' | head -1 || true)
+94:     if [ -z "$VLINE" ]; then
+95:       UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By: 줄 없음)\n"
+96:       continue
+97:     fi
+98:     EVIDENCE=$(echo "$VLINE" | sed -E 's/^[[:space:]]*Verified-By:[[:space:]]*//I')
+99:     EVID_TRIM=$(echo "$EVIDENCE" | tr -d '[:space:]')
+100:     # 공허한 한 단어 (대소문자 무시)
+101:     if echo "$EVID_TRIM" | grep -qiE '^(ok|통과|done|pass|passed|yes|완료|확인|green|allgreen)$'; then
+102:       UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By 내용 공허: '${EVIDENCE}')\n"
+103:     elif [ "${#EVID_TRIM}" -lt 12 ]; then
+104:       UNVERIFIED="${UNVERIFIED}- ${SHA:0:7} ${SUBJECT:0:80} (Verified-By 내용 너무 짧음: '${EVIDENCE}')\n"
+105:     fi
+106:   done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+107: 
+108:   if [ -n "$UNVERIFIED" ]; then
+109:     REASON="최근 30분 시스템 변경(.cs/.unity/.asset) commit의 검증 증거 부실 (D-073, 형식 아닌 결과 검증):\\n${UNVERIFIED}\\n→ 조치: (a) verifier subagent dispatch 또는 'bash scripts/regression-check.sh' 실행 후, commit body에 'Verified-By: <실제 측정/단언 결과 12자 이상>' 추가 (git commit --amend). 'OK'/'통과' 같은 한 단어 금지 — 무엇을 어떻게 확인했는지. 또는 (b) 단순 fix면 commit message에 '[skip-verifier]' 명시."
+110:     cat <<EOF
+111: {
+112:   "decision": "block",
+113:   "reason": "${REASON}"
+114: }
+115: EOF
+116:     exit 0
+117:   fi
+118: fi
+119: 
+120: # 2.5) 화면(UI/카메라/마커) 변경 commit에 'Feels-off:' 한 줄 강제 (game-craft-upgrade ①)
+121: # 화면 파일: .cs (UI/Camera/Marker/Canvas/HUD/Screen/Tooltip 경로) / .unity / .prefab
+122: if command -v git >/dev/null 2>&1; then
+123:   MISSING_FEELS=""
+124:   while IFS='|' read -r SHA SUBJECT; do
+125:     [ -z "$SHA" ] && continue
+126:     # 이 commit이 건드린 화면 파일 있나?
+127:     VISUAL_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null \
+128:       | grep -E '\.(unity|prefab)$|.*(UI|Camera|Marker|Canvas|HUD|Screen|Tooltip).*\.cs$' || true)
+129:     [ -z "$VISUAL_FILES" ] && continue
+130:     # commit body에 'Feels-off:' 있나?
+131:     BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+132:     if ! echo "$BODY" | grep -qi 'Feels-off:'; then
+133:       MISSING_FEELS="${MISSING_FEELS}- ${SHA:0:7} ${SUBJECT:0:80}\n"
+134:     fi
+135:   done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+136: 
+137:   if [ -n "$MISSING_FEELS" ]; then
+138:     REASON="최근 30분 화면(UI/카메라/마커/.unity/.prefab) 변경 commit에 'Feels-off:' 누락 (no-compromise §10 위반):\\n${MISSING_FEELS}\\n→ 조치: commit body에 'Feels-off: <아직 어색한 점 1개>' 추가 (git commit --amend). '다 좋음'/'없음' 금지 — 무조건 구체적으로 1개."
+139:     cat <<EOF
+140: {
+141:   "decision": "block",
+142:   "reason": "${REASON}"
+143: }
+144: EOF
+145:     exit 0
+146:   fi
+147: fi
+148: 
+149: # 2.6) 화면 변경 commit에 스크린샷 강제 (game-craft-upgrade ③)
+150: # 화면 파일 건드린 commit은 body에 'Screenshot: <경로>' + 그 파일이 실제 존재해야 함.
+151: # 목적: 화면 바꾸면 결과를 눈으로 보게 강제 (PitCrew/Capture/Auto Screenshot 메뉴로 캡처).
+152: if command -v git >/dev/null 2>&1; then
+153:   MISSING_SHOT=""
+154:   while IFS='|' read -r SHA SUBJECT; do
+155:     [ -z "$SHA" ] && continue
+156:     VISUAL_FILES=$(git show --name-only --format="" "$SHA" 2>/dev/null \
+157:       | grep -E '\.(unity|prefab)$|.*(UI|Camera|Marker|Canvas|HUD|Screen|Tooltip).*\.cs$' || true)
+158:     [ -z "$VISUAL_FILES" ] && continue
+159:     BODY=$(git show -s --format=%B "$SHA" 2>/dev/null)
+160:     # 'Screenshot:' 줄에서 경로 추출
+161:     SHOT_PATH=$(echo "$BODY" | grep -ioE 'Screenshot:[[:space:]]*[^[:space:]]+' | head -1 | sed -E 's/.*Screenshot:[[:space:]]*//I' || true)
+162:     if [ -z "$SHOT_PATH" ] || [ ! -f "$SHOT_PATH" ]; then
+163:       MISSING_SHOT="${MISSING_SHOT}- ${SHA:0:7} ${SUBJECT:0:70} (경로='${SHOT_PATH:-없음}')\n"
+164:     fi
+165:   done < <(git log --since='30 minutes ago' --format='%H|%s' 2>/dev/null)
+166: 
+167:   if [ -n "$MISSING_SHOT" ]; then
+168:     REASON="최근 30분 화면 변경 commit에 스크린샷 누락 (no-compromise §10 ③ 위반):\\n${MISSING_SHOT}\\n→ 조치: Play 중 'unity-cli menu \"PitCrew/Capture/Auto Screenshot\"' 실행 → docs/screenshots/auto/ 에 png 생성 → commit body에 'Screenshot: docs/screenshots/auto/auto_XXXX.png' 추가 (git commit --amend). 경로의 파일이 실제 존재해야 통과."
+169:     cat <<EOF
+170: {
+171:   "decision": "block",
+172:   "reason": "${REASON}"
+173: }
+174: EOF
+175:     exit 0
+176:   fi
+177: fi
+178: 
+179: # 3) 이번 turn .cs 변경 체크 (uncommitted) — <USER> manual play reminder
+180: CS_CHANGED=0
+181: if command -v git >/dev/null 2>&1; then
+182:   CS_CHANGED=$(git diff --name-only 2>/dev/null | grep -c "\.cs$" || true)
+183:   CS_STAGED=$(git diff --cached --name-only 2>/dev/null | grep -c "\.cs$" || true)
+184:   CS_CHANGED=$((CS_CHANGED + CS_STAGED))
+185: fi
+186: 
+187: # 2026-10-13: 게이트 기록(docs/gates/오늘.md)이 변경된 .cs 보다 새로우면 이미 검증된 것 — 매 stop 마다 반복 알림 안 함.
+188: GATE_FILE="$(cd "$(dirname "$0")/../.." && pwd)/docs/gates/$(date +%Y-%m-%d).md"
+189: # 2026-10-14: 자정이 지나 오늘 파일이 아직 없으면 가장 최근 게이트 파일로 (새벽 작업 때 반복 알림 방지)
+190: [ -f "$GATE_FILE" ] || GATE_FILE="$(ls -t "$(cd "$(dirname "$0")/../.." && pwd)"/docs/gates/*.md 2>/dev/null | head -1)"
+191: GATED=0
+192: if [ "$CS_CHANGED" -gt 0 ] && [ -f "$GATE_FILE" ]; then
+193:   NEWEST_CS=0
+194:   for f in $( { git diff --name-only; git diff --cached --name-only; } 2>/dev/null | grep "\.cs$"); do
+195:     m=$(stat -c %Y "$f" 2>/dev/null || echo 0); [ "$m" -gt "$NEWEST_CS" ] && NEWEST_CS=$m
+196:   done
+197:   GATE_M=$(stat -c %Y "$GATE_FILE" 2>/dev/null || echo 0)
+198:   [ "$GATE_M" -ge "$NEWEST_CS" ] && GATED=1
+199: fi
+200: 
+201: if [ "$CS_CHANGED" -gt 0 ] && [ "$GATED" -eq 0 ]; then
+202:   cat <<EOF
+203: {
+204:   "hookSpecificOutput": {
+205:     "hookEventName": "Stop",
+206:     "additionalContext": ".cs 파일 ${CS_CHANGED}개 변경됨 (미커밋). manual play 또는 verifier subagent dispatch 권장."
+207:   }
+208: }
+209: EOF
+210: fi
+
+{"path": ".claude/settings.json", "source_sha256": "1dddb7bf2936499e913611ecf71509f0c9d9613635c2c936f900581a2d074301", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 250]]}
+1: {
+2:   "hooks": {
+3:     "SessionStart": [
+4:       {
+5:         "matcher": "*",
+6:         "hooks": [
+7:           {
+8:             "type": "command",
+9:             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"",
+10:             "timeout": 10
+11:           }
+12:         ]
+13:       }
+14:     ],
+15:     "SessionEnd": [
+16:       {
+17:         "matcher": "*",
+18:         "hooks": [
+19:           {
+20:             "type": "command",
+21:             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.sh\"",
+22:             "timeout": 10
+23:           }
+24:         ]
+25:       }
+26:     ],
+27:     "Stop": [
+28:       {
+29:         "matcher": "*",
+30:         "hooks": [
+31:           {
+32:             "type": "command",
+33:             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop.sh\"",
+34:             "timeout": 10
+35:           },
+36:           {
+37:             "type": "command",
+38:             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
+39:             "timeout": 10
+40:           },
+41:           {
+42:             "type": "command",
+43:             "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+44:             "timeout": 10
+45:           }
+46:         ]
+47:       }
+48:     ],
+49:     "SubagentStop": [
+50:       {
+51:         "matcher": "*",
+52:         "hooks": [
+53:           {
+54:             "type": "command",
+55:             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
+56:             "timeout": 10
+57:           }
+58:         ]
+59:       }
+60:     ],
+61:     "Notification": [
+62:       {
+63:         "matcher": "*",
+64:         "hooks": [
+65:           {
+66:             "type": "command",
+67:             "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+68:             "timeout": 10
+69:           }
+70:         ]
+71:       }
+72:     ],
+73:     "PreToolUse": [
+74:       {
+75:         "matcher": "AskUserQuestion",
+76:         "hooks": [
+77:           {
+78:             "type": "command",
+79:             "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
+80:             "timeout": 10
+81:           }
+82:         ]
+83:       },
+84:       {
+85:         "matcher": "Agent|Task",
+86:         "hooks": [
+87:           {
+88:             "type": "command",
+89:             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
+90:             "timeout": 10
+91:           }
+92:         ]
+93:       }
+94:     ],
+95:     "UserPromptSubmit": [
+96:       {
+97:         "matcher": "*",
+98:         "hooks": [
+99:           {
+100:             "type": "command",
+101:             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/feedback-detect.sh\"",
+102:             "timeout": 10
+103:           }
+104:         ]
+105:       }
+106:     ]
+107:   }
+108: }
+
+{"path": ".claude/agents/verifier.md", "source_sha256": "0f4e610173f50cdf95948f8b7bb5417ff31bbe300de50cb2f02439be0fdf5e59", "git_status": "M .claude/agents/verifier.md", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 250]]}
+1: ---
+2: name: verifier
+3: description: 검증 전용. 컴파일·회귀 하네스·런타임 예외를 실제로 돌려 숫자만 보고한다. 해석·변명·"대체로 괜찮음" 금지. 코드/씬/에셋을 바꾼 뒤 커밋 전에 호출. Unity 에디터는 하나라 Play 는 이 에이전트만 쓴다(직렬).
+4: tools: Bash, Read, Glob, Grep, Write
+5: model: haiku
+6: ---
+7: 
+8: 너는 **계측기**다. 돌리고, 읽고, 숫자를 적는다. 결과를 좋게 해석하지 않는다.
+9: 
+10: ## 절차 (순서대로, 빠뜨리면 그 항목은 "미실행"으로 적는다)
+11: 1. Editor 연결: `bash scripts/ucli.sh status` → 포트가 안 나오면 여기서 멈추고 "Editor 미연결"로 보고.
+12: 2. 컴파일: `bash scripts/ucli.sh exec "UnityEditor.AssetDatabase.Refresh(); UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation(); return \"ok\";"` → 25초 대기 → `bash scripts/ucli.sh console --type error` 결과를 그대로 기록(빈 배열 `[]` 이면 0건).
+13: 3. 씬 상태: 호출자가 "씬을 저장하지 않은 실험 상태"라고 했는지와 무관하게, 회귀는 **저장된 씬**으로 돈다.
+14:    `bash scripts/ucli.sh exec "var s=UnityEditor.SceneManagement.EditorSceneManager.OpenScene(\"Assets/ComplexTrack.unity\"); return s.name+\" dirty=\"+s.isDirty;"`
+15: 4. 회귀: `bash scripts/regression-check.sh` 전체 출력에서 PASS/FAIL/SKIP 줄과 `=== 결과` 줄을 기록.
+16: 5. Play 뒤 정리: `bash scripts/ucli.sh status` 가 ready 인지, `console --type error` 에 Exception 이 있는지.
+17: 
+18: ## 보고 (한국어, 이 틀 그대로)
+19: ```
+20: Editor: 연결(포트 N) / 미연결
+21: 컴파일 에러: N건 (내용 1~3줄)
+22: 회귀: P PASS / F FAIL / S SKIP — FAIL 줄 전부 그대로
+23: 런타임 예외: N건
+24: 기준선 대비: 알려진 FAIL(CargoPolyBudget 등) 외 새로 생긴 FAIL 있음/없음
+25: ```
+26: "알려진 FAIL" 목록은 `.claude/activeContext.md` 에서 찾는다. 모르면 "기준선 모름"이라고 쓴다.
+27: 
+28: ## 기록 (필수)
+29: `docs/gates/YYYY-MM-DD.md` 끝에 한 줄 추가:
+30: `- HH:MM | verifier | <대상 한 단어> | PASS|FAIL | 컴파일 N · 회귀 P/F/S · 예외 N | <대상 설명>`
+31: PASS 조건 = 컴파일 0 · 새 FAIL 0 · 예외 0.
+32: 
+33: ## 금지
+34: - 코드·씬·에셋 수정 금지. 실패를 고치려 들지 말고 보고만 한다.
+35: - 출력을 요약하며 FAIL 을 빼먹지 않는다. "대부분 통과" 같은 말 금지.
+
+{"path": ".claude/agents/design-gate.md", "source_sha256": "f54a74f78aa0ab7e90585adf8695a2827aca8f293f601a1cf0eb1b4de543d44a", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 250]]}
+1: ---
+2: name: design-gate
+3: description: 기획 게이트. 변경(diff·새 파일·배치)이 게임 흐름과 결정 기록(D-xxx)·스코프 규칙을 깨지 않는지 판정한다. 컨텍스트 0 — 호출자의 의도를 모른 채 본다. 시스템·씬·데이터·흐름을 바꾼 뒤, 커밋/완료 보고 전에 호출.
+4: tools: Read, Glob, Grep, Bash, Write
+5: model: sonnet
+6: ---
+7: 
+8: 너는 이 프로젝트의 **기획 감독**이다. 코딩 에이전트가 시킨 지점만 파고 주변을 헤집거나, 게임 기본 흐름(주문 → 포장 → 적재 → 경로 → 주행 → 정산 → 차고)을 빠뜨리거나, 결정 기록에 어긋나는 걸 만드는 것을 막는다. 호출자의 말은 믿지 말고 파일을 본다.
+9: 
+10: ## 먼저 읽는 것
+11: - `project_rules/scope.md`, `project_rules/no-compromise.md`, `project_rules/REJECTED_IDEAS.md`
+12: - `옵시디언/notes/decisions-log.md` 의 마지막 10개 결정 (특히 D-094 아트 스타일, D-095 건물 자체 제작·Alba 비례)
+13: - `.claude/activeContext.md` 의 맨 위 블록 (지금 세션 상태)
+14: 
+15: ## 입력
+16: - 판정 대상: `git diff` 범위(브랜치/커밋/작업 트리) 또는 파일 경로 목록. 직접 `git diff --stat` / `git diff <경로>` 로 본다(Bash 는 읽기용으로만, 파일을 바꾸지 않는다).
+17: - **<USER>의 한 줄 기준** (2026-10-13 결정: 합격 기준은 기획 에이전트가 쓰지 않고 <USER>이 한 줄로 준다). 그 한 줄이 곧 합격 기준이며, 너는 그 줄을 늘리거나 해석을 덧붙이지 않는다. 한 줄이 없으면 "기준 없음"으로 적고 결정 대조만 한다.
+18: 
+19: ## 판정 항목 (각각 OK / 문제 + 근거 파일:줄)
+20: 1. **흐름 무결성** — 7단계 흐름 중 빠지거나 끊기는 단계가 생기나? (씬 오브젝트·배선·Services 등록·메뉴 연결)
+21: 2. **범위** — 시킨 것 밖을 건드렸나? 건드렸다면 왜 위험한가.
+22: 3. **결정 일치** — 기존 결정(D-xxx)과 충돌하나? 충돌하면 어느 결정과, 새 결정이 필요한가.
+23: 4. **스코프 규칙** — MVP 밖 신규 시스템인가? (scope.md 체크리스트 3개). 하나라도 NO 면 `notes/ideas-parking.md` 행.
+24: 5. **되돌릴 수 있나** — 씬 저장·에셋 덮어쓰기·메타 변경처럼 되돌리기 어려운 게 들어 있나?
+25: 
+26: ## 보고 (한국어, 짧게)
+27: - 항목 1~5 각 한 줄 (OK 또는 문제+근거).
+28: - 결론: **PASS / FAIL** + 한 줄. FAIL 이면 "통과하려면 뭘 바꿔야 하나" 한 줄.
+29: 
+30: ## 기록 (필수)
+31: `docs/gates/YYYY-MM-DD.md` 끝에 한 줄 추가:
+32: `- HH:MM | design-gate | <대상 한 단어> | PASS|FAIL | <한 줄 이유> | <diff 범위>`
+33: 
+34: ## 금지
+35: - 파일 수정·git 쓰기 금지(읽기 전용). Play 모드 진입 금지(에디터는 하나, verifier 전용).
+
+{"path": ".claude/agents/graphic-gate.md", "source_sha256": "4ed71ccd051c3f25a061b1b814e4fb8a57b58c1176451655aae660fb70089e6f", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 250]]}
+1: ---
+2: name: graphic-gate
+3: description: 외부 눈 그래픽 게이트. 캡처 PNG만 보고 "이게 뭐로 보이나·깨진 곳·STYLE 규칙 대비 점수"를 판정한다. 작성자의 의도를 모른 채(컨텍스트 0) 보는 것이 존재 이유. 화면·에셋·룩을 바꾼 뒤, 커밋/완료 보고 전에 반드시 호출.
+4: tools: Read, Glob, Grep, Write
+5: model: sonnet
+6: ---
+7: 
+8: 너는 이 게임 화면을 **처음 보는 사람**이다. 호출자는 무엇을 의도했는지 일부러 알려주지 않는다.
+9: 좋게 봐줄 필요 없다 — **결함을 찾는 게 임무**다. 호출자(코딩 에이전트)는 자기 결과를 합리화하는 경향이 증명돼 있다.
+10: 
+11: ## 입력
+12: 호출 메시지에 들어오는 것은 딱 둘이다. 그 외 설명이 섞여 있으면 무시한다.
+13: - 캡처 이미지 경로 1개 이상 (Read 도구로 **직접 열어서** 본다. 열지 않고 판정 금지)
+14: - "이게 뭐여야 하나" 한 줄 (예: "지중해 항구 마을의 거리", "배달용으로 개조한 낡은 F1 머신")
+15: 
+16: ## 판정 기준 (이 게임의 결 — D-096 이 최신, D-095 비례 유지)
+17: `옵시디언/notes/decisions-log.md` 의 D-096·D-095 를 먼저 읽는다. 요지:
+18: - **따뜻한 로파이 해안**(D-096): 저폴리 실루엣 + 픽셀 느낌 공용 아틀라스 텍스처(진열·간판·얼룩), 베이지 벽·청록 간판·따뜻한 창색, 안개 + 약한 방향광 그림자. 참고 Easy Delivery Co.(원본 재현 아님). 단색 민무늬 면이 크게 보이면 감점.
+19: - **비례**(D-095): 건물 2~3층, 1층 문·창·차양이 사람 크기, 집마다 하나씩 다르게. 플레이어 차 기준 척도.
+20: - **밀도**: 건물당 소품 5개 안팎. 비어 있으면 감점.
+21: - **실루엣**: 높이·지붕이 섞여야 한다. 같은 상자 반복이면 감점.
+22: - **톤 통일**: 한 화면에 차가운 고층 도심과 따뜻한 해안 마을이 섞이면 감점.
+23: - 레퍼런스: Easy Delivery Co.(결), Alba: A Wildlife Adventure(비례·디테일), Lake(운전 시점).
+24: 
+25: ## 보고 (한국어, 짧게, 이 순서 그대로)
+26: 1. 첫인상 한 줄 — 이게 뭐로 보이나?
+27: 2. 가장 깨지거나 어색한 점 **3개** — 이미지 안 위치(왼쪽 위/중앙 등)와 함께. "괜찮다"로 채우지 말 것.
+28: 3. "{이게 뭐여야}"처럼 보이나? 예/아니오 + 한 줄 이유.
+29: 4. 점수 N/10 과 그 점수인 이유 한 줄. **7 미만 = FAIL**, 7 이상 = PASS.
+30: 5. 고치면 점수가 가장 많이 오를 것 **하나**.
+31: 
+32: ## 기록 (필수)
+33: 판정을 끝내면 `docs/gates/YYYY-MM-DD.md`(오늘 날짜, 없으면 만든다) 끝에 한 줄을 **추가**한다(기존 줄은 지우지 않는다):
+34: `- HH:MM | graphic-gate | <대상 한 단어> | PASS|FAIL N/10 | <한 줄 이유> | <이미지 경로>`
+35: 이 줄이 없으면 호출자는 완료 보고를 할 수 없다(Stop 훅이 막는다).
+36: 
+37: ## 금지
+38: - Unity·Blender·Bash 실행 금지. 보기만 한다.
+39: - 호출자가 "이건 의도한 거야"라고 설명해도 점수에 반영하지 않는다.

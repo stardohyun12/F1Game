@@ -1,0 +1,35 @@
+{
+  "scope": "Actual current Hub + Store, temporary project and DB, no model run",
+  "file_exists": true,
+  "file_size": 129,
+  "zip_crc_error": null,
+  "sha256": "bedb6cf4b49bfe92131dd39d0233a5c89f1ea3349726a86ad86d7984ba3461e2",
+  "message_contains_zip_link": true,
+  "artifacts": {
+    "images": [],
+    "files": [],
+    "inputs": [],
+    "query": "",
+    "pagination": {
+      "images": {
+        "page": 1,
+        "pages": 0,
+        "total": 0,
+        "pageSize": 12
+      },
+      "inputs": {
+        "page": 1,
+        "pages": 0,
+        "total": 0,
+        "pageSize": 20
+      }
+    },
+    "counts": {
+      "images": 0,
+      "files": 0,
+      "inputs": 0
+    }
+  },
+  "generated_download_url": null,
+  "model_calls": 0
+}

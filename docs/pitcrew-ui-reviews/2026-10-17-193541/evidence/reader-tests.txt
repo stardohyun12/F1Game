@@ -1,0 +1,14 @@
+﻿✔ missing or invalid browser library preserves escaped original text and allows later recovery (21.4878ms)
+✔ tables, nested lists, headings and links render semantically (13.6818ms)
+✔ unconstructable, throwing and malformed libraries fall back once per library and recover when replaced (7.8827ms)
+✔ untrusted HTML and dangerous link protocols cannot execute (1.6251ms)
+✔ fenced code escapes source and info, preserving exact text (0.5289ms)
+✔ images never trigger network requests and incomplete streaming fences render (2.8729ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56.4221

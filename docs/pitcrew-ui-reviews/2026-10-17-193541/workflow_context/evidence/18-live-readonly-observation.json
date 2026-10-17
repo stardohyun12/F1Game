@@ -1,0 +1,51 @@
+{
+  "requests": [
+    {
+      "GET": "/api/hub/runtime-health",
+      "status": 200,
+      "allowlisted_response": {
+        "pid": 19020,
+        "startedAt": 1792148083.830326,
+        "independent": true,
+        "protocol": 1
+      },
+      "response_field_names": [
+        "service",
+        "protocol",
+        "independent",
+        "pid",
+        "startedAt"
+      ]
+    },
+    {
+      "GET": "/api/hub/runtime-identity",
+      "status": 404,
+      "body_not_exported": true
+    }
+  ],
+  "process_query": "Get-CimInstance Win32_Process | Where-Object { $_.ProcessId -in @(3536,19020,39668) -or $_.Name -eq 'blender.exe' } | Select-Object ProcessId,ParentProcessId,Name,ExecutablePath,CreationDate | ConvertTo-Json -Depth 3",
+  "process_result": [
+    {
+      "ProcessId": 39668,
+      "ParentProcessId": 33248,
+      "Name": "pythonw.exe",
+      "ExecutablePath": "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\pythonw.exe",
+      "CreationDate": "/Date(1792079361885)/"
+    },
+    {
+      "ProcessId": 19020,
+      "ParentProcessId": 35348,
+      "Name": "python.exe",
+      "ExecutablePath": "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "CreationDate": "/Date(1792148083590)/"
+    },
+    {
+      "ProcessId": 3536,
+      "ParentProcessId": 39236,
+      "Name": "Unity.exe",
+      "ExecutablePath": "C:\\Program Files\\Unity\\Hub\\Editor\\6000.3.19f1\\Editor\\Unity.exe",
+      "CreationDate": "/Date(1792149848622)/"
+    }
+  ],
+  "note": "GET only. No bootstrap, usage lookup, restart, editor or agent request. PID/process existence does not prove active work."
+}

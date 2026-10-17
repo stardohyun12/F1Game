@@ -1,0 +1,138 @@
+{"path": "scripts/regression-check.sh", "source_sha256": "b2c480fc45da493661b759e41edf6712d16298c88347e8a5e05dcd05020e2179", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 300]]}
+1: #!/usr/bin/env bash
+2: # PitCrew 회귀 점검 — Play 흐름의 각 상태에서 HarnessChecks 단언 호출.
+3: # 우리가 실제로 겪은 버그(엔진음 잔류·맵 fog·화물 피벗)가 되살아나면 FAIL.
+4: # 사용: bash scripts/regression-check.sh   (Editor 켜져 있어야)
+5: # 머신별 분기(본가 데탑 exe / 노트북 HTTP 대체)는 scripts/ucli.sh 가 한다. 2026-10-12
+6: UCLI="$(cd "$(dirname "$0")" && pwd)/ucli.sh"
+7: # 각 단언 결과를 출력 + 집계. FAIL/SKIP을 조용히 넘기지 않고 끝에 크게 요약.
+8: # (검증자 지적: 출력만 하고 FAIL/SKIP 자동 감지가 없으면 false-green 빠져나감)
+9: PASSES=0; FAILS=0; SKIPS=0
+10: say() {
+11:   local out
+12:   out=$("$UCLI" exec "$1" 2>/dev/null | grep -vE "Update available|unity-cli update|^$")
+13:   echo "$out"
+14:   case "$out" in
+15:     *FAIL*) FAILS=$((FAILS+1)) ;;
+16:     *SKIP*) SKIPS=$((SKIPS+1)) ;;
+17:     *PASS*) PASSES=$((PASSES+1)) ;;
+18:   esac
+19: }
+20: 
+21: echo "=== PitCrew 회귀 점검 ==="
+22: "$UCLI" editor play --wait >/dev/null 2>&1
+23: sleep 1
+24: # 프레임 틱 보장(백그라운드면 Update 멈춤) + 메인메뉴 시작
+25: "$UCLI" exec "Application.runInBackground=true; foreach(var b in UnityEngine.Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None)){ var t=b.GetComponentInChildren<TMPro.TMP_Text>(); if(t!=null && t.text.Contains(\"시작\")){ b.onClick.Invoke(); break; } } return \"setup\";" >/dev/null 2>&1
+26: sleep 2
+27: 
+28: echo "[BOARD 주문보드]"
+29: say "return HarnessChecks.CheckCoreServicesPresent();"
+30: say "return HarnessChecks.CheckOrderBoardWiring();"
+31: say "return HarnessChecks.CheckOrderDestinationsResolve();"
+32: say "return HarnessChecks.CheckFog(false);"
+33: say "return HarnessChecks.CheckRunInactiveSilent();"
+34: say "return HarnessChecks.CheckCargoPivots();"
+35: say "return HarnessChecks.CheckCargoPolyBudget();"
+36: 
+37: # 포장 화면 — 실제 입력경로(BeginStroke)로 wrap 생성되는지 (false-green 종류 검출)
+38: "$UCLI" exec "var j=ScriptableObject.CreateInstance<OrderJob>(); j.cargoType=CargoType.Glass; j.destinationLabels=new System.Collections.Generic.List<string>{\"T\"}; var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>(); if(ps==null){ ps=new GameObject(\"PackingScreen\").AddComponent<PitCrew.Packing.PackingScreen>(); } ps.Show(j); return \"pack\";" >/dev/null 2>&1
+39: sleep 1
+40: echo "[PACKING 포장]"
+41: say "return HarnessChecks.CheckWrapRealPath();"
+42: "$UCLI" exec "var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>(); if(ps!=null) ps.Hide(); return \"hide\";" >/dev/null 2>&1
+43: sleep 1
+44: 
+45: "$UCLI" exec "var j=ScriptableObject.CreateInstance<OrderJob>(); j.cargoType=CargoType.Glass; j.destinationLabels=new System.Collections.Generic.List<string>{\"T\"}; (Services.Run as RunController).BeginRun(j); return \"begin\";" >/dev/null 2>&1
+46: sleep 2
+47: 
+48: echo "[DRIVING 주행]"
+49: say "return HarnessChecks.CheckFog(true);"
+50: say "return HarnessChecks.CheckEngineMute(false);"
+51: 
+52: "$UCLI" exec "typeof(RunController).GetMethod(\"EndRun\", System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(Services.Run as RunController, new object[]{true}); return \"end\";" >/dev/null 2>&1
+53: sleep 2
+54: 
+55: echo "[RESULT 정산]"
+56: say "return HarnessChecks.CheckRunInactiveSilent();"
+57: say "return HarnessChecks.CheckEngineMute(true);"
+58: say "return HarnessChecks.CheckFog(false);"
+59: 
+60: "$UCLI" editor stop >/dev/null 2>&1
+61: echo "=== 결과: ${PASSES} PASS / ${FAILS} FAIL / ${SKIPS} SKIP ==="
+62: [ "$FAILS" -gt 0 ] && echo "⚠ 회귀 ${FAILS}건 — 위 FAIL 확인 (완료 보고 금지)"
+63: [ "$SKIPS" -gt 0 ] && echo "⚠ SKIP ${SKIPS}건 — 검증 못 한 항목 있음 (조용히 넘기지 마라)"
+64: exit $([ "$FAILS" -gt 0 ] && echo 1 || echo 0)
+
+{"path": "scripts/ucli.sh", "source_sha256": "1a619df41931854b9c9ace9ee85ec2d3641cec6a39153ac90844d9ba5f325e94", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 300]]}
+1: #!/usr/bin/env bash
+2: # unity-cli 디스패처 — 본가 데탑(stard)의 unity-cli.exe 가 있으면 그걸, 없으면(이 노트북) HTTP 대체(ucli-http.sh).
+3: # stop.sh / regression-check.sh 가 머신에 상관없이 같은 명령으로 Editor 를 때리게 한다. (2026-10-12)
+4: EXE="C:/Users/USER/AppData/Local/unity-cli/unity-cli.exe"
+5: if [ -x "$EXE" ]; then
+6:   exec "$EXE" "$@"
+7: else
+8:   exec bash "$(dirname "$0")/ucli-http.sh" "$@"
+9: fi
+
+{"path": "scripts/ucli-http.sh", "source_sha256": "f4c92f713e95f5f0e17155deaae33dc332bc9d41ea0ec6545e3bf14bfee4fe6a", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 300]]}
+1: #!/usr/bin/env bash
+2: # unity-cli(youngwoocho02) exe 가 없는 머신용 대체 — 같은 connector 의 HTTP 포트로 직접 보낸다.
+3: # 지원: exec "<C#>" | editor play [--wait] | editor stop | console
+4: # 포트: ~/.unity-cli/instances/*.json 중 이 리포(F1) 항목에서 읽는다.
+5: # 사용: UCLI="bash scripts/ucli-http.sh" 로 regression-check.sh 의 UCLI 를 바꿔 쓴다.
+6: set -u
+7: PROJ="D:/Github/F1Game/F1"
+8: PORT=$(python -X utf8 - "$PROJ" <<'EOF'
+9: import json,glob,os,sys
+10: proj=sys.argv[1].lower()
+11: for f in glob.glob(os.path.expanduser("~/.unity-cli/instances/*.json")):
+12:     try: d=json.load(open(f,encoding="utf-8"))
+13:     except Exception: continue
+14:     p=d.get("projectPath","").replace("\\","/").rstrip("/").lower()
+15:     # Play/컴파일 중엔 state 가 ready 가 아니다 — stopped 만 제외
+16:     if p==proj and d.get("state")!="stopped": print(d["port"]); break
+17: EOF
+18: )
+19: [ -z "$PORT" ] && { echo "FAIL: F1 Editor connector not ready"; exit 1; }
+20: U="http://127.0.0.1:$PORT/command"
+21: [ "${1:-}" = "status" ] && { echo "F1 Editor connector: port $PORT"; exit 0; }
+22: 
+23: post() { python -X utf8 - "$U" "$1" "$2" <<'EOF'
+24: import json,sys,urllib.request
+25: u,cmd,params=sys.argv[1],sys.argv[2],sys.argv[3]
+26: body={"command":cmd,"params":json.loads(params)}
+27: req=urllib.request.Request(u,data=json.dumps(body).encode(),headers={"Content-Type":"application/json"})
+28: try:
+29:     d=json.loads(urllib.request.urlopen(req,timeout=280).read())
+30: except Exception as e:
+31:     print("FAIL: request error", e); sys.exit(1)
+32: if not d.get("success"): print("FAIL:", d.get("message")); sys.exit(1)
+33: out=d.get("data")
+34: print(out if isinstance(out,str) else json.dumps(out,ensure_ascii=False))
+35: EOF
+36: }
+37: 
+38: case "${1:-}" in
+39:   exec)
+40:     code=$(python -X utf8 -c 'import json,sys; print(json.dumps({"code": sys.argv[1]}))' "$2")
+41:     post exec "$code" ;;
+42:   editor)
+43:     case "${2:-}" in
+44:       play)
+45:         post exec '{"code":"UnityEditor.EditorApplication.EnterPlaymode(); return \"play\";"}' >/dev/null
+46:         if [ "${3:-}" = "--wait" ]; then
+47:           for i in $(seq 1 60); do sleep 1; r=$(post exec '{"code":"return UnityEditor.EditorApplication.isPlaying ? \"yes\" : \"no\";"}' 2>/dev/null); [ "$r" = "yes" ] && break; done
+48:           sleep 2
+49:         fi
+50:         echo "play" ;;
+51:       stop)
+52:         post exec '{"code":"UnityEditor.EditorApplication.ExitPlaymode(); return \"stop\";"}' ;;
+53:       *) echo "unsupported: editor $2"; exit 2 ;;
+54:     esac ;;
+55:   console)
+56:     # unity-cli 의 `console --type error[,warning]` 호환 — connector 파라미터는 type/lines/stacktrace
+57:     t="error"; [ "${2:-}" = "--type" ] && t="${3:-error}"
+58:     post console "{\"type\":\"$t\",\"lines\":20,\"stacktrace\":\"none\"}" ;;
+59:   *) echo "unsupported: $*"; exit 2 ;;
+60: esac

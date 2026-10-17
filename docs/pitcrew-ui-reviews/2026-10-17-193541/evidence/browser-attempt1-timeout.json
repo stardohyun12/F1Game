@@ -1,0 +1,234 @@
+{
+  "capturedAt": "2026-10-17T10:38:54.478Z",
+  "browser": "155.0.4283.45",
+  "screenshots": [
+    {
+      "file": "01-live-workspace.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    }
+  ],
+  "blockedWrites": 0,
+  "liveUi": {
+    "agentCards": 12,
+    "projects": 2,
+    "statusLabels": [
+      "완료",
+      "대기",
+      "대기",
+      "대기",
+      "대기",
+      "대기",
+      "작업 중",
+      "완료",
+      "완료",
+      "완료",
+      "완료",
+      "완료"
+    ],
+    "messageCount": 0,
+    "promptVisible": true,
+    "buttons": [
+      {
+        "id": "navToggle",
+        "label": "프로젝트와 대화 목록"
+      },
+      {
+        "id": "workOverviewOpen",
+        "label": null
+      },
+      {
+        "id": "inboxToggle",
+        "label": null
+      },
+      {
+        "id": "themeToggle",
+        "label": "화면 테마 변경"
+      },
+      {
+        "id": "navShade",
+        "label": "프로젝트 메뉴 닫기"
+      },
+      {
+        "id": "newAgent",
+        "label": "새 대화 만들기"
+      },
+      {
+        "id": "globalSearchOpen",
+        "label": "모든 대화에서 찾기"
+      },
+      {
+        "id": "clearChatSearch",
+        "label": "검색 지우기"
+      },
+      {
+        "id": "usageOpen",
+        "label": "Codex와 Claude 사용량"
+      },
+      {
+        "id": "notifyToggle",
+        "label": null
+      },
+      {
+        "id": "shortcutsOpen",
+        "label": null
+      },
+      {
+        "id": "projectsOpen",
+        "label": null
+      },
+      {
+        "id": "manageTeams",
+        "label": null
+      },
+      {
+        "id": "importChats",
+        "label": null
+      },
+      {
+        "id": "setupOpen",
+        "label": null
+      },
+      {
+        "id": "sourcesOpen",
+        "label": null
+      },
+      {
+        "id": "sharedOpen",
+        "label": null
+      },
+      {
+        "id": "activityOpen",
+        "label": null
+      },
+      {
+        "id": "archivedOpen",
+        "label": null
+      },
+      {
+        "id": "helpOpen",
+        "label": null
+      },
+      {
+        "id": "teamOpen",
+        "label": null
+      },
+      {
+        "id": "workReturn",
+        "label": null
+      },
+      {
+        "id": "sidebarFold",
+        "label": null
+      },
+      {
+        "id": "artifactsOpen",
+        "label": "대화의 결과물 보기"
+      },
+      {
+        "id": "collabOpen",
+        "label": null
+      },
+      {
+        "id": "cycleOpen",
+        "label": null
+      },
+      {
+        "id": "findInChat",
+        "label": "찾기"
+      },
+      {
+        "id": "compareOpen",
+        "label": "비교"
+      },
+      {
+        "id": "settingsOpen",
+        "label": "설정"
+      },
+      {
+        "id": "contextToggle",
+        "label": "컨텍스트 패널 토글"
+      },
+      {
+        "id": "flowOpen",
+        "label": null
+      },
+      {
+        "id": "retryConnection",
+        "label": null
+      },
+      {
+        "id": "chatFindPrev",
+        "label": "이전 검색 결과"
+      },
+      {
+        "id": "chatFindNext",
+        "label": "다음 검색 결과"
+      },
+      {
+        "id": "chatFindClose",
+        "label": "본문 검색 닫기"
+      },
+      {
+        "id": "jumpLatest",
+        "label": null
+      },
+      {
+        "id": "compareClose",
+        "label": "비교 닫기"
+      },
+      {
+        "id": "resumeSource",
+        "label": null
+      },
+      {
+        "id": "plusBtn",
+        "label": "파일 첨부 · 더 많은 도구"
+      },
+      {
+        "id": "quick-mention",
+        "label": null
+      },
+      {
+        "id": "quick-slash",
+        "label": null
+      },
+      {
+        "id": "attach",
+        "label": "파일 첨부"
+      },
+      {
+        "id": "stop",
+        "label": null
+      },
+      {
+        "id": "send",
+        "label": null
+      },
+      {
+        "id": "contextClose",
+        "label": "컨텍스트 닫기"
+      },
+      {
+        "id": "modalClose",
+        "label": "닫기"
+      },
+      {
+        "id": "contextShade",
+        "label": "컨텍스트 닫기"
+      }
+    ],
+    "originalLink": {
+      "found": false,
+      "reason": "Not in the currently loaded history slice; diagnostic replay below"
+    },
+    "results": {
+      "downloadLinks": 0,
+      "buttons": []
+    }
+  },
+  "diagnostics": [],
+  "error": {
+    "name": "TimeoutError",
+    "message": "page.screenshot: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - taking page screenshot\u001b[22m\n\u001b[2m    - disabled all CSS animations\u001b[22m\n\u001b[2m  - waiting for fonts to load...\u001b[22m\n\u001b[2m  - fonts loaded\u001b[22m\n"
+  }
+}

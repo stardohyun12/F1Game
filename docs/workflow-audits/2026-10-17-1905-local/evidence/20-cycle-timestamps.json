@@ -1,0 +1,436 @@
+{
+  "cycles": [
+    {
+      "id": "b93a5e6db6cd426db8736da761a37357",
+      "status": "done",
+      "goal_scope": "PitCrew tooling (see 11-dashboard-records.json)",
+      "created": 1792074372.108482,
+      "ended": 1792075187.2071323,
+      "elapsed_span_seconds": 815.0986504554749,
+      "stages": [
+        {
+          "kind": "research",
+          "round": 1,
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "ts": 1792074372.177871,
+          "startedAt": 1792074372.1829762,
+          "finishedAt": 1792074428.7623606,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": null,
+          "helpers": null,
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 1,
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "ts": 1792074428.7640996,
+          "startedAt": 1792074428.7670884,
+          "finishedAt": 1792074436.6962261,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": null,
+          "helpers": null,
+          "verdict": ""
+        },
+        {
+          "kind": "qa",
+          "round": 1,
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "ts": 1792074436.7004998,
+          "startedAt": 1792074436.7056406,
+          "finishedAt": 1792074449.9290931,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": null,
+          "helpers": null,
+          "verdict": "수정 필요"
+        },
+        {
+          "kind": "build",
+          "round": 2,
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "ts": 1792074449.9333816,
+          "startedAt": 1792074449.93658,
+          "finishedAt": 1792075005.2974434,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": null,
+          "helpers": null,
+          "verdict": ""
+        },
+        {
+          "kind": "qa",
+          "round": 2,
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "ts": 1792075005.300771,
+          "startedAt": 1792075005.3048055,
+          "finishedAt": 1792075187.2036755,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": null,
+          "helpers": null,
+          "verdict": "수정 필요"
+        }
+      ]
+    },
+    {
+      "id": "6977b17e83e04af294666e02b05c5d2b",
+      "status": "done",
+      "goal_scope": "PitCrew tooling (see 11-dashboard-records.json)",
+      "created": 1792078523.3955545,
+      "ended": 1792079344.5420468,
+      "elapsed_span_seconds": 821.1464922428131,
+      "stages": [
+        {
+          "kind": "research",
+          "round": 1,
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "ts": 1792078523.414156,
+          "startedAt": 1792078523.4217606,
+          "finishedAt": 1792078605.9798303,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 1,
+          "helpers": [
+            "리서치 · Luna"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 1,
+          "agent": "db447dd5b502498ea98b447f0dc1e3c7",
+          "status": "done",
+          "ts": 1792078605.9824488,
+          "startedAt": 1792078605.985578,
+          "finishedAt": 1792078901.439546,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 1,
+          "helpers": [
+            "툴 구현 · Codex 협업"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "qa",
+          "round": 1,
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "ts": 1792078901.4520998,
+          "startedAt": 1792078901.458318,
+          "finishedAt": 1792079087.3955395,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 1,
+          "helpers": [
+            "QA · Codex"
+          ],
+          "verdict": "수정 필요"
+        },
+        {
+          "kind": "build",
+          "round": 2,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792079087.4087732,
+          "startedAt": 1792079087.5049188,
+          "finishedAt": 1792079222.557601,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 0,
+          "helpers": [],
+          "verdict": ""
+        },
+        {
+          "kind": "qa",
+          "round": 2,
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "ts": 1792079222.5673943,
+          "startedAt": 1792079222.5782912,
+          "finishedAt": 1792079344.5350084,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 0,
+          "helpers": [],
+          "verdict": "통과"
+        }
+      ]
+    },
+    {
+      "id": "cc0edf661b5448c6b0459843e7b8c57d",
+      "status": "done",
+      "goal_scope": "PitCrew tooling (see 11-dashboard-records.json)",
+      "created": 1792131857.8571694,
+      "ended": 1792133351.1783946,
+      "elapsed_span_seconds": 1493.3212251663208,
+      "stages": [
+        {
+          "kind": "research",
+          "round": 1,
+          "agent": "0d3f5ee12e254244b8a593a4be23358f",
+          "status": "done",
+          "ts": 1792131857.8627195,
+          "startedAt": 1792131857.8677135,
+          "finishedAt": 1792132325.1730106,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 1,
+          "helpers": [
+            "리서치 · Luna"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 1,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792132325.1778069,
+          "startedAt": 1792132326.348541,
+          "finishedAt": 1792133168.7518604,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 1,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "qa",
+          "round": 1,
+          "agent": "d948577ab9a142909e46394ef01ba8cb",
+          "status": "done",
+          "ts": 1792133168.7667968,
+          "startedAt": 1792133168.7839146,
+          "finishedAt": 1792133351.1686358,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 0,
+          "helpers": [],
+          "verdict": "통과"
+        }
+      ]
+    },
+    {
+      "id": "22b1564244ad4baab83cef03d5aead37",
+      "status": "paused",
+      "goal_scope": "PitCrew tooling (see 11-dashboard-records.json)",
+      "created": 1792148569.733743,
+      "ended": null,
+      "elapsed_span_seconds": null,
+      "stages": [
+        {
+          "kind": "build",
+          "round": 1,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792148569.810428,
+          "startedAt": 1792148569.9078774,
+          "finishedAt": 1792153406.4988973,
+          "retried": true,
+          "retriedAt": 1792153394.2071173,
+          "delegated": 16,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 2,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792153406.5274992,
+          "startedAt": 1792153406.63435,
+          "finishedAt": 1792160984.7282567,
+          "retried": true,
+          "retriedAt": 1792160973.671408,
+          "delegated": 25,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 3,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792160984.7561638,
+          "startedAt": 1792160984.8765476,
+          "finishedAt": 1792168027.238989,
+          "retried": true,
+          "retriedAt": 1792168017.6814096,
+          "delegated": 18,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 4,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792168027.269145,
+          "startedAt": 1792168027.399462,
+          "finishedAt": 1792173532.1549056,
+          "retried": true,
+          "retriedAt": 1792173522.4412785,
+          "delegated": 20,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 5,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792173532.1985412,
+          "startedAt": 1792173532.4118164,
+          "finishedAt": 1792179004.6012633,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 13,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 6,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792179004.6307597,
+          "startedAt": 1792179004.748498,
+          "finishedAt": 1792181763.585401,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 11,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 7,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792181763.6228547,
+          "startedAt": 1792181763.8380556,
+          "finishedAt": 1792185721.96013,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 9,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 8,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792185722.0753217,
+          "startedAt": 1792185723.3187559,
+          "finishedAt": 1792186545.08512,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 2,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 9,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792186545.13439,
+          "startedAt": 1792186545.3626633,
+          "finishedAt": 1792191740.440327,
+          "retried": true,
+          "retriedAt": 1792191725.4825113,
+          "delegated": 16,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 10,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792191740.4870367,
+          "startedAt": 1792191740.617237,
+          "finishedAt": 1792193277.4837077,
+          "retried": null,
+          "retriedAt": null,
+          "delegated": 5,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        },
+        {
+          "kind": "build",
+          "round": 11,
+          "agent": "a39459a67e954373b7a45bfef3885ecc",
+          "status": "done",
+          "ts": 1792193277.534291,
+          "startedAt": 1792193277.7923439,
+          "finishedAt": 1792198187.9901104,
+          "retried": true,
+          "retriedAt": 1792198179.4214427,
+          "delegated": 14,
+          "helpers": [
+            "툴 구현"
+          ],
+          "verdict": ""
+        }
+      ]
+    }
+  ],
+  "usage_field_coverage": {
+    "turnUsage_record_counts": {
+      "db447dd5b502498ea98b447f0dc1e3c7": 196,
+      "a39459a67e954373b7a45bfef3885ecc": 235,
+      "0d3f5ee12e254244b8a593a4be23358f": 5,
+      "d948577ab9a142909e46394ef01ba8cb": 6,
+      "5d872181b31142afa9f446d7bd2e6b28": 2,
+      "99ae616585ba4dd8b004e9ea911b33fe": 1
+    },
+    "with_cost": {
+      "db447dd5b502498ea98b447f0dc1e3c7": 196,
+      "0d3f5ee12e254244b8a593a4be23358f": 5,
+      "d948577ab9a142909e46394ef01ba8cb": 6
+    },
+    "with_input_tokens": {
+      "db447dd5b502498ea98b447f0dc1e3c7": 196,
+      "a39459a67e954373b7a45bfef3885ecc": 235,
+      "0d3f5ee12e254244b8a593a4be23358f": 5,
+      "d948577ab9a142909e46394ef01ba8cb": 6,
+      "5d872181b31142afa9f446d7bd2e6b28": 2,
+      "99ae616585ba4dd8b004e9ea911b33fe": 1
+    }
+  },
+  "limits": "Elapsed timestamps include waits. Do not interpret as human-free execution or useful game production. Cost not summed across resumed sessions or attributed to game cases."
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>v2 · 대화</title><link rel="stylesheet" href="ui.css">
+<style>
+main{display:grid;grid-template-columns:248px 1fr;min-height:0}
+.side{background:var(--side);padding:14px 10px;display:flex;flex-direction:column;overflow:auto}
+.side .lbl{padding:0 10px 6px}
+.conv{padding:9px 10px;border-radius:9px;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:1px 8px;align-items:center}
+.conv.on{background:var(--sur2)}
+.conv .n{display:flex;align-items:center;gap:8px;font-weight:500;font-size:13.5px}
+.conv .n .role{color:var(--dim);font-size:11.5px;font-weight:400}
+.conv .t{font-size:11.5px;color:var(--dim)}
+.conv .p{grid-column:1/3;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv .b{grid-column:2;justify-self:end;font-size:11px;background:var(--warn);color:#1a1a1a;border-radius:999px;padding:0 7px;font-weight:500}
+.conv.sub{margin-left:14px}
+.side .new{padding:9px 10px;color:var(--mute);font-size:13px}
+.side .goal{margin-top:auto;padding:12px 10px 4px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mute)}
+.side .goal b{color:var(--ink2);font-weight:500}
+.room{display:grid;grid-template-rows:44px 1fr auto;min-height:0;min-width:0}
+.bar{display:flex;align-items:center;gap:10px;padding:0 28px;font-size:13px;color:var(--mute)}
+.bar b{color:var(--ink);font-weight:600;font-size:14px}
+.bar .sp{flex:1}
+.bar a{color:var(--mute)}.bar a.acc{color:var(--acc)}
+.chat{overflow:auto;padding:16px 0 10px;display:flex;flex-direction:column;gap:22px}
+.chat>*{width:min(820px,calc(100% - 112px));margin:0 auto}
+.chat .me{margin-right:56px;width:auto;max-width:min(620px,70%)}
+.compose{width:min(820px,calc(100% - 112px));margin:8px auto 8px}
+.hint{width:min(820px,calc(100% - 112px));margin:0 auto 14px;font-size:12px;color:var(--dim)}
+</style></head><body>
+<header class="top"><span class="brand"><i></i>PitCrew</span><a class="tab">흐름</a><a class="tab">팀</a><a class="tab on">대화</a><a class="tab">결과물</a><span class="sp"></span><span class="proj">첫 제작 · 해안 차량 시험</span><span class="st"><i></i>조작감 작업 중 · 4분 12초</span></header>
+<main>
+ <aside class="side">
+  <div class="lbl">대화</div>
+  <div class="conv"><div class="n"><span class="dot"></span>전체 제작 <span class="role">팀장</span></div><div class="t">09:58</div><div class="p">검토 자료 ZIP 등록했습니다. 다음 지시 기다립니다.</div></div>
+  <div class="conv sub on"><div class="n"><span class="dot wait"></span>아트</div><div class="t">10:47</div><div class="p">카메라 검토 끝. 채택 전에 캡처 2장 확인해 주세요.</div><span class="b">1</span></div>
+  <div class="conv sub"><div class="n"><span class="dot run"></span>조작감</div><div class="t">지금</div><div class="p">▸ Bash  ucli exec "CoastalTownSmoke.Run()"</div></div>
+  <div class="new">＋ 새 대화</div>
+  <div class="goal">공통 방향 · <b>B 차가운 색감</b> 채택됨<br>이 대화의 다음 요청에 같이 들어갑니다.</div>
+ </aside>
+ <section class="room">
+  <div class="bar"><b>아트</b><span>codex · gpt-6-astra · low · 작업 권한</span><span class="sp"></span><a class="acc">흐름에서 보기</a><a>설정</a></div>
+  <div class="chat">
+   <div class="me"><span class="thumb" style="width:150px;height:84px;display:block;margin:0 0 8px"></span>이 차 지금 색감이 너무 뜨거워. 해안 느낌 나게 두 가지 시안 뽑아서 같은 카메라로 캡처해줘.</div>
+   <div class="ai"><div class="who"><b>아트</b>10:12</div>
+    <p>첨부 이미지: 붉은 차체, 크림색 장식, 주황 상자. 화면에 해안 풍경이 없음. 기존 CoastalFormula 재질을 재사용해 A(따뜻)/B(차가움) 두 벌을 만들고 동일 카메라로 찍겠습니다.</p>
+    <div class="tool"><span class="c">▶</span><b>Read</b><span class="path">F1/Assets/Art/CoastalFormula/FormulaRestored.mat</span></div>
+    <div class="tool"><span class="c">▶</span><b>Read</b><span class="path">F1/Assets/Editor/CoastalNoonLook.cs</span></div>
+    <div class="tool open"><span class="c">▶</span><b>Edit</b><span class="path">F1/Assets/PitCrewTrial/TrialPalette.cs</span><span class="plus">+41</span><span class="minus">−0</span></div>
+    <div class="diff"><span class="p">+ static readonly Color CoolBody = new Color(.30f,.52f,.66f);</span>
+<span class="p">+ static readonly Color CoolTrim = new Color(.86f,.90f,.92f);</span>
+  … 39줄 더</div>
+    <div class="tool"><span class="c">▶</span><b>Bash</b><span class="path">ucli exec "ArtCapture.CaptureChaseAt(...)"</span><span class="dim">2회 · 6.1s</span></div>
+    <div class="tool"><span class="c">▶</span><b>register_artifact</b><span class="path">capture_A.png, capture_B.png</span></div>
+    <p style="margin-top:12px">두 캡처입니다. B 는 바다·벽의 하늘빛 반사에 차체 채도를 맞췄고, A 는 현재 톤을 유지한 채 상자만 눌렀습니다.</p>
+    <span class="thumb warm"></span><span class="thumb"></span>
+    <div class="foot">1분 38초 · 9 tools · 12.4k → 2.1k 토큰 · $0.004</div></div>
+   <div class="me">B 로 가자. 바다랑 어울림.</div>
+   <div class="link"><span class="arrow">↗</span><b>채택</b> B · 차가운 색감 → 공통 방향 · 조작감 다음 요청에 포함</div>
+   <div class="link"><span class="arrow">↙</span><b>조작감이 요청함</b> 카메라 검토 포인트 확인 · 51초 · <span class="mute">원래 대화 보기</span></div>
+   <div class="ai"><div class="who"><b>아트</b>10:47 · 조작감 요청으로</div>
+    <p>조작감 팀이 조향 지연을 줄이면 코너에서 차체 롤이 빨라집니다. 현재 추격 카메라(뒤 7m, 높이 3.2m) 기준으로 B 색감이 그림자에서 뭉개지는 구간은 없었습니다.</p>
+    <div class="fileCard"><span class="ic">PNG</span><div>corner_roll_01.png · corner_roll_02.png<small>1280×720 · 비교 열기</small></div></div></div>
+   <div class="ask"><div class="lbl">확인 필요</div>캡처 2장을 채택 근거에 붙일까요? 붙이면 조작감 팀의 다음 요청에 "카메라 검토 완료"가 같이 들어갑니다.<div class="btns"><button class="y">붙이기</button><button>안 붙임</button><button>캡처 열기</button></div></div>
+  </div>
+  <div class="compose"><textarea placeholder="아트에게 보내기…"></textarea><div class="row"><span class="ib">＋</span><span class="ib">/</span><span class="ib">@</span><span class="ib">⌘</span><span class="sp"></span><span class="sel-chip">gpt-6-astra · low</span><span class="sel-chip">작업 권한</span><span class="send">↑</span></div></div>
+  <div class="hint">조작감 작업이 끝나면 바로 시작 · 지금 보내면 예약 3번째</div>
+ </section>
+</main>
+</body></html>

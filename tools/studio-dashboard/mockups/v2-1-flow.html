@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>v2 · 흐름</title><link rel="stylesheet" href="ui.css">
+<style>
+main{display:grid;grid-template-columns:1fr 372px;min-height:0}
+.map{padding:20px 28px;position:relative;overflow:hidden}
+.sum{display:flex;gap:26px;align-items:baseline;margin-bottom:22px;font-size:13px;color:var(--mute)}
+.sum b{color:var(--ink);font-weight:600;font-size:15px;margin-right:4px}
+.sum .w b{color:var(--warn)}.sum .r b{color:var(--run)}
+.sum .sp{flex:1}
+.sum button{padding:5px 10px;border-radius:8px;color:var(--mute);background:var(--sur)}
+.cols{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;position:relative;align-items:start}
+.col h3{margin:0 0 12px;font-size:12.5px;font-weight:500;color:var(--mute);display:flex;gap:8px;align-items:center}
+.col h3 span{color:var(--dim)}
+.node{margin-bottom:12px;cursor:pointer;position:relative}
+.node .t{font-weight:500;font-size:14px;margin:0 0 6px;padding-right:92px;line-height:1.45}
+.side li{display:block}.side li span{display:inline-block}
+.node .r{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute)}
+.node .r .sp{flex:1}
+.node .pill{position:absolute;top:12px;right:12px}
+.node .thumb{display:block;width:100%;height:64px;margin:10px 0 0}
+svg.wires{position:absolute;inset:0;pointer-events:none;overflow:visible}
+svg.wires path{fill:none;stroke:rgba(255,255,255,.2);stroke-width:1.5}svg.wires path.hot{stroke:var(--acc)}
+.legend{position:absolute;left:28px;bottom:18px;font-size:12px;color:var(--dim);display:flex;gap:18px}
+.side{border-left:1px solid var(--line);padding:22px 22px;overflow:auto}
+.side h2{margin:0 0 4px;font-size:17px;font-weight:600;line-height:1.35}
+.side .sub{color:var(--mute);font-size:13px;margin-bottom:18px;display:flex;gap:8px;align-items:center}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-bottom:6px}
+.kv .v{font-size:13.5px;color:var(--ink2)}
+.side .big{display:block;width:100%;height:170px;border-radius:10px;background:linear-gradient(160deg,#17334a,#3b8ba1 55%,#dfe8ea);margin:8px 0 10px;position:relative}
+.side .big:after{content:"B · 채택";position:absolute;left:10px;bottom:8px;font-size:11px;background:#000a;color:#fff;padding:2px 7px;border-radius:6px}
+.side ul{margin:6px 0 0;padding:0;list-style:none}
+.side li{padding:5px 0;font-size:13px;color:var(--ink2)}
+.side li>span:first-child{color:var(--dim);display:inline-block;width:18px}
+.acts{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.acts button{padding:9px 12px;border-radius:10px;background:var(--sur);text-align:left;font-size:13.5px;color:var(--ink2)}
+.acts button.pri{background:var(--acc);color:#1a1a1a;font-weight:500}
+</style></head><body>
+<header class="top"><span class="brand"><i></i>PitCrew</span><a class="tab on">흐름</a><a class="tab">팀</a><a class="tab">대화</a><a class="tab">결과물</a><span class="sp"></span><span class="proj">첫 제작 · 해안 차량 시험</span><span class="st"><i></i>조작감 작업 중 · 4분 12초</span></header>
+<main>
+ <section class="map">
+  <div class="sum"><span class="r"><b>1</b>작업 중</span><span><b>2</b>예약</span><span><b>5</b>오늘 끝남</span><span class="w"><b>2</b>내 확인 기다림</span><span><b>1</b>채택</span><span><b>184k</b>토큰 · $0.61</span><span class="sp"></span><button>오늘</button><button>모든 팀</button><button>전체 이력</button></div>
+  <div class="cols">
+   <svg class="wires">
+    <path class="hot" d="M 276 74 C 302 74, 302 206, 328 206"/>
+    <path d="M 576 66 C 602 66, 602 66, 628 66"/>
+    <path d="M 576 206 C 700 206, 760 66, 900 66"/>
+   </svg>
+   <div class="col"><h3>요청 <span>· 도현</span></h3>
+    <div class="card node"><p class="t">이 차 색감이 너무 뜨거움, 해안 느낌으로 시안 두 개</p><div class="r"><span class="dot"></span>아트에게<span class="sp"></span>10:12</div></div>
+    <div class="card node ghost"><p class="t">카메라 검토 결과를 아트에 반영</p><div class="r">예약 2 · 조작감 끝나면 시작</div></div>
+   </div>
+   <div class="col"><h3>작업 중 <span>· 팀</span></h3>
+    <div class="card node"><span class="pill run">작업 중</span><p class="t">steerLag 0.025 → 0.015 실험</p><div class="r"><span class="dot run"></span>조작감 · gpt-6-astra<span class="sp"></span>4분 12초 · 23 tools</div></div>
+    <div class="card node sel"><span class="pill ok">끝남</span><p class="t">색감 A/B 캡처, 같은 카메라</p><div class="r"><span class="dot"></span>아트 · gpt-6-astra<span class="sp"></span>1분 38초 · 9 tools</div><span class="thumb"></span></div>
+   </div>
+   <div class="col"><h3>결과 확인 <span>· 도현</span></h3>
+    <div class="card node"><span class="pill warn">확인 필요</span><p class="t">조작감 → 아트 카메라 검토</p><div class="r"><span class="dot wait"></span>아트가 보고 · 연결 ← 조작감<span class="sp"></span>캡처 2</div></div>
+    <div class="card node"><span class="pill warn">플레이 안 함</span><p class="t">PitCrewCoastalTrial.exe 빌드</p><div class="r"><span class="dot"></span>전체 제작 · claude<span class="sp"></span>53 MB</div></div>
+   </div>
+   <div class="col"><h3>채택 <span>· 공통 방향</span></h3>
+    <div class="card node"><span class="pill acc">채택</span><p class="t">B · 차가운 색감</p><div class="r"><span class="dot ok"></span>도현 결정 · 10:31<span class="sp"></span>다음 요청에 포함</div></div>
+   </div>
+  </div>
+  <div class="legend"><span>선 = 실제로 넘어간 일</span><span>카드 클릭 → 오른쪽 · 두 번 → 그 대화</span></div>
+ </section>
+ <aside class="side">
+  <h2>색감 A/B 캡처, 같은 카메라</h2>
+  <div class="sub"><span class="pill ok">끝남</span>아트 · gpt-6-astra · low</div>
+  <div class="kv">
+   <div><div class="lbl">시작 → 끝</div><div class="v">10:12:51 → 10:14:29</div></div>
+   <div><div class="lbl">도구 호출</div><div class="v">9 · 재시도 0</div></div>
+   <div><div class="lbl">토큰</div><div class="v">12,412 → 2,087</div></div>
+   <div><div class="lbl">비용</div><div class="v">$0.0043</div></div>
+   <div><div class="lbl">기술 검증</div><div class="v" style="color:var(--warn)">아직</div></div>
+   <div><div class="lbl">게임 통합</div><div class="v" style="color:var(--warn)">아직</div></div>
+  </div>
+  <hr>
+  <div class="lbl">결과물 2</div>
+  <span class="big"></span>
+  <div class="fileCard" style="display:flex"><span class="ic">PNG</span><div>capture_A.png · capture_B.png<small>1280×720 · 같은 카메라 · 비교 열기</small></div></div>
+  <hr>
+  <div class="lbl">바뀐 파일</div>
+  <ul><li><span>±</span>TrialPalette.cs <span class="mute">+41 −0</span></li><li><span>±</span>CoastalTrial.unity <span class="mute">카메라 레이어</span></li></ul>
+  <hr>
+  <div class="lbl">연결</div>
+  <ul><li><span>←</span>도현 10:12 요청</li><li><span>→</span>채택 B · 공통 방향</li><li><span>→</span>카메라 검토 (조작감이 요청)</li></ul>
+  <hr>
+  <div class="acts"><button class="pri">이 대화 열기</button><button>검증 결과 적기</button><button>조작감에 넘기기</button></div>
+ </aside>
+</main>
+</body></html>

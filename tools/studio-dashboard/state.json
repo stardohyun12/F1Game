@@ -1,35 +1,90 @@
 {
-  "title": "PITCREW STUDIO · 야간 마감",
-  "focus": "🌙→☀ 밤작업 완료 — 허브 'wake-up' 탭 보세요",
-  "updatedAt": "2026-05-24T04:50:00",
-  "pm": { "doing": "맵 6조사 종합 + 소도시 v1→v3(3.5→5.0, 비평루프). 레시피·결정거리 wake-up 페이지에. 깨우면 마을만들기(랜드마크·나무) 이어감." },
-  "departments": [
+ "title": "PITCREW STUDIO · 2026-10-13 밤",
+ "focus": "한낮 색감 v5 · 도현 결정 대기(소품 Codex / 커밋 / 해안도로)",
+ "updatedAt": "2026-10-13T23:17:13",
+ "pm": {
+  "doing": "Claude(PM): 통합·게이트 호출·캡처·기록. 지금: 대시보드 복구, 도현 판정 대기."
+ },
+ "departments": [
+  {
+   "name": "아트",
+   "icon": "🎨",
+   "status": "active",
+   "note": "Codex = 키트 주인(건물 11종), Claude = 소품·바닥·조명",
+   "desks": [
     {
-      "name": "기획",
-      "icon": "📐",
-      "status": "idle",
-      "note": "맵 방향 종합",
-      "desks": [
-        { "role": "종합", "name": "맵 방향 6조사", "task": "17배폐기·런길이=잡수·양식화·소도시→도시. 문서 완료", "status": "done" }
-      ]
+     "role": "건물",
+     "name": "Codex exec",
+     "task": "5차 집 6·가게 3·정비소 2 설치 (7/10 PASS). 다음 후보: 소품 참고사진 방식",
+     "status": "done"
     },
     {
-      "name": "아트",
-      "icon": "🎨",
-      "status": "idle",
-      "note": "소도시 룩",
-      "desks": [
-        { "role": "빌드", "name": "소도시 v1→v3", "task": "저층화+지붕색변주. 비평 5.0/10(마을만들기 남음)", "status": "done" }
-      ]
-    },
-    {
-      "name": "프로그래밍",
-      "icon": "💻",
-      "status": "idle",
-      "note": "구현·검증",
-      "desks": [
-        { "role": "구현", "name": "색변주 패치+커밋", "task": "BuildingPlacer variation, 전 작업 커밋", "status": "done" }
-      ]
+     "role": "조명",
+     "name": "Claude",
+     "task": "한낮 v5 (셰이더 해 세기 반영·후처리 ON·해상도 0.5)",
+     "status": "done"
     }
-  ]
+   ]
+  },
+  {
+   "name": "QA(게이트)",
+   "icon": "👁",
+   "status": "active",
+   "note": "작성자≠판정자. docs/gates/오늘.md 한 줄씩",
+   "desks": [
+    {
+     "role": "외부 눈",
+     "name": "graphic-gate",
+     "task": "한낮 v5 7/10 PASS · 남은 레버: 도로 밝기·대비·해",
+     "status": "done"
+    },
+    {
+     "role": "계측",
+     "name": "verifier",
+     "task": "v5 PASS (후처리 2컴포·카메라 ON·회귀 12/1/0)",
+     "status": "done"
+    }
+   ]
+  },
+  {
+   "name": "조사",
+   "icon": "🔎",
+   "status": "idle",
+   "note": "web-search 에이전트 → 옵시디언/research/",
+   "desks": [
+    {
+     "role": "도시 알고리즘",
+     "name": "MapGenerator·OSS",
+     "task": "city-layout-algorithms-2026-10-13.md",
+     "status": "done"
+    },
+    {
+     "role": "형성 원리",
+     "name": "논문",
+     "task": "urban-morphology-2026-10-13.md",
+     "status": "done"
+    },
+    {
+     "role": "레벨디자인",
+     "name": "소프트 게이팅",
+     "task": "soft-gating-level-design-2026-10-13.md",
+     "status": "done"
+    }
+   ]
+  },
+  {
+   "name": "기획",
+   "icon": "📐",
+   "status": "idle",
+   "note": "도현 한 줄 → D-098~D-102, 스펙 two-towns-coastal-road",
+   "desks": [
+    {
+     "role": "스펙",
+     "name": "마을 2개+해안도로",
+     "task": "docs/superpowers/specs/2026-10-13-two-towns-coastal-road.md",
+     "status": "done"
+    }
+   ]
+  }
+ ]
 }

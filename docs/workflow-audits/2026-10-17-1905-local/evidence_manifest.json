@@ -1,0 +1,858 @@
+{
+  "investigation_started_utc": "2026-10-17T10:04:11.944250+00:00",
+  "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+  "scope": "F1Game current local workflow; no product modifications or model/editor calls",
+  "redaction_policy": "No auth files read. No raw conversation dumps. Username/name masked. Config and DB metadata allowlisted. Session/run IDs retained as evidence anchors.",
+  "files": [
+    {
+      "file": "evidence/02-project-rules.txt",
+      "sources": [
+        {
+          "path": "CLAUDE.md",
+          "source_sha256": "90c2e9512e7b8e57ba65c4f5fcb221f27906543965c20dc9010f1d181e2b5a5b",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              150
+            ]
+          ]
+        },
+        {
+          "path": "F1/ProjectSettings/ProjectVersion.txt",
+          "source_sha256": "3e78f3e1fbb6e96c92f36002865a679ff7344056725f11d06922c2b2eab02ff3",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              5
+            ]
+          ]
+        },
+        {
+          "path": ".claude/activeContext.md",
+          "source_sha256": "565a25baaeb5bd21cf6358805b49c206a5fed1a427c6542e6885269e06c6eba0",
+          "git_status": "M .claude/activeContext.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              8,
+              44
+            ]
+          ]
+        },
+        {
+          "path": "project_rules/roles.md",
+          "source_sha256": "0230e40f29efbd0ae9df8ca42a4f3dfa8e9cfcc163c574f8f22a0f828fdded97",
+          "git_status": "M project_rules/roles.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              160
+            ]
+          ]
+        },
+        {
+          "path": "project_rules/session.md",
+          "source_sha256": "f99e4ebb857774f3d10e04af938030b8b7edff053aaeca1c6390d1453cf4ed88",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              110
+            ]
+          ]
+        },
+        {
+          "path": "project_rules/no-compromise.md",
+          "source_sha256": "c2b71cb3ddbc829a04ceca51c7bb89b5c786a12e26e87a78f2e056de887112cc",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              150
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "dee0c9a040249da9a0771600259a5073871f12b06c79be0abd2a4086a001f923",
+      "bytes": 35298,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/03-regression-and-connection.txt",
+      "sources": [
+        {
+          "path": "scripts/regression-check.sh",
+          "source_sha256": "b2c480fc45da493661b759e41edf6712d16298c88347e8a5e05dcd05020e2179",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              300
+            ]
+          ]
+        },
+        {
+          "path": "scripts/ucli.sh",
+          "source_sha256": "1a619df41931854b9c9ace9ee85ec2d3641cec6a39153ac90844d9ba5f325e94",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              300
+            ]
+          ]
+        },
+        {
+          "path": "scripts/ucli-http.sh",
+          "source_sha256": "f4c92f713e95f5f0e17155deaae33dc332bc9d41ea0ec6545e3bf14bfee4fe6a",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              300
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "8000bdc04ccf30848dab4333c2fa1744a15fde6c3b59deec432c9c8526427757",
+      "bytes": 8323,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/04-hooks-gates.txt",
+      "sources": [
+        {
+          "path": ".claude/hooks/stop.sh",
+          "source_sha256": "2f2d4141bbb198928b9edabf730fdff56eab0325312013c835ede9c16d1ebc63",
+          "git_status": "M .claude/hooks/stop.sh",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              250
+            ]
+          ]
+        },
+        {
+          "path": ".claude/settings.json",
+          "source_sha256": "1dddb7bf2936499e913611ecf71509f0c9d9613635c2c936f900581a2d074301",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              250
+            ]
+          ]
+        },
+        {
+          "path": ".claude/agents/verifier.md",
+          "source_sha256": "0f4e610173f50cdf95948f8b7bb5417ff31bbe300de50cb2f02439be0fdf5e59",
+          "git_status": "M .claude/agents/verifier.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              250
+            ]
+          ]
+        },
+        {
+          "path": ".claude/agents/design-gate.md",
+          "source_sha256": "f54a74f78aa0ab7e90585adf8695a2827aca8f293f601a1cf0eb1b4de543d44a",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              250
+            ]
+          ]
+        },
+        {
+          "path": ".claude/agents/graphic-gate.md",
+          "source_sha256": "4ed71ccd051c3f25a061b1b814e4fb8a57b58c1176451655aae660fb70089e6f",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              250
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "2288fa81e8286dc4091405e6b5bbb37df5eae0c6c525fe17d07dfb7b2691cd63",
+      "bytes": 24264,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/05-hub-orchestration.txt",
+      "sources": [
+        {
+          "path": "tools/studio-dashboard/hub.py",
+          "source_sha256": "7b613b83eed52f0723f1097f2864d19ef226027ad62265220ffba0c341c43fbe",
+          "git_status": "?? tools/studio-dashboard/hub.py",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              450,
+              480
+            ],
+            [
+              855,
+              881
+            ],
+            [
+              930,
+              945
+            ],
+            [
+              959,
+              992
+            ],
+            [
+              1198,
+              1245
+            ],
+            [
+              1291,
+              1404
+            ],
+            [
+              1406,
+              1499
+            ],
+            [
+              2570,
+              2604
+            ],
+            [
+              2640,
+              2667
+            ],
+            [
+              2733,
+              2783
+            ],
+            [
+              2796,
+              2804
+            ],
+            [
+              2828,
+              2840
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "b1ca648326ea0bdf24330047d3ffabcd690551d5efa33cdc228d1382b95ff70a",
+      "bytes": 45744,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/06-runtime-and-docs.txt",
+      "sources": [
+        {
+          "path": "tools/studio-dashboard/runtime.py",
+          "source_sha256": "781d1ed47ac3d2b8577b51f6eeebf0d7198442b8f201b1b977d4db9babdb785e",
+          "git_status": "?? tools/studio-dashboard/runtime.py",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              21,
+              81
+            ],
+            [
+              83,
+              147
+            ],
+            [
+              148,
+              176
+            ],
+            [
+              225,
+              260
+            ]
+          ]
+        },
+        {
+          "path": "tools/studio-dashboard/README.md",
+          "source_sha256": "48669b5f686f503234792d7cc7a2609a23d2d8aa0582af4a348e082b7e7e2b7f",
+          "git_status": "M tools/studio-dashboard/README.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              105
+            ]
+          ]
+        },
+        {
+          "path": "tools/studio-dashboard/start.ps1",
+          "source_sha256": "989f0f8e0d05cfb821d49522eace4cd9d9bdfa521a00c967379488c88b2f5d68",
+          "git_status": "?? tools/studio-dashboard/start.ps1",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              100
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "122909cf8754b98be27da6be8f699e5dbad1d9569d07ef8cbe17637e62c82978",
+      "bytes": 25374,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/07-art-pipeline.txt",
+      "sources": [
+        {
+          "path": "tools/asset-gen/README.md",
+          "source_sha256": "0897e2e701ffa2068e5a6743e798fceeafb47d8980a5c69b13c9b461f65e2f23",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              120
+            ]
+          ]
+        },
+        {
+          "path": "project_rules/asset.md",
+          "source_sha256": "bc4ee5e3d8461748daf3b74d7aa1f68401351697252910118589290045fe3756",
+          "git_status": "M project_rules/asset.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              145
+            ]
+          ]
+        },
+        {
+          "path": "art/_briefs/2026-10-13-building-faces.md",
+          "source_sha256": "7fcfe6cd876a8bba5adcc2bd6f90d2ed9bb6aedfd8de896e357e81e4492a1042",
+          "git_status": "?? art/_briefs/2026-10-13-building-faces.md",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              140
+            ]
+          ]
+        },
+        {
+          "path": "art/_briefs/2026-10-13-building-variety.md",
+          "source_sha256": "d28310a1c920c94dd6aaf61815d5fa61130b29d2fa4d50bbc45fc8b19b7ad87c",
+          "git_status": "?? art/_briefs/2026-10-13-building-variety.md",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              140
+            ]
+          ]
+        },
+        {
+          "path": "art/source/coastal-town/README.md",
+          "source_sha256": "a700d5a38719c6d8f5c181f16c961a501c565870fb4d5489f2c4aabe47603d05",
+          "git_status": "M art/source/coastal-town/README.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              25,
+              54
+            ],
+            [
+              127,
+              174
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "776fcc6a2cf213d1f69b7d1a7e63af4ebf71549f95d6f245815dbe467e3f1791",
+      "bytes": 29563,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/08-game-gate-record.txt",
+      "sources": [
+        {
+          "path": "docs/gates/2026-10-13.md",
+          "source_sha256": "25becc77943f6a948381f3c1a177d8f45102c50c0e7e8672e9f185efd01dc10b",
+          "git_status": "M docs/gates/2026-10-13.md",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              60
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "9b08cdbb330ff2e2e6314d920f68b9e840c88a686f17361deb8814fe7168034a",
+      "bytes": 12114,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/09-codex-task-records.txt",
+      "sources": [
+        {
+          "path": ".ai_logs/codex-town-density-2026-10-13.log",
+          "source_sha256": "27f4d8534f28e14d8c9d99fdf8a191a8ecb81f4863c75bb5a2dda5047cc39673",
+          "git_status": "clean tracked (or ignored; see tracked)",
+          "tracked": true,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              30
+            ]
+          ]
+        },
+        {
+          "path": ".ai_logs/codex-building-faces-2026-10-13.log",
+          "source_sha256": "9b7f0733c672ad1ee7f47b7c1c0de29f5d4ddd553921e50e26849033790b7990",
+          "git_status": "?? .ai_logs/codex-building-faces-2026-10-13.log",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              15
+            ]
+          ]
+        },
+        {
+          "path": ".ai_logs/codex-building-variety-2026-10-13.log",
+          "source_sha256": "49b0b55a1f474580850778ba4f2f9bbb22d0de58d07a601f87e476bc03b6e752",
+          "git_status": "?? .ai_logs/codex-building-variety-2026-10-13.log",
+          "tracked": false,
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "line_ranges": [
+            [
+              1,
+              15
+            ]
+          ]
+        }
+      ],
+      "method": "Numbered source excerpts, no product execution",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "d0b0fb464f65e2c67cdf93d24197244c2d1fdbd5f7dd6f05c8c3a828abdaac33",
+      "bytes": 3239,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/10-environment-config.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.codex\\config.toml",
+        "C:\\Users\\<USER>\\.claude\\settings.json",
+        "F1/Packages/manifest.json"
+      ],
+      "method": "Allowlisted config fields, env names/set status only",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "7fea7f14428fce7d0bc4c008f04561a02d975f4f4637ce726fa56e8b787ee8c7",
+      "bytes": 5057,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/11-dashboard-records.json",
+      "sources": [
+        "tools/studio-dashboard/.runtime/hub.sqlite3 (+ live WAL, read transaction)"
+      ],
+      "method": "SQLite mode=ro; allowlisted metadata, message aggregates",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "a2f591ee61e619c1542465d2e8400b948ec67ab540ddfd1a7a45490cd1af77b5",
+      "bytes": 21958,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/12-art-validation-records.json",
+      "sources": [
+        "art/source/coastal-town/building-faces-geometry.json",
+        "art/source/coastal-town/building-faces-unity.json",
+        "art/source/coastal-town/building-variety-final-state.json",
+        "art/source/coastal-town/building-variety-protected-files.json",
+        "art/source/coastal-town/building-catalog.json",
+        "art/source/coastal-town/play-verification.txt",
+        "art/source/coastal-town/validation.txt"
+      ],
+      "method": "Read existing small output files; no rerun; mtime not treated as execution proof",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "home username and personal name masked; selected fields only; no credentials copied",
+      "sha256": "8dacf90c826e805a0c2297f32a8ec95c53cc3f694fc2314811fad0d4008b2a37",
+      "bytes": 23442,
+      "captured_at_utc": "2026-10-17T10:04:11.944250+00:00"
+    },
+    {
+      "file": "evidence/13-codex-session-evidence.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.codex\\sessions\\2026\\10\\13\\rollout-2026-10-13T18-18-25-01a1348e-5347-7141-b79a-36e26758d4a4.jsonl",
+        "C:\\Users\\<USER>\\.codex\\sessions\\2026\\10\\13\\rollout-2026-10-13T19-27-20-01a134cd-6c99-7e10-b5e1-e4cb4f1c7943.jsonl",
+        "C:\\Users\\<USER>\\.codex\\sessions\\2026\\10\\13\\rollout-2026-10-13T19-52-57-01a134e4-dfd8-7a70-950a-c1e0c61981b1.jsonl"
+      ],
+      "method": "Parse selected session IDs; metadata, final token counters, short actual tool-result blocks only",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "Allowlisted fields only; usernames/names masked; images, hidden reasoning, raw prompts and credential contents omitted",
+      "sha256": "8f9c9f0bbed6abc52a9f46b90be50c8e0f9ca6e9a625f451f1d64648c9778830",
+      "bytes": 19140,
+      "captured_at_utc": "2026-10-17T10:06:52.017198+00:00"
+    },
+    {
+      "file": "evidence/14-claude-session-evidence.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.claude\\projects\\D--Github-F1Game"
+      ],
+      "method": "Parse JSONL timestamps, tool-use IDs and model names; no conversation bodies or hidden reasoning",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "Allowlisted fields only; usernames/names masked; images, hidden reasoning, raw prompts and credential contents omitted",
+      "sha256": "7f060749a4d8fd6d31782f7f399518d1e2f81a6fd6c92f272d92d859120c7f65",
+      "bytes": 42690,
+      "captured_at_utc": "2026-10-17T10:06:55.023934+00:00"
+    },
+    {
+      "file": "evidence/15-regression-isolated-reproduction.json",
+      "sources": [
+        "scripts/regression-check.sh"
+      ],
+      "method": "Isolated behavior reproduction with explicit substituted dependencies",
+      "claim_type": "[이번에 재현]",
+      "redacted": true,
+      "redaction": "Allowlisted fields only; usernames/names masked; images, hidden reasoning, raw prompts and credential contents omitted",
+      "sha256": "1794a92d1f7de853c5d9f4c401d55d638e4f7a18fc998a843747e62410e4fbf1",
+      "bytes": 3512,
+      "captured_at_utc": "2026-10-17T10:07:54.048619+00:00"
+    },
+    {
+      "file": "evidence/16-installed-tools.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.claude.json",
+        "F1/Library/PackageCache/*unity-cli*/package.json"
+      ],
+      "method": "Version-only commands; whitelisted saved descriptors/MCP configuration",
+      "claim_type": "[이번에 재현]",
+      "redacted": true,
+      "redaction": "Allowlisted fields only; usernames/names masked; images, hidden reasoning, raw prompts and credential contents omitted",
+      "sha256": "800e02cb6a748377b13d602e0ccd350dc833e6b82a26fdabf6f480010108d873",
+      "bytes": 2102,
+      "captured_at_utc": "2026-10-17T10:07:57.902346+00:00"
+    },
+    {
+      "file": "evidence/01-repository.json",
+      "sources": [
+        "local git metadata"
+      ],
+      "method": "Read-only git metadata; preserve porcelain leading spaces",
+      "claim_type": "[이번에 재현]",
+      "redacted": true,
+      "redaction": "Names masked; selected code/log/metadata only; no credentials or message bodies",
+      "sha256": "e79753b6696f601cf9a7e613a83affbd3b71c00eefce603619d8a62c38e1b1d4",
+      "bytes": 23426,
+      "captured_at_utc": "2026-10-17T10:10:34.783084+00:00"
+    },
+    {
+      "file": "evidence/17-supplement-code.txt",
+      "sources": [
+        {
+          "path": "tools/studio-dashboard/hub.py",
+          "ranges": [
+            [
+              400,
+              413
+            ],
+            [
+              1060,
+              1115
+            ],
+            [
+              1218,
+              1239
+            ],
+            [
+              1377,
+              1404
+            ],
+            [
+              1982,
+              2013
+            ],
+            [
+              2605,
+              2619
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": "?? tools/studio-dashboard/hub.py",
+          "sha256": "7b613b83eed52f0723f1097f2864d19ef226027ad62265220ffba0c341c43fbe"
+        },
+        {
+          "path": "tools/studio-dashboard/watchdog.py",
+          "ranges": [
+            [
+              13,
+              70
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": "?? tools/studio-dashboard/watchdog.py",
+          "sha256": "f597a6a12b3954c4df51fe17d074e2c15c0d955e35610430a2e20ca144ada373"
+        },
+        {
+          "path": ".claude/hooks/session-start.sh",
+          "ranges": [
+            [
+              24,
+              56
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": "clean tracked",
+          "sha256": "cd04c8fba09633130e67e56570acfce3f8ef90c10cac00b1e3089e7f32a281d5"
+        },
+        {
+          "path": "F1/Assets/Editor/CoastalTownSmoke.cs",
+          "ranges": [
+            [
+              1,
+              55
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": "clean tracked",
+          "sha256": "e19f803a440a06bd912dd9a1ed065a039facc33b3a39cde97018c77930c80a29"
+        },
+        {
+          "path": "F1/Assets/Editor/LofiPilotBuilder.cs",
+          "ranges": [
+            [
+              22,
+              59
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": " M F1/Assets/Editor/LofiPilotBuilder.cs",
+          "sha256": "331c910b6e808beab56f7eeea0a1338e56d3edfdaa164bb403335d0ec5688e3e"
+        },
+        {
+          "path": "tools/asset-gen/lofi_pilot.py",
+          "ranges": [
+            [
+              1,
+              28
+            ],
+            [
+              585,
+              625
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": " M tools/asset-gen/lofi_pilot.py",
+          "sha256": "172c89292f535a159c5eb4e35ee26757434321a45b654dce7e56e923849a6b00"
+        },
+        {
+          "path": "F1/Assets/Editor/CoastalTownDensity.cs",
+          "ranges": [
+            [
+              1,
+              85
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": " M F1/Assets/Editor/CoastalTownDensity.cs",
+          "sha256": "38b076a08efc3f413ec80c1f383bf2c94da4ceb7061b14f1bed06d4fadae6ba4"
+        },
+        {
+          "path": ".ai_logs/pitcrew-audit/round30-closeout-transition.md",
+          "ranges": [
+            [
+              1,
+              70
+            ]
+          ],
+          "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c",
+          "git_status": "?? .ai_logs/pitcrew-audit/round30-closeout-transition.md",
+          "sha256": "2f7cd7ae1566e92c61b5d319f5dba4edf14e608abcb51d4ef15b57ffad04d54f"
+        }
+      ],
+      "method": "Numbered source excerpts; historical round30 explicitly not treated as current observation",
+      "claim_type": "[코드 확인]",
+      "redacted": true,
+      "redaction": "Names masked; selected code/log/metadata only; no credentials or message bodies",
+      "sha256": "8cb2efbf4155783eb4da225ab1a41e0cf1fbc8acf4fc38ff633a9bf28d45e224",
+      "bytes": 44013,
+      "captured_at_utc": "2026-10-17T10:10:36.021236+00:00"
+    },
+    {
+      "file": "evidence/18-live-readonly-observation.json",
+      "sources": [
+        "http://127.0.0.1:7878/api/hub/runtime-health",
+        "http://127.0.0.1:7878/api/hub/runtime-identity",
+        "Windows Win32_Process"
+      ],
+      "method": "GET health/identity after source inspection; read-only process inventory",
+      "claim_type": "[이번에 재현]",
+      "redacted": true,
+      "redaction": "Names masked; selected code/log/metadata only; no credentials or message bodies",
+      "sha256": "59c905ef89e02bf103414a48fba24f873661dbb8bf43627c088d378e04df4f50",
+      "bytes": 1683,
+      "captured_at_utc": "2026-10-17T10:10:37.345686+00:00"
+    },
+    {
+      "file": "evidence/19-warmgrade-verifier-results.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.claude\\projects\\D--Github-F1Game\\a3e29587-ae78-41dd-a321-ea4500e45403\\subagents"
+      ],
+      "method": "Selected actual tool-result records showing missing then present Volume component references",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "Names masked; selected code/log/metadata only; no credentials or message bodies",
+      "sha256": "7ee215ec29c707d0e5078e9438fd3667d552adff0237f29a412d95042c812dc8",
+      "bytes": 1631,
+      "captured_at_utc": "2026-10-17T10:10:37.382382+00:00"
+    },
+    {
+      "file": "evidence/20-cycle-timestamps.json",
+      "sources": [
+        "tools/studio-dashboard/.runtime/hub.sqlite3"
+      ],
+      "method": "Read transaction, actual stage timestamp field names; usage coverage not billing estimate",
+      "claim_type": "[로그 확인]",
+      "redacted": true,
+      "redaction": "Names masked; selected code/log/metadata only; no credentials or message bodies",
+      "sha256": "ef0eee8cb57a7fc5e57bfabd455293bb91c8bf581e268e6a4044679eb782e37a",
+      "bytes": 13150,
+      "captured_at_utc": "2026-10-17T10:10:38.772880+00:00"
+    },
+    {
+      "file": "evidence/21-image-generation-history.json",
+      "sources": [
+        "C:\\Users\\<USER>\\.codex\\sessions\\2026\\10\\13\\rollout-2026-10-13T03-13-24-01a13151-c43a-7e71-aa69-d788509d678c.jsonl"
+      ],
+      "method": "Selected tool-call/result metadata; no image bytes or hidden reasoning",
+      "claim_type": "[?? ??]",
+      "redacted": true,
+      "redaction": "Home username masked; no raw image data",
+      "sha256": "7ed7fa938481e6cba17032b983909664f4af8774b271192e024824713d16a274",
+      "bytes": 12273,
+      "captured_at_utc": "2026-10-17T10:12:32.744777+00:00"
+    },
+    {
+      "file": "evidence/22-density-brief.txt",
+      "sources": [
+        "art/_briefs/2026-10-13-town-density.md"
+      ],
+      "method": "Numbered full short task brief",
+      "claim_type": "[?? ??]",
+      "redacted": true,
+      "redaction": "Personal name masked",
+      "sha256": "5b69d9eb67b7465427607a30b92e14149715cc63171d0a508e3a3e1e9080f6a6",
+      "bytes": 3309,
+      "captured_at_utc": "2026-10-17T10:12:32.773161+00:00"
+    },
+    {
+      "file": "evidence/23-commit-and-protected-files.json",
+      "sources": [
+        "git commit 906f8994e9533f9953f775d292831f8f8586bf8c",
+        "art/source/coastal-town/building-variety-protected-files.json",
+        "F1/Assets/Editor/CoastalTownDensity.cs",
+        "F1/Assets/Editor/CoastalPropsBuilder.cs"
+      ],
+      "method": "Read git commit body/name list and compare current file SHA-256 to logged protected-file hashes",
+      "claim_type": "[?? ??] / [??? ??]",
+      "redacted": true,
+      "redaction": "Identity trailers omitted; personal name masked",
+      "sha256": "513e599e9b6502b4fd4d1b06aa00b34b09e92f819cfd245d9b4b8210d37f9d52",
+      "bytes": 3157,
+      "captured_at_utc": "2026-10-17T10:19:37.489130+00:00"
+    }
+  ],
+  "completed_at_utc": "2026-10-17T10:20:59.435220+00:00",
+  "handoff": {
+    "file": "WORKFLOW_HANDOFF.md",
+    "sha256": "7435ec7106d3daa18e27c9f4eac6d66305fc263277a759ef43652010573474c9"
+  },
+  "artifact_validation": {
+    "evidence_files": 23,
+    "manifest_hash_errors": [],
+    "broken_local_links": [],
+    "credential_name_email_image_scan_flags": [],
+    "source_files_changed_since_extraction": [],
+    "limits": "Pattern scan and allowlisted extraction are not an exhaustive DLP guarantee. No product tests rerun."
+  }
+}

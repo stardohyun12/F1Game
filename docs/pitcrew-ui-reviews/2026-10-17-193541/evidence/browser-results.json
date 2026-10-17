@@ -1,0 +1,305 @@
+{
+  "capturedAt": "2026-10-17T10:39:53.001Z",
+  "browser": "155.0.4283.45",
+  "screenshots": [
+    {
+      "file": "01-live-workspace.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    },
+    {
+      "file": "03-live-results.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    },
+    {
+      "file": "04-live-mobile.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    },
+    {
+      "file": "01-live-workspace.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    },
+    {
+      "file": "03-live-results.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    },
+    {
+      "file": "04-live-mobile.png",
+      "kind": "current live UI, privacy masks; data not fabricated"
+    }
+  ],
+  "blockedWrites": 0,
+  "liveUi": {
+    "agentCards": 12,
+    "projects": 2,
+    "statusLabels": [
+      "완료",
+      "대기",
+      "대기",
+      "대기",
+      "대기",
+      "대기",
+      "작업 중",
+      "완료",
+      "완료",
+      "완료",
+      "완료",
+      "완료"
+    ],
+    "messageCount": 0,
+    "promptVisible": true,
+    "buttons": [
+      {
+        "id": "navToggle",
+        "label": "프로젝트와 대화 목록"
+      },
+      {
+        "id": "workOverviewOpen",
+        "label": null
+      },
+      {
+        "id": "inboxToggle",
+        "label": null
+      },
+      {
+        "id": "themeToggle",
+        "label": "화면 테마 변경"
+      },
+      {
+        "id": "navShade",
+        "label": "프로젝트 메뉴 닫기"
+      },
+      {
+        "id": "newAgent",
+        "label": "새 대화 만들기"
+      },
+      {
+        "id": "globalSearchOpen",
+        "label": "모든 대화에서 찾기"
+      },
+      {
+        "id": "clearChatSearch",
+        "label": "검색 지우기"
+      },
+      {
+        "id": "usageOpen",
+        "label": "Codex와 Claude 사용량"
+      },
+      {
+        "id": "notifyToggle",
+        "label": null
+      },
+      {
+        "id": "shortcutsOpen",
+        "label": null
+      },
+      {
+        "id": "projectsOpen",
+        "label": null
+      },
+      {
+        "id": "manageTeams",
+        "label": null
+      },
+      {
+        "id": "importChats",
+        "label": null
+      },
+      {
+        "id": "setupOpen",
+        "label": null
+      },
+      {
+        "id": "sourcesOpen",
+        "label": null
+      },
+      {
+        "id": "sharedOpen",
+        "label": null
+      },
+      {
+        "id": "activityOpen",
+        "label": null
+      },
+      {
+        "id": "archivedOpen",
+        "label": null
+      },
+      {
+        "id": "helpOpen",
+        "label": null
+      },
+      {
+        "id": "teamOpen",
+        "label": null
+      },
+      {
+        "id": "workReturn",
+        "label": null
+      },
+      {
+        "id": "sidebarFold",
+        "label": null
+      },
+      {
+        "id": "artifactsOpen",
+        "label": "대화의 결과물 보기"
+      },
+      {
+        "id": "collabOpen",
+        "label": null
+      },
+      {
+        "id": "cycleOpen",
+        "label": null
+      },
+      {
+        "id": "findInChat",
+        "label": "찾기"
+      },
+      {
+        "id": "compareOpen",
+        "label": "비교"
+      },
+      {
+        "id": "settingsOpen",
+        "label": "설정"
+      },
+      {
+        "id": "contextToggle",
+        "label": "컨텍스트 패널 토글"
+      },
+      {
+        "id": "flowOpen",
+        "label": null
+      },
+      {
+        "id": "retryConnection",
+        "label": null
+      },
+      {
+        "id": "chatFindPrev",
+        "label": "이전 검색 결과"
+      },
+      {
+        "id": "chatFindNext",
+        "label": "다음 검색 결과"
+      },
+      {
+        "id": "chatFindClose",
+        "label": "본문 검색 닫기"
+      },
+      {
+        "id": "jumpLatest",
+        "label": null
+      },
+      {
+        "id": "compareClose",
+        "label": "비교 닫기"
+      },
+      {
+        "id": "resumeSource",
+        "label": null
+      },
+      {
+        "id": "plusBtn",
+        "label": "파일 첨부 · 더 많은 도구"
+      },
+      {
+        "id": "quick-mention",
+        "label": null
+      },
+      {
+        "id": "quick-slash",
+        "label": null
+      },
+      {
+        "id": "attach",
+        "label": "파일 첨부"
+      },
+      {
+        "id": "stop",
+        "label": null
+      },
+      {
+        "id": "send",
+        "label": null
+      },
+      {
+        "id": "contextClose",
+        "label": "컨텍스트 닫기"
+      },
+      {
+        "id": "modalClose",
+        "label": "닫기"
+      },
+      {
+        "id": "contextShade",
+        "label": "컨텍스트 닫기"
+      }
+    ],
+    "originalLink": {
+      "found": false,
+      "reason": "Not in the currently loaded history slice; diagnostic replay below"
+    },
+    "results": {
+      "downloadLinks": 0,
+      "buttons": []
+    },
+    "mobile": {
+      "width": 390,
+      "documentWidth": 390,
+      "promptRect": {
+        "x": 23,
+        "y": 640,
+        "width": 344,
+        "height": 52
+      }
+    }
+  },
+  "diagnostics": [
+    {
+      "id": "windows-root",
+      "rendered": "<p><a href=\"http://127.0.0.1:7878/D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/진단 파일 공백.txt\" target=\"_blank\" rel=\"noopener noreferrer\">Windows 루트 링크</a></p>\n",
+      "href": "http://127.0.0.1:7878/D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/진단 파일 공백.txt"
+    },
+    {
+      "id": "windows-drive",
+      "rendered": "<p><a href=\"D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/%EC%A7%84%EB%8B%A8%20%ED%8C%8C%EC%9D%BC%20%EA%B3%B5%EB%B0%B1.txt\" target=\"_blank\" rel=\"noopener noreferrer\">Windows 드라이브</a></p>\n",
+      "href": "D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/%EC%A7%84%EB%8B%A8%20%ED%8C%8C%EC%9D%BC%20%EA%B3%B5%EB%B0%B1.txt"
+    },
+    {
+      "id": "file-scheme",
+      "rendered": "<p>[file URL](&lt;file:///D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/진단 파일 공백.txt&gt;)</p>\n",
+      "href": null
+    },
+    {
+      "id": "sandbox-scheme",
+      "rendered": "<p><a href=\"sandbox:/mnt/data/probe.txt\" target=\"_blank\" rel=\"noopener noreferrer\">sandbox URL</a></p>\n",
+      "href": "sandbox:/mnt/data/probe.txt"
+    },
+    {
+      "id": "control",
+      "rendered": "<p><a href=\"/download\" target=\"_blank\" rel=\"noopener noreferrer\">정상 진단 다운로드</a></p>\n",
+      "href": "/download"
+    }
+  ],
+  "video": {
+    "recorded": false,
+    "reason": "Installed Playwright ffmpeg executable missing; attempt recorded separately. Screenshots provided."
+  },
+  "badClick": {
+    "url": "http://127.0.0.1:7878/D:/Github/F1Game/docs/pitcrew-ui-reviews/2026-10-17-193541/evidence/%EC%A7%84%EB%8B%A8%20%ED%8C%8C%EC%9D%BC%20%EA%B3%B5%EB%B0%B1.txt",
+    "body": "not found",
+    "downloadEvents": 0
+  },
+  "controlDownload": {
+    "scope": "isolated diagnostic only; not a product fix",
+    "suggestedFilename": "진단 파일 공백.txt",
+    "originalBytes": 62,
+    "savedBytes": 62,
+    "sha256": "f3301bb76f3ed04287a07fec8e1d4bef8f019943eb75061a1659a6c569877e94",
+    "savedSha256": "f3301bb76f3ed04287a07fec8e1d4bef8f019943eb75061a1659a6c569877e94",
+    "match": true,
+    "failure": null
+  }
+}

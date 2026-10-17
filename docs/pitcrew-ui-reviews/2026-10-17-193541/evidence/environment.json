@@ -1,0 +1,8 @@
+{
+  "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+  "claude_agent_sdk": "0.2.165",
+  "platform": "win32",
+  "node": "24.18.0",
+  "browser": "see browser-results.json",
+  "authentication_contents_collected": false
+}

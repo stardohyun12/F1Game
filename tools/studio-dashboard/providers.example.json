@@ -1,0 +1,12 @@
+{
+  "providers": [
+    {
+      "id": "ollama",
+      "name": "Ollama · 로컬 모델",
+      "baseUrl": "http://127.0.0.1:11434/v1",
+      "apiKeyEnv": "",
+      "defaultModel": "",
+      "models": []
+    }
+  ]
+}

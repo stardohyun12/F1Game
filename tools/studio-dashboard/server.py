@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PitCrew 스튜디오 허브 — 의존성 0, 로컬 전용, 읽기 전용, 안 죽음.
+"""PitCrew 로컬 AI 워크스페이스. 새 UI /, 이전 관제탑 /legacy.
 
 한 주소(http://localhost:7878)에서 사이드바로 페이지 전환:
 - 🏢 팀: PM+3부서 스튜디오 도면 (state.json + 세션 busy 라이트, 3초 폴링)
@@ -7,12 +7,13 @@
 
 새 뷰 추가 = pages/ 에 .html 한 장 떨구면 끝. 포트 안 바뀜, 30분 타임아웃 없음.
 
-실행:  py tools/studio-dashboard/server.py   (백그라운드 권장)
+실행: tools/studio-dashboard/start.ps1 (Claude SDK가 설치된 가상환경 사용)
 """
 import json, glob, os, re, time
+from urllib.parse import urlsplit, parse_qs
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-PORT = 7878
+PORT = int(os.environ.get('PITCREW_PORT', '7878'))
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATE = os.path.join(HERE, "state.json")
 ACTIVITY = os.path.join(HERE, "activity.jsonl")
@@ -21,20 +22,74 @@ SESSIONS = os.path.expanduser("~/.claude/sessions")
 os.makedirs(PAGES_DIR, exist_ok=True)
 
 
+ROOT = os.path.dirname(os.path.dirname(HERE))
+AI_LOGS = os.path.join(ROOT, ".ai_logs")
+GATES = os.path.join(ROOT, "docs", "gates")
+
+
+def codex_runs(limit=4):
+    """2026-10-13: Codex exec 로그(.ai_logs/codex-*.log)를 피드 항목으로. 'tokens used' 가 없으면 아직 돌고 있는 것."""
+    out = []
+    for p in sorted(glob.glob(os.path.join(AI_LOGS, "codex-*.log")), key=os.path.getmtime, reverse=True)[:limit]:
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                txt = f.read()
+            name = os.path.basename(p).replace("codex-", "").replace(".log", "")
+            done = "tokens used" in txt
+            last = ""
+            for ln in reversed(txt.splitlines()):
+                ln = ln.strip()
+                if ln and not ln.startswith(("+", "-", "@@", "exec", "diff", "***")):
+                    last = ln[:110]; break
+            out.append({"kind": "done" if done else "start", "who": "Codex", "text": f"{name} — " + ("완료: " if done else "작업 중: ") + last, "ts": int(os.path.getmtime(p)), "src": "codex"})
+        except Exception:
+            pass
+    return out
+
+
+def gate_lines(limit=8):
+    """오늘 게이트 기록(docs/gates/YYYY-MM-DD.md)의 '- HH:MM | agent | 대상 | 판정 | …' 줄을 피드로."""
+    out = []
+    try:
+        today = time.strftime("%Y-%m-%d")
+        p = os.path.join(GATES, today + ".md")
+        if not os.path.exists(p):
+            return out
+        day = int(time.mktime(time.strptime(today, "%Y-%m-%d")))
+        with open(p, encoding="utf-8") as f:
+            for ln in f:
+                if not ln.startswith("- "):
+                    continue
+                cells = [c.strip() for c in ln[2:].split("|")]
+                if len(cells) < 4:
+                    continue
+                hhmm = cells[0].replace("x", "0")
+                try:
+                    h, m = hhmm.split(":"); ts = day + int(h) * 3600 + int(m) * 60
+                except Exception:
+                    ts = day
+                out.append({"kind": "review", "who": cells[1], "text": f"{cells[2]} → {cells[3]}" + (f" · {cells[4][:90]}" if len(cells) > 4 else ""), "ts": ts, "src": "gate"})
+    except Exception:
+        pass
+    return out[-limit:]
+
+
 def read_activity(n=14):
-    """activity.jsonl 마지막 n줄 (hook이 자동 적재). 최신이 위로."""
+    """activity.jsonl 마지막 n줄 (hook이 자동 적재) + Codex 실행 로그 + 오늘 게이트 기록. 최신이 위로."""
+    out = []
     try:
         with open(ACTIVITY, encoding="utf-8") as f:
             lines = f.readlines()[-n:]
-        out = []
         for ln in lines:
             try:
                 out.append(json.loads(ln))
             except Exception:
                 pass
-        return list(reversed(out))
     except Exception:
-        return []
+        pass
+    out += codex_runs() + gate_lines()
+    out.sort(key=lambda r: r.get("ts", 0), reverse=True)
+    return out[: n + 12]
 
 
 def read_state():
@@ -166,7 +221,13 @@ def list_pages():
 SAFE = re.compile(r"^[A-Za-z0-9_\-]+$")
 
 
+UPLOAD_LIMIT = 20 * 1024 * 1024
+
+def body_limit(path):
+    return UPLOAD_LIMIT * 4 // 3 + 4096 if urlsplit(path).path in ('/api/hub/upload','/api/hub/studio-assets') else 250000
+
 class H(BaseHTTPRequestHandler):
+    runtime_proxy = False
     def log_message(self, *a):
         pass
 
@@ -175,12 +236,322 @@ class H(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(b)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Referrer-Policy", "same-origin")
+        self.send_header("X-Frame-Options", "SAMEORIGIN")
+        if urlsplit(self.path).path.startswith('/view/page/'):
+            self.send_header('Content-Security-Policy', 'sandbox allow-scripts')
         self.end_headers()
-        self.wfile.write(b)
+        try:
+            self.wfile.write(b)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
+
+    def _local(self):
+        host = self.headers.get('Host', '')
+        allowed = {f'localhost:{PORT}', f'127.0.0.1:{PORT}'}
+        if host not in allowed:
+            return False
+        origin = self.headers.get('Origin')
+        if origin and origin not in {'http://' + h for h in allowed}:
+            return False
+        return self.headers.get('Sec-Fetch-Site') != 'cross-site'
+
+    _roots_cache = (0.0, [])
+    def _image_roots(self):
+        """Project folders + PitCrew data folder. Refreshed at most once a minute."""
+        import time
+        from pathlib import Path
+        at, roots = H._roots_cache
+        if time.time() - at < 60 and roots: return roots
+        from hub import ROOT, MEDIA
+        roots = [ROOT.resolve(), MEDIA.parent.resolve()]
+        try:
+            if self.runtime_proxy:
+                from runtime import forward
+                code, body = forward('/api/hub/projects', None, None, timeout=5)
+                rows = json.loads(body) if code == 200 else []
+            else:
+                from hub import get_hub
+                rows = get_hub().projects()
+            roots += [Path(r['path']).resolve() for r in rows if r.get('path')]
+        except Exception:
+            pass
+        H._roots_cache = (time.time(), roots)
+        return roots
+
+    def _local_image(self, raw):
+        from pathlib import Path
+        kinds = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp', '.bmp': 'image/bmp'}
+        try:
+            from hub import ROOT
+            import re as _re
+            raw = raw.replace('\\', '/')
+            if raw.lower().startswith('file://'):
+                raw = raw[7:]
+                if not raw.startswith('/') and not _re.match(r'^[A-Za-z]:/', raw):
+                    return self._json({'error': '외부 공유 경로는 열 수 없습니다.'}, 403)
+            if raw.startswith('//'):
+                return self._json({'error': '외부 공유 경로는 열 수 없습니다.'}, 403)
+            raw = _re.sub(r'^/([A-Za-z]:)', r'\1', raw)  # "/D:/x.png" from Markdown
+            p = Path(raw)
+            p = Path(os.path.abspath(p if p.is_absolute() else ROOT / p))
+            # Check the lexical boundary before resolve/stat can touch an untrusted path.
+            roots = self._image_roots()
+            if not any(p.is_relative_to(r) for r in roots):
+                return self._json({'error': '프로젝트 폴더 밖의 파일은 열 수 없습니다.'}, 403)
+            if p.suffix.lower() not in kinds:
+                return self._json({'error': '이미지를 찾을 수 없습니다.'}, 404)
+            p = p.resolve()
+            # Keep the second check: a project-local link can resolve outside the roots.
+            if not any(p.is_relative_to(r) for r in roots):
+                return self._json({'error': '프로젝트 폴더 밖의 파일은 열 수 없습니다.'}, 403)
+        except (OSError, ValueError, RuntimeError):
+            return self._json({'error': '경로가 올바르지 않습니다.'}, 400)
+        if p.suffix.lower() not in kinds or not p.is_file():
+            return self._json({'error': '이미지를 찾을 수 없습니다.'}, 404)
+        if p.stat().st_size > 30 * 1024 * 1024:
+            return self._json({'error': '이미지가 너무 큽니다.'}, 413)
+        return self._send(p.read_bytes(), kinds[p.suffix.lower()])
+
+    def _json(self, body, code=200):
+        self._send(json.dumps(body, ensure_ascii=False), 'application/json; charset=utf-8', code)
+
+    def _proxy_runtime(self):
+        if not self._local():
+            return self._json({'error': '로컬 접근만 허용됩니다.'}, 403)
+        if not urlsplit(self.path).path.startswith('/api/hub/'):
+            return self._json({'error': '없는 API입니다.'}, 404)
+        try:
+            body = None
+            if self.command == 'POST':
+                length = int(self.headers.get('Content-Length', '0'))
+                if not 0 < length <= body_limit(self.path):
+                    return self._json({'error': '요청 크기가 올바르지 않습니다.'}, 413)
+                self.connection.settimeout(15)
+                body = self.rfile.read(length)
+            from runtime import forward
+            code, result = forward(self.path, body, self.headers.get('X-PitCrew-Token'))
+            return self._send(result, 'application/json; charset=utf-8', code)
+        except (OSError, ValueError, KeyError, RuntimeError):
+            return self._json({'error': '실행 서비스에 연결하지 못했습니다. PitCrew.cmd를 실행해 복구하세요. 전송한 작업은 상태를 확인한 뒤 다시 시도하세요.'}, 503)
+
+    def do_POST(self):
+        if self.runtime_proxy:
+            return self._proxy_runtime()
+        # Read bounded input before returning an auth error: on Windows, closing a
+        # socket with unread request bytes can reset it and hide the HTTP status.
+        try:
+            length = int(self.headers.get('Content-Length', '0'))
+            if not 0 < length <= body_limit(self.path):
+                return self._json({'error': '요청 크기가 올바르지 않습니다.'}, 413)
+            self.connection.settimeout(15)
+            raw = self.rfile.read(length)
+        except (OSError, ValueError):
+            return self._json({'error': '요청 본문을 읽지 못했습니다.'}, 400)
+        from hub import get_hub, text
+        hub = get_hub()
+        if not self._local() or self.headers.get('X-PitCrew-Token') != hub.token:
+            return self._json({'error': '로컬 앱에서만 요청할 수 있습니다. 페이지를 새로고침하세요.'}, 403)
+        try:
+            d = json.loads(raw)
+            if not isinstance(d, dict): raise ValueError('객체 형식의 요청이 필요합니다.')
+            path = urlsplit(self.path).path
+            project = parse_qs(urlsplit(self.path).query).get('project',['default'])[0]
+            hub = get_hub(project)
+            if path == '/api/hub/projects': result = hub.add_project(d)
+            elif path == '/api/hub/studio':
+                import studio
+                result = studio.action(hub,d)
+            elif path == '/api/hub/studio-assets':
+                import studio_assets
+                result=studio_assets.update(hub,d) if d.get('action')=='update' else studio_assets.upload(hub,d)
+            elif path == '/api/hub/studio-terminal':
+                import studio_terminal
+                result=studio_terminal.action(hub,d)
+            elif path == '/api/hub/deliverables':
+                import deliverables
+                result = deliverables.revoke(hub,d.get('id')) if d.get('action')=='expire' else deliverables.register(hub,d)
+            elif path == '/api/hub/agents': result = hub.save_agent(d)
+            elif path == '/api/hub/goal': result = hub.goal(d['agent'],d)
+            elif path == '/api/hub/file-baselines': result = hub.file_baselines(d)
+            elif path == '/api/hub/teams': result = hub.save_team(d)
+            elif path == '/api/hub/team-member': result = hub.change_team_member(d)
+            elif path == '/api/hub/team-links': result = hub.save_team_links(d)
+            elif path == '/api/hub/import': result = hub.import_sources(d)
+            elif path == '/api/hub/send': result = hub.send(d['agent'], d)
+            elif path == '/api/hub/stop': result = hub.stop(d['agent'])
+            elif path == '/api/hub/decide': result = hub.decide(d['id'], d)
+            elif path == '/api/hub/queue': result = hub.queue_action(d)
+            elif path == '/api/hub/handoff': result = hub.save_handoff(d)
+            elif path == '/api/hub/revoke-allow': result = hub.revoke_allow(d)
+            elif path == '/api/hub/upload': result = hub.upload(d)
+            elif path == '/api/hub/research': result = hub.research(d)
+            elif path == '/api/hub/add-cli': result = hub.add_cli(d)
+            elif path == '/api/hub/cycle':
+                action = d.get('action')
+                if action == 'start': result = hub.start_cycle(d)
+                elif action == 'retry': result = hub.retry_cycle(d.get('id'))
+                elif action == 'stop': result = hub.stop_cycle(d.get('id'))
+                elif action == 'hold': result = hub.hold_cycle(d.get('id'))
+                elif action == 'release': result = hub.release_cycle(d.get('id'))
+                else: raise ValueError('지원하지 않는 목표 동작입니다. start, retry, stop, hold, release 중 하나를 지정하세요.')
+            elif path == '/api/hub/continue-conversation': result = hub.continue_conversation(d['agent'])
+            elif path == '/api/hub/resume-source': result = hub.resume_source(d['agent'])
+            elif path == '/api/hub/watch': result = hub.watch(d['source'])
+            elif path == '/api/hub/archive': result = hub.archive(d['agent'])
+            elif path == '/api/hub/restore': result = hub.restore(d['agent'])
+            elif path == '/api/hub/shared':
+                hub.store.put('shared', text(d.get('text', ''), 30000))
+                hub.store.activity(None, '팀 공유 컨텍스트 업데이트'); result = {'ok': True}
+            else: return self._json({'error': '없는 API입니다.'}, 404)
+            self._json(result)
+        except (ValueError, KeyError, TypeError) as e:
+            self._json({'error': str(e)}, 400)
+        except Exception as e:
+            self._json({'error': str(e)[:2000]}, 500)
 
     def do_GET(self):
-        path = self.path.split("?")[0]
+        path = urlsplit(self.path).path
+        if not self._local():
+            return self._json({'error': '로컬 접근만 허용됩니다.'}, 403)
+        if path.startswith('/api/hub/'):
+            if self.runtime_proxy:
+                return self._proxy_runtime()
+            from hub import get_hub
+            hub = get_hub(); q = parse_qs(urlsplit(self.path).query)
+            try:
+                if path == '/api/hub/runtime-identity':
+                    import runtime_identity
+                    result=runtime_identity.snapshot(getattr(hub.owner,'runtime_identity',None),os.path.dirname(__file__))
+                    result['runtime']=getattr(hub.owner,'runtime',{'independent':False})
+                    return self._json(result)
+                if path == '/api/hub/maintenance-status':
+                    from runtime import maintenance_status
+                    return self._json(maintenance_status(hub))
+                hub = get_hub(q.get('project',['default'])[0])
+                if path == '/api/hub/projects': result = hub.projects()
+                elif path == '/api/hub/studio':
+                    import studio
+                    result = studio.snapshot(hub)
+                elif path == '/api/hub/studio-terminal':
+                    import studio_terminal
+                    result=studio_terminal.state(hub,q.get('id',[''])[0],q.get('offset',['0'])[0])
+                elif path == '/api/hub/studio-image':
+                    import studio_assets
+                    result=studio_assets.image(hub,q.get('id',[''])[0])
+                elif path == '/api/hub/deliverables':
+                    import deliverables
+                    result = deliverables.listing(hub,q.get('agent',[''])[0])
+                elif path == '/api/hub/delivery-bytes':
+                    import deliverables
+                    result = deliverables.download(hub,q.get('id',[''])[0])
+                elif path == '/api/hub/runtime-health': result = getattr(hub, 'runtime', {'independent': False})
+                elif path == '/api/hub/usage': result = hub.usage()
+                elif path == '/api/hub/team': result = hub.team()
+                elif path == '/api/hub/flow': result = hub.flow()
+                elif path == '/api/hub/commands': result = hub.commands(q.get('agent', [''])[0])
+                elif path == '/api/hub/goal': result = hub.goal(q.get('agent', [''])[0])
+                elif path == '/api/hub/stage-report': result = hub.stage_report(q.get('id', [''])[0],q.get('stage', [''])[0])
+                elif path == '/api/hub/goal-history': result = hub.goal_history(q.get('q', [''])[0],q.get('page', ['1'])[0],q.get('id', [''])[0])
+                elif path == '/api/hub/file-baselines': result = hub.file_baselines(bid=q.get('id',[''])[0],goal=q.get('goal',[''])[0])
+                elif path == '/api/hub/files': result = hub.project_files(q.get('q', [''])[0])
+                elif path == '/api/hub/search': result = hub.search(q.get('q', [''])[0])
+                elif path == '/api/hub/artifacts':
+                    if q.get('browse', [''])[0] == '1':
+                        result = hub.artifacts(q.get('agent', [''])[0], query=q.get('q', [''])[0], image_page=q.get('image_page', ['1'])[0],
+                                               input_page=q.get('input_page', ['1'])[0], browse=True)
+                    else: result = hub.artifacts(q.get('agent', [''])[0])
+                elif path == '/api/hub/workspace-changes':
+                    import workspace_changes
+                    result = workspace_changes.snapshot(hub.root)
+                elif path == '/api/hub/unity-status':
+                    import unity_status  # read-only: heartbeat files + one fixed loopback query per fresh editor
+                    result = unity_status.snapshot(hub.root)
+                elif path == '/api/hub/unity-console':
+                    import unity_console
+                    result = unity_console.snapshot(hub.root, q.get('path', [''])[0])
+                elif path == '/api/hub/bootstrap':
+                    if 'client' in q: hub.client_report(*(x == '1' for x in (q['client'][0] + ',0').split(',')[:2]))
+                    result = hub.bootstrap()
+                elif path == '/api/hub/detail': result = hub.detail_view(q.get('agent', [''])[0], q.get('etag', [''])[0])
+                elif path == '/api/hub/models': result = hub.models(q.get('provider', [''])[0], q.get('refresh', [''])[0] == '1')
+                elif path == '/api/hub/sources': result = hub.source_catalog()
+                elif path == '/api/hub/archived': result = [a for a in hub.store.agents(include_archived=True) if a.get('archived')]
+                elif path == '/api/hub/message': result = hub.message(q.get('agent', [''])[0], q.get('id', [''])[0])
+                elif path == '/api/hub/export': result = hub.export(q.get('agent', [''])[0])
+                else: return self._json({'error': '없는 API입니다.'}, 404)
+                return self._json(result)
+            except (ValueError, KeyError) as e:
+                return self._json({'error': str(e)}, 400)
+            except Exception as e:
+                return self._json({'error': str(e)[:2000]}, 500)
+        if path.startswith('/studio-image/'):
+            import base64
+            from urllib.parse import urlencode
+            q=parse_qs(urlsplit(self.path).query);identity=path.rsplit('/',1)[-1];project=q.get('project',['default'])[0]
+            try:
+                if self.runtime_proxy:
+                    from runtime import forward
+                    code,body=forward('/api/hub/studio-image?'+urlencode({'id':identity,'project':project}),None,None)
+                    result=json.loads(body)
+                    if code!=200:raise ValueError(result.get('error','이미지를 읽을 수 없습니다.'))
+                else:
+                    from hub import get_hub
+                    import studio_assets
+                    result=studio_assets.image(get_hub(project),identity)
+                return self._send(base64.b64decode(result['content']),result['type'])
+            except (ValueError,OSError,KeyError) as e:return self._json({'error':str(e)},410)
+        if path.startswith('/deliverables/'):
+            import base64
+            from urllib.parse import quote, urlencode
+            q=parse_qs(urlsplit(self.path).query)
+            identity=path.rsplit('/',1)[-1]
+            project=q.get('project',['default'])[0]
+            try:
+                if self.runtime_proxy:
+                    from runtime import forward
+                    code,body=forward('/api/hub/delivery-bytes?'+urlencode({'id':identity,'project':project}),None,None)
+                    item=json.loads(body)
+                    if code!=200:raise ValueError(item.get('error','다운로드할 수 없습니다.'))
+                else:
+                    from hub import get_hub
+                    import deliverables
+                    item=deliverables.download(get_hub(project),identity)
+                content=base64.b64decode(item['content'])
+                self.send_response(200)
+                self.send_header('Content-Type',item['type'])
+                self.send_header('Content-Length',str(len(content)))
+                self.send_header('Content-Disposition',"attachment; filename=download; filename*=UTF-8''"+quote(item['name']))
+                self.send_header('X-Content-Type-Options','nosniff')
+                self.send_header('Cache-Control','no-store')
+                self.end_headers();self.wfile.write(content)
+            except (ValueError,OSError,KeyError) as e:
+                return self._json({'error':str(e)},410)
+            return
+        if path in ('/studio','/studio.js','/studio.css','/studio-workbench.css','/studio-workbench.js','/xterm.js','/xterm.css'):
+            filename={'/studio':'studio.html','/studio.js':'studio.js','/studio.css':'studio.css','/studio-workbench.css':'studio-workbench.css','/studio-workbench.js':'studio-workbench.js','/xterm.js':'xterm.js','/xterm.css':'xterm.css'}[path]
+            with open(os.path.join(HERE,'web',filename),encoding='utf-8') as f:
+                return self._send(f.read(),('text/javascript' if filename.endswith('.js') else 'text/css' if filename.endswith('.css') else 'text/html')+'; charset=utf-8')
+        if path == '/local-image':
+            return self._local_image(parse_qs(urlsplit(self.path).query).get('path', [''])[0])
+        if path.startswith('/media/'):
+            import re
+            from hub import MEDIA
+            name = path[len('/media/'):]
+            if not re.fullmatch(r'[0-9a-f]{32}\.(png|jpg|gif|webp)', name) or not (MEDIA / name).is_file():
+                return self._json({'error': '이미지를 찾을 수 없습니다.'}, 404)
+            ext = name.rsplit('.', 1)[1]
+            return self._send((MEDIA / name).read_bytes(), 'image/' + ('jpeg' if ext == 'jpg' else ext))
+        if path in ('/', '/hub', '/app.css', '/app.js', '/connection.js', '/teams.js', '/workspace.js', '/organize.js', '/product.css', '/reader.js', '/notify.js', '/queue.js', '/attach.js', '/composer.js', '/markdown-it.min.js'):
+            filename = {'/': 'index.html', '/hub': 'index.html', '/app.css': 'app.css', '/app.js': 'app.js', '/connection.js': 'connection.js', '/teams.js': 'teams.js', '/workspace.js':'workspace.js', '/product.css':'product.css', '/organize.js':'organize.js', '/reader.js':'reader.js', '/notify.js':'notify.js', '/queue.js':'queue.js', '/attach.js':'attach.js', '/composer.js':'composer.js', '/markdown-it.min.js':'markdown-it.min.js'}[path]
+            ctype = 'text/css' if filename.endswith('.css') else ('text/javascript' if filename.endswith('.js') else 'text/html')
+            with open(os.path.join(HERE, 'web', filename), encoding='utf-8') as f:
+                return self._send(f.read(), ctype + '; charset=utf-8')
         if path == "/" or path == "":
+            self._send(SHELL)
+        elif path == '/legacy':
             self._send(SHELL)
         elif path == "/api/state":
             d = read_state(); d["session"] = session_activity()
@@ -304,6 +675,7 @@ TEAM_PAGE = r"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><titl
 <script>
 const IC={working:"🟢",done:"✅",idle:"💤"};
 const FIC={start:"🚀",done:"✅",turn:"💬",review:"👁"};
+function safe(t){return String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function ago(ts){const d=Math.max(0,Math.floor(Date.now()/1000-ts));
   if(d<60)return d+"초 전";if(d<3600)return Math.floor(d/60)+"분 전";return Math.floor(d/3600)+"시간 전";}
 let lastFeedTop=0;
@@ -311,7 +683,7 @@ async function feed(){try{
   const a=await (await fetch('/api/activity?_='+Date.now())).json();
   const f=document.getElementById('feed');
   if(!a.length){f.innerHTML='<div class="fitem"><span class="ft">아직 활동 없음 — 에이전트 띄우면 여기 흐름</span></div>';return;}
-  f.innerHTML=a.map(r=>`<div class="fitem k-${r.kind}"><span class="fi">${FIC[r.kind]||'·'}</span><span class="fw">${r.who||''}</span><span class="ft">${r.text||''}</span><span class="fa">${ago(r.ts)}</span></div>`).join('');
+  f.innerHTML=a.map(r=>`<div class="fitem k-${safe(r.kind)}"><span class="fi">${FIC[r.kind]||'·'}</span><span class="fw">${safe(r.who)}</span><span class="ft">${safe(r.text)}</span><span class="fa">${ago(r.ts)}</span></div>`).join('');
 }catch(e){}}
 async function tick(){try{
   const s=await (await fetch('/api/state?_='+Date.now())).json();
@@ -323,8 +695,8 @@ async function tick(){try{
   const w=document.getElementById('deps');w.innerHTML='';
   (s.departments||[]).forEach((d,i)=>{const el=document.createElement('div');
     el.className='dep k'+i+(d.status==='active'?' active':'');
-    let dk=(d.desks&&d.desks.length)?d.desks.map(k=>`<div class="desk"><div class="ava">${IC[k.status]||'💤'}</div><div class="dk"><div class="role">${k.role||''}</div><div class="nm">${k.name||''}</div><div class="tk">${k.task||''}</div></div><span class="badge b-${k.status||'idle'}">${k.status||'idle'}</span></div>`).join(''):'<div class="empty">대기 중</div>';
-    el.innerHTML=`<h2>${d.icon||''} ${d.name}실 ${d.status==='active'?'● 활성':'○ 대기'}</h2><div class="note">${d.note||''}</div>${dk}`;
+    let dk=(d.desks&&d.desks.length)?d.desks.map(k=>`<div class="desk"><div class="ava">${IC[k.status]||'💤'}</div><div class="dk"><div class="role">${safe(k.role)}</div><div class="nm">${safe(k.name)}</div><div class="tk">${safe(k.task)}</div></div><span class="badge b-${safe(k.status||'idle')}">${safe(k.status||'idle')}</span></div>`).join(''):'<div class="empty">대기 중</div>';
+    el.innerHTML=`<h2>${safe(d.icon)} ${safe(d.name)}실 ${d.status==='active'?'● 활성':'○ 대기'}</h2><div class="note">${safe(d.note)}</div>${dk}`;
     w.appendChild(el);});
 }catch(e){document.getElementById('pm').textContent='상태 못 읽음: '+e;}}
 tick();feed();setInterval(tick,3000);setInterval(feed,3000);
@@ -332,5 +704,8 @@ tick();feed();setInterval(tick,3000);setInterval(feed,3000);
 
 
 if __name__ == "__main__":
+    from runtime import ensure_running
+    ensure_running()
+    H.runtime_proxy = True
     print(f"PitCrew Hub → http://localhost:{PORT}  (pages dir: {PAGES_DIR})")
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()

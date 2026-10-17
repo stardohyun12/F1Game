@@ -1,0 +1,134 @@
+{
+  "configs": [
+    {
+      "path": "C:\\Users\\<USER>\\.codex\\config.toml",
+      "exists": true,
+      "settings": {
+        "model": "gpt-6-astra",
+        "model_reasoning_effort": "medium"
+      },
+      "permission_default": null,
+      "env_presence": {},
+      "mcp": [
+        {
+          "name": "unity",
+          "command": "unity",
+          "url_configured": false,
+          "env_presence": {}
+        },
+        {
+          "name": "node_repl",
+          "command": "C:/Users/<USER>\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\78fb63cda1a9e2b2\\bin\\node_repl.exe",
+          "url_configured": false,
+          "env_presence": {
+            "NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS": true,
+            "NODE_REPL_NODE_MODULE_DIRS": true,
+            "NODE_REPL_NODE_PATH": true,
+            "NODE_REPL_TRUSTED_CODE_PATHS": true,
+            "CODEX_HOME": true,
+            "BROWSER_USE_AVAILABLE_BACKENDS": true,
+            "BROWSER_USE_TINYSKY_ENABLED": true,
+            "NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER": false,
+            "NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME": false,
+            "BROWSER_USE_CODEX_APP_BUILD_FLAVOR": true,
+            "BROWSER_USE_CODEX_APP_VERSION": true,
+            "NODE_REPL_TRUSTED_SERVICES": true,
+            "SKY_CUA_NATIVE_PIPE": true,
+            "SKY_CUA_NATIVE_PIPE_DIRECTORY": true,
+            "CODEX_CLI_PATH": true,
+            "NODE_REPL_UNTRUSTED_ENV_ALLOWLIST": true
+          }
+        }
+      ]
+    },
+    {
+      "path": "C:\\Users\\<USER>\\.claude\\settings.json",
+      "exists": true,
+      "settings": {
+        "effortLevel": "medium",
+        "enabledPlugins": {
+          "productivity@inline": false
+        }
+      },
+      "permission_default": "auto",
+      "env_presence": {
+        "CLAUDE_CODE_NO_FLICKER": true,
+        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
+      },
+      "mcp": []
+    },
+    {
+      "path": "D:\\Github\\F1Game\\.mcp.json",
+      "exists": false
+    },
+    {
+      "path": "D:\\Github\\F1Game\\.claude\\settings.local.json",
+      "exists": false
+    }
+  ],
+  "current_process_env_presence": {
+    "OPENAI_API_KEY": false,
+    "ANTHROPIC_API_KEY": false,
+    "PITCREW_RUNTIME_DIR": false,
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": false,
+    "UNITY_CLI_PATH": false,
+    "BLENDER_PATH": false
+  },
+  "Unity_packages": {
+    "com.unity.ai.navigation": "2.0.13",
+    "com.unity.collab-proxy": "2.12.4",
+    "com.unity.ide.rider": "3.0.40",
+    "com.unity.ide.visualstudio": "2.0.26",
+    "com.unity.inputsystem": "1.19.0",
+    "com.unity.multiplayer.center": "1.0.1",
+    "com.unity.recorder": "5.1.6",
+    "com.unity.render-pipelines.universal": "17.3.0",
+    "com.unity.test-framework": "1.6.0",
+    "com.unity.timeline": "1.8.12",
+    "com.unity.ugui": "2.0.0",
+    "com.unity.visualscripting": "1.9.11",
+    "com.whinarn.unitymeshsimplifier": "https://github.com/Whinarn/UnityMeshSimplifier.git",
+    "com.youngwoocho02.unity-cli-connector": "https://github.com/youngwoocho02/unity-cli.git?path=unity-connector",
+    "com.unity.modules.accessibility": "1.0.0",
+    "com.unity.modules.adaptiveperformance": "1.0.0",
+    "com.unity.modules.ai": "1.0.0",
+    "com.unity.modules.androidjni": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.assetbundle": "1.0.0",
+    "com.unity.modules.audio": "1.0.0",
+    "com.unity.modules.cloth": "1.0.0",
+    "com.unity.modules.director": "1.0.0",
+    "com.unity.modules.imageconversion": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.particlesystem": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.physics2d": "1.0.0",
+    "com.unity.modules.screencapture": "1.0.0",
+    "com.unity.modules.terrain": "1.0.0",
+    "com.unity.modules.terrainphysics": "1.0.0",
+    "com.unity.modules.tilemap": "1.0.0",
+    "com.unity.modules.ui": "1.0.0",
+    "com.unity.modules.uielements": "1.0.0",
+    "com.unity.modules.umbra": "1.0.0",
+    "com.unity.modules.unityanalytics": "1.0.0",
+    "com.unity.modules.unitywebrequest": "1.0.0",
+    "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+    "com.unity.modules.unitywebrequestaudio": "1.0.0",
+    "com.unity.modules.unitywebrequesttexture": "1.0.0",
+    "com.unity.modules.unitywebrequestwww": "1.0.0",
+    "com.unity.modules.vectorgraphics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.video": "1.0.0",
+    "com.unity.modules.vr": "1.0.0",
+    "com.unity.modules.wind": "1.0.0",
+    "com.unity.modules.xr": "1.0.0",
+    "com.unity.pipeline": "0.8.0-exp.1"
+  },
+  "harness_roots_checked": {
+    "D:\\Github\\F1Game\\harness-core": false,
+    "D:\\Github\\harness-core": false,
+    "C:/Users/<USER>\\harness-core": false
+  },
+  "note": "Current process env is not the full environment of already running agents. OAuth/auth files deliberately not read."
+}

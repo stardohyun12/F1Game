@@ -1,0 +1,16 @@
+{
+  "completed_at": "2026-10-17T10:48:53.281080+00:00",
+  "head": "906f8994e9533f9953f775d292831f8f8586bf8c",
+  "original_product_sources_compared": 123,
+  "original_product_sources_changed_since_capture": [],
+  "export_redactions": [],
+  "secret_pattern_findings": [],
+  "live_web_pid_after": 39668,
+  "live_runtime_pid_after": 19020,
+  "notes": [
+    "No production code modified or services restarted",
+    "Original live UI screenshot private text masked",
+    "UI fixture and diagnostic control server are not production fixes",
+    "Video unavailable: ffmpeg missing; failed attempts retained"
+  ]
+}

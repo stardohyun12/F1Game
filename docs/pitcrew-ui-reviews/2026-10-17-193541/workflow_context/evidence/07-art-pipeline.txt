@@ -1,0 +1,200 @@
+{"path": "tools/asset-gen/README.md", "source_sha256": "0897e2e701ffa2068e5a6743e798fceeafb47d8980a5c69b13c9b461f65e2f23", "git_status": "clean tracked (or ignored; see tracked)", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 120]]}
+1: # asset-gen — 로컬 AI + Blender 로 게임 메시 만들기 (2026-10-12 시작)
+2: 
+3: > 한 줄: **ComfyUI(모양) → Blender(마감) → Unity**. 각진 물건은 ComfyUI 없이 Blender 스크립트로 바로.
+4: 
+5: ## 왜 이 구조인가
+6: 
+7: 세션 28(2026-05) 결론 그대로다 — "각진 것 = 프로시저럴/Kenney, 유기적 hero 만 AI". 달라진 건
+8: 둘 다 **로컬·무료**가 됐다는 것(Meshy 크레딧 불필요):
+9: 
+10: - ComfyUI 에 **Hunyuan3D-2 노드가 기본 내장** → 이미지 1장 → GLB. (RTX 4070 8GB 에서 돈다)
+11: - **Blender 5.2** 가 `D:\Tools\Blender` 에 있다 → 헤드리스로 깎기·UV·FBX.
+12: 
+13: ## 도구
+14: 
+15: | 파일 | 하는 일 | 실행 |
+16: |---|---|---|
+17: | `hy3d_run.py` | 이미지 → ComfyUI Hunyuan3D-2 → `<name>_raw.glb` | `python -X utf8 tools/asset-gen/hy3d_run.py --image ref.png --name cake --out out/ --comfy-output C:/Users/USER/ComfyUI/output` |
+18: | `blender_lowpoly.py` | 조밀한 메시 → 리메시 → 깎기(목표 tris) → 플랫 셰이딩 → Smart UV → 높이(m) 맞춤 → 바닥 원점 → FBX+GLB | `blender -b -P tools/asset-gen/blender_lowpoly.py -- --in cake_raw.glb --out cake_low.fbx --tris 1500 --height 0.30` |
+19: | `proc_cake.py` | Blender 프리미티브로 직접 짠 케이크 (ComfyUI 없이) | `blender -b -P tools/asset-gen/proc_cake.py -- --out cake_proc.fbx --height 0.30` |
+20: | `blender_render.py` | 모델 N개를 같은 카메라로 렌더 (3/4·측면·흑실루엣) — <USER> 판정용 | `blender -b -P tools/asset-gen/blender_render.py -- --out out/compare a.glb b.fbx` |
+21: | `sheet.py` | PNG 들을 라벨 달아 한 장으로 | `python -X utf8 tools/asset-gen/sheet.py --out sheet.png "라벨=a.png" ...` |
+22: 
+23: `blender` = `D:\Tools\Blender\blender.exe`. ComfyUI 는 `C:\Users\USER\ComfyUI` 의 `.venv\Scripts\python.exe main.py --port 8188`
+24: (D:\ComfyUI\Imag_Generate 쪽은 torch 가 없어 못 뜬다). Hunyuan3D 체크포인트는 C 가 꽉 차서
+25: `D:\ComfyUI\Imag_Generate\ComfyUI\models\checkpoints\hunyuan3d-dit-v2_fp16.safetensors` 에 두고
+26: `extra_model_paths.yaml` 의 `f1_hunyuan3d` 항목으로 잇는다.
+27: 
+28: ## 참고 이미지는 Codex 로
+29: 
+30: `codex exec -s workspace-write -C <빈 폴더> --skip-git-repo-check -` 에 영어 프롬프트를 stdin 으로.
+31: 한 장 약 2분. Hunyuan 입력용 조건: **물체 하나 · 흰 배경 · 3/4 위에서 본 각도 · 여백 · 그림자 없음**.
+32: 저장한 프롬프트는 `art/_prompts/` 에.
+33: 
+34: ## 실측으로 알게 된 것 (2026-10-12)
+35: 
+36: - **Meshy 메시가 "깎으면 깨지던" 진짜 이유**: `cake_01.fbx` 는 shell 1개지만 **boundary edge 1,249 · non-manifold 2,723 짜리 열린 표면**이다.
+37:   복셀 리메시는 닫힌 표면을 전제로 해서, 이걸 넣으면 **782 조각**으로 터지고 그걸 깎으니 산산조각.
+38:   (진단 수치: import tris 54,364 → remesh 36,340/782 shells → collapse 1,900 → 재임포트 1,129, 면 40% 증발)
+39:   → `blender_lowpoly.py` 는 입력 열림 여부를 경고하고, 리메시 뒤 부스러기 shell 을 지운다.
+40:   Hunyuan3D 출력(surface net)은 닫힌 표면이라 이 문제가 없을 것으로 예상 — 실측 후 여기 갱신.
+41: - Blender 5.2 헤드리스: FBX import/export, glTF import/export, Workbench 렌더 모두 동작 확인.
+
+{"path": "project_rules/asset.md", "source_sha256": "bc4ee5e3d8461748daf3b74d7aa1f68401351697252910118589290045fe3756", "git_status": "M project_rules/asset.md", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 145]]}
+1: # 에셋/맵 자동 배치 작업 규칙 (D-024/D-026 교훈) [project]
+2: 
+3: ## 아트 제작·적용 승인 순서 (2026-10-13 사용자 직접 지시)
+4: 
+5: - 실제 아트 에셋 제작 전에 원화나 분위기·형태를 보여주는 그림을 먼저 제시한다.
+6: - 사용자가 원화를 승인한 뒤에만 모델·텍스처 등 실제 에셋을 제작한다.
+7: - 제작 후에도 게임에 적용하기 전에 미리보기를 보여주고 적용 승인을 받는다.
+8: - 순서: 참고 자료 → 원화 → 사용자 승인 → 에셋 제작 → 적용 전 미리보기 → 사용자 승인 → 게임 적용.
+9: - 제작 요청이나 방향에 대한 긍정을 이후 단계 전체의 포괄 승인으로 해석하지 않는다.
+10: 
+11: 
+12: - **신규 타일·프리팹 도입 시:** mesh 외곽 bounds만 보고 "정규화 완료" 판정 금지. 기존 타일과 **side-by-side 렌더 + 이음매 클로즈업** 의무 (`_Recovery/PreviewBend.cs` 패턴).
+13: - **시각 검증은 톱다운 정사영 + 사이드뷰 두 축으로.** 톱다운만 보면 상하 뒤집힘 등 Y축 이슈 못 잡음 (세션 7 건물 땅 속 박힘 사례).
+14: - **회전은 Y-yaw만 명시적으로 계산.** `Quaternion.FromToRotation(A, -A)`는 180° 축이 여러 해 → Unity가 X축 선택하면 상하 뒤집힘. `atan2(x, z)` 패턴 사용.
+15: - **자동 배치 스크립트에는 post-build verification 포함 의무.** `BuildingPlacer.VerifyPlacements` 패턴 (euler X/Z 검사 + bounds.min.y 검사). 침묵 실패 방지.
+16: - **맵 레이아웃은 ScriptableObject (`TrackLayout`)로 관리.** 코드 하드코드 금지. 여러 씬에 각자의 Layout SO.
+17: - **roadMask 수정 시 `TrackConnectivityVerifier` 자동 실행 필수** (세션 13 D-038). `RunFullRebuild` Step 6에 내장. BFS로 고립/도달불가/End 자동 리포트. 수동: `PitCrew > Verify Track Connectivity`. End 개수가 의도와 다르면 즉시 확인.
+18: - **heightMask 도입 시 (D-050)**: 도로 cell은 heightMask='.' (0) 유지 권장. 의도된 elevation은 slope tile (`n/s/e/w/=/+`) 사용. 일반 도로 cell에 height 값 넣으면 인접 도로와 단절 step 발생.
+19:   - **D-098(2026-10-13)로 범위 축소**: 위 규칙은 **마을 타일 격자 안에서만**. 마을 사이 해안도로는 타일이 아닌 스플라인 메시로 깔고 고도(언덕·내리막)를 넣는다. 격자와 스플라인의 이음새 높이는 맞춰야 한다.
+20: 
+21: ## 에셋 제약
+22: **Kenney 에셋 라인업 안에서만.** 커스텀 모델 제작 금지. 미사용 모델 활용이 원칙 (industrial 21 + low-detail 14 + decor 6 = 세션 17에 41개 추가됨).
+
+{"path": "art/_briefs/2026-10-13-building-faces.md", "source_sha256": "7fcfe6cd876a8bba5adcc2bd6f90d2ed9bb6aedfd8de896e357e81e4492a1042", "git_status": "?? art/_briefs/2026-10-13-building-faces.md", "tracked": false, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 140]]}
+1: # 브리프: 로파이 해안 마을 — 건물 벽 단면 (2026-10-13, 저녁)
+2: 
+3: ## <USER>의 한 줄 (합격 기준)
+4: > 아트 부분 같이 해봐. — 네 로파이 키트(D-096) 그대로, 건물이 "창 하나 붙은 베이지 평면"으로 보이지 않게.
+5: 
+6: ## 바탕 (읽고 시작)
+7: - 네 키트: `tools/asset-gen/lofi_pilot.py` (CornerShop / RepairGarage / CoastalHouse). 오늘 Claude 가 소품 31종과 아틀라스 칸 15개를 **뒤에 붙였다**(기존 칸·rng 순서 보존). 네가 할 때도 같은 규칙: 팔레트 칸은 목록 끝에만 추가, 기존 함수의 rng 호출 순서를 바꾸지 않는다.
+8: - 지금 상태 캡처: `art/source/coastal-town/01_ingame_neighborhood.png`, `03_ingame_harbor.png`, `06_downtown_center.png`. 비교 3단 `v3_vs_v2_vs_codex.png`. 경위 `art/source/coastal-town/README.md`(3차까지).
+9: - 외부 눈(graphic-gate, `docs/gates/2026-10-13.md` 19:34 줄) 6/10 FAIL. 남은 지적 중 네 몫: **"건물 벽이 잘린 거대한 단면 — 화면 20% 가 베이지 얼룩 평면에 문 하나"**, **"건물 반복(같은 집 3종)"**.
+10: - 배치 규칙 `F1/Assets/Editor/CoastalTownDensity.cs` 의 `Body()` 가 몸통 치수를 안다: 집 5×4.8, 상점 6×5.2, 정비소 6.4×5.6. **이 치수는 유지**(돌출은 벽에서 0.35m 이내). 벽걸이 소품(차양 y=hd+.46·실외기 2.25s·벽등 2.15s)이 벽 바깥에 붙으니 그 높이 띠(1.9~2.5m)의 돌출은 피한다.
+11: 
+12: ## 해야 할 것 (이 순서)
+13: 1. **벽면 디테일** — 세 건물 모두: 층 구분선(1층/2층 사이 띠), 벽 하단 기단 띠(석재·0.5m), 창 줄(층마다 창 2~3개, 창틀·창턱), 처마 밑 그림자 띠, 모서리 기둥(쿼인). 2m 이상 민무늬 면이 안 남게. 전부 같은 아틀라스(64px 칸, Point 샘플링, 2m UV 분할).
+14: 2. **변형** — 건물 종류마다 hash 로 고르는 변형 2~3개: 집(발코니 있음/없음, 덧문, 굴뚝, 지붕 색), 상점(간판 글자 MART 외 1개, 차양 색), 정비소(셔터 열림/닫힘, 간판 위치). 변형은 `lofi_pilot.py` 에서 별도 FBX 이름(예 `CoastalHouseB`)으로 내보내고, `CoastalTownInstaller.Layout()` 의 asset 선택 한 줄에서 hash 로 고른다. `CoastalPropsBuilder` 는 손대지 말 것(소품 전용). 새 건물 프리팹은 네 `LofiPilotBuilder` 쪽에서.
+15: 3. **검증** — Blender: `D:/Tools/Blender/blender.exe -b -P tools/asset-gen/lofi_pilot.py -- --root D:/Github/F1Game`. Unity 는 켜져 있다(포트 8090): `bash scripts/ucli.sh exec "<C#>"` / `console --type error`. 순서: `AssetDatabase.Refresh()` → 컴파일 대기 → 프리팹 빌드 → 메뉴 `PitCrew/Art/Coastal Town/Rebuild Layout + Install`(저장된 깨끗한 ComplexTrack 필요) → `CoastalTownSmoke.Run()` 이 `art/source/coastal-town/play-verification.txt` 에 8 PASS + SUCCESS. `validation.txt` 의 Issues 가 비어야 한다.
+16: 4. **캡처** — 스모크가 `01/02/03_*.png` 를 덮어쓴다. 추가로 `ArtCapture.CaptureChaseAt(path,84,60,0,1600,900)` 로 `06_downtown_center.png`, 건물 한 채 정면·측면 클로즈업 `07_house_closeup.png`.
+17: 5. **기록** — `art/source/coastal-town/README.md` 끝에 "4차 — 건물 벽 단면 (Codex)" 절: 바꾼 것 / 안 한 것 / 못 본 것. 씬 저장. **git 커밋 금지.**
+18: 
+19: ## 하지 말 것
+20: - `CoastalTownDensity.cs` 수정 금지 (Claude 가 같은 시간에 2칸 폭 도로 쪽을 고치고 있다). `CoastalTownInstaller.cs` 는 asset 선택 한 줄만.
+21: - 소품(Awning~Boat) 함수·아틀라스 칸 수정 금지. 추가만.
+22: - 차량·카메라·배달·물리 코드 변경 금지. 새 스타일 제안 금지.
+23: - 결과를 좋게 요약하지 말 것. 안 한 것·못 본 것은 그대로.
+
+{"path": "art/_briefs/2026-10-13-building-variety.md", "source_sha256": "d28310a1c920c94dd6aaf61815d5fa61130b29d2fa4d50bbc45fc8b19b7ad87c", "git_status": "?? art/_briefs/2026-10-13-building-variety.md", "tracked": false, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[1, 140]]}
+1: # 브리프: 로파이 해안 마을 — 건물 다양성 (2026-10-13, 밤)
+2: 
+3: ## <USER>의 한 줄 (합격 기준)
+4: > 이 느낌(네 4차 변형 7종, `codex4_08_building_variants.png`)으로 다양하게 뽑아 봐라. 단, 지금 TEA·MART 는 **책방 건물에 간판만 바꾼 것**처럼 보인다 — 가게는 가게 종류가 정면에서 읽혀야 한다.
+5: 
+6: ## 바탕
+7: - 네 4차 결과가 채택됐다(graphic-gate 7/10 PASS, `docs/gates/2026-10-13.md` 19:52). 지금 씬에 네 판이 설치돼 있다(2752 배치, 스모크 8/8). 그 위에서 이어 간다.
+8: - 같은 규칙: `tools/asset-gen/lofi_pilot.py`, 아틀라스 64px 칸·Point·2m UV, 팔레트 칸은 끝에만 추가, 기존 함수의 rng 순서 보존. 소품(Awning~Boat)·`CoastalTownDensity.cs`·`CoastalPropsBuilder.cs` 는 손대지 않는다.
+9: - 몸통 치수 규칙은 **이번엔 풀린다**(실루엣이 달라야 하므로). 대신 새 치수를 `CoastalTownDensity.Body()` 가 알아야 한다 — Density 는 Claude 가 고치니, 네가 만든 건물마다 **(이름, 폭 w, 깊이 d, 층수, 정면 문 x)** 를 `art/source/coastal-town/building-catalog.json` 에 적어라. 바닥 원점·앞=-y(Unity +z)·벽걸이 띠(1.9~2.5m) 규칙은 유지.
+10: - 삼각형 예산: 건물당 **4,500 이하**(지금 3,000~4,100). 넘으면 창살·장식부터 줄인다.
+11: 
+12: ## 해야 할 것
+13: 1. **실루엣이 다른 집 3종 추가** (기존 3종 유지): ① 좁고 높은 3층집(폭 4, 깊이 4.8, 지붕 급경사) ② 단층 오두막(폭 6, 깊이 4.4, 큰 지붕·처마 깊음·현관 포치) ③ 모서리가 깎인 L자/모서리집(폭 6, 깊이 6, 한쪽 날개). 지붕 형태(박공/모임/한쪽 경사)와 색이 서로 달라야 한다.
+14: 2. **가게는 종류가 읽히게** — 지금 CornerShop/B 를 "같은 몸통에 간판"에서 벗어나게:
+15:    - **MART**: 정면에 과일·채소 상자 진열대(가로로 긴 선반 2단), 냉장 쇼케이스 유리, 벽에 포스터 2~3장, 입구 위 큰 간판, 출입문은 넓은 유리문.
+16:    - **TEA(찻집)**: 작은 창 격자(종이창 느낌), 입구 옆 둥근 테이블 2 + 의자, 처마에 등(랜턴) 2~3개, 간판은 세로로 매단 나무판 + 찻주전자 아이콘(픽셀), 차양은 천이 아니라 나무 처마.
+17:    - 가능하면 **BAKERY** 한 종 더(빵 진열창, 굴뚝에서 연기 없이 굴뚝만 큼, 줄무늬 차양). 이름은 `CornerShop`(MART) / `CornerShopB`(TEA) / `CornerShopC`(BAKERY) 로.
+18: 3. **정비소** 2종 유지, 지붕 색 하나는 바꿔라(회색 일색 탈출).
+19: 4. **배치**: `CoastalTownInstaller.Layout()` 의 asset 선택에서 새 집 3종이 hash 로 섞이게(집 6종 균등, 상점 3종, 정비소 2종). `scale` 줄은 종류별 기본 .62~.64 유지. 새 집의 치수가 다르니 **`CoastalTownDensity.Body()` 는 Claude 가 catalog.json 으로 맞춘다** — 네가 설치를 돌릴 때는 Density 가 옛 치수를 쓰므로 옆 소품이 조금 어긋나도 무시하고 진행, README 에 적어라.
+20: 5. **검증**: Blender 생성 → `AssetDatabase.Refresh()` → 컴파일 대기 → `PitCrew/Art/Lofi Pilot/Build Building Prefabs` → `PitCrew/Art/Coastal Town/Rebuild Layout + Install` → `CoastalTownSmoke.Run()` 8 PASS + SUCCESS, `validation.txt` Issues 비어 있음. Unity 는 켜져 있다(8090). 네 `verify_building_faces.py` 는 새 치수에 맞게 고쳐서 돌려라.
+21: 6. **캡처**: 스모크 01~04 + `06_downtown_center.png`(`ArtCapture.CaptureChaseAt(path,84,60,0,1600,900)`) + 변형 전체 모음 `08_building_variants.png`(네 Capture Building Faces) + 가게 3종 정면 근접 `10_shops_front.png`.
+22: 7. **기록**: `art/source/coastal-town/README.md` 끝에 "5차 — 건물 다양성 (Codex)" 절. 씬 저장. **git 커밋 금지.**
+23: 
+24: ## 하지 말 것
+25: - 간판·색만 바꾼 변형. 가게는 진열·가구·창 형태가 달라야 한다.
+26: - 차량·카메라·배달·물리·도로 코드 변경. 새 스타일 제안.
+27: - 결과를 좋게 요약하지 말 것. 안 한 것·못 본 것은 그대로.
+
+{"path": "art/source/coastal-town/README.md", "source_sha256": "a700d5a38719c6d8f5c181f16c961a501c565870fb4d5489f2c4aabe47603d05", "git_status": "M art/source/coastal-town/README.md", "tracked": true, "baseline_HEAD": "906f8994e9533f9953f775d292831f8f8586bf8c", "line_ranges": [[25, 54], [127, 174]]}
+25: # 3차 — 바닥·원경 (Claude, 2026-10-13 저녁)
+26: 
+27: 2차 그래픽게이트(5/10)가 짚은 두 레버: **바닥**(연석·얼룩·균열, 보도의 가로수·가로등·가판·쓰레기통, 잔디 변화)과 **원경**(땅 끝이 하늘과 바로 만남, 바다·잔디 경계). 출발점 커밋 `906f899`.
+28: 
+29: ## 바꾼 것
+30: - **소품 15종 추가**(`lofi_pilot.py`, 아틀라스 칸 7개: curb·dirt·sand·flowers·stain·quaystone·grass2): 연석·가로등·쓰레기통·가판·소화전·풀포기·덤불·바위·꽃밭(데칼)·기름얼룩(데칼)·땜질(데칼)·석축 12m·계류 말뚝·잔교·배. 12~484 삼각형. 프리팹은 `CoastalPropsBuilder`(31종).
+31: - **도로 규칙**(`CoastalTownDensity.ForRoads`): 연석 = 도로 셀의 도로 아닌 변마다(350개, 보도 안쪽 모서리 1.76m, 충돌 없음). **횡단보도 643→47** — 2칸 폭 도로는 셀마다 이웃이 3이라 전부 "교차로"로 잡혀 깔리던 걸 "직선 셀이 교차로로 들어가는 끝"에만. 방향도 고침(3.4m 가 차도 폭을 가로지르고 줄무늬는 도로 방향). 얼룩 1/4·땜질 1/5 셀. 보도 위 가로등(6셀 주기, 양쪽 엇갈림)·쓰레기통·소화전.
+32: - **빈 마당**(`ForGround`): 도로 아님·건물 없음 셀마다 2~4개 — 다운타운 꽃·풀·덤불 / 공업 바위·드럼통·상자 / 항구 바위·상자·풀. 도로 옆 빈 셀 셋 중 하나에 가로수. 바다 행(z≥120)은 제외.
+33: - **구역 바닥**(`CoastalTownInstaller`): 공업=흙(풀 덩어리) / 다운타운=잔디(짙은 잔디 덩어리) / 항구=모래(흙 덩어리). 덩어리는 `WorldSurface.shader` 의 새 `_Patch/_Tile2` — 월드 좌표 값노이즈(11m·4m 두 겹)를 계단식(step)으로 잘라 두 번째 칸을 섞는다. 경계는 2칸 폭 도로 밑에 숨는다. `_Patch=0` 인 기존 재질은 그대로.
+34: - **원경**: `FarGround`(1400×780m, y −0.06, 충돌 없음, 바다 쪽 z>120 은 안 덮음) + 언덕 13개(서·남·동, 반경 62~70m·높이 14~22m, 안개색) + 마을 밖 나무 띠(10~75m, 9m 격자 중 2/3, 약 500그루).
+35: - **부두**(`ForHarbor`): 석축 16조각(z 119.4, MeshCollider — 차가 바다로 못 떨어짐), 계류 32, 잔교 3(x 36·90·144, 바다로 14m), 배 5~7, 잔교 옆 상자·드럼통.
+36: - 설치 결과: 배치 **2752**, 도로 297/297, 바닥 샘플 1,554 이상 없음, 셰이더 오류 0. 스모크 8/8.
+37: 
+38: ## 안 한 것 / 본 것
+39: - **다운타운 2칸 폭 도로 = 12m 빈 아스팔트**(06 캡처). 중앙 분리대·주차선·가로수 섬이 없다. 이번 바퀴 범위(바닥·원경) 밖이라 안 건드림 — 다음 레버 후보.
+40: - 건물 반복(전부 같은 집 3종)은 그대로.
+41: - 석축 높이 0.3m 라 멀리선 선 하나로 보인다. 배는 잔교 옆에만.
+42: - 성능(FPS) 미측정: 배치 2053→2752, 나무 ~500 추가.
+43: - 바다에 풀·상자가 뜨던 것(첫 설치)은 바다 행 제외로 고침.
+44: 
+45: ## 캡처
+46: - `01/02/03` 스모크 카메라(같은 자리), `05_harbor_quay`·`06_downtown_center` 는 새 자리(에디터 카메라). 비교 3단 `v3_vs_v2_vs_codex.png` (`before_`=Codex 1차, `v2_`=2차).
+47: 
+48: ## 3차-b (게이트 6/10 뒤 즉시 수정)
+49: - 1순위 "도로 아스팔트 민무늬": 아틀라스 칸 `asphalt2`(균열 폴리라인 2·밝은 자갈·짙은 얼룩) 추가, `Asphalt` 재질에 `_Patch`(tile2=43, 문턱 .5) — 도로 전체가 11m·4m 덩어리로 톤이 갈리고 균열이 깔린다.
+50: - 2순위 "03 하단 계단식 얼룩": `stain` 칸 톤을 아스팔트에 가깝게(#4f5557→#5b6165), 땜질 데칼 1.7×1.15→1.3×0.9.
+51: - 재설치(레이아웃 캐시 그대로) 2752 배치, 스모크 8/8.
+52: 
+53: ## 3차-c (게이트 3차-b 6/10 "덩어리가 차보다 큼" 뒤)
+54: - `Mat()` 에 `patchScale` 인자, Asphalt 만 `_PatchScale` .09→.3 (덩어리 11m→3.3m), `asphalt2` 톤 아스팔트에 더 가깝게. 재설치·스모크 8/8. 재판정은 안 걸었다 — 남은 지적(벽 단면·2칸 폭 도로)은 다른 레버라 <USER> 판단으로.
+127: # 5차 — 건물 다양성 (Codex)
+128: 
+129: 2026-10-13, `art/_briefs/2026-10-13-building-variety.md` 수행. 이번 출발점은 채택된 Codex 4차 생성기이며, 위의 Claude 4차 절에 적힌 당시 설치 상태와 다르다. 최종 생성·설치·스모크는 이 절의 결과다.
+130: 
+131: ## 바꾼 것
+132: 
+133: - 기존 `CoastalHouse/B/C` 형상·UV를 그대로 유지하고 **D/E/F**를 추가했다. D는 **4×4.8m, 3층, 급경사 적갈색 박공**, E는 **6×4.4m, 단층, 큰 회색 모임지붕·깊은 처마·현관 포치**, F는 **6×6m, 2층, 모서리를 깎은 L 평면·한쪽 날개·녹색 한쪽 경사 지붕**이다. 포치는 벽걸이 띠를 침범하지 않는 외팔보 차양과 낮은 발판으로 만들었다.
+134: - **MART / CornerShop**: 2층 몸통, 가로로 이어진 2단 과일·채소 상자 선반, 냉장 쇼케이스를 표현한 유리면과 금속 하부, 포스터 3장, 큰 입구 간판, 폭 1.7m 유리문.
+135: - **TEA / CornerShopB**: 단층 모임지붕, 작은 종이창 격자, 입구 양옆 둥근 테이블 2개·의자 4개·찻잔, 나무 처마와 랜턴 3개, 세로 나무 간판·픽셀 찻주전자. 천 차양은 사용하지 않았다.
+136: - **BAKERY / CornerShopC**: 단층 박공, 2단 빵 진열창, 큰 굴뚝(연기 없음), 적갈색 줄무늬 차양. 빵은 작은 타원형 팔각 메시로 만들었으며 실내나 투명 유리 셰이더는 추가하지 않았다.
+137: - 정비소 2종을 유지하고 B의 지붕만 기존 `roof_clay`로 바꿨다.
+138: - **`building-catalog.json`**에 전체 11종의 `name`, `w`, `d`, `floors`, `frontDoorX`를 기록했다. 치수는 지붕·가구·포치를 제외한 몸통의 로컬 미터 값이다. F의 오목한 평면 꼭짓점, 방향·원점, 최대 돌출량도 포함한다.
+139: - Installer에서 집 6종·상점 3종·정비소 2종을 `(hash/7)%종수`로 선택한다. 기존 기본 종류별 `scale` 줄을 그대로 보존했다(집 기본 .62 + 기존 hash 변주, 상점·정비소 .64). Density에는 실제 변형 이름을 전달하지만, 현재 Density는 `BaseName()`으로 정규화하므로 아직 옛 치수를 사용한다.
+140: - 실제 건물 232동: 집 A/B/C/D/E/F **23/22/23/24/19/24**, 상점 MART/TEA/BAKERY **12/7/6**, 정비소 A/B **38/34**. 해시 선택의 동일 가중치이며 유한한 맵의 배치 수를 강제로 같게 맞추지는 않았다. `building-variant-counts.json`에 기록했다.
+141: - 기존 47칸 뒤에 `tea_board`, `bakery`, `paper`, `poster` 4칸만 추가했다. 512×512 아틀라스·64px 칸·Point·무압축·mipmap 없음 유지. 기존 2m 면 분할을 재사용하고 새 모임지붕 끝면과 L자 지붕 삼각형도 최대 변 길이 2m 이하로 분할했다. 간판 등 전용 UV 예외는 유지했다.
+142: - FBX·mesh.json·프리팹·`art/source/lofi-pilot/LofiCoastalKit.blend`를 갱신했다. `LofiPilotBuilder`는 11종 빌드와 전체 모음·상점 정면 캡처를 지원한다.
+143: 
+144: ## 참고 → 재현 → 적용 → 개선
+145: 
+146: - [Jacob Norris / PurePolygons — Modular Building Breakdown](https://www.purepolygons.com/blog/modular-building-breakdown)의 제작자 설명을 읽었다. 상점 용도에 따라 창·문·진열 공간을 달리 정하고, 공용 트림을 재사용하며, 엔진에서 치수를 확인하는 방법을 가져왔다. 외부 모델·텍스처·유료 원본은 구입하거나 복제하지 않았다.
+147: - 대안으로 [Konstantin Magnus — Low Poly Building with UVs](https://procegen.konstantinmagnus.de/low-poly-building)를 확인하려 했지만 본문 접근에 실패했다. Houdini 원본 워크플로우를 검증하거나 재현했다고 주장하지 않는다.
+148: - 직접 재현한 기준은 **변경 전 저장소 생성기**다. 같은 Blender 5.2.2·seed 413으로 출력 루트만 `files/building-variety-baseline`으로 바꿔 실행했다. 원본 아틀라스와 재생성 PNG가 바이트 단위로 같음을 검사했다. 외부 작품의 재현은 아니다.
+149: - 기존 창·기단·층 띠·아틀라스·프리팹 경로를 재사용하고, 이번에 허용된 몸통·층수·지붕·상점 집기를 자체 코드로 추가했다. 새 도구 설치·외부 다운로드·유료 의존성·외부 에셋 라이선스는 추가하지 않았다.
+150: - 첫 실행에서 Blender 5.2의 `tessellate_polygon` 결과를 좌표로 취급해 오류가 났다. 실제 반환값인 인덱스로 원래 꼭짓점을 조회하도록 고쳤다. 첫 Unity 캡처에서는 랜턴이 처마에 가려지고 BAKERY 글자가 반복되어, 처마 높이와 간판 전용 UV를 수정했다. 전체 모음은 앞 건물에 뒤 건물이 가려지는 문제가 있어 같은 카메라·배율로 한 동씩 찍는 4열 연락판으로 바꿨다.
+151: 
+152: ## 실제 검증
+153: 
+154: - `D:/Tools/Blender/blender.exe -b -P tools/asset-gen/lofi_pilot.py -- --root D:/Github/F1Game` 생성 완료.
+155: - 새 카탈로그를 읽도록 수정한 `tools/asset-gen/verify_building_faces.py` 실행: **104개 검사 PASS, `issues=[]`**. 기존 **47칸의 모든 픽셀**, 건물 외 **40종의 형상·UV**, Awning~Boat 함수 AST, 기존 집 3종이 기준과 같다.
+156: - 전체 건물 **1,380~4,118삼각형**, 모두 4,500 이하. 집 A/B/C/D/E/F = **3154/4118/3946/3130/1380/2012**, 상점 MART/TEA/BAKERY = **3736/2540/2604**, 정비소 A/B = **2998/3014**. 바닥 원점·UV 유효성 검사 통과.
+157: - 삼각형의 경계 교차점까지 포함해 **1.9~2.5m 벽걸이 띠**를 검사했다. 몸통 사각 경계 밖 돌출은 집·정비소 1mm, 상점 2mm의 표면 장식뿐이다. 띠 밖에서는 요청한 깊은 처마·포치·가구를 허용했다(E 최대 1m, TEA 최대 약 1.459m). F의 오목한 벽을 따라 배치하는 Density 기능은 이번에 구현하지 않았다.
+158: - Unity 8090에서 `AssetDatabase.Refresh()` → 컴파일 종료 확인 → `Build Building Prefabs` → `Rebuild Layout + Install` → `CoastalTownSmoke.Run()` 완료. 11종 FBX와 JSON의 크기·중심·바닥·UV 비교 통과, 셰이더 오류 0(`building-faces-unity.json`).
+159: - 최종 설치: **2752 배치**, 도로 **297/297**, 바닥 충돌 샘플 **1554**, `validation.txt`의 **`Issues=` 비어 있음**. 최종 스모크 20:04:30 기록: **8 PASS + SUCCESS**, 세 지점 이동·접지 및 실제 배달 접근 완료. 콘솔 오류 **0**.
+160: - `Assets/ComplexTrack.unity` 저장. 마지막 상태 **playing=False, compiling=False, dirty=False**, 아틀라스 **Point/Uncompressed/mipmaps=False**(`building-variety-final-state.json`).
+161: - **`CoastalTownDensity.cs`, `CoastalPropsBuilder.cs`는 수정하지 않았다.** 두 파일의 시작·종료 SHA-256이 같으며 `building-variety-protected-files.json`에 기록했다. 차량·게임 카메라·배달·물리·도로 코드 수정 없음. **git commit 하지 않았다.**
+162: 
+163: ## 캡처와 남은 한계
+164: 
+165: - `01_ingame_neighborhood.png`~`04_delivery_complete.png`: 최종 스모크가 생성한 플레이 캡처. `06_downtown_center.png`: 지정된 `ArtCapture.CaptureChaseAt(path,84,60,0,1600,900)`.
+166: - `08_building_variants.png`: 11종, 같은 카메라·배율의 개별 프리팹 검토. 왼쪽부터 1행 집 A/B/C/D, 2행 집 E/F·MART·TEA, 3행 BAKERY·정비소 A/B. 빈 마지막 칸은 의도한 여백이다.
+167: - `10_shops_front.png`: 별도 검토 씬의 세 상점 정면 근접. 화면 왼쪽부터 BAKERY·TEA·MART. 종류별 진열·가구·창 형태와 간판을 직접 확인했다. `07`·`09`도 다시 생성했다. `05_harbor_quay.png`는 이번 작업에서 갱신하지 않았다.
+168: - **Density가 옛 몸통·문 위치를 사용하므로 새 집 주변 소품 위치, TEA/F의 문 피하기, 기존 외부 차양·간판과 새 전면 집기의 간섭은 해결하지 않았다.** 브리프대로 이 상태로 설치했다. Claude의 카탈로그 적용 후 소품 배치를 다시 검사해야 한다. F는 단순 w/d뿐 아니라 오목한 평면 정보도 고려해야 한다.
+169: - 01~04·06·08·10 화면을 확인했으나 모든 건물 배치·시점·소품 조합을 시각 검사하지 않았다. 실제 주행 화면에서는 작은 빵·포스터·주전자까지 항상 읽힌다고 보장하지 않는다. 유리는 기존 불투명 픽셀 재질의 표현이며 내부 공간은 없다.
+170: - FPS·메모리·드로콜·플레이어 빌드·모든 가구의 충돌 감각은 측정하지 않았다. 이번 결과의 새 graphic-gate 점수나 외부 합격 판정은 받지 않았다.
+171: 
+172: ## 5차 통합 (Claude) — 치수 동기화 + 해상도 실험
+173: - `CoastalTownDensity.Body()/DoorX()` 가 Codex 의 `building-catalog.json`(name/w/d/frontDoorX) 을 읽는다(정규식, 외부 JSON 라이브러리 없음). 없으면 옛 3종 치수. 재설치 2752 배치, 건물 11종(집 23/22/23/24/19/24 · 가게 12/7/6 · 정비소 38/34), 스모크 8/8, Issues 없음.
+174: - <USER>: "에셋은 맞는데 화면 해상도와 안 맞아 부족해 보인다" → 진단: 아틀라스가 1m 당 32~43 텍셀로 균일한데 추적캠은 차 앞 5~7m 를 1m 당 100+ 픽셀로 키워 **가까운 바닥은 텍셀이 4~8픽셀 덩어리, 먼 건물은 1픽셀 미만** — 한 화면에 굵은 픽셀아트와 흐린 로우폴리가 섞인다. 실험 `resolution_test.png`: 같은 자리를 1920×1080 / 640×360 ×3 최근접 / 960×540 ×2. 확대 비교 `resolution_test_zoom.png`. (URP 설정 변경 없이 작은 RT 로 찍고 PIL 최근접 확대 = 내부 해상도 낮춤 + Point 업스케일과 동일.) 적용은 <USER> 판단 — 적용하면 URP 에셋 Render Scale + Upscaling Filter=Point 두 칸.

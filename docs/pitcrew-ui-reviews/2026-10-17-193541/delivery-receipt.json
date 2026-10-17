@@ -1,0 +1,21 @@
+{
+  "filename": "pitcrew_ui_review_2026-10-17_194853.zip",
+  "bytes": 1343406,
+  "sha256": "2b2efd1cc57570c59d92efa99cd88089ad432f559d1f7e405bdde4b1c238ff42",
+  "zip_entries": 198,
+  "crc_test": "PASS",
+  "manifest_entries_verified": 197,
+  "delivery": "Verified browser saved file in Windows Downloads",
+  "public_upload": false,
+  "browser_download": {
+    "verified": true,
+    "method": "Playwright Chromium msedge: click -> download event -> saveAs -> SHA-256 equality",
+    "suggestedFilename": "pitcrew_ui_review_2026-10-17_194853.zip",
+    "bytes": 1343406,
+    "sha256": "2b2efd1cc57570c59d92efa99cd88089ad432f559d1f7e405bdde4b1c238ff42",
+    "failure": null,
+    "scope": "Temporary loopback server serving exactly this archive; closed after verification. NOT a production PitCrew download route or external sharing URL."
+  },
+  "downloads_filename": "pitcrew_ui_review_2026-10-17_194853.zip",
+  "verified_at": "2026-10-17T10:49:19.141Z"
+}

@@ -1,0 +1,41 @@
+{
+  "source": "scripts/regression-check.sh",
+  "source_sha256": "b2c480fc45da493661b759e41edf6712d16298c88347e8a5e05dcd05020e2179",
+  "source_unchanged": true,
+  "expected_say_calls": 13,
+  "method": "Exact script copy; sibling ucli.sh replaced by fake below, PATH sleep shim returns immediately. No HTTP, Unity, game or model calls. Temporary folder removed.",
+  "fake_ucli": "#!/usr/bin/env bash\ncase \"$2\" in *HarnessChecks*)\n case \"$AUDIT_SCENARIO\" in\n  empty_failure) exit 127 ;;\n  text_failure) echo 'FAIL: isolated connector unavailable'; exit 1 ;;\n  all_skip) echo 'SKIP: isolated fixture'; exit 0 ;;\n  pass_nonzero) echo 'PASS: isolated fixture'; exit 9 ;;\n  too_few) case \"$2\" in *CheckCoreServicesPresent*) echo 'PASS: isolated fixture';; esac; exit 0 ;;\n esac ;;\nesac\nexit 0\n",
+  "sleep_shim": "#!/bin/sh\nexit 0\n",
+  "results": [
+    {
+      "scenario": "empty_failure",
+      "exit_code": 0,
+      "stdout": "=== PitCrew 회귀 점검 ===\n[BOARD 주문보드]\n\n\n\n\n\n\n\n[PACKING 포장]\n\n[DRIVING 주행]\n\n\n[RESULT 정산]\n\n\n\n=== 결과: 0 PASS / 0 FAIL / 0 SKIP ===\n",
+      "stderr": ""
+    },
+    {
+      "scenario": "text_failure",
+      "exit_code": 1,
+      "stdout": "=== PitCrew 회귀 점검 ===\n[BOARD 주문보드]\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\n[PACKING 포장]\nFAIL: isolated connector unavailable\n[DRIVING 주행]\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\n[RESULT 정산]\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\nFAIL: isolated connector unavailable\n=== 결과: 0 PASS / 13 FAIL / 0 SKIP ===\n⚠ 회귀 13건 — 위 FAIL 확인 (완료 보고 금지)\n",
+      "stderr": ""
+    },
+    {
+      "scenario": "all_skip",
+      "exit_code": 0,
+      "stdout": "=== PitCrew 회귀 점검 ===\n[BOARD 주문보드]\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\n[PACKING 포장]\nSKIP: isolated fixture\n[DRIVING 주행]\nSKIP: isolated fixture\nSKIP: isolated fixture\n[RESULT 정산]\nSKIP: isolated fixture\nSKIP: isolated fixture\nSKIP: isolated fixture\n=== 결과: 0 PASS / 0 FAIL / 13 SKIP ===\n⚠ SKIP 13건 — 검증 못 한 항목 있음 (조용히 넘기지 마라)\n",
+      "stderr": ""
+    },
+    {
+      "scenario": "pass_nonzero",
+      "exit_code": 0,
+      "stdout": "=== PitCrew 회귀 점검 ===\n[BOARD 주문보드]\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\n[PACKING 포장]\nPASS: isolated fixture\n[DRIVING 주행]\nPASS: isolated fixture\nPASS: isolated fixture\n[RESULT 정산]\nPASS: isolated fixture\nPASS: isolated fixture\nPASS: isolated fixture\n=== 결과: 13 PASS / 0 FAIL / 0 SKIP ===\n",
+      "stderr": ""
+    },
+    {
+      "scenario": "too_few",
+      "exit_code": 0,
+      "stdout": "=== PitCrew 회귀 점검 ===\n[BOARD 주문보드]\nPASS: isolated fixture\n\n\n\n\n\n\n[PACKING 포장]\n\n[DRIVING 주행]\n\n\n[RESULT 정산]\n\n\n\n=== 결과: 1 PASS / 0 FAIL / 0 SKIP ===\n",
+      "stderr": ""
+    }
+  ]
+}
