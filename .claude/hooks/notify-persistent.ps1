@@ -1,4 +1,4 @@
-# Persistent Claude notification: tray icon + balloon, stays until user clicks
+﻿# Persistent Claude notification: tray icon + balloon, stays until user clicks
 # Spawned detached from flash.ps1 (hook returns immediately, this runs forever until click)
 
 $pidFile = Join-Path $PSScriptRoot 'notify.pid'
@@ -29,9 +29,14 @@ $notif.add_Click($dismiss)
 $notif.add_BalloonTipClicked($dismiss)
 $notif.add_DoubleClick($dismiss)
 
+# 2026-10-13: dismiss 를 안 누르면 다음 알람이 전부 건너뛰어졌음(pid 파일이 살아 있어서) → 15분 뒤 자동 종료, 5분마다 풍선 재표시
+$started = Get-Date
+$lastTip = Get-Date
 while (-not $script:done) {
     [System.Windows.Forms.Application]::DoEvents()
     Start-Sleep -Milliseconds 200
+    if (((Get-Date) - $started).TotalMinutes -ge 15) { break }
+    if (((Get-Date) - $lastTip).TotalMinutes -ge 5) { $notif.ShowBalloonTip(10000); $lastTip = Get-Date }
 }
 
 $notif.Visible = $false

@@ -1,3 +1,6 @@
+# Legacy duplicate alarms disabled: PitCrew owns completion/approval notifications.
+# Existing sessions may still invoke this hook; return without spawning PowerShell.
+exit 0
 # Claude alarm: detached persistent tray notification (stays until user clicks)
 $logPath = Join-Path $PSScriptRoot 'flash.log'
 $ts = Get-Date -Format 'HH:mm:ss'

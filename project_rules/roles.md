@@ -54,3 +54,9 @@
 - 파일: `.claude/agents/graphic-gate.md`(QA 외부 눈) · `design-gate.md`(기획: 결정 대조) · `verifier.md`(QA 계측). 아트 손은 Codex(`codex exec`, 브리프 `art/_briefs/`) 또는 Blender 생성기.
 - **합격 기준은 도현이 한 줄로 준다.** 기획 에이전트는 기준을 쓰지 않고 결정 기록과 대조만 한다.
 - 판정 기록: `docs/gates/YYYY-MM-DD.md` 한 줄씩. Stop 훅은 이 기록이 변경 .cs 보다 새로우면 조용하다.
+
+## 모델 배정 — 일의 난이도에 맞춰 (도현 2026-10-13 "전부 Fable 로 돌리지 말고 난이도에 맞춰")
+- **haiku**: 계측·집계·파일 읽어 숫자 보고 (verifier). 판단 없음.
+- **sonnet**: 외부 눈 판정(graphic-gate·design-gate), 웹 조사(web-search 에이전트는 Agent 호출 때 `model: sonnet` 명시), Codex 브리프 통합 같은 정해진 절차.
+- **Fable(PM 본인)**: 기획 대화, 결정 기록, 셰이더·물리 디버깅, 브리프 작성, 어느 모델에 맡길지 고르기.
+- 기본값은 "상속"이라 명시 안 하면 전부 PM 모델로 돈다 — Agent 호출 때마다 `model` 을 적는다.

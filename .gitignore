@@ -146,3 +146,10 @@ tools/studio-dashboard/pages/
 *.blend1
 captures/art/
 tools/studio-dashboard/running.json
+
+# Private operational conversation snapshot and extracted audit records
+/.ai_logs/pitcrew-audit/legacy-transition-snapshot/
+
+# 첫 제작 시험 빌드 산출물 (177MB, 디스크에만)
+/art/pitcrew-first-flow/Windows/
+/art/pitcrew-first-flow/*.zip

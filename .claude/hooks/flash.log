@@ -1174,3 +1174,209 @@
   already active pid=7672, skip new spawn
 [15:28:29] flash called
   already active pid=7672, skip new spawn
+[19:19:43] flash called
+  stale pid file cleaned
+  spawned notify pid=46428
+[20:06:33] flash called
+  spawned notify pid=42724
+[20:08:53] flash called
+  spawned notify pid=50992
+[20:17:50] flash called
+  already active pid=50992, skip new spawn
+[02:49:15] flash called
+  already active pid=50992, skip new spawn
+[02:53:00] flash called
+  already active pid=50992, skip new spawn
+[03:12:15] flash called
+  already active pid=50992, skip new spawn
+[03:17:23] flash called
+  already active pid=50992, skip new spawn
+[03:33:23] flash called
+  already active pid=50992, skip new spawn
+[03:36:29] flash called
+  already active pid=50992, skip new spawn
+[03:45:25] flash called
+  already active pid=50992, skip new spawn
+[03:47:03] flash called
+  already active pid=50992, skip new spawn
+[17:59:58] flash called
+  stale pid file cleaned
+  spawned notify pid=2188
+[18:00:26] flash called
+  already active pid=2188, skip new spawn
+[18:00:35] flash called
+  already active pid=2188, skip new spawn
+[18:00:44] flash called
+  already active pid=2188, skip new spawn
+[18:00:53] flash called
+  already active pid=2188, skip new spawn
+[18:01:01] flash called
+  already active pid=2188, skip new spawn
+[18:01:09] flash called
+  already active pid=2188, skip new spawn
+[18:01:18] flash called
+  already active pid=2188, skip new spawn
+[18:01:25] flash called
+  already active pid=2188, skip new spawn
+[18:01:44] flash called
+  already active pid=2188, skip new spawn
+[18:01:52] flash called
+  already active pid=2188, skip new spawn
+[18:02:00] flash called
+  already active pid=2188, skip new spawn
+[18:02:44] flash called
+  already active pid=2188, skip new spawn
+[18:14:34] flash called
+  already active pid=2188, skip new spawn
+[18:18:42] flash called
+  already active pid=2188, skip new spawn
+[18:19:14] flash called
+  already active pid=2188, skip new spawn
+[18:35:45] flash called
+  already active pid=2188, skip new spawn
+[18:37:05] flash called
+  already active pid=2188, skip new spawn
+[19:22:06] flash called
+  already active pid=2188, skip new spawn
+[19:22:41] flash called
+  already active pid=2188, skip new spawn
+[19:22:51] flash called
+  already active pid=2188, skip new spawn
+[19:23:01] flash called
+  already active pid=2188, skip new spawn
+[19:48:52] flash called
+  already active pid=2188, skip new spawn
+[20:14:05] flash called
+  already active pid=2188, skip new spawn
+[20:14:15] flash called
+  already active pid=2188, skip new spawn
+[20:17:37] flash called
+  already active pid=2188, skip new spawn
+[20:24:09] flash called
+  already active pid=2188, skip new spawn
+[20:24:58] flash called
+  already active pid=2188, skip new spawn
+[20:27:49] flash called
+  already active pid=2188, skip new spawn
+[20:34:26] flash called
+  already active pid=2188, skip new spawn
+[20:42:31] flash called
+  already active pid=2188, skip new spawn
+[20:49:40] flash called
+  already active pid=2188, skip new spawn
+[20:58:51] flash called
+  already active pid=2188, skip new spawn
+[21:03:02] flash called
+  already active pid=2188, skip new spawn
+[21:05:21] flash called
+  already active pid=2188, skip new spawn
+[21:09:55] flash called
+  already active pid=2188, skip new spawn
+[21:19:13] flash called
+  spawned notify pid=27196
+[21:19:22] flash called
+  spawned notify pid=18256
+[21:24:50] flash called
+  spawned notify pid=19712
+[21:29:12] flash called
+  spawned notify pid=36456
+[21:31:24] flash called
+  already active pid=36456, skip new spawn
+[21:31:37] flash called
+  already active pid=36456, skip new spawn
+[21:36:32] flash called
+  already active pid=36456, skip new spawn
+[21:36:39] flash called
+  spawned notify pid=35596
+[21:38:45] flash called
+  already active pid=35596, skip new spawn
+[21:38:55] flash called
+  already active pid=35596, skip new spawn
+[21:44:39] flash called
+  spawned notify pid=48480
+[21:50:10] flash called
+  spawned notify pid=47356
+[21:52:16] flash called
+  already active pid=47356, skip new spawn
+[21:52:24] flash called
+  already active pid=47356, skip new spawn
+[22:00:22] flash called
+  spawned notify pid=3920
+[22:00:28] flash called
+  already active pid=3920, skip new spawn
+[23:18:07] flash called
+  spawned notify pid=3776
+[23:18:16] flash called
+  already active pid=3776, skip new spawn
+[23:18:23] flash called
+  already active pid=3776, skip new spawn
+[23:18:39] flash called
+  already active pid=3776, skip new spawn
+[23:19:54] flash called
+  spawned notify pid=33100
+[23:20:02] flash called
+  already active pid=33100, skip new spawn
+[23:20:11] flash called
+  already active pid=33100, skip new spawn
+[23:20:23] flash called
+  already active pid=33100, skip new spawn
+[23:20:46] flash called
+  already active pid=33100, skip new spawn
+[23:20:53] flash called
+  already active pid=33100, skip new spawn
+[23:23:13] flash called
+  spawned notify pid=40320
+[23:23:27] flash called
+  spawned notify pid=28884
+[23:25:24] flash called
+  spawned notify pid=54392
+[23:25:30] flash called
+  already active pid=54392, skip new spawn
+[23:30:23] flash called
+  spawned notify pid=23436
+[23:30:30] flash called
+  already active pid=23436, skip new spawn
+[23:30:39] flash called
+  already active pid=23436, skip new spawn
+[23:32:36] flash called
+  spawned notify pid=37932
+[23:32:43] flash called
+  spawned notify pid=13424
+[23:32:53] flash called
+  already active pid=13424, skip new spawn
+[23:33:02] flash called
+  already active pid=13424, skip new spawn
+[23:33:10] flash called
+  already active pid=13424, skip new spawn
+[23:33:19] flash called
+  already active pid=13424, skip new spawn
+[23:34:00] flash called
+  already active pid=13424, skip new spawn
+[23:34:08] flash called
+  already active pid=13424, skip new spawn
+[23:46:32] flash called
+  spawned notify pid=29508
+[23:49:27] flash called
+  spawned notify pid=56544
+[23:49:33] flash called
+  already active pid=56544, skip new spawn
+[00:18:20] flash called
+  spawned notify pid=32348
+[00:18:27] flash called
+  already active pid=32348, skip new spawn
+[00:18:35] flash called
+  already active pid=32348, skip new spawn
+[00:18:41] flash called
+  already active pid=32348, skip new spawn
+[00:18:52] flash called
+  already active pid=32348, skip new spawn
+[00:19:30] flash called
+  already active pid=32348, skip new spawn
+[00:36:35] flash called
+  spawned notify pid=18660
+[00:37:21] flash called
+  already active pid=18660, skip new spawn
+[00:38:13] flash called
+  already active pid=18660, skip new spawn
+[00:41:59] flash called
+  already active pid=18660, skip new spawn

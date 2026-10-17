@@ -186,6 +186,8 @@ fi
 
 # 2026-10-13: 게이트 기록(docs/gates/오늘.md)이 변경된 .cs 보다 새로우면 이미 검증된 것 — 매 stop 마다 반복 알림 안 함.
 GATE_FILE="$(cd "$(dirname "$0")/../.." && pwd)/docs/gates/$(date +%Y-%m-%d).md"
+# 2026-10-14: 자정이 지나 오늘 파일이 아직 없으면 가장 최근 게이트 파일로 (새벽 작업 때 반복 알림 방지)
+[ -f "$GATE_FILE" ] || GATE_FILE="$(ls -t "$(cd "$(dirname "$0")/../.." && pwd)"/docs/gates/*.md 2>/dev/null | head -1)"
 GATED=0
 if [ "$CS_CHANGED" -gt 0 ] && [ -f "$GATE_FILE" ]; then
   NEWEST_CS=0

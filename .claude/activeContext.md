@@ -5,6 +5,16 @@
 
 ---
 
+## 세션 34 저녁 (2026-10-13) — 밀도 2차 커밋 + 바닥·원경 3차 + 도시 알고리즘 조사
+
+- **커밋 `906f899`** = 밀도 2차(소품 16종, 2053 배치, 게이트 5/10·verifier PASS).
+- **3차(바닥·원경, 미커밋)**: 소품 15종 더(연석·가로등·쓰레기통·가판·소화전·풀·덤불·바위·꽃·얼룩·땜질·석축·계류·잔교·배), `WorldSurface.shader` 에 `_Patch/_Tile2` 덩어리 무늬(값노이즈 step), 구역 바닥 흙/잔디/모래, FarGround·언덕 13·마을 밖 나무 ~500, 부두(석축 MeshCollider·잔교 3·배), 횡단보도 643→47(2칸 폭 도로 오판 수정), 아스팔트 균열 덩어리(3차-b). 배치 2752, 스모크 8/8, validation 이슈 0. **게이트: 3차 6/10 FAIL(verifier PASS) → 3차-b 판정 대기.** 기록 `docs/gates/2026-10-13.md`, 경위 `art/source/coastal-town/README.md`, 비교 `v3_vs_v2_vs_codex.png`.
+- **다음 레버(게이트·내 눈)**: 다운타운 2칸 폭 도로 = 12m 빈 아스팔트(중앙 분리대·주차선·가로수 섬), 건물 반복(집 3종), 02 서쪽 바깥이 공원처럼 빈 들판(울타리·밭), 석축 0.3m 낮음.
+- **4차 건물 벽 단면 = Codex·Claude 둘 다**(도현 "나누지 말고 둘 다, 차이 보자"). Codex: 벽돌 기단·쿼인·네 면 창·지붕색 3종·변형 7종, 삼각형 5배(3~4k). Claude: 띠·쿼인·뒷창·변형 8종(간판/차양/덧문/발코니 교체 = **도현 "복붙으로 보임, 임시만 OK"**), 1.2k. **지금 씬엔 Claude 판 설치**, Codex 판은 `art/_compare/2026-10-13-building-faces/codex/`(패치+스크립트)로 복원 가능. 비교표 `art/source/coastal-town/codex4_vs_claude4.png`. 게이트 판정 `docs/gates/2026-10-13.md` v4 줄. **도현 결정 대기: 어느 판으로 갈지 / 다음은 실루엣(폭·층수·지붕)이 다른 진짜 변형.** 확인 필요 시 PushNotification(Remote Control 꺼져 있으면 데스크톱만).
+- **밤 기획 대화 → D-098~D-102**: 마을 2개 + 굽은 해안도로(고도 허용, D-050 범위 축소) / 마을 대체로 평지+일부 경사 = 보이지 않는 난이도(패드 업그레이드 백로그) / 높이=진행 단계, 생성 규칙 셋(막지 않기·우회로·꼭대기 랜드마크) / 색감 아말피 한낮 / 카메라 뒤 5m. 스펙 `docs/superpowers/specs/2026-10-13-two-towns-coastal-road.md`. 조사 노트 3개 `옵시디언/research/` (city-layout·urban-morphology·soft-gating). 해상도 640×360×3 적용됨(PC_RPAsset). 건물 5차 = Codex 11종 설치(게이트 7/10 PASS). 한낮 v2+카메라 게이트 대기. **전부 미커밋.**
+- **도시 배치 알고리즘 조사** → `옵시디언/research/city-layout-algorithms-2026-10-13.md`. index.opensource 는 도시용 거의 없음(WFC·MarkovJunior·mapgenerator 릴스 3개). 추천 1순위 = 직접 구현(구역→블록 이등분→연결, ~170줄). **도현 결정 대기.**
+- 캡처 PNG 는 git-lfs — `git show` 로 꺼내면 포인터만 나온다. `git cat-file -p rev:path | git lfs smudge > out.png`.
+
 ## 세션 34 (2026-10-13) — Codex 줄기 채택(D-096) + 에이전트 팀 가동
 
 - **아트 스타일 최종 = Codex "따뜻한 로파이 해안"(D-096).** 어제 제 플랫 Alba 줄기(D-094)는 접음. 비례·밀도 규칙(D-095)은 유지.
