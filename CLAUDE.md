@@ -110,12 +110,14 @@ harness-core/                    ← 별도 repo, F1 외 프로젝트와 공유
 
 Claude Code가 세션 시작 시 자동 로드하는 이 프로젝트의 룰·상태 모듈.
 
+@PIPELINE.md
 @project_rules/scope.md
 @project_rules/asset.md
 @project_rules/session.md
 @project_rules/communication.md
 @project_rules/no-compromise.md
 @project_rules/REJECTED_IDEAS.md
+@project_rules/roles.md
 @.claude/activeContext.md
 
 universal 룰 (별도 repo `harness-core` — 텍스트 참조, 자동 로드 아님):
@@ -123,6 +125,10 @@ universal 룰 (별도 repo `harness-core` — 텍스트 참조, 자동 로드 �
 - `harness-core/rules/universal/ai-blindspots.md` — AI 약점 회피 10개
 - `harness-core/rules/universal/working-norms.md` — 의사결정·안전 규범
 
+## 11. AionUi 팀 모드 [project] (2026-10-18)
+
+이 저장소는 AionUi 팀(총괄 PD · 기획 · 아트 · 프로그래밍 · QA)으로도 작업한다. 팀 운영 규약은 `PIPELINE.md`(자동 로드). Codex 팀원은 `AGENTS.md`를 읽는다. 혼자 세션으로 일할 때도 PIPELINE §2 산출물 위치, §4 에디터 토큰 개념, §5 모델링 규격은 그대로 적용한다.
+
 ---
 
-버전: v0.1 (2026-05-14)
+버전: v0.2 (2026-10-18, AionUi 팀 모드 §11 추가) · v0.1 (2026-05-14)
