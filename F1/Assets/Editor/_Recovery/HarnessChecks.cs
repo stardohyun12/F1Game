@@ -150,9 +150,16 @@ public static class HarnessChecks
         if (Services.Tires == null) missing += "Tires ";
         if (Services.Upgrade == null) missing += "Upgrade ";
         if (Services.Shake == null) missing += "Shake ";
+        // BUG-002 (2026-10-19): ZoneUnlockSystem 은 Services 에 없고 자체 Instance 싱글톤.
+        // ComplexTrack 에 한 번도 배선된 적이 없어 OrderBoard 가 OrderCatalog(A/B/C Box 3종) 폴백으로
+        // 조용히 고정됐고 원물 화물·zone 해금이 플레이에서 전부 죽어 있었다. 씬 객체 + registry 둘 다 단언.
+        // FindFirstObjectByType 이라 에디트 모드/Play 양쪽에서 동작.
+        var zus = Object.FindFirstObjectByType<ZoneUnlockSystem>(FindObjectsInactive.Include);
+        if (zus == null) missing += "ZoneUnlock ";
+        else if (zus.Registry == null || zus.Registry.allZones == null || zus.Registry.allZones.Count == 0) missing += "ZoneUnlock.registry ";
         return missing == ""
-            ? "PASS: 풀 루프 시스템 9개 전부 Services 등록됨"
-            : $"FAIL: Services 누락(단계 죽음) — {missing}(씬에 GameObject 유실. WireGarageSceneObjects/WireCoreSingletons/Add PackingScreen/Setup Cargo View 재실행 필요)";
+            ? "PASS: 풀 루프 시스템 10개 전부 등록됨 (Services 9 + ZoneUnlockSystem/registry)"
+            : $"FAIL: 시스템 누락(단계 죽음) — {missing}(씬에 GameObject 유실. WireGarageSceneObjects/WireCoreSingletons/Add PackingScreen/Setup Cargo View/W1 Wire Scene (Zones) 재실행 필요)";
     }
 
     /// <summary>

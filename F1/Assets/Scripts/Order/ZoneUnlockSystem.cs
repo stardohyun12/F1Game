@@ -110,17 +110,19 @@ public class ZoneUnlockSystem : MonoBehaviour
         return null;
     }
 
-    /// <summary>현재 unlocked zone들의 잡을 하나로 합쳐 반환.</summary>
+    /// <summary>현재 unlocked zone들의 잡을 하나로 합쳐 반환. 같은 잡이 여러 zone에 있으면 한 번만 (BUG-002 후속:
+    /// Harbor·Industrial 잡이 Downtown 과 겹쳐 해금 뒤 보드에 같은 카드 2장이 떴음). 순서는 registry·zone 순, 처음 나온 자리 유지.</summary>
     public List<OrderJob> GetAvailableJobs()
     {
         var result = new List<OrderJob>();
         if (registry == null) return result;
+        var seen = new HashSet<OrderJob>();
         for (int i = 0; i < registry.allZones.Count; i++)
         {
             var z = registry.allZones[i];
             if (z == null || !unlockedIds.Contains(z.id)) continue;
             for (int j = 0; j < z.jobs.Count; j++)
-                if (z.jobs[j] != null) result.Add(z.jobs[j]);
+                if (z.jobs[j] != null && seen.Add(z.jobs[j])) result.Add(z.jobs[j]);
         }
         return result;
     }
