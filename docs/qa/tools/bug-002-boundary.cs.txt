@@ -1,0 +1,10 @@
+var z=ZoneUnlockSystem.Instance;
+var w=UpgradeSystem.Instance;
+var result=new System.Text.StringBuilder();
+foreach(int target in new int[]{0,999,1000,2499,2500}) {
+ if(target>w.Wallet) w.AddReward(target-w.Wallet);
+ result.Append("wallet="+w.Wallet+" pool="+z.GetAvailableJobs().Count);
+ foreach(var zone in z.Registry.allZones) result.Append(" "+zone.id+"="+z.IsUnlocked(zone));
+ result.AppendLine();
+}
+return result.ToString();

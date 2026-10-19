@@ -1,0 +1,1 @@
+PASS 39 checks, 0 violations. PNG 12/12: 1920x1080; local links; view/silhouette/zoom handlers via DOM stub. Browser layout NOT tested (no available CUA browser).

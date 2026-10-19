@@ -1,0 +1,16 @@
+Application.runInBackground=true;
+UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode=UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+var board=UnityEngine.Object.FindFirstObjectByType<OrderBoard>();
+var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+for(int n=0;n<30;n++) {
+ foreach(var c in UnityEngine.Object.FindObjectsByType<OrderCardUI>(FindObjectsSortMode.None)) {
+ var j=(OrderJob)typeof(OrderCardUI).GetField("job",flags).GetValue(c);
+ if(j.name=="Order_02_Glass") {
+ c.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current));
+ UnityEditor.EditorApplication.ExecuteMenuItem("PitCrew/Capture/Auto Screenshot");
+ return "Selected "+j.name+" wallet="+UpgradeSystem.Instance.Wallet+" boardAttempts="+(n+1);
+ }
+ }
+ board.Open();
+}
+return "FAIL Glass absent after 30 boards";

@@ -205,3 +205,9 @@
 - **어떻게 잡았나**: 도현 불만. AI 자체 발견 0.
 - **Missing-heuristic**: **에이전트를 2개 이상 띄우는 세션은 대시보드를 먼저 띄운다**(세션 시작 훅에서 자동). Codex exec 도 활동 피드에 start/done 을 기록. 앱 안 브라우저 패널(launch.json)로 열어 창 전환 0.
 - **관련 패턴**: 세션 31 "능력은 설명 말고 시연(show, don't tell)" 과 같은 뿌리 — 보이지 않는 작업은 없는 것과 같다.
+
+### 2026-10-19 — 메인 씬 교체 때 ZoneUnlockSystem 이 따라오지 않음 (5개월 잠복)
+- 증상: ComplexTrack 주문 보드가 항상 Box 3장 고정, 원물 화물·맵 해금(채널 3·4)이 실제 플레이에서 한 번도 안 보임. 재기동 QA 3런에서 기획팀이 "원물이 안 뜬다"로 처음 발견.
+- 추정원인: W1 배선(0a39d668)이 OpenWorld_v2 에만 들어갔고, 세션 27 메인 씬 전환·복원 체인 7단계·CheckCoreServicesPresent 어디에도 ZoneUnlock 이 없음. OrderBoard 가 조용히 catalog 로 폴백.
+- Missing-heuristic: "기능이 있는 씬 = 출시 씬" 단언 — 메인 씬에 모든 Services 싱글턴이 있는지 + 보드 출력 화물 종류 분포(Box 100% 이면 FAIL)를 회귀에 넣었으면 잡았다.
+- 패턴: 세션 31·32 OrderBoard wiring 손실과 같은 계열(씬 배선 조용한 손실) — 3건째 → 규칙 발효 검토.

@@ -1,0 +1,15 @@
+Application.runInBackground=true;
+UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode=UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+var board=UnityEngine.Object.FindFirstObjectByType<OrderBoard>();
+var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+var output=new System.Text.StringBuilder();
+for(int n=0;n<8;n++) {
+ if(n>0) board.Open();
+ output.AppendLine("BOARD "+n);
+ foreach(var c in UnityEngine.Object.FindObjectsByType<OrderCardUI>(FindObjectsSortMode.None)) {
+ var j=(OrderJob)typeof(OrderCardUI).GetField("job",flags).GetValue(c);
+ output.AppendLine(j.name+" cargo="+j.cargoType+" title="+c.titleText.text);
+ }
+}
+UnityEditor.EditorApplication.ExecuteMenuItem("PitCrew/Capture/Auto Screenshot");
+return output.ToString();

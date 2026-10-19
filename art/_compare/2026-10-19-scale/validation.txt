@@ -1,0 +1,9 @@
+Controlled comparison scene; no game scene or assets saved. Source workflow: capture-real-scale.cs.txt; car stretching REMOVED.
+Car world bounds=(3.785, 1.072, 1.959); human=1.750m; bench=1.8m; road=6m; sidewalks=2.2/1.8m.
+064 CoastalHouse bounds=(3.533, 4.224, 3.405)
+064 CornerShop bounds=(4.173, 4.352, 4.058)
+064 RepairGarage bounds=(4.429, 2.656, 3.917)
+100 CoastalHouse bounds=(5.520, 6.600, 5.320)
+100 CornerShop bounds=(6.520, 6.800, 6.340)
+100 RepairGarage bounds=(6.920, 4.150, 6.120)
+Drive offset=(-7,3.2,0), yaw=90, lookHeight=1.15, FOV=50. Side eye=(0,5,23), target=(0,3,0), ortho=7.8. Output=1920x1080.

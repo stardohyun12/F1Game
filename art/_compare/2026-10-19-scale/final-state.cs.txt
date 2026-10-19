@@ -1,0 +1,2 @@
+var s=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+return "scene="+s.path+"; dirty="+s.isDirty+"; play="+UnityEditor.EditorApplication.isPlaying+"; compiling="+UnityEditor.EditorApplication.isCompiling+"; scenes="+UnityEngine.SceneManagement.SceneManager.sceneCount+"; BuildingScale="+CoastalTownInstaller.BuildingScale;

@@ -1,0 +1,79 @@
+// Exec-only QA driver. No scene/code save, teleport, physics override or forced result.
+// Requires an already-started UI-originated run. Stops after 90 realtime seconds.
+Application.runInBackground = true;
+var packing = UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+if(packing!=null && packing.IsVisible && packing.IsPlacing)
+ foreach(var b in UnityEngine.Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None))
+  if(b.name=="BtnGo" && b.interactable) { b.onClick.Invoke(); break; }
+var car = UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>();
+var run = Services.Run as RunController;
+if (!run.RunActive) return "FAIL: not driving";
+var dest = run.CurrentJob.destinationLabels[0];
+// QA-only road-grid BFS. Runtime route UI orders destinations, not drivable waypoints.
+// Reuse the authored road mask and editor CellToWorld mapping; never move the car.
+if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name!="ComplexTrack") return "FAIL: QA route supports ComplexTrack only";
+var layout=UnityEditor.AssetDatabase.LoadAssetAtPath<TrackLayout>("Assets/Data/ComplexTrackLayout.asset");
+if(layout==null) return "FAIL: missing layout";
+var origin=car.transform.position; origin.y=0;
+var source=new Vector2Int(-1,-1);
+float nearest=float.PositiveInfinity;
+for(int y=0;y<layout.Height;y++) for(int x=0;x<layout.Width;x++) {
+ if(!layout.IsRoad(x,y)) continue;
+ var world=TileMapAuto.CellToWorld(x,y); world.y=0;
+ var distance=(world-origin).sqrMagnitude;
+ if(distance<nearest){nearest=distance;source=new Vector2Int(x,y);}
+}
+if(source.x<0 || nearest>36f) return "FAIL: car more than 6m from road grid; manual recovery required";
+var goal=new Vector2Int(-1,-1);
+foreach(var d in layout.deliveries) if(d.label==dest){goal=new Vector2Int(d.col,d.row);break;}
+if(!layout.IsRoad(goal.x,goal.y)) return "FAIL: destination not on authored road grid: "+dest;
+var queue=new System.Collections.Generic.Queue<Vector2Int>();
+var parent=new System.Collections.Generic.Dictionary<Vector2Int,Vector2Int>();
+queue.Enqueue(source); parent[source]=source;
+var steps=new Vector2Int[]{Vector2Int.right,Vector2Int.up,Vector2Int.left,Vector2Int.down};
+while(queue.Count>0 && !parent.ContainsKey(goal)) {
+ var cell=queue.Dequeue();
+ foreach(var step in steps){var next=cell+step;if(layout.IsRoad(next.x,next.y)&&!parent.ContainsKey(next)){parent[next]=cell;queue.Enqueue(next);}}
+}
+if(!parent.ContainsKey(goal)) return "FAIL: no connected road route";
+var cells=new System.Collections.Generic.List<Vector2Int>();
+for(var cell=goal;;cell=parent[cell]){cells.Add(cell);if(cell==source)break;}
+cells.Reverse();
+var points=new System.Collections.Generic.List<Vector3>();
+for(int k=0;k<cells.Count;k++) {
+ if(k>0 && k<cells.Count-1 && cells[k]-cells[k-1]==cells[k+1]-cells[k]) continue;
+ var point=TileMapAuto.CellToWorld(cells[k].x,cells[k].y);point.y=0;
+ points.Add(point);
+}
+Debug.Log("QA_ROUTE current="+origin+" source="+source+" destination="+dest+" cells="+cells.Count+" corners="+points.Count);
+
+var samples=new System.Collections.Generic.List<float>();
+int i=0, frame=-1;
+double start=UnityEditor.EditorApplication.timeSinceStartup, last=start;
+UnityEditor.EditorApplication.CallbackFunction tick=null;
+tick = () => {
+  if (!UnityEditor.EditorApplication.isPlaying || car==null || !run.RunActive || UnityEditor.EditorApplication.timeSinceStartup-start>90) {
+    UnityEditor.EditorApplication.update-=tick;
+    if(samples.Count>0){ samples.Sort(); float sum=0; foreach(var dt in samples)sum+=dt; Debug.Log("QA_FRAME samples="+samples.Count+" meanMs="+(1000*sum/samples.Count)+" p95Ms="+(1000*samples[(int)(samples.Count*0.95f)])+" maxMs="+(1000*samples[samples.Count-1])); }
+    UnityEngine.InputSystem.InputSystem.QueueStateEvent(UnityEngine.InputSystem.Keyboard.current,new UnityEngine.InputSystem.LowLevel.KeyboardState());
+    Debug.Log("QA_DRIVER_STOP "+dest+" active="+run.RunActive+" elapsed="+run.Elapsed+" pos="+car.transform.position);
+    return;
+  }
+  if(frame==Time.frameCount) return;
+  frame=Time.frameCount; samples.Add(Time.unscaledDeltaTime);
+  var pos=car.transform.position; pos.y=0;
+  while(i<points.Count-1 && Vector3.Distance(pos,points[i])<3f) i++;
+  var delta=points[i]-pos;
+  float angle=Vector3.SignedAngle(car.transform.forward,delta,Vector3.up);
+  float speed=car.GetComponent<Rigidbody>().linearVelocity.magnitude;
+  var keys=new System.Collections.Generic.List<UnityEngine.InputSystem.Key>();
+  float desired=Mathf.Abs(angle)>25?3f:5f;
+  if(speed<desired) keys.Add(UnityEngine.InputSystem.Key.W);
+  else if(speed>desired+1) keys.Add(UnityEngine.InputSystem.Key.S);
+  if(angle>3) keys.Add(UnityEngine.InputSystem.Key.D);
+  else if(angle< -3) keys.Add(UnityEngine.InputSystem.Key.A);
+  UnityEngine.InputSystem.InputSystem.QueueStateEvent(UnityEngine.InputSystem.Keyboard.current,new UnityEngine.InputSystem.LowLevel.KeyboardState(keys.ToArray()));
+  if(UnityEditor.EditorApplication.timeSinceStartup-last>5) { last=UnityEditor.EditorApplication.timeSinceStartup; Debug.Log("QA_DRIVER "+dest+" waypoint="+i+" pos="+pos+" speed="+speed+" angle="+angle); }
+};
+UnityEditor.EditorApplication.update+=tick;
+return "QA synthetic keyboard driver started: "+dest;

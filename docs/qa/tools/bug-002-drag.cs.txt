@@ -1,0 +1,22 @@
+// Exercise the InputAction -> Update -> stroke/placement path over distinct frames.
+var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+var bf=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+var cam=(Camera)ps.GetType().GetField("packingCamera",bf).GetValue(ps);
+var item=ps.ActiveItem;
+var center=cam.WorldToScreenPoint(item.GetComponentInChildren<Renderer>().bounds.center);
+var from=new Vector2(center.x,center.y);
+var to=from+new Vector2(ps.IsPlacing?70:40,ps.IsPlacing?-40:80);
+var start=UnityEditor.EditorApplication.timeSinceStartup;
+int frame=-1;
+UnityEditor.EditorApplication.CallbackFunction tick=null;
+tick=()=>{
+ if(!UnityEditor.EditorApplication.isPlaying || ps==null){UnityEditor.EditorApplication.update-=tick;return;}
+ if(frame==Time.frameCount)return; frame=Time.frameCount;
+ float t=(float)(UnityEditor.EditorApplication.timeSinceStartup-start);
+ var pos=Vector2.Lerp(from,to,Mathf.Clamp01(t));
+ var state=new UnityEngine.InputSystem.LowLevel.MouseState {position=pos,buttons=(ushort)(t<1.1f?1:0)};
+ UnityEngine.InputSystem.InputSystem.QueueStateEvent(UnityEngine.InputSystem.Mouse.current,state);
+ if(t>=1.1f){ UnityEditor.EditorApplication.update-=tick; Debug.Log("QA_DRAG completed placing="+ps.IsPlacing+" from="+from+" to="+to+" item="+item.transform.position); }
+};
+UnityEditor.EditorApplication.update+=tick;
+return "QA drag queued; placing="+ps.IsPlacing+" from="+from+" to="+to;

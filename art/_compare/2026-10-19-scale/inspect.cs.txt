@@ -1,0 +1,8 @@
+var scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+var rows=new System.Collections.Generic.List<string>();
+rows.Add("Scene="+scene.path+" dirty="+scene.isDirty+" play="+UnityEditor.EditorApplication.isPlaying);
+foreach(var g in scene.GetRootGameObjects())rows.Add(g.name+" "+g.transform.position);
+foreach(var c in UnityEngine.Object.FindObjectsByType<UnityEngine.Camera>(UnityEngine.FindObjectsSortMode.None))rows.Add("CAM "+c.name+" "+c.transform.position+" "+c.transform.eulerAngles+" FOV="+c.fieldOfView);
+var town=UnityEngine.GameObject.Find("CoastalTown");
+foreach(UnityEngine.Transform t in town.transform)if(t.name.StartsWith("CoastalHouse")||t.name.StartsWith("Bench"))rows.Add(t.name+" pos="+t.position+" rot="+t.eulerAngles+" scale="+t.localScale);
+return string.Join("\n",rows.Take(65));

@@ -1,0 +1,37 @@
+// QA-only road-grid BFS. Runtime route UI orders destinations, not drivable waypoints.
+// Reuse the authored road mask and editor CellToWorld mapping; never move the car.
+if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name!="ComplexTrack") return "FAIL: QA route supports ComplexTrack only";
+var layout=UnityEditor.AssetDatabase.LoadAssetAtPath<TrackLayout>("Assets/Data/ComplexTrackLayout.asset");
+if(layout==null) return "FAIL: missing layout";
+var origin=car.transform.position; origin.y=0;
+var source=new Vector2Int(-1,-1);
+float nearest=float.PositiveInfinity;
+for(int y=0;y<layout.Height;y++) for(int x=0;x<layout.Width;x++) {
+ if(!layout.IsRoad(x,y)) continue;
+ var world=TileMapAuto.CellToWorld(x,y); world.y=0;
+ var distance=(world-origin).sqrMagnitude;
+ if(distance<nearest){nearest=distance;source=new Vector2Int(x,y);}
+}
+if(source.x<0 || nearest>36f) return "FAIL: car more than 6m from road grid; manual recovery required";
+var goal=new Vector2Int(-1,-1);
+foreach(var d in layout.deliveries) if(d.label==dest){goal=new Vector2Int(d.col,d.row);break;}
+if(!layout.IsRoad(goal.x,goal.y)) return "FAIL: destination not on authored road grid: "+dest;
+var queue=new System.Collections.Generic.Queue<Vector2Int>();
+var parent=new System.Collections.Generic.Dictionary<Vector2Int,Vector2Int>();
+queue.Enqueue(source); parent[source]=source;
+var steps=new Vector2Int[]{Vector2Int.right,Vector2Int.up,Vector2Int.left,Vector2Int.down};
+while(queue.Count>0 && !parent.ContainsKey(goal)) {
+ var cell=queue.Dequeue();
+ foreach(var step in steps){var next=cell+step;if(layout.IsRoad(next.x,next.y)&&!parent.ContainsKey(next)){parent[next]=cell;queue.Enqueue(next);}}
+}
+if(!parent.ContainsKey(goal)) return "FAIL: no connected road route";
+var cells=new System.Collections.Generic.List<Vector2Int>();
+for(var cell=goal;;cell=parent[cell]){cells.Add(cell);if(cell==source)break;}
+cells.Reverse();
+var points=new System.Collections.Generic.List<Vector3>();
+for(int k=0;k<cells.Count;k++) {
+ if(k>0 && k<cells.Count-1 && cells[k]-cells[k-1]==cells[k+1]-cells[k]) continue;
+ var point=TileMapAuto.CellToWorld(cells[k].x,cells[k].y);point.y=0;
+ points.Add(point);
+}
+Debug.Log("QA_ROUTE current="+origin+" source="+source+" destination="+dest+" cells="+cells.Count+" corners="+points.Count);

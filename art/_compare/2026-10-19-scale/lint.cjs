@@ -1,0 +1,9 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');const dir=__dirname,html=fs.readFileSync(path.join(dir,'index.html'),'utf8');let checks=0;function check(ok,msg){checks++;if(!ok)throw Error(msg)}
+for(const view of ['side','drive','overview'])for(const scale of ['064','100'])for(const suffix of ['','_silhouette']){const f=`${view}_${scale}${suffix}.png`,b=fs.readFileSync(path.join(dir,f));check(b.subarray(1,4).toString()==='PNG',f+' format');check(b.readUInt32BE(16)===1920&&b.readUInt32BE(20)===1080,f+' dimensions')}
+for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g))check(fs.existsSync(path.resolve(dir,m[1])),m[1]+' missing');
+const nodes={};for(const id of ['view','sil','one','four','a','b','caption'])nodes['#'+id]={value:id==='view'?'side':'',setAttribute(k,v){this[k]=v}};
+const panes=[0,1].map(()=>({classList:{toggle(k,v){this[k]=v}},addEventListener(){},scrollLeft:0,scrollTop:0}));
+vm.runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],{document:{querySelector:s=>nodes[s],querySelectorAll:()=>panes},requestAnimationFrame:f=>f()});
+for(const v of ['side','drive','overview']){nodes['#view'].value=v;nodes['#view'].onchange();check(nodes['#a'].src===`${v}_064.png`&&nodes['#b'].src===`${v}_100.png`,v+' switch');nodes['#sil'].onclick();check(nodes['#a'].src===`${v}_064_silhouette.png`,v+' silhouette');nodes['#sil'].onclick()}
+nodes['#four'].onclick();check(panes.every(p=>p.classList.zoom===true),'4x');nodes['#one'].onclick();check(panes.every(p=>p.classList.zoom===false),'1x');
+const result=`PASS ${checks} checks, 0 violations. PNG 12/12: 1920x1080; local links; view/silhouette/zoom handlers via DOM stub. Browser layout NOT tested (no available CUA browser).\n`;fs.writeFileSync(path.join(dir,'lint-results.txt'),result);console.log(result);

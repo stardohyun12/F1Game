@@ -1,0 +1,4 @@
+﻿timestamp,run#,success,orders,completed,elapsedSec,distance_m,avgSpeed_kmh,reward,integrity%,walletBefore,walletAfter,fuelPct
+2026-10-19 01:03:46,1,1,1,1,10.1,41,14.7,2300,100,0,2300,-1
+2026-10-19 01:05:05,1,1,1,1,20.7,96,16.7,1100,100,0,1100,-1
+2026-10-19 01:06:32,1,1,1,1,17.3,78,16.3,500,100,-33,467,-1

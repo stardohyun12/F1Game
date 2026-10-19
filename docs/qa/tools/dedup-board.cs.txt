@@ -1,0 +1,30 @@
+Application.runInBackground=true;
+UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode=UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+var wallet=UpgradeSystem.Instance;
+if(wallet.Wallet<2500) wallet.AddReward(2500-wallet.Wallet);
+var zones=ZoneUnlockSystem.Instance;
+var pool=zones.GetAvailableJobs();
+var output=new System.Text.StringBuilder("wallet="+wallet.Wallet+" pool="+pool.Count+" unique="+new System.Collections.Generic.HashSet<OrderJob>(pool).Count+"\n");
+foreach(var zone in zones.Registry.allZones) output.AppendLine(zone.id+" unlocked="+zones.IsUnlocked(zone));
+var board=UnityEngine.Object.FindFirstObjectByType<OrderBoard>();
+var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+int total=0,raw=0,duplicateBoards=0,badCount=0;
+var kinds=new System.Collections.Generic.HashSet<string>();
+for(int n=0;n<20;n++) {
+ board.Open();
+ var cards=UnityEngine.Object.FindObjectsByType<OrderCardUI>(FindObjectsSortMode.None);
+ var jobs=new System.Collections.Generic.HashSet<OrderJob>();
+ int rawThis=0;
+ foreach(var c in cards) {
+  var j=(OrderJob)typeof(OrderCardUI).GetField("job",flags).GetValue(c);
+  jobs.Add(j); total++; kinds.Add(j.cargoType.ToString());
+  if(j.cargoType.ToString()!="Box"){raw++;rawThis++;}
+  output.AppendLine("board="+(n+1)+" job="+j.name+" cargo="+j.cargoType+" title="+c.titleText.text.Replace("\n"," / "));
+ }
+ if(cards.Length!=3)badCount++;
+ if(jobs.Count!=cards.Length)duplicateBoards++;
+ output.AppendLine("COUNT board="+(n+1)+" cards="+cards.Length+" unique="+jobs.Count+" raw="+rawThis);
+}
+output.AppendLine("TOTAL boards=20 cards="+total+" raw="+raw+" duplicateBoards="+duplicateBoards+" badCountBoards="+badCount+" cargoKinds="+string.Join(",",kinds));
+UnityEditor.EditorApplication.ExecuteMenuItem("PitCrew/Capture/Auto Screenshot");
+return output.ToString();

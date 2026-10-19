@@ -1,0 +1,4 @@
+﻿Static check 2026-10-19; no Unity/editor commands executed this task
+HEAD=8446797063d3726b2fcb3c1ef7c8d66292107462
+ComplexTrack ZoneUnlockSystem script references=0
+OpenWorld_v2 ZoneUnlockSystem script references=1

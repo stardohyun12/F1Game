@@ -68,8 +68,8 @@
 
 **시스템 복원 체인** (세션32 발견: 맵 리빌드가 8개 시스템 GameObject + OrderBoard 배선을 조용히 날림 → 포장/차고 흐름 죽음 + 주문 UI 안뜸). 리빌드 후 순서대로:
 1. `PitCrew/Cargo/Setup Cargo View (CCTV)` → 2. `PitCrew/Packing/Add PackingScreen To Active Scene` → 3. `PitCrew/Garage/Wire Scene Objects` → 4. `PitCrew/Restore/Wire Core Singletons`(UpgradeSystem/TireSystem)
-5. `PitCrew/Channel8/Board Layout — 카드 우측 스트립` → 6. exec `FixOrderBoardWiring.Execute()`(panelRoot/cardsContainer/cardPrefab) → 7. exec로 OrderBoard.runController=RunRoot 할당 + SaveScene.
-검증: 회귀의 `CheckCoreServicesPresent`(9 시스템) + `CheckOrderBoardWiring`(5필드) 자동 단언 — 빠지면 FAIL. (Phase1 통합 메뉴는 부작용 커서 회피.) **세션32 맵 리빌드 때 5~7 빠뜨려 OrderBoard NULL 재발→가드가 잡음.** 다음엔 이 7단계 다.
+5. `PitCrew/Channel8/Board Layout — 카드 우측 스트립` → 6. exec `FixOrderBoardWiring.Execute()`(panelRoot/cardsContainer/cardPrefab) → 7. exec로 OrderBoard.runController=RunRoot 할당 + SaveScene. → 8. `PitCrew/W1/Wire Scene (Zones)`(ZoneUnlockSystem — 빠지면 보드가 Box 3장 고정, BUG-002 2026-10-19) + SaveScene.
+검증: 회귀의 `CheckCoreServicesPresent`(10 시스템: Services 9 + ZoneUnlock) + `CheckOrderBoardWiring`(5필드) 자동 단언 — 빠지면 FAIL. (Phase1 통합 메뉴는 부작용 커서 회피.) **세션32 맵 리빌드 때 5~7 빠뜨려 OrderBoard NULL 재발→가드가 잡음.** 다음엔 이 8단계 다.
 
 ---
 

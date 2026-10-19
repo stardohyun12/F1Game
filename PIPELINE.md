@@ -91,6 +91,8 @@
 
 **정책.** 아트팀(Codex)이 모델을 **만든다.** Kenney는 기준 룩이자 1차 라이브러리이지 상한이 아니다. `asset.md`의 "커스텀 모델 금지"는 폐기됐다.
 
+**제작 순서 (D-106, 2026-10-19).** Codex 가 원화(분위기·형태)를 먼저 그린다 → 도현 승인 → Blender 등 실제 도구로 모델링 → 미리보기 → 도현 적용 승인. 원화 없이 바로 모델링하지 않는다.
+
 **제작 방식 우선순위.**
 1. **코드 생성 로우폴리** — Blender `bpy` 스크립트 → glTF/FBX, 또는 Unity Editor 스크립트로 `Mesh` 생성 후 프리팹화. 결정적이고 재생성 가능하며 폴리 예산을 처음부터 통제한다. Blender가 없으면 Unity Editor 경로.
 2. **Meshy text-to-3D** — `scripts/meshy-generate.ps1` + `CargoDecimator`. 유기적 형태에 한정. 깎으면 깨지는 전례(세션 21 케이크) 있음.
@@ -134,10 +136,10 @@
 | 항목 | 값 |
 |---|---|
 | OS / 셸 | Windows 11 / PowerShell 5.1 (한글 리터럴 깨짐 주의: `scripts/refresh-control.ps1` 주석 참조) |
-| Unity | 6000.3.9f1 |
+| Unity | 6000.3.19f1 (ProjectVersion 실측 2026-10-19. 원 6000.3.9f1 미설치) |
 | unity-cli | `C:/Users/stard/AppData/Local/unity-cli/unity-cli.exe` |
 | Python | 있음 (`py`) |
-| Blender | 미확인 — 아트팀 첫 작업에서 `blender --version`으로 확인, 없으면 Unity Editor 생성 경로 |
+| Blender | 5.2 `D:\Tools\Blender` (activeContext 세션33 기록, 아트팀이 `--version` 재확인) |
 | Meshy | `.env.local`의 `MESHY_API_KEY` |
 | AionUi 어시스턴트 | 별도 저장소 `stardohyun12/GameStudio`의 `setup/SETUP.md`로 생성 |
 
