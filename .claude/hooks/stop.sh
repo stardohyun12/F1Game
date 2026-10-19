@@ -188,6 +188,10 @@ fi
 GATE_FILE="$(cd "$(dirname "$0")/../.." && pwd)/docs/gates/$(date +%Y-%m-%d).md"
 # 2026-10-14: 자정이 지나 오늘 파일이 아직 없으면 가장 최근 게이트 파일로 (새벽 작업 때 반복 알림 방지)
 [ -f "$GATE_FILE" ] || GATE_FILE="$(ls -t "$(cd "$(dirname "$0")/../.." && pwd)"/docs/gates/*.md 2>/dev/null | head -1)"
+# 2026-10-20: AionUi 팀 모드(PIPELINE §2)는 게이트 기록을 docs/qa/GATE-*.md 에 쓴다 — 둘 중 더 새 파일을 기준으로.
+_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+_QA_GATE="$(ls -t "$_ROOT"/docs/qa/GATE-*.md 2>/dev/null | grep -v TEMPLATE | head -1)"
+if [ -n "$_QA_GATE" ] && { [ ! -f "$GATE_FILE" ] || [ "$(stat -c %Y "$_QA_GATE")" -gt "$(stat -c %Y "$GATE_FILE")" ]; }; then GATE_FILE="$_QA_GATE"; fi
 GATED=0
 if [ "$CS_CHANGED" -gt 0 ] && [ -f "$GATE_FILE" ]; then
   NEWEST_CS=0
