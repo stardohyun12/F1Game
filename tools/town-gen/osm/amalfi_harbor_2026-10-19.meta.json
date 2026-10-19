@@ -1,0 +1,14 @@
+{
+ "box_swne": [
+  40.6315,
+  14.599,
+  40.6365,
+  14.607
+ ],
+ "query": "[out:json][timeout:120];way[\"highway\"](40.6315,14.599,40.6365,14.607);out body geom;",
+ "mirror": "https://overpass-api.de/api/interpreter",
+ "fetched": "2026-10-19T11:40:10+0900",
+ "osm_base": "2026-10-19T02:38:41Z",
+ "ways": 224,
+ "bytes": 161205
+}
