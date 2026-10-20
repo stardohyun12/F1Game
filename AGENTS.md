@@ -2,7 +2,7 @@
 
 이 저장소는 AionUi 팀 모드로 운영된다. Codex로 실행되는 팀원(게임 아트팀, 게임 QA팀, 선택 프로그래밍팀)은 작업 전에 아래를 순서대로 읽는다. Claude 팀원은 `CLAUDE.md`가 같은 내용을 자동 로드한다.
 
-1. `PIPELINE.md` — 팀 운영 규약. 역할, 산출물 위치, 게이트, 에디터 토큰, 모델링 파이프라인.
+1. `PIPELINE.md` — 팀 운영 규약(§11 = 전역 `~/.claude/TEAM-PIPELINE.md` 보충: 메시지 3종·10줄·토큰, 에디터는 `scripts/open-editor.ps1`). 역할, 산출물 위치, 게이트, 에디터 토큰, 모델링 파이프라인.
 2. `CLAUDE.md` §0·§10과 거기 나열된 `project_rules/*.md` — 상위 규칙 (scope, no-compromise, asset, session, communication, roles).
 3. `docs/CONTROL.md`, `.claude/activeContext.md` — 현재 상태.
 
