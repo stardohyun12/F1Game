@@ -71,11 +71,20 @@ public class RunController : MonoBehaviour, IRunController
     [SerializeField] private float parDetourFactor = 1.35f;
     [Tooltip("목표 시간의 몇 배가 지나면 런 종료(시간 초과).")]
     [SerializeField] private float parHardLimitMul = 2f;
-    [Tooltip("D-118 긴급 전화: 목표 시간에 더해 주는 포장 시간(초). 시계는 전화 수락부터 돈다.")]
-    [SerializeField] private float packAllowanceSec = 40f;
+    [Tooltip("D-119 제한 시간(초). 주문판이 열리는 순간부터 고르기·포장·주행 전부 포함. 넘으면 런 종료.")]
+    [SerializeField] private float runTimeLimitSec = 90f;
+    [Tooltip("D-119 긴급 전화 이벤트로 받은 주문의 추가 보상 비율(기본 보상 대비).")]
+    [SerializeField] private float urgentRewardBonus = 0.5f;
 
-    /// <summary>D-118 — 전화 수락 후 포장 중에도 시계가 도는 중.</summary>
-    public bool UrgentClockRunning { get; private set; }
+    /// <summary>D-119 — 주문판부터 도는 제한 시간 모드(프로토타입).</summary>
+    public bool ClockRunning { get; private set; }
+    /// <summary>호환용 별칭 (HUD).</summary>
+    public bool UrgentClockRunning => ClockRunning;
+    /// <summary>이번 런에서 긴급 전화로 받은 주문.</summary>
+    readonly HashSet<OrderJob> urgentOrders = new HashSet<OrderJob>();
+    public float UrgentRewardBonus => urgentRewardBonus;
+    public void MarkUrgent(OrderJob job) { if (job != null) urgentOrders.Add(job); }
+    public bool IsUrgent(OrderJob job) => job != null && urgentOrders.Contains(job);
 
     /// <summary>D-117 — 이번 런의 목표 시간(초). 0 = 계산 안 함(프로토타입 모드 아님).</summary>
     public float ParTime { get; private set; }
@@ -89,7 +98,7 @@ public class RunController : MonoBehaviour, IRunController
     {
         get
         {
-            if (UsePar) return ParTime * parHardLimitMul;
+            if (UsePar) return ClockRunning ? ParTime : ParTime * parHardLimitMul;
             if (CurrentOrders == null || CurrentOrders.Count == 0) return 0f;
             float maxT = 0f;
             foreach (var o in CurrentOrders)
@@ -125,6 +134,7 @@ public class RunController : MonoBehaviour, IRunController
         }
         Time.timeScale = 0f;
         if (Overview != null && !Overview.IsInOverview) Overview.GoToOverview();
+        if (Services.PrototypeMode) StartRunClock();
         Board.Open();
     }
 
@@ -172,7 +182,7 @@ public class RunController : MonoBehaviour, IRunController
             Services.TireWear.OnPunctured += HandlePuncture;
         }
         ActivateDeliveryPoints();
-        if (!UrgentClockRunning) ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
+        if (!ClockRunning) ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색
@@ -214,7 +224,7 @@ public class RunController : MonoBehaviour, IRunController
     void InitRunState(List<OrderJob> orders)
     {
         CurrentOrders = new List<OrderJob>(orders);
-        if (!UrgentClockRunning) Elapsed = 0f; // D-118: 전화 수락부터 잰 시간은 이어 간다
+        if (!ClockRunning) Elapsed = 0f; // D-119: 주문판부터 잰 시간은 이어 간다
         CompletedCount = 0;
         RunActive = true;
         OnRunStarted?.Invoke(this);
@@ -243,25 +253,16 @@ public class RunController : MonoBehaviour, IRunController
     }
 
     /// <summary>
-    /// D-118 — 긴급 전화 수락. 이 순간부터 시계가 돈다(포장 포함).
-    /// 목표 시간 = 포장 여유(packAllowanceSec) + 주행 목표 시간(행선지 거리 기반).
+    /// D-119 — 제한 시간 시작. 주문판이 열리는 순간부터 고르기·포장·주행이 모두 한 시계를 쓴다.
     /// </summary>
-    public void StartUrgentClock(List<OrderJob> orders)
+    public void StartRunClock()
     {
-        var mgr = Delivery as DeliveryManager;
-        float drive = mgr != null ? ComputeDrivePar(BuildRouteFromLabels(mgr, orders)) : 0f;
-        ParTime = drive > 0f ? packAllowanceSec + drive : 0f;
+        ParTime = runTimeLimitSec;
         Elapsed = 0f;
-        UrgentClockRunning = ParTime > 0f;
-        Debug.Log($"[RunController] 긴급 전화 수락(D-118): 목표 {ParTime:F0}s = 포장 {packAllowanceSec:F0}s + 주행 {drive:F0}s");
-    }
-
-    /// <summary>수락 전 미리보기용 — StartUrgentClock 과 같은 계산.</summary>
-    public float PreviewUrgentLimit(List<OrderJob> orders)
-    {
-        var mgr = Delivery as DeliveryManager;
-        float drive = mgr != null ? ComputeDrivePar(BuildRouteFromLabels(mgr, orders)) : 0f;
-        return drive > 0f ? packAllowanceSec + drive : 0f;
+        CurrentOrders = new List<OrderJob>();
+        urgentOrders.Clear();
+        ClockRunning = ParTime > 0f;
+        Debug.Log($"[RunController] 제한 시간 시작(D-119): {ParTime:F0}s");
     }
 
     /// <summary>주문 행선지 라벨 → 차에서 가까운 순으로 이은 경로.</summary>
@@ -372,7 +373,8 @@ public class RunController : MonoBehaviour, IRunController
     void Update()
     {
         // D-118: 전화 수락 ~ 출발 전(포장, timeScale 0) 에도 시계가 돈다.
-        if (UrgentClockRunning && !RunActive && stage == RunStage.Packing)
+        // D-119: 주문판·포장(timeScale 0) 에서도 시계가 돈다. 0 이 돼도 여기선 끝내지 않고(UI 꼬임 방지) 출발 즉시 시간 초과.
+        if (ClockRunning && !RunActive && (stage == RunStage.Board || stage == RunStage.Routing || stage == RunStage.Packing))
         {
             Elapsed += Time.unscaledDeltaTime;
             return;
@@ -427,7 +429,6 @@ public class RunController : MonoBehaviour, IRunController
 
         SetStage(RunStage.Result);
         RunActive = false;
-        UrgentClockRunning = false;
         LastRunSuccess = success;
         LastElapsed = Elapsed;
         LastIntegrityPercent = Cargo != null ? Cargo.IntegrityPercent : 1f;
@@ -463,8 +464,13 @@ public class RunController : MonoBehaviour, IRunController
             float ratio = n > 0 ? (float)CompletedCount / n : 0f;
             reward = Mathf.RoundToInt(totalBase * ratio * 0.5f);
         }
+        // D-119: 긴급 전화로 받은 주문은 배달 성공 시 추가 보상.
+        if (success && urgentOrders.Count > 0)
+            foreach (var o in CurrentOrders)
+                if (o != null && urgentOrders.Contains(o)) reward += Mathf.RoundToInt(o.baseReward * urgentRewardBonus);
         reward = Mathf.RoundToInt(reward * integrityMul);
         LastReward = reward;
+        ClockRunning = false;
 
         if (Upgrade != null && reward > 0) Upgrade.AddReward(reward);
 

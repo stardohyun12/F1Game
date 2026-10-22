@@ -103,7 +103,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else destStr = $"{job.itemCount}곳";
         SetStatRow(0, "행선지", destStr);
-        SetStatRow(1, "시간", Services.PrototypeMode ? "출발 시 목표 계산"
+        SetStatRow(1, "시간", Services.PrototypeMode ? "판 제한 시간 안"
             : job.timeLimitSec > 0f
             ? $"{Mathf.RoundToInt(job.timeLimitSec / 60f)}분 {Mathf.RoundToInt(job.timeLimitSec % 60f):D2}초"
             : "무제한");
@@ -154,6 +154,16 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     /// <summary>채널 8 정정 — 다중 픽 선택 상태. 클릭으로 토글.</summary>
+    /// <summary>D-119 — 긴급 전화로 받은 주문 표시(제목 앞 빨간 "긴급").</summary>
+    public void SetUrgent(bool urgent)
+    {
+        if (titleText == null) return;
+        const string tag = "<color=#E81A14><b>긴급</b></color> ";
+        bool has = titleText.text.StartsWith(tag);
+        if (urgent && !has) titleText.text = tag + titleText.text;
+        else if (!urgent && has) titleText.text = titleText.text.Substring(tag.Length);
+    }
+
     public void SetSelected(bool sel)
     {
         selected = sel;

@@ -80,7 +80,8 @@ public class CountdownHUD : MonoBehaviour
         // 운전 단계에만 표시 (시간 제한 있는 경우).
         // D-118: 긴급 전화 수락 뒤엔 포장 단계에서도 보인다.
         bool show = controller != null && (controller.CurrentStage == RunStage.Driving
-            || (controller.CurrentStage == RunStage.Packing && controller.UrgentClockRunning));
+            || (controller.ClockRunning && (controller.CurrentStage == RunStage.Board
+                || controller.CurrentStage == RunStage.Routing || controller.CurrentStage == RunStage.Packing)));
         if (!show) { group.alpha = 0f; return; }
         float remaining = controller.TimeRemaining;
         if (remaining < 0f) { group.alpha = 0f; return; }

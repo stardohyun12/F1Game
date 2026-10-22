@@ -13,8 +13,8 @@ public class UrgentCallPanel : MonoBehaviour
 
     GameObject root;
     TMP_Text callerText, situationText, detailText, timeText;
-    Button acceptBtn;
-    Action onAccept;
+    Button acceptBtn, declineBtn;
+    Action onAccept, onDecline;
 
     public static UrgentCallPanel Ensure()
     {
@@ -28,19 +28,25 @@ public class UrgentCallPanel : MonoBehaviour
 
     public bool IsVisible => root != null && root.activeSelf;
 
-    /// <summary>전화 표시. limitSec = 수락부터 배달 완료까지 목표 시간(포장 포함).</summary>
-    public void Show(OrderJob job, float limitSec, Action accept)
+    /// <summary>전화 표시. remainSec = 지금 남은 제한 시간(음수면 숨김).</summary>
+    public void Show(OrderJob job, float remainSec, Action accept, Action decline)
     {
         onAccept = accept;
+        onDecline = decline;
         string dest = job.destinationLabels != null && job.destinationLabels.Count > 0
             ? string.Join(" → ", job.destinationLabels) : "-";
         string cargo = CargoTypePresets.DisplayName(job.cargoType);
         callerText.text = string.IsNullOrEmpty(job.callerName) ? $"{dest}에서 전화" : job.callerName;
         situationText.text = string.IsNullOrEmpty(job.urgentSituation) ? DefaultSituation(job.cargoType, dest) : job.urgentSituation;
-        string bonus = job.timeBonus > 0 ? $"  (+ 시간 안이면 ₩{job.timeBonus:N0})" : "";
-        detailText.text = $"배달지  {dest}\n화물  {cargo}\n보상  ₩{job.baseReward:N0}{bonus}";
-        int s = Mathf.CeilToInt(limitSec);
-        timeText.text = $"{s / 60}:{s % 60:D2} 안에!";
+        float bonusMul = (Services.Run as RunController)?.UrgentRewardBonus ?? 0.5f;
+        int urgentExtra = Mathf.RoundToInt(job.baseReward * bonusMul);
+        detailText.text = $"배달지  {dest}\n화물  {cargo}\n보상  ₩{job.baseReward:N0}  <color=#FFD040>+ 긴급 ₩{urgentExtra:N0}</color>";
+        if (remainSec >= 0f)
+        {
+            int s = Mathf.CeilToInt(remainSec);
+            timeText.text = $"남은 시간 {s / 60}:{s % 60:D2}";
+        }
+        else timeText.text = "";
         transform.SetAsLastSibling();
         root.SetActive(true);
         AudioCueBus.Publish(AudioCueId.PackingConfirm);
@@ -51,10 +57,27 @@ public class UrgentCallPanel : MonoBehaviour
         if (root != null) root.SetActive(false);
     }
 
+    // 전화가 떠 있는 동안에도 제한 시간은 흐른다 — 남은 시간을 실시간으로.
+    void Update()
+    {
+        if (!IsVisible || timeText == null) return;
+        var rc = Services.Run as RunController;
+        if (rc == null || !rc.ClockRunning) return;
+        int s = Mathf.CeilToInt(Mathf.Max(0f, rc.TimeRemaining));
+        timeText.text = $"남은 시간 {s / 60}:{s % 60:D2}";
+    }
+
     void OnAcceptClicked()
     {
         Hide();
-        var cb = onAccept; onAccept = null;
+        var cb = onAccept; onAccept = null; onDecline = null;
+        cb?.Invoke();
+    }
+
+    void OnDeclineClicked()
+    {
+        Hide();
+        var cb = onDecline; onAccept = null; onDecline = null;
         cb?.Invoke();
     }
 
@@ -102,26 +125,35 @@ public class UrgentCallPanel : MonoBehaviour
         detailText = Label(card.transform, "", 22, FontStyles.Normal, TextAlignmentOptions.TopLeft);
         detailText.color = new Color(0.78f, 0.80f, 0.85f, 1f);
         Place(detailText.rectTransform, new Vector2(0, -275), new Vector2(680, 100));
-        timeText = Label(card.transform, "", 40, FontStyles.Bold, TextAlignmentOptions.Left);
+        timeText = Label(card.transform, "", 30, FontStyles.Bold, TextAlignmentOptions.Left);
         timeText.color = new Color(1f, 0.82f, 0.25f, 1f);
-        Place(timeText.rectTransform, new Vector2(-150, -400), new Vector2(380, 60));
+        Place(timeText.rectTransform, new Vector2(-170, -405), new Vector2(340, 50));
 
-        var btnGO = new GameObject("Accept", typeof(RectTransform), typeof(Image), typeof(Button));
-        btnGO.transform.SetParent(card.transform, false);
-        var art = btnGO.GetComponent<RectTransform>();
-        art.anchorMin = art.anchorMax = new Vector2(0.5f, 1f); art.pivot = new Vector2(0.5f, 1f);
-        art.anchoredPosition = new Vector2(200, -395); art.sizeDelta = new Vector2(260, 70);
-        btnGO.GetComponent<Image>().color = new Color(0.88f, 0.10f, 0.08f, 1f);
-        var bl = Label(btnGO.transform, "바로 갈게요!", 28, FontStyles.Bold, TextAlignmentOptions.Center);
-        Stretch(bl.rectTransform);
-        acceptBtn = btnGO.GetComponent<Button>();
+        acceptBtn = MakeButton(card.transform, "Accept", "받을게요!", new Vector2(250, -395), new Vector2(200, 70),
+            new Color(0.88f, 0.10f, 0.08f, 1f));
         acceptBtn.onClick.AddListener(OnAcceptClicked);
+        declineBtn = MakeButton(card.transform, "Decline", "못 가요", new Vector2(60, -395), new Vector2(150, 70),
+            new Color(0.25f, 0.27f, 0.32f, 1f));
+        declineBtn.onClick.AddListener(OnDeclineClicked);
 
         if (UnityEngine.EventSystems.EventSystem.current == null &&
             FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             Debug.LogWarning("[UrgentCallPanel] EventSystem 없음 — 버튼 클릭 불가");
 
         root.SetActive(false);
+    }
+
+    static Button MakeButton(Transform parent, string name, string label, Vector2 pos, Vector2 size, Color color)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+        go.transform.SetParent(parent, false);
+        var r = go.GetComponent<RectTransform>();
+        r.anchorMin = r.anchorMax = new Vector2(0.5f, 1f); r.pivot = new Vector2(0.5f, 1f);
+        r.anchoredPosition = pos; r.sizeDelta = size;
+        go.GetComponent<Image>().color = color;
+        var t = Label(go.transform, label, 26, FontStyles.Bold, TextAlignmentOptions.Center);
+        Stretch(t.rectTransform);
+        return go.GetComponent<Button>();
     }
 
     static TMP_Text Label(Transform parent, string text, float size, FontStyles style, TextAlignmentOptions align)
