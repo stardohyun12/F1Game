@@ -31,6 +31,8 @@ public class DeliveryManager : MonoBehaviour, IDeliveryManager
         ? null
         : route[currentIndex];
     public Transform ReturnTarget => startReturn;
+    /// <summary>이번 런의 배달 순서 (D-117 목표 시간 계산용).</summary>
+    public IReadOnlyList<DeliveryPoint> Route => route;
 
     /// <summary>true면 RoutePlanScreen이 경로를 미리 세팅함 — RunController는 ActivateSubset 폴백 안 함.</summary>
     public bool HasPlannedRoute => route.Count > 0 && !finished;

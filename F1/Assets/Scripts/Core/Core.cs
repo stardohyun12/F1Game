@@ -147,8 +147,12 @@ public static class Services
     public static PitCrew.Garage.IBoostSystem Boost { get; internal set; }
     public static PitCrew.Garage.ITireWearStore TireWear { get; internal set; }
 
+    /// <summary>D-117 프로토타입 모드 — 연료·타이어 펑크·경로 계획·부스트 끔, 시간 = 경로 길이로 계산한 목표 시간.</summary>
+    public static bool PrototypeMode { get; internal set; }
+
     public static void Reset()
     {
+        PrototypeMode = false;
         Delivery = null;
         Overview = null;
         Board = null;

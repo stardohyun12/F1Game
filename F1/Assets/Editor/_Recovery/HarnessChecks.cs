@@ -145,8 +145,17 @@ public static class HarnessChecks
         if (Services.Delivery == null) missing += "Delivery ";
         if (Services.Packing == null) missing += "Packing ";
         if (Services.Restore == null) missing += "Restore ";
-        if (Services.Boost == null) missing += "Boost ";
-        if (Services.TireWear == null) missing += "TireWear ";
+        // D-117 프로토타입 모드는 Boost·TireWear 를 일부러 Services 에서 뺀다 → 씬 객체 존재만 단언(유실은 계속 잡음).
+        if (Services.PrototypeMode)
+        {
+            if (Object.FindFirstObjectByType<PitCrew.Garage.BoostSystem>(FindObjectsInactive.Include) == null) missing += "Boost ";
+            if (Object.FindFirstObjectByType<PitCrew.Garage.TireWearStore>(FindObjectsInactive.Include) == null) missing += "TireWear ";
+        }
+        else
+        {
+            if (Services.Boost == null) missing += "Boost ";
+            if (Services.TireWear == null) missing += "TireWear ";
+        }
         if (Services.Tires == null) missing += "Tires ";
         if (Services.Upgrade == null) missing += "Upgrade ";
         if (Services.Shake == null) missing += "Shake ";

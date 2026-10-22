@@ -65,11 +65,26 @@ public class RunController : MonoBehaviour, IRunController
     /// <summary>EndRun 시점에 캡처. ResultPanel "이야기"용 (Day 12).</summary>
     public float LastIntegrityPercent { get; private set; } = 1f;
 
-    /// <summary>유효 시간 제한(초). 픽한 주문들 중 가장 큰 값 (0 무제한이 하나라도 있으면 0).</summary>
+    [Header("Prototype 목표 시간 (D-117)")]
+    [Tooltip("목표 시간 = 경로 직선거리 × 우회 계수 ÷ 기준 속도. 기준 속도가 낮을수록 여유.")]
+    [SerializeField] private float parSpeedKmh = 55f;
+    [SerializeField] private float parDetourFactor = 1.35f;
+    [Tooltip("목표 시간의 몇 배가 지나면 런 종료(시간 초과).")]
+    [SerializeField] private float parHardLimitMul = 2f;
+
+    /// <summary>D-117 — 이번 런의 목표 시간(초). 0 = 계산 안 함(프로토타입 모드 아님).</summary>
+    public float ParTime { get; private set; }
+    /// <summary>EndRun 시점 목표 시간 안에 들어왔는지.</summary>
+    public bool LastBeatPar { get; private set; }
+
+    bool UsePar => Services.PrototypeMode && ParTime > 0f;
+
+    /// <summary>유효 시간 제한(초). 프로토타입: 목표 시간 × parHardLimitMul. 그 외: 픽한 주문들 중 가장 큰 값 (0 무제한이 하나라도 있으면 0).</summary>
     public float EffectiveTimeLimit
     {
         get
         {
+            if (UsePar) return ParTime * parHardLimitMul;
             if (CurrentOrders == null || CurrentOrders.Count == 0) return 0f;
             float maxT = 0f;
             foreach (var o in CurrentOrders)
@@ -82,9 +97,12 @@ public class RunController : MonoBehaviour, IRunController
         }
     }
 
-    public float TimeRemaining => EffectiveTimeLimit > 0f
-        ? Mathf.Max(0f, EffectiveTimeLimit - Elapsed)
-        : -1f; // -1 = 무제한
+    /// <summary>HUD 표시용. 프로토타입: 목표 시간까지 남은 초(넘으면 0). -1 = 무제한.</summary>
+    public float TimeRemaining => UsePar
+        ? Mathf.Max(0f, ParTime - Elapsed)
+        : EffectiveTimeLimit > 0f
+            ? Mathf.Max(0f, EffectiveTimeLimit - Elapsed)
+            : -1f; // -1 = 무제한
 
     void Start()
     {
@@ -149,6 +167,7 @@ public class RunController : MonoBehaviour, IRunController
             Services.TireWear.OnPunctured += HandlePuncture;
         }
         ActivateDeliveryPoints();
+        ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색
@@ -202,11 +221,66 @@ public class RunController : MonoBehaviour, IRunController
     void ActivateDeliveryPoints()
     {
         if (Delivery == null) return;
-        // 채널 8: RoutePlanScreen이 이미 ActivateRoute로 경로 세팅했으면 그대로.
         var mgr = Delivery as DeliveryManager;
+        // D-117: 경로 계획 화면이 꺼져 있으므로 주문 행선지 라벨 → 가까운 순서로 직접 경로를 만든다.
+        // (DeliveryManager.Start 가 전체 지점을 미리 활성화해 HasPlannedRoute 가 늘 true 이므로 아래 분기보다 먼저.)
+        if (Services.PrototypeMode && mgr != null)
+        {
+            var stops = new List<DeliveryPoint>();
+            foreach (var o in CurrentOrders)
+            {
+                if (o == null || o.destinationLabels == null) continue;
+                foreach (var label in o.destinationLabels)
+                {
+                    var p = mgr.FindByLabel(label);
+                    if (p != null && !stops.Contains(p)) stops.Add(p);
+                }
+            }
+            if (stops.Count > 0)
+            {
+                var ordered = new List<DeliveryPoint>(stops.Count);
+                Vector3 cur = Services.Car != null ? Services.Car.Transform.position : stops[0].transform.position;
+                while (stops.Count > 0)
+                {
+                    int best = 0; float bestD = float.MaxValue;
+                    for (int i = 0; i < stops.Count; i++)
+                    {
+                        float d = (stops[i].transform.position - cur).sqrMagnitude;
+                        if (d < bestD) { bestD = d; best = i; }
+                    }
+                    cur = stops[best].transform.position;
+                    ordered.Add(stops[best]);
+                    stops.RemoveAt(best);
+                }
+                mgr.ActivateRoute(ordered);
+            }
+            else mgr.ActivateSubset(CurrentOrders.Count);
+            return;
+        }
+        // 채널 8: RoutePlanScreen이 이미 ActivateRoute로 경로 세팅했으면 그대로.
         if (mgr != null && mgr.HasPlannedRoute) return;
         // 폴백: 주문 수만큼.
         Delivery.ActivateSubset(CurrentOrders.Count);
+    }
+
+    /// <summary>D-117 — 차 위치 → 배달지들 → (복귀 지점) 직선거리 합으로 목표 시간 계산.</summary>
+    float ComputeParTime()
+    {
+        var mgr = Delivery as DeliveryManager;
+        if (mgr == null || mgr.Route == null || mgr.Route.Count == 0) return 0f;
+        Vector3 prev = Services.Car != null ? Services.Car.Transform.position : mgr.Route[0].transform.position;
+        float dist = 0f;
+        foreach (var p in mgr.Route)
+        {
+            if (p == null) continue;
+            dist += Vector3.Distance(prev, p.transform.position);
+            prev = p.transform.position;
+        }
+        if (mgr.ReturnTarget != null) dist += Vector3.Distance(prev, mgr.ReturnTarget.position);
+        float mps = Mathf.Max(1f, parSpeedKmh / 3.6f);
+        float par = Mathf.Max(10f, dist * parDetourFactor / mps);
+        Debug.Log($"[RunController] 목표 시간(D-117): 경로 {dist:F0}m × {parDetourFactor} ÷ {parSpeedKmh}km/h = {par:F1}s (초과 종료 {par * parHardLimitMul:F0}s)");
+        return par;
     }
 
     /// <summary>화물 타입 적용 — primary 주문 기준 (Task 14: SetPacking 제거).</summary>
@@ -321,8 +395,15 @@ public class RunController : MonoBehaviour, IRunController
         }
         float effectiveLim = EffectiveTimeLimit;
 
+        LastBeatPar = UsePar && success && Elapsed <= ParTime;
+
         int reward;
-        if (success)
+        if (success && UsePar)
+        {
+            // D-117: 목표 시간 안 = 시간 보너스 전액, 넘으면 0 (런은 끝까지).
+            reward = totalBase + (LastBeatPar ? totalTimeBonus : 0);
+        }
+        else if (success)
         {
             reward = totalBase + (effectiveLim > 0f ? totalTimeBonus : 0);
         }

@@ -351,7 +351,9 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // 완료 — 다물건이면 분모 = 주문 수 (각 주문 1곳).
         int totalSpots = orderCount > 0 ? orderCount : (job != null ? job.itemCount : 0);
         completedVal.text = $"{controller.CompletedCount}/{totalSpots}곳";
-        timeVal.text = FormatTimeWithBonus(controller.LastElapsed, job);
+        timeVal.text = controller.ParTime > 0f
+            ? FormatTimeVsPar(controller.LastElapsed, controller.ParTime)
+            : FormatTimeWithBonus(controller.LastElapsed, job);
         string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
         int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);
         cargoLabel.text = $"화물 ({cargoName})";
@@ -467,6 +469,15 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         var garage = UnityEngine.Object.FindFirstObjectByType<PitCrew.Garage.GarageScreen>();
         if (garage != null) garage.Show();
         else Debug.LogWarning("[ResultPanel] GarageScreen 없음 — Task 11 wiring 필요");
+    }
+
+    /// <summary>D-117 — 목표 시간 대비.</summary>
+    static string FormatTimeVsPar(float sec, float par)
+    {
+        string t = $"{Mathf.FloorToInt(sec / 60f)}분 {Mathf.FloorToInt(sec % 60f):D2}초";
+        string p = $"{Mathf.FloorToInt(par / 60f)}분 {Mathf.FloorToInt(par % 60f):D2}초";
+        float d = par - sec;
+        return d >= 0f ? $"{t} / 목표 {p} (+{d:F0}s 여유 · 보너스)" : $"{t} / 목표 {p} ({-d:F0}s 초과)";
     }
 
     static string FormatTimeWithBonus(float sec, OrderJob job)

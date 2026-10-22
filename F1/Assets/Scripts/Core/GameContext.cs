@@ -34,6 +34,10 @@ public class GameContext : MonoBehaviour
     [SerializeField] private PitCrew.Garage.BoostSystem boostSystem;
     [SerializeField] private PitCrew.Garage.TireWearStore tireWearStore;
 
+    [Header("Prototype (D-117)")]
+    [Tooltip("켜면 연료·타이어 펑크·경로 계획·부스트를 끄고, 시간 제한을 경로 길이로 계산한 목표 시간으로 바꾼다.")]
+    [SerializeField] private bool prototypeMode = true;
+
     [Header("Validation")]
     [SerializeField] private bool autoFindMissingOnAwake = true;
     [SerializeField] private bool logRegistration = true;
@@ -64,6 +68,9 @@ public class GameContext : MonoBehaviour
         Services.Boost = boostSystem;
         Services.TireWear = tireWearStore;
 
+        Services.PrototypeMode = prototypeMode;
+        if (prototypeMode) ApplyPrototypeCuts();
+
         if (logRegistration)
         {
             int registered = 0;
@@ -89,6 +96,20 @@ public class GameContext : MonoBehaviour
     }
 
     void OnDestroy() => Services.Reset();
+
+    /// <summary>D-117 — 프로토타입에서 끄는 시스템. 코드는 남기고 등록·표시만 뺀다.</summary>
+    void ApplyPrototypeCuts()
+    {
+        Services.Fuel = null;          // 연료
+        Services.RoutePlan = null;     // 경로 계획 화면 → 보드에서 바로 포장으로
+        Services.Boost = null;         // 부스트
+        Services.TireWear = null;      // 타이어 마모·펑크
+        if (fuelSystem != null) fuelSystem.enabled = false;
+        if (boostSystem != null) boostSystem.enabled = false;
+        foreach (var hud in FindObjectsByType<FuelHUD>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            hud.gameObject.SetActive(false);
+        Debug.Log("[GameContext] 프로토타입 모드(D-117): 연료·경로 계획·부스트·타이어 펑크 끔");
+    }
 
     void AutoFindMissing()
     {

@@ -103,7 +103,8 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         else destStr = $"{job.itemCount}곳";
         SetStatRow(0, "행선지", destStr);
-        SetStatRow(1, "시간", job.timeLimitSec > 0f
+        SetStatRow(1, "시간", Services.PrototypeMode ? "출발 시 목표 계산"
+            : job.timeLimitSec > 0f
             ? $"{Mathf.RoundToInt(job.timeLimitSec / 60f)}분 {Mathf.RoundToInt(job.timeLimitSec % 60f):D2}초"
             : "무제한");
         string rewardStr = job.timeBonus > 0
