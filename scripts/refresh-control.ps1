@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $path = (Resolve-Path "docs/CONTROL.md").Path
 
 $today = [datetime]::Today
-$dday  = [int](([datetime]"2026-06-24") - $today).TotalDays
+$dday  = [int](([datetime]"2026-11-05") - $today).TotalDays
 $statusStr = $today.ToString("yyyy-MM-dd") + " | D-" + $dday
 
 $commits = git log --oneline -5 --no-decorate
