@@ -71,6 +71,11 @@ public class RunController : MonoBehaviour, IRunController
     [SerializeField] private float parDetourFactor = 1.35f;
     [Tooltip("목표 시간의 몇 배가 지나면 런 종료(시간 초과).")]
     [SerializeField] private float parHardLimitMul = 2f;
+    [Tooltip("D-118 긴급 전화: 목표 시간에 더해 주는 포장 시간(초). 시계는 전화 수락부터 돈다.")]
+    [SerializeField] private float packAllowanceSec = 40f;
+
+    /// <summary>D-118 — 전화 수락 후 포장 중에도 시계가 도는 중.</summary>
+    public bool UrgentClockRunning { get; private set; }
 
     /// <summary>D-117 — 이번 런의 목표 시간(초). 0 = 계산 안 함(프로토타입 모드 아님).</summary>
     public float ParTime { get; private set; }
@@ -167,7 +172,7 @@ public class RunController : MonoBehaviour, IRunController
             Services.TireWear.OnPunctured += HandlePuncture;
         }
         ActivateDeliveryPoints();
-        ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
+        if (!UrgentClockRunning) ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색
@@ -209,7 +214,7 @@ public class RunController : MonoBehaviour, IRunController
     void InitRunState(List<OrderJob> orders)
     {
         CurrentOrders = new List<OrderJob>(orders);
-        Elapsed = 0f;
+        if (!UrgentClockRunning) Elapsed = 0f; // D-118: 전화 수락부터 잰 시간은 이어 간다
         CompletedCount = 0;
         RunActive = true;
         OnRunStarted?.Invoke(this);
@@ -226,34 +231,8 @@ public class RunController : MonoBehaviour, IRunController
         // (DeliveryManager.Start 가 전체 지점을 미리 활성화해 HasPlannedRoute 가 늘 true 이므로 아래 분기보다 먼저.)
         if (Services.PrototypeMode && mgr != null)
         {
-            var stops = new List<DeliveryPoint>();
-            foreach (var o in CurrentOrders)
-            {
-                if (o == null || o.destinationLabels == null) continue;
-                foreach (var label in o.destinationLabels)
-                {
-                    var p = mgr.FindByLabel(label);
-                    if (p != null && !stops.Contains(p)) stops.Add(p);
-                }
-            }
-            if (stops.Count > 0)
-            {
-                var ordered = new List<DeliveryPoint>(stops.Count);
-                Vector3 cur = Services.Car != null ? Services.Car.Transform.position : stops[0].transform.position;
-                while (stops.Count > 0)
-                {
-                    int best = 0; float bestD = float.MaxValue;
-                    for (int i = 0; i < stops.Count; i++)
-                    {
-                        float d = (stops[i].transform.position - cur).sqrMagnitude;
-                        if (d < bestD) { bestD = d; best = i; }
-                    }
-                    cur = stops[best].transform.position;
-                    ordered.Add(stops[best]);
-                    stops.RemoveAt(best);
-                }
-                mgr.ActivateRoute(ordered);
-            }
+            var ordered = BuildRouteFromLabels(mgr, CurrentOrders);
+            if (ordered.Count > 0) mgr.ActivateRoute(ordered);
             else mgr.ActivateSubset(CurrentOrders.Count);
             return;
         }
@@ -263,20 +242,83 @@ public class RunController : MonoBehaviour, IRunController
         Delivery.ActivateSubset(CurrentOrders.Count);
     }
 
-    /// <summary>D-117 — 차 위치 → 배달지들 → (복귀 지점) 직선거리 합으로 목표 시간 계산.</summary>
+    /// <summary>
+    /// D-118 — 긴급 전화 수락. 이 순간부터 시계가 돈다(포장 포함).
+    /// 목표 시간 = 포장 여유(packAllowanceSec) + 주행 목표 시간(행선지 거리 기반).
+    /// </summary>
+    public void StartUrgentClock(List<OrderJob> orders)
+    {
+        var mgr = Delivery as DeliveryManager;
+        float drive = mgr != null ? ComputeDrivePar(BuildRouteFromLabels(mgr, orders)) : 0f;
+        ParTime = drive > 0f ? packAllowanceSec + drive : 0f;
+        Elapsed = 0f;
+        UrgentClockRunning = ParTime > 0f;
+        Debug.Log($"[RunController] 긴급 전화 수락(D-118): 목표 {ParTime:F0}s = 포장 {packAllowanceSec:F0}s + 주행 {drive:F0}s");
+    }
+
+    /// <summary>수락 전 미리보기용 — StartUrgentClock 과 같은 계산.</summary>
+    public float PreviewUrgentLimit(List<OrderJob> orders)
+    {
+        var mgr = Delivery as DeliveryManager;
+        float drive = mgr != null ? ComputeDrivePar(BuildRouteFromLabels(mgr, orders)) : 0f;
+        return drive > 0f ? packAllowanceSec + drive : 0f;
+    }
+
+    /// <summary>주문 행선지 라벨 → 차에서 가까운 순으로 이은 경로.</summary>
+    List<DeliveryPoint> BuildRouteFromLabels(DeliveryManager mgr, List<OrderJob> orders)
+    {
+        var stops = new List<DeliveryPoint>();
+        if (orders != null)
+            foreach (var o in orders)
+            {
+                if (o == null || o.destinationLabels == null) continue;
+                foreach (var label in o.destinationLabels)
+                {
+                    var p = mgr.FindByLabel(label);
+                    if (p != null && !stops.Contains(p)) stops.Add(p);
+                }
+            }
+        var ordered = new List<DeliveryPoint>(stops.Count);
+        if (stops.Count == 0) return ordered;
+        Vector3 cur = Services.Car != null ? Services.Car.Transform.position : stops[0].transform.position;
+        while (stops.Count > 0)
+        {
+            int best = 0; float bestD = float.MaxValue;
+            for (int i = 0; i < stops.Count; i++)
+            {
+                float d = (stops[i].transform.position - cur).sqrMagnitude;
+                if (d < bestD) { bestD = d; best = i; }
+            }
+            cur = stops[best].transform.position;
+            ordered.Add(stops[best]);
+            stops.RemoveAt(best);
+        }
+        return ordered;
+    }
+
+    /// <summary>D-117 — 이번 런 경로로 목표 시간 계산.</summary>
     float ComputeParTime()
     {
         var mgr = Delivery as DeliveryManager;
         if (mgr == null || mgr.Route == null || mgr.Route.Count == 0) return 0f;
-        Vector3 prev = Services.Car != null ? Services.Car.Transform.position : mgr.Route[0].transform.position;
+        var list = new List<DeliveryPoint>(mgr.Route);
+        return ComputeDrivePar(list);
+    }
+
+    /// <summary>차 위치 → 배달지들 → (복귀 지점) 직선거리 합 × 우회 계수 ÷ 기준 속도.</summary>
+    float ComputeDrivePar(List<DeliveryPoint> route)
+    {
+        var mgr = Delivery as DeliveryManager;
+        if (route == null || route.Count == 0) return 0f;
+        Vector3 prev = Services.Car != null ? Services.Car.Transform.position : route[0].transform.position;
         float dist = 0f;
-        foreach (var p in mgr.Route)
+        foreach (var p in route)
         {
             if (p == null) continue;
             dist += Vector3.Distance(prev, p.transform.position);
             prev = p.transform.position;
         }
-        if (mgr.ReturnTarget != null) dist += Vector3.Distance(prev, mgr.ReturnTarget.position);
+        if (mgr != null && mgr.ReturnTarget != null) dist += Vector3.Distance(prev, mgr.ReturnTarget.position);
         float mps = Mathf.Max(1f, parSpeedKmh / 3.6f);
         float par = Mathf.Max(10f, dist * parDetourFactor / mps);
         Debug.Log($"[RunController] 목표 시간(D-117): 경로 {dist:F0}m × {parDetourFactor} ÷ {parSpeedKmh}km/h = {par:F1}s (초과 종료 {par * parHardLimitMul:F0}s)");
@@ -329,6 +371,12 @@ public class RunController : MonoBehaviour, IRunController
 
     void Update()
     {
+        // D-118: 전화 수락 ~ 출발 전(포장, timeScale 0) 에도 시계가 돈다.
+        if (UrgentClockRunning && !RunActive && stage == RunStage.Packing)
+        {
+            Elapsed += Time.unscaledDeltaTime;
+            return;
+        }
         if (!RunActive) return;
         Elapsed += Time.deltaTime;
         float lim = EffectiveTimeLimit;
@@ -379,6 +427,7 @@ public class RunController : MonoBehaviour, IRunController
 
         SetStage(RunStage.Result);
         RunActive = false;
+        UrgentClockRunning = false;
         LastRunSuccess = success;
         LastElapsed = Elapsed;
         LastIntegrityPercent = Cargo != null ? Cargo.IntegrityPercent : 1f;

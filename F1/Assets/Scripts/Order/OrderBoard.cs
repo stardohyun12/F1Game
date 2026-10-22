@@ -79,6 +79,13 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         if (allMarkers != null)
             foreach (var m in allMarkers) if (m != null) m.SetExternalControl(true);
 
+        // D-118: 프로토타입 — 카드 고르기 대신 긴급 전화 한 통. 수락하는 순간 시계 시작 → 포장.
+        if (Services.PrototypeMode && currentOffer.Count > 0)
+        {
+            OpenUrgentCall();
+            return;
+        }
+
         SpawnCards();
 
         if (panelRoot != null) panelRoot.SetActive(true);
@@ -134,6 +141,28 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
     }
 
     // ---- 내부 ----
+
+    /// <summary>D-118 — 긴급 전화. 무작위 주문 1개를 전화로 받고, 수락 = 시계 시작 + 포장 화면.</summary>
+    void OpenUrgentCall()
+    {
+        if (panelRoot != null) panelRoot.SetActive(false);
+        HideStartMarkerAndLine();
+        if (boardGoButton != null) boardGoButton.gameObject.SetActive(false);
+
+        var job = currentOffer[Random.Range(0, currentOffer.Count)];
+        var picked = new List<OrderJob> { job };
+        float limit = runController != null ? runController.PreviewUrgentLimit(picked) : 0f;
+        UrgentCallPanel.Ensure().Show(job, limit, () =>
+        {
+            if (!isOpen) return;
+            currentOffer.Clear();
+            currentOffer.Add(job);
+            selectedIndices.Clear();
+            selectedIndices.Add(0);
+            if (runController != null) runController.StartUrgentClock(picked);
+            OnBoardGoClicked();
+        });
+    }
 
     /// <summary>Day 26 — 풀에서 offerCount개 무작위 픽 (중복 X). W1: ZoneUnlockSystem 있으면 해금 zone 풀, 없으면 catalog 폴백.</summary>
     void PickOffer()

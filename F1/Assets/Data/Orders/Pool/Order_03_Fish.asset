@@ -21,3 +21,7 @@ MonoBehaviour:
   timeBonus: 400
   weightTier: 1
   cargoType: 3
+  callerName: "\uBD80\uB450 \uB05D \uD69F\uC9D1"
+  urgentSituation: "\"\uB2E8\uCCB4 \uC608\uC57D \uC190\uB2D8\uC774 30\uBD84 \uB4A4\uC5D0
+    \uC640\uC694. \uC0DD\uC120\uC740 \uC2E0\uC120\uD574\uC57C \uD558\uB2C8\uAE4C
+    \uCD5C\uB300\uD55C \uBE68\uB9AC\uC694!\""

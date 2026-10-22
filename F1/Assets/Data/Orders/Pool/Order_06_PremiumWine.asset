@@ -21,3 +21,7 @@ MonoBehaviour:
   timeBonus: 600
   weightTier: 2
   cargoType: 2
+  callerName: "\uC5ED \uC55E \uD638\uD154 \uC18C\uBBC8\uB9AC\uC5D0"
+  urgentSituation: "\"VIP \uAC74\uBC30 \uC2DC\uAC04\uC774 \uB2E4\uAC00\uC640\uC694.
+    \uBE48\uD2F0\uC9C0 \uC640\uC778\uC774\uB77C \uD55C \uBCD1\uB3C4 \uAE68\uC9C0\uBA74
+    \uC548 \uB3FC\uC694!\""

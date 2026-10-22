@@ -12,12 +12,15 @@
 ## 2. 한 판 (목표 5분)
 
 ```
-주문 1~3개 고르기 → 포장(피트스탑) → 주행(제한 시간·화물 HP) → 배달 → 정산 → 부품 1개 수리 → 다음 판
+긴급 전화(상황·배달지·제한 시간) → 수락 = 시계 시작 → 포장(피트스탑) → 주행(화물 HP) → 배달 → 정산 → 부품 1개 수리 → 다음 판
 ```
+
+- D-118: 시계는 전화 수락부터 돈다. 목표 시간 = 포장 여유 40s(가설) + 주행 목표(거리 × 1.35 ÷ 55km/h). 안이면 시간 보너스, 넘으면 0, 2배면 종료.
+- 전화 문구 = `OrderJob.callerName`·`urgentSituation` (비우면 화물별 기본 문구). UI `Order/UrgentCallPanel.cs`.
 
 | 단계 | 플레이어 결정 | 쓰는 기존 코드 |
 |---|---|---|
-| 주문 고르기 | 취약한 고보상 vs 튼튼한 저보상 | `Order/OrderBoard`, `OrderJob.timeLimitSec·baseReward` |
+| 긴급 전화 | (지금은 수락만 — 두 통 중 고르기는 보류) | `Order/OrderBoard`, `OrderJob.timeLimitSec·baseReward` |
 | 포장 | 빨리 대충 vs 꼼꼼히(시간 소모) | `Packing/*`, `WrapState` |
 | 주행 | 코너·오르막 속도 | `ArcadeCarController`, `Cargo/CargoBox`(HP), `CargoShakeSimulator` |
 | 정산 | — | `RunController.EndRun`, `ResultPanel` |

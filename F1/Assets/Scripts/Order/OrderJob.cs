@@ -50,4 +50,10 @@ public class OrderJob : ScriptableObject
     [Header("Cargo (Day 11)")]
     [Tooltip("이 주문에 실리는 화물 타입. RunController.BeginRun에서 CargoBox에 자동 적용.")]
     public CargoType cargoType = CargoType.Box;
+
+    [Header("긴급 전화 (D-118)")]
+    [Tooltip("전화 건 사람/가게. 비우면 \"{배달지}에서 전화\".")]
+    public string callerName = "";
+    [Tooltip("급한 상황 한두 문장. 비우면 화물 종류별 기본 문구.")]
+    [TextArea(2, 4)] public string urgentSituation = "";
 }
