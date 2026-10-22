@@ -79,16 +79,21 @@ namespace PitCrew.Packing
     public float QueryAbsorption(Vector3 worldHitPoint, Vector3 outwardImpactDir)
     {
         var col = targetRenderer != null ? targetRenderer.GetComponent<MeshCollider>() : null;
-        if (col == null) col = GetComponentInChildren<MeshCollider>();
+        if (col == null) col = GetComponentInChildren<MeshCollider>(true);
         if (col == null) return 0f;
 
         Vector3 dir = outwardImpactDir.normalized;
         var b = targetRenderer != null ? targetRenderer.bounds : col.bounds;
         float r = Mathf.Max(0.5f, b.extents.magnitude * 1.5f);
 
+        // 트렁크에 실린 화물은 콜라이더가 꺼져 있다(물리 간섭 방지) — 조회 순간만 켠다.
+        bool wasEnabled = col.enabled;
+        if (!wasEnabled) { col.enabled = true; Physics.SyncTransforms(); }
         // 충격 벽 바깥에서 시작 → 박스 안쪽 방향으로 ray → 첫 hit = 충격 면.
         var origin = worldHitPoint + dir * r;
-        if (!col.Raycast(new Ray(origin, -dir), out var hit, r * 2f)) return 0f;
+        bool ok = col.Raycast(new Ray(origin, -dir), out var hit, r * 2f);
+        if (!wasEnabled) col.enabled = false;
+        if (!ok) return 0f;
 
         return SampleAbsorptionAtUV(hit.textureCoord);
     }

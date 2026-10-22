@@ -212,8 +212,10 @@ public class RunController : MonoBehaviour, IRunController
             if (srcWrap != null) totalCost += Mathf.RoundToInt(srcWrap.TotalCost);
             var painter = cube.GetComponent<PitCrew.Packing.WrapPainter>();
             if (painter != null) painter.enabled = false;
+            // 콜라이더는 지우지 않고 끈다 — WrapState.QueryAbsorption 이 충격 면 UV 를 얻으려면 MeshCollider 가 필요하다.
+            // (예전엔 지워서 주행 중 흡수가 늘 0 = 포장해도 손상이 안 줄었다.)
             foreach (var col in cube.GetComponentsInChildren<Collider>(true))
-                UnityEngine.Object.DestroyImmediate(col);
+                col.enabled = false;
             cube.name = "WrappedItem";
             Shake.MountWrappedItem(cube);
         }
