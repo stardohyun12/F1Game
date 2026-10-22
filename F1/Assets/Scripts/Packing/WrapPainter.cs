@@ -38,6 +38,11 @@ namespace PitCrew.Packing
 
         Material[] ribbonMaterialsByChannel;
 
+        // 메시 평균 "UV 1 당 월드 길이". 비용·이음새 판정을 UV 배치와 무관하게 하려고 (AI 메시는 UV 섬이 잘게 쪼개져 있음).
+        float worldPerUV = 1f;
+        [Tooltip("UV 이동이 월드 이동으로 예상한 값의 몇 배를 넘으면 UV 이음새를 건넌 것으로 본다.")]
+        [SerializeField] private float seamJumpRatio = 3f;
+
         const float k_RaycastRange = 100f;
 
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
@@ -57,6 +62,29 @@ namespace PitCrew.Packing
             if (col != null) targetCollider = col;
             if (blitMat == null) blitMat = new Material(Shader.Find("PitCrew/WrapStripBlit"));
             InitRT();
+            worldPerUV = ComputeWorldPerUV(targetCollider, out _);
+        }
+
+        /// <summary>sqrt(월드 표면적 / UV 면적). 실패하면 1.</summary>
+        static float ComputeWorldPerUV(MeshCollider col, out float worldArea)
+        {
+            worldArea = 0f;
+            if (col == null || col.sharedMesh == null) return 1f;
+            var m = col.sharedMesh;
+            var v = m.vertices; var uv = m.uv; var t = m.triangles;
+            if (uv == null || uv.Length != v.Length || t.Length == 0) return 1f;
+            var sc = col.transform.lossyScale;
+            double wa = 0, ua = 0;
+            for (int i = 0; i < t.Length; i += 3)
+            {
+                var a = Vector3.Scale(v[t[i]], sc); var b = Vector3.Scale(v[t[i + 1]], sc); var c = Vector3.Scale(v[t[i + 2]], sc);
+                wa += Vector3.Cross(b - a, c - a).magnitude * 0.5;
+                var p = uv[t[i]]; var q = uv[t[i + 1]]; var r = uv[t[i + 2]];
+                ua += Mathf.Abs((q.x - p.x) * (r.y - p.y) - (r.x - p.x) * (q.y - p.y)) * 0.5;
+            }
+            worldArea = (float)wa;
+            if (ua < 1e-6 || wa < 1e-6) return 1f;
+            return (float)System.Math.Sqrt(wa / ua);
         }
 
         void InitRT()
@@ -163,14 +191,21 @@ namespace PitCrew.Packing
             }
 
             var t = targetCollider.transform;
+            float worldDist = 0f;
+            float dragDist = 0f; // 화면 드래그를 물건 깊이의 평면으로 옮긴 거리 = 리본 길이(비용 기준)
 
             if (hasLastHit)
             {
                 // 큐브 회전(WASD) 반영 — 직전 hit을 현재 frame world/screen으로 재투영.
                 Vector3 lastWorldNow = t.TransformPoint(lastHitLocalPos);
+                worldDist = Vector3.Distance(lastWorldNow, hit.point);
                 Vector3 lastNormalWorldNow = t.TransformDirection(lastHitLocalNormal);
                 Vector3 lastScreen3 = packingCamera.WorldToScreenPoint(lastWorldNow);
                 Vector2 lastScreenNow = new Vector2(lastScreen3.x, lastScreen3.y);
+                float depth = packingCamera.WorldToScreenPoint(hit.point).z;
+                dragDist = Vector3.Distance(
+                    packingCamera.ScreenToWorldPoint(new Vector3(lastScreenNow.x, lastScreenNow.y, depth)),
+                    packingCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, depth)));
 
                 SubdivideAndAdd(lastScreenNow, screenPos,
                                 lastWorldNow, lastNormalWorldNow, lastUV,
@@ -181,8 +216,13 @@ namespace PitCrew.Packing
                 activeRibbon.AddSample(hit.point, hit.normal, currentStrokeLift);
             }
 
-            DrawStrip(lastUV, uv, currentMat);
-            BumpCoverage(lastUV, uv);
+            // 이음새 판정: 표면에선 조금 움직였는데 UV 가 크게 뛰면 다른 UV 섬으로 넘어간 것 —
+            // 그 사이를 선으로 칠하면 텍스처 엉뚱한 곳이 칠해지고 비용이 폭증한다(케이크 윗면 버그).
+            float expectedUV = worldDist / Mathf.Max(1e-4f, worldPerUV);
+            bool seam = !hasLastHit || (lastUV - uv).magnitude > expectedUV * seamJumpRatio + 0.02f;
+            Vector2 from = seam ? uv : lastUV;
+            DrawStrip(from, uv, currentMat, dragDist);
+            BumpCoverage(from, uv);
 
             lastUV = uv;
             lastHitLocalPos = t.InverseTransformPoint(hit.point);
@@ -236,7 +276,9 @@ namespace PitCrew.Packing
             return true;
         }
 
-        void DrawStrip(Vector2 prev, Vector2 curr, WrapMaterialDef mat)
+        /// <param name="costLenUV">비용 길이 — 화면 드래그 거리(물건 깊이 평면, m). 리본은 월드 폭이 일정하므로 끈 길이 = 쓴 포장지.
+        /// 기본 큐브(UV 1 = 1m)에선 예전 식(UV 이동 거리)과 같고, UV 섬 배치·메시 울퉁불퉁함과 무관하다.</param>
+        void DrawStrip(Vector2 prev, Vector2 curr, WrapMaterialDef mat, float costLenUV)
         {
             if (targetState == null || targetState.WrapRT == null) return;
             var src = targetState.WrapRT;
@@ -254,8 +296,7 @@ namespace PitCrew.Packing
             Graphics.Blit(src, scratch, blitMat);
             Graphics.Blit(scratch, src);
 
-            float lenUV = (curr - prev).magnitude;
-            float pixelArea = lenUV * stripWidthUV * targetState.Size * targetState.Size;
+            float pixelArea = costLenUV * stripWidthUV * targetState.Size * targetState.Size;
             targetState.AccumulateCost(mat.channelIndex, pixelArea * mat.costPerPixel);
         }
     }
