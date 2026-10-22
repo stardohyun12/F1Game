@@ -1,0 +1,264 @@
+{
+  "criteria": {
+    "spec": "docs\\superpowers\\specs\\2026-10-20-spline-town-design.md",
+    "sha256": "76e977e17f788119aed0f8fd279e983f6e3087682dbdeb1cfb67e072a1e51d16",
+    "height_scale": 0.3,
+    "cutfill_m": 6.0,
+    "generated_grade": 0.1,
+    "pad_grade": 0.05,
+    "main_grade": 0.08,
+    "warning_fraction": 0.01,
+    "changed_terrain_m": 0.1,
+    "absolute_cutfill_m": 10.0,
+    "alley_grade": 0.12
+  },
+  "M1": {
+    "samples": 23975,
+    "violations": 0,
+    "max_abs": 2.6480399952788503e-05,
+    "worst_xyz": [
+      408.054,
+      34.1145363,
+      366.054
+    ],
+    "signed_delta": 2.6480399952788503e-05,
+    "method": "welded triangle perimeter minus geometric road/sidewalk contacts; <=0.5m interval",
+    "boundary": {
+      "perimeter_edges": 17598,
+      "end_cap_edges": 36,
+      "internal_edges": 17544,
+      "inner_contact_edges": 8781,
+      "outer_edges": 8781,
+      "ambiguous_edges": 0
+    },
+    "classification_complete": true
+  },
+  "penetration_Asphalt": {
+    "samples": 12459,
+    "violations": 0,
+    "max_above": -0.05845187958260212,
+    "worst_xyz": [
+      174.047836,
+      28.4392567,
+      108.592
+    ],
+    "primitive": 784
+  },
+  "intersection_discs": {
+    "samples": 1806,
+    "violations": 0,
+    "max_above": -0.11387064999999907,
+    "worst_xyz": [
+      178.8734285,
+      28.78656195,
+      130.847576
+    ]
+  },
+  "penetration_Alleys": {
+    "samples": 414,
+    "violations": 0,
+    "max_above": -0.03704598991613994,
+    "worst_xyz": [
+      222.425964,
+      1.29700649,
+      57.01551
+    ],
+    "primitive": 8
+  },
+  "penetration_Sidewalk_Curb": {
+    "samples": 23380,
+    "violations": 0,
+    "max_above": -0.14831158499999653,
+    "worst_xyz": [
+      425.144531,
+      7.85717154,
+      61.13763
+    ],
+    "primitive": 89
+  },
+  "scene_core_crosscheck": {
+    "max_center_error": 2.8169640686686454e-05,
+    "max_terrain_error": 3.647208288271031e-06
+  },
+  "M2_Asphalt": {
+    "segments": 1184,
+    "violations": 0,
+    "maximum": [
+      0.09950242568794132,
+      [
+        427.7365265,
+        36.63733205,
+        331.26616025
+      ],
+      0.1,
+      "generated"
+    ],
+    "categories": {
+      "main": {
+        "samples": 374,
+        "violations": 0
+      },
+      "generated": {
+        "samples": 708,
+        "violations": 0
+      },
+      "pad": {
+        "samples": 102,
+        "violations": 0
+      },
+      "alley": {
+        "samples": 0,
+        "violations": 0
+      }
+    }
+  },
+  "M3_Asphalt": {
+    "chains": 19,
+    "samples": 1161,
+    "minimum": [
+      8.181833337969175,
+      [
+        96.93879749999999,
+        18.6473122,
+        310.86071849999996
+      ]
+    ],
+    "below_absolute_floor": 0,
+    "below_regular_main12": 18,
+    "wide4m_minimum": [
+      8.305088400141656,
+      [
+        96.93879749999999,
+        18.6473122,
+        310.86071849999996
+      ]
+    ]
+  },
+  "hairpin_grade": {
+    "samples": 43,
+    "violations": 0,
+    "limit": 0.05,
+    "maximum": [
+      0.049751051996440594,
+      [
+        136.59411599999999,
+        33.1222534,
+        140.6549075
+      ]
+    ],
+    "classification": "absolute turn >=120deg across ~40m arc window, independently computed"
+  },
+  "M2_Alleys": {
+    "segments": 46,
+    "violations": 0,
+    "maximum": [
+      0.07225499985149901,
+      [
+        237.0240785,
+        13.433389649999999,
+        322.30166625
+      ],
+      0.12,
+      "alley"
+    ],
+    "categories": {
+      "main": {
+        "samples": 0,
+        "violations": 0
+      },
+      "generated": {
+        "samples": 0,
+        "violations": 0
+      },
+      "pad": {
+        "samples": 0,
+        "violations": 0
+      },
+      "alley": {
+        "samples": 46,
+        "violations": 0
+      }
+    }
+  },
+  "M3_Alleys": {
+    "chains": 3,
+    "samples": 43,
+    "minimum": [
+      6.243626963721434,
+      [
+        232.84235999999999,
+        13.8124819,
+        327.6559145
+      ]
+    ],
+    "below_absolute_floor": 0,
+    "below_regular_main12": null,
+    "wide4m_minimum": [
+      6.718200069198284,
+      [
+        232.84235999999999,
+        13.8124819,
+        327.6559145
+      ]
+    ]
+  },
+  "M4": {
+    "houses": 300,
+    "missing_plinth": 0,
+    "max_abs_base_delta": 2.799999997193936e-06,
+    "base_violations": 0,
+    "road_overlap_houses": 0,
+    "house_pair_overlaps": 0,
+    "base25cm_overlap_houses": 0,
+    "base25cm_hits": []
+  },
+  "M7": {
+    "terrain_vertices": 48441,
+    "over_limit": 12,
+    "maximum": [
+      9.058256162670897,
+      [
+        180.0,
+        28.3392563,
+        104.0
+      ],
+      9.058256162670897
+    ],
+    "wall_length": 782.2683749610126,
+    "changed_terrain_vertices": 11752,
+    "exceedance_fraction": 0.0010211027910142954,
+    "status": "PASS with warning",
+    "road_samples": 1252,
+    "road_over_limit": 0,
+    "road_maximum": [
+      5.55856664615327,
+      [
+        177.0465545,
+        28.4392567,
+        108.5042785
+      ]
+    ],
+    "road_fraction": 0.0,
+    "terrain_over_absolute": 0
+  },
+  "M5": {
+    "sea_cells": 126,
+    "road_primitives": 0,
+    "houses": 0
+  },
+  "M6": {
+    "nodes": 2619,
+    "components": 1,
+    "sizes": [
+      2619
+    ],
+    "representatives": [
+      [
+        1.46066248,
+        9.74325,
+        61.7033577
+      ]
+    ],
+    "method": "actual asphalt triangle edges; 0.1mm Euclidean vertex weld; no 3.05m proximity links"
+  }
+}

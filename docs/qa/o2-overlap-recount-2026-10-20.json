@@ -1,0 +1,86 @@
+﻿{
+  "input": "tools/town-gen/out/scene_structure_s15a3/o2_scene_overlap.json",
+  "sha256": "3fb6c52b0014b00584780a84ff582fa92c8b700da4e8a39370341f1bd564f5a4",
+  "observationRows": 31,
+  "counts": {
+    "car": {
+      "buildings": 0,
+      "area_m2": 0
+    },
+    "walk": {
+      "buildings": 3,
+      "area_m2": 10.25
+    },
+    "shoulder": {
+      "buildings": 31,
+      "area_m2": 354
+    }
+  },
+  "failBuildings": 3,
+  "verdict": "FAIL",
+  "summaryMismatches": [],
+  "regionOverlapRows": [],
+  "failures": [
+    {
+      "fail": true,
+      "centre": [
+        2867.1,
+        2332.9
+      ],
+      "bbox": [
+        2850.7,
+        2310.6,
+        2883.5,
+        2355.2
+      ],
+      "baseY": 3.39,
+      "roofY": 14.4,
+      "footprint_m2": 832.2,
+      "overlap_m2": {
+        "Sidewalk_Curb": 5.75,
+        "Shoulder": 62.25
+      }
+    },
+    {
+      "fail": true,
+      "centre": [
+        3009.7,
+        2335.2
+      ],
+      "bbox": [
+        2994.4,
+        2320.3,
+        3025.1,
+        2350.1
+      ],
+      "baseY": 4.18,
+      "roofY": 16.48,
+      "footprint_m2": 421.5,
+      "overlap_m2": {
+        "Sidewalk_Curb": 2.5,
+        "Shoulder": 33.25
+      }
+    },
+    {
+      "fail": true,
+      "centre": [
+        2760.6,
+        2312.7
+      ],
+      "bbox": [
+        2754.3,
+        2305.4,
+        2766.8,
+        2319.9
+      ],
+      "baseY": 7.54,
+      "roofY": 18.5,
+      "footprint_m2": 149.8,
+      "overlap_m2": {
+        "Sidewalk_Curb": 2,
+        "Shoulder": 17
+      }
+    }
+  ],
+  "limitation": "Recounts exported observations, not independent mesh measurement; 0.5m samples cannot prove exact geometric zero."
+}

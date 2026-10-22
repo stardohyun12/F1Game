@@ -1,0 +1,265 @@
+/* 대화 화면 v2 스킨 — 2026-10-18 도현: "Claude Code·Codex 앱처럼 깔끔하게". 기준 시안 mockups/v2-3-chat.html.
+   원칙: 선 대신 면 밝기, 라벨은 보통 글씨, 강조색 하나, 설명문은 화면당 한 줄. 켜고 끄기 = html[data-skin=v2] (localStorage pitcrew.skin). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&display=swap');
+:root[data-skin=v2]{
+  --bg:#141414;--panel:#1c1c1c;--surface:#242424;--raised:#2a2a2a;--line:rgba(255,255,255,.08);--text:#ececec;--muted:#8d8d8d;
+  --accent:#d9a26b;--green:#79c99e;--red:#e5736d;--blue:#7fb2f0;--shadow:0 16px 48px #0008;--pc-user:#242424;
+  --organize-border:rgba(255,255,255,.08);--organize-surface:#1a1a1a;--organize-accent:#d9a26b;--border:var(--line);
+  --side:#101010;--ink2:#b9b9b9;--dim:#5a5a5a;--warn:#e6b45c;
+  color-scheme:dark;font-family:"Inter","Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;
+}
+[data-skin=v2] body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+[data-skin=v2] *{scrollbar-width:thin;scrollbar-color:#333 transparent}
+[data-skin=v2] :focus-visible{outline:1px solid rgba(255,255,255,.35);outline-offset:1px}
+[data-skin=v2] ::selection{background:rgba(217,162,107,.35)}
+[data-skin=v2] .message-header,[data-skin=v2] .turn-usage,[data-skin=v2] .tool-count,[data-skin=v2] .agent-sub,[data-skin=v2] .conversation-status{font-variant-numeric:tabular-nums}
+/* 상단바 순서: 브랜드 · 흐름/팀/대화/작업실 · 작업 현황 · (오른쪽) 가져오기 · 확인 필요 · 예전 화면 · 연결 */
+[data-skin=v2] .appbar>*{order:5}
+[data-skin=v2] .appbar .brand{order:0;font-size:14px;font-weight:600;padding:6px 4px;border-radius:8px}
+[data-skin=v2] .appbar .brand .brand-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);font-size:0;margin:0 8px 0 0}
+[data-skin=v2] .appbar .brand strong{font-size:14px;letter-spacing:0;font-weight:600}
+[data-skin=v2] #pageNav{order:1}
+[data-skin=v2] #workOverviewOpen{order:2;margin-left:8px;color:var(--muted)}
+[data-skin=v2] #sourcesOpen{order:6;margin-left:auto}
+[data-skin=v2] #inboxToggle{order:7}
+[data-skin=v2] #skinToggle{order:8;margin-left:0}
+[data-skin=v2] #connection{order:9}
+[data-skin=v2] button{border-color:transparent;background:transparent;border-radius:8px}
+[data-skin=v2] button:hover:not(:disabled){background:var(--surface)}
+[data-skin=v2] input,[data-skin=v2] textarea,[data-skin=v2] select{background:var(--panel);border-color:var(--line);border-radius:8px}
+[data-skin=v2] input:focus,[data-skin=v2] textarea:focus,[data-skin=v2] select:focus{border-color:rgba(255,255,255,.18);box-shadow:none}
+
+/* 상단 */
+[data-skin=v2] .appbar{height:48px;background:var(--bg);border-bottom:1px solid var(--line);padding:0 16px;gap:10px}
+[data-skin=v2] .brand{font-size:14px;font-weight:600;gap:8px;letter-spacing:0}
+[data-skin=v2] .brand strong{font-size:14px;letter-spacing:0;font-weight:600;text-transform:none}
+[data-skin=v2] .brand-dot{font-size:8px;margin:0;color:var(--accent)}
+[data-skin=v2] .brand-tag,[data-skin=v2] .project,[data-skin=v2] #setupOpen,[data-skin=v2] #themeToggle,[data-skin=v2] .appbar nav a[href="/legacy"],[data-skin=v2] #navToggle{display:none}
+[data-skin=v2] #sourcesOpen{display:inline-flex;font-size:13px;color:var(--muted);padding:6px 10px;border-radius:8px}
+[data-skin=v2] #sourcesOpen span{display:none}
+
+/* 커스텀 선택 메뉴 (기본 <select> 대체) */
+[data-skin=v2] select.v2-hidden{position:absolute!important;width:1px!important;height:1px!important;opacity:0;pointer-events:none;margin:0;padding:0;border:0}
+[data-skin=v2] .v2-select{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 8px 0 10px;border-radius:8px;background:var(--panel);color:var(--ink2);font-size:13px;border:0;max-width:100%;min-width:0}
+[data-skin=v2] .v2-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+[data-skin=v2] .v2-select i{font-style:normal;color:var(--muted);font-size:12px;line-height:1;transform:translateY(-1px)}
+[data-skin=v2] .v2-select:hover{background:var(--surface);color:var(--text)}
+[data-skin=v2] .mode-chip .v2-select{background:transparent;color:inherit;padding:0 4px}
+[data-skin=v2] .project-switcher .v2-select{flex:1;font-weight:500;color:var(--text)}
+[data-skin=v2] .team-controls .v2-select,[data-skin=v2] .conversation-filters .v2-select{font-size:12.5px}
+.v2-menu{position:fixed;z-index:50;background:#262626;border-radius:10px;padding:4px;box-shadow:0 12px 40px #000a,0 0 0 1px rgba(255,255,255,.08);display:flex;flex-direction:column;max-height:60vh;overflow:auto;font-family:"Inter","Noto Sans KR",system-ui,sans-serif}
+.v2-menu button{display:block;width:100%;text-align:left;padding:7px 12px;border-radius:7px;background:transparent;border:0;color:#d8d8d8;font-size:13px;white-space:nowrap;cursor:pointer}
+.v2-menu button:hover{background:rgba(255,255,255,.07);color:#fff}
+.v2-menu button[aria-selected=true]{color:#fff;background:rgba(217,162,107,.16)}
+.v2-menu button:disabled{color:#5a5a5a;cursor:default}
+
+/* 대화상자·폼: 테두리 상자 대신 면, 대문자 소제목 제거, 닫기는 조용히 */
+[data-skin=v2] dialog#modal{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 24px 80px #000a}
+[data-skin=v2] .modal-head{margin-bottom:18px;align-items:center}
+[data-skin=v2] .modal-head .eyebrow{display:none}
+[data-skin=v2] .modal-head h2{font-size:17px;font-weight:600;margin:0}
+[data-skin=v2] #modalClose{width:30px;height:30px;padding:0;border:0;background:transparent;color:var(--muted);font-size:18px;border-radius:8px}
+[data-skin=v2] #modalClose:hover{background:var(--surface);color:var(--text)}
+[data-skin=v2] #modalClose:focus-visible{outline:1px solid rgba(255,255,255,.25);outline-offset:0}
+[data-skin=v2] #workOverviewTitle,[data-skin=v2] input#workOverviewTitle{border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important}
+[data-skin=v2] #modal input,[data-skin=v2] #modal select,[data-skin=v2] #modal textarea{background:var(--surface);border:1px solid transparent;border-radius:9px;padding:9px 11px;font-size:13.5px}
+[data-skin=v2] #modal input:focus,[data-skin=v2] #modal select:focus,[data-skin=v2] #modal textarea:focus{border-color:rgba(255,255,255,.18)}
+[data-skin=v2] .field label{font-size:12.5px;color:var(--muted)}
+[data-skin=v2] .field small,[data-skin=v2] .form-note{font-size:12.5px;color:var(--muted);line-height:1.6}
+[data-skin=v2] #modal button{border:0;background:var(--surface);color:var(--ink2);border-radius:9px;padding:8px 12px;font-size:13px}
+[data-skin=v2] #modal button:hover:not(:disabled){background:var(--raised)}
+[data-skin=v2] #modal button.primary{background:var(--accent);color:#1a1a1a;font-weight:500}
+[data-skin=v2] #modal button.quiet,[data-skin=v2] #modal .quiet{background:transparent;color:var(--muted)}
+[data-skin=v2] .source-row{border:0;background:var(--surface);border-radius:12px;padding:11px 13px;gap:12px}
+[data-skin=v2] .source-row .avatar{width:28px;height:28px;border-radius:8px;background:var(--raised)}
+[data-skin=v2] .source-row b{font-size:13px}
+[data-skin=v2] .source-row p{font-size:12.5px;margin:3px 0}
+[data-skin=v2] .source-row small{font-size:11.5px}
+[data-skin=v2] .source-row button{background:transparent;color:var(--accent)}
+[data-skin=v2] .model-description,[data-skin=v2] .runtime-card,[data-skin=v2] .member-option,[data-skin=v2] .import-row,[data-skin=v2] .team-node{border:0;background:var(--surface);border-radius:12px}
+[data-skin=v2] .model-choice{border:1px solid transparent;background:var(--surface);border-radius:12px}
+[data-skin=v2] .model-choice.selected{border-color:var(--accent);background:rgba(217,162,107,.08)}
+[data-skin=v2] .option-chip span{border:0;background:var(--surface);border-radius:8px}
+[data-skin=v2] .option-chip input:checked+span{background:var(--accent);color:#1a1a1a;border-color:var(--accent)}
+[data-skin=v2] .picker-footer{border-top:1px solid var(--line)}
+[data-skin=v2] .checkbox-row{font-size:13.5px}
+[data-skin=v2] .log-row{border-bottom:1px solid var(--line);font-size:13px}
+[data-skin=v2] .prose{font-size:13.5px;color:var(--ink2)}
+[data-skin=v2] .appbar nav{gap:4px;font-size:13px}
+[data-skin=v2] .appbar nav a,[data-skin=v2] .appbar nav button{padding:6px 12px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13px}
+[data-skin=v2] .appbar nav a:hover,[data-skin=v2] .appbar nav button:hover{color:var(--text);background:var(--surface)}
+[data-skin=v2] .connection{border:0;padding:0 4px;font-size:12px;color:var(--muted)}
+[data-skin=v2] .composer-content{background:transparent;border:0;box-shadow:none;padding:0;border-radius:0}
+[data-skin=v2] .workspace{height:calc(100dvh - 48px);grid-template-columns:250px minmax(0,1fr)}
+[data-skin=v2] .context-panel{position:absolute;right:0;top:48px;bottom:0;width:340px;z-index:5;display:none;background:var(--panel);border-left:1px solid var(--line)}
+[data-skin=v2] .context-panel.visible{display:block}
+
+/* 왼쪽: 대화 목록 */
+[data-skin=v2] .sidebar{background:var(--side);border-right:1px solid var(--line);padding:12px 10px 10px;gap:0}
+[data-skin=v2] .project-switcher{display:flex;align-items:center;gap:6px;padding:0 4px 10px}
+[data-skin=v2] .project-switcher label{display:none}
+[data-skin=v2] .project-switcher select{flex:1;min-width:0;font-size:13px;padding:7px 10px;background:var(--panel);border:0;color:var(--ink2)}
+[data-skin=v2] #projectsOpen{font-size:12px;padding:6px 8px;color:var(--muted)}
+[data-skin=v2] .side-title{padding:6px 10px 6px;font-size:12px;color:var(--muted);font-weight:400}
+[data-skin=v2] .side-title .icon{font-size:16px;padding:2px 6px;color:var(--muted)}
+[data-skin=v2] .side-note,[data-skin=v2] #teamFilterNote,[data-skin=v2] .team-summary{display:none}
+[data-skin=v2] .conversation-search{padding:0 4px 8px}
+[data-skin=v2] .conversation-search input{font-size:12.5px;padding:7px 10px;border:0;background:var(--panel)}
+[data-skin=v2] .team-controls{order:9;grid-template-columns:1fr 1fr;padding:10px 4px 2px;border-bottom:0;border-top:1px solid var(--line);gap:4px}
+[data-skin=v2] .team-controls label,[data-skin=v2] .team-controls select{display:none}
+[data-skin=v2] .team-controls button{font-size:12px;color:var(--muted);padding:6px 4px;text-align:left}
+[data-skin=v2] .sidebar-tools{order:10;font-size:12px;color:var(--muted)}
+[data-skin=v2] .sidebar-tools summary{padding:6px 4px;list-style:none;cursor:pointer}
+[data-skin=v2] .side-bottom{padding:4px 4px 0;border:0;margin:0}
+[data-skin=v2] .side-action{padding:7px 0;font-size:12.5px}
+[data-skin=v2] .agents{padding:0}
+[data-skin=v2] .agent-row{margin-bottom:2px}
+[data-skin=v2] .agent-row .agent-card{padding:8px 10px;border-radius:9px;gap:9px;align-items:center;background:transparent;border:0;box-shadow:none}
+[data-skin=v2] .agent-card.active{background:var(--surface)}
+[data-skin=v2] .agent-card:hover{background:var(--panel)}
+[data-skin=v2] .agent-card .avatar{width:22px;height:22px;border-radius:6px;font-size:11px;background:var(--surface);color:var(--muted)}
+[data-skin=v2] .agent-card .avatar svg{width:14px;height:14px}
+[data-skin=v2] .agent-name{font-size:13.5px;font-weight:500;margin-bottom:2px}
+[data-skin=v2] .agent-sub{font-size:11.5px;color:var(--muted)}
+[data-skin=v2] .agent-task{font-size:11.5px;margin-top:3px;color:var(--dim)}
+[data-skin=v2] .status-dot{width:6px;height:6px}
+[data-skin=v2] .status-dot.running{background:var(--blue);box-shadow:0 0 0 3px rgba(127,178,240,.18);animation:none}
+[data-skin=v2] .row-menu{color:var(--muted)}
+
+/* 가운데 상단 */
+[data-skin=v2] .conversation{background:var(--bg)}
+[data-skin=v2] #workspaceTabs,[data-skin=v2] .runtime-bar,[data-skin=v2] #modelBar,[data-skin=v2] #sidebarFold,[data-skin=v2] #selectedAvatar{display:none!important}
+[data-skin=v2] .conversation-head{min-height:44px;padding:0 24px;gap:10px;border-bottom:1px solid var(--line)}
+[data-skin=v2] .conversation-title{display:flex;align-items:baseline;gap:10px;min-width:0}
+[data-skin=v2] .conversation-title h1{font-size:14px;font-weight:600;margin:0}
+[data-skin=v2] .conversation-title .muted{font-size:12.5px;color:var(--muted)}
+[data-skin=v2] .conversation-status{font-size:11.5px;color:var(--muted);padding:2px 8px;border-radius:999px;background:var(--surface)}
+[data-skin=v2] .conversation-status[data-status=running]{color:var(--blue);background:rgba(127,178,240,.12)}
+[data-skin=v2] .conversation-status[data-status=waiting]{color:var(--warn);background:rgba(230,180,92,.12)}
+[data-skin=v2] .head-actions .quiet{font-size:12.5px;color:var(--muted);padding:5px 9px;gap:5px}
+[data-skin=v2] .head-actions .quiet svg{width:15px;height:15px}
+[data-skin=v2] .compact-menu summary{font-size:12.5px;color:var(--muted);padding:5px 9px;border-radius:8px}
+[data-skin=v2] .sync-notice{background:rgba(230,180,92,.1);color:var(--warn);border:0}
+
+/* 메시지 */
+[data-skin=v2] .messages{padding:20px max(24px,calc((100% - 820px)/2)) 8px;scrollbar-color:#333 transparent}
+[data-skin=v2] .message{margin-bottom:22px}
+[data-skin=v2] .message-header{font-size:12px;color:var(--muted);gap:8px;margin-bottom:6px;line-height:18px}
+[data-skin=v2] .message-header b{color:var(--ink2);font-size:12px;font-weight:500}
+[data-skin=v2] .speaker-avatar{display:none}
+[data-skin=v2] .message.user{display:flex;flex-direction:column;align-items:flex-end}
+[data-skin=v2] .message.user .message-header{flex-direction:row-reverse}
+[data-skin=v2] .message.user .message-body{max-width:min(620px,78%);background:var(--surface);border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:14px;line-height:1.6;border:0}
+[data-skin=v2] .message.user .msg-files{align-self:flex-end}
+[data-skin=v2] .message.assistant .message-body{font-size:14px;line-height:1.65;color:var(--text)}
+[data-skin=v2] .message-body pre{background:var(--side);border:0;border-radius:8px;font-size:12px}
+[data-skin=v2] .message-body code{background:var(--surface);font-size:12.5px}
+[data-skin=v2] .message-actions{opacity:0;transition:opacity .15s;margin-top:4px;gap:2px}
+[data-skin=v2] .message:hover .message-actions,[data-skin=v2] .message:focus-within .message-actions{opacity:1}
+[data-skin=v2] .message-actions button{font-size:11.5px;color:var(--muted);padding:2px 6px}
+[data-skin=v2] .message.assistant .message-actions{opacity:1}
+[data-skin=v2] .message.assistant .message-actions button{opacity:0}
+[data-skin=v2] .message.assistant:hover .message-actions button{opacity:1}
+[data-skin=v2] .turn-usage{font-size:11.5px;color:var(--dim);order:-1;margin-right:6px}
+[data-skin=v2] .msg-event,[data-skin=v2] .incoming-head{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding:8px 0 2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+[data-skin=v2] .msg-event-mark{color:var(--dim)}
+[data-skin=v2] .msg-event-to{color:var(--accent);background:none;border:0;padding:0;font-weight:500;font-size:12px}
+[data-skin=v2] .msg-event time{color:var(--dim);margin-left:auto}
+[data-skin=v2] .message.incoming .message-body{font-size:14px}
+
+/* 도구 호출: 접힌 한 줄 */
+[data-skin=v2] .message.tool{margin-bottom:6px}
+[data-skin=v2] .tool-box,[data-skin=v2] .tool-group-box{border:0;background:transparent;border-radius:0}
+[data-skin=v2] .tool-box summary,[data-skin=v2] .tool-group-box summary{padding:3px 0 3px 12px;border-left:2px solid var(--line);color:var(--muted);font-size:13px;gap:8px;align-items:center;list-style:none}
+[data-skin=v2] .tool-box summary::-webkit-details-marker,[data-skin=v2] .tool-group-box summary::-webkit-details-marker{display:none}
+[data-skin=v2] .tool-summary-main{display:flex;gap:8px;align-items:center;min-width:0;flex-wrap:wrap}
+[data-skin=v2] .tool-summary-main b{font-weight:500;color:var(--ink2)}
+[data-skin=v2] .tool-mark{width:14px;color:var(--dim);font-size:10px}
+[data-skin=v2] .tool-label{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:520px}
+[data-skin=v2] .tool-count{font-size:11.5px;color:var(--dim)}
+[data-skin=v2] .tool-last{display:none}
+[data-skin=v2] .tool-output-preview{display:none}
+[data-skin=v2] .tool-output-note{display:none}
+[data-skin=v2] details[open]>summary{border-left-color:var(--blue)}
+[data-skin=v2] .tool-running summary{border-left-color:var(--blue)}
+[data-skin=v2] .has-error summary,[data-skin=v2] .tool-error{color:var(--red)}
+[data-skin=v2] .tool-list{margin-left:14px}
+[data-skin=v2] .tool-part{margin:4px 0 4px 22px;font-size:12px;color:var(--muted)}
+[data-skin=v2] .tool-part pre,[data-skin=v2] .tool-box pre{background:var(--side);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--muted);border:0}
+[data-skin=v2] .diff-stat .add{color:var(--green)}[data-skin=v2] .diff-stat .del{color:var(--red)}
+[data-skin=v2] .tool-diff pre .add{color:var(--green)}[data-skin=v2] .tool-diff pre .del{color:var(--red)}
+[data-skin=v2] .message.plan{border-left:2px solid var(--line);padding-left:12px;font-size:13px}
+
+/* 승인·대기열 */
+[data-skin=v2] .approvals{padding:0 max(24px,calc((100% - 820px)/2))}
+[data-skin=v2] .approval{background:rgba(230,180,92,.08);border:0;box-shadow:inset 0 0 0 1px rgba(230,180,92,.25);border-radius:12px;padding:12px 14px}
+[data-skin=v2] .approval h3{color:var(--warn);font-size:12px;font-weight:500}
+[data-skin=v2] .queue-bar{margin:0 max(24px,calc((100% - 820px)/2)) 6px;background:transparent;border:0;font-size:12px;color:var(--muted)}
+[data-skin=v2] .queued-tag{font-size:11px;color:var(--warn)}
+[data-skin=v2] .message.user.queued .message-body{opacity:.6}
+[data-skin=v2] .observer-notice,[data-skin=v2] .agent-notice{background:var(--panel);border:0;font-size:13px;margin:8px max(24px,calc((100% - 820px)/2))}
+
+/* 입력창 — Claude Code 꼴 */
+[data-skin=v2] .composer{margin:6px auto 14px;width:min(820px,calc(100% - 48px));background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:none;padding:4px 6px 6px}
+[data-skin=v2] .composer:focus-within{border-color:rgba(255,255,255,.2)}
+[data-skin=v2] .composer textarea{font-size:14px;line-height:1.6;padding:12px 12px 4px;min-height:64px;max-height:260px;color:var(--text);background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0}
+[data-skin=v2] #skinToggle{font-size:12px;color:var(--dim);padding:4px 8px;margin-left:auto}
+[data-skin=v2] #pageNav{display:flex;gap:2px;margin-left:6px}
+[data-skin=v2] #pageNav a{padding:6px 12px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13px}
+[data-skin=v2] #pageNav a.on{color:var(--text);background:var(--surface)}
+[data-skin=v2] #pageNav a:hover{color:var(--text)}
+[data-skin=v2] #workOverviewOpen{margin-left:8px}
+[data-skin=v2] #workOverviewOpen{border:0;background:transparent;color:var(--muted);font-weight:500;font-size:13px;padding:6px 12px;border-radius:8px}
+[data-skin=v2] #workOverviewOpen[aria-pressed=true]{color:var(--text);background:var(--surface)}
+[data-skin=v2] .inbox-toggle{font-size:12.5px;color:var(--warn);border:0;background:rgba(230,180,92,.12);border-radius:999px;padding:4px 10px}
+[data-skin=v2] .composer textarea::placeholder{color:var(--dim)}
+[data-skin=v2] .compose-bottom{padding:2px 4px 2px;gap:6px;align-items:center}
+[data-skin=v2] .composer-tools{gap:2px;padding:0}
+[data-skin=v2] .tool-btn{width:30px;height:30px;border-radius:8px;color:var(--muted)}
+[data-skin=v2] .tool-btn svg{width:16px;height:16px}
+[data-skin=v2] .compose-shortcut{font-size:13px;color:var(--muted);min-height:30px;padding:0 8px;border-radius:8px}
+[data-skin=v2] .composer-right{gap:4px}
+[data-skin=v2] .tool-chip{height:30px;min-height:30px;border:0;background:transparent;color:var(--ink2);font-size:12.5px;padding:0 8px;border-radius:8px}
+[data-skin=v2] .tool-chip:hover{background:var(--surface)}
+[data-skin=v2] .mode-chip{color:var(--warn)}
+[data-skin=v2] .mode-chip select{background:transparent;border:0;color:inherit;font-size:12.5px;padding:0}
+[data-skin=v2] .mode-chip.mode-read{color:var(--muted)}
+[data-skin=v2] #send.primary{width:32px;height:32px;padding:0;border-radius:9px;background:var(--accent);border:0;color:#1a1a1a;font-size:0;display:inline-grid;place-items:center}
+[data-skin=v2] #send.primary span{margin:0;font-size:15px;font-weight:600}
+[data-skin=v2] #send.primary:hover:not(:disabled){background:#e6b27d}
+[data-skin=v2] #stop.danger{font-size:12.5px;border:0;background:rgba(229,115,109,.14);color:var(--red);border-radius:8px;padding:6px 10px}
+[data-skin=v2] .plus-menu{background:var(--raised);border:1px solid var(--line);box-shadow:var(--shadow)}
+[data-skin=v2] .plus-menu button{font-size:13px}
+[data-skin=v2] .references,[data-skin=v2] .attachments,[data-skin=v2] .mention-chips{padding:0 8px}
+[data-skin=v2] .ref-chip{background:var(--surface);border:0;color:var(--accent);font-size:12px;border-radius:6px}
+[data-skin=v2] .jump{background:var(--raised);border:1px solid var(--line);color:var(--ink2);font-size:12px}
+
+/* 빈 대화 */
+[data-skin=v2] .welcome{padding:60px 0 0;max-width:560px}
+[data-skin=v2] .welcome-mark,[data-skin=v2] .welcome .eyebrow,[data-skin=v2] .welcome-foot{display:none}
+[data-skin=v2] .welcome h2{font-size:20px;font-weight:500;letter-spacing:-.2px;margin:0 0 8px}
+[data-skin=v2] .welcome p{font-size:13.5px;color:var(--muted);margin:0 0 18px}
+[data-skin=v2] .suggestions button{background:var(--panel);border:0;border-radius:10px;font-size:13.5px;color:var(--ink2);padding:12px 14px}
+[data-skin=v2] .welcome-actions button{font-size:13px}
+
+/* 작업 현황 페이지 */
+[data-skin=v2] .wo-kicker,[data-skin=v2] #workOverview .eyebrow{display:none}
+[data-skin=v2] #workOverviewTitle{border:0;background:transparent;padding:0;font-size:20px;font-weight:600}
+[data-skin=v2] .wo-header{align-items:center}
+[data-skin=v2] .wo-muted,[data-skin=v2] .wo-meta{color:var(--muted);font-size:13px}
+[data-skin=v2] .wo-section-head{border-bottom:0;margin-top:26px}
+[data-skin=v2] .wo-section-head h2,[data-skin=v2] .wo-section-head h3{font-size:15px;font-weight:600}
+[data-skin=v2] .wo-card,[data-skin=v2] .wo-goal,[data-skin=v2] .wo-result,[data-skin=v2] .wo-attention,[data-skin=v2] .wo-task{border:0;background:var(--panel);border-radius:14px;box-shadow:none}
+[data-skin=v2] .wo-empty,[data-skin=v2] .flow-empty{border:0;background:var(--panel);border-radius:12px;color:var(--muted);font-size:13.5px}
+[data-skin=v2] .wo-metrics b,[data-skin=v2] .wo-metrics strong{font-size:22px;font-weight:600}
+[data-skin=v2] #workOverview button,[data-skin=v2] .wo-header button{border:0;background:var(--surface);color:var(--ink2);border-radius:9px;font-size:13px}
+[data-skin=v2] #workOverview button.primary{background:var(--accent);color:#1a1a1a}
+[data-skin=v2] #workOverview button.quiet{background:transparent;color:var(--muted)}
+
+/* 대화상자·토스트 */
+[data-skin=v2] dialog{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+[data-skin=v2] .modal-head h2{font-size:18px}
+[data-skin=v2] .eyebrow{letter-spacing:0;text-transform:none;font-size:12px;font-weight:400;color:var(--muted)}
+[data-skin=v2] .toast{background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:10px}
+[data-skin=v2] .primary{background:var(--accent);border-color:var(--accent);color:#1a1a1a}
+[data-skin=v2] .primary:hover:not(:disabled){background:#e6b27d}

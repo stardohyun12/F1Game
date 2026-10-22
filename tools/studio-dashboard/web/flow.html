@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PitCrew · 흐름</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/flow.css"></head>
+<body data-page="flow">
+<header class="top"><a class="brand" href="/"><i></i>PitCrew</a><nav><a class="tab on" href="/flow">흐름</a><a class="tab" href="/team">팀</a><a class="tab" href="/">대화</a><a class="tab" href="/studio">작업실</a></nav><span class="sp"></span><select id="project" aria-label="프로젝트"></select><span class="st" id="live"><i></i>연결 중</span></header>
+<main class="flow">
+ <section class="boardwrap">
+  <div class="sum" id="sum"></div>
+  <div class="board" id="board"><div class="canvas" id="canvas"></div><div class="legend"><span>배경 끌기 = 이동 · 휠 = 확대 · 카드 끌기 = 자리 바꾸기(기억됨)</span><span>클릭 = 증거 · 두 번 = 그 대화</span><span>선 = 실제로 넘어간 일</span></div></div>
+ </section>
+ <aside class="side" id="side"><div class="empty">카드를 고르면 여기에 증거가 나옵니다.</div></aside>
+</main>
+<script src="/flow.js"></script>
+</body></html>

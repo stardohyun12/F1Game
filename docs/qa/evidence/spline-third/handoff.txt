@@ -1,0 +1,5 @@
+Executed 2026-10-19 KST; project iteration 2026-10-20.
+QA token returned to PD after scene exports, captures, and regression.
+Assets/ComplexTrack.unity / isPlaying=False / isCompiling=False / isDirty=False.
+Console errors/warnings=[]; main git diff exit=0; both scene hashes unchanged.
+No scene saves. Regression 12 PASS / existing CargoPolyBudget FAIL 1 / 0 SKIP.

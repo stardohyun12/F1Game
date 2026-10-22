@@ -1,0 +1,129 @@
+{
+  "seconds": 186.64,
+  "jobs": [
+    {
+      "id": "3458ba8f996a4af49fea3af4f4bf93c1",
+      "room": "art",
+      "agent": "dd800a1971e2451d9a0e26ae1bd5133d",
+      "text": "첨부된 실제 이미지를 읽으세요. 무엇이 보이는지 구체적으로 설명하고 기존 차량 형태를 유지하는 색감 시안 A/B를 제안하세요. 도구로 raster 이미지를 생성했다고 주장하지 마세요. 두 시안은 Unity에서 실제 소재 복제본으로 렌더링할 예정입니다. 이 폴더에 art-options.json 파일 하나만 작성하세요. 형식 {\"observed\":\"한국어 실제 관찰\", \"options\":[{\"id\":\"A\",\"name\":\"...\",\"bodyTint\":\"#RRGGBB\",\"groundTint\":\"#RRGGBB\",\"reason\":\"...\"},{\"id\":\"B\",...}]}. bodyTint는 원본 텍스처에 곱할 tint이므로 너무 어두운 값은 피하세요. JSON을 register_artifact로 등록하세요. 사용자 채택은 아직 없습니다. 추가 에이전트 실행 금지. 다른 파일 수정 금지.",
+      "status": "interrupted",
+      "created": 1792249090.6505764,
+      "parent": null,
+      "root": null,
+      "impacts": [],
+      "verification": "미검증",
+      "integration": "not_verified",
+      "imageInputs": [
+        {
+          "id": "2ab1880bb4ec44cab5f046bf52d39e22",
+          "version": "2ab1880bb4ec44cab5f046bf52d39e22",
+          "name": "01_front.png",
+          "sha256": "18cca5646c568399a2190fc611e0e609412f5224332610eff0ca766b8302f4c1",
+          "kind": "reference",
+          "purpose": "이미지에 보이는 차량·배달 상자를 관찰하고 색감 2개를 비교 제안",
+          "region": {
+            "x": 0.15,
+            "y": 0.2,
+            "w": 0.7,
+            "h": 0.65
+          }
+        }
+      ],
+      "started": 1792249090.6706247,
+      "decisionRevision": 3,
+      "error": "실행 서비스 재시작으로 중단됨. 결과를 확인하고 새 요청을 보내세요."
+    },
+    {
+      "id": "456a2089169a48adb368b4c0a03ac200",
+      "room": "art",
+      "agent": "dd800a1971e2451d9a0e26ae1bd5133d",
+      "text": "첨부된 실제 이미지를 읽으세요. 무엇이 보이는지 구체적으로 설명하고 기존 차량 형태를 유지하는 색감 시안 A/B를 제안하세요. 도구로 raster 이미지를 생성했다고 주장하지 마세요. 두 시안은 Unity에서 실제 소재 복제본으로 렌더링할 예정입니다. 이 폴더에 art-options.json 파일 하나만 작성하세요. 형식 {\"observed\":\"한국어 실제 관찰\", \"options\":[{\"id\":\"A\",\"name\":\"...\",\"bodyTint\":\"#RRGGBB\",\"groundTint\":\"#RRGGBB\",\"reason\":\"...\"},{\"id\":\"B\",...}]}. bodyTint는 원본 텍스처에 곱할 tint이므로 너무 어두운 값은 피하세요. JSON을 register_artifact로 등록하세요. 사용자 채택은 아직 없습니다. 추가 에이전트 실행 금지. 다른 파일 수정 금지.",
+      "status": "done",
+      "created": 1792249331.4515276,
+      "parent": null,
+      "root": null,
+      "impacts": [],
+      "verification": "미검증",
+      "integration": "not_verified",
+      "imageInputs": [
+        {
+          "id": "5de433a4f2ea442b9e73cf2b5f792ed3",
+          "version": "5de433a4f2ea442b9e73cf2b5f792ed3",
+          "name": "01_front.png",
+          "sha256": "18cca5646c568399a2190fc611e0e609412f5224332610eff0ca766b8302f4c1",
+          "kind": "reference",
+          "purpose": "이미지에 보이는 차량·배달 상자를 관찰하고 색감 2개를 비교 제안",
+          "region": {
+            "x": 0.15,
+            "y": 0.2,
+            "w": 0.7,
+            "h": 0.65
+          }
+        }
+      ],
+      "started": 1792249331.4722042,
+      "decisionRevision": 8,
+      "finished": 1792249380.8067036,
+      "message": "d54854f60bf2400382d7836a0b0d5775"
+    },
+    {
+      "id": "a88a861425a842f68cd3500869b46d47",
+      "room": "feel",
+      "agent": "fc3cd5ddee654aea8bd5a6c3faa79682",
+      "text": "조작감 팀에 직접 요청합니다. ArcadeCarController.reference.txt는 현재 코드의 읽기 전용 복사본입니다. 조향 반응을 조금 더 빠르게 시험할 최소 변경 1개를 제안하세요. 값은 기존 steerLag 0.025초에서 0.015초로 비교하는 가설을 검토하세요. 코드 전체의 입력과 물리 적용을 읽고 기대 효과·부작용·동일 조건 검증·카메라/애니메이션 영향·원복 조건을 feel-experiment.json에 작성하세요. 기존 기준과 제안을 구분하며 사용자 플레이 검증을 했다고 쓰지 마세요. 파일을 register_artifact로 등록하세요. 다른 파일 수정이나 에이전트 실행 금지.",
+      "status": "done",
+      "created": 1792249380.989066,
+      "parent": null,
+      "root": null,
+      "impacts": [],
+      "verification": "미검증",
+      "integration": "not_verified",
+      "imageInputs": [],
+      "started": 1792249380.9909403,
+      "decisionRevision": 11,
+      "finished": 1792249518.008386,
+      "message": "bb35c3a100eb49899ad1a68f2ee9b004"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "4d928e53075444f6a0cd78a1b939ca0c",
+      "project": "default",
+      "agent": "dd800a1971e2451d9a0e26ae1bd5133d",
+      "run": "456a2089169a48adb368b4c0a03ac200",
+      "message": null,
+      "name": "art-options.json",
+      "size": 2621,
+      "type": "application/json",
+      "created": 1792249374.2329097,
+      "sha256": "1f2a4e35f2829a1bbf49a082fcaec3f942616bcaa192345e751a39a9037c5f4a",
+      "status": "available",
+      "verification": "미검증",
+      "policy": "immutable-copy",
+      "url": "/deliverables/4d928e53075444f6a0cd78a1b939ca0c?project=default"
+    },
+    {
+      "id": "8baf94c9e27343789e03788977f29dc8",
+      "project": "default",
+      "agent": "fc3cd5ddee654aea8bd5a6c3faa79682",
+      "run": "a88a861425a842f68cd3500869b46d47",
+      "message": null,
+      "name": "feel-experiment.json",
+      "size": 12013,
+      "type": "application/json",
+      "created": 1792249510.8463135,
+      "sha256": "20fb48f02ecad3b2cd539eb48c532871f13f4c44b5325bc759d68d28288b45c9",
+      "status": "available",
+      "verification": "미검증",
+      "policy": "immutable-copy",
+      "url": "/deliverables/8baf94c9e27343789e03788977f29dc8?project=default"
+    }
+  ],
+  "models": [
+    null,
+    "gpt-6-astra",
+    "gpt-6-astra"
+  ],
+  "userAdoption": false,
+  "userPlayFeedback": false
+}

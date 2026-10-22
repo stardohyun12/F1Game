@@ -1,0 +1,7 @@
+{
+    "originalScene": "Assets/ComplexTrack.unity",
+    "scene": "Assets/PitCrewTrial/CoastalTrial.unity",
+    "controller": "Unchanged ArcadeCarController; only steerLag runtime variant",
+    "art": "Actual Unity renders with identical camera; model-proposed multiplicative material tint; not generative image output",
+    "originalDirty": false
+}

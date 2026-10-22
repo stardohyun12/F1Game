@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>A · 트랙 타임라인</title><link rel="stylesheet" href="../web/flow.css">
+<style>
+main.flow{grid-template-columns:minmax(0,1fr) 372px}
+.board{cursor:default;background:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px) 0 0/24px 24px}
+.tracks{position:absolute;left:0;top:0;padding:24px 28px;min-width:1400px}
+.track{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:start;margin-bottom:22px}
+.who{position:sticky;left:0;padding-top:6px}
+.who b{display:block;font-size:14px;font-weight:600}
+.who .m{font-size:12px;color:var(--mute);margin-top:2px}
+.who .now{font-size:12px;color:var(--ink2);margin-top:6px;font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lane{position:relative;display:flex;gap:28px;align-items:flex-start;padding:4px 0}
+.lane::before{content:"";position:absolute;left:0;right:0;top:38px;border-top:1px solid var(--line2)}
+.lane .turn{display:block;grid-template-columns:none;gap:0;border-top:0;position:relative;background:var(--panel);border-radius:12px;padding:10px 12px;width:340px;flex:none;font-size:13px}
+.lane .turn .tm{padding:0;font-size:11.5px}
+.turn.live{box-shadow:0 0 0 1.5px var(--run)}
+.turn .q{font-size:13px;font-weight:500;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.turn .tm{font-size:11.5px;color:var(--dim);margin-top:2px}
+.steps{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 6px}
+.step{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:6px;background:var(--sur);font-size:11.5px;color:var(--ink2);font-family:var(--mono)}
+.step i{width:6px;height:6px;border-radius:50%;background:var(--dim)}
+.step.read i{background:#7a8aa5}.step.edit i{background:var(--ok)}.step.bash i{background:var(--acc)}.step.web i{background:#b48ad9}.step.err i{background:var(--err)}
+.step.run{box-shadow:0 0 0 1px var(--run);color:var(--run)}.step.run i{background:var(--run)}
+.step.sel{box-shadow:0 0 0 1.5px var(--acc)}
+.turn .a{font-size:12.5px;color:var(--mute);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.turn .u{font-size:11px;color:var(--dim);margin-top:6px;font-variant-numeric:tabular-nums}
+.turn .ok{position:absolute;top:10px;right:10px}
+.arrow{position:absolute;pointer-events:none;overflow:visible}
+.arrow path{fill:none;stroke:var(--acc);stroke-width:1.5;stroke-dasharray:4 3}
+.arrow text{fill:var(--acc);font-size:11px}
+.hist{font-size:12.5px;color:var(--mute);background:var(--panel);border-radius:8px;padding:5px 10px;margin-left:200px;display:inline-block}
+.side .step{margin:2px 2px 2px 0}
+.out{background:var(--side);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:11.5px;color:var(--mute);white-space:pre-wrap;max-height:220px;overflow:auto;line-height:1.5}
+.out .p{color:var(--ok)}.out .d{color:var(--err)}
+</style></head><body data-page="flow">
+<header class="top"><a class="brand" href="#"><i></i>PitCrew</a><nav><a class="tab on">흐름</a><a class="tab">팀</a><a class="tab">대화</a><a class="tab">작업실</a></nav><span class="sp"></span><select><option>F1Game</option></select><span class="st"><i class="run"></i>runtime ready · 1 작업 중</span></header>
+<main class="flow">
+ <section class="boardwrap">
+  <div class="sum"><span class="r"><b>1</b>작업 중</span><span class="w"><b>0</b>내 확인 기다림</span><span><b>6</b>오늘 끝난 턴</span><span><b>$20.9</b>오늘 비용</span><span class="sp"></span><button class="on">오늘</button><button>이력 열기</button><button>맞춤</button><button>100%</button></div>
+  <div class="board" id="board">
+   <div class="tracks">
+    <div class="track"><div class="who"><b>Claude · 기존 팀</b><div class="m">Claude Code · fable-5-1 · 전체 권한</div><div class="now">▸ Bash · node shot_mockup.cjs …</div></div>
+     <div class="lane">
+      <div class="turn"><span class="pill ok ok">끝남</span><div class="q">이렇게 대화 열었을 때 투박하게 나오는것하고 협업 이상하게…</div><div class="tm">02:41 → 02:43 · 2분 18초</div>
+       <div class="steps"><span class="step read"><i></i>Read ×2</span><span class="step bash"><i></i>Bash grep</span><span class="step edit"><i></i>Edit chat-v2.js</span><span class="step edit"><i></i>Edit chat-v2.css</span><span class="step bash"><i></i>Bash playwright</span><span class="step bash"><i></i>register_artifact</span></div>
+       <div class="a">둘 다 바꿨습니다. 드롭다운은 칩+메뉴로, 협업 보기는 /team 으로.</div><div class="u">6 tools · 781k→1.4k · $7.98</div></div>
+      <div class="turn"><span class="pill ok ok">끝남</span><div class="q">그리고 답 왔을때 갑자기 위로 예전 대화로 올라가고 흐름 엄청 예전상태…</div><div class="tm">02:45 → 02:52 · 7분 04초</div>
+       <div class="steps"><span class="step bash"><i></i>Bash grep ×2</span><span class="step read"><i></i>Read hub.py ×2</span><span class="step bash"><i></i>Bash curl+playwright</span><span class="step edit"><i></i>Edit flow.js ×3</span><span class="step edit sel"><i></i>Edit chat-v2.js</span><span class="step bash"><i></i>Bash playwright</span></div>
+       <div class="a">두 건 다 원인을 찾아 고쳤습니다. 답 끝나면 서버가 옛 기록을 앞에 합쳐서…</div><div class="u">11 tools · 790k→2.1k · $8.03</div></div>
+      <div class="turn live"><span class="pill run ok">작업 중</span><div class="q">둘다 대략 그림으로 예시줘봐</div><div class="tm">02:58 → · 1분 12초째</div>
+       <div class="steps"><span class="step edit"><i></i>Write v3-A-tracks.html</span><span class="step edit"><i></i>Write v3-B-cards.html</span><span class="step bash run"><i></i>Bash playwright …</span></div>
+       <div class="a dim">답 아직</div></div>
+     </div></div>
+    <div class="track"><div class="who"><b>전체 제작 담당</b><div class="m">Codex · gpt-6-astra · 작업</div><div class="now dim">대기</div></div>
+     <div class="lane">
+      <div class="turn"><span class="pill ok ok">끝남</span><div class="q">PitCrew 작업실 구현 검토 자료를 전달하는 확인 작업입니다. 이미 생성된 ZIP 을…</div><div class="tm">10.17 22:42 · 41초</div>
+       <div class="steps"><span class="step bash"><i></i>register_artifact</span></div>
+       <div class="a">ZIP 등록이 완료되었습니다. [PitCrew 검토 자료.zip 다운로드]</div><div class="u">1 tool · 12k→0.3k · $0.004</div></div>
+     </div></div>
+    <div class="track"><div class="who"><b>툴 구현 · Codex 협업</b><span class="pill" style="margin-left:6px">팀장</span><div class="m">Codex · gpt-6-astra · 전체 권한</div><div class="now dim">대기</div></div>
+     <div class="lane">
+      <div class="turn"><span class="pill ok ok">끝남</span><div class="q">29회차 시험 정리 보완 최종 검토만 요청. 28회차 5/5 원시값/해시 수용…</div><div class="tm">10.17 09:45 → 09:48 · 2분 38초</div>
+       <div class="steps"><span class="step read"><i></i>Read ×6</span><span class="step bash"><i></i>Bash pytest</span><span class="step web"><i></i>delegate → 툴 구현</span></div>
+       <div class="a">도현, 29회차 최종 검토 끝났어요. 결함은 없었고…</div><div class="u">8 tools · 31k→1.9k · $0.02</div></div>
+     </div></div>
+    <div class="track"><div class="who"><b>툴 구현</b><div class="m">Claude Code · opus-5-5 · 전체 권한</div><div class="now dim">대기</div></div>
+     <div class="lane" style="padding-left:368px">
+      <div class="turn"><span class="pill ok ok">끝남</span><div class="q">↙ 29회차 독립 검토 부탁합니다 (툴 구현 · Codex 협업이 맡김)</div><div class="tm">10.17 09:46 → 09:48 · 1분 50초</div>
+       <div class="steps"><span class="step read"><i></i>Read ×4</span><span class="step bash"><i></i>Bash pytest</span><span class="step web"><i></i>report → 팀장</span></div>
+       <div class="a">결함 없음. round29-cleanup-final-peer.md 원시값 일치.</div><div class="u">6 tools · 22k→1.1k</div></div>
+     </div></div>
+    <svg class="arrow" style="left:742px;top:452px;width:140px;height:120px"><path d="M 0 0 C 60 0, 60 100, 120 100"/><text x="24" y="58">일을 맡김</text></svg>
+    <div class="hist">어제 이전 20턴 · 이력 열기</div>
+   </div>
+   <div class="legend"><span>띠 = 대화 하나 · 상자 = 턴(요청→도구→답) · 점선 = 대화끼리 넘김</span><span>도구 칩 클릭 → 오른쪽에 입력·출력(그때 가져옴)</span></div>
+  </div>
+ </section>
+ <aside class="side">
+  <h2>Edit · chat-v2.js</h2>
+  <div class="sub"><span class="pill ok">실행 종료</span><span>02:50:12 · 0.4초 · 턴 "그리고 답 왔을때…" 의 10번째 단계</span></div>
+  <div class="kv"><div><div class="lbl">파일</div><div class="v">web/chat-v2.js</div></div><div><div class="lbl">변경</div><div class="v"><span style="color:var(--ok)">+14</span> <span style="color:var(--err)">−1</span></div></div></div>
+  <hr><div class="lbl">입력 (앞부분)</div><div class="out">old_string: "  document.addEventListener('DOMContentLoaded',()=>{\n    enhanceAll();"
+new_string: "  // 답이 끝나면 서버가 원래 세션의 옛 기록을 앞에 합쳐 주는데…\n  function keepReadingPosition(){ … }"</div>
+  <hr><div class="lbl">출력</div><div class="out">The file D:\Github\F1Game\tools\studio-dashboard\web\chat-v2.js has been updated successfully.</div>
+  <hr><div class="lbl">이 턴의 단계 11</div>
+  <div><span class="step bash"><i></i>Bash grep</span><span class="step bash"><i></i>Bash grep</span><span class="step read"><i></i>Read hub.py</span><span class="step read"><i></i>Read hub.py</span><span class="step bash"><i></i>Bash curl</span><span class="step edit"><i></i>Edit flow.js</span><span class="step edit"><i></i>Edit flow.js</span><span class="step edit"><i></i>Edit flow.js</span><span class="step edit sel"><i></i>Edit chat-v2.js</span><span class="step bash"><i></i>Bash playwright</span><span class="step bash"><i></i>Bash playwright</span></div>
+  <hr><div class="acts"><a class="pri" href="#">대화에서 이 단계 보기</a><a href="#">턴 전체 보기</a></div>
+ </aside>
+</main></body></html>

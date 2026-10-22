@@ -1,0 +1,26 @@
+{
+  "scene_sha256": "AC520B81E0421208608BFD6C0F38DCDF43E4E136B832B4478CDE73E2A8499A77",
+  "gate": "FAIL",
+  "criteria": {
+    "M1": "PASS",
+    "M2": "FAIL",
+    "M3": "FAIL",
+    "M4": "PASS",
+    "M5": "PASS",
+    "M6": "PASS",
+    "M7": "PASS with warning",
+    "M8": "PASS"
+  },
+  "driveways": {
+    "terrain": "FAIL",
+    "endpoints": "FAIL",
+    "support": "FAIL",
+    "overlap": "PASS within sampled scope"
+  },
+  "regression": {
+    "pass": 12,
+    "existing_fail": 1,
+    "skip": 0
+  },
+  "limitations": "See GATE third review: OSM way correspondence, missing endpoint samples, play physics not verified"
+}

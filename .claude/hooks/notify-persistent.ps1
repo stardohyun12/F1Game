@@ -8,15 +8,13 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # Audible alarm — play system sound once (도현 요청: 3번 시끄러움 → 1번)
-try {
-    [System.Media.SystemSounds]::Exclamation.Play()
-} catch {}
+if (-not $env:PITCREW_NOTIFY_TEXT) { try { [System.Media.SystemSounds]::Exclamation.Play() } catch {} }
 
 $notif = New-Object System.Windows.Forms.NotifyIcon
 $notif.Icon = [System.Drawing.SystemIcons]::Information
 $notif.Text = 'Claude Code: click to dismiss'
 $notif.BalloonTipTitle = 'Claude Code'
-$notif.BalloonTipText = 'Waiting for input - click this icon to dismiss'
+$notif.BalloonTipText = $(if ($env:PITCREW_NOTIFY_TEXT) { $env:PITCREW_NOTIFY_TEXT } else { 'Waiting for input - click this icon to dismiss' })
 $notif.BalloonTipIcon = [System.Windows.Forms.ToolTipIcon]::Info
 $notif.Visible = $true
 $notif.ShowBalloonTip(10000)

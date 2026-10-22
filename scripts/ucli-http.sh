@@ -18,7 +18,14 @@ EOF
 )
 [ -z "$PORT" ] && { echo "FAIL: F1 Editor connector not ready"; exit 1; }
 U="http://127.0.0.1:$PORT/command"
-[ "${1:-}" = "status" ] && { echo "F1 Editor connector: port $PORT"; exit 0; }
+# status: 포트를 실제로 때려본다. 인스턴스 json 이 남아 있어도 Editor 가 꺼져 있으면 연결 거부 → exit 1 (stop.sh 도달성 판정용)
+[ "${1:-}" = "status" ] && {
+  if python -X utf8 -c "import socket,sys; s=socket.socket(); s.settimeout(2); sys.exit(0 if s.connect_ex(('127.0.0.1',int(sys.argv[1])))==0 else 1)" "$PORT"; then
+    echo "F1 Editor connector: port $PORT"; exit 0
+  else
+    echo "FAIL: F1 Editor connector port $PORT not reachable"; exit 1
+  fi
+}
 
 post() { python -X utf8 - "$U" "$1" "$2" <<'EOF'
 import json,sys,urllib.request

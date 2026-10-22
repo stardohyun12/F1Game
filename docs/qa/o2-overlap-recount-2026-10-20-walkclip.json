@@ -1,0 +1,25 @@
+﻿{
+  "input": "tools/town-gen/out/scene_structure_s15a3/o2_scene_overlap.json",
+  "sha256": "057421581830a48ef6798c57b8633785c6f5f1109998a41fd06e91c647f3f2cd",
+  "observationRows": 31,
+  "counts": {
+    "car": {
+      "buildings": 0,
+      "area_m2": 0
+    },
+    "walk": {
+      "buildings": 0,
+      "area_m2": 0
+    },
+    "shoulder": {
+      "buildings": 31,
+      "area_m2": 354
+    }
+  },
+  "failBuildings": 0,
+  "verdict": "PASS",
+  "summaryMismatches": [],
+  "regionOverlapRows": [],
+  "failures": [],
+  "limitation": "Recounts exported observations, not independent mesh measurement; 0.5m samples cannot prove exact geometric zero."
+}

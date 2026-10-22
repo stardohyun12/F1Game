@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>B · 카드 펼치기</title><link rel="stylesheet" href="../web/flow.css">
+<style>
+.board{cursor:default;overflow:auto}
+.cols{position:absolute;left:28px;top:24px;display:grid;grid-template-columns:repeat(4,300px);gap:48px;align-items:start}
+.col h3{margin:0 0 10px;font-size:12.5px;font-weight:500;color:var(--mute);display:flex;gap:8px}.col h3 span{color:var(--dim)}.col h3 .n{margin-left:auto}
+.node{position:static;margin-bottom:10px}
+.node .t{padding-right:72px}
+.exp{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+.st{display:grid;grid-template-columns:62px 1fr;gap:4px 10px;font-size:12px;color:var(--mute)}
+.st .tm{color:var(--dim);font-variant-numeric:tabular-nums}
+.st b{font-weight:500;color:var(--ink2);font-family:var(--mono);font-size:11.5px}
+.st .sel{color:var(--acc)}
+.more{font-size:12px;color:var(--acc);margin-top:6px}
+.chev{position:absolute;right:12px;bottom:10px;color:var(--dim);font-size:12px}
+.out{background:var(--side);border-radius:8px;padding:8px 10px;font-family:var(--mono);font-size:11.5px;color:var(--mute);white-space:pre-wrap;max-height:220px;overflow:auto;line-height:1.5}
+</style></head><body data-page="flow">
+<header class="top"><a class="brand" href="#"><i></i>PitCrew</a><nav><a class="tab on">흐름</a><a class="tab">팀</a><a class="tab">대화</a><a class="tab">작업실</a></nav><span class="sp"></span><select><option>F1Game</option></select><span class="st"><i class="run"></i>runtime ready · 1 작업 중</span></header>
+<main class="flow">
+ <section class="boardwrap">
+  <div class="sum"><span class="r"><b>1</b>작업 중</span><span class="w"><b>0</b>내 확인 기다림</span><span><b>6</b>오늘 끝난 턴</span><span><b>$20.9</b>오늘 비용</span><span class="sp"></span><button class="on">오늘</button><button>이력 열기</button><button>맞춤</button><button>100%</button><button>자동 정렬</button></div>
+  <div class="board">
+   <div class="cols">
+    <div class="col"><h3>요청 <span>· 도현</span><span class="n">3</span></h3>
+     <div class="card node"><p class="t">둘다 대략 그림으로 예시줘봐</p><div class="r"><span class="dot"></span><span class="nm">Claude · 기존 팀에게</span><span class="sp"></span><span class="tm">02:58</span></div></div>
+     <div class="card node"><p class="t">그리고 답 왔을때 갑자기 위로 예전 대화로 올라가고 흐름 엄청 예전상태 인것 같은데 확인해봐</p><div class="r"><span class="dot"></span><span class="nm">Claude · 기존 팀에게</span><span class="sp"></span><span class="tm">02:45</span></div></div>
+     <div class="card node"><p class="t">PitCrew 작업실 구현 검토 자료를 전달하는 확인 작업입니다…</p><div class="r"><span class="dot"></span><span class="nm">전체 제작 담당에게</span><span class="sp"></span><span class="tm">10.17 22:42</span></div></div>
+    </div>
+    <div class="col"><h3>작업 중 <span>· 팀</span><span class="n">1</span></h3>
+     <div class="card node sel"><span class="pill run">작업 중</span><p class="t">둘다 대략 그림으로 예시줘봐</p><div class="r"><span class="dot running"></span><span class="nm">Claude · 기존 팀 · fable-5-1</span><span class="sp"></span><span class="tm">1분 12초 · 3 tools</span></div>
+      <div class="exp"><div class="st"><span class="tm">02:58:40</span><span><b>Write</b> mockups/v3-A-tracks.html</span><span class="tm">02:58:41</span><span><b>Write</b> mockups/v3-B-cards.html</span><span class="tm">02:59:02</span><span class="sel"><b>Bash</b> node shot_mockup.cjs … 실행 중</span></div></div><span class="chev">▴ 접기</span></div>
+    </div>
+    <div class="col"><h3>결과 확인 <span>· 도현</span><span class="n">3</span></h3>
+     <div class="card node"><span class="pill ok">끝남</span><p class="t">두 건 다 원인을 찾아 고쳤습니다. 답 끝나면 서버가 옛 기록을 앞에 합쳐서 스크롤이…</p><div class="r"><span class="dot"></span><span class="nm">Claude · 기존 팀 · fable-5-1</span><span class="sp"></span><span class="tm">02:52 · 11 tools</span></div>
+      <div class="exp"><div class="st"><span class="tm">02:45:10</span><span><b>Bash</b> grep scrollTop app.js</span><span class="tm">02:45:11</span><span><b>Read</b> hub.py:1824</span><span class="tm">02:45:11</span><span><b>Read</b> hub.py:1658</span><span class="tm">02:47:30</span><span><b>Bash</b> curl + playwright 스크롤 시험</span><span class="tm">02:47:31</span><span><b>Edit</b> flow.js</span><span class="tm">02:47:31</span><span><b>Edit</b> flow.js</span><span class="tm">02:49:58</span><span><b>Read</b> app.js:224</span><span class="tm">02:50:12</span><span class="sel"><b>Edit</b> chat-v2.js +14 −1</span><span class="tm">02:50:40</span><span><b>Bash</b> playwright 앵커 시험 → delta −14 유지</span></div><div class="more">+2 더 · 비용 $8.03 · 790k→2.1k</div></div><span class="chev">▴ 접기</span></div>
+     <div class="card node"><span class="pill ok">끝남</span><p class="t">둘 다 바꿨습니다. 드롭다운은 칩+메뉴로, 협업 보기는 /team 으로.</p><div class="r"><span class="dot"></span><span class="nm">Claude · 기존 팀 · fable-5-1</span><span class="sp"></span><span class="tm">02:43 · 6 tools</span></div><span class="chev">▾ 단계 6</span></div>
+     <div class="card node"><span class="pill ok">끝남</span><p class="t">ZIP 등록이 완료되었습니다. [PitCrew 검토 자료.zip 다운로드]</p><div class="r"><span class="dot"></span><span class="nm">전체 제작 담당 · gpt-6-astra</span><span class="sp"></span><span class="tm">10.17 22:42 · 1 tool</span></div><span class="chev">▾ 단계 1</span></div>
+    </div>
+    <div class="col"><h3>채택 <span>· 공통 방향</span><span class="n">0</span></h3><div class="empty">없음</div></div>
+   </div>
+   <div class="legend"><span>카드 ▾ 펼치면 그 턴의 단계가 세로로</span><span>단계 클릭 → 오른쪽에 입력·출력</span></div>
+  </div>
+ </section>
+ <aside class="side">
+  <h2>Edit · chat-v2.js</h2>
+  <div class="sub"><span class="pill ok">실행 종료</span><span>02:50:12 · 0.4초 · 8번째 단계</span></div>
+  <div class="kv"><div><div class="lbl">파일</div><div class="v">web/chat-v2.js</div></div><div><div class="lbl">변경</div><div class="v"><span style="color:var(--ok)">+14</span> <span style="color:var(--err)">−1</span></div></div></div>
+  <hr><div class="lbl">출력</div><div class="out">The file D:\Github\F1Game\tools\studio-dashboard\web\chat-v2.js has been updated successfully.</div>
+  <hr><div class="acts"><a class="pri" href="#">대화에서 이 단계 보기</a></div>
+ </aside>
+</main></body></html>

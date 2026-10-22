@@ -1,0 +1,16 @@
+if(UnityEditor.EditorApplication.isPlaying||UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty)return "FAIL scene state";
+UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/TownGen/TownGen_Spline.unity",UnityEditor.SceneManagement.OpenSceneMode.Single);
+var houses=new System.Collections.Generic.List<object>();
+foreach(Transform house in GameObject.Find("TownGen_Spline").transform.Find("Houses")){
+if(house.name=="Plinths")continue;
+var verts=new System.Collections.Generic.List<Vector3>();
+foreach(var mf in house.GetComponentsInChildren<MeshFilter>())foreach(var v in mf.sharedMesh.vertices)verts.Add(house.InverseTransformPoint(mf.transform.TransformPoint(v)));
+float bottom=float.PositiveInfinity;foreach(var v in verts)bottom=Mathf.Min(bottom,v.y);
+var b=new Bounds();bool first=true;int count=0;
+foreach(var v in verts)if(v.y<=bottom+.25f){if(first){b=new Bounds(v,Vector3.zero);first=false;}else b.Encapsulate(v);count++;}
+var corners=new System.Collections.Generic.List<float[]>();
+foreach(float x in new[]{b.min.x,b.max.x})foreach(float z in new[]{b.min.z,b.max.z}){var p=house.TransformPoint(new Vector3(x,bottom,z));corners.Add(new[]{p.x,p.y,p.z});}
+houses.Add(new{name=house.name,corners=corners,verticesBelow25cm=count});
+}
+System.IO.File.WriteAllText("../docs/qa/evidence/spline-section29/spline-house-bases.json",Newtonsoft.Json.JsonConvert.SerializeObject(houses));
+return "base footprints="+houses.Count+" dirty="+UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty;

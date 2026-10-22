@@ -1,0 +1,6 @@
+var cam=Camera.main;var pos=cam.transform.position;var rot=cam.transform.rotation;var target=cam.targetTexture;var aspect=cam.aspect;var active=RenderTexture.active;
+var shots=new[]{new{label="terrain-road",eye=new Vector3(161,29,79),aim=new Vector3(175.5f,16,99)},new{label="house-alley",eye=new Vector3(235,20,29),aim=new Vector3(218.15f,2,43)},new{label="shoulder-gap",eye=new Vector3(80,22,52),aim=new Vector3(94.54f,12,69.32f)}};
+var rt=new RenderTexture(1280,720,24);var tex=new Texture2D(1280,720,TextureFormat.RGB24,false);
+try{foreach(var shot in shots){cam.transform.SetPositionAndRotation(shot.eye,Quaternion.LookRotation(shot.aim-shot.eye));cam.targetTexture=rt;cam.aspect=1280f/720;cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,1280,720),0,0);tex.Apply();System.IO.File.WriteAllBytes("../docs/qa/evidence/spline-"+shot.label+".png",tex.EncodeToPNG());}}
+finally{cam.transform.SetPositionAndRotation(pos,rot);cam.targetTexture=target;cam.aspect=aspect;RenderTexture.active=active;UnityEngine.Object.DestroyImmediate(tex);rt.Release();UnityEngine.Object.DestroyImmediate(rt);}
+return "captured 3; dirty="+UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty;

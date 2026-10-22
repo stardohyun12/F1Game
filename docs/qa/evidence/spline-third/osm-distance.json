@@ -1,0 +1,17 @@
+{
+  "samples": 499,
+  "maximum": {
+    "xyz": [
+      97.2744139,
+      18.54838,
+      308.900604
+    ],
+    "edge": 10,
+    "distance": 7.916368540163102,
+    "limit": 10,
+    "highway": "residential",
+    "core_hairpin": true
+  },
+  "violations": [],
+  "method": "Conservative scene-to-original OSM deviation lower bound.\nNearest segment of the same highway type, not necessarily the authored source\nway: exceeding the cap proves deviation, passing does not prove correspondence.\n"
+}

@@ -1,0 +1,111 @@
+{
+  "title": "조향 입력 평활 시간 단일 변수 비교",
+  "status": "제안 가설 — 미적용·미채택·플레이 미검증",
+  "source": {
+    "file": "ArcadeCarController.reference.txt",
+    "read_scope": "클래스 전체: 초기화, 입력, 단계 차단, 모든 물리 적용 함수와 공개 속성",
+    "sha256": "B5BEB11ECECAEAA7FEA6ECDBFE2A47AED3FE275A5C1F82C9C0484C4E88101387",
+    "limitation": "읽기 전용 복사본의 선언값을 확인했다. 실제 씬·프리팹의 직렬화 값, Unity 버전, 물리 주기, 외부 시스템 구현은 확인하지 않았다. 주석의 과거 피드백은 독립적으로 검증하지 않았다."
+  },
+  "baseline": {
+    "label": "A: 제공 코드의 기존 기준",
+    "steerLag_seconds": 0.025,
+    "throttleLag_seconds": 0.01,
+    "maxTurnDegPerSec": 135,
+    "minSpeedForSteer_mps": 0.5,
+    "turnResponseBySpeed": "정규화 속도 0에서 1, 1에서 0.35인 선형 곡선"
+  },
+  "proposal": {
+    "label": "B: 사용자 채택 전 실험 후보",
+    "change_count": 1,
+    "parameter": "steerLag",
+    "from_seconds": 0.025,
+    "to_seconds": 0.015,
+    "hypothesis": "조향 목표값을 향한 평활 시간을 줄이면 꺾기·놓기·반대 방향 전환 때 smoothedMove.x가 더 빨리 입력을 따라가 조향 반응이 조금 더 직접적으로 느껴질 수 있다.",
+    "interpretation": "파라미터는 40% 감소하지만 실제 입력 지연 10ms 단축 또는 조작감 40% 향상을 뜻하지 않는다. smoothTime은 고정 대기 시간이 아니며 물리 틱과 입력 이벤트 시점의 영향을 받는다.",
+    "future_application": "별도 시험 환경에서 실제 컴포넌트의 steerLag만 A/B로 설정한다. SerializeField이므로 코드 초기값만 바꾸어 기존 씬 값까지 변경된 것으로 간주하지 말고 런타임 값을 확인한다. 이번 작업에서는 적용하지 않는다.",
+    "fixed_parameters": "스로틀, 최고속도, 조향 최대값·속도 곡선, 그립·드리프트, 입력 설정, 물리 주기, 카메라·애니메이션 설정 모두 동일하게 유지"
+  },
+  "code_verified_facts": [
+    "OnMove는 InputValue의 Vector2를 moveInput에 저장한다. 별도 데드존·입력 처리 설정은 이 코드에 없다.",
+    "FixedUpdate는 Driving 단계가 아니거나 RunController가 없으면 선속도·각속도를 0으로 만들고 반환한다. moveInput, smoothedMove, smoothVel, wasDrifting은 이 경로에서 초기화하지 않는다.",
+    "Driving에서 x/y를 각각 steerLag/throttleLag로 SmoothDamp한 후 접지 Raycast와 Handbrake.IsPressed를 확인한다. SteerInput은 평활값, RawSteerInput은 원시값을 공개한다.",
+    "드리프트 진입은 원시 x의 부호로 VelocityChange 토크를 가한다. x=0이면 양의 방향이다. 진입·이탈 때 angularDamping을 바꾸며 이 진입 충격은 steerLag를 직접 사용하지 않는다.",
+    "속도를 전방·측방으로 투영한 뒤 ApplyThrottle → ApplySteering → ApplySideGrip → ApplyDriftDrag → ApplyAirDrag 순서로 적용한다.",
+    "ApplyThrottle은 접지 시 평활 y로 가속·제동·후진·코스팅을 처리한다. 엔진·부스트, 저속 가속 램프, 드리프트 스로틀 배율이 작용한다. x 평활 변경은 y 계산을 직접 바꾸지 않지만 바뀐 진행 방향과 속도는 이후 물리 결과에 영향을 줄 수 있다.",
+    "ApplySteering은 전방 속도 절댓값 0.5m/s 미만이면 반환한다. 정상 주행은 135 × 평활 x × 속도 응답 × fixedDeltaTime의 yaw를 MoveRotation으로 적용한다. 후진에 대한 조향 부호 반전은 없다.",
+    "드리프트 조향은 평활 x × driftYawTorque(11) × driftYawBoost(1.25) × 속도 응답을 Acceleration 토크로 적용한다. 정상·드리프트 조향과 진입 토크에는 접지 검사 조건이 없어 공중에서도 작용할 수 있다.",
+    "EffectiveMaxSpeedMps는 타이어 속도 배율·엔진 복원·부스트를 포함하여 가속 제한과 제동·공기저항·조향의 속도 정규화에 쓰인다. 동일 실제 속도라도 이 상태가 다르면 조향 응답이 달라질 수 있다.",
+    "접지 시 측면 그립은 측방 속도에 반대 힘을 주며 타이어 그립·마모와 드리프트 배율을 반영한다. 드리프트 저항과 65km/h 초과 감속은 접지 시 작용한다. 공기저항은 전진 속도 0.1m/s 초과에서 작용하며 공중에서 두 배다.",
+    "Awake는 무게중심·각감쇠·입력·타이어 연결과 가속 힘을 초기화한다. OnValidate는 힘을 재계산한다. 이 클래스에는 카메라나 Animator를 직접 갱신하는 코드가 없다."
+  ],
+  "expected_effects_inference": [
+    "입력 변화 직후 정상 주행의 틱별 회전량과 드리프트 지속 토크가 목표 크기에 더 빨리 접근하고, 중립 복귀의 잔여 조향이 줄어들 수 있다.",
+    "입력이 일정하게 수렴한 뒤의 동일 속도·상태에서 최대 정상 회전량과 지속 드리프트 토크 공식은 같다. 드리프트 진입 충격과 스로틀 평활 시간도 직접 바뀌지 않는다.",
+    "실제 fixedDeltaTime이 예를 들어 0.02초라면 후보 0.015초는 한 물리 틱보다 짧다. 틱 사이의 새 반응을 만들지는 않으며 틱당 응답 차이를 비교해야 한다. 프로젝트의 실제 주기는 미확인이다."
+  ],
+  "possible_side_effects_inference": [
+    "아날로그 스틱의 작은 흔들림이 더 빨리 드러나고 디지털 좌우 전환이 급하게 느껴질 수 있다.",
+    "드리프트 카운터스티어 토크가 빨리 바뀌어 자세 회복이 쉬워질 수도 있지만 과보정·좌우 흔들림이 늘 수 있다. 입력 평활과 차량 궤적의 오버슈트는 별개다.",
+    "고속·좁은 배달 진입 구간에서 초기 회전량 증가가 경로 이탈이나 충돌을 늘릴 수 있다. 공중·착지·후진도 기존 조향 적용 조건에 따라 영향받을 수 있다."
+  ],
+  "camera_and_animation": {
+    "verified": "제공 클래스에는 카메라·애니메이션 직접 제어가 없다. 외부 소비 코드는 읽지 않았으므로 무영향이라고 확정할 수 없다.",
+    "hypotheses": [
+      "차량 회전·진행 방향을 추적하는 카메라는 초기 회전이 빨라져 화면의 횡이동·추적 지연·흔들림이 더 보일 수 있다.",
+      "SteerInput을 읽는 바퀴·핸들·차체 애니메이션은 더 빨리 반응할 수 있다. RawSteerInput만 읽는 표현의 입력 신호는 동일하다. 물리 자세를 읽는 표현은 간접적으로 달라질 수 있다.",
+      "별도 시각 평활이 있다면 물리 회전과 표현 사이의 지연 차이가 두드러질 수 있다."
+    ],
+    "future_check": "동일 카메라·애니메이션 설정과 프레임 제한으로 녹화하여 차체 회전 시작, 화면 추적, 바퀴·핸들 전환 시점을 비교한다. 이번 단일 변수 실험에서 시각 설정을 함께 조정하지 않는다."
+  },
+  "same_condition_validation_plan": {
+    "status": "미실행 계획",
+    "setup": [
+      "기존 원본을 보존한 별도 시험 환경에서 먼저 A를 재현하고 실제 steerLag=0.025를 확인한다. 이어 B=0.015만 바꾼다.",
+      "동일 해안 마을 경로·배달 차량·시작 위치와 회전·초기 선속도와 각속도·노면·접지·타이어 종류와 마모·엔진 복원·부스트 상태를 사용한다.",
+      "Unity 버전, fixedDeltaTime, timeScale, 프레임 제한, Rigidbody 질량·보간·감쇠, 입력 장치·데드존·Input System 갱신 모드, 카메라 설정을 기록하고 A/B에서 고정한다.",
+      "각 반복 전 동일한 새 시작 상태를 확보한다. 단계 전환만으로 평활 내부 상태가 초기화되지는 않으므로 smoothedMove·smoothVel·wasDrifting 및 카메라 추적 상태의 잔존을 제거하거나 동일함을 확인한다."
+    ],
+    "procedure": [
+      "평지에서 동일 초기 속도 10/40/70km/h 조건별로 원시 x 0→1 유지→0, 1→-1 전환과 작은 ±0.1 입력을 동일 물리 틱에 재생한다. 스로틀 입력과 이벤트 타이밍도 동일하게 한다.",
+      "드리프트 진입·유지·카운터스티어·이탈을 동일 입력 시퀀스로 비교한다. 진입 충격은 그대로인지, 이후 토크 반응이 달라지는지 구분한다.",
+      "저속 조향 경계 0.5m/s 전후, 후진, 언덕 이탈·착지, 좁은 배달 정차 진입을 동일 조건으로 비교한다.",
+      "각 조건을 A/B와 B/A 순서로 최소 3쌍 반복한다. 실제 사용 장치로 비교하고 키보드·패드 결과는 섞지 않는다. 이후 사용자에게 순서를 가린 플레이 비교를 요청할 수 있으나 현재 수행한 것은 아니다."
+    ],
+    "measurements": [
+      "입력 이벤트 시각·물리 틱 번호·RawSteerInput·SteerInput·속도·차체 yaw·각속도를 기록한다. 유지 입력에서 목표 변화량의 50%/90% 도달 틱, 중립 복귀 시 절댓값 0.1 이하 도달 틱, 반전 시 부호 전환 틱을 비교한다.",
+      "같은 구간의 경로 이탈 폭·충돌 횟수·추가 조향 수정 횟수·드리프트 자세 회복·정차 성공을 기록한다. 초기 속도는 맞추되 이후 궤적·속도 차이는 결과로 남긴다.",
+      "동일 시점 영상에서 카메라 흔들림·차량 가독성·바퀴/핸들 표현 지연을 비교한다. 사용자 반응성·편안함 평가는 별도 주관 지표로 기록한다."
+    ],
+    "proposed_decision_rule": "동일 조건 반복에서 과도 응답이 빨라지고 경로 이탈·충돌·수정 조작 및 시각 불편이 일관되게 악화하지 않을 때만 후속 플레이 평가 후보로 남긴다. 틱 해상도나 반복 변동 때문에 차이가 불명확하면 개선으로 판정하지 않는다. 사용자 채택 전 공통 방향으로 확정하지 않는다."
+  },
+  "rollback": {
+    "conditions": [
+      "반복 비교에서 과민 반응·과보정·충돌·드리프트 불안정이 기준보다 일관되게 증가한다.",
+      "카메라 불편이나 차량·바퀴 표현 불일치가 커진다.",
+      "측정 또는 사용자 비교에서 이점이 확인되지 않거나 사용자가 기준을 선호한다.",
+      "실제 직렬화 값 또는 시험 초기 조건이 맞지 않으면 비교를 무효화하고 기준부터 다시 확보한다."
+    ],
+    "action": "시험 컴포넌트의 steerLag를 0.025초로 돌리고 런타임 값과 초기 상태를 확인한 뒤 A를 다시 재현한다. 현재는 변경을 적용하지 않아 게임 파일 원복 작업이 필요하지 않다."
+  },
+  "references": [
+    {
+      "url": "https://docs.unity3d.com/ScriptReference/Mathf.SmoothDamp.html",
+      "type": "Unity 공식 API 설명",
+      "used": "smoothTime이 낮으면 목표값에 더 빨리 접근한다는 의미와 생략된 deltaTime의 기본값을 확인했다. API 의미를 적용했으며 타 게임의 조작감 개선 실적으로 취급하지 않았다."
+    },
+    {
+      "url": "https://docs.unity3d.com/ScriptReference/Time-deltaTime.html",
+      "type": "Unity 공식 API 설명",
+      "used": "FixedUpdate 안의 Time.deltaTime이 fixedDeltaTime을 반환한다는 설명을 확인했다. 실제 프로젝트 버전 및 설정과의 실행 대조는 미수행이다."
+    }
+  ],
+  "verification": {
+    "completed": ["제공 코드 전체 정적 검토", "Unity 공식 API 의미 확인"],
+    "not_performed": ["Unity 실행 또는 컴파일", "원본 조건 주행 재현", "수치 시뮬레이션", "A/B 물리 측정", "카메라·애니메이션 통합 검증", "사용자 플레이 검증"],
+    "user_play_verified": false,
+    "adopted": false,
+    "game_files_modified": false,
+    "delivery_scope": "feel-experiment.json 작성 및 등록만 수행. 에이전트 실행 없음."
+  }
+}

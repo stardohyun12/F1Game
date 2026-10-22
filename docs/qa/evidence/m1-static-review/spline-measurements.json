@@ -1,0 +1,212 @@
+{
+  "M1": {
+    "samples": 30202,
+    "violations": 446,
+    "max_abs": 2.372737916260739,
+    "worst_xyz": [
+      94.5397949,
+      13.0141392,
+      69.32186
+    ],
+    "signed_delta": -2.372737916260739,
+    "method": "welded triangle perimeter minus geometric road/sidewalk contacts; <=0.5m interval",
+    "boundary": {
+      "perimeter_edges": 24530,
+      "end_cap_edges": 206,
+      "internal_edges": 24221,
+      "inner_contact_edges": 12162,
+      "outer_edges": 12162,
+      "ambiguous_edges": 0
+    },
+    "classification_complete": true
+  },
+  "penetration_Asphalt": {
+    "samples": 16231,
+    "violations": 423,
+    "max_above": 2.073576742393243,
+    "worst_xyz": [
+      175.5515575,
+      13.5455589,
+      98.25899805
+    ],
+    "primitive": 94
+  },
+  "intersection_discs": {
+    "samples": 2744,
+    "violations": 286,
+    "max_above": 1.309744938999998,
+    "worst_xyz": [
+      238.71,
+      8.355268,
+      97.58
+    ]
+  },
+  "penetration_Alleys": {
+    "samples": 765,
+    "violations": 128,
+    "max_above": 1.92918444476595,
+    "worst_xyz": [
+      206.445786,
+      3.37688065,
+      65.065155
+    ],
+    "primitive": 56
+  },
+  "penetration_Sidewalk_Curb": {
+    "samples": 26967,
+    "violations": 391,
+    "max_above": 10.28817342431828,
+    "worst_xyz": [
+      175.47052,
+      13.695558550000001,
+      99.25570285
+    ],
+    "primitive": 377
+  },
+  "scene_core_crosscheck": {
+    "max_center_error": 2.6366948728921336e-05,
+    "max_terrain_error": 7.291773528095291e-06
+  },
+  "M2_Asphalt": {
+    "segments": 1499,
+    "violations": 5,
+    "maximum": [
+      0.0802151629890591,
+      [
+        377.60563675,
+        33.587766849999994,
+        308.24256675
+      ]
+    ]
+  },
+  "M3_Asphalt": {
+    "chains": 28,
+    "samples": 1325,
+    "minimum": [
+      2.500452779615812,
+      [
+        94.66584,
+        24.988409,
+        308.057132
+      ]
+    ],
+    "below_absolute_floor": 25,
+    "below_regular_main12": 131,
+    "wide4m_minimum": [
+      4.684757318694314,
+      [
+        94.66584,
+        24.988409,
+        308.057132
+      ]
+    ]
+  },
+  "hairpin_grade": {
+    "samples": 191,
+    "over3percent": 36,
+    "maximum": [
+      0.08000256009392068,
+      [
+        366.05163500000003,
+        38.6585274,
+        367.097809
+      ]
+    ],
+    "classification": "absolute turn >=120deg across ~40m arc window, independently computed"
+  },
+  "M2_Alleys": {
+    "segments": 85,
+    "violations": 0,
+    "maximum": [
+      0.12000083764335906,
+      [
+        220.50180225,
+        5.4160298749999995,
+        74.51566
+      ]
+    ]
+  },
+  "M3_Alleys": {
+    "chains": 7,
+    "samples": 78,
+    "minimum": [
+      4.615914721872702,
+      [
+        200.95272799999998,
+        3.22124529,
+        45.806118
+      ]
+    ],
+    "below_absolute_floor": 3,
+    "below_regular_main12": null,
+    "wide4m_minimum": [
+      6.50049139734321,
+      [
+        232.7444305,
+        18.0011024,
+        327.8635
+      ]
+    ]
+  },
+  "M4": {
+    "houses": 300,
+    "missing_plinth": 0,
+    "max_abs_base_delta": 2.69999999957804e-06,
+    "base_violations": 0,
+    "road_overlap_houses": 24,
+    "house_pair_overlaps": 0,
+    "base25cm_overlap_houses": 4,
+    "base25cm_hits": [
+      [
+        95,
+        "Sidewalk_Curb"
+      ],
+      [
+        141,
+        "Alleys"
+      ],
+      [
+        156,
+        "Asphalt"
+      ],
+      [
+        219,
+        "Sidewalk_Curb"
+      ]
+    ]
+  },
+  "M7": {
+    "terrain_vertices": 48441,
+    "over3m": 2700,
+    "maximum": [
+      13.369735728881835,
+      [
+        156.0,
+        15.1402645,
+        102.0
+      ],
+      -13.369735728881835
+    ],
+    "wall_length": 3852.5734673485217
+  },
+  "M5": {
+    "sea_cells": 108,
+    "road_primitives": 0,
+    "houses": 0
+  },
+  "M6": {
+    "nodes": 1499,
+    "components": 1,
+    "sizes": [
+      1499
+    ],
+    "representatives": [
+      [
+        353.341,
+        37.91,
+        376.332
+      ]
+    ],
+    "method": "strip endpoint topology, 1mm 3D weld; geometric crossings not added"
+  }
+}

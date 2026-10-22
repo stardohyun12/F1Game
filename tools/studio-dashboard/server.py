@@ -544,8 +544,8 @@ class H(BaseHTTPRequestHandler):
                 return self._json({'error': '이미지를 찾을 수 없습니다.'}, 404)
             ext = name.rsplit('.', 1)[1]
             return self._send((MEDIA / name).read_bytes(), 'image/' + ('jpeg' if ext == 'jpg' else ext))
-        if path in ('/', '/hub', '/app.css', '/app.js', '/connection.js', '/teams.js', '/workspace.js', '/organize.js', '/product.css', '/reader.js', '/notify.js', '/queue.js', '/attach.js', '/composer.js', '/markdown-it.min.js'):
-            filename = {'/': 'index.html', '/hub': 'index.html', '/app.css': 'app.css', '/app.js': 'app.js', '/connection.js': 'connection.js', '/teams.js': 'teams.js', '/workspace.js':'workspace.js', '/product.css':'product.css', '/organize.js':'organize.js', '/reader.js':'reader.js', '/notify.js':'notify.js', '/queue.js':'queue.js', '/attach.js':'attach.js', '/composer.js':'composer.js', '/markdown-it.min.js':'markdown-it.min.js'}[path]
+        if path in ('/', '/hub', '/flow', '/team', '/flow.css', '/flow.js', '/chat-v2.css', '/chat-v2.js', '/app.css', '/app.js', '/connection.js', '/teams.js', '/workspace.js', '/organize.js', '/product.css', '/reader.js', '/notify.js', '/queue.js', '/attach.js', '/composer.js', '/markdown-it.min.js'):
+            filename = {'/': 'index.html', '/hub': 'index.html', '/flow': 'flow.html', '/team': 'team.html', '/flow.css': 'flow.css', '/flow.js': 'flow.js', '/chat-v2.css': 'chat-v2.css', '/chat-v2.js': 'chat-v2.js', '/app.css': 'app.css', '/app.js': 'app.js', '/connection.js': 'connection.js', '/teams.js': 'teams.js', '/workspace.js':'workspace.js', '/product.css':'product.css', '/organize.js':'organize.js', '/reader.js':'reader.js', '/notify.js':'notify.js', '/queue.js':'queue.js', '/attach.js':'attach.js', '/composer.js':'composer.js', '/markdown-it.min.js':'markdown-it.min.js'}[path]
             ctype = 'text/css' if filename.endswith('.css') else ('text/javascript' if filename.endswith('.js') else 'text/html')
             with open(os.path.join(HERE, 'web', filename), encoding='utf-8') as f:
                 return self._send(f.read(), ctype + '; charset=utf-8')

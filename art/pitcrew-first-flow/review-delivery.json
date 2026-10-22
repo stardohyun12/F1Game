@@ -1,0 +1,16 @@
+{
+  "id": "9b0b462034c845808b2d2808f2bb0533",
+  "project": "1883836f423844229d01dc4194e7fec7",
+  "agent": "dd800a1971e2451d9a0e26ae1bd5133d",
+  "run": "456a2089169a48adb368b4c0a03ac200",
+  "message": null,
+  "name": "PitCrew 첫 제작 검토 자료.zip",
+  "size": 1133429,
+  "type": "application/zip",
+  "created": 1792250767.5788531,
+  "sha256": "f6f7206550d963cae9deb1ada9c068f1133f12aa74cd97ecb549de433720d693",
+  "status": "available",
+  "verification": "미검증",
+  "policy": "immutable-copy",
+  "url": "/deliverables/9b0b462034c845808b2d2808f2bb0533?project=1883836f423844229d01dc4194e7fec7"
+}

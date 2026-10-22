@@ -1,0 +1,26 @@
+[
+  {
+    "file": "amalfi_reference.jpg",
+    "title": "Amalfi / piazza",
+    "page_url": "https://hostel-positano.com/en/how-to-get-here/amalfi-positano-bus",
+    "image_url": "https://hostel-positano.com/images/guides/amalfiPositanoBus/amalfi-piazza-duomo.jpg",
+    "usage": "Internal reference quotation only; not game asset; rights remain with source",
+    "sha256": "e375f3c2686a0e4bcda8a01521268e015b60f45b688f6c193df37ff156a323fc"
+  },
+  {
+    "file": "positano_reference.jpg",
+    "title": "Positano / church",
+    "page_url": "https://comune.positano.sa.it/vivere-il-comune/luogo/edificio-di-culto/chiesa-di-santa-maria-assunta",
+    "image_url": "https://comune.positano.sa.it/sites/default/files/2024-03/chiesa%20madre.jpg",
+    "usage": "Internal reference quotation only; not game asset; rights remain with source",
+    "sha256": "72691e38f66b6256550a8b2cd31cadeda30a6c9177e82296d92ec790d5775e97"
+  },
+  {
+    "file": "edc_reference.jpg",
+    "title": "Easy Delivery Co. / Steam",
+    "page_url": "https://store.steampowered.com/app/3293010/Easy_Delivery_Co/",
+    "image_url": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3293010/287ddbe79e43b36d1ab74111609212f8cc7aeb64/ss_287ddbe79e43b36d1ab74111609212f8cc7aeb64.1920x1080.jpg",
+    "usage": "Internal reference quotation only; not game asset; rights remain with source",
+    "sha256": "73498e4fc0c695b45eaf23d15cbb89b42cc14d91ea11d5906fa59e2b00a523d1"
+  }
+]

@@ -1,0 +1,6 @@
+var cam=Camera.main;var pos=cam.transform.position;var rot=cam.transform.rotation;var target=cam.targetTexture;var aspect=cam.aspect;var active=RenderTexture.active;
+var shots=new[]{new{label="junction-v3",eye=new Vector3(50,18,46),aim=new Vector3(63.76f,5.28f,60.19f)},new{label="drive-door-v3",eye=new Vector3(164,32,158),aim=new Vector3(175.43f,24.8f,165.02f)},new{label="drive-terrain-v3",eye=new Vector3(422,36,204),aim=new Vector3(431.95f,27.69f,213.87f)},new{label="drive-floating-v3",eye=new Vector3(358,23,211),aim=new Vector3(365.7f,19.16f,217.19f)}};
+var rt=new RenderTexture(1280,720,24);var tex=new Texture2D(1280,720,TextureFormat.RGB24,false);
+try{foreach(var shot in shots){cam.transform.SetPositionAndRotation(shot.eye,Quaternion.LookRotation(shot.aim-shot.eye));cam.targetTexture=rt;cam.aspect=1280f/720;cam.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,1280,720),0,0);tex.Apply();System.IO.File.WriteAllBytes("../docs/qa/evidence/spline-third/spline-"+shot.label+".png",tex.EncodeToPNG());}}
+finally{cam.transform.SetPositionAndRotation(pos,rot);cam.targetTexture=target;cam.aspect=aspect;RenderTexture.active=active;UnityEngine.Object.DestroyImmediate(tex);rt.Release();UnityEngine.Object.DestroyImmediate(rt);}
+return "captured 4; dirty="+UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty;

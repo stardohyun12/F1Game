@@ -1,0 +1,20 @@
+﻿[
+    {
+        "file":  "01_house_variants_v02.png",
+        "width":  1672,
+        "height":  941,
+        "format":  "[ImageFormat: b96b3caf-0728-11d3-9d7b-0000f81ef32e]",
+        "bytes":  1895895,
+        "sha256":  "597B8A63609D24C99FDDE2E0E8188E32141B3BB05F48151105C71FAF7AC1224F",
+        "status":  "CONCEPT_PENDING_APPROVAL"
+    },
+    {
+        "file":  "02_town_center_slope_v02.png",
+        "width":  1672,
+        "height":  941,
+        "format":  "[ImageFormat: b96b3caf-0728-11d3-9d7b-0000f81ef32e]",
+        "bytes":  2103844,
+        "sha256":  "853C7C81CE113EE8FF05581CF9A0E3286588696CBC2C667497E2EF48BED26C65",
+        "status":  "CONCEPT_PENDING_APPROVAL"
+    }
+]

@@ -1,0 +1,6 @@
+2026-10-19 KST (project iteration 2026-10-20)
+Editor token QA -> PD returned after direct scene export and main-scene regression.
+Assets/ComplexTrack.unity; isPlaying=False; isCompiling=False; isDirty=False.
+Console error/warning=[]; main and spline SHA256 unchanged; no scene saves.
+Main git diff exit=0. TMP SDF 3 modified assets already present before regression; not reverted.
+Regression: 12 PASS / 1 existing CargoPolyBudget FAIL / 0 SKIP.

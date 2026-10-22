@@ -1,0 +1,4 @@
+Actual Unity standalone, unchanged ArcadeCarController; isolated Driving gate.
+baseline speedMps=-0.0007 distance=0.0025 steerAfter2FixedSteps=0.4085 fixedDeltaTime=0.01999999 PASS=False
+experiment speedMps=-0.0007 distance=0.0025 steerAfter2FixedSteps=0.4762 fixedDeltaTime=0.01999999 PASS=False
+No user adoption or subjective play validation claimed.

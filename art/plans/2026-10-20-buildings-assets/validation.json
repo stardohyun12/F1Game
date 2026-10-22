@@ -1,0 +1,27 @@
+{
+  "dimensions": {
+    "option_A_640.png": [
+      640,
+      360
+    ],
+    "option_B_640.png": [
+      640,
+      360
+    ],
+    "current_640.png": [
+      640,
+      360
+    ],
+    "reference_board.png": [
+      1600,
+      340
+    ],
+    "options_640_board.png": [
+      1312,
+      430
+    ]
+  },
+  "new_generated_art": 0,
+  "models_created": 0,
+  "errors": 0
+}
