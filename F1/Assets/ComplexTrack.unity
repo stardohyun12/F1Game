@@ -53773,12 +53773,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::FollowCamera
   target: {fileID: 374189956}
   car: {fileID: 374189955}
-  offset: {x: 0, y: 3.2, z: -7}
-  lookHeight: 1.15
-  positionSmoothTime: 0.15
-  rotationLerpSpeed: 8
-  baseFov: 50
-  maxFov: 100
+  offset: {x: 0, y: 2.1, z: -5}
+  lookHeight: 1.05
+  positionSmoothTime: 0.05
+  rotationLerpSpeed: 10
+  baseFov: 56
+  maxFov: 72
   referenceMaxSpeedMps: 0
   fovLerpSpeed: 5
   maxShakeAmplitude: 0.05
@@ -59672,6 +59672,54 @@ PrefabInstance:
     - target: {fileID: 1811446672057895780, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: airDrag
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: steerLag
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: accelTime
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: brakeDecel
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: maxSpeedKmh
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: throttleLag
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: driftMaxSpeedKmh
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: maxTurnDegPerSec
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: centerOfMassOffset.y
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: turnResponseBySpeed.m_Curve.Array.data[1].value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: turnResponseBySpeed.m_Curve.Array.data[1].inSlope
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: turnResponseBySpeed.m_Curve.Array.data[0].outSlope
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5522889733767891348, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_Enabled
@@ -94007,6 +94055,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87fc35f4352abb8488b8adf932549dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: PitCrew::RunController
+  parSpeedKmh: 55
+  parDetourFactor: 1.35
+  parHardLimitMul: 2
+  runTimeLimitSec: 90
+  urgentRewardBonus: 0.5
 --- !u!114 &610846810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94027,6 +94080,7 @@ MonoBehaviour:
   headerText: {fileID: 1018801402}
   helpText: {fileID: 1878238655}
   offerCount: 3
+  urgentCallChance: 0.4
 --- !u!4 &610846811
 Transform:
   m_ObjectHideFlags: 0
@@ -157141,6 +157195,7 @@ MonoBehaviour:
   restoreSystem: {fileID: 876995130}
   boostSystem: {fileID: 1683706467}
   tireWearStore: {fileID: 1297798444}
+  prototypeMode: 1
   autoFindMissingOnAwake: 1
   logRegistration: 1
 --- !u!4 &1032886037
