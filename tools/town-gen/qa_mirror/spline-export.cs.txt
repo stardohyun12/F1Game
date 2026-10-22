@@ -1,0 +1,28 @@
+if(UnityEditor.EditorApplication.isPlaying || UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty) return "FAIL: unsafe scene state";
+UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/TownGen/TownGen_Spline.unity",UnityEditor.SceneManagement.OpenSceneMode.Single);
+var root=GameObject.Find("TownGen_Spline");
+if(root==null)return "FAIL root absent";
+var meshes=new System.Collections.Generic.List<object>();
+foreach(var mf in root.GetComponentsInChildren<MeshFilter>()) {
+ if(mf.sharedMesh==null)continue;
+ if(mf.transform.parent!=null && mf.transform.parent.name!="Roads" && mf.name!="Terrain" && mf.name!="RetainingWalls" && mf.name!="Plinths" && mf.name!="Sea") continue;
+ var verts=new System.Collections.Generic.List<float[]>();
+ foreach(var v in mf.sharedMesh.vertices){var w=mf.transform.TransformPoint(v);verts.Add(new[]{w.x,w.y,w.z});}
+ meshes.Add(new{name=mf.name,vertices=verts,triangles=mf.sharedMesh.triangles});
+}
+var houses=new System.Collections.Generic.List<object>();
+var hr=root.transform.Find("Houses");
+foreach(Transform house in hr){
+ if(house.name=="Plinths")continue;
+ var rs=house.GetComponentsInChildren<Renderer>();if(rs.Length==0)continue;
+ var bounds=rs[0].bounds;foreach(var r in rs)bounds.Encapsulate(r.bounds);
+ var local=new Bounds();bool first=true;
+ foreach(var mf in house.GetComponentsInChildren<MeshFilter>())foreach(var v in mf.sharedMesh.vertices){var p=house.InverseTransformPoint(mf.transform.TransformPoint(v));if(first){local=new Bounds(p,Vector3.zero);first=false;}else local.Encapsulate(p);}
+ var corners=new System.Collections.Generic.List<float[]>();
+ foreach(var x in new[]{local.min.x,local.max.x})foreach(var z in new[]{local.min.z,local.max.z}) {var p=house.TransformPoint(new Vector3(x,local.min.y,z));corners.Add(new[]{p.x,p.y,p.z});}
+ houses.Add(new{name=house.name,position=new[]{house.position.x,house.position.y,house.position.z},minY=bounds.min.y,maxY=bounds.max.y,corners=corners});
+}
+var result=new{scene=UnityEngine.SceneManagement.SceneManager.GetActiveScene().path,unity=Application.unityVersion,meshes=meshes,houses=houses};
+var path=System.IO.Path.GetFullPath("../tools/town-gen/out/qa_mirror/spline-scene-geometry.json");
+System.IO.File.WriteAllText(path,Newtonsoft.Json.JsonConvert.SerializeObject(result));
+return "export="+path+" meshes="+meshes.Count+" houses="+houses.Count+" dirty="+UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty;

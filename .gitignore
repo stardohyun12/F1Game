@@ -153,3 +153,12 @@ tools/studio-dashboard/running.json
 # 첫 제작 시험 빌드 산출물 (177MB, 디스크에만)
 /art/pitcrew-first-flow/Windows/
 /art/pitcrew-first-flow/*.zip
+
+# --- 2026-10-22 정리: 생성기 산출물·대용량 로그는 git 에 넣지 않는다 ---
+# TownGen 씬은 생성기(F1/Assets/Editor/TownGen) 메뉴로 다시 만든다. 한 장 100MB+ (GitHub 한도 초과).
+# 옛 버전은 D:/Github/F1Game_archive/TownGen_scenes/ 에 보관.
+/F1/Assets/Scenes/TownGen/*.unity
+/F1/Assets/Scenes/TownGen/*.unity.meta
+/tools/town-gen/out/
+/.ai_logs/
+__pycache__/

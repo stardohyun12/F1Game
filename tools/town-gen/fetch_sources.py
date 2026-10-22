@@ -29,6 +29,8 @@ BOXES = {
     "amalfi_harbor": (40.6315, 14.5990, 40.6365, 14.6070),
     # 포지타노 비탈 — 해변(Spiaggia Grande)에서 북쪽 비탈 위 SS163 까지. 약 845m x 666m
     "positano_slope": (40.6270, 14.4800, 40.6330, 14.4900),
+    # 구조 스펙 D-113 상자 A — 아말피 항구 → SS163 해안도로 → 카포 디 콘카 곶 → 콘카 데이 마리니. 3.12 x 2.72km (남쪽 절반 바다)
+    "structure_a": (40.6130, 14.5690, 40.6375, 14.6060),
 }
 
 OVERPASS_MIRRORS = [
@@ -51,14 +53,37 @@ def get(url, data=None, timeout=180):
         return r.status, r.read()
 
 
-def fetch_osm(name, box):
-    out = os.path.join(OSM_DIR, f"{name}_{TODAY}.json")
-    existing = [f for f in os.listdir(OSM_DIR) if f.startswith(name + "_") and f.endswith(".json")]
+def fetch_osm(name, box, kind=""):
+    """kind="" → way[highway] (<name>_<날짜>.json) · kind="buildings" → way/relation[building] (<name>_buildings_<날짜>.json, 조각 10 D-114)."""
+    tag = f"{name}_{kind}" if kind else name
+    out = os.path.join(OSM_DIR, f"{tag}_{TODAY}.json")
+    existing = [f for f in os.listdir(OSM_DIR) if f.startswith(tag + "_2") and f.endswith(".json") and not f.endswith(".meta.json")]
     if existing and not FORCE:
-        print(f"[osm] {name}: 캐시 있음 {existing[0]} — 건너뜀")
+        print(f"[osm] {tag}: 캐시 있음 {existing[0]} — 건너뜀")
         return os.path.join(OSM_DIR, existing[0])
     s, w, n, e = box
+    if kind == "buildings":
+        return fetch_buildings_tiled(tag, out, box)
     query = f'[out:json][timeout:120];way["highway"]({s},{w},{n},{e});out body geom;'
+    raw, mirror, errors = overpass(query)
+    if raw is None:
+        raise RuntimeError(f"[osm] {tag} 실패:\n  " + "\n  ".join(errors))
+    doc = json.loads(raw)
+    ways = [el for el in doc.get("elements", []) if el.get("type") == "way"]
+    with open(out, "wb") as f:
+        f.write(raw)
+    meta = {
+        "box_swne": box, "query": query, "mirror": mirror, "fetched": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "osm_base": doc.get("osm3s", {}).get("timestamp_osm_base"), "ways": len(ways), "bytes": len(raw), "license": "© OpenStreetMap contributors, ODbL",
+    }
+    with open(out.replace(".json", ".meta.json"), "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=1)
+    print(f"[osm] {tag}: way {len(ways)}개, {len(raw)} bytes, {mirror}")
+    return out
+
+
+def overpass(query, need_elements=True):
+    """미러·재시도를 돌며 (raw, mirror, errors). 실패면 raw=None. 502/500/504/406/429 가 실제로 난다."""
     body = urllib.parse.urlencode({"data": query}).encode()
     errors = []
     for mirror in OVERPASS_MIRRORS:
@@ -66,23 +91,50 @@ def fetch_osm(name, box):
             try:
                 status, raw = get(mirror, data=body)
                 doc = json.loads(raw)
-                ways = [el for el in doc.get("elements", []) if el.get("type") == "way"]
-                if not ways:
-                    raise ValueError("way 0개")
-                with open(out, "wb") as f:
-                    f.write(raw)
-                meta = {
-                    "box_swne": box, "query": query, "mirror": mirror, "fetched": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-                    "osm_base": doc.get("osm3s", {}).get("timestamp_osm_base"), "ways": len(ways), "bytes": len(raw),
-                }
-                with open(out.replace(".json", ".meta.json"), "w", encoding="utf-8") as f:
-                    json.dump(meta, f, ensure_ascii=False, indent=1)
-                print(f"[osm] {name}: way {len(ways)}개, {len(raw)} bytes, {mirror}")
-                return out
-            except Exception as ex:  # 502/406/429 가 실제로 난다 — 다음 시도/미러로
+                if need_elements and not doc.get("elements"):
+                    raise ValueError("요소 0개")
+                return raw, mirror, errors
+            except Exception as ex:
                 errors.append(f"{mirror} #{attempt + 1}: {ex}")
                 time.sleep(5 * (attempt + 1))
-    raise RuntimeError(f"[osm] {name} 실패:\n  " + "\n  ".join(errors))
+    return None, None, errors
+
+
+def fetch_buildings_tiled(tag, out, box, tiles=4):
+    """상자 A 한 번에 물으면 서버가 502/500(2026-10-20 실측) → tiles×tiles 칸으로 나눠 받고 (type,id) 로 중복 제거해 합친다."""
+    s, w, n, e = box
+    elems, seen, queries, mirrors, base = [], set(), [], set(), None
+    for j in range(tiles):
+        for i in range(tiles):
+            ts, tn = s + (n - s) * j / tiles, s + (n - s) * (j + 1) / tiles
+            tw, te = w + (e - w) * i / tiles, w + (e - w) * (i + 1) / tiles
+            q = f'[out:json][timeout:120];(way["building"]({ts:.6f},{tw:.6f},{tn:.6f},{te:.6f});relation["building"]({ts:.6f},{tw:.6f},{tn:.6f},{te:.6f}););out body geom;'
+            raw, mirror, errors = overpass(q, need_elements=False)
+            if raw is None:
+                raise RuntimeError(f"[osm] {tag} 칸 {i},{j} 실패:\n  " + "\n  ".join(errors))
+            doc = json.loads(raw)
+            base = base or doc.get("osm3s", {}).get("timestamp_osm_base")
+            k0 = len(elems)
+            for el in doc.get("elements", []):
+                key = (el.get("type"), el.get("id"))
+                if key not in seen:
+                    seen.add(key); elems.append(el)
+            queries.append(q); mirrors.add(mirror)
+            print(f"[osm] {tag} 칸 {i},{j}: 새 요소 {len(elems) - k0}")
+            time.sleep(2)
+    if not elems:
+        raise RuntimeError(f"[osm] {tag}: 건물 0개")
+    doc = {"version": 0.6, "generator": "fetch_sources.py tiled merge", "osm3s": {"timestamp_osm_base": base, "copyright": "© OpenStreetMap contributors, ODbL"}, "elements": elems}
+    raw = json.dumps(doc, ensure_ascii=False).encode("utf-8")
+    with open(out, "wb") as f:
+        f.write(raw)
+    meta = {"box_swne": box, "tiles": f"{tiles}x{tiles}", "queries": queries, "mirrors": sorted(mirrors), "fetched": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "osm_base": base, "ways": sum(1 for x in elems if x["type"] == "way"), "relations": sum(1 for x in elems if x["type"] == "relation"), "bytes": len(raw),
+            "license": "© OpenStreetMap contributors, ODbL"}
+    with open(out.replace(".json", ".meta.json"), "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=1)
+    print(f"[osm] {tag}: way {meta['ways']} · relation {meta['relations']} · {len(raw)} bytes")
+    return out
 
 
 def fetch_dem():
@@ -121,6 +173,11 @@ if __name__ == "__main__":
             print(ex)
             failed = True
         time.sleep(2)  # Overpass 예의
+    try:
+        fetch_osm("structure_a", BOXES["structure_a"], "buildings")   # 조각 10(D-114): 실제 건물 윤곽
+    except Exception as ex:
+        print(ex)
+        failed = True
     try:
         fetch_dem()
     except Exception as ex:

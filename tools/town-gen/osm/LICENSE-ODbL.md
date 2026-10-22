@@ -10,3 +10,7 @@
 
 ## 가공 내용 (E1~E2 에서 채움)
 - (아직 없음)
+
+## 조각 10 (D-114, 2026-10-20) — 건물 윤곽
+- `structure_a_buildings_2026-10-19.json` — 상자 A(40.6130, 14.5690, 40.6375, 14.6060) `way/relation["building"]`, 4×4 칸으로 나눠 받아 합침(한 번에 물으면 502). way 767 · relation 1. 쿼리·미러·OSM 기준 시각은 `.meta.json`
+- 가공본 `out/structure_a/buildings.json`(로컬 m 윤곽·층수·구역)도 ODbL 파생 DB. 씬 크레딧 오브젝트 "© OpenStreetMap contributors (ODbL)" 유지

@@ -1,0 +1,1 @@
+{"query": "[out:json][timeout:60];node[\"place\"~\"village|town|hamlet\"](40.6130,14.5690,40.6375,14.6060);out body;", "mirror": "https://overpass-api.de/api/interpreter", "fetched": "2026-10-19T20:28:41", "license": "ODbL"}

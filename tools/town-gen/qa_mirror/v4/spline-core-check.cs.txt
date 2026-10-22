@@ -1,0 +1,24 @@
+var s=(PitCrew.TownGen.SplineTownSettings)typeof(TownGenSpline).GetMethod("LoadSettings",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic).Invoke(null,null);
+var widths=new System.Collections.Generic.List<float>();var depths=new System.Collections.Generic.List<float>();
+var centersX=new System.Collections.Generic.List<float>();var centersZ=new System.Collections.Generic.List<float>();
+foreach(var n in new[]{"CoastalHouse","CoastalHouseB","CoastalHouseC","CoastalHouseD","CoastalHouseE","CoastalHouseF","CornerShop","CornerShopB","CornerShopC","RepairGarage","RepairGarageB"}) {
+var go=UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/LofiPilot/"+n+".prefab");if(go==null)continue;var rr=go.GetComponentsInChildren<Renderer>();var b=rr[0].bounds;foreach(var r in rr)b.Encapsulate(r.bounds);widths.Add(b.size.x);depths.Add(b.size.z);centersX.Add(b.center.x);centersZ.Add(b.center.z);}
+s.houseModelWidths=widths.ToArray();s.houseModelDepths=depths.ToArray();
+s.houseModelCenterX=centersX.ToArray();s.houseModelCenterZ=centersZ.ToArray();
+var suffix=string.IsNullOrEmpty(s.inputVariant)?"":"_"+s.inputVariant;
+var hd=Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("../tools/town-gen/out/heights_480x400"+suffix+".json"));
+var heights=hd["heights_m"].ToObject<float[]>();
+var hf=new PitCrew.TownGen.GridHeightField(heights,(int)hd["nx"],(int)hd["nz"],(double)hd["step_m"],(double)hd["step_m"]);
+var nd=Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("../tools/town-gen/out/osm_network"+suffix+".json"));
+var ways=new System.Collections.Generic.List<PitCrew.TownGen.OsmWay>();
+foreach(var sg in nd["segments"]){var w=new PitCrew.TownGen.OsmWay{highway=(string)sg["highway"]??"",wayId=(long?)sg["osm_way"]??0};foreach(var p in sg["points_m"])w.points.Add(new PitCrew.TownGen.Vec2((double)p[0],(double)p[1]));ways.Add(w);}
+var hashes=new System.Collections.Generic.List<string>();
+for(int i=0;i<2;i++){
+ var result=PitCrew.TownGen.SplineTown.Build(ways,hf,s);
+ var payload=Newtonsoft.Json.JsonConvert.SerializeObject(new{settings=s,nodes=result.nodes,nodeY=result.nodeY,edges=result.edges,terrain=result.terrain,houses=result.houses,walls=result.walls});
+ using(var sha=System.Security.Cryptography.SHA256.Create())hashes.Add(System.BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(payload))).Replace("-",""));
+ if(i==0)System.IO.File.WriteAllText("../tools/town-gen/out/qa_v4/spline-core-rebuilt.json",payload);
+}
+var msg="geometry SHA256="+string.Join(" / ",hashes)+" equal="+(hashes[0]==hashes[1])+" sceneDirty="+UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty;
+System.IO.File.WriteAllText("../tools/town-gen/out/qa_v4/spline-determinism.txt",msg);
+return msg;

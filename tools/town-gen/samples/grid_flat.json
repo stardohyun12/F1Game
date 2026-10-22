@@ -1,0 +1,18 @@
+{ "source": "test", "seed": 0, "bounds_m": [480, 400],
+  "segments": [
+    { "id": 1,  "class": "major", "points_m": [[4, 20], [476, 20]] },
+    { "id": 2,  "class": "major", "points_m": [[244, 20], [244, 396]] },
+    { "id": 3,  "class": "minor", "points_m": [[12, 100], [468, 100]] },
+    { "id": 4,  "class": "minor", "points_m": [[12, 180], [468, 180]] },
+    { "id": 5,  "class": "minor", "points_m": [[12, 260], [468, 260]] },
+    { "id": 6,  "class": "minor", "points_m": [[12, 340], [468, 340]] },
+    { "id": 7,  "class": "minor", "points_m": [[84, 20], [84, 340]] },
+    { "id": 8,  "class": "minor", "points_m": [[164, 20], [164, 340]] },
+    { "id": 9,  "class": "minor", "points_m": [[324, 20], [324, 340]] },
+    { "id": 10, "class": "minor", "points_m": [[404, 20], [404, 340]] },
+    { "id": 11, "class": "alley", "points_m": [[20, 340], [20, 392], [116, 392]] },
+    { "id": 12, "class": "steps", "points_m": [[300, 360], [300, 392]] },
+    { "id": 13, "class": "path",  "points_m": [[440, 360], [470, 390]] },
+    { "id": 14, "class": "minor", "points_m": [[100, 220], [140, 260]] }
+  ],
+  "landmarks_hint": [] }

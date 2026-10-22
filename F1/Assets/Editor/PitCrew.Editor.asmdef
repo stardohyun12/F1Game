@@ -9,7 +9,9 @@
         "Unity.RenderPipelines.Core.Runtime",
         "Unity.Recorder.Editor",
         "Unity.Recorder.Base",
-        "Whinarn.UnityMeshSimplifier.Runtime"
+        "Whinarn.UnityMeshSimplifier.Runtime",
+        "TownGen.Core",
+        "RoadGen.Editor"
     ],
     "includePlatforms": [
         "Editor"

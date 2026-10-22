@@ -1,0 +1,8 @@
+{ "source": "test", "seed": 0, "bounds_m": [240, 96],
+  "segments": [
+    { "id": 1, "class": "major",   "points_m": [[4, 20], [100, 20]] },
+    { "id": 2, "class": "minor",   "points_m": [[140, 20], [236, 20]] },
+    { "id": 3, "class": "footway", "points_m": [[100, 20], [140, 20]] },
+    { "id": 4, "class": "minor",   "points_m": [[60, 76], [180, 76]] },
+    { "id": 5, "class": "footway", "points_m": [[60, 68], [60, 76]] }
+  ] }
