@@ -6,6 +6,7 @@
 - result.json: 마지막 결과 요약(성공 여부·비용·최종 답·세션 id)
 """
 import json
+import os
 import sys
 import time
 
@@ -51,9 +52,14 @@ for raw in sys.stdin:
             elif c.get("type") == "tool_use":
                 out("🔧 " + tool_brief(c.get("name", "?"), c.get("input", {})))
     elif t == "result":
+        cum = ev.get("total_cost_usd") or 0
+        prev = float(os.environ.get("TEAM_PREV_COST") or 0)
+        task_cost = cum - prev if cum >= prev else cum  # resume 세션은 누적값을 준다
         result.update(ok=ev.get("subtype") == "success" and not ev.get("is_error"), final=ev.get("result", ""),
-                      cost_usd=ev.get("total_cost_usd"), session_id=ev.get("session_id") or result["session_id"])
-        out(f"끝: {'❌ 오류' if ev.get('is_error') else ev.get('subtype')} · {ev.get('num_turns')}턴 · ${ev.get('total_cost_usd') or 0:.2f}")
+                      cost_usd=round(task_cost, 4), session_cost_usd=cum,
+                      session_id=ev.get("session_id") or result["session_id"])
+        out(f"끝: {'❌ 오류' if ev.get('is_error') else ev.get('subtype')} · {ev.get('num_turns')}턴 · "
+            f"이번 ${task_cost:.2f} (세션 누적 ${cum:.2f})")
     # ---- Codex exec --json ----
     elif t == "thread.started":
         result["session_id"] = ev.get("thread_id")

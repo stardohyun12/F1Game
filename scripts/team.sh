@@ -62,8 +62,9 @@ $PROMPT"
 else
   # ---- Claude Code ----
   EXTRA_TOOLS=""; [ "$ROLE" = "research" ] && EXTRA_TOOLS="WebSearch WebFetch"
-  if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")")
-  else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); fi
+  COSTFILE=".claude/team/sessions/$ROLE.cost"
+  if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")"); export TEAM_PREV_COST=$(cat "$COSTFILE" 2>/dev/null || echo 0)
+  else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); export TEAM_PREV_COST=0; fi
   # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
   claude -p "$PROMPT" "${SESS[@]}" \
     --model "${TEAM_MODEL:-${C_MODEL:-sonnet}}" ${C_EFFORT:+--effort "$C_EFFORT"} \
@@ -81,6 +82,7 @@ else
     | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
 fi
 
+if [ "$ROLE" != "art" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d '' > ".claude/team/sessions/$ROLE.cost"; fi
 python - "$RESULT" <<'EOF'
 import json,sys
 try: d=json.load(open(sys.argv[1],encoding="utf-8"))

@@ -107,6 +107,7 @@ def reset_session(role):
     p = ROOT / f".claude/team/sessions/{role}.id"
     if p.exists():
         p.unlink()
+    (ROOT / f".claude/team/sessions/{role}.cost").unlink(missing_ok=True)
     return True, "기억을 지웠어요. 다음 과제부터 새 대화로 시작해요."
 
 
