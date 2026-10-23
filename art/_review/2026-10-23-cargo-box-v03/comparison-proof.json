@@ -1,0 +1,20 @@
+{
+  "same_geometry": true,
+  "reference_scene_overlay_xywh": [
+    776,
+    625,
+    126,
+    114
+  ],
+  "downscale": "BOX to exactly480x270; nearest integer2x/3x display",
+  "camera": "same Blender orthographic match; NOT Unity runtime camera",
+  "haze_rgb": [
+    163,
+    179,
+    176
+  ],
+  "haze_mix": 0.025,
+  "contact_shadow": "identical review-only ellipse; not baked asset texture",
+  "foreground_mask": "low-chroma source rail pixels within explicit polygons",
+  "64_density_approved": false
+}

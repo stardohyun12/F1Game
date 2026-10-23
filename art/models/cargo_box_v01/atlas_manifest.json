@@ -1,0 +1,129 @@
+{
+  "name": "cargo_box_v01",
+  "dimensions_whd_m": [
+    0.4,
+    0.3,
+    0.3
+  ],
+  "dimension_basis": "TART manufacturer external 400x300x300mm; not physically measured by us",
+  "texture": "cargo_box_atlas_64.png",
+  "texture_size": [
+    64,
+    64
+  ],
+  "density_target": 32,
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        2,
+        2,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "density_xy": [
+        32.5,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/front.json"
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        19,
+        2,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "density_xy": [
+        32.5,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/back.json"
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        36,
+        2,
+        10,
+        10
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "density_xy": [
+        33.333333333333336,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/right.json"
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        49,
+        2,
+        10,
+        10
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "density_xy": [
+        33.333333333333336,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/left.json"
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        2,
+        18,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "density_xy": [
+        32.5,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/top.json"
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        19,
+        18,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "density_xy": [
+        32.5,
+        33.333333333333336
+      ],
+      "source_metadata": "patches/bottom.json"
+    }
+  ],
+  "source_photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "font": "Galmuri7 8px, real route number 1; no AI text",
+  "artwork_provenance": "CC0 Surface Photogrammetry photo + scripted label/tape/arrows only. Reference image used solely to sample palette."
+}

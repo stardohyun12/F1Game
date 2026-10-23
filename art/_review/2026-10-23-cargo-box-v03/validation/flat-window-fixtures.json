@@ -1,0 +1,454 @@
+{
+  "pass": true,
+  "fixture_count": 9,
+  "results": [
+    {
+      "fixture": "solid_face_fails",
+      "expected_pass": false,
+      "observed": {
+        "status": "checked",
+        "pass": false,
+        "window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 9,
+        "flat_window_count": 9,
+        "flat_windows": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              4,
+              8,
+              8
+            ]
+          }
+        ],
+        "regions": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              10,
+              10
+            ],
+            "window_count": 9,
+            "minimum_colors": 1,
+            "flat_window_count": 9
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha."
+      }
+    },
+    {
+      "fixture": "two_color_variation_passes",
+      "expected_pass": true,
+      "observed": {
+        "status": "checked",
+        "pass": true,
+        "window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 9,
+        "flat_window_count": 0,
+        "flat_windows": [],
+        "regions": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              10,
+              10
+            ],
+            "window_count": 9,
+            "minimum_colors": 2,
+            "flat_window_count": 0
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha."
+      }
+    },
+    {
+      "fixture": "outside_region_cannot_rescue",
+      "expected_pass": false,
+      "observed": {
+        "status": "checked",
+        "pass": false,
+        "window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 9,
+        "flat_window_count": 9,
+        "flat_windows": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              4,
+              8,
+              8
+            ]
+          }
+        ],
+        "regions": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              10,
+              10
+            ],
+            "window_count": 9,
+            "minimum_colors": 1,
+            "flat_window_count": 9
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha."
+      }
+    },
+    {
+      "fixture": "adjacent_faces_are_isolated",
+      "expected_pass": false,
+      "observed": {
+        "status": "checked",
+        "pass": false,
+        "window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 2,
+        "flat_window_count": 2,
+        "flat_windows": [
+          {
+            "face": "a",
+            "rect_xywh": [
+              0,
+              0,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "b",
+            "rect_xywh": [
+              8,
+              0,
+              8,
+              8
+            ]
+          }
+        ],
+        "regions": [
+          {
+            "face": "a",
+            "rect_xywh": [
+              0,
+              0,
+              8,
+              8
+            ],
+            "window_count": 1,
+            "minimum_colors": 1,
+            "flat_window_count": 1
+          },
+          {
+            "face": "b",
+            "rect_xywh": [
+              8,
+              0,
+              8,
+              8
+            ],
+            "window_count": 1,
+            "minimum_colors": 1,
+            "flat_window_count": 1
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha."
+      }
+    },
+    {
+      "fixture": "all_windows_not_only_whole_face",
+      "expected_pass": false,
+      "observed": {
+        "status": "checked",
+        "pass": false,
+        "window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 9,
+        "flat_window_count": 8,
+        "flat_windows": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              2,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              3,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              3,
+              4,
+              8,
+              8
+            ]
+          },
+          {
+            "face": "front",
+            "rect_xywh": [
+              4,
+              4,
+              8,
+              8
+            ]
+          }
+        ],
+        "regions": [
+          {
+            "face": "front",
+            "rect_xywh": [
+              2,
+              2,
+              10,
+              10
+            ],
+            "window_count": 9,
+            "minimum_colors": 1,
+            "flat_window_count": 8
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha."
+      }
+    },
+    {
+      "fixture": "tiny_region_rejected",
+      "expected_error": true,
+      "error": "Invalid or smaller-than-window surface region: tiny"
+    },
+    {
+      "fixture": "out_of_bounds_rejected",
+      "expected_error": true,
+      "error": "Invalid or smaller-than-window surface region: bad"
+    },
+    {
+      "fixture": "transparent_main_face_rejected",
+      "expected_error": true,
+      "error": "Main surface must be opaque: front"
+    },
+    {
+      "fixture": "no_regions_rejected",
+      "expected_error": true,
+      "error": "Surface check needs regions and a positive window"
+    }
+  ]
+}

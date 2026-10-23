@@ -1,0 +1,219 @@
+{
+  "pass": false,
+  "original_assets_unchanged": true,
+  "original_sha256": {
+    "model": "5a557afe2d2af10f2077c0e7167a144c846cbf6da15a9154ffa520a3be2213cb",
+    "texture": "7d94a5183e8096a687127248702158c34d87538fb30c3e4f3ee2cb5af74e758b"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "expected_behavior_observed": true,
+      "exit_code": 0,
+      "expected_failed_check": null,
+      "failed_checks": [],
+      "report": "baseline.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_v01.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_atlas_64.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\baseline.json"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "outside_palette",
+      "expected_behavior_observed": false,
+      "exit_code": 1,
+      "expected_failed_check": "palette_outside_zero",
+      "failed_checks": [],
+      "report": "outside_palette.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_v01.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\INVALID_palette_color.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\outside_palette.json"
+      ],
+      "stderr": "Traceback (most recent call last):\n  File \"D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py\", line 93, in <module>\n    if __name__=='__main__':sys.exit(main())\n                                     ~~~~^^\n  File \"D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py\", line 91, in main\n    Path(args.out).parent.mkdir(parents=True,exist_ok=True);Path(args.out).write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')\n                                                                                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\json\\__init__.py\", line 242, in dumps\n    **kw).encode(obj)\n          ~~~~~~^^^^^\n  File \"C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\json\\encoder.py\", line 202, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n  File \"C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\json\\encoder.py\", line 263, in iterencode\n    return _iterencode(o, 0)\n  File \"C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\json\\encoder.py\", line 182, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\n                    f'is not JSON serializable')\nTypeError: Object of type uint8 is not JSON serializable\n"
+    },
+    {
+      "name": "non_power_of_two",
+      "expected_behavior_observed": true,
+      "exit_code": 1,
+      "expected_failed_check": "texture_power_of_two",
+      "failed_checks": [
+        "texture_power_of_two",
+        "texture_is_64",
+        "embedded_texture_matches_png"
+      ],
+      "report": "non_power_of_two.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_v01.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\INVALID_63x64.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\non_power_of_two.json"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "wrong_target_density",
+      "expected_behavior_observed": true,
+      "exit_code": 1,
+      "expected_failed_check": "density_both_principal_axes",
+      "failed_checks": [
+        "density_both_principal_axes"
+      ],
+      "report": "wrong_target_density.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_v01.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_atlas_64.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\wrong_target_density.json",
+        "--density",
+        "64"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "triangle_budget_10",
+      "expected_behavior_observed": true,
+      "exit_code": 1,
+      "expected_failed_check": "triangle_budget",
+      "failed_checks": [
+        "triangle_budget"
+      ],
+      "report": "triangle_budget_10.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_v01.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_atlas_64.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\triangle_budget_10.json",
+        "--max-tris",
+        "10"
+      ],
+      "stderr": ""
+    },
+    {
+      "name": "nonuniform_scale",
+      "expected_behavior_observed": true,
+      "exit_code": 1,
+      "expected_failed_check": "density_both_principal_axes",
+      "failed_checks": [
+        "density_both_principal_axes"
+      ],
+      "report": "nonuniform_scale.json",
+      "command": [
+        "C:\\Users\\rtx40\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "D:\\Github\\F1Game\\tools\\asset-gen\\check_asset.py",
+        "--model",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\INVALID_nonuniform_scale.glb",
+        "--texture",
+        "D:\\Github\\F1Game\\art\\models\\cargo_box_v01\\cargo_box_atlas_64.png",
+        "--palette",
+        "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.gpl",
+        "--out",
+        "D:\\Github\\F1Game\\art\\_review\\2026-10-23-cargo-box\\negative-tests\\nonuniform_scale.json",
+        "--dimensions",
+        ".8",
+        ".15",
+        ".3"
+      ],
+      "stderr": ""
+    }
+  ],
+  "area_only_false_positive_examples": [
+    {
+      "triangle": 0,
+      "before_axes": [
+        32.49999951571227,
+        33.333332008785725
+      ],
+      "after_axes": [
+        16.249999757856134,
+        66.66666401757145
+      ],
+      "geometric_mean": 32.91402853104755
+    },
+    {
+      "triangle": 1,
+      "before_axes": [
+        32.49999951571227,
+        33.33333200878572
+      ],
+      "after_axes": [
+        16.249999757856127,
+        66.66666401757146
+      ],
+      "geometric_mean": 32.91402853104755
+    },
+    {
+      "triangle": 2,
+      "before_axes": [
+        32.49999951571227,
+        33.333332008785725
+      ],
+      "after_axes": [
+        16.249999757856134,
+        66.66666401757145
+      ],
+      "geometric_mean": 32.91402853104755
+    },
+    {
+      "triangle": 3,
+      "before_axes": [
+        32.49999951571227,
+        33.33333200878572
+      ],
+      "after_axes": [
+        16.249999757856127,
+        66.66666401757146
+      ],
+      "geometric_mean": 32.91402853104755
+    }
+  ],
+  "baseline_measurements": {
+    "tris": 12,
+    "dimensions_m": [
+      0.4000000059604645,
+      0.30000001192092896,
+      0.30000001192092896
+    ],
+    "density_min": 32.49999951571227,
+    "density_max": 33.33333200878573,
+    "texture_size": [
+      64,
+      64
+    ]
+  },
+  "note": "Deliberately invalid regression fixtures, not production assets."
+}

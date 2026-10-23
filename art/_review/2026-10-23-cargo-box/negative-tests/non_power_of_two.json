@@ -1,0 +1,329 @@
+{
+  "shape": "box",
+  "main_face_uv_regions": [
+    {
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "area_m2": 0.04500000357627876,
+      "uv_pixel_bounds": [
+        [
+          48.234375,
+          2.0
+        ],
+        [
+          58.078125,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "area_m2": 0.04500000357627876,
+      "uv_pixel_bounds": [
+        [
+          35.4375,
+          2.0
+        ],
+        [
+          45.28125,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "area_m2": 0.0600000032782555,
+      "uv_pixel_bounds": [
+        [
+          18.703125,
+          18.0
+        ],
+        [
+          31.5,
+          28.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      "area_m2": 0.0600000032782555,
+      "uv_pixel_bounds": [
+        [
+          1.96875,
+          18.0
+        ],
+        [
+          14.765625,
+          28.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "area_m2": 0.0600000032782555,
+      "uv_pixel_bounds": [
+        [
+          18.703125,
+          2.0
+        ],
+        [
+          31.5,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "area_m2": 0.0600000032782555,
+      "uv_pixel_bounds": [
+        [
+          1.96875,
+          2.0
+        ],
+        [
+          14.765625,
+          12.0
+        ]
+      ]
+    }
+  ],
+  "main_face_uv_overlaps": [],
+  "pass": false,
+  "checks": {
+    "palette_outside_zero": true,
+    "texture_power_of_two": false,
+    "texture_is_64": false,
+    "triangle_budget": true,
+    "density_both_principal_axes": true,
+    "embedded_texture_matches_png": false,
+    "point_sampling": true,
+    "six_distinct_face_regions": true,
+    "material_no_normal_or_metal": true,
+    "dimensions_metres": true,
+    "pivot_floor_center": true,
+    "provenance_registered_non_ai": false
+  },
+  "palette_colors": 32,
+  "used_colors": 9,
+  "outside_color_count": 0,
+  "outside_colors": [],
+  "texture_size": [
+    63,
+    64
+  ],
+  "tris": 12,
+  "density_target": 32,
+  "density_tolerance": 0.1,
+  "density_min": 31.992187023279254,
+  "density_max": 33.333332008785725,
+  "per_triangle_density": [
+    [
+      31.992187023279264,
+      33.333332008785725
+    ],
+    [
+      31.992187023279254,
+      33.333332008785725
+    ],
+    [
+      31.992187023279264,
+      33.333332008785725
+    ],
+    [
+      31.992187023279254,
+      33.333332008785725
+    ],
+    [
+      32.812498696148445,
+      33.333332008785725
+    ],
+    [
+      32.81249869614845,
+      33.33333200878572
+    ],
+    [
+      32.812498696148445,
+      33.333332008785725
+    ],
+    [
+      32.81249869614845,
+      33.33333200878572
+    ],
+    [
+      31.992187023279264,
+      33.333332008785725
+    ],
+    [
+      31.992187023279254,
+      33.333332008785725
+    ],
+    [
+      31.992187023279264,
+      33.333332008785725
+    ],
+    [
+      31.992187023279254,
+      33.333332008785725
+    ]
+  ],
+  "dimensions_m": [
+    0.4000000059604645,
+    0.30000001192092896,
+    0.30000001192092896
+  ],
+  "bounds_min": [
+    -0.20000000298023224,
+    0.0,
+    -0.15000000596046448
+  ],
+  "bounds_max": [
+    0.20000000298023224,
+    0.30000001192092896,
+    0.15000000596046448
+  ],
+  "face_uv_regions": [
+    {
+      "normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "area_m2": 0.120000006556511,
+      "uv_pixel_bounds": [
+        [
+          1.96875,
+          2.0
+        ],
+        [
+          14.765625,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "area_m2": 0.120000006556511,
+      "uv_pixel_bounds": [
+        [
+          18.703125,
+          2.0
+        ],
+        [
+          31.5,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "area_m2": 0.09000000715255752,
+      "uv_pixel_bounds": [
+        [
+          35.4375,
+          2.0
+        ],
+        [
+          45.28125,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "area_m2": 0.09000000715255752,
+      "uv_pixel_bounds": [
+        [
+          48.234375,
+          2.0
+        ],
+        [
+          58.078125,
+          12.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      "area_m2": 0.120000006556511,
+      "uv_pixel_bounds": [
+        [
+          1.96875,
+          18.0
+        ],
+        [
+          14.765625,
+          28.0
+        ]
+      ]
+    },
+    {
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "area_m2": 0.120000006556511,
+      "uv_pixel_bounds": [
+        [
+          18.703125,
+          18.0
+        ],
+        [
+          31.5,
+          28.0
+        ]
+      ]
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9728,
+      "minFilter": 9984,
+      "wrapS": 33071,
+      "wrapT": 33071
+    }
+  ],
+  "material_issues": [],
+  "model_sha256": "972a8152dec2c54b68f92947e969a29fc7d9ee688cf8824d8a532dc30c4fddb0",
+  "texture_sha256": "9e8457986c927f1ee6f946ea6d7e7a50a98136f9e40bbc31d380f32311cb4ef7",
+  "method": "GLB binary accessor positions + node transforms; singular values of world-to-UV-pixel Jacobian per triangle. Not metadata claims."
+}

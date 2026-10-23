@@ -1,0 +1,31 @@
+{
+  "camera_source": "F1/Assets/ComplexTrack.unity serialized FollowCamera values, read only",
+  "unity_offset": [
+    0,
+    2.1,
+    -5
+  ],
+  "look_height": 1.05,
+  "vertical_fov_degrees": 56,
+  "output_px": [
+    1280,
+    720
+  ],
+  "cargo_mount_assumption_m": [
+    0,
+    -0.35,
+    0.77
+  ],
+  "proxy_vehicle_dimensions_m": [
+    1.8,
+    3.8,
+    0.6
+  ],
+  "projected_box_bounds_px": [
+    610.6621932983398,
+    362.9694414138794,
+    669.3378448486328,
+    414.54121828079224
+  ],
+  "runtime_verified": false
+}

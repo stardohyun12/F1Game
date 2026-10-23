@@ -1,0 +1,17 @@
+{
+  "ambient_and_montage_haze": [
+    0.64,
+    0.7,
+    0.69
+  ],
+  "haze_mix": 0.025,
+  "sun_color": [
+    1,
+    0.91,
+    0.77
+  ],
+  "sun_energy": 2.3,
+  "exposure": 0.35,
+  "scene_angle": "orthographic scene-match montage; not engine capture",
+  "runtime_verified": false
+}

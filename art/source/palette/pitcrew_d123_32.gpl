@@ -1,0 +1,36 @@
+GIMP Palette
+Name: PitCrew D123 Shared 32
+Columns: 8
+# All swatches sampled from approved reference; see JSON coordinates.
+196 166 135	scene_00
+105  98  99	scene_01
+ 55  53  47	scene_02
+136 162 192	scene_03
+151 130 106	scene_04
+ 82  83  80	scene_05
+ 35  31  27	scene_06
+113 106 101	scene_07
+101  94  94	scene_08
+ 72  70  66	scene_09
+110 102 100	scene_10
+101  96  95	scene_11
+ 96  89  89	scene_12
+174 188 202	scene_13
+203 212 222	scene_14
+121  82  68	scene_15
+168 136 104	scene_16
+136 121  99	scene_17
+103 123 128	scene_18
+196 199 201	scene_19
+110  99  96	scene_20
+112  81  46	carton_dark
+150 117  72	carton_mid
+184 147  96	carton_light
+123  86  47	tape
+228 214 191	label
+ 48  54  47	ink
+ 62  74  45	wine
+138  70  49	stamp
+137 112  68	paper_fold
+146 119  76	paper_fibre
+160 131  85	paper_flat
