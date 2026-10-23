@@ -834,7 +834,7 @@ namespace PitCrew.Packing
             if (rightPanel != null) rightPanel.SetActive(false);
             if (prevBtn != null) prevBtn.gameObject.SetActive(false);
             if (nextBtn != null) nextBtn.gameObject.SetActive(false);
-            if (titleText != null) titleText.text = "트렁크에 배치 — 드래그 · 잡은 채 A/D·W/S 회전";
+            if (titleText != null) titleText.text = "트렁크에 배치 — 드래그로 옮기기";
             if (goButtonLabel != null) goButtonLabel.text = "출발";
         }
 
@@ -927,6 +927,11 @@ namespace PitCrew.Packing
             sideChByItem.Clear();
         }
 
+        /// <summary>포장비 상한 = 주문 baseReward × 이 값 (가설 0.4).</summary>
+        const float PackCostCapOfReward = 0.4f;
+
+        public static readonly Quaternion FrontFacingRotation = Quaternion.Euler(0f, 180f, 0f);
+
         void SpawnItem(int idx)
         {
             var ctype = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
@@ -957,7 +962,11 @@ namespace PitCrew.Packing
             go.name = $"PackingItem_{idx}";
             if (cargoSpawnPoint != null) go.transform.SetParent(cargoSpawnPoint, false);
             go.transform.localPosition = Vector3.zero;
-            go.AddComponent<WrapState>();
+            // 화물 앞 = +Z, 포장 카메라는 +Z 를 바라봄 → 180° 돌려 첫 화면에서 앞면이 카메라를 보게 한다.
+            go.transform.localRotation = FrontFacingRotation;
+            var wrapState = go.AddComponent<WrapState>();
+            if (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
+                wrapState.CostCap = currentOrders[idx].baseReward * PackCostCapOfReward;
             go.AddComponent<WrapPainter>();
             // painter.Init은 ActivateItem → WirePainterFor에서 처리 (3D 리본이 표면 위에 올라탐)
 

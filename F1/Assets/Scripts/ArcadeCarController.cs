@@ -163,6 +163,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         var stageRc = Services.Run as RunController;
         if (stageRc == null || stageRc.CurrentStage != RunStage.Driving)
         {
+            safePoints.Clear();
             if (rb != null)
             {
                 rb.linearVelocity = Vector3.zero;
@@ -170,6 +171,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
             }
             return;
         }
+
+        // 맵 끝 추락 복구 — 마지막 도로 지점으로 리스폰(화물 약간 손상).
+        if (rb.position.y < fallRespawnY) RespawnAtSafePoint();
 
         // TOP 1: 입력 SmoothDamp (세션 14 리서치) — steer/throttle에 자연 지연
         smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, steerLag);
@@ -183,6 +187,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         // 트리거(DeliveryPoint SphereCollider 등) 무시 — 트리거 위에서 grounded 오판 차단.
         isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
         IsDrifting = (handbrakeAction != null && handbrakeAction.IsPressed()) || qaForceHandbrake;
+        RecordSafePoint();
 
         if (IsDrifting && !wasDrifting)
         {
@@ -212,6 +217,44 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         ApplyDriftDrag(forwardSpeed);
         ApplyAirDrag(forwardSpeed);
         ApplyDownforce(forwardSpeed);
+    }
+
+    // ── 추락 복구 ──
+    [Header("추락 복구")]
+    [Tooltip("이 높이 아래로 떨어지면 마지막 안전 지점으로 되돌림.")]
+    [SerializeField] private float fallRespawnY = -20f;
+    [Tooltip("리스폰 때 화물에 주는 손상(HP 100 기준).")]
+    [SerializeField] private float fallRespawnCargoDamage = 8f;
+    [Tooltip("안전 지점 샘플 간격(초). 리스폰은 가장 오래된 샘플(≈간격×개수 전)로 — 낭떠러지 끝자락을 피함.")]
+    [SerializeField] private float safePointInterval = 0.25f;
+    private const int SafePointCount = 4; // 8개(2초)였을 땐 낙하 2초가 더해져 ~90m 뒤로 돌아갔다
+    private readonly System.Collections.Generic.Queue<(Vector3 pos, Quaternion rot)> safePoints =
+        new System.Collections.Generic.Queue<(Vector3, Quaternion)>(SafePointCount + 1);
+    private float nextSafePointTime;
+
+    void RecordSafePoint()
+    {
+        if (!isGrounded || Time.time < nextSafePointTime || rb.position.y < fallRespawnY + 15f) return;
+        nextSafePointTime = Time.time + safePointInterval;
+        var yawRot = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+        safePoints.Enqueue((rb.position + Vector3.up * 0.3f, yawRot));
+        while (safePoints.Count > SafePointCount) safePoints.Dequeue();
+    }
+
+    void RespawnAtSafePoint()
+    {
+        if (safePoints.Count == 0) return; // 샘플 없음(런 시작 직후) — 아무것도 안 함
+        var sp = safePoints.Peek();
+        rb.position = sp.pos;
+        rb.rotation = sp.rot;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        smoothedMove = Vector2.zero; smoothVel = Vector2.zero;
+        Physics.SyncTransforms();
+        safePoints.Clear();
+        nextSafePointTime = Time.time + 1f;
+        (Services.Cargo as CargoBox)?.ApplyExternalDamage(fallRespawnCargoDamage, 20f);
+        Debug.Log($"[ArcadeCarController] 추락 복구 → {sp.pos}");
     }
 
     /// <summary>D-122 — 속도² 비례로 차를 바닥에 누른다(고속 안정, F1 다운포스 느낌).</summary>

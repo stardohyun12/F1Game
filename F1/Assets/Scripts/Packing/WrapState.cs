@@ -78,8 +78,13 @@ namespace PitCrew.Packing
         public void AccumulateCost(int channelIndex, float amount)
         {
             if (channelIndex < 0 || channelIndex > 2) return;
-            CostByChannel[channelIndex] += amount;
+            // 포장비 상한(주문 보상의 40%, 가설) — 다 감아도 보상보다 비싸지지 않게. 상한에 닿으면 이후 면적은 무료.
+            float room = Mathf.Max(0f, CostCap - TotalCost);
+            CostByChannel[channelIndex] += Mathf.Min(amount, room);
         }
+
+        /// <summary>이 화물 포장비 총합 상한(₩). PackingScreen 이 주문 보상 × 0.4 로 넣는다.</summary>
+        public float CostCap = float.PositiveInfinity;
 
         public float TotalCost => CostByChannel[0] + CostByChannel[1] + CostByChannel[2];
 

@@ -1,0 +1,183 @@
+{
+  "same_manifest_as_d121": true,
+  "sprite_count": 10,
+  "size_pass_count": 10,
+  "rgba_count": 10,
+  "sprites": [
+    {
+      "slot": "paperPanel",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "ba4d47158b6bdbb4a000d0365c018876d5dc19218ff5ba261720505a3e270b83"
+    },
+    {
+      "slot": "paperCard",
+      "size": [
+        256,
+        320
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "947f871edc09e7fbc877c4088d1ea7ede9d8c07c043a0f55a256c582c68adc29"
+    },
+    {
+      "slot": "slipHeader",
+      "size": [
+        256,
+        64
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "f4e680485f5e6fa1ee25bff053012dd245b8cd294c11d67a139b4e59f7feea30"
+    },
+    {
+      "slot": "stampRing",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        0,
+        250
+      ],
+      "sha256": "5e27d3c53a3fe05b2ede1481ac708bb9d90cb9960439666606e16a694647f8d9"
+    },
+    {
+      "slot": "buttonPlate",
+      "size": [
+        256,
+        80
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "511021e10901e0a2dbed5da5d49ab1aae9ff2b5854a6df831e9da3631b4d24b6"
+    },
+    {
+      "slot": "enamelPlate",
+      "size": [
+        256,
+        128
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "61c0d3c83e8c460fb09f10df937cad2588c0d511dbbf2b5fa838e9c45aef969a"
+    },
+    {
+      "slot": "gaugeFill",
+      "size": [
+        128,
+        24
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "fcbc6b702c31f3273582fce20eb0fdac6f55ee7699355128d5d09f88ab5a8256"
+    },
+    {
+      "slot": "stampSprite",
+      "size": [
+        300,
+        300
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        0,
+        249
+      ],
+      "sha256": "be6358c90e68c89dae4ab1b8731fee605eaa61d220c9c69f28145d3aec8e6c6d"
+    },
+    {
+      "slot": "gaugeTrackSprite",
+      "size": [
+        256,
+        32
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "48c46c8eba15eb2c8c3c452cd12a0b604223c2f72c49960836fa76808088a4ec"
+    },
+    {
+      "slot": "gaugeFillSprite",
+      "size": [
+        128,
+        24
+      ],
+      "mode": "RGBA",
+      "size_pass": true,
+      "alpha": [
+        255,
+        255
+      ],
+      "sha256": "f9ba65c912d09ec4b71ef67495e2f7d0275a3be61f5e6b2862a1268c1d7f1aa4"
+    }
+  ],
+  "missing_local_html_links": [],
+  "rendered_screens": {
+    "mockup-call.png": [
+      1280,
+      720
+    ],
+    "mockup-hud.png": [
+      1280,
+      720
+    ],
+    "mockup-orders.png": [
+      1280,
+      720
+    ],
+    "mockup-packing.png": [
+      1280,
+      720
+    ],
+    "mockup-receipt.png": [
+      1280,
+      720
+    ]
+  },
+  "compare_size": [
+    1600,
+    1880
+  ],
+  "cargo_sheet_size": [
+    1600,
+    1490
+  ],
+  "font_license_present": true,
+  "unity_executed": false,
+  "actual_64px_atlas_created": false,
+  "triangles_measured": false
+}

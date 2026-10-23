@@ -94,21 +94,7 @@ namespace PitCrew.Packing
                     else if (_mouseClickAction.IsPressed()) Screen.UpdateTrunkDrag(sp);
                     else if (_mouseClickAction.WasReleasedThisFrame()) Screen.EndTrunkDrag();
                 }
-                        // 채널 5 — 드래그 중 큐브 회전.
-                // W/S = X축 90도 스냅 (pitch), A/D = Y축 90도 스냅 (yaw),
-                // Q/E = Z축 90도 스냅 (roll), 마우스 우클릭 드래그 = 자유 회전 (3D 표준).
-                if (Screen.IsDraggingTrunkItem)
-                {
-                    // W/S = X축 pitch (위아래), A/D = Y축 yaw (좌우), Q/E = Z축 roll
-                    // WASD 회전만 (Q/E roll · 마우스 우클릭 자유 회전 제거 — 도현 요청)
-                    if (Keyboard.current != null)
-                    {
-                        if (Keyboard.current.wKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, -90f);
-                        if (Keyboard.current.sKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.right, 90f);
-                        if (Keyboard.current.aKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, -90f);
-                        if (Keyboard.current.dKey.wasPressedThisFrame) Screen.RotateDraggedItemAxis(Vector3.up, 90f);
-                    }
-                }
+                        // 배치 단계에선 회전 차단 (스펙 B2·F4 정합 — 앞면을 감은 방향이 곧 주행 방향).
                 return;
             }
 
@@ -128,7 +114,7 @@ namespace PitCrew.Packing
                 RotateTarget.Rotate(Vector3.right, -wasd.y * pitchSpeedDegPerSec * Time.unscaledDeltaTime, Space.World);
             }
 
-            if (_resetAction != null && _resetAction.WasPressedThisFrame()) RotateTarget.rotation = Quaternion.identity;
+            if (_resetAction != null && _resetAction.WasPressedThisFrame()) RotateTarget.rotation = PackingScreen.FrontFacingRotation;
             if (_selectMat1 != null && _selectMat1.WasPressedThisFrame()) Screen.SelectMaterialByChannel(0);
             if (_selectMat2 != null && _selectMat2.WasPressedThisFrame()) Screen.SelectMaterialByChannel(1);
             if (_selectMat3 != null && _selectMat3.WasPressedThisFrame()) Screen.SelectMaterialByChannel(2);
