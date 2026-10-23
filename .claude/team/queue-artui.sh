@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# 아트팀 UI 담당 연속 과제 (Codex 사용량 02:00 초기화 전까지 소진). 하나 끝나면 다음.
+cd "$(dirname "$0")/../.." || exit 1
+run() { bash scripts/pd-log.sh "📤 아트팀 UI: $1"; bash scripts/team.sh artui "$2"; }
+
+run "UI 1/3 레퍼런스 조사" "UI 조사 1/3 — 레퍼런스. 우리 게임: 배달 레이싱, 경험 문장 D-125('갈 때 급하게, 돌아오는 길이 보상'), 아트 D-123(바랜 해안 동네·픽셀), 화면 960×540 Point. 조사(원문 링크·스크린샷 출처 필수, 각 게임 2~4줄): (1) 로파이/레트로 3D 게임 UI — Easy Delivery Co, A Short Hike, Lunacid, Dredge, Mini Motorways, Unpacking, Papers Please, Return of the Obra Dinn, Inscryption, Paradise Killer 등 확인 가능한 것: 폰트·색·테두리·애니메이션·소리, 화면 몇 % 를 UI 가 쓰는가. (2) 디제틱 UI(세계 속 물건이 UI — 영수증·전표·라디오·대시보드 계기)가 잘 된 사례와 실패 사례. (3) 시간 압박 HUD(타이머·남은 거리) 가 긴장을 주면서 풍경을 가리지 않는 방법 — 레이싱/배달/택시 게임(Crazy Taxi 등). (4) 한글 픽셀/레트로 폰트 실사용 사례와 가독성 크기(Galmuri 등 OFL), 960×540 정수배 규칙. 결과: docs/research/ui-01-references.md + art/_review/2026-10-23-ui-refboard/index.html(레퍼런스 보드, 이미지는 링크 또는 직접 캡처 시 출처 표기), 마지막에 '우리가 가져올 것 10개 / 하지 말 것 5개'."
+
+run "UI 2/3 화면 흐름·HUD 두 박자" "UI 조사 2/3 — 1/3 결과(docs/research/ui-01-references.md)를 이어서. 우리 실제 화면을 먼저 본다: docs/qa/evidence/ 의 20261023-* 캡처들(주문판·긴급전화·포장·주행·정산), F1/Assets/Scripts/UI/·Order/·Packing/ 의 UI 코드(읽기만). (1) 현재 UI 감사: 화면별 문제 5개 이내(정보 과다·위계·색·글자 크기·D-123 과 어긋남) 캡처에 표시. (2) 한 판 화면 흐름 다시 그리기: 주문판→(긴급전화)→포장→주행(갈 때)→정산→돌아오는 길(새 단계, D-125) 와이어프레임, 화면마다 '꼭 보여야 할 정보 3개'. (3) HUD 두 박자 시안: 갈 때(타이머·목적지·화물 상태 또렷, F1 속도감) vs 돌아올 때(거의 없음, 풍경) — 960×540 실제 픽셀로 목업 2장씩, Galmuri/Pretendard, D-123 팔레트(art/source/palette). 결과 docs/research/ui-02-flow.md + art/_review/2026-10-23-ui-flow/ (index.html 로 한 장에)."
+
+run "UI 3/3 종이 전표 최종 시안" "UI 3/3 — 1·2 결과를 바탕으로 멈춘 화면 4종(주문판·긴급 전화·포장·정산 영수증) 최종 시안. 규칙: 출시 빌드에 AI 생성 이미지 0(규칙 1) — 종이 질감은 CC0 사진→photo_to_pixel.py→팔레트, 도장·선·글자는 스크립트/폰트로. 기존 D-123 시안(art/_review/2026-10-23-d123)의 남은 이슈(종이 질감이 세계 픽셀보다 곱다) 해결: 종이도 960×540 기준 정수배 픽셀. UITheme 슬롯 10종 PNG 최종판(9-slice 여백 유지) + 화면 4종 960×540 목업 + 2× 확대본 + 원화/게임 캡처 옆 비교. provenance.csv 기록, check_asset.py 통과. 결과 art/_review/2026-10-23-ui-final/, 보고에 '도현 승인 필요' 항목과 프로그래밍팀이 임포트할 때 필요한 것(슬롯·크기·여백·폰트 크기 표)."

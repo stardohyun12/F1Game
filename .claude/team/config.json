@@ -13,12 +13,16 @@
  },
  "art": {
   "model": "gpt-6-astra",
-  "effort": "medium"
+  "effort": "xhigh"
  },
  "research": {
   "model": "sonnet",
-  "effort": "high",
+  "effort": "xhigh",
   "budget": 4,
   "turns": 60
+ },
+ "artui": {
+  "model": "gpt-6-astra",
+  "effort": "xhigh"
  }
 }

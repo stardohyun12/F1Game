@@ -42,7 +42,7 @@ echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" 
 printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +%H:%M:%S)" "$ROLE" \
   "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
 
-if [ "$ROLE" = "art" ]; then
+if [ "$ROLE" = "art" ] || [ "$ROLE" = "artui" ]; then
   CX=(); [ -n "${C_MODEL:-}" ] && CX+=(-m "$C_MODEL"); [ -n "${C_EFFORT:-}" ] && CX+=(-c "model_reasoning_effort=\"$C_EFFORT\"")
   # ---- Codex (첫 과제에만 역할 파일을 앞에 붙인다; 이후 resume 이 기억) ----
   # workspace-write 샌드박스는 Blender 실행 등을 승인 대기로 막는데 비대화형이라 그대로 실패한다.
@@ -82,7 +82,7 @@ else
     | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
 fi
 
-if [ "$ROLE" != "art" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d '' > ".claude/team/sessions/$ROLE.cost"; fi
+if [ "$ROLE" != "art" ] && [ "$ROLE" != "artui" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d '' > ".claude/team/sessions/$ROLE.cost"; fi
 python - "$RESULT" <<'EOF'
 import json,sys
 try: d=json.load(open(sys.argv[1],encoding="utf-8"))

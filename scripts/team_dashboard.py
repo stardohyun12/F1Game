@@ -15,15 +15,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / ".claude/team/config.json"
 ROLES = [("pd", "PD (Hermes)", "#e8a33d"), ("programmer", "프로그래밍팀", "#e0607e"),
-         ("qa", "기획·QA팀", "#5aa0e0"), ("art", "아트팀 (Codex)", "#6cc070"), ("research", "리서치팀", "#b08be0")]
-WORKERS = ["programmer", "qa", "art", "research"]
+         ("qa", "기획·QA팀", "#5aa0e0"), ("art", "아트팀 (Codex)", "#6cc070"), ("artui", "아트팀 UI (Codex)", "#4fb3a0"), ("research", "리서치팀", "#b08be0")]
+WORKERS = ["programmer", "qa", "art", "artui", "research"]
 # 엔진별 선택지 (빈 값 = 기본값)
 ENGINES = {
     "claude": {"models": ["sonnet", "opus", "haiku"], "efforts": ["", "low", "medium", "high", "xhigh", "max"],
                "limits": True},
-    "codex": {"models": ["gpt-6-astra"], "efforts": ["", "low", "medium", "high"], "limits": False},
+    "codex": {"models": ["gpt-6-astra"], "efforts": ["", "low", "medium", "high", "xhigh"], "limits": False},
 }
-ENGINE_OF = {"programmer": "claude", "qa": "claude", "art": "codex", "research": "claude"}
+ENGINE_OF = {"programmer": "claude", "qa": "claude", "art": "codex", "artui": "codex", "research": "claude"}
 LINE_RE = re.compile(r"^\[(\d\d:\d\d:\d\d)\]\s+\S+\s+\|\s?(.*)$")
 
 
@@ -117,7 +117,7 @@ PAGE = r"""<!doctype html><html lang=ko><meta charset=utf-8><title>F1Game 팀</t
 body{margin:0;background:#1e1e1e;color:#ddd;font:14px/1.45 'Pretendard','Malgun Gothic',sans-serif}
 header{display:flex;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid #333}
 header h1{font-size:18px;margin:0 8px 0 0}.chip{padding:3px 10px;border-radius:12px;background:#2c2c2c;font-size:12px}
-.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px}
+.cols{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;padding:12px}
 .col{background:#262626;border:1px solid #333;border-radius:8px;display:flex;flex-direction:column;height:calc(100vh - 230px);min-height:420px}
 .col h2{font-size:15px;margin:0;padding:10px 12px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;gap:6px}
 .badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#3a3a3a;white-space:nowrap}.badge.on{background:#2f6b3a;color:#cfe}
