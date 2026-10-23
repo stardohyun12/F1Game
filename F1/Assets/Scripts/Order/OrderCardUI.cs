@@ -36,18 +36,16 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public TMP_Text tipText;
 
     [Header("Visuals")]
-    [Tooltip("기본 배경 색 (검정 반투명).")]
-    [SerializeField] Color baseBgColor = new Color(0.05f, 0.05f, 0.10f, 0.88f);
-    [Tooltip("호버 시 배경 색.")]
-    [SerializeField] Color hoverBgColor = new Color(0.18f, 0.20f, 0.30f, 0.95f);
     [Tooltip("호버 시 hoverStrip 알파 (job.color에 곱).")]
     [SerializeField] float hoverStripAlpha = 0.6f;
-    [Tooltip("적재함 부족으로 잠긴 카드 배경 색.")]
-    [SerializeField] Color lockedBgColor = new Color(0.04f, 0.04f, 0.05f, 0.92f);
-    [Tooltip("선택된 카드 배경 — job.color를 어둡게 섞은 진한 톤 (런타임 계산).")]
-    [SerializeField] Color selectedBgColor = new Color(0.25f, 0.30f, 0.38f, 1.0f);
-    [Tooltip("선택 시 job.color를 더 진하게 (Lerp 비율 0~1; 1=job.color 그대로).")]
-    [SerializeField, Range(0f, 1f)] float selectedTintLerp = 0.55f;
+    [Tooltip("선택 시 종이에 job.color 를 섞는 비율(0~1). 잉크 글자가 읽히도록 낮게.")]
+    [SerializeField, Range(0f, 0.6f)] float selectedPaperTint = 0.28f;
+
+    // D-121 종이 전표 톤 — 배경색은 토큰에서(프리팹 직렬화 값이 아니라). 옛 어두운 색 필드는 제거.
+    static Color BaseBgColor => UIPalette.Paper;
+    static Color HoverBgColor => UIPalette.PaperDeep;
+    static Color LockedBgColor => Color.Lerp(UIPalette.Paper, UIPalette.Stone, 0.6f);
+    bool styled;
 
     int cardIndex;
     OrderJob job;
@@ -74,6 +72,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         this.onCardClicked = onCardClicked;
         this.onCardHoverEnter = onCardHoverEnter;
         this.onCardHoverExit = onCardHoverExit;
+        ApplyPaperStyle();
 
         // 채널 3 — 잡이 속한 zone 라벨을 작게 위에 표시.
         if (titleText != null)
@@ -81,13 +80,13 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             Zone zone = ZoneUnlockSystem.Instance != null ? ZoneUnlockSystem.Instance.GetZoneOf(job) : null;
             if (zone != null)
             {
-                string hex = ColorUtility.ToHtmlStringRGB(zone.tintColor);
-                titleText.text = $"<size=60%><color=#{hex}>{zone.displayName}</color></size>\n{job.displayName}";
+                // 종이 위에선 zone.tintColor(옅은 파랑 등)가 안 읽힘 → 보조 잉크색.
+                titleText.text = $"<size=60%><color={UIPalette.Hex(UIPalette.InkMuted)}>{zone.displayName}</color></size>\n{job.displayName}";
             }
             else titleText.text = job.displayName;
         }
         if (colorStrip != null) colorStrip.color = job.color;
-        if (bg != null) bg.color = baseBgColor;
+        if (bg != null) bg.color = BaseBgColor;
         if (hoverStrip != null)
         {
             var c = job.color; c.a = 0f;
@@ -98,8 +97,8 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         string destStr;
         if (job.destinationLabels != null && job.destinationLabels.Count > 0)
         {
-            if (job.destinationLabels.Count == 1) destStr = job.destinationLabels[0];
-            else destStr = string.Join(" → ", job.destinationLabels);
+            // 라벨은 데이터 키(영문) — 화면엔 한글 표시명.
+            destStr = PlaceNames.Join(job.destinationLabels);
         }
         else destStr = $"{job.itemCount}곳";
         SetStatRow(0, "행선지", destStr);
@@ -135,7 +134,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         ApplyBgColor();
         if (colorStrip != null && job != null)
-            colorStrip.color = isLocked ? Color.Lerp(job.color, Color.gray, 0.75f) : job.color;
+            colorStrip.color = isLocked ? Color.Lerp(job.color, UIPalette.Stone, 0.75f) : job.color;
 
         SetAlpha(titleText, a);
         SetAlpha(tipText, a);
@@ -158,7 +157,7 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void SetUrgent(bool urgent)
     {
         if (titleText == null) return;
-        const string tag = "<color=#E81A14><b>긴급</b></color> ";
+        string tag = $"<color={UIPalette.Hex(UIPalette.Signal)}><b>긴급</b></color> ";
         bool has = titleText.text.StartsWith(tag);
         if (urgent && !has) titleText.text = tag + titleText.text;
         else if (!urgent && has) titleText.text = titleText.text.Substring(tag.Length);
@@ -177,19 +176,51 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     void ApplyBgColor()
     {
         if (bg == null) return;
-        if (locked) bg.color = lockedBgColor;
-        else if (selected)
+        if (locked) bg.color = LockedBgColor;
+        else if (selected) bg.color = SelectedBgColor();
+        else bg.color = BaseBgColor;
+        // 선택 = 테라코타 굵은 테두리, 평소 = 잉크 얇은 테두리.
+        UIPalette.InkBorder(bg, selected && !locked ? 5f : 2f);
+        var o = bg.GetComponent<Outline>();
+        if (o != null && selected && !locked) o.effectColor = UIPalette.Terracotta;
+    }
+
+    /// <summary>선택된 카드 배경 — 종이에 job.color 를 옅게 섞음(어떤 주문 골랐는지 색으로 한눈에).</summary>
+    Color SelectedBgColor()
+    {
+        var c = job != null ? Color.Lerp(UIPalette.Paper, job.color, selectedPaperTint) : UIPalette.PaperDeep;
+        c.a = 1f;
+        return c;
+    }
+
+    /// <summary>
+    /// D-121 — 프리팹(어두운 카드·흰 글자·맑은 고딕)을 런타임에 종이 전표 톤으로 덮는다.
+    /// 배치(RectTransform)는 건드리지 않는다. 한 번만.
+    /// </summary>
+    void ApplyPaperStyle()
+    {
+        if (styled) return;
+        styled = true;
+        if (bg != null)
         {
-            // job.color 가용 시 그 색을 어둡게 섞어서 직관적 (어떤 주문 골랐는지 색으로 한눈에).
-            if (job != null)
-            {
-                var dark = new Color(0.05f, 0.05f, 0.08f, 1f);
-                bg.color = Color.Lerp(dark, job.color, selectedTintLerp);
-                bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, 1f);
-            }
-            else bg.color = selectedBgColor;
+            UIPalette.PaperPanel(bg, BaseBgColor, slot: UISlot.Card);
         }
-        else bg.color = baseBgColor;
+        if (titleText != null)
+        {
+            UIPalette.Display(titleText, UIPalette.Ink);
+            titleText.textWrappingMode = TextWrappingModes.Normal;
+        }
+        for (int i = 0; i < statRows.Length; i++)
+        {
+            if (statRows[i] == null) continue;
+            UIPalette.Body(statRows[i].label, UIPalette.InkMuted);
+            UIPalette.Body(statRows[i].value, UIPalette.Ink);
+        }
+        if (tipText != null)
+        {
+            UIPalette.Body(tipText, UIPalette.InkMuted);
+            tipText.textWrappingMode = TextWrappingModes.Normal;     // 어절 줄바꿈(TMP Modern Hangul)
+        }
     }
 
     static void SetAlpha(TMP_Text t, float a)
@@ -203,9 +234,9 @@ public class OrderCardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // 잠긴 카드는 호버 배경색 변화 없음. 선택된 카드는 selectedBg 유지.
         if (bg != null)
         {
-            if (locked) bg.color = lockedBgColor;
-            else if (selected) bg.color = selectedBgColor;
-            else bg.color = hovering ? hoverBgColor : baseBgColor;
+            if (locked) bg.color = LockedBgColor;
+            else if (selected) bg.color = SelectedBgColor();
+            else bg.color = hovering ? HoverBgColor : BaseBgColor;
         }
         if (hoverStrip != null && job != null && !locked)
         {

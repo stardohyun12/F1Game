@@ -12,8 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e42499dfaaf584d8c95a3eaef6457c, type: 3}
   m_Name: UITheme
   m_EditorClassIdentifier: Assembly-CSharp::UITheme
-  fontPrimary: {fileID: 11400000, guid: b10abf291a767c94397797f2d2cdf406, type: 2}
-  fontCondensed: {fileID: 11400000, guid: 5d94d8d68b00f4f41bbddcfbfa25ff52, type: 2}
+  fontPrimary: {fileID: 11400000, guid: 718a620ce6336a74cab65fc4d6cc4c7c, type: 2}
+  fontCondensed: {fileID: 11400000, guid: 502ff170942342c499f3dddc88830f4f, type: 2}
+  fontDisplay: {fileID: 11400000, guid: 7a309801fbafe294982e2178518ca295, type: 2}
+  ink: {r: 0.13725491, g: 0.1882353, b: 0.23137255, a: 1}
+  inkMuted: {r: 0.36862746, g: 0.40784314, b: 0.44705883, a: 1}
+  paper: {r: 0.9529412, g: 0.9137255, b: 0.8235294, a: 1}
+  paperDeep: {r: 0.89411765, g: 0.8352941, b: 0.7019608, a: 1}
+  lemon: {r: 0.9490196, g: 0.7607843, b: 0.1882353, a: 1}
+  lemonInk: {r: 0.56078434, g: 0.41568628, b: 0, a: 1}
+  terracotta: {r: 0.78431374, g: 0.33333334, b: 0.23921569, a: 1}
+  tyrrhenian: {r: 0.12156863, g: 0.47843137, b: 0.6117647, a: 1}
+  signal: {r: 0.8509804, g: 0.22745098, b: 0.16862746, a: 1}
+  olive: {r: 0.41568628, g: 0.6039216, b: 0.22745098, a: 1}
+  stone: {r: 0.6509804, g: 0.62352943, b: 0.5764706, a: 1}
+  shade: {r: 0.13725491, g: 0.1882353, b: 0.23137255, a: 0.6}
+  sizeTitle: 60
+  sizeHeading: 36
+  sizeBody: 26
+  sizeSmall: 20
+  sizeNumber: 44
+  paperPanel: {fileID: 0}
+  paperCard: {fileID: 0}
+  slipHeader: {fileID: 0}
+  stampRing: {fileID: 0}
+  buttonPlate: {fileID: 0}
+  enamelPlate: {fileID: 0}
+  gaugeFill: {fileID: 0}
   panelDark: {fileID: 21300000, guid: 0718788fd4a3f9d49be3d684d68b6800, type: 3}
   panelBright: {fileID: 21300000, guid: 0b3a7d26585b23241a9ac8f60b0c6ed1, type: 3}
   panelGloss: {fileID: 21300000, guid: e8aa2133693bba94aa8797cd3feafeeb, type: 3}

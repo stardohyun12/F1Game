@@ -50,32 +50,27 @@ public abstract class BarHUDBase : MonoBehaviour
         bool show = ShouldShow();
         if (group != null) group.alpha = show ? 1f : 0f;
         if (!show) return;
-        var theme = UITheme.Active;
-        if (theme != null)
-        {
-            if (bg != null) bg.color = theme.colorPanel;
-            if (label != null) label.color = theme.colorTextOnFill;
-        }
+        // D-121: 법랑 표지판 — 종이 판 + 잉크 글자. (IntegrityHUD 의 충격 플래시는 OnApplyEffects 가 덮어씀)
+        if (bg != null) bg.color = UIPalette.Paper;
+        if (label != null) label.color = UIPalette.Ink;
         OnApplyEffects();   // BG color override 가능 (impact flash 등)
 
         float level = Mathf.Clamp01(OnLevel());
         float innerW = rt.rect.width - 16f;
         if (fillRt != null) fillRt.sizeDelta = new Vector2(innerW * level, 0);
 
-        if (theme != null && fillImg != null)
+        if (fillImg != null)
         {
-            var s = theme.FillForLevel(level, warnThreshold, critThreshold);
-            if (s != null && fillImg.sprite != s) fillImg.sprite = s;
-
+            // 평면 토큰색: 정상 = 올리브, 경고 = 레몬, 위험 = 신호 빨강(깜박).
+            Color fc = level <= critThreshold ? UIPalette.Signal
+                     : level <= warnThreshold ? UIPalette.Lemon
+                                              : UIPalette.Olive;
             if (level <= critThreshold && level > 0f)
             {
                 float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * critBlinkHz * Mathf.PI * 2f);
-                fillImg.color = new Color(1f, 1f, 1f, 0.55f + 0.45f * t);
+                fc.a = 0.55f + 0.45f * t;
             }
-            else
-            {
-                fillImg.color = Color.white;
-            }
+            fillImg.color = fc;
         }
 
         if (label != null) label.text = OnLabel(level);
@@ -120,7 +115,6 @@ public abstract class BarHUDBase : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(0, 0); rt.pivot = new Vector2(0, 0);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
@@ -131,8 +125,7 @@ public abstract class BarHUDBase : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, slot: UISlot.Plate);
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
             r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -144,8 +137,8 @@ public abstract class BarHUDBase : MonoBehaviour
             go.transform.SetParent(transform, false);
             fillImg = go.GetComponent<Image>();
             fillImg.raycastTarget = false;
-            fillImg.color = Color.white;
-            if (theme?.fillOk != null) { fillImg.sprite = theme.fillOk; fillImg.type = Image.Type.Sliced; }
+            fillImg.sprite = null;                 // D-121: Kenney 글로스 대신 평면 토큰색(슬롯 있으면 스프라이트)
+            UIPalette.Tint(fillImg, UISlot.Gauge, UIPalette.Olive);
             fillRt = fillImg.rectTransform;
             fillRt.anchorMin = new Vector2(0, 0); fillRt.anchorMax = new Vector2(0, 1);
             fillRt.pivot = new Vector2(0, 0.5f);
@@ -160,7 +153,7 @@ public abstract class BarHUDBase : MonoBehaviour
             label.raycastTarget = false;
             label.alignment = TextAlignmentOptions.MidlineLeft;
             label.fontSize = 40; label.fontStyle = FontStyles.Bold;
-            if (theme != null) { if (theme.fontPrimary != null) label.font = theme.fontPrimary; label.color = theme.colorText; }
+            UIPalette.Body(label, UIPalette.Ink);
             var r = label.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);
             r.offsetMin = new Vector2(20, 0); r.offsetMax = new Vector2(-20, 0);

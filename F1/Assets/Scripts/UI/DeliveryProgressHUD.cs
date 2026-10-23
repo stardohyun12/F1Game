@@ -47,7 +47,6 @@ public class DeliveryProgressHUD : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(0.5f, 1); rt.anchorMax = new Vector2(0.5f, 1); rt.pivot = new Vector2(0.5f, 1);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
@@ -58,8 +57,7 @@ public class DeliveryProgressHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, slot: UISlot.Plate);     // D-121: 법랑 표지판
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
@@ -72,7 +70,7 @@ public class DeliveryProgressHUD : MonoBehaviour
             countText.raycastTarget = false;
             countText.alignment = TextAlignmentOptions.MidlineLeft;
             countText.fontSize = 40; countText.fontStyle = FontStyles.Bold;
-            if (theme != null) { if (theme.fontPrimary != null) countText.font = theme.fontPrimary; countText.color = theme.colorAccent; }
+            UIPalette.Body(countText, UIPalette.Ink);
             var r = countText.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(0.4f, 1);
             r.offsetMin = new Vector2(24, 0); r.offsetMax = Vector2.zero;
@@ -88,7 +86,7 @@ public class DeliveryProgressHUD : MonoBehaviour
             labelText.fontSize = 24;
             labelText.textWrappingMode = TextWrappingModes.NoWrap; // 한 줄 강제
             labelText.overflowMode = TextOverflowModes.Ellipsis;
-            if (theme != null) { if (theme.fontCondensed != null) labelText.font = theme.fontCondensed; labelText.color = theme.colorText; }
+            UIPalette.Body(labelText, UIPalette.Ink);     // 한글 배달지명 → Pretendard (KenneyFuture 는 한글 없음)
             var r = labelText.rectTransform;
             r.anchorMin = new Vector2(0.3f, 0); r.anchorMax = new Vector2(1, 1);
             r.offsetMin = new Vector2(0, 0); r.offsetMax = new Vector2(-20, 0);
@@ -103,12 +101,6 @@ public class DeliveryProgressHUD : MonoBehaviour
         bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
         if (group != null) { group.alpha = driving ? 1f : 0f; group.blocksRaycasts = driving; }
         if (!driving) return;
-        var theme = UITheme.Active;
-        if (theme != null)
-        {
-            if (bg != null) bg.color = theme.colorPanel;
-            if (labelText != null) labelText.color = theme.colorText;
-        }
 
         if (manager.Finished)
         {
@@ -116,9 +108,9 @@ public class DeliveryProgressHUD : MonoBehaviour
             {
                 lastState = DisplayState.Finished;
                 countText.text = "✓";
-                labelText.text = "COMPLETE";
+                labelText.text = "배달 완료";
             }
-            countText.color = theme != null ? theme.colorOkText : Color.green;
+            countText.color = UIPalette.Olive;
         }
         else if (manager.Returning)
         {
@@ -128,16 +120,16 @@ public class DeliveryProgressHUD : MonoBehaviour
                 lastState = DisplayState.Returning;
                 lastTotal = total;
                 countText.text = $"{total}/{total}";
-                labelText.text = "RETURN TO START";
+                labelText.text = "출발점으로 복귀";
             }
-            countText.color = theme != null ? theme.colorWarnText : Color.yellow;
+            countText.color = UIPalette.LemonInk;
         }
         else
         {
             int idx = manager.CurrentIndex;
             int total = manager.TotalCount;
             var target = manager.CurrentTarget;
-            string targetLabel = target != null ? target.Label : "...";
+            string targetLabel = target != null ? target.Label : "...";     // 키(참조 비교용) — 표시는 PlaceNames
             if (lastState != DisplayState.Normal || lastIdx != idx || lastTotal != total)
             {
                 lastState = DisplayState.Normal;
@@ -147,9 +139,9 @@ public class DeliveryProgressHUD : MonoBehaviour
             if (!ReferenceEquals(lastTargetLabel, targetLabel))
             {
                 lastTargetLabel = targetLabel;
-                labelText.text = targetLabel;
+                labelText.text = target != null ? PlaceNames.Display(targetLabel) : targetLabel;
             }
-            countText.color = theme != null ? theme.colorAccent : Color.yellow;
+            countText.color = UIPalette.Terracotta;
         }
     }
 }

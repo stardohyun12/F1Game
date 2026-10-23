@@ -165,7 +165,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
             startMarker.transform.localScale = new Vector3(2f, 3f, 2f);
             var mr = startMarker.GetComponent<MeshRenderer>();
             var mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-            mat.color = new Color(1f, 0.9f, 0.2f, 1f);
+            mat.color = UIPalette.Lemon;     // 출발점 = 레몬
             mr.sharedMaterial = mat;
         }
         startMarker.SetActive(show);
@@ -178,7 +178,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         routeLine = lrGO.AddComponent<LineRenderer>();
         var mat = new Material(Shader.Find("Sprites/Default"));
         routeLine.material = mat;
-        Color c = currentJob != null ? currentJob.color : Color.yellow;
+        Color c = currentJob != null ? currentJob.color : UIPalette.Tyrrhenian;     // 경로 = 바다색
         routeLine.startColor = c; routeLine.endColor = c;
         routeLine.startWidth = 0.5f; routeLine.endWidth = 0.5f;
         routeLine.positionCount = 0;
@@ -253,11 +253,11 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         if (_tooltipText != null && job != null)
         {
             string timeStr = job.timeLimitSec > 0 ? $"\n제한 {job.timeLimitSec:F0}초" : "";
-            _tooltipText.text = $"<b>{job.displayName}</b>\n화물 {job.itemCount}개  보상 ¥{job.baseReward:N0}{timeStr}";
+            _tooltipText.text = $"<b>{job.displayName}</b>\n화물 {job.itemCount}개  보상 ₩{job.baseReward:N0}{timeStr}";
         }
         else if (_tooltipText != null && marker != null)
         {
-            _tooltipText.text = marker.Label ?? "배달지";
+            _tooltipText.text = PlaceNames.Display(marker.Label);
         }
         if (_tooltipGO != null) _tooltipGO.SetActive(true);
         UpdateTooltipPosition(screenPos);
@@ -298,7 +298,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         rt.anchorMin = rt.anchorMax = Vector2.zero;
         rt.pivot = new Vector2(0f, 1f);
         rt.sizeDelta = new Vector2(240, 90);
-        _tooltipGO.GetComponent<Image>().color = new Color(0.05f, 0.05f, 0.08f, 0.90f);
+        UIPalette.PaperPanel(_tooltipGO.GetComponent<Image>(), slot: UISlot.Card);
 
         var txtGO = new GameObject("Text", typeof(RectTransform));
         txtGO.transform.SetParent(_tooltipGO.transform, false);
@@ -307,7 +307,8 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         trt.offsetMin = new Vector2(8, 6); trt.offsetMax = new Vector2(-8, -6);
         _tooltipText = txtGO.AddComponent<TextMeshProUGUI>();
         _tooltipText.raycastTarget = false;
-        _tooltipText.fontSize = 14; _tooltipText.color = Color.white;
+        _tooltipText.fontSize = 14;
+        UIPalette.Body(_tooltipText, UIPalette.Ink);
         _tooltipText.alignment = TextAlignmentOptions.TopLeft;
         _tooltipGO.SetActive(false);
     }
@@ -406,7 +407,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         {
             var sb = new System.Text.StringBuilder();
             for (int i = 0; i < orderedRoute.Count; i++)
-                sb.AppendLine($"{i + 1}. {orderedRoute[i].Label}");
+                sb.AppendLine($"{i + 1}. {PlaceNames.Display(orderedRoute[i].Label)}");
             listText.text = sb.ToString();
         }
         // 직선 거리 합 (XZ)
@@ -426,7 +427,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         if (routeLine != null)
         {
             routeLine.startColor = routeLine.endColor =
-                currentJob != null ? currentJob.color : Color.yellow;
+                currentJob != null ? currentJob.color : UIPalette.Tyrrhenian;
             routeLine.positionCount = orderedRoute.Count + (orderedRoute.Count > 0 ? 1 : 0);
             int idx = 0;
             if (orderedRoute.Count > 0)
@@ -485,16 +486,18 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         prt.anchorMin = new Vector2(1, 0); prt.anchorMax = new Vector2(1, 1);
         prt.pivot = new Vector2(1, 0.5f);
         prt.sizeDelta = new Vector2(340, 0); prt.anchoredPosition = Vector2.zero;
-        panelGO.GetComponent<Image>().color = new Color(0.08f, 0.08f, 0.10f, 0.92f);
+        UIPalette.PaperPanel(panelGO.GetComponent<Image>());     // D-121: 종이 전표 사이드 패널
 
         titleText = MakeLabel(panelGO.transform, "Title",
             currentJob != null ? $"경로 계획 — {currentJob.displayName}" : "경로 계획",
             new Vector2(0.5f, 1f), new Vector2(0, -50), new Vector2(300, 60),
             24, FontStyles.Bold, TextAlignmentOptions.Center);
+        UIPalette.Display(titleText, UIPalette.Ink);
 
-        MakeLabel(panelGO.transform, "Hint", "맵의 목적지를 배달 순서대로 클릭",
+        var hint = MakeLabel(panelGO.transform, "Hint", "맵의 목적지를 배달 순서대로 클릭",
             new Vector2(0.5f, 1f), new Vector2(0, -100), new Vector2(300, 40),
             14, FontStyles.Normal, TextAlignmentOptions.Center);
+        hint.color = UIPalette.InkMuted;
 
         listText = MakeLabel(panelGO.transform, "List", "",
             new Vector2(0.5f, 1f), new Vector2(0, -140), new Vector2(300, 200),
@@ -515,8 +518,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         confirmBtn = MakeButton(panelGO.transform, "Confirm", "확정",
             new Vector2(0.5f, 0f), new Vector2(0, 60), new Vector2(280, 56));
         confirmBtn.onClick.AddListener(OnConfirm);
-        var cbg = confirmBtn.GetComponent<Image>();
-        if (cbg != null) cbg.color = new Color(0.88f, 0.04f, 0f, 1f);
+        UIPalette.ButtonColors(confirmBtn, UIPalette.Terracotta);     // 확정 = 주 버튼
         confirmBtn.interactable = false;
     }
 
@@ -532,7 +534,7 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         var t = go.AddComponent<TextMeshProUGUI>();
         t.raycastTarget = false;
         t.text = text; t.fontSize = fontSize; t.fontStyle = style; t.alignment = align;
-        t.color = Color.white;
+        UIPalette.Body(t, UIPalette.Ink);
         return t;
     }
 
@@ -545,7 +547,10 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         rt.anchorMin = anchor; rt.anchorMax = anchor; rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = anchoredPos; rt.sizeDelta = size;
         var img = go.GetComponent<Image>();
-        img.color = new Color(0.18f, 0.20f, 0.25f, 1f);
+        UIPalette.PaperPanel(img, UIPalette.Tyrrhenian, slot: UISlot.Button);
+        var btn = go.GetComponent<Button>();
+        btn.targetGraphic = img;
+        UIPalette.ButtonColors(btn, UIPalette.Tyrrhenian);     // 보조 버튼 = 바다색
         var txtGO = new GameObject("Label", typeof(RectTransform));
         txtGO.transform.SetParent(go.transform, false);
         var trt = txtGO.GetComponent<RectTransform>();
@@ -554,7 +559,8 @@ public sealed class RoutePlanScreen : MonoBehaviour, IRoutePlanScreen
         var txt = txtGO.AddComponent<TextMeshProUGUI>();
         txt.raycastTarget = false;
         txt.text = label; txt.fontSize = 20; txt.fontStyle = FontStyles.Bold;
-        txt.alignment = TextAlignmentOptions.Center; txt.color = Color.white;
-        return go.GetComponent<Button>();
+        txt.alignment = TextAlignmentOptions.Center;
+        UIPalette.Body(txt, UIPalette.Paper);
+        return btn;
     }
 }

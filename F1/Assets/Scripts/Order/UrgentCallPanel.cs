@@ -33,14 +33,14 @@ public class UrgentCallPanel : MonoBehaviour
     {
         onAccept = accept;
         onDecline = decline;
-        string dest = job.destinationLabels != null && job.destinationLabels.Count > 0
-            ? string.Join(" → ", job.destinationLabels) : "-";
+        // 라벨은 데이터 키(영문) — 화면엔 한글 표시명.
+        string dest = PlaceNames.Join(job.destinationLabels);
         string cargo = CargoTypePresets.DisplayName(job.cargoType);
         callerText.text = string.IsNullOrEmpty(job.callerName) ? $"{dest}에서 전화" : job.callerName;
         situationText.text = string.IsNullOrEmpty(job.urgentSituation) ? DefaultSituation(job.cargoType, dest) : job.urgentSituation;
         float bonusMul = (Services.Run as RunController)?.UrgentRewardBonus ?? 0.5f;
         int urgentExtra = Mathf.RoundToInt(job.baseReward * bonusMul);
-        detailText.text = $"배달지  {dest}\n화물  {cargo}\n보상  ₩{job.baseReward:N0}  <color=#FFD040>+ 긴급 ₩{urgentExtra:N0}</color>";
+        detailText.text = $"배달지  {dest}\n화물  {cargo}\n보상  ₩{job.baseReward:N0}  <color={UIPalette.Hex(UIPalette.Signal)}><b>+ 긴급 ₩{urgentExtra:N0}</b></color>";
         if (remainSec >= 0f)
         {
             int s = Mathf.CeilToInt(remainSec);
@@ -100,40 +100,44 @@ public class UrgentCallPanel : MonoBehaviour
         root = new GameObject("Root", typeof(RectTransform), typeof(Image));
         root.transform.SetParent(transform, false);
         Stretch(root.GetComponent<RectTransform>());
-        root.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.6f); // 뒤 화면 어둡게 + 클릭 막기
+        root.GetComponent<Image>().color = UIPalette.Shade; // 뒤 화면 어둡게(잉크 60%) + 클릭 막기
 
         var card = new GameObject("Card", typeof(RectTransform), typeof(Image));
         card.transform.SetParent(root.transform, false);
         var crt = card.GetComponent<RectTransform>();
         crt.anchorMin = crt.anchorMax = new Vector2(0.5f, 0.5f);
         crt.sizeDelta = new Vector2(760, 520);
-        card.GetComponent<Image>().color = new Color(0.10f, 0.11f, 0.14f, 0.97f);
+        UIPalette.PaperPanel(card.GetComponent<Image>());     // D-121: 전화 쪽지 = 종이 + 잉크 테두리
 
         var band = new GameObject("Band", typeof(RectTransform), typeof(Image));
         band.transform.SetParent(card.transform, false);
         var brt = band.GetComponent<RectTransform>();
         brt.anchorMin = new Vector2(0, 1); brt.anchorMax = new Vector2(1, 1); brt.pivot = new Vector2(0.5f, 1);
         brt.sizeDelta = new Vector2(0, 70); brt.anchoredPosition = Vector2.zero;
-        band.GetComponent<Image>().color = new Color(0.88f, 0.10f, 0.08f, 1f);
-        var head = Label(band.transform, "긴급 전화", 36, FontStyles.Bold, TextAlignmentOptions.Center);
+        UIPalette.Tint(band.GetComponent<Image>(), UISlot.Header, UIPalette.Signal);     // 긴급 = signal 전용
+        var head = Label(band.transform, "긴급 전화", 40, FontStyles.Bold, TextAlignmentOptions.Center);
+        UIPalette.Display(head, UIPalette.Paper);
         Stretch(head.rectTransform);
 
         callerText = Label(card.transform, "", 26, FontStyles.Bold, TextAlignmentOptions.Left);
         Place(callerText.rectTransform, new Vector2(0, -95), new Vector2(680, 40));
         situationText = Label(card.transform, "", 28, FontStyles.Normal, TextAlignmentOptions.TopLeft);
+        situationText.textWrappingMode = TextWrappingModes.Normal;     // 어절 줄바꿈(TMP Modern Hangul, "밟으/셔도" 방지)
         Place(situationText.rectTransform, new Vector2(0, -145), new Vector2(680, 120));
         detailText = Label(card.transform, "", 22, FontStyles.Normal, TextAlignmentOptions.TopLeft);
-        detailText.color = new Color(0.78f, 0.80f, 0.85f, 1f);
+        detailText.color = UIPalette.InkMuted;
         Place(detailText.rectTransform, new Vector2(0, -275), new Vector2(680, 100));
         timeText = Label(card.transform, "", 30, FontStyles.Bold, TextAlignmentOptions.Left);
-        timeText.color = new Color(1f, 0.82f, 0.25f, 1f);
+        timeText.color = UIPalette.LemonInk;
         Place(timeText.rectTransform, new Vector2(-170, -405), new Vector2(340, 50));
 
         acceptBtn = MakeButton(card.transform, "Accept", "받을게요!", new Vector2(250, -395), new Vector2(200, 70),
-            new Color(0.88f, 0.10f, 0.08f, 1f));
+            UIPalette.Terracotta);
         acceptBtn.onClick.AddListener(OnAcceptClicked);
         declineBtn = MakeButton(card.transform, "Decline", "못 가요", new Vector2(60, -395), new Vector2(150, 70),
-            new Color(0.25f, 0.27f, 0.32f, 1f));
+            UIPalette.PaperDeep);
+        var declineLabel = declineBtn.GetComponentInChildren<TMP_Text>();
+        if (declineLabel != null) declineLabel.color = UIPalette.Ink;     // 보조 선택 = 종이 버튼 + 잉크 글자
         declineBtn.onClick.AddListener(OnDeclineClicked);
 
         if (UnityEngine.EventSystems.EventSystem.current == null &&
@@ -150,10 +154,15 @@ public class UrgentCallPanel : MonoBehaviour
         var r = go.GetComponent<RectTransform>();
         r.anchorMin = r.anchorMax = new Vector2(0.5f, 1f); r.pivot = new Vector2(0.5f, 1f);
         r.anchoredPosition = pos; r.sizeDelta = size;
-        go.GetComponent<Image>().color = color;
+        var img = go.GetComponent<Image>();
+        UIPalette.PaperPanel(img, color, slot: UISlot.Button);
+        var btn = go.GetComponent<Button>();
+        btn.targetGraphic = img;
+        UIPalette.ButtonColors(btn, color);
         var t = Label(go.transform, label, 26, FontStyles.Bold, TextAlignmentOptions.Center);
+        t.color = UIPalette.Paper;
         Stretch(t.rectTransform);
-        return go.GetComponent<Button>();
+        return btn;
     }
 
     static TMP_Text Label(Transform parent, string text, float size, FontStyles style, TextAlignmentOptions align)
@@ -163,9 +172,7 @@ public class UrgentCallPanel : MonoBehaviour
         var t = go.AddComponent<TextMeshProUGUI>();
         t.raycastTarget = false;
         t.text = text; t.fontSize = size; t.fontStyle = style; t.alignment = align;
-        t.color = Color.white;
-        var theme = UITheme.Active;
-        if (theme != null && theme.fontPrimary != null) t.font = theme.fontPrimary;
+        UIPalette.Body(t, UIPalette.Ink);     // D-121: 종이 위 잉크 + Pretendard
         return t;
     }
 

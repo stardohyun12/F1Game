@@ -48,10 +48,7 @@ public class CargoWarningHUD : MonoBehaviour
     Image bg;
     TMP_Text label;
 
-    // Phase 6 perf(B4/R3): 매 프레임 new Color 회피 + 0-divide 가드 매직넘버 통일.
-    static readonly Color WarnYellow = new Color(1f, 0.85f, 0.20f, 1f);
-    static readonly Color CritRed    = new Color(1f, 0.25f, 0.25f, 1f);
-    static readonly Color WarnBgBase = new Color(0.18f, 0.14f, 0.05f, 0.85f);
+    // D-121 토큰: 경고 = 종이→레몬 판 + 잉크 글자, 위험 = 신호 빨강 판(깜박) + 종이색 글자.
     const float SafeEpsilon = 0.0001f;
 
     enum Source { None, BrakeAccel, Corner, Spin, Slope }
@@ -75,7 +72,6 @@ public class CargoWarningHUD : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(0.5f, 1f);
         rt.anchorMax = new Vector2(0.5f, 1f);
         rt.pivot = new Vector2(0.5f, 1f);
@@ -88,8 +84,7 @@ public class CargoWarningHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = new Color(0.18f, 0.10f, 0.10f, 0.85f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, UIPalette.Lemon, slot: UISlot.Plate);
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
             r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -104,7 +99,7 @@ public class CargoWarningHUD : MonoBehaviour
             label.alignment = TextAlignmentOptions.Center;
             label.fontSize = 46;
             label.fontStyle = FontStyles.Bold;
-            if (theme?.fontPrimary != null) label.font = theme.fontPrimary;
+            UIPalette.Body(label, UIPalette.Ink);
             var r = label.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
             r.offsetMin = new Vector2(12, 6); r.offsetMax = new Vector2(-12, -6);
@@ -156,15 +151,14 @@ public class CargoWarningHUD : MonoBehaviour
         if (maxRatio >= critThreshold)
         {
             float t = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * critBlinkHz * Mathf.PI * 2f);
-            labelColor = Color.white;
-            bgColor = Color.Lerp(CritRed * 0.6f, CritRed, t);
+            labelColor = UIPalette.Paper;
+            bgColor = Color.Lerp(Color.Lerp(UIPalette.Signal, UIPalette.Ink, 0.35f), UIPalette.Signal, t);
         }
         else
         {
             float warnT = Mathf.InverseLerp(showThreshold, critThreshold, maxRatio);
-            labelColor = Color.white;
-            bgColor = Color.Lerp(WarnBgBase, WarnYellow * 0.7f, warnT);
-            bgColor.a = 0.85f;
+            labelColor = UIPalette.Ink;
+            bgColor = Color.Lerp(UIPalette.Paper, UIPalette.Lemon, warnT);
         }
         if (label != null) label.color = labelColor;
         if (bg != null) bg.color = bgColor;

@@ -55,7 +55,6 @@ public class MiniMapHUD : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(0, 1); rt.anchorMax = new Vector2(0, 1); rt.pivot = new Vector2(0, 1);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
@@ -66,8 +65,7 @@ public class MiniMapHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, slot: UISlot.Plate);     // D-121: 종이 액자
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
@@ -95,7 +93,7 @@ public class MiniMapHUD : MonoBehaviour
         mapCam.orthographic = true;
         mapCam.orthographicSize = orthoSize;
         mapCam.clearFlags = CameraClearFlags.SolidColor;
-        mapCam.backgroundColor = new Color(0.10f, 0.12f, 0.14f, 1f);
+        mapCam.backgroundColor = UIPalette.Ink;
         mapCam.cullingMask = ~0;
         mapCam.depth = -10;                 // 메인보다 먼저. targetTexture 있어 화면엔 안 그림.
         mapCam.nearClipPlane = 1f;

@@ -1,0 +1,162 @@
+[
+  {
+    "owner": "UITheme",
+    "slot": "paperPanel",
+    "size": [
+      256,
+      256
+    ],
+    "border_LBRT": [
+      16,
+      24,
+      16,
+      16
+    ],
+    "tint": "original",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "paperCard",
+    "size": [
+      256,
+      320
+    ],
+    "border_LBRT": [
+      16,
+      24,
+      16,
+      40
+    ],
+    "tint": "original",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "slipHeader",
+    "size": [
+      256,
+      64
+    ],
+    "border_LBRT": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "tint": "white",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "stampRing",
+    "size": [
+      256,
+      256
+    ],
+    "border_LBRT": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "tint": "white",
+    "mode": "Simple"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "buttonPlate",
+    "size": [
+      256,
+      80
+    ],
+    "border_LBRT": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "tint": "white",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "enamelPlate",
+    "size": [
+      256,
+      128
+    ],
+    "border_LBRT": [
+      20,
+      20,
+      20,
+      20
+    ],
+    "tint": "original",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "UITheme",
+    "slot": "gaugeFill",
+    "size": [
+      128,
+      24
+    ],
+    "border_LBRT": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "tint": "white",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "PackingScreen",
+    "slot": "stampSprite",
+    "size": [
+      300,
+      300
+    ],
+    "border_LBRT": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "tint": "original",
+    "mode": "Simple"
+  },
+  {
+    "owner": "PackingScreen",
+    "slot": "gaugeTrackSprite",
+    "size": [
+      256,
+      32
+    ],
+    "border_LBRT": [
+      12,
+      12,
+      12,
+      12
+    ],
+    "tint": "white",
+    "mode": "Sliced"
+  },
+  {
+    "owner": "PackingScreen",
+    "slot": "gaugeFillSprite",
+    "size": [
+      128,
+      24
+    ],
+    "border_LBRT": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "tint": "white",
+    "mode": "Sliced"
+  }
+]

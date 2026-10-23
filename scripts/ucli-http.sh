@@ -44,6 +44,8 @@ EOF
 
 case "${1:-}" in
   exec)
+    # exec @path.cs — 긴 스니펫을 파일에서 읽는다(셸 인용 회피)
+    case "${2:-}" in @*) set -- exec "$(cat "${2#@}")" ;; esac
     code=$(python -X utf8 -c 'import json,sys; print(json.dumps({"code": sys.argv[1]}))' "$2")
     post exec "$code" ;;
   editor)

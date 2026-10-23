@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645338a6626a14e45a190678809032f3, type: 3}
   m_Name: Foam
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
-  displayName: Foam
+  displayName: 폼
   channelIndex: 1
   costPerPixel: 0.07
   absorption: 0.55

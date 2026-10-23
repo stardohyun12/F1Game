@@ -11,6 +11,9 @@ namespace PitCrew.Packing
         [SerializeField] private float maxWidthUV = 0.18f;
         [SerializeField] private float wheelStep = 0.01f;
 
+        public float MinWidthUV => minWidthUV;
+        public float MaxWidthUV => maxWidthUV;
+
         public Transform RotateTarget { get; set; }
         public WrapPainter Painter { get; set; }
         public PackingScreen Screen { get; set; }
@@ -140,7 +143,13 @@ namespace PitCrew.Packing
 
                 float wheel = _wheelAction != null ? _wheelAction.ReadValue<float>() : 0f;
                 if (Mathf.Abs(wheel) > 0.01f)
-                    Painter.StripWidthUV = Mathf.Clamp(Painter.StripWidthUV + wheel * wheelStep, minWidthUV, maxWidthUV);
+                {
+                    // 휠 한 칸 = ±1 (scroll/y 는 OS 에 따라 ±120 이 올 수 있어 부호만 씀)
+                    Painter.StripWidthUV = Mathf.Clamp(Painter.StripWidthUV + Mathf.Sign(wheel) * wheelStep, minWidthUV, maxWidthUV);
+                    // 랩 폭 라벨·재료 카드 ₩/m 갱신 (예전엔 라벨이 고정 문자열이었다)
+                    Screen.OnWrapWidthChanged(Painter.StripWidthUV,
+                        Mathf.InverseLerp(minWidthUV, maxWidthUV, Painter.StripWidthUV));
+                }
             }
         }
     }

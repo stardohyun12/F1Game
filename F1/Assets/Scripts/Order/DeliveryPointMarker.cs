@@ -59,13 +59,13 @@ public class DeliveryPointMarker : MonoBehaviour
         if (dp.IsCompleted)
         {
             // 완료 — 어둡게 dim
-            ApplyColor(new Color(0.4f, 0.4f, 0.4f), 0.4f);
+            ApplyColor(UIPalette.Stone, 0.4f);
         }
         else if (dp.IsActive)
         {
             // 현재 목표 — 강렬한 노랑+빨강 펄스 (대기 마커와 명확히 구분; 미니맵에서도 잘 보이게)
             float pulse = 0.6f + 0.4f * Mathf.Sin(Time.unscaledTime * 4f);
-            var hot = Color.Lerp(new Color(1f, 0.85f, 0.20f), new Color(1f, 0.30f, 0.10f), pulse);
+            var hot = Color.Lerp(UIPalette.Lemon, UIPalette.Signal, pulse);     // D-121 토큰: 레몬↔신호 빨강
             ApplyColor(hot, 1f, 2.5f);
         }
         else
@@ -288,8 +288,9 @@ public class DeliveryPointMarker : MonoBehaviour
         orderBadgeText = orderBadge.AddComponent<TextMeshPro>();
         orderBadgeText.fontSize = 8f;
         orderBadgeText.alignment = TextAlignmentOptions.Center;
-        orderBadgeText.color = Color.white;
+        orderBadgeText.color = UIPalette.Paper;
         orderBadgeText.fontStyle = FontStyles.Bold;
+        if (UIPalette.BodyFont != null) orderBadgeText.font = UIPalette.BodyFont;
         // 작은 검정 배경 — 가독성
         var bg = GameObject.CreatePrimitive(PrimitiveType.Quad);
         bg.name = "BadgeBG";
@@ -300,7 +301,7 @@ public class DeliveryPointMarker : MonoBehaviour
         if (c != null) Destroy(c);
         var mr = bg.GetComponent<MeshRenderer>();
         var mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-        mat.color = new Color(0f, 0f, 0f, 0.7f);
+        mat.color = UIPalette.WithAlpha(UIPalette.Ink, 0.85f);     // 잉크 배지
         // 투명 설정
         mat.SetFloat("_Surface", 1);
         mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);

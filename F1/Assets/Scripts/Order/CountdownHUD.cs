@@ -42,7 +42,6 @@ public class CountdownHUD : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(1, 1); rt.anchorMax = new Vector2(1, 1); rt.pivot = new Vector2(1, 1);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
@@ -53,8 +52,7 @@ public class CountdownHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, slot: UISlot.Plate);     // D-121: 법랑 표지판 — 밝은 판 + 잉크 테두리
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
@@ -67,7 +65,7 @@ public class CountdownHUD : MonoBehaviour
             timeText.raycastTarget = false;
             timeText.alignment = TextAlignmentOptions.Center;
             timeText.fontSize = 44; timeText.fontStyle = FontStyles.Bold;
-            if (theme != null) { if (theme.fontPrimary != null) timeText.font = theme.fontPrimary; timeText.color = theme.colorText; }
+            UIPalette.Body(timeText, UIPalette.Ink);
             var r = timeText.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
             r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
@@ -87,15 +85,11 @@ public class CountdownHUD : MonoBehaviour
         if (remaining < 0f) { group.alpha = 0f; return; }
         group.alpha = 1f;
 
-        var theme = UITheme.Active;
-        if (theme != null)
-        {
-            var panelSprite = theme.PanelForTimer(remaining);
-            if (panelSprite != null && bg.sprite != panelSprite) bg.sprite = panelSprite;
-            // panelDark 시 어두운 tint, fill sprite(Red/Yellow) 시 원색
-            bg.color = (panelSprite == theme.panelDark) ? theme.colorPanel : Color.white;
-            if (timeText != null) timeText.color = theme.colorText;
-        }
+        // D-121: 60s 이상 = 종이 판 + 잉크, 60s 미만 = 레몬 판 + 잉크, 30s 미만 = 신호 빨강 판 + 종이색 글자.
+        if (bg != null)
+            bg.color = remaining < 30f ? UIPalette.Signal : remaining < 60f ? UIPalette.Lemon : UIPalette.Paper;
+        if (timeText != null)
+            timeText.color = remaining < 30f ? UIPalette.Paper : UIPalette.Ink;
 
         int totalSec = Mathf.Max(0, Mathf.FloorToInt(remaining));
         if (totalSec != lastWholeSecond)

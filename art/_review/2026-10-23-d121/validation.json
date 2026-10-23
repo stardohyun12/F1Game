@@ -1,0 +1,40 @@
+{
+  "slots": 10,
+  "rgba_pngs": true,
+  "slice_corner_exact": [
+    true,
+    true,
+    true
+  ],
+  "unity_tested": false,
+  "model_triangles_measured": false,
+  "png_dimensions_alpha_pass": 10,
+  "html_missing_links": [],
+  "mockup_sizes": {
+    "mockup-call.png": [
+      1280,
+      720
+    ],
+    "mockup-orders.png": [
+      1280,
+      720
+    ],
+    "mockup-overview.png": [
+      2560,
+      1440
+    ],
+    "mockup-packing.png": [
+      1280,
+      720
+    ],
+    "mockup-receipt.png": [
+      1280,
+      720
+    ]
+  },
+  "cargo_sheet_size": [
+    1600,
+    1510
+  ],
+  "final_cargo_reference": "cargo-concepts-v02.png"
+}

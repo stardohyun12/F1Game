@@ -48,6 +48,25 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [SerializeField] private float driftEntryYawImpulse = 2.5f;        // 4→2.5 (진입 톡 줄임)
     [SerializeField] private float driftYawTorque = 11f;               // 15→11 (지속 토크 완화)
 
+    [Header("F1 느낌 (D-122) — 다운포스")]
+    [Tooltip("속도² 비례 옆 그립 증가. 1 = 최고속에서 그립 2배.")]
+    [SerializeField] private float downforceGripGain = 0.8f;
+    [Tooltip("속도² 비례 아래로 누르는 힘(m/s², 최고속 기준). 고속 안정감.")]
+    [SerializeField] private float downforceAccel = 6f;
+
+    [Header("Drift 2 (D-122) — 목표 회전 속도 방식")]
+    [Tooltip("핸드브레이크 + 풀 조향 때 목표 회전 속도(deg/s).")]
+    [SerializeField] private float driftYawRateDeg = 95f;
+    [Tooltip("현재 회전 속도가 목표로 따라가는 빠르기(1/s). 높을수록 즉각.")]
+    [SerializeField] private float driftYawResponse = 6f;
+    [Tooltip("드리프트 중 속도 방향이 차 머리 쪽으로 돌아오는 빠르기(1/s, slip 각에 비례). 평형 slip ≈ 회전속도/이 값. 0 이면 계속 미끄러짐.")]
+    [SerializeField] private float driftVelocityAlign = 1.6f;
+    [Tooltip("드리프트를 놓은 뒤 그립이 완전히 돌아오기까지(초). 갑자기 꺾이는 스냅 방지.")]
+    [SerializeField] private float driftGripRecoverTime = 0.35f;
+    private float driftGripBlend = 1f; // 0 = 드리프트 그립, 1 = 정상 그립
+    // QA 합성 주행용(리플렉션으로 켬) — 에디터 포커스 없이 핸드브레이크 재현.
+    private bool qaForceHandbrake = false;
+
     [Header("Engine Restore (D-089)")]
     [SerializeField] private float engineMaxSpeedMul = 1.0f;   // 1.20 after restore
     [SerializeField] private float engineAccelMul = 1.0f;       // 1.30 after restore
@@ -163,13 +182,14 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         Vector3 groundOrigin = transform.position + Vector3.up * 0.5f;
         // 트리거(DeliveryPoint SphereCollider 등) 무시 — 트리거 위에서 grounded 오판 차단.
         isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
-        IsDrifting = handbrakeAction != null && handbrakeAction.IsPressed();
+        IsDrifting = (handbrakeAction != null && handbrakeAction.IsPressed()) || qaForceHandbrake;
 
         if (IsDrifting && !wasDrifting)
         {
             rb.angularDamping = driftAngularDamping;
-            // Drift 진입 impulse는 raw input 방향 (즉각 반응 유지)
-            rb.AddTorque(Vector3.up * (driftEntryYawImpulse * Mathf.Sign(moveInput.x == 0 ? 1f : moveInput.x)), ForceMode.VelocityChange);
+            // D-122: 진입 톡은 조향 중일 때만, 작게 (예전엔 조향 없이도 돌아 휘청).
+            if (Mathf.Abs(moveInput.x) > 0.2f)
+                rb.AddTorque(Vector3.up * (driftEntryYawImpulse * 0.25f * Mathf.Sign(moveInput.x)), ForceMode.VelocityChange);
         }
         else if (!IsDrifting && wasDrifting)
         {
@@ -181,11 +201,42 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         float forwardSpeed = Vector3.Dot(v, transform.forward);
         float sideSpeed = Vector3.Dot(v, transform.right);
 
+        // 드리프트 그립 블렌드: 들어갈 땐 즉시, 나올 땐 driftGripRecoverTime 동안 서서히.
+        if (IsDrifting) driftGripBlend = 0f;
+        else driftGripBlend = Mathf.MoveTowards(driftGripBlend, 1f, Time.fixedDeltaTime / Mathf.Max(0.01f, driftGripRecoverTime));
+
         ApplyThrottle(forwardSpeed);
         ApplySteering(forwardSpeed);
-        ApplySideGrip(sideSpeed);
+        ApplySideGrip(sideSpeed, forwardSpeed);
+        ApplyDriftAlign();
         ApplyDriftDrag(forwardSpeed);
         ApplyAirDrag(forwardSpeed);
+        ApplyDownforce(forwardSpeed);
+    }
+
+    /// <summary>D-122 — 속도² 비례로 차를 바닥에 누른다(고속 안정, F1 다운포스 느낌).</summary>
+    void ApplyDownforce(float forwardSpeed)
+    {
+        if (!isGrounded || downforceAccel <= 0f) return;
+        float n = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / Mathf.Max(0.1f, EffectiveMaxSpeedMps));
+        rb.AddForce(-transform.up * (downforceAccel * n * n), ForceMode.Acceleration);
+    }
+
+    /// <summary>D-122 — 드리프트 중 속도 방향을 차 머리 쪽으로 천천히 돌린다(속력 유지). 끝없이 미끄러지지 않게.</summary>
+    void ApplyDriftAlign()
+    {
+        if (!IsDrifting || !isGrounded || driftVelocityAlign <= 0f) return;
+        Vector3 v = rb.linearVelocity;
+        Vector3 horiz = Vector3.ProjectOnPlane(v, Vector3.up);
+        float spd = horiz.magnitude;
+        if (spd < 1f) return;
+        Vector3 fwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        if (Vector3.Dot(horiz, fwd) < 0f) return; // 후진 방향이면 건드리지 않음
+        // 정렬 속도 ∝ 미끄러짐 각 → 평형 slip = 회전속도 / driftVelocityAlign. 상수 속도면 회전이 더 빠를 때 slip 이 0 으로 붙는다.
+        float slipRad = Vector3.Angle(horiz, fwd) * Mathf.Deg2Rad;
+        float step = Mathf.Max(driftVelocityAlign * slipRad, 0.05f) * Time.fixedDeltaTime;
+        Vector3 aligned = Vector3.RotateTowards(horiz, fwd * spd, step, 0f);
+        rb.linearVelocity = aligned + Vector3.up * v.y;
     }
 
     void ApplyAirDrag(float forwardSpeed)
@@ -256,7 +307,11 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
 
         if (IsDrifting)
         {
-            rb.AddTorque(Vector3.up * (smoothedMove.x * driftYawTorque * driftYawBoost * response), ForceMode.Acceleration);
+            // D-122: 토크를 쌓는 대신 목표 회전 속도로 수렴 — 조향을 놓으면 회전도 멈춰서 예측 가능.
+            float target = smoothedMove.x * driftYawRateDeg * Mathf.Deg2Rad * Mathf.Clamp01(speedMag / 8f);
+            Vector3 av = rb.angularVelocity;
+            av.y = Mathf.Lerp(av.y, target, 1f - Mathf.Exp(-driftYawResponse * Time.fixedDeltaTime));
+            rb.angularVelocity = av;
         }
         else
         {
@@ -265,10 +320,13 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         }
     }
 
-    void ApplySideGrip(float sideSpeed)
+    void ApplySideGrip(float sideSpeed, float forwardSpeed)
     {
         if (!isGrounded) return;
-        float grip = IsDrifting ? sideGripDamping * driftGripMultiplier : sideGripDamping;
+        // D-122: 드리프트 그립 ↔ 정상 그립을 블렌드(놓은 직후 스냅 방지) + 속도² 다운포스 그립.
+        float grip = Mathf.Lerp(sideGripDamping * driftGripMultiplier, sideGripDamping, driftGripBlend);
+        float n = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / Mathf.Max(0.1f, EffectiveMaxSpeedMps));
+        grip *= 1f + downforceGripGain * n * n;
         // Day 20: 타이어 그립 배율 — Soft ×1.4, Medium ×1.0, Hard ×0.7. 마모 시 점진 감소.
         if (tireSystem != null) grip *= tireSystem.GripMultiplier;
         rb.AddForce(-transform.right * (sideSpeed * grip), ForceMode.Acceleration);

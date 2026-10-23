@@ -48,11 +48,11 @@ public class DirectionArrow : MonoBehaviour
         if (theme != null && theme.arrowNorth != null)
         {
             sr.sprite = theme.arrowNorth;
-            sr.color = theme.colorAccent;
+            sr.color = UIPalette.Lemon;
         }
         else
         {
-            sr.color = new Color(1f, 0.82f, 0.25f, 1f); // 폴백 노랑
+            sr.color = UIPalette.Lemon; // 폴백 레몬
         }
     }
 
@@ -98,8 +98,8 @@ public class DirectionArrow : MonoBehaviour
         if (sr != null)
         {
             float k = Mathf.Clamp01((15f - dist) / 15f); // 0..1 (가까울수록 1)
-            var far = new Color(1f, 0.82f, 0.25f, 1f);
-            var near = new Color(0.30f, 1f, 0.40f, 1f);
+            var far = UIPalette.Lemon;     // D-121 토큰: 멀면 레몬, 가까우면 올리브
+            var near = UIPalette.Olive;
             var c = Color.Lerp(far, near, k);
             // 가까우면 펄스
             if (k > 0f) c *= 0.85f + 0.15f * Mathf.Sin(Time.unscaledTime * 6f);

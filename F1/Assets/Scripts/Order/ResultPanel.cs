@@ -107,7 +107,6 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
 
-        var theme = UITheme.Active;
 
         // Backdrop (전체 어둡게)
         backdrop = new GameObject("Backdrop", typeof(RectTransform), typeof(Image));
@@ -116,7 +115,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         bdRT.anchorMin = Vector2.zero; bdRT.anchorMax = Vector2.one;
         bdRT.offsetMin = Vector2.zero; bdRT.offsetMax = Vector2.zero;
         var bdImg = backdrop.GetComponent<Image>();
-        bdImg.color = new Color(0, 0, 0, 0.65f);
+        bdImg.color = UIPalette.Shade;     // D-121: 순수 검정 대신 잉크 60%
         bdImg.raycastTarget = true;     // 배경 클릭 차단
 
         // Panel (1200×800, 중앙)
@@ -129,8 +128,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // 도현 #2-4 "아직도 작음": 1200×800 → 1600×1000 (1920×1080 reference 기준 83%×92%).
         panelRT.sizeDelta = new Vector2(1600, 1000);
         panelBg = panelGO.GetComponent<Image>();
-        panelBg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.96f);
-        if (theme?.panelDark != null) { panelBg.sprite = theme.panelDark; panelBg.type = Image.Type.Sliced; }
+        UIPalette.PaperPanel(panelBg);     // D-121: 영수증 종이 + 잉크 테두리 + 평면 그림자
 
         // 색상 띠 (top 12px)
         var stripGO = new GameObject("ColorStrip", typeof(RectTransform), typeof(Image));
@@ -141,11 +139,12 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         stripRT.pivot = new Vector2(0.5f, 1);
         stripRT.sizeDelta = new Vector2(0, 12);
         colorStrip = stripGO.GetComponent<Image>();
-        colorStrip.color = new Color(0.4f, 0.95f, 0.4f);
+        UIPalette.Tint(colorStrip, UISlot.Header, UIPalette.Olive);
 
         // Title
         titleText = CreateText(panelGO.transform, "Title", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0, -75), new Vector2(800, 80), 64, FontStyles.Bold, TextAlignmentOptions.Center);
+            new Vector2(0, -75), new Vector2(800, 80), UIPalette.SizeTitle, FontStyles.Bold, TextAlignmentOptions.Center);
+        UIPalette.Display(titleText, UIPalette.Ink);
 
         // Stats — 좌측 컬럼 (라벨 + 값) 5개. 도현 #2-8 fix: + 대신 - (UI Y는 상→하 음수, 행 추가는 더 음수).
         // #2-10: 이야기 공간 확보 위해 statY -180→-160.
@@ -160,7 +159,8 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // 화물 이야기 — 도현 #2-12: -460→-450 (보상-story 30px, story-tire 30px 균등).
         storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
             new Vector2(0, -450), new Vector2(1500, 50), 32, FontStyles.Italic, TextAlignmentOptions.Center);
-        if (UITheme.Active != null) storyText.color = UITheme.Active.colorTextMuted;
+        storyText.color = UIPalette.InkMuted;
+        storyText.textWrappingMode = TextWrappingModes.Normal;     // 어절 줄바꿈(TMP Modern Hangul)
 
         // 타이어 마모 — 도현 #2-8: y=460 (카드 top 340 + 여유)
         tireLabel = CreateText(panelGO.transform, "TireLabel", new Vector2(0, 0), new Vector2(0, 0),
@@ -174,7 +174,8 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         tireBgRT.anchoredPosition = new Vector2(285, 478);
         tireBgRT.sizeDelta = new Vector2(280, 24);
         tireFillBg = tireBgGO.GetComponent<Image>();
-        tireFillBg.color = new Color(0.10f, 0.10f, 0.12f, 1f);
+        tireFillBg.color = UIPalette.PaperDeep;
+        UIPalette.InkBorder(tireFillBg, 2f);
 
         var tireFillGO = new GameObject("TireFill", typeof(RectTransform), typeof(Image));
         tireFillGO.transform.SetParent(tireBgGO.transform, false);
@@ -183,14 +184,15 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         tireFillRT.pivot = new Vector2(0, 0.5f);
         tireFillRT.offsetMin = new Vector2(2, 2); tireFillRT.offsetMax = new Vector2(2, -2);
         tireFill = tireFillGO.GetComponent<Image>();
-        tireFill.color = new Color(0.5f, 0.85f, 1f);
+        UIPalette.Tint(tireFill, UISlot.Gauge, UIPalette.Tyrrhenian);
 
         tireVal = CreateText(panelGO.transform, "TireVal", new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(580, 460), new Vector2(300, 36), 24, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
 
-        // 포장 피드백 (우 영역)
+        // 포장 피드백 (우 영역) — D-121: "포장이 막은 손상 −N" 한 줄
         packingFeedback = CreateText(panelGO.transform, "PackingFeedback", new Vector2(1, 0), new Vector2(1, 0),
-            new Vector2(-60, 460), new Vector2(500, 60), 26, FontStyles.Normal, TextAlignmentOptions.MidlineRight);
+            new Vector2(-60, 460), new Vector2(560, 60), 28, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
+        packingFeedback.color = UIPalette.Olive;
 
         // Wallet 표시 — 도현 #2-8: 카드 위 (타이어보다 약간 아래 행)
         walletLabel = CreateText(panelGO.transform, "WalletLabel", new Vector2(0, 0), new Vector2(0, 0),
@@ -198,7 +200,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         walletLabel.text = "보유 자금";
         walletVal = CreateText(panelGO.transform, "WalletVal", new Vector2(0, 0), new Vector2(0, 0),
             new Vector2(285, 400), new Vector2(300, 36), 30, FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
-        if (UITheme.Active != null) walletVal.color = UITheme.Active.colorAccent;
+        walletVal.color = UIPalette.LemonInk;
 
         // 업그레이드 카드 5개 (가로)
         BuildUpgradeCards(panelGO.transform);
@@ -212,15 +214,16 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         btnRT.anchoredPosition = new Vector2(-160f, 30);
         btnRT.sizeDelta = new Vector2(280, 70);
         var btnImg = btnGO.GetComponent<Image>();
-        btnImg.color = theme != null ? theme.colorAccent : new Color(0.20f, 0.55f, 0.85f);
-        if (theme?.panelBright != null) { btnImg.sprite = theme.panelBright; btnImg.type = Image.Type.Sliced; }
+        UIPalette.PaperPanel(btnImg, UIPalette.Terracotta, slot: UISlot.Button);
         restartBtn = btnGO.GetComponent<Button>();
+        restartBtn.targetGraphic = btnImg;
+        UIPalette.ButtonColors(restartBtn, UIPalette.Terracotta);     // 주 버튼 = 테라코타
         restartBtn.onClick.AddListener(OnRestartClicked);
 
         restartBtnText = CreateText(btnGO.transform, "Text", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
             Vector2.zero, new Vector2(280, 70), 38, FontStyles.Bold, TextAlignmentOptions.Center);
         restartBtnText.text = "다시";
-        restartBtnText.color = Color.white;
+        restartBtnText.color = UIPalette.Paper;
 
         // "차고로" 버튼 (D-085 — 다시 버튼 우측)
         var garageBtnGo = new GameObject("GarageBtn", typeof(RectTransform), typeof(Image), typeof(Button));
@@ -231,8 +234,10 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         gbRT.anchoredPosition = new Vector2(160f, 30);
         gbRT.sizeDelta = new Vector2(280, 70);
         var gbImg = garageBtnGo.GetComponent<Image>();
-        gbImg.color = new Color(0.35f, 0.40f, 0.65f);
+        UIPalette.PaperPanel(gbImg, UIPalette.Tyrrhenian, slot: UISlot.Button);
         _garageBtn = garageBtnGo.GetComponent<Button>();
+        _garageBtn.targetGraphic = gbImg;
+        UIPalette.ButtonColors(_garageBtn, UIPalette.Tyrrhenian);     // 보조 버튼 = 바다색
         _garageBtn.onClick.AddListener(OnGarageClicked);
 
         var gbTxtGo = new GameObject("Txt", typeof(RectTransform));
@@ -240,10 +245,9 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         _garageBtnTxt = gbTxtGo.AddComponent<TextMeshProUGUI>();
         _garageBtnTxt.text = "차고로";
         _garageBtnTxt.alignment = TextAlignmentOptions.Center;
-        _garageBtnTxt.color = Color.white;
         _garageBtnTxt.fontSize = 38;
         _garageBtnTxt.fontStyle = FontStyles.Bold;
-        if (theme?.fontPrimary != null) _garageBtnTxt.font = theme.fontPrimary;
+        UIPalette.Body(_garageBtnTxt, UIPalette.Paper);
         var gbtRT = gbTxtGo.GetComponent<RectTransform>();
         gbtRT.anchorMin = Vector2.zero; gbtRT.anchorMax = Vector2.one;
         gbtRT.offsetMin = Vector2.zero; gbtRT.offsetMax = Vector2.zero;
@@ -251,7 +255,6 @@ public class ResultPanel : MonoBehaviour, IResultPanel
 
     void BuildUpgradeCards(Transform parent)
     {
-        var theme = UITheme.Active;
         cards.Clear();
         // 카탈로그 개수만큼 카드 생성 (채널 5: 적재함 업그레이드 2개 추가로 5→7).
         int n = (upgradeCatalog != null && upgradeCatalog.upgrades != null && upgradeCatalog.upgrades.Count > 0)
@@ -276,8 +279,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             card.rt.anchoredPosition = new Vector2(pad + i * (cardW + spacing), cardY);
             card.rt.sizeDelta = new Vector2(cardW, cardH);
             card.bg = cardGO.GetComponent<Image>();
-            if (theme?.panelDark != null) { card.bg.sprite = theme.panelDark; card.bg.type = Image.Type.Sliced; }
-            card.bg.color = new Color(0.16f, 0.18f, 0.22f, 0.95f);
+            UIPalette.PaperPanel(card.bg, UIPalette.PaperDeep, shadow: false, slot: UISlot.Card);
 
             // strip
             var stripGO = new GameObject("Strip", typeof(RectTransform), typeof(Image));
@@ -287,7 +289,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             sRT.pivot = new Vector2(0.5f, 1);
             sRT.sizeDelta = new Vector2(0, 6);
             card.strip = stripGO.GetComponent<Image>();
-            card.strip.color = Color.white;
+            card.strip.color = UIPalette.Ink;
 
             // name
             card.name = CreateText(cardGO.transform, "Name", new Vector2(0, 1), new Vector2(1, 1),
@@ -297,10 +299,11 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             card.desc = CreateText(cardGO.transform, "Desc", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -90), new Vector2(0, 70), 18, FontStyles.Normal, TextAlignmentOptions.Top);
             card.desc.textWrappingMode = TextWrappingModes.Normal;
+            card.desc.color = UIPalette.InkMuted;
             // cost — 도현 #2-9: 카드 안 cost 라인이 buy 버튼과 겹침. -160→-140.
             card.cost = CreateText(cardGO.transform, "Cost", new Vector2(0, 1), new Vector2(1, 1),
                 new Vector2(0, -140), new Vector2(0, 30), 22, FontStyles.Bold, TextAlignmentOptions.Center);
-            if (theme != null) card.cost.color = theme.colorAccent;
+            card.cost.color = UIPalette.LemonInk;
             // buy btn
             var btnGO = new GameObject("BuyBtn", typeof(RectTransform), typeof(Image), typeof(Button));
             btnGO.transform.SetParent(cardGO.transform, false);
@@ -311,12 +314,13 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             bRT.sizeDelta = new Vector2(-16, 38);
             card.buyBtn = btnGO.GetComponent<Button>();
             var btnImg = btnGO.GetComponent<Image>();
-            btnImg.color = new Color(0.20f, 0.55f, 0.85f);
-            if (theme?.panelBright != null) { btnImg.sprite = theme.panelBright; btnImg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(btnImg, UIPalette.Tyrrhenian, shadow: false, slot: UISlot.Button);
+            card.buyBtn.targetGraphic = btnImg;
+            UIPalette.ButtonColors(card.buyBtn, UIPalette.Tyrrhenian);
             card.buyText = CreateText(btnGO.transform, "Text", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(-16, 38), 22, FontStyles.Bold, TextAlignmentOptions.Center);
             card.buyText.text = "구매";
-            card.buyText.color = Color.white;
+            card.buyText.color = UIPalette.Paper;
             int captured = i;
             card.buyBtn.onClick.AddListener(() => OnUpgradeClick(captured));
 
@@ -327,7 +331,6 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     void Refresh()
     {
         if (controller == null) return;
-        var theme = UITheme.Active;
         var job = controller.CurrentJob;
         int orderCount = controller.CurrentOrders != null ? controller.CurrentOrders.Count : 0;
         bool perfect = controller.LastIntegrityPercent >= 0.8f;
@@ -335,10 +338,12 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // Title — 다물건이면 N건 부기
         string baseTitle = controller.LastRunSuccess ? "배달 완료!" : "시간 초과";
         titleText.text = orderCount > 1 ? $"{baseTitle}  ({orderCount}건)" : baseTitle;
-        Color stripCol = controller.LastRunSuccess && perfect ? new Color(0.4f, 0.95f, 0.4f)
-                       : controller.LastRunSuccess              ? new Color(0.95f, 0.85f, 0.3f)
-                                                                : new Color(1f, 0.5f, 0.4f);
+        // D-121: 성공·완벽 = 올리브, 성공(흠집) = 레몬, 실패(시간 초과) = 신호 빨강(도장색).
+        Color stripCol = controller.LastRunSuccess && perfect ? UIPalette.Olive
+                       : controller.LastRunSuccess              ? UIPalette.Lemon
+                                                                : UIPalette.Signal;
         colorStrip.color = stripCol;
+        titleText.color = controller.LastRunSuccess ? UIPalette.Ink : UIPalette.Signal;
 
         // 스탯 — 다물건이면 주문 이름들 콤마 결합 (긴 경우 ellipsis로 잘림)
         if (orderCount > 1)
@@ -363,8 +368,8 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // 이야기
         storyText.text = BuildStory(job, controller.LastIntegrityPercent);
 
-        // 타이어 마모
-        var tire = Services.Tires as TireSystem;
+        // 타이어 마모 — 프로토타입 모드는 타이어 펑크·마모를 끈다(D-117) → 바 숨김.
+        var tire = Services.PrototypeMode ? null : Services.Tires as TireSystem;
         if (tire != null)
         {
             float wear = tire.Wear;
@@ -374,9 +379,9 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             var rt = tireFill.rectTransform;
             rt.anchorMax = new Vector2(Mathf.Clamp01(1f - wear), 1);     // 남은 수명 표시 (1-wear)
             tireVal.text = $"{Mathf.RoundToInt((1f - wear) * 100f)}% ({TireSystem.DisplayName(tire.Current)})";
-            tireFill.color = wear > 0.7f ? new Color(1f, 0.5f, 0.4f)
-                          : wear > 0.4f ? new Color(0.95f, 0.85f, 0.3f)
-                                         : new Color(0.4f, 0.95f, 0.7f);
+            tireFill.color = wear > 0.7f ? UIPalette.Signal
+                          : wear > 0.4f ? UIPalette.Lemon
+                                         : UIPalette.Olive;
             tireLabel.gameObject.SetActive(true);
             tireFillBg.gameObject.SetActive(true);
             tireVal.gameObject.SetActive(true);
@@ -388,9 +393,15 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             tireVal.gameObject.SetActive(false);
         }
 
-        // 포장 피드백 — Task 14: PackingTier 폐기. WrapState 기반으로 대체 예정 (Task 17).
+        // 포장 피드백 — D-121: 포장이 이번 런에서 막아 준 손상량(CargoShakeSimulator.AbsorbedDamageThisRun).
         if (packingFeedback != null)
-            packingFeedback.text = "";
+        {
+            var shake = Services.Shake as CargoShakeSimulator;
+            float absorbed = shake != null ? shake.AbsorbedDamageThisRun : 0f;
+            packingFeedback.text = shake != null && absorbed > 0.05f
+                ? $"포장이 막은 손상 −{Mathf.RoundToInt(absorbed)}"
+                : "";
+        }
 
         // 업그레이드 영역
         var ups = UpgradeSystem.Instance;
@@ -410,24 +421,25 @@ public class ResultPanel : MonoBehaviour, IResultPanel
             card.desc.text = card.def.description;
             card.cost.text = $"₩{card.def.cost:N0}";
             card.strip.color = card.def.tintColor;
+            card.name.color = UIPalette.Ink;
 
             bool owned = ups.IsOwned(card.def.effect);
             bool affordable = ups.Wallet >= card.def.cost;
             if (owned)
             {
-                card.bg.color = new Color(0.20f, 0.45f, 0.25f, 0.92f);
+                card.bg.color = Color.Lerp(UIPalette.PaperDeep, UIPalette.Olive, 0.35f);
                 card.buyBtn.interactable = false;
                 card.buyText.text = "✓ 보유";
             }
             else if (!affordable)
             {
-                card.bg.color = new Color(0.10f, 0.10f, 0.12f, 0.92f);
+                card.bg.color = Color.Lerp(UIPalette.PaperDeep, UIPalette.Stone, 0.6f);
                 card.buyBtn.interactable = false;
                 card.buyText.text = "자금 부족";
             }
             else
             {
-                card.bg.color = new Color(0.18f, 0.20f, 0.25f, 0.95f);
+                card.bg.color = UIPalette.PaperDeep;
                 card.buyBtn.interactable = true;
                 card.buyText.text = "구매";
             }
@@ -477,7 +489,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         string t = $"{Mathf.FloorToInt(sec / 60f)}분 {Mathf.FloorToInt(sec % 60f):D2}초";
         string p = $"{Mathf.FloorToInt(par / 60f)}분 {Mathf.FloorToInt(par % 60f):D2}초";
         float d = par - sec;
-        return d >= 0f ? $"{t} / 목표 {p} (+{d:F0}s 여유 · 보너스)" : $"{t} / 목표 {p} ({-d:F0}s 초과)";
+        return d >= 0f ? $"{t} / 목표 {p} (+{d:F0}초 여유 · 보너스)" : $"{t} / 목표 {p} ({-d:F0}초 초과)";
     }
 
     static string FormatTimeWithBonus(float sec, OrderJob job)
@@ -490,7 +502,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         int limS = Mathf.FloorToInt(job.timeLimitSec % 60f);
         float bonus = job.timeLimitSec - sec;
         if (bonus > 0f)
-            return $"{baseStr} / {limM}분 {limS:D2}초 (+{bonus:F0}s 여유)";
+            return $"{baseStr} / {limM}분 {limS:D2}초 (+{bonus:F0}초 여유)";
         return $"{baseStr} / {limM}분 {limS:D2}초 (초과)";
     }
 
@@ -518,7 +530,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         var label = CreateText(parent, $"{id}_Label", new Vector2(0, 1), new Vector2(0, 1),
             new Vector2(60, y), new Vector2(280, 50), 30, FontStyles.Normal, TextAlignmentOptions.MidlineLeft);
         label.text = labelText;
-        if (UITheme.Active != null) label.color = UITheme.Active.colorTextMuted;
+        label.color = UIPalette.InkMuted;
 
         var val = CreateText(parent, $"{id}_Val", new Vector2(1, 1), new Vector2(1, 1),
             new Vector2(-60, y), new Vector2(520, 50), 32, FontStyles.Bold, TextAlignmentOptions.MidlineRight);
@@ -527,7 +539,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         val.fontSizeMin = 18;
         val.fontSizeMax = 32;
         val.overflowMode = TMPro.TextOverflowModes.Ellipsis;
-        if (UITheme.Active != null) val.color = UITheme.Active.colorText;
+        val.color = UIPalette.Ink;
 
         return (label, val);
     }
@@ -551,12 +563,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         t.fontStyle = style;
         t.alignment = align;
         t.textWrappingMode = TextWrappingModes.NoWrap;
-        var theme = UITheme.Active;
-        if (theme != null)
-        {
-            if (theme.fontPrimary != null) t.font = theme.fontPrimary;
-            t.color = theme.colorText;
-        }
+        UIPalette.Body(t, UIPalette.Ink);     // D-121: 종이 위 잉크 글자 + Pretendard
         return t;
     }
 }

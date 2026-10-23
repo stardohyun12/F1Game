@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645338a6626a14e45a190678809032f3, type: 3}
   m_Name: Hardcase
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
-  displayName: Hardcase
+  displayName: 하드케이스
   channelIndex: 2
   costPerPixel: 0.18
   absorption: 0.85

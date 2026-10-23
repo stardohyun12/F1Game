@@ -36,7 +36,6 @@ public class PauseMenu : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
         rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
 
@@ -45,7 +44,7 @@ public class PauseMenu : MonoBehaviour
             var go = new GameObject("Overlay", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             go.transform.SetParent(transform, false);
             overlay = go.GetComponent<Image>();
-            overlay.color = new Color(0, 0, 0, 0.75f);
+            overlay.color = UIPalette.WithAlpha(UIPalette.Ink, 0.75f);
             overlay.raycastTarget = true;
             var r = overlay.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one;
@@ -57,8 +56,7 @@ public class PauseMenu : MonoBehaviour
             var go = new GameObject("Panel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             go.transform.SetParent(transform, false);
             var panelImg = go.GetComponent<Image>();
-            panelImg.color = Color.white;
-            if (theme?.panelGloss != null) { panelImg.sprite = theme.panelGloss; panelImg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(panelImg);     // D-121: 종이 패널
             panelImg.raycastTarget = true;
             panelRt = panelImg.rectTransform;
             panelRt.anchorMin = new Vector2(0.5f, 0.5f); panelRt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -69,27 +67,26 @@ public class PauseMenu : MonoBehaviour
             var titleGo = new GameObject("Title", typeof(RectTransform));
             titleGo.transform.SetParent(panelRt, false);
             var title = titleGo.AddComponent<TextMeshProUGUI>();
-            title.text = "PAUSED";
+            title.text = "일시 정지";
             title.alignment = TextAlignmentOptions.Center;
             title.fontSize = 60; title.fontStyle = FontStyles.Bold;
-            if (theme != null) { if (theme.fontPrimary != null) title.font = theme.fontPrimary; title.color = theme.colorAccent; }
+            UIPalette.Display(title, UIPalette.Ink);
             var tR = title.rectTransform;
             tR.anchorMin = new Vector2(0, 1); tR.anchorMax = new Vector2(1, 1); tR.pivot = new Vector2(0.5f, 1);
             tR.sizeDelta = new Vector2(0, 96); tR.anchoredPosition = new Vector2(0, -40);
 
-            CreateButton("ResumeBtn", panelRt, "RESUME", new Vector2(0, 30), () => SetOpen(false));
-            CreateButton("QuitBtn", panelRt, "QUIT", new Vector2(0, -60), OnQuit);
+            CreateButton("ResumeBtn", panelRt, "계속하기", new Vector2(0, 30), () => SetOpen(false), UIPalette.Terracotta, UIPalette.Paper);
+            CreateButton("QuitBtn", panelRt, "나가기", new Vector2(0, -60), OnQuit, UIPalette.PaperDeep, UIPalette.Ink);
         }
     }
 
-    void CreateButton(string name, RectTransform parent, string label, Vector2 anchoredPos, System.Action onClick)
+    void CreateButton(string name, RectTransform parent, string label, Vector2 anchoredPos, System.Action onClick,
+        Color fill, Color textColor)
     {
-        var theme = UITheme.Active;
         var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
         go.transform.SetParent(parent, false);
         var img = go.GetComponent<Image>();
-        img.color = Color.white;
-        if (theme?.buttonNormal != null) { img.sprite = theme.buttonNormal; img.type = Image.Type.Sliced; }
+        UIPalette.PaperPanel(img, fill, slot: UISlot.Button);
         var btnRt = img.rectTransform;
         btnRt.anchorMin = new Vector2(0.5f, 0.5f); btnRt.anchorMax = new Vector2(0.5f, 0.5f); btnRt.pivot = new Vector2(0.5f, 0.5f);
         btnRt.sizeDelta = new Vector2(320, 72);
@@ -97,15 +94,7 @@ public class PauseMenu : MonoBehaviour
 
         var btn = go.GetComponent<Button>();
         btn.targetGraphic = img;
-        // Kenney highlight sprite로 hover 전환
-        if (theme?.buttonHighlight != null)
-        {
-            var spriteState = btn.spriteState;
-            spriteState.highlightedSprite = theme.buttonHighlight;
-            spriteState.pressedSprite = theme.buttonHighlight;
-            btn.spriteState = spriteState;
-            btn.transition = Selectable.Transition.SpriteSwap;
-        }
+        UIPalette.ButtonColors(btn, fill);     // D-121: 글로스 스프라이트 대신 평면 색 상태
         btn.onClick.AddListener(() => { UISounds.Click(); onClick?.Invoke(); });
 
         var lblGo = new GameObject("Label", typeof(RectTransform));
@@ -114,7 +103,7 @@ public class PauseMenu : MonoBehaviour
         lbl.text = label;
         lbl.alignment = TextAlignmentOptions.Center;
         lbl.fontSize = 32; lbl.fontStyle = FontStyles.Bold;
-        if (theme != null) { if (theme.fontPrimary != null) lbl.font = theme.fontPrimary; lbl.color = theme.colorText; }
+        UIPalette.Body(lbl, textColor);
         lbl.raycastTarget = false;
         var lR = lbl.rectTransform;
         lR.anchorMin = Vector2.zero; lR.anchorMax = Vector2.one;

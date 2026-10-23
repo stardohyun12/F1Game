@@ -59683,43 +59683,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: accelTime
-      value: 2.2
+      value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: brakeDecel
-      value: 9
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: maxSpeedKmh
-      value: 115
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: throttleLag
       value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: driftYawRateDeg
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: driftMaxSpeedKmh
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: driftYawResponse
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: maxTurnDegPerSec
       value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: driftVelocityAlign
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: centerOfMassOffset.y
       value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: driftLongitudinalDrag
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: turnResponseBySpeed.m_Curve.Array.data[1].value
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: brakeStrengthBySpeed.m_Curve.Array.data[0].value
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: brakeStrengthBySpeed.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: turnResponseBySpeed.m_Curve.Array.data[1].inSlope
       value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: brakeStrengthBySpeed.m_Curve.Array.data[1].inSlope
+      value: 0.14999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: turnResponseBySpeed.m_Curve.Array.data[0].outSlope
       value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094000627798262811, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
+      propertyPath: brakeStrengthBySpeed.m_Curve.Array.data[0].outSlope
+      value: 0.14999998
       objectReference: {fileID: 0}
     - target: {fileID: 5522889733767891348, guid: 356a5e3b096c28641af798c7539095f8, type: 3}
       propertyPath: m_Enabled
@@ -262645,6 +262677,9 @@ MonoBehaviour:
   packingCamera: {fileID: 0}
   cargoSpawnPoint: {fileID: 0}
   materials: []
+  stampSprite: {fileID: 0}
+  gaugeTrackSprite: {fileID: 0}
+  gaugeFillSprite: {fileID: 0}
 --- !u!4 &1688505257
 Transform:
   m_ObjectHideFlags: 0

@@ -351,16 +351,11 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         rt.anchoredPosition = new Vector2(0, buttonBottom);
         rt.sizeDelta = new Vector2(-24, 72);
         var img = goGO.GetComponent<UnityEngine.UI.Image>();
-        img.color = goBtnReadyColor;
+        UIPalette.PaperPanel(img, UIPalette.Terracotta, slot: UISlot.Button);
         boardGoButton = goGO.GetComponent<UnityEngine.UI.Button>();
-        // Button.targetGraphic + colors transition으로 interactable=false 시 회색 dim 자동
+        // Button.targetGraphic + colors transition — D-121: 출발 = 테라코타, 비활성 = stone(검붉은 띠 제거).
         boardGoButton.targetGraphic = img;
-        var colors = boardGoButton.colors;
-        colors.normalColor = goBtnReadyColor;
-        colors.highlightedColor = new Color(1.00f, 0.20f, 0.10f, 1f);
-        colors.pressedColor = new Color(0.70f, 0.02f, 0.00f, 1f);
-        colors.disabledColor = new Color(0.30f, 0.30f, 0.34f, 1f);
-        boardGoButton.colors = colors;
+        UIPalette.ButtonColors(boardGoButton, UIPalette.Terracotta);
         boardGoButton.onClick.AddListener(OnBoardGoClicked);
 
         var txtGO = new GameObject("Label", typeof(RectTransform));
@@ -377,14 +372,12 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         boardGoButtonLabel.fontSize = 28;
         boardGoButtonLabel.fontStyle = TMPro.FontStyles.Bold;
         boardGoButtonLabel.alignment = TMPro.TextAlignmentOptions.Center;
-        boardGoButtonLabel.color = Color.white;
+        UIPalette.Body(boardGoButtonLabel, UIPalette.Paper);
         boardGoButtonLabel.textWrappingMode = TMPro.TextWrappingModes.NoWrap; // 한 줄 유지 + autoSize로 줄임
         boardGoButtonLabel.overflowMode = TMPro.TextOverflowModes.Ellipsis;
         boardGoButtonLabel.margin = new Vector4(12, 4, 12, 4); // 좌우 패딩
         boardGoButtonLabel.text = "주문을 골라주세요";
     }
-
-    static readonly Color goBtnReadyColor = new Color(0.88f, 0.04f, 0f, 1f);
 
     void UpdateGoButton()
     {
@@ -394,6 +387,8 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
         boardGoButton.interactable = n >= 1;
         if (boardGoButtonLabel != null)
         {
+            // 비활성(stone) 위엔 잉크, 활성(테라코타) 위엔 종이색 글자.
+            boardGoButtonLabel.color = n >= 1 ? UIPalette.Paper : UIPalette.Ink;
             if (n == 0) boardGoButtonLabel.text = $"주문을 골라주세요 (최대 {cap}개)";
             else if (n < cap) boardGoButtonLabel.text = $"출발 ({n}/{cap})";
             else boardGoButtonLabel.text = $"출발 ({n}/{cap}) — 적재함 가득";
@@ -546,7 +541,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
                 startMarker.transform.localScale = new Vector3(2f, 3f, 2f);
                 var mr = startMarker.GetComponent<MeshRenderer>();
                 var mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-                mat.color = new Color(1f, 0.9f, 0.2f, 1f);
+                mat.color = UIPalette.Lemon;     // 차고(출발점) = 레몬
                 mr.sharedMaterial = mat;
             }
         }
@@ -577,6 +572,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
             destLabelText.fontSize = 14f;
             destLabelText.alignment = TMPro.TextAlignmentOptions.Center;
             destLabelText.fontStyle = TMPro.FontStyles.Bold;
+            if (UIPalette.BodyFont != null) destLabelText.font = UIPalette.BodyFont;
             destLabelGO.transform.localScale = Vector3.one * 0.8f;
         }
         destLabelGO.SetActive(true);
@@ -628,7 +624,7 @@ public class OrderBoard : MonoBehaviour, IOrderBoard
 
         // 세션 27 — 도착지 위 큰 라벨
         if (lastDest != null && firstLabel != null)
-            ShowDestLabel(lastDest.transform.position, firstLabel, job.color);
+            ShowDestLabel(lastDest.transform.position, PlaceNames.Display(firstLabel), job.color);
     }
 
     OrderJob GetLargestJob()

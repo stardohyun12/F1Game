@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645338a6626a14e45a190678809032f3, type: 3}
   m_Name: Bubble
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
-  displayName: Bubble
+  displayName: 버블랩
   channelIndex: 0
   costPerPixel: 0.03
   absorption: 0.25

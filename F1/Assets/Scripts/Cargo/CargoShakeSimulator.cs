@@ -75,6 +75,19 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     bool placeholderHidden;
     float graceUntil = -1f;
 
+    // ── 정산용 '포장이 막은 손상' (설계 P8 — 데이터만. 표시는 ResultPanel 담당) ─────────
+    /// <summary>이번 런에 포장 흡수로 줄어든 손상 합 (raw − 실제 적용). 런 시작(ClearMountedItems) 때 0.</summary>
+    public float AbsorbedDamageThisRun { get; private set; }
+    /// <summary>위 값을 맞은 트렁크 벽 기준으로 나눔 — 0 앞(+Z) · 1 뒤(−Z) · 2 좌(−X) · 3 우(+X).</summary>
+    public readonly float[] AbsorbedDamageBySide = new float[4];
+
+    /// <summary>런별 누적 초기화. RunController.BeginRun → TransferWrapStateToCargo → ClearMountedItems 에서 매 런 호출됨.</summary>
+    public void ResetRunStats()
+    {
+        AbsorbedDamageThisRun = 0f;
+        for (int i = 0; i < AbsorbedDamageBySide.Length; i++) AbsorbedDamageBySide[i] = 0f;
+    }
+
     /// <summary>런 진입 직후 N초간 화물 손상 무효 (진입 순간 자동 손상 방지).</summary>
     public void StartGracePeriod(float seconds = 1.0f)
     {
@@ -103,8 +116,12 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         bool alreadyPlaced = cube.transform.parent == transform;
         Vector3 placedLocal = cube.transform.localPosition;
 
+        Quaternion placedRot = cube.transform.localRotation;
+
         cube.transform.SetParent(transform, false);    // CargoSimRoot 직속 (이미 자식이면 localPos 유지)
-        cube.transform.localRotation = Quaternion.identity;
+        // 배치 단계에서 플레이어가 돌린 방향(A/D·W/S 90° 스냅)을 유지 — 예전엔 identity 로 덮어써서
+        // 배치 회전이 보이기만 하고 무효였다. 흡수 조회는 면을 실제 지오메트리로 찾으므로 회전과 무관하게 맞는다.
+        cube.transform.localRotation = alreadyPlaced ? placedRot : Quaternion.identity;
         cube.transform.localScale = Vector3.one * itemScale;
 
         // Day 5 (2026-05-19): CargoType별 색 적용 (placeholder visual).
@@ -145,6 +162,7 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
     {
         foreach (var it in items) if (it.t != null) Destroy(it.t.gameObject);
         items.Clear();
+        ResetRunStats(); // 새 런 시작 — 지난 런의 '포장이 막은 손상' 은 정산이 끝난 뒤라 지워도 된다
     }
 
     // placeholder Box는 1회만 숨김 (포장 큐브가 그 자리 대신).
@@ -267,16 +285,24 @@ public class CargoShakeSimulator : MonoBehaviour, ICargoShakeSimulator
         if (raw <= 0f) return;
 
         // 충격 흡수율 — 이 아이템 자기 WrapState로 계산 (각자 따로 포장).
+        // impactDirLocal 은 트렁크(CargoSimRoot) 기준 벽 방향 → 트렁크 transform 으로 월드 변환.
+        // (아이템 transform 으로 바꾸면 배치 회전이 살아난 지금 엉뚱한 면을 조회한다.)
+        // 면 조회 = 포장 화면 면별 게이지와 같은 함수(3×3 ray 평균) — 보이는 값과 실제 손상이 일치.
         float absorption = 0f;
         if (it.wrap != null && it.t != null)
         {
-            Vector3 worldHit = it.t.position;
-            Vector3 worldDir = it.t.TransformDirection(impactDirLocal).normalized;
-            absorption = it.wrap.QueryAbsorption(worldHit, worldDir);
+            Vector3 worldDir = transform.TransformDirection(impactDirLocal).normalized;
+            absorption = it.wrap.QueryFaceAbsorption(worldDir, out _);
         }
         float dmg = raw * (1f - absorption);
         if (absorption > 0.01f)
-            Debug.Log($"[CargoShake] 충격 흡수 {absorption * 100f:F0}% (raw {raw:F1} → {dmg:F1})");
+        {
+            float saved = raw - dmg;
+            AbsorbedDamageThisRun += saved;
+            int side = impactDirLocal.z > 0.5f ? 0 : impactDirLocal.z < -0.5f ? 1 : impactDirLocal.x < 0f ? 2 : 3;
+            AbsorbedDamageBySide[side] += saved;
+            Debug.Log($"[CargoShake] 충격 흡수 {absorption * 100f:F0}% (raw {raw:F1} → {dmg:F1}, 런 누적 막음 {AbsorbedDamageThisRun:F1})");
+        }
         if (dmg > 0.01f) cargo.ApplyExternalDamage(dmg, flashSpeedKmh: speed * 3.6f);
     }
 

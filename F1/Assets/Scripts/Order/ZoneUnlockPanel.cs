@@ -105,7 +105,7 @@ public class ZoneUnlockPanel : MonoBehaviour
         var rt = (RectTransform)go.transform;
         rt.sizeDelta = new Vector2(220, 60);
         var img = go.GetComponent<Image>();
-        img.color = new Color(0.10f, 0.10f, 0.15f, 0.92f);
+        UIPalette.PaperPanel(img, slot: UISlot.Card);
 
         var label = new GameObject("Label", typeof(RectTransform));
         label.transform.SetParent(go.transform, false);
@@ -115,7 +115,7 @@ public class ZoneUnlockPanel : MonoBehaviour
         var tmp = label.AddComponent<TextMeshProUGUI>();
         tmp.fontSize = 16;
         tmp.alignment = TextAlignmentOptions.Left;
-        tmp.color = Color.white;
+        UIPalette.Body(tmp, UIPalette.Ink);
 
         var btn = go.GetComponent<Button>();
         btn.onClick.AddListener(() => OnClickUnlock(z));
@@ -128,9 +128,9 @@ public class ZoneUnlockPanel : MonoBehaviour
     {
         var wallet = UpgradeSystem.Instance;
         bool canAfford = wallet != null && wallet.Wallet >= z.unlockCost;
-        tmp.text = $"<b>{z.displayName}</b>  잠금 해제 ₩{z.unlockCost:N0}\n<size=12><color=#aaa>잡 {z.jobs.Count}개 추가</color></size>";
+        tmp.text = $"<b>{z.displayName}</b>  잠금 해제 ₩{z.unlockCost:N0}\n<size=12><color={UIPalette.Hex(UIPalette.InkMuted)}>잡 {z.jobs.Count}개 추가</color></size>";
         if (btn != null) btn.interactable = canAfford;
-        tmp.color = canAfford ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+        tmp.color = canAfford ? UIPalette.Ink : UIPalette.Stone;
     }
 
     void OnClickUnlock(Zone z)

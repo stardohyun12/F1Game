@@ -45,7 +45,6 @@ public class SpeedometerHUD : MonoBehaviour
 
     void BuildIfNeeded()
     {
-        var theme = UITheme.Active;
         rt.anchorMin = new Vector2(0, 0); rt.anchorMax = new Vector2(0, 0); rt.pivot = new Vector2(0, 0);
         rt.anchoredPosition = anchoredPos;
         rt.sizeDelta = size;
@@ -56,8 +55,7 @@ public class SpeedometerHUD : MonoBehaviour
             go.transform.SetParent(transform, false);
             bg = go.GetComponent<Image>();
             bg.raycastTarget = false;
-            bg.color = theme != null ? theme.colorPanel : new Color(0.12f, 0.14f, 0.18f, 0.92f);
-            if (theme?.panelDark != null) { bg.sprite = theme.panelDark; bg.type = Image.Type.Sliced; }
+            UIPalette.PaperPanel(bg, slot: UISlot.Plate);     // D-121: 법랑 표지판
             var r = bg.rectTransform;
             r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = Vector2.zero; r.offsetMax = Vector2.zero;
         }
@@ -73,7 +71,7 @@ public class SpeedometerHUD : MonoBehaviour
             speedText.fontSize = 76; speedText.fontStyle = FontStyles.Bold;
             speedText.textWrappingMode = TextWrappingModes.NoWrap;
             speedText.overflowMode = TextOverflowModes.Overflow;
-            if (theme != null) { if (theme.fontPrimary != null) speedText.font = theme.fontPrimary; speedText.color = theme.colorText; }
+            UIPalette.Body(speedText, UIPalette.Ink);
             var r = speedText.rectTransform;
             r.anchorMin = new Vector2(0, 0); r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(0.5f, 0.5f);
@@ -91,7 +89,7 @@ public class SpeedometerHUD : MonoBehaviour
             unitText.alignment = TextAlignmentOptions.MidlineLeft;
             unitText.fontSize = 24;
             unitText.textWrappingMode = TextWrappingModes.NoWrap;
-            if (theme != null) { if (theme.fontCondensed != null) unitText.font = theme.fontCondensed; unitText.color = theme.colorTextMuted; }
+            UIPalette.Body(unitText, UIPalette.InkMuted);
             var r = unitText.rectTransform;
             r.anchorMin = new Vector2(1, 0); r.anchorMax = new Vector2(1, 1);
             r.pivot = new Vector2(1, 0.5f);
@@ -108,23 +106,12 @@ public class SpeedometerHUD : MonoBehaviour
         bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
         if (group != null) { group.alpha = driving ? 1f : 0f; group.blocksRaycasts = driving; }
         if (!driving) return;
-        var theme = UITheme.Active;
-        if (theme != null)
-        {
-            if (bg != null) bg.color = theme.colorPanel;
-            if (unitText != null) unitText.color = theme.colorTextMuted;
-        }
-
         float mps = Mathf.Abs(car.CurrentSpeedMps);
         int kmh = Mathf.RoundToInt(mps * 3.6f);
         speedText.text = kmh.ToString();
 
-        // 저속/정지도 가독성 유지 — colorText(검정) 기본, 고속만 accent
+        // 저속/정지 = 잉크, 고속 = 테라코타(종이 위에서 읽히는 강조색).
         float norm = car.MaxSpeedMps > 0 ? mps / car.MaxSpeedMps : 0f;
-        Color col;
-        if (theme == null) col = Color.black;
-        else if (norm >= highSpeedNorm) col = theme.colorAccent;
-        else col = theme.colorText;
-        speedText.color = col;
+        speedText.color = norm >= highSpeedNorm ? UIPalette.Terracotta : UIPalette.Ink;
     }
 }

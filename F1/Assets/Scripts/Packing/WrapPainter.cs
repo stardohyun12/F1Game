@@ -40,12 +40,23 @@ namespace PitCrew.Packing
 
         // 메시 평균 "UV 1 당 월드 길이". 비용·이음새 판정을 UV 배치와 무관하게 하려고 (AI 메시는 UV 섬이 잘게 쪼개져 있음).
         float worldPerUV = 1f;
+        // 같은 값을 콜라이더 로컬 단위로 — 리본(콜라이더 자식, 로컬 폭)과 칠하는 띠 폭을 맞출 때 쓴다.
+        float localPerUV = 1f;
         [Tooltip("UV 이동이 월드 이동으로 예상한 값의 몇 배를 넘으면 UV 이음새를 건넌 것으로 본다.")]
         [SerializeField] private float seamJumpRatio = 3f;
+
+        [Header("Sound (포장 감기 틱)")]
+        [Tooltip("리본이 이 길이(m)만큼 풀릴 때마다 틱 1번 (가설 — 플레이 후 조정).")]
+        [SerializeField] private float tickSpacingMeters = 0.06f;
+        float tickAccum;
 
         const float k_RaycastRange = 100f;
 
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
+        /// <summary>리본 폭(로컬 m) — BeginStroke 의 WrapRibbon 폭과 같은 식.</summary>
+        public float RibbonWidthMeters => stripWidthUV * 4.0f;
+        /// <summary>WrapRT 에 칠하는 띠 폭(UV) — 눈에 보이는 리본 폭과 같은 표면 넓이를 칠한다(보이는 포장 = 보호).</summary>
+        float PaintWidthUV => Mathf.Clamp(RibbonWidthMeters / Mathf.Max(1e-4f, localPerUV), 0.005f, 0.5f);
         public void SetMaterial(WrapMaterialDef def) { currentMat = def; }
         public System.Action<WrapState> OnStrokeEnded;
 
@@ -62,18 +73,20 @@ namespace PitCrew.Packing
             if (col != null) targetCollider = col;
             if (blitMat == null) blitMat = new Material(Shader.Find("PitCrew/WrapStripBlit"));
             InitRT();
-            worldPerUV = ComputeWorldPerUV(targetCollider, out _);
+            worldPerUV = ComputeWorldPerUV(targetCollider, true, out _);
+            localPerUV = ComputeWorldPerUV(targetCollider, false, out _);
         }
 
-        /// <summary>sqrt(월드 표면적 / UV 면적). 실패하면 1.</summary>
-        static float ComputeWorldPerUV(MeshCollider col, out float worldArea)
+        /// <summary>sqrt(표면적 / UV 면적). useScale=false 면 콜라이더 로컬 단위. 실패하면 1.</summary>
+        static float ComputeWorldPerUV(MeshCollider col, bool useScale, out float worldArea)
         {
             worldArea = 0f;
             if (col == null || col.sharedMesh == null) return 1f;
             var m = col.sharedMesh;
+            if (!m.isReadable) return 1f; // Read/Write 꺼진 임포트 메시 — 접근 시 에러 스팸. (화물 FBX 는 임포트에서 켜 둔다)
             var v = m.vertices; var uv = m.uv; var t = m.triangles;
             if (uv == null || uv.Length != v.Length || t.Length == 0) return 1f;
-            var sc = col.transform.lossyScale;
+            var sc = useScale ? col.transform.lossyScale : Vector3.one;
             double wa = 0, ua = 0;
             for (int i = 0; i < t.Length; i += 3)
             {
@@ -178,7 +191,22 @@ namespace PitCrew.Packing
             lastHitLocalNormal = t.InverseTransformDirection(hit.normal);
             hasLastHit = true;
             stroking = true;
+            tickAccum = 0f;
             AudioCueBus.Publish(AudioCueId.PackingStrokeStart);
+        }
+
+        /// <summary>
+        /// 감는 소리 — 리본이 tickSpacingMeters 만큼 풀릴 때마다 짧은 틱. 속도가 빠를수록 촘촘·높게.
+        /// 포장 중엔 timeScale 0 → unscaledDeltaTime 으로 속도를 잰다. 한 프레임에 1번만.
+        /// </summary>
+        void EmitStrokeTick(float dragDist)
+        {
+            if (dragDist <= 0f || currentMat == null) return;
+            tickAccum += dragDist;
+            if (tickAccum < tickSpacingMeters) return;
+            tickAccum %= Mathf.Max(1e-4f, tickSpacingMeters);
+            float speed = dragDist / Mathf.Max(1e-3f, Time.unscaledDeltaTime); // m/s
+            PackingSfx.PlayTick(currentMat.channelIndex, Mathf.InverseLerp(0.2f, 3f, speed));
         }
 
         public void UpdateStroke(Vector2 screenPos)
@@ -223,6 +251,7 @@ namespace PitCrew.Packing
             Vector2 from = seam ? uv : lastUV;
             DrawStrip(from, uv, currentMat, dragDist);
             BumpCoverage(from, uv);
+            EmitStrokeTick(dragDist);
 
             lastUV = uv;
             lastHitLocalPos = t.InverseTransformPoint(hit.point);
@@ -290,11 +319,12 @@ namespace PitCrew.Packing
 
             blitMat.SetVector("_UVPrev", new Vector4(prev.x, prev.y, 0, 0));
             blitMat.SetVector("_UVCurr", new Vector4(curr.x, curr.y, 0, 0));
-            blitMat.SetFloat("_Width", stripWidthUV);
+            blitMat.SetFloat("_Width", PaintWidthUV);
             blitMat.SetVector("_ChannelMask", mask);
 
             Graphics.Blit(src, scratch, blitMat);
             Graphics.Blit(scratch, src);
+            targetState.MarkDirty(); // 면별 게이지·흡수 조회가 새 픽셀을 읽게
 
             float pixelArea = costLenUV * stripWidthUV * targetState.Size * targetState.Size;
             targetState.AccumulateCost(mat.channelIndex, pixelArea * mat.costPerPixel);

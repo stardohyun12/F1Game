@@ -38,13 +38,11 @@ public class MainMenuScreen : MonoBehaviour
         go.AddComponent<GraphicRaycaster>();
         _cg = go.AddComponent<CanvasGroup>();
 
-        var th = UITheme.Active;
-
-        // 배경 — 어두운 단색 (후속: Midjourney/screenshot 자산)
+        // 배경 — D-121 종이 바탕 (후속: 원화 자산)
         var bgGo = new GameObject("BG", typeof(RectTransform));
         bgGo.transform.SetParent(go.transform, false);
         var bg = bgGo.AddComponent<Image>();
-        bg.color = new Color(0.05f, 0.06f, 0.08f, 1f);  // 거의 검정 + 살짝 푸른 톤
+        bg.color = UIPalette.Paper;
         var bgrt = bg.rectTransform;
         bgrt.anchorMin = Vector2.zero; bgrt.anchorMax = Vector2.one;
         bgrt.offsetMin = Vector2.zero; bgrt.offsetMax = Vector2.zero;
@@ -62,8 +60,7 @@ public class MainMenuScreen : MonoBehaviour
         title.fontSizeMin = 24f;
         title.fontSizeMax = 144f;
         title.fontStyle = FontStyles.Bold;
-        if (th != null && th.fontPrimary != null) title.font = th.fontPrimary;
-        title.color = th != null ? th.colorAccent : new Color(1f, 0.82f, 0.25f, 1f);
+        UIPalette.Display(title, UIPalette.Ink);     // 제목체(Jua)
         var trt = title.rectTransform;
         trt.anchorMin = new Vector2(0.1f, 0.60f); trt.anchorMax = new Vector2(0.9f, 0.80f);
         trt.offsetMin = Vector2.zero; trt.offsetMax = Vector2.zero;
@@ -75,16 +72,15 @@ public class MainMenuScreen : MonoBehaviour
         sub.text = "망한 F1 팀의 배달 — 머신 복원 → 그랑프리 복귀";
         sub.alignment = TextAlignmentOptions.Center;
         sub.fontSize = 26;
-        if (th != null && th.fontPrimary != null) sub.font = th.fontPrimary;
-        sub.color = th != null ? th.colorTextMuted : new Color(0.72f, 0.74f, 0.78f, 1f);
+        UIPalette.Body(sub, UIPalette.InkMuted);
         var srt = sub.rectTransform;
         srt.anchorMin = new Vector2(0.1f, 0.53f); srt.anchorMax = new Vector2(0.9f, 0.60f);
         srt.offsetMin = Vector2.zero; srt.offsetMax = Vector2.zero;
 
         // 시작 버튼
-        MakeButton(go.transform, "시작", new Vector2(0.35f, 0.32f), new Vector2(0.65f, 0.40f), OnStartClicked, th != null ? th.colorAccent : new Color(1f, 0.82f, 0.25f, 1f));
+        MakeButton(go.transform, "시작", new Vector2(0.35f, 0.32f), new Vector2(0.65f, 0.40f), OnStartClicked, UIPalette.Terracotta, UIPalette.Paper);
         // 종료 버튼
-        MakeButton(go.transform, "종료", new Vector2(0.35f, 0.20f), new Vector2(0.65f, 0.28f), OnQuitClicked, th != null ? th.colorTextMuted : new Color(0.5f, 0.5f, 0.55f, 1f));
+        MakeButton(go.transform, "종료", new Vector2(0.35f, 0.20f), new Vector2(0.65f, 0.28f), OnQuitClicked, UIPalette.PaperDeep, UIPalette.Ink);
 
         // 버전/크레딧
         var verGo = new GameObject("Version", typeof(RectTransform));
@@ -93,8 +89,7 @@ public class MainMenuScreen : MonoBehaviour
         ver.text = "Demo · 2026-06-24";
         ver.alignment = TextAlignmentOptions.BottomRight;
         ver.fontSize = 16;
-        if (th != null && th.fontPrimary != null) ver.font = th.fontPrimary;
-        ver.color = th != null ? th.colorTextMuted : new Color(0.6f, 0.6f, 0.65f, 1f);
+        UIPalette.Body(ver, UIPalette.InkMuted);
         var vrt = ver.rectTransform;
         vrt.anchorMin = new Vector2(0.8f, 0.02f); vrt.anchorMax = new Vector2(0.98f, 0.06f);
         vrt.offsetMin = Vector2.zero; vrt.offsetMax = Vector2.zero;
@@ -102,16 +97,18 @@ public class MainMenuScreen : MonoBehaviour
         _canvas.enabled = false;
     }
 
-    void MakeButton(Transform parent, string label, Vector2 anchorMin, Vector2 anchorMax, System.Action onClick, Color bgColor)
+    void MakeButton(Transform parent, string label, Vector2 anchorMin, Vector2 anchorMax, System.Action onClick, Color bgColor, Color textColor)
     {
         var go = new GameObject($"Btn_{label}", typeof(RectTransform));
         go.transform.SetParent(parent, false);
         var img = go.AddComponent<Image>();
-        img.color = new Color(bgColor.r, bgColor.g, bgColor.b, 0.9f);
+        UIPalette.PaperPanel(img, bgColor, slot: UISlot.Button);
         var rt = img.rectTransform;
         rt.anchorMin = anchorMin; rt.anchorMax = anchorMax;
         rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
         var btn = go.AddComponent<Button>();
+        btn.targetGraphic = img;
+        UIPalette.ButtonColors(btn, bgColor);
         btn.onClick.AddListener(() => onClick?.Invoke());
 
         var txtGo = new GameObject("Txt", typeof(RectTransform));
@@ -121,9 +118,7 @@ public class MainMenuScreen : MonoBehaviour
         txt.alignment = TextAlignmentOptions.Center;
         txt.fontSize = 36;
         txt.fontStyle = FontStyles.Bold;
-        var th = UITheme.Active;
-        if (th != null && th.fontPrimary != null) txt.font = th.fontPrimary;
-        txt.color = new Color(0.05f, 0.06f, 0.08f, 1f);  // 어두운 텍스트 (밝은 버튼 위)
+        UIPalette.Body(txt, textColor);
         var trt = txt.rectTransform;
         trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one;
         trt.offsetMin = Vector2.zero; trt.offsetMax = Vector2.zero;
