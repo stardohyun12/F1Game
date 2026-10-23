@@ -162,3 +162,7 @@ tools/studio-dashboard/running.json
 /tools/town-gen/out/
 /.ai_logs/
 __pycache__/
+
+# 상주 팀 세션·잠금 (로컬 전용)
+/.claude/team/sessions/
+/.claude/team/editor.lock
