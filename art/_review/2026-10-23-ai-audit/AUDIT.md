@@ -11,8 +11,11 @@
 | 아스팔트 | `Art/StreetFurniture/AsphaltAggregate.png` | 스크립트 (원화는 imagegen 참고) | 아니오 |
 | 씬 머티리얼·메시 82개 | `Scenes/Proto_CoastCourse_Mats/*` | 빌드 메뉴 생성 | 아니오 |
 | UI | `UI/kenney_ui-pack` 10장, kenney car-kit 2 | Kenney CC0 | 아니오 (단, 범용 키트 티) |
+| 엔진음 | `Sound/EngineLoop.mp3` ← `Prefabs/Race.prefab` | AI 효과음 서비스(ElevenLabs 추정, `Sound/LICENSE.txt`·session-log D-020) | **예** — 소리라 시각 점검에서 빠졌음 |
+| 효과음 13 | `Resources/WrapMaterials/Sfx/*.ogg` 9, `Sound/kenney_interface-sounds` 4 | Kenney CC0 (Sfx 9개는 해시로 원본 일치 확인) | 아니오 |
 
-→ 게임 안 AI 파일은 **Meshy 화물 4개뿐**. 대체품 `art/models/cargo_{cake,eggs,fish}_v02`, `cargo_wine_v01`, `cargo_box_final_v2` 는 만들어져 있고 임포트(BUG-001) 대기.
+→ 게임 안 AI 파일은 **Meshy 화물 4개 + 엔진음 1개**. 화물 4개는 프리팹 머티리얼이 단색(`Mat_Cargo_*`, 텍스처 없음)이라 FBX 안의 Meshy 텍스처는 화면에 안 나오고 **형태(54k·53k·75k·27k tris)만** AI.
+교차 확인(2026-10-23 22:2x): 이 PC의 AI 생성 이미지 485장(`~/.codex/generated_images`, ComfyUI output)과 `F1/Assets` 이미지 전체(TownGen·Kenney·TMP 제외) 해시·dHash 대조 → 복사본·근사본 0. 대체품 `art/models/cargo_{cake,eggs,fish}_v02`, `cargo_wine_v01`, `cargo_box_final_v2` 는 만들어져 있고 임포트(BUG-001) 대기.
 
 ## 2. 도현이 보는 이미지 (AI 티의 실제 원인)
 | 이미지 | AI 부분 |
@@ -27,5 +30,5 @@
 ## 3. 조치
 1. 검토판 규칙: 배경은 실제 게임 캡처 또는 bpy 렌더만. AI 플레이트·인페인팅 금지.
 2. 기준 원화 교체: AI 원화 대신 실사 기준(도현 사진/실제 게임 스크린샷 레퍼런스) — 도현 결정.
-3. Meshy 화물 4개 → 대체품 임포트(BUG-001), `Model/AI/` 제거.
+3. Meshy 화물 4개 → 대체품 임포트(BUG-001), `Model/AI/` 제거. 엔진음은 CC0 실녹음(freesound CC0, D-020 원래 조건)으로 교체 — 출시 전 Steam AI 공개 대상.
 4. `check_asset.py` 에 "출시 의존성 중 provenance ai_generated=yes 또는 장부 누락 → FAIL" 추가.
