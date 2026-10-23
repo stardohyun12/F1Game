@@ -72,6 +72,8 @@ def save_config(role, values):
     cur = cfg.get(role, {})
     eng = ENGINES[ENGINE_OF[role]]
     cur["model"] = re.sub(r"[^\w.\-]", "", str(values.get("model", "")))
+    if ENGINE_OF[role] == "claude" and cur["model"] not in eng["models"]:
+        raise ValueError(f"모델은 {', '.join(eng['models'])} 중 하나여야 해요 (opus = 최신 Opus)")
     cur["effort"] = values.get("effort", "") if values.get("effort", "") in eng["efforts"] else ""
     if eng["limits"]:
         cur["budget"] = max(0.1, min(50.0, float(values.get("budget") or 5)))
@@ -151,8 +153,9 @@ function build(){
  $('cols').innerHTML=ROLES.map(([r,name,color])=>{
   const w=WORKERS.includes(r), eng=w?ENGINES[ENGINE_OF[r]]:null;
   const set=w?`<div class=settings id=set-${r}>
-    <label>모델<input list=ml-${r} id=model-${r} placeholder="${ENGINE_OF[r]==='codex'?'기본 (codex 설정)':'sonnet'}">
-      <datalist id=ml-${r}>${eng.models.map(m=>`<option value="${m}">`).join('')}</datalist></label>
+    <label>모델${ENGINE_OF[r]==='claude'
+      ?`<select id=model-${r}>${eng.models.map(m=>`<option value="${m}">${m}${m==='opus'?' (최신 Opus)':m==='sonnet'?' (최신 Sonnet)':m==='haiku'?' (최신 Haiku)':''}</option>`).join('')}</select>`
+      :`<input list=ml-${r} id=model-${r} placeholder="기본 (codex 설정)"><datalist id=ml-${r}>${eng.models.map(m=>`<option value="${m}">`).join('')}</datalist>`}</label>
     <label>추론<select id=effort-${r}>${eng.efforts.map(e=>`<option value="${e}">${effLabel[e]}</option>`).join('')}</select></label>
     ${eng.limits?`<label>예산 $<input type=number step=0.5 min=0.1 max=50 id=budget-${r}></label>
     <label>최대 턴<input type=number step=10 min=1 max=300 id=turns-${r}></label>`:''}
@@ -169,7 +172,7 @@ function build(){
 let filled=false;
 function fillSettings(cfg){
  for(const r of WORKERS){const c=cfg[r]||{};
-  $('model-'+r).value=c.model||''; $('effort-'+r).value=c.effort||'';
+  $('model-'+r).value=c.model||(ENGINE_OF[r]==='claude'?'sonnet':''); $('effort-'+r).value=c.effort||'';
   if($('budget-'+r)){$('budget-'+r).value=c.budget??5;$('turns-'+r).value=c.turns??80}}
 }
 function metaText(r,cfg){const c=cfg[r]||{};

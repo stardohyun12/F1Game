@@ -1,12 +1,12 @@
 {
  "programmer": {
-  "model": "opus5.5",
+  "model": "opus",
   "effort": "",
   "budget": 5.0,
   "turns": 80
  },
  "qa": {
-  "model": "opus5.5",
+  "model": "opus",
   "effort": "",
   "budget": 5.0,
   "turns": 80

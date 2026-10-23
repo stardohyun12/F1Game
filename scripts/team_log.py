@@ -51,9 +51,9 @@ for raw in sys.stdin:
             elif c.get("type") == "tool_use":
                 out("🔧 " + tool_brief(c.get("name", "?"), c.get("input", {})))
     elif t == "result":
-        result.update(ok=ev.get("subtype") == "success", final=ev.get("result", ""),
+        result.update(ok=ev.get("subtype") == "success" and not ev.get("is_error"), final=ev.get("result", ""),
                       cost_usd=ev.get("total_cost_usd"), session_id=ev.get("session_id") or result["session_id"])
-        out(f"끝: {ev.get('subtype')} · {ev.get('num_turns')}턴 · ${ev.get('total_cost_usd') or 0:.2f}")
+        out(f"끝: {'❌ 오류' if ev.get('is_error') else ev.get('subtype')} · {ev.get('num_turns')}턴 · ${ev.get('total_cost_usd') or 0:.2f}")
     # ---- Codex exec --json ----
     elif t == "thread.started":
         result["session_id"] = ev.get("thread_id")
