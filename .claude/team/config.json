@@ -1,18 +1,24 @@
 {
  "programmer": {
-  "model": "sonnet",
+  "model": "opus5.5",
   "effort": "",
-  "budget": 5,
+  "budget": 5.0,
   "turns": 80
  },
  "qa": {
-  "model": "sonnet",
+  "model": "opus5.5",
   "effort": "",
   "budget": 5.0,
   "turns": 80
  },
  "art": {
-  "model": "",
+  "model": "gpt-6-astra",
   "effort": "medium"
+ },
+ "research": {
+  "model": "sonnet",
+  "effort": "high",
+  "budget": 4,
+  "turns": 60
  }
 }
