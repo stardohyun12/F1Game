@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
   displayName: 폼
   channelIndex: 1
-  costPerPixel: 0.21
+  costPerPixel: 0.25
   absorption: 0.55
   displayColor: {r: 0.91, g: 0.84, b: 0.42, a: 0.95}
   hotkey: 50

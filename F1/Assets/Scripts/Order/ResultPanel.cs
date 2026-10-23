@@ -366,7 +366,10 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         string cargoName = job != null ? CargoTypePresets.DisplayName(job.cargoType) : "-";
         int integrityInt = Mathf.RoundToInt(controller.LastIntegrityPercent * 100f);
         cargoLabel.text = $"화물 ({cargoName})";
-        cargoVal.text = $"{integrityInt}% · {RunController.IntegrityGrade(controller.LastIntegrityPercent)}";
+        // 한 곳도 못 갔으면 화물 상태를 판정할 수 없다 — 무결성 대신 '—' (QA 1536: 0/1 인데 '100% · 완벽').
+        bool undelivered = controller.CompletedCount <= 0;
+        cargoVal.text = undelivered ? "—"
+            : $"{integrityInt}% · {RunController.IntegrityGrade(controller.LastIntegrityPercent)}";
         rewardVal.text = $"₩{controller.LastReward:N0}";
         packCostVal.text = controller.LastPackCost > 0 ? $"−₩{controller.LastPackCost:N0}" : "₩0";
         int net = controller.LastNet;
@@ -374,7 +377,9 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         netVal.color = net < 0 ? UIPalette.Signal : UIPalette.Ink;
 
         // 이야기
-        storyText.text = BuildStory(job, controller.LastIntegrityPercent);
+        storyText.text = undelivered && job != null
+            ? $"\"{CargoTypePresets.DisplayName(job.cargoType)}, 배달 못 함.\""
+            : BuildStory(job, controller.LastIntegrityPercent);
 
         // 타이어 마모 — 프로토타입 모드는 타이어 펑크·마모를 끈다(D-117) → 바 숨김.
         var tire = Services.PrototypeMode ? null : Services.Tires as TireSystem;

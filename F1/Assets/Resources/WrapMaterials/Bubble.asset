@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
   displayName: 버블랩
   channelIndex: 0
-  costPerPixel: 0.13
+  costPerPixel: 0.15
   absorption: 0.25
   displayColor: {r: 0.42, g: 0.72, b: 0.91, a: 0.85}
   hotkey: 49

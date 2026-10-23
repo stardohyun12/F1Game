@@ -55,6 +55,7 @@ namespace PitCrew.Packing
         public float StripWidthUV { get => stripWidthUV; set => stripWidthUV = Mathf.Clamp(value, 0.01f, 0.25f); }
         /// <summary>리본 폭(로컬 m) — BeginStroke 의 WrapRibbon 폭과 같은 식.</summary>
         public float RibbonWidthMeters => stripWidthUV * 4.0f;
+        public MeshCollider TargetCollider => targetCollider;
         /// <summary>WrapRT 에 칠하는 띠 폭(UV) — 눈에 보이는 리본 폭과 같은 표면 넓이를 칠한다(보이는 포장 = 보호).</summary>
         float PaintWidthUV => Mathf.Clamp(RibbonWidthMeters / Mathf.Max(1e-4f, localPerUV), 0.005f, 0.5f);
         public void SetMaterial(WrapMaterialDef def) { currentMat = def; }

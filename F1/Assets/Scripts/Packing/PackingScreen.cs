@@ -10,6 +10,7 @@ namespace PitCrew.Packing
     {
         [SerializeField] private GameObject panelRoot;
         [SerializeField] private Camera packingCamera;
+        public Camera PackingCamera => packingCamera;
         [SerializeField] private Transform cargoSpawnPoint;
         [SerializeField] private WrapMaterialDef[] materials;
 
@@ -427,14 +428,13 @@ namespace PitCrew.Packing
             // 이름 레이블
             MakeLabel(t, "MatName", matName,
                 new Vector2(0, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(60, 12), new Vector2(-80, 36), 22, FontStyles.Bold,
+                new Vector2(60, 20), new Vector2(-80, 36), 22, FontStyles.Bold,
                 TextAlignmentOptions.Left);
 
-            // 비용 레이블 — 실제 m당 값(현재 랩 폭 기준). 휠로 폭을 바꾸면 RefreshWidthUI 가 갱신.
-            float costDisplay = idx < mats.Length ? CostPerMeter(mats[idx], CurrentWidthUV) : (idx + 1) * 30f;
-            var costLbl = MakeLabel(t, "MatCost", $"₩{costDisplay:0}/m",
+            // 비용 레이블 — '다 감으면 약 ₩N / 보상의 N%' 두 줄(한 줄이면 키 배지를 덮음). 화물이 바뀌면 RefreshWidthUI 가 갱신.
+            var costLbl = MakeLabel(t, "MatCost", idx < mats.Length ? FullWrapCostLabel(mats[idx]) : "",
                 new Vector2(0, 0.5f), new Vector2(1, 0.5f),
-                new Vector2(60, -16), new Vector2(-80, 28), 16, FontStyles.Normal,
+                new Vector2(60, -18), new Vector2(-80, 44), 15, FontStyles.Normal,
                 TextAlignmentOptions.Left);
             if (UITheme.Active != null) costLbl.color = UITheme.Active.colorTextMuted;
             else costLbl.color = kMuted;
@@ -989,7 +989,12 @@ namespace PitCrew.Packing
             int reward = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
                 ? currentOrders[idx].baseReward : 1000;
             wrapState.CostCap = reward * PackCostCapOfReward;
-            wrapState.CostScale = reward / FullCoverPixelArea(go, wrapState.Size);
+            // 실측 보정(PitCrew/Calibrate Wrap Cost)이 있으면 그것, 없으면 메시 겉면적 추정.
+            var calib = WrapCostCalibration.Load();
+            float fullPixels = calib != null && calib.TryGet(ctype, out var px) ? px : FullCoverPixelArea(go, wrapState.Size);
+            wrapState.FullWrapPixels = fullPixels;
+            wrapState.Reward = reward;
+            wrapState.CostScale = reward / fullPixels;
             go.AddComponent<WrapPainter>();
             // painter.Init은 ActivateItem → WirePainterFor에서 처리 (3D 리본이 표면 위에 올라탐)
 
@@ -1119,16 +1124,17 @@ namespace PitCrew.Packing
         float CurrentWidthUV => currentWidthUV > 0f ? currentWidthUV : 0.06f; // 0.06 = WrapPainter.stripWidthUV 기본값
 
         /// <summary>
-        /// 리본 1m 당 실제 비용 — WrapPainter.DrawStrip 식(끈 길이 × 폭 × RT 픽셀² × costPerPixel)과 같다.
-        /// 예: 기본 폭 0.06 에서 버블 ≈ ₩118/m, 폼 ≈ ₩275/m, 하드 ≈ ₩708/m.
+        /// 재료 카드 비용 안내 — '다 감으면 약 ₩N (보상 N%)'. N = 보정된 다 감기 면적 × 단가(WrapState.FullWrapCost).
+        /// m당 표시는 화물마다 6배씩 달라 버그처럼 읽혀서 바꿨다(QA 1536 #4).
         /// </summary>
-        float CostPerMeter(WrapMaterialDef m, float widthUV)
+        string FullWrapCostLabel(WrapMaterialDef m)
         {
-            if (m == null) return 0f;
             var ws = ActiveItem != null ? ActiveItem.GetComponent<WrapState>() : null;
-            int size = ws != null ? ws.Size : 256;
-            float scale = ws != null ? ws.CostScale : 1f;
-            return m.costPerPixel * widthUV * size * size * scale;
+            if (m == null || ws == null || ws.Reward <= 0) return "";
+            float cost = ws.FullWrapCost(m);
+            int won = Mathf.RoundToInt(cost / 10f) * 10;
+            int pct = Mathf.RoundToInt(cost / ws.Reward * 100f);
+            return $"다 감으면 약 ₩{won:N0}\n보상의 {pct}%";
         }
 
         /// <summary>PackingScreenInput 이 휠로 폭을 바꿀 때 호출. t = min~max 사이 위치(0~1).</summary>
@@ -1153,7 +1159,7 @@ namespace PitCrew.Packing
             for (int i = 0; i < cardCostText.Length; i++)
             {
                 if (cardCostText[i] == null || i >= mats.Length) continue;
-                cardCostText[i].text = $"₩{CostPerMeter(mats[i], w):0}/m";
+                cardCostText[i].text = FullWrapCostLabel(mats[i]);
             }
         }
 

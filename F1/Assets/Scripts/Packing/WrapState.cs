@@ -90,6 +90,15 @@ namespace PitCrew.Packing
         /// 재료 costPerPixel 은 '겉면을 한 번 다 덮으면 보상의 몇 배' 가 된다(크기 다른 화물도 같은 비율). 기본 1 = 예전 식.</summary>
         public float CostScale = 1f;
 
+        /// <summary>'사람처럼 다 감기' 한 번의 픽셀 면적(WrapCostCalibration 실측, 없으면 겉면적 추정). 0 = 모름.</summary>
+        public float FullWrapPixels;
+
+        /// <summary>이 화물 주문 보상(₩). 비용 안내 '보상의 N%' 용.</summary>
+        public int Reward;
+
+        /// <summary>이 재료로 다 감으면 드는 예상 비용(₩) — 상한 적용 전.</summary>
+        public float FullWrapCost(WrapMaterialDef m) => m != null ? FullWrapPixels * m.costPerPixel * CostScale : 0f;
+
         public float TotalCost => CostByChannel[0] + CostByChannel[1] + CostByChannel[2];
 
     // ── Damage Query ──────────────────────────────────────────────────────────

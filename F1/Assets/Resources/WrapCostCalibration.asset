@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ba2bb1fccc2ca4dbb2a362cf7d9b77, type: 3}
+  m_Name: WrapCostCalibration
+  m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapCostCalibration
+  entries:
+  - cargoType: 1
+    fullWrapPixels: 48851.836
+    strokes: 32
+  - cargoType: 2
+    fullWrapPixels: 23485.02
+    strokes: 12
+  - cargoType: 3
+    fullWrapPixels: 18727.56
+    strokes: 20
+  - cargoType: 4
+    fullWrapPixels: 68753.695
+    strokes: 32
+  - cargoType: 0
+    fullWrapPixels: 120407.16
+    strokes: 35
