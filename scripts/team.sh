@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-# 상주 팀원에게 과제를 준다 — 역할별 Claude Code 세션을 이어서(--resume) 돌린다.
-# 사용: bash scripts/team.sh <programmer|qa> "<과제>"     (과제에 [EDITOR] 가 있으면 에디터 잠금)
-# 환경: TEAM_MODEL(기본 sonnet) TEAM_BUDGET_USD(기본 5) TEAM_MAX_TURNS(기본 80)
+# 상주 팀원에게 과제를 준다 — 역할별 세션을 이어서(--resume) 돌린다.
+# 사용: bash scripts/team.sh <programmer|qa|art> "<과제>"   (과제에 [EDITOR] 가 있으면 에디터 잠금)
+#   programmer·qa = Claude Code, art = Codex CLI
+# 환경: TEAM_MODEL(Claude 기본 sonnet) TEAM_BUDGET_USD(기본 5) TEAM_MAX_TURNS(기본 80)
+# 보기: bash scripts/team-watch.sh (실시간) / bash scripts/team-status.sh (요약)
 set -u
 cd "$(dirname "$0")/.." || exit 1
 ROLE="${1:-}"; TASK="${2:-}"
-[ -z "$ROLE" ] || [ -z "$TASK" ] && { echo "usage: team.sh <role> \"<task>\""; exit 2; }
+{ [ -z "$ROLE" ] || [ -z "$TASK" ]; } && { echo "usage: team.sh <role> \"<task>\""; exit 2; }
 ROLEFILE=".claude/team/roles/$ROLE.md"
 [ -f "$ROLEFILE" ] || { echo "FAIL: 역할 파일 없음 $ROLEFILE"; exit 2; }
 
 mkdir -p .claude/team/sessions .ai_logs/team docs/team/reports
 SIDFILE=".claude/team/sessions/$ROLE.id"
-LOG=".ai_logs/team/$ROLE.log"
+LIVE=".ai_logs/team/$ROLE.live.log"
+RESULT=".ai_logs/team/$ROLE-last.json"
 LOCK=".claude/team/editor.lock"
-MODEL="${TEAM_MODEL:-sonnet}"
-BUDGET="${TEAM_BUDGET_USD:-5}"
-TURNS="${TEAM_MAX_TURNS:-80}"
+STATE=".claude/team/sessions/$ROLE.state"
 
-# 에디터 잠금
 HOLD_LOCK=0
 if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
   if [ -f "$LOCK" ] && [ "$(cat "$LOCK")" != "$ROLE" ]; then
@@ -25,48 +25,58 @@ if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
   fi
   echo "$ROLE" > "$LOCK"; HOLD_LOCK=1
 fi
-cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; }
+cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; echo "idle $(date +%H:%M)" > "$STATE"; }
 trap cleanup EXIT
-
-if [ -s "$SIDFILE" ]; then
-  SESS=(--resume "$(cat "$SIDFILE")")
-else
-  SID=$(python -c "import uuid; print(uuid.uuid4())")
-  echo "$SID" > "$SIDFILE"
-  SESS=(--session-id "$SID")
-fi
 
 STAMP=$(date +%Y%m%d-%H%M)
 PROMPT="[PD 과제 $STAMP]
 $TASK
 
 보고 파일: docs/team/reports/$ROLE-$STAMP.md"
+echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" > "$STATE"
+printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +%H:%M:%S)" "$ROLE" \
+  "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
 
-echo "===== $STAMP $ROLE ($MODEL) =====" >> "$LOG"
-echo "$TASK" >> "$LOG"
+if [ "$ROLE" = "art" ]; then
+  # ---- Codex (첫 과제에만 역할 파일을 앞에 붙인다; 이후 resume 이 기억) ----
+  # workspace-write 샌드박스는 Blender 실행 등을 승인 대기로 막는데 비대화형이라 그대로 실패한다.
+  # → danger-full-access + approval never, 통제는 역할 파일 규칙(커밋 금지·승인 전 F1/Assets 금지)으로.
+  if [ -s "$SIDFILE" ]; then
+    codex exec resume "$(cat "$SIDFILE")" --json --skip-git-repo-check \
+      -c sandbox_mode='"danger-full-access"' -c approval_policy='"never"' "$PROMPT" < /dev/null \
+      2>>".ai_logs/team/$ROLE.err" | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
+  else
+    FULL="$(cat "$ROLEFILE")
 
-# --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
-claude -p "$PROMPT" "${SESS[@]}" \
-  --model "$MODEL" \
-  --append-system-prompt-file "$ROLEFILE" \
-  --setting-sources user \
-  --permission-mode acceptEdits \
-  --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
-     "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" \
-     "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout -- :*)" \
-     "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
-  --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
-  --max-turns "$TURNS" --max-budget-usd "$BUDGET" \
-  --output-format json > ".ai_logs/team/$ROLE-last.json" 2>> "$LOG"
-RC=$?
+$PROMPT"
+    codex exec --json --skip-git-repo-check -C "$(pwd -W)" -s danger-full-access -c approval_policy='"never"' "$FULL" < /dev/null \
+      2>>".ai_logs/team/$ROLE.err" | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
+    python -c "import json;print(json.load(open('$RESULT',encoding='utf-8')).get('session_id') or '')" | tr -d '' > "$SIDFILE"
+  fi
+else
+  # ---- Claude Code ----
+  if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")")
+  else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); fi
+  # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
+  claude -p "$PROMPT" "${SESS[@]}" \
+    --model "${TEAM_MODEL:-sonnet}" \
+    --append-system-prompt-file "$ROLEFILE" \
+    --setting-sources user \
+    --permission-mode acceptEdits \
+    --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
+       "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" \
+       "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout -- :*)" \
+       "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
+    --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
+    --max-turns "${TEAM_MAX_TURNS:-80}" --max-budget-usd "${TEAM_BUDGET_USD:-5}" \
+    --output-format stream-json --verbose 2>>".ai_logs/team/$ROLE.err" \
+    | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
+fi
 
-python - "$ROLE" ".ai_logs/team/$ROLE-last.json" >> "$LOG" <<'EOF'
+python - "$RESULT" <<'EOF'
 import json,sys
-role,path=sys.argv[1],sys.argv[2]
-try: d=json.load(open(path,encoding="utf-8"))
-except Exception as e: print(f"[{role}] 결과 파싱 실패: {e}"); sys.exit()
-print(f"[{role}] {d.get('subtype')} turns={d.get('num_turns')} cost=${d.get('total_cost_usd',0):.2f}")
-print(d.get("result",""))
+try: d=json.load(open(sys.argv[1],encoding="utf-8"))
+except Exception as e: print("결과 파싱 실패:", e); sys.exit()
+c=d.get("cost_usd"); print(f"[{d['role']}] ok={d.get('ok')}" + (f" cost=${c:.2f}" if c else ""))
+print((d.get("final") or "")[-1500:])
 EOF
-tail -n 25 "$LOG"
-exit $RC
