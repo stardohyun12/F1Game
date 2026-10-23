@@ -1,0 +1,18 @@
+{
+ "programmer": {
+  "model": "sonnet",
+  "effort": "",
+  "budget": 5,
+  "turns": 80
+ },
+ "qa": {
+  "model": "sonnet",
+  "effort": "",
+  "budget": 5.0,
+  "turns": 80
+ },
+ "art": {
+  "model": "",
+  "effort": "medium"
+ }
+}

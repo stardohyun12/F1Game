@@ -2,7 +2,7 @@
 # 상주 팀원에게 과제를 준다 — 역할별 세션을 이어서(--resume) 돌린다.
 # 사용: bash scripts/team.sh <programmer|qa|art> "<과제>"   (과제에 [EDITOR] 가 있으면 에디터 잠금)
 #   programmer·qa = Claude Code, art = Codex CLI
-# 환경: TEAM_MODEL(Claude 기본 sonnet) TEAM_BUDGET_USD(기본 5) TEAM_MAX_TURNS(기본 80)
+# 설정: .claude/team/config.json (대시보드에서 편집) — 환경 변수 TEAM_MODEL/TEAM_BUDGET_USD/TEAM_MAX_TURNS 가 있으면 우선
 # 보기: bash scripts/team-watch.sh (실시간) / bash scripts/team-status.sh (요약)
 set -u
 cd "$(dirname "$0")/.." || exit 1
@@ -12,6 +12,11 @@ ROLEFILE=".claude/team/roles/$ROLE.md"
 [ -f "$ROLEFILE" ] || { echo "FAIL: 역할 파일 없음 $ROLEFILE"; exit 2; }
 
 mkdir -p .claude/team/sessions .ai_logs/team docs/team/reports
+# 역할별 설정(대시보드에서 편집): .claude/team/config.json — 환경 변수가 있으면 그게 우선.
+cfg() { python -c "import json,sys
+try: print(json.load(open('.claude/team/config.json',encoding='utf-8')).get('$ROLE',{}).get('$1','') or '')
+except Exception: print('')" | tr -d '\r'; }
+C_MODEL=$(cfg model); C_EFFORT=$(cfg effort); C_BUDGET=$(cfg budget); C_TURNS=$(cfg turns)
 SIDFILE=".claude/team/sessions/$ROLE.id"
 LIVE=".ai_logs/team/$ROLE.live.log"
 RESULT=".ai_logs/team/$ROLE-last.json"
@@ -38,20 +43,21 @@ printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +
   "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
 
 if [ "$ROLE" = "art" ]; then
+  CX=(); [ -n "${C_MODEL:-}" ] && CX+=(-m "$C_MODEL"); [ -n "${C_EFFORT:-}" ] && CX+=(-c "model_reasoning_effort=\"$C_EFFORT\"")
   # ---- Codex (첫 과제에만 역할 파일을 앞에 붙인다; 이후 resume 이 기억) ----
   # workspace-write 샌드박스는 Blender 실행 등을 승인 대기로 막는데 비대화형이라 그대로 실패한다.
   # → danger-full-access + approval never, 통제는 역할 파일 규칙(커밋 금지·승인 전 F1/Assets 금지)으로.
   if [ -s "$SIDFILE" ]; then
-    codex exec resume "$(cat "$SIDFILE")" --json --skip-git-repo-check \
+    codex exec resume "$(cat "$SIDFILE")" --json --skip-git-repo-check "${CX[@]}" \
       -c sandbox_mode='"danger-full-access"' -c approval_policy='"never"' "$PROMPT" < /dev/null \
       2>>".ai_logs/team/$ROLE.err" | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
   else
     FULL="$(cat "$ROLEFILE")
 
 $PROMPT"
-    codex exec --json --skip-git-repo-check -C "$(pwd -W)" -s danger-full-access -c approval_policy='"never"' "$FULL" < /dev/null \
+    codex exec --json --skip-git-repo-check "${CX[@]}" -C "$(pwd -W)" -s danger-full-access -c approval_policy='"never"' "$FULL" < /dev/null \
       2>>".ai_logs/team/$ROLE.err" | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
-    python -c "import json;print(json.load(open('$RESULT',encoding='utf-8')).get('session_id') or '')" | tr -d '' > "$SIDFILE"
+    python -c "import json;print(json.load(open('$RESULT',encoding='utf-8')).get('session_id') or '')" | tr -d '\r' > "$SIDFILE"
   fi
 else
   # ---- Claude Code ----
@@ -59,16 +65,16 @@ else
   else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); fi
   # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
   claude -p "$PROMPT" "${SESS[@]}" \
-    --model "${TEAM_MODEL:-sonnet}" \
+    --model "${TEAM_MODEL:-${C_MODEL:-sonnet}}" ${C_EFFORT:+--effort "$C_EFFORT"} \
     --append-system-prompt-file "$ROLEFILE" \
     --setting-sources user \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
        "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" \
-       "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout -- :*)" \
+       "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout:*)" \
        "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
     --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
-    --max-turns "${TEAM_MAX_TURNS:-80}" --max-budget-usd "${TEAM_BUDGET_USD:-5}" \
+    --max-turns "${TEAM_MAX_TURNS:-${C_TURNS:-80}}" --max-budget-usd "${TEAM_BUDGET_USD:-${C_BUDGET:-5}}" \
     --output-format stream-json --verbose 2>>".ai_logs/team/$ROLE.err" \
     | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
 fi
