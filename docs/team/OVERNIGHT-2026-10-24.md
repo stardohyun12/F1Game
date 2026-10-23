@@ -35,3 +35,14 @@
 - 23:xx PD: 루프 시작. P1 programmer 진행 중, Codex 리서치(max) 진행 중.
 - 00:15 programmer P1 끝($4.44): 블록아웃 메뉴 재현, 비교판 docs/qa/evidence/course-kp-compare.png. **Play 주행 미실행(kp-play.sh 권한)** → QA 가 주행·FAIL 2건 확인할 것. exit 1 은 tail 경로 오타일 뿐.
 - 00:2x PD: Codex 리서치(max) 완료 — docs/research/2026-10-23-non-ai-art-codex.md, 요약 research-codex-20261023-nonai.md. A1·S1 백로그 추가.
+- 01:36 PD: P2 QA [EDITOR] 시작(주행·#A·#4·비교판 판정), A1 art(Codex) 질감 4종 시작. 커밋 없음. 이번 비용 $0(오늘 밤 Claude 누적 약 $4.4).
+
+## 세션 정리 (10-24 02:3x, 도현 지시: "밤샘 루프 만든 쪽만 남기고 나머지 정리")
+- 남는 세션 = 텔레그램 스레드 5754 「AI 티 안 나는 에셋 생성 방법」(20261023_214314_d8ea903c). 나머지 텔레그램 세션 8개는 `hermes sessions archive`(숨김, 삭제 아님)로 정리.
+- 정리된 스레드 5617 세션(16:20~02:30)에서 넘길 것:
+  - 결정: decisions-log **D-125~D-130** — 경험 문장(갈 땐 급하게·돌아오는 길이 보상), 속도감=F1 무비/규모감=EDC, 목표 장면=가을날·탁 트인 시야·사람 기척, 웅장함은 풍경 스케일로만·세월의 흔적, 음악 두 박자, 원화 재현 슬라이스 비주얼 합격.
+  - 도현 취향·해체 분석: `~/knowledge/me/TASTE.md`(전역 CLAUDE.md·Codex AGENTS.md 가 가리킴) + Hermes 스킬 `dohyun-creative-direction`.
+  - 산출물: 핵심 루프 스펙 `docs/superpowers/specs/2026-10-23-return-clutch-crowd.md`(돌아오는 길·역전 순간·관객 반응 — 아직 구현 전), 코스 UI 시안 `art/_review/2026-10-23-course-ui/`, 언덕 위 도착 장면 표(art 브리프 맨 아래).
+  - 팀 도구: 대시보드 `python scripts/team_dashboard.py`(localhost:8765, 역할별 모델·추론·예산 설정), 아트 UI 담당 `artui`(Codex), 리서치팀 `research`.
+  - **도현 귀가 후 할 일**: 음성 대화 설정 — STT 언어 ko·TTS edge `ko-KR-InJoonNeural` 로 바꿨고 edge-tts 7.3.1 로 올렸음(Bing 403 해결). **게이트웨이 재시작해야 음성 답장이 동작**(팀 작업 없을 때). 그다음 데스크톱 음성 대화·웨이크워드.
+  - 도현 판정 대기: 화물 5종(cargo-set-v2), UI 최종(ui-final), HUD 두 박자(ui-flow) — 코스 재구성(교토·포지타노)과 맞는지 함께 재확인.
