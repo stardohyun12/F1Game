@@ -61,6 +61,11 @@ public class RunController : MonoBehaviour, IRunController
     public int CompletedCount { get; private set; }
     public bool LastRunSuccess { get; private set; }
     public int LastReward { get; private set; }
+    /// <summary>이번 판 포장비(₩). 정산 때 보상에서 뺀다.</summary>
+    public int LastPackCost { get; private set; }
+    /// <summary>이번 판 순이익 = LastReward − LastPackCost (음수 가능, 지갑은 0 에서 멈춤).</summary>
+    public int LastNet { get; private set; }
+    int pendingPackCost;
     public float LastElapsed { get; private set; }
     /// <summary>EndRun 시점에 캡처. ResultPanel "이야기"용 (Day 12).</summary>
     public float LastIntegrityPercent { get; private set; } = 1f;
@@ -219,7 +224,8 @@ public class RunController : MonoBehaviour, IRunController
             cube.name = "WrappedItem";
             Shake.MountWrappedItem(cube);
         }
-        if (totalCost > 0 && UpgradeSystem.Instance != null) UpgradeSystem.Instance.Spend(totalCost);
+        // 포장비는 장착 때 빼지 않는다 — 정산(EndRun)에서 보상에서 차감(시작 지갑이 모자라도 포장 가능).
+        pendingPackCost = totalCost;
         Debug.Log($"[RunController] 포장 큐브 {packedItems.Count}개 → 트렁크 마운트 (총 cost={totalCost})");
     }
 
@@ -263,6 +269,7 @@ public class RunController : MonoBehaviour, IRunController
         Elapsed = 0f;
         CurrentOrders = new List<OrderJob>();
         urgentOrders.Clear();
+        pendingPackCost = 0;
         ClockRunning = ParTime > 0f;
         Debug.Log($"[RunController] 제한 시간 시작(D-119): {ParTime:F0}s");
     }
@@ -474,7 +481,15 @@ public class RunController : MonoBehaviour, IRunController
         LastReward = reward;
         ClockRunning = false;
 
-        if (Upgrade != null && reward > 0) Upgrade.AddReward(reward);
+        // 포장비 정산: 순이익 = 보상 − 포장비. 손해면 지갑에서 빼되 0 밑으로는 안 내린다(프로토 — 빚 없음).
+        LastPackCost = pendingPackCost;
+        pendingPackCost = 0;
+        LastNet = reward - LastPackCost;
+        if (Upgrade != null)
+        {
+            if (LastNet > 0) Upgrade.AddReward(LastNet);
+            else if (LastNet < 0) Upgrade.Spend(Mathf.Min(-LastNet, Mathf.Max(0, Upgrade.Wallet)));
+        }
 
         // 2026-05-16 수치 audit — RunMetricsRecorder가 구독해서 CSV 기록.
         OnRunEnded?.Invoke(this);

@@ -86,6 +86,10 @@ namespace PitCrew.Packing
         /// <summary>이 화물 포장비 총합 상한(₩). PackingScreen 이 주문 보상 × 0.4 로 넣는다.</summary>
         public float CostCap = float.PositiveInfinity;
 
+        /// <summary>단가 배율(₩/픽셀). PackingScreen 이 주문 보상 ÷ 화물 겉면 전체 픽셀 면적으로 넣는다 →
+        /// 재료 costPerPixel 은 '겉면을 한 번 다 덮으면 보상의 몇 배' 가 된다(크기 다른 화물도 같은 비율). 기본 1 = 예전 식.</summary>
+        public float CostScale = 1f;
+
         public float TotalCost => CostByChannel[0] + CostByChannel[1] + CostByChannel[2];
 
     // ── Damage Query ──────────────────────────────────────────────────────────

@@ -327,7 +327,7 @@ namespace PitCrew.Packing
             targetState.MarkDirty(); // 면별 게이지·흡수 조회가 새 픽셀을 읽게
 
             float pixelArea = costLenUV * stripWidthUV * targetState.Size * targetState.Size;
-            targetState.AccumulateCost(mat.channelIndex, pixelArea * mat.costPerPixel);
+            targetState.AccumulateCost(mat.channelIndex, pixelArea * mat.costPerPixel * targetState.CostScale);
         }
     }
 }

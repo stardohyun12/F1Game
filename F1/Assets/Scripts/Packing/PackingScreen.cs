@@ -930,6 +930,27 @@ namespace PitCrew.Packing
         /// <summary>포장비 상한 = 주문 baseReward × 이 값 (가설 0.4).</summary>
         const float PackCostCapOfReward = 0.4f;
 
+        /// <summary>
+        /// 겉면을 한 번 다 덮을 때 DrawStrip 이 세는 픽셀 면적. 리본 폭이 콜라이더 로컬 기준이라
+        /// 덮는 끈 길이 = 월드 면적 ÷ (폭 × 스케일) → 픽셀 면적 = 로컬 메시 면적 × 스케일 × Size²/4 (리본 폭 = 폭UV × 4m). 폭은 약분된다.
+        /// </summary>
+        static float FullCoverPixelArea(GameObject go, int size)
+        {
+            Mesh mesh = null; Transform t = null;
+            var mc = go.GetComponentInChildren<MeshCollider>();
+            if (mc != null && mc.sharedMesh != null) { mesh = mc.sharedMesh; t = mc.transform; }
+            else { var mf = go.GetComponentInChildren<MeshFilter>(); if (mf != null) { mesh = mf.sharedMesh; t = mf.transform; } }
+            float area = 6f; // 1m 큐브
+            if (mesh != null && mesh.isReadable)
+            {
+                var v = mesh.vertices; var tri = mesh.triangles; area = 0f;
+                for (int i = 0; i < tri.Length; i += 3)
+                    area += Vector3.Cross(v[tri[i + 1]] - v[tri[i]], v[tri[i + 2]] - v[tri[i]]).magnitude * 0.5f;
+            }
+            float s = t != null ? t.lossyScale.x : 1f;
+            return Mathf.Max(1f, area * s * size * size / 4f);
+        }
+
         public static readonly Quaternion FrontFacingRotation = Quaternion.Euler(0f, 180f, 0f);
 
         void SpawnItem(int idx)
@@ -965,8 +986,10 @@ namespace PitCrew.Packing
             // 화물 앞 = +Z, 포장 카메라는 +Z 를 바라봄 → 180° 돌려 첫 화면에서 앞면이 카메라를 보게 한다.
             go.transform.localRotation = FrontFacingRotation;
             var wrapState = go.AddComponent<WrapState>();
-            if (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
-                wrapState.CostCap = currentOrders[idx].baseReward * PackCostCapOfReward;
+            int reward = (currentOrders != null && idx < currentOrders.Count && currentOrders[idx] != null)
+                ? currentOrders[idx].baseReward : 1000;
+            wrapState.CostCap = reward * PackCostCapOfReward;
+            wrapState.CostScale = reward / FullCoverPixelArea(go, wrapState.Size);
             go.AddComponent<WrapPainter>();
             // painter.Init은 ActivateItem → WirePainterFor에서 처리 (3D 리본이 표면 위에 올라탐)
 
@@ -1104,7 +1127,8 @@ namespace PitCrew.Packing
             if (m == null) return 0f;
             var ws = ActiveItem != null ? ActiveItem.GetComponent<WrapState>() : null;
             int size = ws != null ? ws.Size : 256;
-            return m.costPerPixel * widthUV * size * size;
+            float scale = ws != null ? ws.CostScale : 1f;
+            return m.costPerPixel * widthUV * size * size * scale;
         }
 
         /// <summary>PackingScreenInput 이 휠로 폭을 바꿀 때 호출. t = min~max 사이 위치(0~1).</summary>

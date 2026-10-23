@@ -31,6 +31,7 @@ public class ResultPanel : MonoBehaviour, IResultPanel
     Image colorStrip;
     TMP_Text titleText;
     TMP_Text rewardLabel, rewardVal;
+    TMP_Text packCostLabel, packCostVal, netLabel, netVal;
     TMP_Text timeLabel, timeVal;
     TMP_Text orderLabel, orderVal;
     TMP_Text completedLabel, completedVal;
@@ -149,16 +150,19 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         // Stats — 좌측 컬럼 (라벨 + 값) 5개. 도현 #2-8 fix: + 대신 - (UI Y는 상→하 음수, 행 추가는 더 음수).
         // #2-10: 이야기 공간 확보 위해 statY -180→-160.
         float statY = -160f;
-        float rowH = 56f;
+        // 2026-10-23: 포장비·순이익 2줄 추가 → 56→44 (이야기·타이어 줄 위치 유지).
+        float rowH = 44f;
         (orderLabel, orderVal) = CreateStatRow(panelGO.transform, "Order", statY - 0 * rowH, "주문");
         (completedLabel, completedVal) = CreateStatRow(panelGO.transform, "Completed", statY - 1 * rowH, "완료");
         (timeLabel, timeVal) = CreateStatRow(panelGO.transform, "Time", statY - 2 * rowH, "소요 시간");
         (cargoLabel, cargoVal) = CreateStatRow(panelGO.transform, "Cargo", statY - 3 * rowH, "화물");
         (rewardLabel, rewardVal) = CreateStatRow(panelGO.transform, "Reward", statY - 4 * rowH, "보상");
+        (packCostLabel, packCostVal) = CreateStatRow(panelGO.transform, "PackCost", statY - 5 * rowH, "포장비");
+        (netLabel, netVal) = CreateStatRow(panelGO.transform, "Net", statY - 6 * rowH, "순이익");
 
         // 화물 이야기 — 도현 #2-12: -460→-450 (보상-story 30px, story-tire 30px 균등).
         storyText = CreateText(panelGO.transform, "Story", new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-            new Vector2(0, -450), new Vector2(1500, 50), 32, FontStyles.Italic, TextAlignmentOptions.Center);
+            new Vector2(0, -470), new Vector2(1500, 32), 28, FontStyles.Italic, TextAlignmentOptions.Center);
         storyText.color = UIPalette.InkMuted;
         storyText.textWrappingMode = TextWrappingModes.Normal;     // 어절 줄바꿈(TMP Modern Hangul)
 
@@ -364,6 +368,10 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         cargoLabel.text = $"화물 ({cargoName})";
         cargoVal.text = $"{integrityInt}% · {RunController.IntegrityGrade(controller.LastIntegrityPercent)}";
         rewardVal.text = $"₩{controller.LastReward:N0}";
+        packCostVal.text = controller.LastPackCost > 0 ? $"−₩{controller.LastPackCost:N0}" : "₩0";
+        int net = controller.LastNet;
+        netVal.text = net < 0 ? $"−₩{-net:N0}" : $"₩{net:N0}";
+        netVal.color = net < 0 ? UIPalette.Signal : UIPalette.Ink;
 
         // 이야기
         storyText.text = BuildStory(job, controller.LastIntegrityPercent);

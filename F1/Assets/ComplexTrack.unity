@@ -57245,6 +57245,7 @@ GameObject:
   - component: {fileID: 346046675}
   - component: {fileID: 346046676}
   - component: {fileID: 346046677}
+  - component: {fileID: 346046678}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -57418,6 +57419,19 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &346046678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346046671}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b078bec230b35c4b86c5421db13eb76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::LowResRenderTest
+  targetHeight: 270
 --- !u!1001 &346626898
 PrefabInstance:
   m_ObjectHideFlags: 0

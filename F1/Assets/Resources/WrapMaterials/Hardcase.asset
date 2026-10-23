@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::PitCrew.Packing.WrapMaterialDef
   displayName: 하드케이스
   channelIndex: 2
-  costPerPixel: 0.18
+  costPerPixel: 0.3
   absorption: 0.85
   displayColor: {r: 0.33, g: 0.33, b: 0.36, a: 1}
   hotkey: 51

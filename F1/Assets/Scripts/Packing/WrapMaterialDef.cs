@@ -11,7 +11,7 @@ namespace PitCrew.Packing
         [Tooltip("RGB 채널 인덱스. 0=R(부블랩), 1=G(폼), 2=B(하드케이스)")]
         [Range(0, 2)] public int channelIndex = 0;
 
-        [Tooltip("단위 면적(픽셀)당 비용. 띠 한 strip 그릴 때 픽셀 수 × 이 값.")]
+        [Tooltip("화물 겉면을 한 번 다 덮을 때 비용 = 주문 보상 × 이 값 (WrapState.CostScale 이 화물 크기를 정규화). 겹쳐 칠하면 또 든다.")]
         public float costPerPixel = 0.05f;
 
         [Tooltip("충격 흡수율 0~1. 1이면 완전 흡수.")]
