@@ -1,0 +1,265 @@
+﻿path,type,verdict,evidence,used_by,first_commit
+Assets/Art/CoastalFormula/CoastalFormula.fbx,GameObject,비AI,스크립트 생성 tools/asset-gen/coastal_formula.py,ComplexTrack.unity;Proto_CoastCourse.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalFormula/FormulaAtlas.png,Texture2D,비AI,스크립트 생성 tools/asset-gen/coastal_formula.py,ComplexTrack.unity;Proto_CoastCourse.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalFormula/FormulaAtlasServiced.png,Texture2D,비AI,스크립트 생성 tools/asset-gen/coastal_formula.py,ComplexTrack.unity;Proto_CoastCourse.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalFormula/FormulaAtlasWorn.png,Texture2D,비AI,스크립트 생성 tools/asset-gen/coastal_formula.py,ComplexTrack.unity;Proto_CoastCourse.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill0.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill1.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill10.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill11.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill12.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill2.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill3.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill4.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill5.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill6.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill7.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill8.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Hill9.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island0.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island1.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island2.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island3.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island4.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island5.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/CoastalTown/Island6.asset,Mesh,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/AcUnit.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Awning.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Barrel.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Boat.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Bollard.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Clothesline.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/CoastalHouse.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/CoastalHouseB.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CoastalHouseC.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CoastalHouseD.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CoastalHouseE.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CoastalHouseF.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CoastalTree.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/CornerShop.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/CornerShopB.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/CornerShopC.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Crate.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/CrateStack.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Crosswalk.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Curb.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Drain.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/FlowerPatch.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/GrassTuft.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Hydrant.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/LofiAtlas.png,Texture2D,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/Manhole.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Mooring.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/OilStain.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Patch.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Pier.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Planter.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Pots.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/QuaySegment.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/RepairGarage.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/RepairGarageB.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Rock.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/Shrub.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/SignIce.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/SignRest.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/SignTea.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/LofiPilot/Stall.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/StreetLamp.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/LofiPilot/TireStack.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/UtilityPole.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/Wall3m.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,"21c77820|2026-10-13|feat(art): Codex 줄기 ""따뜻한 로파이 해안"" — 건물 키트 12종 + 포뮬러 배달차(낡음/복원 재질) + 도시 설치 (D-096)"
+Assets/Art/LofiPilot/WallLamp.fbx,GameObject,비AI,"스크립트 생성 tools/asset-gen/lofi_pilot.py (Blender 코드, 이미지 입력 없음)",ComplexTrack.unity,906f8994|2026-10-13|feat(art): 해안마을 밀도 2차 — 소품 16종 + 건물당 4~6개 배치 규칙 + 도로 디테일 (417→2053 배치)
+Assets/Art/StreetFurniture/AsphaltAggregate.png,Texture2D,비AI,스크립트 생성 tools/asset-gen/street_furniture.py,ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/StreetFurniture/Bench.fbx,GameObject,비AI,스크립트 생성 tools/asset-gen/street_furniture.py,ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/StreetFurniture/Bin.fbx,GameObject,비AI,스크립트 생성 tools/asset-gen/street_furniture.py,ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Art/StreetFurniture/FurnitureAtlas.png,Texture2D,비AI,스크립트 생성 tools/asset-gen/street_furniture.py,ComplexTrack.unity,76a8f653|2026-10-18|feat(art): 해안마을 3~5차 — 바닥 무늬·원경·소품 15종·부두 + Codex 건물 11종 채택(D-097) + 거리가구 실제 치수
+Assets/Meshes/JunctionFlat/road-crossroad-flat.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,ComplexTrack.unity,"926234c6|2026-05-25|fix(map): 교차로 ""네모 블럭"" 제거 — junction 타일 솟은 코너 연석 평탄화"
+Assets/Meshes/JunctionFlat/road-intersection-flat.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,ComplexTrack.unity,"926234c6|2026-05-25|fix(map): 교차로 ""네모 블럭"" 제거 — junction 타일 솟은 코너 연석 평탄화"
+Assets/Model/AI/cake_01.fbx,GameObject,AI,Meshy 3D 생성 (폴더·커밋 c4fb9633/a1feb87a·b7e8e5ea meshy 스크립트),CargoModelCatalog.asset,a1feb87a|2026-05-21|feat(cargo): 화물 3종 추가 — 계란판/생선/케이크 (원물+버블랩)
+Assets/Model/AI/eggs_carton_01.fbx,GameObject,AI,Meshy 3D 생성 (폴더·커밋 c4fb9633/a1feb87a·b7e8e5ea meshy 스크립트),CargoModelCatalog.asset,a1feb87a|2026-05-21|feat(cargo): 화물 3종 추가 — 계란판/생선/케이크 (원물+버블랩)
+Assets/Model/AI/fish_01.fbx,GameObject,AI,Meshy 3D 생성 (폴더·커밋 c4fb9633/a1feb87a·b7e8e5ea meshy 스크립트),CargoModelCatalog.asset,a1feb87a|2026-05-21|feat(cargo): 화물 3종 추가 — 계란판/생선/케이크 (원물+버블랩)
+Assets/Model/AI/wine_bottle_lowpoly.fbx,GameObject,AI,Meshy 3D 생성 (폴더·커밋 c4fb9633/a1feb87a·b7e8e5ea meshy 스크립트),CargoModelCatalog.asset,c4fb9633|2026-05-21|feat(cargo): Meshy 와인병(로우폴리 초록) + 자산 중립 검수 도구
+Assets/Model/kenney_car-kit/Models/FBX format/Textures/colormap.png,Texture2D,비AI,Kenney CC0 팩,ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/delivery.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/garbage-truck.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/hatchback-sports.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/race.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/sedan.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/suv-luxury.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/suv.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_car-kit/Models/FBX format/taxi.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/Textures/colormap.png,Texture2D,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-e.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-skyscraper-a.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-skyscraper-b.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-skyscraper-c.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-skyscraper-d.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-commercial_2.1/Models/FBX format/building-skyscraper-e.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/Textures/colormap.png,Texture2D,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/building-c.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/building-e.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/building-f.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/building-g.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/building-l.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-industrial_1.0/Models/FBX format/chimney-large.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/Textures/colormap.png,Texture2D,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/light-curved.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/light-square.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/road-bend.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/road-crossroad.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/road-end-round.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/road-intersection.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/road-straight.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-roads/Models/FBX format/sign-highway.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/Textures/colormap.png,Texture2D,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/fence-low.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/fence.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/path-stones-long.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/planter.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/tree-large.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Model/kenney_city-kit-suburban_20/Models/FBX format/tree-small.fbx,GameObject,비AI,Kenney CC0 팩,ComplexTrack.unity,4cb73784|2026-04-20|feat(day1): Kenny Car Kit + Road Tiles 임포트
+Assets/Resources/WrapMaterials/Sfx/confirmation_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,confirmation_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/drop_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,drop_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/drop_004.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,drop_004.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/scratch_001.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,scratch_001.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/scratch_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,scratch_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/scratch_003.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,scratch_003.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/select_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,select_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/switch_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,switch_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Resources/WrapMaterials/Sfx/tick_002.ogg,AudioClip,비AI,Kenney interface-sounds CC0 복사본,tick_002.ogg,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Dash_760.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Edge_L_760.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Edge_R_760.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Guardrail_80.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Road_0.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Shoulder_L_60.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Shoulder_R_760.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Sidewalk_L_60.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_DetourRoad_Sidewalk_R_760.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_1.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_101.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_102.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_103.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_104.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_2.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_201.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_202.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_203.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_204.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_3.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_301.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_302.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_303.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_304.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_4.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_401.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_402.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_403.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_404.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_501.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_502.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Meadow_MeadowTile_503.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_RoadLines_Dash_-110.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_RoadLines_Edge_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_RoadLines_Edge_L_3698.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_RoadLines_Edge_L_6397.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_RoadLines_Edge_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_BLOCKOUT_TerraceFence_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_CliffFace_L_500.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Ground_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_3838.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_4278.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_4878.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_5317.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_560.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Guardrail_5917.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_HillTerrain_0.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_RetainingWall_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Road_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Shoulder_L_1640.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Shoulder_L_3698.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Shoulder_L_6397.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Shoulder_R_1640.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Sidewalk_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Sidewalk_L_3698.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Sidewalk_L_6397.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Sidewalk_R2_1640.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Sidewalk_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Terrace_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_YardApron_9076.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Proto_CoastCourse_Mats/Mesh_Terrain_Yard_0.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Proto_CoastCourse.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_-10.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_-110.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_-60.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1040.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1090.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1140.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1190.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1240.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1290.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1340.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1390.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_140.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1440.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1490.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1540.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_1590.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_190.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_240.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_290.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_340.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_390.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_40.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_440.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_490.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_540.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_590.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_640.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_690.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_740.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_790.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_840.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_890.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_90.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_940.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Dash_990.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Edge_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_RoadLines_Edge_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_BLOCKOUT_TerraceFence_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_CliffFace_L_500.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Ground_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Guardrail_L_560.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_RetainingWall_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Road_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Sidewalk_L_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Sidewalk_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Scenes/Slice_PostcardStreet_Mats/Mesh_Terrain_Terrace_R_-120.asset,Mesh,비AI,에디터 메뉴가 코드로 생성한 메시,Slice_PostcardStreet.unity,
+Assets/Sound/EngineLoop.mp3,AudioClip,AI,"커밋 a0df81a5 ""AI 생성 EngineLoop.mp3"" (D-020)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,a0df81a5|2026-04-20|feat(day3-5): 트랙 배치 + 드리프트 + 아케이드 튜닝 + 엔진 사운드
+Assets/Sound/kenney_interface-sounds (1)/Audio/back_001.ogg,AudioClip,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/Sound/kenney_interface-sounds (1)/Audio/bong_001.ogg,AudioClip,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/Sound/kenney_interface-sounds (1)/Audio/click_001.ogg,AudioClip,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/Sound/kenney_interface-sounds (1)/Audio/confirmation_001.ogg,AudioClip,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/TextMesh Pro/Fonts/LiberationSans.ttf,Font,비AI,폰트(사람 제작),ComplexTrack.unity;Proto_CoastCourse.unity,daf21422|2026-04-23|chore(session-12): TMP Essentials + Kenney Future TMP FontAssets
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset,TMP_FontAsset,비AI,폰트(사람 제작),ComplexTrack.unity;Proto_CoastCourse.unity,daf21422|2026-04-23|chore(session-12): TMP Essentials + Kenney Future TMP FontAssets
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),ComplexTrack.unity;Proto_CoastCourse.unity,daf21422|2026-04-23|chore(session-12): TMP Essentials + Kenney Future TMP FontAssets
+Assets/UI/Fonts/Jua/Jua-Regular SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),UITheme.asset,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/UI/Fonts/Korean/KoreanFallback SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),ComplexTrack.unity;Proto_CoastCourse.unity,d801b939|2026-04-28|chore(ui): 한글 fallback 자산 — NotoSansKR-VF + KoreanFallback SDF + Kenney 폰트 fallback 등록
+Assets/UI/Fonts/Korean/Malgun SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),Proto_CoastCourse.unity,0a39d668|2026-05-14|chore: 세션 18~24 미커밋 일괄 + 세션 24 점검·버그수정
+Assets/UI/Fonts/Korean/malgun.ttf,Font,비AI,폰트(사람 제작),ComplexTrack.unity;Proto_CoastCourse.unity,ac2a8e12|2026-04-28|chore(scene): Apply Session 16 Tuning 결과 반영
+Assets/UI/Fonts/Pretendard/Pretendard-Bold SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),UITheme.asset,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/UI/Fonts/Pretendard/Pretendard-Regular Dynamic SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),UITheme.asset,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/UI/Fonts/Pretendard/Pretendard-Regular SDF.asset,TMP_FontAsset,비AI,폰트(사람 제작),UITheme.asset,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/UI/Fonts/Pretendard/Pretendard-Regular.ttf,Font,비AI,폰트(사람 제작),UITheme.asset,"3d2183e5|2026-10-23|feat(proto): 포장 '보이는 보호'·UI D-121 폰트/팔레트·차 D-122 드리프트(slip 18°) — QA PASS(12/1), D-123 아트 방향 v2 [skip-verifier]"
+Assets/UI/kenney_ui-pack/PNG/Green/Default/button_rectangle_flat.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Green/Default/icon_checkmark.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Grey/Default/button_rectangle_depth_flat.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Grey/Default/button_rectangle_flat.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Grey/Default/button_rectangle_gloss.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Grey/Default/slide_horizontal_grey_section_wide.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Red/Default/button_rectangle_flat.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Yellow/Default/arrow_basic_n.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Yellow/Default/button_rectangle_flat.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Assets/UI/kenney_ui-pack/PNG/Yellow/Default/button_rectangle_gloss.png,Texture2D,비AI,Kenney CC0 팩,UITheme.asset,98364a4e|2026-04-23|chore(session-11): Kenny UI pack + interface sounds 임포트
+Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputAction.png,Texture2D,비AI,"Unity 패키지(에디터 아이콘, 빌드 미포함)",ComplexTrack.unity;Proto_CoastCourse.unity;Slice_PostcardStreet.unity,
+Packages/com.unity.ugui/Editor Resources/Gizmos/TMP - Font Asset Icon.psd,Texture2D,비AI,"Unity 패키지(에디터 아이콘, 빌드 미포함)",ComplexTrack.unity;Proto_CoastCourse.unity;UITheme.asset,
+Packages/com.unity.ugui/Editor Resources/Gizmos/TMP - Text Component Icon.psd,Texture2D,비AI,"Unity 패키지(에디터 아이콘, 빌드 미포함)",ComplexTrack.unity;Proto_CoastCourse.unity,
