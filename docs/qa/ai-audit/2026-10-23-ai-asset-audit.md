@@ -4,6 +4,12 @@
 나머지 259개는 Kenney CC0 팩, 스크립트로 만든 것, 폰트다.
 정할 것: Meshy 화물 4종을 교체할 순서(브리프 규칙 9 「출시 전 전수 감사」 통과 조건). 엔진 소리를 바꿀지도 정해야 한다.
 
+같은 시각에 다른 세션이 정적 GUID 추적으로 같은 점검을 했다. 결과는 같다(AI 5개). 자세한 내용은 [AUDIT.md](../../../art/_review/2026-10-23-ai-audit/AUDIT.md)에 있다.
+그 점검에서 추가로 확인한 것:
+- 화물 프리팹 머티리얼은 단색이다. 그래서 AI 부분은 **형태뿐**이다.
+- AI 이미지 485장을 대조했는데 겹치는 것은 0건이었다.
+- 기준 원화와 검토판 배경이 AI였다.
+
 ## 방법
 - 대상은 실제로 플레이하는 씬 3개 `Proto_CoastCourse`·`ComplexTrack`·`Slice_PostcardStreet`와 `Assets/Resources` 전체다(런타임 로드).
   Build Settings 목록에는 `SampleScene` 하나뿐이라 그 목록은 쓰지 않았다.
