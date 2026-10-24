@@ -60,8 +60,17 @@ def role_data(role):
             "working": state.startswith("working")}
 
 
+def waits():
+    try:
+        import team_wait  # 같은 scripts/ 폴더
+        return team_wait.active()
+    except Exception:  # 대기 줄이 깨져도 대시보드는 산다
+        return []
+
+
 def api():
     return {"roles": {r: role_data(r) for r, _, _ in ROLES},
+            "waits": waits(),
             "board": read(ROOT / "docs/team/BOARD.md"),
             "lock": read(ROOT / ".claude/team/editor.lock", "").strip(),
             "config": load_config()}
@@ -138,10 +147,14 @@ button.pri{background:#3d5a80;color:#fff;border:0;border-radius:6px;padding:5px 
 .settings .hint{color:#888;font-size:11px;margin:4px 0 8px}
 .danger{background:none;border:1px solid #6a3a3a;color:#d99;border-radius:6px;padding:4px 10px;cursor:pointer}
 .board{margin:0 12px 12px;background:#262626;border:1px solid #333;border-radius:8px;padding:8px 14px;white-space:pre-wrap;font-size:12px;max-height:140px;overflow:auto}
+.waits{display:flex;flex-direction:column;gap:6px;padding:10px 12px 0}
+.wait{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:8px;border:1px solid #333;background:#262626;font-size:13px}
+.wait b{white-space:nowrap}.wait .sub{color:#8a8a8a;font-size:12px;margin-left:auto;white-space:nowrap}
+.wait.running{border-color:#3d5a80}.wait.ready{border-color:#c9a03a;background:#2e2a1e}.wait.stalled{border-color:#a04848;background:#2e1e1e}
 #toast{position:fixed;right:16px;bottom:16px;background:#333;border:1px solid #555;padding:8px 14px;border-radius:8px;display:none}
 </style>
 <header><h1>F1Game 팀</h1><span class=chip id=lock></span><span class=chip id=upd></span></header>
-<div class=cols id=cols></div><div class=board id=board></div><div id=toast></div>
+<div class=waits id=waits></div><div class=cols id=cols></div><div class=board id=board></div><div id=toast></div>
 <script>
 const ROLES=__ROLES__, ENGINES=__ENGINES__, ENGINE_OF=__ENGINE_OF__, WORKERS=__WORKERS__;
 const $=id=>document.getElementById(id);
@@ -194,6 +207,8 @@ async function tick(){
   $('rep-'+r).innerHTML=x.reports.map(esc).join('<br>')||'보고서 없음';
  }
  $('board').textContent=d.board;
+ $('waits').innerHTML=(d.waits||[]).map(w=>`<div class="wait ${w.status}"><b>${esc(w.label)}</b><span>${esc(w.what)}${w.next?' → '+esc(w.next):''}</span>
+   <span class=sub>기다리는 것: ${esc(w.on)}${w.why?' · '+esc(w.why):''} · ${w.since}부터</span></div>`).join('');
 }
 async function saveSet(r){const v={model:$('model-'+r).value,effort:$('effort-'+r).value};
  if($('budget-'+r)){v.budget=$('budget-'+r).value;v.turns=$('turns-'+r).value}
