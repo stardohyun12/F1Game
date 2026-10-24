@@ -39,6 +39,7 @@ $TASK
 
 보고 파일: docs/team/reports/$ROLE-$STAMP.md"
 echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" > "$STATE"
+printf '%s' "$TASK" > ".claude/team/sessions/$ROLE.task"   # 워치독 자동 재시작이 원문을 쓴다
 printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +%H:%M:%S)" "$ROLE" \
   "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
 
