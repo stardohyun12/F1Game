@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """팀 대시보드 — 역할별 칸: 지금 하는 일·실시간 로그·보고서 + 설정(모델·추론·예산·턴) + 과제 보내기.
 
-실행: python scripts/team_dashboard.py   →  http://localhost:8765  (3초마다 갱신)
+실행: python scripts/team_dashboard.py   →  http://localhost:8765  (3초마다 갱신, 워치독 내장 — scripts/team_watchdog.py)
 읽는 것: .claude/team/sessions/<role>.state, .ai_logs/team/<role>.live.log, docs/team/reports/, docs/team/BOARD.md
 쓰는 것: .claude/team/config.json (설정), 과제 보내기 = bash scripts/team.sh <role> "<과제>" 백그라운드 실행
 """
@@ -272,6 +272,9 @@ class H(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    import threading
+    import team_watchdog  # 같은 scripts/ 폴더 — 멈춘/죽은 팀원을 60초마다 잡는다
+    threading.Thread(target=team_watchdog.loop, daemon=True).start()
     port = int(os.environ.get("TEAM_DASH_PORT", "8765"))
     print(f"http://localhost:{port}")
     ThreadingHTTPServer(("127.0.0.1", port), H).serve_forever()

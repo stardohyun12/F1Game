@@ -63,7 +63,7 @@ def active():
         s = status(it)
         label = "▶ PD가 지금 할 일" if it["on"] == "pd" else LABEL[s]
         if it.get("quiet_min"):
-            label = f"⛔ 멈춤 — {it['on']} 로그 {it['quiet_min']}분째 조용 (죽었을 수 있음)"
+            label = f"⚠ {it['on']} 로그 {it['quiet_min']}분째 조용 — 15분 넘으면 워치독이 끊고 재시작"
         out.append({**it, "status": s, "label": label,
                     "since": datetime.fromtimestamp(it["created"]).strftime("%H:%M")})
     return out

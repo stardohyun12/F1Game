@@ -167,3 +167,4 @@ __pycache__/
 /.claude/team/sessions/
 /.claude/team/editor.lock
 /.claude/team/waits.json
+/.claude/team/watchdog.json
