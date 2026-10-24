@@ -9,6 +9,7 @@ import json
 import os
 import re
 import subprocess
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -56,8 +57,10 @@ def role_data(role):
         elif "새 과제" not in msg:
             events.append({"t": t, "msg": msg})
     reports = sorted((ROOT / "docs/team/reports").glob(f"{role}-*.md"), key=os.path.getmtime, reverse=True)[:3]
+    log = ROOT / f".ai_logs/team/{role}.live.log"
+    quiet = int((time.time() - log.stat().st_mtime) // 60) if log.exists() else 0
     return {"state": state, "task": task, "events": events[-40:], "reports": [r.name for r in reports],
-            "working": state.startswith("working")}
+            "working": state.startswith("working"), "quiet": quiet}
 
 
 def waits():
@@ -198,8 +201,8 @@ async function tick(){
  $('upd').textContent='갱신 '+new Date().toLocaleTimeString();
  if(!filled){fillSettings(d.config);filled=true}
  for(const [r] of ROLES){const x=d.roles[r];
-  $('badge-'+r).textContent=x.working?'작업 중':(x.state.startsWith('idle')?'쉬는 중 '+x.state.slice(5):x.state);
-  $('badge-'+r).className='badge '+(x.working?'on':'');
+  $('badge-'+r).textContent=x.working?(x.quiet>=10?'⛔ 로그 '+x.quiet+'분 조용':'작업 중'):(x.state.startsWith('idle')?'쉬는 중 '+x.state.slice(5):x.state);
+  $('badge-'+r).className='badge '+(x.working&&x.quiet<10?'on':'');
   if(WORKERS.includes(r)){$('meta-'+r).textContent=metaText(r,d.config);$('btn-'+r).disabled=x.working}
   const t=$('task-'+r); t.style.display=x.task?'block':'none'; t.textContent=x.task?'📋 '+x.task:'';
   const html=x.events.slice().reverse().map(e=>`<div class=ev><time>${e.t}</time>${esc(e.msg)}</div>`).join('')||'<div class=ev style="color:#666">활동 없음</div>';

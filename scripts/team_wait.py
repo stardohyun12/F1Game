@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WAITS = ROOT / ".claude/team/waits.json"
 LABEL = {"running": "⏳ 앞 작업 도는 중", "ready": "▶ 앞 작업 끝남 — PD 차례", "stalled": "⛔ 멈춤 — 아무것도 안 돎"}
+SILENT_SEC = 10 * 60  # 작업 중인데 로그가 이만큼 조용하면 죽은 것으로 본다
 
 
 def load():
@@ -43,6 +44,12 @@ def status(item):
     except OSError:
         state, mtime = "", 0
     if state.startswith("working"):
+        # 프로세스가 강제 종료되면 state 가 "working" 으로 남는다 → 로그가 오래 조용하면 멈춤으로 본다
+        log = ROOT / f".ai_logs/team/{item['on']}.live.log"
+        quiet = time.time() - (log.stat().st_mtime if log.exists() else mtime)
+        if quiet > SILENT_SEC:
+            item["quiet_min"] = int(quiet // 60)
+            return "stalled"
         return "running"
     return "ready" if mtime > item["created"] else "stalled"
 
@@ -55,6 +62,8 @@ def active():
             continue
         s = status(it)
         label = "▶ PD가 지금 할 일" if it["on"] == "pd" else LABEL[s]
+        if it.get("quiet_min"):
+            label = f"⛔ 멈춤 — {it['on']} 로그 {it['quiet_min']}분째 조용 (죽었을 수 있음)"
         out.append({**it, "status": s, "label": label,
                     "since": datetime.fromtimestamp(it["created"]).strftime("%H:%M")})
     return out
