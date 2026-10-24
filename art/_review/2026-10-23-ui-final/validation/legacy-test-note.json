@@ -1,0 +1,11 @@
+{
+  "command": "py tools/asset-gen/test_flat_windows.py",
+  "exit_code": 1,
+  "error": "AssertionError: tiny_region_rejected",
+  "completed_cases_before_error": 5,
+  "subsequent_error_cases_not_run": 3,
+  "cause_observed": "The existing test expects a 7x8 surface region to raise ValueError; current flat_windows accepts narrow regions as min(8,width) x min(8,height) auxiliary windows.",
+  "ui_change_scope": "Only __main__ dispatch was added to check_asset.py. flat_windows and all GLB checks were left unchanged. test_flat_windows imports flat_windows without executing the UI dispatch.",
+  "separate_legacy_glb_run": "legacy-3d-check.json: pass, including 1200 main-face windows",
+  "action": "Recorded for checker owner; existing 3D test and model files were not edited."
+}

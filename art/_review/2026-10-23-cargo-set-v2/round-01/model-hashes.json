@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "box",
+    "model_sha256": "23f563fb62f36f8ded55eb70ccafb7817afc67d2ffc07b740ff3df35eefd3d37"
+  },
+  {
+    "kind": "cake",
+    "model_sha256": "c8a141cdc10b3f40b8152256a00f17d4dd7cbe5834ca61264d8fe65adff39deb"
+  },
+  {
+    "kind": "eggs",
+    "model_sha256": "45ac81a26a96a5fae7c0eccbfce4c30fe95f62ba2525e47f8039f1e038a70a59"
+  },
+  {
+    "kind": "wine",
+    "model_sha256": "7bb3af5b1a97890a07403db6a5fa8f8715fc0e0918a790d7d96005ad6dcecbc2"
+  },
+  {
+    "kind": "fish",
+    "model_sha256": "1add769a8c3506b23a8138a9abf36622612a142f26c1edf5d7eb08d565d0b98c"
+  }
+]

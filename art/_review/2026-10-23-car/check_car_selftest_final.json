@@ -1,0 +1,17 @@
+{
+  "pass": true,
+  "policy": "car-v2-connected-surface-occupancy",
+  "tests": [
+    "64px/m metric reproduction",
+    "anisotropic stretch detection",
+    "collapsed UV rejection",
+    "blank face rejection",
+    "textured face pass",
+    "neighbour island cannot rescue blank face",
+    "one different pixel cannot rescue blank face",
+    "localized edge wear with broad quiet paint allowed; 8x8 diagnostics retained",
+    "disconnected coplanar panels checked separately",
+    "explicit non-AI CSV spellings accepted; positive and ambiguous values rejected",
+    "accessed/download_date ISO dates accepted; invalid dates rejected"
+  ]
+}

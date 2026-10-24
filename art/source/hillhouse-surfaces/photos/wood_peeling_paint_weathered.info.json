@@ -1,0 +1,68 @@
+{
+  "type": 1,
+  "tags": [
+    "rough",
+    "old",
+    "weathered",
+    "wood",
+    "planks",
+    "painted",
+    "chipped",
+    "flaked",
+    "paint",
+    "worn",
+    "faded",
+    "dry",
+    "damaged",
+    "peeling",
+    "discolored",
+    "cracked",
+    "stained",
+    "wall"
+  ],
+  "name": "Wood Peeling Paint Weathered",
+  "categories": [
+    "outdoor",
+    "man made",
+    "wall",
+    "wood",
+    "dirty"
+  ],
+  "authors": {
+    "Rob Tuytel": "Processing",
+    "Dimitrios Savva": "Photography"
+  },
+  "date_published": 1649894400,
+  "staging": null,
+  "dimensions": [
+    761.9999647140503,
+    762.0000243186951
+  ],
+  "sponsors": [
+    "540619",
+    "3237733"
+  ],
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "files_hash": "477efc13ced9f70916939064f880c9a610979f80",
+  "description": "Free 8K texture of weathered painted wood: rough, cracked planks with chipped, flaking dark paint exposing warm, stained wood grain.",
+  "category_id": "26eb2cbb-558a-5357-ae3f-9519f081f247",
+  "category": "Wood/Boards & Planks/Painted Planks",
+  "attributes": {
+    "surface_use": "wall",
+    "condition": [
+      "weathered",
+      "damaged",
+      "painted",
+      "worn",
+      "cracked"
+    ],
+    "origin": "man_made",
+    "setting": "outdoor"
+  },
+  "img_version": "b08bff7c",
+  "download_count": 104236,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/wood_peeling_paint_weathered.png?width=256&height=256&format=webp&v=b08bff7c"
+}

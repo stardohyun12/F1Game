@@ -1,0 +1,42 @@
+{
+  "pass": true,
+  "assets": [
+    {
+      "asset": "box",
+      "hashes_current": true,
+      "provenance_hash_present": true,
+      "views_uncropped": true,
+      "checks_pass": true
+    },
+    {
+      "asset": "cake",
+      "hashes_current": true,
+      "provenance_hash_present": true,
+      "views_uncropped": true,
+      "checks_pass": true
+    },
+    {
+      "asset": "eggs",
+      "hashes_current": true,
+      "provenance_hash_present": true,
+      "views_uncropped": true,
+      "checks_pass": true
+    },
+    {
+      "asset": "wine",
+      "hashes_current": true,
+      "provenance_hash_present": true,
+      "views_uncropped": true,
+      "checks_pass": true
+    },
+    {
+      "asset": "fish",
+      "hashes_current": true,
+      "provenance_hash_present": true,
+      "views_uncropped": true,
+      "checks_pass": true
+    }
+  ],
+  "missing_index_links": [],
+  "scope": "file hashes, provenance, image dimensions and alpha border; no Unity verification"
+}

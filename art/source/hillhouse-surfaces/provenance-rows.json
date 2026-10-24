@@ -1,0 +1,101 @@
+[
+  {
+    "asset_id": "hill_surface_wall_repaint_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/wall_repaint.png",
+    "source_url": "https://polyhaven.com/a/worn_plaster_wall",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "9714efef47d0b9905bf9d75a36da07ec0d92d865e6614522ba0ba66ec13c04aa",
+    "notes": "상단은 밝은 새 회벽, 아래 0.65m 이내의 한쪽 옛 도료 경계에만 사진 기반 박락. 윗벽 UV는 PNG y4..32, 낮은 벽은 y34..62 사용."
+  },
+  {
+    "asset_id": "hill_surface_wood_handworn_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/wood_handworn.png",
+    "source_url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "73a44f18c45ed2dba3ccffddb4f9c92e98cb2d87bc0c20cc318a32a71b86c408",
+    "notes": "회청색 재도장 아래 목재가 드러남. 손잡이 높이 접촉부와 하단 물튐 부위만 추가 마모."
+  },
+  {
+    "asset_id": "hill_surface_roof_repair_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/roof_repair.png",
+    "source_url": "https://polyhaven.com/a/clay_roof_tiles",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "c4930275bc8861c2763b9094e61553a3d647522912de67e0c39b10bbf0d8a3b6",
+    "notes": "실제 곡면 기와 사진으로 교체. 적갈색 2색 큰 명암과 사진에서 연속된 세로 하이라이트 5개만 회갈색으로 유지. 노랑 점 없음. 넓은 수리는 모델 한 위치에만 배치."
+  },
+  {
+    "asset_id": "hill_surface_paver_worn_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/paver_worn.png",
+    "source_url": "https://polyhaven.com/a/rectangular_paving",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "5ce98848b2e2f8b61f4e33ac162aa8f3c1bf3fa9ad29a9570bb06d9b9f4c15e9",
+    "notes": "사진 속 20×40cm 포장 블록의 실제 줄눈을 1px로 보강. 중앙 보행 접촉부만 밝게 닳고 잔점은 제거."
+  },
+  {
+    "asset_id": "hill_surface_layered_sign_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/layered_sign.png",
+    "source_url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "b9fb7e00d9bc2e8e2cf97e5ce86d628193f4be6e5d59e740ee60b9a34032aa83",
+    "notes": "이전 상회 간판의 하단 글자와 못 구멍을 남긴 채 작은 수선 간판을 덧댐. Galmuri11 실제 글리프."
+  },
+  {
+    "asset_id": "hill_surface_asphalt_patch_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/asphalt_patch.png",
+    "source_url": "https://polyhaven.com/a/worn_asphalt",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "112ac80508c5269e55953ae11266dc2ed1da637021a1fa0436532203d43fa773",
+    "notes": "구멍을 메운 국소 불규칙 패치. 직선 띠를 없애고 원천 사진 골재의 큰 평균값만 회색 3색으로 유지."
+  },
+  {
+    "asset_id": "hill_surface_foundation_repair_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/foundation_repair.png",
+    "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "9383da1c95aae52a4be612a62e57d1bb70479b366d204365cb2d49604a4f90e7",
+    "notes": "사진 속 석재 블록·줄눈을 회갈색의 좁은 명도 사다리로 읽힘. 한쪽의 짧은 이음만 새 모르타르로 보수."
+  },
+  {
+    "asset_id": "hill_surface_faded_cloth_v01",
+    "path": "art/source/hillhouse-surfaces/tiles/faded_cloth.png",
+    "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "950e58fc8a59c0fe68577a0668466a7ce5e162d498539ef1aa2394b0d334cc73",
+    "notes": "CC0 면직물 사진의 직조를 가장자리 봉제에만 남기고 중앙은 바랜 밝은 면. 두 접힘선만 보강해 빨래가 너덜거리지 않게 절제."
+  },
+  {
+    "asset_id": "hillhouse_surface_extension_atlas_v01",
+    "path": "art/source/hillhouse-surfaces/extension_atlas.png",
+    "source_url": "https://polyhaven.com/a/worn_plaster_wall; https://polyhaven.com/a/wood_peeling_paint_weathered; https://polyhaven.com/a/clay_roof_tiles; https://polyhaven.com/a/rectangular_paving; https://polyhaven.com/a/worn_asphalt; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/fabric_pattern_05",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-23",
+    "tool": "hill_surfaces.py; photo_to_pixel.py; Pillow",
+    "ai_generated": "no",
+    "sha256": "88b7c1fe7ecb1d12f40a9120993af8ca06908e2d4799d45e6bc5740acdeab575",
+    "notes": "512x512 append-only extension atlas; new slots51-58; all32palette; source hashes in sources.json."
+  }
+]

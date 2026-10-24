@@ -1,0 +1,181 @@
+{
+  "triangles": 2168,
+  "density": 64,
+  "bounds_blender": {
+    "min": [
+      -0.979454517364502,
+      -2.0300002098083496,
+      0.0
+    ],
+    "max": [
+      0.979454517364502,
+      1.7549999952316284,
+      1.0720000267028809
+    ]
+  },
+  "objects": {
+    "body": {
+      "triangles": 398,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "cockpit_rim",
+        "dark_undertray",
+        "dash",
+        "intake_recess",
+        "mirror_glass",
+        "mirror_shell",
+        "mirror_stalk",
+        "seat_back",
+        "seat_cavity",
+        "sidepod",
+        "tapered_nose"
+      ]
+    },
+    "engine": {
+      "triangles": 80,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "engine_cowl",
+        "exhaust",
+        "tail_lamp"
+      ]
+    },
+    "aero": {
+      "triangles": 132,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "front_endplate",
+        "front_flap",
+        "front_wing",
+        "rear_endplate",
+        "rear_flap",
+        "rear_post",
+        "rear_wing",
+        "rear_worn_lip"
+      ]
+    },
+    "suspension": {
+      "triangles": 252,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "rear_cross_stay",
+        "rear_crossbeam",
+        "rear_diagonal",
+        "wishbone"
+      ]
+    },
+    "driver": {
+      "triangles": 218,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "helmet",
+        "jacket_shoulders",
+        "neck_collar",
+        "rollbar",
+        "rollbar_top",
+        "sleeve",
+        "steering_bar"
+      ]
+    },
+    "delivery_bag": {
+      "triangles": 272,
+      "pivot_blender": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "bag_handle",
+        "bag_handle_upright",
+        "bag_rack",
+        "bag_strap_top",
+        "bag_strap_vertical",
+        "insulated_canvas_bag",
+        "padded_fabric_lid",
+        "small_metal_buckle"
+      ]
+    },
+    "wheel_front_left": {
+      "triangles": 204,
+      "pivot_blender": [
+        0.7900000214576721,
+        -1.2000000476837158,
+        0.3499999940395355
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_front_right": {
+      "triangles": 204,
+      "pivot_blender": [
+        -0.7900000214576721,
+        -1.2000000476837158,
+        0.3499999940395355
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_rear_left": {
+      "triangles": 204,
+      "pivot_blender": [
+        0.7900000214576721,
+        1.100000023841858,
+        0.375
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_rear_right": {
+      "triangles": 204,
+      "pivot_blender": [
+        -0.7900000214576721,
+        1.100000023841858,
+        0.375
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    }
+  },
+  "wear": {
+    "body": "lower sidepod chip, left seam tape",
+    "bag": "handling edges, lid folds, strap contact",
+    "metal": "rack/wishbone local oxidation"
+  },
+  "source": "CC0 photography + scripts; original concept is visual reference only"
+}

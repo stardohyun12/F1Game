@@ -1,0 +1,13 @@
+{
+  "box_changed_texels": 43,
+  "box_changed_bounds": [
+    23,
+    47,
+    38,
+    58
+  ],
+  "box_other_five_faces_identical": true,
+  "box_mesh_positions_identical": true,
+  "box_uv_identical": true,
+  "wine_model_unchanged": true
+}

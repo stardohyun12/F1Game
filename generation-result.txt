@@ -1,0 +1,6 @@
+- [01_house_variants.png](D:/Github/F1Game/art/concept/2026-10-20-town-variety/01_house_variants.png)
+- [02_town_center_slope.png](D:/Github/F1Game/art/concept/2026-10-20-town-variety/02_town_center_slope.png)
+
+각각 image_gen 1회로 생성했으며, PNG 1672×941 저장·열기 확인했습니다. **디렉터 승인 대기 콘셉트**이며 게임 미적용 상태입니다. 두 번째 시트는 하단 비중이 요청한 30%보다 큽니다.
+
+[사용 프롬프트](D:/Github/F1Game/art/concept/2026-10-20-town-variety/generation_prompts.txt)

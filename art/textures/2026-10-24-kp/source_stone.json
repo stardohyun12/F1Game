@@ -1,0 +1,23 @@
+{
+  "id": "stone_pavers",
+  "path": "art/textures/2026-10-24-kp/sources/stone/stone_pavers_diff_1k.png",
+  "url": "https://polyhaven.com/a/stone_pavers",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/stone_pavers/stone_pavers_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b",
+  "md5": "a553a6fd6d2ab8921f845e804aca5d51",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

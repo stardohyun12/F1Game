@@ -1,0 +1,76 @@
+{
+  "name": "cargo_fish_v02",
+  "revision": "PD1720 pass1",
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        26,
+        7
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        30,
+        1,
+        26,
+        7
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        1,
+        10,
+        20,
+        7
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        24,
+        10,
+        20,
+        7
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        1,
+        20,
+        26,
+        20
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        30,
+        20,
+        26,
+        20
+      ]
+    }
+  ],
+  "recognition_anchor": "Forked tail at tray rim, silver flank, irregular bright ice and folded liner edges.",
+  "layers": [
+    "CC0 paper photo BOX reduction and exact palette",
+    "EPS mould joints",
+    "silver fish value ladder and gill",
+    "ice facet highlights",
+    "scripted label/up chevrons",
+    "contact vertex AO"
+  ],
+  "wear": "EPS mould joints, lower contact shading and liner folds only. No global noise.",
+  "narrow_face_note": "7px main sides use narrow auxiliary monochrome check; density not enlarged."
+}

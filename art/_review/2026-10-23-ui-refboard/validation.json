@@ -1,0 +1,66 @@
+{
+  "local_links_missing": [],
+  "source_images_verified": 72,
+  "source_hash_mismatches": [],
+  "browser": {
+    "1440": {
+      "visibleImageCount": 13,
+      "hiddenImagesCheckedByHashOnly": 10,
+      "brokenVisibleImages": [],
+      "fontLoaded": true,
+      "filterCount": 2,
+      "toggleOn": true,
+      "viewportWidth": 1418,
+      "scrollWidth": 1418,
+      "scrollHeight": 5161
+    },
+    "960": {
+      "visibleImageCount": 13,
+      "hiddenImagesCheckedByHashOnly": 10,
+      "brokenVisibleImages": [],
+      "fontLoaded": true,
+      "filterCount": 2,
+      "toggleOn": true,
+      "viewportWidth": 938,
+      "scrollWidth": 938,
+      "scrollHeight": 6897
+    },
+    "600": {
+      "visibleImageCount": 13,
+      "hiddenImagesCheckedByHashOnly": 10,
+      "brokenVisibleImages": [],
+      "fontLoaded": true,
+      "filterCount": 2,
+      "toggleOn": true,
+      "viewportWidth": 578,
+      "scrollWidth": 578,
+      "scrollHeight": 11932
+    }
+  },
+  "screenshot_exit": 0,
+  "screenshot_size": [
+    1440,
+    5165
+  ],
+  "font": {
+    "ttf_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "source": "https://github.com/quiple/galmuri/releases/tag/v2.40.4",
+    "native_px": 12,
+    "scales": [
+      2,
+      3
+    ],
+    "sample": "배달 2/3   남은 시간 01:28   거리 320m / 볶음 · 값 · 흙 · 뺨    0/O 1/I 8/B    m km/h 초 원",
+    "missing_vs_undefined_glyph": [],
+    "native_mask_values": [
+      0,
+      1
+    ],
+    "nearest_2x_roundtrip_equal": true,
+    "unity_tested": false,
+    "human_readability_tested": false
+  },
+  "unity_executed": false,
+  "original_games_executed": false,
+  "new_ui_sprites": 0
+}

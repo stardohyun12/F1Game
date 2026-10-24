@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "revision": "R3",
+  "texture_size": [
+    512,
+    512
+  ],
+  "power_of_two": true,
+  "palette_outside": 0,
+  "used_colors": 18,
+  "palette_size": 32,
+  "all_tiles_at_least_two_colors": true,
+  "metadata_density": 64,
+  "geometry_uv_density_check": "parent checker required; not inferred from PNG",
+  "atlas_sha256": "9000cb8fa153d98f567f2b7aaa8e461a211810ea6ecb2ff5a2e9bba4b6a0db67",
+  "ai_generated": false
+}

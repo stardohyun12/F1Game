@@ -1,0 +1,23 @@
+{
+  "id": "plastered_wall_05",
+  "path": "art/textures/2026-10-24-kp-v2/sources/plaster_c/plastered_wall_05_diff_1k.png",
+  "url": "https://polyhaven.com/a/plastered_wall_05",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/plastered_wall_05/plastered_wall_05_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Charlotte Baglioni": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "4c489178cf6f82821c46771a3354e9728ef88c3c95410fb4c37b9bf11083bc30",
+  "md5": "f16e80b70b0aee19d7571aff326b40fc",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

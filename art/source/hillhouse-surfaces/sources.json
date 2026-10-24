@@ -1,0 +1,123 @@
+[
+  {
+    "id": "worn_plaster_wall",
+    "path": "art/source/hillhouse-surfaces/photos/worn_plaster_wall_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/worn_plaster_wall",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/worn_plaster_wall/worn_plaster_wall_diff_1k.jpg",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "dimensions_mm": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "f769bee35504ff713e89e89d2b64c1eb3c373dd184973ac8706310f19fd63efe",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "wood_peeling_paint_weathered",
+    "path": "art/source/hillhouse-surfaces/photos/wood_peeling_paint_weathered_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_peeling_paint_weathered/wood_peeling_paint_weathered_diff_1k.jpg",
+    "authors": {
+      "Rob Tuytel": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "dimensions_mm": [
+      761.9999647140503,
+      762.0000243186951
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "7311e60ec0ca3de10383dd5f2d398819e2198ea78244cf4f6627d1cb26cf4b53",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "clay_roof_tiles",
+    "path": "art/source/hillhouse-surfaces/photos/clay_roof_tiles_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/clay_roof_tiles",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles/clay_roof_tiles_diff_1k.jpg",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "dimensions_mm": [
+      4000,
+      4000
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "aac0f4e742a2cce21afb5dfb523b47c720c6a8e2782a312b823608fe3f80eae6",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "rectangular_paving",
+    "path": "art/source/hillhouse-surfaces/photos/rectangular_paving_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/rectangular_paving",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rectangular_paving/rectangular_paving_diff_1k.jpg",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "dimensions_mm": [
+      2000,
+      2000
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "23f3da5644a95fbcc1916165c8b03ac74d0836ce4b6f5bf2a28b0266dcdf84c5",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "worn_asphalt",
+    "path": "art/source/hillhouse-surfaces/photos/worn_asphalt_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/worn_asphalt",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/worn_asphalt/worn_asphalt_diff_1k.jpg",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "dimensions_mm": [
+      2000,
+      2000
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "3bf71ad290730092ad2aee85e246b2e43318bc1f32261826ba91250e815b5f72",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "stone_brick_wall_001",
+    "path": "art/source/hillhouse-surfaces/photos/stone_brick_wall_001_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/stone_brick_wall_001",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/stone_brick_wall_001/stone_brick_wall_001_diff_1k.jpg",
+    "authors": {
+      "Dimitrios Savva": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "dimensions_mm": [
+      2500,
+      2500
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "15fb31a178401eda2a2b86da539fa39021a08c7a43e902af785f99e18cba6311",
+    "md5_matches_provider": true
+  },
+  {
+    "id": "fabric_pattern_05",
+    "path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+    "url": "https://polyhaven.com/a/fabric_pattern_05",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/fabric_pattern_05/fabric_pattern_05_col_01_1k.jpg",
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions_mm": [
+      500,
+      499.9999403953552
+    ],
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "sha256": "b9ece89a45044945ce4d1402672cfd605f1f074b313cb3cc12b7b2ea66fad7fe",
+    "md5_matches_provider": true
+  }
+]

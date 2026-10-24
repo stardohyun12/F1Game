@@ -1,0 +1,11 @@
+var fc = UnityEngine.Object.FindFirstObjectByType<FollowCamera>(FindObjectsInactive.Include);
+if (fc == null) return "no FollowCamera";
+var so = new UnityEditor.SerializedObject(fc);
+var sb = new System.Text.StringBuilder();
+var it = so.GetIterator(); it.NextVisible(true);
+while (it.NextVisible(false)) sb.Append(it.propertyPath).Append('=').Append(it.propertyType == UnityEditor.SerializedPropertyType.ObjectReference ? (it.objectReferenceValue ? it.objectReferenceValue.name : "null") : it.propertyType == UnityEditor.SerializedPropertyType.Vector3 ? it.vector3Value.ToString() : it.propertyType == UnityEditor.SerializedPropertyType.Float ? it.floatValue.ToString() : it.propertyType.ToString()).Append(" | ");
+var car = UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>();
+var cso = new UnityEditor.SerializedObject(car);
+sb.Append(" CAR maxSpeedMps=").Append(cso.FindProperty("maxSpeedMps")?.floatValue);
+sb.Append(" cam=").Append(fc.name).Append(" fov=").Append(fc.GetComponent<Camera>()?.fieldOfView);
+return sb.ToString();

@@ -1,0 +1,12 @@
+Application.runInBackground=true;
+var car=UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>(); var rb=car.GetComponent<Rigidbody>();
+var mi=typeof(ArcadeCarController).GetField("moveInput",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+Time.timeScale=1f; rb.linearVelocity=Vector3.zero; rb.angularVelocity=Vector3.zero;
+car.transform.SetPositionAndRotation(new Vector3(150,-2.2f,107.1f),Quaternion.LookRotation(Vector3.right)); Physics.SyncTransforms();
+float t0=Time.realtimeSinceStartup, last=t0, maxdt=0; string log="";
+UnityEditor.EditorApplication.CallbackFunction cb=null;
+cb=()=>{ float n=Time.realtimeSinceStartup; float dt=n-last; last=n; maxdt=Mathf.Max(maxdt,dt);
+ mi.SetValue(car,new Vector2(0,1));
+ if(dt>0.1f) log+="dt"+dt.ToString("F2")+"@x"+rb.position.x.ToString("F0")+" ";
+ if(n-t0>9f){ UnityEditor.EditorApplication.update-=cb; mi.SetValue(car,Vector2.zero); UnityEditor.SessionState.SetString("p.hitch","maxdt="+maxdt.ToString("F2")+" "+log+"endx="+rb.position.x.ToString("F0")+" hp="+string.Join(",",UnityEngine.Object.FindObjectsByType<CargoBox>(FindObjectsSortMode.None).Select(b=>b.IntegrityHP.ToString("F0")))); } };
+UnityEditor.EditorApplication.update+=cb; return "go";

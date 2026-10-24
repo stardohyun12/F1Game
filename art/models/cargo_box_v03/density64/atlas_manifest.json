@@ -1,0 +1,236 @@
+{
+  "name": "cargo_box_v03_64",
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": [
+        4,
+        7,
+        7,
+        9
+      ],
+      "source_metadata": "patches/front_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          19,
+          4
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          21,
+          11
+        ]
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        29,
+        1,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/back_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          21,
+          11
+        ]
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        1,
+        22,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/top_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          17,
+          11
+        ],
+        [
+          24,
+          10
+        ]
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        29,
+        22,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/bottom_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          17,
+          11
+        ],
+        [
+          24,
+          10
+        ]
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        1,
+        43,
+        19,
+        19
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/left_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          14,
+          4
+        ],
+        [
+          5,
+          12
+        ]
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        22,
+        43,
+        19,
+        19
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/right_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          14,
+          4
+        ]
+      ]
+    }
+  ],
+  "seed": 0,
+  "label_physical_wh_m": [
+    0.105,
+    0.148
+  ],
+  "label_width_fraction": 0.2625,
+  "color_ladder_metrics": {
+    "front": {
+      "base_mean_luma": 131.75072469635626,
+      "final_mean_luma": 135.6049801619433,
+      "final_unique_colors": 8,
+      "sparse_fill_count": 3
+    },
+    "back": {
+      "base_mean_luma": 120.88454736842107,
+      "final_mean_luma": 119.99399230769231,
+      "final_unique_colors": 6,
+      "sparse_fill_count": 3
+    },
+    "top": {
+      "base_mean_luma": 149.37184291497974,
+      "final_mean_luma": 145.58810647773274,
+      "final_unique_colors": 5,
+      "sparse_fill_count": 3
+    },
+    "bottom": {
+      "base_mean_luma": 90.55868016194331,
+      "final_mean_luma": 100.15708785425102,
+      "final_unique_colors": 5,
+      "sparse_fill_count": 3
+    },
+    "left": {
+      "base_mean_luma": 111.55757673130189,
+      "final_mean_luma": 108.95341329639888,
+      "final_unique_colors": 6,
+      "sparse_fill_count": 2
+    },
+    "right": {
+      "base_mean_luma": 111.55757673130189,
+      "final_mean_luma": 108.62935346260386,
+      "final_unique_colors": 5,
+      "sparse_fill_count": 1
+    }
+  },
+  "layer_order": [
+    "CC0 photo",
+    "BOX downscale",
+    "32-color exact quantization",
+    "weak 4x4 Bayer with face color ladder",
+    "rule-based stamps",
+    "adaptive sparse blue-noise-like fill",
+    "quantized fold/contact AO"
+  ],
+  "noise_scope": "only flat 8x8 windows; minimum inserted adjacent-palette pixel; not randomized global wear",
+  "vertex_color_AO": false,
+  "AO_reason": "baked palette AO; URP Lit vertex color support unverified",
+  "source_photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "approval": "64px/m is review-only pending Dohyun exception;32 retains baseline"
+}

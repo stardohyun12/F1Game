@@ -46,6 +46,8 @@ public class DeliveryPointMarker : MonoBehaviour
 
     void Update()
     {
+        ApplyDrivingVisibility();
+
         // 런 중 상태 자동 반영 (OrderBoard가 close에서 SetExternalControl(false) 호출)
         if (!useAutoState || dp == null) return;
 
@@ -158,6 +160,47 @@ public class DeliveryPointMarker : MonoBehaviour
     public void SetDimmed(bool dim)
     {
         ApplyColor(baseColor, dim ? dimAlpha : 1f);
+    }
+
+    // 1638: 운전 시점에선 높이 9m·지름 9.6m(활성 1.6배) 구가 하늘 한가운데 살구색 원판으로 떠서 화면을 가렸다.
+    // 운전 중 길 안내는 DirectionArrow·MiniMapHUD 가 한다 → 운전 중엔 구를 숨기고 기둥은 마지막 접근 거리 안에서만.
+    // 보드·경로 화면(위에서 내려다봄)은 예전 그대로.
+    // 미니맵(MiniMapHUD 직교 카메라)은 이 구를 목적지 점으로 찍으므로 SetActive 로 끄지 않고, 메인 카메라가 그릴 때만 렌더러를 끈다.
+    [Header("Driving view")]
+    [SerializeField] private float drivingPillarDistance = 45f;
+    bool _hideSphereMain, _hidePillarMain;
+    Renderer _sphereR, _pillarR;
+
+    void OnEnable()  { UnityEngine.Rendering.RenderPipelineManager.beginCameraRendering += OnBeginCam; UnityEngine.Rendering.RenderPipelineManager.endCameraRendering += OnEndCam; }
+    void OnDisable() { UnityEngine.Rendering.RenderPipelineManager.beginCameraRendering -= OnBeginCam; UnityEngine.Rendering.RenderPipelineManager.endCameraRendering -= OnEndCam; }
+
+    void ApplyDrivingVisibility()
+    {
+        var rc = Services.Run as RunController;
+        bool driving = rc != null && rc.CurrentStage == RunStage.Driving;
+        _hideSphereMain = driving;
+        _hidePillarMain = false;
+        if (driving)
+        {
+            var cam = Camera.main;
+            bool near = cam != null && (cam.transform.position - transform.position).sqrMagnitude < drivingPillarDistance * drivingPillarDistance;
+            _hidePillarMain = !(near && dp != null && dp.IsActive && !dp.IsCompleted);
+        }
+    }
+
+    void OnBeginCam(UnityEngine.Rendering.ScriptableRenderContext ctx, Camera cam)
+    {
+        if (cam != Camera.main) return;
+        if (_sphereR == null && sphere != null) _sphereR = sphere.GetComponent<Renderer>();
+        if (_pillarR == null && pillar != null) _pillarR = pillar.GetComponent<Renderer>();
+        if (_sphereR != null && _hideSphereMain) _sphereR.enabled = false;
+        if (_pillarR != null && _hidePillarMain) _pillarR.enabled = false;
+    }
+
+    void OnEndCam(UnityEngine.Rendering.ScriptableRenderContext ctx, Camera cam)
+    {
+        if (_sphereR != null) _sphereR.enabled = true;
+        if (_pillarR != null) _pillarR.enabled = true;
     }
 
     public void SetVisible(bool visible)

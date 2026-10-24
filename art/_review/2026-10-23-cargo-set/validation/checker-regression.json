@@ -1,0 +1,64 @@
+{
+  "pass": true,
+  "tests": [
+    {
+      "case": "legacy_beveled_box",
+      "pass": true
+    },
+    {
+      "case": "cargo_missing_positive_y",
+      "removed_triangles": 40,
+      "pass": true,
+      "actual_directions": [
+        "-X",
+        "+X",
+        "-Y",
+        "-Z",
+        "+Z"
+      ]
+    },
+    {
+      "case": "narrow_uniform_rejected",
+      "pass": true
+    },
+    {
+      "case": "narrow_varied_auxiliary_only",
+      "pass": true,
+      "evidence": {
+        "status": "checked",
+        "pass": true,
+        "requested_window_size": [
+          8,
+          8
+        ],
+        "stride": 1,
+        "minimum_required_colors": 2,
+        "window_count": 12,
+        "standard_8x8_window_count": 0,
+        "narrow_auxiliary_window_count": 12,
+        "flat_window_count": 0,
+        "flat_windows": [],
+        "regions": [
+          {
+            "face": "narrow",
+            "rect_xywh": [
+              0,
+              0,
+              4,
+              19
+            ],
+            "window_size": [
+              4,
+              8
+            ],
+            "check_kind": "narrow_surface_auxiliary",
+            "window_count": 12,
+            "minimum_colors": 2,
+            "flat_window_count": 0
+          }
+        ],
+        "scope": "Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. Narrow faces use min(8,width) x min(8,height) auxiliary windows, not an 8x8 claim. RGB variation only, not alpha; manifest coverage is not inferred from geometry."
+      }
+    }
+  ]
+}

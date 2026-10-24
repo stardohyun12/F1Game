@@ -1,0 +1,75 @@
+{
+  "name": "cargo_box_v02",
+  "dimensions_m": [
+    0.4,
+    0.3,
+    0.3
+  ],
+  "density": 32,
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        2,
+        2,
+        13,
+        10
+      ],
+      "source_metadata": "patches/front.json"
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        19,
+        2,
+        13,
+        10
+      ],
+      "source_metadata": "patches/back.json"
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        36,
+        2,
+        10,
+        10
+      ],
+      "source_metadata": "patches/right.json"
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        49,
+        2,
+        10,
+        10
+      ],
+      "source_metadata": "patches/left.json"
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        2,
+        18,
+        13,
+        10
+      ],
+      "source_metadata": "patches/top.json"
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        19,
+        18,
+        13,
+        10
+      ],
+      "source_metadata": "patches/bottom.json"
+    }
+  ],
+  "font_candidate": "Galmuri11 native12px 조심; review only NOT APPLIED. Await density exception; model label has symbolic bars/lines only.",
+  "source_photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "wear": "upper front-left crush, bottom contact edge only; photo fibre is material variation, not added random wear"
+}

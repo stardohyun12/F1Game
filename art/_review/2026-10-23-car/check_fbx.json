@@ -1,0 +1,915 @@
+{
+  "pass": true,
+  "checks": {
+    "fbx_individual_checks": true,
+    "glb_individual_checks": true,
+    "same_triangle_count": true,
+    "same_mesh_object_names": true,
+    "same_position_uv_corners_within_1e5": true,
+    "same_bounds": true
+  },
+  "blender_version": "5.2.2 LTS",
+  "fbx": {
+    "pass": true,
+    "checks": {
+      "tris_at_most_3000": true,
+      "source_bounds_and_pivot_preserved": true,
+      "all_triangles_nondegenerate": true,
+      "all_triangles_density_64_both_principal_axes": true,
+      "four_wheel_pivots_axes_center_floor": true
+    },
+    "path": "D:\\Github\\F1Game\\art\\models\\car_v01\\car_v01.fbx",
+    "sha256": "7de1087d24915d0108e44c21cc586eb52c1b81980e463a1fbfff77eeba557663",
+    "tris": 2168,
+    "bounds_min_blender": [
+      -0.9794545024633408,
+      -2.030000189046424,
+      0.0
+    ],
+    "bounds_max_blender": [
+      0.9794545024633408,
+      1.7550000548749765,
+      1.072000024437943
+    ],
+    "dimensions_blender": [
+      1.9589090049266815,
+      3.7850002439214006,
+      1.072000024437943
+    ],
+    "objects": {
+      "aero": {
+        "tris": 132,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.8925000429153442,
+          -1.985000005245367,
+          0.1200001147170325
+        ],
+        "bounds_max": [
+          0.8925000429153442,
+          1.7550000548749765,
+          0.7899999802726159
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.4550000474948242,
+        "unique_position_uv_corners": 264
+      },
+      "body": {
+        "tris": 398,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.6660000085830688,
+          -2.030000189046424,
+          0.13999992112483106
+        ],
+        "bounds_max": [
+          0.6660000085830688,
+          1.2500000166095382,
+          0.8149999794963183
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.4774999503105747,
+        "unique_position_uv_corners": 756
+      },
+      "delivery_bag": {
+        "tris": 272,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.38999998569488525,
+          0.5800000895352988,
+          0.6174999090052893
+        ],
+        "bounds_max": [
+          0.38999998569488525,
+          1.3000000023336455,
+          1.0580000183554636
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.9400000459344722,
+        "unique_position_uv_corners": 528
+      },
+      "driver": {
+        "tris": 218,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.2353350818157196,
+          -0.26749996687055194,
+          0.5249999614360519
+        ],
+        "bounds_max": [
+          0.2353350818157196,
+          0.3755001253055883,
+          1.072000024437943
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.7984999929369975,
+        "unique_position_uv_corners": 420
+      },
+      "engine": {
+        "tris": 80,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.25,
+          0.37000002741774285,
+          0.27999993209216895
+        ],
+        "bounds_max": [
+          0.25,
+          1.669000061650515,
+          0.6499999482239183
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 1.019500044534129,
+        "unique_position_uv_corners": 152
+      },
+      "suspension": {
+        "tris": 252,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.7967678308486938,
+          -1.4322173382234467,
+          0.2424998852331197
+        ],
+        "bounds_max": [
+          0.7967678308486938,
+          1.4240001887869433,
+          0.6329509236046711
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.4377254044188954,
+        "unique_position_uv_corners": 504
+      },
+      "wheel_front_left": {
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          0.6396999955177307,
+          -1.5499999523162837,
+          0.0
+        ],
+        "bounds_max": [
+          0.9402999877929688,
+          -0.8500000238418574,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464521947983e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_front_right": {
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          -0.9402999877929688,
+          -1.5499999523162837,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6396999955177307,
+          -0.8500000238418574,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464521947983e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_rear_left": {
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          0.6005454808473587,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          0.9794545024633408,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_rear_right": {
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          -0.9794545024633408,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6005454808473587,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      }
+    },
+    "wheels": [
+      {
+        "name": "wheel_front_left",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          0.6396999955177307,
+          -1.5499999523162837,
+          0.0
+        ],
+        "bounds_max": [
+          0.9402999877929688,
+          -0.8500000238418574,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464521947983e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_front_right",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          -0.9402999877929688,
+          -1.5499999523162837,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6396999955177307,
+          -0.8500000238418574,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464521947983e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_rear_left",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          0.6005454808473587,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          0.9794545024633408,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_rear_right",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          -0.9794545024633408,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6005454808473587,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      }
+    ],
+    "density_min": 63.998645007100485,
+    "density_max": 64.10133643647328,
+    "density_failures": [],
+    "geometry_failures": []
+  },
+  "glb": {
+    "pass": true,
+    "checks": {
+      "tris_at_most_3000": true,
+      "source_bounds_and_pivot_preserved": true,
+      "all_triangles_nondegenerate": true,
+      "all_triangles_density_64_both_principal_axes": true,
+      "four_wheel_pivots_axes_center_floor": true
+    },
+    "path": "D:\\Github\\F1Game\\art\\models\\car_v01\\car_v01.glb",
+    "sha256": "a7c596114a8173506d92b0ab480090f37e3baf649e6af6fcdef4684c96b034ad",
+    "tris": 2168,
+    "bounds_min_blender": [
+      -0.9794545024633408,
+      -2.0300002098083496,
+      0.0
+    ],
+    "bounds_max_blender": [
+      0.9794545024633408,
+      1.7549999952316284,
+      1.0720000267028809
+    ],
+    "dimensions_blender": [
+      1.9589090049266815,
+      3.785000205039978,
+      1.0720000267028809
+    ],
+    "objects": {
+      "aero": {
+        "tris": 132,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.8925000429153442,
+          -1.9850000143051147,
+          0.11999999731779099
+        ],
+        "bounds_max": [
+          0.8925000429153442,
+          1.7549999952316284,
+          0.7900000810623169
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.45500003919005394,
+        "unique_position_uv_corners": 264
+      },
+      "body": {
+        "tris": 398,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.6660000085830688,
+          -2.0300002098083496,
+          0.14000000059604645
+        ],
+        "bounds_max": [
+          0.6660000085830688,
+          1.25,
+          0.8149999976158142
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.47749999910593033,
+        "unique_position_uv_corners": 756
+      },
+      "delivery_bag": {
+        "tris": 272,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.38999998569488525,
+          0.5800000429153442,
+          0.6175000071525574
+        ],
+        "bounds_max": [
+          0.38999998569488525,
+          1.2999999523162842,
+          1.058000087738037
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.9399999976158142,
+        "unique_position_uv_corners": 528
+      },
+      "driver": {
+        "tris": 218,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.2353350818157196,
+          -0.26750001311302185,
+          0.5249999761581421
+        ],
+        "bounds_max": [
+          0.2353350818157196,
+          0.37550005316734314,
+          1.0720000267028809
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.7985000014305115,
+        "unique_position_uv_corners": 420
+      },
+      "engine": {
+        "tris": 80,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.25,
+          0.3700000047683716,
+          0.2800000309944153
+        ],
+        "bounds_max": [
+          0.25,
+          1.6690000295639038,
+          0.6499999761581421
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 1.0195000171661377,
+        "unique_position_uv_corners": 152
+      },
+      "suspension": {
+        "tris": 252,
+        "origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_min": [
+          -0.7967678308486938,
+          -1.4322173595428467,
+          0.24249999225139618
+        ],
+        "bounds_max": [
+          0.7967678308486938,
+          1.4240001440048218,
+          0.632951021194458
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 0.4377255067229271,
+        "unique_position_uv_corners": 504
+      },
+      "wheel_front_left": {
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          0.6396999955177307,
+          -1.5499999523162842,
+          0.0
+        ],
+        "bounds_max": [
+          0.9402999877929688,
+          -0.8500000238418579,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464477539063e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_front_right": {
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          -0.9402999877929688,
+          -1.5499999523162842,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6396999955177307,
+          -0.8500000238418579,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464477539063e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_rear_left": {
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          0.6005454808473587,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          0.9794545024633408,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      },
+      "wheel_rear_right": {
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          -0.9794545024633408,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6005454808473587,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      }
+    },
+    "wheels": [
+      {
+        "name": "wheel_front_left",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          0.6396999955177307,
+          -1.5499999523162842,
+          0.0
+        ],
+        "bounds_max": [
+          0.9402999877929688,
+          -0.8500000238418579,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464477539063e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_front_right",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          -1.2000000476837158,
+          0.3499999940395355
+        ],
+        "bounds_min": [
+          -0.9402999877929688,
+          -1.5499999523162842,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6396999955177307,
+          -0.8500000238418579,
+          0.699999988079071
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 5.960464477539063e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_rear_left",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          0.6005454808473587,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          0.9794545024633408,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      },
+      {
+        "name": "wheel_rear_right",
+        "pass": true,
+        "tris": 204,
+        "origin_blender": [
+          -0.7900000214576721,
+          1.100000023841858,
+          0.375
+        ],
+        "bounds_min": [
+          -0.9794545024633408,
+          0.7250000238418579,
+          0.0
+        ],
+        "bounds_max": [
+          -0.6005454808473587,
+          1.475000023841858,
+          0.75
+        ],
+        "spin_axis_x": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "center_error_m": 2.9802322387695312e-08,
+        "unique_position_uv_corners": 360
+      }
+    ],
+    "density_min": 63.99647874191757,
+    "density_max": 64.10133643647326,
+    "density_failures": [],
+    "geometry_failures": []
+  },
+  "position_uv_differences": [],
+  "position_uv_corner_comparisons": [
+    {
+      "node": "aero",
+      "fbx_unique": 264,
+      "glb_unique": 264,
+      "max_position_delta_m": 1.4986333508881788e-07,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "body",
+      "fbx_unique": 756,
+      "glb_unique": 756,
+      "max_position_delta_m": 1.5326075541999273e-07,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "delivery_bag",
+      "fbx_unique": 528,
+      "glb_unique": 528,
+      "max_position_delta_m": 9.814726809054264e-08,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "driver",
+      "fbx_unique": 420,
+      "glb_unique": 420,
+      "max_position_delta_m": 8.093375217232968e-08,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "engine",
+      "fbx_unique": 152,
+      "glb_unique": 152,
+      "max_position_delta_m": 1.2600599946788194e-07,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "suspension",
+      "fbx_unique": 504,
+      "glb_unique": 504,
+      "max_position_delta_m": 1.0812940481885747e-07,
+      "max_uv_delta_normalized": 0.0,
+      "max_uv_delta_pixels_at_512": 0.0,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "wheel_front_left",
+      "fbx_unique": 360,
+      "glb_unique": 360,
+      "max_position_delta_m": 2.6424267218772002e-08,
+      "max_uv_delta_normalized": 1.4901161193847656e-08,
+      "max_uv_delta_pixels_at_512": 7.62939453125e-06,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "wheel_front_right",
+      "fbx_unique": 360,
+      "glb_unique": 360,
+      "max_position_delta_m": 2.6424267218772002e-08,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "wheel_rear_left",
+      "fbx_unique": 360,
+      "glb_unique": 360,
+      "max_position_delta_m": 2.8311712974016245e-08,
+      "max_uv_delta_normalized": 2.2351741790771484e-08,
+      "max_uv_delta_pixels_at_512": 1.1444091796875e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    },
+    {
+      "node": "wheel_rear_right",
+      "fbx_unique": 360,
+      "glb_unique": 360,
+      "max_position_delta_m": 2.8311712974016245e-08,
+      "max_uv_delta_normalized": 2.9802322387695312e-08,
+      "max_uv_delta_pixels_at_512": 1.52587890625e-05,
+      "position_tolerance_m": 1e-05,
+      "uv_tolerance_normalized": 1e-05,
+      "pass": true
+    }
+  ],
+  "method": "Independent Blender FBX and glTF imports. Compare transformed mesh vertex/UV corner sets, bounds, pivots, X spin axes, triangle count and all triangle UV principal densities.",
+  "limitations": "Blender round trip only. Does not run Unity FBX/glTF importer or prove runtime name/axis conversion; compare current-car-measure.md for measured Unity prefab convention. Texture/palette/provenance audit is check_car.py."
+}

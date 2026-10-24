@@ -191,7 +191,9 @@ public static class HarnessChecks
         int chec_ = 0;
         foreach (var guid in AssetDatabase.FindAssets("t:OrderJob"))
         {
-            var job = AssetDatabase.LoadAssetAtPath<OrderJob>(AssetDatabase.GUIDToAssetPath(guid));
+            var jp = AssetDatabase.GUIDToAssetPath(guid);
+            if (jp.StartsWith("Assets/Data/Orders/ProtoCourse/")) continue; // Proto_CoastCourse 씬 전용 주문(그 씬 DeliveryPoint 라벨)
+            var job = AssetDatabase.LoadAssetAtPath<OrderJob>(jp);
             if (job == null || job.destinationLabels == null || job.destinationLabels.Count == 0) continue;
             chec_++;
             var label = job.destinationLabels[0];

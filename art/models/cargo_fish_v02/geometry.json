@@ -1,0 +1,4200 @@
+{
+  "tris": 494,
+  "revision": "PD1720 pass2",
+  "gltf_dimensions_m": [
+    0.4,
+    0.095,
+    0.3
+  ],
+  "density": 64,
+  "shape_change": "Manufacturer outer envelope retained; back wall lowered from95 to75mm for open-inspection readability, side/front rim retain95mm. Not an exact BEWI manufactured wall replica.",
+  "inner_wall_topology": "Inside-facing wall polygons centre-fanned; exterior original two triangles retained as largest representative. Inner UV at [30,54], no printed label/arrows. No density/checker threshold change.",
+  "regions": [
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        -0.5773499011993408,
+        -0.5773499011993408,
+        -0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        -0.5773499011993408,
+        -0.5773499011993408,
+        0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        -0.5773499011993408,
+        0.5773499011993408,
+        -0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        -0.5773499011993408,
+        0.5773499011993408,
+        0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.5773499011993408,
+        -0.5773499011993408,
+        -0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.5773499011993408,
+        -0.5773499011993408,
+        0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.5773499011993408,
+        0.5773499011993408,
+        -0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.5773499011993408,
+        0.5773499011993408,
+        0.5773510932922363
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        -0.7071060538291931,
+        0.0,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071068286895752,
+        -0.7071068286895752,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        -0.7071060538291931,
+        0.0,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071068286895752,
+        0.7071068286895752,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071060538291931,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071060538291931,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071068286895752,
+        0.7071068286895752,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.7071060538291931,
+        0.0,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.7071060538291931,
+        0.0,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071068286895752,
+        -0.7071068286895752,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071060538291931,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071060538291931,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -0.9999999403953552,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.0,
+        1.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        0.9999999403953552,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_base",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        -0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        -0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        -0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        -0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.0,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.7071061134338379,
+        -0.7071073651313782,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.0,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.7071073651313782,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        -0.7071074843406677
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -6.4960583578965725e-09,
+        0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        0.707107424736023,
+        -0.7071061730384827
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        6.4960583578965725e-09,
+        0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        0.7071074843406677
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        6.4960583578965725e-09,
+        0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        0.707107424736023,
+        0.7071061730384827
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -6.4960583578965725e-09,
+        0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.7071073651313782,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.0,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.0,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.7071061134338379,
+        -0.7071073651313782,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.0,
+        1.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_front",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        -0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        -0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.5773495435714722,
+        0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        -0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        -0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        0.5773506164550781,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.5773495435714722,
+        0.5773506164550781,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.0,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        -0.7071061134338379,
+        -0.707107424736023,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.0,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        -0.7071061134338379,
+        0.707107424736023,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.707107424736023,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.0,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.7071061134338379,
+        0.0,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.7071061134338379,
+        -0.707107424736023,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        -0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -0.7071068286895752,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.0,
+        -1.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.0,
+        1.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_back",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.5773506164550781,
+        -0.5773495435714722,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.5773506164550781,
+        -0.5773495435714722,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.5773506164550781,
+        0.5773495435714722,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.5773506164550781,
+        0.5773495435714722,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        -0.5773521661758423,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        -0.5773482918739319,
+        -0.5773531794548035
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.577353298664093,
+        -0.5773482918739319,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773531794548035,
+        -0.5773482918739319,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        -0.5773482918739319,
+        0.577353298664093
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        -0.5773521661758423,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773531794548035,
+        0.5773482918739319,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        0.5773482918739319,
+        -0.577353298664093
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        0.5773521661758423,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        0.5773521661758423,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.5773493647575378,
+        0.5773482918739319,
+        0.5773531794548035
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.577353298664093,
+        0.5773482918739319,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071068286895752,
+        0.0,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071073651313782,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071068286895752,
+        0.0,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.7071073651313782,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        0.7071061134338379,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071061730384827,
+        0.0,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071068286895752,
+        9.856090166238118e-09,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071074843406677,
+        0.0,
+        -0.7071061134338379
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071068286895752,
+        -9.856090166238118e-09,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071061730384827,
+        -0.0,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071068286895752,
+        -9.856090166238118e-09,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071074843406677,
+        0.0,
+        0.7071061134338379
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.7071068286895752,
+        9.856090166238118e-09,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071061134338379,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071061134338379,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -0.9999999403953552
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "left",
+      "uv_origin_pixels": [
+        24,
+        10
+      ],
+      "normal": [
+        -0.9999999403953552,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.0,
+        0.9999999403953552
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        1.0,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_left",
+      "region": "right",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773531794548035,
+        -0.5773482918739319,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        -0.5773482918739319,
+        -0.577353298664093
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        -0.5773521661758423,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.577353298664093,
+        -0.5773482918739319,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        -0.5773521661758423,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        -0.5773482918739319,
+        0.5773531794548035
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        0.5773521661758423,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        0.5773482918739319,
+        -0.5773531794548035
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.577353298664093,
+        0.5773482918739319,
+        -0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773531794548035,
+        0.5773482918739319,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        0.5773482918739319,
+        0.577353298664093
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.5773493647575378,
+        0.5773521661758423,
+        0.5773493647575378
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.5773506164550781,
+        -0.5773495435714722,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.5773506164550781,
+        -0.5773495435714722,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.5773506164550781,
+        0.5773495435714722,
+        -0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.5773506164550781,
+        0.5773495435714722,
+        0.5773506164550781
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071061730384827,
+        0.0,
+        -0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071068286895752,
+        -9.856090166238118e-09,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071074843406677,
+        -0.0,
+        -0.7071061134338379
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071068286895752,
+        9.856090166238118e-09,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        -0.7071061134338379,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071061730384827,
+        0.0,
+        0.707107424736023
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071068286895752,
+        9.856090166238118e-09,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071074843406677,
+        0.0,
+        0.7071061134338379
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.7071068286895752,
+        -9.856090166238118e-09,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -0.707107424736023,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.7071061134338379,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071073651313782,
+        0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071068286895752,
+        0.0,
+        -0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071068286895752,
+        0.0,
+        0.7071068286895752
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.7071073651313782,
+        -0.7071061134338379,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071061134338379,
+        -0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.7071061134338379,
+        0.7071073651313782
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        30,
+        20
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -0.9999999403953552
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -1.0,
+        -0.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "left",
+      "uv_origin_pixels": [
+        30,
+        54
+      ],
+      "normal": [
+        -1.0,
+        0.0,
+        -0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        1
+      ],
+      "normal": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        20
+      ],
+      "normal": [
+        0.0,
+        -0.0,
+        0.9999999403953552
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "back",
+      "uv_origin_pixels": [
+        30,
+        1
+      ],
+      "normal": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "object": "EPS_right",
+      "region": "right",
+      "uv_origin_pixels": [
+        1,
+        10
+      ],
+      "normal": [
+        0.9999999403953552,
+        -0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        0.0,
+        0.0,
+        -0.9999999403953552
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "top",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        -0.03480123355984688,
+        0.042711444199085236,
+        0.9984811544418335
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "back",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        0.6316637992858887,
+        0.7752424478530884,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "back",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        -0.3097073435783386,
+        0.950831949710846,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "left",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        -0.961540937423706,
+        0.2746616303920746,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        -0.15806062519550323,
+        -0.9874293804168701,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_0",
+      "region": "front",
+      "uv_origin_pixels": [
+        1,
+        43
+      ],
+      "normal": [
+        0.6316639184951782,
+        -0.7752423286437988,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        -1.6533229540982575e-07,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "top",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        3.099981142895558e-07,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "back",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        0.4586407542228699,
+        0.8886218070983887,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "back",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        -0.14827917516231537,
+        0.9889455437660217,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "left",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        -0.9999784827232361,
+        -0.006571250036358833,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        -0.45864054560661316,
+        -0.8886218667030334,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        0.14827920496463776,
+        -0.9889455437660217,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_1",
+      "region": "right",
+      "uv_origin_pixels": [
+        4,
+        45
+      ],
+      "normal": [
+        0.9999784231185913,
+        0.0065711443312466145,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        4.359483085636384e-08,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "top",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        -0.04613694176077843,
+        -0.02821338176727295,
+        0.9985366463661194
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "back",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        0.22382423281669617,
+        0.9746295213699341,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "left",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        -0.8866332173347473,
+        0.46247345209121704,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "front",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        -0.4522326588630676,
+        -0.8918999433517456,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "front",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        0.2081901729106903,
+        -0.9780883193016052,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_2",
+      "region": "right",
+      "uv_origin_pixels": [
+        7,
+        47
+      ],
+      "normal": [
+        0.8531299233436584,
+        0.5216984748840332,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        -7.148474878704292e-08,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "top",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        -0.04145028442144394,
+        -0.03217749297618866,
+        0.9986222982406616
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "back",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        -0.27649638056755066,
+        0.961014986038208,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "left",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        -0.9931167364120483,
+        -0.11712919920682907,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "front",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        -0.3963448107242584,
+        -0.9181016683578491,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "right",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        0.7518777251243591,
+        -0.6593025922775269,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_3",
+      "region": "right",
+      "uv_origin_pixels": [
+        10,
+        49
+      ],
+      "normal": [
+        0.7899203896522522,
+        0.6132093667984009,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        -9.036442349952267e-08,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "top",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        -0.03114410489797592,
+        -0.052050646394491196,
+        0.9981586933135986
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "back",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        -0.6202989220619202,
+        0.7843655347824097,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "left",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        -0.9720421433448792,
+        -0.23480643332004547,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "front",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        0.12452118843793869,
+        -0.9922168850898743,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "right",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        0.984390139579773,
+        -0.17599992454051971,
+        0.0
+      ]
+    },
+    {
+      "object": "ice_4",
+      "region": "back",
+      "uv_origin_pixels": [
+        13,
+        43
+      ],
+      "normal": [
+        0.513449490070343,
+        0.8581199049949646,
+        0.0
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        33.815502379536625,
+        43.602890595793724
+      ],
+      "normal": [
+        -0.3220137357711792,
+        0.8147748708724976,
+        0.48212969303131104
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        33.844605988338586,
+        43.482737738639116
+      ],
+      "normal": [
+        -0.2427051067352295,
+        0.2701532542705536,
+        0.9317249059677124
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        33.84460599020123,
+        43.482737727463245
+      ],
+      "normal": [
+        -0.2427051067352295,
+        -0.2701532542705536,
+        0.9317249059677124
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        33.815502375811334,
+        43.60289058089256
+      ],
+      "normal": [
+        -0.3220137357711792,
+        -0.8147748708724976,
+        0.48212969303131104
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        33.815502491295334,
+        50.602890610694885
+      ],
+      "normal": [
+        -0.3220137655735016,
+        -0.8147748708724976,
+        -0.48212987184524536
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        33.84460588216781,
+        50.482737738639116
+      ],
+      "normal": [
+        -0.242705300450325,
+        -0.2701532542705536,
+        -0.9317249059677124
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        33.84460588123649,
+        50.482737723737955
+      ],
+      "normal": [
+        -0.242705300450325,
+        0.2701532542705536,
+        -0.9317249059677124
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        33.81550248198211,
+        50.60289058834314
+      ],
+      "normal": [
+        -0.3220137655735016,
+        0.8147748708724976,
+        -0.48212987184524536
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        36.08251812726259,
+        43.33377303242683
+      ],
+      "normal": [
+        -0.17839202284812927,
+        0.8140973448753357,
+        0.5526498556137085
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        36.10898759633302,
+        43.14007994160056
+      ],
+      "normal": [
+        -0.09593528509140015,
+        0.243905171751976,
+        0.9650423526763916
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        36.108987596420334,
+        43.14007991203107
+      ],
+      "normal": [
+        -0.09593528509140015,
+        -0.243905171751976,
+        0.9650423526763916
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        36.08251813098788,
+        43.33377303242683
+      ],
+      "normal": [
+        -0.17839202284812927,
+        -0.8140973448753357,
+        0.5526498556137085
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        36.08251813471317,
+        50.33377299517393
+      ],
+      "normal": [
+        -0.17839200794696808,
+        -0.8140973448753357,
+        -0.5526499152183533
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        36.108987607508894,
+        50.14007989689708
+      ],
+      "normal": [
+        -0.09593527019023895,
+        -0.24390526115894318,
+        -0.9650423526763916
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        36.10898760742158,
+        50.140079867444
+      ],
+      "normal": [
+        -0.09593527019023895,
+        0.24390526115894318,
+        -0.9650423526763916
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        36.08251813471317,
+        50.33377300262451
+      ],
+      "normal": [
+        -0.17839200794696808,
+        0.8140973448753357,
+        -0.5526499152183533
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        40.27953499082243,
+        43.403416546881196
+      ],
+      "normal": [
+        0.01764714904129505,
+        0.8085613250732422,
+        0.5881471037864685
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        40.27981724273879,
+        43.13996081054211
+      ],
+      "normal": [
+        0.01103364210575819,
+        0.22955793142318726,
+        0.9732324481010437
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        40.2798172428552,
+        43.13996081054211
+      ],
+      "normal": [
+        0.01103364210575819,
+        -0.22955793142318726,
+        0.9732324481010437
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        40.279534990880634,
+        43.40341653756797
+      ],
+      "normal": [
+        0.01764714904129505,
+        -0.8085613250732422,
+        0.5881471037864685
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        40.2795349914045,
+        50.40341660648584
+      ],
+      "normal": [
+        0.017647137865424156,
+        -0.8085613250732422,
+        -0.5881471633911133
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        40.279817244019355,
+        50.139960784465075
+      ],
+      "normal": [
+        0.01103364210575819,
+        -0.22955793142318726,
+        -0.9732324481010437
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        40.279817244019355,
+        50.139960784465075
+      ],
+      "normal": [
+        0.01103364210575819,
+        0.22955793142318726,
+        -0.9732324481010437
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        40.279534991346296,
+        50.40341658785939
+      ],
+      "normal": [
+        0.017647137865424156,
+        0.8085613250732422,
+        -0.5881471633911133
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        46.02610556453466,
+        43.37750067710876
+      ],
+      "normal": [
+        0.12019254267215729,
+        0.8225262761116028,
+        0.5558815002441406
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        46.03761354808695,
+        43.18626522272825
+      ],
+      "normal": [
+        0.046960145235061646,
+        0.24579553306102753,
+        0.9681833982467651
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        46.037613548785444,
+        43.18626522272825
+      ],
+      "normal": [
+        0.046960145235061646,
+        -0.24579553306102753,
+        0.9681833982467651
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        46.026105565931644,
+        43.37750067338347
+      ],
+      "normal": [
+        0.12019254267215729,
+        -0.8225262761116028,
+        0.5558815002441406
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        46.026105562672015,
+        50.377500772476196
+      ],
+      "normal": [
+        0.12019255757331848,
+        -0.822526216506958,
+        -0.5558815598487854
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        46.03761354273185,
+        50.186265252530575
+      ],
+      "normal": [
+        0.046960145235061646,
+        -0.24579553306102753,
+        -0.9681833982467651
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        46.03761354319751,
+        50.186265252530575
+      ],
+      "normal": [
+        0.046960145235061646,
+        0.24579553306102753,
+        -0.9681833982467651
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        46.026105562672015,
+        50.37750077992678
+      ],
+      "normal": [
+        0.12019255757331848,
+        0.822526216506958,
+        -0.5558815598487854
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        49.134378884434696,
+        43.50928375124931
+      ],
+      "normal": [
+        0.3691100776195526,
+        0.8117254972457886,
+        0.4526142179965973
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        49.19503691837191,
+        43.36646208912134
+      ],
+      "normal": [
+        0.2455826848745346,
+        0.2850874364376068,
+        0.926506519317627
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "top",
+      "uv_origin_pixels": [
+        49.19503692023456,
+        43.36646208912134
+      ],
+      "normal": [
+        0.2455826848745346,
+        -0.2850874364376068,
+        0.926506519317627
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        49.13437889933586,
+        43.50928374379873
+      ],
+      "normal": [
+        0.3691100776195526,
+        -0.8117254972457886,
+        0.4526142179965973
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "front",
+      "uv_origin_pixels": [
+        49.1343789589405,
+        50.509283661842346
+      ],
+      "normal": [
+        0.3691100478172302,
+        -0.8117254376411438,
+        -0.45261427760124207
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        49.19503692582249,
+        50.3664620295167
+      ],
+      "normal": [
+        0.2455826848745346,
+        -0.28508758544921875,
+        -0.926506519317627
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        49.19503692861646,
+        50.3664620295167
+      ],
+      "normal": [
+        0.2455826848745346,
+        0.28508758544921875,
+        -0.926506519317627
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "back",
+      "uv_origin_pixels": [
+        49.13437897384166,
+        50.509283639490604
+      ],
+      "normal": [
+        0.3691100478172302,
+        0.8117254376411438,
+        -0.45261427760124207
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "left",
+      "uv_origin_pixels": [
+        33.36799963235855,
+        47.615999937057495
+      ],
+      "normal": [
+        -1.0,
+        4.2874006567217293e-07,
+        0.0
+      ]
+    },
+    {
+      "object": "fish_body",
+      "region": "right",
+      "uv_origin_pixels": [
+        51.28799970865249,
+        47.48799991607666
+      ],
+      "normal": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        -0.34780141711235046,
+        0.13722772896289825,
+        -0.9274711012840271
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        -0.34780147671699524,
+        -0.13722774386405945,
+        -0.9274711608886719
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "top",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        0.45997166633605957,
+        -0.2112113982439041,
+        0.8624475598335266
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "top",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        0.4599716365337372,
+        0.2112114429473877,
+        0.8624475598335266
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "back",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        -0.6546581983566284,
+        0.6813792586326599,
+        0.3273303210735321
+      ]
+    },
+    {
+      "object": "fish_tail",
+      "region": "front",
+      "uv_origin_pixels": [
+        58,
+        43
+      ],
+      "normal": [
+        -0.6546580791473389,
+        -0.6813790798187256,
+        0.3273305892944336
+      ]
+    },
+    {
+      "object": "fish_fin",
+      "region": "top",
+      "uv_origin_pixels": [
+        39,
+        59
+      ],
+      "normal": [
+        0.01758095622062683,
+        0.13440898060798645,
+        0.9907699823379517
+      ]
+    },
+    {
+      "object": "fish_fin",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        39,
+        59
+      ],
+      "normal": [
+        -0.36563584208488464,
+        -0.6581446528434753,
+        -0.6581458449363708
+      ]
+    },
+    {
+      "object": "fish_fin",
+      "region": "right",
+      "uv_origin_pixels": [
+        39,
+        59
+      ],
+      "normal": [
+        0.6502776741981506,
+        -0.5371860861778259,
+        -0.5371870994567871
+      ]
+    },
+    {
+      "object": "fish_fin",
+      "region": "bottom",
+      "uv_origin_pixels": [
+        39,
+        59
+      ],
+      "normal": [
+        -0.01663702353835106,
+        -0.06716427952051163,
+        -0.9976032376289368
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.08299659937620163,
+        -0.9959566593170166,
+        -0.03437838330864906
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.03437838330864906,
+        -0.9959566593170166,
+        -0.08299659937620163
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.03437832370400429,
+        -0.9959566593170166,
+        -0.08299659192562103
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.08299650251865387,
+        -0.9959566593170166,
+        -0.03437834233045578
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.08299649506807327,
+        -0.9959566593170166,
+        0.034378282725811005
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.034378279000520706,
+        -0.9959566593170166,
+        0.08299648761749268
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.03437834233045578,
+        -0.9959566593170166,
+        0.08299649506807327
+      ]
+    },
+    {
+      "object": "eye_ring_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.08299659192562103,
+        -0.9959566593170166,
+        0.03437832370400429
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.24132134020328522,
+        -0.9652835726737976,
+        -0.09995804727077484
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.09995850920677185,
+        -0.9652836322784424,
+        -0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.09995824098587036,
+        -0.9652836322784424,
+        -0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.2413209229707718,
+        -0.9652836918830872,
+        -0.09995787590742111
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.2413209229707718,
+        -0.9652836918830872,
+        0.09995787590742111
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.09995826333761215,
+        -0.9652836918830872,
+        0.24132095277309418
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.09995850920677185,
+        -0.9652836322784424,
+        0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.24132134020328522,
+        -0.9652835726737976,
+        0.09995804727077484
+      ]
+    },
+    {
+      "object": "gill_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.24148721992969513,
+        -0.9659488797187805,
+        0.0928797721862793
+      ]
+    },
+    {
+      "object": "gill_-1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.24148721992969513,
+        -0.9659488797187805,
+        0.0928797721862793
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.08299659937620163,
+        -0.9959566593170166,
+        0.03437838330864906
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.03437838330864906,
+        -0.9959566593170166,
+        0.08299659937620163
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.03437832370400429,
+        -0.9959566593170166,
+        0.08299659192562103
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.08299650251865387,
+        -0.9959566593170166,
+        0.03437834233045578
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.08299649506807327,
+        -0.9959566593170166,
+        -0.034378282725811005
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        -0.034378279000520706,
+        -0.9959566593170166,
+        -0.08299648761749268
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.03437834233045578,
+        -0.9959566593170166,
+        -0.08299649506807327
+      ]
+    },
+    {
+      "object": "eye_ring_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        60
+      ],
+      "normal": [
+        0.08299659192562103,
+        -0.9959566593170166,
+        -0.03437832370400429
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.24132134020328522,
+        -0.9652835726737976,
+        0.09995804727077484
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.09995850920677185,
+        -0.9652836322784424,
+        0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.09995824098587036,
+        -0.9652836322784424,
+        0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.2413209229707718,
+        -0.9652836918830872,
+        0.09995787590742111
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.2413209229707718,
+        -0.9652836918830872,
+        -0.09995787590742111
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        -0.09995826333761215,
+        -0.9652836918830872,
+        -0.24132095277309418
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.09995850920677185,
+        -0.9652836322784424,
+        -0.2413209080696106
+      ]
+    },
+    {
+      "object": "eye_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.24132134020328522,
+        -0.9652835726737976,
+        -0.09995804727077484
+      ]
+    },
+    {
+      "object": "gill_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.24148721992969513,
+        -0.9659488797187805,
+        -0.0928797721862793
+      ]
+    },
+    {
+      "object": "gill_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        30,
+        60
+      ],
+      "normal": [
+        0.24148721992969513,
+        -0.9659488797187805,
+        -0.0928797721862793
+      ]
+    },
+    {
+      "object": "liner_fold_0",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        59
+      ],
+      "normal": [
+        0.035079989582300186,
+        -0.846513032913208,
+        -0.5312110185623169
+      ]
+    },
+    {
+      "object": "liner_fold_0",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        59
+      ],
+      "normal": [
+        -0.04133604094386101,
+        -0.950185239315033,
+        -0.30893269181251526
+      ]
+    },
+    {
+      "object": "liner_fold_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        59
+      ],
+      "normal": [
+        0.03244437277317047,
+        -0.8454838395118713,
+        -0.5330144762992859
+      ]
+    },
+    {
+      "object": "liner_fold_1",
+      "region": "front",
+      "uv_origin_pixels": [
+        48,
+        59
+      ],
+      "normal": [
+        -0.03693729639053345,
+        -0.9496753811836243,
+        -0.31105032563209534
+      ]
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "pass": true,
+  "test_count": 20,
+  "tests": [
+    {
+      "name": "Baseline: four 64 px / one metre neutral unlit proof quads",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    },
+    {
+      "name": "Whole 2 m repeat unit / 128 px has actual 64 px/m",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    },
+    {
+      "name": "Whole 4 m repeat unit / 256 px has actual 64 px/m",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    },
+    {
+      "name": "Non-square 1 x 2 m unit / 64 x 128 px preserves both density axes",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    },
+    {
+      "name": "Larger repeat unit with too few pixels rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "pixel_dimensions_match_metric_density",
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Metric declaration cannot hide undersized exported geometry",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "pixel_dimensions_match_metric_density",
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Non-power-of-two texture rejected even when density is exactly 64",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "texture_power_of_two"
+      ]
+    },
+    {
+      "name": "Outside-palette RGB rejected even with current hashes and matching embedded image",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "albedo_palette_outside_zero"
+      ]
+    },
+    {
+      "name": "Half-scale UV rejected from decoded geometry despite manifest declaring 64 px/m",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Source hash mismatch rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "source_hash_matches_file"
+      ]
+    },
+    {
+      "name": "Missing albedo provenance rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "albedo_provenance_current_non_ai"
+      ]
+    },
+    {
+      "name": "Missing proof model provenance rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "model_provenance_current_non_ai"
+      ]
+    },
+    {
+      "name": "Tinted material rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Linear magnification rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Extra normal texture rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "exported_quad_checks"
+      ]
+    },
+    {
+      "name": "Procedural-only source does not meet photography contract",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "photographic_method_declared"
+      ]
+    },
+    {
+      "name": "Third-party download host rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "approved_direct_download_site"
+      ]
+    },
+    {
+      "name": "Explicit non-AI string declaration supported",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    },
+    {
+      "name": "Positive AI declaration rejected",
+      "pass": true,
+      "actual_asset_pass": false,
+      "failed_checks": [
+        "no_positive_ai_declaration"
+      ]
+    },
+    {
+      "name": "Monochrome 8x8 diagnostic does not force synthetic noise into quiet fields",
+      "pass": true,
+      "actual_asset_pass": true,
+      "failed_checks": []
+    }
+  ],
+  "scope": "Synthetic temporary fixtures only; no downloads, production edits or real source license claims."
+}

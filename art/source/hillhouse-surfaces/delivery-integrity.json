@@ -1,0 +1,116 @@
+{
+  "pass": true,
+  "round": 2,
+  "rows": 9,
+  "files": [
+    {
+      "asset_id": "hill_surface_wall_repaint_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_wood_handworn_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_roof_repair_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_paver_worn_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_layered_sign_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_asphalt_patch_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_foundation_repair_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hill_surface_faded_cloth_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        64,
+        64
+      ],
+      "power_of_two": true
+    },
+    {
+      "asset_id": "hillhouse_surface_extension_atlas_v01",
+      "hash_match": true,
+      "outside_palette": 0,
+      "size": [
+        512,
+        512
+      ],
+      "power_of_two": true
+    }
+  ],
+  "atlas_sha256": "88b7c1fe7ecb1d12f40a9120993af8ca06908e2d4799d45e6bc5740acdeab575",
+  "roof_three_exact_colors": [
+    [
+      121,
+      82,
+      68
+    ],
+    [
+      136,
+      121,
+      99
+    ],
+    [
+      138,
+      70,
+      49
+    ]
+  ],
+  "wall_upper_34px_clean_cream": true
+}

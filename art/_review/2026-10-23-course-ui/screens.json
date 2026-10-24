@@ -1,0 +1,257 @@
+[
+  {
+    "id": "outbound",
+    "title": "갈 때 · 일반",
+    "path": "hud/outbound.png",
+    "zoom": "hud/outbound@2x.png",
+    "overlay": "hud/outbound-ui.png",
+    "groups": [
+      [
+        24,
+        24,
+        254,
+        58
+      ],
+      [
+        808,
+        24,
+        108,
+        66
+      ],
+      [
+        24,
+        466,
+        136,
+        58
+      ],
+      [
+        810,
+        494,
+        104,
+        24
+      ]
+    ],
+    "envelope_percent": 6.22,
+    "ink_percent": 1.8,
+    "note": "illustrative numbers; straight-line distance, not route remaining length; central60%x60% clear; choice hint replaces second line at fork approach45m, no additional panel",
+    "sha256": "1833ba3b309f4dd400712f2a768b47ffd5fedfb2923604f9b94955970f411b21"
+  },
+  {
+    "id": "outbound-urgent",
+    "title": "갈 때 · 마감·손상 경고",
+    "path": "hud/outbound-urgent.png",
+    "zoom": "hud/outbound-urgent@2x.png",
+    "overlay": "hud/outbound-urgent-ui.png",
+    "groups": [
+      [
+        24,
+        24,
+        254,
+        58
+      ],
+      [
+        808,
+        24,
+        108,
+        66
+      ],
+      [
+        24,
+        466,
+        136,
+        58
+      ],
+      [
+        810,
+        494,
+        104,
+        24
+      ],
+      [
+        796,
+        24,
+        4,
+        60
+      ]
+    ],
+    "envelope_percent": 6.27,
+    "ink_percent": 2.11,
+    "note": "illustrative numbers; straight-line distance, not route remaining length; central60%x60% clear; choice hint replaces second line at fork approach45m, no additional panel",
+    "sha256": "abf277317ff881a146c20085cd0f87837d6173143c894ba1ab15337e4b320077"
+  },
+  {
+    "id": "outbound-choice",
+    "title": "갈 때 · 갈림길 접근 안내",
+    "path": "hud/outbound-choice.png",
+    "zoom": "hud/outbound-choice@2x.png",
+    "overlay": "hud/outbound-choice-ui.png",
+    "groups": [
+      [
+        24,
+        24,
+        298,
+        58
+      ],
+      [
+        808,
+        24,
+        108,
+        66
+      ],
+      [
+        24,
+        466,
+        136,
+        58
+      ],
+      [
+        810,
+        494,
+        104,
+        24
+      ]
+    ],
+    "envelope_percent": 6.71,
+    "ink_percent": 1.98,
+    "note": "illustrative numbers; straight-line distance, not route remaining length; central60%x60% clear; choice hint replaces second line at fork approach45m, no additional panel",
+    "sha256": "e28e083dd28def06cfdc8f456ea4b80507e6f7e142831c3864c2ad270da32389"
+  },
+  {
+    "id": "return-entry",
+    "title": "귀로 · 진입 4초",
+    "path": "hud/return-entry.png",
+    "zoom": "hud/return-entry@2x.png",
+    "overlay": "hud/return-entry-ui.png",
+    "groups": [
+      [
+        24,
+        492,
+        132,
+        24
+      ]
+    ],
+    "envelope_percent": 0.61,
+    "ink_percent": 0.31,
+    "note": "existing outward overlook capture as visual proxy; actual return drive not captured; direction illustrative",
+    "sha256": "b78b857ef156957872067cc765e23f13636abab93d7bb47f43b8d86105292ddb"
+  },
+  {
+    "id": "return-quiet",
+    "title": "귀로 · 기본 0%",
+    "path": "hud/return-quiet.png",
+    "zoom": "hud/return-quiet@2x.png",
+    "overlay": "hud/return-quiet-ui.png",
+    "groups": [],
+    "envelope_percent": 0.0,
+    "ink_percent": 0.0,
+    "note": "existing outward overlook capture as visual proxy; actual return drive not captured; direction illustrative",
+    "sha256": "6099361bd450ec38ffcaec3e0d1779fb59119e4787d63ab443b9d2a85246815b"
+  },
+  {
+    "id": "return-guide",
+    "title": "귀로 · 안내 요청",
+    "path": "hud/return-guide.png",
+    "zoom": "hud/return-guide@2x.png",
+    "overlay": "hud/return-guide-ui.png",
+    "groups": [
+      [
+        24,
+        24,
+        104,
+        58
+      ]
+    ],
+    "envelope_percent": 1.16,
+    "ink_percent": 0.35,
+    "note": "existing outward overlook capture as visual proxy; actual return drive not captured; direction illustrative",
+    "sha256": "7b1ead5906c47441d47cb874dbdc318ca3da36e40c95c488ecbb7be265820d61"
+  },
+  {
+    "id": "packing-time",
+    "title": "포장 · 공용 남은 시간",
+    "path": "hud/packing-time.png",
+    "zoom": "hud/packing-time@2x.png",
+    "overlay": "hud/packing-time-ui.png",
+    "groups": [
+      [
+        24,
+        20,
+        912,
+        500
+      ]
+    ],
+    "envelope_percent": 87.96,
+    "ink_percent": 81.28,
+    "note": "existing packing has a time-left label already; this art proposal unifies the duplicated clock; numbers illustrative",
+    "sha256": "928ee7920df33117b6fe295b5d3f1a8c2c6f495452d211f04569ce3b0f4c2c03"
+  },
+  {
+    "id": "a-slip",
+    "title": "A / 인수 도장",
+    "path": "arrival/a-slip.png",
+    "zoom": "arrival/a-slip@2x.png",
+    "overlay": "arrival/a-slip-ui.png",
+    "groups": [
+      [
+        24,
+        24,
+        520,
+        140
+      ]
+    ],
+    "envelope_percent": 14.04,
+    "ink_percent": 14.04,
+    "note": "0.12s clock lock -> 0.16s stamp contact -> hold1.6s -> receipt. One paper tap + customer acknowledgement. No fullscreen flash/shake or new reward.",
+    "sha256": "7ccad08074472bb3d194a246855f76f23697a8caac1ed06cf186afc4adb12e55"
+  },
+  {
+    "id": "b-customer",
+    "title": "B / 손님의 인정",
+    "path": "arrival/b-customer.png",
+    "zoom": "arrival/b-customer@2x.png",
+    "overlay": "arrival/b-customer-ui.png",
+    "groups": [
+      [
+        632,
+        24,
+        304,
+        188
+      ],
+      [
+        24,
+        442,
+        644,
+        74
+      ]
+    ],
+    "envelope_percent": 20.22,
+    "ink_percent": 20.21,
+    "note": "0.12s clock lock -> customer subtitle/voice0.2-2.2s -> small receipt. Human acknowledgement is the peak; voice not produced. Keep house/horizon uncovered.",
+    "sha256": "4b67a539271909e596aafe00704c3c40ab2f583d210e80cce0aa0de833f3058b"
+  },
+  {
+    "id": "c-release",
+    "title": "C / 긴장 풀기",
+    "path": "arrival/c-release.png",
+    "zoom": "arrival/c-release@2x.png",
+    "overlay": "arrival/c-release-ui.png",
+    "groups": [
+      [
+        708,
+        24,
+        228,
+        112
+      ],
+      [
+        242,
+        442,
+        476,
+        74
+      ]
+    ],
+    "envelope_percent": 11.72,
+    "ink_percent": 11.71,
+    "note": "clock freezes in same corner -> converts to paper stub0.18s -> hold1.2s -> collapse receipt. Wind rises after clock vanishes. No score burst. Sound/timing proposal only.",
+    "sha256": "0e677548084f216915c74a3c258945e6c73baf01c2c96ac88da7252bb5ca79bb"
+  }
+]

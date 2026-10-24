@@ -1,0 +1,1328 @@
+{
+  "units": "meters",
+  "coordinate_note": "Blender source = X width, Y depth, Z up; nose -Y. Unity prefab = +Z front, +Y up; Unity X = negative Blender X in the existing FBX/prefab conversion.",
+  "source_files": {
+    "F1/Assets/Art/CoastalFormula/CoastalFormula.fbx": "34d0755abb1e1e467efad7fb4830890cb30cdd5f1c4ba0b95a8ac7c0770d4c9b",
+    "art/source/coastal-formula/CoastalFormula.glb": "ed6da6a280b5bcf6d0700b7de7f56beebcec26e3f059d5e7fa0179363ee563df",
+    "F1/Assets/Scenes/Proto_CoastCourse.unity": "6745bcfdd5125f080d6dcc6999fb5e74dd955d8a92eefe62a8a04752f3dd058c",
+    "F1/Assets/Art/CoastalFormula/FormulaGameplayVisual.prefab": "de93aa9149640343aecf5c1dbd086c7b5bab3c91b91a4b5d46461e930d160c65",
+    "F1/Assets/Prefabs/Race.prefab": "337056a1bf7d43e7cd8cddaaf86dcb24804b0ff9800f1a390c3f0ddd6208c044"
+  },
+  "source_trace": {
+    "scene": "F1/Assets/Scenes/Proto_CoastCourse.unity",
+    "visual_prefab": "F1/Assets/Art/CoastalFormula/FormulaGameplayVisual.prefab",
+    "visual_prefab_guid": "ee48b362edabaa245b556832a047788e",
+    "mesh_fbx": "F1/Assets/Art/CoastalFormula/CoastalFormula.fbx",
+    "mesh_fbx_guid": "c098ca4be9a433845a9dfe6306945ea0",
+    "physics_parent": "F1/Assets/Prefabs/Race.prefab",
+    "physics_parent_guid": "356a5e3b096c28641af798c7539095f8"
+  },
+  "scene_transform": {
+    "visual_local_scale": [
+      1.4285712,
+      1.4285712,
+      1.4285712
+    ],
+    "visual_local_position_unity": [
+      0.0,
+      0.1285497,
+      -0.19642855
+    ],
+    "race_inherited_scale": [
+      0.7,
+      0.7,
+      0.7
+    ],
+    "combined_world_scale": [
+      0.9999998399999999,
+      0.9999998399999999,
+      0.9999998399999999
+    ],
+    "race_saved_position_unity": [
+      1.2,
+      8.275001,
+      5.0
+    ],
+    "visual_origin_offset_from_race_world_axes_unity": [
+      0.0,
+      0.08998478999999998,
+      -0.137499985
+    ],
+    "visual_saved_world_origin_unity": [
+      1.2,
+      8.36498579,
+      4.862500015
+    ],
+    "runtime_note": "Saved scene only: runtime physics position, restoration state and render result not inspected."
+  },
+  "unity_prefab_transforms": {
+    "delivery_bag": {
+      "file_id": 6852557946155926092,
+      "position_unity": {
+        "x": 0.0,
+        "y": -0.69,
+        "z": 0.92
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 4399203528526041816
+    },
+    "FormulaGameplayVisual": {
+      "file_id": 2749762494709477545,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 0
+    },
+    "wheel_rear_left": {
+      "file_id": 4674340887149820664,
+      "position_unity": {
+        "x": -0.79,
+        "y": 0.375,
+        "z": -1.1
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 2749762494709477545
+    },
+    "driver": {
+      "file_id": 6674141768703789771,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    },
+    "ChassisLean": {
+      "file_id": 3729621701486333651,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 2749762494709477545
+    },
+    "engine": {
+      "file_id": 8741593791897330596,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    },
+    "suspension": {
+      "file_id": 3777118044098677416,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    },
+    "wheel_front_left": {
+      "file_id": 8618741907568320293,
+      "position_unity": {
+        "x": -0.79,
+        "y": 0.35,
+        "z": 1.2
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 2749762494709477545
+    },
+    "CargoMount": {
+      "file_id": 4399203528526041816,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.69,
+        "z": -0.92
+      },
+      "rotation_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    },
+    "wheel_front_right": {
+      "file_id": 6584749523525869473,
+      "position_unity": {
+        "x": 0.79,
+        "y": 0.35,
+        "z": 1.2
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 2749762494709477545
+    },
+    "body": {
+      "file_id": 7926345930632103592,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    },
+    "wheel_rear_right": {
+      "file_id": 630191355344298247,
+      "position_unity": {
+        "x": 0.79,
+        "y": 0.375,
+        "z": -1.1
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 2749762494709477545
+    },
+    "aero": {
+      "file_id": 8639589227829980249,
+      "position_unity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation_unity": {
+        "x": -0.0,
+        "y": -0.0,
+        "z": -0.0,
+        "w": 1.0
+      },
+      "scale_unity": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "parent_file_id": 3729621701486333651
+    }
+  },
+  "fbx_import_measurement": {
+    "objects": {
+      "aero": {
+        "tris": 384,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.892499983,
+            -1.980000019,
+            0.105000108
+          ],
+          "max": [
+            0.892499983,
+            1.754999995,
+            0.942499876
+          ],
+          "dimensions": [
+            1.784999967,
+            3.735000014,
+            0.837499768
+          ],
+          "center": [
+            0.0,
+            -0.112500012,
+            0.523749992
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "body": {
+        "tris": 944,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.685499966,
+            -2.029999971,
+            0.149999902
+          ],
+          "max": [
+            0.683000028,
+            1.624500036,
+            1.002000093
+          ],
+          "dimensions": [
+            1.368499994,
+            3.654500008,
+            0.852000192
+          ],
+          "center": [
+            -0.001249969,
+            -0.202749968,
+            0.575999998
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "delivery_bag": {
+        "tris": 300,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.360000014,
+            0.600000083,
+            0.69599998
+          ],
+          "max": [
+            0.360000014,
+            1.261000156,
+            1.036799908
+          ],
+          "dimensions": [
+            0.720000029,
+            0.661000073,
+            0.340799928
+          ],
+          "center": [
+            0.0,
+            0.93050012,
+            0.866399944
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "driver": {
+        "tris": 408,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.218547836,
+            -0.306269199,
+            0.526897252
+          ],
+          "max": [
+            0.218547836,
+            0.255000055,
+            1.072000027
+          ],
+          "dimensions": [
+            0.437095672,
+            0.561269253,
+            0.545102775
+          ],
+          "center": [
+            0.0,
+            -0.025634572,
+            0.799448639
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "engine": {
+        "tris": 164,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.25999999,
+            0.390000015,
+            0.274999857
+          ],
+          "max": [
+            0.25999999,
+            1.64199996,
+            0.660000026
+          ],
+          "dimensions": [
+            0.519999981,
+            1.251999944,
+            0.385000169
+          ],
+          "center": [
+            0.0,
+            1.015999988,
+            0.467499942
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "suspension": {
+        "tris": 320,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.797513962,
+            -1.445667982,
+            0.271129489
+          ],
+          "max": [
+            0.797513962,
+            1.345667839,
+            0.45883131
+          ],
+          "dimensions": [
+            1.595027924,
+            2.791335821,
+            0.187701821
+          ],
+          "center": [
+            0.0,
+            -0.050000072,
+            0.3649804
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_front_left": {
+        "tris": 588,
+        "world_origin_blender": [
+          0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_position": [
+          0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            0.630545497,
+            -1.549999952,
+            0.0
+          ],
+          "max": [
+            0.949454546,
+            -0.850000024,
+            0.699999988
+          ],
+          "dimensions": [
+            0.318909049,
+            0.699999928,
+            0.699999988
+          ],
+          "center": [
+            0.790000021,
+            -1.199999988,
+            0.349999994
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_front_right": {
+        "tris": 588,
+        "world_origin_blender": [
+          -0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_position": [
+          -0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.949454546,
+            -1.549999952,
+            0.0
+          ],
+          "max": [
+            -0.630545497,
+            -0.850000024,
+            0.699999988
+          ],
+          "dimensions": [
+            0.318909049,
+            0.699999928,
+            0.699999988
+          ],
+          "center": [
+            -0.790000021,
+            -1.199999988,
+            0.349999994
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_rear_left": {
+        "tris": 588,
+        "world_origin_blender": [
+          0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_position": [
+          0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            0.600545466,
+            0.725000024,
+            0.0
+          ],
+          "max": [
+            0.979454517,
+            1.475000024,
+            0.75
+          ],
+          "dimensions": [
+            0.378909051,
+            0.75,
+            0.75
+          ],
+          "center": [
+            0.789999992,
+            1.100000024,
+            0.375
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_rear_right": {
+        "tris": 588,
+        "world_origin_blender": [
+          -0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_position": [
+          -0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          1.570796251,
+          -0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.979454517,
+            0.725000024,
+            0.0
+          ],
+          "max": [
+            -0.600545466,
+            1.475000024,
+            0.75
+          ],
+          "dimensions": [
+            0.378909051,
+            0.75,
+            0.75
+          ],
+          "center": [
+            -0.789999992,
+            1.100000024,
+            0.375
+          ]
+        },
+        "uv_layer_count": 1
+      }
+    },
+    "total_tris": 4872,
+    "bounds_blender": {
+      "min": [
+        -0.979454517,
+        -2.029999971,
+        0.0
+      ],
+      "max": [
+        0.979454517,
+        1.754999995,
+        1.072000027
+      ],
+      "dimensions": [
+        1.958909035,
+        3.784999967,
+        1.072000027
+      ],
+      "center": [
+        0.0,
+        -0.137499988,
+        0.536000013
+      ]
+    }
+  },
+  "glb_import_measurement": {
+    "objects": {
+      "aero": {
+        "tris": 384,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.892499983,
+            -1.980000019,
+            0.104999997
+          ],
+          "max": [
+            0.892499983,
+            1.754999876,
+            0.942499995
+          ],
+          "dimensions": [
+            1.784999967,
+            3.734999895,
+            0.837499999
+          ],
+          "center": [
+            0.0,
+            -0.112500072,
+            0.523749996
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "body": {
+        "tris": 944,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.685499966,
+            -2.029999971,
+            0.150000006
+          ],
+          "max": [
+            0.683000028,
+            1.624500036,
+            1.002000093
+          ],
+          "dimensions": [
+            1.368499994,
+            3.654500008,
+            0.852000087
+          ],
+          "center": [
+            -0.001249969,
+            -0.202749968,
+            0.57600005
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "delivery_bag": {
+        "tris": 300,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.360000014,
+            0.600000024,
+            0.69600004
+          ],
+          "max": [
+            0.360000014,
+            1.261000037,
+            1.036800027
+          ],
+          "dimensions": [
+            0.720000029,
+            0.661000013,
+            0.340799987
+          ],
+          "center": [
+            0.0,
+            0.930500031,
+            0.866400033
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "driver": {
+        "tris": 408,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.218547836,
+            -0.306269228,
+            0.526897252
+          ],
+          "max": [
+            0.218547836,
+            0.254999995,
+            1.072000027
+          ],
+          "dimensions": [
+            0.437095672,
+            0.561269224,
+            0.545102775
+          ],
+          "center": [
+            0.0,
+            -0.025634617,
+            0.799448639
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "engine": {
+        "tris": 164,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.25999999,
+            0.389999986,
+            0.274999976
+          ],
+          "max": [
+            0.25999999,
+            1.64199996,
+            0.660000026
+          ],
+          "dimensions": [
+            0.519999981,
+            1.251999974,
+            0.38500005
+          ],
+          "center": [
+            0.0,
+            1.015999973,
+            0.467500001
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "suspension": {
+        "tris": 320,
+        "world_origin_blender": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.797513962,
+            -1.445667982,
+            0.271129549
+          ],
+          "max": [
+            0.797513962,
+            1.345667839,
+            0.458831251
+          ],
+          "dimensions": [
+            1.595027924,
+            2.791335821,
+            0.187701702
+          ],
+          "center": [
+            0.0,
+            -0.050000072,
+            0.3649804
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_front_left": {
+        "tris": 588,
+        "world_origin_blender": [
+          0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_position": [
+          0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            0.630545497,
+            -1.549999952,
+            0.0
+          ],
+          "max": [
+            0.949454546,
+            -0.850000024,
+            0.699999988
+          ],
+          "dimensions": [
+            0.318909049,
+            0.699999928,
+            0.699999988
+          ],
+          "center": [
+            0.790000021,
+            -1.199999988,
+            0.349999994
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_front_right": {
+        "tris": 588,
+        "world_origin_blender": [
+          -0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_position": [
+          -0.790000021,
+          -1.200000048,
+          0.349999994
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.949454546,
+            -1.549999952,
+            0.0
+          ],
+          "max": [
+            -0.630545497,
+            -0.850000024,
+            0.699999988
+          ],
+          "dimensions": [
+            0.318909049,
+            0.699999928,
+            0.699999988
+          ],
+          "center": [
+            -0.790000021,
+            -1.199999988,
+            0.349999994
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_rear_left": {
+        "tris": 588,
+        "world_origin_blender": [
+          0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_position": [
+          0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            0.600545466,
+            0.725000024,
+            0.0
+          ],
+          "max": [
+            0.979454517,
+            1.475000024,
+            0.75
+          ],
+          "dimensions": [
+            0.378909051,
+            0.75,
+            0.75
+          ],
+          "center": [
+            0.789999992,
+            1.100000024,
+            0.375
+          ]
+        },
+        "uv_layer_count": 1
+      },
+      "wheel_rear_right": {
+        "tris": 588,
+        "world_origin_blender": [
+          -0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_position": [
+          -0.790000021,
+          1.100000024,
+          0.375
+        ],
+        "local_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "local_rotation_euler": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bounds_blender": {
+          "min": [
+            -0.979454517,
+            0.725000024,
+            0.0
+          ],
+          "max": [
+            -0.600545466,
+            1.475000024,
+            0.75
+          ],
+          "dimensions": [
+            0.378909051,
+            0.75,
+            0.75
+          ],
+          "center": [
+            -0.789999992,
+            1.100000024,
+            0.375
+          ]
+        },
+        "uv_layer_count": 1
+      }
+    },
+    "total_tris": 4872,
+    "bounds_blender": {
+      "min": [
+        -0.979454517,
+        -2.029999971,
+        0.0
+      ],
+      "max": [
+        0.979454517,
+        1.754999876,
+        1.072000027
+      ],
+      "dimensions": [
+        1.958909035,
+        3.784999847,
+        1.072000027
+      ],
+      "center": [
+        0.0,
+        -0.137500048,
+        0.536000013
+      ]
+    }
+  },
+  "wheel_rotation_contract": {
+    "spin_axis_unity": [
+      1,
+      0,
+      0
+    ],
+    "steer_axis_unity": [
+      0,
+      1,
+      0
+    ],
+    "front_radius_source_m": 0.35,
+    "rear_radius_source_m": 0.375,
+    "source": "F1/Assets/Scripts/Garage/FormulaVehicleVisual.cs",
+    "names": [
+      "wheel_front_left",
+      "wheel_front_right",
+      "wheel_rear_left",
+      "wheel_rear_right"
+    ]
+  },
+  "material_observation": {
+    "not_untextured": true,
+    "worn_texture": "F1/Assets/Art/CoastalFormula/FormulaAtlasWorn.png",
+    "restored_driver_texture": "F1/Assets/Art/CoastalFormula/FormulaAtlas.png",
+    "scene_material": "F1/Assets/Scenes/Proto_CoastCourse_Mats/FormulaWorn.mat",
+    "visual_diagnosis_note": "Texture is referenced in saved material; looking flat in screenshot does not prove absence of texture. Actual runtime material not verified."
+  },
+  "execution": {
+    "blender_version": "5.2.2 LTS",
+    "unity_editor_used": false,
+    "files_under_F1_modified": false,
+    "source_copy_blend": "art/_review/2026-10-23-car/current-car-source.blend"
+  }
+}

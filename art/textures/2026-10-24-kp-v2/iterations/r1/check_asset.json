@@ -1,0 +1,884 @@
+{
+  "pass": true,
+  "checks": {
+    "schema_version_1": true,
+    "four_unique_tiles": true,
+    "four_unique_albedos_and_models": true,
+    "shared_palette_exactly_32": true,
+    "palette_matches_manifest": true,
+    "all_tile_checks": true
+  },
+  "tile_count": 4,
+  "manifest": "D:\\Github\\F1Game\\art\\textures\\2026-10-24-kp-v2\\manifest.json",
+  "manifest_sha256": "db21fd10d8699ce4a2fddd3a5c6bdd2f5cd76390fc49db7141f523241419c165",
+  "palette": "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.json",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "palette_colors": 32,
+  "tiles": [
+    {
+      "id": "wood",
+      "pass": true,
+      "checks": {
+        "png_albedo": true,
+        "texture_power_of_two": true,
+        "opaque_pixels": true,
+        "albedo_palette_outside_zero": true,
+        "physical_density_declaration": true,
+        "pixel_dimensions_match_metric_density": true,
+        "approved_source_site": true,
+        "approved_direct_download_site": true,
+        "cc0_license": true,
+        "photographic_method_declared": true,
+        "source_hash_matches_file": true,
+        "nonempty_recorded_photo_process": true,
+        "no_positive_ai_declaration": true,
+        "source_provenance_current_non_ai": true,
+        "albedo_provenance_current_non_ai": true,
+        "model_provenance_current_non_ai": true,
+        "exported_quad_checks": true
+      },
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/wood_metric.glb",
+      "source": {
+        "id": "wooden_planks",
+        "path": "art/textures/2026-10-24-kp-v2/sources/wood_b/wooden_planks_diff_1k.png",
+        "url": "https://polyhaven.com/a/wooden_planks",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wooden_planks/wooden_planks_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Dario Barresi": "Processing",
+          "Charlotte Baglioni": "Photography"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "6b08165dfa7a1a5d662436cefc4566d1161540d17b5fc1314a7bfb4ee985ab2f",
+        "md5": "34660fe5744c8e901ace51cde9313f56",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "albedo_sha256": "546d32f54b892d940da80edda150e13e6e0bccf4b43dfa9d9fef0f63ffb43604",
+      "model_sha256": "2eee7074cd6ee90fd57c775005f06e6ab3e1a8b99fde46a7b84b883263373c3d",
+      "process_sha256": "e92845176f6fea24e20747135e4d6e6c89f5df31ced1792ff1d8575b35dd3c17",
+      "recorded_process": [
+        "Official CC0 photo diffuse download; wooden_planks; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [0, 0, 1024, 1024]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Rotate 90 degrees; no recolouring; new photograph structure, actual knots/end-joints/nail traces retained; shared palette quantization only",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "source_sha256_actual": "6b08165dfa7a1a5d662436cefc4566d1161540d17b5fc1314a7bfb4ee985ab2f",
+      "used_albedo_colors": 11,
+      "texture_size_px": [
+        128,
+        128
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "pixels_per_declared_metre": [
+        64.0,
+        64.0
+      ],
+      "outside_color_count": 0,
+      "outside_colors": [],
+      "palette_scope": "Original delivered albedo PNG only. Source photo and final lit screen excluded.",
+      "quad": {
+        "pass": true,
+        "checks": {
+          "two_triangles": true,
+          "four_unique_world_corners": true,
+          "declared_metric_axis_aligned_plane": true,
+          "declared_physical_patch_area": true,
+          "full_0_1_uv_quad": true,
+          "density_both_principal_axes": true,
+          "all_material_checks": true
+        },
+        "tris": 2,
+        "bounds_yup": [
+          [
+            0.0,
+            0.0,
+            -2.0
+          ],
+          [
+            2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "dimensions_yup_m": [
+          2.0,
+          0.0,
+          2.0
+        ],
+        "area_m2": 4.0,
+        "declared_physical_size_m": [
+          2,
+          2
+        ],
+        "density_target_px_m": 64,
+        "density_tolerance": 0.1,
+        "density_min": 64.0,
+        "density_max": 64.0,
+        "per_triangle_principal_density": [
+          [
+            64.0,
+            64.0
+          ],
+          [
+            64.0,
+            64.0
+          ]
+        ],
+        "materials": [
+          {
+            "pass": true,
+            "checks": {
+              "point_no_mipmap_sampling": true,
+              "repeat_wrap": true,
+              "embedded_matches_original_albedo": true,
+              "unlit": true,
+              "white_base_color_factor": true,
+              "opaque": true,
+              "no_extra_maps_or_material_extensions": true,
+              "no_metal_or_emission": true,
+              "untransformed_uv0": true
+            },
+            "sampler": {
+              "magFilter": 9728,
+              "minFilter": 9728,
+              "wrapS": 10497,
+              "wrapT": 10497
+            }
+          }
+        ]
+      },
+      "diagnostics": {
+        "diagnostic_only": true,
+        "monochrome_8x8_windows": 0,
+        "tested_8x8_windows": 14641,
+        "left_right_edge_rgb_mae": 0.0,
+        "top_bottom_edge_rgb_mae": 0.0,
+        "interior_horizontal_rgb_mae": 9.4185531496063,
+        "interior_vertical_rgb_mae": 2.40748031496063,
+        "scope": "Quiet fields are allowed; 8x8 windows are not a noise quota. Edge RGB deltas do not prove seamless patterns or perceptual tileability."
+      },
+      "provenance": {
+        "source": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_wood_source",
+          "path": "art/textures/2026-10-24-kp-v2/sources/wood_b/wooden_planks_diff_1k.png",
+          "record_count": 1,
+          "recorded_sha256": "6b08165dfa7a1a5d662436cefc4566d1161540d17b5fc1314a7bfb4ee985ab2f"
+        },
+        "albedo": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_wood_albedo",
+          "path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+          "record_count": 1,
+          "recorded_sha256": "546d32f54b892d940da80edda150e13e6e0bccf4b43dfa9d9fef0f63ffb43604"
+        },
+        "model": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_wood_proof_quad",
+          "path": "art/textures/2026-10-24-kp-v2/proof/wood_metric.glb",
+          "record_count": 1,
+          "recorded_sha256": "2eee7074cd6ee90fd57c775005f06e6ab3e1a8b99fde46a7b84b883263373c3d"
+        }
+      }
+    },
+    {
+      "id": "stone",
+      "pass": true,
+      "checks": {
+        "png_albedo": true,
+        "texture_power_of_two": true,
+        "opaque_pixels": true,
+        "albedo_palette_outside_zero": true,
+        "physical_density_declaration": true,
+        "pixel_dimensions_match_metric_density": true,
+        "approved_source_site": true,
+        "approved_direct_download_site": true,
+        "cc0_license": true,
+        "photographic_method_declared": true,
+        "source_hash_matches_file": true,
+        "nonempty_recorded_photo_process": true,
+        "no_positive_ai_declaration": true,
+        "source_provenance_current_non_ai": true,
+        "albedo_provenance_current_non_ai": true,
+        "model_provenance_current_non_ai": true,
+        "exported_quad_checks": true
+      },
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/stone_metric.glb",
+      "source": {
+        "id": "stone_pavers",
+        "path": "art/textures/2026-10-24-kp/sources/stone/stone_pavers_diff_1k.png",
+        "url": "https://polyhaven.com/a/stone_pavers",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/stone_pavers/stone_pavers_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b",
+        "md5": "a553a6fd6d2ab8921f845e804aca5d51",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "albedo_sha256": "f9064118377213dc0985b6f1cfba40652a77ee3a6bb1cc0df714177b7a057a32",
+      "model_sha256": "793fcb20645bfe284eb682a00f0cc839716cf57ef1e4149d201921973b37bf4a",
+      "process_sha256": "82ed1c7d374a005528b5fb6b791420fc3e2bb29fa824333a3db7ebae29f7bd20",
+      "recorded_process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; stone_pavers",
+        "full physical repeat [2.0, 2.0]m from [2000, 2000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 0 degrees; photo luminance 2..98 percentile -> close neutral-grey ladder 5,8,7,10,11,12,20; no random noise; manually trace existing photographed mortar joints at 1px using palette9; coordinates recorded in kp_textures.py",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending",
+        "A1 round2: unchanged passed stone albedo; original file SHA retained",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "source_sha256_actual": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b",
+      "used_albedo_colors": 8,
+      "texture_size_px": [
+        128,
+        128
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "pixels_per_declared_metre": [
+        64.0,
+        64.0
+      ],
+      "outside_color_count": 0,
+      "outside_colors": [],
+      "palette_scope": "Original delivered albedo PNG only. Source photo and final lit screen excluded.",
+      "quad": {
+        "pass": true,
+        "checks": {
+          "two_triangles": true,
+          "four_unique_world_corners": true,
+          "declared_metric_axis_aligned_plane": true,
+          "declared_physical_patch_area": true,
+          "full_0_1_uv_quad": true,
+          "density_both_principal_axes": true,
+          "all_material_checks": true
+        },
+        "tris": 2,
+        "bounds_yup": [
+          [
+            0.0,
+            0.0,
+            -2.0
+          ],
+          [
+            2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "dimensions_yup_m": [
+          2.0,
+          0.0,
+          2.0
+        ],
+        "area_m2": 4.0,
+        "declared_physical_size_m": [
+          2,
+          2
+        ],
+        "density_target_px_m": 64,
+        "density_tolerance": 0.1,
+        "density_min": 64.0,
+        "density_max": 64.0,
+        "per_triangle_principal_density": [
+          [
+            64.0,
+            64.0
+          ],
+          [
+            64.0,
+            64.0
+          ]
+        ],
+        "materials": [
+          {
+            "pass": true,
+            "checks": {
+              "point_no_mipmap_sampling": true,
+              "repeat_wrap": true,
+              "embedded_matches_original_albedo": true,
+              "unlit": true,
+              "white_base_color_factor": true,
+              "opaque": true,
+              "no_extra_maps_or_material_extensions": true,
+              "no_metal_or_emission": true,
+              "untransformed_uv0": true
+            },
+            "sampler": {
+              "magFilter": 9728,
+              "minFilter": 9728,
+              "wrapS": 10497,
+              "wrapT": 10497
+            }
+          }
+        ]
+      },
+      "diagnostics": {
+        "diagnostic_only": true,
+        "monochrome_8x8_windows": 0,
+        "tested_8x8_windows": 14641,
+        "left_right_edge_rgb_mae": 0.0,
+        "top_bottom_edge_rgb_mae": 0.0,
+        "interior_horizontal_rgb_mae": 4.439591535433071,
+        "interior_vertical_rgb_mae": 4.569102690288714,
+        "scope": "Quiet fields are allowed; 8x8 windows are not a noise quota. Edge RGB deltas do not prove seamless patterns or perceptual tileability."
+      },
+      "provenance": {
+        "source": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp_stone_source",
+          "path": "art/textures/2026-10-24-kp/sources/stone/stone_pavers_diff_1k.png",
+          "record_count": 1,
+          "recorded_sha256": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b"
+        },
+        "albedo": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_stone_albedo",
+          "path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+          "record_count": 1,
+          "recorded_sha256": "f9064118377213dc0985b6f1cfba40652a77ee3a6bb1cc0df714177b7a057a32"
+        },
+        "model": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_stone_proof_quad",
+          "path": "art/textures/2026-10-24-kp-v2/proof/stone_metric.glb",
+          "record_count": 1,
+          "recorded_sha256": "793fcb20645bfe284eb682a00f0cc839716cf57ef1e4149d201921973b37bf4a"
+        }
+      }
+    },
+    {
+      "id": "plaster",
+      "pass": true,
+      "checks": {
+        "png_albedo": true,
+        "texture_power_of_two": true,
+        "opaque_pixels": true,
+        "albedo_palette_outside_zero": true,
+        "physical_density_declaration": true,
+        "pixel_dimensions_match_metric_density": true,
+        "approved_source_site": true,
+        "approved_direct_download_site": true,
+        "cc0_license": true,
+        "photographic_method_declared": true,
+        "source_hash_matches_file": true,
+        "nonempty_recorded_photo_process": true,
+        "no_positive_ai_declaration": true,
+        "source_provenance_current_non_ai": true,
+        "albedo_provenance_current_non_ai": true,
+        "model_provenance_current_non_ai": true,
+        "exported_quad_checks": true
+      },
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_plaster_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/plaster_metric.glb",
+      "source": {
+        "id": "painted_plaster_wall",
+        "path": "art/textures/2026-10-24-kp/sources/plaster/painted_plaster_wall_diff_1k.png",
+        "url": "https://polyhaven.com/a/painted_plaster_wall",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/painted_plaster_wall/painted_plaster_wall_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71",
+        "md5": "a579bdf62c32e5d8ada9b167da322416",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "albedo_sha256": "118506e9b8eabaa7167285c9034d5395fdd1e7550db0a27ee265a3e144531ee0",
+      "model_sha256": "bf9b37ba4517093facbcf99b6178c5e56c741bce35a100ed6c7c0fd281a78064",
+      "process_sha256": "fbc49f81e3216a933a22ba6a11eb169044d2e697f15b2e0693b0f52d78bdb1ef",
+      "recorded_process": [
+        "Official CC0 photo diffuse download; painted_plaster_wall; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [0, 0, 1024, 1024]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Quiet painted photo RGB+[53,43,28]; two traced REAL spall contours from rough_plaster_broken; 1.5m source scale -> 64px/m, local lower-left placements only, chip RGB+[35,38,38]; masks/coordinates recorded in script",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "source_sha256_actual": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71",
+      "used_albedo_colors": 8,
+      "texture_size_px": [
+        128,
+        128
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "pixels_per_declared_metre": [
+        64.0,
+        64.0
+      ],
+      "outside_color_count": 0,
+      "outside_colors": [],
+      "palette_scope": "Original delivered albedo PNG only. Source photo and final lit screen excluded.",
+      "quad": {
+        "pass": true,
+        "checks": {
+          "two_triangles": true,
+          "four_unique_world_corners": true,
+          "declared_metric_axis_aligned_plane": true,
+          "declared_physical_patch_area": true,
+          "full_0_1_uv_quad": true,
+          "density_both_principal_axes": true,
+          "all_material_checks": true
+        },
+        "tris": 2,
+        "bounds_yup": [
+          [
+            0.0,
+            0.0,
+            -2.0
+          ],
+          [
+            2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "dimensions_yup_m": [
+          2.0,
+          0.0,
+          2.0
+        ],
+        "area_m2": 4.0,
+        "declared_physical_size_m": [
+          2,
+          2
+        ],
+        "density_target_px_m": 64,
+        "density_tolerance": 0.1,
+        "density_min": 64.0,
+        "density_max": 64.0,
+        "per_triangle_principal_density": [
+          [
+            64.0,
+            64.0
+          ],
+          [
+            64.0,
+            64.0
+          ]
+        ],
+        "materials": [
+          {
+            "pass": true,
+            "checks": {
+              "point_no_mipmap_sampling": true,
+              "repeat_wrap": true,
+              "embedded_matches_original_albedo": true,
+              "unlit": true,
+              "white_base_color_factor": true,
+              "opaque": true,
+              "no_extra_maps_or_material_extensions": true,
+              "no_metal_or_emission": true,
+              "untransformed_uv0": true
+            },
+            "sampler": {
+              "magFilter": 9728,
+              "minFilter": 9728,
+              "wrapS": 10497,
+              "wrapT": 10497
+            }
+          }
+        ]
+      },
+      "diagnostics": {
+        "diagnostic_only": true,
+        "monochrome_8x8_windows": 13282,
+        "tested_8x8_windows": 14641,
+        "left_right_edge_rgb_mae": 0.0,
+        "top_bottom_edge_rgb_mae": 0.0,
+        "interior_horizontal_rgb_mae": 0.5505659448818898,
+        "interior_vertical_rgb_mae": 0.4299540682414698,
+        "scope": "Quiet fields are allowed; 8x8 windows are not a noise quota. Edge RGB deltas do not prove seamless patterns or perceptual tileability."
+      },
+      "provenance": {
+        "source": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp_plaster_source",
+          "path": "art/textures/2026-10-24-kp/sources/plaster/painted_plaster_wall_diff_1k.png",
+          "record_count": 1,
+          "recorded_sha256": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71"
+        },
+        "albedo": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_plaster_albedo",
+          "path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_plaster_64ppm.png",
+          "record_count": 1,
+          "recorded_sha256": "118506e9b8eabaa7167285c9034d5395fdd1e7550db0a27ee265a3e144531ee0"
+        },
+        "model": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_plaster_proof_quad",
+          "path": "art/textures/2026-10-24-kp-v2/proof/plaster_metric.glb",
+          "record_count": 1,
+          "recorded_sha256": "bf9b37ba4517093facbcf99b6178c5e56c741bce35a100ed6c7c0fd281a78064"
+        }
+      }
+    },
+    {
+      "id": "roof",
+      "pass": true,
+      "checks": {
+        "png_albedo": true,
+        "texture_power_of_two": true,
+        "opaque_pixels": true,
+        "albedo_palette_outside_zero": true,
+        "physical_density_declaration": true,
+        "pixel_dimensions_match_metric_density": true,
+        "approved_source_site": true,
+        "approved_direct_download_site": true,
+        "cc0_license": true,
+        "photographic_method_declared": true,
+        "source_hash_matches_file": true,
+        "nonempty_recorded_photo_process": true,
+        "no_positive_ai_declaration": true,
+        "source_provenance_current_non_ai": true,
+        "albedo_provenance_current_non_ai": true,
+        "model_provenance_current_non_ai": true,
+        "exported_quad_checks": true
+      },
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/roof_metric.glb",
+      "source": {
+        "id": "ceramic_roof_01",
+        "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+        "url": "https://polyhaven.com/a/ceramic_roof_01",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "sha256": "d16264943b3a052a6b91f4ad7c9c1f37c09f2a9e9c503bdb3477f4705c03ff8c",
+        "provider_md5": "5c8b9deb160ae011b496f7d0b8470cbb",
+        "md5_verified": true,
+        "authors": {
+          "Rob Tuytel": "All"
+        },
+        "dimensions_mm": [
+          3500.000238418579,
+          3500.000238418579
+        ],
+        "method": "photographic source; exact per-asset capture method not specified",
+        "method_evidence": "https://docs.polyhaven.com/en/faq",
+        "method_evidence_detail": "Official FAQ states all texture materials use photographic methods, not procedural or generative AI. This is provider-wide evidence, not a per-asset photogrammetry claim.",
+        "crop_ltrb_px": [
+          365,
+          365,
+          658,
+          658
+        ],
+        "physical_size_m": [
+          1,
+          1
+        ],
+        "density_px_m": 64,
+        "palette_png": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/palette_64.png",
+        "ai_generated": false,
+        "process": [
+          "official diffuse JPG direct download",
+          "provider MD5 verified",
+          "physical 1m centre crop",
+          "BOX downsample to 64x64",
+          "photo_to_pixel.py exact shared-palette nearest RGB; no dither; no color correction"
+        ]
+      },
+      "albedo_sha256": "483b462dbd7a53c954b9b28fef583cee15a6d25301a7c0ef6c9fffffea14ded9",
+      "model_sha256": "1f9c80033e0e96b612138e9bc5072c001fdfb2b95a18df9759189ea3c592b44c",
+      "process_sha256": "18c40b64f7623ff1f469169ec7b15ad7f4a49472f946829db7bb2ccd899c6f46",
+      "recorded_process": [
+        "Official CC0 photo diffuse download; ceramic_roof_01; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [216, 185, 801, 770]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Rotate 0 degrees; no recolouring; new photograph structure, actual knots/end-joints/nail traces retained; shared palette quantization only",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "source_sha256_actual": "d16264943b3a052a6b91f4ad7c9c1f37c09f2a9e9c503bdb3477f4705c03ff8c",
+      "used_albedo_colors": 22,
+      "texture_size_px": [
+        128,
+        128
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "pixels_per_declared_metre": [
+        64.0,
+        64.0
+      ],
+      "outside_color_count": 0,
+      "outside_colors": [],
+      "palette_scope": "Original delivered albedo PNG only. Source photo and final lit screen excluded.",
+      "quad": {
+        "pass": true,
+        "checks": {
+          "two_triangles": true,
+          "four_unique_world_corners": true,
+          "declared_metric_axis_aligned_plane": true,
+          "declared_physical_patch_area": true,
+          "full_0_1_uv_quad": true,
+          "density_both_principal_axes": true,
+          "all_material_checks": true
+        },
+        "tris": 2,
+        "bounds_yup": [
+          [
+            0.0,
+            0.0,
+            -2.0
+          ],
+          [
+            2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "dimensions_yup_m": [
+          2.0,
+          0.0,
+          2.0
+        ],
+        "area_m2": 4.0,
+        "declared_physical_size_m": [
+          2,
+          2
+        ],
+        "density_target_px_m": 64,
+        "density_tolerance": 0.1,
+        "density_min": 64.0,
+        "density_max": 64.0,
+        "per_triangle_principal_density": [
+          [
+            64.0,
+            64.0
+          ],
+          [
+            64.0,
+            64.0
+          ]
+        ],
+        "materials": [
+          {
+            "pass": true,
+            "checks": {
+              "point_no_mipmap_sampling": true,
+              "repeat_wrap": true,
+              "embedded_matches_original_albedo": true,
+              "unlit": true,
+              "white_base_color_factor": true,
+              "opaque": true,
+              "no_extra_maps_or_material_extensions": true,
+              "no_metal_or_emission": true,
+              "untransformed_uv0": true
+            },
+            "sampler": {
+              "magFilter": 9728,
+              "minFilter": 9728,
+              "wrapS": 10497,
+              "wrapT": 10497
+            }
+          }
+        ]
+      },
+      "diagnostics": {
+        "diagnostic_only": true,
+        "monochrome_8x8_windows": 0,
+        "tested_8x8_windows": 14641,
+        "left_right_edge_rgb_mae": 0.0,
+        "top_bottom_edge_rgb_mae": 0.0,
+        "interior_horizontal_rgb_mae": 11.480355971128608,
+        "interior_vertical_rgb_mae": 10.182127624671915,
+        "scope": "Quiet fields are allowed; 8x8 windows are not a noise quota. Edge RGB deltas do not prove seamless patterns or perceptual tileability."
+      },
+      "provenance": {
+        "source": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_roof_source",
+          "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+          "record_count": 1,
+          "recorded_sha256": "d16264943b3a052a6b91f4ad7c9c1f37c09f2a9e9c503bdb3477f4705c03ff8c"
+        },
+        "albedo": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_roof_albedo",
+          "path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+          "record_count": 1,
+          "recorded_sha256": "483b462dbd7a53c954b9b28fef583cee15a6d25301a7c0ef6c9fffffea14ded9"
+        },
+        "model": {
+          "pass": true,
+          "checks": {
+            "exactly_one_path_record": true,
+            "current_file_hash": true,
+            "explicit_non_ai": true,
+            "source_url_linked": true,
+            "license_recorded": true,
+            "access_date_valid": true,
+            "asset_id_and_tool_recorded": true,
+            "photo_quantization_process_recorded": true
+          },
+          "asset_id": "a1_kp2_roof_proof_quad",
+          "path": "art/textures/2026-10-24-kp-v2/proof/roof_metric.glb",
+          "record_count": 1,
+          "recorded_sha256": "1f9c80033e0e96b612138e9bc5072c001fdfb2b95a18df9759189ea3c592b44c"
+        }
+      }
+    }
+  ],
+  "scope": "Original albedo PNG palette; embedded PNG equality; actual exported GLB world-space UV Jacobian on all triangles; recorded CC0 photographic lineage and hashes.",
+  "limitations": [
+    "Does not infer AI origin from pixels or independently certify a source license.",
+    "Process hash binds the recorded steps; it does not prove those steps were executed.",
+    "Proof quad density is measured; later Unity object scaling/UVs/import are not tested.",
+    "Final framebuffer palette, mip/filter behaviour in motion, artistic readability, and perceptual tileability require separate game capture review."
+  ]
+}

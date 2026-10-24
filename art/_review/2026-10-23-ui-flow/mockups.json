@@ -1,0 +1,138 @@
+[
+  {
+    "id": "outbound-a",
+    "title": "갈 때 A · Galmuri / 보통 상태",
+    "note": "상시 시간·행선지·상태. 속도는 보조.",
+    "image": "outbound-a.png",
+    "overlay": "outbound-a-overlay.png",
+    "background": "mood-B.png",
+    "groups": [
+      [
+        24,
+        24,
+        144,
+        58
+      ],
+      [
+        808,
+        24,
+        108,
+        66
+      ],
+      [
+        24,
+        466,
+        172,
+        38
+      ],
+      [
+        814,
+        494,
+        104,
+        24
+      ]
+    ],
+    "envelope_pixels": 24512,
+    "envelope_percent": 4.73,
+    "ink_percent": 1.42,
+    "center_clear": true,
+    "palette_outside": 0,
+    "size": [
+      960,
+      540
+    ]
+  },
+  {
+    "id": "outbound-b",
+    "title": "갈 때 B · Pretendard / 마감·화물 경고",
+    "note": "경고는 글자+작은 호박색 선. 전면 점멸 없음. Pretendard는 가독성 비교용, 채택은 승인 필요.",
+    "image": "outbound-b.png",
+    "overlay": "outbound-b-overlay.png",
+    "background": "mood-B.png",
+    "groups": [
+      [
+        24,
+        24,
+        116,
+        58
+      ],
+      [
+        796,
+        24,
+        102,
+        66
+      ],
+      [
+        24,
+        466,
+        108,
+        58
+      ],
+      [
+        814,
+        494,
+        106,
+        24
+      ]
+    ],
+    "envelope_pixels": 22268,
+    "envelope_percent": 4.3,
+    "ink_percent": 1.43,
+    "center_clear": true,
+    "palette_outside": 0,
+    "size": [
+      960,
+      540
+    ]
+  },
+  {
+    "id": "return-a",
+    "title": "돌아올 때 A · Galmuri / 진입 4초",
+    "note": "이 문구도 4초 뒤 숨김 → 기본 HUD 0%. 제한 시간·화물·보상 숫자 없음.",
+    "image": "return-a.png",
+    "overlay": "return-a-overlay.png",
+    "background": "mood-A.png",
+    "groups": [
+      [
+        24,
+        492,
+        132,
+        24
+      ]
+    ],
+    "envelope_pixels": 3168,
+    "envelope_percent": 0.61,
+    "ink_percent": 0.31,
+    "center_clear": true,
+    "palette_outside": 0,
+    "size": [
+      960,
+      540
+    ]
+  },
+  {
+    "id": "return-b",
+    "title": "돌아올 때 B · Pretendard / 길 안내 요청",
+    "note": "Tab 누름 예시. 떼고 2초 뒤 숨김. 키 배정·시간은 제안이며 미구현.",
+    "image": "return-b.png",
+    "overlay": "return-b-overlay.png",
+    "background": "mood-A.png",
+    "groups": [
+      [
+        24,
+        28,
+        70,
+        58
+      ]
+    ],
+    "envelope_pixels": 4060,
+    "envelope_percent": 0.78,
+    "ink_percent": 0.25,
+    "center_clear": true,
+    "palette_outside": 0,
+    "size": [
+      960,
+      540
+    ]
+  }
+]

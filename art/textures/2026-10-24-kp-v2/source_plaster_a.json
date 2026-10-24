@@ -1,0 +1,23 @@
+{
+  "id": "worn_cracked_plaster",
+  "path": "art/textures/2026-10-24-kp-v2/sources/plaster_a/worn_cracked_plaster_diff_1k.png",
+  "url": "https://polyhaven.com/a/worn_cracked_plaster",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/worn_cracked_plaster/worn_cracked_plaster_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    1799.9999523162842,
+    1799.9999523162842
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "e8c2359a98ccd66eeea88d402f7bc3afcb7207e3fa8e1dbc862f6d884fd54d86",
+  "md5": "c65b84ec61779257da41acc9f208c619",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

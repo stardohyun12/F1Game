@@ -1,0 +1,38 @@
+{
+  "glb": "art/models/cargo_eggs_v02/cargo_eggs_v02.glb",
+  "world_bounds_min": [
+    -0.14000000059604645,
+    -0.14000000059604645,
+    -4.656612873077393e-10
+  ],
+  "world_bounds_max": [
+    0.14000000059604645,
+    0.14000000059604645,
+    0.0689999982714653
+  ],
+  "dimensions_blender_xyz": [
+    0.2800000011920929,
+    0.2800000011920929,
+    0.0689999982714653
+  ],
+  "close_resolution": [
+    960,
+    540
+  ],
+  "face_resolution": [
+    640,
+    480
+  ],
+  "ambient": [
+    0.64,
+    0.7,
+    0.69
+  ],
+  "sun": [
+    1,
+    0.91,
+    0.77
+  ],
+  "exposure": 0.35,
+  "runtime_verified": false
+}

@@ -1,0 +1,544 @@
+[
+  {
+    "id": "shortcut",
+    "title": "지름길 — 급경사, 화물 주의",
+    "path": "art/_review/2026-10-23-course-ui/textures/shortcut.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      112,
+      64
+    ],
+    "physical_m": [
+      3.5,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.875,
+      1
+    ],
+    "letters": [
+      {
+        "text": "지름길",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          33,
+          5,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "급경사",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          8,
+          29,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "화물주의",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          58,
+          52,
+          48,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "bolt rust; lower runoff; old repair strip",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "85ea22beac4c0e22bc5f41f3ca2b763effc907d0d1ee78bd14af53b2b8f770f6"
+  },
+  {
+    "id": "coast",
+    "title": "해안길 — 완만",
+    "path": "art/_review/2026-10-23-course-ui/textures/coast.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      112,
+      64
+    ],
+    "physical_m": [
+      3.5,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.875,
+      1
+    ],
+    "letters": [
+      {
+        "text": "해안길",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          33,
+          5,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "완만",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          34,
+          32,
+          48,
+          22
+        ],
+        "role": "primary"
+      }
+    ],
+    "wear": "sun-faded teal top edge; bolt rust; bottom repair strip",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "d2e4cbb05f585fd17a6083a6de277563bed3b6a535df6ed0b59de8821cb806e7"
+  },
+  {
+    "id": "alley",
+    "title": "골목 끝 집",
+    "path": "art/_review/2026-10-23-course-ui/textures/alley.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      80,
+      64
+    ],
+    "physical_m": [
+      2.5,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.625,
+      1
+    ],
+    "letters": [
+      {
+        "text": "01",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          5,
+          8,
+          14,
+          11
+        ],
+        "role": "number"
+      },
+      {
+        "text": "골목",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          27,
+          3,
+          48,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "끝집",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          27,
+          27,
+          48,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "문 앞 배송",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          8,
+          50,
+          58,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "handled lower edge; replaced gate label; one paper patch",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "cffdcebc2b7ddce156fce92bffc4f30b5828d3c6865ed0702837a1e33ffde68e"
+  },
+  {
+    "id": "cafe",
+    "title": "해안 카페",
+    "path": "art/_review/2026-10-23-course-ui/textures/cafe.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      96,
+      64
+    ],
+    "physical_m": [
+      3.0,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.75,
+      1
+    ],
+    "letters": [
+      {
+        "text": "02",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          6,
+          7,
+          16,
+          11
+        ],
+        "role": "number"
+      },
+      {
+        "text": "해안",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          40,
+          3,
+          48,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "카페",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          40,
+          27,
+          48,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "영업중",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          46,
+          50,
+          36,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "repainted enamel; corner rust; pasted open notice",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "84dae00899f2adbd52c5bf1729c714f7076474bbfcbbb11a31617f5ddd6264e2"
+  },
+  {
+    "id": "orchard",
+    "title": "헤어핀 과수원",
+    "path": "art/_review/2026-10-23-course-ui/textures/orchard.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      112,
+      64
+    ],
+    "physical_m": [
+      3.5,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.875,
+      1
+    ],
+    "letters": [
+      {
+        "text": "03",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          4,
+          18,
+          32,
+          22
+        ],
+        "role": "number"
+      },
+      {
+        "text": "헤어핀",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          35,
+          3,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "과수원",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          35,
+          27,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "오늘 수확",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          39,
+          50,
+          53,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "bottom soil/rain; replaced lower harvest notice",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "8e689c6f2cb6b042425f242284467e457c71560bce501505b8c6af003f5af71f"
+  },
+  {
+    "id": "hill",
+    "title": "언덕 위 홀로 떨어진 집",
+    "path": "art/_review/2026-10-23-course-ui/textures/hill.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      80,
+      64
+    ],
+    "physical_m": [
+      2.5,
+      2.0
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.0,
+      0.625,
+      1
+    ],
+    "letters": [
+      {
+        "text": "외딴집",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          5,
+          5,
+          72,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "04 언덕위",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          8,
+          32,
+          57,
+          11
+        ],
+        "role": "detail"
+      },
+      {
+        "text": "초인종 →",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          8,
+          50,
+          53,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "old enamel edge; replaced name strip; bell notice",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "b4790d6a11a0fd750bae0cb1366bb5b61470db32ee735510d9a9ee7897adc9eb"
+  },
+  {
+    "id": "mart",
+    "title": "MART",
+    "path": "art/_review/2026-10-23-course-ui/textures/mart.png",
+    "size_px": [
+      128,
+      64
+    ],
+    "active_xywh": [
+      0,
+      0,
+      128,
+      48
+    ],
+    "physical_m": [
+      4.0,
+      1.5
+    ],
+    "density_px_m": [
+      32,
+      32
+    ],
+    "uv_bounds_bl": [
+      0,
+      0.25,
+      1.0,
+      1
+    ],
+    "letters": [
+      {
+        "text": "MART",
+        "font": "Galmuri11",
+        "font_em_texels": 24,
+        "rect_texels": [
+          29,
+          5,
+          68,
+          22
+        ],
+        "role": "primary"
+      },
+      {
+        "text": "매일",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          6,
+          34,
+          24,
+          11
+        ],
+        "role": "detail"
+      },
+      {
+        "text": "배달 접수",
+        "font": "Galmuri11",
+        "font_em_texels": 12,
+        "rect_texels": [
+          59,
+          34,
+          53,
+          11
+        ],
+        "role": "detail"
+      }
+    ],
+    "wear": "older sign visible at lower rim; overpaint; delivery paper patch",
+    "wear_mask_scope": "outer sides2-3texels; bottom3texels; bolt local runs; repair paper only",
+    "letter_density_exception": false,
+    "font_source": "https://github.com/quiple/galmuri",
+    "font_sha256": "e24256f42e43713d2ea086a1e1669d78b968f5b3cc547e5c157f0606ffa5def1",
+    "ai_generated": false,
+    "sha256": "b5c8254fb852bf23062218d6663334d28268240de6618f355e0964df41ce2bda"
+  }
+]

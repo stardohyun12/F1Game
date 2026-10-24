@@ -1,0 +1,68 @@
+{
+  "resolution": [
+    960,
+    540
+  ],
+  "montage_only": true,
+  "runtime_verified": false,
+  "source_reference": "art/concept/lofi-styles-2026-10-13/02_warm_street.png",
+  "placements": {
+    "box": {
+      "overlay_xywh": [
+        407,
+        729,
+        126,
+        121
+      ],
+      "physical_width_m": 0.4000000059604645,
+      "source_cargo_removal": false,
+      "note": "same clear foreground road placement; source car stays reference-only; not installed cargo"
+    },
+    "cake": {
+      "overlay_xywh": [
+        430,
+        783,
+        80,
+        67
+      ],
+      "physical_width_m": 0.2540000081062317,
+      "source_cargo_removal": false,
+      "note": "same clear foreground road placement; source car stays reference-only; not installed cargo"
+    },
+    "eggs": {
+      "overlay_xywh": [
+        426,
+        799,
+        88,
+        51
+      ],
+      "physical_width_m": 0.2800000011920929,
+      "source_cargo_removal": false,
+      "note": "same clear foreground road placement; source car stays reference-only; not installed cargo"
+    },
+    "wine": {
+      "overlay_xywh": [
+        458,
+        757,
+        24,
+        93
+      ],
+      "physical_width_m": 0.07519999891519547,
+      "source_cargo_removal": false,
+      "note": "same clear foreground road placement; source car stays reference-only; not installed cargo"
+    },
+    "fish": {
+      "overlay_xywh": [
+        407,
+        788,
+        126,
+        62
+      ],
+      "physical_width_m": 0.4000000059604645,
+      "source_cargo_removal": false,
+      "note": "same clear foreground road placement; source car stays reference-only; not installed cargo"
+    }
+  },
+  "lineup": "all five identical camera, common physical scale, reference background; not installed game assets",
+  "filter": "BOX downscale; integer nearest review thumbnails"
+}

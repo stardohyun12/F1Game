@@ -1,0 +1,1047 @@
+[
+  {
+    "slug": "edc",
+    "appid": 3293010,
+    "name": "Easy Delivery Co.",
+    "source": "https://store.steampowered.com/app/3293010/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=3293010&l=english",
+    "developers": [
+      "Sam C"
+    ],
+    "publishers": [
+      "Oro Interactive"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/125f45762e597b3afb008aee8bbefac19ba02941/ss_125f45762e597b3afb008aee8bbefac19ba02941.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ad0ccba8b38c31c0e5c037576c7adb66f4c6f81892d523739aa04cc431c51a3e"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/cf5ed0c38426b0b7d592fd7d5d9006043e2fa948/ss_cf5ed0c38426b0b7d592fd7d5d9006043e2fa948.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "0d1addcaf869fd0caf2772c9a9d77f00f9fb9b7b8350c29b4517a27670bc04dd"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/2df6e79b65c499cd45590df8b1cbf0a705a2a6a8/ss_2df6e79b65c499cd45590df8b1cbf0a705a2a6a8.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "633bd57d667447e18a533f53ef94c240c4c19a759e20cd818d740e0da696de4b"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/287ddbe79e43b36d1ab74111609212f8cc7aeb64/ss_287ddbe79e43b36d1ab74111609212f8cc7aeb64.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "73498e4fc0c695b45eaf23d15cbb89b42cc14d91ea11d5906fa59e2b00a523d1"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/b44a25aaae8d91772613af7a3334084bbbb76c4c/ss_b44a25aaae8d91772613af7a3334084bbbb76c4c.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "80b62ee24ba1777952c702e8532eb14d43796b8cb11df5f6ace45e621b148bf9"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3293010/ef75d56aced607ac06e8f01bb4eee91c22574149/ss_ef75d56aced607ac06e8f01bb4eee91c22574149.1920x1080.jpg?t=1783346058",
+        "local": "images/edc-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "5f54348788615437ba3878a37edd36918e06c7b43d5440f4fff07893cc642b54"
+      }
+    ],
+    "movies": [
+      {
+        "id": 257201088,
+        "name": "Easy Delivery Co. | Out Now Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257201088/5e157e443764db6db0eacd1c217a6b024435ea21/movie_600x337.jpg?t=1758204027",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/3293010/673004916/60bc87b038db4a43e77bfa6d4f32d7ddf4260ff5/1758192057/dash_av1.mpd?t=1758204027",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/673004916/60bc87b038db4a43e77bfa6d4f32d7ddf4260ff5/1758192057/dash_h264.mpd?t=1758204027",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/673004916/60bc87b038db4a43e77bfa6d4f32d7ddf4260ff5/1758192057/hls_264_master.m3u8?t=1758204027",
+        "highlight": true
+      },
+      {
+        "id": 257371859,
+        "name": "Easy Delivery Co. | EasyRally Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257371859/08002e79f66b3ebf46f0d23245548747390e43bd/movie_600x337.jpg?t=1783346057",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/3293010/431567510/9048e551835d8d39959ec54de5e86a48773aff45/1783345672/dash_av1.mpd?t=1783346057",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/431567510/9048e551835d8d39959ec54de5e86a48773aff45/1783345672/dash_h264.mpd?t=1783346057",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/431567510/9048e551835d8d39959ec54de5e86a48773aff45/1783345672/hls_264_master.m3u8?t=1783346057",
+        "highlight": true
+      },
+      {
+        "id": 257129275,
+        "name": "Easy Delivery Co. | Reveal Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257129275/8a7b32e2fc609053bbbe9d24c849c14eace46814/movie_600x337.jpg?t=1758194024",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/3293010/875421/93540f857ad241dee87d7de9c92568c971b62949/1750976462/dash_av1.mpd?t=1758194024",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/875421/93540f857ad241dee87d7de9c92568c971b62949/1750976462/dash_h264.mpd?t=1758194024",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/3293010/875421/93540f857ad241dee87d7de9c92568c971b62949/1750976462/hls_264_master.m3u8?t=1758194024",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "short-hike",
+    "appid": 1055540,
+    "name": "A Short Hike",
+    "source": "https://store.steampowered.com/app/1055540/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1055540&l=english",
+    "developers": [
+      "adamgryu"
+    ],
+    "publishers": [
+      "adamgryu"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_f2123fea859e299736a3e99d130238c784d53e75.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "46ef4f464e7554fa083a88f1d041ee8a9507c55bfc659d61f8eac1394c91c510"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_0e864bf975bb71f238de6861fc8fd3d6ed6e4ce8.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-1.jpg",
+        "width": 1900,
+        "height": 1080,
+        "sha256": "68f535877e10d69d4c3c4471d6ae2d8845d6568364b0e111a05398af9c9d27c4"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_a22817e259c4220cad0c25db315f417b6d3641b8.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-2.jpg",
+        "width": 1900,
+        "height": 1080,
+        "sha256": "f1839155adf6372c36894153f4124e2a0d84dc249175a038f99f7b89cebdef61"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_c9c8a8e6062511c5ae9259c68c66754cd09ae971.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-3.jpg",
+        "width": 1900,
+        "height": 1080,
+        "sha256": "8a9ece5e5a7b6c2f45b9f048d9508bf51fd97ed7f52ddbf3b21ad65ec12c2046"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_4c7c9650606ac7b451f8d2e5b71b503649e43edc.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "8bf1f69cfa7e811d6671bcd79531f324d5eaae437365aeb4ae58b3c44b0636e1"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1055540/ss_783252636e3a44ff5ba636d817c462358933ba89.1920x1080.jpg?t=1777758958",
+        "local": "images/short-hike-5.jpg",
+        "width": 1900,
+        "height": 1080,
+        "sha256": "5d736f9418d38ad6beeb9742ef082e1c126a1ed761fd7c4a06b8b89bb59c27a3"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256755947,
+        "name": "Launch Date Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256755947/movie.293x165.jpg?t=1562963541",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1055540/232619/db12cb0eed3e04cbd8762810eb1046e0b26dfde6/1750610204/dash_av1.mpd?t=1562963541",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1055540/232619/db12cb0eed3e04cbd8762810eb1046e0b26dfde6/1750610204/dash_h264.mpd?t=1562963541",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1055540/232619/db12cb0eed3e04cbd8762810eb1046e0b26dfde6/1750610204/hls_264_master.m3u8?t=1562963541",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "lunacid",
+    "appid": 1745510,
+    "name": "Lunacid",
+    "source": "https://store.steampowered.com/app/1745510/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1745510&l=english",
+    "developers": [
+      "KIRA LLC"
+    ],
+    "publishers": [
+      "KIRA LLC",
+      "CRITICAL REFLEX"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_2481e2130f4a9145d64f2e5481385b5173fba245.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "f4197abcae1826817212073a1b0a5f09c51e770b82512e41f55a6cf777508d98"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_9b06123c6971390c47adcd86588d9596c1fd9423.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "75889d4f12599981bfb82244912d7ab88e63930fc77be5a429e3f16bd774734c"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_7148977e25ca77aef9c406398d3dbd72679e93bc.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "cf7b53293673eb80e0edfd67d0f3f0af0b286cf7b1ef793dfc134948d24842b4"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_a3f4e7d0d71728aabfe4a27a62e213286483b56f.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "28b7097d87e3598d1d679d04b6c841e0ab9fe564f16c9050e1dc1d4a4cc43690"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_d9368a7320ea5a44af431673a9eb3ac13f25d8ca.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "60223a38f7e47d1dcb2665e68dbc745ebc99a94aa8059df6009d83d78add25bd"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1745510/ss_c30f7d7a091df4170cfb27fa6a27b3e79431877f.1920x1080.jpg?t=1777045181",
+        "local": "images/lunacid-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "fedfc6c21e6241a6802184621f49d0e2609eaba7d06413583e64cce557f2f22c"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256855266,
+        "name": "Reveal Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256855266/movie.293x165.jpg?t=1633879040",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1745510/408005/34eae90252d550ca20ad9ed825c5fe001d6ef7e8/1750731797/dash_av1.mpd?t=1633879040",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1745510/408005/34eae90252d550ca20ad9ed825c5fe001d6ef7e8/1750731797/dash_h264.mpd?t=1633879040",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1745510/408005/34eae90252d550ca20ad9ed825c5fe001d6ef7e8/1750731797/hls_264_master.m3u8?t=1633879040",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "dredge",
+    "appid": 1562430,
+    "name": "DREDGE",
+    "source": "https://store.steampowered.com/app/1562430/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1562430&l=english",
+    "developers": [
+      "Black Salt Games"
+    ],
+    "publishers": [
+      "Team17"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_70f88014423ed93eaa111c0d0daca2c500f76908.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "d3a54b95c67fbb16bb2899ef03731461d3bb2539bca1ba7b805b8b7f11c1a9f2"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_d4d4b14c5cd071307e27b4e9737f23f28b096248.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ab4914d8f4ab87de2efcaab95a23ddb9c9f1a8fb2f80613aa6843ae60d568a1c"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_9529104cde1af2ffbb715cab42bbb3012fb9b7d8.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "9f92bd688d4e1863a060410c3339a0f5510e5a774bfebb88e853028dc6ea0236"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_b60f2ff50997c5da29fcd783770053263aac26c0.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "43cc8ba020fdc1d31ec5614bbc2fcdcf9eaed8e2b2f592f6a79b7026589646c1"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_e964290b6a6a6941e299ba5be00fd3d98aec6d06.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "a3879ae3b2e7d8ec6b0ebb41494c7d761506cc6526da6aa691fcfff8467e8d87"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1562430/ss_87d0d9ba6e7851a07778ac696d56af8e0ab71a21.1920x1080.jpg?t=1780479732",
+        "local": "images/dredge-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "2e9eed90f5e2670ef4f2006fd40b96e738ee5cb8cecadeb8d00ff7d597b4ac19"
+      }
+    ],
+    "movies": [
+      {
+        "id": 257052901,
+        "name": "DREDGE: Complete Edition Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257052901/movie.293x165.jpg?t=1725614790",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1562430/751913/2f166531a359b6bbad73e42bb417a30b2eb61798/1750701525/dash_av1.mpd?t=1725614790",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/751913/2f166531a359b6bbad73e42bb417a30b2eb61798/1750701525/dash_h264.mpd?t=1725614790",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/751913/2f166531a359b6bbad73e42bb417a30b2eb61798/1750701525/hls_264_master.m3u8?t=1725614790",
+        "highlight": true
+      },
+      {
+        "id": 256938596,
+        "name": "Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256938596/movie.293x165.jpg?t=1680192002",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1562430/553322/db0df35acf025e6ecd0c3305a8b97ed97c0bab33/1750701500/dash_av1.mpd?t=1680192002",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/553322/db0df35acf025e6ecd0c3305a8b97ed97c0bab33/1750701500/dash_h264.mpd?t=1680192002",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/553322/db0df35acf025e6ecd0c3305a8b97ed97c0bab33/1750701500/hls_264_master.m3u8?t=1680192002",
+        "highlight": true
+      },
+      {
+        "id": 256970250,
+        "name": "Update 3 Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256970250/movie.293x165.jpg?t=1695055166",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1562430/608861/680db670dbc1eeb05185b000ed458f106f825856/1750701525/dash_av1.mpd?t=1695055166",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/608861/680db670dbc1eeb05185b000ed458f106f825856/1750701525/dash_h264.mpd?t=1695055166",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/608861/680db670dbc1eeb05185b000ed458f106f825856/1750701525/hls_264_master.m3u8?t=1695055166",
+        "highlight": true
+      },
+      {
+        "id": 256928385,
+        "name": "Release Date Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256928385/movie.293x165.jpg?t=1680171045",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1562430/535315/5c47677e95ebf76ce5026c01ab60fb82664e53b5/1750701489/dash_av1.mpd?t=1680171045",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/535315/5c47677e95ebf76ce5026c01ab60fb82664e53b5/1750701489/dash_h264.mpd?t=1680171045",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/535315/5c47677e95ebf76ce5026c01ab60fb82664e53b5/1750701489/hls_264_master.m3u8?t=1680171045",
+        "highlight": false
+      },
+      {
+        "id": 256903110,
+        "name": "Announcement Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256903110/movie.293x165.jpg?t=1680171049",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1562430/491552/d660424ef5f5b2dbe26feec5545222ab434ee8c8/1750701487/dash_av1.mpd?t=1680171049",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/491552/d660424ef5f5b2dbe26feec5545222ab434ee8c8/1750701487/dash_h264.mpd?t=1680171049",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1562430/491552/d660424ef5f5b2dbe26feec5545222ab434ee8c8/1750701487/hls_264_master.m3u8?t=1680171049",
+        "highlight": false
+      }
+    ]
+  },
+  {
+    "slug": "motorways",
+    "appid": 1127500,
+    "name": "Mini Motorways",
+    "source": "https://store.steampowered.com/app/1127500/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1127500&l=english",
+    "developers": [
+      "Dinosaur Polo Club"
+    ],
+    "publishers": [
+      "Dinosaur Polo Club"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/ss_605e3ca3cea0ce5dd5d784e51afd7a1b681f9443.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "bc165c24f340951d7a9c0ff90e5eb5cdec729b842352fb75fbec99881c8c0f41"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/ss_7a57d11fd0d3a097b02645f96b49f81793b6ac7f.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "2e3644a0d042e2f61430c8daa50ed16e2181b3cb0c5011be18d6f6541c99d22e"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/d34e19a7ab782516e7cfba7b01daaf02b8388e27/ss_d34e19a7ab782516e7cfba7b01daaf02b8388e27.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "77548568fe9dc3640285d5ff3a76b191f9b7b0198ae1a9b947d64dc88f070c1f"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/8a29438b1eeb08022f503e1759099ff1be66caac/ss_8a29438b1eeb08022f503e1759099ff1be66caac.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "36091f6748d3faeffb29292f0ad3f3f005022def0eefb375a677592cb429aba3"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/e24ff73761b2f12d8d2b00aa25dc8c43d19beb31/ss_e24ff73761b2f12d8d2b00aa25dc8c43d19beb31.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "92951be5da9c496e7f93af88cb55a25cd2fd859144ca6b1c980046f32fb74d35"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1127500/c6811006a7a4b07600e8502c8f1671fe56ab006a/ss_c6811006a7a4b07600e8502c8f1671fe56ab006a.1920x1080.jpg?t=1789703699",
+        "local": "images/motorways-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "aefbd49b0506fbc917d27917d766968145f4054951dc83e3c8ac54944a723ca3"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256843552,
+        "name": "Release Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256843552/movie.293x165.jpg?t=1626792750",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1127500/386119/97e4169058f8c22dc461de5a994d29f050b1ef4b/1750624352/dash_av1.mpd?t=1626792750",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1127500/386119/97e4169058f8c22dc461de5a994d29f050b1ef4b/1750624352/dash_h264.mpd?t=1626792750",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1127500/386119/97e4169058f8c22dc461de5a994d29f050b1ef4b/1750624352/hls_264_master.m3u8?t=1626792750",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "unpacking",
+    "appid": 1135690,
+    "name": "Unpacking",
+    "source": "https://store.steampowered.com/app/1135690/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1135690&l=english",
+    "developers": [
+      "Witch Beam"
+    ],
+    "publishers": [
+      "Balor Games"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_b32bfdd3f68e1f9e264bd37e10a464629ca034f8.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ede27558e4bdb05360f8e1570b738d362a771f273adfa77ce839d90d0536f32d"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_9b358510285a4b70e446237de5996bc434415c01.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "80f9434484a8ec5579fcd66e8331313a23712e3a4e2a486ff48318e1b2dd53fd"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_8ad1858b98d2a04212a44b65ce2ae199e02a87cd.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "6ba91b53be61372058276f212827871d8de859ee21c5ee511df01f11b523bac0"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_e0be82259f402c277973c5d0c4f2a22d01d9b1c2.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "e7fc0638336f09ea969a840a223dcef5107c9b1ebd75ec16a8bb3b773d9fccaf"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_e63c93af0d56632ed0c6ddb0e566725dbb0e9f3a.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "286e1d4faba3b47e7f3e8a45ab4e7c848cd6ff30d445c2248164cc16f5f3e06e"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1135690/ss_2066e90763952aac24e03657038977abcf1f7453.1920x1080.jpg?t=1789426289",
+        "local": "images/unpacking-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "7c712a963a44fc81f93565447a46eb16d28ac792d2b4f31941bf44173bd45397"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256858010,
+        "name": "Launch Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256858010/movie.293x165.jpg?t=1635837686",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1135690/412839/1c63f1d588a1925cc567070e0cc1b8ab51943bf3/1750625906/dash_av1.mpd?t=1635837686",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1135690/412839/1c63f1d588a1925cc567070e0cc1b8ab51943bf3/1750625906/dash_h264.mpd?t=1635837686",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1135690/412839/1c63f1d588a1925cc567070e0cc1b8ab51943bf3/1750625906/hls_264_master.m3u8?t=1635837686",
+        "highlight": true
+      },
+      {
+        "id": 256864897,
+        "name": "Accolades Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256864897/movie.293x165.jpg?t=1639478872",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1135690/424527/0e96707327a586dd51cb887c2e48c2e93a05b453/1750625915/dash_av1.mpd?t=1639478872",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1135690/424527/0e96707327a586dd51cb887c2e48c2e93a05b453/1750625915/dash_h264.mpd?t=1639478872",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1135690/424527/0e96707327a586dd51cb887c2e48c2e93a05b453/1750625915/hls_264_master.m3u8?t=1639478872",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "papers",
+    "appid": 239030,
+    "name": "Papers, Please",
+    "source": "https://store.steampowered.com/app/239030/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=239030&l=english",
+    "developers": [
+      "Lucas Pope"
+    ],
+    "publishers": [
+      "3909"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_4cd77e3ef5b147b011a5cf8f96b8bcbcd79b3e15.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-0.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "20c0e0ebb228fc6077800fcedfcede4198a7daae244aaff92a6b987a6f6e97fe"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_a1d08145ac2d3e85e8db440ccfeb7f7ad3c8247a.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-1.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "aef0d1ffef8fda56841971289443fda88efd917b1392ab270316a4bf33d73a77"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_4b50458fbc4afe2917803b59a35afb3e5d61c960.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-2.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "0e622ee780d669acb4ddd55e8d5ba83d93841e696a066086dac38dfc18d759ec"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_958285f31774906eb4def9d98a83e7926ceb3be2.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-3.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "b81a60ea44e69de8d13d3558db6c28eab1ff7d036dff97fb9667a471a136b4af"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_d24155eecb65aaff7367b791bc7d4910fe59b303.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-4.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "2c1b6b1616657289b494c3c50ada70cd36376930663276cca507c797ea57feb7"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239030/ss_6c095a8ff86f9ebf8f796d23b1186c176fd21991.1920x1080.jpg?t=1678266428",
+        "local": "images/papers-5.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "7aecf01778284d111fa00f61cbf0272d86ef5ac17b858acb07b4cd5b9d2f4779"
+      }
+    ],
+    "movies": [
+      {
+        "id": 2028977,
+        "name": "Papers, Please Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2028977/movie.293x165.jpg?t=1447358378",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/239030/12493/25e308189ca35ef9ac9811b3c9ddc34088016038/1750483398/dash_av1.mpd?t=1447358378",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/239030/12493/25e308189ca35ef9ac9811b3c9ddc34088016038/1750483398/dash_h264.mpd?t=1447358378",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/239030/12493/25e308189ca35ef9ac9811b3c9ddc34088016038/1750483398/hls_264_master.m3u8?t=1447358378",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "obra-dinn",
+    "appid": 653530,
+    "name": "Return of the Obra Dinn",
+    "source": "https://store.steampowered.com/app/653530/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=653530&l=english",
+    "developers": [
+      "Lucas Pope"
+    ],
+    "publishers": [
+      "3909"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_7dd3476ace2170e134141e487f9491d4c9d094f3.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-0.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "1c784f1da10751c5a0b057833fd26bc01fc39d03e3574e4bcea0b9bcfa4cc189"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_380dc35237fde7d3863a44270abafc37924d1db4.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-1.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "2feb6481b29104a375b6147d0c6b9337e61aa023c0f6ab86182fffdfd9b7089e"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_69b3c98eda3c3476a4dee6a1a220169ac70dcb6d.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-2.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "3ecf64b03b9e0a90c2c1ffc9cd76daba17ddcd17affef8ce7e231972b45c0494"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_4f555f01fa82723c28fcce8f0909570caaee8e8f.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-3.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "d872c01f85d3686a78885e470647367fca8499ba56b85f1fea1ceaa22c2d2211"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_7a8824f581b399abc52f598966b339fada982349.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-4.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "fb408d8de0a0722eccd3edfff931170fca8f28d6637331ba8732f7bc679cf5d3"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/653530/ss_f3e24e7a7f86ad925076f63b4e6cd86258f63d2c.1920x1080.jpg?t=1686697594",
+        "local": "images/obra-dinn-5.jpg",
+        "width": 1600,
+        "height": 900,
+        "sha256": "214bbcacdb094208886cfcd512449344dab0fe438e1892cfef79552609b44fc2"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256728392,
+        "name": "Announcement",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256728392/movie.293x165.jpg?t=1686697587",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/653530/183863/74b83c24f842bfa11fd5e45b0a8322446c9fd813/1750567368/dash_av1.mpd?t=1686697587",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/653530/183863/74b83c24f842bfa11fd5e45b0a8322446c9fd813/1750567368/dash_h264.mpd?t=1686697587",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/653530/183863/74b83c24f842bfa11fd5e45b0a8322446c9fd813/1750567368/hls_264_master.m3u8?t=1686697587",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "inscryption",
+    "appid": 1092790,
+    "name": "Inscryption",
+    "source": "https://store.steampowered.com/app/1092790/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1092790&l=english",
+    "developers": [
+      "Daniel Mullins Games"
+    ],
+    "publishers": [
+      "Devolver Digital"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_0191a69b0e94a9a7784f5b81e27f06379910645a.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-0.jpg",
+        "width": 1920,
+        "height": 1079,
+        "sha256": "b034e3f4702d5c7a5298e58fe5237b550150e93fbcc4c9e64f5212224fdfe615"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_3b714682e9e0a214df1630a234e9f6764528eece.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-1.jpg",
+        "width": 1920,
+        "height": 1079,
+        "sha256": "26273dbe75763cc40632cbbaf1ee57572489e2b74cf4aa33033b6700850389f5"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_7bfe728822807d232398df1cb1a5d64addd3d8fb.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-2.jpg",
+        "width": 1920,
+        "height": 1079,
+        "sha256": "0281a3ef42691d24e14600291c10401d58c6c404d7b6d0a8acc6bff9d7693907"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_79a146c36a3f0b728a8e0085327cec8c7fba82d6.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-3.jpg",
+        "width": 1919,
+        "height": 1079,
+        "sha256": "0c23a4a67b78fc0a64606fa807eefaae30b56a1a766b7841e70ce1936de1cc25"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_738220c84b63522c4ca8c77fbff1ddb252ea0fe9.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-4.jpg",
+        "width": 1919,
+        "height": 1079,
+        "sha256": "65cd5d0135a3b52e39e7c4474f89809b6287745ea28331234476ed17c021532f"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1092790/ss_e3338b329e4d92b56121f2e849486ee805a56169.1920x1080.jpg?t=1777572925",
+        "local": "images/inscryption-5.jpg",
+        "width": 1919,
+        "height": 1079,
+        "sha256": "e9c788fb6e88f28fa1c08b4a906245705396b0a18b0c1cd747d13554b60d9a12"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256795106,
+        "name": "Inscryption - Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256795106/movie.293x165.jpg?t=1597161792",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1092790/302287/ab0d21c6b888e99deba7fb8ca48e0f34ebba0332/1750618102/dash_av1.mpd?t=1597161792",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1092790/302287/ab0d21c6b888e99deba7fb8ca48e0f34ebba0332/1750618102/dash_h264.mpd?t=1597161792",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1092790/302287/ab0d21c6b888e99deba7fb8ca48e0f34ebba0332/1750618102/hls_264_master.m3u8?t=1597161792",
+        "highlight": true
+      },
+      {
+        "id": 256852985,
+        "name": "Release Date Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256852985/movie.293x165.jpg?t=1711536013",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1092790/403882/734d67fdb26f3a44d766eea69eb1354b5cc4e984/1750618115/dash_av1.mpd?t=1711536013",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1092790/403882/734d67fdb26f3a44d766eea69eb1354b5cc4e984/1750618115/dash_h264.mpd?t=1711536013",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1092790/403882/734d67fdb26f3a44d766eea69eb1354b5cc4e984/1750618115/hls_264_master.m3u8?t=1711536013",
+        "highlight": false
+      }
+    ]
+  },
+  {
+    "slug": "paradise",
+    "appid": 1160220,
+    "name": "Paradise Killer",
+    "source": "https://store.steampowered.com/app/1160220/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1160220&l=english",
+    "developers": [
+      "Kaizen Game Works"
+    ],
+    "publishers": [
+      "Fellow Traveller"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_d9c9c4f0939b2d40a1d02f4fc3e2bf9c6b42a558.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-0.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "9988ad1dd9aa32e3dbe552f3487e00b483a7632b0b28e975c575b7cb596cd4aa"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_5a69d0b1e05df2d5b40aa85d78fb646a7753b026.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "bf2dcba06208753079e3460c9eb4b9258acecd2a44f677ece4bfb36566115352"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_0ee4deeaa33b45f96ac96499c4966577b3f2dd50.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-2.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "0903422d5c8ed372fe7778e07b389dccdd7a8128c8dbb22513db3ed14c1348a7"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_9e21741b9391a3430db34928ef1ca402ddf23ed4.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-3.jpg",
+        "width": 1920,
+        "height": 1040,
+        "sha256": "3f304c97b798e1b8a24e85423072a9d2c612645eb939ddc764aa46f1b1b1834d"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_77e580e497dd0c4ae227e49a0bc543cc7120ac34.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-4.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "ce3eeab407c09a2b5327b5893f6a9f4c3d69ce1a365b7133d709ea6260a746de"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1160220/ss_00c9b6bffcfc19e66237405cb95a8b13cf890a8d.1920x1080.jpg?t=1776963586",
+        "local": "images/paradise-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "e884d463a4070c428525d21b8f7f23845de0bf15f0fd40acb0d2307f0ea014a1"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256878159,
+        "name": "Update Trailer - Available Now",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256878159/movie.293x165.jpg?t=1683089838",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1160220/447545/dfb116e2d194a6ceff5fc19849fb4da0d485dec8/1750630877/dash_av1.mpd?t=1683089838",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/447545/dfb116e2d194a6ceff5fc19849fb4da0d485dec8/1750630877/dash_h264.mpd?t=1683089838",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/447545/dfb116e2d194a6ceff5fc19849fb4da0d485dec8/1750630877/hls_264_master.m3u8?t=1683089838",
+        "highlight": true
+      },
+      {
+        "id": 256878435,
+        "name": "Lady Love Dies catches up with Shinji.",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256878435/movie.293x165.jpg?t=1683089845",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1160220/447994/4996b6e6d07fe01b2eeccd2aa3b4b699980050c3/1750630891/dash_av1.mpd?t=1683089845",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/447994/4996b6e6d07fe01b2eeccd2aa3b4b699980050c3/1750630891/dash_h264.mpd?t=1683089845",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/447994/4996b6e6d07fe01b2eeccd2aa3b4b699980050c3/1750630891/hls_264_master.m3u8?t=1683089845",
+        "highlight": true
+      },
+      {
+        "id": 256800958,
+        "name": "Accolade Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256800958/movie.293x165.jpg?t=1683089873",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1160220/312196/4bf6f604c6ec5045d849bed834610e6880457a82/1750630859/dash_av1.mpd?t=1683089873",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/312196/4bf6f604c6ec5045d849bed834610e6880457a82/1750630859/dash_h264.mpd?t=1683089873",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1160220/312196/4bf6f604c6ec5045d849bed834610e6880457a82/1750630859/hls_264_master.m3u8?t=1683089873",
+        "highlight": true
+      }
+    ]
+  },
+  {
+    "slug": "crazy-taxi",
+    "appid": 71230,
+    "name": "Crazy Taxi",
+    "source": "https://store.steampowered.com/app/71230/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=71230&l=english",
+    "developers": [
+      "SEGA"
+    ],
+    "publishers": [
+      "SEGA"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_bb08922b713140e0e075df587ba39f9c73612b3c.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-0.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "bd677ab293ea3753636a9288d4f36a4255d3e213592afb03a9f3c860ca435f85"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_5ddc57dd3e43d29787eceaf42e0e30a49419a371.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-1.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "daa0fe8b821e7202f1714e7ffc6b5a440ed1f5fd1a927ac60996cf9f1b4d8690"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_3e9f51f97a38e52a03749975a595754335427c4a.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-2.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "424d4cdf158c5c123d1d52228cbe5fde0bbbf7ac4b76f9b8d81d344b01384131"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_837068ece0806b4f9d654ed772b35d0c90f6a8c2.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-3.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "7a3ae619ae36b944f4873ae6f6867cb57add28a7c453ddf8422ea0821029a9c1"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_24f2dcfd4e52bb49cc5c0bdac091a86563753ceb.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-4.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "b254e55b5fc09041b62912d4049034d814e721c9ce1d81f9eec9c0af9ced5997"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/71230/ss_0a8605142396d6a82cc40fc02d21820db5b94723.1920x1080.jpg?t=1733765150",
+        "local": "images/crazy-taxi-5.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "244b68f36dca5572929ebe6d84e829aa76d7026d0ade194aaab19a2dc3e8bf0a"
+      }
+    ],
+    "movies": [
+      {
+        "id": 80658,
+        "name": "Dreamcast Collection Trailer (EN) (ESRB)",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/80658/movie.293x165.jpg?t=1705675828",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/71230/4813/d8d4c5fee540bb20e617a95513cd19421934f5e7/1751249929/dash_av1.mpd?t=1705675828",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/71230/4813/d8d4c5fee540bb20e617a95513cd19421934f5e7/1751249929/dash_h264.mpd?t=1705675828",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/71230/4813/d8d4c5fee540bb20e617a95513cd19421934f5e7/1751249929/hls_264_master.m3u8?t=1705675828",
+        "highlight": false
+      }
+    ]
+  },
+  {
+    "slug": "pacific-drive",
+    "appid": 1458140,
+    "name": "Pacific Drive",
+    "source": "https://store.steampowered.com/app/1458140/",
+    "metadata_url": "https://store.steampowered.com/api/appdetails?appids=1458140&l=english",
+    "developers": [
+      "Ironwood Studios"
+    ],
+    "publishers": [
+      "Kepler Interactive"
+    ],
+    "retrieved": "2026-10-23",
+    "shots": [
+      {
+        "id": 0,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_a753a13813556eb20e02763e82877485dac848ab.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-0.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "144b664ab43fd0001919750f099bd019df963b539ac3d1a7dfcc54eb1f4b3a8f"
+      },
+      {
+        "id": 1,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_7dfb1b9087a859b49debadb941269f971b212277.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-1.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "2ee3abb70506c507b69d5b0247ba46da7f5e128d5421dbbac93a08ebbba28be6"
+      },
+      {
+        "id": 2,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_930c6e45bb3ea4510af967f94650007ea9b73383.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-2.jpg",
+        "width": 1920,
+        "height": 1073,
+        "sha256": "860adf6b3589f1ff19ad60e51b5f9b2c7abf0f9c185b741ebf4aa120119771e6"
+      },
+      {
+        "id": 3,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_d3a7abac1b8cc4a09aff0ff023998c6aa0404c3c.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-3.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "396b7c91382075cb41bc2a2ee2d4c472cf28786d48da18f6dd5d69099c2ab090"
+      },
+      {
+        "id": 4,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_95e6fcee0a43efdc430e01c9660b3ab2b61658bc.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-4.jpg",
+        "width": 1920,
+        "height": 1068,
+        "sha256": "49750e1640a7adf982997e614067273cafe0885ded1bb44c90f5ba9ebea07825"
+      },
+      {
+        "id": 5,
+        "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1458140/ss_1b7b6b59d66bc85538302850b873eb2797f33205.1920x1080.jpg?t=1792430302",
+        "local": "images/pacific-drive-5.jpg",
+        "width": 1920,
+        "height": 1080,
+        "sha256": "cd88d39db6f58db9349333c58485c5f0d19172fd2f87a0a82755bbfb8b2f5942"
+      }
+    ],
+    "movies": [
+      {
+        "id": 256929444,
+        "name": "Pacific Drive - 2023 Gameplay Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256929444/movie.293x165.jpg?t=1683140284",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/537096/6175980df1ad0a369f0150579ed0ef146d53c373/1750691469/dash_av1.mpd?t=1683140284",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/537096/6175980df1ad0a369f0150579ed0ef146d53c373/1750691469/dash_h264.mpd?t=1683140284",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/537096/6175980df1ad0a369f0150579ed0ef146d53c373/1750691469/hls_264_master.m3u8?t=1683140284",
+        "highlight": true
+      },
+      {
+        "id": 257120987,
+        "name": "Content Update 4 (Expeditions) Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257120987/24d949d9fc69eaccb776457f95ddd9f6ee17319b/movie_600x337.jpg?t=1744042721",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/861730/7aaeb4b94f189afb848a7da9542fb31ace969c02/1750691535/dash_av1.mpd?t=1744042721",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/861730/7aaeb4b94f189afb848a7da9542fb31ace969c02/1750691535/dash_h264.mpd?t=1744042721",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/861730/7aaeb4b94f189afb848a7da9542fb31ace969c02/1750691535/hls_264_master.m3u8?t=1744042721",
+        "highlight": true
+      },
+      {
+        "id": 257002017,
+        "name": "Release Trailer (available now)",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257002017/movie.293x165.jpg?t=1708606331",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/664208/9654db96eedb0e414f9b55a382b1c343e5ddf6a5/1750691513/dash_av1.mpd?t=1708606331",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/664208/9654db96eedb0e414f9b55a382b1c343e5ddf6a5/1750691513/dash_h264.mpd?t=1708606331",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/664208/9654db96eedb0e414f9b55a382b1c343e5ddf6a5/1750691513/hls_264_master.m3u8?t=1708606331",
+        "highlight": true
+      },
+      {
+        "id": 257074579,
+        "name": "Content Update 3 Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/257074579/227d7cc274c189fbb1431039f1b1f172ee816d12/movie_600x337.jpg?t=1731949345",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/787531/3937b45dd3806d11a2f8c10d7e43c0bd594ef30c/1750691516/dash_av1.mpd?t=1731949345",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/787531/3937b45dd3806d11a2f8c10d7e43c0bd594ef30c/1750691516/dash_h264.mpd?t=1731949345",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/787531/3937b45dd3806d11a2f8c10d7e43c0bd594ef30c/1750691516/hls_264_master.m3u8?t=1731949345",
+        "highlight": true
+      },
+      {
+        "id": 256985453,
+        "name": "Release Date 2024 Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256985453/movie.293x165.jpg?t=1708348869",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/634825/5e6bfd16bc45b4e246626a9289b87a23e0732446/1750691509/dash_av1.mpd?t=1708348869",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/634825/5e6bfd16bc45b4e246626a9289b87a23e0732446/1750691509/dash_h264.mpd?t=1708348869",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/634825/5e6bfd16bc45b4e246626a9289b87a23e0732446/1750691509/hls_264_master.m3u8?t=1708348869",
+        "highlight": true
+      },
+      {
+        "id": 256964963,
+        "name": "Story Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256964963/movie.293x165.jpg?t=1692879998",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/599420/810c5f20b65a4d278d6f6ec0de027e79c947a402/1750691501/dash_av1.mpd?t=1692879998",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/599420/810c5f20b65a4d278d6f6ec0de027e79c947a402/1750691501/dash_h264.mpd?t=1692879998",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/599420/810c5f20b65a4d278d6f6ec0de027e79c947a402/1750691501/hls_264_master.m3u8?t=1692879998",
+        "highlight": true
+      },
+      {
+        "id": 256929446,
+        "name": "Pacific Drive | 2022 Announcement Trailer",
+        "thumbnail": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/256929446/movie.293x165.jpg?t=1708606337",
+        "dash_av1": "https://video.akamai.steamstatic.com/store_trailers/1458140/537098/792e404284d95c0ac531ccff3afec2e5f093db32/1750691493/dash_av1.mpd?t=1708606337",
+        "dash_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/537098/792e404284d95c0ac531ccff3afec2e5f093db32/1750691493/dash_h264.mpd?t=1708606337",
+        "hls_h264": "https://video.akamai.steamstatic.com/store_trailers/1458140/537098/792e404284d95c0ac531ccff3afec2e5f093db32/1750691493/hls_264_master.m3u8?t=1708606337",
+        "highlight": true
+      }
+    ]
+  }
+]

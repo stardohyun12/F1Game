@@ -1,0 +1,11 @@
+{
+  "asset_id": "cargo_fish_v02_atlas",
+  "path": "art/models/cargo_fish_v02/cargo_fish_v02_atlas_64.png",
+  "source_url": "https://ambientcg.com/view?id=CardboardSet001; script://cargo_fish_v02/build_atlas.py",
+  "license": "CC0-1.0; Project-authored",
+  "accessed": "2026-10-23",
+  "tool": "photo_to_pixel.quantize_exact; build_atlas.py; Blender bpy",
+  "ai_generated": "no",
+  "sha256": "8e8a1491dd0307d2f49d632b35748e878bbd8eaef3400de6d3addfb3a6fd9274",
+  "notes": "CC0 photo only under paper label. EPS/fish/ice/liner authored with shared palette; no generated image. Manufacturer dimensions reused."
+}

@@ -1,0 +1,358 @@
+{
+  "pass": true,
+  "scope": "10 review UI sprites only. Actual PNG pixels, immutable D-123 slot sizes/borders, SHA-256 + declared photographic/script provenance. Does not infer AI origin from pixels, inspect a release build, or test Unity import. NPOT slot sizes are intentional; all legacy GLB checks remain separate.",
+  "checks": {
+    "schema": true,
+    "ten_unique_expected_slots": true,
+    "palette_32": true,
+    "palette_matches_manifest": true,
+    "review_only_sprite_root": true,
+    "exactly_ten_pngs_on_disk": true,
+    "photographic_input_hash_matches": true,
+    "photographic_lineage_recorded": true,
+    "all_sprite_checks": true
+  },
+  "sprite_count": 10,
+  "sprites": [
+    {
+      "slot": "paperPanel",
+      "path": "art/_review/2026-10-23-ui-final/sprites/paperPanel.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        256
+      ],
+      "border_LBRT": [
+        16,
+        24,
+        16,
+        16
+      ],
+      "mode": "Tiled",
+      "used_colors": 2,
+      "outside_colors": [],
+      "sha256": "6bdb78838cd2d1ffc2925558ba878154bf8f0d3c28caa005d0e0fc3a36b10110"
+    },
+    {
+      "slot": "paperCard",
+      "path": "art/_review/2026-10-23-ui-final/sprites/paperCard.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        320
+      ],
+      "border_LBRT": [
+        16,
+        24,
+        16,
+        40
+      ],
+      "mode": "Tiled",
+      "used_colors": 2,
+      "outside_colors": [],
+      "sha256": "3ff08898974c7f8da7b29b466837fd230b69778695b15351bc2fa4730411a998"
+    },
+    {
+      "slot": "slipHeader",
+      "path": "art/_review/2026-10-23-ui-final/sprites/slipHeader.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        64
+      ],
+      "border_LBRT": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "mode": "Tiled",
+      "used_colors": 2,
+      "outside_colors": [],
+      "sha256": "896b617efe2d0bd6c2aca475902de656d859636e1c50c00199e607eb54bcfd14"
+    },
+    {
+      "slot": "stampRing",
+      "path": "art/_review/2026-10-23-ui-final/sprites/stampRing.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        256
+      ],
+      "border_LBRT": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mode": "Simple",
+      "used_colors": 1,
+      "outside_colors": [],
+      "sha256": "2b10a16f626a1a639c8b0076330a899d21c717a9f9751c673ba41b5dfffe0542"
+    },
+    {
+      "slot": "buttonPlate",
+      "path": "art/_review/2026-10-23-ui-final/sprites/buttonPlate.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        80
+      ],
+      "border_LBRT": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "mode": "Sliced",
+      "used_colors": 3,
+      "outside_colors": [],
+      "sha256": "0b42be5642776a6b98ee1e901bb839f932d21417b6f2bf246ac985cef86d7090"
+    },
+    {
+      "slot": "enamelPlate",
+      "path": "art/_review/2026-10-23-ui-final/sprites/enamelPlate.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        128
+      ],
+      "border_LBRT": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "mode": "Sliced",
+      "used_colors": 4,
+      "outside_colors": [],
+      "sha256": "9bbb53b3babc6ce11fcf2516d9664f49c9dbc379d8c26beab8936cebf2d0bfb7"
+    },
+    {
+      "slot": "gaugeFill",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeFill.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        128,
+        24
+      ],
+      "border_LBRT": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "mode": "Sliced",
+      "used_colors": 1,
+      "outside_colors": [],
+      "sha256": "24f9532b96decd2af7be278dbc894af5f96c0ef687d9995f900e602fbcc6935b"
+    },
+    {
+      "slot": "stampSprite",
+      "path": "art/_review/2026-10-23-ui-final/sprites/stampSprite.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        300,
+        300
+      ],
+      "border_LBRT": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "mode": "Simple",
+      "used_colors": 1,
+      "outside_colors": [],
+      "sha256": "4dfad9aed92b78e7eb0156300427f012d946d7ea9138685f09f712cda58a8087"
+    },
+    {
+      "slot": "gaugeTrackSprite",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeTrackSprite.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        256,
+        32
+      ],
+      "border_LBRT": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "mode": "Sliced",
+      "used_colors": 2,
+      "outside_colors": [],
+      "sha256": "1d932002cbb64db0bfb67e634c421f846e577a91257f0b8cdc6b19970e38dc07"
+    },
+    {
+      "slot": "gaugeFillSprite",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeFillSprite.png",
+      "pass": true,
+      "checks": {
+        "png_rgba": true,
+        "existing_size_preserved": true,
+        "existing_border_preserved": true,
+        "owner_matches": true,
+        "alpha_binary": true,
+        "nonempty_visible_content": true,
+        "palette_outside_zero": true,
+        "every_4px_cell_uniform": true,
+        "manifest_sha_matches_bytes": true,
+        "provenance_registered_non_ai": true,
+        "mode_matches_contract": true,
+        "full_color_white_tint_declared": true,
+        "logical_2px_contract": true
+      },
+      "size": [
+        128,
+        24
+      ],
+      "border_LBRT": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "mode": "Sliced",
+      "used_colors": 1,
+      "outside_colors": [],
+      "sha256": "24f9532b96decd2af7be278dbc894af5f96c0ef687d9995f900e602fbcc6935b"
+    }
+  ]
+}

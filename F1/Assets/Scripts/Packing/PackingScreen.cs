@@ -45,6 +45,7 @@ namespace PitCrew.Packing
 
         // UI refs (filled in BuildSidePanels)
         TMP_Text titleText, totalCostText;
+        TMP_Text timeLeftText;   // 과제 1827: 포장 중에도 런 시계(주문판부터 흐름)가 보이게
         TMP_Text[] costPerMaterialText = new TMP_Text[3];
         TMP_Text[] cardCostText = new TMP_Text[3];   // 재료 카드의 ₩/m — 랩 폭 따라 갱신
         Image[] materialCardImages = new Image[3];
@@ -226,7 +227,7 @@ namespace PitCrew.Packing
                 Destroy(panelRoot);
                 panelRoot = null;
                 // UI 캐시 참조 초기화 — 죽은 객체 참조 방지
-                titleText = totalCostText = widthLabel = null;
+                titleText = totalCostText = widthLabel = null; timeLeftText = null;
                 gradePreviewText = null;
                 for (int i = 0; i < costPerMaterialText.Length; i++) costPerMaterialText[i] = null;
                 for (int i = 0; i < cardCostText.Length; i++) cardCostText[i] = null;
@@ -349,6 +350,10 @@ namespace PitCrew.Packing
                 Vector2.zero, new Vector2(400, 60), 30, FontStyles.Bold,
                 TextAlignmentOptions.Center);
             titleText.enableAutoSizing = true; titleText.fontSizeMin = 18; titleText.fontSizeMax = 32;
+            timeLeftText = MakeLabel(panel.transform, "TimeLeftLabel", "",
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0, -42), new Vector2(400, 30), 22, FontStyles.Bold,
+                TextAlignmentOptions.Center);
 
             // ▶ 다음 물건 — 배치하기 왼쪽으로 충분히 띄움 (-340 ± 90 → x: -430~-250)
             nextBtn = MakeButton(panel.transform, "BtnNext", "다음 물건 ▶",
@@ -1089,10 +1094,22 @@ namespace PitCrew.Packing
         // UnityEngine.Input API 호출이 InvalidOperationException. 일단 제거. ◀/▶ 버튼 명시화로 대체.
         // 추후 Input System actions 라우팅 필요 시 별도 작업.
 
+        /// <summary>남은 시간 = RunController.TimeRemaining (프로토타입 모드면 주문판·포장·주행 공용 시계). 30초 아래면 빨강.</summary>
+        void UpdateTimeLeft()
+        {
+            if (timeLeftText == null) return;
+            var rc = Services.Run as RunController;
+            if (rc == null || !rc.ClockRunning) { timeLeftText.text = ""; return; }
+            float t = Mathf.Max(0f, rc.TimeRemaining);
+            timeLeftText.text = $"남은 시간 {(int)t / 60}:{(int)t % 60:00}";
+            timeLeftText.color = t < 30f ? new Color(1f, 0.42f, 0.36f) : (UITheme.Active != null ? UITheme.Active.colorText : kText);
+        }
+
         void LateUpdate()
         {
             UpdateFrontMarkers();
             if (!IsVisible) return;
+            UpdateTimeLeft();
             var w = ActiveItem != null ? ActiveItem.GetComponent<WrapState>() : null;
             if (w == null) return;
             var mats = GetMaterials();

@@ -1,0 +1,23 @@
+{
+  "id": "wood_plank_wall",
+  "path": "art/textures/2026-10-24-kp/sources/wood/wood_plank_wall_diff_1k.png",
+  "url": "https://polyhaven.com/a/wood_plank_wall",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wood_plank_wall/wood_plank_wall_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Dimitrios Savva": "All"
+  },
+  "dimensions_mm": [
+    1000,
+    1000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "7a39214f063b62c2c14101b989145ceb1f3faecaf37344a4bb5cbbd9c1bd939b",
+  "md5": "297a3ed5dd79d6b0f23b670fa04230d7",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

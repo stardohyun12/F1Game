@@ -1,0 +1,200 @@
+{
+  "pass": true,
+  "html_local_links": [
+    {
+      "path": "SOURCES.md",
+      "exists": true
+    },
+    {
+      "path": "ATLAS-PROPOSAL.md",
+      "exists": true
+    },
+    {
+      "path": "check_asset.json",
+      "exists": true
+    },
+    {
+      "path": "visual-gate.md",
+      "exists": true
+    },
+    {
+      "path": "trial-copy.json",
+      "exists": true
+    },
+    {
+      "path": "review/material-stage-960.png",
+      "exists": true
+    },
+    {
+      "path": "review/material-stage-oblique-960.png",
+      "exists": true
+    },
+    {
+      "path": "compare-full-4x.png",
+      "exists": true
+    },
+    {
+      "path": "compare-4x.png",
+      "exists": true
+    },
+    {
+      "path": "albedo/A1_KP_wood_64ppm.png",
+      "exists": true
+    },
+    {
+      "path": "review/wood_repeat_3x3.png",
+      "exists": true
+    },
+    {
+      "path": "proof/wood_metric.glb",
+      "exists": true
+    },
+    {
+      "path": "albedo/A1_KP_stone_64ppm.png",
+      "exists": true
+    },
+    {
+      "path": "review/stone_repeat_3x3.png",
+      "exists": true
+    },
+    {
+      "path": "proof/stone_metric.glb",
+      "exists": true
+    },
+    {
+      "path": "albedo/A1_KP_plaster_64ppm.png",
+      "exists": true
+    },
+    {
+      "path": "review/plaster_repeat_3x3.png",
+      "exists": true
+    },
+    {
+      "path": "proof/plaster_metric.glb",
+      "exists": true
+    },
+    {
+      "path": "albedo/A1_KP_roof_64ppm.png",
+      "exists": true
+    },
+    {
+      "path": "review/roof_repeat_3x3.png",
+      "exists": true
+    },
+    {
+      "path": "proof/roof_metric.glb",
+      "exists": true
+    },
+    {
+      "path": "research/visual-r1/visual-gate.md",
+      "exists": true
+    }
+  ],
+  "union_albedo_colors": 18,
+  "provenance_current": [
+    {
+      "asset_id": "a1_kp_wood_source",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_wood_albedo",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_wood_proof_quad",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_stone_source",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_stone_albedo",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_stone_proof_quad",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_plaster_source",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_plaster_albedo",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_plaster_proof_quad",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_roof_source",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_roof_albedo",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_roof_proof_quad",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_wood_trial_copy",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_stone_trial_copy",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_plaster_trial_copy",
+      "current": true
+    },
+    {
+      "asset_id": "a1_kp_roof_trial_copy",
+      "current": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "review/material-stage-960.png",
+      "sha256": "c48a6b22bc465c02c33ae4b73bdd444b2eefd125e79b3b0ba0d43ac7180de2c0",
+      "size_px": [
+        960,
+        540
+      ]
+    },
+    {
+      "path": "review/material-stage-oblique-960.png",
+      "sha256": "db6b6cc2a8f44579d3be93551b3a3a66021608f4d0045d8e344afb5d9a5cfaa6",
+      "size_px": [
+        960,
+        540
+      ]
+    },
+    {
+      "path": "compare-4x.png",
+      "sha256": "f0096f7e60bf6fe449d5e51ef964ceec72a66a14bd4b6805a96daeaeea71179c",
+      "size_px": [
+        1160,
+        1374
+      ]
+    },
+    {
+      "path": "compare-full-4x.png",
+      "sha256": "027b59980ce0024e6e1464ab124985f6744c96b3dea0b93a1976fe121b4edf21",
+      "size_px": [
+        3400,
+        2810
+      ]
+    },
+    {
+      "path": "visual-gate.md",
+      "sha256": "e4493fd81d40a9ce9dd818ba424ce8706e7cbd842eb6e5c2ae335f9405682fea",
+      "size_px": null
+    }
+  ],
+  "scope": "File existence and byte hashes only; HTML browser render not tested."
+}

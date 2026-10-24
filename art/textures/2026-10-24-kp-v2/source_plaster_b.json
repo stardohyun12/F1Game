@@ -1,0 +1,23 @@
+{
+  "id": "rough_plaster_broken",
+  "path": "art/textures/2026-10-24-kp-v2/sources/plaster_b/rough_plaster_broken_diff_1k.png",
+  "url": "https://polyhaven.com/a/rough_plaster_broken",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/rough_plaster_broken/rough_plaster_broken_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "dimensions_mm": [
+    1500,
+    1500
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "0d220e1aefc3f002a80c7a88c9f1605a13e93f1dcc1b554c2274b1c8a240a6f6",
+  "md5": "eb13f6fd0868d744158b38936c27ae52",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

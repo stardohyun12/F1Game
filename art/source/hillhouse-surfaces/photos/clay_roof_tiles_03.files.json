@@ -1,0 +1,846 @@
+{
+  "Diffuse": {
+    "8k": {
+      "jpg": {
+        "size": 40957751,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.jpg",
+        "md5": "af086f8784bc0922e89dd99365405482"
+      },
+      "png": {
+        "size": 399648814,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.png",
+        "md5": "d9a4047b1fc3c6e288fcae845ba6dbb6"
+      },
+      "exr": {
+        "size": 66524810,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.exr",
+        "md5": "e56b66b5438437eef1f2ac6c7362a7e7"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 12883184,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.jpg",
+        "md5": "2d3b6aada3c8202b709d05c6840c7abf"
+      },
+      "png": {
+        "size": 100580753,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.png",
+        "md5": "6e31e7aed9cd6cdad1f1cb4359f1ab7a"
+      },
+      "exr": {
+        "size": 22584317,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.exr",
+        "md5": "55f9ea225885b104da1ffbb92d07b0fb"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 3737900,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.jpg",
+        "md5": "edc547de2a19296a42c8a4de61179b8f"
+      },
+      "png": {
+        "size": 25891435,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.png",
+        "md5": "18478f71b441e595a3ff1bc52f4e33ca"
+      },
+      "exr": {
+        "size": 7033058,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.exr",
+        "md5": "02673c74f2d35d3e6d3c28cc5e1c1912"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 970368,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.jpg",
+        "md5": "3600516ecf26b60a8d46dabe2007a7ba"
+      },
+      "png": {
+        "size": 6536956,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.png",
+        "md5": "3b47a26515970f6b6f71319da1494ed7"
+      },
+      "exr": {
+        "size": 1938511,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.exr",
+        "md5": "0b4a19598dac01c213e8267f2f09a2bf"
+      }
+    }
+  },
+  "nor_dx": {
+    "8k": {
+      "jpg": {
+        "size": 51401299,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_8k.jpg",
+        "md5": "64f8d0b1a03f881672773711c37f01e1"
+      },
+      "png": {
+        "size": 341330742,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_8k.png",
+        "md5": "cf75faecb8ac2b6e5da48f4cbba22486"
+      },
+      "exr": {
+        "size": 100215264,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_8k.exr",
+        "md5": "98fba70411f5993bc52a9e45bff95eab"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 15623755,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_4k.jpg",
+        "md5": "ca14409ff830523b63b5e975c9f68548"
+      },
+      "png": {
+        "size": 90190631,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_4k.png",
+        "md5": "1c73499902ca0b324902467006edafcb"
+      },
+      "exr": {
+        "size": 32478577,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_4k.exr",
+        "md5": "2417ae0d46465072d844981f461f62b0"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 4056708,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_2k.jpg",
+        "md5": "c7131920485b0e1ea8354dd650442d1c"
+      },
+      "png": {
+        "size": 22952923,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_2k.png",
+        "md5": "c64521a5c83dd08bfb9c0fd42f9af877"
+      },
+      "exr": {
+        "size": 8717993,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_2k.exr",
+        "md5": "93bc0e97aa120d9e22d3353a1ccdeb50"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 978464,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_1k.jpg",
+        "md5": "575ca44bc2a5bde6dae925889ae165c6"
+      },
+      "png": {
+        "size": 5692684,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_1k.png",
+        "md5": "30006531b7cecfc64d8311e80dd81f91"
+      },
+      "exr": {
+        "size": 2153005,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_dx_1k.exr",
+        "md5": "59548b73951d34f5f0d840f00e152463"
+      }
+    }
+  },
+  "nor_gl": {
+    "8k": {
+      "jpg": {
+        "size": 51836064,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.jpg",
+        "md5": "f841d1a97c8b0961c3ff3726f1b19dd3"
+      },
+      "png": {
+        "size": 342305729,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.png",
+        "md5": "6a398922a395ab7e40d2b809baf9deeb"
+      },
+      "exr": {
+        "size": 99515896,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.exr",
+        "md5": "773a81353cd636613d39e1f975dd55cf"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 15739534,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.jpg",
+        "md5": "5b1c00142da4e137f5b893c0286885b7"
+      },
+      "png": {
+        "size": 90194266,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.png",
+        "md5": "fcf588e33bc64416ae2e7dbe8731dc8f"
+      },
+      "exr": {
+        "size": 32359677,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.exr",
+        "md5": "f8694af10c3fa16a0c041555d46d2718"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 4062956,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.jpg",
+        "md5": "1ada63b5a9865bc5acb74a558b80c93d"
+      },
+      "png": {
+        "size": 22953149,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.png",
+        "md5": "fa9fe4659205dc033c81dcb7782ab93f"
+      },
+      "exr": {
+        "size": 8685634,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.exr",
+        "md5": "f707e713ff750a4c3c82e469524d88f1"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 974757,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.jpg",
+        "md5": "61b471769ef1f72674d1647ff08cc87b"
+      },
+      "png": {
+        "size": 5693084,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.png",
+        "md5": "1d5c7d78f81f59aabaf8cdab53c17b7d"
+      },
+      "exr": {
+        "size": 2153711,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.exr",
+        "md5": "2494a203080795ddee6db7d494670956"
+      }
+    }
+  },
+  "blend": {
+    "8k": {
+      "blend": {
+        "include": {
+          "textures/clay_roof_tiles_03_nor_gl_8k.exr": {
+            "size": 99515896,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.exr",
+            "md5": "773a81353cd636613d39e1f975dd55cf"
+          },
+          "textures/clay_roof_tiles_03_disp_8k.png": {
+            "size": 85143709,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_disp_8k.png",
+            "md5": "171daac041fe1b0cf5e463dc3daf9e7d"
+          },
+          "textures/clay_roof_tiles_03_diff_8k.jpg": {
+            "size": 40957751,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.jpg",
+            "md5": "af086f8784bc0922e89dd99365405482"
+          },
+          "textures/clay_roof_tiles_03_rough_8k.exr": {
+            "size": 12468776,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_rough_8k.exr",
+            "md5": "e1a5949b18c6d0dc17863cb8d92e80a9"
+          }
+        },
+        "size": 216530,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/8k/clay_roof_tiles_03/clay_roof_tiles_03_8k.blend",
+        "md5": "6d5746eea5ad0f51d5f6e01478f01bbd"
+      }
+    },
+    "4k": {
+      "blend": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_4k.jpg": {
+            "size": 12883184,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.jpg",
+            "md5": "2d3b6aada3c8202b709d05c6840c7abf"
+          },
+          "textures/clay_roof_tiles_03_rough_4k.exr": {
+            "size": 4339269,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_rough_4k.exr",
+            "md5": "46a04ec8edc5ffee11c29aa101402eb4"
+          },
+          "textures/clay_roof_tiles_03_disp_4k.png": {
+            "size": 23938126,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_disp_4k.png",
+            "md5": "ee9024f5139fcf139a3277572e81b8fc"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_4k.exr": {
+            "size": 32359677,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.exr",
+            "md5": "f8694af10c3fa16a0c041555d46d2718"
+          }
+        },
+        "size": 216796,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/4k/clay_roof_tiles_03/clay_roof_tiles_03_4k.blend",
+        "md5": "02da253da2219360c6244ac68cdd346f"
+      }
+    },
+    "2k": {
+      "blend": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_2k.jpg": {
+            "size": 3737900,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.jpg",
+            "md5": "edc547de2a19296a42c8a4de61179b8f"
+          },
+          "textures/clay_roof_tiles_03_rough_2k.exr": {
+            "size": 1454928,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_rough_2k.exr",
+            "md5": "002b8b86900875ed82a4cd9748402d4a"
+          },
+          "textures/clay_roof_tiles_03_disp_2k.png": {
+            "size": 6376814,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_disp_2k.png",
+            "md5": "436043ff3d0a34c916914e3d4b1feb52"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_2k.exr": {
+            "size": 8685634,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.exr",
+            "md5": "f707e713ff750a4c3c82e469524d88f1"
+          }
+        },
+        "size": 216970,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/2k/clay_roof_tiles_03/clay_roof_tiles_03_2k.blend",
+        "md5": "48b71ed2458de573af7a48a1c3f4083a"
+      }
+    },
+    "1k": {
+      "blend": {
+        "include": {
+          "textures/clay_roof_tiles_03_nor_gl_1k.exr": {
+            "size": 2153711,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.exr",
+            "md5": "2494a203080795ddee6db7d494670956"
+          },
+          "textures/clay_roof_tiles_03_diff_1k.jpg": {
+            "size": 970368,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.jpg",
+            "md5": "3600516ecf26b60a8d46dabe2007a7ba"
+          },
+          "textures/clay_roof_tiles_03_disp_1k.png": {
+            "size": 1624665,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_disp_1k.png",
+            "md5": "0444b93ab1594680621fb6150963400e"
+          },
+          "textures/clay_roof_tiles_03_rough_1k.exr": {
+            "size": 431190,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_rough_1k.exr",
+            "md5": "755424f48cdfbdf379ce331e4eb771a2"
+          }
+        },
+        "size": 216399,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/blend/1k/clay_roof_tiles_03/clay_roof_tiles_03_1k.blend",
+        "md5": "57bf9ddaca70dda9264f59a1f08af8f3"
+      }
+    }
+  },
+  "gltf": {
+    "8k": {
+      "gltf": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_8k.jpg": {
+            "size": 40957751,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.jpg",
+            "md5": "af086f8784bc0922e89dd99365405482"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_8k.jpg": {
+            "size": 51836064,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.jpg",
+            "md5": "f841d1a97c8b0961c3ff3726f1b19dd3"
+          },
+          "textures/clay_roof_tiles_03_arm_8k.jpg": {
+            "size": 34698362,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_arm_8k.jpg",
+            "md5": "132e339f417331109d98218f0116b44f"
+          },
+          "clay_roof_tiles_03.bin": {
+            "size": 2368372,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/clay_roof_tiles_03/clay_roof_tiles_03.bin",
+            "md5": "420f311dc6bf2d3b3b73dc1a0fea40aa"
+          }
+        },
+        "size": 2827,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/clay_roof_tiles_03/clay_roof_tiles_03_8k.gltf",
+        "md5": "caa20b01dcc39673a1024bbbfb11cef9"
+      }
+    },
+    "4k": {
+      "gltf": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_4k.jpg": {
+            "size": 12883184,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.jpg",
+            "md5": "2d3b6aada3c8202b709d05c6840c7abf"
+          },
+          "textures/clay_roof_tiles_03_arm_4k.jpg": {
+            "size": 8341388,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_arm_4k.jpg",
+            "md5": "b3ca74be18ab7b1c23b08948a51f4ee3"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_4k.jpg": {
+            "size": 15739534,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.jpg",
+            "md5": "5b1c00142da4e137f5b893c0286885b7"
+          },
+          "clay_roof_tiles_03.bin": {
+            "size": 2368372,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/clay_roof_tiles_03/clay_roof_tiles_03.bin",
+            "md5": "420f311dc6bf2d3b3b73dc1a0fea40aa"
+          }
+        },
+        "size": 2827,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/4k/clay_roof_tiles_03/clay_roof_tiles_03_4k.gltf",
+        "md5": "1a62a8c7780ac394f1338545f055a427"
+      }
+    },
+    "2k": {
+      "gltf": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_2k.jpg": {
+            "size": 3737900,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.jpg",
+            "md5": "edc547de2a19296a42c8a4de61179b8f"
+          },
+          "textures/clay_roof_tiles_03_arm_2k.jpg": {
+            "size": 2251616,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_arm_2k.jpg",
+            "md5": "35a57801c486c988a884f71a8f11a749"
+          },
+          "clay_roof_tiles_03.bin": {
+            "size": 2368372,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/clay_roof_tiles_03/clay_roof_tiles_03.bin",
+            "md5": "420f311dc6bf2d3b3b73dc1a0fea40aa"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_2k.jpg": {
+            "size": 4062956,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.jpg",
+            "md5": "1ada63b5a9865bc5acb74a558b80c93d"
+          }
+        },
+        "size": 2827,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/2k/clay_roof_tiles_03/clay_roof_tiles_03_2k.gltf",
+        "md5": "710d7a3123b96e5acebb2dad5f6b74dd"
+      }
+    },
+    "1k": {
+      "gltf": {
+        "include": {
+          "textures/clay_roof_tiles_03_arm_1k.jpg": {
+            "size": 620705,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_arm_1k.jpg",
+            "md5": "c93203da05b1d1671877b1e97fdb10fb"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_1k.jpg": {
+            "size": 974757,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.jpg",
+            "md5": "61b471769ef1f72674d1647ff08cc87b"
+          },
+          "textures/clay_roof_tiles_03_diff_1k.jpg": {
+            "size": 970368,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.jpg",
+            "md5": "3600516ecf26b60a8d46dabe2007a7ba"
+          },
+          "clay_roof_tiles_03.bin": {
+            "size": 2368372,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/8k/clay_roof_tiles_03/clay_roof_tiles_03.bin",
+            "md5": "420f311dc6bf2d3b3b73dc1a0fea40aa"
+          }
+        },
+        "size": 2827,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/gltf/1k/clay_roof_tiles_03/clay_roof_tiles_03_1k.gltf",
+        "md5": "47ee81b59117264c8d69b6112593a933"
+      }
+    }
+  },
+  "arm": {
+    "8k": {
+      "jpg": {
+        "size": 34698362,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_arm_8k.jpg",
+        "md5": "132e339f417331109d98218f0116b44f"
+      },
+      "png": {
+        "size": 157065008,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_arm_8k.png",
+        "md5": "a5c661587031ddd80051f8e96c5d1d57"
+      },
+      "exr": {
+        "size": 56593381,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_arm_8k.exr",
+        "md5": "8e1aa4f8ce5e88f961fa77dc9a7e6c40"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 8341388,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_arm_4k.jpg",
+        "md5": "b3ca74be18ab7b1c23b08948a51f4ee3"
+      },
+      "png": {
+        "size": 45047856,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_arm_4k.png",
+        "md5": "4ccfe5e84469e2c4ab512ca17e36eaed"
+      },
+      "exr": {
+        "size": 13636160,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_arm_4k.exr",
+        "md5": "b7648f62e924ce768f20981e1dd57560"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 2251616,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_arm_2k.jpg",
+        "md5": "35a57801c486c988a884f71a8f11a749"
+      },
+      "png": {
+        "size": 13292287,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_arm_2k.png",
+        "md5": "d98be8d5c080830fb889292189e256a8"
+      },
+      "exr": {
+        "size": 3866812,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_arm_2k.exr",
+        "md5": "2599b59c17244ce3ba764d16e4d39da8"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 620705,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_arm_1k.jpg",
+        "md5": "c93203da05b1d1671877b1e97fdb10fb"
+      },
+      "png": {
+        "size": 3679660,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_arm_1k.png",
+        "md5": "1fdf8c760906c8e52b23f729e6320b20"
+      },
+      "exr": {
+        "size": 1111895,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_arm_1k.exr",
+        "md5": "5fc4054db05f88698b284e6cf7ea073a"
+      }
+    }
+  },
+  "AO": {
+    "8k": {
+      "jpg": {
+        "size": 38376564,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_ao_8k.jpg",
+        "md5": "106be364fc62dd23bde9382f11f1da03"
+      },
+      "png": {
+        "size": 36521023,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_ao_8k.png",
+        "md5": "e7654b8312e9803dae4fed606154fe3a"
+      },
+      "exr": {
+        "size": 37753307,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_ao_8k.exr",
+        "md5": "7b83abfc304732ba0b8b85e8aa42b5e4"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 8742196,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_ao_4k.jpg",
+        "md5": "b7629fe924aa86dcbb8476e145385e3b"
+      },
+      "png": {
+        "size": 11582580,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_ao_4k.png",
+        "md5": "69110837362bb318230639291375fb77"
+      },
+      "exr": {
+        "size": 8850555,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_ao_4k.exr",
+        "md5": "321b4e3d5c47011f5216d00e58fb9b35"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 2179577,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_ao_2k.jpg",
+        "md5": "768e35fb2b1f97e438fcb053f6bc8333"
+      },
+      "png": {
+        "size": 4311114,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_ao_2k.png",
+        "md5": "fe548f06e5c22a9b012c144705c6e64b"
+      },
+      "exr": {
+        "size": 2228481,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_ao_2k.exr",
+        "md5": "98cff3610d393de4c3271bc380b01ca3"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 573718,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_ao_1k.jpg",
+        "md5": "0726fbaaee8c379cacac870329accfd5"
+      },
+      "png": {
+        "size": 1330897,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_ao_1k.png",
+        "md5": "9c262c809ecffa82ae6a6d06ce384294"
+      },
+      "exr": {
+        "size": 604789,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_ao_1k.exr",
+        "md5": "26556e30bc88ccdb44c583891c8a5ad2"
+      }
+    }
+  },
+  "Displacement": {
+    "8k": {
+      "jpg": {
+        "size": 9349036,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_disp_8k.jpg",
+        "md5": "44d1a13350162b9125be3bd081997982"
+      },
+      "png": {
+        "size": 85143709,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_disp_8k.png",
+        "md5": "171daac041fe1b0cf5e463dc3daf9e7d"
+      },
+      "exr": {
+        "size": 8994311,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_disp_8k.exr",
+        "md5": "30c7bafdceaff65a2838b1912845678c"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 3148144,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_disp_4k.jpg",
+        "md5": "047c8f9003b3826a0944766e62d76bd3"
+      },
+      "png": {
+        "size": 23938126,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_disp_4k.png",
+        "md5": "ee9024f5139fcf139a3277572e81b8fc"
+      },
+      "exr": {
+        "size": 3273559,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_disp_4k.exr",
+        "md5": "f2d19a18fa5550d7db588dfc2bd088c7"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 1017029,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_disp_2k.jpg",
+        "md5": "f9c0e23f3e7b79a174e788fcc2dca31e"
+      },
+      "png": {
+        "size": 6376814,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_disp_2k.png",
+        "md5": "436043ff3d0a34c916914e3d4b1feb52"
+      },
+      "exr": {
+        "size": 1117949,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_disp_2k.exr",
+        "md5": "3ad037922d03f21c078491b3ec5f437f"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 332301,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_disp_1k.jpg",
+        "md5": "7f11efea5ffecc8925dd5716875b1b77"
+      },
+      "png": {
+        "size": 1624665,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_disp_1k.png",
+        "md5": "0444b93ab1594680621fb6150963400e"
+      },
+      "exr": {
+        "size": 394776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_disp_1k.exr",
+        "md5": "23f336d2124b8c3bee49cf8f94bf5860"
+      }
+    }
+  },
+  "Rough": {
+    "8k": {
+      "jpg": {
+        "size": 14675163,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_rough_8k.jpg",
+        "md5": "b436ec249d65627e916572de3f963a1e"
+      },
+      "png": {
+        "size": 100290905,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_rough_8k.png",
+        "md5": "981fbc51dbfa6cd97ad7aeeb0f556cbf"
+      },
+      "exr": {
+        "size": 12468776,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_rough_8k.exr",
+        "md5": "e1a5949b18c6d0dc17863cb8d92e80a9"
+      }
+    },
+    "4k": {
+      "jpg": {
+        "size": 4800127,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_rough_4k.jpg",
+        "md5": "9d13de6244197a0ef86e43647db6fb51"
+      },
+      "png": {
+        "size": 26204794,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_rough_4k.png",
+        "md5": "79217269144438cb05f9ea544aa451f6"
+      },
+      "exr": {
+        "size": 4339269,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_rough_4k.exr",
+        "md5": "46a04ec8edc5ffee11c29aa101402eb4"
+      }
+    },
+    "2k": {
+      "jpg": {
+        "size": 1563680,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_rough_2k.jpg",
+        "md5": "6f07f96e8ace4f3fa8da3f7ffa1ae1c0"
+      },
+      "png": {
+        "size": 6798800,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_rough_2k.png",
+        "md5": "bf25ef74a40fdac912ea9628f7986c44"
+      },
+      "exr": {
+        "size": 1454928,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_rough_2k.exr",
+        "md5": "002b8b86900875ed82a4cd9748402d4a"
+      }
+    },
+    "1k": {
+      "jpg": {
+        "size": 440788,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_rough_1k.jpg",
+        "md5": "5cdfb71209d75ba0642b9ac03256b335"
+      },
+      "png": {
+        "size": 1729765,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_rough_1k.png",
+        "md5": "0037328211671f3a2bffdb7461c643df"
+      },
+      "exr": {
+        "size": 431190,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_rough_1k.exr",
+        "md5": "755424f48cdfbdf379ce331e4eb771a2"
+      }
+    }
+  },
+  "mtlx": {
+    "8k": {
+      "mtlx": {
+        "include": {
+          "textures/clay_roof_tiles_03_nor_gl_8k.exr": {
+            "size": 99515896,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_8k.exr",
+            "md5": "773a81353cd636613d39e1f975dd55cf"
+          },
+          "textures/clay_roof_tiles_03_disp_8k.png": {
+            "size": 85143709,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/8k/clay_roof_tiles_03/clay_roof_tiles_03_disp_8k.png",
+            "md5": "171daac041fe1b0cf5e463dc3daf9e7d"
+          },
+          "textures/clay_roof_tiles_03_diff_8k.jpg": {
+            "size": 40957751,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/8k/clay_roof_tiles_03/clay_roof_tiles_03_diff_8k.jpg",
+            "md5": "af086f8784bc0922e89dd99365405482"
+          },
+          "textures/clay_roof_tiles_03_rough_8k.exr": {
+            "size": 12468776,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/8k/clay_roof_tiles_03/clay_roof_tiles_03_rough_8k.exr",
+            "md5": "e1a5949b18c6d0dc17863cb8d92e80a9"
+          }
+        },
+        "size": 4781,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/mtlx/8k/clay_roof_tiles_03/clay_roof_tiles_03_8k.mtlx",
+        "md5": "09f0c98bc8a58fb71a923ebd5beb84cc"
+      }
+    },
+    "4k": {
+      "mtlx": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_4k.jpg": {
+            "size": 12883184,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/clay_roof_tiles_03/clay_roof_tiles_03_diff_4k.jpg",
+            "md5": "2d3b6aada3c8202b709d05c6840c7abf"
+          },
+          "textures/clay_roof_tiles_03_rough_4k.exr": {
+            "size": 4339269,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_rough_4k.exr",
+            "md5": "46a04ec8edc5ffee11c29aa101402eb4"
+          },
+          "textures/clay_roof_tiles_03_disp_4k.png": {
+            "size": 23938126,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/4k/clay_roof_tiles_03/clay_roof_tiles_03_disp_4k.png",
+            "md5": "ee9024f5139fcf139a3277572e81b8fc"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_4k.exr": {
+            "size": 32359677,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/4k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_4k.exr",
+            "md5": "f8694af10c3fa16a0c041555d46d2718"
+          }
+        },
+        "size": 4781,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/mtlx/4k/clay_roof_tiles_03/clay_roof_tiles_03_4k.mtlx",
+        "md5": "a6efa5673eee5f790d5c90398d6f68a2"
+      }
+    },
+    "2k": {
+      "mtlx": {
+        "include": {
+          "textures/clay_roof_tiles_03_diff_2k.jpg": {
+            "size": 3737900,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/clay_roof_tiles_03/clay_roof_tiles_03_diff_2k.jpg",
+            "md5": "edc547de2a19296a42c8a4de61179b8f"
+          },
+          "textures/clay_roof_tiles_03_rough_2k.exr": {
+            "size": 1454928,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_rough_2k.exr",
+            "md5": "002b8b86900875ed82a4cd9748402d4a"
+          },
+          "textures/clay_roof_tiles_03_disp_2k.png": {
+            "size": 6376814,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/clay_roof_tiles_03/clay_roof_tiles_03_disp_2k.png",
+            "md5": "436043ff3d0a34c916914e3d4b1feb52"
+          },
+          "textures/clay_roof_tiles_03_nor_gl_2k.exr": {
+            "size": 8685634,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/2k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_2k.exr",
+            "md5": "f707e713ff750a4c3c82e469524d88f1"
+          }
+        },
+        "size": 4781,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/mtlx/2k/clay_roof_tiles_03/clay_roof_tiles_03_2k.mtlx",
+        "md5": "27d627d35a6daf6d919743fc79ef57c9"
+      }
+    },
+    "1k": {
+      "mtlx": {
+        "include": {
+          "textures/clay_roof_tiles_03_nor_gl_1k.exr": {
+            "size": 2153711,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_nor_gl_1k.exr",
+            "md5": "2494a203080795ddee6db7d494670956"
+          },
+          "textures/clay_roof_tiles_03_diff_1k.jpg": {
+            "size": 970368,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_03/clay_roof_tiles_03_diff_1k.jpg",
+            "md5": "3600516ecf26b60a8d46dabe2007a7ba"
+          },
+          "textures/clay_roof_tiles_03_disp_1k.png": {
+            "size": 1624665,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles_03/clay_roof_tiles_03_disp_1k.png",
+            "md5": "0444b93ab1594680621fb6150963400e"
+          },
+          "textures/clay_roof_tiles_03_rough_1k.exr": {
+            "size": 431190,
+            "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/clay_roof_tiles_03/clay_roof_tiles_03_rough_1k.exr",
+            "md5": "755424f48cdfbdf379ce331e4eb771a2"
+          }
+        },
+        "size": 4781,
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/mtlx/1k/clay_roof_tiles_03/clay_roof_tiles_03_1k.mtlx",
+        "md5": "8e9807bd539efb4b2168e9ba2f1b48b0"
+      }
+    }
+  }
+}

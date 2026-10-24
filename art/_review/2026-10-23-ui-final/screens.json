@@ -1,0 +1,1271 @@
+[
+  {
+    "id": "orders",
+    "title": "주문판",
+    "path": "mockups/orders.png",
+    "zoom": "mockups/orders@2x.png",
+    "ui_layer": "mockups/orders-ui.png",
+    "size": [
+      960,
+      540
+    ],
+    "placements": [
+      {
+        "slot": "paperPanel",
+        "rect": [
+          28,
+          24,
+          904,
+          492
+        ]
+      },
+      {
+        "slot": "paperCard",
+        "rect": [
+          48,
+          138,
+          264,
+          262
+        ]
+      },
+      {
+        "slot": "paperCard",
+        "rect": [
+          336,
+          138,
+          264,
+          262
+        ]
+      },
+      {
+        "slot": "paperCard",
+        "rect": [
+          624,
+          138,
+          264,
+          262
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          648,
+          438,
+          264,
+          60
+        ]
+      }
+    ],
+    "text": [
+      {
+        "text": "배달 사무소",
+        "rect": [
+          48,
+          48,
+          195,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "오늘의 주문",
+        "rect": [
+          330,
+          58,
+          130,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "1:30",
+        "rect": [
+          804,
+          42,
+          78,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "남은 시간",
+        "rect": [
+          792,
+          84,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "전표 01",
+        "rect": [
+          66,
+          158,
+          86,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "선택",
+        "rect": [
+          234,
+          158,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "시청",
+        "rect": [
+          66,
+          206,
+          72,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "반품 상자",
+        "rect": [
+          66,
+          258,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "보상 1,500원",
+        "rect": [
+          66,
+          324,
+          136,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "흔들림 주의",
+        "rect": [
+          66,
+          366,
+          116,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "전표 02",
+        "rect": [
+          354,
+          158,
+          90,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "부두",
+        "rect": [
+          354,
+          206,
+          72,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "활어",
+        "rect": [
+          354,
+          258,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "보상 1,200원",
+        "rect": [
+          354,
+          324,
+          134,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "신선도 주의",
+        "rect": [
+          354,
+          366,
+          116,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "전표 03",
+        "rect": [
+          642,
+          158,
+          90,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "물류 센터",
+        "rect": [
+          642,
+          206,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "문구 상자",
+        "rect": [
+          642,
+          258,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "보상 900원",
+        "rect": [
+          642,
+          324,
+          120,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "표준 화물",
+        "rect": [
+          642,
+          366,
+          94,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "선택 1/3 · 보상 1,500원",
+        "rect": [
+          48,
+          436,
+          240,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "고르기부터 배달까지 같은 시계",
+        "rect": [
+          48,
+          478,
+          304,
+          24
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "포장하러 →",
+        "rect": [
+          666,
+          454,
+          130,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      }
+    ],
+    "background": "reference/game-960.png",
+    "numbers": "illustrative; not engine state"
+  },
+  {
+    "id": "call",
+    "title": "긴급 전화",
+    "path": "mockups/call.png",
+    "zoom": "mockups/call@2x.png",
+    "ui_layer": "mockups/call-ui.png",
+    "size": [
+      960,
+      540
+    ],
+    "placements": [
+      {
+        "slot": "paperPanel",
+        "rect": [
+          780,
+          20,
+          156,
+          82
+        ]
+      },
+      {
+        "slot": "paperPanel",
+        "rect": [
+          176,
+          90,
+          608,
+          416
+        ]
+      },
+      {
+        "slot": "stampRing",
+        "rect": [
+          636,
+          104,
+          128,
+          128
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          200,
+          436,
+          164,
+          52
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          500,
+          436,
+          260,
+          52
+        ]
+      }
+    ],
+    "text": [
+      {
+        "text": "1:22",
+        "rect": [
+          798,
+          30,
+          78,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "남은 시간",
+        "rect": [
+          798,
+          72,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "전화 수신 전표",
+        "rect": [
+          200,
+          114,
+          164,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "시청 행사팀",
+        "rect": [
+          200,
+          160,
+          195,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "긴급",
+        "rect": [
+          676,
+          156,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "곧 철수가 끝나요.",
+        "rect": [
+          200,
+          246,
+          172,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "반품 물품을 먼저 부탁드릴게요.",
+        "rect": [
+          200,
+          282,
+          310,
+          24
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "시청 · 반품 상자",
+        "rect": [
+          200,
+          336,
+          182,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "기본 1,000원 + 긴급 500원",
+        "rect": [
+          200,
+          378,
+          282,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "거절",
+        "rect": [
+          218,
+          452,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "이 주문 추가",
+        "rect": [
+          518,
+          452,
+          140,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      }
+    ],
+    "background": "reference/game-960.png",
+    "numbers": "illustrative; not engine state"
+  },
+  {
+    "id": "packing",
+    "title": "포장",
+    "path": "mockups/packing.png",
+    "zoom": "mockups/packing@2x.png",
+    "ui_layer": "mockups/packing-ui.png",
+    "size": [
+      960,
+      540
+    ],
+    "placements": [
+      {
+        "slot": "paperPanel",
+        "rect": [
+          24,
+          20,
+          912,
+          82
+        ]
+      },
+      {
+        "slot": "paperPanel",
+        "rect": [
+          24,
+          116,
+          196,
+          316
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          34,
+          128,
+          176,
+          78
+        ]
+      },
+      {
+        "slot": "paperPanel",
+        "rect": [
+          240,
+          116,
+          418,
+          316
+        ]
+      },
+      {
+        "slot": "paperPanel",
+        "rect": [
+          678,
+          116,
+          258,
+          316
+        ]
+      },
+      {
+        "slot": "gaugeTrackSprite",
+        "rect": [
+          742,
+          190,
+          116,
+          16
+        ]
+      },
+      {
+        "slot": "gaugeFillSprite",
+        "rect": [
+          746,
+          194,
+          92,
+          8
+        ]
+      },
+      {
+        "slot": "gaugeTrackSprite",
+        "rect": [
+          742,
+          232,
+          116,
+          16
+        ]
+      },
+      {
+        "slot": "gaugeFillSprite",
+        "rect": [
+          746,
+          236,
+          54,
+          8
+        ]
+      },
+      {
+        "slot": "gaugeTrackSprite",
+        "rect": [
+          742,
+          274,
+          116,
+          16
+        ]
+      },
+      {
+        "slot": "gaugeFillSprite",
+        "rect": [
+          746,
+          278,
+          48,
+          8
+        ]
+      },
+      {
+        "slot": "gaugeTrackSprite",
+        "rect": [
+          742,
+          316,
+          116,
+          16
+        ]
+      },
+      {
+        "slot": "gaugeFillSprite",
+        "rect": [
+          746,
+          320,
+          48,
+          8
+        ]
+      },
+      {
+        "slot": "paperPanel",
+        "rect": [
+          24,
+          442,
+          912,
+          78
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          716,
+          452,
+          200,
+          54
+        ]
+      }
+    ],
+    "text": [
+      {
+        "text": "포장",
+        "rect": [
+          44,
+          38,
+          72,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "화물 1/1 · 반품 상자",
+        "rect": [
+          164,
+          48,
+          228,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "1:08",
+        "rect": [
+          798,
+          30,
+          78,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "남은 시간",
+        "rect": [
+          798,
+          72,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "1 버블랩",
+        "rect": [
+          42,
+          138,
+          94,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "약 230원",
+        "rect": [
+          42,
+          172,
+          96,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "2 폼",
+        "rect": [
+          42,
+          226,
+          50,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "약 380원",
+        "rect": [
+          42,
+          260,
+          98,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "3 하드케이스",
+        "rect": [
+          42,
+          314,
+          146,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "약 520원",
+        "rect": [
+          42,
+          348,
+          96,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "선택",
+        "rect": [
+          156,
+          172,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "현재 앞면",
+        "rect": [
+          260,
+          134,
+          106,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "보호 예상 B",
+        "rect": [
+          696,
+          134,
+          132,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "앞",
+        "rect": [
+          696,
+          186,
+          24,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "85%",
+        "rect": [
+          866,
+          186,
+          54,
+          18
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "뒤",
+        "rect": [
+          696,
+          228,
+          24,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "50%",
+        "rect": [
+          866,
+          228,
+          54,
+          18
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "좌",
+        "rect": [
+          696,
+          270,
+          24,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "45%",
+        "rect": [
+          866,
+          270,
+          54,
+          18
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "우",
+        "rect": [
+          696,
+          312,
+          24,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "45%",
+        "rect": [
+          866,
+          312,
+          54,
+          18
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "포장비 230원",
+        "rect": [
+          696,
+          372,
+          154,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "보상 1,500원",
+        "rect": [
+          696,
+          402,
+          136,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "WASD 회전 · 드래그 감기",
+        "rect": [
+          44,
+          454,
+          256,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "비용은 예상 · 배치 후 출발",
+        "rect": [
+          44,
+          486,
+          258,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "배치하기",
+        "rect": [
+          734,
+          468,
+          96,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      }
+    ],
+    "background": "reference/game-960.png",
+    "numbers": "illustrative; not engine state"
+  },
+  {
+    "id": "receipt",
+    "title": "정산 영수증",
+    "path": "mockups/receipt.png",
+    "zoom": "mockups/receipt@2x.png",
+    "ui_layer": "mockups/receipt-ui.png",
+    "size": [
+      960,
+      540
+    ],
+    "placements": [
+      {
+        "slot": "paperPanel",
+        "rect": [
+          244,
+          24,
+          472,
+          492
+        ]
+      },
+      {
+        "slot": "stampRing",
+        "rect": [
+          576,
+          38,
+          128,
+          128
+        ]
+      },
+      {
+        "slot": "buttonPlate",
+        "rect": [
+          272,
+          444,
+          416,
+          54
+        ]
+      }
+    ],
+    "text": [
+      {
+        "text": "배달 영수증",
+        "rect": [
+          272,
+          48,
+          130,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "배달 완료",
+        "rect": [
+          272,
+          94,
+          159,
+          33
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "인수",
+        "rect": [
+          616,
+          90,
+          48,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "순이익",
+        "rect": [
+          272,
+          190,
+          72,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "+1,270원",
+        "rect": [
+          454,
+          184,
+          162,
+          36
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 36,
+        "base_em_px": 12,
+        "integer_scale": 3
+      },
+      {
+        "text": "배달 보상",
+        "rect": [
+          272,
+          256,
+          94,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "1,500원",
+        "rect": [
+          510,
+          256,
+          86,
+          26
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "포장비",
+        "rect": [
+          272,
+          296,
+          66,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "-230원",
+        "rect": [
+          510,
+          296,
+          80,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "화물 상태",
+        "rect": [
+          272,
+          336,
+          94,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "96% · 양호",
+        "rect": [
+          510,
+          336,
+          118,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "물건 잘 받았습니다.",
+        "rect": [
+          272,
+          386,
+          194,
+          22
+        ],
+        "font": "Pretendard",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      },
+      {
+        "text": "돌아가기 →",
+        "rect": [
+          290,
+          460,
+          130,
+          22
+        ],
+        "font": "Galmuri11",
+        "logical_em_px": 24,
+        "base_em_px": 12,
+        "integer_scale": 2
+      }
+    ],
+    "background": "reference/game-960.png",
+    "numbers": "illustrative; not engine state"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "id": "wooden_planks",
+  "path": "art/textures/2026-10-24-kp-v2/sources/wood_b/wooden_planks_diff_1k.png",
+  "url": "https://polyhaven.com/a/wooden_planks",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wooden_planks/wooden_planks_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Dario Barresi": "Processing",
+    "Charlotte Baglioni": "Photography"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "6b08165dfa7a1a5d662436cefc4566d1161540d17b5fc1314a7bfb4ee985ab2f",
+  "md5": "34660fe5744c8e901ace51cde9313f56",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

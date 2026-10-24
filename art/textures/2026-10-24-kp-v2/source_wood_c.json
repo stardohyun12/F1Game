@@ -1,0 +1,24 @@
+{
+  "id": "wood_peeling_paint_weathered",
+  "path": "art/textures/2026-10-24-kp-v2/sources/wood_c/wood_peeling_paint_weathered_diff_1k.png",
+  "url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wood_peeling_paint_weathered/wood_peeling_paint_weathered_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rob Tuytel": "Processing",
+    "Dimitrios Savva": "Photography"
+  },
+  "dimensions_mm": [
+    761.9999647140503,
+    762.0000243186951
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "cb5567bfdf3a15e5bee4844dc7f2986bd2b0388226c01ff0325777319025ad29",
+  "md5": "91c46e0dfb596fde3da5308589e5a7a7",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "tiles": [
+    {
+      "id": "wood",
+      "albedo": "art/textures/2026-10-24-kp/albedo/A1_KP_wood_64ppm.png",
+      "model": "art/textures/2026-10-24-kp/proof/wood_metric.glb",
+      "physical_size_m": [
+        1.0,
+        1.0
+      ],
+      "density_px_m": 64,
+      "ai_generated": false,
+      "source": {
+        "id": "wood_plank_wall",
+        "path": "art/textures/2026-10-24-kp/sources/wood/wood_plank_wall_diff_1k.png",
+        "url": "https://polyhaven.com/a/wood_plank_wall",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wood_plank_wall/wood_plank_wall_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Dimitrios Savva": "All"
+        },
+        "dimensions_mm": [
+          1000,
+          1000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "7a39214f063b62c2c14101b989145ceb1f3faecaf37344a4bb5cbbd9c1bd939b",
+        "md5": "297a3ed5dd79d6b0f23b670fa04230d7",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; wood_plank_wall",
+        "full physical repeat [1.0, 1.0]m from [1000, 1000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 90 degrees; photo luminance ranks 4/18/55/88 -> wood brown ladder 2,21,24,15,22; real grain and board gaps retained",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending"
+      ],
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 90,
+      "palette_indices": [
+        2,
+        21,
+        24,
+        15,
+        22
+      ],
+      "actual_used_colors": 5,
+      "atlas_cell": {
+        "active_pixels": [
+          60,
+          60
+        ],
+        "gutter_pixels": 2,
+        "active_size_m": [
+          0.9375,
+          0.9375
+        ]
+      }
+    },
+    {
+      "id": "stone",
+      "albedo": "art/textures/2026-10-24-kp/albedo/A1_KP_stone_64ppm.png",
+      "model": "art/textures/2026-10-24-kp/proof/stone_metric.glb",
+      "physical_size_m": [
+        2.0,
+        2.0
+      ],
+      "density_px_m": 64,
+      "ai_generated": false,
+      "source": {
+        "id": "stone_pavers",
+        "path": "art/textures/2026-10-24-kp/sources/stone/stone_pavers_diff_1k.png",
+        "url": "https://polyhaven.com/a/stone_pavers",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/stone_pavers/stone_pavers_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b",
+        "md5": "a553a6fd6d2ab8921f845e804aca5d51",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; stone_pavers",
+        "full physical repeat [2.0, 2.0]m from [2000, 2000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 0 degrees; photo luminance 2..98 percentile -> close neutral-grey ladder 5,8,7,10,11,12,20; no random noise; manually trace existing photographed mortar joints at 1px using palette9; coordinates recorded in kp_textures.py",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending"
+      ],
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 0,
+      "palette_indices": [
+        5,
+        8,
+        7,
+        10,
+        11,
+        12,
+        20,
+        9
+      ],
+      "actual_used_colors": 8,
+      "atlas_cell": {
+        "active_pixels": [
+          60,
+          60
+        ],
+        "gutter_pixels": 2,
+        "active_size_m": [
+          0.9375,
+          0.9375
+        ]
+      }
+    },
+    {
+      "id": "plaster",
+      "albedo": "art/textures/2026-10-24-kp/albedo/A1_KP_plaster_64ppm.png",
+      "model": "art/textures/2026-10-24-kp/proof/plaster_metric.glb",
+      "physical_size_m": [
+        2.0,
+        2.0
+      ],
+      "density_px_m": 64,
+      "ai_generated": false,
+      "source": {
+        "id": "painted_plaster_wall",
+        "path": "art/textures/2026-10-24-kp/sources/plaster/painted_plaster_wall_diff_1k.png",
+        "url": "https://polyhaven.com/a/painted_plaster_wall",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/painted_plaster_wall/painted_plaster_wall_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71",
+        "md5": "a579bdf62c32e5d8ada9b167da322416",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; painted_plaster_wall",
+        "full physical repeat [2.0, 2.0]m from [2000, 2000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 0 degrees; photo luminance blur .38px; 3/23 percentiles -> cream ladder 0,19,25; real dirt mask only",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending"
+      ],
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 0,
+      "palette_indices": [
+        0,
+        19,
+        25
+      ],
+      "actual_used_colors": 3,
+      "atlas_cell": {
+        "active_pixels": [
+          60,
+          60
+        ],
+        "gutter_pixels": 2,
+        "active_size_m": [
+          0.9375,
+          0.9375
+        ]
+      }
+    },
+    {
+      "id": "roof",
+      "albedo": "art/textures/2026-10-24-kp/albedo/A1_KP_roof_64ppm.png",
+      "model": "art/textures/2026-10-24-kp/proof/roof_metric.glb",
+      "physical_size_m": [
+        4.0,
+        4.0
+      ],
+      "density_px_m": 64,
+      "ai_generated": false,
+      "source": {
+        "id": "clay_roof_tiles",
+        "path": "art/textures/2026-10-24-kp/sources/roof/clay_roof_tiles_diff_1k.png",
+        "url": "https://polyhaven.com/a/clay_roof_tiles",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles/clay_roof_tiles_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          4000,
+          4000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "3825da3d0e267d203bb2bc497baf7e4879f8aa4e34caca8083a55e92965ce0a8",
+        "md5": "4e78adac16c769fa9df784e2a1ed80f0",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; clay_roof_tiles",
+        "full physical repeat [4.0, 4.0]m from [4000, 4000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 0 degrees; photo blur .55px; luminance 3..97 percentile -> dusty clay ladder 21,24,22,23,16; retains tile overlap without charcoal pinholes",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending"
+      ],
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 0,
+      "palette_indices": [
+        21,
+        24,
+        22,
+        23,
+        16
+      ],
+      "actual_used_colors": 5,
+      "atlas_cell": {
+        "active_pixels": [
+          60,
+          60
+        ],
+        "gutter_pixels": 2,
+        "active_size_m": [
+          0.9375,
+          0.9375
+        ]
+      }
+    }
+  ]
+}

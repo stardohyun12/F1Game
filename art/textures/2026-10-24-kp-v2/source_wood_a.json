@@ -1,0 +1,23 @@
+{
+  "id": "wood_planks",
+  "path": "art/textures/2026-10-24-kp-v2/sources/wood_a/wood_planks_diff_1k.png",
+  "url": "https://polyhaven.com/a/wood_planks",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wood_planks/wood_planks_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    1499.999761581421,
+    1499.999761581421
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "2d079a0bea287e2b167eaec78360932aa822e970b4b9650c7c4f55bbdf36a91f",
+  "md5": "8308a169ed23e5912ef27eb5a54b1543",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

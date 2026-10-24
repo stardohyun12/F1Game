@@ -1,0 +1,2 @@
+UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode=UnityEngine.InputSystem.InputSettings.EditorInputBehaviorInPlayMode.PointersAndKeyboardsRespectGameViewFocus;
+return "behav="+UnityEngine.InputSystem.InputSystem.settings.editorInputBehaviorInPlayMode;

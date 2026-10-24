@@ -1,0 +1,1 @@
+var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>(); ps.GetType().GetMethod("OnGoClicked",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(ps,null); return "go stage="+(Services.Run as RunController).CurrentStage;

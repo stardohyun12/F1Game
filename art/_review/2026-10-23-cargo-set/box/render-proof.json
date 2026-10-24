@@ -1,0 +1,38 @@
+{
+  "glb": "art/models/cargo_box_final/cargo_box_final.glb",
+  "world_bounds_min": [
+    -0.20000000298023224,
+    -0.15000000596046448,
+    0.0
+  ],
+  "world_bounds_max": [
+    0.20000000298023224,
+    0.15000000596046448,
+    0.30000001192092896
+  ],
+  "dimensions_blender_xyz": [
+    0.4000000059604645,
+    0.30000001192092896,
+    0.30000001192092896
+  ],
+  "close_resolution": [
+    960,
+    540
+  ],
+  "face_resolution": [
+    640,
+    480
+  ],
+  "ambient": [
+    0.64,
+    0.7,
+    0.69
+  ],
+  "sun": [
+    1,
+    0.91,
+    0.77
+  ],
+  "exposure": 0.35,
+  "runtime_verified": false
+}
