@@ -29,14 +29,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DryDeg: 22
+    - _DryDeg: 46
     - _EdgeJitter: 5
     - _FaceShade: 0.9
     - _FogEnd: 950
     - _FogStart: 90
     - _PatchScale: 0.07
     - _PatchThreshold: 0.7
-    - _RockDeg: 38
+    - _RockDeg: 62
     - _SoilAmount: 1
     - _WorldScale: 0.53763443
     m_Colors:

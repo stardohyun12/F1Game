@@ -30,9 +30,15 @@ public static class CarVisualSwitcher
     // C 는 아이보리가 해 색(주황)·포스트에 누렇게 눌려 파랑을 더 올린다.
     static Color TintFor(string which) => which == "C" ? new Color(1.15f, 1.2f, 1.3f, 1f) : new Color(1.12f, 1.12f, 1.12f, 1f);
 
+    // 과제 0344: 마지막 선택을 기억해 BuildBayLoop 재빌드 끝에 다시 건다(재빌드가 차를 새로 만들어 A 가 풀렸다). 기본 A(D-143).
+    const string ChoicePref = "PitCrew.Car.Choice";
+    public static string LastChoice => EditorPrefs.GetString(ChoicePref, "A");
+    public static string ReapplyLast() { var c = LastChoice; return Apply(c == "Current" ? null : c); }
+
     /// <summary>which = null(현재) / "A" / "C". 씬을 저장한다(플레이 중이면 저장 안 하고 그 판에만).</summary>
     public static string Apply(string which)
     {
+        EditorPrefs.SetString(ChoicePref, which ?? "Current");
         var race = Object.FindFirstObjectByType<ArcadeCarController>(FindObjectsInactive.Include);
         if (race == null) return "[CarVisual] ArcadeCarController 없음";
         var cur = race.transform.Find("FormulaGameplayVisual");

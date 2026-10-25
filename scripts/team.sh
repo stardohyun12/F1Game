@@ -32,7 +32,7 @@ if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
 fi
 cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; echo "idle $(date +%H:%M)" > "$STATE"
   # Hermes 백그라운드 완료 알림이 텔레그램에 안 와서 직접 알린다 (TEAM_NOTIFY_TO 로 대상 변경, 빈 값이면 끔)
-  local to="${TEAM_NOTIFY_TO:-}"  # 기본 끔: hermes send 는 DM 토픽(thread) 을 못 찾아 스레드 밖 채팅으로 보낸다(도현: 여기서만)
+  local to="${TEAM_NOTIFY_TO:-}" # off                 
   [ -n "$to" ] && hermes send -q -t "$to" "🔔 PitCrew $ROLE 끝 ($(date +%H:%M)) — $(tail -1 "$LIVE" 2>/dev/null | cut -c1-200)
 '다음' 이라고 하면 PD 가 결과 확인하고 이어서 진행" >/dev/null 2>&1 || true; }
 trap cleanup EXIT

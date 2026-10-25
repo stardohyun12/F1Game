@@ -171,6 +171,8 @@ public static partial class BuildBayLoop
         AssetDatabase.SaveAssets();
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene, ScenePath);
+        // 과제 0344: 차 외형 마지막 선택(기본 A)·운전자/가방 토글 다시 걸기 — 씬에 경로가 생긴 뒤라 Apply 의 저장이 대화창 없이 된다.
+        log.Add(CarVisualSwitcher.ReapplyLast());
         return "built " + ScenePath + " | " + string.Join(" | ", log);
     }
 
@@ -2085,7 +2087,14 @@ public static partial class BuildBayLoop
             "Ground" => "Assets/Art/CoastalTown/Ground.mat", "Concrete" => "Assets/Art/CoastalTown/BoundaryConcrete.mat",
             "Sea" => "Assets/Art/CoastalTown/Sea.mat", _ => null
         };
-        if (src != null) m = AssetDatabase.LoadAssetAtPath<Material>(src);
+        // 과제 0344: 공유 재질(CoastalTown·StreetFurniture)은 ComplexTrack·Proto 도 쓴다. 무드(MoodController)가 씬 재질의 안개·색을 덮어써서
+        // 마지막에 돌린 빌더 값이 남았다 → BayLoop 전용 사본(MatDir/BL_<key>.mat)을 처음 한 번 복사해 그것만 쓴다.
+        if (src != null)
+        {
+            string own = MatDir + "/BL_" + key + ".mat";
+            if (AssetDatabase.LoadAssetAtPath<Material>(own) == null && AssetDatabase.LoadAssetAtPath<Material>(src) != null) AssetDatabase.CopyAsset(src, own);
+            m = AssetDatabase.LoadAssetAtPath<Material>(own) ?? AssetDatabase.LoadAssetAtPath<Material>(src);
+        }
         if (m == null)
         {
             Color c = key switch

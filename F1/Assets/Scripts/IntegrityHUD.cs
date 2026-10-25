@@ -22,10 +22,11 @@ public class IntegrityHUD : BarHUDBase
     protected override bool HasDependency() => cargo != null;
 
     // 화물 무결성 HUD는 운전 단계에만 표시.
+    // 과제 0344: 실은 화물이 있을 때(런 진행 중)만 — 자유 주행(튜토리얼 T0 MART 가는 길)에 기본 주문 "상자 100%" 가 보였다.
     protected override bool ShouldShow()
     {
         var run = Services.Run as RunController;
-        return run != null && run.CurrentStage == RunStage.Driving;
+        return run != null && run.CurrentStage == RunStage.Driving && run.RunActive;
     }
 
     protected override void OnPostAwake() => HookCargoEvents();

@@ -46,6 +46,10 @@ public static class ImportBayLoopDelivery
         m.SetTexture("_MainTex", AssetDatabase.LoadAssetAtPath<Texture2D>(TerrainDir + "BL_TerrainAtlas_32ppm.png"));
         m.SetFloat("_WorldScale", 32f / (64f * .93f));   // SPEC: 셰이더 안쪽 93% 표본 → 정확 32px/m
         m.SetFloat("_PatchThreshold", 0.70f);   // 첫 캡처: 0.62 면 흙이 풀밭의 1/3 — 패치로 안 읽힘(가설: 0.70 ≈ 1/8)
+        // 과제 0344: 경사 분포(docs/qa/tmp/f0344-slopehist.cs, BayTerrain 면적 가중) — 언덕 몸통은 0→55° 로 줄고, 깎인 벽은 65~80° 에 따로 봉우리, 골은 55~60°.
+        // 38/22 면 언덕 몸통(22~45°, 면적 23%)이 통째로 마른풀·바위였다. 52/35 도 언덕 원뿔(50°+)이 갈색 → 바위는 깎인 벽 봉우리부터(62°, 면적 ~7%),
+        // 마른풀은 그 아래 띠(46°). 지터 ±5° 라 실제 경계는 57~67°. 캡처 docs/qa/evidence/fix-0342/slope_*.
+        m.SetFloat("_RockDeg", 62f); m.SetFloat("_DryDeg", 46f);
         EditorUtility.SetDirty(m);
         sb.Append($"지형 머티리얼 {TerrainMat} 경사 마른풀≥{m.GetFloat("_DryDeg")}° 바위≥{m.GetFloat("_RockDeg")}°\n");
     }
