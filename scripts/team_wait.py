@@ -35,7 +35,7 @@ def save(items):
 
 
 def status(item):
-    if item["on"] == "pd":  # PD 자신이 할 일 — 팀원을 기다리는 게 아님
+    if item["on"] in ("pd", "도현"):  # 팀원을 기다리는 게 아님 — PD 나 도현이 할 일
         return "ready"
     st_file = ROOT / f".claude/team/sessions/{item['on']}.state"
     try:
@@ -62,6 +62,8 @@ def active():
             continue
         s = status(it)
         label = "▶ PD가 지금 할 일" if it["on"] == "pd" else LABEL[s]
+        if it["on"] == "도현":
+            label = "👤 도현 차례 — 끝나면 PD 에게 한마디"
         if it.get("quiet_min"):
             label = f"⚠ {it['on']} 로그 {it['quiet_min']}분째 조용 — 15분 넘으면 워치독이 끊고 재시작"
         out.append({**it, "status": s, "label": label,
