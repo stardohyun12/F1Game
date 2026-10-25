@@ -163,6 +163,8 @@ public static partial class BuildBayLoop
         log.Add(LivedIn(Group("LivedIn")));   // v5 D-141 생활 층
         log.Add(Tutorial(Group("Tutorial"), mainR));   // 과제 2338 D-142 첫 배달 동선 자리(코드 임시 모양 + 아트 슬롯)
         log.Add(Motion(Group("Motion"), mainR));   // 과제 0131 갭 #1·#2 움직임·소리 최소
+        log.Add(Hilltop(Group("Hilltop"), mainR));   // 과제 0404 갭 #9 바람 풀·구름·홀로 선 집
+        log.Add(MapEdge(Group("MapEdge")));          // 과제 0404 갭 #6 육지 쪽 맵 끝
         log.Add(BuildWindowGlow.Run());   // D-137 초저녁 창 불(기본 꺼짐, 무드가 켠다)
 
         // ── 차·카메라·주행 ──
@@ -2109,7 +2111,9 @@ public static partial class BuildBayLoop
                 "Meadow" => new Color(.56f, .64f, .36f), "CurbStone" => new Color(.50f, .49f, .47f), "CurbDark" => new Color(.36f, .36f, .37f),   // v5: 밝은 연석 윗면이 흰 선처럼 읽혔다 → 회색(.60 도 그늘 인도 옆에선 흰 띠 — 2차 .50)
                 "LotStone" => new Color(.70f, .66f, .60f), "LotConcrete" => new Color(.72f, .71f, .68f), "LotGravel" => new Color(.63f, .58f, .50f), "LotDark" => new Color(.56f, .54f, .51f),
                 "PatchDark" => new Color(.30f, .30f, .31f), "PatchLight" => new Color(.50f, .49f, .47f), "PaintWhite" => new Color(.90f, .90f, .86f), "MirrorGlass" => new Color(.75f, .85f, .92f),
-                "Soil" => new Color(.42f, .32f, .22f), "PathDirt" => new Color(.60f, .52f, .40f), "Gutter" => new Color(.42f, .42f, .42f), "Pink" => new Color(.92f, .62f, .66f), _ => Color.magenta
+                "Soil" => new Color(.42f, .32f, .22f), "PathDirt" => new Color(.60f, .52f, .40f), "Gutter" => new Color(.42f, .42f, .42f), "Pink" => new Color(.92f, .62f, .66f),
+                "Cloud" => new Color(.97f, .97f, .95f), "Ridge1" => new Color(.40f, .48f, .42f), "Ridge2" => new Color(.46f, .54f, .56f),   // 과제 0404: 구름·먼 능선 2겹(안쪽 초록빛, 바깥 푸른빛)
+                _ => Color.magenta
             };
             string p = MatDir + "/BL_" + key + ".mat";
             m = AssetDatabase.LoadAssetAtPath<Material>(p);

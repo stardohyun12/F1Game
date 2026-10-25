@@ -29,6 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CloudScale: 70
+    - _CloudShadow: 0.24
     - _DryDeg: 46
     - _EdgeJitter: 5
     - _FaceShade: 0.9

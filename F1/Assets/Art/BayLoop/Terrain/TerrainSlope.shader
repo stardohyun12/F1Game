@@ -22,6 +22,8 @@ Shader "PitCrew/BayLoop/TerrainSlope"
   _FogColor("Maritime haze",Color)=(0.54,0.65,0.69,1)
   _FogStart("Fog start",Float)=30
   _FogEnd("Fog end",Float)=105
+  _CloudShadow("Cloud shadow strength (0404)",Range(0,1))=0.24
+  _CloudScale("Cloud shadow size m",Float)=70
  }
  SubShader {
   Tags {"RenderType"="Opaque" "RenderPipeline"="UniversalPipeline"}
@@ -40,9 +42,13 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float _FaceShade, _FogStart, _FogEnd, _WorldScale;
     float4 _TileGrass, _TileSoil, _TileDry, _TileRock;
     float _DryDeg, _RockDeg, _EdgeJitter, _SoilAmount, _PatchScale, _PatchThreshold;
+    float _CloudShadow, _CloudScale;
    CBUFFER_END
+   float4 _CloudOffset;   // 과제 0404: CloudDrift 가 매 프레임 넣는 전역 — 구름 그림자가 바람 따라 흐른다
    float hash21(float2 p){p=frac(p*float2(123.34,345.45));p+=dot(p,p+34.345);return frac(p.x*p.y);}
    float vnoise(float2 p){float2 i=floor(p),f=frac(p);f=f*f*(3-2*f);float a=hash21(i),b=hash21(i+float2(1,0)),c=hash21(i+float2(0,1)),d=hash21(i+1);return lerp(lerp(a,b,f.x),lerp(c,d,f.x),f.y);}
+   // 과제 0404: 구름 그림자. 1/32m 격자로 자르고 0 / 0.5 / 1 세 단 — BL_WindGrass 와 같은 식(풀잎과 땅이 같은 그림자를 받는다)
+   float CloudStep(float2 xz){float2 q=(floor(xz*32)/32+_CloudOffset.xy)/_CloudScale;float c=vnoise(q)*.75+vnoise(q*2.7)*.25;return floor(saturate((c-.52)/.16)*2+.5)*.5;}
    struct Attributes {float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0;};
    struct Varyings {float4 positionCS:SV_POSITION;float3 normal:TEXCOORD1;float3 pos:TEXCOORD2;};
    Varyings vert(Attributes v) {
@@ -70,7 +76,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
      float nz=vnoise(q)*.62+vnoise(q*2.6+float2(11.3,7.1))*.38;
      if(_SoilAmount>0 && nz>_PatchThreshold) col=Tile(_TileSoil,worldUV);
     }
-    col*=_Tint.rgb*shade;
+    col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.pos.xz));
     float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
     return half4(lerp(col,_FogColor.rgb,fog),1);
    }
