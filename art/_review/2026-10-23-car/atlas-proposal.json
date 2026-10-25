@@ -1,0 +1,30 @@
+{
+  "status": "proposal_only_not_generated_or_imported",
+  "date": "2026-10-23",
+  "atlas_size_px": [512, 512],
+  "grid": [8, 8],
+  "tile_size_px": [64, 64],
+  "legacy_indices": [0, 50],
+  "existing_review_extension_indices": [51, 58],
+  "verified_free_indices": [59, 60, 61, 62, 63],
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "sampling": "Point/Closest",
+  "padding_px": 2,
+  "usable_extent_m": [1.875, 1.875],
+  "full_tile_extent_m": [2, 2],
+  "current_ground_projected_density_px_m": 26.784,
+  "proposed_world_scale_with_existing_0_93_inset": 0.5376344086,
+  "proposed_world_scale_with_exact_2px_inset": 0.5333333333,
+  "warning": "Projection density is not a substitute for actual sloped-triangle UV/metre verification.",
+  "tiles": [
+    {"index": 59, "name": "autumn_leaf_cluster", "png_xy_topdown": [192, 0], "blender_cell_xy": [3, 7], "targets": ["BLOCKOUT_AutumnCrown"], "source_status": "unselected; LeafSet010 official asset page inaccessible", "source_url": null, "notes_ko": "실제 잎 사진 확인 후 큰3단 군집으로. 구 수관을 비대칭 덩어리로 교체. 전체 나무를 주황색으로 만들지 않음."},
+    {"index": 60, "name": "bark_weathered", "png_xy_topdown": [256, 0], "blender_cell_xy": [4, 7], "targets": ["BLOCKOUT_AutumnTrunk"], "source_status": "official_candidate_verified_not_downloaded", "source_url": "https://polyhaven.com/a/bark_brown_01", "license": "CC0-1.0", "license_url": "https://polyhaven.com/license", "source_width_m": 1, "notes_ko": "나무껍질의 세로 홈·분기 흔적만3단. 잎과 별도 UV."},
+    {"index": 61, "name": "meadow_ground", "png_xy_topdown": [320, 0], "blender_cell_xy": [5, 7], "targets": ["HillTerrain", "MeadowTile_ground"], "source_status": "official_candidate_verified_not_downloaded", "source_url": "https://polyhaven.com/a/grass_path_2", "license": "CC0-1.0", "license_url": "https://polyhaven.com/license", "source_width_m": 1, "notes_ko": "풀 부분의 큰 결을 크롭. 균일 잔노이즈 금지. 바람은 유지. 현32색 양자화가 초지를 갈색으로 뭉개는지 시안으로 먼저 확인."},
+    {"index": 62, "name": "shoulder_earth", "png_xy_topdown": [384, 0], "blender_cell_xy": [6, 7], "targets": ["Shoulder_L", "Shoulder_R", "HillTerrain_water_runoff"], "source_status": "official_candidate_verified_not_downloaded", "source_url": "https://polyhaven.com/a/grass_path_2", "license": "CC0-1.0", "license_url": "https://polyhaven.com/license", "source_width_m": 1, "notes_ko": "같은 사진의 드러난 흙 부분. 길 어깨·물길·밟힌 곳에만 사용. 크롭 치수 메타 필수."},
+    {"index": 63, "name": "rail_worn_metal", "png_xy_topdown": [448, 0], "blender_cell_xy": [7, 7], "targets": ["Guardrail", "RailPost"], "source_status": "official_candidate_verified_not_downloaded", "source_url": "https://polyhaven.com/a/rusty_metal", "license": "CC0-1.0", "license_url": "https://polyhaven.com/license", "source_width_m": 1.5, "notes_ko": "녹은 볼트·조인트·하단의 국소 마스크. 셔터 주름 형태를 전체 표면에 복사하지 않음."}
+  ],
+  "reuse": {"walls": 51, "doorframes": 52, "roofs": 53, "pavers": 54, "signs": 55, "road_repairs": 56, "foundations": 57, "cloth": 58},
+  "no_new_tile_required": ["thin_wires", "distant_clouds", "distant_sea_before_visual_test"],
+  "not_performed": ["texture_download", "texture_generation", "Unity_import", "runtime_capture", "F1_Assets_write", "commit", "push"]
+}

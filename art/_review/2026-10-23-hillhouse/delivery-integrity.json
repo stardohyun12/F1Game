@@ -1,0 +1,26 @@
+{
+  "pass": true,
+  "missing_html_links": [],
+  "provenance_rows": 13,
+  "provenance_hash_errors": [],
+  "distance_image_sizes": {
+    "30": [
+      960,
+      540
+    ],
+    "45": [
+      960,
+      540
+    ],
+    "60": [
+      960,
+      540
+    ]
+  },
+  "glb_evidence_hash_current": true,
+  "fbx_evidence_hash_current": true,
+  "original_atlas_unchanged": true,
+  "glb_pass": true,
+  "fbx_geometry_uv_pass": true,
+  "scope": "Static deliverable integrity. Browser layout, Unity import, animation and runtime not executed by this script."
+}

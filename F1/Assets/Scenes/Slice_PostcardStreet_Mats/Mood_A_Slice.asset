@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc46e964d2eaf1746b2a4e031d3d1a61, type: 3}
+  m_Name: Mood_A_WarmMorning
+  m_EditorClassIdentifier: PitCrew::MoodProfile
+  sunRotationEuler: {x: 22, y: 300, z: 0}
+  sunColor: {r: 1, g: 0.78, b: 0.46, a: 1}
+  sunIntensity: 1.55
+  castShadows: 1
+  shadowStrength: 0.7
+  ambientMode: 3
+  ambientColor: {r: 0.602, g: 0.595, b: 0.56, a: 0.7}
+  ambientIntensity: 1
+  fog: 1
+  fogMode: 1
+  fogColor: {r: 0.86, g: 0.85, b: 0.8, a: 1}
+  fogDensity: 0.0035
+  skybox: {fileID: 2100000, guid: db5fe628b2b4caa44bfd80a42e506e88, type: 2}
+  postProfile: {fileID: 11400000, guid: 63fe19206dad31748b8585bd1d774ae1, type: 2}
+  syncWorld: 1
+  fogStart: 70
+  fogEnd: 900
+  worldAmbientScale: 1.15
+  railTint: {r: 0.78, g: 0.64, b: 0.36, a: 1}

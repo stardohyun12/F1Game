@@ -1,0 +1,155 @@
+{
+  "pass": true,
+  "scope": "Static PNGs + local headless Chrome. No Unity/Play.",
+  "mockups": [
+    {
+      "screen": "orders",
+      "size": [
+        960,
+        540
+      ],
+      "exact_nearest_2x": true,
+      "text_bounds_overlap": [],
+      "sprite_placements_even": true,
+      "sha256": "642a52861f409a69e259572e20baaa862ea766a70c37af955a92ff0b17cb23f3"
+    },
+    {
+      "screen": "call",
+      "size": [
+        960,
+        540
+      ],
+      "exact_nearest_2x": true,
+      "text_bounds_overlap": [],
+      "sprite_placements_even": true,
+      "sha256": "da6d4ae94d9712188e07b73c4cabe984095fe3eb94d45afb013f2c6ab6c2be67"
+    },
+    {
+      "screen": "packing",
+      "size": [
+        960,
+        540
+      ],
+      "exact_nearest_2x": true,
+      "text_bounds_overlap": [],
+      "sprite_placements_even": true,
+      "sha256": "607ea1c27fbbd90e89a35e2708fe3d5b1a4f1f532a8aa4b488be01e8db86ba22"
+    },
+    {
+      "screen": "receipt",
+      "size": [
+        960,
+        540
+      ],
+      "exact_nearest_2x": true,
+      "text_bounds_overlap": [],
+      "sprite_placements_even": true,
+      "sha256": "37e5497ac6822e53ae443bf503344f06272b6b054f1582fec4fcf3e347b308f7"
+    }
+  ],
+  "pixel_paper_patch_2x2": true,
+  "bar_measurements": [
+    {
+      "label": "앞",
+      "value": 85,
+      "filled_pixels": 92,
+      "track_inner_pixels": 108,
+      "error_percentage_points": 0.185
+    },
+    {
+      "label": "뒤",
+      "value": 50,
+      "filled_pixels": 54,
+      "track_inner_pixels": 108,
+      "error_percentage_points": 0.0
+    },
+    {
+      "label": "좌",
+      "value": 45,
+      "filled_pixels": 48,
+      "track_inner_pixels": 108,
+      "error_percentage_points": 0.556
+    },
+    {
+      "label": "우",
+      "value": 45,
+      "filled_pixels": 48,
+      "track_inner_pixels": 108,
+      "error_percentage_points": 0.556
+    }
+  ],
+  "negative_tests": 8,
+  "missing_links": [],
+  "source_hashes_match": true,
+  "browser": [
+    {
+      "width": 1418,
+      "scrollWidth": 1418,
+      "images": 6,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ]
+    },
+    {
+      "width": 578,
+      "scrollWidth": 578,
+      "images": 6,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ]
+    }
+  ],
+  "not_run": [
+    "Unity import",
+    "TMP runtime raster equivalence",
+    "input/state transitions",
+    "game audio",
+    "release-build full AI audit"
+  ]
+}

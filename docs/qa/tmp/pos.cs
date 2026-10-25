@@ -1,0 +1,1 @@
+var c=UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>(); return "pos="+c.transform.position+" t="+Time.time+" frame="+Time.frameCount+" stage="+(Services.Run as RunController).CurrentStage+" playing="+Application.isPlaying;

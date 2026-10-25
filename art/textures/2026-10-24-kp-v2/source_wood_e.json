@@ -1,0 +1,23 @@
+{
+  "id": "wooden_rough_planks",
+  "path": "art/textures/2026-10-24-kp-v2/sources/wood_e/wooden_rough_planks_diff_1k.png",
+  "url": "https://polyhaven.com/a/wooden_rough_planks",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wooden_rough_planks/wooden_rough_planks_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "c3dfc04c55c545d14159f78aaf9979ae0bd2669e4e2779d3d1bd1e546078cbbf",
+  "md5": "e55eca58109f17d65ee6fd28f030b335",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

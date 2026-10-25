@@ -1,0 +1,23 @@
+{
+  "id": "white_plaster_02",
+  "path": "art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png",
+  "url": "https://polyhaven.com/a/white_plaster_02",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/white_plaster_02/white_plaster_02_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "dimensions_mm": [
+    1000,
+    1000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "d9a5e887b5443903141a20a4622936c6d0554f07d738728478911169ad17e224",
+  "md5": "831d55aa039776cc77b41a8305d37520",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

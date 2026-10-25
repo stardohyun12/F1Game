@@ -1,0 +1,46 @@
+[
+  {
+    "asset_id": "car_v01_source_rough_linen",
+    "path": "art/source/car-v01/photos/rough_linen_diff_1k.jpg",
+    "source_url": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "Poly Haven download",
+    "ai_generated": "아니오",
+    "sha256": "04897d7611d7390ddf5b2c6f7273f448dfc48341fdbd1f4f207fa30b331d7f57",
+    "notes": "Source photo; public dimensions in metadata; https://polyhaven.com/license"
+  },
+  {
+    "asset_id": "car_v01_source_rubberized_track",
+    "path": "art/source/car-v01/photos/rubberized_track_diff_1k.jpg",
+    "source_url": "https://polyhaven.com/a/rubberized_track",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "Poly Haven download",
+    "ai_generated": "아니오",
+    "sha256": "63bbde84facf0ec99d6d4c7a72bcbd2a8fe2dcb910bd65572b600e53e4ac13ea",
+    "notes": "Source photo; public dimensions in metadata; https://polyhaven.com/license"
+  },
+  {
+    "asset_id": "car_v01_source_rusty_metal_02",
+    "path": "art/source/car-v01/photos/rusty_metal_02_diff_1k.jpg",
+    "source_url": "https://polyhaven.com/a/rusty_metal_02",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-23",
+    "tool": "Poly Haven download",
+    "ai_generated": "아니오",
+    "sha256": "adaf094391518b6afe787a123942110aa88ef521c844f970b124420f5ed5d3d9",
+    "notes": "Source photo; public dimensions in metadata; https://polyhaven.com/license"
+  },
+  {
+    "asset_id": "car_v01_atlas",
+    "path": "art/models/car_v01/CarAtlas.png",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://polyhaven.com/a/rubberized_track; https://polyhaven.com/a/rusty_metal_02",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-23",
+    "tool": "car_texture.py + photo_to_pixel.py",
+    "ai_generated": "아니오",
+    "sha256": "9000cb8fa153d98f567f2b7aaa8e461a211810ea6ecb2ff5a2e9bba4b6a0db67",
+    "notes": "512 atlas; 16x128 cells, 4px gutters; 64px/m; reasons and UV contract in art/source/car-v01/texture-contract.json"
+  }
+]

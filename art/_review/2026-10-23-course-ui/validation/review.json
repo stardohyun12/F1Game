@@ -1,0 +1,611 @@
+{
+  "pass": true,
+  "scope": "Static PNG/declared UV contract, existing screenshot composites, mathematical projection and local browser only. No Unity or actual mesh density/import/Play.",
+  "world_signs": [
+    {
+      "id": "shortcut",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        112,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "85ea22beac4c0e22bc5f41f3ca2b763effc907d0d1ee78bd14af53b2b8f770f6"
+    },
+    {
+      "id": "coast",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        112,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "d2e4cbb05f585fd17a6083a6de277563bed3b6a535df6ed0b59de8821cb806e7"
+    },
+    {
+      "id": "alley",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        80,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "cffdcebc2b7ddce156fce92bffc4f30b5828d3c6865ed0702837a1e33ffde68e"
+    },
+    {
+      "id": "cafe",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        96,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "84dae00899f2adbd52c5bf1729c714f7076474bbfcbbb11a31617f5ddd6264e2"
+    },
+    {
+      "id": "orchard",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        112,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [
+        [
+          "03",
+          "헤어핀"
+        ],
+        [
+          "03",
+          "과수원"
+        ]
+      ],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "8e689c6f2cb6b042425f242284467e457c71560bce501505b8c6af003f5af71f"
+    },
+    {
+      "id": "hill",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        80,
+        64
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "b4790d6a11a0fd750bae0cb1366bb5b61470db32ee735510d9a9ee7897adc9eb"
+    },
+    {
+      "id": "mart",
+      "pass": true,
+      "png": [
+        128,
+        64
+      ],
+      "active_texels": [
+        128,
+        48
+      ],
+      "declared_active_uv_density": [
+        32,
+        32
+      ],
+      "outside_palette_colors": 0,
+      "glyph_ink_overlap": false,
+      "glyph_bbox_overlap_only": [],
+      "layer_composite_matches": true,
+      "provenance_sha_matches": true,
+      "sha256": "b5c8254fb852bf23062218d6663334d28268240de6618f355e0964df41ce2bda"
+    }
+  ],
+  "mockups": [
+    {
+      "id": "outbound",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 6.22,
+      "sha256": "1833ba3b309f4dd400712f2a768b47ffd5fedfb2923604f9b94955970f411b21"
+    },
+    {
+      "id": "outbound-urgent",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 6.27,
+      "sha256": "abf277317ff881a146c20085cd0f87837d6173143c894ba1ab15337e4b320077"
+    },
+    {
+      "id": "outbound-choice",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 6.71,
+      "sha256": "e28e083dd28def06cfdc8f456ea4b80507e6f7e142831c3864c2ad270da32389"
+    },
+    {
+      "id": "return-entry",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 0.61,
+      "sha256": "b78b857ef156957872067cc765e23f13636abab93d7bb47f43b8d86105292ddb"
+    },
+    {
+      "id": "return-quiet",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 0.0,
+      "sha256": "6099361bd450ec38ffcaec3e0d1779fb59119e4787d63ab443b9d2a85246815b"
+    },
+    {
+      "id": "return-guide",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 1.16,
+      "sha256": "7b1ead5906c47441d47cb874dbdc318ca3da36e40c95c488ecbb7be265820d61"
+    },
+    {
+      "id": "packing-time",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 87.96,
+      "sha256": "928ee7920df33117b6fe295b5d3f1a8c2c6f495452d211f04569ce3b0f4c2c03"
+    },
+    {
+      "id": "a-slip",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 14.04,
+      "sha256": "7ccad08074472bb3d194a246855f76f23697a8caac1ed06cf186afc4adb12e55"
+    },
+    {
+      "id": "b-customer",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 20.22,
+      "sha256": "4b67a539271909e596aafe00704c3c40ab2f583d210e80cce0aa0de833f3058b"
+    },
+    {
+      "id": "c-release",
+      "pass": true,
+      "exact_nearest_2x": true,
+      "envelope_percent": 11.72,
+      "sha256": "0e677548084f216915c74a3c258945e6c73baf01c2c96ac88da7252bb5ca79bb"
+    }
+  ],
+  "distance_samples": 42,
+  "front_projection_calibration": [
+    {
+      "id": "shortcut",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "shortcut",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "shortcut",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "coast",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "coast",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "coast",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "alley",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "alley",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "alley",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "cafe",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "cafe",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "cafe",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "orchard",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "orchard",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "orchard",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "hill",
+      "distance": 10,
+      "expected_height_px": 81.55167162501138,
+      "calculated_quad_height_px": 81.55167162501141
+    },
+    {
+      "id": "hill",
+      "distance": 15,
+      "expected_height_px": 60.314257139331346,
+      "calculated_quad_height_px": 60.314257139331346
+    },
+    {
+      "id": "hill",
+      "distance": 20,
+      "expected_height_px": 47.85263376343644,
+      "calculated_quad_height_px": 47.852633763436415
+    },
+    {
+      "id": "mart",
+      "distance": 10,
+      "expected_height_px": 61.163753718758535,
+      "calculated_quad_height_px": 61.16375371875853
+    },
+    {
+      "id": "mart",
+      "distance": 15,
+      "expected_height_px": 45.23569285449851,
+      "calculated_quad_height_px": 45.235692854498495
+    },
+    {
+      "id": "mart",
+      "distance": 20,
+      "expected_height_px": 35.889475322577326,
+      "calculated_quad_height_px": 35.88947532257731
+    }
+  ],
+  "source_snapshots": [
+    {
+      "source": "docs/qa/evidence/proto-course-1-start.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-2-curve.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-3-coast.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-4-hairpin.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-5-village.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-fork-sign.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-detour.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-overlook.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-meadow.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-lonehouse.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/evidence/proto-course-packing-timeleft.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "F1/Assets/Editor/BuildPostcardSlice.cs",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "F1/Assets/Settings/Camera/CameraFeel_4_Postcard.asset",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "docs/qa/tmp/proto-cap2.cs",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "F1/Assets/Scripts/Packing/PackingScreen.cs",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "art/concept/lofi-styles-2026-10-13/02_warm_street.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    },
+    {
+      "source": "art/source/photos/cargo-box/CardboardSet001_1K-PNG_Color.png",
+      "snapshot_hash_matches": true,
+      "original_still_matches": true
+    }
+  ],
+  "independent_score_threshold_met": true,
+  "independent_all_yes": false,
+  "independent_issue": "20m small warning/copy remains unreadable on world signs alone",
+  "browser": [
+    {
+      "width": 1418,
+      "scrollWidth": 1418,
+      "images": 16,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ],
+      "selectorPath": "readability/mart-base-10m.png"
+    },
+    {
+      "width": 578,
+      "scrollWidth": 578,
+      "images": 16,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ],
+      "selectorPath": "readability/mart-base-10m.png"
+    }
+  ],
+  "missing_links": [],
+  "not_run": [
+    "Unity import",
+    "actual mesh UV density",
+    "real driving readability",
+    "TMP equivalence",
+    "animation/audio",
+    "return state transition",
+    "release build full AI audit"
+  ]
+}

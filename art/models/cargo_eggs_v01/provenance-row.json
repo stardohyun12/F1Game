@@ -1,0 +1,11 @@
+{
+  "asset_id": "cargo_eggs_v01_atlas",
+  "path": "art/models/cargo_eggs_v01/cargo_eggs_atlas_64.png",
+  "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+  "license": "CC0-1.0",
+  "accessed": "2026-10-23",
+  "tool": "photo_to_pixel.py; cargo_cake_v01/build_atlas.py",
+  "ai_generated": "no",
+  "sha256": "f69b6d5a341245e8db8e2befa05598d258048b4e1e63faf03bcf9fcb797dd8ba",
+  "notes": "Photo pulp substrate recolored; scripted packaging stamps/interior cream/fruit palette pixels; no generated image texture."
+}

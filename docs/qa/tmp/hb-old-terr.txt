@@ -1,0 +1,46 @@
+    const float EdgeZ = 174f, EdgeWestSlope = 0.25f;  // ④ 절벽 모서리 z (x<0 이면 서쪽으로 갈수록 북쪽으로 0.25m/m 물러남 — 우회로 자리)
+    const float FaceDrop = 18.5f, FaceRun = 70f;      // ⑤ 절벽면: 모서리에서 70m 동안 18.5m (≈26%) 내려감 → 노면 −4
+    const float TownDrop = 18f, TownRun = 90f;        // ⑥ 마을 비탈: 절벽면 아래 90m 동안 18m 더 (−22, 해면 위 8m)
+    const float ShoreZ = 345f, WestShoreX = -160f;    // ⑦ 북쪽·서쪽 해안선 — 넘으면 바다 밑으로
+    const float EastHill = 22f;                       // ⑧ 동쪽(x>140) 언덕 — 헤어핀 뒤 막이
+    static readonly Vector3 RingC = new Vector3(0f, 0f, 180f);  // ⑨ 먼 산 고리 중심 — 반경 380m 넘어 솟아 판 끝을 가린다
+
+    static float S(float t) { t = Mathf.Clamp01(t); return t * t * (3 - 2 * t); }
+    public static float EdgeAt(float x) => EdgeZ + EdgeWestSlope * Mathf.Max(0f, -x);
+    public static float HilltopHeight(float x, float z)
+    {
+        float h = RampBase + (Plateau - RampBase) * S((z - RampZ0) / RampLen);
+        if (x < TerraceX) h += Mathf.Floor(Mathf.Clamp((TerraceX - x) / TerraceW, 0f, 2f)) * TerraceH * (1f - S((z - 130f) / 20f));
+        float u = (z - EdgeAt(x)) / FaceRun;
+        float f = u <= 0f ? 0f : u < 0.08f ? u * u / 0.16f : Mathf.Min(1f, u - 0.04f);   // 모서리만 4m 둥글게, 그 뒤 곧은 경사(볼록하면 아래가 가려짐)
+        h -= FaceDrop * f + TownDrop * S((z - EdgeAt(x) - 75f) / TownRun);
+        h -= 16f * S((z - ShoreZ) / 15f) + 40f * S((WestShoreX - x) / 25f) * S((z - 110f) / 30f);
+        h += EastHill * S((x - 140f) / 45f) + 15f * S((-z - 10f) / 40f);
+        float r = new Vector2(x - RingC.x, z - RingC.z).magnitude;
+        if (r > 380f)
+        {
+            float th = Mathf.Atan2(z - RingC.z, x - RingC.x);
+            float n = 0.5f + 0.3f * Mathf.Sin(3f * th + 1f) + 0.2f * Mathf.Sin(7f * th + 2f) * Mathf.Sin(r * 0.02f);
+            h = Mathf.Max(h, h + (45f + 40f * n) * S((r - 380f) / 160f));
+        }
+        return h;
+    }
+
+    // ── 스플라인 제어점 (x, y, z) ──
+    // 본선 13점: 오르막 S자 → 꼭대기·갈림목(3) → 모서리 우회전(4) → 모서리 길 동쪽 → 헤어핀 좌회전(8~10) → 아래 길 서쪽 → 배달 문
+    static readonly Vector3[] MainKnots =
+    {
+        new Vector3(0f, 1f, 0f), new Vector3(6f, 5.5f, 50f), new Vector3(-6f, 10.5f, 95f),
+        new Vector3(1f, 14.5f, 150f),    // 꼭대기 = 갈림목 (우회는 여기서 왼쪽)
+        new Vector3(12f, 14.4f, 167f),   // 모서리 우회전 — 차가 여기 서면 정면~왼쪽이 열린다
+        new Vector3(34f, 14.2f, 171f), new Vector3(65f, 13.2f, 173f), new Vector3(100f, 11f, 182f),
+        // 헤어핀: 중심 (115,198) 반경 11m 원 위 3점, 반시계(좌회전). 1차 교훈: 꼭짓점 1점 AutoSmooth 는 반경 3.5m 로 꺾임
+        new Vector3(115f, 9.8f, 187f), new Vector3(126f, 8.4f, 198f), new Vector3(115f, 7.0f, 209f),
+        new Vector3(88f, 4.9f, 216f), new Vector3(60f, 2.6f, 221f),
+    };
+    static readonly Vector2 HairpinC = new Vector2(115f, 198f);
+    // 우회 6점(갈림목 공유): 꼭대기에서 왼쪽 — 서쪽 모서리 안쪽을 따라 완만히 내려간다
+    static readonly Vector3[] DetourKnots =
+    {
+        new Vector3(1f, 14.5f, 150f), new Vector3(-6f, 14.5f, 166f), new Vector3(-30f, 14f, 177f), new Vector3(-62f, 12.2f, 185f), new Vector3(-95f, 10.3f, 192f), new Vector3(-122f, 8.8f, 195f),
+    };

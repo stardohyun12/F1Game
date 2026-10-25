@@ -66,6 +66,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     private float driftGripBlend = 1f; // 0 = 드리프트 그립, 1 = 정상 그립
     // QA 합성 주행용(리플렉션으로 켬) — 에디터 포커스 없이 핸드브레이크 재현.
     private bool qaForceHandbrake = false;
+    [Tooltip("런 시스템(RunController) 없는 시안 씬에서 바로 운전. 본 게임 씬에선 끔.")]
+    [SerializeField] private bool freeDrive = false;
 
     [Header("Engine Restore (D-089)")]
     [SerializeField] private float engineMaxSpeedMul = 1.0f;   // 1.20 after restore
@@ -161,7 +163,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     {
         // Stage gating: 운전 단계가 아니면 입력/물리 모두 차단.
         var stageRc = Services.Run as RunController;
-        if (stageRc == null || stageRc.CurrentStage != RunStage.Driving)
+        // freeDrive: 런 시스템이 없는 시안 씬(Slice_PostcardStreet)에서만 켠다 — RunController 가 있으면 무시.
+        if (!(freeDrive && stageRc == null) && (stageRc == null || stageRc.CurrentStage != RunStage.Driving))
         {
             safePoints.Clear();
             if (rb != null)
@@ -225,6 +228,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [SerializeField] private float fallRespawnY = -20f;
     [Tooltip("리스폰 때 화물에 주는 손상(HP 100 기준).")]
     [SerializeField] private float fallRespawnCargoDamage = 8f;
+    [Tooltip("안전 지점은 fallRespawnY 보다 이만큼 위에서만 저장(낭떠러지 중턱을 피함).")]
+    [SerializeField] private float safePointAboveFall = 15f;
     [Tooltip("안전 지점 샘플 간격(초). 리스폰은 가장 오래된 샘플(≈간격×개수 전)로 — 낭떠러지 끝자락을 피함.")]
     [SerializeField] private float safePointInterval = 0.25f;
     private const int SafePointCount = 4; // 8개(2초)였을 땐 낙하 2초가 더해져 ~90m 뒤로 돌아갔다
@@ -234,7 +239,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
 
     void RecordSafePoint()
     {
-        if (!isGrounded || Time.time < nextSafePointTime || rb.position.y < fallRespawnY + 15f) return;
+        if (!isGrounded || Time.time < nextSafePointTime || rb.position.y < fallRespawnY + safePointAboveFall) return;
         nextSafePointTime = Time.time + safePointInterval;
         var yawRot = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
         safePoints.Enqueue((rb.position + Vector3.up * 0.3f, yawRot));
@@ -245,6 +250,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     {
         if (safePoints.Count == 0) return; // 샘플 없음(런 시작 직후) — 아무것도 안 함
         var sp = safePoints.Peek();
+        // 코스 중심선이 구워져 있으면 안전 지점 근처 길 한가운데로, 진행 방향 정렬 (QA 0136: 안전 지점이 길 밖 6~31m 였다)
+        if (CourseCenterline.Instance != null && CourseCenterline.Instance.Nearest(sp.pos, out var cp, out var cf))
+            sp = (cp + Vector3.up * .6f, Quaternion.LookRotation(cf));
         rb.position = sp.pos;
         rb.rotation = sp.rot;
         rb.linearVelocity = Vector3.zero;

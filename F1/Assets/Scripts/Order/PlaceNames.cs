@@ -20,6 +20,12 @@ public static class PlaceNames
         { "CargoDock", "화물 부두" },
         { "FactoryA", "A 공장" },
         { "ContainerYard", "컨테이너 야적장" },
+        // 프로토 해안 코스 (Proto_CoastCourse)
+        { "AlleyEnd", "골목 끝 집" },
+        { "CoastCafe", "해안 카페" },
+        { "HairpinOrchard", "헤어핀 과수원" },
+        { "HilltopBellTower", "언덕 종탑" },
+        { "LoneHouse", "들판 외딴집" },
         // 다른 트랙/레이아웃 라벨
         { "CentralCross", "중앙 교차로" },
         { "DowntownEntry", "시내 입구" },

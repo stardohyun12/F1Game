@@ -1,0 +1,44 @@
+{
+  "input": "current-car-source.blend",
+  "camera_blender": [
+    0,
+    4.0625,
+    1.810015
+  ],
+  "target_blender": [
+    0,
+    -8.1375,
+    0.910015
+  ],
+  "review_full_camera": [
+    0,
+    6.6,
+    2.2
+  ],
+  "review_full_target": [
+    0,
+    -4,
+    1.3
+  ],
+  "vertical_fov": 50,
+  "resolution": [
+    960,
+    540
+  ],
+  "scene_basis": "CameraFeel_4_Postcard: height1.9,distance4.2,lookHeight1,lookAhead8; current visual origin offset removed",
+  "runtime_camera_exact": false,
+  "light_color": [
+    1,
+    0.86,
+    0.66
+  ],
+  "sun_energy_blender": 3.5,
+  "ambient_color": [
+    0.55,
+    0.61,
+    0.65
+  ],
+  "note": "Review approximation of Unity light; same rig for both models; not a Unity capture. Full view is camera proposal, not model rescale.",
+  "render_engine": "Cycles",
+  "samples": 72
+}

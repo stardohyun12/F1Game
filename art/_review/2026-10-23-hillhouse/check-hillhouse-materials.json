@@ -1,0 +1,101 @@
+{
+  "pass": true,
+  "checks": {
+    "unlit_glass_tint_preserved": true,
+    "unlit_glass_atlas_connected": true,
+    "plant_tint_preserved": true,
+    "plant_atlas_connected": true,
+    "required_tint_materials_exist": true,
+    "one_emissive_material": true,
+    "one_connected_emissive_region": true
+  },
+  "materials": [
+    {
+      "name": "hill_photo32",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "baseColorTexture": {
+        "index": 0
+      },
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "one_inhabited_window",
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "baseColorTexture": {
+        "index": 1
+      },
+      "emissiveFactor": [
+        0.6000000238418579,
+        0.3060000064373014,
+        0.10800000858306902
+      ]
+    },
+    {
+      "name": "unlit_glass",
+      "baseColorFactor": [
+        0.11999999731779099,
+        0.1899999976158142,
+        0.20999999344348907,
+        1
+      ],
+      "baseColorTexture": {
+        "index": 2
+      },
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "plant",
+      "baseColorFactor": [
+        0.41999998688697815,
+        0.6000000238418579,
+        0.20000000298023224,
+        1
+      ],
+      "baseColorTexture": {
+        "index": 3
+      },
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "emissive_triangle_count": 12,
+  "emissive_connected_components": [
+    {
+      "welded_vertices": 8,
+      "bounds_min_m": [
+        1.695,
+        1.12,
+        2.945
+      ],
+      "bounds_max_m": [
+        2.745,
+        2.37,
+        3.025
+      ]
+    }
+  ],
+  "model_sha256": "074de458d11b3e22872f4268d48f8cb320ef2a2a90401247a300b3becbda74dd",
+  "method": "Read exported GLB material factors, texture references and emission. Count connected emissive triangles after world-position welding at 0.00001m; one component is geometric evidence for one glowing-window region.",
+  "limitations": "GLB metadata and geometry verification only, not Unity rendering. FBX material losses are recorded separately in check-hillhouse-fbx.json."
+}

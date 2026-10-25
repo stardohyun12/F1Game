@@ -1,0 +1,32 @@
+{
+  "pass": true,
+  "checks": {
+    "check_car.json": true,
+    "check_fbx.json": true,
+    "check_closed_volume_wheel_spin.json": true,
+    "model_check_hash_current": true,
+    "texture_check_hash_current": true,
+    "measured_source_files_unchanged": true,
+    "html_local_links_exist": true,
+    "seven_current_provenance_hashes": true,
+    "only_review_plate_is_ai": true,
+    "four_960_images": true,
+    "reference_comparison_exists": true,
+    "no_temp_paths_in_html": true
+  },
+  "details": {
+    "input_hashes_unchanged": {
+      "F1/Assets/Art/CoastalFormula/CoastalFormula.fbx": true,
+      "art/source/coastal-formula/CoastalFormula.glb": true,
+      "F1/Assets/Scenes/Proto_CoastCourse.unity": true,
+      "F1/Assets/Art/CoastalFormula/FormulaGameplayVisual.prefab": true,
+      "F1/Assets/Prefabs/Race.prefab": true
+    },
+    "missing_links": [],
+    "model_sha256": "a7c596114a8173506d92b0ab480090f37e3baf649e6af6fcdef4684c96b034ad",
+    "fbx_sha256": "7de1087d24915d0108e44c21cc586eb52c1b81980e463a1fbfff77eeba557663",
+    "atlas_sha256": "9000cb8fa153d98f567f2b7aaa8e461a211810ea6ecb2ff5a2e9bba4b6a0db67"
+  },
+  "unity_editor_used": false,
+  "scope": "Static delivery, image dimensions, recorded source hash comparison. Does not claim whole-repository mutation audit or browser rendering."
+}

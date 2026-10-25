@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "local_html_links": 27,
+  "missing_links": [],
+  "provenance_rows_verified": 25,
+  "sha_failures": [],
+  "duplicate_paths": [],
+  "albedo_sizes": {
+    "A1_KP_plaster_64ppm.png": [
+      128,
+      128
+    ],
+    "A1_KP_roof_64ppm.png": [
+      128,
+      128
+    ],
+    "A1_KP_stone_64ppm.png": [
+      128,
+      128
+    ],
+    "A1_KP_wood_64ppm.png": [
+      128,
+      128
+    ]
+  },
+  "trial_and_meta_hashes_verified": 8,
+  "html_browser_rendered": false,
+  "unity_run": false
+}

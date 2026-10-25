@@ -1,0 +1,35 @@
+{
+  "pass": true,
+  "legacy_original_sha256": "de515064b94fb1df83f7e2b80cce3fa56e2913e5cc6446f8c8e6475c2e4f3679",
+  "legacy_file_untouched": true,
+  "original_pixels_unchanged_outside_51_58": true,
+  "append_slots": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58
+  ],
+  "new_tiles": 8,
+  "new_tile_size_px": [
+    64,
+    64
+  ],
+  "atlas_size_px": [
+    512,
+    512
+  ],
+  "new_tiles_palette_outside_count": 0,
+  "extension_palette_outside_count": 0,
+  "legacy_palette_claim": "Existing 0..50 cells retain legacy colors; shared32 check applies to extension only, not merged preview.",
+  "source_md5_all_match_provider": true,
+  "density_px_m": [
+    32,
+    32
+  ],
+  "density_deviation": 0,
+  "ai_generated_asset_files": 0
+}

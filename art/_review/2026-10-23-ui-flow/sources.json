@@ -1,0 +1,125 @@
+{
+  "inspected": "2026-10-23",
+  "items": [
+    {
+      "path": "docs/qa/evidence/20261023-qa-0-board.png",
+      "sha256": "764fc231f580f4867432887966d21bf3812024b69c1ff56533af8fd8172976a2",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/20261023-qa-6-packing-all.png",
+      "sha256": "043b9a0da4333f6ac75f23c8ee42fb83478576e010bde42356464c6bcb9cbef0",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/20261023-1551-card-Order_04_WeddingCake.png",
+      "sha256": "e585ebfc69876c791cab2259e1bedcad014e9c59fc4d684890d59447ae0ba15b",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/20261023-flow-3-driving.png",
+      "sha256": "37b825018d7270e4fe58a1baed48b8eaa4a05c2c67705b6530ce67967e8dc58d",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/20261023-1536-result-profit.png",
+      "sha256": "e622fb1ba106c6e6a330a80bde1ec715d6c2ecd30e09c8a9d5366ae8079a7777",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/mood-A.png",
+      "sha256": "5c3df5581926c5fd023be9da9e72e15e389f1d42e6a27891274935532d614dbc",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "docs/qa/evidence/mood-B.png",
+      "sha256": "6308f8dbcaa4722c84707976103755a846d320b85018dadaf52c1571493c33e8",
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "F1/Assets/Scripts/UI/UIRoot.cs",
+      "sha256": "4370c6171f212a472e63bafb74d612d9664d624def98d5ddb2aebdc2f55cde28"
+    },
+    {
+      "path": "F1/Assets/Scripts/UI/UITheme.cs",
+      "sha256": "e2d259bea6960fbf9b264cc7ad079476cd727464aa5c05220fe54b02105b0043"
+    },
+    {
+      "path": "F1/Assets/Scripts/UI/DeliveryProgressHUD.cs",
+      "sha256": "361826a28008157dab8ccd6d32c415a73570155d7a2d63a46152c38ef91dd79c"
+    },
+    {
+      "path": "F1/Assets/Scripts/UI/CargoWarningHUD.cs",
+      "sha256": "8c3269ace6c914d0ff4396feea877645b79c8d82d367b37dac7487e50aa9b1a1"
+    },
+    {
+      "path": "F1/Assets/Scripts/UI/SpeedometerHUD.cs",
+      "sha256": "8829b8e60adc77e631a42e36b067a95559f20a1fc152dbe1c0b40b5f6211ab02"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/UrgentCallPanel.cs",
+      "sha256": "ad3466d2ca26af51cd39eb7985d656ba907a21df784561fab342831472a5c11d"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/CountdownHUD.cs",
+      "sha256": "f1dc33390950a358d8af24fb448512f31ea7367e48843b7ac41ada3133c5d21f"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/OrderBoard.cs",
+      "sha256": "d58cf0e98c9a1cf2c007da93d219d4bfd117ea3c7bff6acd21a1d7507bfb1bd1"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/OrderCardUI.cs",
+      "sha256": "08ea7bd72c2ef1c13fd30a910340da210dbc5402855d3d5e2b769a75e4efdf9d"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/ResultPanel.cs",
+      "sha256": "c1fc53b945e36a274009d353867e2cd5350dadf1f10813be7ff4075337ccb304"
+    },
+    {
+      "path": "F1/Assets/Scripts/Order/RunController.cs",
+      "sha256": "033c8782c4390adacb2411c215c2a96f11c84fcd4297df6c825d122ffe807e29"
+    },
+    {
+      "path": "F1/Assets/Scripts/Packing/PackingScreen.cs",
+      "sha256": "f0aa7e2c49c7aa7518d8e3c7d15cfc81e22a8397e073ad1323faf8f171675e50"
+    },
+    {
+      "path": "F1/Assets/Scripts/Packing/PackingScreenInput.cs",
+      "sha256": "da162657254f452dd7cb4c1c4bc232bae7a39fd09baf50e4dea30636917a7158"
+    },
+    {
+      "path": "F1/Assets/Scripts/DeliveryManager.cs",
+      "sha256": "7d92ad6fee715bc4d201a7d6447d786bb87bdb682125177fc518f09ef53d9df3"
+    },
+    {
+      "path": "F1/Assets/Resources/UITheme.asset",
+      "sha256": "289dbac53c16f6d4eb777e39a898ab96828f34756bd9fca6b0a83571bf957469"
+    },
+    {
+      "path": "art/source/palette/pitcrew_d123_32.json",
+      "sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82"
+    }
+  ]
+}

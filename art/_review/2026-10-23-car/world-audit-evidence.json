@@ -1,0 +1,378 @@
+{
+  "kind": "static audit, not Unity/runtime verification",
+  "screenshot": "docs/qa/evidence/proto-course-3-coast.png",
+  "screenshot_sha256": "8bc2776aee14a1f65975b1c72684541e17759d722825a4c1e576f31a4a571b38",
+  "scene_sha256": "6745bcfdd5125f080d6dcc6999fb5e74dd955d8a92eefe62a8a04752f3dd058c",
+  "legacy_atlas_sha256": "de515064b94fb1df83f7e2b80cce3fa56e2913e5cc6446f8c8e6475c2e4f3679",
+  "legacy_tile_count": 51,
+  "review_extension_indices": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58
+  ],
+  "free_indices_in_512_grid": [
+    59,
+    60,
+    61,
+    62,
+    63
+  ],
+  "tile_stats": [
+    {
+      "index": 13,
+      "legacy_name": "grass",
+      "color_count": 5,
+      "most_common_fraction": 0.878662109375,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            119,
+            127,
+            81
+          ],
+          3599
+        ],
+        [
+          [
+            117,
+            125,
+            79
+          ],
+          248
+        ],
+        [
+          [
+            120,
+            128,
+            82
+          ],
+          196
+        ],
+        [
+          [
+            118,
+            126,
+            80
+          ],
+          43
+        ],
+        [
+          [
+            121,
+            129,
+            83
+          ],
+          10
+        ]
+      ]
+    },
+    {
+      "index": 42,
+      "legacy_name": "grass2",
+      "color_count": 6,
+      "most_common_fraction": 0.84326171875,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            92,
+            104,
+            58
+          ],
+          3454
+        ],
+        [
+          [
+            86,
+            97,
+            54
+          ],
+          266
+        ],
+        [
+          [
+            86,
+            98,
+            52
+          ],
+          157
+        ],
+        [
+          [
+            89,
+            101,
+            55
+          ],
+          107
+        ],
+        [
+          [
+            98,
+            110,
+            64
+          ],
+          90
+        ],
+        [
+          [
+            95,
+            107,
+            61
+          ],
+          22
+        ]
+      ]
+    },
+    {
+      "index": 59,
+      "legacy_name": null,
+      "color_count": 1,
+      "most_common_fraction": 1.0,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          4096
+        ]
+      ]
+    },
+    {
+      "index": 60,
+      "legacy_name": null,
+      "color_count": 1,
+      "most_common_fraction": 1.0,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          4096
+        ]
+      ]
+    },
+    {
+      "index": 61,
+      "legacy_name": null,
+      "color_count": 1,
+      "most_common_fraction": 1.0,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          4096
+        ]
+      ]
+    },
+    {
+      "index": 62,
+      "legacy_name": null,
+      "color_count": 1,
+      "most_common_fraction": 1.0,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          4096
+        ]
+      ]
+    },
+    {
+      "index": 63,
+      "legacy_name": null,
+      "color_count": 1,
+      "most_common_fraction": 1.0,
+      "out_of_shared_palette_pixels": 4096,
+      "sample_colors": [
+        [
+          [
+            0,
+            0,
+            0
+          ],
+          4096
+        ]
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Asphalt.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "cdc580a57b0377f40ba0a4158e4fca6b",
+      "serialized_scene_guid_mentions": 2
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/BoundaryConcrete.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "d9e0339122728534abff3d39805a9247",
+      "serialized_scene_guid_mentions": 2
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/BoundaryRock.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/FormulaRestored.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "05e5ec4a614817a4c81c5ed18d45afcc",
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/FormulaWorn.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "1a64e36d751e11a45869fafa0a35053a",
+      "serialized_scene_guid_mentions": 9
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Ground.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "d9e0339122728534abff3d39805a9247",
+      "serialized_scene_guid_mentions": 19
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/LofiShared.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "d9e0339122728534abff3d39805a9247",
+      "serialized_scene_guid_mentions": 64
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Pavement.mat",
+      "main_texture_file_id": 2800000,
+      "main_texture_guid": "d9e0339122728534abff3d39805a9247",
+      "serialized_scene_guid_mentions": 9
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Proto_Cloud.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 32
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Proto_Sign_Coast.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Proto_Sign_Short.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Proto_WindGrass.mat",
+      "main_texture_file_id": null,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 23
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/RoadPaint.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 8
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Sea.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_AutumnTree.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 28
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_Blockout.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 28
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_FarHill.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 4
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_FarRoof.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 1
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_FarVillage.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 7
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_Guardrail.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 373
+    },
+    {
+      "path": "F1/Assets/Scenes/Proto_CoastCourse_Mats/Slice_Wire.mat",
+      "main_texture_file_id": 0,
+      "main_texture_guid": null,
+      "serialized_scene_guid_mentions": 108
+    }
+  ],
+  "selected_scene_object_counts": {
+    "RailPost": 366,
+    "BLOCKOUT_SeaBollard": 13,
+    "BLOCKOUT_AutumnCrown": 14,
+    "BLOCKOUT_CloudPuff": 32,
+    "MeadowTile": 23,
+    "BLOCKOUT_TerraceFence_R": 1,
+    "BLOCKOUT_AutumnTrunk": 14,
+    "BLOCKOUT_BellTower": 1,
+    "BLOCKOUT_ForkSignBoard": 2,
+    "BLOCKOUT_BellTowerRoof": 1,
+    "BLOCKOUT_IsletHouse": 6,
+    "BLOCKOUT_ShopPosters": 1,
+    "BLOCKOUT_CoastCafeAwning": 1,
+    "Guardrail": 7,
+    "BLOCKOUT_ForkSignPostB": 1,
+    "BLOCKOUT_LaundryPostB": 1,
+    "BLOCKOUT_LaundryPostA": 1,
+    "BLOCKOUT_ForkSignPostA": 1,
+    "BLOCKOUT_LaundryLine": 1,
+    "BLOCKOUT_AlleyEndSteps": 1,
+    "BLOCKOUT_KeiTruck": 1,
+    "HillTerrain": 1,
+    "BLOCKOUT_VendingMachine": 1,
+    "BLOCKOUT_OrchardShed": 1,
+    "BLOCKOUT_CoastCafe": 1,
+    "BLOCKOUT_PackingTable": 1,
+    "BLOCKOUT_OrderBoardStand": 1
+  },
+  "ground_projected_px_m": 26.784000000000002,
+  "worldscale_for_32_projected_px_m": 0.5376344086021505,
+  "note": "WorldSurface chooses a dominant world projection; sloped triangle density needs per-triangle measurement."
+}

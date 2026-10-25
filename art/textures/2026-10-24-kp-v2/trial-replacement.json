@@ -1,0 +1,57 @@
+{
+  "selected_revision": 2,
+  "files": [
+    {
+      "id": "wood",
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_wood_64ppm.png",
+      "replaced": true,
+      "sha256": "65398c3b6703851c2c88a9a244ffb4ae2aa6a4a4ca4040b50ed003af6824b6e8",
+      "byte_identical": true
+    },
+    {
+      "id": "stone",
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_stone_64ppm.png",
+      "replaced": false,
+      "sha256": "f9064118377213dc0985b6f1cfba40652a77ee3a6bb1cc0df714177b7a057a32",
+      "byte_identical": true
+    },
+    {
+      "id": "plaster",
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_plaster_64ppm.png",
+      "replaced": true,
+      "sha256": "fcc80f1fad0def199313faf16f7a79b4092a1c84c3b43a672bd4f8ac6f3a39f1",
+      "byte_identical": true
+    },
+    {
+      "id": "roof",
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_roof_64ppm.png",
+      "replaced": true,
+      "sha256": "483b462dbd7a53c954b9b28fef583cee15a6d25301a7c0ef6c9fffffea14ded9",
+      "byte_identical": true
+    }
+  ],
+  "metas": [
+    {
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_wood_64ppm.png.meta",
+      "sha256": "a1e3cdc2751df31ce4bfcdbfe640b51a5578e883e14d0d181b4e9436a07a4190",
+      "unchanged": true
+    },
+    {
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_stone_64ppm.png.meta",
+      "sha256": "8b59e239e700ca93ba4051d83ac56da2039fe09fbecb87d7d3b598360149339c",
+      "unchanged": true
+    },
+    {
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_plaster_64ppm.png.meta",
+      "sha256": "4421b94462f9cd962fcfa63316d6a78eea8bbfe518cc475697bfb7171563550e",
+      "unchanged": true
+    },
+    {
+      "path": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_roof_64ppm.png.meta",
+      "sha256": "ff8c895c12c95a5c730899014f1871d1e1af75b03f84e4a26c5ebdf7177a840b",
+      "unchanged": true
+    }
+  ],
+  "unity_run": false,
+  "scene_code_atlas_modified": false
+}

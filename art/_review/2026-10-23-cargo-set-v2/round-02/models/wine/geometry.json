@@ -1,0 +1,355 @@
+{
+  "tris": 188,
+  "gltf_dimensions_m": [
+    0.0752,
+    0.3,
+    0.0752
+  ],
+  "density": 64,
+  "regions": [
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "bottom"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "bottom"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "bottom"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "bottom"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "back"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "left"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "front"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "right"
+    },
+    {
+      "object": "wine750",
+      "region": "bottom"
+    },
+    {
+      "object": "wine750",
+      "region": "top"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "original": "docs/qa/evidence/slice-start.png",
+    "snapshot": "reference/game-960.png",
+    "sha256": "f917261bae3b91b9b0cb72269c731bf0e2acab71c3eb54da3c4cd3e292f4c38c",
+    "scope": "existing game screenshot; review background only"
+  },
+  {
+    "original": "art/concept/lofi-styles-2026-10-13/02_warm_street.png",
+    "snapshot": "reference/concept.png",
+    "sha256": "87f6171bcd20359717f1f00d5d851e7cd26033ac6f46b9f9a976de9531dea2c0",
+    "scope": "AI concept reference only; never sprite input"
+  },
+  {
+    "original": "art/_review/2026-10-23-cargo-set-v2/box/close.png",
+    "snapshot": "reference/cargo-existing.png",
+    "sha256": "f7f008b24e2fc830396a3086142644d6439182d338dc84877da01117af1d0978",
+    "scope": "existing art-team render; no model editing"
+  },
+  {
+    "original": "art/_review/2026-10-23-d123/mockup-call.png",
+    "snapshot": "reference/old-call.png",
+    "sha256": "81d1cda9dfff376f075979a28b3b0aac761ced0058ea184b1675a6ad66e4972b",
+    "scope": "old AI concept; comparison only; never sprite input"
+  },
+  {
+    "original": "art/source/photos/cargo-box/CardboardSet001_1K-PNG_Color.png",
+    "sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license_url": "https://docs.ambientcg.com/license/",
+    "license": "CC0-1.0",
+    "technique": "Surface Photogrammetry",
+    "crop_ltrb": [
+      825,
+      590,
+      1000,
+      705
+    ],
+    "source_is_raw_camera_photo": false,
+    "pipeline": [
+      "crop unprinted paper/card fibre",
+      "BOX 64x64",
+      "real luma remap: min to 70th percentile",
+      "photo_to_pixel.quantize_exact, shared 32 palette, dither none"
+    ],
+    "tone_luma_range": [
+      109.0,
+      120.0
+    ],
+    "UI_units": "pixels, no physical metre/density claim",
+    "photographic_patch": "materials/paper-photo-64.png"
+  }
+]

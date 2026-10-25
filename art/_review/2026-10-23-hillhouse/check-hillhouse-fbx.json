@@ -1,0 +1,180 @@
+{
+  "pass": true,
+  "pass_scope": "Geometry, UV, density and units only; material handoff issues below are not waived.",
+  "checks": {
+    "triangle_budget": true,
+    "tris_match_glb": true,
+    "density_both_principal_axes": true,
+    "valid_geometry_and_permitted_uv_cells": true,
+    "dimensions_match_glb": true,
+    "bounds_match_glb": true,
+    "pivot_on_floor": true
+  },
+  "tris": 2052,
+  "density_min": 31.997615818988237,
+  "density_max": 32.002359461141594,
+  "dimensions_m": [
+    11.335000038146973,
+    6.400000575983427,
+    7.2300004959106445
+  ],
+  "bounds_min_m": [
+    -4.100000381469727,
+    -4.806159950021538e-07,
+    -3.380000591278076
+  ],
+  "bounds_max_m": [
+    7.234999656677246,
+    6.400000095367432,
+    3.8499999046325684
+  ],
+  "violations": [],
+  "imported_materials": [
+    {
+      "name": "hill_photo32",
+      "base_color_linked": true,
+      "base_color_source_node": "TEX_IMAGE",
+      "base_color_unlinked_socket_default": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "effective_base_color_factor_if_simple_graph": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "expected_glb_base_color_factor": null,
+      "stored_base_color_matches_expected": null,
+      "factor_matches_expected": null,
+      "emission_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission_strength": 0.0,
+      "emission_linked": false,
+      "image_paths": [
+        "D:\\Github\\F1Game\\art\\models\\hill_house_v01\\HillHouseAtlas.png"
+      ]
+    },
+    {
+      "name": "one_inhabited_window",
+      "base_color_linked": true,
+      "base_color_source_node": "TEX_IMAGE",
+      "base_color_unlinked_socket_default": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "effective_base_color_factor_if_simple_graph": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "expected_glb_base_color_factor": null,
+      "stored_base_color_matches_expected": null,
+      "factor_matches_expected": null,
+      "emission_color": [
+        1.0,
+        0.5099999904632568,
+        0.18000000715255737,
+        1.0
+      ],
+      "emission_strength": 0.6000000238418579,
+      "emission_linked": false,
+      "image_paths": [
+        "D:\\Github\\F1Game\\art\\models\\hill_house_v01\\HillHouseAtlas.png"
+      ]
+    },
+    {
+      "name": "plant",
+      "base_color_linked": true,
+      "base_color_source_node": "TEX_IMAGE",
+      "base_color_unlinked_socket_default": [
+        0.41999998688697815,
+        0.6000000238418579,
+        0.20000000298023224,
+        1.0
+      ],
+      "effective_base_color_factor_if_simple_graph": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "expected_glb_base_color_factor": [
+        0.42,
+        0.6,
+        0.2,
+        1
+      ],
+      "stored_base_color_matches_expected": true,
+      "factor_matches_expected": false,
+      "emission_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission_strength": 0.0,
+      "emission_linked": false,
+      "image_paths": [
+        "D:\\Github\\F1Game\\art\\models\\hill_house_v01\\HillHouseAtlas.png"
+      ]
+    },
+    {
+      "name": "unlit_glass",
+      "base_color_linked": true,
+      "base_color_source_node": "TEX_IMAGE",
+      "base_color_unlinked_socket_default": [
+        0.11999999731779099,
+        0.1899999976158142,
+        0.20999999344348907,
+        1.0
+      ],
+      "effective_base_color_factor_if_simple_graph": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "expected_glb_base_color_factor": [
+        0.12,
+        0.19,
+        0.21,
+        1
+      ],
+      "stored_base_color_matches_expected": true,
+      "factor_matches_expected": false,
+      "emission_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emission_strength": 0.0,
+      "emission_linked": false,
+      "image_paths": [
+        "D:\\Github\\F1Game\\art\\models\\hill_house_v01\\HillHouseAtlas.png"
+      ]
+    }
+  ],
+  "material_handoff_issues": [
+    "plant: atlas and tint data are preserved, but Blender imports a direct image link that bypasses the stored tint; confirm texture-times-tint in Unity importer/material",
+    "unlit_glass: atlas and tint data are preserved, but Blender imports a direct image link that bypasses the stored tint; confirm texture-times-tint in Unity importer/material"
+  ],
+  "material_handoff_complete": false,
+  "fbx_tint_and_atlas_data_preserved": true,
+  "blender_imported_shader_tints_match_glb": false,
+  "fbx_sha256": "b169ae663092ee07d4a97c165aa29e171300119f3d098d5591ae319fd9b69beb",
+  "reference_glb_sha256": "074de458d11b3e22872f4268d48f8cb320ef2a2a90401247a300b3becbda74dd",
+  "blender_version": "5.2.2 LTS",
+  "method": "Fresh factory-empty Blender scene; actual FBX importer; mesh loop triangles, transformed positions and loop UV Jacobian. Compare with independently decoded GLB bounds and tris.",
+  "limitations": "Blender import only. Unity/FBX material texture Point settings still require programming/QA import; no Unity editor was run."
+}

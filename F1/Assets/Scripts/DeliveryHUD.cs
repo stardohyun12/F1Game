@@ -12,6 +12,7 @@ public class DeliveryHUD : MonoBehaviour
     [SerializeField] DeliveryManager manager;
     [SerializeField] Camera cam;
     [SerializeField] float edgePadding = 80f;
+    [SerializeField] float onScreenLift = 5f;   // 목적지가 화면 안일 때 화살을 목적지 위 몇 m 공중에 띄울지
     [SerializeField] float arrowSize = 80f;
 
     RectTransform rt;
@@ -117,6 +118,10 @@ public class DeliveryHUD : MonoBehaviour
         }
         else
         {
+            // 화면 안: 목적지 바로 위가 아니라 그 위 공중에 — 그대로면 화살이 배달 문·받는 사람을 덮는다(Hilltop 2차 캡처).
+            Vector3 lifted = cam.WorldToScreenPoint(worldTarget + Vector3.up * onScreenLift);
+            screenPos = lifted.z > 0 ? new Vector2(lifted.x, lifted.y) : screenPos;
+            dir = screenPos - center;
             finalScreenPos = screenPos;
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
         }

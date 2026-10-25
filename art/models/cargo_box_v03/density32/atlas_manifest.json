@@ -1,0 +1,170 @@
+{
+  "name": "cargo_box_v03_32",
+  "density_target": 32,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": [
+        2,
+        3,
+        3,
+        5
+      ],
+      "source_metadata": "patches/front_01_quantized.json",
+      "sparse_fill_pixels": []
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        16,
+        1,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/back_01_quantized.json",
+      "sparse_fill_pixels": []
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        1,
+        13,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/top_01_quantized.json",
+      "sparse_fill_pixels": []
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        16,
+        13,
+        13,
+        10
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/bottom_01_quantized.json",
+      "sparse_fill_pixels": []
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        1,
+        25,
+        10,
+        10
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/left_01_quantized.json",
+      "sparse_fill_pixels": []
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        13,
+        25,
+        10,
+        10
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/right_01_quantized.json",
+      "sparse_fill_pixels": []
+    }
+  ],
+  "seed": 0,
+  "label_physical_wh_m": [
+    0.105,
+    0.148
+  ],
+  "label_width_fraction": 0.2625,
+  "color_ladder_metrics": {
+    "front": {
+      "base_mean_luma": 132.32835384615382,
+      "final_mean_luma": 130.86525076923076,
+      "final_unique_colors": 8,
+      "sparse_fill_count": 0
+    },
+    "back": {
+      "base_mean_luma": 121.0588769230769,
+      "final_mean_luma": 118.10509384615384,
+      "final_unique_colors": 6,
+      "sparse_fill_count": 0
+    },
+    "top": {
+      "base_mean_luma": 149.8501692307692,
+      "final_mean_luma": 143.75966153846153,
+      "final_unique_colors": 4,
+      "sparse_fill_count": 0
+    },
+    "bottom": {
+      "base_mean_luma": 90.5898769230769,
+      "final_mean_luma": 98.13507538461538,
+      "final_unique_colors": 4,
+      "sparse_fill_count": 0
+    },
+    "left": {
+      "base_mean_luma": 112.52205399999995,
+      "final_mean_luma": 107.45482199999996,
+      "final_unique_colors": 5,
+      "sparse_fill_count": 0
+    },
+    "right": {
+      "base_mean_luma": 112.52205399999995,
+      "final_mean_luma": 106.90891799999997,
+      "final_unique_colors": 4,
+      "sparse_fill_count": 0
+    }
+  },
+  "layer_order": [
+    "CC0 photo",
+    "BOX downscale",
+    "32-color exact quantization",
+    "weak 4x4 Bayer with face color ladder",
+    "rule-based stamps",
+    "adaptive sparse blue-noise-like fill",
+    "quantized fold/contact AO"
+  ],
+  "noise_scope": "only flat 8x8 windows; minimum inserted adjacent-palette pixel; not randomized global wear",
+  "vertex_color_AO": false,
+  "AO_reason": "baked palette AO; URP Lit vertex color support unverified",
+  "source_photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "approval": "64px/m is review-only pending Dohyun exception;32 retains baseline"
+}

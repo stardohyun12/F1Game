@@ -38,6 +38,7 @@ public static class FixOrderDestinations
         foreach (var guid in AssetDatabase.FindAssets("t:OrderJob"))
         {
             var path = AssetDatabase.GUIDToAssetPath(guid);
+            if (path.StartsWith("Assets/Data/Orders/ProtoCourse/")) continue; // Proto_CoastCourse 씬 전용 — ComplexTrack 라벨로 바꾸면 안 됨
             var job = AssetDatabase.LoadAssetAtPath<OrderJob>(path);
             if (job == null || job.destinationLabels == null) continue;
             orders++;

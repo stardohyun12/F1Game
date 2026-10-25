@@ -1,0 +1,11 @@
+{
+  "asset_id": "cargo_cake_v02_atlas",
+  "path": "art/models/cargo_cake_v02/cargo_cake_atlas_64.png",
+  "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+  "license": "CC0-1.0",
+  "accessed": "2026-10-23",
+  "tool": "photo_to_pixel.py; cargo_cake_v02/build_atlas.py",
+  "ai_generated": "no",
+  "sha256": "a2815df7d111a3896ec7914995289903e8030fd3d9f2cda27cd02662c71ea3ef",
+  "notes": "CC0 photo paper/pulp substrate recolored; scripted packaging stamps and natural cream/egg/fruit palette pixels. Clear windows represented by apertures and narrow opaque film-edge glints, no stochastic transparency noise. No generated image texture."
+}

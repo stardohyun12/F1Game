@@ -1,0 +1,46 @@
+{
+  "pass": true,
+  "count": 8,
+  "tests": [
+    {
+      "mutation": "palette",
+      "expected_rejection": "palette_outside_zero",
+      "rejected": true
+    },
+    {
+      "mutation": "grid",
+      "expected_rejection": "every_4px_cell_uniform",
+      "rejected": true
+    },
+    {
+      "mutation": "alpha",
+      "expected_rejection": "alpha_binary",
+      "rejected": true
+    },
+    {
+      "mutation": "size",
+      "expected_rejection": "existing_size_preserved",
+      "rejected": true
+    },
+    {
+      "mutation": "border",
+      "expected_rejection": "existing_border_preserved",
+      "rejected": true
+    },
+    {
+      "mutation": "hash",
+      "expected_rejection": "manifest_sha_matches_bytes",
+      "rejected": true
+    },
+    {
+      "mutation": "provenance",
+      "expected_rejection": "provenance_registered_non_ai",
+      "rejected": true
+    },
+    {
+      "mutation": "ai_flag",
+      "expected_rejection": "provenance_registered_non_ai",
+      "rejected": true
+    }
+  ]
+}

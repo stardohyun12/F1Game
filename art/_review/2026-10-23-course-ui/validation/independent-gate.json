@@ -1,0 +1,55 @@
+{
+  "reviewer": "/root/course_ui_gate",
+  "fresh_context": true,
+  "fix_review_cycles": 1,
+  "final_scores": {
+    "세계표지": 7.5,
+    "HUD": 8.5,
+    "도착A": 8,
+    "도착B": 7.5,
+    "도착C": 8
+  },
+  "verdicts": {
+    "세계표지": "아니오",
+    "HUD": "예",
+    "도착A": "예",
+    "도착B": "예 (1차 유지)",
+    "도착C": "예 (1차 유지)"
+  },
+  "score_threshold_met": true,
+  "all_yes": false,
+  "reviewed_final_files": [
+    {
+      "path": "sign-sheet.png",
+      "sha256": "29bc91a490779e081f40ad348daecdff70270f5aeb00514afb7314b68b1d519e"
+    },
+    {
+      "path": "readability/shortcut-stress-10m.png",
+      "sha256": "ee43e46de5c1f4054bf7b98d40d8e68bdeea392164da6612a1b07b65c3a05751"
+    },
+    {
+      "path": "readability/shortcut-stress-20m.png",
+      "sha256": "19d758f79c50364ce48d734d75446433fab4ad9717d443e96a4302db47ab2245"
+    },
+    {
+      "path": "readability/coast-stress-20m.png",
+      "sha256": "95ff8d91f6d7eff446f295023a50baed23599ed98f65034dbd6b0e9a3d25c24d"
+    },
+    {
+      "path": "readability/mart-stress-20m.png",
+      "sha256": "52b83bd5d3484c953931792ba07638fc067146704eb7bce8ebc24ec57fd35c84"
+    },
+    {
+      "path": "hud/outbound-choice.png",
+      "sha256": "e28e083dd28def06cfdc8f456ea4b80507e6f7e142831c3864c2ad270da32389"
+    },
+    {
+      "path": "arrival/a-slip.png",
+      "sha256": "7ccad08074472bb3d194a246855f76f23697a8caac1ed06cf186afc4adb12e55"
+    }
+  ],
+  "remaining": [
+    "20m 화물주의와 MART 보조문구 판독 불가",
+    "실제 주행 검증 미실행"
+  ]
+}

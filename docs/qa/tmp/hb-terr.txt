@@ -1,0 +1,57 @@
+    // ④ 절벽 모서리 — 2차 첫 시도(모서리를 길에서 7m+ 떨어뜨림)는 미리보기에서 평지만 보였다: 카메라가 노면 1.9m 위라
+    //   모서리가 멀면 아래가 전부 가려진다. 그래서 모서리를 길 어깨에 붙인다 — 북쪽 모서리 = 모서리 길 북쪽 어깨선, 서쪽 모서리 = 꼭대기 길 왼쪽 x −4.5.
+    static readonly Vector2[] NorthEdge = { new Vector2(-60f, 166f), new Vector2(-4.5f, 168f), new Vector2(11f, 170.2f), new Vector2(34f, 174.2f), new Vector2(65f, 176.4f), new Vector2(95f, 183.4f), new Vector2(106f, 186.2f), new Vector2(200f, 210f) };
+    const float WestEdgeX = -4.5f, WestEdgeZ0 = 128f;  // 서쪽 모서리는 z 128~138 에서 생긴다 — 오르막 끝까지는 왼쪽이 막혀 있다
+    const float CliffH = 7f, CliffRun = 5f, SlopeAfter = 0.12f;  // ⑤ 모서리 5m 안에 7m 떨어지고, 그 뒤 12% 계단 비탈(마을)
+    const float TownDrop = 18f, TownRun = 90f, ShoreE = 135f;    // ⑥ 모서리에서 50m 넘으면 90m 동안 18m 더, 135m 에서 해안 절벽 → 바다
+    const float EastHill = 22f;                       // ⑧ 동쪽(x>140) 언덕 — 헤어핀 뒤 막이
+    static readonly Vector3 RingC = new Vector3(0f, 0f, 180f);  // ⑨ 먼 산 고리 중심 — 반경 380m 넘어 솟아 판 끝을 가린다
+
+    static float S(float t) { t = Mathf.Clamp01(t); return t * t * (3 - 2 * t); }
+    static float ZN(float x)
+    {
+        if (x <= NorthEdge[0].x) return NorthEdge[0].y;
+        for (int i = 1; i < NorthEdge.Length; i++)
+            if (x <= NorthEdge[i].x) return Mathf.Lerp(NorthEdge[i - 1].y, NorthEdge[i].y, (x - NorthEdge[i - 1].x) / (NorthEdge[i].x - NorthEdge[i - 1].x));
+        return NorthEdge[NorthEdge.Length - 1].y;
+    }
+    /// <summary>모서리 밖으로 e m 나간 곳이 꼭대기보다 얼마나 낮은가.</summary>
+    static float Drop(float e) => e <= 0f ? 0f : CliffH * S(e / CliffRun) + SlopeAfter * Mathf.Max(0f, e - 2.5f) + TownDrop * S((e - 50f) / TownRun) + 16f * S((e - ShoreE) / 12f);
+    /// <summary>꼭대기 높이보다 9m 넘게 낮은 곳 = 마을 자리(모서리 윗부분은 비워 열림을 안 막는다).</summary>
+    static float DropAt(float x, float z) => Mathf.Max(Drop(z - ZN(x)), Drop(WestEdgeX - x) * S((z - WestEdgeZ0) / 10f));
+    public static float HilltopHeight(float x, float z)
+    {
+        float h = RampBase + (Plateau - RampBase) * S((z - RampZ0) / RampLen);
+        if (x < TerraceX) h += Mathf.Floor(Mathf.Clamp((TerraceX - x) / TerraceW, 0f, 2f)) * TerraceH * (1f - S((z - 130f) / 20f));
+        h -= DropAt(x, z);
+        h += EastHill * S((x - 140f) / 45f) + 15f * S((-z - 10f) / 40f);
+        float r = new Vector2(x - RingC.x, z - RingC.z).magnitude;
+        if (r > 380f)
+        {
+            float th = Mathf.Atan2(z - RingC.z, x - RingC.x);
+            float n = 0.5f + 0.3f * Mathf.Sin(3f * th + 1f) + 0.2f * Mathf.Sin(7f * th + 2f) * Mathf.Sin(r * 0.02f);
+            h += (45f + 40f * n) * S((r - 380f) / 160f);
+        }
+        return h;
+    }
+
+    // ── 스플라인 제어점 (x, y, z) ──
+    // 본선 14점: 오르막 S자 → 갈림목(3, 우회는 오른쪽 평지로) → 꼭대기(4) → 모서리 우회전(5) → 모서리 길 동쪽(왼쪽이 절벽)
+    //   → 헤어핀 좌회전(9~11) → 아래 길 서쪽 → 배달 문(꼭대기 모서리에서 정면 왼쪽 아래 ~65m)
+    static readonly Vector3[] MainKnots =
+    {
+        new Vector3(0f, 1f, 0f), new Vector3(6f, 5.5f, 50f), new Vector3(-6f, 10.5f, 95f),
+        new Vector3(-2f, 13.6f, 125f),   // 갈림목
+        new Vector3(1f, 14.5f, 150f),    // 꼭대기 — 왼쪽(서쪽) 모서리가 여기서 열린다
+        new Vector3(12f, 14.4f, 167f),   // 모서리 우회전 — 정면~왼쪽 아래로 절벽·마을·바다
+        new Vector3(34f, 14.2f, 171f), new Vector3(65f, 13.6f, 173f), new Vector3(95f, 12.6f, 180f),
+        // 헤어핀: 중심 (110,194) 반경 11m 원 위 3점, 반시계(좌회전). 1차 교훈: 꼭짓점 1점 AutoSmooth 는 반경 3.5m 로 꺾임
+        new Vector3(110f, 11.6f, 183f), new Vector3(121f, 10.2f, 194f), new Vector3(110f, 8.8f, 205f),
+        new Vector3(85f, 7.4f, 211f), new Vector3(48f, 5.8f, 216f),
+    };
+    static readonly Vector2 HairpinC = new Vector2(110f, 194f);
+    // 우회 6점(갈림목 공유): 오른쪽 — 꼭대기 평지 남쪽을 동쪽으로(모서리 길과 25m 떨어짐)
+    static readonly Vector3[] DetourKnots =
+    {
+        new Vector3(-2f, 13.6f, 125f), new Vector3(10f, 14.1f, 140f), new Vector3(38f, 14.3f, 147f), new Vector3(72f, 14.3f, 147f), new Vector3(104f, 14.1f, 141f), new Vector3(130f, 13.6f, 132f),
+    };

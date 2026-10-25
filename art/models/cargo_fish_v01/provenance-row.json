@@ -1,0 +1,11 @@
+{
+  "asset_id": "cargo_fish_v01_atlas",
+  "path": "art/models/cargo_fish_v01/cargo_fish_v01_atlas_64.png",
+  "source_url": "https://ambientcg.com/view?id=CardboardSet001; script://cargo_fish_v01/build_atlas.py",
+  "license": "CC0-1.0; Project-authored; Galmuri OFL-1.1",
+  "accessed": "2026-10-23",
+  "tool": "photo_to_pixel.quantize_exact; build_atlas.py; Blender bpy",
+  "ai_generated": "no",
+  "sha256": "b5983791f837016b8b23e675347ab6ea002525187230fbb13f282fbb7335f968",
+  "notes": "Prop hand-pixel material and information layers, D123 rule2. CC0 paper photograph brightened only under label. No AI image used. Reference colors only."
+}

@@ -1,0 +1,72 @@
+{
+  "name": "cargo_wine_v01",
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        5,
+        20
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        9,
+        1,
+        5,
+        20
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        17,
+        1,
+        5,
+        20
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        25,
+        1,
+        5,
+        20
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        48,
+        1,
+        5,
+        5
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        41,
+        1,
+        5,
+        5
+      ]
+    }
+  ],
+  "narrow_face_note": "Manufactured dimensions at 64px/m produce surfaces smaller than 8px; no enlarged fake UV region.",
+  "layers": [
+    "authored material colour ladder",
+    "scripted EPS structure or glass strips",
+    "scripted label and orientation",
+    "contact vertex AO"
+  ],
+  "wear": "No global wear/noise. EPS mould seams and glass reflection value strips are material structure."
+}

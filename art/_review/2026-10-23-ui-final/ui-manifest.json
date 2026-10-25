@@ -1,0 +1,301 @@
+{
+  "schema": "pitcrew-ui-sprites-v1",
+  "baseline": "art/_review/2026-10-23-d123/sprites.json",
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "sprite_root": "art/_review/2026-10-23-ui-final/sprites",
+  "sprites": [
+    {
+      "owner": "UITheme",
+      "slot": "paperPanel",
+      "size": [
+        256,
+        256
+      ],
+      "border_LBRT": [
+        16,
+        24,
+        16,
+        16
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Tiled",
+      "path": "art/_review/2026-10-23-ui-final/sprites/paperPanel.png",
+      "author_grid": [
+        64,
+        64
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "original",
+      "sha256": "6bdb78838cd2d1ffc2925558ba878154bf8f0d3c28caa005d0e0fc3a36b10110",
+      "ai_generated": false,
+      "source_kind": "photo+script",
+      "wear": "photo fibre + lower handling corners"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "paperCard",
+      "size": [
+        256,
+        320
+      ],
+      "border_LBRT": [
+        16,
+        24,
+        16,
+        40
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Tiled",
+      "path": "art/_review/2026-10-23-ui-final/sprites/paperCard.png",
+      "author_grid": [
+        64,
+        80
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "original",
+      "sha256": "3ff08898974c7f8da7b29b466837fd230b69778695b15351bc2fa4730411a998",
+      "ai_generated": false,
+      "source_kind": "photo+script",
+      "wear": "photo fibre + lower handling corners"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "slipHeader",
+      "size": [
+        256,
+        64
+      ],
+      "border_LBRT": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Tiled",
+      "path": "art/_review/2026-10-23-ui-final/sprites/slipHeader.png",
+      "author_grid": [
+        64,
+        16
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "896b617efe2d0bd6c2aca475902de656d859636e1c50c00199e607eb54bcfd14",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "stampRing",
+      "size": [
+        256,
+        256
+      ],
+      "border_LBRT": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Simple",
+      "path": "art/_review/2026-10-23-ui-final/sprites/stampRing.png",
+      "author_grid": [
+        64,
+        64
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "2b10a16f626a1a639c8b0076330a899d21c717a9f9751c673ba41b5dfffe0542",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "ink pressure gaps on ring only"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "buttonPlate",
+      "size": [
+        256,
+        80
+      ],
+      "border_LBRT": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Sliced",
+      "path": "art/_review/2026-10-23-ui-final/sprites/buttonPlate.png",
+      "author_grid": [
+        64,
+        20
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "0b42be5642776a6b98ee1e901bb839f932d21417b6f2bf246ac985cef86d7090",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "enamelPlate",
+      "size": [
+        256,
+        128
+      ],
+      "border_LBRT": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Sliced",
+      "path": "art/_review/2026-10-23-ui-final/sprites/enamelPlate.png",
+      "author_grid": [
+        64,
+        32
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "original",
+      "sha256": "9bbb53b3babc6ce11fcf2516d9664f49c9dbc379d8c26beab8936cebf2d0bfb7",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    },
+    {
+      "owner": "UITheme",
+      "slot": "gaugeFill",
+      "size": [
+        128,
+        24
+      ],
+      "border_LBRT": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Sliced",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeFill.png",
+      "author_grid": [
+        32,
+        6
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "24f9532b96decd2af7be278dbc894af5f96c0ef687d9995f900e602fbcc6935b",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    },
+    {
+      "owner": "PackingScreen",
+      "slot": "stampSprite",
+      "size": [
+        300,
+        300
+      ],
+      "border_LBRT": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Simple",
+      "path": "art/_review/2026-10-23-ui-final/sprites/stampSprite.png",
+      "author_grid": [
+        75,
+        75
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "original",
+      "sha256": "4dfad9aed92b78e7eb0156300427f012d946d7ea9138685f09f712cda58a8087",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "ink pressure gaps on ring only"
+    },
+    {
+      "owner": "PackingScreen",
+      "slot": "gaugeTrackSprite",
+      "size": [
+        256,
+        32
+      ],
+      "border_LBRT": [
+        12,
+        12,
+        12,
+        12
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Sliced",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeTrackSprite.png",
+      "author_grid": [
+        64,
+        8
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "1d932002cbb64db0bfb67e634c421f846e577a91257f0b8cdc6b19970e38dc07",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    },
+    {
+      "owner": "PackingScreen",
+      "slot": "gaugeFillSprite",
+      "size": [
+        128,
+        24
+      ],
+      "border_LBRT": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "tint": "Color.white; full-color palette texture",
+      "mode": "Sliced",
+      "path": "art/_review/2026-10-23-ui-final/sprites/gaugeFillSprite.png",
+      "author_grid": [
+        32,
+        6
+      ],
+      "export_cell_px": 4,
+      "native_display_cell_px": 2,
+      "source_to_logical": 0.5,
+      "previous_tint": "white",
+      "sha256": "24f9532b96decd2af7be278dbc894af5f96c0ef687d9995f900e602fbcc6935b",
+      "ai_generated": false,
+      "source_kind": "script",
+      "wear": "scripted structural marks only"
+    }
+  ],
+  "release_scope": "sprites/*.png only; no reference/materials/mockups/guides/fonts auto-import",
+  "grid": "export 4px macrocell -> logical960 2px macrocell; paper uses tiled 9-slice to avoid stretched fibre",
+  "sources_manifest": "art/_review/2026-10-23-ui-final/sources.json"
+}

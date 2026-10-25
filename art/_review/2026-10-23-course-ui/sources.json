@@ -1,0 +1,120 @@
+[
+  {
+    "source": "docs/qa/evidence/proto-course-1-start.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/1-start.png",
+    "sha256": "1863a562f23c72d82bbcac449e398ea56913094e516054850e0cf5405b18ef39",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-2-curve.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/2-curve.png",
+    "sha256": "97288c55d02d7af2d66ca8fa7728a3000971b8cf8b7a1a60140936c75c01fae7",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-3-coast.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/3-coast.png",
+    "sha256": "8bc2776aee14a1f65975b1c72684541e17759d722825a4c1e576f31a4a571b38",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-4-hairpin.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/4-hairpin.png",
+    "sha256": "1758cbc5245337eeab82defac97b92c88d294b3068545e371e65f4e2d786b1e6",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-5-village.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/5-village.png",
+    "sha256": "5e40eb839ff8683d726e7e60315f7328fef8e1362a6e44122262d4272874439f",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-fork-sign.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/fork-sign.png",
+    "sha256": "614f4d5ee515265ff741d566e11642cd5c1be3a2ba84fe4532d85a4037128510",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-detour.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/detour.png",
+    "sha256": "f7d681597c4f8fb57a3cf31e414d3615938407650214d1fb9f68a1b4a8969eb9",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-overlook.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/overlook.png",
+    "sha256": "233f54434518baf25414dfde4d2f4c2767f1ef82dd586f42891ccb3527d33c37",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-meadow.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/meadow.png",
+    "sha256": "7619a4dac72b81ce93f816d6c8c6e69807211ad4f8da3678af83b1cc23c5d4f4",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-lonehouse.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/lonehouse.png",
+    "sha256": "775d3ffe5b03261c5a91369dc8d195860472ba6b64fc5ca8391b46d8d719e77a",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "docs/qa/evidence/proto-course-packing-timeleft.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/packing-timeleft.png",
+    "sha256": "2235f2e0b7f7db54efbf897c569c708640f51e6371a01c77a37ddd1107ff5191",
+    "scope": "existing capture; not captured in this task"
+  },
+  {
+    "source": "F1/Assets/Editor/BuildPostcardSlice.cs",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/BuildPostcardSlice.cs",
+    "sha256": "6d365ebc6a0cf142717ebd31eb2df829e91d2699ed8ab4600dd54bdd0cff7b29",
+    "scope": "read-only code snapshot; newer 1827 fork/meadow changes observed"
+  },
+  {
+    "source": "F1/Assets/Settings/Camera/CameraFeel_4_Postcard.asset",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/CameraFeel_4_Postcard.asset",
+    "sha256": "75d6ac59ac83e2bc14d06bc7b71a079d720af83d5895e6a58fff2d70f70816cf",
+    "scope": "FOV50-62; chase distance4.2m"
+  },
+  {
+    "source": "docs/qa/tmp/proto-cap2.cs",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/proto-cap2.cs",
+    "sha256": "9603a2a565ab2d20f415b905d2db131b3e9a68ee0f6b9815357e6fa915d1de51",
+    "scope": "edit-mode capture method"
+  },
+  {
+    "source": "F1/Assets/Scripts/Packing/PackingScreen.cs",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/PackingScreen.cs",
+    "sha256": "88121e54377b8b652e79fa26656a013864d3a87d86863a2df12a11b0f5aaf62c",
+    "scope": "time-left label already implemented; display truncates seconds"
+  },
+  {
+    "source": "art/concept/lofi-styles-2026-10-13/02_warm_street.png",
+    "snapshot": "art/_review/2026-10-23-course-ui/reference/02_warm_street.png",
+    "sha256": "87f6171bcd20359717f1f00d5d851e7cd26033ac6f46b9f9a976de9531dea2c0",
+    "scope": "D-096 concept reference only; never an asset input or release import"
+  },
+  {
+    "source": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+    "sha256": "8050abf23d77c3673368a4de3d4397a500e4b8b1c9593cd8a6bf8d2ff5e91e4c",
+    "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+    "license_url": "https://polyhaven.com/license",
+    "license": "CC0-1.0",
+    "author": "Amal Kumar",
+    "crop_ltrb": [
+      204,
+      389,
+      849,
+      983
+    ],
+    "pipeline": "photo diffuse -> BOX64 -> photo_to_pixel.quantize_exact none -> localized edge/bolt masks"
+  },
+  {
+    "source": "art/source/photos/cargo-box/CardboardSet001_1K-PNG_Color.png",
+    "sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "pipeline": "reuse verified ui-final photo paper patch; source crop825,590,1000,705 -> BOX64 -> luma recolor -> exact palette"
+  }
+]

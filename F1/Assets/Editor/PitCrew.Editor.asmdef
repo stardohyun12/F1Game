@@ -11,7 +11,9 @@
         "Unity.Recorder.Base",
         "Whinarn.UnityMeshSimplifier.Runtime",
         "TownGen.Core",
-        "RoadGen.Editor"
+        "RoadGen.Editor",
+        "Unity.Splines",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [
         "Editor"

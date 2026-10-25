@@ -1,0 +1,7 @@
+{
+  "pass": true,
+  "tests_run": 8,
+  "failures": 0,
+  "errors": 0,
+  "scope": "Synthetic known 1-metre triangle, parent-scale transform, anisotropic/degenerate UV, forbidden/spanning tile, Point-vs-linear sampler, outside-palette injection. These are checker tests, not evidence that the house model passes."
+}

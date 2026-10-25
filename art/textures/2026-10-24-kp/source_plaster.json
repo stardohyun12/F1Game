@@ -1,0 +1,23 @@
+{
+  "id": "painted_plaster_wall",
+  "path": "art/textures/2026-10-24-kp/sources/plaster/painted_plaster_wall_diff_1k.png",
+  "url": "https://polyhaven.com/a/painted_plaster_wall",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/painted_plaster_wall/painted_plaster_wall_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71",
+  "md5": "a579bdf62c32e5d8ada9b167da322416",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

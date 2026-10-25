@@ -1,0 +1,1 @@
+UnityEditor.SessionState.SetString("p.label","HilltopDoor"); UnityEditor.SessionState.SetInt("hb.route",0); UnityEditor.SessionState.SetInt("hb.cap",1); UnityEditor.SessionState.SetInt("p.vcap",15); UnityEditor.SessionState.EraseString("hb.drive"); UnityEditor.SessionState.EraseString("p.hp"); return "set0";

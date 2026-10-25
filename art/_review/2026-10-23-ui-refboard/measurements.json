@@ -1,0 +1,488 @@
+[
+  {
+    "slug": "edc",
+    "source_image": "images/edc-2.jpg",
+    "source_sha256": "633bd57d667447e18a533f53ef94c240c4c19a759e20cd818d740e0da696de4b",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        155,
+        85,
+        410,
+        48
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 3.796,
+    "state": "상점 대화",
+    "limitation": "상점 대화 면적이다. 주행 컷의 0%는 홍보 프레임 관찰값이며 실제 HUD 평균은 [미확인]."
+  },
+  {
+    "slug": "short-hike",
+    "source_image": "images/short-hike-3.jpg",
+    "source_sha256": "8a9ece5e5a7b6c2f45b9f048d9508bf51fd97ed7f52ddbf3b21ad65ec12c2046",
+    "source_size": [
+      1900,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        242,
+        100,
+        345,
+        50
+      ],
+      [
+        400,
+        150,
+        26,
+        31
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 3.483,
+    "state": "짧은 대화",
+    "limitation": "대화 순간의 값. 탐험 보조 컷은 HUD 0%로 보이지만 전체 플레이의 평균이 아니다."
+  },
+  {
+    "slug": "lunacid",
+    "source_image": "images/lunacid-0.jpg",
+    "source_sha256": "f4197abcae1826817212073a1b0a5f09c51e770b82512e41f55a6cf777508d98",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        25,
+        20,
+        330,
+        60
+      ],
+      [
+        48,
+        78,
+        73,
+        38
+      ],
+      [
+        700,
+        25,
+        242,
+        62
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 7.221,
+    "state": "전투",
+    "limitation": "대화창이 없는 전투 컷의 상태 표시 영역. 무기·피격 화면 효과는 UI 면적에서 제외."
+  },
+  {
+    "slug": "dredge",
+    "source_image": "images/dredge-2.jpg",
+    "source_sha256": "9f92bd688d4e1863a060410c3339a0f5510e5a774bfebb88e853028dc6ea0236",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        410,
+        0,
+        195,
+        67
+      ],
+      [
+        926,
+        80,
+        34,
+        44
+      ],
+      [
+        0,
+        390,
+        77,
+        130
+      ],
+      [
+        81,
+        459,
+        103,
+        55
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 5.833,
+    "state": "항해",
+    "limitation": "항해와 상점 면적은 별개. 보조 상점 컷의 큰 패널을 항해 HUD로 합산하지 않음."
+  },
+  {
+    "slug": "motorways",
+    "source_image": "images/motorways-0.jpg",
+    "source_sha256": "bc165c24f340951d7a9c0ff90e5eb5cdec729b842352fb75fbec99881c8c0f41",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        10,
+        12,
+        31,
+        26
+      ],
+      [
+        843,
+        8,
+        112,
+        34
+      ],
+      [
+        379,
+        474,
+        135,
+        58
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 2.4,
+    "state": "도로 편집",
+    "limitation": "2D 대조군. 도로·건물·수요 핀은 조작 대상이므로 제외; 그 대상을 전부 UI로 세면 사실상 화면 전체가 된다."
+  },
+  {
+    "slug": "unpacking",
+    "source_image": "images/unpacking-2.jpg",
+    "source_sha256": "6ba91b53be61372058276f212827871d8de859ee21c5ee511df01f11b523bac0",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        5,
+        4,
+        95,
+        40
+      ],
+      [
+        882,
+        7,
+        66,
+        35
+      ],
+      [
+        5,
+        220,
+        48,
+        78
+      ],
+      [
+        912,
+        216,
+        38,
+        81
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 2.495,
+    "state": "물건 정리",
+    "limitation": "2D 픽셀 대조군. 방·가구는 조작 대상이라 제외, 화면 가장자리 도구만 계산."
+  },
+  {
+    "slug": "papers",
+    "source_image": "images/papers-4.jpg",
+    "source_sha256": "2c1b6b1616657289b494c3c50ada70cd36376930663276cca507c797ea57feb7",
+    "source_size": [
+      1280,
+      720
+    ],
+    "source_crop_xyxy": [
+      70,
+      40,
+      1210,
+      680
+    ],
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "D",
+    "rects_xywh": [
+      [
+        310,
+        176,
+        650,
+        364
+      ],
+      [
+        0,
+        352,
+        310,
+        188
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 56.883,
+    "state": "서류 검사",
+    "limitation": "검은 바깥 여백을 제외한 활성 화면에서 책상·조작대가 차지하는 면적(D). 풍경 위 HUD(O)와 순위 비교 불가."
+  },
+  {
+    "slug": "obra-dinn",
+    "source_image": "images/obra-dinn-1.jpg",
+    "source_sha256": "2feb6481b29104a375b6147d0c6b9337e61aa023c0f6ab86182fffdfd9b7089e",
+    "source_size": [
+      1600,
+      900
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "D",
+    "rects_xywh": [
+      [
+        242,
+        280,
+        144,
+        173
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 4.806,
+    "state": "시계로 조사",
+    "limitation": "손 전체가 아닌 시계의 읽을 면만 D로 계산; 중첩 HUD O는 0%."
+  },
+  {
+    "slug": "inscryption",
+    "source_image": "images/inscryption-0.jpg",
+    "source_sha256": "b034e3f4702d5c7a5298e58fe5237b550150e93fbcc4c9e64f5212224fdfe615",
+    "source_size": [
+      1920,
+      1079
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "D",
+    "rects_xywh": [
+      [
+        230,
+        380,
+        475,
+        160
+      ],
+      [
+        193,
+        241,
+        601,
+        142
+      ],
+      [
+        680,
+        195,
+        210,
+        115
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 33.989,
+    "state": "카드 테이블",
+    "limitation": "카드 읽기·배치 면(D)의 근사. 사선 카드 사이 빈 공간도 묶음 영역에 포함; 일반 HUD O는 0%."
+  },
+  {
+    "slug": "paradise",
+    "source_image": "images/paradise-4.jpg",
+    "source_sha256": "ce3eeab407c09a2b5327b5893f6a9f4c3d69ce1a365b7133d709ea6260a746de",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        0,
+        26,
+        276,
+        70
+      ],
+      [
+        865,
+        29,
+        74,
+        60
+      ],
+      [
+        13,
+        409,
+        414,
+        111
+      ]
+    ],
+    "polygons_xy": [
+      [
+        [
+          0,
+          230
+        ],
+        [
+          650,
+          0
+        ],
+        [
+          896,
+          0
+        ],
+        [
+          0,
+          309
+        ]
+      ]
+    ],
+    "area_pct": 25.816,
+    "state": "대화 진입 안내",
+    "limitation": "안내가 겹친 한 순간. 사선 띠는 외접 사각형 대신 다각형으로 계산; 상시 점유율로 일반화하지 않음."
+  },
+  {
+    "slug": "crazy-taxi",
+    "source_image": "images/crazy-taxi-1.jpg",
+    "source_sha256": "daa0fe8b821e7202f1714e7ffc6b5a440ed1f5fd1a927ac60996cf9f1b4d8690",
+    "source_size": [
+      1280,
+      720
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "O",
+    "rects_xywh": [
+      [
+        105,
+        32,
+        162,
+        103
+      ],
+      [
+        412,
+        24,
+        111,
+        92
+      ],
+      [
+        619,
+        29,
+        297,
+        103
+      ],
+      [
+        503,
+        231,
+        65,
+        36
+      ],
+      [
+        835,
+        437,
+        74,
+        74
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 12.597,
+    "state": "승객 운송",
+    "limitation": "PC Steam 게시 컷 기준. 플랫폼별 UI 차이·실제 긴장도·주행 가독성은 시험하지 않음."
+  },
+  {
+    "slug": "pacific-drive",
+    "source_image": "images/pacific-drive-1.jpg",
+    "source_sha256": "2ee3abb70506c507b69d5b0247ba46da7f5e128d5421dbbac93a08ebbba28be6",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "source_crop_xyxy": null,
+    "normalized_size": [
+      960,
+      540
+    ],
+    "kind": "D",
+    "rects_xywh": [
+      [
+        231,
+        333,
+        70,
+        24
+      ],
+      [
+        350,
+        452,
+        238,
+        88
+      ],
+      [
+        558,
+        350,
+        146,
+        101
+      ],
+      [
+        704,
+        345,
+        216,
+        151
+      ]
+    ],
+    "polygons_xy": [],
+    "area_pct": 13.5,
+    "state": "차내 계기",
+    "limitation": "발광 계기·화면의 읽을 면 D만 계산. 운전대·차창 기둥·거울·검은 기기 케이스는 제외; 총 시야 가림과 다름."
+  }
+]

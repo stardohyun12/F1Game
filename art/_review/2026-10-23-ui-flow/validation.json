@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-23",
+  "scope": "Static artifacts + headless Chromium; no Unity/Play",
+  "evidence_20261023_count": 31,
+  "audit_count": 5,
+  "issues_per_screen": {
+    "board": 4,
+    "call": 4,
+    "packing": 5,
+    "driving": 5,
+    "result": 4
+  },
+  "wireframe_count": 6,
+  "essential_count_each": 3,
+  "mockup_count": 4,
+  "mockups": [
+    {
+      "file": "outbound-a.png",
+      "size": [
+        960,
+        540
+      ],
+      "overlay_palette_outside": 0,
+      "central_hud_pixels": 0,
+      "nearest_2x_3x_roundtrip": "pass",
+      "sha256": "d8b6dc494d7c0375f021613a622e302bd2922da977aabc6b1f7b3742f8f66583"
+    },
+    {
+      "file": "outbound-b.png",
+      "size": [
+        960,
+        540
+      ],
+      "overlay_palette_outside": 0,
+      "central_hud_pixels": 0,
+      "nearest_2x_3x_roundtrip": "pass",
+      "sha256": "71607676624ae989d2bf8fc5d88ba10fb2e280155cd813cb94d6189fd275a928"
+    },
+    {
+      "file": "return-a.png",
+      "size": [
+        960,
+        540
+      ],
+      "overlay_palette_outside": 0,
+      "central_hud_pixels": 0,
+      "nearest_2x_3x_roundtrip": "pass",
+      "sha256": "b3d89ecc7034d84dd823b5f58a95634aed69f2991b0e537c1991f165326c2adf"
+    },
+    {
+      "file": "return-b.png",
+      "size": [
+        960,
+        540
+      ],
+      "overlay_palette_outside": 0,
+      "central_hud_pixels": 0,
+      "nearest_2x_3x_roundtrip": "pass",
+      "sha256": "9594008e55b0013d2479f49bf74fc4d4a1f14aae0e78398174108fee2af8b313"
+    }
+  ],
+  "local_missing_links": [],
+  "source_changed_since_snapshot": [],
+  "browser": [
+    {
+      "width": 1418,
+      "scrollWidth": 1418,
+      "images": 15,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ]
+    },
+    {
+      "width": 578,
+      "scrollWidth": 578,
+      "images": 15,
+      "broken": [],
+      "fonts": "loaded",
+      "galmuri": true,
+      "pretendard": true,
+      "native": [
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        },
+        {
+          "width": 960,
+          "naturalWidth": 960,
+          "naturalHeight": 540
+        }
+      ]
+    }
+  ],
+  "visual_review": "Author inspected artifact PNGs and browser previews. Independent graphics gate not run.",
+  "not_run": [
+    "Unity import",
+    "Play",
+    "input/state transitions",
+    "audio",
+    "human reading test",
+    "F1 motion/speed perception",
+    "independent UX review"
+  ]
+}

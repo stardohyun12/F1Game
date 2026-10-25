@@ -1,0 +1,38 @@
+{
+  "pass": true,
+  "copies": [
+    {
+      "source": "art/textures/2026-10-24-kp/albedo/A1_KP_wood_64ppm.png",
+      "destination": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_wood_64ppm.png",
+      "sha256": "88fce213f24bf349263be4658c0f63e9ab445380285c7536313da7166d4fb02a",
+      "copy_sha256": "88fce213f24bf349263be4658c0f63e9ab445380285c7536313da7166d4fb02a",
+      "match": true,
+      "id": "wood"
+    },
+    {
+      "source": "art/textures/2026-10-24-kp/albedo/A1_KP_stone_64ppm.png",
+      "destination": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_stone_64ppm.png",
+      "sha256": "f9064118377213dc0985b6f1cfba40652a77ee3a6bb1cc0df714177b7a057a32",
+      "copy_sha256": "f9064118377213dc0985b6f1cfba40652a77ee3a6bb1cc0df714177b7a057a32",
+      "match": true,
+      "id": "stone"
+    },
+    {
+      "source": "art/textures/2026-10-24-kp/albedo/A1_KP_plaster_64ppm.png",
+      "destination": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_plaster_64ppm.png",
+      "sha256": "3624e276173fda398c0eb6a42a2555ad9eae8bc164ddf0755a7905e42f46eca4",
+      "copy_sha256": "3624e276173fda398c0eb6a42a2555ad9eae8bc164ddf0755a7905e42f46eca4",
+      "match": true,
+      "id": "plaster"
+    },
+    {
+      "source": "art/textures/2026-10-24-kp/albedo/A1_KP_roof_64ppm.png",
+      "destination": "F1/Assets/Art/ProtoCourse/Textures/A1_KP_roof_64ppm.png",
+      "sha256": "cf5ef045214791b4250c380e08829d547eaa69ceb4ce2dd69df734358349a8d1",
+      "copy_sha256": "cf5ef045214791b4250c380e08829d547eaa69ceb4ce2dd69df734358349a8d1",
+      "match": true,
+      "id": "roof"
+    }
+  ],
+  "scope": "PNG copies only. No Unity, .meta, material, scene, shader, code or atlas edits."
+}

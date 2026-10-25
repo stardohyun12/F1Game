@@ -1,0 +1,693 @@
+{
+  "atlas_size_px": [
+    512,
+    512
+  ],
+  "grid_xy": [
+    4,
+    4
+  ],
+  "slot_order": "top-left row-major PNG coordinates",
+  "cell_size_px": 128,
+  "guard_px": 4,
+  "active_size_px": 120,
+  "density_px_m": 64,
+  "number_decal": {
+    "slot": 10,
+    "local_rect_ltrb": [
+      52,
+      56,
+      76,
+      72
+    ],
+    "size_m": [
+      0.375,
+      0.25
+    ],
+    "text": "07",
+    "font": "art/_review/2026-10-23-d123/fonts/Galmuri11.ttf",
+    "font_size_px": 11
+  },
+  "bag_rear_useful_crop": {
+    "slot": 7,
+    "local_rect_ltrb": [
+      41,
+      54,
+      87,
+      74
+    ]
+  },
+  "blender_uv_formula": "u=(slot%4*128+local_x)/512; v=1-(slot//4*128+local_y)/512",
+  "sampling": "Closest/Point; no mipmap in review; configure separately at Unity import",
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "atlas_sha256": "81973fb67b83cfcfaaa2b690392849a9f627ee72903464e7c243447b7c2567c4",
+  "outside_palette_pixels": 0,
+  "sources": [
+    {
+      "id": "rough_linen",
+      "path": "art/source/car-v01/photos/rough_linen_diff_1k.jpg",
+      "sha256": "04897d7611d7390ddf5b2c6f7273f448dfc48341fdbd1f4f207fa30b331d7f57",
+      "url": "https://polyhaven.com/a/rough_linen",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "dimensions_mm": [
+        270.7081392676629,
+        271.29998803138733
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    },
+    {
+      "id": "rubberized_track",
+      "path": "art/source/car-v01/photos/rubberized_track_diff_1k.jpg",
+      "sha256": "63bbde84facf0ec99d6d4c7a72bcbd2a8fe2dcb910bd65572b600e53e4ac13ea",
+      "url": "https://polyhaven.com/a/rubberized_track",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rubberized_track/rubberized_track_diff_1k.jpg",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "dimensions_mm": [
+        2000,
+        2000
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    },
+    {
+      "id": "rusty_metal_02",
+      "path": "art/source/car-v01/photos/rusty_metal_02_diff_1k.jpg",
+      "sha256": "adaf094391518b6afe787a123942110aa88ef521c844f970b124420f5ed5d3d9",
+      "url": "https://polyhaven.com/a/rusty_metal_02",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_02/rusty_metal_02_diff_1k.jpg",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "dimensions_mm": [
+        1000,
+        1000
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    }
+  ],
+  "tiles": [
+    {
+      "slot": 0,
+      "name": "faded_red_main",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/00_faded_red_main.png",
+      "atlas_rect_xywh": [
+        0,
+        0,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        15,
+        28
+      ],
+      "luminance_quantiles": [
+        0.18
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "사진의 저주파 도장 변색만. 마모 픽셀 없음.",
+      "used_colors": 2,
+      "dominant_fraction": 0.798583984375,
+      "sha256": "15fb0888974930ba5b028379e7052df580608d9888b55f511dbaa8e3d17d441d",
+      "ai_generated": false
+    },
+    {
+      "slot": 1,
+      "name": "red_worn_contact",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/01_red_worn_contact.png",
+      "atlas_rect_xywh": [
+        128,
+        0,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        15,
+        28
+      ],
+      "luminance_quantiles": [
+        0.18
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "사이드포드 하단의 돌 튐/정비 접촉. local x54..73 y71..75 한 군데만.",
+      "used_colors": 4,
+      "dominant_fraction": 0.79779052734375,
+      "sha256": "4ad352331aaecf807432148727fd651370e5fdbf57809561a4769792acb8ee2e",
+      "ai_generated": false
+    },
+    {
+      "slot": 2,
+      "name": "red_number_panel",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/02_red_number_panel.png",
+      "atlas_rect_xywh": [
+        256,
+        0,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        15,
+        28
+      ],
+      "luminance_quantiles": [
+        0.18
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "작은 실번호판. local [52,56,76,72), Galmuri11 07.",
+      "used_colors": 5,
+      "dominant_fraction": 0.78045654296875,
+      "sha256": "8c2b49dae1f6d5d5b15f6fee3e967e78665c344c9189376de4a34d37167ef98e",
+      "ai_generated": false
+    },
+    {
+      "slot": 3,
+      "name": "exposed_dark_steel",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/03_exposed_dark_steel.png",
+      "atlas_rect_xywh": [
+        384,
+        0,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        9,
+        5,
+        12
+      ],
+      "luminance_quantiles": [
+        0.08,
+        0.92
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "하부 프레임 연결부 local x52..60 y70..73에만 녹.",
+      "used_colors": 5,
+      "dominant_fraction": 0.80224609375,
+      "sha256": "a7c93e5fc1dd8476b2631165917cacd998e33ee85b631c42b47bf9d33ec985fd",
+      "ai_generated": false
+    },
+    {
+      "slot": 4,
+      "name": "rubber_sidewall",
+      "source_id": "rubberized_track",
+      "tile_path": "art/source/car-v01/tiles/04_rubber_sidewall.png",
+      "atlas_rect_xywh": [
+        0,
+        128,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        6,
+        2
+      ],
+      "luminance_quantiles": [
+        0.85
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "타이어의 고무 소재 미세 명도. 무작위 스크래치 없음.",
+      "used_colors": 2,
+      "dominant_fraction": 0.846923828125,
+      "sha256": "694a7e204732a33d4993d2118aae81619d99a1bc9f6aa1eabdfe4c127ed26656",
+      "ai_generated": false
+    },
+    {
+      "slot": 5,
+      "name": "rubber_tread",
+      "source_id": "rubberized_track",
+      "tile_path": "art/source/car-v01/tiles/05_rubber_tread.png",
+      "atlas_rect_xywh": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        6,
+        2,
+        9
+      ],
+      "luminance_quantiles": [
+        0.82,
+        0.98
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "접지 고무의 낮은 명도 차. 회전 방향 줄은 메시 UV에 의존.",
+      "used_colors": 3,
+      "dominant_fraction": 0.81689453125,
+      "sha256": "6084deb334cf654f9054a8f716a8ea1511b5950c1dd39d4e1e1401ceff5bf557",
+      "ai_generated": false
+    },
+    {
+      "slot": 6,
+      "name": "orange_bag_main",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/06_orange_bag_main.png",
+      "atlas_rect_xywh": [
+        256,
+        128,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        31,
+        23
+      ],
+      "luminance_quantiles": [
+        0.08
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "바탕 천 재질. 모서리 때나 접힘은 별도 후면/뚜껑에만.",
+      "used_colors": 2,
+      "dominant_fraction": 0.9111328125,
+      "sha256": "a5e76623106dc8d260a0c67996f6e2c9c843f9396b7c5dd1c11b47c29332d7ab",
+      "ai_generated": false
+    },
+    {
+      "slot": 7,
+      "name": "orange_bag_rear",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/07_orange_bag_rear.png",
+      "atlas_rect_xywh": [
+        384,
+        128,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        31,
+        23
+      ],
+      "luminance_quantiles": [
+        0.08
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "후면 46x20px 중앙 사용 영역 가장자리 봉제/상단 지퍼. 중앙 비움.",
+      "used_colors": 6,
+      "dominant_fraction": 0.9013671875,
+      "sha256": "45c4ee3c53076661953e39cf4096867803eec7ef487ac0c38db89d76f18ee158",
+      "ai_generated": false
+    },
+    {
+      "slot": 8,
+      "name": "orange_bag_lid",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/08_orange_bag_lid.png",
+      "atlas_rect_xywh": [
+        0,
+        256,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        31,
+        23
+      ],
+      "luminance_quantiles": [
+        0.08
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "가방 뚜껑 접힘 두 개. 스트랩 마찰 가장자리만 어두움.",
+      "used_colors": 3,
+      "dominant_fraction": 0.90972900390625,
+      "sha256": "5bdb30b206a677a0a31a98b81a12c45e4d04a556365ee2c60d63a0913293ea33",
+      "ai_generated": false
+    },
+    {
+      "slot": 9,
+      "name": "black_fabric_strap",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/09_black_fabric_strap.png",
+      "atlas_rect_xywh": [
+        128,
+        256,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        6,
+        2,
+        9
+      ],
+      "luminance_quantiles": [
+        0.85,
+        0.98
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "하중 받는 직물 끈. 단색 면 대신 실제 직물 면적 평균 명도.",
+      "used_colors": 3,
+      "dominant_fraction": 0.833740234375,
+      "sha256": "0eb4816289f506211012a35b3eef922febb9a0981eb79861dd5622c118f53e5b",
+      "ai_generated": false
+    },
+    {
+      "slot": 10,
+      "name": "number_sticker",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/10_number_sticker.png",
+      "atlas_rect_xywh": [
+        256,
+        256,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        0,
+        25
+      ],
+      "luminance_quantiles": [
+        0.1
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "local [52,56,76,72) 24x16px 실제 Galmuri11 숫자 07; 모서리 1px 들뜸.",
+      "used_colors": 4,
+      "dominant_fraction": 0.892578125,
+      "sha256": "db669eab04a6fb76bd7ef15f51a35bccb8692af117a6460b15b3d64296451a6f",
+      "ai_generated": false
+    },
+    {
+      "slot": 11,
+      "name": "grey_repair_tape",
+      "source_id": "rough_linen",
+      "tile_path": "art/source/car-v01/tiles/11_grey_repair_tape.png",
+      "atlas_rect_xywh": [
+        384,
+        256,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        8,
+        7,
+        17
+      ],
+      "luminance_quantiles": [
+        0.1,
+        0.93
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "천 테이프 실물 질감. 실제 폭 8px=12.5cm의 패치에 쓸 작은 원천.",
+      "used_colors": 3,
+      "dominant_fraction": 0.80694580078125,
+      "sha256": "fe44a8f804d0093381441982712491310111a937d4b8ea967d5cd11eab2a1c5e",
+      "ai_generated": false
+    },
+    {
+      "slot": 12,
+      "name": "cream_helmet",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/12_cream_helmet.png",
+      "atlas_rect_xywh": [
+        0,
+        384,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        0,
+        25
+      ],
+      "luminance_quantiles": [
+        0.06
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "헬멧 바랜 도장 명도. 무작위 칩 없음.",
+      "used_colors": 2,
+      "dominant_fraction": 0.9189453125,
+      "sha256": "b4c9759d27ec3351b556faf994d62a237d05e9b24422e4d70130ae933ed91dea",
+      "ai_generated": false
+    },
+    {
+      "slot": 13,
+      "name": "dark_visor",
+      "source_id": "rubberized_track",
+      "tile_path": "art/source/car-v01/tiles/13_dark_visor.png",
+      "atlas_rect_xywh": [
+        128,
+        384,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        6,
+        2,
+        9
+      ],
+      "luminance_quantiles": [
+        0.9,
+        0.98
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "반사 대신 무광 3색 저대비. 가짜 하이라이트 없음.",
+      "used_colors": 3,
+      "dominant_fraction": 0.898193359375,
+      "sha256": "d97edbb9b2cc6c82b91dca9aa1cf926ecdec6ad4ac6e51d4fecae4ab79f92071",
+      "ai_generated": false
+    },
+    {
+      "slot": 14,
+      "name": "dark_underbody",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/14_dark_underbody.png",
+      "atlas_rect_xywh": [
+        256,
+        384,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        6,
+        2,
+        9
+      ],
+      "luminance_quantiles": [
+        0.8,
+        0.96
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "하부 오염은 재질 평균 명도만. 전체에 녹 뿌리지 않음.",
+      "used_colors": 3,
+      "dominant_fraction": 0.79052734375,
+      "sha256": "ae10539f392475ca3156db272efe2d505724a852e9ae2fffd99249b77df59557",
+      "ai_generated": false
+    },
+    {
+      "slot": 15,
+      "name": "small_red_lamp",
+      "source_id": "rusty_metal_02",
+      "tile_path": "art/source/car-v01/tiles/15_small_red_lamp.png",
+      "atlas_rect_xywh": [
+        384,
+        384,
+        128,
+        128
+      ],
+      "active_rect_local_xywh": [
+        4,
+        4,
+        120,
+        120
+      ],
+      "active_physical_m": [
+        1.875,
+        1.875
+      ],
+      "target_texels_per_m": 64,
+      "ladder_palette_indices": [
+        15,
+        28
+      ],
+      "luminance_quantiles": [
+        0.1
+      ],
+      "photo_lowpass": "float 7x7 box filter twice at target density",
+      "information_layer_reason_ko": "작은 붉은 렌즈 영역. 팔레트 색 그대로, 발광 굽기 없음.",
+      "used_colors": 2,
+      "dominant_fraction": 0.875,
+      "sha256": "2ecaa31d90dcf0ab9948ef8405f52515f8a951984d626443a94ed5844fd19958",
+      "ai_generated": false
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+var r=Services.Run as RunController; var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>(); var ws=ps!=null&&ps.ActiveItem!=null?ps.ActiveItem.GetComponent<PitCrew.Packing.WrapState>():null;
+return "stage="+r.CurrentStage+" wallet="+UpgradeSystem.Instance.Wallet+" reward="+r.LastReward+" pack="+r.LastPackCost+" net="+r.LastNet+" itemCost="+(ws!=null?ws.TotalCost.ToString("F0"):"-")+" order="+(r.CurrentOrders!=null&&r.CurrentOrders.Count>0?r.CurrentOrders[0].name+"/"+r.CurrentOrders[0].baseReward:"-");

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f271fe002b5584a8bbcaa42cab620b, type: 3}
+  m_Name: Proto_1_AlleyEnd
+  m_EditorClassIdentifier: PitCrew::OrderJob
+  displayName: "\uACE8\uBAA9 \uB05D \uC9D1 \u2014 \uC0C1\uC790"
+  color: {r: 0.55, g: 0.85, b: 0.55, a: 1}
+  destinationLabels:
+  - AlleyEnd
+  timeLimitSec: 0
+  baseReward: 600
+  timeBonus: 150
+  weightTier: 0
+  cargoType: 0
+  callerName: 
+  urgentSituation: 

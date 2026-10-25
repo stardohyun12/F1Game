@@ -1,0 +1,54 @@
+{
+  "type": 1,
+  "name": "Worn Asphalt",
+  "categories": [
+    "floor",
+    "asphalt"
+  ],
+  "tags": [
+    "asphalt",
+    "asphalt road",
+    "petals",
+    "plant debris",
+    "outdoor",
+    "cracked",
+    "driveway",
+    "sticks",
+    "twigs",
+    "leaf litter",
+    "worn",
+    "coarse",
+    "gritty",
+    "gravelly"
+  ],
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "max_resolution": [
+    16384,
+    16384
+  ],
+  "dimensions": [
+    2000,
+    2000
+  ],
+  "files_hash": "06968c4bb0fdac2b16f83c0e21cf35bc6f752bb6",
+  "staging": null,
+  "date_published": 1759363200,
+  "description": "Free 16K worn asphalt texture: coarse, gritty, gravelly surface with cracks, leaf litter, twigs and petals - great for outdoor roads, driveways and ground props.",
+  "category_id": "8871debe-40cf-5e4d-a5e5-1ddfe979f14f",
+  "category": "Asphalt & Bitumen/Asphalt/Worn Road Surface",
+  "attributes": {
+    "surface_use": "ground",
+    "condition": [
+      "weathered",
+      "cracked",
+      "worn"
+    ],
+    "origin": "man_made",
+    "setting": "outdoor"
+  },
+  "img_version": "9b7fdfa7",
+  "download_count": 5789,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/worn_asphalt.png?width=256&height=256&format=webp&v=9b7fdfa7"
+}

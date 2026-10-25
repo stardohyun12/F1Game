@@ -1,0 +1,22 @@
+[
+  {
+    "file": "rusty_painted_metal_diff_1k.png",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/rusty_painted_metal/rusty_painted_metal_diff_1k.png",
+    "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+    "license": "CC0-1.0",
+    "author": "Amal Kumar",
+    "date": "2026-10-23",
+    "sha256": "8050abf23d77c3673368a4de3d4397a500e4b8b1c9593cd8a6bf8d2ff5e91e4c",
+    "bytes": 5784179
+  },
+  {
+    "file": "rusty_painted_metal_context.jpg",
+    "download_url": "https://cdn.polyhaven.com/asset_img/renders/rusty_painted_metal/context_01.jpg?width=1200",
+    "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+    "license": "CC0-1.0",
+    "author": "Amal Kumar",
+    "date": "2026-10-23",
+    "sha256": "9ebfe95e6c3bdc604008a066b90bd01f3e7cf294b83354f88832701f8a237993",
+    "bytes": 264427
+  }
+]

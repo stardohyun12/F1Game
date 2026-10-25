@@ -1,0 +1,70 @@
+{
+  "camera_records": [
+    {
+      "distance_to_front_wall_m": 30,
+      "camera_blender_xyz": [
+        0.0,
+        -32.900001525878906,
+        2.0999999046325684
+      ],
+      "horizontal_fov_degrees": 50,
+      "eye_height_m": 2.1
+    },
+    {
+      "distance_to_front_wall_m": 45,
+      "camera_blender_xyz": [
+        0.0,
+        -47.900001525878906,
+        2.0999999046325684
+      ],
+      "horizontal_fov_degrees": 50,
+      "eye_height_m": 2.1
+    },
+    {
+      "distance_to_front_wall_m": 60,
+      "camera_blender_xyz": [
+        0.0,
+        -62.900001525878906,
+        2.0999999046325684
+      ],
+      "horizontal_fov_degrees": 50,
+      "eye_height_m": 2.1
+    }
+  ],
+  "ambient": [
+    0.7,
+    0.75,
+    0.83
+  ],
+  "sun_color": [
+    1,
+    0.79,
+    0.53
+  ],
+  "sun_energy": 3.5,
+  "sun_direction": [
+    0.42,
+    0.65,
+    -0.5
+  ],
+  "close_camera": {
+    "orthographic_scale": 16.4,
+    "position": [
+      11,
+      -18,
+      10
+    ],
+    "target": [
+      1,
+      0,
+      2.75
+    ]
+  },
+  "review_only_terrain": "foundation grass triangles and shadow catcher, excluded from model export",
+  "render_engine": "Cycles",
+  "blender": "5.2.2 LTS",
+  "samples": 96,
+  "input": "exported hill_house_v01.glb",
+  "concept_background": "AI review plate only; no model texture samples from it",
+  "runtime_verified": false
+}

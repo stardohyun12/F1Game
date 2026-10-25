@@ -1,0 +1,23 @@
+{
+  "id": "wood_planks_dirt",
+  "path": "art/textures/2026-10-24-kp-v2/sources/wood_d/wood_planks_dirt_diff_1k.png",
+  "url": "https://polyhaven.com/a/wood_planks_dirt",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wood_planks_dirt/wood_planks_dirt_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "4aa989221f4f37b21581d28e1148e1c4bf2035c2414d817b74f95c5ce2e28aff",
+  "md5": "92f39910d5a60a68360b367102117c08",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

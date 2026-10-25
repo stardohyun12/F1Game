@@ -1,0 +1,35 @@
+{
+  "id": "grey_stone_path",
+  "provider": "Poly Haven",
+  "path": "art/textures/2026-10-24-kp/sources/stone/grey_stone_path_diff_1k.png",
+  "url": "https://polyhaven.com/a/grey_stone_path",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/grey_stone_path/grey_stone_path_diff_1k.png",
+  "info_url": "https://api.polyhaven.com/info/grey_stone_path",
+  "files_url": "https://api.polyhaven.com/files/grey_stone_path",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    1799.999713897705,
+    1799.999713897705
+  ],
+  "method": "Photographic texture source; provider states all texture materials use photogrammetry or photometric stereo, not procedural generation or generative AI. Per-asset scan subtype not exposed in info metadata.",
+  "method_evidence": [
+    "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+    "https://docs.polyhaven.com/en/technical-standards/textures"
+  ],
+  "ai_generated": false,
+  "sha256": "7a1a9f51a0f916b6f4eaa8b80cbf091fe97988c1ecdaa46096f3ba00e44bfa8a",
+  "md5": "0892f11c06ad603f382b4cc4be0e524f",
+  "provider_md5": "0892f11c06ad603f382b4cc4be0e524f",
+  "provider_md5_verified": true,
+  "bytes": 5713889,
+  "accessed": "2026-10-24",
+  "downloaded_utc": "2026-10-23T16:41:13.085415+00:00",
+  "processing": [
+    "Direct 1k PNG diffuse download; original bytes preserved."
+  ],
+  "geography": "Source capture location not established; selected for material suitability, not claimed to depict Kyoto."
+}

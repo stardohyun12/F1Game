@@ -1,0 +1,1910 @@
+[
+  {
+    "id": "shortcut",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/shortcut-base-10m.png",
+    "projected_quad_px": [
+      [
+        668.642287328115,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        245.7758358125057
+      ],
+      [
+        668.642287328115,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "shortcut",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/shortcut-base-15m.png",
+    "projected_quad_px": [
+      [
+        687.2250250030851,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        235.15712856966567
+      ],
+      [
+        687.2250250030851,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "shortcut",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/shortcut-base-20m.png",
+    "projected_quad_px": [
+      [
+        698.1289454569932,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        228.9263168817182
+      ],
+      [
+        698.1289454569932,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/coast-base-10m.png",
+    "projected_quad_px": [
+      [
+        668.642287328115,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        245.7758358125057
+      ],
+      [
+        668.642287328115,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/coast-base-15m.png",
+    "projected_quad_px": [
+      [
+        687.2250250030851,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        235.15712856966567
+      ],
+      [
+        687.2250250030851,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/coast-base-20m.png",
+    "projected_quad_px": [
+      [
+        698.1289454569932,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        228.9263168817182
+      ],
+      [
+        698.1289454569932,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/alley-base-10m.png",
+    "projected_quad_px": [
+      [
+        689.0302052343678,
+        164.2241641874943
+      ],
+      [
+        790.9697947656322,
+        164.2241641874943
+      ],
+      [
+        790.9697947656322,
+        245.7758358125057
+      ],
+      [
+        689.0302052343678,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 14.02
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/alley-base-15m.png",
+    "projected_quad_px": [
+      [
+        702.3035892879179,
+        174.84287143033433
+      ],
+      [
+        777.6964107120821,
+        174.84287143033433
+      ],
+      [
+        777.6964107120821,
+        235.15712856966567
+      ],
+      [
+        702.3035892879179,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 10.37
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/alley-base-20m.png",
+    "projected_quad_px": [
+      [
+        710.0921038978522,
+        181.0736831182818
+      ],
+      [
+        769.9078961021478,
+        181.0736831182818
+      ],
+      [
+        769.9078961021478,
+        228.9263168817182
+      ],
+      [
+        710.0921038978522,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 8.22
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/cafe-base-10m.png",
+    "projected_quad_px": [
+      [
+        678.8362462812414,
+        164.2241641874943
+      ],
+      [
+        801.1637537187586,
+        164.2241641874943
+      ],
+      [
+        801.1637537187586,
+        245.7758358125057
+      ],
+      [
+        678.8362462812414,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 14.02
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/cafe-base-15m.png",
+    "projected_quad_px": [
+      [
+        694.7643071455014,
+        174.84287143033433
+      ],
+      [
+        785.2356928544986,
+        174.84287143033433
+      ],
+      [
+        785.2356928544986,
+        235.15712856966567
+      ],
+      [
+        694.7643071455014,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 10.37
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/cafe-base-20m.png",
+    "projected_quad_px": [
+      [
+        704.1105246774226,
+        181.0736831182818
+      ],
+      [
+        775.8894753225774,
+        181.0736831182818
+      ],
+      [
+        775.8894753225774,
+        228.9263168817182
+      ],
+      [
+        704.1105246774226,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 8.22
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/orchard-base-10m.png",
+    "projected_quad_px": [
+      [
+        668.642287328115,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        164.2241641874943
+      ],
+      [
+        811.357712671885,
+        245.7758358125057
+      ],
+      [
+        668.642287328115,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/orchard-base-15m.png",
+    "projected_quad_px": [
+      [
+        687.2250250030851,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        174.84287143033433
+      ],
+      [
+        792.7749749969149,
+        235.15712856966567
+      ],
+      [
+        687.2250250030851,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/orchard-base-20m.png",
+    "projected_quad_px": [
+      [
+        698.1289454569932,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        181.0736831182818
+      ],
+      [
+        781.8710545430068,
+        228.9263168817182
+      ],
+      [
+        698.1289454569932,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/hill-base-10m.png",
+    "projected_quad_px": [
+      [
+        689.0302052343678,
+        164.2241641874943
+      ],
+      [
+        790.9697947656322,
+        164.2241641874943
+      ],
+      [
+        790.9697947656322,
+        245.7758358125057
+      ],
+      [
+        689.0302052343678,
+        245.7758358125057
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/hill-base-15m.png",
+    "projected_quad_px": [
+      [
+        702.3035892879179,
+        174.84287143033433
+      ],
+      [
+        777.6964107120821,
+        174.84287143033433
+      ],
+      [
+        777.6964107120821,
+        235.15712856966567
+      ],
+      [
+        702.3035892879179,
+        235.15712856966567
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/hill-base-20m.png",
+    "projected_quad_px": [
+      [
+        710.0921038978522,
+        181.0736831182818
+      ],
+      [
+        769.9078961021478,
+        181.0736831182818
+      ],
+      [
+        769.9078961021478,
+        228.9263168817182
+      ],
+      [
+        710.0921038978522,
+        228.9263168817182
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "base",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/mart-base-10m.png",
+    "projected_quad_px": [
+      [
+        658.4483283749886,
+        174.41812314062074
+      ],
+      [
+        821.5516716250114,
+        174.41812314062074
+      ],
+      [
+        821.5516716250114,
+        235.58187685937926
+      ],
+      [
+        658.4483283749886,
+        235.58187685937926
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 28.03
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 14.02
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "base",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/mart-base-15m.png",
+    "projected_quad_px": [
+      [
+        679.6857428606686,
+        182.38215357275075
+      ],
+      [
+        800.3142571393314,
+        182.38215357275075
+      ],
+      [
+        800.3142571393314,
+        227.61784642724925
+      ],
+      [
+        679.6857428606686,
+        227.61784642724925
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 20.73
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 10.37
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "base",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 50,
+    "yaw_deg": 0,
+    "path": "readability/mart-base-20m.png",
+    "projected_quad_px": [
+      [
+        692.1473662365636,
+        187.05526233871134
+      ],
+      [
+        787.8526337634364,
+        187.05526233871134
+      ],
+      [
+        787.8526337634364,
+        222.94473766128866
+      ],
+      [
+        692.1473662365636,
+        222.94473766128866
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 16.45
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 8.22
+      }
+    ]
+  },
+  {
+    "id": "shortcut",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/shortcut-stress-10m.png",
+    "projected_quad_px": [
+      [
+        688.8916940478964,
+        171.2772637722597
+      ],
+      [
+        785.1753351118927,
+        175.192009271334
+      ],
+      [
+        785.1753351118927,
+        234.807990728666
+      ],
+      [
+        688.8916940478964,
+        238.7227362277403
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 20.64
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 21.2
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 10.31
+      }
+    ]
+  },
+  {
+    "id": "shortcut",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/shortcut-stress-15m.png",
+    "projected_quad_px": [
+      [
+        702.8366615655235,
+        180.47855605813697
+      ],
+      [
+        773.9236949843976,
+        182.6161663644015
+      ],
+      [
+        773.9236949843976,
+        227.3838336355985
+      ],
+      [
+        702.8366615655235,
+        229.52144394186303
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 15.47
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 15.78
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 7.73
+      }
+    ]
+  },
+  {
+    "id": "shortcut",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/shortcut-stress-20m.png",
+    "projected_quad_px": [
+      [
+        710.8030792363652,
+        185.7350285001226
+      ],
+      [
+        767.1592493244978,
+        187.0795429617292
+      ],
+      [
+        767.1592493244978,
+        222.9204570382708
+      ],
+      [
+        710.8030792363652,
+        224.2649714998774
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "지름길",
+        "role": "primary",
+        "min_body_height_px": 12.37
+      },
+      {
+        "text": "급경사",
+        "role": "primary",
+        "min_body_height_px": 12.57
+      },
+      {
+        "text": "화물주의",
+        "role": "detail",
+        "min_body_height_px": 6.18
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/coast-stress-10m.png",
+    "projected_quad_px": [
+      [
+        688.8916940478964,
+        171.2772637722597
+      ],
+      [
+        785.1753351118927,
+        175.192009271334
+      ],
+      [
+        785.1753351118927,
+        234.807990728666
+      ],
+      [
+        688.8916940478964,
+        238.7227362277403
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 20.64
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 21.15
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/coast-stress-15m.png",
+    "projected_quad_px": [
+      [
+        702.8366615655235,
+        180.47855605813697
+      ],
+      [
+        773.9236949843976,
+        182.6161663644015
+      ],
+      [
+        773.9236949843976,
+        227.3838336355985
+      ],
+      [
+        702.8366615655235,
+        229.52144394186303
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 15.47
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 15.76
+      }
+    ]
+  },
+  {
+    "id": "coast",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/coast-stress-20m.png",
+    "projected_quad_px": [
+      [
+        710.8030792363652,
+        185.7350285001226
+      ],
+      [
+        767.1592493244978,
+        187.0795429617292
+      ],
+      [
+        767.1592493244978,
+        222.9204570382708
+      ],
+      [
+        710.8030792363652,
+        224.2649714998774
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "해안길",
+        "role": "primary",
+        "min_body_height_px": 12.37
+      },
+      {
+        "text": "완만",
+        "role": "primary",
+        "min_body_height_px": 12.56
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/alley-stress-10m.png",
+    "projected_quad_px": [
+      [
+        704.1663679657048,
+        171.89830863833225
+      ],
+      [
+        772.812246533933,
+        174.6893450094678
+      ],
+      [
+        772.812246533933,
+        235.3106549905322
+      ],
+      [
+        704.1663679657048,
+        238.10169136166775
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 11.14
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 20.95
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 20.95
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 10.58
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/alley-stress-15m.png",
+    "projected_quad_px": [
+      [
+        713.8120293477492,
+        180.8085889510288
+      ],
+      [
+        764.5367745203308,
+        182.333898601027
+      ],
+      [
+        764.5367745203308,
+        227.666101398973
+      ],
+      [
+        713.8120293477492,
+        229.1914110489712
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 8.18
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 15.64
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 15.64
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 7.88
+      }
+    ]
+  },
+  {
+    "id": "alley",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/alley-stress-20m.png",
+    "projected_quad_px": [
+      [
+        719.3662118826911,
+        185.93932300171198
+      ],
+      [
+        759.5948259764575,
+        186.8990751164294
+      ],
+      [
+        759.5948259764575,
+        223.1009248835706
+      ],
+      [
+        719.3662118826911,
+        224.06067699828802
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "01",
+        "role": "number",
+        "min_body_height_px": 6.47
+      },
+      {
+        "text": "골목",
+        "role": "primary",
+        "min_body_height_px": 12.48
+      },
+      {
+        "text": "끝집",
+        "role": "primary",
+        "min_body_height_px": 12.48
+      },
+      {
+        "text": "문 앞 배송",
+        "role": "detail",
+        "min_body_height_px": 6.28
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/cafe-stress-10m.png",
+    "projected_quad_px": [
+      [
+        696.6000099748201,
+        171.59067210151375
+      ],
+      [
+        779.0454759758308,
+        174.94277857962274
+      ],
+      [
+        779.0454759758308,
+        235.05722142037726
+      ],
+      [
+        696.6000099748201,
+        238.40932789848625
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 11.2
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 20.84
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 20.84
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 10.49
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/cafe-stress-15m.png",
+    "projected_quad_px": [
+      [
+        708.361524886793,
+        180.64469050218753
+      ],
+      [
+        769.2596423979282,
+        182.47591678021854
+      ],
+      [
+        769.2596423979282,
+        227.52408321978146
+      ],
+      [
+        708.361524886793,
+        229.35530949781247
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 8.22
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 15.58
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 15.58
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 7.83
+      }
+    ]
+  },
+  {
+    "id": "cafe",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/cafe-stress-20m.png",
+    "projected_quad_px": [
+      [
+        715.1074684077327,
+        185.83772024585758
+      ],
+      [
+        763.3959866067603,
+        186.98976111284009
+      ],
+      [
+        763.3959866067603,
+        223.01023888715991
+      ],
+      [
+        715.1074684077327,
+        224.16227975414242
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "02",
+        "role": "number",
+        "min_body_height_px": 6.49
+      },
+      {
+        "text": "해안",
+        "role": "primary",
+        "min_body_height_px": 12.44
+      },
+      {
+        "text": "카페",
+        "role": "primary",
+        "min_body_height_px": 12.44
+      },
+      {
+        "text": "영업중",
+        "role": "detail",
+        "min_body_height_px": 6.25
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/orchard-stress-10m.png",
+    "projected_quad_px": [
+      [
+        688.8916940478964,
+        171.2772637722597
+      ],
+      [
+        785.1753351118927,
+        175.192009271334
+      ],
+      [
+        785.1753351118927,
+        234.807990728666
+      ],
+      [
+        688.8916940478964,
+        238.7227362277403
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 22.25
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 20.6
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 20.6
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 10.46
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/orchard-stress-15m.png",
+    "projected_quad_px": [
+      [
+        702.8366615655235,
+        180.47855605813697
+      ],
+      [
+        773.9236949843976,
+        182.6161663644015
+      ],
+      [
+        773.9236949843976,
+        227.3838336355985
+      ],
+      [
+        702.8366615655235,
+        229.52144394186303
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 16.36
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 15.45
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 15.45
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 7.82
+      }
+    ]
+  },
+  {
+    "id": "orchard",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/orchard-stress-20m.png",
+    "projected_quad_px": [
+      [
+        710.8030792363652,
+        185.7350285001226
+      ],
+      [
+        767.1592493244978,
+        187.0795429617292
+      ],
+      [
+        767.1592493244978,
+        222.9204570382708
+      ],
+      [
+        710.8030792363652,
+        224.2649714998774
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "03",
+        "role": "number",
+        "min_body_height_px": 12.93
+      },
+      {
+        "text": "헤어핀",
+        "role": "primary",
+        "min_body_height_px": 12.36
+      },
+      {
+        "text": "과수원",
+        "role": "primary",
+        "min_body_height_px": 12.36
+      },
+      {
+        "text": "오늘 수확",
+        "role": "detail",
+        "min_body_height_px": 6.24
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/hill-stress-10m.png",
+    "projected_quad_px": [
+      [
+        704.1663679657048,
+        171.89830863833225
+      ],
+      [
+        772.812246533933,
+        174.6893450094678
+      ],
+      [
+        772.812246533933,
+        235.3106549905322
+      ],
+      [
+        704.1663679657048,
+        238.10169136166775
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 20.9
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 10.59
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 10.63
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/hill-stress-15m.png",
+    "projected_quad_px": [
+      [
+        713.8120293477492,
+        180.8085889510288
+      ],
+      [
+        764.5367745203308,
+        182.333898601027
+      ],
+      [
+        764.5367745203308,
+        227.666101398973
+      ],
+      [
+        713.8120293477492,
+        229.1914110489712
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 15.62
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 7.88
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 7.91
+      }
+    ]
+  },
+  {
+    "id": "hill",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/hill-stress-20m.png",
+    "projected_quad_px": [
+      [
+        719.3662118826911,
+        185.93932300171198
+      ],
+      [
+        759.5948259764575,
+        186.8990751164294
+      ],
+      [
+        759.5948259764575,
+        223.1009248835706
+      ],
+      [
+        719.3662118826911,
+        224.06067699828802
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "외딴집",
+        "role": "primary",
+        "min_body_height_px": 12.47
+      },
+      {
+        "text": "04 언덕위",
+        "role": "detail",
+        "min_body_height_px": 6.28
+      },
+      {
+        "text": "초인종 →",
+        "role": "detail",
+        "min_body_height_px": 6.3
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "stress",
+    "car_distance_m": 10,
+    "camera_depth_m": 14.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/mart-stress-10m.png",
+    "projected_quad_px": [
+      [
+        681.0373872890233,
+        179.46843975939547
+      ],
+      [
+        791.2043741963745,
+        182.82785558052763
+      ],
+      [
+        791.2043741963745,
+        227.17214441947237
+      ],
+      [
+        681.0373872890233,
+        230.53156024060453
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 20.99
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 11.3
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 10.33
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "stress",
+    "car_distance_m": 15,
+    "camera_depth_m": 19.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/mart-stress-15m.png",
+    "projected_quad_px": [
+      [
+        697.2359072645663,
+        186.48260466066046
+      ],
+      [
+        778.530024147767,
+        188.31601013980298
+      ],
+      [
+        778.530024147767,
+        221.68398986019702
+      ],
+      [
+        697.2359072645663,
+        223.51739533933954
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 15.67
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 8.27
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 7.74
+      }
+    ]
+  },
+  {
+    "id": "mart",
+    "case": "stress",
+    "car_distance_m": 20,
+    "camera_depth_m": 24.2,
+    "vertical_fov_deg": 62,
+    "yaw_deg": 30,
+    "path": "readability/mart-stress-20m.png",
+    "projected_quad_px": [
+      [
+        706.452306560996,
+        190.473422621725
+      ],
+      [
+        770.8851780867021,
+        191.62632558825476
+      ],
+      [
+        770.8851780867021,
+        218.37367441174524
+      ],
+      [
+        706.452306560996,
+        219.526577378275
+      ]
+    ],
+    "text_measurements": [
+      {
+        "text": "MART",
+        "role": "primary",
+        "min_body_height_px": 12.5
+      },
+      {
+        "text": "매일",
+        "role": "detail",
+        "min_body_height_px": 6.53
+      },
+      {
+        "text": "배달 접수",
+        "role": "detail",
+        "min_body_height_px": 6.19
+      }
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "glb": "art/models/cargo_wine_v01/cargo_wine_v01.glb",
+  "world_bounds_min": [
+    -0.03759999945759773,
+    -0.03759999945759773,
+    0.0
+  ],
+  "world_bounds_max": [
+    0.03759999945759773,
+    0.03759999945759773,
+    0.30000001192092896
+  ],
+  "dimensions_blender_xyz": [
+    0.07519999891519547,
+    0.07519999891519547,
+    0.30000001192092896
+  ],
+  "close_resolution": [
+    960,
+    540
+  ],
+  "face_resolution": [
+    640,
+    480
+  ],
+  "ambient": [
+    0.64,
+    0.7,
+    0.69
+  ],
+  "sun": [
+    1,
+    0.91,
+    0.77
+  ],
+  "exposure": 0.35,
+  "runtime_verified": false
+}

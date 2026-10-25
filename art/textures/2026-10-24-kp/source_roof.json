@@ -1,0 +1,23 @@
+{
+  "id": "clay_roof_tiles",
+  "path": "art/textures/2026-10-24-kp/sources/roof/clay_roof_tiles_diff_1k.png",
+  "url": "https://polyhaven.com/a/clay_roof_tiles",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/clay_roof_tiles/clay_roof_tiles_diff_1k.png",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    4000,
+    4000
+  ],
+  "method": "photography / photoscan; provider FAQ statement",
+  "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+  "sha256": "3825da3d0e267d203bb2bc497baf7e4879f8aa4e34caca8083a55e92965ce0a8",
+  "md5": "4e78adac16c769fa9df784e2a1ed80f0",
+  "provider_md5_match": true,
+  "accessed": "2026-10-24",
+  "ai_generated": "no",
+  "location": "capture location unverified; material analogue only"
+}

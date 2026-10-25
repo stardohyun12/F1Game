@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "revision": 2,
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "tiles": [
+    {
+      "id": "wood",
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/wood_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 64,
+      "source": {
+        "id": "wooden_rough_planks",
+        "path": "art/textures/2026-10-24-kp-v2/sources/wood_e/wooden_rough_planks_diff_1k.png",
+        "url": "https://polyhaven.com/a/wooden_rough_planks",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/wooden_rough_planks/wooden_rough_planks_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Rob Tuytel": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "c3dfc04c55c545d14159f78aaf9979ae0bd2669e4e2779d3d1bd1e546078cbbf",
+        "md5": "e55eca58109f17d65ee6fd28f030b335",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Official CC0 photo diffuse download; wooden_rough_planks; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [0, 0, 1024, 1024]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Rotate 90 degrees; no recolouring; photographic board width differences, knots, weathered grain retained; shared palette quantization only",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "ai_generated": false,
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 90,
+      "actual_used_colors": 20
+    },
+    {
+      "id": "stone",
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/stone_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 64,
+      "source": {
+        "id": "stone_pavers",
+        "path": "art/textures/2026-10-24-kp/sources/stone/stone_pavers_diff_1k.png",
+        "url": "https://polyhaven.com/a/stone_pavers",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/stone_pavers/stone_pavers_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "26a3bebe31487ce71e444929e41f226bc81cf3ecd03d6522ff96a74ca3d0a89b",
+        "md5": "a553a6fd6d2ab8921f845e804aca5d51",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Direct official 1k diffuse PNG download; MD5 + SHA verified; stone_pavers",
+        "full physical repeat [2.0, 2.0]m from [2000, 2000] mm source; no geometry stretch or cropped joint pattern",
+        "photo_to_pixel.py: physical source size, 64px/m, BOX, exact common 32 palette, dither none; preserved unmodified baseline",
+        "rotate photo patch 0 degrees; photo luminance 2..98 percentile -> close neutral-grey ladder 5,8,7,10,11,12,20; no random noise; manually trace existing photographed mortar joints at 1px using palette9; coordinates recorded in kp_textures.py",
+        "3px symmetric seam colour correction, then exact palette quantization; no generated texture/noise/AI",
+        "PNG Point intent; GLB proof sampler Nearest/Repeat, physical-size UV quad; Unity import still pending",
+        "A1 round2: unchanged passed stone albedo; original file SHA retained",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "ai_generated": false,
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 0,
+      "actual_used_colors": 8
+    },
+    {
+      "id": "plaster",
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_plaster_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/plaster_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 64,
+      "source": {
+        "id": "painted_plaster_wall",
+        "path": "art/textures/2026-10-24-kp/sources/plaster/painted_plaster_wall_diff_1k.png",
+        "url": "https://polyhaven.com/a/painted_plaster_wall",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/painted_plaster_wall/painted_plaster_wall_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ statement",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "3a4516b94c7072b201c0423811d709ed955230114d9319888a9850ee64453d71",
+        "md5": "a579bdf62c32e5d8ada9b167da322416",
+        "provider_md5_match": true,
+        "accessed": "2026-10-24",
+        "ai_generated": false,
+        "location": "capture location unverified; material analogue only"
+      },
+      "process": [
+        "Official CC0 photo diffuse download; painted_plaster_wall; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [0, 0, 1024, 1024]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Quiet painted photographic base + two traced REAL spall contours from rough_plaster_broken; 1.5m source scale -> 64px/m, local lower-left placements; masks/coordinates recorded in script",
+        "Revision 2: base gain [53,43,28]; chip gain [60, 65, 80]; 55px original-source mask expansion and 12px feather include actual adjacent plaster; final palette quantization",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "ai_generated": false,
+      "crop_ltrb": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "rotation_degrees": 0,
+      "actual_used_colors": 6,
+      "additional_sources": [
+        {
+          "id": "rough_plaster_broken",
+          "path": "art/textures/2026-10-24-kp-v2/sources/plaster_b/rough_plaster_broken_diff_1k.png",
+          "url": "https://polyhaven.com/a/rough_plaster_broken",
+          "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/rough_plaster_broken/rough_plaster_broken_diff_1k.png",
+          "license": "CC0-1.0",
+          "license_url": "https://polyhaven.com/license",
+          "authors": {
+            "Rob Tuytel": "All"
+          },
+          "dimensions_mm": [
+            1500,
+            1500
+          ],
+          "method": "photography / photoscan; provider FAQ statement",
+          "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+          "sha256": "0d220e1aefc3f002a80c7a88c9f1605a13e93f1dcc1b554c2274b1c8a240a6f6",
+          "md5": "eb13f6fd0868d744158b38936c27ae52",
+          "provider_md5_match": true,
+          "accessed": "2026-10-24",
+          "ai_generated": false,
+          "location": "capture location unverified; material analogue only"
+        }
+      ],
+      "damage_placements": [
+        {
+          "polygon": [
+            [
+              330,
+              15
+            ],
+            [
+              370,
+              8
+            ],
+            [
+              410,
+              16
+            ],
+            [
+              452,
+              9
+            ],
+            [
+              499,
+              25
+            ],
+            [
+              519,
+              45
+            ],
+            [
+              511,
+              70
+            ],
+            [
+              486,
+              84
+            ],
+            [
+              463,
+              108
+            ],
+            [
+              440,
+              143
+            ],
+            [
+              409,
+              154
+            ],
+            [
+              382,
+              196
+            ],
+            [
+              359,
+              183
+            ],
+            [
+              345,
+              152
+            ],
+            [
+              338,
+              126
+            ],
+            [
+              330,
+              112
+            ],
+            [
+              328,
+              72
+            ],
+            [
+              322,
+              41
+            ]
+          ],
+          "dest": [
+            24,
+            81,
+            53,
+            105
+          ]
+        },
+        {
+          "polygon": [
+            [
+              181,
+              654
+            ],
+            [
+              203,
+              608
+            ],
+            [
+              235,
+              580
+            ],
+            [
+              264,
+              587
+            ],
+            [
+              280,
+              616
+            ],
+            [
+              281,
+              649
+            ],
+            [
+              269,
+              680
+            ],
+            [
+              275,
+              713
+            ],
+            [
+              294,
+              746
+            ],
+            [
+              275,
+              784
+            ],
+            [
+              246,
+              805
+            ],
+            [
+              208,
+              790
+            ],
+            [
+              194,
+              747
+            ],
+            [
+              176,
+              711
+            ]
+          ],
+          "dest": [
+            54,
+            103,
+            76,
+            135
+          ]
+        }
+      ]
+    },
+    {
+      "id": "roof",
+      "albedo": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+      "model": "art/textures/2026-10-24-kp-v2/proof/roof_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 64,
+      "source": {
+        "id": "ceramic_roof_01",
+        "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+        "url": "https://polyhaven.com/a/ceramic_roof_01",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "sha256": "d16264943b3a052a6b91f4ad7c9c1f37c09f2a9e9c503bdb3477f4705c03ff8c",
+        "provider_md5": "5c8b9deb160ae011b496f7d0b8470cbb",
+        "md5_verified": true,
+        "authors": {
+          "Rob Tuytel": "All"
+        },
+        "dimensions_mm": [
+          3500.000238418579,
+          3500.000238418579
+        ],
+        "method": "photographic source; exact per-asset capture method not specified",
+        "method_evidence": "https://docs.polyhaven.com/en/faq",
+        "method_evidence_detail": "Official FAQ states all texture materials use photographic methods, not procedural or generative AI. This is provider-wide evidence, not a per-asset photogrammetry claim.",
+        "crop_ltrb_px": [
+          365,
+          365,
+          658,
+          658
+        ],
+        "physical_size_m": [
+          1,
+          1
+        ],
+        "density_px_m": 64,
+        "palette_png": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/palette_64.png",
+        "ai_generated": false,
+        "process": [
+          "official diffuse JPG direct download",
+          "provider MD5 verified",
+          "physical 1m centre crop",
+          "BOX downsample to 64x64",
+          "photo_to_pixel.py exact shared-palette nearest RGB; no dither; no color correction"
+        ]
+      },
+      "process": [
+        "Official CC0 photo diffuse download; ceramic_roof_01; provider MD5 verified",
+        "photo_to_pixel.py; physical crop [216, 185, 801, 770]; [2, 2]m -> (128, 128)px; BOX; exact shared 32 palette; dither none; baseline preserved",
+        "Rotate 0 degrees; no recolouring; photographic broad overlapping ceramic rows, undercuts and rounded lower edges retained; shared palette quantization only",
+        "2px matching-edge colour repair followed by exact palette quantization; no AI or random noise",
+        "Closest/Point proof material; metric GLB validates actual 64px/m; final lit framebuffer is outside albedo palette check"
+      ],
+      "ai_generated": false,
+      "crop_ltrb": [
+        216,
+        185,
+        801,
+        770
+      ],
+      "rotation_degrees": 0,
+      "actual_used_colors": 22
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "original": "docs/qa/evidence/proto-course-3-coast.png",
+  "mask": "coast-plate-mask.png",
+  "outside_mask_identical": true,
+  "size": [
+    960,
+    540
+  ],
+  "new_car_pixels": "Blender imported GLB; no generative changes",
+  "background_note": "AI inpainting restricted to occluded road; original screenshot outside mask",
+  "primary_comparison_camera": "6.6m full-view proposal, same for old/new; current 4.2m framing kept separately",
+  "runtime_capture": false,
+  "plate_sha256": "5a759460df152eb810f22b6de593ba61c9949bd6c46dc85b1705111060d7be0a"
+}

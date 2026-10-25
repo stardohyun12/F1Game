@@ -1,0 +1,35 @@
+{
+  "id": "stone_pathway",
+  "provider": "Poly Haven",
+  "path": "art/textures/2026-10-24-kp/sources/stone/stone_pathway_diff_1k.png",
+  "url": "https://polyhaven.com/a/stone_pathway",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/stone_pathway/stone_pathway_diff_1k.png",
+  "info_url": "https://api.polyhaven.com/info/stone_pathway",
+  "files_url": "https://api.polyhaven.com/files/stone_pathway",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "authors": {
+    "Amal Kumar": "All"
+  },
+  "dimensions_mm": [
+    2000,
+    2000
+  ],
+  "method": "Photographic texture source; provider states all texture materials use photogrammetry or photometric stereo, not procedural generation or generative AI. Per-asset scan subtype not exposed in info metadata.",
+  "method_evidence": [
+    "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+    "https://docs.polyhaven.com/en/technical-standards/textures"
+  ],
+  "ai_generated": false,
+  "sha256": "95d1cb517b18a5495641591ba8e5a2b7f9a773797ef503ca47d29a4c6f8eee26",
+  "md5": "f298b5b3294467be06cc63584f11c247",
+  "provider_md5": "f298b5b3294467be06cc63584f11c247",
+  "provider_md5_verified": true,
+  "bytes": 6201424,
+  "accessed": "2026-10-24",
+  "downloaded_utc": "2026-10-23T16:39:55.239584+00:00",
+  "processing": [
+    "Direct 1k PNG diffuse download; original bytes preserved."
+  ],
+  "geography": "Source capture location not established; selected for material suitability, not claimed to depict Kyoto."
+}

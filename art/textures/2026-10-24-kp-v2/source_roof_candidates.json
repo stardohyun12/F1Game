@@ -1,0 +1,129 @@
+{
+  "provider": "Poly Haven",
+  "api_credit": "Powered by Poly Haven",
+  "candidates": [
+    {
+      "id": "ceramic_roof_01",
+      "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+      "url": "https://polyhaven.com/a/ceramic_roof_01",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/ceramic_roof_01/ceramic_roof_01_diff_1k.jpg",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "sha256": "d16264943b3a052a6b91f4ad7c9c1f37c09f2a9e9c503bdb3477f4705c03ff8c",
+      "provider_md5": "5c8b9deb160ae011b496f7d0b8470cbb",
+      "md5_verified": true,
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "dimensions_mm": [
+        3500.000238418579,
+        3500.000238418579
+      ],
+      "method": "photographic source; exact per-asset capture method not specified",
+      "method_evidence": "https://docs.polyhaven.com/en/faq",
+      "method_evidence_detail": "Official FAQ states all texture materials use photographic methods, not procedural or generative AI. This is provider-wide evidence, not a per-asset photogrammetry claim.",
+      "crop_ltrb_px": [
+        365,
+        365,
+        658,
+        658
+      ],
+      "physical_size_m": [
+        1,
+        1
+      ],
+      "density_px_m": 64,
+      "palette_png": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/ceramic_roof_01/palette_64.png",
+      "ai_generated": "no",
+      "process": [
+        "official diffuse JPG direct download",
+        "provider MD5 verified",
+        "physical 1m centre crop",
+        "BOX downsample to 64x64",
+        "photo_to_pixel.py exact shared-palette nearest RGB; no dither; no color correction"
+      ]
+    },
+    {
+      "id": "clay_roof_tiles_02",
+      "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/clay_roof_tiles_02/clay_roof_tiles_02_diff_1k.jpg",
+      "url": "https://polyhaven.com/a/clay_roof_tiles_02",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_diff_1k.jpg",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "sha256": "227a062b38b170e02c27eaa513dae45dc8bc893a62cbd8d0c08e2c32b381fc25",
+      "provider_md5": "43c45fa3ac4c68ffb28aa813cec32608",
+      "md5_verified": true,
+      "authors": {
+        "Amal Kumar": "All"
+      },
+      "dimensions_mm": [
+        2500,
+        2500
+      ],
+      "method": "photographic source; exact per-asset capture method not specified",
+      "method_evidence": "https://docs.polyhaven.com/en/faq",
+      "method_evidence_detail": "Official FAQ states all texture materials use photographic methods, not procedural or generative AI. This is provider-wide evidence, not a per-asset photogrammetry claim.",
+      "crop_ltrb_px": [
+        307,
+        307,
+        717,
+        717
+      ],
+      "physical_size_m": [
+        1,
+        1
+      ],
+      "density_px_m": 64,
+      "palette_png": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/clay_roof_tiles_02/palette_64.png",
+      "ai_generated": "no",
+      "process": [
+        "official diffuse JPG direct download",
+        "provider MD5 verified",
+        "physical 1m centre crop",
+        "BOX downsample to 64x64",
+        "photo_to_pixel.py exact shared-palette nearest RGB; no dither; no color correction"
+      ]
+    },
+    {
+      "id": "grey_roof_tiles",
+      "path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/grey_roof_tiles/grey_roof_tiles_diff_1k.jpg",
+      "url": "https://polyhaven.com/a/grey_roof_tiles",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/grey_roof_tiles/grey_roof_tiles_diff_1k.jpg",
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "sha256": "f61107b70cf56074c9db09384a332620c94c678ed2baabfae78029a8242e49a3",
+      "provider_md5": "9a0d2c1ca66e79972c7c35cefa238cf7",
+      "md5_verified": true,
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "dimensions_mm": [
+        3000,
+        3000
+      ],
+      "method": "photographic source; exact per-asset capture method not specified",
+      "method_evidence": "https://docs.polyhaven.com/en/faq",
+      "method_evidence_detail": "Official FAQ states all texture materials use photographic methods, not procedural or generative AI. This is provider-wide evidence, not a per-asset photogrammetry claim.",
+      "crop_ltrb_px": [
+        341,
+        341,
+        682,
+        682
+      ],
+      "physical_size_m": [
+        1,
+        1
+      ],
+      "density_px_m": 64,
+      "palette_png": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/grey_roof_tiles/palette_64.png",
+      "ai_generated": "no",
+      "process": [
+        "official diffuse JPG direct download",
+        "provider MD5 verified",
+        "physical 1m centre crop",
+        "BOX downsample to 64x64",
+        "photo_to_pixel.py exact shared-palette nearest RGB; no dither; no color correction"
+      ]
+    }
+  ]
+}
