@@ -26,17 +26,17 @@
       "bounds_min": [
         -1.6325000524520874,
         0.0,
-        -0.05050000175833702
+        -0.07417887076735497
       ],
       "bounds_max": [
         1.6325000524520874,
-        1.5499999749299604,
-        0.05050000175833702
+        1.5499999672174454,
+        0.07417887076735497
       ],
       "dimensions_m": [
         3.265000104904175,
-        1.5499999749299604,
-        0.10100000351667404
+        1.5499999672174454,
+        0.14835774153470993
       ],
       "source_urls": [
         "https://polyhaven.com/a/asphalt_02",
@@ -54,7 +54,7 @@
         "variant": 0,
         "seed": 232100
       },
-      "geometry_sha256": "2429aa941ce422657bf94425920ab96681a055ae09ed0cdb0eebbb1c689329fb",
+      "geometry_sha256": "62cdd77e3b908c57ab208fbbac959edb09517b15bf018b11526b454eb9505a5c",
       "design": {
         "pivot": "bottom_center",
         "mount_height_m": 2.7,
@@ -62,7 +62,7 @@
         "triangle_budget": 1500,
         "design_notes": [
           "Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.",
-          "Broad shallow folds, smooth garment normals, continuous photo UV; no simulation or animation."
+          "Broad folds, smooth garment normals, physical32px/m triangle UV islands, intentional shared-photo overlap; no simulation or animation."
         ],
         "skills": [
           "prop-artist",

@@ -133,6 +133,15 @@ def main():
             spec['tiles'][0]['physical_size_m'] = list(size_m)
         check('Whole 2 m repeat unit / 128 px has actual 64 px/m',
               lambda s: repeat_unit(s, [2, 2], (128, 128)))
+        def world32(spec):
+            repeat_unit(spec, [2, 2], (64, 64))
+            spec['tiles'][0]['density_px_m'] = 32
+        check('World32 explicit: 64px / 2m proof quad', world32)
+        check('32 declaration cannot excuse a 64px/m exported quad',
+              lambda s: s['tiles'][0].update(density_px_m=32), False,
+              'pixel_dimensions_match_metric_density')
+        check('Arbitrary density declaration rejected',
+              lambda s: s['tiles'][0].update(density_px_m=48), False)
         check('Whole 4 m repeat unit / 256 px has actual 64 px/m',
               lambda s: repeat_unit(s, [4, 4], (256, 256)))
         check('Non-square 1 x 2 m unit / 64 x 128 px preserves both density axes',

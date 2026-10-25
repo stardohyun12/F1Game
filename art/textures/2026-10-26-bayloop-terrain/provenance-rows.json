@@ -1,0 +1,145 @@
+[
+  {
+    "asset_id": "bayloop_terrain_grass_source",
+    "path": "art/textures/2026-10-26-bayloop-terrain/sources/sparse_grass_diff_1k.png",
+    "source_url": "https://polyhaven.com/a/sparse_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "ab60bc2f607801de291b826514cd13615397a903e861f0974c61c67849b7eb2d",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_grass_albedo",
+    "path": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_grass_32ppm.png",
+    "source_url": "https://polyhaven.com/a/sparse_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "d9d1ccc63c52b0cac5c13ce8a111c47a777a49dbff0624d6e6472d1a358f11a0",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_grass_proof",
+    "path": "art/textures/2026-10-26-bayloop-terrain/proof/grass_metric.glb",
+    "source_url": "https://polyhaven.com/a/sparse_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "e7cf970a11954f80441da54cb1587e32a678a3469bd5e8d8d96e529c589c6ff4",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_soil_source",
+    "path": "art/textures/2026-10-26-bayloop-terrain/sources/dirt_diff_1k.png",
+    "source_url": "https://polyhaven.com/a/dirt",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "96b3eb441121c41806a4766f37eeeeb4667af73207ccd8bfb56bbd446a221d42",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_soil_albedo",
+    "path": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_soil_32ppm.png",
+    "source_url": "https://polyhaven.com/a/dirt",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "997640858d3d9b25cd3c31ae964ad283c459067dbc334c744e43b52aebbb99e7",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_soil_proof",
+    "path": "art/textures/2026-10-26-bayloop-terrain/proof/soil_metric.glb",
+    "source_url": "https://polyhaven.com/a/dirt",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "bebf4b3b02060ededab97d0ab0bbc27dc366f7eedacec0ebed06aa630801cd33",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_dry_grass_source",
+    "path": "art/textures/2026-10-26-bayloop-terrain/sources/withered_grass_diff_1k.png",
+    "source_url": "https://polyhaven.com/a/withered_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "30bdaa96e88b7194d7d6b5f9c385d1155b34843c5e4eb4da3b93b48f328f4198",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_dry_grass_albedo",
+    "path": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_dry_grass_32ppm.png",
+    "source_url": "https://polyhaven.com/a/withered_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "f5045909f4bf1ce36cd8a949138f3c59acc6e7a6ee25e5e548fac109a775614b",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_dry_grass_proof",
+    "path": "art/textures/2026-10-26-bayloop-terrain/proof/dry_grass_metric.glb",
+    "source_url": "https://polyhaven.com/a/withered_grass",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "86d31bd8c9c4136867538781d34b6140c4148d22a1a858f64442856df586b0b6",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_rock_source",
+    "path": "art/textures/2026-10-26-bayloop-terrain/sources/rock_face_04_diff_1k.png",
+    "source_url": "https://polyhaven.com/a/rock_face_04",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "4761f69c25e78b3ee4193695a1e11457cc12b8eabbf0bfdf47e39436400db841",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_rock_albedo",
+    "path": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_rock_32ppm.png",
+    "source_url": "https://polyhaven.com/a/rock_face_04",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "e311e9f3d36aceb629d68bfe92db7306e81ab6e4a49f3e2ce02a0ae371b1c79e",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_rock_proof",
+    "path": "art/textures/2026-10-26-bayloop-terrain/proof/rock_metric.glb",
+    "source_url": "https://polyhaven.com/a/rock_face_04",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "0cfc12b1d93944c96e59bda9cdcda7dd28675f123e63f14d0613b0d08a6bf7f6",
+    "notes": "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified; photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none; Original albedo palette only; no Unity test"
+  },
+  {
+    "asset_id": "bayloop_terrain_atlas",
+    "path": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_TerrainAtlas_32ppm.png",
+    "source_url": "https://polyhaven.com/a/sparse_grass; https://polyhaven.com/a/dirt; https://polyhaven.com/a/withered_grass; https://polyhaven.com/a/rock_face_04",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_terrain_textures.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "7388dcfeb84b52341b05a67c1e637ca0989e4a7f87311647095cae18975fef3a",
+    "notes": "Four exact64px photo_to_pixel palette quantized tiles packed without rescale; original albedo only32color check; 32px/m at2m tile"
+  }
+]

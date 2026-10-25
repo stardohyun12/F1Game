@@ -96,13 +96,21 @@ public class RunController : MonoBehaviour, IRunController
     /// <summary>EndRun 시점 목표 시간 안에 들어왔는지.</summary>
     public bool LastBeatPar { get; private set; }
 
-    bool UsePar => Services.PrototypeMode && ParTime > 0f;
+    bool UsePar => !NoClock && Services.PrototypeMode && ParTime > 0f;
+
+    /// <summary>D-142 첫 배달 튜토리얼: 시계 없음 — 제한 시간·목표 시간을 안 쓴다(TimeRemaining = -1, 시간 초과 종료 없음).</summary>
+    public bool NoClock { get; private set; }
+    /// <summary>D-142 튜토리얼 시작: 주문판 시계를 멈추고 이후 런을 무제한으로.</summary>
+    public void BeginNoClock() { NoClock = true; ClockRunning = false; ParTime = 0f; Elapsed = 0f; }
+    /// <summary>D-142 튜토리얼: 주문을 받기 전(MART 까지) 차를 움직이게 주행 단계로만 넘긴다. 주문판·카메라 정리 포함.</summary>
+    public void EnterFreeDrive() { SetStage(RunStage.Driving); StartFollowCameraAndCloseBoard(); }
 
     /// <summary>유효 시간 제한(초). 프로토타입: 목표 시간 × parHardLimitMul. 그 외: 픽한 주문들 중 가장 큰 값 (0 무제한이 하나라도 있으면 0).</summary>
     public float EffectiveTimeLimit
     {
         get
         {
+            if (NoClock) return 0f;
             if (UsePar) return ClockRunning ? ParTime : ParTime * parHardLimitMul;
             if (CurrentOrders == null || CurrentOrders.Count == 0) return 0f;
             float maxT = 0f;
@@ -187,7 +195,7 @@ public class RunController : MonoBehaviour, IRunController
             Services.TireWear.OnPunctured += HandlePuncture;
         }
         ActivateDeliveryPoints();
-        if (!ClockRunning) ParTime = Services.PrototypeMode ? ComputeParTime() : 0f;
+        if (!ClockRunning) ParTime = Services.PrototypeMode && !NoClock ? ComputeParTime() : 0f;
         if (Fuel != null) Fuel.Refill();
         ApplyCargoSetup();        // primary 주문 cargoType
         UpdateShakeSimColor();    // primary 주문 색

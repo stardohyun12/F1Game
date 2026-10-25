@@ -1,0 +1,7 @@
+{
+  "source_atlas": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+  "processing": "Reuse verified CC0 photo cells at unchanged UV density; metal photographic luminance into shared palette pairs 29/30 and15/28. No generated noise.",
+  "colors": 29,
+  "outside": 0,
+  "sha256": "d1067eb31fce31164c7122d06c9ca58720e0cde50f358a391afb66977cd56931"
+}

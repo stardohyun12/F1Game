@@ -33,7 +33,7 @@ Material:
     - _FogEnd: 950
     - _FogStart: 90
     m_Colors:
-    - _Ambient: {r: 0.703, g: 0.78849995, b: 0.85499996, a: 1}
+    - _Ambient: {r: 0.7029999, g: 0.7885, b: 0.85499996, a: 1}
     - _FogColor: {r: 0.74, g: 0.83, b: 0.9, a: 1}
     - _Tint: {r: 0.7, g: 0.66, b: 0.6, a: 1}
   m_BuildTextureStacks: []

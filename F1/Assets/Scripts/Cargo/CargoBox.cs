@@ -265,7 +265,10 @@ public class CargoBox : MonoBehaviour, ICargoBox
     void OnCollisionEnter(Collision col)
     {
         if (IsTotaled) return;
+        // 0308: 접촉면에 수직인 성분만 충격으로 친다. 전체 크기를 쓰면 평평한 노면 이음매(콜라이더 두 장)를
+        //   59km/h 로 굴러 넘기만 해도 59km/h 충돌로 계산돼 유리 98→0 이었다(Proto 갈림목 실측). 정면 벽 충돌은 그대로.
         float speedKmh = col.relativeVelocity.magnitude * 3.6f;
+        if (col.contactCount > 0) speedKmh = Mathf.Abs(Vector3.Dot(col.relativeVelocity, col.GetContact(0).normal)) * 3.6f;
         if (speedKmh < impactWarnKmh) return;
 
         float dmg = (speedKmh - impactWarnKmh) * impactDamageMul;

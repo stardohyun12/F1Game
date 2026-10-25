@@ -1,0 +1,91 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "assets": [
+    {
+      "id": "lighthouse_01",
+      "type": "lighthouse",
+      "asset_kind": "landmark",
+      "max_tris": 4000,
+      "pivot_kind": "floor_center",
+      "scene_object_name": "LANDMARK_등대(곶 끝·해안 직선 시작)",
+      "model": "art/models/bayloop_harbor_landmarks_v01/lighthouse_01.glb",
+      "fbx": "art/models/bayloop_harbor_landmarks_v01/lighthouse_01.fbx",
+      "texture": "art/models/bayloop_harbor_landmarks_v01/HarborPhotoAtlas.png",
+      "bounds_min": [
+        -1.8800002336502075,
+        0.0,
+        -1.880000114440918
+      ],
+      "bounds_max": [
+        1.880000114440918,
+        16.0,
+        1.880000114440918
+      ],
+      "dimensions_m": [
+        3.7600003480911255,
+        16.0,
+        3.760000228881836
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 1532,
+      "original_height_m": 16
+    },
+    {
+      "id": "harbor_crane_01",
+      "type": "harbor_crane",
+      "asset_kind": "landmark",
+      "max_tris": 4000,
+      "pivot_kind": "floor_center",
+      "scene_object_name": "LANDMARK_크레인(항구 직선 시작)",
+      "model": "art/models/bayloop_harbor_landmarks_v01/harbor_crane_01.glb",
+      "fbx": "art/models/bayloop_harbor_landmarks_v01/harbor_crane_01.fbx",
+      "texture": "art/models/bayloop_harbor_landmarks_v01/HarborPhotoAtlas.png",
+      "bounds_min": [
+        -1.850000023841858,
+        0.0,
+        -11.0649995803833
+      ],
+      "bounds_max": [
+        1.850000023841858,
+        18.094999313354492,
+        5.065000057220459
+      ],
+      "dimensions_m": [
+        3.700000047683716,
+        18.094999313354492,
+        16.12999963760376
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2504,
+      "original_height_m": 18
+    }
+  ]
+}

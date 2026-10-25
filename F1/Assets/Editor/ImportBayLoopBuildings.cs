@@ -25,6 +25,8 @@ public static class ImportBayLoopBuildings
         { "terrace_house_a", new Vector2(5.5f, 6f) },     { "terrace_house_b", new Vector2(6.75f, 6f) },  { "terrace_house_c", new Vector2(5.5f, 6f) },
         { "cliff_villa_a", new Vector2(8f, 7f) },
         { "harbor_warehouse_a", new Vector2(9f, 8.5f) },  { "harbor_warehouse_b", new Vector2(11f, 9.5f) },
+        // 과제 0226 아트 납품(art-20261026-0155): bayloop_deferred_v02 · bayloop_teahouse_v01 manifest footprint_m — 프리팹은 ImportBayLoopDelivery
+        { "farmhouse_01", new Vector2(6.2f, 7.2f) }, { "bus_stop_01", new Vector2(4.8f, 2.2f) }, { "cafe_kiosk_01", new Vector2(4.0f, 3.5f) }, { "teahouse_01", new Vector2(6.4f, 6.0f) },
     };
     // D-140 매개변수 변형(<type>_<nn>, art/models/bayloop_variety_v01/manifest.json): 폭·깊이·아틀라스·앞 돌출을 장부에서 읽는다.
     // 앞 돌출(FrontOut) = bounds_max.z — 앞마당·담장·차양이 앞벽(z=0)보다 길 쪽으로 나온 길이. 빌더가 그만큼 물려 앉힌다.
@@ -35,6 +37,8 @@ public static class ImportBayLoopBuildings
     [System.Serializable] class VManifest { public VAsset[] assets; }
     static ImportBayLoopBuildings()
     {
+        // 과제 0226: 납품 manifest bounds_max.z(앞 돌출)
+        FrontOut["farmhouse_01"] = 1.3f; FrontOut["bus_stop_01"] = 0.31f; FrontOut["cafe_kiosk_01"] = 1.065f; FrontOut["teahouse_01"] = 2.45f;
         var path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, VarietyManifest));
         if (!System.IO.File.Exists(path)) return;
         var m = JsonUtility.FromJson<VManifest>(System.IO.File.ReadAllText(path, Encoding.UTF8));
@@ -103,7 +107,7 @@ public static class ImportBayLoopBuildings
     [MenuItem("PitCrew/Map/Import BayLoop Buildings")]
     public static void Menu() => Debug.Log(Run());
 
-    static void SetupTexture(string path, StringBuilder sb)
+    internal static void SetupTexture(string path, StringBuilder sb)
     {
         var ti = AssetImporter.GetAtPath(path) as TextureImporter;
         if (ti == null) { sb.Append($"텍스처 없음 {path}\n"); return; }
@@ -115,7 +119,7 @@ public static class ImportBayLoopBuildings
         sb.Append($"텍스처 {System.IO.Path.GetFileNameWithoutExtension(path)} {tex.width}x{tex.height} {tex.filterMode} {tex.format}\n");
     }
 
-    static Material SetupMaterial(string dir, string atlas)
+    internal static Material SetupMaterial(string dir, string atlas)
     {
         var refMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/LofiPilot/LofiShared.mat");
         var shader = Shader.Find("PitCrew/LofiPilot/Surface");
@@ -134,7 +138,7 @@ public static class ImportBayLoopBuildings
     // 판정: 규격상 몸체는 -Z 쪽(bounds z 대략 -8..+1) → 임포트 후 bounds 가운데가 +Z 면 뒤집힌 것.
     // 소품은 피벗이 뒤끝(몸체 +Z) 이라 반대로 판정, 앞뒤 대칭(자전거·화분)은 건물에서 본 결과를 따른다.
     static bool buildingsFlipped;
-    static GameObject Build(string fbx, string id, Material mat, out Bounds b, out bool flipped, bool prop = false)
+    internal static GameObject Build(string fbx, string id, Material mat, out Bounds b, out bool flipped, bool prop = false)
     {
         var mi = AssetImporter.GetAtPath(fbx) as ModelImporter;
         mi.globalScale = 1f; mi.useFileScale = true; mi.bakeAxisConversion = true;
@@ -171,6 +175,7 @@ public static class ImportBayLoopBuildings
         {
             string id = kv.Key, fbx = Dir + id + ".fbx";
             bool variety = VarietyAtlas.ContainsKey(id);
+            if (!variety && !AtlasOf.ContainsKey(id)) continue;   // 과제 0226 납품분은 ImportBayLoopDelivery 가 만든다
             if (AssetImporter.GetAtPath(fbx) == null) { if (!variety) sb.Append($"모델 없음 {fbx}\n"); continue; }   // 장부의 보류분(F1 에 없음)은 조용히 건너뜀
             string atl = variety ? VarietyAtlas[id] : AtlasOf[id];
             if (!mats.ContainsKey(atl)) { sb.Append($"아틀라스 없음 {atl} ({id})\n"); continue; }

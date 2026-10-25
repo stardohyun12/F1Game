@@ -295,7 +295,9 @@ def inspect(args):
                               'spin_axis_yup': axis.tolist(), 'bounds_min': blo.tolist(), 'bounds_max': bhi.tolist()})
 
     flat = flat_surface_evidence(image, connected_coplanar_surfaces(list(planes.values())), args.min_flat_area)
-    bad_density = [r for r in density if r['principal_px_per_m'][0] < 57.6-1e-5 or r['principal_px_per_m'][1] > 70.4+1e-5]
+    target_density = getattr(args, 'density', 64)
+    triangle_budget = getattr(args, 'max_tris', 3000)
+    bad_density = [r for r in density if r['principal_px_per_m'][0] < target_density*.9-1e-5 or r['principal_px_per_m'][1] > target_density*1.1+1e-5]
     texture_hash = sha256(args.texture)
     relative = Path(args.texture).resolve().relative_to(ROOT).as_posix()
     with Path(args.provenance).open(encoding='utf-8-sig', newline='') as f:
@@ -306,9 +308,9 @@ def inspect(args):
         'palette_outside_zero': not outside,
         'texture_512_square': image.size == (512, 512),
         'texture_power_of_two': all(n > 0 and n & (n-1) == 0 for n in image.size),
-        'tris_at_most_3000': 0 < tris <= 3000,
+        f'tris_at_most_{triangle_budget}': 0 < tris <= triangle_budget,
         'all_triangle_geometry_and_uv_nondegenerate': not geometry_errors,
-        'density_64_both_principal_axes_all_triangles': len(density) == tris and not bad_density,
+        f'density_{target_density}_both_principal_axes_all_triangles': len(density) == tris and not bad_density,
         'uv_all_inside_atlas': not uv_errors,
         'source_bounds_and_origin_preserved': bool(np.allclose(low, EXPECTED_LOW, atol=args.position_tolerance, rtol=0) and np.allclose(high, EXPECTED_HIGH, atol=args.position_tolerance, rtol=0)),
         'four_independent_named_wheels': len(wheel_nodes) == 4 and all(w['pass'] for w in wheel_records),
@@ -322,9 +324,9 @@ def inspect(args):
     }
     return {'pass': all(checks.values()), 'checks': checks, 'model': str(args.model), 'texture': str(args.texture),
             'model_sha256': sha256(args.model), 'texture_sha256': texture_hash,
-            'tris': tris, 'triangle_budget': 3000, 'texture_size': list(image.size),
+            'tris': tris, 'triangle_budget': triangle_budget, 'texture_size': list(image.size),
             'palette_colors': len(palette), 'used_colors': len(colors), 'outside_color_count': len(outside), 'outside_colors': outside[:32],
-            'density_target': 64, 'density_tolerance': .1,
+            'density_target': target_density, 'density_tolerance': .1,
             'density_min': min((r['principal_px_per_m'][0] for r in density), default=0),
             'density_max': max((r['principal_px_per_m'][1] for r in density), default=0),
             'density_failures': bad_density, 'per_triangle_density': density,
@@ -346,6 +348,7 @@ def self_test():
     tri = np.array([[0., 0., 0.], [1., 0., 0.], [0., 1., 0.]])
     scales = triangle_density(tri, np.array([[0., 0.], [64., 0.], [0., 64.]]))
     assert np.allclose(scales, [64, 64])
+    assert np.allclose(triangle_density(tri, np.array([[0., 0.], [32., 0.], [0., 32.]])), [32,32])
     distorted = triangle_density(tri, np.array([[0., 0.], [64., 0.], [0., 128.]]))
     assert distorted[1] > 70.4
     try:
@@ -397,6 +400,10 @@ def main():
     parser.add_argument('--wheel-center-tolerance', type=float, default=.001)
     parser.add_argument('--min-flat-area', type=float, default=.04)
     parser.add_argument('--self-test', action='store_true')
+    parser.add_argument('--density', type=int, choices=[32,64], default=64,
+                        help='Explicit task contract; legacy car remains 64')
+    parser.add_argument('--max-tris', type=int, choices=[3000,6000], default=3000,
+                        help='D142 candidate contract permits 6000; legacy stays 3000')
     args = parser.parse_args()
     try:
         result = self_test() if args.self_test else inspect(args)

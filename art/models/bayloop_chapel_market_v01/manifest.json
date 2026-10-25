@@ -1,0 +1,98 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "chapel_bell_01",
+      "type": "chapel_bell",
+      "model": "art/models/bayloop_chapel_market_v01/chapel_bell_01.glb",
+      "fbx": "art/models/bayloop_chapel_market_v01/chapel_bell_01.fbx",
+      "texture": "art/models/bayloop_chapel_market_v01/ChapelMarketPhotoAtlas.png",
+      "tris": 1477,
+      "dimensions_m": [
+        3.5999999046325684,
+        12.800000190734863,
+        3.7699999511241913
+      ],
+      "bounds_min": [
+        -1.7999999523162842,
+        0.0,
+        -3.299999952316284
+      ],
+      "bounds_max": [
+        1.7999999523162842,
+        12.800000190734863,
+        0.4699999988079071
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "footprint_m": [
+        3.6,
+        3.6
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "legacy_name": "LANDMARK_종탑",
+      "legacy_height_m": 12.8
+    },
+    {
+      "id": "FishMarketRoof",
+      "type": "fish_market",
+      "model": "art/models/bayloop_chapel_market_v01/FishMarketRoof.glb",
+      "fbx": "art/models/bayloop_chapel_market_v01/FishMarketRoof.fbx",
+      "texture": "art/models/bayloop_chapel_market_v01/FishMarketPhotoAtlas.png",
+      "tris": 3287,
+      "dimensions_m": [
+        12.573554992675781,
+        3.805000066757202,
+        9.153567224740982
+      ],
+      "bounds_min": [
+        -6.286777496337891,
+        0.0,
+        -8.671067237854004
+      ],
+      "bounds_max": [
+        6.286777496337891,
+        3.805000066757202,
+        0.48249998688697815
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "footprint_m": [
+        12,
+        8.6
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "legacy_name": "FishMarketRoof",
+      "legacy_height_m": 3.6,
+      "legacy_pier_note": "Old columns extend -3m below local origin; new visible structure starts0. Programmer supplies slope foundations if necessary."
+    }
+  ]
+}

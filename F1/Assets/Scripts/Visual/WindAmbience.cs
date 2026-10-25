@@ -22,6 +22,10 @@ public class WindAmbience : MonoBehaviour
 
     void Update()
     {
+        // 과제 0131: 런이 안 도는 화면(보드·정산·차고)에선 멈춘다 — 회귀 점검 '런 비활성 잔류 소리' 규칙(HarnessChecks.CheckRunInactiveSilent).
+        bool run = Services.Run == null || Services.Run.RunActive;
+        if (!run) { if (src.isPlaying) src.Pause(); return; }
+        if (!src.isPlaying) src.UnPause();
         if (listener == null) { var l = FindFirstObjectByType<AudioListener>(); if (l != null) listener = l.transform; else return; }
         float k = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(lowY, highY, listener.position.y));
         src.volume = Mathf.MoveTowards(src.volume, Mathf.Lerp(quietVolume, loudVolume, k), Time.deltaTime * 0.2f);

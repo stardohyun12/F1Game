@@ -1,0 +1,85 @@
+    // ------------------------------------------------------------------ 튜토리얼 동선 (과제 20261025-2338, D-142)
+    // 항구 MART·정비소 → ① 상점가 오르막(본선 0→167) → V_kyoto_back 언덕 찻집 → SC_ridge → 본선 355→끝(해안 직선 = 연습 랩) → 항구.
+    // 전부 임시 상자 + 'ArtSlot_*'(빈 SpriteRenderer) — 실제 그림은 나중에 Codex 로 만들어 슬롯에 꽂는다.
+    static string Tutorial(Transform parent, Road main)
+    {
+        var martP = (List<object>)Get(J, "mart", "pos"); var mart = new Vector2(F(martP[0]), F(martP[1]));
+        var log = new List<string>();
+        // 정비소 PitCrew: MART 동쪽 부두, 예전 위판장(+8) 자리. 셔터가 길(+z) 쪽을 본다.
+        {
+            var c = new Vector3(mart.x + 8f, 0, mart.y - 12f); float y = H(c.x, c.z + 3f);
+            var g = new GameObject("TUT_Garage_PitCrew").transform; g.SetParent(parent); g.position = new Vector3(c.x, y, c.z);
+            Box(g, "Hall", new Vector3(10f, 5.2f, 6.4f), new Vector3(c.x, y + 2.1f, c.z), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "RoofCap", new Vector3(10.6f, 0.35f, 7f), new Vector3(c.x, y + 4.85f, c.z), Quaternion.identity, M("Dark"), false);
+            float fz = c.z + 3.25f;
+            Box(g, "Shutter", new Vector3(5.4f, 3.5f, 0.12f), new Vector3(c.x, y + 1.75f, fz), Quaternion.identity, M("CurbDark"), false);
+            for (int i = 0; i < 7; i++) Box(g, "ShutterSlat" + i, new Vector3(5.4f, 0.06f, 0.16f), new Vector3(c.x, y + 0.3f + i * 0.5f, fz + 0.02f), Quaternion.identity, M("Stone"), false);
+            Box(g, "SignBoard", new Vector3(6.4f, 1.1f, 0.2f), new Vector3(c.x, y + 4.1f, fz + 0.12f), Quaternion.identity, M("Red"), false);
+            Label(g, "PitCrew", new Vector3(c.x, y + 4.1f, fz + 0.25f), Quaternion.LookRotation(Vector3.back), 0.75f, Color.white);
+            ArtSlot(g, "ArtSlot_GarageSign", new Vector3(c.x, y + 4.1f, fz + 0.3f), Quaternion.LookRotation(Vector3.back));
+            ArtSlot(g, "ArtSlot_GarageShutter", new Vector3(c.x, y + 1.75f, fz + 0.1f), Quaternion.LookRotation(Vector3.back));
+            log.Add($"정비소({c.x:F0},{y:F1},{c.z:F0})");
+        }
+        // MART 앞 포장 자리: 차양 아래 탁자 + 상자 + 바닥 흰 틀.
+        {
+            float x = mart.x - 3.5f, z = mart.y + 10f - 3.6f, y = H(x, z);
+            var g = new GameObject("TUT_PackingSpot").transform; g.SetParent(parent); g.position = new Vector3(x, y, z);
+            Box(g, "FloorMark", new Vector3(3.2f, 0.03f, 2.2f), new Vector3(x, y + 0.02f, z), Quaternion.identity, M("PaintWhite"), false);
+            Box(g, "FloorMarkIn", new Vector3(2.9f, 0.035f, 1.9f), new Vector3(x, y + 0.025f, z), Quaternion.identity, M("Paving"), false);
+            Box(g, "Table", new Vector3(1.6f, 0.08f, 0.8f), new Vector3(x, y + 0.9f, z + 0.3f), Quaternion.identity, M("Wood"), false);
+            Box(g, "TableLegs", new Vector3(1.4f, 0.86f, 0.6f), new Vector3(x, y + 0.43f, z + 0.3f), Quaternion.identity, M("Dark"), false);
+            Box(g, "EggCrate", new Vector3(0.5f, 0.18f, 0.35f), new Vector3(x - 0.3f, y + 1.03f, z + 0.3f), Quaternion.identity, M("Sand"), false);
+            ArtSlot(g, "ArtSlot_PackingSpot", new Vector3(x, y + 1.6f, z + 0.3f), Quaternion.LookRotation(Vector3.forward));
+            log.Add($"포장자리({x:F0},{y:F1},{z:F0})");
+        }
+        // 언덕 찻집: STOP_1 옆에 받는 사람 자리(몸 + 머리) + 머리 위 표시 + 간판.
+        foreach (Dictionary<string, object> st in (List<object>)J["stops"])
+        {
+            if (System.Convert.ToInt32(st["n"]) != 1) continue;
+            var p = (List<object>)st["pos"]; float x = F(p[0]) - 1.6f, z = F(p[1]); float y = H(x, z);
+            var g = new GameObject("TUT_TeaHouse_NPC").transform; g.SetParent(parent); g.position = new Vector3(x, y, z);
+            Box(g, "NPC_Body", new Vector3(0.55f, 1.1f, 0.4f), new Vector3(x, y + 0.55f, z), Quaternion.identity, M("Fish"), false);
+            Box(g, "NPC_Head", new Vector3(0.36f, 0.36f, 0.36f), new Vector3(x, y + 1.32f, z), Quaternion.identity, M("Sand"), false);
+            Box(g, "NPC_Marker", new Vector3(0.4f, 0.4f, 0.4f), new Vector3(x, y + 2.3f, z), Quaternion.Euler(45f, 0f, 45f), M("Orange"), false);
+            Box(g, "TeaSign", new Vector3(1.8f, 0.6f, 0.12f), new Vector3(x + 1.6f, y + 3.0f, z + 0.2f), Quaternion.identity, M("Wood"), false);
+            Label(g, "TEA", new Vector3(x + 1.6f, y + 3.0f, z + 0.3f), Quaternion.LookRotation(Vector3.back), 0.45f, new Color(.95f, .92f, .80f));
+            ArtSlot(g, "ArtSlot_TeaNPC", new Vector3(x, y + 0.8f, z), Quaternion.identity);
+            ArtSlot(g, "ArtSlot_TeaSign", new Vector3(x + 1.6f, y + 3.0f, z + 0.35f), Quaternion.LookRotation(Vector3.back));
+            log.Add($"찻집NPC({x:F0},{y:F1},{z:F0})");
+        }
+        // 해안 직선 끝 표지판: 본선 1000~1350 에서 가장 긴 곧은 구간의 끝, 오른쪽 길가, 다가오는 차를 본다.
+        {
+            var P = main.pts; int best0 = 0, bestLen = 0, run0 = -1;
+            for (int i = 1000; i < Mathf.Min(1350, P.Count - 22); i++)
+            {
+                bool straight = Vector3.Angle(Flat(P[i + 2] - P[i]), Flat(P[i + 22] - P[i + 20])) < 6f;
+                if (straight) { if (run0 < 0) run0 = i; if (i - run0 > bestLen) { bestLen = i - run0; best0 = run0; } } else run0 = -1;
+            }
+            int e = best0 + bestLen + 20; var f = Flat(P[e + 2] - P[e - 2]); var right = Vector3.Cross(Vector3.up, f);
+            float hw = main.w != null && e < main.w.Length ? main.w[e] * 0.5f : main.width * 0.5f;
+            var sp = P[e] + right * (hw + 2.2f); sp.y = H(sp.x, sp.z);
+            var g = new GameObject("TUT_CoastStraightEnd_Sign").transform; g.SetParent(parent); g.position = sp;
+            var rot = Quaternion.LookRotation(f);
+            Box(g, "Post", new Vector3(0.12f, 2.2f, 0.12f), sp + Vector3.up * 1.1f, rot, M("Dark"), false);
+            Box(g, "Board", new Vector3(1.6f, 0.9f, 0.08f), sp + Vector3.up * 2.4f, rot, M("Yellow"), false);
+            for (int k = 0; k < 3; k++) Box(g, "Chevron" + k, new Vector3(0.12f, 0.6f, 0.02f), sp + Vector3.up * 2.4f + right * (-0.45f + k * 0.45f) - f * 0.05f, rot * Quaternion.Euler(0, 0, 30f), M("Dark"), false);
+            ArtSlot(g, "ArtSlot_StraightEndSign", sp + Vector3.up * 2.4f - f * 0.08f, rot);
+            log.Add($"직선끝표지 본선#{e}({sp.x:F0},{sp.y:F1},{sp.z:F0}) 곧은구간 {best0}~{best0 + bestLen + 20}");
+        }
+        return "튜토리얼 " + string.Join(" ", log);
+    }
+
+    static void Label(Transform parent, string text, Vector3 pos, Quaternion rot, float height, Color col)
+    {
+        var go = new GameObject("Label_" + text); go.transform.SetParent(parent); go.transform.SetPositionAndRotation(pos, rot);
+        var tm = go.AddComponent<TextMesh>(); tm.text = text; tm.anchor = TextAnchor.MiddleCenter; tm.alignment = TextAlignment.Center;
+        tm.fontSize = 64; tm.characterSize = height / 6.4f; tm.color = col;
+        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); tm.font = font; go.GetComponent<MeshRenderer>().sharedMaterial = font.material;
+    }
+
+    static void ArtSlot(Transform parent, string name, Vector3 pos, Quaternion rot)
+    {
+        var go = new GameObject(name); go.transform.SetParent(parent); go.transform.SetPositionAndRotation(pos, rot);
+        go.AddComponent<SpriteRenderer>();
+    }
+

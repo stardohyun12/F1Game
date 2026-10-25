@@ -20,8 +20,14 @@ def sha(path):
 def is_prop(asset):
     return asset.get('asset_kind')=='prop' or asset.get('type')=='props'
 
+def is_person(asset):
+    return asset.get('asset_kind')=='person'
+
+def is_landmark(asset):
+    return asset.get('asset_kind')=='landmark'
+
 def triangle_limit(asset, manifest):
-    return min(800 if is_prop(asset) else 4000,
+    return min(1500 if is_person(asset) else 800 if is_prop(asset) else 4000,
                int(asset.get('max_tris',manifest['max_tris'])),int(manifest['max_tris']))
 
 def prop_pivot_checks(asset, lo, hi):
@@ -166,10 +172,24 @@ def inspect_asset(asset, manifest, root, rows):
         'bounds_match':bool(np.allclose(lo,asset['bounds_min'],atol=1e-4) and np.allclose(hi,asset['bounds_max'],atol=1e-4)),
         'dimensions_match':bool(np.allclose(hi-lo,asset['dimensions_m'],atol=1e-4)),
         'root_origin':all(roots),'floor_y_zero':abs(float(lo[1]))<1e-4,
-        'main_triangle_variation':(bool(major) or is_prop(asset)) and not flat,
+        'main_triangle_variation':(bool(major) or is_prop(asset) or is_person(asset)) and not flat,
         'material_checks':bool(materials) and all(all(m.values()) for m in materials),
         'fbx_exists':rooted(root,asset['fbx']).is_file() and rooted(root,asset['fbx']).stat().st_size>0})
-    if is_prop(asset):
+    if is_landmark(asset):
+        base=v[np.abs(v[:,1])<1e-4]
+        checks.update({'landmark_floor_pivot':asset.get('pivot_kind')=='floor_center',
+            'landmark_ground_anchor':len(base)>=3 and bool(np.allclose(base[:,[0,2]].min(0)+base[:,[0,2]].max(0),0,atol=1e-4)),
+            'landmark_budget_declared':asset.get('max_tris')==4000})
+    elif is_person(asset):
+        checks.update({'person_height':1.6<=float(hi[1]-lo[1])<=1.7,
+            'person_pivot_kind':asset.get('pivot_kind')=='floor_center',
+            'person_x_center':abs(float(lo[0]+hi[0]))<1e-4,
+            'person_budget_declared':asset.get('max_tris')==1500,
+            'person_surface_variation':any(f['colors']>=2 for f in faces),
+            'person_skin_present':bool(g.get('skins')) and any('skin' in n for n in g['nodes'])})
+        # A human's toes extend ahead of the skeleton root. Depth-bound midpoint
+        # is not the root pivot; actual floor height and lateral centre are tested.
+    elif is_prop(asset):
         checks.update(prop_pivot_checks(asset,lo,hi))
         # Tiny objects need not contain a 0.04 m2 face, but cannot pass with
         # entirely uniform sampled surfaces. Density still checks every face.

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f271fe002b5584a8bbcaa42cab620b, type: 3}
+  m_Name: Hilltop_1_Door
+  m_EditorClassIdentifier: PitCrew::OrderJob
+  displayName: "\uC5B8\uB355 \uC704 \uC9D1 \u2014 \uC720\uB9AC"
+  color: {r: 1, g: 0.55, b: 0.45, a: 1}
+  destinationLabels:
+  - HilltopDoor
+  timeLimitSec: 0
+  baseReward: 1500
+  timeBonus: 400
+  weightTier: 1
+  cargoType: 2
+  callerName: 
+  urgentSituation: 

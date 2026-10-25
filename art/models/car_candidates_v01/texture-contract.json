@@ -1,0 +1,599 @@
+{
+  "atlas_size_px": [
+    512,
+    512
+  ],
+  "grid_xy": [
+    4,
+    4
+  ],
+  "cell_size_px": 128,
+  "guard_px": 4,
+  "active_size_px": 120,
+  "active_physical_m": [
+    3.75,
+    3.75
+  ],
+  "density_px_m": 32,
+  "slot_order": "top-left row-major PNG",
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "sources": [
+    {
+      "id": "rough_linen",
+      "path": "art/source/car-v01/photos/rough_linen_diff_1k.jpg",
+      "sha256": "04897d7611d7390ddf5b2c6f7273f448dfc48341fdbd1f4f207fa30b331d7f57",
+      "url": "https://polyhaven.com/a/rough_linen",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+      "authors": {
+        "colormass": "Photography",
+        "Rico Cilliers": "Processing"
+      },
+      "dimensions_mm": [
+        270.7081392676629,
+        271.29998803138733
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    },
+    {
+      "id": "rubberized_track",
+      "path": "art/source/car-v01/photos/rubberized_track_diff_1k.jpg",
+      "sha256": "63bbde84facf0ec99d6d4c7a72bcbd2a8fe2dcb910bd65572b600e53e4ac13ea",
+      "url": "https://polyhaven.com/a/rubberized_track",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rubberized_track/rubberized_track_diff_1k.jpg",
+      "authors": {
+        "Charlotte Baglioni": "All"
+      },
+      "dimensions_mm": [
+        2000,
+        2000
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    },
+    {
+      "id": "rusty_metal_02",
+      "path": "art/source/car-v01/photos/rusty_metal_02_diff_1k.jpg",
+      "sha256": "adaf094391518b6afe787a123942110aa88ef521c844f970b124420f5ed5d3d9",
+      "url": "https://polyhaven.com/a/rusty_metal_02",
+      "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rusty_metal_02/rusty_metal_02_diff_1k.jpg",
+      "authors": {
+        "Rob Tuytel": "All"
+      },
+      "dimensions_mm": [
+        1000,
+        1000
+      ],
+      "license": "CC0-1.0",
+      "license_url": "https://polyhaven.com/license",
+      "accessed": "2026-10-23",
+      "ai_generated": false
+    }
+  ],
+  "ai_generated": false,
+  "number_decal": {
+    "slot": 10,
+    "local_rect_ltrb": [
+      58.88,
+      60.8,
+      69.12,
+      67.2
+    ],
+    "size_m": [
+      0.32,
+      0.2
+    ],
+    "font": "art/_review/2026-10-23-d123/fonts/Galmuri11.ttf",
+    "font_size_px": 7,
+    "text": "7",
+    "density_px_m": 32,
+    "glyph_processing": "binary Galmuri glyph 4x7 compressed to4x5 by coverage-preserving row OR; ink local62..65,61..65"
+  },
+  "sampling": "Closest/Point; Unity import not executed",
+  "material_skill_adaptation": "Shared master with material regions. PBR/noise/transmission rejected for project flat palette photo workflow.",
+  "variants": {
+    "A": {
+      "path": "art/models/car_candidates_v01/A_Atlas.png",
+      "sha256": "29d16d3aebc49ff23ccd2339522730711e06a3d00ab2864d35680811b4bc4e8e",
+      "palette_outside": 0,
+      "used_colors": 14,
+      "power_of_two": true,
+      "tiles": [
+        {
+          "slot": 0,
+          "name": "body",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            15,
+            28
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_00_body.png",
+          "sha256": "cf32c4bff89f7af0e6f9630384e8e9a34ec698ba77ffedb846a2da090665f806"
+        },
+        {
+          "slot": 1,
+          "name": "replacement_panel",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            26,
+            5
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_01_replacement_panel.png",
+          "sha256": "6cc4fb470bf524a0bf982a5d0ff3b3f8d2daa2cea303dfec937c074072553a69"
+        },
+        {
+          "slot": 2,
+          "name": "wheel_light_metal",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            7,
+            19
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_02_wheel_light_metal.png",
+          "sha256": "030f9043eca488226627cab08a9e61328e7da3716d49972695d3b27b077adcac"
+        },
+        {
+          "slot": 3,
+          "name": "exposed_steel",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            8,
+            7
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_03_exposed_steel.png",
+          "sha256": "2848549deade8fdd36c7863565b8af935929f8a7425925e4e2414e7ec5075101"
+        },
+        {
+          "slot": 4,
+          "name": "rubber_sidewall",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_04_rubber_sidewall.png",
+          "sha256": "07175da6e8dd0c925a3762dbbd0f6f1ead3479c24c07df05c0a6fcdf41708fe3"
+        },
+        {
+          "slot": 5,
+          "name": "rubber_tread",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_05_rubber_tread.png",
+          "sha256": "07175da6e8dd0c925a3762dbbd0f6f1ead3479c24c07df05c0a6fcdf41708fe3"
+        },
+        {
+          "slot": 6,
+          "name": "ochre_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            29,
+            30
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.9599305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_06_ochre_fabric.png",
+          "sha256": "59ceaf4505a1a317330c74e70b74429dffb4de5456350231b4f0790463ebef8d"
+        },
+        {
+          "slot": 7,
+          "name": "rear_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            29,
+            30
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.9599305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_07_rear_fabric.png",
+          "sha256": "59ceaf4505a1a317330c74e70b74429dffb4de5456350231b4f0790463ebef8d"
+        },
+        {
+          "slot": 8,
+          "name": "red_livery",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            15,
+            28
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_08_red_livery.png",
+          "sha256": "cf32c4bff89f7af0e6f9630384e8e9a34ec698ba77ffedb846a2da090665f806"
+        },
+        {
+          "slot": 9,
+          "name": "black_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.8499305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_09_black_fabric.png",
+          "sha256": "e25f385466c6a8362a0ee75b765cfd321c29253a467bff5295027559418360bc"
+        },
+        {
+          "slot": 10,
+          "name": "number_sticker",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            16,
+            0
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 4,
+          "dominant_fraction": 0.9535416666666666,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_10_number_sticker.png",
+          "sha256": "7bd62266f97a81882b930f3ca40552b51f9e4a9be006fbff30abe9bab69ade96"
+        },
+        {
+          "slot": 11,
+          "name": "repair_tape",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            8,
+            7
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.8499305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_11_repair_tape.png",
+          "sha256": "963c8f46d77921f045bb1fc76783f68c0552cde21b6e58590c4a60d43c6e47ed"
+        },
+        {
+          "slot": 12,
+          "name": "cream_paint",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            16,
+            0
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_12_cream_paint.png",
+          "sha256": "78ab8bbbeac317057aecd48b3d82e37d82d486e638b1eac5a5c3e52fa8823526"
+        },
+        {
+          "slot": 13,
+          "name": "dark_glass",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            2,
+            26
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_13_dark_glass.png",
+          "sha256": "e835cf86785009c5c35e3ed158febeb705ad27091ecb78abe756145d311a1ebc"
+        },
+        {
+          "slot": 14,
+          "name": "underbody",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_14_underbody.png",
+          "sha256": "c21b6c45888406c2252a870042407cbdebbf017f03494a0b3385e749e7fcf8c0"
+        },
+        {
+          "slot": 15,
+          "name": "rear_lamp",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            15,
+            28
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/A_15_rear_lamp.png",
+          "sha256": "cf32c4bff89f7af0e6f9630384e8e9a34ec698ba77ffedb846a2da090665f806"
+        }
+      ]
+    },
+    "C": {
+      "path": "art/models/car_candidates_v01/C_Atlas.png",
+      "sha256": "a7ecba1c9029b05d844be25cfb24de737f79516d6cc241986360664ba05d4b2d",
+      "palette_outside": 0,
+      "used_colors": 14,
+      "power_of_two": true,
+      "tiles": [
+        {
+          "slot": 0,
+          "name": "body",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            19,
+            25
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_00_body.png",
+          "sha256": "edc1b8f75a0a5f5ce509dab5afbb9b016bc0d946ad17d87ba6f4867b1204ea53"
+        },
+        {
+          "slot": 1,
+          "name": "replacement_panel",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            26,
+            5
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_01_replacement_panel.png",
+          "sha256": "6cc4fb470bf524a0bf982a5d0ff3b3f8d2daa2cea303dfec937c074072553a69"
+        },
+        {
+          "slot": 2,
+          "name": "wheel_light_metal",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            7,
+            19
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_02_wheel_light_metal.png",
+          "sha256": "030f9043eca488226627cab08a9e61328e7da3716d49972695d3b27b077adcac"
+        },
+        {
+          "slot": 3,
+          "name": "exposed_steel",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            8,
+            7
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_03_exposed_steel.png",
+          "sha256": "2848549deade8fdd36c7863565b8af935929f8a7425925e4e2414e7ec5075101"
+        },
+        {
+          "slot": 4,
+          "name": "rubber_sidewall",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_04_rubber_sidewall.png",
+          "sha256": "07175da6e8dd0c925a3762dbbd0f6f1ead3479c24c07df05c0a6fcdf41708fe3"
+        },
+        {
+          "slot": 5,
+          "name": "rubber_tread",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_05_rubber_tread.png",
+          "sha256": "07175da6e8dd0c925a3762dbbd0f6f1ead3479c24c07df05c0a6fcdf41708fe3"
+        },
+        {
+          "slot": 6,
+          "name": "ochre_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            29,
+            30
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.9599305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_06_ochre_fabric.png",
+          "sha256": "59ceaf4505a1a317330c74e70b74429dffb4de5456350231b4f0790463ebef8d"
+        },
+        {
+          "slot": 7,
+          "name": "rear_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            29,
+            30
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.9599305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_07_rear_fabric.png",
+          "sha256": "59ceaf4505a1a317330c74e70b74429dffb4de5456350231b4f0790463ebef8d"
+        },
+        {
+          "slot": 8,
+          "name": "red_livery",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            15,
+            28
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_08_red_livery.png",
+          "sha256": "cf32c4bff89f7af0e6f9630384e8e9a34ec698ba77ffedb846a2da090665f806"
+        },
+        {
+          "slot": 9,
+          "name": "black_fabric",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.8499305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_09_black_fabric.png",
+          "sha256": "e25f385466c6a8362a0ee75b765cfd321c29253a467bff5295027559418360bc"
+        },
+        {
+          "slot": 10,
+          "name": "number_sticker",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            16,
+            0
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 4,
+          "dominant_fraction": 0.9535416666666666,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_10_number_sticker.png",
+          "sha256": "7bd62266f97a81882b930f3ca40552b51f9e4a9be006fbff30abe9bab69ade96"
+        },
+        {
+          "slot": 11,
+          "name": "repair_tape",
+          "source_id": "rough_linen",
+          "palette_indices": [
+            8,
+            7
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.8499305555555555,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_11_repair_tape.png",
+          "sha256": "963c8f46d77921f045bb1fc76783f68c0552cde21b6e58590c4a60d43c6e47ed"
+        },
+        {
+          "slot": 12,
+          "name": "cream_paint",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            16,
+            0
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_12_cream_paint.png",
+          "sha256": "78ab8bbbeac317057aecd48b3d82e37d82d486e638b1eac5a5c3e52fa8823526"
+        },
+        {
+          "slot": 13,
+          "name": "dark_glass",
+          "source_id": "rubberized_track",
+          "palette_indices": [
+            2,
+            26
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_13_dark_glass.png",
+          "sha256": "e835cf86785009c5c35e3ed158febeb705ad27091ecb78abe756145d311a1ebc"
+        },
+        {
+          "slot": 14,
+          "name": "underbody",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            26,
+            2
+          ],
+          "photo_quantile": 0.15,
+          "used_colors": 2,
+          "dominant_fraction": 0.85,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_14_underbody.png",
+          "sha256": "c21b6c45888406c2252a870042407cbdebbf017f03494a0b3385e749e7fcf8c0"
+        },
+        {
+          "slot": 15,
+          "name": "rear_lamp",
+          "source_id": "rusty_metal_02",
+          "palette_indices": [
+            15,
+            28
+          ],
+          "photo_quantile": 0.04,
+          "used_colors": 2,
+          "dominant_fraction": 0.96,
+          "process": "source physical dimensions -> 3.75m photo field -> BOX120 -> target photo luminance minus float3x3 mean -> low-contrast palette ladder; no random noise; coarse camouflage rejected",
+          "path": "art/models/car_candidates_v01/textures/C_15_rear_lamp.png",
+          "sha256": "cf32c4bff89f7af0e6f9630384e8e9a34ec698ba77ffedb846a2da090665f806"
+        }
+      ]
+    }
+  }
+}

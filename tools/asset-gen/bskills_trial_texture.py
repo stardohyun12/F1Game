@@ -21,4 +21,5 @@ meta=json.loads((OLD/'texture-manifest.json').read_text());meta['aliases'].updat
 meta.update(atlas=out.relative_to(ROOT).as_posix(),trial=dict(protected_paint_crop=crop,photo_crop_m=[190/1024*2.2,250/1024*2.2],photo_crop_px=paint_size,method='Float photo luminance BOX at32px/m; lower paint contrast; different surface value families, no generated noise',ladders={str(i):v[1] for i,v in spec.items()},rough_linen_url='https://polyhaven.com/a/rough_linen'))
 (O/'texture-manifest.json').write_text(json.dumps(meta,indent=2),encoding='utf8')
 colors=np.unique(arr.reshape(-1,3),axis=0);assert set(map(tuple,colors))<=set(map(tuple,pal))
-(O/'texture-check.json').write_text(json.dumps(dict(colors=len(colors),outside_palette=0,power_of_two=True,sha256=hashlib.sha256(out.read_bytes()).hexdigest
+(O/'texture-check.json').write_text(json.dumps(dict(colors=len(colors),outside_palette=0,power_of_two=True,sha256=hashlib.sha256(out.read_bytes()).hexdigest()),indent=2))
+print('ATLAS',len(colors))

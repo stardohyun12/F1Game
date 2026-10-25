@@ -1,0 +1,181 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "teahouse_01",
+      "type": "teahouse",
+      "asset_kind": "building",
+      "pivot_kind": "front_wall_ground_center",
+      "model": "art/models/bayloop_teahouse_v01/teahouse_01.glb",
+      "fbx": "art/models/bayloop_teahouse_v01/teahouse_01.fbx",
+      "texture": "art/models/bayloop_teahouse_v01/TeaHousePhotoAtlas.png",
+      "tris": 2565,
+      "max_tris": 4000,
+      "dimensions_m": [
+        6.905000036954879,
+        6.309999942779541,
+        8.819999933242798
+      ],
+      "bounds_min": [
+        -3.3600000381469726,
+        0.0,
+        -6.369999885559082
+      ],
+      "bounds_max": [
+        3.5449999988079073,
+        6.309999942779541,
+        2.450000047683716
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "footprint_m": [
+        6.4,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "wear_locations": [
+        "threshold stone",
+        "wood table hand edges",
+        "photo plaster lower wall",
+        "downpipe base",
+        "sign board"
+      ],
+      "recipient_anchor_blender": [
+        0.6,
+        -1.0,
+        0.1
+      ],
+      "recipient_clearance_m": [
+        1.2,
+        1.2
+      ]
+    },
+    {
+      "id": "tea_table_01",
+      "type": "props",
+      "asset_kind": "prop",
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_teahouse_v01/tea_table_01.glb",
+      "fbx": "art/models/bayloop_teahouse_v01/tea_table_01.fbx",
+      "texture": "art/models/bayloop_teahouse_v01/TeaHousePhotoAtlas.png",
+      "tris": 748,
+      "max_tris": 800,
+      "dimensions_m": [
+        0.800000011920929,
+        0.9629999995231628,
+        2.045000014305115
+      ],
+      "bounds_min": [
+        -0.4000000059604645,
+        0.0,
+        -1.0225000071525574
+      ],
+      "bounds_max": [
+        0.4000000059604645,
+        0.9629999995231628,
+        1.0225000071525574
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ]
+    },
+    {
+      "id": "tea_tray_display_01",
+      "type": "props",
+      "asset_kind": "prop",
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_teahouse_v01/tea_tray_display_01.glb",
+      "fbx": "art/models/bayloop_teahouse_v01/tea_tray_display_01.fbx",
+      "texture": "art/models/bayloop_teahouse_v01/TeaHousePhotoAtlas.png",
+      "tris": 680,
+      "max_tris": 800,
+      "dimensions_m": [
+        0.7599999904632568,
+        1.0099999904632568,
+        0.49000000953674316
+      ],
+      "bounds_min": [
+        -0.3799999952316284,
+        0.0,
+        -0.24500000476837158
+      ],
+      "bounds_max": [
+        0.3799999952316284,
+        1.0099999904632568,
+        0.24500000476837158
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ]
+    },
+    {
+      "id": "tea_owner_bicycle_01",
+      "type": "props",
+      "asset_kind": "prop",
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_teahouse_v01/tea_owner_bicycle_01.glb",
+      "fbx": "art/models/bayloop_teahouse_v01/tea_owner_bicycle_01.fbx",
+      "texture": "art/models/bayloop_teahouse_v01/TeaHousePhotoAtlas.png",
+      "tris": 800,
+      "max_tris": 800,
+      "dimensions_m": [
+        1.7694975137710571,
+        1.0472487564838957,
+        0.5
+      ],
+      "bounds_min": [
+        -0.8847487568855286,
+        0.0,
+        -0.25
+      ],
+      "bounds_max": [
+        0.8847487568855286,
+        1.0472487564838957,
+        0.25
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ]
+    }
+  ]
+}

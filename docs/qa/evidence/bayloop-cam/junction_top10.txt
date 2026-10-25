@@ -1,0 +1,10 @@
+jx0 ROUTE_kyoto_back.start (118, 14, -96) on main#168
+jx1 ROUTE_kyoto_back.end (-31, 14, -98) on V_kyoto_back#150
+jx2 ROUTE_SC_ridge.start (14, 4, -141) on main#36
+jx3 ROUTE_kyoto_steps.start (39, 14, -100) on V_kyoto_back#80
+jx4 S_hairpin.start_틈 (97, 41, 187) on S_hairpin#0
+jx5 S_hairpin.end_틈 (97, 38, 204) on S_hairpin#18
+jx6 V_farmyard.end_틈 (133, 44, 121) on V_farmyard#12
+jx7 S_beach#3xA_cliffwalk#39_겹침높이차 (-57, 20, 234) on S_beach#3
+jx8 S_pos2#22_노면턱 (-79, 13, 150) on S_pos2#22
+jx9 S_pos1#10_노면턱 (-47, 24, 167) on S_pos1#10

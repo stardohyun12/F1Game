@@ -1,0 +1,98 @@
+{
+  "atlas": "art/models/bayloop_people_v01/PeoplePhotoAtlas.png",
+  "source": "art/models/bayloop_props2_v01/sources/rough_linen_diff_1k.jpg",
+  "source_url": "https://polyhaven.com/a/rough_linen",
+  "license": "CC0",
+  "source_width_m": 0.271,
+  "pixel_sample": [
+    9,
+    9
+  ],
+  "density": 32,
+  "method": "photo luminance BOX 9px from .271m then 3-step shared-palette recolor; repeat; two-pixel edge gutter",
+  "outside_palette": 0,
+  "colors": 16,
+  "sha256": "e259ed02fb3c85a7e9ae8d6ddb5bee84ae84a5889ea2eb1537a68b61d401b2b2",
+  "ladders": [
+    [
+      18,
+      18,
+      7
+    ],
+    [
+      29,
+      29,
+      30
+    ],
+    [
+      5,
+      5,
+      9
+    ],
+    [
+      9,
+      9,
+      5
+    ],
+    [
+      0,
+      0,
+      16
+    ],
+    [
+      2,
+      6,
+      9
+    ],
+    [
+      14,
+      19,
+      14
+    ],
+    [
+      2,
+      26,
+      2
+    ],
+    [
+      19,
+      14,
+      0
+    ],
+    [
+      15,
+      17,
+      4
+    ],
+    [
+      2,
+      9,
+      7
+    ],
+    [
+      0,
+      0,
+      16
+    ],
+    [
+      18,
+      18,
+      7
+    ],
+    [
+      29,
+      29,
+      30
+    ],
+    [
+      5,
+      5,
+      9
+    ],
+    [
+      9,
+      9,
+      5
+    ]
+  ]
+}

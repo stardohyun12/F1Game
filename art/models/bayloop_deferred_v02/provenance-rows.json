@@ -1,0 +1,79 @@
+[
+  {
+    "asset_id": "deferred_v02_atlas",
+    "path": "art/models/bayloop_deferred_v02/DeferredPhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_textures.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "6a2e7fa36c4c2ceb8e34ee19b6fc27ae83ef2e304bfbf46e41f3926c0b759e7b",
+    "notes": "Verified CC0 photo atlas reused; localized photographic plaster mask; reduced roof/metal contrast; rough linen 0.271m at9px; shared palette only; Point"
+  },
+  {
+    "asset_id": "deferred_v02_bus_stop_01",
+    "path": "art/models/bayloop_deferred_v02/bus_stop_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "2ff8b06e581c95ce60818172389eaf69c09a7b6232623cd249dd694746c6e372",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  },
+  {
+    "asset_id": "deferred_v02_bus_stop_01",
+    "path": "art/models/bayloop_deferred_v02/bus_stop_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "c6a63c1b5baf4495c424b5477b0c0590ffa6f5fac03bc6ce1489b264c1133e37",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  },
+  {
+    "asset_id": "deferred_v02_cafe_kiosk_01",
+    "path": "art/models/bayloop_deferred_v02/cafe_kiosk_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "f12d0ac4d3df8d5c16c1ae1b579fe296248c96e8433d7035d7d541e26c8d4e64",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  },
+  {
+    "asset_id": "deferred_v02_cafe_kiosk_01",
+    "path": "art/models/bayloop_deferred_v02/cafe_kiosk_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "4b321b1f4583bb5d2cb31e876266690f1d22a8e8ae3e66439427481d1b9d1dd8",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  },
+  {
+    "asset_id": "deferred_v02_farmhouse_01",
+    "path": "art/models/bayloop_deferred_v02/farmhouse_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "2f432a535cfcb7ae49dc4a03ddc35abe432f48f6634e3b5b4a2f7bb6862e0ef1",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  },
+  {
+    "asset_id": "deferred_v02_farmhouse_01",
+    "path": "art/models/bayloop_deferred_v02/farmhouse_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks; https://polyhaven.com/a/rough_linen",
+    "license": "CC0-1.0 (photos); project-authored geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_deferred_facilities.py; bayloop_buildgen.py; photo_to_pixel.py",
+    "ai_generated": "no",
+    "sha256": "f0de96bb4e6e3f212daca469ae022fa01c335f2802d60ccb7bf1094b6f91d75a",
+    "notes": "Metric bpy repaired facility; existing verified CC0 photo atlas; 32px/m; no AI"
+  }
+]

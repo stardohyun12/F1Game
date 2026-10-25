@@ -1,0 +1,5424 @@
+{
+  "aerial_grass_rock": {
+    "type": 1,
+    "tags": [
+      "moss",
+      "grass",
+      "cliff",
+      "cave",
+      "rock face"
+    ],
+    "date_published": 1582514587,
+    "name": "Aerial Grass Rock",
+    "categories": [
+      "terrain",
+      "rock",
+      "outdoor",
+      "natural",
+      "aerial"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      15000,
+      15000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "76058381"
+    ],
+    "files_hash": "d610669c24e20d7c2effc4c116c718176f5b044a",
+    "description": "Free 8K aerial rock texture with moss and grass, rough weathered stone with fine gravel and earthy green-brown tones.",
+    "category_id": "e8121dc9-96d3-59b8-b8ee-83104e60ba82",
+    "category": "Stone/Rock & Cliffs/Mossy & Lichened Rock",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "mossy",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "da74fb8a",
+    "download_count": 365889,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/aerial_grass_rock.png?width=256&height=256&format=webp&v=da74fb8a"
+  },
+  "aerial_ground_rock": {
+    "type": 1,
+    "tags": [
+      "mud",
+      "rocks",
+      "stones",
+      "dirt",
+      "dry"
+    ],
+    "date_published": 1581826348,
+    "name": "Aerial Ground Rock",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural",
+      "aerial"
+    ],
+    "dimensions": [
+      19999.950408935547,
+      20000
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "sponsors": [
+      "7934315"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "dfc637c0aca2c8bf1864528b9d586681cbcf8c88",
+    "description": "Free 8K texture of dry aerial ground: compacted brown dirt with exposed rocks, scattered stones, dust and subtle moss on a rough, cracked surface.",
+    "category_id": "c650da98-1200-549c-ade9-c3756c2f327c",
+    "category": "Ground & Terrain/Rocky Ground/Stony Dirt",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "93cf8cab",
+    "download_count": 32594,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/aerial_ground_rock.png?width=256&height=256&format=webp&v=93cf8cab"
+  },
+  "aerial_rocks_01": {
+    "type": 1,
+    "tags": [
+      "rocks",
+      "moss",
+      "cliff",
+      "rock face",
+      "cave"
+    ],
+    "date_published": 1596531311,
+    "name": "Aerial Rocks 01",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural",
+      "rock",
+      "aerial"
+    ],
+    "dimensions": [
+      80000,
+      80000.20599365234
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "ea281839fd9f0d5d67f3cc675bddbac76ef26b27",
+    "description": "Free 8K texture: aerial rock face with scattered stones and patchy green moss, rough weathered surfaces, coarse grain and damp-looking crevices.",
+    "category_id": "e8121dc9-96d3-59b8-b8ee-83104e60ba82",
+    "category": "Stone/Rock & Cliffs/Mossy & Lichened Rock",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "mossy",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "433c76b8",
+    "download_count": 125314,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/aerial_rocks_01.png?width=256&height=256&format=webp&v=433c76b8"
+  },
+  "aerial_rocks_02": {
+    "type": 1,
+    "tags": [
+      "rocks",
+      "rough",
+      "moss",
+      "cliff",
+      "rock face",
+      "cave"
+    ],
+    "date_published": 1600274572,
+    "name": "Aerial Rocks 02",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural",
+      "rock",
+      "aerial"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      50000,
+      50000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "128081732"
+    ],
+    "files_hash": "76c3c2d202e28839b72e336a5b1839e58e2da2e3",
+    "description": "Free 8K texture of rough weathered cliff rock, showing coarse stone faces, deep fractures and patches of green moss.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "mossy",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "8146a458",
+    "download_count": 401882,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/aerial_rocks_02.png?width=256&height=256&format=webp&v=8146a458"
+  },
+  "aerial_rocks_04": {
+    "type": 1,
+    "tags": [
+      "rough",
+      "rocks",
+      "moss",
+      "cliff",
+      "rock face",
+      "cave"
+    ],
+    "date_published": 1602692912,
+    "name": "Aerial Rocks 04",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural",
+      "rock",
+      "aerial"
+    ],
+    "dimensions": [
+      80000,
+      80000
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "26820710"
+    ],
+    "files_hash": "dc43dffab8e915bc54ac64899dcfe8cec826f8b9",
+    "description": "Free 8K texture of rough, moss-covered cliff rock with weathered cracks, exposed stone, deep crevices and subtle lichen staining.",
+    "category_id": "e8121dc9-96d3-59b8-b8ee-83104e60ba82",
+    "category": "Stone/Rock & Cliffs/Mossy & Lichened Rock",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "mossy",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "a9b1d6d2",
+    "download_count": 224085,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/aerial_rocks_04.png?width=256&height=256&format=webp&v=a9b1d6d2"
+  },
+  "brown_mud_rocks_01": {
+    "date_published": 1529359200,
+    "name": "Brown Mud Rocks 01",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor"
+    ],
+    "type": 1,
+    "dimensions": [
+      1299.996018409729,
+      1299.996018409729
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "4047949",
+      "77433244"
+    ],
+    "files_hash": "303c0f36bd4d15ecdec08c7bba20b55b0b31c7e6",
+    "tags": [
+      "gravel",
+      "mud",
+      "moss",
+      "stones",
+      "forest",
+      "rocks",
+      "loose stones",
+      "plants",
+      "weeds",
+      "scattered weeds",
+      "plant debris",
+      "riverbank",
+      "organic matter",
+      "rocky soil",
+      "wet ground"
+    ],
+    "description": "Free 8K texture of brown muddy rocky soil: coarse, damp surface with mixed gravel, loose stones, mossy patches and scattered plant debris.",
+    "category_id": "12aa7954-48be-5855-812b-7dc4aca856fd",
+    "category": "Ground & Terrain/Soil & Mud/Wet Mud",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "mossy",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "a43842a7",
+    "download_count": 50970,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/brown_mud_rocks_01.png?width=256&height=256&format=webp&v=a43842a7"
+  },
+  "coast_land_rocks_01": {
+    "date_published": 1651104000,
+    "name": "Coast Land Rocks 01",
+    "type": 1,
+    "dimensions": [
+      19999.950408935547,
+      20000
+    ],
+    "authors": {
+      "Rob Tuytel": "Photography, Processing",
+      "Rico Cilliers": "Tiling, Adjustments"
+    },
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "aerial",
+      "sand",
+      "collection: smugglers_cove"
+    ],
+    "tags": [
+      "rough",
+      "uneven",
+      "stones",
+      "moss",
+      "rock",
+      "dirt",
+      "cracked",
+      "seaside",
+      "ocean",
+      "costal",
+      "rocks",
+      "brown",
+      "gravel",
+      "nature",
+      "ground",
+      "cliff"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "7edca0ae2eea88339632bcb8c96a04ec591de36b",
+    "description": "Free 8K texture of rough coastal terrain: uneven brown stone with cracked surfaces, gravel, dirt and scattered green foliage across weathered cliff terrain.",
+    "category_id": "6f927474-95dd-5ec5-b756-e9299996aeee",
+    "category": "Stone/Rock & Cliffs/Coastal Rock",
+    "collections": [
+      "smugglers_cove"
+    ],
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "mossy",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "89fd84ef",
+    "download_count": 46877,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/coast_land_rocks_01.png?width=256&height=256&format=webp&v=89fd84ef"
+  },
+  "coast_sand_rocks_02": {
+    "date_published": 1646352000,
+    "name": "Coast Sand Rocks 02",
+    "type": 1,
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      15000,
+      15000
+    ],
+    "sponsors": [
+      "540619",
+      "7937391",
+      "7934315",
+      "77433244"
+    ],
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "aerial",
+      "rock",
+      "collection: smugglers_cove"
+    ],
+    "tags": [
+      "grass",
+      "rock face",
+      "rock",
+      "moss",
+      "rough",
+      "uneven",
+      "weathered",
+      "stones",
+      "cliff",
+      "ground",
+      "seaside",
+      "coastal"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "579892253d0d73a45eaee485135c35666bceb237",
+    "description": "Free 8K texture of weathered coastal sand-rock: rough, uneven rock faces with scattered stones, brown sandy soil and patchy green moss coverage.",
+    "category_id": "6f927474-95dd-5ec5-b756-e9299996aeee",
+    "category": "Stone/Rock & Cliffs/Coastal Rock",
+    "collections": [
+      "smugglers_cove"
+    ],
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "63f92b86",
+    "download_count": 547406,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/coast_sand_rocks_02.png?width=256&height=256&format=webp&v=63f92b86"
+  },
+  "concrete_rock_path": {
+    "name": "Concrete Rock Path",
+    "type": 1,
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "tags": [
+      "rough",
+      "uneven",
+      "old",
+      "weathered",
+      "brown",
+      "rock",
+      "dirty",
+      "ground",
+      "concrete",
+      "pathway",
+      "path",
+      "dry",
+      "cement"
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1677715200,
+    "sponsors": [
+      "3237733"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "6058e2ae50dd5f075fd693aa6ce8f6a604463261",
+    "description": "Free 8K texture of an old, weathered rock path - rough, uneven brown stones set in dry, dirty cement with worn edges and subtle mossy grime.",
+    "categories": [
+      "outdoor",
+      "man made",
+      "dirty",
+      "floor",
+      "concrete",
+      "rock",
+      "plaster-concrete"
+    ],
+    "attributes": {
+      "surface_use": "paving",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "img_version": "a8250b94",
+    "download_count": 26551,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/concrete_rock_path.png?width=256&height=256&format=webp&v=a8250b94"
+  },
+  "dark_rock": {
+    "type": 1,
+    "name": "Dark Rock",
+    "categories": [
+      "natural",
+      "outdoor",
+      "rock"
+    ],
+    "tags": [
+      "uneven",
+      "rough",
+      "weathered",
+      "rock",
+      "fissured",
+      "cracked",
+      "craggy",
+      "striated",
+      "geological",
+      "rock formation",
+      "veined",
+      "stone",
+      "fractured",
+      "metamorphic",
+      "striations",
+      "exposed rock"
+    ],
+    "description": "Free 8K dark rock texture with layered fractures, deep crevices and chipped edges, charcoal tone and rough, slightly matte surface with subtle highlights.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2421.1976528167725,
+      2421.199083328247
+    ],
+    "files_hash": "3c4dc6dd0a7867dfbca5064d5d38e006d9be5b8d",
+    "date_published": 1782864000,
+    "attributes": {
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "category_id": "f2e3fa2c-5ddb-54b9-9e4a-9ba42c7233af",
+    "category": "Stone/Rock & Cliffs/Stratified & Layered Rock",
+    "img_version": "d0e24f23",
+    "download_count": 17427,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dark_rock.png?width=256&height=256&format=webp&v=d0e24f23"
+  },
+  "dark_rock_02": {
+    "type": 1,
+    "name": "Dark Rock 02",
+    "categories": [
+      "outdoor",
+      "natural",
+      "rock"
+    ],
+    "tags": [
+      "rough",
+      "rock face",
+      "rock",
+      "weathered",
+      "fractured",
+      "stratified",
+      "craggy",
+      "striated",
+      "fissured",
+      "geological",
+      "veined",
+      "weathered rock",
+      "rock formation",
+      "striations",
+      "exposed rock"
+    ],
+    "description": "Free 8K texture of dark stratified rock with sharp fractures, deep crevices and layered plates. Matte, weathered stone with subtle earthy brown tones.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000.9167194366455,
+      2000.917911529541
+    ],
+    "files_hash": "98e3cfc4288dcb24621f1cb7c1d6b0b35dca2cab",
+    "date_published": 1784505600,
+    "category_id": "f2e3fa2c-5ddb-54b9-9e4a-9ba42c7233af",
+    "category": "Stone/Rock & Cliffs/Stratified & Layered Rock",
+    "attributes": {
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "50d8df4a",
+    "download_count": 9567,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dark_rock_02.png?width=256&height=256&format=webp&v=50d8df4a"
+  },
+  "dirt": {
+    "name": "Dirt",
+    "categories": [
+      "floor",
+      "dirty",
+      "sand"
+    ],
+    "type": 1,
+    "tags": [
+      "dirt",
+      "dirty",
+      "ground",
+      "nature",
+      "earth",
+      "dusty",
+      "rocky",
+      "debris",
+      "footprints"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1721692800,
+    "files_hash": "fe7ab433626bec3f3bdc5a478b06eed2eb12572e",
+    "description": "Free 8K dirt texture showing dusty, compacted earth with small rocks, debris and subtle footprints; rough, low-gloss surface with detailed soil variation.",
+    "category_id": "d9215ca1-f9af-578a-a269-6cd2338bdba6",
+    "category": "Ground & Terrain/Soil & Mud/Bare Dirt & Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "efbb8f04",
+    "download_count": 32397,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirt.png?width=256&height=256&format=webp&v=efbb8f04"
+  },
+  "dirt_aerial_02": {
+    "type": 1,
+    "date_published": 1581673534,
+    "name": "Dirt Aerial 02",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "sand",
+      "natural",
+      "aerial"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      20000,
+      20000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "d0806565a3a304dcabf0e4b982761a3797c564e6",
+    "tags": [
+      "mud",
+      "rough",
+      "soil",
+      "erosion",
+      "compacted",
+      "tracks"
+    ],
+    "sponsors": [
+      "84390067"
+    ],
+    "description": "Free 8K texture of compacted, eroded brown dirt with muddy patches, rough cracked surfaces, visible tracks and subtle sand and dust variations.",
+    "category_id": "e0c05e0b-25f0-5141-ad7a-2aa12e149440",
+    "category": "Ground & Terrain/Soil & Mud/Compacted Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "cracked",
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "623accac",
+    "download_count": 41825,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirt_aerial_02.png?width=256&height=256&format=webp&v=623accac"
+  },
+  "dirt_aerial_03": {
+    "type": 1,
+    "date_published": 1582175338,
+    "name": "Dirt Aerial 03",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "sand",
+      "natural",
+      "aerial"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      25000,
+      25000
+    ],
+    "sponsors": [
+      "77433244"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "7ee5aa54f512a538d232697564d70d3a4da1f844",
+    "tags": [
+      "mud",
+      "gravel",
+      "stones",
+      "dry",
+      "organic",
+      "ground",
+      "rock fragments"
+    ],
+    "description": "Free 8K texture of dry, compacted dirt with scattered gravel and small stone fragments, dusty surface with subtle erosion streaks and organic color variation.",
+    "category_id": "e0c05e0b-25f0-5141-ad7a-2aa12e149440",
+    "category": "Ground & Terrain/Soil & Mud/Compacted Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "57345a2d",
+    "download_count": 31648,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirt_aerial_03.png?width=256&height=256&format=webp&v=57345a2d"
+  },
+  "dirt_floor": {
+    "date_published": 1673827200,
+    "name": "Dirt Floor",
+    "type": 1,
+    "tags": [
+      "dirt",
+      "ground",
+      "brown",
+      "nature",
+      "uneven",
+      "mud",
+      "debris",
+      "forest",
+      "pathway",
+      "woodland"
+    ],
+    "authors": {
+      "eye-candy.xyz": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2069.9996948242188,
+      2069.9996948242188
+    ],
+    "prepaid": true,
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "collection: verdant_trail"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "77433244",
+      "128081732"
+    ],
+    "files_hash": "5786a04233bc38e09aea24ac369f43f71a0aa728",
+    "description": "Free 8K texture of uneven brown dirt with compacted, slightly muddy surface, scattered twig and leaf debris, fine granular detail and subtle roughness.",
+    "category_id": "2b016db1-a760-53aa-89ac-54c30f13214a",
+    "category": "Ground & Terrain/Forest Floor/Forest Soil",
+    "collections": [
+      "verdant_trail"
+    ],
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "01ad0711",
+    "download_count": 52349,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirt_floor.png?width=256&height=256&format=webp&v=01ad0711"
+  },
+  "dirty_carpet": {
+    "name": "Dirty Carpet",
+    "type": 1,
+    "tags": [
+      "carpet",
+      "dirty",
+      "floor",
+      "textile ",
+      "rug",
+      "discolored",
+      "faded"
+    ],
+    "authors": {
+      "Rohit Seervi": "All"
+    },
+    "info": null,
+    "dimensions": [
+      599.9999046325684,
+      599.9999046325684
+    ],
+    "date_published": 1699315200,
+    "donated": true,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "categories": [
+      "floor",
+      "fabric",
+      "carpet"
+    ],
+    "files_hash": "5a10cbdb900933c85bebdd7abc6efe94bf5caa36",
+    "description": "Free 8K texture of a dirty, faded carpet with coarse, flattened pile, discolored olive-brown tones, subtle stripe detail, worn fibers and surface grime.",
+    "category_id": "745bbd34-5a32-52b8-8899-f9ebe482797a",
+    "category": "Textiles & Leather/Carpet & Matting/Carpet",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "worn",
+        "weathered"
+      ],
+      "origin": "man_made"
+    },
+    "img_version": "c2afaeb5",
+    "download_count": 86527,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirty_carpet.png?width=256&height=256&format=webp&v=c2afaeb5"
+  },
+  "dirty_concrete": {
+    "date_published": 1610480759,
+    "name": "Dirty Concrete",
+    "categories": [
+      "concrete",
+      "outdoor",
+      "floor",
+      "man made",
+      "sand",
+      "dirty",
+      "plaster-concrete"
+    ],
+    "type": 1,
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "tags": [
+      "rough",
+      "mud"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "3c33952f49577fd3edd4bc90f72c4e4111429e8c",
+    "description": "Free 8K texture of dirty concrete: rough, sandy surface with mud stains, embedded twigs and grit, and worn, gritty outdoor floor detail.",
+    "category_id": "0a7b70c3-bc79-531b-8cf3-cadeb4cbf686",
+    "category": "Concrete/Cast Walls & Floors/Bare Cast",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "weathered",
+        "damaged"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "4ba47176",
+    "download_count": 66090,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirty_concrete.png?width=256&height=256&format=webp&v=4ba47176"
+  },
+  "dirty_tiles": {
+    "type": 1,
+    "name": "Dirty Tiles",
+    "categories": [
+      "floor",
+      "tiles"
+    ],
+    "tags": [
+      "dirty",
+      "tiles",
+      "indoor",
+      "indoor flooring",
+      "grout",
+      "scuffed",
+      "square tiles",
+      "square",
+      "grout lines",
+      "ceramic"
+    ],
+    "description": "scuffed, reddish-brown ceramic square tiles with worn grout lines, subtle stains and a low-sheen indoor flooring surface.",
+    "authors": {
+      "Matterfield": "Photography",
+      "Jenelle van Heerden": "Processing"
+    },
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2259.999990463257,
+      2259.999990463257
+    ],
+    "files_hash": "385002cf82c5f6fd39f376c5015a900f5e6c666d",
+    "date_published": 1759968000,
+    "category_id": "3a92bf01-5218-5998-86bc-598021427fb9",
+    "category": "Ceramic/Quarry & Unglazed",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "worn",
+        "damaged"
+      ],
+      "origin": "man_made"
+    },
+    "img_version": "1d24a227",
+    "download_count": 5317,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dirty_tiles.png?width=256&height=256&format=webp&v=1d24a227"
+  },
+  "dry_ground_rocks": {
+    "type": 1,
+    "date_published": 1582243648,
+    "name": "Dry Ground Rocks",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      4000,
+      4000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "8d8008c32f6f8165608b95e105e5937552accb49",
+    "tags": [
+      "mud",
+      "rocks",
+      "cracked",
+      "ground",
+      "dry",
+      "parched",
+      "soil",
+      "dirt",
+      "stones",
+      "rough",
+      "stony"
+    ],
+    "description": "Free 8K texture of dry, cracked ground with rough stony soil, parched brown dirt, compacted mud and scattered small rocks, gritty surface detail.",
+    "category_id": "c650da98-1200-549c-ade9-c3756c2f327c",
+    "category": "Ground & Terrain/Rocky Ground/Stony Dirt",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "fd2c84d4",
+    "download_count": 56081,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dry_ground_rocks.png?width=256&height=256&format=webp&v=fd2c84d4"
+  },
+  "dry_riverbed_rock": {
+    "name": "Dry Riverbed Rock",
+    "categories": [
+      "floor",
+      "natural",
+      "terrain",
+      "rock",
+      "outdoor"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "rock face",
+      "uneven",
+      "weathered",
+      "cracked",
+      "stone"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1710374400,
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "aa87f826fc4326cd3e4ecd9d73e3644e18e86ed1",
+    "description": "Free 16K texture of dry riverbed rock: rough, weathered stone with cracked, uneven faces, layered striations and a gritty, low-sheen surface.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "fdd5a13a",
+    "download_count": 97259,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dry_riverbed_rock.png?width=256&height=256&format=webp&v=fdd5a13a"
+  },
+  "embedded_rock_floor": {
+    "name": "Embedded Rock Floor",
+    "categories": [
+      "floor",
+      "man made",
+      "plaster-concrete",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "uneven",
+      "stone",
+      "exterior",
+      "cement",
+      "rocky",
+      "rocks",
+      "rugged"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1799.9995946884155,
+      1799.9995946884155
+    ],
+    "date_published": 1698710400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "80c81c7ffcb2a219699935f3ca96e2a0044f4a7a",
+    "description": "Free 8K texture of a weathered cement floor with embedded rocks, a rugged uneven stone surface with chipped edges and subtle dirt staining.",
+    "sponsors": [
+      "3237733"
+    ],
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "weathered",
+        "damaged"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "category_id": "70d3bf8f-46b0-5250-a419-61cbf068f448",
+    "category": "Concrete/Cast Walls & Floors/Exposed Aggregate",
+    "img_version": "37a5e48c",
+    "download_count": 5048,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/embedded_rock_floor.png?width=256&height=256&format=webp&v=37a5e48c"
+  },
+  "excavated_soil_wall": {
+    "name": "Excavated Soil Wall",
+    "categories": [
+      "outdoor",
+      "wall",
+      "sand"
+    ],
+    "type": 1,
+    "tags": [
+      "sand",
+      "wall",
+      "cracks",
+      "excavation",
+      "soil",
+      "earth",
+      "dirt",
+      "dusty",
+      "dry",
+      "uneven"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1999.9996423721313,
+      1999.9996423721313
+    ],
+    "date_published": 1697500800,
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "a4f887714035737be41c8712c0da8267ca39b3e6",
+    "description": "Free, 16K excavated soil wall texture showing dusty, dry sandy earth with deep grooves, uneven compacted clumps and a rough granular surface.",
+    "category_id": "d9215ca1-f9af-578a-a269-6cd2338bdba6",
+    "category": "Ground & Terrain/Soil & Mud/Bare Dirt & Soil",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "93078fe7",
+    "download_count": 12725,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/excavated_soil_wall.png?width=256&height=256&format=webp&v=93078fe7"
+  },
+  "farm_soil": {
+    "type": 1,
+    "name": "Farm Soil",
+    "categories": [
+      "floor",
+      "natural",
+      "dirty"
+    ],
+    "category": "Ground & Terrain/Soil & Mud/Bare Dirt & Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "dirty"
+      ]
+    },
+    "tags": [
+      "uneven",
+      "sand",
+      "sandy",
+      "dusty",
+      "ploughed",
+      "soil",
+      "earth",
+      "ground",
+      "granulated",
+      "cloddy"
+    ],
+    "description": "Free 8K farm soil texture with dark brown, slightly damp earth, crumbly clods, fine grit and stray roots; rough, matte surface with rich micro detail.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": "One of our nearby neighbors has a small farm in their yard and they had ploughed the soil recently. Was a good opportunity to scan it. Tried to scan it carefully because walking over it would compact the soil and leave footmarks.",
+    "category_id": "d9215ca1-f9af-578a-a269-6cd2338bdba6",
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1999.9992847442627,
+      2000.000238418579
+    ],
+    "files_hash": "b93416f6e73ab09fc3d0c5d76e1721bda83177e8",
+    "date_published": 1788912000,
+    "img_version": "a2aced0e",
+    "download_count": 5980,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/farm_soil.png?width=256&height=256&format=webp&v=a2aced0e"
+  },
+  "flower_scattered_dirt": {
+    "type": 1,
+    "name": "Flower Scattered Dirt",
+    "categories": [
+      "floor",
+      "outdoor",
+      "natural",
+      "sand"
+    ],
+    "tags": [
+      "dirt",
+      "dirty",
+      "ground",
+      "petals",
+      "sand",
+      "flowers",
+      "jacaranda",
+      "scattered",
+      "earth",
+      "soil",
+      "scattered flowers",
+      "scattered petals"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "date_published": 1738800000,
+    "files_hash": "da33dc96bcb44761f0e014a80b8ff1a66d5cc9e2",
+    "description": "Free 8K texture of brown sandy dirt dotted with scattered purple jacaranda petals, rough granular soil with subtle bumps, fine sand, and a dry matte surface.",
+    "category_id": "d9215ca1-f9af-578a-a269-6cd2338bdba6",
+    "category": "Ground & Terrain/Soil & Mud/Bare Dirt & Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "3ba3ed59",
+    "download_count": 1495,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/flower_scattered_dirt.png?width=256&height=256&format=webp&v=3ba3ed59"
+  },
+  "grass_concrete_pavement": {
+    "name": "Grass Concrete Pavement",
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "weathered",
+      "old",
+      "discolored",
+      "grass",
+      "dead grass",
+      "dry",
+      "grey",
+      "pavement",
+      "concrete",
+      "blocks",
+      "worn"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1970.0000286102295,
+      1970.0000286102295
+    ],
+    "date_published": 1689379200,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "4245fbdce5c13b847dff4639b60207f92e6e2e1d",
+    "description": "Free 8K texture of rough, weathered concrete blocks set in dry, discolored grass - uneven, worn grey pavers with fibrous dead turf and subtle green moss.",
+    "categories": [
+      "man made",
+      "outdoor",
+      "cobblestone"
+    ],
+    "category_id": "ce26ba57-ef4b-54d4-a954-9a85bb053b9e",
+    "category": "Brick & Block/Concrete Block & Paver/Interlocking Pavers",
+    "attributes": {
+      "surface_use": "paving",
+      "condition": [
+        "weathered",
+        "worn",
+        "mossy"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "4ece8d4c",
+    "download_count": 3354,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/grass_concrete_pavement.png?width=256&height=256&format=webp&v=4ece8d4c"
+  },
+  "grass_ground": {
+    "type": 1,
+    "name": "Grass Ground",
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "dirty"
+    ],
+    "category": "Ground & Terrain/Grass & Vegetation/Dry & Sparse Grass",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "dirty"
+      ]
+    },
+    "tags": [
+      "grass",
+      "dry grass",
+      "dirt",
+      "root",
+      "dead grass",
+      "turf",
+      "dry"
+    ],
+    "description": "Free 16K texture of worn grass on soil, matte and rough, with fine micro-bumps, subtle height, and natural brown-green variation.",
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "category_id": "e9516d71-1efd-51d6-b3c4-ce945ee92604",
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2509.999990463257,
+      2509.999990463257
+    ],
+    "files_hash": "0835c92f7cacee85b306c2a35d2c006be11ea3c2",
+    "date_published": 1789689600,
+    "img_version": "6fb7fdcf",
+    "sponsors": [
+      "121968951"
+    ],
+    "download_count": 12687,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/grass_ground.png?width=256&height=256&format=webp&v=6fb7fdcf"
+  },
+  "grass_path_2": {
+    "type": 1,
+    "tags": [
+      "grass",
+      "pathway",
+      "path",
+      "ground",
+      "stones",
+      "sidewalk",
+      "rural",
+      "farm"
+    ],
+    "date_published": 1529359200,
+    "name": "Grass Path 2",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1000,
+      1000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "b4f12e39d7b91eb602717bd76dc4ed8a0ab34185",
+    "description": "Free 8K texture of a compacted dirt path with scattered stones and small grass tufts, rough, grainy earth with subtle displacement and worn, patchy areas.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "worn"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "7dd04a04",
+    "download_count": 80591,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/grass_path_2.png?width=256&height=256&format=webp&v=7dd04a04"
+  },
+  "grass_path_3": {
+    "type": 1,
+    "tags": [
+      "grass",
+      "pathway",
+      "path",
+      "ground",
+      "stones",
+      "sidewalk",
+      "rural",
+      "farm"
+    ],
+    "date_published": 1529359200,
+    "name": "Grass Path 3",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1000,
+      1000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "4d369edce79d890934bdf5f1b1d41411a44df5e0",
+    "description": "Free 8K texture of a compacted dirt and gravel grass path with small stones, patchy grass tufts and subtle wear, rough, slightly glossy soil surface.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "worn"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "fea64d49",
+    "download_count": 40145,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/grass_path_3.png?width=256&height=256&format=webp&v=fea64d49"
+  },
+  "grassy_cobblestone": {
+    "date_published": 1658188800,
+    "name": "Grassy Cobblestone",
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing ",
+      "Charlotte Baglioni": "Photography"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "categories": [
+      "natural",
+      "sand",
+      "outdoor",
+      "floor",
+      "cobblestone"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "tags": [
+      "ground",
+      "dirt",
+      "rock",
+      "grass",
+      "dirty",
+      "path",
+      "trampled",
+      "pathway"
+    ],
+    "files_hash": "6093a2264b43e4fe5a7b6ab741894ae3e7b9163c",
+    "description": "Free 8K texture of grassy cobblestone: weathered stone pavers with dirt-filled seams, scattered moss and trampled grass, with pronounced height and roughness.",
+    "category_id": "99762fb0-f134-5cd9-93f7-5b876875f7c9",
+    "attributes": {
+      "surface_use": "paving",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "category": "Stone/Cobblestone & Paving/Rough & Irregular Setts",
+    "img_version": "74e599ff",
+    "download_count": 54565,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/grassy_cobblestone.png?width=256&height=256&format=webp&v=74e599ff"
+  },
+  "gray_rocks": {
+    "name": "Gray Rocks",
+    "categories": [
+      "outdoor",
+      "terrain",
+      "natural",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "uneven",
+      "rocks",
+      "rocky",
+      "rock",
+      "gray",
+      "rough"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1799.9995946884155,
+      1799.9995946884155
+    ],
+    "date_published": 1696291200,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "85e11fb6423b057327317b25bd4cc631d3d6d292",
+    "description": "Free 8K texture of uneven, angular gray rocks with rough, coarse faces, packed gravel gaps and scattered dirt and leaf debris - a natural rocky surface.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "weathered"
+      ]
+    },
+    "img_version": "2521daf8",
+    "download_count": 128898,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/gray_rocks.png?width=256&height=256&format=webp&v=2521daf8"
+  },
+  "leafy_grass": {
+    "date_published": 1685145600,
+    "name": "Leafy Grass",
+    "categories": [
+      "outdoor",
+      "floor"
+    ],
+    "type": 1,
+    "tags": [
+      "grass",
+      "green",
+      "nature",
+      "ground",
+      "foliage",
+      "leaves",
+      "plants",
+      "outdoors",
+      "twigs",
+      "sticks",
+      "trampled"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "90fd49a21ddface404d32d9956c3a9f3ca8e0679",
+    "description": "Free 8K leafy grass texture: trampled green blades with scattered brown leaves and twigs, low-relief rough soil surface with a natural matte finish.",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "category_id": "21e06d88-2ab6-5bdd-ad11-869b7ff0b573",
+    "category": "Ground & Terrain/Grass & Vegetation/Lush & Green Grass",
+    "img_version": "8866acdc",
+    "download_count": 95932,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/leafy_grass.png?width=256&height=256&format=webp&v=8866acdc"
+  },
+  "lichen_rock": {
+    "name": "Lichen Rock",
+    "categories": [
+      "collection: verdant_trail",
+      "rock",
+      "terrain",
+      "natural"
+    ],
+    "type": 1,
+    "tags": [
+      "rock",
+      "cliff",
+      "lichen",
+      "moss",
+      "rock face",
+      "boulder",
+      "mossy",
+      "stone",
+      "nature",
+      "rugged"
+    ],
+    "authors": {
+      "Rico Cilliers": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1707177600,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "3f77b26ff52da2807965072c56cbf18b8fcf3af5",
+    "description": "Free 8K texture of rugged, weathered rock with pale-green lichen patches, layered stone grain, rough microdetail and a subtle damp sheen.",
+    "category_id": "e8121dc9-96d3-59b8-b8ee-83104e60ba82",
+    "category": "Stone/Rock & Cliffs/Mossy & Lichened Rock",
+    "collections": [
+      "verdant_trail"
+    ],
+    "attributes": {
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "eefe40e1",
+    "download_count": 62148,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/lichen_rock.png?width=256&height=256&format=webp&v=eefe40e1"
+  },
+  "low_tide_rocks": {
+    "type": 1,
+    "name": "Low Tide Rocks",
+    "categories": [
+      "floor",
+      "outdoor",
+      "natural",
+      "sand"
+    ],
+    "tags": [
+      "rocks",
+      "scattered rocks",
+      "pebbles",
+      "wet",
+      "wet ground",
+      "low tide",
+      "granular",
+      "scattered pebbles",
+      "riverbank",
+      "pebbly",
+      "small stones",
+      "river sediment",
+      "sand"
+    ],
+    "description": "Free 8k texture of damp low-tide ground: dense granular sand with scattered pebbles and small rocks, dark wet sheen and varied earth tones.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2170.0000762939453,
+      2170.0000762939453
+    ],
+    "files_hash": "6aeb6db4e4e0209f42ec017d36bad064a7bf8ebf",
+    "date_published": 1766102400,
+    "category_id": "d5cd6278-7150-5639-a2c9-a5f9e1e72f61",
+    "category": "Ground & Terrain/Gravel & Pebbles/Coastal Gravel",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "2878f7d5",
+    "download_count": 3236,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/low_tide_rocks.png?width=256&height=256&format=webp&v=2878f7d5"
+  },
+  "marble_rock_01": {
+    "type": 1,
+    "name": "Marble Rock 01",
+    "categories": [
+      "outdoor",
+      "rock",
+      "natural"
+    ],
+    "tags": [
+      "uneven",
+      "rock",
+      "rock face",
+      "geological",
+      "cracked",
+      "boulder",
+      "craggy",
+      "marble",
+      "veined",
+      "weathered",
+      "striated"
+    ],
+    "description": "Free 8K marble rock texture with a cracked, veined surface. Light gray-beige stone, dark striations and pits, weathered with craggy relief.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2002.079963684082,
+      2002.0811557769775
+    ],
+    "files_hash": "f3c6b324d949ea2b3bb28eff1f75cf763322eaf8",
+    "date_published": 1781049600,
+    "category_id": "19a0b774-8b0a-5853-a205-8f019fe00ae9",
+    "category": "Stone/Rock & Cliffs/Marble & Metamorphic",
+    "attributes": {
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "e5802972",
+    "download_count": 3668,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/marble_rock_01.png?width=256&height=256&format=webp&v=e5802972"
+  },
+  "marble_rock_02": {
+    "type": 1,
+    "name": "Marble Rock 02",
+    "categories": [
+      "outdoor",
+      "natural",
+      "rock"
+    ],
+    "tags": [
+      "uneven",
+      "rock",
+      "cracked",
+      "weathered",
+      "marble",
+      "craggy",
+      "stone",
+      "rock face",
+      "chipped",
+      "striated",
+      "rugged",
+      "fissured",
+      "rock formation",
+      "veined"
+    ],
+    "description": "Free 8K texture of weathered beige marble rock with craggy fractures, fine veins, and uneven matte surface, subtle color variation and chipped details.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2002.079963684082,
+      2002.0811557769775
+    ],
+    "files_hash": "742ee4ef720bcf2d63a9b88f9d542388b6346d3b",
+    "date_published": 1781222400,
+    "category_id": "19a0b774-8b0a-5853-a205-8f019fe00ae9",
+    "category": "Stone/Rock & Cliffs/Marble & Metamorphic",
+    "attributes": {
+      "condition": [
+        "weathered",
+        "cracked",
+        "damaged"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "40bfb52c",
+    "download_count": 5422,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/marble_rock_02.png?width=256&height=256&format=webp&v=40bfb52c"
+  },
+  "marble_rock_03": {
+    "type": 1,
+    "name": "Marble Rock 03",
+    "categories": [
+      "rock",
+      "outdoor",
+      "natural"
+    ],
+    "tags": [
+      "uneven",
+      "weathered",
+      "cracked",
+      "worn",
+      "rock face",
+      "rock",
+      "dirty",
+      "marble",
+      "rock formation",
+      "exposed rock",
+      "striated",
+      "craggy",
+      "fissured",
+      "veined",
+      "geological",
+      "stratified",
+      "fractured",
+      "striations",
+      "cliff"
+    ],
+    "description": "Free 8K texture of weathered marble rock with chunky fractured blocks, deep crevices, dark veins, and rough, matte surfaces in warm beige-brown tones.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1798.436999320984,
+      1798.4380722045898
+    ],
+    "files_hash": "9c4465ad5b99dee88000701ad6aa7178d70b7c44",
+    "date_published": 1783296000,
+    "category_id": "19a0b774-8b0a-5853-a205-8f019fe00ae9",
+    "category": "Stone/Rock & Cliffs/Marble & Metamorphic",
+    "attributes": {
+      "condition": [
+        "weathered",
+        "cracked",
+        "damaged"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "41f24999",
+    "download_count": 6675,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/marble_rock_03.png?width=256&height=256&format=webp&v=41f24999"
+  },
+  "mixed_rock_tiles": {
+    "type": 1,
+    "name": "Mixed Rock Tiles",
+    "categories": [
+      "floor",
+      "rock"
+    ],
+    "tags": [
+      "rough",
+      "uneven",
+      "old",
+      "pebbles",
+      "rocks",
+      "stone tiles",
+      "embedded rock",
+      "dirty",
+      "stone slabs",
+      "outdoor",
+      "weathered",
+      "embedded pebble"
+    ],
+    "description": "Free 8k mixed rock tiles texture: weathered brown stone slabs with pebble-inlaid joints, rough sedimentary surface, worn edges and grime in crevices.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1899.9998569488525,
+      1899.9998569488525
+    ],
+    "files_hash": "a68ddbcfa403c4978b466de08d1dac667f1ae036",
+    "date_published": 1764547200,
+    "category_id": "42008e30-c71f-5d74-af61-22ee59098e60",
+    "category": "Stone/Slabs & Tiles/Mixed-Stone",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "82f530b9",
+    "download_count": 2993,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/mixed_rock_tiles.png?width=256&height=256&format=webp&v=82f530b9"
+  },
+  "mossy_rock": {
+    "type": 1,
+    "date_published": 1603908102,
+    "name": "Mossy Rock",
+    "categories": [
+      "rock",
+      "natural",
+      "outdoor",
+      "terrain"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "75980c1e8b690dab1cad640407c18eac16307869",
+    "tags": [
+      "rough",
+      "moss",
+      "rock face",
+      "cracked",
+      "lichen",
+      "striations",
+      "striated",
+      "mosscovered",
+      "mossy",
+      "uneven",
+      "rock"
+    ],
+    "description": "Free 8K texture of weathered, striated rock with uneven, cracked surfaces, mottled lichen and green moss patches, and detailed rough stone grain.",
+    "category_id": "e8121dc9-96d3-59b8-b8ee-83104e60ba82",
+    "category": "Stone/Rock & Cliffs/Mossy & Lichened Rock",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "mossy",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "df74987e",
+    "download_count": 116834,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/mossy_rock.png?width=256&height=256&format=webp&v=df74987e"
+  },
+  "park_dirt": {
+    "date_published": 1672876800,
+    "name": "Park Dirt",
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "sand"
+    ],
+    "type": 1,
+    "authors": {
+      "Christopher Melani": "All"
+    },
+    "tags": [
+      "sand",
+      "park",
+      "dirt",
+      "leaves",
+      "twigs",
+      "debris",
+      "seaside",
+      "ground",
+      "damp",
+      "pathway",
+      "autumn",
+      "nature"
+    ],
+    "info": null,
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "prepaid": true,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "882b4500e2605dd83ba4edabb4aec9b83aa2a69c",
+    "description": "Free 8K texture of damp park dirt - compacted sandy soil with fine roughness, scattered autumn leaves, twigs, debris and moist shading.",
+    "category_id": "e0c05e0b-25f0-5141-ad7a-2aa12e149440",
+    "category": "Ground & Terrain/Soil & Mud/Compacted Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "236fb33b",
+    "download_count": 13351,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/park_dirt.png?width=256&height=256&format=webp&v=236fb33b"
+  },
+  "raked_dirt": {
+    "name": "Raked Dirt",
+    "categories": [
+      "outdoor",
+      "natural",
+      "dirty",
+      "floor"
+    ],
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "info": null,
+    "tags": [
+      "brown",
+      "nature",
+      "ground",
+      "sand",
+      "leaves",
+      "dirt",
+      "floor",
+      "dirty"
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1661990400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "9f31e810a45f46e2d314430a7779ec7ec024c94b",
+    "description": "Free 8K texture of raked brown dirt - compact sandy soil with fine rake grooves, scattered leaf debris and twigs, rough matte surface with subtle relief.",
+    "category_id": "e0c05e0b-25f0-5141-ad7a-2aa12e149440",
+    "category": "Ground & Terrain/Soil & Mud/Compacted Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "b469ada3",
+    "download_count": 7186,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/raked_dirt.png?width=256&height=256&format=webp&v=b469ada3"
+  },
+  "red_dirt_mud_01": {
+    "type": 1,
+    "tags": [
+      "gravel",
+      "mud",
+      "dirt",
+      "rough",
+      "pathway",
+      "path",
+      "road",
+      "village"
+    ],
+    "date_published": 1529359200,
+    "name": "Red Dirt Mud 01",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "5b112074006dedd7ea5e2550f0d906cb20fb96e3",
+    "description": "Free 8K texture of compacted red-brown mud with scattered gravel, a rough pebbly surface, damp sheen, and worn pathway detailing.",
+    "category_id": "e0c05e0b-25f0-5141-ad7a-2aa12e149440",
+    "category": "Ground & Terrain/Soil & Mud/Compacted Soil",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "4a4c4baa",
+    "download_count": 42248,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/red_dirt_mud_01.png?width=256&height=256&format=webp&v=4a4c4baa"
+  },
+  "red_laterite_soil_stones": {
+    "name": "Red Laterite Soil Stones",
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "rock",
+      "road",
+      "sand"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "red",
+      "laterite",
+      "stones",
+      "ground",
+      "dirt",
+      "pebbles",
+      "rocks",
+      "gravel",
+      "debris",
+      "nature",
+      "pathway",
+      "path",
+      "rock",
+      "brown",
+      "chipped"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1666828800,
+    "prepaid": true,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "7162c7ae70b9626991753b8e0ba6c2b4abd633ca",
+    "description": "Free 8K texture of red laterite soil with coarse, compacted gravel and scattered pebble stones; rough, earthy brown-red surface with chipped rock fragments.",
+    "category_id": "ff767449-ea44-5527-96f0-d74aa52df2d0",
+    "category": "Ground & Terrain/Gravel & Pebbles/Crushed Aggregate",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "3e15d464",
+    "download_count": 71262,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/red_laterite_soil_stones.png?width=256&height=256&format=webp&v=3e15d464"
+  },
+  "river_small_rocks": {
+    "date_published": 1648684800,
+    "name": "River Small Rocks",
+    "categories": [
+      "terrain",
+      "rock",
+      "natural",
+      "outdoor"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "stones",
+      "rock",
+      "pebbles",
+      "river",
+      "pathway",
+      "debris",
+      "scattered",
+      "ground",
+      "broken",
+      "costal"
+    ],
+    "authors": {
+      "Rob Tuytel": "Photography, Processing",
+      "Rico Cilliers": "Minor adjustment"
+    },
+    "dimensions": [
+      2900.0000953674316,
+      2900.0003337860107
+    ],
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "sponsors": [
+      "3237733"
+    ],
+    "files_hash": "76bdbc02ea9f100547b193105e747970702b148d",
+    "description": "Free 16K texture of rough, uneven river pebbles and broken rocks - scattered stones in compacted soil with weathered, muted tones and high micro-detail.",
+    "category_id": "4276b1ed-fbfe-5689-abd6-a58335e780e9",
+    "category": "Ground & Terrain/Gravel & Pebbles/River Pebbles",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "cf51a283",
+    "download_count": 30279,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/river_small_rocks.png?width=256&height=256&format=webp&v=cf51a283"
+  },
+  "rock_01": {
+    "type": 1,
+    "date_published": 1533797188,
+    "name": "Rock 01",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "sponsors": [
+      "82322099"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "4b1a673750efae534c749458f29458296f27fa78",
+    "tags": [
+      "grey",
+      "smooth",
+      "rock",
+      "stone",
+      "gray",
+      "weathered",
+      "rock face",
+      "solid rock"
+    ],
+    "description": "Free 8K rock texture: smooth, weathered grey stone with subtle erosion streaks, fine grain and occasional rusty speckles, low-gloss solid rock surface.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "7d245b68",
+    "download_count": 132101,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_01.png?width=256&height=256&format=webp&v=7d245b68"
+  },
+  "rock_04": {
+    "date_published": 1546731812,
+    "name": "Rock 04",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "type": 1,
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "f0e05b3fa4965aeca08d979a898e82a21e49be2c",
+    "tags": [
+      "rough",
+      "uneven",
+      "stone",
+      "bumpy",
+      "rock",
+      "rock formation",
+      "weathered",
+      "dirty",
+      "coarse",
+      "mossy"
+    ],
+    "description": "Free 8K texture of a rough, weathered stone: coarse, uneven, bumpy surface with dirt and subtle moss patches in warm brown-gray tones.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "57fc7a29",
+    "download_count": 81750,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_04.png?width=256&height=256&format=webp&v=57fc7a29"
+  },
+  "rock_05": {
+    "date_published": 1536799926,
+    "sponsors": [
+      "42579608"
+    ],
+    "name": "Rock 05",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "type": 1,
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "489f71601bc8f756c9762f6c77c92dbd0cfab6b6",
+    "tags": [
+      "rough",
+      "uneven",
+      "old",
+      "stone",
+      "geological",
+      "irregular",
+      "rock",
+      "pitted",
+      "rock face"
+    ],
+    "description": "Free 8K texture of an old, rough brown-gray rock face with pitted, uneven, weathered surfaces and irregular geological detail.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "8ef6f6a9",
+    "download_count": 93098,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_05.png?width=256&height=256&format=webp&v=8ef6f6a9"
+  },
+  "rock_06": {
+    "type": 1,
+    "date_published": 1533797237,
+    "name": "Rock 06",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "sponsors": [
+      "4047949"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "6be527d9eaabf2b64d5695a4a4c355c52f595a36",
+    "tags": [
+      "yellow",
+      "cliff",
+      "rough",
+      "rock face",
+      "solid rock",
+      "rock",
+      "striated",
+      "geological",
+      "exposed rock",
+      "uneven",
+      "weathered rock",
+      "striations"
+    ],
+    "description": "Free 8K texture of weathered yellow-brown cliff rock with rough, striated surface, uneven fissures and layered, solid rock detailing.",
+    "category_id": "f2e3fa2c-5ddb-54b9-9e4a-9ba42c7233af",
+    "category": "Stone/Rock & Cliffs/Stratified & Layered Rock",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "3deaed34",
+    "download_count": 80890,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_06.png?width=256&height=256&format=webp&v=3deaed34"
+  },
+  "rock_08": {
+    "type": 1,
+    "date_published": 1536800221,
+    "name": "Rock 08",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "5c14c5204a31ab3a95fb63279a0b42497fa819ce",
+    "tags": [
+      "rough",
+      "rock face",
+      "bare",
+      "rock",
+      "boulder",
+      "coarse",
+      "geological",
+      "stone",
+      "uneven"
+    ],
+    "description": "Free 8K texture - coarse, uneven weathered rock surface in beige-brown tones, with rough pits, subtle wear and rugged boulder-like details.",
+    "category_id": "78e4c120-24c3-5f41-b48a-01617c52bc26",
+    "category": "Stone/Rock & Cliffs/Boulder Surfaces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "b42e10ae",
+    "download_count": 82987,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_08.png?width=256&height=256&format=webp&v=b42e10ae"
+  },
+  "rock_2": {
+    "date_published": 1534153267,
+    "name": "Rock 2",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "type": 1,
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "4467a50b38d4ceae0f261c88c335707a1d0a74c9",
+    "tags": [
+      "rough",
+      "stone",
+      "dirty",
+      "rock face",
+      "rock",
+      "coarse",
+      "geological",
+      "uneven"
+    ],
+    "description": "Free 8K texture of a coarse, uneven stone surface with weathered, dirty patches and subtle geological grain - rough, sandy-tan rock face detailing.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "dcacb974",
+    "download_count": 31804,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_2.png?width=256&height=256&format=webp&v=dcacb974"
+  },
+  "rock_3": {
+    "type": 1,
+    "date_published": 1534667113,
+    "name": "Rock 3",
+    "categories": [
+      "rock",
+      "outdoor",
+      "terrain",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "e042e7c4e75a05d2da221914b6c0739a1f8bfd0a",
+    "tags": [
+      "grey",
+      "seaside",
+      "rough",
+      "rock face",
+      "rock",
+      "uneven",
+      "boulder",
+      "mossy",
+      "mossy patches",
+      "eroded",
+      "grunge"
+    ],
+    "description": "Free 8K texture of a grey seaside rock face: rough, uneven boulder surface with eroded pits, mossy patches and grungy mineral stains.",
+    "category_id": "6f927474-95dd-5ec5-b756-e9299996aeee",
+    "category": "Stone/Rock & Cliffs/Coastal Rock",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "e3054ecb",
+    "download_count": 29997,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_3.png?width=256&height=256&format=webp&v=e3054ecb"
+  },
+  "rock_boulder_cracked": {
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "rock face",
+      "rock",
+      "orange",
+      "cliff",
+      "cave",
+      "stone",
+      "uneven",
+      "eroded"
+    ],
+    "name": "Rock Boulder Cracked",
+    "categories": [
+      "outdoor",
+      "terrain",
+      "rock",
+      "natural"
+    ],
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "dimensions": [
+      1389.9999856948853,
+      1390.0001049041748
+    ],
+    "date_published": 1651536000,
+    "sponsors": [
+      "540619"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "afaff23585ab95f9855387acb02172479b293417",
+    "description": "Free 8K texture of a cracked orange boulder: rough, weathered stone with deep fissures, uneven eroded faces and subtle mineral staining.",
+    "category_id": "78e4c120-24c3-5f41-b48a-01617c52bc26",
+    "category": "Stone/Rock & Cliffs/Boulder Surfaces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "87c09bab",
+    "download_count": 58326,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_boulder_cracked.png?width=256&height=256&format=webp&v=87c09bab"
+  },
+  "rock_boulder_dry": {
+    "type": 1,
+    "tags": [
+      "weathered",
+      "chipped",
+      "rocks",
+      "boulder",
+      "stone",
+      "flat",
+      "damaged",
+      "eroded",
+      "cracked",
+      "rough",
+      "uneven"
+    ],
+    "name": "Rock Boulder Dry",
+    "categories": [
+      "rock",
+      "outdoor",
+      "natural",
+      "terrain"
+    ],
+    "authors": {
+      "Dimitrios Savva": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "date_published": 1635811200,
+    "sponsors": [
+      "540619"
+    ],
+    "dimensions": [
+      1799.9999523162842,
+      1800.0001907348633
+    ],
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "d0ca2468d0a2b2453c93e504016641249b400e4d",
+    "description": "Free 16K texture of a dry, weathered rock boulder with rough, chipped and cracked surfaces, small pits and uneven, eroded pale sandy-gray tones.",
+    "category_id": "78e4c120-24c3-5f41-b48a-01617c52bc26",
+    "category": "Stone/Rock & Cliffs/Boulder Surfaces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered",
+        "cracked",
+        "damaged"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "5a624d4f",
+    "download_count": 143633,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_boulder_dry.png?width=256&height=256&format=webp&v=5a624d4f"
+  },
+  "rock_embedded_concrete": {
+    "type": 1,
+    "name": "Rock Embedded Concrete",
+    "tags": [
+      "rocks",
+      "embedded rock",
+      "pebbles",
+      "stone embedded",
+      "embedded pebble",
+      "coarse",
+      "concrete",
+      "rounded pebbles",
+      "rounded rocks",
+      "pebbled surface",
+      "pebble finish ",
+      "bumpy"
+    ],
+    "description": "Free 8k texture of coarse exposed-aggregate concrete with rounded multi-colored pebbles, rough recessed mortar and subtle stone specular.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "files_hash": "518cdc7b9573dfef97ed4e5b7376a675cc4fdac0",
+    "date_published": 1770076800,
+    "categories": [
+      "floor",
+      "man made",
+      "cobblestone"
+    ],
+    "category_id": "70d3bf8f-46b0-5250-a419-61cbf068f448",
+    "category": "Concrete/Cast Walls & Floors/Exposed Aggregate",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "9c941339",
+    "download_count": 6438,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_embedded_concrete.png?width=256&height=256&format=webp&v=9c941339"
+  },
+  "rock_embedded_concrete_wall": {
+    "name": "Rock Embedded Concrete Wall",
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "old",
+      "wall",
+      "worn",
+      "chipped",
+      "cracked",
+      "discolored",
+      "concrete",
+      "rocks",
+      "scratched",
+      "cement",
+      "plaster",
+      "cracked cement",
+      "coarse",
+      "weathered",
+      "rock"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1759.9998712539673,
+      1759.9999904632568
+    ],
+    "date_published": 1688774400,
+    "sponsors": [
+      "20953239"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "52983c111f004d89941d07b4a7344f3c612cb84f",
+    "description": "Free 8K texture of a weathered, rock\u2011embedded concrete wall: coarse, cracked cement and chipped plaster with discolored, scratched stones and uneven surface.",
+    "categories": [
+      "man made",
+      "outdoor",
+      "rock",
+      "concrete",
+      "plaster-concrete"
+    ],
+    "category_id": "70d3bf8f-46b0-5250-a419-61cbf068f448",
+    "category": "Concrete/Cast Walls & Floors/Exposed Aggregate",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "cracked",
+        "damaged",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "b1aa4434",
+    "download_count": 9905,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_embedded_concrete_wall.png?width=256&height=256&format=webp&v=b1aa4434"
+  },
+  "rock_embedded_floor": {
+    "type": 1,
+    "name": "Rock Embedded Floor",
+    "tags": [
+      "rough",
+      "uneven",
+      "stone embedded",
+      "embedded rock",
+      "concrete",
+      "embedded pebble",
+      "bumpy"
+    ],
+    "description": "Free 8k texture of rough, uneven concrete floor with embedded stones and pebbles; weathered brown mortar, varied stone shapes and subtle sheen.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "files_hash": "757b3a2ec2911018884defd20b1b5202b471a4d2",
+    "date_published": 1764720000,
+    "categories": [
+      "floor",
+      "rock",
+      "cobblestone"
+    ],
+    "category_id": "70d3bf8f-46b0-5250-a419-61cbf068f448",
+    "category": "Concrete/Cast Walls & Floors/Exposed Aggregate",
+    "attributes": {
+      "surface_use": "floor",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "6cd0057f",
+    "download_count": 3966,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_embedded_floor.png?width=256&height=256&format=webp&v=6cd0057f"
+  },
+  "rock_embedded_tiles": {
+    "type": 1,
+    "name": "Rock Embedded Tiles",
+    "categories": [
+      "wall",
+      "rock"
+    ],
+    "tags": [
+      "rocks",
+      "rock",
+      "tiles",
+      "outdoor",
+      "city",
+      "wall",
+      "tiled wall",
+      "exterior",
+      "embedded pebble",
+      "embedded rock"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1741651200,
+    "files_hash": "4b18b62d7f5d10fb58dd1967e0f818443174af91",
+    "description": "Free 8K texture of tan, pebble-embedded tiles with rough aggregate surface, weathered grout lines, and a muted, low-sheen exterior stone finish.",
+    "category_id": "70d3bf8f-46b0-5250-a419-61cbf068f448",
+    "category": "Concrete/Cast Walls & Floors/Exposed Aggregate",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "4b5daf98",
+    "download_count": 1597,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_embedded_tiles.png?width=256&height=256&format=webp&v=4b5daf98"
+  },
+  "rock_face": {
+    "name": "Rock Face",
+    "type": 1,
+    "authors": {
+      "Greg Zaal": "Photography",
+      "Dario Barresi": "Processing"
+    },
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2380.000114440918,
+      2380.000114440918
+    ],
+    "categories": [
+      "outdoor",
+      "terrain",
+      "natural",
+      "rock",
+      "collection: namaqualand"
+    ],
+    "tags": [
+      "terrain",
+      "landscape",
+      "rock face",
+      "solid rock",
+      "cliff",
+      "solid"
+    ],
+    "date_published": 1728345600,
+    "files_hash": "99a9a8ad19728556cbd1a53440087998ae007697",
+    "description": "Free 16K texture of a weathered reddish-brown rock face - rough, solid cliff stone with cracks, crevices and fine surface detail for outdoor terrain.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "collections": [
+      "namaqualand"
+    ],
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "d87da439",
+    "download_count": 28133,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_face.png?width=256&height=256&format=webp&v=d87da439"
+  },
+  "rock_face_03": {
+    "name": "Rock Face 03",
+    "categories": [
+      "natural",
+      "terrain",
+      "rock",
+      "outdoor",
+      "collection: verdant_trail"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "rock",
+      "cliff",
+      "uneven",
+      "weathered",
+      "wall",
+      "cracked",
+      "stone",
+      "rock face",
+      "rugged",
+      "chipped",
+      "eroded",
+      "cracks",
+      "rocks"
+    ],
+    "info": null,
+    "dimensions": [
+      2699.9995708465576,
+      2699.9995708465576
+    ],
+    "date_published": 1707177600,
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "sponsors": [
+      "78546118"
+    ],
+    "files_hash": "d48f9ea2b7ecd038fa76a01c54309b8aa1e80d1e",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "description": "Free 16K texture - weathered, rugged rock face with rough, cracked, uneven stone, chipped edges and eroded details in variegated brown tones.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "collections": [
+      "verdant_trail"
+    ],
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "83c5ed9e",
+    "download_count": 185567,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_face_03.png?width=256&height=256&format=webp&v=83c5ed9e"
+  },
+  "rock_face_04": {
+    "type": 1,
+    "name": "Rock Face 04",
+    "categories": [
+      "outdoor",
+      "natural",
+      "rock"
+    ],
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "weathered",
+        "dirty",
+        "cracked"
+      ]
+    },
+    "tags": [
+      "rough",
+      "uneven",
+      "weathered",
+      "old",
+      "cracked",
+      "chipped",
+      "rock face",
+      "rock",
+      "leaves",
+      "dry leaves",
+      "fallen leaves",
+      "cracks",
+      "striated",
+      "geological"
+    ],
+    "description": "Free 8K rock face texture with dark, weathered slabs, deep fractured seams, and leaf litter in crevices. Rough, earthy tones with subtle sheen.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "files_hash": "cab69c8b2b5c5dc82a8d7a5ae9bd82889894a363",
+    "date_published": 1787529600,
+    "img_version": "815aa0e0",
+    "download_count": 2705,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_face_04.png?width=256&height=256&format=webp&v=815aa0e0"
+  },
+  "rock_ground": {
+    "type": 1,
+    "tags": [
+      "gravel",
+      "rough",
+      "broken",
+      "rock",
+      "ground"
+    ],
+    "date_published": 1587617294,
+    "name": "Rock Ground",
+    "categories": [
+      "terrain",
+      "natural",
+      "rock",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      1500,
+      1500
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "0e449fd639850aa6bb168e968142de0d061a36d3",
+    "sponsors": [
+      "128081732"
+    ],
+    "description": "Free 8K texture of rough, broken rock and gravel ground with varied pebbles, coarse soil and matte, rugged stone surfaces.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "a5671d11",
+    "download_count": 46292,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_ground.png?width=256&height=256&format=webp&v=a5671d11"
+  },
+  "rock_ground_02": {
+    "type": 1,
+    "date_published": 1581998232,
+    "name": "Rock Ground 02",
+    "categories": [
+      "terrain",
+      "natural",
+      "rock",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "12ff18faea8c0684f5cd04521c5d93cdc117490d",
+    "tags": [
+      "rough",
+      "broken",
+      "gravel",
+      "ground",
+      "scattered plants ",
+      "stones",
+      "loose stones",
+      "dirt",
+      "sand",
+      "rocks",
+      "scattered rocks"
+    ],
+    "description": "Free 8K texture of rough rocky ground with gravel, loose stones, compacted dirt and sandy tones, scattered mossy plant patches and high surface detail.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "1e787219",
+    "download_count": 52391,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_ground_02.png?width=256&height=256&format=webp&v=1e787219"
+  },
+  "rock_path": {
+    "name": "Rock Path",
+    "categories": [
+      "natural",
+      "outdoor",
+      "floor"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "leaves",
+      "rocks",
+      "rocky",
+      "grass",
+      "path",
+      "pathway",
+      "exterior",
+      "dirt",
+      "stony",
+      "trail",
+      "walkway",
+      "outdoor",
+      "outdoors",
+      "footpath"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "date_published": 1691625600,
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "files_hash": "b4af52db9875272af92ec9915ca03e3bfcce0b30",
+    "description": "Free 16K texture of a rough, weathered rocky path with compacted dirt, scattered stones, dry leaves, and coarse, uneven surface detail.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "d232f680",
+    "download_count": 8950,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_path.png?width=256&height=256&format=webp&v=d232f680"
+  },
+  "rock_pitted_mossy": {
+    "type": 1,
+    "tags": [
+      "cracked",
+      "weathered",
+      "rock face",
+      "rock",
+      "boulder",
+      "red",
+      "discolored",
+      "eroded",
+      "moss",
+      "stone",
+      "uneven",
+      "rough",
+      "orange"
+    ],
+    "name": "Rock Pitted Mossy",
+    "categories": [
+      "outdoor",
+      "rock",
+      "terrain",
+      "natural",
+      "sandstone"
+    ],
+    "authors": {
+      "Dimitrios Savva": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "date_published": 1637798400,
+    "sponsors": [
+      "9910225"
+    ],
+    "dimensions": [
+      1000,
+      1000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "831788b7bbeb28eb4fdc5a410c6a42a449bb7c45",
+    "description": "Free 8K rock texture showing weathered, pitted sandstone with orange-red tones, a rough uneven surface, deep erosion lines and subtle moss discoloration.",
+    "category_id": "78e4c120-24c3-5f41-b48a-01617c52bc26",
+    "category": "Stone/Rock & Cliffs/Boulder Surfaces",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "5ba3c161",
+    "download_count": 78068,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_pitted_mossy.png?width=256&height=256&format=webp&v=5ba3c161"
+  },
+  "rock_surface": {
+    "name": "Rock Surface",
+    "categories": [
+      "natural",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "discolored",
+      "dirty",
+      "stone",
+      "rock",
+      "boulder",
+      "coarse"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1683158400,
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "9f4c23781f3ed9332a44234aa03873c57f0c9f95",
+    "description": "Free 16K texture of a coarse, weathered brown rock - rough, discolored and dirty stone surface with granular, eroded detail.",
+    "category_id": "78e4c120-24c3-5f41-b48a-01617c52bc26",
+    "category": "Stone/Rock & Cliffs/Boulder Surfaces",
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "036b63bd",
+    "download_count": 43721,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_surface.png?width=256&height=256&format=webp&v=036b63bd"
+  },
+  "rock_tile_floor": {
+    "name": "Rock Tile Floor",
+    "categories": [
+      "outdoor",
+      "floor",
+      "rock",
+      "man made"
+    ],
+    "type": 1,
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1960.0000381469727,
+      1960.0000381469727
+    ],
+    "date_published": 1684368000,
+    "tags": [
+      "stone",
+      "rough",
+      "rock",
+      "rocks",
+      "gray",
+      "rugged",
+      "floor",
+      "stonework",
+      "stone tile",
+      "paving",
+      "outdoors",
+      "coarse"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "f3f2c7ce51585ac5221e96b9c6bf0cda2e7b57e6",
+    "description": "Free 8K texture of weathered gray stone tiles - coarse, rough faces with chipped edges, visible grout and moss-filled joints, rugged outdoor paving material.",
+    "category_id": "ed387a11-4ceb-5ff1-ab45-46a821ddbd0e",
+    "category": "Stone/Slabs & Tiles/Flagstones",
+    "attributes": {
+      "surface_use": "paving",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "81ea8d05",
+    "download_count": 85430,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_tile_floor.png?width=256&height=256&format=webp&v=81ea8d05"
+  },
+  "rock_tile_floor_02": {
+    "name": "Rock Tile Floor 02",
+    "categories": [
+      "floor",
+      "man made",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "worn",
+      "walkway",
+      "rocks",
+      "rock",
+      "grass",
+      "dead grass",
+      "outdoor",
+      "outdoor walkway",
+      "pathway",
+      "stone pathway"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2400.0000953674316,
+      2400.0000953674316
+    ],
+    "date_published": 1715817600,
+    "files_hash": "278975155a6bb9fd238f797f472981dd2cbad242",
+    "description": "Free 8K material: weathered rock tile floor with rough, pebbled stone blocks, worn edges, dark surfaces and sandy, dead-grass filled mortar lines.",
+    "category_id": "ed387a11-4ceb-5ff1-ab45-46a821ddbd0e",
+    "category": "Stone/Slabs & Tiles/Flagstones",
+    "attributes": {
+      "surface_use": "paving",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "b2fd4d7f",
+    "download_count": 4474,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_tile_floor_02.png?width=256&height=256&format=webp&v=b2fd4d7f"
+  },
+  "rock_wall": {
+    "name": "Rock Wall",
+    "categories": [
+      "wall",
+      "rock",
+      "outdoor"
+    ],
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Charlotte Baglioni": "Photography"
+    },
+    "tags": [
+      "rough",
+      "uneven",
+      "wall",
+      "chipped",
+      "rocks",
+      "rock",
+      "discolored",
+      "weathered"
+    ],
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1663200000,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "14d7ead0e1adb53c50a51233fe41e0300004e934",
+    "description": "Free 8K texture of a weathered, discolored rock wall with rough, uneven, chipped rock surfaces and deep mortar crevices.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "3837dfb6",
+    "download_count": 10582,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall.png?width=256&height=256&format=webp&v=3837dfb6"
+  },
+  "rock_wall_02": {
+    "type": 1,
+    "date_published": 1601299398,
+    "name": "Rock Wall 02",
+    "categories": [
+      "rock",
+      "natural",
+      "terrain",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "9e5c525cc4a533978c98b83502bc961764738679",
+    "tags": [
+      "rough",
+      "rock face",
+      "bare",
+      "rock",
+      "uneven",
+      "rough  ",
+      "discolored",
+      "coastal landscape",
+      "weathered",
+      "eroded",
+      "weather-beaten",
+      "mossy patches"
+    ],
+    "description": "Free 8K texture of a rough, weathered rock wall - uneven, eroded stone with coastal discoloration and mossy patches, gritty, low-sheen surface.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "a56e87a9",
+    "download_count": 59045,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_02.png?width=256&height=256&format=webp&v=a56e87a9"
+  },
+  "rock_wall_03": {
+    "name": "Rock Wall 03",
+    "categories": [
+      "outdoor",
+      "wall",
+      "rock",
+      "man made"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "old",
+      "weathered",
+      "cracked",
+      "wall",
+      "discolored",
+      "stones",
+      "brown",
+      "rock",
+      "stained",
+      "chipped",
+      "worn"
+    ],
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Charlotte Baglioni": "Photography"
+    },
+    "info": null,
+    "dimensions": [
+      2569.9996948242188,
+      2570.000171661377
+    ],
+    "date_published": 1665446400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "ce89534162e1b8692c388cb342b645a39d4254fa",
+    "description": "Free 8K texture of a rough, uneven brown rock wall with weathered cracked stones, discoloration, stains and chipped, worn surface detail.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn",
+        "damaged"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "5e7eeac8",
+    "download_count": 23800,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_03.png?width=256&height=256&format=webp&v=5e7eeac8"
+  },
+  "rock_wall_04": {
+    "name": "Rock Wall 04",
+    "categories": [
+      "outdoor",
+      "wall",
+      "rock",
+      "man made"
+    ],
+    "type": 1,
+    "tags": [
+      "old",
+      "rough",
+      "wall",
+      "stones",
+      "worn",
+      "rocks",
+      "dirty",
+      "weathered",
+      "stone",
+      "brown",
+      "rock"
+    ],
+    "info": null,
+    "authors": {
+      "Dario Barresi": "Processing ",
+      "Charlotte Baglioni": "Photography"
+    },
+    "dimensions": [
+      2269.9999809265137,
+      2269.9999809265137
+    ],
+    "date_published": 1667865600,
+    "sponsors": [
+      "26820710"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "7e171d8cd57b28a670a9670cafcab133cf6e129f",
+    "description": "Free 8K texture of an old, weathered brown stone wall with rough, worn rocks and gritty mortar, showing dirt, chipped edges, and varied stone tones.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "418066f1",
+    "download_count": 44200,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_04.png?width=256&height=256&format=webp&v=418066f1"
+  },
+  "rock_wall_05": {
+    "name": "Rock Wall 05",
+    "categories": [
+      "wall",
+      "rock",
+      "outdoor"
+    ],
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing ",
+      "Charlotte Baglioni": "Photography"
+    },
+    "info": null,
+    "tags": [
+      "uneven",
+      "rough",
+      "weathered",
+      "stones",
+      "worn",
+      "discolored",
+      "rocks",
+      "wall",
+      "moss"
+    ],
+    "dimensions": [
+      2259.9997520446777,
+      2259.9997520446777
+    ],
+    "date_published": 1670457600,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "sponsors": [
+      "11167855",
+      "7934315"
+    ],
+    "files_hash": "c0dd5c42ed687e77b72dbbfe735051e4404ddedf",
+    "description": "Free 8K texture of a rough, uneven, weathered stone wall with worn, discolored rocks and subtle moss in the crevices.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn",
+        "mossy"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "ce2c84b3",
+    "download_count": 14469,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_05.png?width=256&height=256&format=webp&v=ce2c84b3"
+  },
+  "rock_wall_06": {
+    "name": "Rock Wall 06",
+    "categories": [
+      "wall",
+      "dirty",
+      "rock",
+      "outdoor"
+    ],
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "info": null,
+    "tags": [
+      "rough",
+      "uneven",
+      "stones",
+      "wall",
+      "rock",
+      "chipped",
+      "rocks",
+      "dry"
+    ],
+    "dimensions": [
+      1309.999942779541,
+      1309.999942779541
+    ],
+    "date_published": 1673481600,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "e7530d4aa3803429943bb193c03f1e628161612b",
+    "description": "Free 8K texture of a dry, rough stone wall with uneven, chipped rocks, warm beige-brown tones and a gritty, high-detail surface.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "9270d992",
+    "download_count": 23410,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_06.png?width=256&height=256&format=webp&v=9270d992"
+  },
+  "rock_wall_07": {
+    "name": "Rock Wall 07",
+    "categories": [
+      "outdoor",
+      "man made",
+      "wall",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "weathered",
+      "wall",
+      "worn",
+      "rock",
+      "concrete",
+      "exterior",
+      "stone",
+      "rocks",
+      "dungeon",
+      "castle",
+      "fortress walls"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1799.9999523162842,
+      1799.9999523162842
+    ],
+    "date_published": 1685404800,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "74a59e262cb28acca647005a87442efcf7e84cef",
+    "description": "Free 8K texture of rough, weathered stone blocks with dark mortar, worn surfaces, gritty rock detail with a unique red and grey color pattern.",
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "2b883f74",
+    "download_count": 8143,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_07.png?width=256&height=256&format=webp&v=2b883f74"
+  },
+  "rock_wall_08": {
+    "name": "Rock Wall 08",
+    "categories": [
+      "outdoor",
+      "man made",
+      "wall",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "uneven",
+      "rock",
+      "rocks",
+      "wall",
+      "weathered",
+      "stone",
+      "timeworn",
+      "worn",
+      "stonework",
+      "gray",
+      "grey"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1799.9999523162842,
+      1799.9999523162842
+    ],
+    "date_published": 1686355200,
+    "sponsors": [
+      "92963232"
+    ],
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "4896fd050be3cb15beb283cf9d7bce33732e56e4",
+    "description": "Free 16K texture of a weathered grey stone wall: uneven, timeworn blocks with rough, chiseled faces, deep joints and subtle dirt and moss.",
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn",
+        "mossy"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "c2a63431",
+    "download_count": 45315,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_08.png?width=256&height=256&format=webp&v=c2a63431"
+  },
+  "rock_wall_09": {
+    "type": 1,
+    "tags": [
+      "rough",
+      "uneven",
+      "wall",
+      "rock",
+      "rocks",
+      "fort",
+      "dry",
+      "weathered",
+      "fortress walls"
+    ],
+    "date_published": 1690243200,
+    "name": "Rock Wall 09",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1220.0000286102295,
+      1220.0000286102295
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "1442f637aa5a70911414224dfe2498bd556f16cf",
+    "description": "Free 8K texture of weathered fortress rock wall: rough, uneven stones with mortar, dry, dark brown-gray surfaces, heavy weathering and mineral detail.",
+    "categories": [
+      "wall",
+      "rock",
+      "man made",
+      "dirty"
+    ],
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "7aae2c64",
+    "download_count": 21278,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_09.png?width=256&height=256&format=webp&v=7aae2c64"
+  },
+  "rock_wall_10": {
+    "name": "Rock Wall 10",
+    "categories": [
+      "outdoor",
+      "wall",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "uneven",
+      "rock",
+      "rocks",
+      "wall",
+      "rocky",
+      "cracks",
+      "dirt",
+      "exterior",
+      "stone",
+      "hard",
+      "earthy",
+      "stone wall"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1799.9995946884155,
+      1799.9995946884155
+    ],
+    "date_published": 1695254400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "e1bc5f88e522d2cc93e3bdf5b6a9130d74614f29",
+    "description": "Free 8K texture of an uneven earthy stone wall, rough rock faces with deep cracks, weathered edges and dirt-filled crevices.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "47ed7a00",
+    "download_count": 51582,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_10.png?width=256&height=256&format=webp&v=47ed7a00"
+  },
+  "rock_wall_11": {
+    "name": "Rock Wall 11",
+    "categories": [
+      "man made",
+      "wall",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "weathered",
+      "wall",
+      "discolored",
+      "worn",
+      "stonework",
+      "fortress walls",
+      "rocks",
+      "rock",
+      "outdoor",
+      "exterior",
+      "weatherbeaten"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1909.9996089935303,
+      1909.9996089935303
+    ],
+    "date_published": 1695686400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "74f00fb2cf1c61a34858ef28ea087bd912992295",
+    "description": "Free 8K texture of weathered stone wall: rough, chiseled blocks with sand-yellow discoloration, deep mortar joints and worn, weatherbeaten surface detail.",
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "a0dbf05f",
+    "download_count": 46449,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_11.png?width=256&height=256&format=webp&v=a0dbf05f"
+  },
+  "rock_wall_12": {
+    "type": 1,
+    "name": "Rock Wall 12",
+    "categories": [
+      "floor",
+      "man made",
+      "rock"
+    ],
+    "tags": [
+      "rock",
+      "wall",
+      "fortress walls",
+      "exterior",
+      "weatherbeaten",
+      "dungeon",
+      "stonework",
+      "concrete",
+      "stone wall",
+      "scratched",
+      "mortar"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      1599.9999046325684,
+      1599.9999046325684
+    ],
+    "date_published": 1739404800,
+    "files_hash": "9b05f44c0466e3929c376288c20a0277b4c0297e",
+    "sponsors": [
+      "118714804",
+      "84390067"
+    ],
+    "description": "Free 16K texture: weathered stone wall with irregular polygonal joints, rough scratched faces, recessed mortar joints and subtle surface grime.",
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "man_made"
+    },
+    "img_version": "8cc1e82f",
+    "download_count": 10401,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_12.png?width=256&height=256&format=webp&v=8cc1e82f"
+  },
+  "rock_wall_13": {
+    "type": 1,
+    "name": "Rock Wall 13",
+    "categories": [
+      "wall",
+      "man made",
+      "rock"
+    ],
+    "tags": [
+      "outdoor",
+      "weathered",
+      "weatherbeaten",
+      "concrete",
+      "rocks",
+      "rock",
+      "stone",
+      "rugged",
+      "ancient walls",
+      "fortress walls",
+      "exterior",
+      "timeworn",
+      "masonry"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1739836800,
+    "sponsors": [
+      "118714804"
+    ],
+    "files_hash": "d69865ea258ba19b96a57fc365daefcd7eb52b21",
+    "description": "Free 16K texture: weathered stone wall with rugged, timeworn rocks, recessed mortar, chipped edges and subtle worn highlights and grime in crevices.",
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "b7a28f9f",
+    "download_count": 52440,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_13.png?width=256&height=256&format=webp&v=b7a28f9f"
+  },
+  "rock_wall_14": {
+    "type": 1,
+    "name": "Rock Wall 14",
+    "categories": [
+      "wall",
+      "rock",
+      "man made"
+    ],
+    "tags": [
+      "rough",
+      "rocks",
+      "rock",
+      "concrete",
+      "wall",
+      "embedded rock",
+      "stonework",
+      "coarse"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "date_published": 1749081600,
+    "files_hash": "8f8482b0fa45e863352a55a73db3c034af24b6dd",
+    "description": "Free 8K texture of coarse stonework: irregular dark gray rocks embedded in warm tan mortar with rough, uneven surfaces, visible seams and color variation.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "man_made",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "320515d3",
+    "download_count": 4496,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_14.png?width=256&height=256&format=webp&v=320515d3"
+  },
+  "rock_wall_15": {
+    "type": 1,
+    "name": "Rock Wall 15",
+    "categories": [
+      "wall",
+      "rock",
+      "man made"
+    ],
+    "tags": [
+      "rough",
+      "rocks",
+      "rock",
+      "concrete",
+      "wall",
+      "embedded rock",
+      "stonework",
+      "coarse"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1850.000023841858,
+      1850.000023841858
+    ],
+    "files_hash": "19d4eb0b3d7e8cbd5f67f20044f5ffa473c3a1da",
+    "date_published": 1759190400,
+    "description": "Free 8K texture: coarse, rough stone wall with embedded rocks and concrete mortar; rugged, high-detail surface for rustic walls and man-made stonework.",
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "man_made",
+      "condition": [
+        "weathered"
+      ]
+    },
+    "img_version": "6e6c37bb",
+    "download_count": 17384,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_15.png?width=256&height=256&format=webp&v=6e6c37bb"
+  },
+  "rock_wall_16": {
+    "type": 1,
+    "name": "Rock Wall 16",
+    "categories": [
+      "wall",
+      "outdoor",
+      "rock"
+    ],
+    "tags": [
+      "rough",
+      "weathered",
+      "uneven",
+      "wall",
+      "rock wall",
+      "stone blocks",
+      "stonework",
+      "rock",
+      "timeworn",
+      "fortress walls",
+      "stone wall"
+    ],
+    "description": "Free 8k texture of dark, weathered stone blocks with rough, chiseled faces, recessed mortar joints and subtle wet sheen for an aged outdoor rock wall.",
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "files_hash": "f69b77be4cc4653ea4380bda721e830b15719651",
+    "date_published": 1767830400,
+    "category_id": "7b0fe897-0a1b-5b8b-9d28-7c5928b4b614",
+    "category": "Stone/Walls & Rubble/Fortress & Castle Walls",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn"
+      ],
+      "origin": "man_made",
+      "setting": "outdoor"
+    },
+    "img_version": "a85a477e",
+    "download_count": 20991,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_16.png?width=256&height=256&format=webp&v=a85a477e"
+  },
+  "rock_wall_17": {
+    "type": 1,
+    "name": "Rock Wall 17",
+    "categories": [
+      "wall",
+      "rock",
+      "plaster-concrete"
+    ],
+    "category": "Stone/Walls & Rubble/Rubble & Random Stone",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "man_made",
+      "setting": "either",
+      "condition": [
+        "weathered"
+      ]
+    },
+    "tags": [
+      "rough",
+      "uneven",
+      "rock",
+      "rocks",
+      "embedded rocks",
+      "coarse",
+      "stonework",
+      "fortress walls",
+      "dungeon",
+      "embedded rock"
+    ],
+    "description": "Free 8K rock wall texture featuring rounded cobbles in sandy mortar, dark brown to reddish tones, slightly wet sheen, strong relief and rough variation.",
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "category_id": "6b87bb89-210e-5f4c-a78b-3a4bdfac7fe0",
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "files_hash": "cff0acad91bd0d3c110cbfe1185198dc32b7cb58",
+    "date_published": 1787702400,
+    "img_version": "a471ba82",
+    "download_count": 5832,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rock_wall_17.png?width=256&height=256&format=webp&v=a471ba82"
+  },
+  "rocks_ground_01": {
+    "type": 1,
+    "tags": [
+      "rough",
+      "rock",
+      "cracked",
+      "stones"
+    ],
+    "date_published": 1596793720,
+    "name": "Rocks Ground 01",
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor",
+      "rock",
+      "collection: verdant_trail"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "8be4379ed1475d130e231b9284d46e5a75d70d9e",
+    "description": "Free 8K texture of rough, cracked rocky ground with dense angular stones and gravel. Neutral gray-brown tones, deep cavities and gritty soil between rocks.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "collections": [
+      "verdant_trail"
+    ],
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "fbcc7e13",
+    "download_count": 75170,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_01.png?width=256&height=256&format=webp&v=fbcc7e13"
+  },
+  "rocks_ground_02": {
+    "type": 1,
+    "date_published": 1613471775,
+    "name": "Rocks Ground 02",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor",
+      "rock"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "sponsors": [
+      "9295917"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "46c727637c50e9fb161f39ecab7a36e35a106131",
+    "tags": [
+      "rough",
+      "mud",
+      "rock",
+      "stones",
+      "uneven",
+      "rocks",
+      "scattered rocks",
+      "gravel",
+      "dirt",
+      "exposed rock",
+      "earthy",
+      "soil"
+    ],
+    "description": "Free 8K texture of rocky ground: earthy packed soil with exposed rock, scattered stones, gravel and mud, featuring uneven, highly detailed rough surface.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "weathered"
+      ]
+    },
+    "img_version": "d51fafd1",
+    "download_count": 150337,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_02.png?width=256&height=256&format=webp&v=d51fafd1"
+  },
+  "rocks_ground_03": {
+    "type": 1,
+    "date_published": 1600108504,
+    "name": "Rocks Ground 03",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor",
+      "rock"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "4dc835c1d33fe74cbceb1e934db8beacbe9ecb67",
+    "tags": [
+      "rocks",
+      "rough",
+      "stones",
+      "uneven",
+      "pebbles",
+      "pebbly",
+      "scattered pebbles",
+      "scattered rocks",
+      "gravel",
+      "gravelly",
+      "plant debris"
+    ],
+    "description": "Free 8K texture of rough, gravelly ground with scattered pebbles, stones, soil and plant debris; uneven, coarse surface with varied tones.",
+    "category_id": "79110887-aea0-548a-8676-712d176b8050",
+    "category": "Ground & Terrain/Gravel & Pebbles",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "a013f65f",
+    "download_count": 44982,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_03.png?width=256&height=256&format=webp&v=a013f65f"
+  },
+  "rocks_ground_04": {
+    "type": 1,
+    "date_published": 1597317632,
+    "name": "Rocks Ground 04",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "rock",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "fa4d1b02c71c96cbdcb04abdfd10844d41f76207",
+    "tags": [
+      "rocks",
+      "rough",
+      "smooth",
+      "stones",
+      "gravel",
+      "gravelly",
+      "rock",
+      "rocky",
+      "dirt",
+      "cracks",
+      "crevice"
+    ],
+    "description": "Free 8K texture. Weathered rocky ground with smooth stone faces, rough gravelly patches, dirt-filled crevices and subtle surface cracks.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "cracked"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "488b0f23",
+    "download_count": 60349,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_04.png?width=256&height=256&format=webp&v=488b0f23"
+  },
+  "rocks_ground_05": {
+    "type": 1,
+    "date_published": 1598012992,
+    "name": "Rocks Ground 05",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "rock",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "621c0286196bb195534d809d7dbdae0ddcfcb069",
+    "tags": [
+      "rough",
+      "rock",
+      "gravel",
+      "dirt",
+      "rocky",
+      "soil",
+      "uneven",
+      "stony",
+      "dry",
+      "pebbles",
+      "stones"
+    ],
+    "description": "Free 8K rocky ground texture with dry, uneven soil, coarse gravel and scattered pebbles atop exposed stony surfaces.",
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "weathered"
+      ]
+    },
+    "img_version": "b591d4a2",
+    "download_count": 71309,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_05.png?width=256&height=256&format=webp&v=b591d4a2"
+  },
+  "rocks_ground_06": {
+    "type": 1,
+    "date_published": 1601461624,
+    "name": "Rocks Ground 06",
+    "categories": [
+      "terrain",
+      "outdoor",
+      "rock",
+      "natural"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "785f48b4c1c6275867bd078675a7708fc34c828c",
+    "tags": [
+      "rocks",
+      "rough",
+      "broken",
+      "rock",
+      "uneven",
+      "gravel",
+      "scattered pebbles",
+      "scattered rocks",
+      "coastal",
+      "layered rock"
+    ],
+    "description": "Free 8K texture of rough, layered coastal rock and broken slabs with scattered pebbles, gravel and sandy, weathered surfaces, uneven, coarse, earthy tones.",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "category_id": "9c496835-a9db-515f-bb54-0382019905d7",
+    "category": "Ground & Terrain/Rocky Ground",
+    "img_version": "e5068954",
+    "download_count": 67512,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_06.png?width=256&height=256&format=webp&v=e5068954"
+  },
+  "rocks_ground_08": {
+    "type": 1,
+    "date_published": 1605532411,
+    "name": "Rocks Ground 08",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "sponsors": [
+      "44302755"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "91b9ecf1a1092bf4588d5220e74ab9f1d1003d80",
+    "tags": [
+      "mud",
+      "rough",
+      "dry",
+      "damp",
+      "dirt",
+      "rocks",
+      "scattered rocks",
+      "muddy surface",
+      "footprints",
+      "gritty",
+      "organic",
+      "outdoor",
+      "terrain",
+      "uneven",
+      "gravel"
+    ],
+    "description": "Free 8K texture of rough, muddy ground with scattered rocks, gritty dirt, damp patches and subtle footprints, an uneven, organic gravel terrain surface.",
+    "category_id": "c650da98-1200-549c-ade9-c3756c2f327c",
+    "category": "Ground & Terrain/Rocky Ground/Stony Dirt",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "damaged"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "f01c219d",
+    "download_count": 31800,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_08.png?width=256&height=256&format=webp&v=f01c219d"
+  },
+  "rocks_ground_09": {
+    "type": 1,
+    "date_published": 1603733161,
+    "name": "Rocks Ground 09",
+    "categories": [
+      "terrain",
+      "natural",
+      "outdoor"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      3000,
+      3000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "a4575b4036bf069e83641bcc283a048ffbaa1460",
+    "tags": [
+      "rough",
+      "rock",
+      "stones",
+      "broken",
+      "gravel",
+      "gravelly",
+      "scattered pebbles",
+      "scattered rocks",
+      "stony",
+      "gravelly ground",
+      "rocks",
+      "rock fragments",
+      "loose debris",
+      "pebbled"
+    ],
+    "description": "Free 8K texture of rough, gravelly ground with scattered pebbles and rock fragments, dusty brown soil, loose debris and high-detail stony surface.",
+    "category_id": "ff767449-ea44-5527-96f0-d74aa52df2d0",
+    "category": "Ground & Terrain/Gravel & Pebbles/Crushed Aggregate",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "56dfd3de",
+    "download_count": 20708,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocks_ground_09.png?width=256&height=256&format=webp&v=56dfd3de"
+  },
+  "rocky_gravel": {
+    "name": "Rocky Gravel",
+    "categories": [
+      "outdoor",
+      "floor",
+      "gravel",
+      "dirty"
+    ],
+    "type": 1,
+    "authors": {
+      "Dario Barresi": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "info": null,
+    "tags": [
+      "rough",
+      "stones",
+      "rocks",
+      "gravel",
+      "dirt",
+      "path",
+      "nature",
+      "leaves",
+      "ground",
+      "uneven"
+    ],
+    "dimensions": [
+      1809.999942779541,
+      1809.999942779541
+    ],
+    "date_published": 1677110400,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "6de5125467421ae9f6dfee884c11f83e7cbdc9fb",
+    "description": "Free 8K texture of rough reddish-brown rocky gravel - dense small stones, dirt and leaf fragments creating a gritty, uneven ground surface.",
+    "category_id": "a97bb631-d60c-54fb-ba1b-2121cbed91c6",
+    "category": "Ground & Terrain/Gravel & Pebbles/Driveway Gravel",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "3a617d9f",
+    "download_count": 8324,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_gravel.png?width=256&height=256&format=webp&v=3a617d9f"
+  },
+  "rocky_terrain": {
+    "name": "Rocky Terrain",
+    "type": 1,
+    "tags": [
+      "rock face",
+      "rocky",
+      "solid rock",
+      "nature",
+      "grass",
+      "terrain",
+      "wilderness",
+      "uneven terrain",
+      "mountain",
+      "rugged",
+      "landscape"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      90000,
+      90000
+    ],
+    "date_published": 1723507200,
+    "categories": [
+      "outdoor",
+      "terrain",
+      "natural",
+      "rock",
+      "aerial"
+    ],
+    "files_hash": "ed4f64ced98e133be04387b75d6e827a375e9b04",
+    "description": "Free 8K texture of rugged rocky terrain with layered stone slabs, compacted soil and grass patches; detailed uneven terrain",
+    "category_id": "ad8bbc58-82b8-5734-a99b-3fbdb7f0163c",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Landscape",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "ee1e6791",
+    "download_count": 84529,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_terrain.png?width=256&height=256&format=webp&v=ee1e6791"
+  },
+  "rocky_terrain_02": {
+    "name": "Rocky Terrain 02",
+    "type": 1,
+    "tags": [
+      "rocky",
+      "terrain",
+      "uneven terrain",
+      "grass",
+      "drone",
+      "landscape",
+      "nature",
+      "nature",
+      "boulders",
+      "wilderness",
+      "scenic",
+      "mountain",
+      "landform",
+      "natural landscape"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      90000,
+      90000
+    ],
+    "date_published": 1726704000,
+    "categories": [
+      "outdoor",
+      "terrain",
+      "natural",
+      "aerial"
+    ],
+    "files_hash": "a4c0d422c59c4234227eb04c1fa9d28694c60fbe",
+    "description": "Free, 8K terrain texture of uneven grassy ground with scattered rocks and boulder clusters, subtle height variation and soil patches",
+    "category_id": "ad8bbc58-82b8-5734-a99b-3fbdb7f0163c",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Landscape",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true,
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "6c54f222",
+    "download_count": 282021,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_terrain_02.png?width=256&height=256&format=webp&v=6c54f222"
+  },
+  "rocky_terrain_03": {
+    "type": 1,
+    "name": "Rocky Terrain 03",
+    "tags": [
+      "rocks",
+      "aerial",
+      "terrain",
+      "landscape",
+      "natural landscape",
+      "nature",
+      "boulders",
+      "landform",
+      "scenic",
+      "uneven terrain",
+      "wilderness",
+      "mountainside",
+      "greenery",
+      "rocky",
+      "ground",
+      "earth",
+      "nature scene"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      90000,
+      90000
+    ],
+    "date_published": 1743638400,
+    "sponsors": [
+      "118714804"
+    ],
+    "files_hash": "30f72b4deaec747e4460c1ac0319a389a0c8fffa",
+    "description": "Free 8K texture of rocky terrain: weathered brown stones and boulders with mossy green patches, pronounced cracks and rough, uneven ground detail.",
+    "categories": [
+      "outdoor",
+      "natural",
+      "rock",
+      "aerial",
+      "terrain"
+    ],
+    "category_id": "ad8bbc58-82b8-5734-a99b-3fbdb7f0163c",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Landscape",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "mossy"
+      ],
+      "origin": "natural",
+      "setting": "outdoor",
+      "aerial": true
+    },
+    "img_version": "4ecfd1c4",
+    "download_count": 29728,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_terrain_03.png?width=256&height=256&format=webp&v=4ecfd1c4"
+  },
+  "rocky_trail": {
+    "name": "Rocky Trail",
+    "type": 1,
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1667260800,
+    "sponsors": [
+      "20953239",
+      "7934315"
+    ],
+    "prepaid": true,
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "rock",
+      "collection: pine_forest"
+    ],
+    "tags": [
+      "rough",
+      "uneven",
+      "stones",
+      "rock",
+      "gravel",
+      "chipped",
+      "rocks",
+      "nature",
+      "path",
+      "broken",
+      "cliff"
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "28bcb1dab9a77017ed72c89762f695f3184c905b",
+    "description": "Free 8K texture of a rough, uneven rocky trail - compacted earth with mixed gravel, chipped stones and weathered rock in warm brown-gray tones, high detail.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "collections": [
+      "pine_forest"
+    ],
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "ac905326",
+    "download_count": 115507,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_trail.png?width=256&height=256&format=webp&v=ac905326"
+  },
+  "rocky_trail_02": {
+    "date_published": 1683763200,
+    "name": "Rocky Trail 02",
+    "categories": [
+      "outdoor",
+      "natural",
+      "dirty",
+      "sand",
+      "floor"
+    ],
+    "type": 1,
+    "tags": [
+      "stones",
+      "earthy",
+      "rugged",
+      "rough",
+      "terrain",
+      "gravelly",
+      "pathway",
+      "gritty",
+      "dusty",
+      "rocky",
+      "outdoors",
+      "dirt",
+      "rocks",
+      "ground",
+      "sand",
+      "gravel",
+      "footprints",
+      "dusty",
+      "dry",
+      "stony",
+      "rocky"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "files_hash": "7b9394e3bb60d9c0cfed2631b813c3f37678c62a",
+    "description": "Free 16K texture: rugged, dusty rocky trail with mixed gravel and compacted dirt - gritty stones, fine sand and scattered pebbles on a dry, uneven surface.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "b7f4e08b",
+    "download_count": 107927,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rocky_trail_02.png?width=256&height=256&format=webp&v=b7f4e08b"
+  },
+  "seaside_rock": {
+    "name": "Seaside Rock",
+    "categories": [
+      "natural",
+      "rock"
+    ],
+    "type": 1,
+    "tags": [
+      "rough",
+      "weathered",
+      "seaside",
+      "rock face",
+      "rock",
+      "coastal",
+      "cliff",
+      "shore",
+      "solid rock",
+      "coastal landscape"
+    ],
+    "authors": {
+      "Dimitrios Savva": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1714435200,
+    "files_hash": "082462866f0a2ea55ca59eabd69e7e9a6027be3a",
+    "description": "Free 8K texture of weathered seaside rock, rough, solid cliff face in dark gray-brown with pitted, eroded grain and subtle coastal wet sheen.",
+    "category_id": "6f927474-95dd-5ec5-b756-e9299996aeee",
+    "category": "Stone/Rock & Cliffs/Coastal Rock",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "05230b0b",
+    "download_count": 46051,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/seaside_rock.png?width=256&height=256&format=webp&v=05230b0b"
+  },
+  "sparse_grass": {
+    "name": "Sparse Grass",
+    "categories": [
+      "floor",
+      "natural"
+    ],
+    "type": 1,
+    "tags": [
+      "grass",
+      "nature",
+      "sparse",
+      "roots",
+      "root",
+      "vegetation",
+      "greenery",
+      "landscape",
+      "soil",
+      "environment",
+      "dirt",
+      "plants",
+      "ground",
+      "growth",
+      "flora"
+    ],
+    "authors": {
+      "Amal Kumar": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1725926400,
+    "files_hash": "1293431c7316b89282b883ff760be963802f9000",
+    "description": "Free 8K texture of sparse grass: thin green tufts and visible roots over rough, damp soil, with subtle height detail and organic, earthy brown-green tones.",
+    "category_id": "e9516d71-1efd-51d6-b3c4-ce945ee92604",
+    "category": "Ground & Terrain/Grass & Vegetation/Dry & Sparse Grass",
+    "attributes": {
+      "surface_use": "ground",
+      "origin": "natural",
+      "setting": "outdoor",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "96b0ccb9",
+    "download_count": 45280,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/sparse_grass.png?width=256&height=256&format=webp&v=96b0ccb9"
+  },
+  "stony_dirt_path": {
+    "date_published": 1684540800,
+    "name": "Stony Dirt Path",
+    "categories": [
+      "dirty",
+      "floor",
+      "outdoor",
+      "natural"
+    ],
+    "type": 1,
+    "tags": [
+      "brown",
+      "ground",
+      "leaves",
+      "rocks",
+      "stones",
+      "dirt",
+      "pathway",
+      "path",
+      "forest",
+      "nature",
+      "autumn",
+      "twigs",
+      "rock"
+    ],
+    "authors": {
+      "eye-candy.xyz": "All"
+    },
+    "info": null,
+    "dimensions": [
+      2170.0000762939453,
+      2170.0000762939453
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "d5d34dc3d02e4ba2432b4bd300561cc2402e817a",
+    "description": "Free 8K texture of a stony dirt path: compacted brown soil with scattered pebbles, small rocks, autumn leaf litter and twigs, coarse rough surface.",
+    "category_id": "dd06ef8e-5807-534b-b7ac-19fb07264599",
+    "category": "Ground & Terrain/Rocky Ground/Rocky Paths & Trails",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered",
+        "dirty"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "9771acc0",
+    "download_count": 16795,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/stony_dirt_path.png?width=256&height=256&format=webp&v=9771acc0"
+  },
+  "tiger_rock": {
+    "name": "Tiger Rock",
+    "categories": [
+      "collection: namaqualand",
+      "rock",
+      "terrain",
+      "natural",
+      "outdoor"
+    ],
+    "type": 1,
+    "tags": [
+      "cliff",
+      "boulder",
+      "rock face",
+      "cave",
+      "weathered",
+      "landscape",
+      "solid rock",
+      "mountain",
+      "solid",
+      "rugged",
+      "granite"
+    ],
+    "authors": {
+      "Dario Barresi": "All"
+    },
+    "max_resolution": [
+      16384,
+      16384
+    ],
+    "dimensions": [
+      2549.999952316284,
+      2549.999952316284
+    ],
+    "date_published": 1728345600,
+    "files_hash": "45880782e99fb6bd4d74073a32c168146f43b8e8",
+    "description": "Free 16K texture of weathered Rock with a tiger stripe-like pattern  - rugged, coarse rock surface with warm brown\u2011orange hues, dark mottling and rough, eroded detail.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "collections": [
+      "namaqualand"
+    ],
+    "attributes": {
+      "surface_use": "object",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "976a2c3d",
+    "download_count": 13937,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/tiger_rock.png?width=256&height=256&format=webp&v=976a2c3d"
+  },
+  "volcanic_rock_tiles": {
+    "name": "Volcanic Rock Tiles",
+    "categories": [
+      "wall",
+      "man made"
+    ],
+    "type": 1,
+    "tags": [
+      "wall",
+      "rocks",
+      "rock",
+      "mosaic",
+      "rough",
+      "volcanic rock"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "dimensions": [
+      1800.0000715255737,
+      1800.0000715255737
+    ],
+    "date_published": 1726531200,
+    "files_hash": "45487e23ea16d1ff34ca3727fbba850dad04fab4",
+    "description": "Free 8K texture of rough volcanic rock tiles: dark, irregular mosaic stones with pitted basalt surfaces, deep grout lines and subtle low-sheen highlights.",
+    "category_id": "4ef5ff3b-29d1-556c-9c39-f384e0652af1",
+    "category": "Stone/Walls & Rubble/Decorative Stonework",
+    "attributes": {
+      "surface_use": "wall",
+      "origin": "man_made",
+      "condition": [
+        "clean"
+      ]
+    },
+    "img_version": "ceda7d6c",
+    "download_count": 2857,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/volcanic_rock_tiles.png?width=256&height=256&format=webp&v=ceda7d6c"
+  },
+  "withered_grass": {
+    "name": "Withered Grass",
+    "categories": [
+      "natural",
+      "outdoor",
+      "floor"
+    ],
+    "type": 1,
+    "tags": [
+      "old",
+      "weathered",
+      "grass",
+      "dead grass",
+      "discolored",
+      "driedup",
+      "dry"
+    ],
+    "authors": {
+      "Charlotte Baglioni": "All"
+    },
+    "info": null,
+    "dimensions": [
+      1999.9996423721313,
+      1999.9996423721313
+    ],
+    "date_published": 1694044800,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "eb88811d5af353e86750f73f412bf5aea3f7c8ab",
+    "description": "Free 8K texture of withered grass: brittle, fibrous, sun-bleached blades in muted brown and tan with scattered debris and compacted earth tones.",
+    "attributes": {
+      "surface_use": "ground",
+      "condition": [
+        "weathered"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "category_id": "e9516d71-1efd-51d6-b3c4-ce945ee92604",
+    "category": "Ground & Terrain/Grass & Vegetation/Dry & Sparse Grass",
+    "img_version": "9de71eae",
+    "download_count": 8500,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/withered_grass.png?width=256&height=256&format=webp&v=9de71eae"
+  },
+  "wood_planks_dirt": {
+    "type": 1,
+    "tags": [
+      "planks",
+      "even",
+      "weathered"
+    ],
+    "date_published": 1604563404,
+    "name": "Wood Planks Dirt",
+    "categories": [
+      "wood",
+      "wall",
+      "man made",
+      "outdoor",
+      "indoor",
+      "clean"
+    ],
+    "authors": {
+      "Rob Tuytel": "All"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "03a469e1a3fff8cf86d19a9da4550f4bce6f13e5",
+    "description": "Free 8K wood planks texture: even, weathered boards with worn paint patches, dirt streaks, visible grain and subtle surface roughness.",
+    "category_id": "30ac2613-5076-5364-b4da-130117ad592d",
+    "category": "Wood/Boards & Planks/Weathered Planks",
+    "attributes": {
+      "surface_use": "wall",
+      "condition": [
+        "weathered",
+        "worn",
+        "painted"
+      ],
+      "origin": "man_made",
+      "setting": "either"
+    },
+    "img_version": "b2a89165",
+    "download_count": 151467,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/wood_planks_dirt.png?width=256&height=256&format=webp&v=b2a89165"
+  },
+  "worn_rock_natural_01": {
+    "name": "Worn Rock Natural 01",
+    "categories": [
+      "outdoor",
+      "natural",
+      "terrain",
+      "rock",
+      "sandstone"
+    ],
+    "type": 1,
+    "tags": [
+      "weathered",
+      "yellow",
+      "rock face",
+      "rock",
+      "flat",
+      "brown",
+      "boulder",
+      "cliff",
+      "chipped",
+      "nature",
+      "costal"
+    ],
+    "info": null,
+    "authors": {
+      "Rob Tuytel": "Processing",
+      "Dimitrios Savva": "Photography"
+    },
+    "dimensions": [
+      2000,
+      2000
+    ],
+    "date_published": 1661385600,
+    "prepaid": true,
+    "max_resolution": [
+      8192,
+      8192
+    ],
+    "files_hash": "a5e10beb7649207d76c559cc7f3792e334a1c6d2",
+    "description": "Free 8K texture of weathered yellow-brown sandstone: coarse, chipped and pitted rock face with matte, grainy surface and subtle yellow lichen speckles.",
+    "category_id": "bf84369c-cc7c-5347-ad17-173353e859b8",
+    "category": "Stone/Rock & Cliffs/Rough Rock Faces",
+    "attributes": {
+      "condition": [
+        "weathered",
+        "damaged"
+      ],
+      "origin": "natural",
+      "setting": "outdoor"
+    },
+    "img_version": "f5356574",
+    "download_count": 54349,
+    "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/worn_rock_natural_01.png?width=256&height=256&format=webp&v=f5356574"
+  }
+}

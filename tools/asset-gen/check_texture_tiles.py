@@ -224,15 +224,17 @@ def inspect_tile(spec, root, palette, rows):
                 not np.isfinite(v) or v <= 0 for v in physical_size)):
         raise ValueError('physical_size_m must contain two finite positive metre dimensions')
     declared_density = spec.get('density_px_m')
+    if type(declared_density) not in (int, float) or declared_density not in (32, 64):
+        raise ValueError('density_px_m must explicitly be 32 (world) or 64 (approved high density)')
     pixel_density = [image.width/physical_size[0], image.height/physical_size[1]]
-    quad = inspect_quad(model_path, image, physical_size)
+    quad = inspect_quad(model_path, image, physical_size, target=declared_density)
     checks = {
         'png_albedo': image_format == 'PNG',
         'texture_power_of_two': all(n > 0 and n & (n-1) == 0 for n in image.size),
         'opaque_pixels': bool(np.all(rgba[:, :, 3] == 255)),
         'albedo_palette_outside_zero': not outside,
-        'physical_density_declaration': declared_density == 64,
-        'pixel_dimensions_match_metric_density': all(57.6-1e-5 <= d <= 70.4+1e-5 for d in pixel_density),
+        'physical_density_declaration': declared_density in (32, 64),
+        'pixel_dimensions_match_metric_density': all(declared_density*.9-1e-5 <= d <= declared_density*1.1+1e-5 for d in pixel_density),
         'approved_source_site': allowed_url(source.get('url')),
         'approved_direct_download_site': allowed_url(source.get('download_url'), download=True),
         'cc0_license': source.get('license') == 'CC0-1.0' and allowed_url(source.get('license_url')),

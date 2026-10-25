@@ -1,0 +1,11 @@
+{
+  "font": "Galmuri11",
+  "source_url": "https://galmuri.quiple.dev/",
+  "license": "SIL-OFL-1.1",
+  "font_path": "art/_review/2026-10-23-course-ui/fonts/Galmuri11.ttf",
+  "license_path": "art/_review/2026-10-23-course-ui/fonts/Galmuri-OFL.txt",
+  "text": "??",
+  "font_size_px": 11,
+  "texel_density_px_m": 32,
+  "method": "Pillow binary text mask over CC0 wood-photo substrate; no drawn pseudo-text"
+}

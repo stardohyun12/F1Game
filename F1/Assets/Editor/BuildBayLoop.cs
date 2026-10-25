@@ -136,8 +136,10 @@ public static partial class BuildBayLoop
         gaps.Clear(); sparseYards.Clear(); frontSlots.Clear(); shopFronts.Clear(); pfH.Clear();
         pavedCells = islandCells = sameSb3 = hPairs = hPairsDiff = yawJit = natGaps = cutGaps = 0;
         var gT = Group("Terrain");
-        TerrainMesh(gT, M("Ground"));
-        FarTerrainMesh(gT, M("Ground"));
+        // 과제 0226: 경사별 지형 질감(풀·흙 / 마른 풀 / 바위). 머티리얼이 없으면 옛 공용 Ground.
+        var groundM = AssetDatabase.LoadAssetAtPath<Material>(ImportBayLoopDelivery.TerrainMat) ?? M("Ground");
+        TerrainMesh(gT, groundM);
+        FarTerrainMesh(gT, groundM);
         var seaGo = GameObject.CreatePrimitive(PrimitiveType.Plane); seaGo.name = "Sea"; seaGo.transform.SetParent(root);
         seaGo.transform.position = new Vector3(0f, F(Get(J, "sea", "level")), 0f); seaGo.transform.localScale = new Vector3(420f, 1f, 420f);
         Object.DestroyImmediate(seaGo.GetComponent<Collider>()); seaGo.GetComponent<Renderer>().sharedMaterial = M("Sea");
@@ -159,6 +161,8 @@ public static partial class BuildBayLoop
         Fields(Group("Fields"));
         log.Add(Stops(Group("Stops")));
         log.Add(LivedIn(Group("LivedIn")));   // v5 D-141 생활 층
+        log.Add(Tutorial(Group("Tutorial"), mainR));   // 과제 2338 D-142 첫 배달 동선 자리(코드 임시 모양 + 아트 슬롯)
+        log.Add(Motion(Group("Motion"), mainR));   // 과제 0131 갭 #1·#2 움직임·소리 최소
         log.Add(BuildWindowGlow.Run());   // D-137 초저녁 창 불(기본 꺼짐, 무드가 켠다)
 
         // ── 차·카메라·주행 ──
@@ -479,7 +483,9 @@ public static partial class BuildBayLoop
                 }
             if (verts.Count == 0) continue;
             string mat = kind == "plaza" ? "Paving" : kind == "quay" ? "Concrete" : kind == "beach" ? "Sand" : kind == "lot" ? "Gravel" : "Meadow";
-            var go = MeshGo(parent, "OG_" + g["id"], verts, uvs, new[] { tris }, new[] { M(mat) }, flat);
+            // 과제 0226: 풀밭 면도 지형과 같은 질감(경사 셰이더) — 단색 연두가 질감 있는 땅 옆에서 다른 게임처럼 보였다
+            var ogM = mat == "Meadow" ? AssetDatabase.LoadAssetAtPath<Material>(ImportBayLoopDelivery.TerrainMat) ?? M(mat) : M(mat);
+            var go = MeshGo(parent, "OG_" + g["id"], verts, uvs, new[] { tris }, new[] { ogM }, flat);
             if (flat)
             {
                 var rs = go.AddComponent<RoadSurface>(); rs.roadId = (string)g["id"]; rs.kind = kind; rs.width = 0f;
@@ -1152,7 +1158,7 @@ public static partial class BuildBayLoop
             n++;
         }
         // fish_market: 항구 직선 바다 쪽 — 필지가 없으니 json landmark '어시장 지붕' 외에 위판장 2동을 MART 동쪽 부두에
-        foreach (var fx in new[] { -6f, 8f })
+        foreach (var fx in new[] { -6f })   // 과제 2338: 동쪽 위판장(+8) 자리는 정비소 PitCrew 가 쓴다 → Tutorial()
         {
             var c = new Vector3(mart.x + fx, 0, mart.y - 12f); c.y = H(c.x, c.z) + 0.02f;
             FishMarket(parent, c, Quaternion.LookRotation(Vector3.forward), 10f, 6f, "BLD_fish_market_" + fx); typeCount["fish_market"] = typeCount.TryGetValue("fish_market", out var fc) ? fc + 1 : 1;
@@ -1302,6 +1308,14 @@ public static partial class BuildBayLoop
         foreach (var (p, half) in carPts) { float dx = p.x - q.x, dz = p.z - q.z, r = half + margin; if (dx * dx + dz * dz < r * r) return true; }
         return false;
     }
+    /// <summary>과제 0226: 물체의 BoxCollider 바닥(4x4 표본)이 차길(반폭+margin) 위면 true — 모델 랜드마크·찻집 방향 고르기.</summary>
+    static bool ColBlocksCar(GameObject m, float margin)
+    {
+        foreach (var bc in m.GetComponentsInChildren<BoxCollider>())
+            for (int i = 0; i < 4; i++) for (int j = 0; j < 4; j++)
+                if (NearCar(bc.transform.TransformPoint(bc.center + Vector3.Scale(bc.size, new Vector3(i / 3f - .5f, 0, j / 3f - .5f))), margin)) return true;
+        return false;
+    }
     /// <summary>필지 바닥(4x4 표본)이 어느 차길 띠(반폭+어깨+0.3m) 안에 들어가면 true.</summary>
     static bool OnCarRoad(Vector3 c, Quaternion rot, float w, float d)
     {
@@ -1392,11 +1406,59 @@ public static partial class BuildBayLoop
                     if (NearCar(pos, 2.5f)) pos = pos == a ? b : a;
                     for (int k = 0; k < 6 && NearCar(pos, 2.5f); k++) pos += (pos - c).normalized * 2f;
                     pos.y = H(pos.x, pos.z);
-                    Landmark(parent, name, pos, rot);
-                    nL++; names.Add(name);
+                    Landmark(parent, name, pos, rot, Quaternion.LookRotation(Flat(c - pos)));   // 과제 0131: 크레인 팔을 바다 쪽으로 돌려 봤으나 32%→43% 로 나빠져 되돌림
+                    // 과제 0131 R4: 카메라 B 로 이 길을 양방향 지나가며(20m 앞부터) 화면 폭 1/10 이상 가리면 바깥으로 1.5m 씩 민다(최대 +19.5m, 바다 앞에서 멈춤).
+                    var lg = parent.GetChild(parent.childCount - 1).gameObject;
+                    var outDir = Flat(pos - c); var basePos = lg.transform.position; float frac = LandmarkScreenFrac(lg, r, s), frac0 = frac, pushed = 0f, placed = 0f;
+                    float seaY = F(Get(J, "sea", "level"));
+                    while (frac > 0.10f && pushed < 19.5f)
+                    {
+                        pushed += 1.5f; var np = basePos + outDir * pushed;
+                        if (H(np.x, np.z) < seaY + 0.4f) break;     // 바다 안으로는 안 민다(크레인·어시장)
+                        if (NearCar(np, 2.5f)) continue;     // 다른 차길 위면 그 자리는 건너뛰고 더 바깥
+                        np.y = H(np.x, np.z); lg.transform.position = np; placed = pushed; frac = LandmarkScreenFrac(lg, r, s);
+                    }
+                    if (lg.GetComponentsInChildren<Transform>().Any(t => t.name.EndsWith("_mesh")) && ColBlocksCar(lg, 1.0f)) FaceClear(lg.transform, Quaternion.LookRotation(Flat(c - lg.transform.position)));   // 과제 0226: 밀린 자리에서 몸통이 다른 길에 걸리면 다시 돌림
+                    nL++; names.Add($"{name}(가장자리 {4.5f + placed:F1}m, 화면폭 {frac0 * 100f:F0}%→{frac * 100f:F0}%)");
                 }
             }
         return $"features: 랜드마크 {nL} · " + string.Join(" / ", names);
+    }
+
+    /// <summary>카메라 B(CameraFeel_B) 자리에서 랜드마크가 차지하는 화면 폭 비율의 최댓값 — 길 r 의 s 앞뒤 90m 를 양방향으로 지나가며.
+    /// 바운드 8꼭짓점 투영(가림·원근 단순화, 보수적). 0.10 = 화면 폭 1/10.</summary>
+    static float LandmarkScreenFrac(GameObject g, Road r, float s)
+    {
+        var pr = AssetDatabase.LoadAssetAtPath<CameraFeelPreset>(CameraFeelSwitcher.B);
+        float h = pr != null ? pr.height : 2.8f, dist = pr != null ? pr.distance : 5.6f, lookH = pr != null ? pr.lookHeight : 1.05f, ahead = pr != null ? pr.lookAhead : 0f, fov = pr != null ? pr.baseFov : 56f;
+        float tanV = Mathf.Tan(fov * .5f * Mathf.Deg2Rad), tanH = tanV * 16f / 9f;
+        var b = Bounds(g); var corners = new Vector3[8];
+        for (int i = 0; i < 8; i++) corners[i] = new Vector3((i & 1) == 0 ? b.min.x : b.max.x, (i & 2) == 0 ? b.min.y : b.max.y, (i & 4) == 0 ? b.min.z : b.max.z);
+        float best = 0f;
+        foreach (var dir in new[] { 1f, -1f })
+            for (float q = -90f; q <= 90f; q += 3f)
+            {
+                float ss = s + q; if (r.closed) ss = Mathf.Repeat(ss, r.len); else if (ss < 0f || ss > r.len) continue;
+                At(r, ss, out var c, out var f, out _);
+                var fw = Flat(f) * dir; if (fw.sqrMagnitude < 1e-4f) continue;
+                var crot = Quaternion.LookRotation(fw);
+                var cp = c + Vector3.up * 0.35f + crot * new Vector3(0, h, -dist);
+                var look = c + Vector3.up * (0.35f + lookH) + fw * ahead;
+                var inv = Quaternion.Inverse(Quaternion.LookRotation(look - cp));
+                // 앞 20m 안은 지나치는 순간 — 길가 집도 그때는 화면을 채운다. R4 는 '앞 시야를 막느냐'라서 20m 앞부터만 잰다.
+                if ((inv * (b.center - cp)).z < 20f) continue;
+                float x0 = 1e9f, x1 = -1e9f, y0 = 1e9f, y1 = -1e9f; bool front = false;
+                foreach (var k in corners)
+                {
+                    var v = inv * (k - cp); if (v.z > 0.3f) front = true;
+                    float z = Mathf.Max(v.z, 0.3f);
+                    float x = v.x / (z * tanH), y = v.y / (z * tanV);
+                    x0 = Mathf.Min(x0, x); x1 = Mathf.Max(x1, x); y0 = Mathf.Min(y0, y); y1 = Mathf.Max(y1, y);
+                }
+                if (!front || y1 < -1f || y0 > 1f || x1 < -1f || x0 > 1f) continue;
+                best = Mathf.Max(best, (Mathf.Min(x1, 1f) - Mathf.Max(x0, -1f)) * .5f);
+            }
+        return best;
     }
 
     static float PlanLen(Road r)
@@ -1423,12 +1485,31 @@ public static partial class BuildBayLoop
         go.AddComponent<RoadSurface>().roadId = r.id + "_jump";
     }
 
-    static void Landmark(Transform parent, string name, Vector3 p, Quaternion rot)
+    // 과제 0226: 납품 모델이 있는 넷(등대·크레인·종탑·어시장)은 프리팹 — 앞(+Z)이 길을 보게(face). 크레인 팔·어시장 지붕·종탑 몸은 모델 -Z 쪽 = 길 반대(바다·필지) 쪽.
+    static readonly (string key, string prefab)[] LandmarkModels = { ("등대", "lighthouse_01"), ("크레인", "harbor_crane_01"), ("종탑", "chapel_bell_01"), ("어시장", "FishMarketRoof") };
+    static void FaceClear(Transform g, Quaternion face)
+    {
+        foreach (var yaw in new[] { 0f, 90f, -90f, 180f }) { g.rotation = face * Quaternion.Euler(0, yaw, 0); if (!ColBlocksCar(g.gameObject, 1.0f)) return; }
+        g.rotation = face;
+    }
+    static void Landmark(Transform parent, string name, Vector3 p, Quaternion rot, Quaternion face)
     {
         var g = new GameObject("LANDMARK_" + name).transform; g.SetParent(parent); g.SetPositionAndRotation(p, rot);
+        foreach (var (key, id) in LandmarkModels)
+        {
+            if (!name.Contains(key)) continue;
+            var pf = AssetDatabase.LoadAssetAtPath<GameObject>(ImportBayLoopDelivery.LandDir + id + ".prefab");
+            if (pf == null) break;
+            g.rotation = face;
+            var m = (GameObject)PrefabUtility.InstantiatePrefab(pf, g); m.transform.localPosition = Vector3.zero; m.transform.localRotation = Quaternion.identity;
+            // 몸통(콜라이더)이 다른 차길에 걸리면 옆·뒤로 돌려 본다(첫 빌드: 종탑이 O_coast 를 막음)
+            FaceClear(g, face);
+            m.isStatic = true; foreach (Transform t in m.GetComponentsInChildren<Transform>()) t.gameObject.isStatic = true;
+            return;
+        }
         void B(Vector3 size, Vector3 local, string mat, bool col = true) => Box(g, "Part", size, p + rot * local, rot, M(mat), col);
         void Cy(Vector3 size, Vector3 local, string mat) => Cyl(g, "Part", size, p + rot * local, M(mat));
-        if (name.Contains("크레인")) { B(new Vector3(1.2f, 18f, 1.2f), new Vector3(0, 9f, 0), "Yellow"); B(new Vector3(1f, 1f, 16f), new Vector3(0, 17.5f, -4f), "Yellow", false); B(new Vector3(0.1f, 8f, 0.1f), new Vector3(0, 13f, -11f), "Dark", false); }
+        if (name.Contains("크레인")) { B(new Vector3(1.2f, 18f, 1.2f), new Vector3(0, 9f, 0), "CraneFaded"); B(new Vector3(1f, 1f, 16f), new Vector3(0, 17.5f, -4f), "CraneFaded", false); B(new Vector3(0.1f, 8f, 0.1f), new Vector3(0, 13f, -11f), "Dark", false); }
         else if (name.Contains("종탑")) { B(new Vector3(3f, 10f, 3f), new Vector3(0, 5f, 0), "Stone"); B(new Vector3(3.6f, 0.6f, 3.6f), new Vector3(0, 10.3f, 0), "Roof", false); Cy(new Vector3(1.2f, 1.2f, 1.2f), new Vector3(0, 11.6f, 0), "Roof"); }
         else if (name.Contains("우체통")) { B(new Vector3(0.6f, 1.3f, 0.5f), new Vector3(0, 0.65f, 0), "Yellow"); }
         else if (name.Contains("물탱크")) { foreach (var sx in new[] { -1f, 1f }) foreach (var sz in new[] { -1f, 1f }) B(new Vector3(0.25f, 6f, 0.25f), new Vector3(sx * 1.4f, 3f, sz * 1.4f), "Dark"); Cy(new Vector3(3.6f, 1.5f, 3.6f), new Vector3(0, 7.5f, 0), "TinRoof"); }
@@ -1514,6 +1595,330 @@ public static partial class BuildBayLoop
         return "배달지 " + string.Join(" ", sb);
     }
 
+    // ------------------------------------------------------------------ 튜토리얼 동선 (과제 20261025-2338, D-142)
+    // 항구 MART·정비소 → ① 상점가 오르막(본선 0→167) → V_kyoto_back 언덕 찻집 → SC_ridge → 본선 355→끝(해안 직선 = 연습 랩) → 항구.
+    // 전부 임시 상자 + 'ArtSlot_*'(빈 SpriteRenderer) — 실제 그림은 나중에 Codex 로 만들어 슬롯에 꽂는다.
+    static string Tutorial(Transform parent, Road main)
+    {
+        var martP = (List<object>)Get(J, "mart", "pos"); var mart = new Vector2(F(martP[0]), F(martP[1]));
+        var log = new List<string>();
+        // 정비소 PitCrew: MART 동쪽 부두, 예전 위판장(+8) 자리. 셔터가 길(+z) 쪽을 본다.
+        // 과제 0032: 속이 빈 창고(벽·지붕·바닥 콜라이더) — 시네마틱 장면 2 에서 차가 안에 서 있고 셔터가 말려 올라간다.
+        {
+            var c = new Vector3(mart.x + 8f, 0, mart.y - 12f); float y = H(c.x, c.z + 3f);
+            var g = new GameObject("TUT_Garage_PitCrew").transform; g.SetParent(parent); g.position = new Vector3(c.x, y, c.z);
+            float fz = c.z + 3.25f;
+            Box(g, "HallFloor", new Vector3(10f, 0.3f, 6.4f), new Vector3(c.x, y - 0.15f, c.z), Quaternion.identity, M("CurbDark"), true);
+            Box(g, "HallBack", new Vector3(10f, 5.2f, 0.3f), new Vector3(c.x, y + 2.6f, c.z - 3.05f), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "HallL", new Vector3(0.3f, 5.2f, 6.4f), new Vector3(c.x - 4.85f, y + 2.6f, c.z), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "HallR", new Vector3(0.3f, 5.2f, 6.4f), new Vector3(c.x + 4.85f, y + 2.6f, c.z), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "HallRoof", new Vector3(10f, 0.3f, 6.4f), new Vector3(c.x, y + 5.05f, c.z), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "FrontL", new Vector3(2.3f, 5.2f, 0.3f), new Vector3(c.x - 3.85f, y + 2.6f, fz - 0.1f), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "FrontR", new Vector3(2.3f, 5.2f, 0.3f), new Vector3(c.x + 3.85f, y + 2.6f, fz - 0.1f), Quaternion.identity, M("TinRoof"), true);
+            Box(g, "Lintel", new Vector3(5.4f, 1.7f, 0.3f), new Vector3(c.x, y + 4.35f, fz - 0.1f), Quaternion.identity, M("TinRoof"), false);
+            Box(g, "RoofCap", new Vector3(10.6f, 0.35f, 7f), new Vector3(c.x, y + 5.3f, c.z), Quaternion.identity, M("Dark"), false);
+            Box(g, "Workbench", new Vector3(2.4f, 0.9f, 0.7f), new Vector3(c.x - 3.3f, y + 0.45f, c.z - 2.4f), Quaternion.identity, M("Wood"), false);
+            Box(g, "TireStack", new Vector3(0.7f, 0.9f, 0.7f), new Vector3(c.x + 3.9f, y + 0.45f, c.z - 2.2f), Quaternion.identity, M("Dark"), false);
+            // 셔터: 위(문틀 꼭대기)에 축을 둔 묶음 — OpeningTutorial 이 localScale.y 를 1→0.04 로 줄여 말아 올린다.
+            var roll = new GameObject("ShutterRoll").transform; roll.SetParent(g); roll.position = new Vector3(c.x, y + 3.5f, fz);
+            Box(roll, "Shutter", new Vector3(5.4f, 3.5f, 0.12f), new Vector3(c.x, y + 1.75f, fz), Quaternion.identity, M("CurbDark"), false);
+            for (int i = 0; i < 7; i++) Box(roll, "ShutterSlat" + i, new Vector3(5.4f, 0.06f, 0.16f), new Vector3(c.x, y + 0.3f + i * 0.5f, fz + 0.02f), Quaternion.identity, M("Stone"), false);
+            ArtSlot(roll, "ArtSlot_GarageShutter", new Vector3(c.x, y + 1.75f, fz + 0.1f), Quaternion.LookRotation(Vector3.back));
+            Box(g, "SignBoard", new Vector3(6.4f, 1.1f, 0.2f), new Vector3(c.x, y + 4.4f, fz + 0.12f), Quaternion.identity, M("Red"), false);
+            Label(g, "PitCrew", new Vector3(c.x, y + 4.4f, fz + 0.25f), Quaternion.LookRotation(Vector3.back), 0.75f, Color.white);
+            ArtSlot(g, "ArtSlot_GarageSign", new Vector3(c.x, y + 4.4f, fz + 0.3f), Quaternion.LookRotation(Vector3.back));
+            Mark(g, "TUT_GarageCarSpot", new Vector3(c.x, y + 0.5f, c.z - 0.2f), Quaternion.identity);
+            // 정비소 사람(셔터 왼쪽) — "또 그걸로 배달 가?"
+            var mech = Person(g, "TUT_Mechanic", new Vector3(c.x - 3.4f, y, fz + 1.2f), Quaternion.LookRotation(new Vector3(0.6f, 0, 1f)), M("Fish"));
+            Audio(mech, "Audio_Tools", new Vector3(c.x - 3.3f, y + 1f, c.z - 2.4f));
+            Mark(g, "Shot_2a", new Vector3(c.x + 4.5f, y + 1.7f, fz + 11f), Quaternion.LookRotation(new Vector3(c.x, y + 1.6f, fz) - new Vector3(c.x + 4.5f, y + 1.7f, fz + 11f)));
+            Mark(g, "Shot_2b", new Vector3(c.x + 1.6f, y + 1.35f, fz + 4.6f), Quaternion.LookRotation(new Vector3(c.x - 0.6f, y + 0.8f, c.z) - new Vector3(c.x + 1.6f, y + 1.35f, fz + 4.6f)));
+            log.Add($"정비소({c.x:F0},{y:F1},{c.z:F0}) 속빈창고·셔터축");
+        }
+        // MART 앞 포장 자리: 차양 아래 탁자 + 상자 + 바닥 흰 틀.
+        {
+            float x = mart.x - 3.5f, z = mart.y + 10f - 3.6f, y = H(x, z);
+            var g = new GameObject("TUT_PackingSpot").transform; g.SetParent(parent); g.position = new Vector3(x, y, z);
+            Box(g, "FloorMark", new Vector3(3.2f, 0.03f, 2.2f), new Vector3(x, y + 0.02f, z), Quaternion.identity, M("PaintWhite"), false);
+            Box(g, "FloorMarkIn", new Vector3(2.9f, 0.035f, 1.9f), new Vector3(x, y + 0.025f, z), Quaternion.identity, M("Paving"), false);
+            Box(g, "Table", new Vector3(1.6f, 0.08f, 0.8f), new Vector3(x, y + 0.9f, z + 0.3f), Quaternion.identity, M("Wood"), false);
+            Box(g, "TableLegs", new Vector3(1.4f, 0.86f, 0.6f), new Vector3(x, y + 0.43f, z + 0.3f), Quaternion.identity, M("Dark"), false);
+            Box(g, "EggCrate", new Vector3(0.5f, 0.18f, 0.35f), new Vector3(x - 0.3f, y + 1.03f, z + 0.3f), Quaternion.identity, M("Sand"), false);
+            ArtSlot(g, "ArtSlot_PackingSpot", new Vector3(x, y + 1.6f, z + 0.3f), Quaternion.LookRotation(Vector3.forward));
+            log.Add($"포장자리({x:F0},{y:F1},{z:F0})");
+            // 과제 0032: MART 주인(탁자 옆, 길 쪽을 봄) + 머리 위 마름모(D-138) + 가게 종 소리 자리
+            var op = new Vector3(x + 1.5f, y, z - 0.5f);
+            var owner = Person(parent, "TUT_MartOwner", op, Quaternion.LookRotation(Vector3.back), M("Red"));
+            Box(owner, "NPC_Marker", new Vector3(0.4f, 0.4f, 0.4f), op + Vector3.up * 2.3f, Quaternion.Euler(45f, 0f, 45f), M("Orange"), false);
+            Audio(owner, "Audio_ShopBell", op + Vector3.up * 2.2f);
+            var s3a = op + new Vector3(-2.2f, 1.7f, -6.5f); Mark(parent, "Shot_3a", s3a, Quaternion.LookRotation(op + Vector3.up * 1.4f - s3a));
+            var s3b = op + new Vector3(-0.9f, 1.5f, -3.2f); Mark(parent, "Shot_3b", s3b, Quaternion.LookRotation(op + Vector3.up * 1.3f - s3b));
+            // 포장 시작 지점: 본선 #0(MART 바로 앞 길). 차가 4.5m 안에 들어오면 포장 화면.
+            Mark(parent, "TUT_PackTrigger", main.pts[0] + Vector3.up * 0.3f, Quaternion.LookRotation(Flat(main.pts[2] - main.pts[0])));
+        }
+        // 언덕 찻집: STOP_1 옆에 받는 사람 자리(몸 + 머리) + 머리 위 표시 + 간판.
+        foreach (Dictionary<string, object> st in (List<object>)J["stops"])
+        {
+            if (System.Convert.ToInt32(st["n"]) != 1) continue;
+            var p = (List<object>)st["pos"]; float x = F(p[0]) - 1.6f, z = F(p[1]); float y = H(x, z);
+            // 과제 0226: 찻집 모델 teahouse_01 + 소품 3 — 문 앞 받는 사람 자리(모델 국소 0.6,0,1.0 = 아트 인계 recipient anchor)가 배달 지점에 오게.
+            var housePf = AssetDatabase.LoadAssetAtPath<GameObject>(BldDir + "/teahouse_01.prefab");
+            if (housePf != null)
+            {
+                var sp = new Vector3(F(p[0]), 0f, z); sp.y = H(sp.x, sp.z);
+                var near = roads.SelectMany(r => r.pts).OrderBy(q => new Vector2(q.x - sp.x, q.z - sp.z).sqrMagnitude).First();
+                var fw = Flat(near - sp).normalized; var hrot = Quaternion.LookRotation(fw);
+                var house = (GameObject)PrefabUtility.InstantiatePrefab(housePf, parent); house.name = "TUT_TeaHouse";
+                // 앞(받는 사람)은 배달 지점에 고정, 몸통이 차길(V_kyoto_back 등)에 안 걸리는 방향을 가까운 길 쪽부터 고른다
+                // 배달 지점이 V_kyoto_back 바로 옆이라 제자리에선 어느 방향도 걸린다 → 길 반대쪽으로 1m 씩 물려 앉힌다(최대 8m). 배달 반경(5m)은 그대로 sp.
+                Vector3 hp = sp; float tried = 0f, back = 0f; bool ok = false;
+                for (back = 0f; back <= 8f && !ok; back += 1f)
+                    foreach (var yaw in new[] { 0f, 20f, -20f, 45f, -45f })
+                    {
+                        hrot = Quaternion.LookRotation(fw) * Quaternion.Euler(0, yaw, 0); hp = sp - fw * back - hrot * new Vector3(0.6f, 0f, 1.0f); hp.y = H(hp.x, hp.z);
+                        house.transform.SetPositionAndRotation(hp, hrot); tried = yaw;
+                        if (!ColBlocksCar(house, 0.3f)) { ok = true; break; }
+                    }
+                fw = hrot * Vector3.forward;
+                var npcSpot = hp + hrot * new Vector3(0.6f, 0f, 1.0f); npcSpot.y = H(npcSpot.x, npcSpot.z);
+                log.Add($"찻집 방향 {tried:F0}° 물림 {back - 1f:F0}m{(ok ? "" : " (모두 걸림)")}");
+                // 같은 자리의 일반 건물·옛 주황 문 상자는 치운다(찻집이 그 자리를 쓴다)
+                var hc = hp - fw * 3.2f; int cleared = 0;
+                var bg = root.Find("Buildings");
+                if (bg != null) foreach (Transform t in bg.Cast<Transform>().ToList())
+                {
+                    // 건물 루트 위치가 원점인 것(FishMarket 등)이 있어 렌더러 경계 가운데로 잰다
+                    var rs = t.GetComponentsInChildren<Renderer>(); if (!t.name.StartsWith("BLD_") || rs.Length == 0) continue;
+                    var bb = rs[0].bounds; foreach (var rr in rs) bb.Encapsulate(rr.bounds);
+                    if (new Vector2(bb.center.x - hc.x, bb.center.z - hc.z).magnitude < 7.5f) { Object.DestroyImmediate(t.gameObject); cleared++; }   // Flat() 은 정규화라 거리로 못 쓴다
+                }
+                var stops = root.Find("Stops"); var door = stops != null ? stops.Cast<Transform>().FirstOrDefault(t => t.name.StartsWith("STOP_1_"))?.Find("Door") : null;
+                if (door != null) Object.DestroyImmediate(door.gameObject);
+                foreach (var (id, lp, yaw) in new[] { ("tea_tray_display_01", new Vector3(1.6f, 0, 0.35f), 0f), ("tea_table_01", new Vector3(-2.0f, 0, 1.2f), 90f), ("tea_owner_bicycle_01", new Vector3(2.9f, 0, 0.35f), 0f) })
+                {
+                    var pf = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/BayLoop/Props/" + id + ".prefab"); if (pf == null) continue;
+                    var pr = (GameObject)PrefabUtility.InstantiatePrefab(pf, house.transform); pr.transform.localPosition = lp; pr.transform.localRotation = Quaternion.Euler(0, yaw, 0);
+                    var wp = pr.transform.position; wp.y = H(wp.x, wp.z); pr.transform.position = wp;
+                }
+                // 받는 사람: 주민 모델. 루트는 회전 0 으로 둔다(OpeningTutorial.AnimateTeaNpc 가 루트 회전을 0 으로 되돌린다) — 길을 보는 방향은 자식에.
+                var npc = Person(parent, "TUT_TeaHouse_NPC", npcSpot, hrot, M("Fish"));
+                var kids = npc.Cast<Transform>().ToList(); foreach (var k in kids) k.SetParent(null, true);
+                npc.rotation = Quaternion.identity; foreach (var k in kids) k.SetParent(npc, true);
+                Box(npc, "NPC_Marker", new Vector3(0.4f, 0.4f, 0.4f), npcSpot + Vector3.up * 2.3f, Quaternion.Euler(45f, 0f, 45f), M("Orange"), false);
+                ArtSlot(npc, "ArtSlot_TeaSign", hp + hrot * new Vector3(0, 3.0f, 0.35f), hrot);
+                var dp2 = new GameObject("TUT_TeaDelivery"); dp2.transform.SetParent(npc); dp2.transform.position = sp + Vector3.up * 0.6f;
+                dp2.AddComponent<SphereCollider>(); var dpc2 = dp2.AddComponent<DeliveryPoint>();
+                var dso2 = new SerializedObject(dpc2); dso2.FindProperty("label").stringValue = "TeaHouse"; dso2.FindProperty("radius").floatValue = 5f; dso2.ApplyModifiedPropertiesWithoutUndo();
+                log.Add($"찻집 모델({hp.x:F0},{hp.y:F1},{hp.z:F0}) 길쪽 {fw.x:F2},{fw.z:F2} 치운 건물 {cleared} 소품 {house.transform.childCount - 1}");
+                continue;
+            }
+            var g = new GameObject("TUT_TeaHouse_NPC").transform; g.SetParent(parent); g.position = new Vector3(x, y, z);
+            Box(g, "NPC_Body", new Vector3(0.55f, 1.1f, 0.4f), new Vector3(x, y + 0.55f, z), Quaternion.identity, M("Fish"), false);
+            Box(g, "NPC_Head", new Vector3(0.36f, 0.36f, 0.36f), new Vector3(x, y + 1.32f, z), Quaternion.identity, M("Sand"), false);
+            Box(g, "NPC_Marker", new Vector3(0.4f, 0.4f, 0.4f), new Vector3(x, y + 2.3f, z), Quaternion.Euler(45f, 0f, 45f), M("Orange"), false);
+            Box(g, "TeaSign", new Vector3(1.8f, 0.6f, 0.12f), new Vector3(x + 1.6f, y + 3.0f, z + 0.2f), Quaternion.identity, M("Wood"), false);
+            Label(g, "TEA", new Vector3(x + 1.6f, y + 3.0f, z + 0.3f), Quaternion.LookRotation(Vector3.back), 0.45f, new Color(.95f, .92f, .80f));
+            ArtSlot(g, "ArtSlot_TeaNPC", new Vector3(x, y + 0.8f, z), Quaternion.identity);
+            ArtSlot(g, "ArtSlot_TeaSign", new Vector3(x + 1.6f, y + 3.0f, z + 0.35f), Quaternion.LookRotation(Vector3.back));
+            // 과제 0032: 배달 지점 — 라벨 TeaHouse, 반경 5m. OpeningTutorial 이 DeliveryManager 에 넣는다(다른 판엔 안 쓴다).
+            var dp = new GameObject("TUT_TeaDelivery"); dp.transform.SetParent(g); dp.transform.position = new Vector3(F(p[0]), H(F(p[0]), z) + 0.6f, z);
+            dp.AddComponent<SphereCollider>(); var dpc = dp.AddComponent<DeliveryPoint>();
+            var dso = new SerializedObject(dpc); dso.FindProperty("label").stringValue = "TeaHouse"; dso.FindProperty("radius").floatValue = 5f; dso.ApplyModifiedPropertiesWithoutUndo();
+            log.Add($"찻집NPC({x:F0},{y:F1},{z:F0})");
+        }
+        // 해안 직선 끝 표지판: 본선 1000~1350 에서 가장 긴 곧은 구간의 끝, 오른쪽 길가, 다가오는 차를 본다.
+        {
+            var P = main.pts; int best0 = 0, bestLen = 0, run0 = -1;
+            for (int i = 1000; i < Mathf.Min(1350, P.Count - 22); i++)
+            {
+                bool straight = Vector3.Angle(Flat(P[i + 2] - P[i]), Flat(P[i + 22] - P[i + 20])) < 6f;
+                if (straight) { if (run0 < 0) run0 = i; if (i - run0 > bestLen) { bestLen = i - run0; best0 = run0; } } else run0 = -1;
+            }
+            int e = best0 + bestLen + 20; var f = Flat(P[e + 2] - P[e - 2]); var right = Vector3.Cross(Vector3.up, f);
+            float hw = main.w != null && e < main.w.Length ? main.w[e] * 0.5f : main.width * 0.5f;
+            var sp = P[e] + right * (hw + 2.2f); sp.y = H(sp.x, sp.z);
+            var g = new GameObject("TUT_CoastStraightEnd_Sign").transform; g.SetParent(parent); g.position = sp;
+            var rot = Quaternion.LookRotation(f);
+            Box(g, "Post", new Vector3(0.12f, 2.2f, 0.12f), sp + Vector3.up * 1.1f, rot, M("Dark"), false);
+            Box(g, "Board", new Vector3(1.6f, 0.9f, 0.08f), sp + Vector3.up * 2.4f, rot, M("Yellow"), false);
+            for (int k = 0; k < 3; k++) Box(g, "Chevron" + k, new Vector3(0.12f, 0.6f, 0.02f), sp + Vector3.up * 2.4f + right * (-0.45f + k * 0.45f) - f * 0.05f, rot * Quaternion.Euler(0, 0, 30f), M("Dark"), false);
+            ArtSlot(g, "ArtSlot_StraightEndSign", sp + Vector3.up * 2.4f - f * 0.08f, rot);
+            Mark(parent, "TUT_CoastGateStart", P[best0], Quaternion.LookRotation(Flat(P[best0 + 2] - P[best0])));
+            Mark(parent, "TUT_CoastGateEnd", P[e], rot);
+            log.Add($"직선끝표지 본선#{e}({sp.x:F0},{sp.y:F1},{sp.z:F0}) 곧은구간 {best0}~{best0 + bestLen + 20}");
+        }
+        // 과제 0032 장면 1: 항구 위 비탈집 방(블록아웃 상자). 창이 만(남서쪽)을 본다. 포스터·신청서·저금통·라디오는 ArtSlot.
+        {
+            var r0 = new Vector3(-40f, 0, -95f); r0.y = H(r0.x, r0.z) + 7f;
+            var rot = Quaternion.LookRotation(new Vector3(-60f, 0, -55f));
+            var g = new GameObject("TUT_Room").transform; g.SetParent(parent); g.SetPositionAndRotation(r0, rot);
+            System.Action<string, Vector3, Vector3, string> B = (n, size, lp, mat) => Box(g, n, size, g.TransformPoint(lp), rot, M(mat), false);
+            B("Floor", new Vector3(4.3f, 0.15f, 4.7f), new Vector3(0, -0.075f, 0), "Wood");
+            B("Ceiling", new Vector3(4.3f, 0.15f, 4.7f), new Vector3(0, 2.875f, 0), "MartWall");
+            B("WallBack", new Vector3(4.3f, 2.8f, 0.15f), new Vector3(0, 1.4f, -2.275f), "Sand");
+            B("WallL", new Vector3(0.15f, 2.8f, 4.7f), new Vector3(-2.075f, 1.4f, 0), "Sand");
+            B("WallR", new Vector3(0.15f, 2.8f, 4.7f), new Vector3(2.075f, 1.4f, 0), "Sand");
+            B("WinWallL", new Vector3(1.25f, 2.8f, 0.15f), new Vector3(-1.525f, 1.4f, 2.275f), "Sand");
+            B("WinWallR", new Vector3(1.25f, 2.8f, 0.15f), new Vector3(1.525f, 1.4f, 2.275f), "Sand");
+            B("WinWallBottom", new Vector3(1.8f, 0.9f, 0.15f), new Vector3(0, 0.45f, 2.275f), "Sand");
+            B("WinWallTop", new Vector3(1.8f, 0.7f, 0.15f), new Vector3(0, 2.45f, 2.275f), "Sand");
+            B("WinFrameV", new Vector3(0.06f, 1.2f, 0.08f), new Vector3(0, 1.5f, 2.29f), "Wood");
+            B("WinFrameH", new Vector3(1.8f, 0.06f, 0.08f), new Vector3(0, 1.5f, 2.29f), "Wood");
+            B("Bed", new Vector3(1.2f, 0.45f, 2.1f), new Vector3(-1.35f, 0.225f, -1.1f), "PaintWhite");
+            B("Desk", new Vector3(1.3f, 0.08f, 0.65f), new Vector3(1.3f, 0.78f, 1.6f), "Wood");
+            B("DeskLegs", new Vector3(1.2f, 0.74f, 0.55f), new Vector3(1.3f, 0.37f, 1.6f), "Dark");
+            B("Radio", new Vector3(0.36f, 0.22f, 0.16f), new Vector3(1.65f, 0.93f, 1.7f), "Dark");
+            B("PiggyBank", new Vector3(0.26f, 0.2f, 0.34f), new Vector3(1.05f, 0.92f, 1.55f), "Pink");
+            B("RacePoster", new Vector3(0.03f, 0.9f, 0.65f), new Vector3(-2.0f, 1.65f, 0.5f), "Red");
+            B("EntryForm", new Vector3(0.03f, 0.42f, 0.3f), new Vector3(-2.0f, 1.45f, 1.25f), "PaintWhite");
+            ArtSlot(g, "ArtSlot_RacePoster", g.TransformPoint(new Vector3(-1.98f, 1.65f, 0.5f)), rot * Quaternion.LookRotation(Vector3.right));
+            ArtSlot(g, "ArtSlot_EntryForm", g.TransformPoint(new Vector3(-1.98f, 1.45f, 1.25f)), rot * Quaternion.LookRotation(Vector3.right));
+            ArtSlot(g, "ArtSlot_PiggyBank", g.TransformPoint(new Vector3(1.05f, 1.05f, 1.55f)), rot);
+            Audio(g, "Audio_Radio", g.TransformPoint(new Vector3(1.65f, 0.95f, 1.7f)));
+            Audio(g, "Audio_Gulls", g.TransformPoint(new Vector3(0, 1.5f, 4f)));
+            var lamp = new GameObject("RoomLamp").AddComponent<Light>(); lamp.transform.SetParent(g); lamp.transform.position = g.TransformPoint(new Vector3(0, 2.5f, -0.4f));
+            lamp.type = LightType.Point; lamp.range = 6f; lamp.intensity = 1.6f; lamp.color = new Color(1f, .82f, .6f); lamp.shadows = LightShadows.None;
+            System.Action<string, Vector3, Vector3> S = (n, lp, look) => Mark(g, n, g.TransformPoint(lp), Quaternion.LookRotation(g.TransformPoint(look) - g.TransformPoint(lp)));
+            S("Shot_1a", new Vector3(1.2f, 1.55f, -1.5f), new Vector3(-2f, 1.55f, 0.8f));
+            S("Shot_1b", new Vector3(0.4f, 1.35f, 0.2f), new Vector3(1.1f, 0.95f, 1.55f));
+            S("Shot_1c", new Vector3(0f, 1.5f, 1.75f), new Vector3(0f, 0.6f, 12f));
+            log.Add($"방({r0.x:F0},{r0.y:F1},{r0.z:F0})");
+        }
+        // 장면 4·조작 시작: 차 시작 = 본선 끝-12m(MART 앞 #0 까지 12m 뒤), 동쪽(+x)을 본다. 엔진 첫 소리 자리.
+        {
+            var P = main.pts; int k = P.Count - 12; var f = Flat(P[(k + 2) % P.Count] - P[k - 2]);
+            var cs = Mark(parent, "TUT_CarStart", P[k] + Vector3.up * 0.6f, Quaternion.LookRotation(f));
+            Audio(cs, "Audio_EngineStart", P[k] + Vector3.up * 0.8f);
+            // 장면 4: 북쪽 위에서 정비소·MART·차를 함께(남서쪽 크레인을 피함)
+            var s4 = P[k] + f * 10f + Vector3.up * 16f - Vector3.Cross(Vector3.up, f) * 22f; Mark(parent, "Shot_4a", s4, Quaternion.LookRotation(P[k] + f * 20f - s4));
+            Mark(parent, "TUT_ReturnGarage", P[8] + Vector3.up * 0.3f, Quaternion.LookRotation(Flat(P[10] - P[6])));
+            var dir = new GameObject("OpeningTutorial (D-142 오프닝·첫 배달)"); dir.transform.SetParent(parent);
+            var ot = dir.AddComponent<OpeningTutorial>();
+            var oso = new SerializedObject(ot);
+            oso.FindProperty("morning").objectReferenceValue = AssetDatabase.LoadAssetAtPath<MoodProfile>(MoodSwitcher.PathMorning);
+            oso.ApplyModifiedPropertiesWithoutUndo();
+            log.Add($"차시작 본선#{k}({P[k].x:F0},{P[k].z:F0}) 연출감독");
+        }
+        return "튜토리얼 " + string.Join(" ", log);
+    }
+
+    /// <summary>과제 0131 갭 #2·#1: 바람 소리 + 환경음 자리(클립 없음) + 인도 걷는 사람 + 차양 흔들림. R5 로그 "움직이는 것: N".</summary>
+    static string Motion(Transform parent, Road main)
+    {
+        var P = main.pts; int n = P.Count;
+        // 소리: Proto_CoastCourse 와 같은 바람(카메라 높이 6→20m 에서 커짐)
+        var wind = new GameObject("WindAmbience").AddComponent<WindAmbience>(); wind.transform.SetParent(parent); wind.lowY = 6f; wind.highY = 20f;
+        var martP = (List<object>)Get(J, "mart", "pos"); var mart = new Vector3(F(martP[0]), 0f, F(martP[1]));
+        float sea = F(Get(J, "sea", "level"));
+        Vector3 Side(int i, float extra) { var f = Flat(P[(i + 2) % n] - P[(i - 2 + n) % n]); var rt = new Vector3(f.z, 0, -f.x); return P[i] + rt * (main.LaneHalf(i) + extra); }
+        var amb = new (string name, Vector3 pos, float min, float max)[]
+        {
+            ("Audio_Amb_HarborGulls", new Vector3(mart.x - 25f, sea + 9f, mart.z - 30f), 8f, 70f),
+            ("Audio_Amb_HarborWaves", new Vector3(mart.x - 10f, sea + 0.5f, mart.z - 22f), 4f, 35f),
+            ("Audio_Amb_ShopMurmur", P[80] + Vector3.up * 1.6f, 5f, 40f),
+            ("Audio_Amb_ShopBell", Side(45, 2f) + Vector3.up * 2.2f, 2f, 18f),
+            ("Audio_Amb_CoastWind", Side(Mathf.Min(1150, n - 1), 6f) + Vector3.up * 2f, 10f, 80f),
+        };
+        foreach (var a in amb)
+        {
+            var src = Audio(parent, a.name, a.pos).GetComponent<AudioSource>();
+            src.loop = true; src.playOnAwake = true; src.spatialBlend = 1f; src.rolloffMode = AudioRolloffMode.Linear; src.minDistance = a.min; src.maxDistance = a.max;
+        }
+        // 걷는 사람: 본선 인도 구간을 왕복(앞으로 6m 간격 점 → 되돌아옴). 양 끝에서 멈춤, 무리마다 하나는 앉는다.
+        var spans = new (int a, int b)[] { (14, 58), (52, 96), (92, 138), (120, 164), (n - 112, n - 72), (n - 78, n - 40), (n - 46, n - 12) };
+        var bodies = new[] { "Red", "Fish", "Wood", "Stone", "TinRoof", "Roof", "Fish" };
+        var peds = new List<string>(); int ped = 0;
+        for (int k = 0; k < spans.Length; k++)
+        {
+            var (a, b) = spans[k]; if (a < 0 || b >= n || b - a < 12) continue;
+            int mid = (a + b) / 2; int side = (k % 2 == 0) ? 1 : -1;
+            if (main.Walk(mid, side) < 1.2f) side = -side;
+            if (main.Walk(mid, side) < 1.2f) continue;
+            var fwd = new List<Vector3>(); var outs = new List<Vector3>();
+            for (int i = a; i <= b; i += 6)
+            {
+                float wk = main.Walk(i, side); if (wk < 0.9f) continue;
+                var f = Flat(P[(i + 2) % n] - P[(i - 2 + n) % n]); var nrm = -side * new Vector3(f.z, 0, -f.x);   // side +1 = 진행 방향 왼쪽 (RoadMesh 와 같음)
+                var q = P[i] + nrm * (main.LaneHalf(i) + 0.18f + (wk - 0.18f) * 0.5f); q.y = P[i].y + 0.08f;
+                if (NearCar(q, 0.2f)) continue;
+                fwd.Add(q); outs.Add(nrm);
+            }
+            if (fwd.Count < 3) continue;
+            var path = new List<Vector3>(fwd); var away = new List<Vector3>(outs);
+            for (int i = fwd.Count - 2; i >= 1; i--) { path.Add(fwd[i]); away.Add(outs[i]); }
+            var startI = (k * 3) % path.Count;
+            var g = Person(parent, $"PED_{k}", path[startI], Quaternion.LookRotation(Flat(path[(startI + 1) % path.Count] - path[startI])), M(bodies[k % bodies.Length]));
+            var pd = g.gameObject.AddComponent<Pedestrian>();
+            pd.path = path.ToArray(); pd.awayDir = away.ToArray(); pd.speed = 0.85f + (k % 3) * 0.1f;   // 과제 0226: 걷기 클립 발 속도 0.78m/s 의 1.1~1.35배 — 애니 재생 배속이 덜 튀게(가설)
+            pd.pauseAt = new[] { 0, fwd.Count - 1, fwd.Count / 2 }; pd.pauseSec = new[] { 4f + k % 3, 3f, 6f }; pd.sitAt = new[] { false, false, k % 3 == 0 };
+            ped++; peds.Add($"{k}:{(k < 4 ? "상점가" : "항구")} 점{path.Count}");
+        }
+        // 흔들림: 생활 층의 차양·파라솔(통짜 메시라 물체째). 빨래줄은 기둥까지 한 메시라 흔들면 기둥이 같이 흔들려서 뺐다.
+        int sway = 0;
+        foreach (var t in root.GetComponentsInChildren<Transform>(true))
+        {
+            string nm = t.name; if (t.GetComponent<Rigidbody>() != null) continue;   // 밀리는 소품은 물리에 맡긴다
+            if (nm.StartsWith("PROP_Awning")) { var w = t.gameObject.AddComponent<WindSway>(); w.axis = Vector3.right; w.degrees = 2.5f; sway++; }
+            else if (nm.StartsWith("PROP_parasol_01")) { var w = t.gameObject.AddComponent<WindSway>(); w.axis = Vector3.forward; w.degrees = 1.5f; w.speed = 0.8f; sway++; }
+        }
+        return $"움직이는 것: {ped + sway} (걷는 사람 {ped} [{string.Join(", ", peds)}], 흔들리는 차양·파라솔 {sway}) · 소리: 바람 1 + 환경음 자리 {amb.Length}(클립 없음)";
+    }
+
+    static Transform Mark(Transform parent, string name, Vector3 pos, Quaternion rot)
+    {
+        var t = new GameObject(name).transform; t.SetParent(parent); t.SetPositionAndRotation(pos, rot); return t;
+    }
+
+    /// <summary>사람 자리(몸·머리·팔) — 팔은 어깨 축 'ArmPivot' 아래. 아트는 ArtSlot_* 에.</summary>
+    static Transform Person(Transform parent, string name, Vector3 feet, Quaternion rot, Material body)
+    {
+        var g = new GameObject(name).transform; g.SetParent(parent); g.SetPositionAndRotation(feet, rot);
+        // 과제 0226: 주민 모델 6종(Animator Stand/Walk/Sit). 이름 해시로 고른다(빌드마다 같은 사람). 빈 ArmPivot·NPC_Head 는
+        // 그대로 둔다 — OpeningTutorial 이 ArmPivot 을 돌려 손짓(→ Resident 가 오른 윗팔 본에 옮김), NPC_Head 는 시선 기준점.
+        int hsh = 0; foreach (var ch in name) hsh = hsh * 31 + ch;
+        string pick = name == "TUT_MartOwner" ? "people_elder_01" : name == "TUT_Mechanic" ? "people_young_02" : name == "TUT_TeaHouse_NPC" ? "people_elder_03"
+            : ImportBayLoopDelivery.People[(hsh & 0x7fffffff) % ImportBayLoopDelivery.People.Length];
+        var ppf = AssetDatabase.LoadAssetAtPath<GameObject>(ImportBayLoopDelivery.PeopleDir + pick + ".prefab");
+        if (ppf != null)
+        {
+            var model = (GameObject)PrefabUtility.InstantiatePrefab(ppf, g);
+            model.transform.localPosition = Vector3.zero; model.transform.localRotation = Quaternion.identity;
+            var head = new GameObject("NPC_Head").transform; head.SetParent(g); head.SetPositionAndRotation(g.TransformPoint(new Vector3(0, 1.32f, 0)), rot);
+            var pivot = new GameObject("ArmPivot").transform; pivot.SetParent(g); pivot.SetPositionAndRotation(g.TransformPoint(new Vector3(0.34f, 1.02f, 0)), rot);
+            var res = model.GetComponent<Resident>(); if (res != null) res.armPivot = pivot;   // 프리팹 루트의 Resident 가 g 의 빈 ArmPivot 을 읽는다
+            ArtSlot(g, "ArtSlot_" + name.Replace("TUT_", ""), g.TransformPoint(new Vector3(0, 0.8f, 0)), rot);
+            return g;
+        }
+        Box(g, "NPC_Body", new Vector3(0.55f, 1.1f, 0.4f), g.TransformPoint(new Vector3(0, 0.55f, 0)), rot, body, false);
+        Box(g, "NPC_Head", new Vector3(0.36f, 0.36f, 0.36f), g.TransformPoint(new Vector3(0, 1.32f, 0)), rot, M("Sand"), false);
+        var arm = new GameObject("ArmPivot").transform; arm.SetParent(g); arm.SetPositionAndRotation(g.TransformPoint(new Vector3(0.34f, 1.02f, 0)), rot);
+        Box(arm, "Arm", new Vector3(0.14f, 0.6f, 0.14f), g.TransformPoint(new Vector3(0.34f, 0.72f, 0)), rot, body, false);
+        ArtSlot(g, "ArtSlot_" + name.Replace("TUT_", ""), g.TransformPoint(new Vector3(0, 0.8f, 0)), rot);
+        return g;
+    }
+
+    /// <summary>소리 자리 — 클립 없이 AudioSource 만. 클립이 꽂히면 OpeningTutorial 이 장면에 맞춰 튼다.</summary>
+    static Transform Audio(Transform parent, string name, Vector3 pos)
+    {
+        var t = Mark(parent, name, pos, Quaternion.identity);
+        var a = t.gameObject.AddComponent<AudioSource>(); a.playOnAwake = false; a.spatialBlend = 0.6f;
+        return t;
+    }
+
+    static void Label(Transform parent, string text, Vector3 pos, Quaternion rot, float height, Color col)
+    {
+        var go = new GameObject("Label_" + text); go.transform.SetParent(parent); go.transform.SetPositionAndRotation(pos, rot);
+        var tm = go.AddComponent<TextMesh>(); tm.text = text; tm.anchor = TextAnchor.MiddleCenter; tm.alignment = TextAlignment.Center;
+        tm.fontSize = 64; tm.characterSize = height / 6.4f; tm.color = col;
+        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); tm.font = font; go.GetComponent<MeshRenderer>().sharedMaterial = font.material;
+    }
+
+    static void ArtSlot(Transform parent, string name, Vector3 pos, Quaternion rot)
+    {
+        var go = new GameObject(name); go.transform.SetParent(parent); go.transform.SetPositionAndRotation(pos, rot);
+        go.AddComponent<SpriteRenderer>();
+    }
+
     // ------------------------------------------------------------------ 차
     static void Car(Road main)
     {
@@ -1535,6 +1940,9 @@ public static partial class BuildBayLoop
             var sf = Flat(f);
             fc.transform.position = car.transform.position - sf * 4.2f + Vector3.up * 1.9f; fc.transform.LookAt(car.transform.position + sf * 8f + Vector3.up);
             var cam = fc.GetComponent<Camera>(); if (cam != null) cam.farClipPlane = Mathf.Max(cam.farClipPlane, 1800f);
+            // 과제 2338: 기본 카메라 = B(높고 멀리). 바꾸려면 PitCrew/Camera/A·B·C — 메뉴에서 고른 것(EditorPrefs)을 다시 지어도 유지한다.
+            CameraFeelSwitcher.BuildPresets(false);
+            fc.Preset = AssetDatabase.LoadAssetAtPath<CameraFeelPreset>(CameraFeelSwitcher.Chosen);
         }
         log.Add($"차 시작 ({c.x:F0},{c.y:F1},{c.z:F0}) 본선 s8, 리스폰 y<-3, 중심선 {pts.Count}점");
     }
@@ -1684,7 +2092,7 @@ public static partial class BuildBayLoop
             {
                 "Gravel" => new Color(.62f, .54f, .42f), "AlleyPath" => new Color(.78f, .74f, .66f), "Stairs" => new Color(.70f, .68f, .64f),
                 "Curb" => new Color(.74f, .72f, .68f), "Wood" => new Color(.45f, .33f, .22f), "TinRoof" => new Color(.55f, .62f, .66f),
-                "Fish" => new Color(.30f, .50f, .70f), "Stone" => new Color(.60f, .58f, .54f), "Yellow" => new Color(.95f, .78f, .15f),
+                "Fish" => new Color(.30f, .50f, .70f), "Stone" => new Color(.60f, .58f, .54f), "Yellow" => new Color(.95f, .78f, .15f), "CraneFaded" => new Color(.74f, .66f, .46f),   // 과제 0131: 바랜 크레인(볕에 탄 황토 — Sand·FieldB 사이)
                 "Dark" => new Color(.18f, .18f, .20f), "Roof" => new Color(.70f, .40f, .30f), "White" => new Color(.95f, .95f, .93f),
                 "Red" => new Color(.80f, .20f, .18f), "JumpStripe" => new Color(.85f, .70f, .25f), "FieldA" => new Color(.52f, .66f, .30f),
                 "FieldB" => new Color(.74f, .72f, .36f), "Orange" => new Color(1f, .42f, .08f), "MartWall" => new Color(.92f, .92f, .88f),
@@ -1692,7 +2100,7 @@ public static partial class BuildBayLoop
                 "Meadow" => new Color(.56f, .64f, .36f), "CurbStone" => new Color(.50f, .49f, .47f), "CurbDark" => new Color(.36f, .36f, .37f),   // v5: 밝은 연석 윗면이 흰 선처럼 읽혔다 → 회색(.60 도 그늘 인도 옆에선 흰 띠 — 2차 .50)
                 "LotStone" => new Color(.70f, .66f, .60f), "LotConcrete" => new Color(.72f, .71f, .68f), "LotGravel" => new Color(.63f, .58f, .50f), "LotDark" => new Color(.56f, .54f, .51f),
                 "PatchDark" => new Color(.30f, .30f, .31f), "PatchLight" => new Color(.50f, .49f, .47f), "PaintWhite" => new Color(.90f, .90f, .86f), "MirrorGlass" => new Color(.75f, .85f, .92f),
-                "Soil" => new Color(.42f, .32f, .22f), "PathDirt" => new Color(.60f, .52f, .40f), "Gutter" => new Color(.42f, .42f, .42f), _ => Color.magenta
+                "Soil" => new Color(.42f, .32f, .22f), "PathDirt" => new Color(.60f, .52f, .40f), "Gutter" => new Color(.42f, .42f, .42f), "Pink" => new Color(.92f, .62f, .66f), _ => Color.magenta
             };
             string p = MatDir + "/BL_" + key + ".mat";
             m = AssetDatabase.LoadAssetAtPath<Material>(p);

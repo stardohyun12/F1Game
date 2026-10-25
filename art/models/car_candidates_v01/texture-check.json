@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "palette_outside": 0,
+  "density_metadata": 32,
+  "actual_mesh_uv_check": "parent checker required",
+  "variants": {
+    "A": {
+      "sha256": "29d16d3aebc49ff23ccd2339522730711e06a3d00ab2864d35680811b4bc4e8e",
+      "used_colors": 14,
+      "power_of_two": true
+    },
+    "C": {
+      "sha256": "a7ecba1c9029b05d844be25cfb24de737f79516d6cc241986360664ba05d4b2d",
+      "used_colors": 14,
+      "power_of_two": true
+    }
+  }
+}

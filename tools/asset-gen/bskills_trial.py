@@ -47,6 +47,10 @@ def main():
    # Identical camera and framing to archived baseline, even where geometry changed.
    prior=next(a for a in old['assets'] if a['id']==name);w,h,d=prior['dimensions_m'];scale=1.2*max(1.3,w*1.5,d*1.4,h*2.15)
    for view,loc in [('front',(4,-7,3.5)),('side',(8,0,h*.45 if typ=='three_wheeler' else 1.9)),('top',(0,0,10))]:b.render(sc,R/(name+'_'+view+'.png'),loc,(0,0,h*.45) if view!='top' else (0,0,0),scale)
+   if typ=='laundry_line':
+    bpy.data.objects['REVIEW_ONLY_ground'].location.z=-2.725
+    b.render(sc,R/(name+'_mounted.png'),(4,-7,3.5),(0,0,h*.45),scale)
+    bpy.data.objects['REVIEW_ONLY_ground'].location.z=-.025
    if args.silhouette:
     silhouette=bpy.data.materials.new('REVIEW_ONLY_silhouette');silhouette.diffuse_color=(.06,.06,.06,1)
     for ob in objects:ob.data.materials[0]=silhouette

@@ -1,0 +1,16 @@
+{
+  "source_atlas": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+  "photo_sources": [
+    "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+    "art/models/bayloop_props2_v01/sources/rough_linen_diff_1k.jpg"
+  ],
+  "steps": [
+    "reuse CC0 photo-derived atlas",
+    "plaster local photograph dark-tail mask 12%, two shared palette colors",
+    "terracotta/metal photo color ladder contrast compression",
+    "linen physical 0.271m BOX to 9px =33.2px/m, within 10%; palette quantization",
+    "252px repeat with 2px edge padding"
+  ],
+  "ai_generated": false,
+  "palette_outside": 0
+}

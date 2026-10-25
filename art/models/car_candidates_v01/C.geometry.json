@@ -1,0 +1,201 @@
+{
+  "tris": 3078,
+  "objects": {
+    "body": {
+      "tris": 492,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "cockpit_coaming",
+        "floor_pan",
+        "mechanic_tape",
+        "nose_shell",
+        "panel_joint",
+        "pod_tape_return",
+        "race_number",
+        "radiator_mouth",
+        "replacement_nose_access",
+        "sidepod_shell"
+      ]
+    },
+    "interior": {
+      "tris": 236,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "cockpit_floor",
+        "dashboard",
+        "seat_back",
+        "seat_cushion",
+        "steering_rim",
+        "steering_spoke"
+      ]
+    },
+    "engine": {
+      "tris": 84,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "engine_cover",
+        "exhaust"
+      ]
+    },
+    "aero": {
+      "tris": 184,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "front_endplate",
+        "front_wing_half",
+        "rear_endplate",
+        "rear_wing",
+        "rear_wing_lip",
+        "rear_wing_pylon"
+      ]
+    },
+    "suspension": {
+      "tris": 216,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "shock_absorber",
+        "wishbone"
+      ]
+    },
+    "road_conversion": {
+      "tris": 152,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "mirror_case",
+        "mirror_face",
+        "mirror_stalk",
+        "plate_bracket",
+        "registration_plate",
+        "tail_lamp"
+      ]
+    },
+    "rollbar": {
+      "tris": 84,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "hoop_rear_brace",
+        "roll_hoop"
+      ]
+    },
+    "rally_conversion": {
+      "tris": 510,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "parts": [
+        "canvas_tie_end",
+        "canvas_tie_top",
+        "folded_canvas_cover",
+        "hoop_tray_bracket",
+        "mudflap_support",
+        "rally_nose_stripe",
+        "rally_side_band",
+        "rally_spot",
+        "rubber_mudflap",
+        "spot_mount_arm",
+        "upper_cargo_tray",
+        "upper_rack_brace",
+        "upper_tray_rear_stop",
+        "upper_tray_side"
+      ]
+    },
+    "wheel_front_left": {
+      "tris": 280,
+      "origin": [
+        0.7900000214576721,
+        -1.2000000476837158,
+        0.3499999940395355
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_front_right": {
+      "tris": 280,
+      "origin": [
+        -0.7900000214576721,
+        -1.2000000476837158,
+        0.3499999940395355
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_rear_left": {
+      "tris": 280,
+      "origin": [
+        0.7900000214576721,
+        1.100000023841858,
+        0.375
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    },
+    "wheel_rear_right": {
+      "tris": 280,
+      "origin": [
+        -0.7900000214576721,
+        1.100000023841858,
+        0.375
+      ],
+      "parts": [
+        "hub",
+        "rim",
+        "rim_inset",
+        "rubber"
+      ]
+    }
+  },
+  "bounds_blender": {
+    "min": [
+      -0.979454517364502,
+      -2.0300002098083496,
+      0.0
+    ],
+    "max": [
+      0.979454517364502,
+      1.7549999952316284,
+      1.0720000267028809
+    ]
+  }
+}

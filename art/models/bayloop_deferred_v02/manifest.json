@@ -1,0 +1,225 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json",
+    "art/models/bayloop_props2_v01/linen-source.json"
+  ],
+  "assets": [
+    {
+      "id": "bus_stop_01",
+      "type": "bus_stop",
+      "model": "art/models/bayloop_deferred_v02/bus_stop_01.glb",
+      "fbx": "art/models/bayloop_deferred_v02/bus_stop_01.fbx",
+      "texture": "art/models/bayloop_deferred_v02/DeferredPhotoAtlas.png",
+      "tris": 516,
+      "dimensions_m": [
+        5.065000057220459,
+        2.940000057220459,
+        2.7090000808238983
+      ],
+      "bounds_min": [
+        -2.5399999618530273,
+        0.0,
+        -2.4000000953674316
+      ],
+      "bounds_max": [
+        2.5250000953674316,
+        2.940000057220459,
+        0.3089999854564667
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks",
+        "https://polyhaven.com/a/rough_linen"
+      ],
+      "parameters": {
+        "id": "bus_stop_01",
+        "type": "bus_stop",
+        "width": 4.8,
+        "depth": 2.2,
+        "floors": 1,
+        "roof": "flat",
+        "ground_floor": "windows",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 0,
+          "laundry": false
+        },
+        "seed": 140800,
+        "zone": "medium",
+        "front_space_m": 0
+      },
+      "footprint_m": [
+        4.8,
+        2.2
+      ],
+      "storeys": 1,
+      "front_wall_z": 0
+    },
+    {
+      "id": "cafe_kiosk_01",
+      "type": "cafe_kiosk",
+      "model": "art/models/bayloop_deferred_v02/cafe_kiosk_01.glb",
+      "fbx": "art/models/bayloop_deferred_v02/cafe_kiosk_01.fbx",
+      "texture": "art/models/bayloop_deferred_v02/DeferredPhotoAtlas.png",
+      "tris": 1174,
+      "dimensions_m": [
+        4.5,
+        3.440000057220459,
+        4.9150000512599945
+      ],
+      "bounds_min": [
+        -2.240000009536743,
+        0.0,
+        -3.8499999940395355
+      ],
+      "bounds_max": [
+        2.259999990463257,
+        3.440000057220459,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks",
+        "https://polyhaven.com/a/rough_linen"
+      ],
+      "parameters": {
+        "id": "cafe_kiosk_01",
+        "type": "cafe_kiosk",
+        "width": 4,
+        "depth": 3.5,
+        "floors": 1,
+        "roof": "terracotta_gable",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 0,
+          "laundry": false
+        },
+        "seed": 141000,
+        "zone": "medium",
+        "front_space_m": 0
+      },
+      "footprint_m": [
+        4.0,
+        3.5
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "form": "walk-up kiosk with deep open serving counter, shelves, cloth awning and modest outside seating",
+      "life_layer": "human-scale notice boards, seating and service attachments",
+      "wear_locations": [
+        "entrance threshold",
+        "lower masonry",
+        "roof edge",
+        "handled wood and metal"
+      ]
+    },
+    {
+      "id": "farmhouse_01",
+      "type": "farmhouse",
+      "model": "art/models/bayloop_deferred_v02/farmhouse_01.glb",
+      "fbx": "art/models/bayloop_deferred_v02/farmhouse_01.fbx",
+      "texture": "art/models/bayloop_deferred_v02/DeferredPhotoAtlas.png",
+      "tris": 1580,
+      "dimensions_m": [
+        8.825000202655792,
+        4.630000114440918,
+        8.924999964237212
+      ],
+      "bounds_min": [
+        -5.300000190734863,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        3.525000011920929,
+        4.630000114440918,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks",
+        "https://polyhaven.com/a/rough_linen"
+      ],
+      "parameters": {
+        "id": "farmhouse_01",
+        "type": "farmhouse",
+        "width": 6.2,
+        "depth": 7.2,
+        "floors": 1,
+        "roof": "terracotta_gable",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "none",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 1,
+          "laundry": false
+        },
+        "seed": 140500,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        6.2,
+        7.2
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+var outDir = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/qa/evidence/bayloop-cam"));
+var a = UnityEditor.SessionState.GetString("top.at", "-30,-145,70,top_harbor").Split(',');
+var fc = UnityEngine.Object.FindFirstObjectByType<FollowCamera>(); var cam = fc.GetComponent<Camera>(); fc.enabled = false; float f0 = cam.fieldOfView;
+var c = new Vector3(float.Parse(a[0]), 0, float.Parse(a[1])); float h = float.Parse(a[2]);
+cam.fieldOfView = 60f; cam.transform.SetPositionAndRotation(c + Vector3.up * h, Quaternion.Euler(90, 0, 0));
+var rt = new RenderTexture(960, 960, 24); cam.targetTexture = rt; cam.Render(); cam.targetTexture = null; RenderTexture.active = rt;
+var tex = new Texture2D(960, 960, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 960, 960), 0, 0); tex.Apply(); RenderTexture.active = null;
+System.IO.File.WriteAllBytes(System.IO.Path.Combine(outDir, a[3] + ".png"), tex.EncodeToPNG()); rt.Release();
+cam.fieldOfView = f0; fc.enabled = true;
+return "ok " + a[3] + " covers +-" + (h * Mathf.Tan(30f * Mathf.Deg2Rad)).ToString("F0") + "m";

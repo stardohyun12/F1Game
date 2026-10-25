@@ -1,0 +1,79 @@
+[
+  {
+    "asset_id": "lighthouse_01_fbx",
+    "path": "art/models/bayloop_harbor_landmarks_v01/lighthouse_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "6f05d9253879cf0f43c6f802d9280d934fbce37d43dccc4a8cec9c296ecb7bb4",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "lighthouse_01_glb",
+    "path": "art/models/bayloop_harbor_landmarks_v01/lighthouse_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "2555bb55067885ca18cfd590d36abc3a9b63c77ec826ca182c9cc0efb55f0e49",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "lighthouse_01_blend",
+    "path": "art/models/bayloop_harbor_landmarks_v01/lighthouse_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "b09ceee66aca01247685de43b7138143c618f6bf753ef8c7ec967209e11c71ce",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "harbor_crane_01_fbx",
+    "path": "art/models/bayloop_harbor_landmarks_v01/harbor_crane_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "a8f34c696ba56b09c005464c2e3353578458f798b5b2e50fdf5ef16a59328ce5",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "harbor_crane_01_glb",
+    "path": "art/models/bayloop_harbor_landmarks_v01/harbor_crane_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "74fb70e02aa72912ae87bd80a158e090630ecb24349547491a433c660cc5a59b",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "harbor_crane_01_blend",
+    "path": "art/models/bayloop_harbor_landmarks_v01/harbor_crane_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0 photographs; original bpy mesh",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_landmarks.py; bayloop_harbor_texture.py",
+    "ai_generated": "no",
+    "sha256": "24b2e74e87c81a054088f604cf3d14dd2821216a3bd5c572caf39400e73c9330",
+    "notes": "32px/m metric UV; base-centre pivot; actual bpy render; no Unity import"
+  },
+  {
+    "asset_id": "harbor_photo_atlas",
+    "path": "art/models/bayloop_harbor_landmarks_v01/HarborPhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_harbor_texture.py; verified photo pipeline reuse",
+    "ai_generated": "no",
+    "sha256": "d1067eb31fce31164c7122d06c9ca58720e0cde50f358a391afb66977cd56931",
+    "notes": "Original photo atlas reuse; shared palette pair recolor of photographed metal; no generated noise"
+  }
+]

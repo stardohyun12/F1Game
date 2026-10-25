@@ -7,8 +7,7 @@ def build(p,b):
   x=-1.6+i*.2;b.beam((x,0,rope(x)),(x+.2,0,rope(x+.2)),.009,'metal')
  for x in [-1.6,1.6]:b.box(x,.035,1.43,.065,.08,.12,'metal')
  def cloth(name,x,w,bottom,top,tile,nx=6,nz=5,phase=0):
-  # Bounded slope < .3 avoids projected UV density distortion. Broad folds,
-  # not per-triangle faceting. Both sides separated for correct smooth normals.
+  # Broad physically curved folds; both sides split for correct smooth normals.
   def pt(i,j,side):
    u=i/nx;t=j/nz;xx=x+(u-.5)*w
    z=bottom(u)*(1-t)+top(u)*t+.018*math.sin(u*math.tau)*math.sin(t*math.pi)
@@ -22,8 +21,6 @@ def build(p,b):
      for ids in [(0,1,2),(0,2,3)]:
       tri=[quad[k] for k in ids];tri=tri if side<0 else tri[::-1]
       fstart=len(b.F);b.face(tri,tile,(30+int((x+1.6)*32),30))
-      # Continuous cloth-space UV. Every face has low actual slope; checked
-      # against physical 3D principal axes by existing checker after export.
       # Stronger folds use true 3D metric island axes; intentional shared-photo
       # islands retain density instead of flattening a curved surface into XZ.
  # Shirt body, short sleeves, open V at neck; thin actual fabric surface.
@@ -42,4 +39,4 @@ def build(p,b):
  b.PART='wooden_pegs'
  for x,w in [(-1,.36),(-.27,.49),(.48,.38),(1.14,.28)]:
   for xx in [x-w/2,x+w/2]:b.box(xx,-.012,rope(x)-.035,.018,.028,.07,'wood_dark')
- return dict(pivot='bottom_center',mount_height_m=2.7,placement_offset_m=0,triangle_budget=1500,design_notes=['Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.','Broad shallow folds, smooth garment normals, continuous photo UV; no simulation or animation.'],sk
+ return dict(pivot='bottom_center',mount_height_m=2.7,placement_offset_m=0,triangle_budget=1500,design_notes=['Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.','Broad folds, smooth garment normals, physical32px/m triangle UV islands, intentional shared-photo overlap; no simulation or animation.'],skills=['prop-artist','uv-workflow','lowpoly-style'])

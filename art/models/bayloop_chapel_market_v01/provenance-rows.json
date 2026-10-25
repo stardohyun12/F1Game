@@ -1,0 +1,90 @@
+[
+  {
+    "asset_id": "0155_chapel_bell_01_glb",
+    "path": "art/models/bayloop_chapel_market_v01/chapel_bell_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "8f026286ebf120f76b813e5041c3db23ff3f2064c0118f0efa72a36a3d1486ca",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_chapel_bell_01_fbx",
+    "path": "art/models/bayloop_chapel_market_v01/chapel_bell_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "88381f8f531ae99f31c8f230183f85df34be0b024f5a20286d00fbdd76d51279",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_chapel_bell_01_blend",
+    "path": "art/models/bayloop_chapel_market_v01/chapel_bell_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "233a6ed6e54c59fc2be8600ad46500c6c14ca664e3d56cad923c6607f0bad37a",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_FishMarketRoof_glb",
+    "path": "art/models/bayloop_chapel_market_v01/FishMarketRoof.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "0fe4cb89c661b11b57e47bc97879e02a85c395c8b7559fb3e3a17e595d17d5b2",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_FishMarketRoof_fbx",
+    "path": "art/models/bayloop_chapel_market_v01/FishMarketRoof.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "a1f8ecdcc7f23914d73685e60b2f5c689bc941862465589236145abf7705249e",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_FishMarketRoof_blend",
+    "path": "art/models/bayloop_chapel_market_v01/FishMarketRoof.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0 photographs; original bpy geometry",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_chapel_market.py; bayloop_buildings.py metric UV; existing photo_to_pixel.py CC0 atlas",
+    "ai_generated": "no",
+    "sha256": "42275dc4feb55fa910f018d4ac8973a0673db60ac4c2ea1db1b0691d002993eb",
+    "notes": "Original landmark geometry; 32px/m; shared palette; local splash-band wear; static preview not Unity"
+  },
+  {
+    "asset_id": "0155_ChapelMarketPhotoAtlas",
+    "path": "art/models/bayloop_chapel_market_v01/ChapelMarketPhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "prepare_atlas.py; photo_to_pixel.py; bayloop_buildgen_textures.py",
+    "ai_generated": "no",
+    "sha256": "93050fbe25c1f6191aeee1313122a4e45a5dfe9a594a111c53345d289a443245",
+    "notes": "Existing CC0 photo atlas reused; plaster photo 2m resampled64px, photograph luminance16percent threshold, palette19/25; Point32px/m; no AI"
+  },
+  {
+    "asset_id": "0155_FishMarketPhotoAtlas",
+    "path": "art/models/bayloop_chapel_market_v01/FishMarketPhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0",
+    "accessed": "2026-10-26",
+    "tool": "revise_market.py; photo_to_pixel.py; bayloop_buildgen_textures.py",
+    "ai_generated": "no",
+    "sha256": "1ba16190a7cdeff5c4a9f22c07d1ccf8066eeea19193f73c981afce868d7c81e",
+    "notes": "Existing CC0 photograph patterns: roof cell15 palette11/7; insulated box cell0 palette14/19; fish silver cell14 palette18/19. No generated noise;32px/m Point."
+  }
+]

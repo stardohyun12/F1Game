@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "density_policy": "world32",
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "tiles": [
+    {
+      "id": "grass",
+      "albedo": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_grass_32ppm.png",
+      "model": "art/textures/2026-10-26-bayloop-terrain/proof/grass_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "source": {
+        "id": "sparse_grass",
+        "path": "art/textures/2026-10-26-bayloop-terrain/sources/sparse_grass_diff_1k.png",
+        "url": "https://polyhaven.com/a/sparse_grass",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/sparse_grass/sparse_grass_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Amal Kumar": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "ab60bc2f607801de291b826514cd13615397a903e861f0974c61c67849b7eb2d",
+        "md5": "e4c7593acc6bd6b937e43351fadc41aa",
+        "provider_md5_match": true,
+        "accessed": "2026-10-26",
+        "ai_generated": false
+      },
+      "process": [
+        "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified",
+        "photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none"
+      ],
+      "ai_generated": false
+    },
+    {
+      "id": "soil",
+      "albedo": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_soil_32ppm.png",
+      "model": "art/textures/2026-10-26-bayloop-terrain/proof/soil_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "source": {
+        "id": "dirt",
+        "path": "art/textures/2026-10-26-bayloop-terrain/sources/dirt_diff_1k.png",
+        "url": "https://polyhaven.com/a/dirt",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/dirt/dirt_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Charlotte Baglioni": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "96b3eb441121c41806a4766f37eeeeb4667af73207ccd8bfb56bbd446a221d42",
+        "md5": "033b3aaa80b816a1a53ed211d69a3328",
+        "provider_md5_match": true,
+        "accessed": "2026-10-26",
+        "ai_generated": false
+      },
+      "process": [
+        "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified",
+        "photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none"
+      ],
+      "ai_generated": false
+    },
+    {
+      "id": "dry_grass",
+      "albedo": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_dry_grass_32ppm.png",
+      "model": "art/textures/2026-10-26-bayloop-terrain/proof/dry_grass_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "source": {
+        "id": "withered_grass",
+        "path": "art/textures/2026-10-26-bayloop-terrain/sources/withered_grass_diff_1k.png",
+        "url": "https://polyhaven.com/a/withered_grass",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/withered_grass/withered_grass_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Charlotte Baglioni": "All"
+        },
+        "dimensions_mm": [
+          1999.9996423721313,
+          1999.9996423721313
+        ],
+        "method": "photography / photoscan; provider FAQ",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "30bdaa96e88b7194d7d6b5f9c385d1155b34843c5e4eb4da3b93b48f328f4198",
+        "md5": "aaf94c41831f1f2e66aafb667bfb5677",
+        "provider_md5_match": true,
+        "accessed": "2026-10-26",
+        "ai_generated": false
+      },
+      "process": [
+        "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified",
+        "photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none"
+      ],
+      "ai_generated": false
+    },
+    {
+      "id": "rock",
+      "albedo": "art/textures/2026-10-26-bayloop-terrain/albedo/BL_Terrain_rock_32ppm.png",
+      "model": "art/textures/2026-10-26-bayloop-terrain/proof/rock_metric.glb",
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "source": {
+        "id": "rock_face_04",
+        "path": "art/textures/2026-10-26-bayloop-terrain/sources/rock_face_04_diff_1k.png",
+        "url": "https://polyhaven.com/a/rock_face_04",
+        "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/rock_face_04/rock_face_04_diff_1k.png",
+        "license": "CC0-1.0",
+        "license_url": "https://polyhaven.com/license",
+        "authors": {
+          "Dimitrios Savva": "All"
+        },
+        "dimensions_mm": [
+          2000,
+          2000
+        ],
+        "method": "photography / photoscan; provider FAQ",
+        "method_evidence_url": "https://docs.polyhaven.com/en/faq#-do-you-use-photogrammetryphotoscanning",
+        "sha256": "4761f69c25e78b3ee4193695a1e11457cc12b8eabbf0bfdf47e39436400db841",
+        "md5": "fabc746f642026fc2880ec264970ab8c",
+        "provider_md5_match": true,
+        "accessed": "2026-10-26",
+        "ai_generated": false
+      },
+      "process": [
+        "Direct official CC0 diffuse download; 2m physical scan; provider MD5 verified",
+        "photo_to_pixel.py full source BOX to 64x64 at32px/m; exact shared32 palette quantization; dither none"
+      ],
+      "ai_generated": false
+    }
+  ]
+}

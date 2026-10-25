@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438c1f99279677e46882c00be2723762, type: 3}
+  m_Name: ProtoCourseCatalog
+  m_EditorClassIdentifier: PitCrew::OrderCatalog
+  jobs:
+  - {fileID: 11400000, guid: e313c4a40e739f24d8ba90e0780fbf12, type: 2}
+  - {fileID: 11400000, guid: 19ff8275f5fe78342a90c651e6a08e70, type: 2}
+  - {fileID: 11400000, guid: 5b86d5544ab3857498d4cb4ab4465180, type: 2}
+  - {fileID: 11400000, guid: 1da1467cb54c0c84a8cd77a6dc045768, type: 2}

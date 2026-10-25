@@ -26,17 +26,17 @@
       "bounds_min": [
         -1.6325000524520874,
         0.0,
-        -0.05050000175833702
+        -0.07417887076735497
       ],
       "bounds_max": [
         1.6325000524520874,
-        1.5499999749299604,
-        0.05050000175833702
+        1.5499999672174454,
+        0.07417887076735497
       ],
       "dimensions_m": [
         3.265000104904175,
-        1.5499999749299604,
-        0.10100000351667404
+        1.5499999672174454,
+        0.14835774153470993
       ],
       "source_urls": [
         "https://polyhaven.com/a/asphalt_02",
@@ -54,7 +54,7 @@
         "variant": 0,
         "seed": 232100
       },
-      "geometry_sha256": "2429aa941ce422657bf94425920ab96681a055ae09ed0cdb0eebbb1c689329fb",
+      "geometry_sha256": "62cdd77e3b908c57ab208fbbac959edb09517b15bf018b11526b454eb9505a5c",
       "design": {
         "pivot": "bottom_center",
         "mount_height_m": 2.7,
@@ -62,7 +62,7 @@
         "triangle_budget": 1500,
         "design_notes": [
           "Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.",
-          "Broad shallow folds, smooth garment normals, continuous photo UV; no simulation or animation."
+          "Broad folds, smooth garment normals, physical32px/m triangle UV islands, intentional shared-photo overlap; no simulation or animation."
         ],
         "skills": [
           "prop-artist",
@@ -102,7 +102,7 @@
       "model": "art/models/bskills_trial_v01/parked_car_01.glb",
       "fbx": "art/models/bskills_trial_v01/parked_car_01.fbx",
       "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
-      "tris": 1314,
+      "tris": 1302,
       "bounds_min": [
         -0.8399999737739563,
         0.0,
@@ -134,7 +134,7 @@
         "variant": 0,
         "seed": 232100
       },
-      "geometry_sha256": "afcfd6348987786c0c3c54c442c25c1d0cde8a2cf31d97f6221c8c5ccdea8140",
+      "geometry_sha256": "7251d80fd25fe5566f7970e143a567a01c309566e78535afc295b6043644206b",
       "design": {
         "form": "rounded_european_hatch",
         "design_body_dimensions_m": [
@@ -197,7 +197,7 @@
       "model": "art/models/bskills_trial_v01/parked_car_02.glb",
       "fbx": "art/models/bskills_trial_v01/parked_car_02.fbx",
       "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
-      "tris": 1314,
+      "tris": 1302,
       "bounds_min": [
         -0.8700000047683716,
         0.0,
@@ -229,7 +229,7 @@
         "variant": 1,
         "seed": 232101
       },
-      "geometry_sha256": "74c24ab94428a73db10978bf42aa0d13a8517c6c50aa00bcea26dd5cf26f9d59",
+      "geometry_sha256": "1d06c2eff35188d54c218d09d5b0ac5af43b5ae65215aac8fc84b4d1b1200ed9",
       "design": {
         "form": "angular_european_hatch",
         "design_body_dimensions_m": [
@@ -292,7 +292,7 @@
       "model": "art/models/bskills_trial_v01/parked_car_03.glb",
       "fbx": "art/models/bskills_trial_v01/parked_car_03.fbx",
       "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
-      "tris": 1386,
+      "tris": 1382,
       "bounds_min": [
         -0.7975000143051147,
         0.0,
@@ -300,12 +300,12 @@
       ],
       "bounds_max": [
         0.7975000143051147,
-        1.6799999475479126,
+        1.679999951273203,
         1.7055000066757202
       ],
       "dimensions_m": [
         1.5950000286102295,
-        1.6799999475479126,
+        1.679999951273203,
         3.4110000133514404
       ],
       "source_urls": [
@@ -324,7 +324,7 @@
         "variant": 2,
         "seed": 232102
       },
-      "geometry_sha256": "0f1a92ffa6a6ec7afffafd6e8e2569ee6144ecd8cbf29e3db6457653ed24a385",
+      "geometry_sha256": "594bc596525e8d13d1ddee7163787f059e15f8b875d412f5345e59b7f2a841aa",
       "design": {
         "form": "tall_japanese_kei",
         "design_body_dimensions_m": [
@@ -334,7 +334,7 @@
         ],
         "wheelbase_m": 2.335,
         "track_m": 1.245,
-        "wheel_radius_m": 0.255,
+        "wheel_radius_m": 0.28,
         "wheel_count": 4,
         "front_overhang_m": 0.48,
         "rear_overhang_m": 0.48,
@@ -387,7 +387,7 @@
       "model": "art/models/bskills_trial_v01/three_wheeler_01.glb",
       "fbx": "art/models/bskills_trial_v01/three_wheeler_01.fbx",
       "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
-      "tris": 1042,
+      "tris": 1082,
       "bounds_min": [
         -0.6899999976158142,
         0.0,
@@ -419,7 +419,7 @@
         "variant": 0,
         "seed": 232100
       },
-      "geometry_sha256": "18969bcdcf3a2183dca61ac608ac6c2d9b707b004b8ac5f0468aa0f588ea0487",
+      "geometry_sha256": "a29879ed4536824c09abc12750ac25256a6d3938e292a4f0abacdc89dba59384",
       "design": {
         "form": "three_wheel_drop_side_cargo",
         "maxtris": 1500,
@@ -439,7 +439,7 @@
         "front_axis": "-Y",
         "rigged": false,
         "skill": "vehicle-artist",
-        "geometry_triangles": 1042,
+        "geometry_triangles": 1082,
         "loadpath": {
           "crossmember_count": 2,
           "rail_top_z": 0.45,

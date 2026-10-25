@@ -1,0 +1,173 @@
+[
+  {
+    "asset_id": "people_young_01_fbx",
+    "path": "art/models/bayloop_people_v01/people_young_01.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "a6954cd7c9c7ee4f2658b6f87c92759ea6eeb4b08178d494fe25e19eda1707b5"
+  },
+  {
+    "asset_id": "people_young_01_glb",
+    "path": "art/models/bayloop_people_v01/people_young_01.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "8e01cb3319d5d7d824ae2fcb465663c496554132efbf711f169b331db4df95b1"
+  },
+  {
+    "asset_id": "people_young_01_blend",
+    "path": "art/models/bayloop_people_v01/people_young_01.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "4a52b290cb71a3979b87e51627016905bd63101cc82f3908a728608cd7e8293d"
+  },
+  {
+    "asset_id": "people_young_02_fbx",
+    "path": "art/models/bayloop_people_v01/people_young_02.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "296766f70a0aeffa07191ad80ec1d02ce5f5bf4dd6b6b03a5f5de149fb4a5916"
+  },
+  {
+    "asset_id": "people_young_02_glb",
+    "path": "art/models/bayloop_people_v01/people_young_02.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "81f75aa43efa239a64d3b5683c374751da6f631c405d009e91606455f282cf79"
+  },
+  {
+    "asset_id": "people_young_02_blend",
+    "path": "art/models/bayloop_people_v01/people_young_02.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "5ddfedf300e746ab241e0119d367fde6f70b8e104883339c21afc9b9f2957839"
+  },
+  {
+    "asset_id": "people_young_03_fbx",
+    "path": "art/models/bayloop_people_v01/people_young_03.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "db96401df3e51d86631be2cc4e03ed1893f349fc94a4c806e8cbc189c4f11206"
+  },
+  {
+    "asset_id": "people_young_03_glb",
+    "path": "art/models/bayloop_people_v01/people_young_03.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "59496bfa21e0bf8a46bdd82727a776be4308e2eca6e918ca867908515e39632d"
+  },
+  {
+    "asset_id": "people_young_03_blend",
+    "path": "art/models/bayloop_people_v01/people_young_03.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "4d192a92365fb947270d3035f4f9dbd6eb339617315c221d5d9f1ea8e3de51af"
+  },
+  {
+    "asset_id": "people_elder_01_fbx",
+    "path": "art/models/bayloop_people_v01/people_elder_01.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "663fa8e2acb73f8bb26866445b65be58107b51a91c4a6e16acb8d00fa19d6a48"
+  },
+  {
+    "asset_id": "people_elder_01_glb",
+    "path": "art/models/bayloop_people_v01/people_elder_01.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "9814bcf81696b11924ceb8f41a445e8bdd9f036feab140733fa8fc773b833743"
+  },
+  {
+    "asset_id": "people_elder_01_blend",
+    "path": "art/models/bayloop_people_v01/people_elder_01.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "d3bc8ff3ea55b6164bdda5bbff1fcb3844735181615acc3e39143d12dfc9ae66"
+  },
+  {
+    "asset_id": "people_elder_02_fbx",
+    "path": "art/models/bayloop_people_v01/people_elder_02.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "42824b4af3570c8dc118b836394984e410d0fe31467629d65c1d62aff06e149f"
+  },
+  {
+    "asset_id": "people_elder_02_glb",
+    "path": "art/models/bayloop_people_v01/people_elder_02.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "e0ec0f6051f972c110cc5ab524cc93757bf4d538aadcf8078901bd81595ac075"
+  },
+  {
+    "asset_id": "people_elder_02_blend",
+    "path": "art/models/bayloop_people_v01/people_elder_02.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "2c0e020be6e3a511076dc957800f0c865d2838a58fe5e183aefd70444e00d73b"
+  },
+  {
+    "asset_id": "people_elder_03_fbx",
+    "path": "art/models/bayloop_people_v01/people_elder_03.fbx",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "26b1e010373de1c5849d0855bf053b00cc193b71e834a56145836536be3b56b4"
+  },
+  {
+    "asset_id": "people_elder_03_glb",
+    "path": "art/models/bayloop_people_v01/people_elder_03.glb",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "dc86294182e5db4b10d59a8b7ecd6a5fdfa1db8d0631e03c2f1f836b81bf3593"
+  },
+  {
+    "asset_id": "people_elder_03_blend",
+    "path": "art/models/bayloop_people_v01/people_elder_03.blend",
+    "source_url": "https://polyhaven.com/a/rough_linen; https://quaternius.com/packs/universalanimationlibrary.html",
+    "license": "CC0 photograph and UAL Standard animations; original bpy mesh",
+    "processing": "photo BOX9px per .271m; shared-palette ladders; metric32px/m UV; adult mesh+17-bone weighted rig; UAL rest-basis retarget+3 baked actions",
+    "ai_generated": false,
+    "sha256": "708cd01cdfd8c1b5a81dd8fb8dc1fa13d86f7544614ffd430fc88b0494d40b64"
+  },
+  {
+    "asset_id": "people_photo_atlas",
+    "path": "art/models/bayloop_people_v01/PeoplePhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/rough_linen",
+    "license": "CC0 photograph",
+    "processing": "luminance BOX9px per .271m; shared-palette ladders; Point",
+    "ai_generated": false,
+    "sha256": "e259ed02fb3c85a7e9ae8d6ddb5bee84ae84a5889ea2eb1537a68b61d401b2b2"
+  }
+]

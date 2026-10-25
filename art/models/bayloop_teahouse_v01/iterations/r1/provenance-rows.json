@@ -1,0 +1,156 @@
+[
+  {
+    "asset_id": "bayloop_tea_TeaHousePhotoAtlas_png",
+    "path": "art/models/bayloop_teahouse_v01/TeaHousePhotoAtlas.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "a62228f91e2ed4b2d115e21d191fdc57a161887ec25adcf909b37fd2627315c1",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_teahouse_01_fbx",
+    "path": "art/models/bayloop_teahouse_v01/teahouse_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "5e24461dc4d1a66f64b7e43391f628d68b276390bafb2d1b747e8480bb490597",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_owner_bicycle_01_fbx",
+    "path": "art/models/bayloop_teahouse_v01/tea_owner_bicycle_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "f571c5e1bbb816595760443cfe61722e05b977ef485cd9798b8de81025a95de9",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_table_01_fbx",
+    "path": "art/models/bayloop_teahouse_v01/tea_table_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "cfdf816b9216a998e871e726362dbd245b424ac61c9f2bd312258740e973b149",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_tray_display_01_fbx",
+    "path": "art/models/bayloop_teahouse_v01/tea_tray_display_01.fbx",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "36c1f514442903e5b643d1044a0815d28c91f12ced0d987bf1726a149e2a311f",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_teahouse_01_glb",
+    "path": "art/models/bayloop_teahouse_v01/teahouse_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "b100b2b33e7f5c171439443a24594c6605244bf9fed66ff3b09f6bb45d69751d",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_owner_bicycle_01_glb",
+    "path": "art/models/bayloop_teahouse_v01/tea_owner_bicycle_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "2b425c8186851f91d80d380bcfffd58ef940468cfd0b5e15f5a7c06c182c2d73",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_table_01_glb",
+    "path": "art/models/bayloop_teahouse_v01/tea_table_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "8620c95ea23c028030035f9b70a2e6a9f0c37c714a10a0a18553f924d6de36b9",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_tray_display_01_glb",
+    "path": "art/models/bayloop_teahouse_v01/tea_tray_display_01.glb",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "1a73b71d35b1e14ab01dbb6acf5b9f8f0508c8ce2c91d6c0ae464c14c9d95ec0",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_review_scene_blend",
+    "path": "art/models/bayloop_teahouse_v01/review_scene.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "650b688205154ea7a04480f623a9b7e3fad2f08e4f1ae3a6b35db8a512ad6e8e",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_teahouse_01_blend",
+    "path": "art/models/bayloop_teahouse_v01/teahouse_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "f1ac3e03923e59e16052e0b39f2e696a73e9feca5a02d6a6fc85cc81434ae901",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_owner_bicycle_01_blend",
+    "path": "art/models/bayloop_teahouse_v01/tea_owner_bicycle_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "c22d5332fa9ca95c1927c82242ff91212e9132d4eeb822d229b38a2203f06ca9",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_table_01_blend",
+    "path": "art/models/bayloop_teahouse_v01/tea_table_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "a0e1ef3af9b43a69d5294683c22badc8ba55b28a2a69a05e197a41edc3d05014",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  },
+  {
+    "asset_id": "bayloop_tea_tea_tray_display_01_blend",
+    "path": "art/models/bayloop_teahouse_v01/tea_tray_display_01.blend",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; original bpy geometry; Galmuri OFL-1.1",
+    "accessed": "2026-10-26",
+    "tool": "bayloop_teahouse.py; bayloop_teahouse_textures.py; bayloop_buildings.py; photo_to_pixel.py; Blender bpy",
+    "ai_generated": "no",
+    "sha256": "0cd26083dfa3f5fecbfda7d0b7b79de601997f65d69c661d9b5e60c70636686e",
+    "notes": "Reused audited CC0 photographic atlas; Galmuri Korean information only; 32px/m; review_scene is review-only and not exported to game"
+  }
+]
