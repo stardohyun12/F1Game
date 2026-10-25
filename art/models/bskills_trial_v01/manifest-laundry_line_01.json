@@ -1,0 +1,97 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 1500,
+  "source_manifests": [
+    "art/models/bayloop_buildings_v01/metal-source.json",
+    "art/models/bayloop_props2_v01/asphalt-source.json",
+    "art/models/bayloop_props2_v01/linen-source.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json"
+  ],
+  "assets": [
+    {
+      "id": "laundry_line_01",
+      "type": "laundry_line",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/laundry_line_01.glb",
+      "fbx": "art/models/bskills_trial_v01/laundry_line_01.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 880,
+      "bounds_min": [
+        -1.6325000524520874,
+        0.0,
+        -0.05050000175833702
+      ],
+      "bounds_max": [
+        1.6325000524520874,
+        1.5499999749299604,
+        0.05050000175833702
+      ],
+      "dimensions_m": [
+        3.265000104904175,
+        1.5499999749299604,
+        0.10100000351667404
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "laundry_line_01",
+        "type": "laundry_line",
+        "variant": 0,
+        "seed": 232100
+      },
+      "geometry_sha256": "2429aa941ce422657bf94425920ab96681a055ae09ed0cdb0eebbb1c689329fb",
+      "design": {
+        "pivot": "bottom_center",
+        "mount_height_m": 2.7,
+        "placement_offset_m": 0,
+        "triangle_budget": 1500,
+        "design_notes": [
+          "Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.",
+          "Broad shallow folds, smooth garment normals, continuous photo UV; no simulation or animation."
+        ],
+        "skills": [
+          "prop-artist",
+          "uv-workflow",
+          "lowpoly-style"
+        ]
+      },
+      "systems": [
+        "rope_mounts",
+        "shirt_back",
+        "shirt_front",
+        "sleeve_back",
+        "sleeve_front",
+        "small_cloth_back",
+        "small_cloth_front",
+        "towel_back",
+        "towel_front",
+        "trouser_leg_back",
+        "trouser_leg_front",
+        "trouser_waist_back",
+        "trouser_waist_front",
+        "wooden_pegs"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    }
+  ]
+}

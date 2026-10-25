@@ -1,0 +1,11 @@
+{
+  "path": "art/models/bayloop_props2_v01/Props2RoadAtlas.png",
+  "sha256": "8a907266f4f5d053edcaa02dfb5687863373546fd07cd0d90d6b225fce43269b",
+  "source_url": "https://polyhaven.com/a/asphalt_02",
+  "size": [
+    1024,
+    1024
+  ],
+  "outside_palette_colors": 0,
+  "process": "Actual 3m asphalt diffuse BOX to96px, exact palette ladders; white road paint and red sign are photo-grounded information colours; no noise"
+}

@@ -1,0 +1,72 @@
+{
+  "name": "cargo_fish_v01",
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        26,
+        7
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        30,
+        1,
+        26,
+        7
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        1,
+        10,
+        20,
+        7
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        24,
+        10,
+        20,
+        7
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        1,
+        20,
+        26,
+        20
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        30,
+        20,
+        26,
+        20
+      ]
+    }
+  ],
+  "narrow_face_note": "Manufactured dimensions at 64px/m produce surfaces smaller than 8px; no enlarged fake UV region.",
+  "layers": [
+    "authored material colour ladder",
+    "scripted EPS structure or glass strips",
+    "scripted label and orientation",
+    "contact vertex AO"
+  ],
+  "wear": "No global wear/noise. EPS mould seams and glass reflection value strips are material structure."
+}

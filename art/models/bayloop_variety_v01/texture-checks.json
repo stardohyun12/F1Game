@@ -1,0 +1,124 @@
+{
+  "pass": true,
+  "atlas_count": 4,
+  "wall_colors": 8,
+  "rows": [
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "sha256": "35fb7b15faee6fecb8d268ec62bd65cc16ae2f6c05d85ea2e5df806f3e24f198",
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0,
+      "all_cells_nonflat": true,
+      "cell_color_counts": [
+        2,
+        2,
+        2,
+        2,
+        23,
+        9,
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "sha256": "968c14d54c8e4241094715af5a52208e1a3d139303425c5abd63cafdcf4fca6b",
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0,
+      "all_cells_nonflat": true,
+      "cell_color_counts": [
+        2,
+        2,
+        2,
+        2,
+        23,
+        9,
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "sha256": "230ef36022aecf59bceb4bee284e8f5797ce8cf527aa207e321779e7253bb9a8",
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 29,
+      "outside_palette_colors": 0,
+      "all_cells_nonflat": true,
+      "cell_color_counts": [
+        2,
+        2,
+        2,
+        2,
+        23,
+        9,
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5,
+        3,
+        2,
+        2
+      ]
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "sha256": "e8632bef03cf23b433a1752b1d5a32d74f5a048c0a1e0b8979a4eb21ce41c2f9",
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0,
+      "all_cells_nonflat": true,
+      "cell_color_counts": [
+        2,
+        2,
+        2,
+        2,
+        23,
+        9,
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        5,
+        3,
+        2,
+        2
+      ]
+    }
+  ],
+  "density_note": "Source photo resampling remains 32 px/m; actual GLB UV density must be checked after model export. This report does not claim model check_asset PASS."
+}

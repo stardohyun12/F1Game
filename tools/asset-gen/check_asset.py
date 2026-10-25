@@ -47,19 +47,20 @@ def flat_windows(image,regions,window=8):
   rect=region['rect_xywh']
   if len(rect)!=4 or any(isinstance(v,bool) or int(v)!=v for v in rect):raise ValueError('Surface rect_xywh must contain four integers')
   x,y,w,h=map(int,rect);name=region.get('face',str(len(results)))
-  if min(x,y)<0 or min(w,h)<window or x+w>width or y+h>height:raise ValueError('Invalid or smaller-than-window surface region: '+name)
+  if min(x,y)<0 or min(w,h)<1 or x+w>width or y+h>height:raise ValueError('Invalid surface region: '+name)
+  ww,wh=min(window,w),min(window,h)
   surface=pixels[y:y+h,x:x+w]
   if np.any(surface[:,:,3]!=255):raise ValueError('Main surface must be opaque: '+name)
-  count=0;bad=[];minimum=window*window
-  for sy in range(h-window+1):
-   for sx in range(w-window+1):
-    colors=len(np.unique(surface[sy:sy+window,sx:sx+window,:3].reshape(-1,3),axis=0))
+  count=0;bad=[];minimum=ww*wh
+  for sy in range(h-wh+1):
+   for sx in range(w-ww+1):
+    colors=len(np.unique(surface[sy:sy+wh,sx:sx+ww,:3].reshape(-1,3),axis=0))
     count+=1;minimum=min(minimum,colors)
-    if colors<2:bad.append([x+sx,y+sy,window,window])
+    if colors<2:bad.append([x+sx,y+sy,ww,wh])
   total+=count
   violations.extend({'face':name,'rect_xywh':r} for r in bad)
-  results.append({'face':name,'rect_xywh':[x,y,w,h],'window_count':count,'minimum_colors':minimum,'flat_window_count':len(bad)})
- return {'status':'checked','pass':not violations,'window_size':[window,window],'stride':1,'minimum_required_colors':2,'window_count':total,'flat_window_count':len(violations),'flat_windows':violations,'regions':results,'scope':'Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. RGB variation only, not alpha.'}
+  results.append({'face':name,'rect_xywh':[x,y,w,h],'window_size':[ww,wh],'check_kind':'standard_8x8' if ww==wh==8 else 'narrow_surface_auxiliary','window_count':count,'minimum_colors':minimum,'flat_window_count':len(bad)})
+ return {'status':'checked','pass':not violations,'requested_window_size':[window,window],'stride':1,'minimum_required_colors':2,'window_count':total,'standard_8x8_window_count':sum(r['window_count'] for r in results if r['check_kind']=='standard_8x8'),'narrow_auxiliary_window_count':sum(r['window_count'] for r in results if r['check_kind']=='narrow_surface_auxiliary'),'flat_window_count':len(violations),'flat_windows':violations,'regions':results,'scope':'Declared main face interiors only; atlas padding, gutters and neighbouring faces excluded. Narrow faces use min(8,width) x min(8,height) auxiliary windows, not an 8x8 claim. RGB variation only, not alpha; manifest coverage is not inferred from geometry.'}
 
 def inspect(args):
  palette=load_palette(args.palette);img=Image.open(args.texture).convert('RGBA');w,h=img.size
@@ -113,23 +114,23 @@ def inspect(args):
  main_regions=[]
  for axis in range(3):
   for sign in [-1,1]:
-   candidates=[r for r in triangle_regions if r['normal'][axis]*sign>=.98]
+   candidates=[r for r in triangle_regions if int(np.argmax(np.abs(r['normal'])))==axis and r['normal'][axis]*sign>0] if args.shape=='cargo' else [r for r in triangle_regions if r['normal'][axis]*sign>=.98]
    if candidates:
     main=max(candidates,key=lambda r:r['area_m2'])
     projected_area=float(np.prod(np.delete(hi-lo,axis)))
-    if main['area_m2']>=projected_area*.1:main_regions.append(main)
+    if args.shape=='cargo' or main['area_m2']>=projected_area*.1:main_regions.append(dict(main,direction=('+' if sign>0 else '-')+'XYZ'[axis]))
  main_overlap=[]
  for i,a in enumerate(main_regions):
   for j,b in enumerate(main_regions[:i]):
    a0,a1=np.array(a['uv_pixel_bounds']);b0,b1=np.array(b['uv_pixel_bounds'])
    if np.all(np.minimum(a1,b1)-np.maximum(a0,b0)>1e-4):main_overlap.append([j,i])
  main_rects={tuple(round(v,4) for row in r['uv_pixel_bounds'] for v in row) for r in main_regions}
- six_regions=(len(main_regions)==len(main_rects)==6 and not main_overlap) if args.shape=='beveled-box' else (len(groups)==len(unique_rects)==6)
+ six_regions=(len(main_regions)==len(main_rects)==6 and not main_overlap) if args.shape in ['beveled-box','cargo'] else (len(groups)==len(unique_rects)==6)
  checks={'palette_outside_zero':not extra,'texture_power_of_two':all(n>0 and n&(n-1)==0 for n in [w,h]),'texture_is_64':w==h==64,'triangle_budget':0<tris<=args.max_tris,'density_both_principal_axes':density_min>=low-1e-5 and density_max<=high+1e-5,'embedded_texture_matches_png':all(image_match),'point_sampling':all(s.get('magFilter')==9728 and s.get('minFilter') in [9728,9984] for s in samplers),'six_distinct_face_regions':six_regions,'material_no_normal_or_metal':not material_issues,'dimensions_metres':np.allclose(hi-lo,args.dimensions,atol=.00001),'pivot_floor_center':np.allclose(lo,[-args.dimensions[0]/2,0,-args.dimensions[2]/2],atol=.00001)}
- return {'shape':args.shape,'main_face_uv_regions':main_regions,'main_face_uv_overlaps':main_overlap,'pass':all(checks.values()),'checks':checks,'palette_colors':len(palette),'used_colors':len(actual),'outside_color_count':len(extra),'outside_colors':extra[:32],'texture_size':[w,h],'tris':tris,'density_target':args.density,'density_tolerance':args.tolerance,'density_min':density_min,'density_max':density_max,'per_triangle_density':densities,'dimensions_m':(hi-lo).tolist(),'bounds_min':lo.tolist(),'bounds_max':hi.tolist(),'face_uv_regions':ranges,'samplers':samplers,'material_issues':material_issues,'model_sha256':hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),'texture_sha256':hashlib.sha256(Path(args.texture).read_bytes()).hexdigest(),'method':'GLB binary accessor positions + node transforms; singular values of world-to-UV-pixel Jacobian per triangle. Not metadata claims.'}
+ return {'shape':args.shape,'six_region_scope':'cargo: largest actual triangle per signed dominant world-normal axis; UV bounding boxes must be distinct and disjoint. This verifies six representative directions, not all island overlap, text semantics, or complete surface-manifest coverage. Beveled-box keeps near-axis and projected-area thresholds.', 'main_face_uv_regions':main_regions,'main_face_uv_overlaps':main_overlap,'pass':all(checks.values()),'checks':checks,'palette_colors':len(palette),'used_colors':len(actual),'outside_color_count':len(extra),'outside_colors':extra[:32],'texture_size':[w,h],'tris':tris,'density_target':args.density,'density_tolerance':args.tolerance,'density_min':density_min,'density_max':density_max,'per_triangle_density':densities,'dimensions_m':(hi-lo).tolist(),'bounds_min':lo.tolist(),'bounds_max':hi.tolist(),'face_uv_regions':ranges,'samplers':samplers,'material_issues':material_issues,'model_sha256':hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),'texture_sha256':hashlib.sha256(Path(args.texture).read_bytes()).hexdigest(),'method':'GLB binary accessor positions + node transforms; singular values of world-to-UV-pixel Jacobian per triangle. Not metadata claims.'}
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',required=True);p.add_argument('--texture',required=True);p.add_argument('--palette',required=True);p.add_argument('--out',required=True);p.add_argument('--density',type=float,default=32);p.add_argument('--tolerance',type=float,default=.1);p.add_argument('--max-tris',type=int,default=2000);p.add_argument('--dimensions',nargs=3,type=float,default=[.4,.3,.3]);p.add_argument('--shape',choices=['box','beveled-box'],default='box',help='Six separate near-axis main UV regions; every triangle receives density checks.');p.add_argument('--surface-manifest',help='JSON faces[].rect_xywh main face regions for mandatory 8x8 variation checking');args=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--model',required=True);p.add_argument('--texture',required=True);p.add_argument('--palette',required=True);p.add_argument('--out',required=True);p.add_argument('--density',type=float,default=32);p.add_argument('--tolerance',type=float,default=.1);p.add_argument('--max-tris',type=int,default=2000);p.add_argument('--dimensions',nargs=3,type=float,default=[.4,.3,.3]);p.add_argument('--shape',choices=['box','beveled-box','cargo'],default='box',help='Six separate near-axis main UV regions; every triangle receives density checks.');p.add_argument('--surface-manifest',help='JSON faces[].rect_xywh main face regions for mandatory 8x8 variation checking');args=p.parse_args()
  try:
   result=inspect(args)
   if args.surface_manifest:
@@ -140,7 +141,7 @@ def main():
    evidence['manifest']=str(args.surface_manifest)
    evidence['manifest_sha256']=hashlib.sha256(Path(args.surface_manifest).read_bytes()).hexdigest()
    result['flat_windows']=evidence
-   result['checks']['no_monochrome_8x8_main_face_windows']=evidence['pass']
+   result['checks']['no_monochrome_main_face_windows']=evidence['pass']
   else:result['flat_windows']={'status':'not_requested','reason':'Pass --surface-manifest for explicit main-face coverage. Legacy runs do not claim this check.'}
   root=Path(__file__).resolve().parents[2]
   with (root/'art/provenance.csv').open(encoding='utf-8-sig',newline='') as f:rows=list(csv.DictReader(f))
@@ -151,4 +152,14 @@ def main():
  except Exception as e:result={'pass':False,'error':str(e)}
  Path(args.out).parent.mkdir(parents=True,exist_ok=True);Path(args.out).write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
  print(json.dumps({k:v for k,v in result.items() if k not in ['per_triangle_density','face_uv_regions']},ensure_ascii=False));return 0 if result['pass'] else 1
-if __name__=='__main__':sys.exit(main())
+if __name__=='__main__':
+ if '--building-manifest' in sys.argv:
+  from check_buildings import main as building_main
+  sys.exit(building_main())
+ if '--texture-manifest' in sys.argv:
+  from check_texture_tiles import main as texture_main
+  sys.exit(texture_main())
+ if '--ui-manifest' in sys.argv:
+  from check_ui_sprites import main as ui_main
+  sys.exit(ui_main())
+ sys.exit(main())

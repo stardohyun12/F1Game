@@ -1,0 +1,14 @@
+00:00.438  blend            | Read blend: "D:\Github\F1Game\art\models\bayloop_buildings_v01\shop_house.blend"
+D:\Github\F1Game\tools\asset-gen\bayloop_legacy_preview.py:21: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat=bpy.data.materials.new('Legacy_original_LofiAtlas');mat.use_nodes=True
+00:12.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\legacy_shop.png'
+00:12.844  blend            | Read blend: "D:\Github\F1Game\art\models\bayloop_buildings_v01\shop_house.blend"
+00:30.438  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\legacy_terrace.png'
+00:30.453  blend            | Read blend: "D:\Github\F1Game\art\models\bayloop_buildings_v01\shop_house.blend"
+00:45.578  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\legacy_warehouse.png'
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

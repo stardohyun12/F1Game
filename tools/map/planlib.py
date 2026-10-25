@@ -520,3 +520,69 @@ def cycles(plan, samp, kinds):
                 if v not in seen:
                     seen.add(v); st.append(v)
     return E - V + C
+
+
+# ── v4 (D-138) 공용 ──
+def road_widths(road, pts):
+    """점마다 길 폭. widthProfile [{from, to, width}] (본선 제어점 번호) 이 있으면 구간 폭, 경계 ±12m 에서 녹인다."""
+    w0 = road["width"]
+    prof = road.get("widthProfile")
+    if not prof:
+        return [w0] * len(pts)
+    kidx = knot_index_s(road, pts) + [len(pts) - 1]
+    w = [w0] * len(pts)
+    for seg in prof:
+        a, b = kidx[seg["from"]], kidx[min(seg["to"], len(kidx) - 1)]
+        for i in range(a, b + 1):
+            w[i] = seg["width"]
+    n, H = len(w), 12
+    closed = road.get("closed", False)
+    out = []
+    for i in range(n):
+        acc = c = 0
+        for k in range(-H, H + 1):
+            j = (i + k) % n if closed else min(n - 1, max(0, i + k))
+            acc += w[j]; c += 1
+        out.append(acc / c)
+    return out
+
+
+def half_at(widths, pts, x, z):
+    i, _ = nearest(pts, x, z)
+    return widths[i] / 2
+
+
+def poly_area(poly):
+    return abs(sum(poly[i][0] * poly[(i + 1) % len(poly)][1] - poly[(i + 1) % len(poly)][0] * poly[i][1] for i in range(len(poly)))) / 2
+
+
+def is_out(road):
+    """끝 모를 길(v4 outRoads) — 경계 밖으로 안개 속까지 이어진다."""
+    return bool(road.get("out"))
+
+
+def road_xsecs(road, pts):
+    """점마다 단면(crossSection, D-139). 본선은 widthProfile 구간마다 다르다."""
+    prof = road.get("widthProfile")
+    x0 = road.get("crossSection")
+    if not prof:
+        return [x0] * len(pts)
+    kidx = knot_index_s(road, pts) + [len(pts) - 1]
+    out = [x0 or prof[0].get("crossSection")] * len(pts)
+    for seg in prof:
+        a, b = kidx[seg["from"]], kidx[min(seg["to"], len(kidx) - 1)]
+        for i in range(a, b + 1):
+            out[i] = seg.get("crossSection", out[i])
+    return out
+
+
+def xs_side(xs, side):
+    """side +1 = 진행 방향 왼쪽(법선 (-tz, tx)), -1 = 오른쪽"""
+    return xs["left"] if side > 0 else xs["right"]
+
+
+def xs_reach(xs, side):
+    """차도 가장자리 → 인도 바깥까지(경계 + 인도·길가띠)."""
+    if not xs:
+        return 0.0
+    return xs_side(xs, side)["walk"]

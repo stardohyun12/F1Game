@@ -1,0 +1,1 @@
+Application.runInBackground=true; Time.timeScale=1f; foreach(var b in UnityEngine.Object.FindObjectsByType<UnityEngine.UI.Button>(FindObjectsSortMode.None)){ var t=b.GetComponentInChildren<TMPro.TMP_Text>(); if(t!=null && t.text.Contains("시작")){ b.onClick.Invoke(); break; } } return "clicked";

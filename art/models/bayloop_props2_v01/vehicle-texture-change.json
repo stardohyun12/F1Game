@@ -1,0 +1,35 @@
+{
+  "path": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+  "sha256": "fec940d6bd94bd1ffa60b09ac0246ee1714b14c43ab9669705b91387a72458cf",
+  "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+  "source_crop_xyxy": [
+    340,
+    260,
+    650,
+    620
+  ],
+  "source_crop_m": [
+    0.666015625,
+    0.7734375000000001
+  ],
+  "ladders": {
+    "0": [
+      7,
+      20
+    ],
+    "3": [
+      1,
+      7
+    ],
+    "7": [
+      2,
+      26
+    ],
+    "13": [
+      2,
+      26
+    ]
+  },
+  "reason": "Reduce whole-body camouflage contrast within fixed shared palette; no invented noise or colour. Warm grey, weathered grey, ochre paint; rubber and hub visually separated.",
+  "outside_palette_colors": 0
+}

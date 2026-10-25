@@ -1,0 +1,175 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+22:14:16 | INFO: Starting glTF 2.0 export
+22:14:16 | INFO: Extracting primitive: laundry_line_01
+22:14:16 | INFO: Primitives created: 1
+22:14:16 | INFO: Finished glTF 2.0 export in 0.012011051177978516 s
+00:02.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_front.png'
+00:14.375  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_side.png'
+00:27.375  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\laundry_line_01.fbx'
+export finished in 0.0033 sec.
+Info: Saved as "laundry_line_01.blend"
+PROP_DONE laundry_line_01 358
+22:14:43 | INFO: Starting glTF 2.0 export
+22:14:43 | INFO: Extracting primitive: traffic_mirror_01
+22:14:43 | INFO: Primitives created: 1
+22:14:43 | INFO: Finished glTF 2.0 export in 0.03636026382446289 s
+00:38.563  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_front.png'
+00:50.625  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_side.png'
+01:03.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\traffic_mirror_01.fbx'
+export finished in 0.0188 sec.
+Info: Saved as "traffic_mirror_01.blend"
+PROP_DONE traffic_mirror_01 232
+22:15:19 | INFO: Starting glTF 2.0 export
+22:15:19 | INFO: Extracting primitive: street_sign_01
+22:15:19 | INFO: Primitives created: 1
+22:15:19 | INFO: Finished glTF 2.0 export in 0.05084681510925293 s
+01:17.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_front.png'
+01:30.219  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_side.png'
+01:42.985  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_01.fbx'
+export finished in 0.0170 sec.
+Info: Saved as "street_sign_01.blend"
+PROP_DONE street_sign_01 200
+22:15:59 | INFO: Starting glTF 2.0 export
+22:15:59 | INFO: Extracting primitive: street_sign_02
+22:15:59 | INFO: Primitives created: 1
+22:15:59 | INFO: Finished glTF 2.0 export in 0.024861574172973633 s
+01:53.703  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_front.png'
+02:04.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_side.png'
+02:16.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_02.fbx'
+export finished in 0.0125 sec.
+Info: Saved as "street_sign_02.blend"
+PROP_DONE street_sign_02 67
+22:16:32 | INFO: Starting glTF 2.0 export
+22:16:32 | INFO: Extracting primitive: street_sign_03
+22:16:32 | INFO: Primitives created: 1
+22:16:32 | INFO: Finished glTF 2.0 export in 0.058585405349731445 s
+02:29.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_front.png'
+02:42.578  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_side.png'
+02:54.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_03.fbx'
+export finished in 0.0298 sec.
+Info: Saved as "street_sign_03.blend"
+PROP_DONE street_sign_03 156
+22:17:10 | INFO: Starting glTF 2.0 export
+22:17:10 | INFO: Extracting primitive: crosswalk_paint_01
+22:17:10 | INFO: Primitives created: 1
+22:17:10 | INFO: Finished glTF 2.0 export in 0.020150423049926758 s
+03:05.531  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_front.png'
+03:17.219  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_side.png'
+03:27.953  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\crosswalk_paint_01.fbx'
+export finished in 0.0104 sec.
+Info: Saved as "crosswalk_paint_01.blend"
+PROP_DONE crosswalk_paint_01 48
+22:17:44 | INFO: Starting glTF 2.0 export
+22:17:44 | INFO: Extracting primitive: road_patch_01
+22:17:44 | INFO: Primitives created: 1
+22:17:44 | INFO: Finished glTF 2.0 export in 0.07354378700256348 s
+03:40.313  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_front.png'
+03:51.813  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_side.png'
+04:03.610  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\road_patch_01.fbx'
+export finished in 0.0199 sec.
+Info: Saved as "road_patch_01.blend"
+PROP_DONE road_patch_01 16
+22:18:20 | INFO: Starting glTF 2.0 export
+22:18:20 | INFO: Extracting primitive: road_patch_02
+22:18:20 | INFO: Primitives created: 1
+22:18:20 | INFO: Finished glTF 2.0 export in 0.06713390350341797 s
+04:15.860  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_02_front.png'
+04:27.360  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_02_side.png'
+04:36.922  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\road_patch_02.fbx'
+export finished in 0.0227 sec.
+Info: Saved as "road_patch_02.blend"
+PROP_DONE road_patch_02 16
+22:18:53 | INFO: Starting glTF 2.0 export
+22:18:53 | INFO: Extracting primitive: shop_display_01
+22:18:53 | INFO: Primitives created: 1
+22:18:53 | INFO: Finished glTF 2.0 export in 0.070953369140625 s
+04:48.094  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\shop_display_01_front.png'
+05:01.188  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\shop_display_01_side.png'
+05:16.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\shop_display_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\shop_display_01.fbx'
+export finished in 0.0197 sec.
+Info: Saved as "shop_display_01.blend"
+PROP_DONE shop_display_01 648
+22:19:32 | INFO: Starting glTF 2.0 export
+22:19:32 | INFO: Extracting primitive: cafe_set_01
+22:19:32 | INFO: Primitives created: 1
+22:19:32 | INFO: Finished glTF 2.0 export in 0.05160880088806152 s
+05:30.422  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\cafe_set_01_front.png'
+05:43.969  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\cafe_set_01_side.png'
+05:57.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\cafe_set_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\cafe_set_01.fbx'
+export finished in 0.0168 sec.
+Info: Saved as "cafe_set_01.blend"
+PROP_DONE cafe_set_01 508
+22:20:13 | INFO: Starting glTF 2.0 export
+22:20:13 | INFO: Extracting primitive: parasol_01
+22:20:13 | INFO: Primitives created: 1
+22:20:13 | INFO: Finished glTF 2.0 export in 0.02682805061340332 s
+06:08.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parasol_01_front.png'
+06:21.078  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parasol_01_side.png'
+06:34.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parasol_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\parasol_01.fbx'
+export finished in 0.0127 sec.
+Info: Saved as "parasol_01.blend"
+PROP_DONE parasol_01 184
+22:20:51 | INFO: Starting glTF 2.0 export
+22:20:51 | INFO: Extracting primitive: mailbox_cluster_01
+22:20:51 | INFO: Primitives created: 1
+22:20:51 | INFO: Finished glTF 2.0 export in 0.059291839599609375 s
+06:49.031  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\mailbox_cluster_01_front.png'
+07:02.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\mailbox_cluster_01_side.png'
+07:13.906  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\mailbox_cluster_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\mailbox_cluster_01.fbx'
+export finished in 0.0190 sec.
+Info: Saved as "mailbox_cluster_01.blend"
+PROP_DONE mailbox_cluster_01 186
+22:21:30 | INFO: Starting glTF 2.0 export
+22:21:30 | INFO: Extracting primitive: garage_door_inset_01
+22:21:30 | INFO: Primitives created: 1
+22:21:30 | INFO: Finished glTF 2.0 export in 0.03386878967285156 s
+07:25.672  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\garage_door_inset_01_front.png'
+07:38.391  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\garage_door_inset_01_side.png'
+07:52.016  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\garage_door_inset_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\garage_door_inset_01.fbx'
+export finished in 0.0108 sec.
+Info: Saved as "garage_door_inset_01.blend"
+PROP_DONE garage_door_inset_01 288
+GROUP_DONE street 13
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

@@ -1,0 +1,7 @@
+{
+  "path": "art/models/bayloop_props2_v01/Props2PavingAtlas.png",
+  "sha256": "a37c5dad11c56dbd43c478c81623aa8d48ff2ee12029dfed13ec5e709fb91d1d",
+  "source_url": "https://polyhaven.com/a/asphalt_02",
+  "process": "Same actual 3m96px photo; background close-value ladder; repair rotated90deg and shifted31pixels to break background continuity; tar seam close-dark photo ladder. Physical density unchanged.",
+  "outside_palette_colors": 0
+}

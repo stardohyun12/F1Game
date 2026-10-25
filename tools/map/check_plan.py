@@ -11,7 +11,11 @@ LIMIT = 150.0
 MAIN_LEN = (900, 1500)
 RATIO = (0.10, 0.40)  # 순한 길이 빠른 길보다 10~40% 느려야 '고를 이유' 가 생긴다
 MAX_DY = 1.5          # 엇갈리는 곳 높이 차(이보다 크면 교차가 아니라 입체)
-END_OK = {"부두", "전망대", "공사 바리케이드", "터널", "주차장"}
+END_OK = {"부두", "전망대", "공사 바리케이드", "터널", "주차장", "고개", "등대"}
+OPEN_RATIO = 0.8     # v4: 길 아닌 차가 갈 수 있는 땅 ≥ 차길 면적 × 0.8 (가설)
+OUT_LEN = (300, 600)
+MIN_STRIP = 0.8      # v4 (D-139): 건물 앞면 ↔ 차도 가장자리 최소(아주 좁은 옛 골목 차길 예외 하한)
+DENSITY_SHARE = {"dense": (0.20, 0.30), "medium": (0.33, 0.47), "sparse": (0.28, 0.42)}   # D-140 육지 면적비(~25/40/35%)
 
 
 def radius_min(pts, h=4, closed=False):
@@ -47,7 +51,7 @@ def main():
         pts = samp[r["id"]]
         g, ga = L.grade_max(pts)
         rad, ra = radius_min(pts, closed=r.get("closed", False))
-        wet = 0 if r.get("overWater") else sum(1 for p in pts if terr.h(p[0], p[1]) < 0.5)
+        wet = 0 if r.get("overWater") or L.is_out(r) else sum(1 for p in pts if terr.h(p[0], p[1]) < 0.5)
         lim = MAX_GRADE[r["kind"]]
         mark = " ⚑지름길(16% 허용)" if r["kind"] == "shortcut" and g > 12 else ""
         row("1 경사", f"{r['id']} ({r['kind']}, 거칠기 {r.get('roughness')})", f"{g:.1f}%", g <= lim, f"상한 {lim:.0f}% @({ga[0]:.0f},{ga[1]:.0f}){mark}")
@@ -69,8 +73,10 @@ def main():
     play = plan["boundary"]["play"]
     for p in ps:
         fr = roads[p["front"]["road"]]
-        d = L.road_dist(samp[fr["id"]], *p["frontMid"]) - fr["width"] / 2
-        if not (-0.3 <= d <= 3.5):
+        wl = L.road_widths(fr, samp[fr["id"]]); i, _ = L.nearest(samp[fr["id"]], *p["frontMid"])
+        d = L.road_dist(samp[fr["id"]], *p["frontMid"]) - wl[i] / 2
+        p["_gap"] = d
+        if not (-0.3 <= d <= p.get("walk", 0) + p.get("frontSpace", 0) + 3.5):
             unreach.append(p["id"])
         c = L.rect_corners(p)
         for x, z in c[2:] + [(p["x"], p["z"])]:
@@ -104,13 +110,13 @@ def main():
                 if L.road_dist(samp[j["id"]], p[0], p[1]) > j["width"] / 2 + 5:
                     bad.append(f"{r['id']}.{key}(접속 안 됨)")
             elif e.get("type") in END_OK:
-                if e["type"] != "부두" and terr.h(p[0], p[1]) < 1.0:
+                if e["type"] != "부두" and not L.is_out(r) and terr.h(p[0], p[1]) < 1.0:
                     bad.append(f"{r['id']}.{key}(바다에서 끝남)")
             else:
                 bad.append(f"{r['id']}.{key}(이유 없음)")
     deadc = sum(1 for r in plan["roads"] for k in ("start", "end") if not r.get("closed") and "type" in r.get(k, {}))
     row("3 이유 없는 길 끝", f"끝 {ends}개 (막다른 끝 {deadc})", f"{len(bad)}개", not bad, ", ".join(bad))
-    outr = [r["id"] for r in plan["roads"] if not all(L.in_poly(p[0], p[1], play) for p in samp[r["id"]])]
+    outr = [r["id"] for r in plan["roads"] if not L.is_out(r) and not all(L.in_poly(p[0], p[1], play) for p in samp[r["id"]])]
     row("3 경계 밖 길", "", f"{len(outr)}", not outr, ", ".join(outr))
 
     # 길망 — 교차로·블록
@@ -167,7 +173,7 @@ def main():
     fast_f = [x >= 0.8 * cap for x in v]; slow_f = [x <= 0.5 * cap for x in v]
     fast_t = 100 * sum(d for d, f_ in zip(dt, fast_f) if f_) / t85
     slow_t = 100 * sum(d for d, f_ in zip(dt, slow_f) if f_) / t85
-    row("R1 속도 구간 시간", "main", f"{fast_t:.0f}%", fast_t >= 55, f"v≥0.8·cap · 한 바퀴 {t85:.0f}초")
+    warn("R1 속도 구간 시간", "main", f"{fast_t:.0f}%", fast_t >= 55, f"v≥0.8·cap · 한 바퀴 {t85:.0f}초")
     st_runs = [r for r in L.runs([x >= L.STRAIGHT_R for x in Rm], closed=True) if r[1] >= 40]
     st_max = max((ln for _, ln in st_runs), default=0)
     st100 = sum(1 for _, ln in st_runs if ln >= 100)
@@ -185,7 +191,7 @@ def main():
     row("R3 탁 트인 바다 길", "main (필지 ≥12m ∧ 해안 ≤40m)", f"최장 {op_max:.0f}m", bool(op_ok), "≥200m 이고 그 안 직선 ≥100m: " + (", ".join(f"s{a*4}:{ln:.0f}" for a, ln in op_ok) or "없음"))
     fr = L.runs(fast_f, closed=True)
     fr_max = max((ln for _, ln in fr), default=0)
-    row("R4 이어진 속도 구간", "main", f"최장 {fr_max:.0f}m", fr_max >= 450, " · ".join(f"s{a*4}:{ln:.0f}" for a, ln in fr if ln >= 80))
+    warn("R4 이어진 속도 구간", "main", f"최장 {fr_max:.0f}m", fr_max >= 450, " · ".join(f"s{a*4}:{ln:.0f}" for a, ln in fr if ln >= 80))
     cum = [0.0]
     for d in dt:
         cum.append(cum[-1] + d)
@@ -221,6 +227,153 @@ def main():
     warn("R11 교차로", "차길", f"{len(cj)}곳 · 최소 간격 {sp:.0f}m", len(cj) <= 24, "≤24 · 간격 ≥110m 은 참고(마을 안은 짧다)")
     t5 = sum(f85 for nm, f85, _ in r85)
     row("R12 배달 쌍 합", "빠른 길 5쌍 (85km/h)", f"{t5:.0f}초 = {100 * t5 / LIMIT:.0f}%", 0.40 * LIMIT <= t5 <= 0.70 * LIMIT, "150초의 40~70%")
+
+    # ── v4 (D-138 허락 · D-139 사람의 층) ──
+    WL = {rid: L.road_widths(r, samp[rid]) for rid, r in roads.items()}
+    car_area = sum(sum(WL[r["id"]]) * 1.0 for r in car if not L.is_out(r))   # 1m 표본 × 점마다 폭
+    og = plan.get("openGround", [])
+    G = 2.0
+    og_area, og_steep, og_cells = 0.0, 0, 0
+    pc = [(p, L.rect_corners(p)) for p in ps]
+
+    def in_parcel(x, z):
+        return any(abs(x - p["x"]) < 12 and abs(z - p["z"]) < 12 and L.in_poly(x, z, c) for p, c in pc)
+
+    def slope(x, z):
+        return max(abs(terr.h(x + 1, z) - terr.h(x - 1, z)), abs(terr.h(x, z + 1) - terr.h(x, z - 1))) / 2
+
+    per_g = []
+    for g in og:
+        xs_ = [p[0] for p in g["poly"]]; zs_ = [p[1] for p in g["poly"]]
+        a = st = 0
+        x = min(xs_) + G / 2
+        while x < max(xs_):
+            z = min(zs_) + G / 2
+            while z < max(zs_):
+                if L.in_poly(x, z, g["poly"]) and not in_parcel(x, z) and not any(L.road_dist(samp[r["id"]], x, z) < r["width"] / 2 for r in car):
+                    og_cells += 1
+                    # 평탄화(광장·부두·공터)는 빌더가 길 높이 평면으로 고르므로 경사 제외. 바다 위 부두는 빌더가 콘크리트 상판
+                    if g.get("flatten") or slope(x, z) <= 0.35:
+                        a += G * G
+                    else:
+                        st += 1
+                z += G
+            x += G
+        og_area += a; og_steep += st
+        per_g.append(f"{g['name']} {a:.0f}㎡" + (f"(벼랑 {st}칸 제외)" if st else ""))
+    ratio = og_area / max(1, car_area)
+    row("v4 열린 땅 면적비", f"열린 땅 {len(og)}곳", f"{og_area:.0f}㎡ / 차길 {car_area:.0f}㎡ = {ratio:.2f}", ratio >= OPEN_RATIO, f"≥{OPEN_RATIO} · " + " · ".join(per_g))
+    # 경계 턱(평면도 단계): 녹이지 않는 땅(해변·밭·풀밭)이 길에 닿는 곳의 지형 ↔ 길 높이 차. 빌더 깎기/메우기가 6m 에 걸쳐 녹이므로 경고만, 실측은 3D 스캔
+    edge = []
+    for g in og:
+        if g.get("flatten"):
+            continue
+        n_ = len(g["poly"])
+        for k in range(n_):
+            (x0, z0), (x1, z1) = g["poly"][k], g["poly"][(k + 1) % n_]
+            for t in (0.25, 0.5, 0.75):
+                x, z = x0 + (x1 - x0) * t, z0 + (z1 - z0) * t
+                for r in car:
+                    i, d = L.nearest(samp[r["id"]], x, z)
+                    if d < WL[r["id"]][i] / 2 + 3:
+                        edge.append((abs(terr.h(x, z) - samp[r["id"]][i][2]), g["name"], r["id"]))
+    emax = max(edge, default=(0, "", ""))
+    warn("v4 경계 턱(평면도)", f"길에 닿는 땅 가장자리 {len(edge)}점", f"최대 {emax[0]:.1f}m", emax[0] <= 1.0, f"{emax[1]}↔{emax[2]} — 빌더가 6m 에 녹임, 실측은 3D 스캔")
+    outs = plan.get("outRoads", [])
+    olen = [(o["name"], sum(L.length(samp[rid]) for rid in o["roads"])) for o in outs]
+    row("v4 끝 모를 길", f"{len(outs)}갈래", " · ".join(f"{n} {l:.0f}m" for n, l in olen), len(outs) == 3 and all(OUT_LEN[0] <= l <= OUT_LEN[1] for _, l in olen), f"3갈래 · 각 {OUT_LEN[0]}~{OUT_LEN[1]}m")
+    ends = [roads[o["roads"][-1]].get("end", {}).get("type") for o in outs]
+    row("v4 끝 이유", "끝 모를 길 끝", ", ".join(map(str, ends)), all(e in END_OK for e in ends))
+    ap = plan.get("addressPool", [])
+    off = [a for a in ap if L.road_dist(mp, *a["pos"]) > 12]
+    row("v4 배달지 후보", f"{len(ap)}곳", f"본선 밖(>12m) {len(off)}곳 = {100 * len(off) / max(1, len(ap)):.0f}%", 12 <= len(ap) <= 16 and len(off) >= 0.6 * len(ap), "12~16곳 · 본선 밖 ≥60%")
+    # D-139 건물이 차도에 바로 붙는 곳 0: 필지 네 모서리·앞면 가운데에서 모든 차길 가장자리까지 ≥ 0.8m
+    touch = []
+    for p, c in pc:
+        for x, z in c + [tuple(p["frontMid"])]:
+            hit = None
+            for r in car:
+                i, d = L.nearest(samp[r["id"]], x, z)
+                if d - WL[r["id"]][i] / 2 < MIN_STRIP - 0.05:
+                    hit = r["id"]; break
+            if hit:
+                touch.append(f"{p['id']}↔{hit}"); break
+    row("D-139 차도에 붙은 건물", f"필지 {len(ps)}채", f"{len(touch)}채", not touch, f"차도 가장자리 ↔ 건물 ≥{MIN_STRIP}m · " + ", ".join(touch[:8]))
+    gaps = [p["_gap"] for p in ps if roads[p["front"]["road"]]["kind"] in L.CAR]
+    gaps.sort()
+    if gaps:
+        warn("D-139 사람의 층 폭", "차길 앞 필지", f"최소 {gaps[0]:.1f} · 중앙 {gaps[len(gaps) // 2]:.1f} · 최대 {gaps[-1]:.1f}m", gaps[0] >= MIN_STRIP, "차도 가장자리 → 건물 앞면(인도 + 앞 공간)")
+    nox = [r["id"] for r in plan["roads"] if not r.get("crossSection") and not r.get("widthProfile")]
+    row("D-139 단면", f"길 {len(roads)}개", f"없음 {len(nox)}", not nox, ", ".join(nox))
+    fc = {}
+    for p in ps:
+        fc[p.get("facing", "front")] = fc.get(p.get("facing", "front"), 0) + 1
+    warn("v4 앞면 방향 섞기", f"필지 {len(ps)}채", " · ".join(f"{k} {v}" for k, v in fc.items()), fc.get("front", 0) < len(ps), "일부 옆·뒤")
+
+    # ── D-140 구역 강약 ──
+    ds = plan.get("districts", [])
+    row("D-140 구역", f"{len(ds)}곳", ", ".join(f"{d['id']}:{d['density']}" for d in ds), {d["density"] for d in ds} >= {"dense", "medium", "sparse"})
+    if ds:
+        def dist_at(x, z):
+            return next((d for d in ds if L.in_poly(x, z, d["poly"])), ds[-1])
+        cnt, land = {}, 0
+        for x in range(-184, 161, 4):
+            for z in range(-212, 263, 4):
+                if terr.h(x, z) < 1.0:
+                    continue
+                land += 1
+                k = dist_at(x, z)["density"]
+                cnt[k] = cnt.get(k, 0) + 1
+        share = {k: cnt.get(k, 0) / max(1, land) for k in DENSITY_SHARE}
+        row("D-140 구역 면적비", f"육지 {land * 16}㎡", " · ".join(f"{k} {v * 100:.0f}%" for k, v in share.items()),
+            all(DENSITY_SHARE[k][0] <= v <= DENSITY_SHARE[k][1] for k, v in share.items()), "목표 밀집 ~25 · 보통 ~40 · 성김 ~35%")
+        # 필지 밀도: 구역별 육지 1ha 당 집 수, 이웃 집 사이 틈(가장 가까운 집 앞면 쪽 모서리 거리 근사) 중앙값
+        dens, gapd = {}, {}
+        for p in ps:
+            k = p.get("density") or dist_at(p["x"], p["z"])["density"]
+            dens[k] = dens.get(k, 0) + 1
+            c = L.rect_corners(p)
+            best = 99.0
+            for q in ps:
+                if q is p or abs(q["x"] - p["x"]) > 30 or abs(q["z"] - p["z"]) > 30:
+                    continue
+                qc = L.rect_corners(q)
+                best = min(best, min(math.dist(a, b) for a in c for b in qc))
+            gapd.setdefault(k, []).append(best)
+        per_ha = {k: dens.get(k, 0) / max(1e-6, cnt.get(k, 0) * 16 / 10000) for k in DENSITY_SHARE}
+        med = {k: sorted(v)[len(v) // 2] for k, v in gapd.items()}
+        row("D-140 필지 밀도", f"필지 {len(ps)}채", " · ".join(f"{k} {dens.get(k, 0)}채 {per_ha[k]:.1f}/ha 틈 중앙 {med.get(k, 0):.1f}m" for k in DENSITY_SHARE),
+            per_ha["dense"] > per_ha["medium"] > per_ha["sparse"] and med.get("dense", 99) <= 1.2 and 1.0 <= med.get("medium", 0) <= 5.0 and med.get("sparse", 0) >= 8.0,
+            "밀도 밀집>보통>성김 · 틈 중앙 밀집 ≤1.2 / 보통 1~5 / 성김 ≥8m")
+        # 길 폭: 동네 차길은 그 구역 범위, 큰길(연석 인도 ≥2.5m)은 6~8m, 흙 지름길·끝 모를 길은 예외
+        bad = []
+        for r in car:
+            if L.is_out(r) or r["kind"] == "shortcut":
+                continue
+            pts = samp[r["id"]]
+            xss = L.road_xsecs(r, pts)
+            for i in range(0, len(pts), 10):
+                xs = xss[i] or {}
+                big = (xs.get("left", {}).get("walk", 0) >= 2.5)
+                lo, hi = (6.0, 8.0) if big else dist_at(pts[i][0], pts[i][1])["road"]
+                w = WL[r["id"]][i]
+                if not lo - 0.05 <= w <= hi + 0.05:
+                    bad.append(f"{r['id']}@{i} {w:.1f}∉{lo:g}~{hi:g}({'큰길' if big else dist_at(pts[i][0], pts[i][1])['id']})")
+        # 10점 중 1점꼴 표본. 구역 경계를 걸친 길은 경계 근처 몇 점이 걸릴 수 있다 → 표본의 10% 미만이면 통과
+        nsamp = sum(len(range(0, len(samp[r["id"]]), 10)) for r in car if not L.is_out(r) and r["kind"] != "shortcut")
+        row("D-140 길 폭 범위", f"차길 표본 {nsamp}점", f"벗어남 {len(bad)}점", len(bad) < 0.1 * nsamp,
+            "밀집 3.5~4.5 · 보통 5~6 · 성김 4~6 · 큰길 6~8m · " + ", ".join(bad[:12]))
+        # 좁은 골목(<3m)·집 붙은 계단 상점가는 밀집에만
+        narrow = []
+        for r in plan["roads"]:
+            if r["kind"] not in ("alley", "stairs"):
+                continue
+            pts = samp[r["id"]]
+            mid = pts[len(pts) // 2]
+            lined = [p for p in ps if p["front"]["road"] == r["id"]]
+            if (r["width"] < 3.0 and r["kind"] == "alley" or lined) and dist_at(mid[0], mid[1])["density"] != "dense":
+                narrow.append(f"{r['id']}({dist_at(mid[0], mid[1])['id']})")
+        row("D-140 좁은 골목은 밀집에만", "골목·계단", f"밖 {len(narrow)}개", not narrow, ", ".join(narrow))
 
     print("| 규칙 | 대상 | 값 | 판정 | 메모 |\n|---|---|---|---|---|")
     print("\n".join(rows))

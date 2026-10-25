@@ -1,0 +1,98 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+22:07:07 | INFO: Starting glTF 2.0 export
+22:07:07 | INFO: Extracting primitive: laundry_line_01
+22:07:07 | INFO: Primitives created: 1
+22:07:07 | INFO: Finished glTF 2.0 export in 0.013143301010131836 s
+00:16.781  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_front.png'
+00:34.109  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_side.png'
+00:51.984  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\laundry_line_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\laundry_line_01.fbx'
+export finished in 0.0046 sec.
+Info: Saved as "laundry_line_01.blend"
+PROP_DONE laundry_line_01 312
+22:07:57 | INFO: Starting glTF 2.0 export
+22:07:57 | INFO: Extracting primitive: traffic_mirror_01
+22:07:57 | INFO: Primitives created: 1
+22:07:57 | INFO: Finished glTF 2.0 export in 0.06000781059265137 s
+01:09.406  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_front.png'
+01:26.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_side.png'
+01:42.969  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\traffic_mirror_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\traffic_mirror_01.fbx'
+export finished in 0.0212 sec.
+Info: Saved as "traffic_mirror_01.blend"
+PROP_DONE traffic_mirror_01 160
+22:08:48 | INFO: Starting glTF 2.0 export
+22:08:48 | INFO: Extracting primitive: street_sign_01
+22:08:48 | INFO: Primitives created: 1
+22:08:48 | INFO: Finished glTF 2.0 export in 0.0568692684173584 s
+02:00.516  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_front.png'
+02:18.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_side.png'
+02:35.188  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_01.fbx'
+export finished in 0.0184 sec.
+Info: Saved as "street_sign_01.blend"
+PROP_DONE street_sign_01 108
+22:09:40 | INFO: Starting glTF 2.0 export
+22:09:40 | INFO: Extracting primitive: street_sign_02
+22:09:40 | INFO: Primitives created: 1
+22:09:40 | INFO: Finished glTF 2.0 export in 0.059215545654296875 s
+02:52.453  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_front.png'
+03:09.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_side.png'
+03:26.672  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_02.fbx'
+export finished in 0.0202 sec.
+Info: Saved as "street_sign_02.blend"
+PROP_DONE street_sign_02 67
+22:10:32 | INFO: Starting glTF 2.0 export
+22:10:32 | INFO: Extracting primitive: street_sign_03
+22:10:32 | INFO: Primitives created: 1
+22:10:32 | INFO: Finished glTF 2.0 export in 0.05194568634033203 s
+03:43.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_front.png'
+04:00.672  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_side.png'
+04:17.500  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\street_sign_03_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\street_sign_03.fbx'
+export finished in 0.0172 sec.
+Info: Saved as "street_sign_03.blend"
+PROP_DONE street_sign_03 156
+22:11:22 | INFO: Starting glTF 2.0 export
+22:11:22 | INFO: Extracting primitive: crosswalk_paint_01
+22:11:23 | INFO: Primitives created: 1
+22:11:23 | INFO: Finished glTF 2.0 export in 0.04928016662597656 s
+04:34.906  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_front.png'
+04:51.781  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_side.png'
+05:09.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\crosswalk_paint_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\crosswalk_paint_01.fbx'
+export finished in 0.0390 sec.
+Info: Saved as "crosswalk_paint_01.blend"
+PROP_DONE crosswalk_paint_01 48
+22:12:14 | INFO: Starting glTF 2.0 export
+22:12:14 | INFO: Extracting primitive: road_patch_01
+22:12:14 | INFO: Primitives created: 1
+22:12:14 | INFO: Finished glTF 2.0 export in 0.05988454818725586 s
+05:26.188  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_front.png'
+05:43.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_side.png'
+05:56.750  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\road_patch_01.fbx'
+export finished in 0.0170 sec.
+Info: Saved as "road_patch_01.blend"
+PROP_DONE road_patch_01 16
+22:13:02 | INFO: Starting glTF 2.0 export
+22:13:02 | INFO: Extracting primitive: road_patch_02
+22:13:02 | INFO: Primitives created: 1
+22:13:02 | INFO: Finished glTF 2.0 export in 0.03622627258300781 s
+06:11.563  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\road_patch_02_front.png'

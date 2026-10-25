@@ -1,0 +1,36 @@
+D:\Github\F1Game\tools\asset-gen\bayloop_buildings.py:267: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  im=bpy.data.images.load(str(TEX),check_existing=True);m=bpy.data.materials.new('BayLoop_Photo32');m.use_nodes=True
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+17:30:28 | INFO: Starting glTF 2.0 export
+17:30:28 | INFO: Extracting primitive: harbor_warehouse_a
+17:30:28 | INFO: Primitives created: 1
+17:30:28 | INFO: Finished glTF 2.0 export in 0.01587820053100586 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_buildings_v01\\harbor_warehouse_a.fbx'
+export finished in 0.0045 sec.
+17:30:28 | INFO: Starting glTF 2.0 export
+17:30:28 | INFO: Extracting primitive: harbor_warehouse_b
+17:30:28 | INFO: Primitives created: 1
+17:30:28 | INFO: Finished glTF 2.0 export in 0.004067897796630859 s
+D:\Github\F1Game\tools\asset-gen\bayloop_buildings.py:280: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  sc.world.use_nodes=True;sc.world.node_tree.nodes['Background'].inputs[0].default_value=(.62,.69,.75,1);sc.world.node_tree.nodes['Background'].inputs[1].default_value=.65
+00:11.031  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_a_front.png'
+00:31.485  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_b_front.png'
+00:51.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_pair.png'
+01:11.141  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_a_back.png'
+01:30.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_a_top.png'
+01:43.078  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_a_side.png'
+02:02.891  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_b_back.png'
+02:22.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_b_top.png'
+02:35.125  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-buildings\harbor_warehouse_b_side.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_buildings_v01\\harbor_warehouse_b.fbx'
+export finished in 0.0040 sec.
+Info: Saved as "harbor_warehouse.blend"
+BAYLOOP_DONE [{"id": "harbor_warehouse_a", "tris": 1432, "dimensions": [9.987376689910889, 5.990000247955322, 10.38500002026558]}, {"id": "harbor_warehouse_b", "tris": 1774, "dimensions": [11.797497183084488, 7.190000057220459, 11.38500002026558]}]
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

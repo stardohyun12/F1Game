@@ -1,0 +1,63 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: small_signs_b
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.012717247009277344 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_b.fbx'
+export finished in 0.0034 sec.
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: small_signs_d
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.0027570724487304688 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_d.fbx'
+export finished in 0.0098 sec.
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: planter_row
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.003478527069091797 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\planter_row.fbx'
+export finished in 0.0042 sec.
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: meter_box
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.0029954910278320312 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\meter_box.fbx'
+export finished in 0.0058 sec.
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: bicycle
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.0031609535217285156 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\bicycle.fbx'
+export finished in 0.0039 sec.
+19:46:53 | INFO: Starting glTF 2.0 export
+19:46:53 | INFO: Extracting primitive: lemon_tree_pot
+19:46:53 | INFO: Primitives created: 1
+19:46:53 | INFO: Finished glTF 2.0 export in 0.0031349658966064453 s
+00:04.312  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\bicycle_front.png'
+00:19.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\lemon_tree_pot_front.png'
+00:32.125  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_b_back.png'
+00:44.281  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_d_back.png'
+00:56.422  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\planter_row_back.png'
+01:10.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\meter_box_back.png'
+01:27.141  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\bicycle_back.png'
+01:47.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\lemon_tree_pot_back.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\lemon_tree_pot.fbx'
+export finished in 0.0042 sec.
+Info: Saved as "props_small_signs_b,small_signs_d,planter_row,meter_box,bicycle,lemon_tree_pot.blend"
+PROPS_DONE [('small_signs_b', 38), ('small_signs_d', 38), ('planter_row', 642), ('meter_box', 214), ('bicycle', 764), ('lemon_tree_pot', 456)]
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

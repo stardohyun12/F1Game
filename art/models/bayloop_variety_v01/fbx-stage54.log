@@ -1,0 +1,222 @@
+20:56:49 | INFO: Data are loaded, start creating Blender stuff
+20:56:49 | INFO: Blender create Mesh node cliff_villa_01
+20:56:49 | INFO: glTF import finished in 0.01s
+D:\Github\F1Game\tools\asset-gen\check_bayloop_fbx.py:37: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not material or not material.use_nodes:continue
+FBX version: 7400
+20:56:49 | INFO: Data are loaded, start creating Blender stuff
+20:56:49 | INFO: Blender create Mesh node cliff_villa_02
+20:56:49 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:50 | INFO: Data are loaded, start creating Blender stuff
+20:56:50 | INFO: Blender create Mesh node cliff_villa_03
+20:56:50 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:50 | INFO: Data are loaded, start creating Blender stuff
+20:56:50 | INFO: Blender create Mesh node cliff_villa_04
+20:56:50 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:50 | INFO: Data are loaded, start creating Blender stuff
+20:56:50 | INFO: Blender create Mesh node cliff_villa_05
+20:56:50 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:50 | INFO: Data are loaded, start creating Blender stuff
+20:56:50 | INFO: Blender create Mesh node cliff_villa_06
+20:56:50 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:51 | INFO: Data are loaded, start creating Blender stuff
+20:56:51 | INFO: Blender create Mesh node detached_house_01
+20:56:51 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:56:51 | INFO: Data are loaded, start creating Blender stuff
+20:56:51 | INFO: Blender create Mesh node detached_house_02
+20:56:51 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:53 | INFO: Data are loaded, start creating Blender stuff
+20:56:53 | INFO: Blender create Mesh node detached_house_03
+20:56:53 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:56:54 | INFO: Data are loaded, start creating Blender stuff
+20:56:54 | INFO: Blender create Mesh node detached_house_05
+20:56:54 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:56:55 | INFO: Data are loaded, start creating Blender stuff
+20:56:55 | INFO: Blender create Mesh node detached_house_06
+20:56:56 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:56:58 | INFO: Data are loaded, start creating Blender stuff
+20:56:58 | INFO: Blender create Mesh node detached_house_07
+20:56:58 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:00 | INFO: Data are loaded, start creating Blender stuff
+20:57:00 | INFO: Blender create Mesh node detached_house_08
+20:57:00 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:57:02 | INFO: Data are loaded, start creating Blender stuff
+20:57:02 | INFO: Blender create Mesh node detached_house_04
+20:57:02 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:03 | INFO: Data are loaded, start creating Blender stuff
+20:57:03 | INFO: Blender create Mesh node shop_house_01
+20:57:04 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:05 | INFO: Data are loaded, start creating Blender stuff
+20:57:05 | INFO: Blender create Mesh node shop_house_02
+20:57:05 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:57:08 | INFO: Data are loaded, start creating Blender stuff
+20:57:08 | INFO: Blender create Mesh node shop_house_03
+20:57:08 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:10 | INFO: Data are loaded, start creating Blender stuff
+20:57:10 | INFO: Blender create Mesh node shop_house_04
+20:57:10 | INFO: glTF import finished in 0.07s
+FBX version: 7400
+20:57:13 | INFO: Data are loaded, start creating Blender stuff
+20:57:13 | INFO: Blender create Mesh node shop_house_05
+20:57:13 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:15 | INFO: Data are loaded, start creating Blender stuff
+20:57:15 | INFO: Blender create Mesh node shop_house_06
+20:57:15 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:18 | INFO: Data are loaded, start creating Blender stuff
+20:57:18 | INFO: Blender create Mesh node shop_house_07
+20:57:18 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:20 | INFO: Data are loaded, start creating Blender stuff
+20:57:20 | INFO: Blender create Mesh node shop_house_08
+20:57:20 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:23 | INFO: Data are loaded, start creating Blender stuff
+20:57:23 | INFO: Blender create Mesh node shop_house_09
+20:57:23 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:24 | INFO: Data are loaded, start creating Blender stuff
+20:57:24 | INFO: Blender create Mesh node shop_house_10
+20:57:25 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:27 | INFO: Data are loaded, start creating Blender stuff
+20:57:27 | INFO: Blender create Mesh node shop_house_11
+20:57:27 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:28 | INFO: Data are loaded, start creating Blender stuff
+20:57:28 | INFO: Blender create Mesh node shop_house_12
+20:57:28 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:31 | INFO: Data are loaded, start creating Blender stuff
+20:57:31 | INFO: Blender create Mesh node terrace_house_01
+20:57:31 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:33 | INFO: Data are loaded, start creating Blender stuff
+20:57:33 | INFO: Blender create Mesh node terrace_house_02
+20:57:33 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:35 | INFO: Data are loaded, start creating Blender stuff
+20:57:35 | INFO: Blender create Mesh node terrace_house_03
+20:57:35 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:37 | INFO: Data are loaded, start creating Blender stuff
+20:57:37 | INFO: Blender create Mesh node terrace_house_04
+20:57:37 | INFO: glTF import finished in 0.07s
+FBX version: 7400
+20:57:40 | INFO: Data are loaded, start creating Blender stuff
+20:57:40 | INFO: Blender create Mesh node terrace_house_05
+20:57:40 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:42 | INFO: Data are loaded, start creating Blender stuff
+20:57:42 | INFO: Blender create Mesh node terrace_house_06
+20:57:42 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:57:45 | INFO: Data are loaded, start creating Blender stuff
+20:57:45 | INFO: Blender create Mesh node terrace_house_07
+20:57:45 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:46 | INFO: Data are loaded, start creating Blender stuff
+20:57:46 | INFO: Blender create Mesh node terrace_house_08
+20:57:46 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:57:49 | INFO: Data are loaded, start creating Blender stuff
+20:57:49 | INFO: Blender create Mesh node terrace_house_09
+20:57:49 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:51 | INFO: Data are loaded, start creating Blender stuff
+20:57:51 | INFO: Blender create Mesh node terrace_house_10
+20:57:51 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:57:53 | INFO: Data are loaded, start creating Blender stuff
+20:57:53 | INFO: Blender create Mesh node terrace_house_11
+20:57:54 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:57:55 | INFO: Data are loaded, start creating Blender stuff
+20:57:55 | INFO: Blender create Mesh node terrace_house_12
+20:57:55 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:57:58 | INFO: Data are loaded, start creating Blender stuff
+20:57:58 | INFO: Blender create Mesh node town_house_01
+20:57:58 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:00 | INFO: Data are loaded, start creating Blender stuff
+20:58:00 | INFO: Blender create Mesh node town_house_02
+20:58:00 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:58:02 | INFO: Data are loaded, start creating Blender stuff
+20:58:02 | INFO: Blender create Mesh node town_house_03
+20:58:02 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:04 | INFO: Data are loaded, start creating Blender stuff
+20:58:04 | INFO: Blender create Mesh node town_house_04
+20:58:04 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:58:07 | INFO: Data are loaded, start creating Blender stuff
+20:58:07 | INFO: Blender create Mesh node town_house_05
+20:58:07 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:08 | INFO: Data are loaded, start creating Blender stuff
+20:58:08 | INFO: Blender create Mesh node town_house_06
+20:58:08 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:58:11 | INFO: Data are loaded, start creating Blender stuff
+20:58:11 | INFO: Blender create Mesh node town_house_07
+20:58:11 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:58:13 | INFO: Data are loaded, start creating Blender stuff
+20:58:13 | INFO: Blender create Mesh node town_house_08
+20:58:13 | INFO: glTF import finished in 0.06s
+FBX version: 7400
+20:58:16 | INFO: Data are loaded, start creating Blender stuff
+20:58:16 | INFO: Blender create Mesh node town_house_09
+20:58:16 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:18 | INFO: Data are loaded, start creating Blender stuff
+20:58:18 | INFO: Blender create Mesh node town_house_10
+20:58:18 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+20:58:21 | INFO: Data are loaded, start creating Blender stuff
+20:58:21 | INFO: Blender create Mesh node town_house_11
+20:58:21 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:23 | INFO: Data are loaded, start creating Blender stuff
+20:58:23 | INFO: Blender create Mesh node town_house_12
+20:58:23 | INFO: glTF import finished in 0.06s
+FBX version: 7400
+20:58:25 | INFO: Data are loaded, start creating Blender stuff
+20:58:25 | INFO: Blender create Mesh node town_house_13
+20:58:26 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:27 | INFO: Data are loaded, start creating Blender stuff
+20:58:27 | INFO: Blender create Mesh node town_house_14
+20:58:27 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:58:30 | INFO: Data are loaded, start creating Blender stuff
+20:58:30 | INFO: Blender create Mesh node town_house_15
+20:58:30 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+20:58:31 | INFO: Data are loaded, start creating Blender stuff
+20:58:31 | INFO: Blender create Mesh node town_house_16
+20:58:32 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+{"pass": false, "assets": [{"id": "cliff_villa_01", "pass": true, "error": null}, {"id": "cliff_villa_02", "pass": true, "error": null}, {"id": "cliff_villa_03", "pass": true, "error": null}, {"id": "cliff_villa_04", "pass": true, "error": null}, {"id": "cliff_villa_05", "pass": true, "error": null}, {"id": "cliff_villa_06", "pass": true, "error": null}, {"id": "detached_house_01", "pass": true, "error": null}, {"id": "detached_house_02", "pass": true, "error": null}, {"id": "detached_house_03", "pass": true, "error": null}, {"id": "detached_house_05", "pass": true, "error": null}, {"id": "detached_house_06", "pass": true, "error": null}, {"id": "detached_house_07", "pass": true, "error": null}, {"id": "detached_house_08", "pass": true, "error": null}, {"id": "detached_house_04", "pass": true, "error": null}, {"id": "shop_house_01", "pass": false, "error": null}, {"id": "shop_house_02", "pass": false, "error": null}, {"id": "shop_house_03", "pass": false, "error": null}, {"id": "shop_house_04", "pass": false, "error": null}, {"id": "shop_house_05", "pass": false, "error": null}, {"id": "shop_house_06", "pass": false, "error": null}, {"id": "shop_house_07", "pass": false, "error": null}, {"id": "shop_house_08", "pass": false, "error": null}, {"id": "shop_house_09", "pass": false, "error": null}, {"id": "shop_house_10", "pass": false, "error": null}, {"id": "shop_house_11", "pass": false, "error": null}, {"id": "shop_house_12", "pass": false, "error": null}, {"id": "terrace_house_01", "pass": true, "error": null}, {"id": "terrace_house_02", "pass": true, "error": null}, {"id": "terrace_house_03", "pass": true, "error": null}, {"id": "terrace_house_04", "pass": true, "error": null}, {"id": "terrace_house_05", "pass": true, "error": null}, {"id": "terrace_house_06", "pass": true, "error": null}, {"id": "terrace_house_07", "pass": true, "error": null}, {"id": "terrace_house_08", "pass": true, "error": null}, {"id": "terrace_house_09", "pass": true, "error": null}, {"id": "terrace_house_10", "pass": true, "error": null}, {"id": "terrace_house_11", "pass": true, "error": null}, {"id": "terrace_house_12", "pass": true, "error": null}, {"id": "town_house_01", "pass": true, "error": null}, {"id": "town_house_02", "pass": true, "error": null}, {"id": "town_house_03", "pass": true, "error": null}, {"id": "town_house_04", "pass": true, "error": null}, {"id": "town_house_05", "pass": true, "error": null}, {"id": "town_house_06", "pass": true, "error": null}, {"id": "town_house_07", "pass": true, "error": null}, {"id": "town_house_08", "pass": true, "error": null}, {"id": "town_house_09", "pass": true, "error": null}, {"id": "town_house_10", "pass": true, "error": null}, {"id": "town_house_11", "pass": true, "error": null}, {"id": "town_house_12", "pass": true, "error": null}, {"id": "town_house_13", "pass": true, "error": null}, {"id": "town_house_14", "pass": true, "error": null}, {"id": "town_house_15", "pass": true, "error": null}, {"id": "town_house_16", "pass": true, "error": null}]}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

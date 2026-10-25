@@ -1,0 +1,99 @@
+{
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        16,
+        8
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.127
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        22,
+        1,
+        16,
+        8
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.127
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        43,
+        1,
+        16,
+        8
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.127
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        1,
+        12,
+        16,
+        8
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.127
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        22,
+        12,
+        16,
+        16
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.254
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        43,
+        12,
+        16,
+        16
+      ],
+      "physical_wh_m": [
+        0.254,
+        0.254
+      ]
+    }
+  ],
+  "layer_order": [
+    "CC0 photo",
+    "BOX downscale",
+    "exact 32 palette",
+    "material color ladder",
+    "barcode and upright stamps",
+    "conditional sparse fill",
+    "fold/contact AO"
+  ],
+  "label_width_fraction": 0.25,
+  "photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "ai_generated": false
+}

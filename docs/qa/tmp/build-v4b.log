@@ -1,0 +1,21 @@
+built Assets/Scenes/Map_BayLoop.unity | json v4 제어점 202(길 점 포함) | 갈림목·교차 높이차 최대 2.17m → 윗 길 높이로 맞추고 앞뒤 12m 에 녹임 | 길 28개, 본선 1498m, 차길 합 3879m, 본선 최대경사 12 % | 지형 201x265@2m, 길 밑 최대 깎기/메우기 17.8m | 열린 땅 평탄화 1044칸, 최대 8.0m | V_detour 갈림목 정점 40개 윗 길 아래로 | SC_oldroad 갈림목 정점 72개 윗 길 아래로 | SC_ridge 갈림목 정점 53개 윗 길 아래로 | V_kyoto_back 갈림목 정점 9개 윗 길 아래로 | V_pier 갈림목 정점 3개 윗 길 아래로 | V_tunnel 갈림목 정점 10개 윗 길 아래로 | A_shrine 갈림목 정점 18개 윗 길 아래로 | A_field 갈림목 정점 50개 윗 길 아래로 | A_plateau 갈림목 정점 28개 윗 길 아래로 | A_terrace 갈림목 정점 22개 윗 길 아래로 | A_cliffwalk 갈림목 정점 41개 윗 길 아래로 | V_view 갈림목 정점 10개 윗 길 아래로 | V_x1 갈림목 정점 15개 윗 길 아래로 | V_x2 갈림목 정점 18개 윗 길 아래로 | V_x3 갈림목 정점 17개 윗 길 아래로 | A_west1 갈림목 정점 28개 윗 길 아래로 | A_west2 갈림목 정점 28개 윗 길 아래로 | O_breakwater 갈림목 정점 9개 윗 길 아래로 | O_coast 갈림목 정점 18개 윗 길 아래로 | 인도 띠 32장(연석 1522m), 난간 1142m | 열린 땅 겉면 10장 | 건물 220채(MART 자리 비움 0, 차길 침범 물림 3·비움 0, 기단 157, 블록아웃 0) type cliff_villa 15, detached_house 21, fish_market 2, shop_house 70, terrace_house 48, town_house 66 | 30m 규칙: 반경 30m 같은 프리팹 최대 2채(자기 포함), 아트 소진→폴백 0, 위반 0 | facing front 181, side 28, back 11 | 폴백 type:  | 아트 필지 폭 5.0~11.8m, 필지보다 넓은 변형 0 | 프리팹 cliff_villa_01 4, cliff_villa_02 1, cliff_villa_03 2, cliff_villa_05 4, cliff_villa_06 3, cliff_villa_a 1, detached_house_01 6, detached_house_02 5, detached_house_03 2, detached_house_04 1, detached_house_05 4, detached_house_06 2, detached_house_07 1, shop_house_01 11, shop_house_02 8, shop_house_03 1, shop_house_04 1, shop_house_05 3, shop_house_07 4, shop_house_08 1, shop_house_09 11, shop_house_10 6, shop_house_11 7, shop_house_12 3, shop_house_a 7, shop_house_b 3, shop_house_c 4, terrace_house_01 6, terrace_house_02 2, terrace_house_03 2, terrace_house_04 1, terrace_house_05 2, terrace_house_07 5, terrace_house_08 2, terrace_house_09 6, terrace_house_10 7, terrace_house_11 4, terrace_house_12 2, terrace_house_a 2, terrace_house_b 2, terrace_house_c 5, town_house_01 10, town_house_02 5, town_house_03 3, town_house_04 3, town_house_05 3, town_house_06 1, town_house_07 5, town_house_08 3, town_house_09 8, town_house_10 6, town_house_11 7, town_house_12 2, town_house_13 2, town_house_15 2, town_house_16 6 | 소품 382(리지드바디 188) | 볼라드 0 · 계단 입구 화분 21개 | 인도 가구 벤치 31·화분 16·광장 노점 3 | 나무 145·덤불 60(길·건물 겹침 뺌 0) | features: 랜드마크 8 · 크레인(항구 직선 시작) / 등성이 갈림 앞 종탑 / 문 앞 노란 우체통(내리막 직선 시작) / 옛길 갈림 앞 물탱크 / 등대(곶 끝·해안 직선 시작) / 어시장 지붕(해안 직선 끝) / 좁은 틈 SC_oldroad s212 폭2.6 길이14 / 옛 우마찻길 돌 이정표 / 점프 SC_ridge s179 0.6m / 등성이 풍차 | 전봇대 25·가로등 29 | 배달지 1:찻집(2,13.7,-99) 2:꼭대기 문(46,35.6,216) 3:곶 마을 가로길 집(-104,12.5,150) 4:절벽 카페(-97,15.0,224) 5:농가(선택)(128,43.5,136) MART(-22,3.0,-130) | WindowGlow: 집 2채, 층·면 6 중 켜짐 2, 삼각형 74 | 차 시작 (-14,3.2,-141) 본선 s8, 리스폰 y<-3, 중심선 1956점
+--- check (36s)
+차길 장애+구멍+턱+높이어긋남 합 13
+SC_ridge: 레이 505 장애 0 구멍 0 턱(8~25cm) 1 높이어긋남 0 의도 15 턱+0.08 Road_SC_ridge(1,-135)
+V_x3: 레이 155 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+main: 레이 3745 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+O_coast: 레이 545 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+V_detour: 레이 555 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+SC_oldroad: 레이 920 장애 0 구멍 0 턱(8~25cm) 2 높이어긋남 0 의도 14 턱-0.42 Road_SC_oldroad(-66,7) 턱-0.42 Road_SC_oldroad(-69,6)
+V_view: 레이 50 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+V_tunnel: 레이 95 장애 0 구멍 0 턱(8~25cm) 6 높이어긋남 1 의도 0 높이-0.26 Road_V_tunnel(118,-116) 턱-0.11 Road_V_tunnel(120,-111) 턱+0.19 Road_V_tunnel(120,-115) 턱-0.12 Road_V_tunnel(120,-111)
+V_x2: 레이 175 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+V_x1: 레이 210 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+O_mountain: 레이 825 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+V_farmyard: 레이 35 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+O_breakwater: 레이 820 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+V_kyoto_back: 레이 380 장애 0 구멍 0 턱(8~25cm) 2 높이어긋남 0 의도 0 턱+0.09 Road_V_kyoto_back(114,-98) 턱+0.13 Road_V_kyoto_back(114,-99)
+V_pier: 레이 100 장애 0 구멍 0 턱(8~25cm) 1 높이어긋남 0 의도 0 턱-0.21 Road_V_pier(-29,-147)
+O_bridge: 레이 665 장애 0 구멍 0 턱(8~25cm) 0 높이어긋남 0 의도 0 
+떠 있는 건물 콜라이더 1 BLD_P150_detached_house 틈Infinity(147,12.7,-107)
+

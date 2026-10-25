@@ -1,0 +1,117 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+19:34:42 | INFO: Starting glTF 2.0 export
+19:34:42 | INFO: Extracting primitive: vending_machine
+19:34:42 | INFO: Primitives created: 1
+19:34:42 | INFO: Finished glTF 2.0 export in 0.014327287673950195 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\vending_machine.fbx'
+export finished in 0.0038 sec.
+19:34:42 | INFO: Starting glTF 2.0 export
+19:34:42 | INFO: Extracting primitive: small_signs_a
+19:34:42 | INFO: Primitives created: 1
+19:34:42 | INFO: Finished glTF 2.0 export in 0.003121614456176758 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_a.fbx'
+export finished in 0.0029 sec.
+19:34:42 | INFO: Starting glTF 2.0 export
+19:34:42 | INFO: Extracting primitive: small_signs_b
+19:34:42 | INFO: Primitives created: 1
+19:34:42 | INFO: Finished glTF 2.0 export in 0.003563404083251953 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_b.fbx'
+export finished in 0.0032 sec.
+19:34:42 | INFO: Starting glTF 2.0 export
+19:34:42 | INFO: Extracting primitive: small_signs_c
+19:34:42 | INFO: Primitives created: 1
+19:34:42 | INFO: Finished glTF 2.0 export in 0.0036191940307617188 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_c.fbx'
+export finished in 0.0070 sec.
+19:34:42 | INFO: Starting glTF 2.0 export
+19:34:42 | INFO: Extracting primitive: small_signs_d
+19:34:42 | INFO: Primitives created: 1
+19:34:42 | INFO: Finished glTF 2.0 export in 0.007471561431884766 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\small_signs_d.fbx'
+export finished in 0.0135 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: planter_row
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.0058994293212890625 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\planter_row.fbx'
+export finished in 0.0038 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: ac_unit
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.005396366119384766 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\ac_unit.fbx'
+export finished in 0.0042 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: meter_box
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.004542350769042969 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\meter_box.fbx'
+export finished in 0.0037 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: mailbox
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.003126382827758789 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\mailbox.fbx'
+export finished in 0.0035 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: bicycle
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.0036468505859375 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\bicycle.fbx'
+export finished in 0.0038 sec.
+19:34:43 | INFO: Starting glTF 2.0 export
+19:34:43 | INFO: Extracting primitive: lemon_tree_pot
+19:34:43 | INFO: Primitives created: 1
+19:34:43 | INFO: Finished glTF 2.0 export in 0.003658771514892578 s
+00:08.016  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\vending_machine_front.png'
+00:23.438  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_a_front.png'
+00:39.266  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_b_front.png'
+00:55.125  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_c_front.png'
+01:10.110  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_d_front.png'
+01:31.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\planter_row_front.png'
+01:55.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\ac_unit_front.png'
+02:18.063  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\meter_box_front.png'
+02:33.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\mailbox_front.png'
+02:49.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\bicycle_front.png'
+03:04.938  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\lemon_tree_pot_front.png'
+03:20.907  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\vending_machine_back.png'
+03:34.407  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_a_back.png'
+03:47.485  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_b_back.png'
+04:00.032  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_c_back.png'
+04:11.125  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\small_signs_d_back.png'
+04:22.188  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\planter_row_back.png'
+04:37.563  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\ac_unit_back.png'
+04:52.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\meter_box_back.png'
+05:08.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\mailbox_back.png'
+05:25.985  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\bicycle_back.png'
+05:38.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\props\lemon_tree_pot_back.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_italy_props_v01\\lemon_tree_pot.fbx'
+export finished in 0.0033 sec.
+Info: Saved as "props.blend"
+PROPS_DONE [('vending_machine', 552), ('small_signs_a', 38), ('small_signs_b', 38), ('small_signs_c', 38), ('small_signs_d', 50), ('planter_row', 576), ('ac_unit', 300), ('meter_box', 140), ('mailbox', 50), ('bicycle', 532), ('lemon_tree_pot', 404)]
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

@@ -1,0 +1,20 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:51:21 | INFO: Starting glTF 2.0 export
+20:51:21 | INFO: Extracting primitive: detached_house_04
+20:51:21 | INFO: Primitives created: 1
+20:51:21 | INFO: Finished glTF 2.0 export in 0.037084102630615234 s
+00:19.687  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\detached_house_04_front.png'
+00:46.453  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\detached_house_04_back.png'
+01:11.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\detached_house_04_side.png'
+01:38.422  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\detached_house_04_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\detached_house_04.fbx'
+export finished in 0.0089 sec.
+Info: Saved as "detached_house_04.blend"
+BUILDGEN_ASSET detached_house_04 2020
+BUILDGEN_DONE detached_house 1
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

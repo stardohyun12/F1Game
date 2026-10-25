@@ -1,0 +1,67 @@
+{
+  "upstream": "https://github.com/quiple/galmuri",
+  "native_sizes": "Galmuri11 12px; Galmuri7 8px per upstream README",
+  "license": "OFL-1.1",
+  "samples": [
+    {
+      "text": "세탁",
+      "font": "art\\_review\\2026-10-23-ui-final\\fonts\\Galmuri11.ttf",
+      "size_px": 12,
+      "glyph_bbox": [
+        0,
+        1,
+        24,
+        12
+      ],
+      "uv_region_px": [
+        30,
+        18
+      ],
+      "full_glyph_inside_uv": true,
+      "face_m": [
+        0.9375,
+        0.5625
+      ]
+    },
+    {
+      "text": "차",
+      "font": "art\\_review\\2026-10-23-ui-final\\fonts\\Galmuri11.ttf",
+      "size_px": 12,
+      "glyph_bbox": [
+        0,
+        1,
+        12,
+        12
+      ],
+      "uv_region_px": [
+        16,
+        18
+      ],
+      "full_glyph_inside_uv": true,
+      "face_m": [
+        0.5,
+        0.5625
+      ]
+    },
+    {
+      "text": "07",
+      "font": "art\\models\\cargo_box_v01\\fonts\\Galmuri7.ttf",
+      "size_px": 8,
+      "glyph_bbox": [
+        0,
+        1,
+        10,
+        8
+      ],
+      "uv_region_px": [
+        12,
+        10
+      ],
+      "full_glyph_inside_uv": true,
+      "face_m": [
+        0.375,
+        0.3125
+      ]
+    }
+  ]
+}

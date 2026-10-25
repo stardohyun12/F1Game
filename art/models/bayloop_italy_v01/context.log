@@ -1,0 +1,33 @@
+20:02:23 | INFO: Data are loaded, start creating Blender stuff
+20:02:23 | INFO: Blender create Mesh node shop_house_a
+20:02:24 | INFO: glTF import finished in 0.01s
+00:03.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\machiya_same_camera.png'
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node shop_house_a
+20:02:27 | INFO: glTF import finished in 0.06s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node shop_house_b
+20:02:27 | INFO: glTF import finished in 0.07s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node shop_house_c
+20:02:27 | INFO: glTF import finished in 0.11s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node vending_machine
+20:02:27 | INFO: glTF import finished in 0.02s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node ac_unit
+20:02:27 | INFO: glTF import finished in 0.01s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node mailbox
+20:02:27 | INFO: glTF import finished in 0.01s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node bicycle
+20:02:27 | INFO: glTF import finished in 0.02s
+20:02:27 | INFO: Data are loaded, start creating Blender stuff
+20:02:27 | INFO: Blender create Mesh node planter_row
+20:02:27 | INFO: glTF import finished in 0.02s
+00:25.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-italy\street-study-960.png'
+CONTEXT_DONE
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

@@ -1,0 +1,60 @@
+{
+  "path": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+  "sha256": "e64fd1e84406d02124f5510d926cadd6dfbffaabd7599a8c6d73afeb10a9e80f",
+  "new_source": {
+    "id": "rough_linen",
+    "path": "art/models/bayloop_props2_v01/sources/rough_linen_diff_1k.jpg",
+    "url": "https://polyhaven.com/a/rough_linen",
+    "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+    "license": "CC0-1.0",
+    "sha256": "04897d7611d7390ddf5b2c6f7273f448dfc48341fdbd1f4f207fa30b331d7f57",
+    "dimensions_mm": [
+      270.7081392676629,
+      271.29998803138733
+    ]
+  },
+  "ladders": {
+    "2": [
+      21,
+      24
+    ],
+    "4": [
+      15,
+      28
+    ],
+    "6": [
+      7,
+      8
+    ],
+    "8": [
+      19,
+      14
+    ],
+    "9": [
+      19,
+      14
+    ],
+    "11": [
+      26,
+      27
+    ],
+    "12": [
+      26,
+      27
+    ],
+    "13": [
+      2,
+      26
+    ],
+    "14": [
+      15,
+      28
+    ],
+    "15": [
+      2,
+      26
+    ]
+  },
+  "process": "Actual plain woven linen replaces printed checked fabric; BOX at provider physical scale to 32px/m; close-value fixed-palette ladders for wood/metal; fruit colour stylization retains photographed microvariation. No AI/no procedural noise.",
+  "outside_palette_colors": 0
+}

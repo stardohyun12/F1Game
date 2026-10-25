@@ -1,0 +1,46 @@
+[
+  {
+    "asset_id": "d140_BayLoopShared_01",
+    "path": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-25",
+    "tool": "bayloop_buildgen_textures.py; photo_to_pixel.py; bayloop_textures.py",
+    "ai_generated": "no",
+    "sha256": "35fb7b15faee6fecb8d268ec62bd65cc16ae2f6c05d85ea2e5df806f3e24f198",
+    "notes": "Existing verified CC0 photographs at 32px/m; 8 shared-palette plaster ladders in 4 atlases; photograph-derived localized damage masks, no procedural noise; real Galmuri11 Korean labels; Point required"
+  },
+  {
+    "asset_id": "d140_BayLoopShared_02",
+    "path": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-25",
+    "tool": "bayloop_buildgen_textures.py; photo_to_pixel.py; bayloop_textures.py",
+    "ai_generated": "no",
+    "sha256": "968c14d54c8e4241094715af5a52208e1a3d139303425c5abd63cafdcf4fca6b",
+    "notes": "Existing verified CC0 photographs at 32px/m; 8 shared-palette plaster ladders in 4 atlases; photograph-derived localized damage masks, no procedural noise; real Galmuri11 Korean labels; Point required"
+  },
+  {
+    "asset_id": "d140_BayLoopShared_03",
+    "path": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-25",
+    "tool": "bayloop_buildgen_textures.py; photo_to_pixel.py; bayloop_textures.py",
+    "ai_generated": "no",
+    "sha256": "230ef36022aecf59bceb4bee284e8f5797ce8cf527aa207e321779e7253bb9a8",
+    "notes": "Existing verified CC0 photographs at 32px/m; 8 shared-palette plaster ladders in 4 atlases; photograph-derived localized damage masks, no procedural noise; real Galmuri11 Korean labels; Point required"
+  },
+  {
+    "asset_id": "d140_BayLoopShared_04",
+    "path": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+    "source_url": "https://polyhaven.com/a/ceramic_roof_01; https://polyhaven.com/a/fabric_pattern_05; https://polyhaven.com/a/grey_roof_tiles; https://polyhaven.com/a/painted_plaster_wall; https://polyhaven.com/a/rusty_painted_metal; https://polyhaven.com/a/stone_brick_wall_001; https://polyhaven.com/a/stone_pavers; https://polyhaven.com/a/wooden_rough_planks",
+    "license": "CC0-1.0; Galmuri OFL-1.1",
+    "accessed": "2026-10-25",
+    "tool": "bayloop_buildgen_textures.py; photo_to_pixel.py; bayloop_textures.py",
+    "ai_generated": "no",
+    "sha256": "e8632bef03cf23b433a1752b1d5a32d74f5a048c0a1e0b8979a4eb21ce41c2f9",
+    "notes": "Existing verified CC0 photographs at 32px/m; 8 shared-palette plaster ladders in 4 atlases; photograph-derived localized damage masks, no procedural noise; real Galmuri11 Korean labels; Point required"
+  }
+]

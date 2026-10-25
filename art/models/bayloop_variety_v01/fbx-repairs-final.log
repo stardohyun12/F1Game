@@ -1,0 +1,62 @@
+21:08:12 | INFO: Data are loaded, start creating Blender stuff
+21:08:12 | INFO: Blender create Mesh node shop_house_01
+21:08:12 | INFO: glTF import finished in 0.01s
+D:\Github\F1Game\tools\asset-gen\check_bayloop_fbx.py:37: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not material or not material.use_nodes:continue
+FBX version: 7400
+21:08:12 | INFO: Data are loaded, start creating Blender stuff
+21:08:12 | INFO: Blender create Mesh node shop_house_02
+21:08:12 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+21:08:13 | INFO: Data are loaded, start creating Blender stuff
+21:08:13 | INFO: Blender create Mesh node shop_house_03
+21:08:13 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+21:08:13 | INFO: Data are loaded, start creating Blender stuff
+21:08:13 | INFO: Blender create Mesh node shop_house_04
+21:08:13 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+21:08:14 | INFO: Data are loaded, start creating Blender stuff
+21:08:14 | INFO: Blender create Mesh node shop_house_05
+21:08:14 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+21:08:15 | INFO: Data are loaded, start creating Blender stuff
+21:08:15 | INFO: Blender create Mesh node shop_house_06
+21:08:15 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+21:08:18 | INFO: Data are loaded, start creating Blender stuff
+21:08:18 | INFO: Blender create Mesh node shop_house_07
+21:08:18 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+21:08:20 | INFO: Data are loaded, start creating Blender stuff
+21:08:20 | INFO: Blender create Mesh node shop_house_08
+21:08:20 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+21:08:23 | INFO: Data are loaded, start creating Blender stuff
+21:08:23 | INFO: Blender create Mesh node shop_house_09
+21:08:23 | INFO: glTF import finished in 0.03s
+FBX version: 7400
+21:08:25 | INFO: Data are loaded, start creating Blender stuff
+21:08:25 | INFO: Blender create Mesh node shop_house_10
+21:08:25 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+21:08:27 | INFO: Data are loaded, start creating Blender stuff
+21:08:27 | INFO: Blender create Mesh node shop_house_11
+21:08:27 | INFO: glTF import finished in 0.02s
+FBX version: 7400
+21:08:29 | INFO: Data are loaded, start creating Blender stuff
+21:08:29 | INFO: Blender create Mesh node shop_house_12
+21:08:29 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+21:08:32 | INFO: Data are loaded, start creating Blender stuff
+21:08:32 | INFO: Blender create Mesh node terrace_house_06
+21:08:32 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+21:08:35 | INFO: Data are loaded, start creating Blender stuff
+21:08:35 | INFO: Blender create Mesh node terrace_house_12
+21:08:35 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+{"pass": true, "assets": [{"id": "shop_house_01", "pass": true, "error": null}, {"id": "shop_house_02", "pass": true, "error": null}, {"id": "shop_house_03", "pass": true, "error": null}, {"id": "shop_house_04", "pass": true, "error": null}, {"id": "shop_house_05", "pass": true, "error": null}, {"id": "shop_house_06", "pass": true, "error": null}, {"id": "shop_house_07", "pass": true, "error": null}, {"id": "shop_house_08", "pass": true, "error": null}, {"id": "shop_house_09", "pass": true, "error": null}, {"id": "shop_house_10", "pass": true, "error": null}, {"id": "shop_house_11", "pass": true, "error": null}, {"id": "shop_house_12", "pass": true, "error": null}, {"id": "terrace_house_06", "pass": true, "error": null}, {"id": "terrace_house_12", "pass": true, "error": null}]}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

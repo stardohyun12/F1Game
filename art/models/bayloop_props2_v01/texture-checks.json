@@ -1,0 +1,19 @@
+{
+  "pass_": true,
+  "size": [
+    1024,
+    1024
+  ],
+  "palette_colors": 28,
+  "outside_palette_colors": 0,
+  "sha256": "b3172bc27aab3d5343a52ab63c40d3c44146d34c43598ae40d8369d7e1c6bdea",
+  "albedo_only": true,
+  "photo_repeat_metal": [
+    2200.000047683716,
+    2200.000047683716
+  ],
+  "photo_repeat_asphalt": [
+    3000.000238418579,
+    3000
+  ]
+}

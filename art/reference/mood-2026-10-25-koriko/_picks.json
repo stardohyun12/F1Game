@@ -1,0 +1,24 @@
+[
+ {"name": "board_form", "title": "형태 — 이탈리아 해안 마을 (건물·지형·길의 뼈대)", "cols": 3, "tiles": [
+  {"key": "form_Positano_02", "cap": "비탈에 층층이 쌓인 집 실루엣", "c": [0.5, 0.4]},
+  {"key": "form_Atrani_04", "cap": "아치 교각 위 차길이 마을 지붕을 지남", "c": [0.5, 0.6]},
+  {"key": "form_Atrani_01", "cap": "바다 옆 차 한 대 폭 돌난간 길", "c": [0.3, 0.6]},
+  {"key": "form_Atrani_09", "cap": "바랜 회벽 + 녹색 덧창 + 계단 광장", "c": [0.5, 0.5]},
+  {"key": "form_Procida_Corricella_05", "cap": "아치 계단 골목, 벗겨진 칠·닳은 돌", "c": [0.5, 0.5]},
+  {"key": "form_Procida_Corricella_01", "cap": "항구에 바로 붙은 파스텔 집 줄", "c": [0.5, 0.5]}
+ ]},
+ {"name": "board_life", "title": "생활 — 일본식 눈높이 (길가에 붙은 것들)", "cols": 3, "tiles": [
+  {"key": "life_Yanaka_07", "cap": "가게 앞 자판기·세운 자전거·손간판", "c": [0.5, 0.5]},
+  {"key": "life_Yanaka_00", "cap": "골목 화분 줄·표지판·지나가는 자전거", "c": [0.5, 0.6]},
+  {"key": "life_Ushimado_08", "cap": "항구 동네 길: 처마·화분·전선·작은 간판", "c": [0.5, 0.6]},
+  {"key": "life_Yanaka_Ginza_01", "cap": "계단 상점가: 작은 간판 여러 개, 사람 기척", "c": [0.7, 0.2]},
+  {"key": "life_Onomichi_Senkoji_07", "cap": "비탈 지붕 위 전선 너머 바다", "c": [0.5, 0.5]},
+  {"key": "life_Manazuru_00", "cap": "바다로 내려가는 차길 + 전봇대 줄", "c": [0.5, 0.6]}
+ ]},
+ {"name": "board_light", "title": "빛 — 하루가 흐른다 (같은 해안 마을 계열)", "cols": 2, "tiles": [
+  {"key": "life_Tomonoura_02", "cap": "아침: 연무로 원경이 겹겹이 옅어짐 (도모노우라)", "c": [0.5, 0.5]},
+  {"key": "light_Tellaro_02", "cap": "맑은 가을 오후: 낮은 해가 바랜 회벽을 데움", "c": [0.5, 0.6]},
+  {"key": "light_Procida_sunset_08", "cap": "해 질 녘: 주황 역광, 집 줄이 실루엣으로", "c": [0.5, 0.5]},
+  {"key": "light_Vernazza_evening_00", "cap": "초저녁: 남은 푸른빛 + 창마다 노란 불", "c": [0.5, 0.5]}
+ ]}
+]

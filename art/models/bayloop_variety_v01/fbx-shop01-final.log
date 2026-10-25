@@ -1,0 +1,10 @@
+21:10:44 | INFO: Data are loaded, start creating Blender stuff
+21:10:44 | INFO: Blender create Mesh node shop_house_01
+21:10:44 | INFO: glTF import finished in 0.01s
+D:\Github\F1Game\tools\asset-gen\check_bayloop_fbx.py:37: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not material or not material.use_nodes:continue
+FBX version: 7400
+{"pass": true, "assets": [{"id": "shop_house_01", "pass": true, "error": null}]}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

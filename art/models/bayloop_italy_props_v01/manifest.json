@@ -1,0 +1,489 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 800,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json",
+    "art/models/bayloop_italy_props_v01/leaf-source.json"
+  ],
+  "assets": [
+    {
+      "id": "vending_machine",
+      "type": "vending_machine",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/vending_machine.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/vending_machine.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas.png",
+      "dimensions_m": [
+        1.180999994277954,
+        1.8300000429153442,
+        0.8854999840259552
+      ],
+      "bounds_min": [
+        -0.590499997138977,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.590499997138977,
+        1.8300000429153442,
+        0.8854999840259552
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 552,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "small_signs_a",
+      "type": "small_signs_a",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/small_signs_a.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/small_signs_a.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas.png",
+      "dimensions_m": [
+        0.7799999713897705,
+        0.4000000059604645,
+        0.09700000286102295
+      ],
+      "bounds_min": [
+        -0.38999998569488525,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.38999998569488525,
+        0.4000000059604645,
+        0.09700000286102295
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 38,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "ac_unit",
+      "type": "ac_unit",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/ac_unit.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/ac_unit.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas.png",
+      "dimensions_m": [
+        0.8350000083446503,
+        0.6299999952316284,
+        0.3825000077486038
+      ],
+      "bounds_min": [
+        -0.41750000417232513,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.41750000417232513,
+        0.6299999952316284,
+        0.3825000077486038
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 300,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "mailbox",
+      "type": "mailbox",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/mailbox.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/mailbox.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas.png",
+      "dimensions_m": [
+        0.4000000059604645,
+        0.5,
+        0.2849999666213989
+      ],
+      "bounds_min": [
+        -0.20000000298023224,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.20000000298023224,
+        0.5,
+        0.2849999666213989
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 50,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "small_signs_c",
+      "type": "small_signs_c",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/small_signs_c.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/small_signs_c.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas.png",
+      "dimensions_m": [
+        1.100000023841858,
+        0.5,
+        0.09700000286102295
+      ],
+      "bounds_min": [
+        -0.550000011920929,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.550000011920929,
+        0.5,
+        0.09700000286102295
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 38,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "bicycle",
+      "type": "bicycle",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_italy_props_v01/bicycle.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/bicycle.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r2.png",
+      "dimensions_m": [
+        1.7694975137710571,
+        1.0472487564838957,
+        0.5
+      ],
+      "bounds_min": [
+        -0.8847487568855286,
+        0.0,
+        -0.25
+      ],
+      "bounds_max": [
+        0.8847487568855286,
+        1.0472487564838957,
+        0.25
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 764,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "small_signs_b",
+      "type": "small_signs_b",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/small_signs_b.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/small_signs_b.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r3.png",
+      "dimensions_m": [
+        1.0075000524520874,
+        0.6225000023841858,
+        0.04100000113248825
+      ],
+      "bounds_min": [
+        -0.5037500262260437,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.5037500262260437,
+        0.6225000023841858,
+        0.04100000113248825
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 38,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "small_signs_d",
+      "type": "small_signs_d",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/small_signs_d.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/small_signs_d.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r3.png",
+      "dimensions_m": [
+        0.5699999928474426,
+        0.6225000023841858,
+        0.04100000113248825
+      ],
+      "bounds_min": [
+        -0.2849999964237213,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.2849999964237213,
+        0.6225000023841858,
+        0.04100000113248825
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 38,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "planter_row",
+      "type": "planter_row",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_italy_props_v01/planter_row.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/planter_row.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r3.png",
+      "dimensions_m": [
+        1.5568549633026123,
+        0.7777668842890804,
+        0.5911611020565033
+      ],
+      "bounds_min": [
+        -0.7784274816513062,
+        0.0,
+        -0.29558055102825165
+      ],
+      "bounds_max": [
+        0.7784274816513062,
+        0.7777668842890804,
+        0.29558055102825165
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 786,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "meter_box",
+      "type": "meter_box",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_back_center",
+      "model": "art/models/bayloop_italy_props_v01/meter_box.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/meter_box.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r3.png",
+      "dimensions_m": [
+        0.46000000834465027,
+        0.9519999772310257,
+        0.29099999740719795
+      ],
+      "bounds_min": [
+        -0.23000000417232513,
+        0.0,
+        -0.0
+      ],
+      "bounds_max": [
+        0.23000000417232513,
+        0.9519999772310257,
+        0.29099999740719795
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 262,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    },
+    {
+      "id": "lemon_tree_pot",
+      "type": "lemon_tree_pot",
+      "asset_kind": "prop",
+      "max_tris": 800,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_italy_props_v01/lemon_tree_pot.glb",
+      "fbx": "art/models/bayloop_italy_props_v01/lemon_tree_pot.fbx",
+      "texture": "art/models/bayloop_italy_props_v01/PropsPhotoAtlas_r3.png",
+      "dimensions_m": [
+        0.7530688941478729,
+        1.4962432384490967,
+        0.8011486530303955
+      ],
+      "bounds_min": [
+        -0.37653444707393646,
+        0.0,
+        -0.40057432651519775
+      ],
+      "bounds_max": [
+        0.37653444707393646,
+        1.4962432384490967,
+        0.40057432651519775
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/leafy_grass",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 788,
+      "wear_locations": [
+        "feet",
+        "lower edges",
+        "handles",
+        "metal joints"
+      ]
+    }
+  ]
+}

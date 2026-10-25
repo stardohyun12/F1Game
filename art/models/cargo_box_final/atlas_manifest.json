@@ -1,0 +1,305 @@
+{
+  "name": "cargo_box_final",
+  "density_target": 64,
+  "texture_size": [
+    64,
+    64
+  ],
+  "faces": [
+    {
+      "face": "front",
+      "rect_xywh": [
+        1,
+        1,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": [
+        4,
+        7,
+        7,
+        9
+      ],
+      "source_metadata": "patches/front_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          19,
+          4
+        ],
+        [
+          12,
+          11
+        ],
+        [
+          19,
+          11
+        ]
+      ]
+    },
+    {
+      "face": "back",
+      "rect_xywh": [
+        29,
+        1,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/back_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          15,
+          11
+        ],
+        [
+          22,
+          11
+        ],
+        [
+          6,
+          16
+        ],
+        [
+          12,
+          16
+        ]
+      ]
+    },
+    {
+      "face": "top",
+      "rect_xywh": [
+        1,
+        22,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/top_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          17,
+          11
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          22,
+          17
+        ]
+      ]
+    },
+    {
+      "face": "bottom",
+      "rect_xywh": [
+        29,
+        22,
+        26,
+        19
+      ],
+      "physical_wh_m": [
+        0.4,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/bottom_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          20,
+          4
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          17,
+          11
+        ],
+        [
+          24,
+          10
+        ],
+        [
+          22,
+          17
+        ]
+      ]
+    },
+    {
+      "face": "left",
+      "rect_xywh": [
+        1,
+        43,
+        19,
+        19
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/left_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          13,
+          4
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          6,
+          16
+        ]
+      ]
+    },
+    {
+      "face": "right",
+      "rect_xywh": [
+        22,
+        43,
+        19,
+        19
+      ],
+      "physical_wh_m": [
+        0.3,
+        0.3
+      ],
+      "label_rect_xywh": null,
+      "source_metadata": "patches/right_01_quantized.json",
+      "sparse_fill_pixels": [
+        [
+          13,
+          4
+        ],
+        [
+          1,
+          7
+        ]
+      ]
+    }
+  ],
+  "seed": 0,
+  "label_physical_wh_m": [
+    0.105,
+    0.148
+  ],
+  "label_width_fraction": 0.2625,
+  "color_ladder_metrics": {
+    "front": {
+      "base_mean_luma": 133.6959174089069,
+      "final_mean_luma": 136.16907287449393,
+      "final_unique_colors": 9,
+      "sparse_fill_count": 3
+    },
+    "back": {
+      "base_mean_luma": 121.54453846153848,
+      "final_mean_luma": 119.83994655870445,
+      "final_unique_colors": 6,
+      "sparse_fill_count": 8
+    },
+    "top": {
+      "base_mean_luma": 151.05414736842098,
+      "final_mean_luma": 146.6005874493927,
+      "final_unique_colors": 4,
+      "sparse_fill_count": 7
+    },
+    "bottom": {
+      "base_mean_luma": 90.97768582995953,
+      "final_mean_luma": 100.35795101214575,
+      "final_unique_colors": 4,
+      "sparse_fill_count": 7
+    },
+    "left": {
+      "base_mean_luma": 120.69335290858727,
+      "final_mean_luma": 115.98331966759002,
+      "final_unique_colors": 7,
+      "sparse_fill_count": 4
+    },
+    "right": {
+      "base_mean_luma": 120.69335290858727,
+      "final_mean_luma": 112.80014736842105,
+      "final_unique_colors": 6,
+      "sparse_fill_count": 2
+    }
+  },
+  "layer_order": [
+    "CC0 photo",
+    "BOX downscale",
+    "32-color exact quantization",
+    "weak 4x4 Bayer with face color ladder",
+    "rule-based stamps",
+    "adaptive sparse blue-noise-like fill",
+    "quantized fold/contact AO"
+  ],
+  "noise_scope": "only flat 8x8 windows; minimum inserted adjacent-palette pixel; not randomized global wear",
+  "vertex_color_AO": false,
+  "AO_reason": "baked palette AO; URP Lit vertex color support unverified",
+  "source_photo_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea",
+  "palette_sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+  "approval": "D-124 cargo density64 approved; final preview/import approval still separate",
+  "final_fixes": [
+    "0.5mm tape; returns texture-only",
+    "black paired triangular UP arrows",
+    "reduced photo contrast and adjacent palette fibres"
+  ]
+}

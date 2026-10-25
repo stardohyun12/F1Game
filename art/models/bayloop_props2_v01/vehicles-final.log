@@ -1,0 +1,84 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+22:22:40 | INFO: Starting glTF 2.0 export
+22:22:40 | INFO: Extracting primitive: parked_car_01
+22:22:40 | INFO: Primitives created: 1
+22:22:40 | INFO: Finished glTF 2.0 export in 0.01345968246459961 s
+00:02.797  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_01_front.png'
+00:15.391  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_01_side.png'
+00:29.125  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\parked_car_01.fbx'
+export finished in 0.0045 sec.
+Info: Saved as "parked_car_01.blend"
+PROP_DONE parked_car_01 1312
+22:23:09 | INFO: Starting glTF 2.0 export
+22:23:09 | INFO: Extracting primitive: parked_car_02
+22:23:09 | INFO: Primitives created: 1
+22:23:09 | INFO: Finished glTF 2.0 export in 0.08201098442077637 s
+00:43.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_02_front.png'
+00:56.344  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_02_side.png'
+01:10.016  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\parked_car_02.fbx'
+export finished in 0.0267 sec.
+Info: Saved as "parked_car_02.blend"
+PROP_DONE parked_car_02 1292
+22:23:50 | INFO: Starting glTF 2.0 export
+22:23:50 | INFO: Extracting primitive: parked_car_03
+22:23:50 | INFO: Primitives created: 1
+22:23:50 | INFO: Finished glTF 2.0 export in 0.0704491138458252 s
+01:24.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_03_front.png'
+01:36.922  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_03_side.png'
+01:48.109  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\parked_car_03_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\parked_car_03.fbx'
+export finished in 0.0259 sec.
+Info: Saved as "parked_car_03.blend"
+PROP_DONE parked_car_03 1368
+22:24:28 | INFO: Starting glTF 2.0 export
+22:24:28 | INFO: Extracting primitive: three_wheeler_01
+22:24:28 | INFO: Primitives created: 1
+22:24:28 | INFO: Finished glTF 2.0 export in 0.05405735969543457 s
+01:58.766  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\three_wheeler_01_front.png'
+02:08.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\three_wheeler_01_side.png'
+02:22.266  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\three_wheeler_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\three_wheeler_01.fbx'
+export finished in 0.0170 sec.
+Info: Saved as "three_wheeler_01.blend"
+PROP_DONE three_wheeler_01 746
+22:25:02 | INFO: Starting glTF 2.0 export
+22:25:02 | INFO: Extracting primitive: scooter_01
+22:25:02 | INFO: Primitives created: 1
+22:25:02 | INFO: Finished glTF 2.0 export in 0.06165623664855957 s
+02:36.063  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_01_front.png'
+02:45.906  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_01_side.png'
+02:54.891  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\scooter_01.fbx'
+export finished in 0.0236 sec.
+Info: Saved as "scooter_01.blend"
+PROP_DONE scooter_01 860
+22:25:35 | INFO: Starting glTF 2.0 export
+22:25:35 | INFO: Extracting primitive: scooter_02
+22:25:35 | INFO: Primitives created: 1
+22:25:35 | INFO: Finished glTF 2.0 export in 0.0384221076965332 s
+03:03.594  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_02_front.png'
+03:11.563  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_02_side.png'
+03:19.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-props2\scooter_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_props2_v01\\scooter_02.fbx'
+export finished in 0.0142 sec.
+Info: Saved as "scooter_02.blend"
+PROP_DONE scooter_02 944
+GROUP_DONE vehicles 6
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

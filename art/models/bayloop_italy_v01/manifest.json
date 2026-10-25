@@ -1,0 +1,353 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "terrace_house_a",
+      "type": "terrace_house",
+      "model": "art/models/bayloop_italy_v01/terrace_house_a.glb",
+      "fbx": "art/models/bayloop_italy_v01/terrace_house_a.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_cream_Atlas.png",
+      "dimensions_m": [
+        5.979999929666519,
+        6.269999980926514,
+        7.284999996423721
+      ],
+      "bounds_min": [
+        -2.809999942779541,
+        0.0,
+        -6.419999986886978
+      ],
+      "bounds_max": [
+        3.169999986886978,
+        6.269999980926514,
+        0.8650000095367432
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2227,
+      "footprint_m": [
+        5.5,
+        6.0
+      ],
+      "storeys": 2,
+      "slope_variant": false,
+      "upper_access_height_m": null,
+      "wear_locations": [
+        "stair treads",
+        "plinth",
+        "parapet coping",
+        "shutter edges"
+      ],
+      "front_wall_z": 0,
+      "form": "Stepped Italian roof terraces, arched head, persiane and outside stair",
+      "life_layer": "laundry, pots, small service parts"
+    },
+    {
+      "id": "terrace_house_b",
+      "type": "terrace_house",
+      "model": "art/models/bayloop_italy_v01/terrace_house_b.glb",
+      "fbx": "art/models/bayloop_italy_v01/terrace_house_b.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_ochre_Atlas.png",
+      "dimensions_m": [
+        7.909999847412109,
+        9.069999694824219,
+        6.929999977350235
+      ],
+      "bounds_min": [
+        -3.434999942779541,
+        0.0,
+        -6.419999986886978
+      ],
+      "bounds_max": [
+        4.474999904632568,
+        9.069999694824219,
+        0.5099999904632568
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 3845,
+      "footprint_m": [
+        6.75,
+        6.0
+      ],
+      "storeys": 3,
+      "slope_variant": true,
+      "upper_access_height_m": 2.8,
+      "wear_locations": [
+        "stair treads",
+        "plinth",
+        "parapet coping",
+        "shutter edges"
+      ],
+      "front_wall_z": 0,
+      "form": "Stepped Italian roof terraces, arched head, persiane and outside stair",
+      "life_layer": "laundry, pots, small service parts"
+    },
+    {
+      "id": "shop_house_a",
+      "type": "shop_house",
+      "model": "art/models/bayloop_italy_v01/shop_house_a.glb",
+      "fbx": "art/models/bayloop_italy_v01/shop_house_a.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_cream_Atlas.png",
+      "dimensions_m": [
+        5.905000060796738,
+        7.920000076293945,
+        9.39500007033348
+      ],
+      "bounds_min": [
+        -2.825000047683716,
+        0.0,
+        -8.330000013113022
+      ],
+      "bounds_max": [
+        3.080000013113022,
+        7.920000076293945,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2646,
+      "footprint_m": [
+        5.5,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "wear_locations": [
+        "threshold",
+        "window sill",
+        "shutter edges",
+        "lower wall",
+        "old sign support"
+      ],
+      "form": "Italian arched shop, persiane, iron balcony, roof terrace; C with pergola",
+      "life_layer": "small Korean signs, meter/conduit, planter row"
+    },
+    {
+      "id": "shop_house_b",
+      "type": "shop_house",
+      "model": "art/models/bayloop_italy_v01/shop_house_b.glb",
+      "fbx": "art/models/bayloop_italy_v01/shop_house_b.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_ochre_Atlas.png",
+      "dimensions_m": [
+        7.155000060796738,
+        10.920000076293945,
+        9.39500007033348
+      ],
+      "bounds_min": [
+        -3.450000047683716,
+        0.0,
+        -8.330000013113022
+      ],
+      "bounds_max": [
+        3.705000013113022,
+        10.920000076293945,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 3598,
+      "footprint_m": [
+        6.75,
+        8.0
+      ],
+      "storeys": 3,
+      "front_wall_z": 0,
+      "wear_locations": [
+        "threshold",
+        "window sill",
+        "shutter edges",
+        "lower wall",
+        "old sign support"
+      ],
+      "form": "Italian arched shop, persiane, iron balcony, roof terrace; C with pergola",
+      "life_layer": "small Korean signs, meter/conduit, planter row"
+    },
+    {
+      "id": "shop_house_c",
+      "type": "shop_house",
+      "model": "art/models/bayloop_italy_v01/shop_house_c.glb",
+      "fbx": "art/models/bayloop_italy_v01/shop_house_c.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_blue_Atlas.png",
+      "dimensions_m": [
+        6.655000060796738,
+        8.079999923706055,
+        9.39500007033348
+      ],
+      "bounds_min": [
+        -3.200000047683716,
+        0.0,
+        -8.330000013113022
+      ],
+      "bounds_max": [
+        3.455000013113022,
+        8.079999923706055,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2771,
+      "footprint_m": [
+        6.25,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "wear_locations": [
+        "threshold",
+        "window sill",
+        "shutter edges",
+        "lower wall",
+        "old sign support"
+      ],
+      "form": "Italian arched shop, persiane, iron balcony, roof terrace; C with pergola",
+      "life_layer": "small Korean signs, meter/conduit, planter row"
+    },
+    {
+      "id": "terrace_house_c",
+      "type": "terrace_house",
+      "model": "art/models/bayloop_italy_v01/terrace_house_c.glb",
+      "fbx": "art/models/bayloop_italy_v01/terrace_house_c.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_blue_Atlas.png",
+      "dimensions_m": [
+        5.979999929666519,
+        7.46999979019165,
+        7.284999996423721
+      ],
+      "bounds_min": [
+        -2.809999942779541,
+        0.0,
+        -6.419999986886978
+      ],
+      "bounds_max": [
+        3.169999986886978,
+        7.46999979019165,
+        0.8650000095367432
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2323,
+      "footprint_m": [
+        5.5,
+        6.0
+      ],
+      "storeys": 2,
+      "slope_variant": false,
+      "upper_access_height_m": null,
+      "wear_locations": [
+        "stair treads",
+        "plinth",
+        "parapet coping",
+        "shutter edges"
+      ],
+      "front_wall_z": 0,
+      "form": "Stepped Italian roof terraces, arched head, persiane and outside stair",
+      "life_layer": "laundry, pots, small service parts"
+    },
+    {
+      "id": "cliff_villa_a",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_italy_v01/cliff_villa_a.glb",
+      "fbx": "art/models/bayloop_italy_v01/cliff_villa_a.fbx",
+      "texture": "art/models/bayloop_italy_v01/Italy_cream_Atlas.png",
+      "dimensions_m": [
+        8.42999991774559,
+        7.920000076293945,
+        8.930000066757202
+      ],
+      "bounds_min": [
+        -4.099999904632568,
+        0.0,
+        -7.605000019073486
+      ],
+      "bounds_max": [
+        4.330000013113022,
+        7.920000076293945,
+        1.3250000476837158
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 3747,
+      "footprint_m": [
+        8.0,
+        7.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "wear_locations": [
+        "terrace coping",
+        "entry threshold",
+        "shutter edges",
+        "drain pipe"
+      ],
+      "form": "Coastal villa/cafe with three masonry arches, recessed upper storey and wide terrace",
+      "life_layer": "short Korean signs, bench, meter and pots"
+    }
+  ]
+}

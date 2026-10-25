@@ -1,0 +1,65 @@
+{
+  "tris": 2052,
+  "dimensions_xyz_m": [
+    11.335000038146973,
+    7.230000019073486,
+    6.400000095367432
+  ],
+  "body_dimensions_m": [
+    7.2,
+    5.8,
+    3.3
+  ],
+  "ridge_height_m": 5.25,
+  "chimney_height_m": 6.4,
+  "door_m": [
+    0.92,
+    2.08
+  ],
+  "window_m": [
+    1.05,
+    1.25
+  ],
+  "chair_seat_m": [
+    0.48,
+    0.49,
+    0.44
+  ],
+  "density_px_m": 32,
+  "atlas_grid": [
+    512,
+    64,
+    8,
+    2
+  ],
+  "tile_ids": [
+    51,
+    52,
+    53,
+    54,
+    57,
+    58
+  ],
+  "ai_texture": false,
+  "part_polygon_counts": {
+    "back_window": 36,
+    "chair": 60,
+    "chimney": 18,
+    "curved_tile_eave_ends": 100,
+    "door": 90,
+    "doorstep_plant": 82,
+    "exposed_rafter_ends": 48,
+    "foundation": 48,
+    "front_steps": 12,
+    "gable": 14,
+    "laundry": 48,
+    "laundry_line": 12,
+    "laundry_posts": 20,
+    "lit_window": 48,
+    "local_roof_repair": 1,
+    "roof": 182,
+    "walls": 96,
+    "window": 108
+  },
+  "dimensions_basis": "Authored metre-scale dimensions using human-scale doors/windows. Not a surveyed replica; HABS vernacular roof/eaves/repair patterns only."
+}

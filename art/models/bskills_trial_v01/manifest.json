@@ -1,0 +1,505 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 1500,
+  "source_manifests": [
+    "art/models/bayloop_buildings_v01/metal-source.json",
+    "art/models/bayloop_props2_v01/asphalt-source.json",
+    "art/models/bayloop_props2_v01/linen-source.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json"
+  ],
+  "assets": [
+    {
+      "id": "laundry_line_01",
+      "type": "laundry_line",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/laundry_line_01.glb",
+      "fbx": "art/models/bskills_trial_v01/laundry_line_01.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 880,
+      "bounds_min": [
+        -1.6325000524520874,
+        0.0,
+        -0.05050000175833702
+      ],
+      "bounds_max": [
+        1.6325000524520874,
+        1.5499999749299604,
+        0.05050000175833702
+      ],
+      "dimensions_m": [
+        3.265000104904175,
+        1.5499999749299604,
+        0.10100000351667404
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "laundry_line_01",
+        "type": "laundry_line",
+        "variant": 0,
+        "seed": 232100
+      },
+      "geometry_sha256": "2429aa941ce422657bf94425920ab96681a055ae09ed0cdb0eebbb1c689329fb",
+      "design": {
+        "pivot": "bottom_center",
+        "mount_height_m": 2.7,
+        "placement_offset_m": 0,
+        "triangle_budget": 1500,
+        "design_notes": [
+          "Prop-artist: garment-scale primary silhouette before seams. One shirt/towel/trousers/small cloth; no repeated socks.",
+          "Broad shallow folds, smooth garment normals, continuous photo UV; no simulation or animation."
+        ],
+        "skills": [
+          "prop-artist",
+          "uv-workflow",
+          "lowpoly-style"
+        ]
+      },
+      "systems": [
+        "rope_mounts",
+        "shirt_back",
+        "shirt_front",
+        "sleeve_back",
+        "sleeve_front",
+        "small_cloth_back",
+        "small_cloth_front",
+        "towel_back",
+        "towel_front",
+        "trouser_leg_back",
+        "trouser_leg_front",
+        "trouser_waist_back",
+        "trouser_waist_front",
+        "wooden_pegs"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    },
+    {
+      "id": "parked_car_01",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/parked_car_01.glb",
+      "fbx": "art/models/bskills_trial_v01/parked_car_01.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 1314,
+      "bounds_min": [
+        -0.8399999737739563,
+        0.0,
+        -1.6579999923706055
+      ],
+      "bounds_max": [
+        0.8399999737739563,
+        1.429999951273203,
+        1.6579999923706055
+      ],
+      "dimensions_m": [
+        1.6799999475479126,
+        1.429999951273203,
+        3.315999984741211
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_01",
+        "type": "parked_car",
+        "variant": 0,
+        "seed": 232100
+      },
+      "geometry_sha256": "afcfd6348987786c0c3c54c442c25c1d0cde8a2cf31d97f6221c8c5ccdea8140",
+      "design": {
+        "form": "rounded_european_hatch",
+        "design_body_dimensions_m": [
+          1.48,
+          3.2,
+          1.43
+        ],
+        "wheelbase_m": 1.98,
+        "track_m": 1.33,
+        "wheel_radius_m": 0.265,
+        "wheel_count": 4,
+        "front_overhang_m": 0.6100000000000001,
+        "rear_overhang_m": 0.6100000000000001,
+        "cabin_front_rear_m": [
+          -0.91,
+          1.12
+        ],
+        "roof_front_rear_m": [
+          -0.4,
+          0.61
+        ],
+        "ground_footprint_m": [
+          1.48,
+          3.2
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "rigged": false,
+        "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles"
+        ]
+      },
+      "systems": [
+        "body",
+        "chassis",
+        "glass",
+        "lights",
+        "trim",
+        "wheel_left_front",
+        "wheel_left_rear",
+        "wheel_right_front",
+        "wheel_right_rear"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    },
+    {
+      "id": "parked_car_02",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/parked_car_02.glb",
+      "fbx": "art/models/bskills_trial_v01/parked_car_02.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 1314,
+      "bounds_min": [
+        -0.8700000047683716,
+        0.0,
+        -1.878000020980835
+      ],
+      "bounds_max": [
+        0.8700000047683716,
+        1.440000057220459,
+        1.878000020980835
+      ],
+      "dimensions_m": [
+        1.7400000095367432,
+        1.440000057220459,
+        3.75600004196167
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_02",
+        "type": "parked_car",
+        "variant": 1,
+        "seed": 232101
+      },
+      "geometry_sha256": "74c24ab94428a73db10978bf42aa0d13a8517c6c50aa00bcea26dd5cf26f9d59",
+      "design": {
+        "form": "angular_european_hatch",
+        "design_body_dimensions_m": [
+          1.54,
+          3.64,
+          1.44
+        ],
+        "wheelbase_m": 2.28,
+        "track_m": 1.3900000000000001,
+        "wheel_radius_m": 0.28,
+        "wheel_count": 4,
+        "front_overhang_m": 0.6800000000000002,
+        "rear_overhang_m": 0.6800000000000002,
+        "cabin_front_rear_m": [
+          -1.05,
+          1.43
+        ],
+        "roof_front_rear_m": [
+          -0.57,
+          0.79
+        ],
+        "ground_footprint_m": [
+          1.54,
+          3.64
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "rigged": false,
+        "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles"
+        ]
+      },
+      "systems": [
+        "body",
+        "chassis",
+        "glass",
+        "lights",
+        "trim",
+        "wheel_left_front",
+        "wheel_left_rear",
+        "wheel_right_front",
+        "wheel_right_rear"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    },
+    {
+      "id": "parked_car_03",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/parked_car_03.glb",
+      "fbx": "art/models/bskills_trial_v01/parked_car_03.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 1386,
+      "bounds_min": [
+        -0.7975000143051147,
+        0.0,
+        -1.7055000066757202
+      ],
+      "bounds_max": [
+        0.7975000143051147,
+        1.6799999475479126,
+        1.7055000066757202
+      ],
+      "dimensions_m": [
+        1.5950000286102295,
+        1.6799999475479126,
+        3.4110000133514404
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_03",
+        "type": "parked_car",
+        "variant": 2,
+        "seed": 232102
+      },
+      "geometry_sha256": "0f1a92ffa6a6ec7afffafd6e8e2569ee6144ecd8cbf29e3db6457653ed24a385",
+      "design": {
+        "form": "tall_japanese_kei",
+        "design_body_dimensions_m": [
+          1.395,
+          3.295,
+          1.68
+        ],
+        "wheelbase_m": 2.335,
+        "track_m": 1.245,
+        "wheel_radius_m": 0.255,
+        "wheel_count": 4,
+        "front_overhang_m": 0.48,
+        "rear_overhang_m": 0.48,
+        "cabin_front_rear_m": [
+          -1.01,
+          1.43
+        ],
+        "roof_front_rear_m": [
+          -0.75,
+          1.28
+        ],
+        "ground_footprint_m": [
+          1.395,
+          3.295
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "rigged": false,
+        "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles"
+        ]
+      },
+      "systems": [
+        "body",
+        "chassis",
+        "glass",
+        "lights",
+        "trim",
+        "wheel_left_front",
+        "wheel_left_rear",
+        "wheel_right_front",
+        "wheel_right_rear"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    },
+    {
+      "id": "three_wheeler_01",
+      "type": "three_wheeler",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bskills_trial_v01/three_wheeler_01.glb",
+      "fbx": "art/models/bskills_trial_v01/three_wheeler_01.fbx",
+      "texture": "art/models/bskills_trial_v01/BskillsTrialPhotoAtlas.png",
+      "tris": 1042,
+      "bounds_min": [
+        -0.6899999976158142,
+        0.0,
+        -1.284999966621399
+      ],
+      "bounds_max": [
+        0.6899999976158142,
+        1.5900000408291817,
+        1.284999966621399
+      ],
+      "dimensions_m": [
+        1.3799999952316284,
+        1.5900000408291817,
+        2.569999933242798
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "three_wheeler_01",
+        "type": "three_wheeler",
+        "variant": 0,
+        "seed": 232100
+      },
+      "geometry_sha256": "18969bcdcf3a2183dca61ac608ac6c2d9b707b004b8ac5f0468aa0f588ea0487",
+      "design": {
+        "form": "three_wheel_drop_side_cargo",
+        "maxtris": 1500,
+        "wheelbase_m": 1.59,
+        "track_m": 1.06,
+        "wheel_radius_m": 0.225,
+        "wheel_count": 3,
+        "design_body_dimensions_m": [
+          1.26,
+          2.57,
+          1.59
+        ],
+        "ground_footprint_m": [
+          1.38,
+          2.57
+        ],
+        "front_axis": "-Y",
+        "rigged": false,
+        "skill": "vehicle-artist",
+        "geometry_triangles": 1042,
+        "loadpath": {
+          "crossmember_count": 2,
+          "rail_top_z": 0.45,
+          "crossmember_z": [
+            0.43,
+            0.56
+          ],
+          "floor_z": [
+            0.54,
+            0.64
+          ],
+          "rail_crossmember_overlap_m": 0.02,
+          "crossmember_floor_overlap_m": 0.02,
+          "cab_floor_z": [
+            0.43,
+            0.53
+          ],
+          "cab_floor_body_overlap_m": 0.01,
+          "step_bracket_z": [
+            0.35,
+            0.45
+          ],
+          "step_z": [
+            0.42,
+            0.465
+          ],
+          "step_bracket_overlap_m": 0.03
+        },
+        "wear_locations": [
+          "step top",
+          "door handles",
+          "loadbed seams"
+        ]
+      },
+      "systems": [
+        "body",
+        "cab_floor",
+        "chassis",
+        "chassis_crossmembers",
+        "door_seams",
+        "front_fork",
+        "front_mudguard",
+        "glass",
+        "loadbed",
+        "loadbed_floor",
+        "rear_axle",
+        "rear_suspension",
+        "step_brackets",
+        "steps",
+        "tires",
+        "trim",
+        "wheel_hubs",
+        "window_frame"
+      ],
+      "wear_locations": [
+        "lower sill",
+        "bumper ends",
+        "loading bed contact",
+        "cloth hems/pegs"
+      ]
+    }
+  ]
+}

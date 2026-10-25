@@ -1,0 +1,89 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "cafe_kiosk_01",
+      "type": "cafe_kiosk",
+      "model": "art/models/bayloop_variety_v01/cafe_kiosk_01.glb",
+      "fbx": "art/models/bayloop_variety_v01/cafe_kiosk_01.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 656,
+      "dimensions_m": [
+        4.5,
+        3.259999990463257,
+        4.7850000858306885
+      ],
+      "bounds_min": [
+        -2.240000009536743,
+        0.0,
+        -3.7200000286102295
+      ],
+      "bounds_max": [
+        2.259999990463257,
+        3.259999990463257,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cafe_kiosk_01",
+        "type": "cafe_kiosk",
+        "width": 4,
+        "depth": 3.5,
+        "floors": 1,
+        "roof": "terracotta_gable",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "blue",
+        "wear": "medium",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 0,
+          "laundry": false
+        },
+        "seed": 141000,
+        "zone": "medium",
+        "front_space_m": 0
+      },
+      "footprint_m": [
+        4.0,
+        3.5
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "form": "walk-up kiosk with deep open serving counter, shelves, cloth awning and modest outside seating",
+      "life_layer": "human-scale notice boards, seating and service attachments",
+      "wear_locations": [
+        "entrance threshold",
+        "lower masonry",
+        "roof edge",
+        "handled wood and metal"
+      ],
+      "parameter_profile": "fixed_functional_facility: width/depth/palette; fixed roof/floors/openings; seed records identity",
+      "zone": "medium",
+      "front_space_m": 0
+    }
+  ]
+}

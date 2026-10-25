@@ -1,0 +1,378 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "atlas_size": 1024,
+  "cell_size": 256,
+  "interior": 252,
+  "tiles": [
+    {
+      "id": "body_cream",
+      "index": 0,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        0.666015625,
+        0.7734375000000001
+      ],
+      "palette_ladder": [
+        19,
+        14
+      ],
+      "source_crop_xyxy": [
+        340,
+        260,
+        650,
+        620
+      ]
+    },
+    {
+      "id": "wood",
+      "index": 1,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        9,
+        21,
+        24,
+        17
+      ],
+      "atlas_rect_xywh": [
+        258,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wood_dark",
+      "index": 2,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        5
+      ],
+      "atlas_rect_xywh": [
+        514,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "body_blue",
+      "index": 3,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        0.666015625,
+        0.7734375000000001
+      ],
+      "palette_ladder": [
+        1,
+        18
+      ],
+      "source_crop_xyxy": [
+        340,
+        260,
+        650,
+        620
+      ]
+    },
+    {
+      "id": "roof_clay",
+      "index": 4,
+      "source_url": "https://polyhaven.com/a/ceramic_roof_01",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        2,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "stone",
+      "index": 5,
+      "source_url": "https://polyhaven.com/a/stone_pavers",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        258,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "metal",
+      "index": 6,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.200000047683716,
+        2.200000047683716
+      ],
+      "palette_ladder": [
+        7,
+        8
+      ]
+    },
+    {
+      "id": "glass",
+      "index": 7,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.200000047683716,
+        2.200000047683716
+      ],
+      "palette_ladder": [
+        2,
+        26
+      ]
+    },
+    {
+      "id": "cloth",
+      "index": 8,
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+      "physical_photo_repeat_m": [
+        0.5,
+        0.5
+      ],
+      "source_pixels_at_32ppm": [
+        16,
+        16
+      ],
+      "palette_ladder": [
+        17,
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        2,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "trim",
+      "index": 9,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        0.666015625,
+        0.7734375000000001
+      ],
+      "palette_ladder": [
+        19,
+        14
+      ],
+      "source_crop_xyxy": [
+        340,
+        260,
+        650,
+        620
+      ]
+    },
+    {
+      "id": "body_ochre",
+      "index": 10,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        0.666015625,
+        0.7734375000000001
+      ],
+      "palette_ladder": [
+        29,
+        30
+      ],
+      "source_crop_xyxy": [
+        340,
+        260,
+        650,
+        620
+      ]
+    },
+    {
+      "id": "teal",
+      "index": 11,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        0.666015625,
+        0.7734375000000001
+      ],
+      "palette_ladder": [
+        26,
+        27
+      ],
+      "source_crop_xyxy": [
+        340,
+        260,
+        650,
+        620
+      ]
+    },
+    {
+      "id": "stonewall",
+      "index": 12,
+      "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+      "source_path": "art/source/hillhouse-surfaces/photos/stone_brick_wall_001_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        2.5,
+        2.5
+      ],
+      "source_pixels_at_32ppm": [
+        80,
+        80
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7,
+        17
+      ],
+      "atlas_rect_xywh": [
+        2,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "sign",
+      "index": 13,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        21
+      ],
+      "atlas_rect_xywh": [
+        258,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "rust",
+      "index": 14,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.1875,
+        2.1875
+      ],
+      "source_pixels_at_32ppm": [
+        70,
+        70
+      ],
+      "palette_ladder": [
+        9,
+        15,
+        21,
+        4
+      ],
+      "atlas_rect_xywh": [
+        514,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "asphalt",
+      "index": 15,
+      "source_url": "https://polyhaven.com/a/asphalt_02",
+      "source_path": "art/models/bayloop_props2_v01/sources/asphalt_02_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        3.000000238418579,
+        3.0
+      ],
+      "palette_ladder": [
+        2,
+        9,
+        5
+      ]
+    }
+  ],
+  "process": "CC0 photographed metal 2.2m and asphalt provider scale BOX to32px/m; exact palette luminance ladders; existing CC0 wood/stone/cloth cells; no AI/no random noise; symbols actual geometry",
+  "atlas": "art/models/bayloop_props2_v01/Props2PhotoAtlas.png",
+  "aliases": {
+    "plaster": 0,
+    "wood": 1,
+    "wood_dark": 2,
+    "roof": 3,
+    "roof_clay": 4,
+    "stone": 5,
+    "metal": 6,
+    "glass": 7,
+    "cloth": 8,
+    "trim": 9,
+    "rose_wall": 10,
+    "teal": 11,
+    "stonewall": 12,
+    "sign": 13,
+    "rust": 14,
+    "darkroof": 15,
+    "body": 0,
+    "asphalt": 15,
+    "paint": 9,
+    "rubber": 15,
+    "wear": 14,
+    "body_blue": 3,
+    "body_ochre": 10
+  }
+}

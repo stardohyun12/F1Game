@@ -1,0 +1,26 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+21:05:35 | INFO: Starting glTF 2.0 export
+21:05:35 | INFO: Extracting primitive: terrace_house_06
+21:05:35 | INFO: Primitives created: 1
+21:05:35 | INFO: Finished glTF 2.0 export in 0.022363662719726562 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\terrace_house_06.fbx'
+export finished in 0.0078 sec.
+Info: Saved as "terrace_house_06.blend"
+BUILDGEN_ASSET terrace_house_06 3702
+21:05:35 | INFO: Starting glTF 2.0 export
+21:05:35 | INFO: Extracting primitive: terrace_house_12
+21:05:35 | INFO: Primitives created: 1
+21:05:35 | INFO: Finished glTF 2.0 export in 0.0165557861328125 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\terrace_house_12.fbx'
+export finished in 0.0087 sec.
+Info: Saved as "terrace_house_12.blend"
+BUILDGEN_ASSET terrace_house_12 3928
+BUILDGEN_DONE terrace_house 2
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

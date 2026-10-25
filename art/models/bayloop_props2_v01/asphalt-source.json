@@ -1,0 +1,12 @@
+{
+  "id": "asphalt_02",
+  "path": "art/models/bayloop_props2_v01/sources/asphalt_02_diff_1k.jpg",
+  "url": "https://polyhaven.com/a/asphalt_02",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/asphalt_02/asphalt_02_diff_1k.jpg",
+  "license": "CC0-1.0",
+  "sha256": "1aa5ce99f58a625c71d48cfc3e68b65ca85ccb00f39e045c0a928608a0ea25ed",
+  "dimensions_mm": [
+    3000.000238418579,
+    3000
+  ]
+}

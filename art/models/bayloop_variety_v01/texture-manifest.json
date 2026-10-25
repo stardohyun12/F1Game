@@ -1,0 +1,707 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "atlas_size": 1024,
+  "cell_size": 256,
+  "interior": 252,
+  "tiles": [
+    {
+      "id": "wall_primary",
+      "index": 0,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": "Per atlas / see colors",
+      "atlas_rect_xywh": [
+        2,
+        2,
+        252,
+        252
+      ],
+      "photographed_damage_fraction": 0.498291015625,
+      "threshold_method": "photo luminance median"
+    },
+    {
+      "id": "wood",
+      "index": 1,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        9,
+        21,
+        24,
+        17
+      ],
+      "atlas_rect_xywh": [
+        258,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wood_dark",
+      "index": 2,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        5
+      ],
+      "atlas_rect_xywh": [
+        514,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wear_primary",
+      "index": 3,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": "Per atlas / see colors",
+      "atlas_rect_xywh": [
+        770,
+        2,
+        252,
+        252
+      ],
+      "photographed_damage_fraction": 0.3,
+      "threshold_method": "photo 30th percentile"
+    },
+    {
+      "id": "roof_clay",
+      "index": 4,
+      "source_url": "https://polyhaven.com/a/ceramic_roof_01",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        2,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "stone",
+      "index": 5,
+      "source_url": "https://polyhaven.com/a/stone_pavers",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        258,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "metal",
+      "index": 6,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.1875,
+        2.1875
+      ],
+      "source_pixels_at_32ppm": [
+        70,
+        70
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7
+      ],
+      "atlas_rect_xywh": [
+        514,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "glass",
+      "index": 7,
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+      "physical_photo_repeat_m": [
+        0.5,
+        0.5
+      ],
+      "source_pixels_at_32ppm": [
+        16,
+        16
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        17,
+        4
+      ],
+      "atlas_rect_xywh": [
+        770,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "cloth",
+      "index": 8,
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+      "physical_photo_repeat_m": [
+        0.5,
+        0.5
+      ],
+      "source_pixels_at_32ppm": [
+        16,
+        16
+      ],
+      "palette_ladder": [
+        17,
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        2,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "trim",
+      "index": 9,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        258,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wall_secondary",
+      "index": 10,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": "Per atlas / see colors",
+      "atlas_rect_xywh": [
+        514,
+        514,
+        252,
+        252
+      ],
+      "photographed_damage_fraction": 0.498291015625,
+      "threshold_method": "photo luminance median"
+    },
+    {
+      "id": "teal",
+      "index": 11,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        2,
+        26,
+        5,
+        18
+      ],
+      "atlas_rect_xywh": [
+        770,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "stonewall",
+      "index": 12,
+      "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+      "source_path": "art/source/hillhouse-surfaces/photos/stone_brick_wall_001_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        2.5,
+        2.5
+      ],
+      "source_pixels_at_32ppm": [
+        80,
+        80
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7,
+        17
+      ],
+      "atlas_rect_xywh": [
+        2,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "sign",
+      "index": 13,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        21
+      ],
+      "atlas_rect_xywh": [
+        258,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "rust",
+      "index": 14,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.1875,
+        2.1875
+      ],
+      "source_pixels_at_32ppm": [
+        70,
+        70
+      ],
+      "palette_ladder": [
+        9,
+        15,
+        21,
+        4
+      ],
+      "atlas_rect_xywh": [
+        514,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wear_secondary",
+      "index": 15,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": "Per atlas / see colors",
+      "atlas_rect_xywh": [
+        770,
+        770,
+        252,
+        252
+      ],
+      "photographed_damage_fraction": 0.3,
+      "threshold_method": "photo 30th percentile"
+    }
+  ],
+  "process": "D140 reuses D137/A1 actual CC0 photographs; colour ladders and normal/worn local damage cells; four shared atlases; Galmuri11 OFL Korean signs",
+  "atlases": [
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "sha256": "35fb7b15faee6fecb8d268ec62bd65cc16ae2f6c05d85ea2e5df806f3e24f198",
+      "colors": [
+        "cream",
+        "chalk"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "sha256": "968c14d54c8e4241094715af5a52208e1a3d139303425c5abd63cafdcf4fca6b",
+      "colors": [
+        "sand",
+        "ochre"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "sha256": "230ef36022aecf59bceb4bee284e8f5797ce8cf527aa207e321779e7253bb9a8",
+      "colors": [
+        "blue",
+        "mist"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 29,
+      "outside_palette_colors": 0
+    },
+    {
+      "path": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "sha256": "e8632bef03cf23b433a1752b1d5a32d74f5a048c0a1e0b8979a4eb21ce41c2f9",
+      "colors": [
+        "rose",
+        "warm_grey"
+      ],
+      "size": [
+        1024,
+        1024
+      ],
+      "palette_colors": 28,
+      "outside_palette_colors": 0
+    }
+  ],
+  "colors": {
+    "cream": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_01.png",
+      "tiles": {
+        "plaster": 0,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 0,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 3
+      },
+      "color": "cream",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        19,
+        14
+      ]
+    },
+    "chalk": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_01.png",
+      "tiles": {
+        "plaster": 10,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 10,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 15
+      },
+      "color": "chalk",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        19,
+        14
+      ]
+    },
+    "sand": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_02.png",
+      "tiles": {
+        "plaster": 0,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 0,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 3
+      },
+      "color": "sand",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        16,
+        0
+      ]
+    },
+    "ochre": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_02.png",
+      "tiles": {
+        "plaster": 10,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 10,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 15
+      },
+      "color": "ochre",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        29,
+        30
+      ]
+    },
+    "blue": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_03.png",
+      "tiles": {
+        "plaster": 0,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 0,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 3
+      },
+      "color": "blue",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        13,
+        19
+      ]
+    },
+    "mist": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_03.png",
+      "tiles": {
+        "plaster": 10,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 10,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 15
+      },
+      "color": "mist",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        13,
+        19
+      ]
+    },
+    "rose": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_04.png",
+      "tiles": {
+        "plaster": 0,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 0,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 3
+      },
+      "color": "rose",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        10,
+        7
+      ]
+    },
+    "warm_grey": {
+      "atlas": "D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\BayLoopShared_04.png",
+      "tiles": {
+        "plaster": 10,
+        "wood": 1,
+        "wood_dark": 2,
+        "roof": 4,
+        "roof_clay": 4,
+        "stone": 5,
+        "metal": 6,
+        "glass": 7,
+        "cloth": 8,
+        "trim": 9,
+        "rose_wall": 10,
+        "teal": 11,
+        "stonewall": 12,
+        "sign": 13,
+        "rust": 14,
+        "darkroof": 6,
+        "wear_wall": 15
+      },
+      "color": "warm_grey",
+      "wear": "medium",
+      "shutter": "green",
+      "wear_band_height_m": 0.25,
+      "palette_pair": [
+        17,
+        4
+      ]
+    }
+  },
+  "color_family_note": "Six muted palette families, plus two lightness variants: chalk is cream whitewash with reversed photographic coverage; mist is the blue family with reversed coverage. rose is muted warm-grey rose, not saturated pink: no suitable pale pink exists in the fixed shared palette.",
+  "tile_alias_notes": "indices 3/15 repurposed to worn plaster; roof aliases 4 terracotta and 6 sheetmetal; per-building tiles mapping from select_style is authoritative",
+  "wear_rule": "Use wear_wall at ground splash band, threshold and rainwater corners only. light/normal/heavy changes band height, never stochastic whole-wall noise."
+}

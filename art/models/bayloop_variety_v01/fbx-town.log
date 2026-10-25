@@ -1,0 +1,70 @@
+20:52:10 | INFO: Data are loaded, start creating Blender stuff
+20:52:10 | INFO: Blender create Mesh node town_house_01
+20:52:10 | INFO: glTF import finished in 0.01s
+D:\Github\F1Game\tools\asset-gen\check_bayloop_fbx.py:37: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not material or not material.use_nodes:continue
+FBX version: 7400
+20:52:10 | INFO: Data are loaded, start creating Blender stuff
+20:52:10 | INFO: Blender create Mesh node town_house_02
+20:52:10 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:10 | INFO: Data are loaded, start creating Blender stuff
+20:52:10 | INFO: Blender create Mesh node town_house_03
+20:52:10 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:11 | INFO: Data are loaded, start creating Blender stuff
+20:52:11 | INFO: Blender create Mesh node town_house_04
+20:52:11 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:11 | INFO: Data are loaded, start creating Blender stuff
+20:52:11 | INFO: Blender create Mesh node town_house_05
+20:52:11 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:11 | INFO: Data are loaded, start creating Blender stuff
+20:52:11 | INFO: Blender create Mesh node town_house_06
+20:52:12 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:12 | INFO: Data are loaded, start creating Blender stuff
+20:52:12 | INFO: Blender create Mesh node town_house_07
+20:52:12 | INFO: glTF import finished in 0.01s
+FBX version: 7400
+20:52:13 | INFO: Data are loaded, start creating Blender stuff
+20:52:13 | INFO: Blender create Mesh node town_house_08
+20:52:13 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:52:17 | INFO: Data are loaded, start creating Blender stuff
+20:52:17 | INFO: Blender create Mesh node town_house_09
+20:52:17 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:52:19 | INFO: Data are loaded, start creating Blender stuff
+20:52:19 | INFO: Blender create Mesh node town_house_10
+20:52:19 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:52:22 | INFO: Data are loaded, start creating Blender stuff
+20:52:22 | INFO: Blender create Mesh node town_house_11
+20:52:22 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:52:24 | INFO: Data are loaded, start creating Blender stuff
+20:52:24 | INFO: Blender create Mesh node town_house_12
+20:52:24 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:52:28 | INFO: Data are loaded, start creating Blender stuff
+20:52:28 | INFO: Blender create Mesh node town_house_13
+20:52:28 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:52:30 | INFO: Data are loaded, start creating Blender stuff
+20:52:30 | INFO: Blender create Mesh node town_house_14
+20:52:30 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+20:52:33 | INFO: Data are loaded, start creating Blender stuff
+20:52:33 | INFO: Blender create Mesh node town_house_15
+20:52:34 | INFO: glTF import finished in 0.04s
+FBX version: 7400
+20:52:36 | INFO: Data are loaded, start creating Blender stuff
+20:52:36 | INFO: Blender create Mesh node town_house_16
+20:52:36 | INFO: glTF import finished in 0.05s
+FBX version: 7400
+{"pass": true, "assets": [{"id": "town_house_01", "pass": true, "error": null}, {"id": "town_house_02", "pass": true, "error": null}, {"id": "town_house_03", "pass": true, "error": null}, {"id": "town_house_04", "pass": true, "error": null}, {"id": "town_house_05", "pass": true, "error": null}, {"id": "town_house_06", "pass": true, "error": null}, {"id": "town_house_07", "pass": true, "error": null}, {"id": "town_house_08", "pass": true, "error": null}, {"id": "town_house_09", "pass": true, "error": null}, {"id": "town_house_10", "pass": true, "error": null}, {"id": "town_house_11", "pass": true, "error": null}, {"id": "town_house_12", "pass": true, "error": null}, {"id": "town_house_13", "pass": true, "error": null}, {"id": "town_house_14", "pass": true, "error": null}, {"id": "town_house_15", "pass": true, "error": null}, {"id": "town_house_16", "pass": true, "error": null}]}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

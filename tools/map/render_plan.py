@@ -16,6 +16,12 @@ G = 2.0                        # 지형 격자 m
 
 ROAD_STYLE = {"village": ((150, 90, 20), (245, 170, 70)), "shortcut": ((80, 30, 110), (170, 95, 225)), "main": ((150, 40, 35), (225, 80, 60))}
 SEC_FILL = {"1": (236, 200, 165), "2": (226, 220, 210), "3": (250, 236, 205), "4": (215, 222, 228)}
+# v4: 구역(D-140) · 열린 땅(D-138) · 필지는 구역 밀도색
+DIST_FILL = {"dense": (200, 60, 50, 46), "medium": (0, 0, 0, 0), "sparse": (60, 160, 60, 40)}
+DIST_LINE = {"dense": (170, 40, 30), "medium": (120, 120, 120), "sparse": (40, 120, 40)}
+PARCEL_FILL = {"dense": (196, 110, 90), "medium": (232, 196, 150), "sparse": (250, 238, 205)}
+OG_FILL = {"plaza": (205, 195, 180, 210), "quay": (185, 185, 190, 210), "lot": (200, 200, 195, 190), "beach": (240, 220, 160, 210),
+           "field": (175, 200, 110, 170), "meadow": (150, 205, 120, 150)}
 SEC_COL = {"1": (190, 90, 40), "2": (120, 90, 160), "3": (210, 140, 30), "4": (40, 110, 160)}
 
 
@@ -77,10 +83,22 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
             if h >= 0 and (row[i + 1] < 0 or nrow[i] < 0):
                 c = (70, 100, 130)
             px[M + i, top + j] = c
-    dr = ImageDraw.Draw(img)
 
     def P(x, z):
         return (M + (x - x0) * s, top + (z1 - z) * s)
+
+    # v4 (D-140) 구역 강약 반투명 + (D-138) 열린 땅
+    ov = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    od = ImageDraw.Draw(ov)
+    for d in reversed(plan.get("districts", [])[:-1]):
+        od.polygon([P(*q) for q in d["poly"]], fill=DIST_FILL[d["density"]])
+    for g in plan.get("openGround", []):
+        od.polygon([P(*q) for q in g["poly"]], fill=OG_FILL.get(g["kind"], (200, 200, 200, 150)), outline=(90, 90, 90, 200))
+    img = Image.alpha_composite(img.convert("RGBA"), ov).convert("RGB")
+    dr = ImageDraw.Draw(img)
+    for d in plan.get("districts", [])[:-1]:
+        pts_ = [P(*q) for q in d["poly"]]
+        dr.line(pts_ + pts_[:1], fill=DIST_LINE[d["density"]], width=2)
 
     def inside(x, z, pad=0):
         return x0 - pad <= x <= x1 + pad and z0 - pad <= z <= z1 + pad
@@ -93,9 +111,14 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
     for p in plan["parcels"]:
         if not inside(p["x"], p["z"], 10):
             continue
-        c = SEC_FILL.get(p["section"], (230, 230, 230))
+        c = PARCEL_FILL.get(p.get("density"), SEC_FILL.get(p["section"], (230, 230, 230)))
         c = tuple(int(v * (1 - 0.07 * (p["floors"] - 1))) for v in c)
         dr.polygon([P(*q) for q in L.rect_corners(p)], fill=c, outline=(90, 75, 60))
+    # 나무(D-140 성김 구역 빈터·마당)
+    for t in plan.get("trees", {}).get("points", []):
+        if inside(t[0], t[1]):
+            c = P(t[0], t[1]); rr = max(2, s * (1.6 if t[2] == "Tree" else 1.0))
+            dr.ellipse([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(60, 130, 60), outline=(30, 80, 30))
     # 밭
     for f in plan["fields"]:
         x, z, w, d = f["rect"]
@@ -108,6 +131,8 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
     for r in car:
         pts = samp[r["id"]]; hw = r["width"] / 2
         for i in range(0, len(pts), 2):
+            if not inside(pts[i][0], pts[i][1], 2):
+                continue
             tx, tz = L.tangent(pts, i)
             for side in (1, -1):
                 nx, nz = -tz * side, tx * side
@@ -119,12 +144,35 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
                     if i + 2 < len(pts):
                         bx, bz = pts[i + 2][0] + nx * (hw + 1.2), pts[i + 2][1] + nz * (hw + 1.2)
                         dr.line([P(ax + nx * .4, az + nz * .4), P(bx, bz)], fill=(40, 60, 120), width=max(2, int(s * 0.6)))
+    # v4 (D-139) 사람의 층: 인도·길가띠 띠(연석 = 회색, 흰 선·배수로 = 옅은 회색)
+    for r in car:
+        pts = samp[r["id"]]; wl = L.road_widths(r, pts); xl = L.road_xsecs(r, pts)
+        for i in range(0, len(pts) - 1, 1):
+            xs = xl[i]
+            if not xs or not inside(pts[i][0], pts[i][1], 4):
+                continue
+            for side in (1, -1):
+                sd = L.xs_side(xs, side)
+                if sd["walk"] <= 0:
+                    continue
+                tx, tz = L.tangent(pts, i); nx, nz = -tz * side, tx * side
+                o = wl[i] / 2 + sd["walk"] / 2
+                col = (165, 165, 160) if sd["edge"] == "curb" else (210, 208, 200)
+                dr.line([P(pts[i][0] + nx * o, pts[i][1] + nz * o), P(pts[i + 1][0] + nx * o, pts[i + 1][1] + nz * o)], fill=col, width=max(1, int(sd["walk"] * s)))
     for r in sorted(car, key=lambda r: list(ROAD_STYLE).index(r["kind"])):
         pts = samp[r["id"]]; out, fill = ROAD_STYLE[r["kind"]]
-        w = max(3, int(r["width"] * s))
-        xy = [P(p[0], p[1]) for p in pts]
-        dr.line(xy, fill=out, width=w + 4, joint="curve")
-        dr.line(xy, fill=fill, width=w, joint="curve")
+        wl = L.road_widths(r, pts)
+        keep = [i for i, p in enumerate(pts) if inside(p[0], p[1], pad=4)]   # 지도 틀 밖(끝 모를 길 원경)은 그리지 않는다
+        pts = pts[:keep[-1] + 1] if keep else []
+        step = 6
+        for i in range(0, len(pts) - 1, step):
+            w = max(3, int(wl[i] * s))
+            xy = [P(p[0], p[1]) for p in pts[i:i + step + 1]]
+            dr.line(xy, fill=out, width=w + 4, joint="curve")
+        for i in range(0, len(pts) - 1, step):
+            w = max(3, int(wl[i] * s))
+            xy = [P(p[0], p[1]) for p in pts[i:i + step + 1]]
+            dr.line(xy, fill=fill, width=w, joint="curve")
     for r in plan["roads"]:
         if r["kind"] == "alley":
             pts = samp[r["id"]]
@@ -136,17 +184,17 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
             for i in range(0, len(pts), 2):
                 tx, tz = L.tangent(pts, i); nx, nz = -tz, tx
                 dr.line([P(pts[i][0] - nx * 1.2, pts[i][1] - nz * 1.2), P(pts[i][0] + nx * 1.2, pts[i][1] + nz * 1.2)], fill=(30, 30, 30), width=max(1, int(s * .4)))
-            for q in (pts[0], pts[-1]):   # 볼라드
-                c = P(q[0], q[1]); rr = max(2, s * .9)
-                dr.ellipse([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(255, 255, 255), outline=(0, 0, 0))
-    # 전봇대·전선
+            for q in (pts[0], pts[-1]):   # v4: 볼라드 대신 계단 입구 화분(초록 네모)
+                c = P(q[0], q[1]); rr = max(2, s * .8)
+                dr.rectangle([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(70, 150, 70), outline=(0, 0, 0))
+    # 전봇대·가로등 (점 [x, z, kind])
     pl = plan["poles"]["points"]
     for a, b in zip(pl, pl[1:]):
-        if math.dist(a, b) < 40:
-            dr.line([P(*a), P(*b)], fill=(70, 70, 70), width=1)
+        if math.dist(a[:2], b[:2]) < 40 and a[2:] == ["Pole"] and b[2:] == ["Pole"]:
+            dr.line([P(*a[:2]), P(*b[:2])], fill=(70, 70, 70), width=1)
     for q in pl:
-        c = P(*q); rr = max(2, s * .8)
-        dr.ellipse([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(20, 20, 20))
+        c = P(*q[:2]); rr = max(2, s * .8)
+        dr.ellipse([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(250, 200, 40) if q[2:] == ["StreetLamp"] else (20, 20, 20), outline=(0, 0, 0))
     # 구간 경계 눈금
     mp = samp["main"]; main = next(r for r in plan["roads"] if r["id"] == "main")
     kidx = L.knot_index_s(main, mp) + [len(mp) - 1]
@@ -240,6 +288,25 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
         for sl in plan.get("seaLabels", []):
             if inside(*sl["pos"]):
                 text(P(*sl["pos"]), sl["name"], 20 if s < 3 else 24, (30, 70, 140), True, stroke=3)
+    # v4 끝 모를 길: 지도 틀을 나가는 곳에 화살표 + 이름·끝
+    for o in plan.get("outRoads", []):
+        pts = [p for rid in o["roads"] for p in samp[rid]]
+        k_ = next((i for i, p in enumerate(pts) if not inside(p[0], p[1], pad=-12)), len(pts) - 1)
+        a, b = pts[max(0, k_ - 6)], pts[k_]
+        ca, cb = P(a[0], a[1]), P(b[0], b[1])
+        ux, uy = cb[0] - ca[0], cb[1] - ca[1]; dl = math.hypot(ux, uy) or 1; ux, uy = ux / dl, uy / dl
+        k = max(12, s * 6)
+        dr.polygon([(cb[0] + ux * k, cb[1] + uy * k), (cb[0] - uy * k * .6, cb[1] + ux * k * .6), (cb[0] + uy * k * .6, cb[1] - ux * k * .6)], fill=(230, 60, 140), outline=(0, 0, 0))
+        if labels:
+            text((cb[0] - ux * 90, cb[1] - uy * 90 - 14), f"{o['name']} → {o['end']}", 12 if s < 3 else 14, (150, 20, 90), True)
+    # v4 배달지 후보(주소)
+    for a in plan.get("addressPool", []):
+        if not inside(*a["pos"]):
+            continue
+        c = P(*a["pos"]); rr = max(3, s * 1.5)
+        dr.ellipse([c[0] - rr, c[1] - rr, c[0] + rr, c[1] + rr], fill=(40, 120, 230), outline=(255, 255, 255), width=2)
+        if labels and s >= 2.5:
+            text((c[0], c[1] + rr + 8), a["name"], 11, (20, 60, 140))
     # MART · 배달지
     m = plan["mart"]; c = P(*m["pos"]); k = max(10, s * 4)
     dr.rectangle([c[0] - k * 1.6, c[1] - k * .8, c[0] + k * 1.6, c[1] + k * .8], fill=(20, 70, 160), outline=(0, 0, 0), width=2)
@@ -276,9 +343,12 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
         dr.text((M, 14), title, font=font(20, True), fill=(20, 20, 20), anchor="lt")
     if legend:
         lx, ly = M + mw + 24, top
-        items = [("road", "main", "본선 고리 (차, 5.5m)"), ("road", "village", "마을 차길 (4~4.8m)"), ("road", "shortcut", "지름길 (차 가능, 거침·급경사)"), ("junc", None, "교차로 (회색 = 사람길과 만남)"), ("alley", None, "골목 (사람만)"),
-                 ("stairs", None, "계단 지름길 (볼라드로 차 막힘)"), ("cut", None, "산 쪽 깎은 면"), ("fill", None, "메운 면 → 난간"),
-                 ("pole", None, "전봇대·전선 (본선 산 쪽)"), ("field", None, "계단식 밭"), ("parcel", None, "필지 (진할수록 층 많음)"),
+        items = [("dense", None, "밀집 구역 (붙은 집·좁은 길 3.5~4.5m)"), ("sparse", None, "성김 구역 (띄엄띄엄·큰 마당·나무)"), ("tree", None, "나무"),
+                 ("og", None, "열린 땅 (광장·부두·공터·해변·밭·풀밭)"), ("walk", None, "인도(연석)·길가띠 = 사람의 층"),
+                 ("road", "main", "큰길 고리 (4.4~7m, 이름 6개)"), ("road", "village", "마을 차길 (보통 구역 5~6m)"), ("road", "shortcut", "지름길 (차 가능, 거침·급경사)"), ("junc", None, "교차로 (회색 = 사람길과 만남)"), ("alley", None, "골목 (사람만)"),
+                 ("stairs", None, "계단 (입구 화분, 볼라드 없음)"), ("outr", None, "끝 모를 길 (지도 밖 300~600m)"), ("addr", None, "배달지 후보 (주소 16)"),
+                 ("cut", None, "산 쪽 깎은 면"), ("fill", None, "메운 면 → 난간"),
+                 ("pole", None, "전봇대(검정)·가로등(노랑)"), ("field", None, "계단식 밭"), ("parcel", None, "필지 (구역 색, 진할수록 층 많음)"),
                  ("stop", None, "배달지 (흰색 = 선택)"), ("P", None, "주차장"), ("view", None, "전망대"), ("tunnel", None, "터널 입구 (막힘)"),
                  ("pier", None, "부두"), ("fjump", None, "점프 둔턱 (지름길 맛)"), ("fgap", None, "좁은 틈 (지름길 맛)"), ("fmark", None, "표지 (직선 끝·갈림 앞)"), ("sec", None, "구간 경계 눈금"), ("bound", None, "플레이 경계 (밖은 원경)"), ("slice", None, "Hilltop 슬라이스 실물 범위")]
         if rhythm:
@@ -292,6 +362,18 @@ def render(plan, grid, samp, ext, s, title=None, legend=True, labels=True, sec_l
             cx, cy = lx + 16, y + 9
             if kind == "road":
                 o, f_ = ROAD_STYLE[sub]; dr.line([(cx - 14, cy), (cx + 14, cy)], fill=o, width=10 if sub == "main" else 8); dr.line([(cx - 14, cy), (cx + 14, cy)], fill=f_, width=6 if sub == "main" else 4)
+            elif kind in ("dense", "sparse"):
+                dr.rectangle([cx - 14, cy - 8, cx + 14, cy + 8], fill=PARCEL_FILL[kind], outline=DIST_LINE[kind], width=2)
+            elif kind == "tree":
+                dr.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], fill=(60, 130, 60), outline=(30, 80, 30))
+            elif kind == "og":
+                dr.rectangle([cx - 14, cy - 8, cx, cy + 8], fill=OG_FILL["plaza"][:3]); dr.rectangle([cx, cy - 8, cx + 14, cy + 8], fill=OG_FILL["meadow"][:3])
+            elif kind == "walk":
+                dr.line([(cx - 14, cy - 5), (cx + 14, cy - 5)], fill=(165, 165, 160), width=4); dr.line([(cx - 14, cy + 1), (cx + 14, cy + 1)], fill=(225, 80, 60), width=6)
+            elif kind == "outr":
+                dr.polygon([(cx + 12, cy), (cx - 2, cy - 8), (cx - 2, cy + 8)], fill=(230, 60, 140), outline=(0, 0, 0))
+            elif kind == "addr":
+                dr.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=(40, 120, 230), outline=(255, 255, 255), width=2)
             elif kind == "junc":
                 dr.ellipse([cx - 6, cy - 6, cx + 6, cy + 6], fill=(15, 15, 15), outline=(255, 255, 255), width=2)
             elif kind == "alley":
@@ -355,8 +437,8 @@ def main():
     terr = L.Terrain(plan)
     grid = Grid(terr)
     samp = {r["id"]: L.sample(r) for r in plan["roads"]}
-    full = render(plan, grid, samp, EXT, 2.0, title="bayloop v3 — 운전 리듬 (D-136): 해안 직선·곶 큰 굽이·지름길 2개 · 평면도, 북쪽 위")
-    full.save(os.path.join(OUT, "bayloop-plan-v3.png"))
+    full = render(plan, grid, samp, EXT, 2.0, title="bayloop v4 — 구역 강약(D-140)·사람의 층(D-139)·열린 땅·끝 모를 길(D-138) · 평면도, 북쪽 위")
+    full.save(os.path.join(OUT, "bayloop-plan-v4.png"))
     # 리듬 그림: 본선 4m 마다 85 km/h 모형 속도
     q = L.resample(samp["main"], closed=True)
     Rm, v, t85 = L.rhythm(q, closed=True)
@@ -366,8 +448,8 @@ def main():
           "open": [L.parcel_gap(p, plan["parcels"]) >= L.OPEN_BLD and L.poly_edge_dist(p[0], p[1], land) <= L.SEA_NEAR for p in q],
           "straight": [r for r in L.runs([x >= L.STRAIGHT_R for x in Rm], closed=True) if r[1] >= 40]}
     rh["note"] = f"한 바퀴 {t85:.0f}초 · 속도 구간 시간 {100 * sum(4 / max(.5, x) for x, f in zip(v, rh['fast']) if f) / t85:.0f}%"
-    rimg = render(plan, grid, samp, EXT, 2.0, title="bayloop v3 리듬 — 파랑 = 밟는 곳, 빨강 = 브레이크 밟는 곳, 하늘색 = 바다가 트인 길", rhythm=rh)
-    rimg.save(os.path.join(OUT, "rhythm-v3.png"))
+    rimg = render(plan, grid, samp, EXT, 2.0, title="bayloop v4 리듬 — 파랑 = 밟는 곳, 빨강 = 브레이크 밟는 곳, 하늘색 = 바다가 트인 길", rhythm=rh)
+    rimg.save(os.path.join(OUT, "rhythm-v4.png"))
     # 구간 확대: 본선 구간 점 + 여백 (4칸) + 배달 쌍 대안 경로 (2칸)
     mp = samp["main"]; main_r = next(r for r in plan["roads"] if r["id"] == "main")
     kidx = L.knot_index_s(main_r, mp) + [len(mp) - 1]
@@ -400,8 +482,8 @@ def main():
     sheet = Image.new("RGB", (pw * 2, ph * 3), (250, 250, 247))
     for k, p in enumerate(panels):
         sheet.paste(p, ((k % 2) * pw, (k // 2) * ph))
-    sheet.save(os.path.join(OUT, "bayloop-plan-v3-sections.png"))
-    print("wrote", os.path.join(OUT, "bayloop-plan-v3.png"), full.size, "/ sections", sheet.size)
+    sheet.save(os.path.join(OUT, "bayloop-plan-v4-sections.png"))
+    print("wrote", os.path.join(OUT, "bayloop-plan-v4.png"), full.size, "/ sections", sheet.size)
 
 
 if __name__ == "__main__":

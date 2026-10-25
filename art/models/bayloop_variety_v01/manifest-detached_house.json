@@ -1,0 +1,599 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "detached_house_01",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_01.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_01.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 1156,
+      "dimensions_m": [
+        7.035000002384185,
+        4.619999885559082,
+        10.93499995470047
+      ],
+      "bounds_min": [
+        -3.509999990463257,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        3.525000011920929,
+        4.619999885559082,
+        3.309999942779541
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_01",
+        "type": "detached_house",
+        "width": 6.2,
+        "depth": 7.2,
+        "floors": 1,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "none",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "sand",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": false
+        },
+        "seed": 140100,
+        "zone": "sparse",
+        "front_space_m": 3.2
+      },
+      "footprint_m": [
+        6.2,
+        7.2
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.2,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_02",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_02.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_02.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 2146,
+      "dimensions_m": [
+        8.235000145435333,
+        7.429999828338623,
+        12.185000002384186
+      ],
+      "bounds_min": [
+        -4.110000133514404,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        4.125000011920929,
+        7.429999828338623,
+        3.759999990463257
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_02",
+        "type": "detached_house",
+        "width": 7.4,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "terracotta_gable",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "regular",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "ochre",
+        "wear": "medium",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": true
+        },
+        "seed": 140101,
+        "zone": "sparse",
+        "front_space_m": 3.6500000000000004
+      },
+      "footprint_m": [
+        7.4,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.6500000000000004,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_03",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_03.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_03.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 1422,
+      "dimensions_m": [
+        9.435000050067902,
+        4.619999885559082,
+        11.235000050067901
+      ],
+      "bounds_min": [
+        -4.710000038146973,
+        0.0,
+        -7.025000011920929
+      ],
+      "bounds_max": [
+        4.725000011920929,
+        4.619999885559082,
+        4.210000038146973
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_03",
+        "type": "detached_house",
+        "width": 8.6,
+        "depth": 6.6,
+        "floors": 1,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "offset",
+        "balcony": "full",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "blue",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": false
+        },
+        "seed": 140102,
+        "zone": "sparse",
+        "front_space_m": 4.1000000000000005
+      },
+      "footprint_m": [
+        8.6,
+        6.6
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 4.1000000000000005,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_05",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_05.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_05.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 1132,
+      "dimensions_m": [
+        7.035000002384185,
+        4.619999885559082,
+        11.385000002384185
+      ],
+      "bounds_min": [
+        -3.509999990463257,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        3.525000011920929,
+        4.619999885559082,
+        3.759999990463257
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_05",
+        "type": "detached_house",
+        "width": 6.2,
+        "depth": 7.2,
+        "floors": 1,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "rose",
+        "wear": "medium",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": false
+        },
+        "seed": 140104,
+        "zone": "sparse",
+        "front_space_m": 3.6500000000000004
+      },
+      "footprint_m": [
+        6.2,
+        7.2
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.6500000000000004,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_06",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_06.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_06.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 2380,
+      "dimensions_m": [
+        8.235000145435333,
+        7.429999828338623,
+        12.635000050067902
+      ],
+      "bounds_min": [
+        -4.110000133514404,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        4.125000011920929,
+        7.429999828338623,
+        4.210000038146973
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_06",
+        "type": "detached_house",
+        "width": 7.4,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "terracotta_gable",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "offset",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "warm_grey",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": true
+        },
+        "seed": 140105,
+        "zone": "sparse",
+        "front_space_m": 4.1000000000000005
+      },
+      "footprint_m": [
+        7.4,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 4.1000000000000005,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_07",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_07.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_07.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 1186,
+      "dimensions_m": [
+        9.435000050067902,
+        4.630000114440918,
+        10.33499995470047
+      ],
+      "bounds_min": [
+        -4.710000038146973,
+        0.0,
+        -7.025000011920929
+      ],
+      "bounds_max": [
+        4.725000011920929,
+        4.630000114440918,
+        3.309999942779541
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_07",
+        "type": "detached_house",
+        "width": 8.6,
+        "depth": 6.6,
+        "floors": 1,
+        "roof": "metal",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "full",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": false
+        },
+        "seed": 140106,
+        "zone": "sparse",
+        "front_space_m": 3.2
+      },
+      "footprint_m": [
+        8.6,
+        6.6
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.2,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_08",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_08.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_08.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 2394,
+      "dimensions_m": [
+        10.435000050067902,
+        7.420000076293945,
+        10.185000002384186
+      ],
+      "bounds_min": [
+        -5.210000038146973,
+        0.0,
+        -6.425000011920929
+      ],
+      "bounds_max": [
+        5.225000011920929,
+        7.420000076293945,
+        3.759999990463257
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_08",
+        "type": "detached_house",
+        "width": 9.6,
+        "depth": 6.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "regular",
+        "balcony": "alternating",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "chalk",
+        "wear": "medium",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": true
+        },
+        "seed": 140107,
+        "zone": "sparse",
+        "front_space_m": 3.6500000000000004
+      },
+      "footprint_m": [
+        9.6,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.6500000000000004,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "detached_house_04",
+      "type": "detached_house",
+      "model": "art/models/bayloop_variety_v01/detached_house_04.glb",
+      "fbx": "art/models/bayloop_variety_v01/detached_house_04.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 2020,
+      "dimensions_m": [
+        10.435000050067902,
+        7.429999828338623,
+        9.73499995470047
+      ],
+      "bounds_min": [
+        -5.210000038146973,
+        0.0,
+        -6.425000011920929
+      ],
+      "bounds_max": [
+        5.225000011920929,
+        7.429999828338623,
+        3.309999942779541
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "detached_house_04",
+        "type": "detached_house",
+        "width": 9.6,
+        "depth": 6.0,
+        "floors": 2,
+        "roof": "terracotta_gable",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "alternating",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": true
+        },
+        "seed": 140103,
+        "zone": "sparse",
+        "front_space_m": 3.2
+      },
+      "footprint_m": [
+        9.6,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 3.2,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    }
+  ]
+}

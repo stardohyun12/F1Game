@@ -1,0 +1,23 @@
+{
+  "path": "art/models/bayloop_props2_v01/Props2LinenAtlas.png",
+  "sha256": "4f012edf7fc66c7df4ebc2a90da04d0a5f695d53bb9df5ae73734009c7d2bce4",
+  "source_url": "https://polyhaven.com/a/rough_linen",
+  "actual_reduced_rgb": [
+    [
+      145,
+      171,
+      205
+    ],
+    [
+      145,
+      171,
+      206
+    ]
+  ],
+  "float_luminance_range": [
+    167.903564453125,
+    168.2356414794922
+  ],
+  "fix": "Float luminance BOX reduction before quantization retains sub-byte photographed variation; strict >median split, no synthetic noise. Separate atlas preserves other reviewed embedded images.",
+  "outside_palette_colors": 0
+}

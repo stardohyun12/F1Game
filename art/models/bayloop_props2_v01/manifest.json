@@ -1,0 +1,1295 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 1500,
+  "source_manifests": [
+    "art/models/bayloop_buildings_v01/metal-source.json",
+    "art/models/bayloop_props2_v01/asphalt-source.json",
+    "art/models/bayloop_props2_v01/linen-source.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json"
+  ],
+  "assets": [
+    {
+      "id": "cafe_set_01",
+      "type": "cafe_set",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/cafe_set_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/cafe_set_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+      "tris": 586,
+      "bounds_min": [
+        -0.9275195002555847,
+        0.0,
+        -0.37980757653713226
+      ],
+      "bounds_max": [
+        0.9275195002555847,
+        0.8710053116083145,
+        0.37980757653713226
+      ],
+      "dimensions_m": [
+        1.8550390005111694,
+        0.8710053116083145,
+        0.7596151530742645
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cafe_set_01",
+        "type": "cafe_set",
+        "variant": 0,
+        "seed": 141900
+      },
+      "body_tile": 0,
+      "geometry_sha256": "02b0c7819a8ed2e6cc0a48820895de9c646268f24bb065c5ee1c6f2a6cea73be",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          1.855,
+          0.7596,
+          0.871
+        ],
+        "design_notes": [
+          "760mm cafe table, two pulled-out slatted chairs, genuinely open rimmed cup with handle and recessed drink; table steel proportions reduced to match chairs.",
+          "Wear: chair feet, tabletop edge, hand-contact back rails."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "crosswalk_paint_01",
+      "type": "crosswalk_paint",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/crosswalk_paint_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/crosswalk_paint_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PavingAtlas.png",
+      "tris": 378,
+      "bounds_min": [
+        -2.3882254362106323,
+        0.0,
+        -1.25
+      ],
+      "bounds_max": [
+        2.3882254362106323,
+        0.0,
+        1.25
+      ],
+      "dimensions_m": [
+        4.776450872421265,
+        0.0,
+        2.5
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "crosswalk_paint_01",
+        "type": "crosswalk_paint",
+        "variant": 0,
+        "seed": 141600
+      },
+      "body_tile": 0,
+      "geometry_sha256": "e2c881502fd73a61b42ed7cb2566bdfc55fb9fe3c201ec424821ff9d02a4dfd3",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          4.7765,
+          2.5,
+          0.0
+        ],
+        "design_notes": [
+          "Six continuous 0.5m zebra bars, 0.35m gaps, 2.5m depth; each bar has 2-3 small irregular edge chips, no full-width seams or breaks.",
+          "Zero-thickness opaque paint at Z=0, place 2mm above road; no backing or collider. Continuous UV crop differs per stripe without adding noise."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.002,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "garage_door_inset_01",
+      "type": "garage_door_inset",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/garage_door_inset_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/garage_door_inset_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+      "tris": 300,
+      "bounds_min": [
+        -1.375,
+        0.0,
+        -0.2749999910593033
+      ],
+      "bounds_max": [
+        1.375,
+        2.3299999237060547,
+        0.2749999910593033
+      ],
+      "dimensions_m": [
+        2.75,
+        2.3299999237060547,
+        0.5499999821186066
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "garage_door_inset_01",
+        "type": "garage_door_inset",
+        "variant": 0,
+        "seed": 142200
+      },
+      "body_tile": 0,
+      "geometry_sha256": "ff701412b251341902ae49b60634e680714ffcf5f8b0ac8cae4d8ec5cd020504",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          2.75,
+          0.55,
+          2.33
+        ],
+        "design_notes": [
+          "2.5m roll-up garage insert with recessed curtain, 17 slats with narrow 6mm joints, butt-jointed jamb/header (no overlapping front faces) and projecting bright handled grip.",
+          "Use in an actual host-wall opening; raised 45mm worn threshold. Low-contrast metal atlas is supplied upstream; no geometry noise added."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "laundry_line_01",
+      "type": "laundry_line",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/laundry_line_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/laundry_line_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PhotoAtlas.png",
+      "tris": 794,
+      "bounds_min": [
+        -1.6449999809265137,
+        0.0,
+        -0.07082455791532993
+      ],
+      "bounds_max": [
+        1.6449999809265137,
+        1.3600000441074371,
+        0.07082455791532993
+      ],
+      "dimensions_m": [
+        3.2899999618530273,
+        1.3600000441074371,
+        0.14164911583065987
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "laundry_line_01",
+        "type": "laundry_line",
+        "variant": 0,
+        "seed": 141300
+      },
+      "body_tile": 0,
+      "geometry_sha256": "cca3f9b3ed68821459465ed1306658e1a0921c51ff3762c7c9f97d7db8d8e157",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          3.29,
+          0.1416,
+          1.36
+        ],
+        "design_notes": [
+          "3.2m wall-to-wall line, shirt with turned cuffs, sagging towel, split-leg trousers and rounded-heel socks; sampled curved hems and broad folds.",
+          "Continuous garment-space photo UV prevents repeated tile fragments; mount towel hem at 2.7m, anchors belong on host walls; no wind animation."
+        ],
+        "mount_height_m": 2.7,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "mailbox_cluster_01",
+      "type": "mailbox_cluster",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/mailbox_cluster_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/mailbox_cluster_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+      "tris": 288,
+      "bounds_min": [
+        -0.5199999809265137,
+        0.0,
+        -0.14400000870227814
+      ],
+      "bounds_max": [
+        0.5199999809265137,
+        0.4699999988079071,
+        0.14400000870227814
+      ],
+      "dimensions_m": [
+        1.0399999618530273,
+        0.4699999988079071,
+        0.2880000174045563
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "mailbox_cluster_01",
+        "type": "mailbox_cluster",
+        "variant": 0,
+        "seed": 142100
+      },
+      "body_tile": 10,
+      "geometry_sha256": "cda23f62198772658b2530e37f21c373531c1616ab22ebc1dc3943bd76c7b1eb",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          1.04,
+          0.288,
+          0.47
+        ],
+        "design_notes": [
+          "Three separate wall letterboxes; slots, hinged rain flaps, small recessed paper name holders and locks; folded 12mm closed roof with downturned drip lip.",
+          "Asset bottom pivot; installation bottom 1.10m above paving; wear at flap and keyhole; no invented lettering."
+        ],
+        "mount_height_m": 1.1,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "parasol_01",
+      "type": "parasol",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/parasol_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/parasol_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2LinenAtlas.png",
+      "tris": 884,
+      "bounds_min": [
+        -1.1200000047683716,
+        0.0,
+        -1.1200000047683716
+      ],
+      "bounds_max": [
+        1.1200000047683716,
+        2.299999952316284,
+        1.1200000047683716
+      ],
+      "dimensions_m": [
+        2.240000009536743,
+        2.299999952316284,
+        2.240000009536743
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parasol_01",
+        "type": "parasol",
+        "variant": 0,
+        "seed": 142000
+      },
+      "body_tile": 3,
+      "geometry_sha256": "016f6c482281adad0c141c2d6aa2a8d45fd2adc266aecf6a8d7aec432eb32761",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          2.24,
+          2.24,
+          2.3
+        ],
+        "design_notes": [
+          "2.24m octagonal cafe parasol with sampled curved canopy and 20mm between-rib sag; 2mm inner cloth skin and short 18mm turned hem instead of rigid skirt.",
+          "Visible upper hub, sliding runner, eight segmented ribs and stretcher links plus hand crank; weighted base."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "parked_car_01",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/parked_car_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/parked_car_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+      "tris": 1312,
+      "bounds_min": [
+        -0.8700000643730164,
+        0.0,
+        -1.6579999923706055
+      ],
+      "bounds_max": [
+        0.8700000643730164,
+        1.4450000561773777,
+        1.6579999923706055
+      ],
+      "dimensions_m": [
+        1.7400001287460327,
+        1.4450000561773777,
+        3.315999984741211
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_01",
+        "type": "parked_car",
+        "variant": 0,
+        "seed": 141000
+      },
+      "body_tile": 0,
+      "geometry_sha256": "3feee28044c2ec824883957ff991692e6f6349a763ec83251be27470875ed611",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "rounded_european_hatch",
+        "design_body_dimensions_m": [
+          1.48,
+          3.2,
+          1.43
+        ],
+        "wheelbase_m": 1.98,
+        "wheel_count": 4,
+        "ground_footprint_m": [
+          1.48,
+          3.2
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles",
+          "cargo bed floor"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "parked_car_02",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/parked_car_02.glb",
+      "fbx": "art/models/bayloop_props2_v01/parked_car_02.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+      "tris": 1292,
+      "bounds_min": [
+        -0.9000000059604645,
+        0.0,
+        -1.878000020980835
+      ],
+      "bounds_max": [
+        0.9000000059604645,
+        1.440000057220459,
+        1.878000020980835
+      ],
+      "dimensions_m": [
+        1.800000011920929,
+        1.440000057220459,
+        3.75600004196167
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_02",
+        "type": "parked_car",
+        "variant": 1,
+        "seed": 141001
+      },
+      "body_tile": 3,
+      "geometry_sha256": "426268be624c58f5a1aab4ae0340af71ae2abe972e82518a1327d2a0895b0364",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "angular_european_hatch",
+        "design_body_dimensions_m": [
+          1.54,
+          3.64,
+          1.44
+        ],
+        "wheelbase_m": 2.28,
+        "wheel_count": 4,
+        "ground_footprint_m": [
+          1.54,
+          3.64
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles",
+          "cargo bed floor"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "parked_car_03",
+      "type": "parked_car",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/parked_car_03.glb",
+      "fbx": "art/models/bayloop_props2_v01/parked_car_03.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+      "tris": 1368,
+      "bounds_min": [
+        -0.8275000154972076,
+        0.0,
+        -1.7055000066757202
+      ],
+      "bounds_max": [
+        0.8275000154972076,
+        1.6799999475479126,
+        1.7055000066757202
+      ],
+      "dimensions_m": [
+        1.6550000309944153,
+        1.6799999475479126,
+        3.4110000133514404
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "parked_car_03",
+        "type": "parked_car",
+        "variant": 2,
+        "seed": 141002
+      },
+      "body_tile": 10,
+      "geometry_sha256": "1659214c234765655a2a8bea5488ed70fa1dd4d12456acdc44bbd6600b58fe8b",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "tall_japanese_kei",
+        "design_body_dimensions_m": [
+          1.395,
+          3.295,
+          1.68
+        ],
+        "wheelbase_m": 2.335,
+        "wheel_count": 4,
+        "ground_footprint_m": [
+          1.395,
+          3.295
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles",
+          "cargo bed floor"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "road_patch_01",
+      "type": "road_patch",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/road_patch_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/road_patch_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PavingAtlas.png",
+      "tris": 183,
+      "bounds_min": [
+        -1.1100000143051147,
+        0.0,
+        -0.6250000894069672
+      ],
+      "bounds_max": [
+        1.1100000143051147,
+        0.00039999998989515007,
+        0.6250000894069672
+      ],
+      "dimensions_m": [
+        2.2200000286102295,
+        0.00039999998989515007,
+        1.2500001788139343
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "road_patch_01",
+        "type": "road_patch",
+        "variant": 0,
+        "seed": 141700
+      },
+      "body_tile": 3,
+      "geometry_sha256": "1d9777a2b09e833794b03d0b3282a92ab929e076b77e4ac4f479829ad2b64c7e",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          2.22,
+          1.25,
+          0.0004
+        ],
+        "design_notes": [
+          "Opaque flush asphalt repair: irregular resurfaced area (01) or long utility trench (02), perimeter sampled at 115mm with sub-centimetre broken cuts.",
+          "Variable 29-57mm dark tar joint (seam tile13), no bright or raised rim; 0.4mm seal surface over asphalt. Place 2mm above road, no collider."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.002,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "road_patch_02",
+      "type": "road_patch",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/road_patch_02.glb",
+      "fbx": "art/models/bayloop_props2_v01/road_patch_02.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PavingAtlas.png",
+      "tris": 234,
+      "bounds_min": [
+        -1.670551836490631,
+        0.0,
+        -0.4183623641729355
+      ],
+      "bounds_max": [
+        1.670551836490631,
+        0.00039999998989515007,
+        0.4183623641729355
+      ],
+      "dimensions_m": [
+        3.341103672981262,
+        0.00039999998989515007,
+        0.836724728345871
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "road_patch_02",
+        "type": "road_patch",
+        "variant": 1,
+        "seed": 141701
+      },
+      "body_tile": 10,
+      "geometry_sha256": "2d445b236dbbb5b08f840070f02838846b08cfa951775fd8298b9e81a26af755",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          3.3411,
+          0.8367,
+          0.0004
+        ],
+        "design_notes": [
+          "Opaque flush asphalt repair: irregular resurfaced area (01) or long utility trench (02), perimeter sampled at 115mm with sub-centimetre broken cuts.",
+          "Variable 29-57mm dark tar joint (seam tile13), no bright or raised rim; 0.4mm seal surface over asphalt. Place 2mm above road, no collider."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.002,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "scooter_01",
+      "type": "scooter",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/scooter_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/scooter_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+      "tris": 944,
+      "bounds_min": [
+        -0.36500000953674316,
+        0.0,
+        -0.9175000190734863
+      ],
+      "bounds_max": [
+        0.36500000953674316,
+        1.304999953135848,
+        0.9175000190734863
+      ],
+      "dimensions_m": [
+        0.7300000190734863,
+        1.304999953135848,
+        1.8350000381469727
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "scooter_01",
+        "type": "scooter",
+        "variant": 0,
+        "seed": 141200
+      },
+      "body_tile": 10,
+      "geometry_sha256": "e0e75a41e45e25b75f0814eeb16a3496e62bc88cb4f537c57ca0877cd24ca67f",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "step_through_scooter",
+        "design_body_dimensions_m": [
+          0.75,
+          1.87,
+          1.31
+        ],
+        "wheelbase_m": 1.34,
+        "wheel_count": 2,
+        "ground_footprint_m": [
+          0.75,
+          1.87
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "footboard",
+          "seat edge",
+          "stand foot"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "scooter_02",
+      "type": "scooter",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/scooter_02.glb",
+      "fbx": "art/models/bayloop_props2_v01/scooter_02.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+      "tris": 1124,
+      "bounds_min": [
+        -0.36500000953674316,
+        0.0,
+        -1.0000000298023224
+      ],
+      "bounds_max": [
+        0.36500000953674316,
+        1.304999953135848,
+        1.0000000298023224
+      ],
+      "dimensions_m": [
+        0.7300000190734863,
+        1.304999953135848,
+        2.0000000596046448
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "scooter_02",
+        "type": "scooter",
+        "variant": 1,
+        "seed": 141201
+      },
+      "body_tile": 6,
+      "geometry_sha256": "c4d38743a359bf7c6db39e9f77b06bc4a247092e597fd38373a93026059b2d8c",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "step_through_delivery_scooter",
+        "design_body_dimensions_m": [
+          0.75,
+          1.87,
+          1.31
+        ],
+        "wheelbase_m": 1.34,
+        "wheel_count": 2,
+        "ground_footprint_m": [
+          0.75,
+          1.87
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "footboard",
+          "seat edge",
+          "stand foot"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "shop_display_01",
+      "type": "shop_display",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/shop_display_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/shop_display_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2FurnitureAtlas.png",
+      "tris": 1256,
+      "bounds_min": [
+        -0.5774999856948853,
+        0.0,
+        -0.3317499905824661
+      ],
+      "bounds_max": [
+        0.5774999856948853,
+        0.9599999785423279,
+        0.3317499905824661
+      ],
+      "dimensions_m": [
+        1.1549999713897705,
+        0.9599999785423279,
+        0.6634999811649323
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rough_linen",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_display_01",
+        "type": "shop_display",
+        "variant": 0,
+        "seed": 141800
+      },
+      "body_tile": 10,
+      "geometry_sha256": "6cc46a7fb3e61273e03486ff6dc9d72e7d0f0439ea92e1f3022039d7bac72847",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          1.155,
+          0.6635,
+          0.96
+        ],
+        "design_notes": [
+          "1.15m open two-tier greengrocer rack, twelve round faceted fruit with stems, open crate rails and gathered sack.",
+          "Wear: crate lifting edges and stand feet; smaller recessed price holder, no fake writing."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "street_sign_01",
+      "type": "street_sign",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/street_sign_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/street_sign_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PhotoAtlas.png",
+      "tris": 200,
+      "bounds_min": [
+        -0.32335785031318665,
+        0.0,
+        -0.08225000277161598
+      ],
+      "bounds_max": [
+        0.32335785031318665,
+        2.52335786819458,
+        0.08225000277161598
+      ],
+      "dimensions_m": [
+        0.6467157006263733,
+        2.52335786819458,
+        0.16450000554323196
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "street_sign_01",
+        "type": "street_sign",
+        "variant": 0,
+        "seed": 141500
+      },
+      "body_tile": 10,
+      "geometry_sha256": "b83f2f9acc91418de0ac2b93496b1ca58772980998492c4001c09a291b47c254",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          0.6467,
+          0.1645,
+          2.5234
+        ],
+        "design_notes": [
+          "Octagonal stop sign with open-palm stop pictogram from opaque white photo geometry; no text."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "street_sign_02",
+      "type": "street_sign",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/street_sign_02.glb",
+      "fbx": "art/models/bayloop_props2_v01/street_sign_02.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2RoadAtlas.png",
+      "tris": 107,
+      "bounds_min": [
+        -0.36000001430511475,
+        0.0,
+        -0.0767500028014183
+      ],
+      "bounds_max": [
+        0.36000001430511475,
+        2.4000000953674316,
+        0.0767500028014183
+      ],
+      "dimensions_m": [
+        0.7200000286102295,
+        2.4000000953674316,
+        0.1535000056028366
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "street_sign_02",
+        "type": "street_sign",
+        "variant": 1,
+        "seed": 141501
+      },
+      "body_tile": 0,
+      "geometry_sha256": "8fb37164d06b8a28763f1705d0a11187c64418e4d49ae610da22591fb648bcd2",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          0.72,
+          0.1535,
+          2.4
+        ],
+        "design_notes": [
+          "One-way directional arrow made from opaque geometry; two visible 28mm face fixing bolts and pole ending behind plate at 2.36m."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "street_sign_03",
+      "type": "street_sign",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/street_sign_03.glb",
+      "fbx": "art/models/bayloop_props2_v01/street_sign_03.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2RoadAtlas.png",
+      "tris": 240,
+      "bounds_min": [
+        -0.3200000375509262,
+        0.0,
+        -0.10749999806284904
+      ],
+      "bounds_max": [
+        0.3200000375509262,
+        2.5199999809265137,
+        0.10749999806284904
+      ],
+      "dimensions_m": [
+        0.6400000751018524,
+        2.5199999809265137,
+        0.2149999961256981
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "street_sign_03",
+        "type": "street_sign",
+        "variant": 2,
+        "seed": 141502
+      },
+      "body_tile": 3,
+      "geometry_sha256": "b45ae4c25ba22a22a9613afa90a0474a8032efb2a9543122e7614de7aac7b38a",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          0.64,
+          0.215,
+          2.52
+        ],
+        "design_notes": [
+          "Car prohibition pictogram: photographed white car silhouette under red photo-tile ring and slash; no P or other letters.",
+          "Fictional neighborhood sign, not a regulatory sign certification."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    },
+    {
+      "id": "three_wheeler_01",
+      "type": "three_wheeler",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/three_wheeler_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/three_wheeler_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2VehiclesAtlas.png",
+      "tris": 1026,
+      "bounds_min": [
+        -0.6899999976158142,
+        0.0,
+        -1.3300000429153442
+      ],
+      "bounds_max": [
+        0.6899999976158142,
+        1.5900000408291817,
+        1.3300000429153442
+      ],
+      "dimensions_m": [
+        1.3799999952316284,
+        1.5900000408291817,
+        2.6600000858306885
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "three_wheeler_01",
+        "type": "three_wheeler",
+        "variant": 0,
+        "seed": 141100
+      },
+      "body_tile": 0,
+      "geometry_sha256": "96cce588f77606f42f78efa00123dcf4a1e00c79375c9b4221db59a06bfc45a1",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "form": "three_wheel_drop_side_cargo",
+        "design_body_dimensions_m": [
+          1.26,
+          2.53,
+          1.59
+        ],
+        "wheel_count": 3,
+        "ground_footprint_m": [
+          1.26,
+          2.53
+        ],
+        "maxtris": 1500,
+        "front_axis": "-Y",
+        "wear_locations": [
+          "tire tread",
+          "bumper ends",
+          "door handles",
+          "cargo bed floor"
+        ],
+        "rigged": false
+      }
+    },
+    {
+      "id": "traffic_mirror_01",
+      "type": "traffic_mirror",
+      "asset_kind": "prop",
+      "max_tris": 1500,
+      "pivot_kind": "floor_center",
+      "model": "art/models/bayloop_props2_v01/traffic_mirror_01.glb",
+      "fbx": "art/models/bayloop_props2_v01/traffic_mirror_01.fbx",
+      "texture": "art/models/bayloop_props2_v01/Props2PhotoAtlas.png",
+      "tris": 232,
+      "bounds_min": [
+        -0.33000001311302185,
+        0.0,
+        -0.20750001817941666
+      ],
+      "bounds_max": [
+        0.33000001311302185,
+        2.450000047683716,
+        0.20750001817941666
+      ],
+      "dimensions_m": [
+        0.6600000262260437,
+        2.450000047683716,
+        0.4150000363588333
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/asphalt_02",
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "traffic_mirror_01",
+        "type": "traffic_mirror",
+        "variant": 0,
+        "seed": 141400
+      },
+      "body_tile": 3,
+      "geometry_sha256": "bdb7ab0baf3f45cdb0cce4193618abbf88bd1ed4c6a0ef8bdf5ec607092aede4",
+      "wear_locations": [
+        "ground-contact feet",
+        "handled edges",
+        "metal seams",
+        "loading lip"
+      ],
+      "design": {
+        "dimensions": [
+          0.66,
+          0.415,
+          2.45
+        ],
+        "design_notes": [
+          "640mm convex corner mirror with close-fitting rain hood, visible adjustment bolt and 2.1m centre.",
+          "Upper sky reflection uses white photo tile, lower reflection metal photo tile; static faceted reflection, not live reflection."
+        ],
+        "mount_height_m": 0.0,
+        "placement_offset_m": 0.0,
+        "pivot": "bottom_center",
+        "coordinates": "Blender Z-up; front -Y",
+        "triangle_budget": 1500
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "leafy_grass",
+  "path": "art/models/bayloop_italy_props_v01/leafy_grass_diff_1k.jpg",
+  "url": "https://polyhaven.com/a/leafy_grass",
+  "download_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/leafy_grass/leafy_grass_diff_1k.jpg",
+  "sha256": "cfa40bc9d9417d1852db8753a8d5917f110c40101179f63543c382e39bc05e4a",
+  "license": "CC0-1.0",
+  "dimensions_mm": [
+    2000,
+    2000
+  ]
+}

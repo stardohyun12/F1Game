@@ -1,0 +1,81 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:48:46 | INFO: Starting glTF 2.0 export
+20:48:46 | INFO: Extracting primitive: cliff_villa_01
+20:48:46 | INFO: Primitives created: 1
+20:48:46 | INFO: Finished glTF 2.0 export in 0.013778924942016602 s
+00:07.453  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_01_front.png'
+00:33.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_01_back.png'
+00:53.344  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_01_side.png'
+01:19.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_01.fbx'
+export finished in 0.0047 sec.
+Info: Saved as "cliff_villa_01.blend"
+BUILDGEN_ASSET cliff_villa_01 1874
+20:50:05 | INFO: Starting glTF 2.0 export
+20:50:05 | INFO: Extracting primitive: cliff_villa_02
+20:50:05 | INFO: Primitives created: 1
+20:50:05 | INFO: Finished glTF 2.0 export in 0.06661415100097656 s
+01:47.969  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_02_front.png'
+02:11.922  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_02_back.png'
+02:29.344  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_02_side.png'
+02:54.141  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_02.fbx'
+export finished in 0.0208 sec.
+Info: Saved as "cliff_villa_02.blend"
+BUILDGEN_ASSET cliff_villa_02 2110
+20:51:39 | INFO: Starting glTF 2.0 export
+20:51:39 | INFO: Extracting primitive: cliff_villa_03
+20:51:40 | INFO: Primitives created: 1
+20:51:40 | INFO: Finished glTF 2.0 export in 0.06580996513366699 s
+03:29.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_03_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_03.fbx'
+export finished in 0.0234 sec.
+Info: Saved as "cliff_villa_03.blend"
+BUILDGEN_ASSET cliff_villa_03 2216
+20:52:15 | INFO: Starting glTF 2.0 export
+20:52:15 | INFO: Extracting primitive: cliff_villa_04
+20:52:15 | INFO: Primitives created: 1
+20:52:15 | INFO: Finished glTF 2.0 export in 0.05980491638183594 s
+04:01.141  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_04_front.png'
+04:24.484  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_04_back.png'
+04:40.234  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_04_side.png'
+05:02.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_04_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_04.fbx'
+export finished in 0.0503 sec.
+Info: Saved as "cliff_villa_04.blend"
+BUILDGEN_ASSET cliff_villa_04 2040
+20:53:47 | INFO: Starting glTF 2.0 export
+20:53:47 | INFO: Extracting primitive: cliff_villa_05
+20:53:47 | INFO: Primitives created: 1
+20:53:47 | INFO: Finished glTF 2.0 export in 0.06562948226928711 s
+05:24.578  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_05_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_05.fbx'
+export finished in 0.0237 sec.
+Info: Saved as "cliff_villa_05.blend"
+BUILDGEN_ASSET cliff_villa_05 1850
+20:54:10 | INFO: Starting glTF 2.0 export
+20:54:10 | INFO: Extracting primitive: cliff_villa_06
+20:54:10 | INFO: Primitives created: 1
+20:54:10 | INFO: Finished glTF 2.0 export in 0.06950950622558594 s
+05:46.547  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\cliff_villa_06_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\cliff_villa_06.fbx'
+export finished in 0.0232 sec.
+Info: Saved as "cliff_villa_06.blend"
+BUILDGEN_ASSET cliff_villa_06 2190
+BUILDGEN_DONE cliff_villa 6
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

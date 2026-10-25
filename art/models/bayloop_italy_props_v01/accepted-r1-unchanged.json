@@ -1,0 +1,47 @@
+[
+  {
+    "id": "vending_machine",
+    "unchanged": true,
+    "sha256": {
+      "model": "92dcbd104627ececf130dcecec9ace1562bf2d99a0fe93e8f727d59694b79f55",
+      "fbx": "0cb4357c4b1a630f046595d9bf31037c20ec8bf202f7000bb0d2b58f2632094d",
+      "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+    }
+  },
+  {
+    "id": "small_signs_a",
+    "unchanged": true,
+    "sha256": {
+      "model": "17a679b42e55e3773421486ceba3fb1c20727d936ae6dbab5f5752af926aa3f3",
+      "fbx": "ac0c684f95d10bb7742aa67f8ffd4c37fabfc4608504439b50610cf1d9547f6b",
+      "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+    }
+  },
+  {
+    "id": "ac_unit",
+    "unchanged": true,
+    "sha256": {
+      "model": "b44c1d4870694a5dbfbe0823d813e029a613ce4ff040c77302a18eb0465f6f46",
+      "fbx": "54fc7d6feb63f7296a846ab1654fee412379b45e9a8769a27392dfdb6d780a77",
+      "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+    }
+  },
+  {
+    "id": "mailbox",
+    "unchanged": true,
+    "sha256": {
+      "model": "f63ccd6dd1597593632a2a520ee9a4714418e91cca274bb5c23429af0fdbcf77",
+      "fbx": "c8695605b7388c785045b98d8d996783196db829e50a25e343f0792f713adec2",
+      "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+    }
+  },
+  {
+    "id": "small_signs_c",
+    "unchanged": true,
+    "sha256": {
+      "model": "0677985d1f4e33b81cd39fe16f7c6d1e98249e1531727ff8c54ebcdcd8bf203c",
+      "fbx": "f0cca7f3a465dc6c98a8991981f3753899fe119c5492a9500a14312d18ef168a",
+      "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+    }
+  }
+]

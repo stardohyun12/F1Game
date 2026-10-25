@@ -1,0 +1,1240 @@
+{
+  "pass": true,
+  "blender_version": "5.2.2 LTS",
+  "method": "Fresh Blender FBX import global_scale=1.0, embedded axis metadata; Blender x,y,z converted to Unity x,z,-y. Compare independent GLB re-import geometry. FBX imported from temporary copy without external texture search, proving embedded albedo recovery. Source files hashed before/after.",
+  "limitations": "No Unity import or prefab validation. FBX does not guarantee Unity Point importer settings; linked image interpolation is recorded, not treated as a Unity texture-setting proof.",
+  "assets": [
+    {
+      "id": "vending_machine",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 552,
+        "bounds_min": [
+          -0.590499997138977,
+          6.455070700184251e-09,
+          -1.3816116961606895e-07
+        ],
+        "bounds_max": [
+          0.590499997138977,
+          1.8300000429153442,
+          0.8854999542236328
+        ],
+        "dimensions_m": [
+          1.180999994277954,
+          1.8300000364602735,
+          0.8855000923848024
+        ],
+        "roots": [
+          {
+            "name": "vending_machine",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas.png",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 552,
+        "bounds_min": [
+          -0.590499997138977,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.590499997138977,
+          1.8300000429153442,
+          0.8854999542236328
+        ],
+        "dimensions_m": [
+          1.180999994277954,
+          1.8300000429153442,
+          0.8854999542236328
+        ],
+        "roots": [
+          {
+            "name": "vending_machine",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "92dcbd104627ececf130dcecec9ace1562bf2d99a0fe93e8f727d59694b79f55",
+        "fbx": "0cb4357c4b1a630f046595d9bf31037c20ec8bf202f7000bb0d2b58f2632094d",
+        "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+      }
+    },
+    {
+      "id": "small_signs_a",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 38,
+        "bounds_min": [
+          -0.38999998569488525,
+          0.0,
+          -3.019916050561733e-08
+        ],
+        "bounds_max": [
+          0.38999998569488525,
+          0.4000000059604645,
+          0.09699998050928116
+        ],
+        "dimensions_m": [
+          0.7799999713897705,
+          0.4000000059604645,
+          0.09700001070844166
+        ],
+        "roots": [
+          {
+            "name": "small_signs_a",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas.png",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 38,
+        "bounds_min": [
+          -0.38999998569488525,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.38999998569488525,
+          0.4000000059604645,
+          0.09700000286102295
+        ],
+        "dimensions_m": [
+          0.7799999713897705,
+          0.4000000059604645,
+          0.09700000286102295
+        ],
+        "roots": [
+          {
+            "name": "small_signs_a",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "17a679b42e55e3773421486ceba3fb1c20727d936ae6dbab5f5752af926aa3f3",
+        "fbx": "ac0c684f95d10bb7742aa67f8ffd4c37fabfc4608504439b50610cf1d9547f6b",
+        "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+      }
+    },
+    {
+      "id": "ac_unit",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 300,
+        "bounds_min": [
+          -0.41750001907348633,
+          0.0,
+          -6.039831745852098e-09
+        ],
+        "bounds_max": [
+          0.41750001907348633,
+          0.6299999952316284,
+          0.38249996304512024
+        ],
+        "dimensions_m": [
+          0.8350000381469727,
+          0.6299999952316284,
+          0.382499969084952
+        ],
+        "roots": [
+          {
+            "name": "ac_unit",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas.png",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 300,
+        "bounds_min": [
+          -0.41750001907348633,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.41750001907348633,
+          0.6299999952316284,
+          0.3824999928474426
+        ],
+        "dimensions_m": [
+          0.8350000381469727,
+          0.6299999952316284,
+          0.3824999928474426
+        ],
+        "roots": [
+          {
+            "name": "ac_unit",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "b44c1d4870694a5dbfbe0823d813e029a613ce4ff040c77302a18eb0465f6f46",
+        "fbx": "54fc7d6feb63f7296a846ab1654fee412379b45e9a8769a27392dfdb6d780a77",
+        "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+      }
+    },
+    {
+      "id": "mailbox",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 50,
+        "bounds_min": [
+          -0.20000000298023224,
+          1.132465232700497e-09,
+          -3.774895063202166e-08
+        ],
+        "bounds_max": [
+          0.20000000298023224,
+          0.5,
+          0.28499993681907654
+        ],
+        "dimensions_m": [
+          0.4000000059604645,
+          0.49999999886753477,
+          0.28499997456802717
+        ],
+        "roots": [
+          {
+            "name": "mailbox",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas.png",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 50,
+        "bounds_min": [
+          -0.20000000298023224,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.20000000298023224,
+          0.5,
+          0.2849999666213989
+        ],
+        "dimensions_m": [
+          0.4000000059604645,
+          0.5,
+          0.2849999666213989
+        ],
+        "roots": [
+          {
+            "name": "mailbox",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "f63ccd6dd1597593632a2a520ee9a4714418e91cca274bb5c23429af0fdbcf77",
+        "fbx": "c8695605b7388c785045b98d8d996783196db829e50a25e343f0792f713adec2",
+        "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+      }
+    },
+    {
+      "id": "small_signs_c",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 38,
+        "bounds_min": [
+          -0.550000011920929,
+          0.0,
+          -3.774895063202166e-08
+        ],
+        "bounds_max": [
+          0.550000011920929,
+          0.5,
+          0.09699997305870056
+        ],
+        "dimensions_m": [
+          1.100000023841858,
+          0.5,
+          0.0970000108076512
+        ],
+        "roots": [
+          {
+            "name": "small_signs_c",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas.png",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 38,
+        "bounds_min": [
+          -0.550000011920929,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.550000011920929,
+          0.5,
+          0.09700000286102295
+        ],
+        "dimensions_m": [
+          1.100000023841858,
+          0.5,
+          0.09700000286102295
+        ],
+        "roots": [
+          {
+            "name": "small_signs_c",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32",
+            "image": "PropsPhotoAtlas",
+            "linked": true,
+            "sha256": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "0677985d1f4e33b81cd39fe16f7c6d1e98249e1531727ff8c54ebcdcd8bf203c",
+        "fbx": "f0cca7f3a465dc6c98a8991981f3753899fe119c5492a9500a14312d18ef168a",
+        "texture": "9c0a0f5ff8ab3c70111d43d61b57fdd9c332e3d266f4b98806267518918cbd4b"
+      }
+    },
+    {
+      "id": "bicycle",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 764,
+        "bounds_min": [
+          -0.8847487568855286,
+          -1.868477594868523e-09,
+          -0.25000008940696716
+        ],
+        "bounds_max": [
+          0.8847487568855286,
+          1.0472487211227417,
+          0.24999992549419403
+        ],
+        "dimensions_m": [
+          1.7694975137710571,
+          1.0472487229912193,
+          0.5000000149011612
+        ],
+        "roots": [
+          {
+            "name": "bicycle",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r2.png",
+            "linked": true,
+            "sha256": "b6225ba0b2cf6dc9ee4b50e2671d2befd7f5fabf0149d36c6b6ff1d1cbebf637",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r2.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 764,
+        "bounds_min": [
+          -0.8847487568855286,
+          0.0,
+          -0.25
+        ],
+        "bounds_max": [
+          0.8847487568855286,
+          1.0472487211227417,
+          0.25
+        ],
+        "dimensions_m": [
+          1.7694975137710571,
+          1.0472487211227417,
+          0.5
+        ],
+        "roots": [
+          {
+            "name": "bicycle",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r2",
+            "linked": true,
+            "sha256": "b6225ba0b2cf6dc9ee4b50e2671d2befd7f5fabf0149d36c6b6ff1d1cbebf637",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "c5a9698097f40b72f2bbc4db8a9786fee407794b92a862bc3741169f14f2a400",
+        "fbx": "b9033d7a142df8ddf24dc0c2d399d82bc2be8be84d51bdcfa4575aeeaf72b07a",
+        "texture": "b6225ba0b2cf6dc9ee4b50e2671d2befd7f5fabf0149d36c6b6ff1d1cbebf637"
+      }
+    },
+    {
+      "id": "small_signs_b",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 38,
+        "bounds_min": [
+          -0.5037500262260437,
+          0.0,
+          -4.699744238223502e-08
+        ],
+        "bounds_max": [
+          0.5037500262260437,
+          0.6225000023841858,
+          0.040999963879585266
+        ],
+        "dimensions_m": [
+          1.0075000524520874,
+          0.6225000023841858,
+          0.04100001087702765
+        ],
+        "roots": [
+          {
+            "name": "small_signs_b",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3.png",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r3.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 38,
+        "bounds_min": [
+          -0.5037500262260437,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.5037500262260437,
+          0.6225000023841858,
+          0.04100000113248825
+        ],
+        "dimensions_m": [
+          1.0075000524520874,
+          0.6225000023841858,
+          0.04100000113248825
+        ],
+        "roots": [
+          {
+            "name": "small_signs_b",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "381c074216e6e089e736137aa6e9537c70c27d5821861e9739cd720cb30b1a1d",
+        "fbx": "0312e864db973e4ed72006fe458e9fbb4f57f625a2844bc12205cfc9fb0273de",
+        "texture": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8"
+      }
+    },
+    {
+      "id": "small_signs_d",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 38,
+        "bounds_min": [
+          -0.2849999964237213,
+          0.0,
+          -4.699744238223502e-08
+        ],
+        "bounds_max": [
+          0.2849999964237213,
+          0.6225000023841858,
+          0.040999963879585266
+        ],
+        "dimensions_m": [
+          0.5699999928474426,
+          0.6225000023841858,
+          0.04100001087702765
+        ],
+        "roots": [
+          {
+            "name": "small_signs_d",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3.png",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r3.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 38,
+        "bounds_min": [
+          -0.2849999964237213,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.2849999964237213,
+          0.6225000023841858,
+          0.04100000113248825
+        ],
+        "dimensions_m": [
+          0.5699999928474426,
+          0.6225000023841858,
+          0.04100000113248825
+        ],
+        "roots": [
+          {
+            "name": "small_signs_d",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "a071324bb804904793336667d5609208badeced740cfd7aedcef1d75704025ec",
+        "fbx": "ddb6218312de516259acf153c4512da66e4bc094406915a68660053d45645f53",
+        "texture": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8"
+      }
+    },
+    {
+      "id": "planter_row",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 786,
+        "bounds_min": [
+          -0.7784274816513062,
+          -1.442305030963098e-08,
+          -0.29558059573173523
+        ],
+        "bounds_max": [
+          0.7784274816513062,
+          0.7777668833732605,
+          0.29558053612709045
+        ],
+        "dimensions_m": [
+          1.5568549633026123,
+          0.7777668977963108,
+          0.5911611318588257
+        ],
+        "roots": [
+          {
+            "name": "planter_row",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3.png",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r3.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 786,
+        "bounds_min": [
+          -0.7784274816513062,
+          0.0,
+          -0.29558056592941284
+        ],
+        "bounds_max": [
+          0.7784274816513062,
+          0.7777668833732605,
+          0.29558056592941284
+        ],
+        "dimensions_m": [
+          1.5568549633026123,
+          0.7777668833732605,
+          0.5911611318588257
+        ],
+        "roots": [
+          {
+            "name": "planter_row",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "fe306acfbff7f638f4f7cff0f682fa40797582e1bc17a231b29950888430424a",
+        "fbx": "9d79fbae6257944a93d35447285b542e85e3180194b82494bb4f7ab374a3cd2d",
+        "texture": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8"
+      }
+    },
+    {
+      "id": "meter_box",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 262,
+        "bounds_min": [
+          -0.23000000417232513,
+          0.0,
+          -7.187399830854702e-08
+        ],
+        "bounds_max": [
+          0.23000000417232513,
+          0.9519999623298645,
+          0.29099997878074646
+        ],
+        "dimensions_m": [
+          0.46000000834465027,
+          0.9519999623298645,
+          0.29100005065474477
+        ],
+        "roots": [
+          {
+            "name": "meter_box",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3.png",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r3.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 262,
+        "bounds_min": [
+          -0.23000000417232513,
+          0.0,
+          -0.0
+        ],
+        "bounds_max": [
+          0.23000000417232513,
+          0.9519999623298645,
+          0.29100000858306885
+        ],
+        "dimensions_m": [
+          0.46000000834465027,
+          0.9519999623298645,
+          0.29100000858306885
+        ],
+        "roots": [
+          {
+            "name": "meter_box",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "cd7f692693364138ae695c7c6eed102240d77e23a34049707e63e27b8653545e",
+        "fbx": "390d31c0cf3e423297a0d35228cc410e02d83e321970684a73611e5075f8ef12",
+        "texture": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8"
+      }
+    },
+    {
+      "id": "lemon_tree_pot",
+      "pass": true,
+      "checks": {
+        "triangle_count_matches_glb": true,
+        "triangle_budget": true,
+        "bounds_match_glb": true,
+        "dimensions_match_manifest_metres": true,
+        "root_origins_zero": true,
+        "floor_y_zero": true,
+        "vertex_positions_match_glb": true,
+        "embedded_albedo_recovered_and_linked": true,
+        "source_files_unchanged": true,
+        "prop_budget_declared": true,
+        "prop_pivot_kind": true,
+        "prop_x_center_zero": true,
+        "prop_depth_pivot": true
+      },
+      "fbx": {
+        "tris": 788,
+        "bounds_min": [
+          -0.37653446197509766,
+          -1.6241546774153903e-08,
+          -0.4005744457244873
+        ],
+        "bounds_max": [
+          0.37653446197509766,
+          1.4962432384490967,
+          0.4005742371082306
+        ],
+        "dimensions_m": [
+          0.7530689239501953,
+          1.4962432546906435,
+          0.8011486828327179
+        ],
+        "roots": [
+          {
+            "name": "lemon_tree_pot",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3.png",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "PropsPhotoAtlas_r3.png",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Linear"
+          }
+        ]
+      },
+      "glb": {
+        "tris": 788,
+        "bounds_min": [
+          -0.37653446197509766,
+          0.0,
+          -0.40057432651519775
+        ],
+        "bounds_max": [
+          0.37653446197509766,
+          1.4962432384490967,
+          0.40057432651519775
+        ],
+        "dimensions_m": [
+          0.7530689239501953,
+          1.4962432384490967,
+          0.8011486530303955
+        ],
+        "roots": [
+          {
+            "name": "lemon_tree_pot",
+            "origin_blender": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "front_triangle_vertices": 0,
+        "texture_links": [
+          {
+            "material": "BayLoop_Photo32.001",
+            "image": "PropsPhotoAtlas_r3",
+            "linked": true,
+            "sha256": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8",
+            "packed": true,
+            "resolved_file": "",
+            "size": [
+              1024,
+              1024
+            ],
+            "interpolation": "Closest"
+          }
+        ]
+      },
+      "source_sha256": {
+        "model": "0f1dd3d613a73f2c8de5add1046f39c65d6e2ef6797c5583ff0fa74352adeca7",
+        "fbx": "5af1ee9066d239bc5b492cf2a853e952600dc57c72082e1216c87a93ca7f5d8e",
+        "texture": "b2f37ff8fd9c317ead2156d2c955b4c77bce18d08437fdc4cd20147410add3a8"
+      }
+    }
+  ]
+}

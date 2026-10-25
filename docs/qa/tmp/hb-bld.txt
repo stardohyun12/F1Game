@@ -1,0 +1,106 @@
+    // ------------------------------------------------------------------ 건물
+    /// <summary>
+    /// 오르막 양옆 집 줄(2차): 1차는 높이 5m 옹벽이 이어져 "수로/협곡"이었다(PD 판정). 이제 옹벽 대신 집 앞면이 길에 붙는다.
+    ///  앞면 = 어깨 끝 + 0.4 + 물림 0~1m. 길이 6~9m, 높이 5~11m 들쭉날쭉. 4~6채마다 틈 하나(골목 2.5m / 계단 3.5m / 빈터 7m + 낮은 벽 1.5~3m).
+    ///  받침 = 그 집 구간 노면·뒤 지형 중 낮은 쪽 −0.4. 소품(콜라이더 없음): 실외기·화분·오토바이.
+    /// </summary>
+    static int Buildings(Transform parent, List<Vector3> main, float[,] t, Material[] walls, Material concrete, Material propM, Material bikeM, Material potM, out string info)
+    {
+        int n = 0, nGap = 0, nAc = 0, nPot = 0, nBike = 0;
+        int sEnd = 0; while (sEnd < main.Count - 1 && main[sEnd].z < 132f) sEnd++;
+        foreach (int side in new[] { 1, -1 })
+        {
+            var rnd = new System.Random(side > 0 ? 2051 : 2052);
+            float R(float a, float b) => a + (float)rnd.NextDouble() * (b - a);
+            float s = side > 0 ? 5f : 8f; int count = 0, nextGap = rnd.Next(4, 7), gi = side > 0 ? 0 : 1;
+            while (s < sEnd - 6)
+            {
+                bool gap = count == nextGap;
+                float len = gap ? new[] { 2.5f, 3.5f, 7f }[gi % 3] : R(6f, 9f);
+                if (s + len > sEnd) break;
+                int i0 = Mathf.Clamp(Mathf.RoundToInt(s), 0, main.Count - 1), i1 = Mathf.Clamp(Mathf.RoundToInt(s + len), 0, main.Count - 1), im = (i0 + i1) / 2;
+                var f = Fwd(main, im); var r = new Vector3(f.z, 0, -f.x) * side; var rot = Quaternion.LookRotation(f);
+                float roadY = Mathf.Min(main[i0].y, main[i1].y);
+                float sb = gap ? 0f : R(0f, 1f), front = EdgeD + 0.4f + sb;
+                var mid = main[im]; mid.y = 0;
+                if (!gap)
+                {
+                    float h = R(5f, 11f), d = 8f;
+                    var c = mid + r * (front + d * .5f);
+                    float baseY = roadY;
+                    foreach (var sx in new[] { -.5f, .5f }) foreach (var sz in new[] { -.5f, .5f })
+                        { var q = c + rot * new Vector3(sx * d, 0, sz * len); baseY = Mathf.Min(baseY, Hs(t, q.x, q.z)); }
+                    baseY -= 0.4f; float top = main[i1].y + h;
+                    Box(parent, "BLOCKOUT_AlleyHouse_" + n, new Vector3(d, top - baseY, len), c + Vector3.up * ((top + baseY) * .5f), rot, walls[n % walls.Length], true);
+                    double p = rnd.NextDouble();
+                    var faceP = mid + r * front;
+                    if (p < 0.35) { Box(parent, "PROP_AC_" + nAc++, new Vector3(0.35f, 0.6f, 0.9f), faceP - r * 0.18f + f * R(-len * .3f, len * .3f) + Vector3.up * (main[im].y + R(2.6f, 3.6f)), rot, propM, false); }
+                    else if (p < 0.6) { Cyl(parent, "PROP_FlowerPot_" + nPot++, new Vector3(0.45f, 0.22f, 0.45f), faceP - r * 0.3f + f * (len * .5f - 0.6f) + Vector3.up * (main[i1].y + 0.22f), potM); }
+                    else if (p < 0.75) { Box(parent, "PROP_Motorbike_" + nBike++, new Vector3(0.55f, 0.9f, 1.7f), faceP - r * 0.35f + Vector3.up * (main[im].y + 0.45f), rot, bikeM, false); }
+                    n++; count++;
+                }
+                else
+                {
+                    int type = gi % 3;
+                    if (type == 1)   // 계단: 6단, 단 높이 0.45·너비 1.0, 틈 안쪽으로 올라감
+                        for (int k = 0; k < 6; k++)
+                        {
+                            float hh = (k + 1) * 0.45f;
+                            Box(parent, "BLOCKOUT_Stairs_" + nGap + "_" + k, new Vector3(1.0f, hh + 0.4f, len - 0.6f), mid + r * (front + k + .5f) + Vector3.up * (roadY - 0.4f + (hh + 0.4f) * .5f), rot, concrete, false);
+                        }
+                    else if (type == 2)   // 빈터: 앞에 낮은 옹벽 1.5~3m (짧은 구간만)
+                    {
+                        float wh = R(1.5f, 3f);
+                        Box(parent, "BLOCKOUT_LotWall_" + nGap, new Vector3(0.35f, wh + 0.3f, len - 0.6f), mid + r * (front + 0.2f) + Vector3.up * (roadY - 0.3f + (wh + 0.3f) * .5f), rot, concrete, true);
+                    }
+                    nGap++; gi++; count = 0; nextGap = rnd.Next(4, 7);
+                }
+                s += len + (gap ? 0f : 0.3f);
+            }
+        }
+        info = $"틈 {nGap}(골목·계단·빈터), 실외기 {nAc}, 화분 {nPot}, 오토바이 {nBike}";
+        return n;
+    }
+
+    /// <summary>
+    /// 아래 계단식 마을(2차): 절벽면~해안 비탈에 11×10m 격자 + 흔들기. 길 9m 안·바다(해면+1.5 아래)·배달 집 12m 안은 비운다.
+    /// 절반은 지붕판(테라코타)을 얹어 위에서 내려다볼 때 "마을"로 읽히게. 콜라이더 없음(길 밖).
+    /// </summary>
+    static int Town(Transform parent, float[,] t, List<List<Vector3>> polys, Material[] mats)
+    {
+        int n = 0; var rnd = new System.Random(232);
+        float R(float a, float b) => a + (float)rnd.NextDouble() * (b - a);
+        var main = polys[0]; Vector3 door = main[main.Count - 1] + Vector3.forward * 8f;
+        for (float gx = -176f; gx <= 136f; gx += 11f)
+            for (float gz = 180f; gz <= 342f; gz += 10f)
+            {
+                float x = gx + R(-2.5f, 2.5f), z = gz + R(-2f, 2f);
+                if (z < EdgeAt(x) + 8f) continue;
+                if (new Vector2(x - door.x, z - door.z).magnitude < 12f) continue;
+                bool nearRoad = false;
+                foreach (var poly in polys) { for (int i = 0; i < poly.Count; i += 2) if (new Vector2(poly[i].x - x, poly[i].z - z).sqrMagnitude < 81f) { nearRoad = true; break; } if (nearRoad) break; }
+                if (nearRoad) continue;
+                var size = new Vector3(R(5f, 8f), R(4f, 8f), R(5f, 7f));
+                var rot = Quaternion.Euler(0f, R(-8f, 8f), 0f);
+                float lo = float.MaxValue, hi = float.MinValue;
+                foreach (var sx in new[] { -.5f, .5f }) foreach (var sz in new[] { -.5f, .5f })
+                    { var q = new Vector3(x, 0, z) + rot * new Vector3(sx * size.x, 0, sz * size.z); float g = Hg(t, q.x, q.z); lo = Mathf.Min(lo, g); hi = Mathf.Max(hi, g); }
+                if (lo < SeaY + 1.5f) continue;
+                float baseY = lo - 0.5f, top = hi + size.y;
+                Box(parent, "BLOCKOUT_Town_" + n, new Vector3(size.x, top - baseY, size.z), new Vector3(x, (top + baseY) * .5f, z), rot, mats[n % 2], false);
+                if (rnd.NextDouble() < 0.55) Box(parent, "BLOCKOUT_TownRoof_" + n, new Vector3(size.x + 0.4f, 0.35f, size.z + 0.4f), new Vector3(x, top + 0.17f, z), rot, mats[2], false);
+                n++;
+            }
+        return n;
+    }
+
+    /// <summary>정밀 격자 안이면 깎은 높이, 밖이면 원래 높이 함수.</summary>
+    static float Hg(float[,] t, float x, float z) => (x > X0 && x < X1 && z > Z0 && z < Z1) ? Hs(t, x, z) : HilltopHeight(x, z);
+
+    static void Cyl(Transform parent, string name, Vector3 scale, Vector3 pos, Material mat)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder); go.name = name; go.transform.SetParent(parent);
+        go.transform.position = pos; go.transform.localScale = scale; go.GetComponent<Renderer>().sharedMaterial = mat;
+        Object.DestroyImmediate(go.GetComponent<Collider>());
+    }
+

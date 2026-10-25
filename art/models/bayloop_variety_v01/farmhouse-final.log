@@ -1,0 +1,59 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:54:33 | INFO: Starting glTF 2.0 export
+20:54:33 | INFO: Extracting primitive: farmhouse_01
+20:54:33 | INFO: Primitives created: 1
+20:54:33 | INFO: Finished glTF 2.0 export in 0.014314889907836914 s
+00:06.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_01_front.png'
+00:22.516  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_01_back.png'
+00:37.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_01_side.png'
+00:55.375  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\farmhouse_01.fbx'
+export finished in 0.0049 sec.
+Info: Saved as "farmhouse_01.blend"
+BUILDGEN_ASSET farmhouse_01 1092
+20:55:28 | INFO: Starting glTF 2.0 export
+20:55:28 | INFO: Extracting primitive: farmhouse_02
+20:55:28 | INFO: Primitives created: 1
+20:55:28 | INFO: Finished glTF 2.0 export in 0.06421971321105957 s
+01:14.469  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_02_front.png'
+01:32.719  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_02_back.png'
+01:47.141  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_02_side.png'
+02:05.469  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_02_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\farmhouse_02.fbx'
+export finished in 0.0256 sec.
+Info: Saved as "farmhouse_02.blend"
+BUILDGEN_ASSET farmhouse_02 2254
+20:56:38 | INFO: Starting glTF 2.0 export
+20:56:38 | INFO: Extracting primitive: farmhouse_03
+20:56:38 | INFO: Primitives created: 1
+20:56:38 | INFO: Finished glTF 2.0 export in 0.0807335376739502 s
+02:23.844  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_03_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\farmhouse_03.fbx'
+export finished in 0.0276 sec.
+Info: Saved as "farmhouse_03.blend"
+BUILDGEN_ASSET farmhouse_03 1326
+20:56:56 | INFO: Starting glTF 2.0 export
+20:56:56 | INFO: Extracting primitive: farmhouse_04
+20:56:56 | INFO: Primitives created: 1
+20:56:56 | INFO: Finished glTF 2.0 export in 0.06819558143615723 s
+02:38.953  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_04_front.png'
+02:51.813  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_04_back.png'
+03:01.453  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_04_side.png'
+03:14.266  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\farmhouse_04_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\farmhouse_04.fbx'
+export finished in 0.0229 sec.
+Info: Saved as "farmhouse_04.blend"
+BUILDGEN_ASSET farmhouse_04 1950
+BUILDGEN_DONE farmhouse 4
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

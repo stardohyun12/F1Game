@@ -1,0 +1,291 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "assets": [
+    {
+      "id": "shop_house_a",
+      "type": "shop_house",
+      "model": "art/models/bayloop_buildings_v01/shop_house_a.glb",
+      "fbx": "art/models/bayloop_buildings_v01/shop_house_a.fbx",
+      "texture": "art/models/bayloop_buildings_v01/BayLoopPhotoAtlas.png",
+      "dimensions_m": [
+        6.3299998342990875,
+        7.110000133514404,
+        9.684999704360962
+      ],
+      "bounds_min": [
+        -3.1599998474121094,
+        0.0,
+        -8.484999656677246
+      ],
+      "bounds_max": [
+        3.169999986886978,
+        7.110000133514404,
+        1.2000000476837158
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 1928,
+      "footprint_m": [
+        5.5,
+        8.0
+      ],
+      "storeys": 2,
+      "wear_locations": [
+        "lower wood panelling",
+        "thresholds",
+        "rainwater corner",
+        "old sign support"
+      ],
+      "front_wall_z": 0
+    },
+    {
+      "id": "shop_house_b",
+      "type": "shop_house",
+      "model": "art/models/bayloop_buildings_v01/shop_house_b.glb",
+      "fbx": "art/models/bayloop_buildings_v01/shop_house_b.fbx",
+      "texture": "art/models/bayloop_buildings_v01/BayLoopPhotoAtlas.png",
+      "dimensions_m": [
+        7.7299998450279235,
+        7.710000038146973,
+        9.984999656677246
+      ],
+      "bounds_min": [
+        -3.7849998474121094,
+        0.0,
+        -8.484999656677246
+      ],
+      "bounds_max": [
+        3.944999997615814,
+        7.710000038146973,
+        1.5
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 2062,
+      "footprint_m": [
+        6.75,
+        8.0
+      ],
+      "storeys": 2,
+      "wear_locations": [
+        "lower wood panelling",
+        "thresholds",
+        "rainwater corner",
+        "old sign support"
+      ],
+      "front_wall_z": 0
+    },
+    {
+      "id": "terrace_house_a",
+      "type": "terrace_house",
+      "model": "art/models/bayloop_buildings_v01/terrace_house_a.glb",
+      "fbx": "art/models/bayloop_buildings_v01/terrace_house_a.fbx",
+      "texture": "art/models/bayloop_buildings_v01/terrace_house_Atlas.png",
+      "dimensions_m": [
+        5.979999929666519,
+        6.269999980926514,
+        7.284999996423721
+      ],
+      "bounds_min": [
+        -2.809999942779541,
+        0.0,
+        -6.419999986886978
+      ],
+      "bounds_max": [
+        3.169999986886978,
+        6.269999980926514,
+        0.8650000095367432
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 1879,
+      "footprint_m": [
+        5.5,
+        6.0
+      ],
+      "storeys": 2,
+      "slope_variant": false,
+      "upper_access_height_m": null,
+      "wear_locations": [
+        "stair treads",
+        "plinth",
+        "parapet coping",
+        "shutter edges"
+      ],
+      "front_wall_z": 0
+    },
+    {
+      "id": "terrace_house_b",
+      "type": "terrace_house",
+      "model": "art/models/bayloop_buildings_v01/terrace_house_b.glb",
+      "fbx": "art/models/bayloop_buildings_v01/terrace_house_b.fbx",
+      "texture": "art/models/bayloop_buildings_v01/terrace_house_Atlas.png",
+      "dimensions_m": [
+        7.909999847412109,
+        9.069999694824219,
+        6.929999977350235
+      ],
+      "bounds_min": [
+        -3.434999942779541,
+        0.0,
+        -6.419999986886978
+      ],
+      "bounds_max": [
+        4.474999904632568,
+        9.069999694824219,
+        0.5099999904632568
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 3413,
+      "footprint_m": [
+        6.75,
+        6.0
+      ],
+      "storeys": 3,
+      "slope_variant": true,
+      "upper_access_height_m": 2.8,
+      "wear_locations": [
+        "stair treads",
+        "plinth",
+        "parapet coping",
+        "shutter edges"
+      ],
+      "front_wall_z": 0
+    },
+    {
+      "id": "harbor_warehouse_a",
+      "type": "harbor_warehouse",
+      "model": "art/models/bayloop_buildings_v01/harbor_warehouse_a.glb",
+      "fbx": "art/models/bayloop_buildings_v01/harbor_warehouse_a.fbx",
+      "texture": "art/models/bayloop_buildings_v01/harbor_warehouse_Atlas.png",
+      "dimensions_m": [
+        9.987376689910889,
+        5.990000247955322,
+        10.38500002026558
+      ],
+      "bounds_min": [
+        -4.877376556396484,
+        0.0,
+        -8.919999986886978
+      ],
+      "bounds_max": [
+        5.110000133514404,
+        5.990000247955322,
+        1.465000033378601
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 1432,
+      "footprint_m": [
+        9.0,
+        8.5
+      ],
+      "storeys": 1,
+      "wear_locations": [
+        "loading threshold",
+        "lower masonry",
+        "shutter edges",
+        "roof seams",
+        "rain pipes"
+      ],
+      "front_wall_z": 0
+    },
+    {
+      "id": "harbor_warehouse_b",
+      "type": "harbor_warehouse",
+      "model": "art/models/bayloop_buildings_v01/harbor_warehouse_b.glb",
+      "fbx": "art/models/bayloop_buildings_v01/harbor_warehouse_b.fbx",
+      "texture": "art/models/bayloop_buildings_v01/harbor_warehouse_Atlas.png",
+      "dimensions_m": [
+        11.797497183084488,
+        7.190000057220459,
+        11.38500002026558
+      ],
+      "bounds_min": [
+        -5.87749719619751,
+        0.0,
+        -9.919999986886978
+      ],
+      "bounds_max": [
+        5.919999986886978,
+        7.190000057220459,
+        1.465000033378601
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "tris": 1774,
+      "footprint_m": [
+        11.0,
+        9.5
+      ],
+      "storeys": 1,
+      "wear_locations": [
+        "loading threshold",
+        "lower masonry",
+        "shutter edges",
+        "roof seams",
+        "rain pipes"
+      ],
+      "front_wall_z": 0
+    }
+  ],
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ]
+}

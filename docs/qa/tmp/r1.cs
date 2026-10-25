@@ -1,0 +1,12 @@
+Application.runInBackground=true;
+var bf=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+var ob=UnityEngine.Object.FindFirstObjectByType<OrderBoard>();
+var up0=UnityEngine.Object.FindFirstObjectByType<UrgentCallPanel>(); if(up0!=null) typeof(UrgentCallPanel).GetMethod("OnDeclineClicked",bf).Invoke(up0,null);
+typeof(OrderBoard).GetMethod("OnCardClicked",bf).Invoke(ob,new object[]{0});
+typeof(OrderBoard).GetMethod("OnBoardGoClicked",bf).Invoke(ob,null);
+var up=UnityEngine.Object.FindFirstObjectByType<UrgentCallPanel>(); if(up!=null) typeof(UrgentCallPanel).GetMethod("OnDeclineClicked",bf).Invoke(up,null);
+var ps=UnityEngine.Object.FindFirstObjectByType<PitCrew.Packing.PackingScreen>();
+var item=ps.ActiveItem; var cam=ps.GetType().GetField("packingCamera",bf).GetValue(ps) as Camera;
+var r=Services.Run as RunController;
+UnityEngine.ScreenCapture.CaptureScreenshot("D:/Github/F1Game/docs/qa/evidence/20261023-1504-packing-first.png");
+return "stage="+r.CurrentStage+" job="+r.CurrentJob+" item.fwd="+item.transform.forward+" cam.fwd="+cam.transform.forward+" dot="+Vector3.Dot(item.transform.forward,cam.transform.forward)+" urgentPanel="+(up!=null);

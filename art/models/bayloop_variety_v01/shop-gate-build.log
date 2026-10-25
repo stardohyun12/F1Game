@@ -1,0 +1,43 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:39:39 | INFO: Starting glTF 2.0 export
+20:39:39 | INFO: Extracting primitive: shop_house_01
+20:39:39 | INFO: Primitives created: 1
+20:39:39 | INFO: Finished glTF 2.0 export in 0.02689671516418457 s
+00:05.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_front.png'
+00:23.578  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_back.png'
+00:38.031  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_side.png'
+00:56.500  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_01.fbx'
+export finished in 0.0045 sec.
+Info: Saved as "shop_house_01.blend"
+BUILDGEN_ASSET shop_house_01 1704
+20:40:36 | INFO: Starting glTF 2.0 export
+20:40:36 | INFO: Extracting primitive: shop_house_06
+20:40:36 | INFO: Primitives created: 1
+20:40:36 | INFO: Finished glTF 2.0 export in 0.08042645454406738 s
+01:15.875  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_front.png'
+01:34.234  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_back.png'
+01:48.594  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_side.png'
+02:06.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_06.fbx'
+export finished in 0.0288 sec.
+Info: Saved as "shop_house_06.blend"
+BUILDGEN_ASSET shop_house_06 3263
+Traceback (most recent call last):
+  File "D:\Github\F1Game\tools\asset-gen\bayloop_buildgen.py", line 254, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "D:\Github\F1Game\tools\asset-gen\bayloop_buildgen.py", line 231, in main
+    name=p['id'];tris=sum(len(f)-2 for f in b.F);assert 0<tris<=4000,(name,tris)
+                                                        ^^^^^^^^^^^^
+AssertionError: ('shop_house_12', 4151)
+
+Error: script failed, file: 'tools/asset-gen/bayloop_buildgen.py', exiting.
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

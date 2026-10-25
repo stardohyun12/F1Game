@@ -1,0 +1,20 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+21:09:23 | INFO: Starting glTF 2.0 export
+21:09:23 | INFO: Extracting primitive: shop_house_01
+21:09:23 | INFO: Primitives created: 1
+21:09:23 | INFO: Finished glTF 2.0 export in 0.023875951766967773 s
+00:11.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_front.png'
+00:24.063  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_back.png'
+00:34.407  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_side.png'
+00:47.797  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_01.fbx'
+export finished in 0.0070 sec.
+Info: Saved as "shop_house_01.blend"
+BUILDGEN_ASSET shop_house_01 1788
+BUILDGEN_DONE shop_house 1
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

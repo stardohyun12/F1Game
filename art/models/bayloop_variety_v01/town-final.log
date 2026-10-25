@@ -1,0 +1,191 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:42:55 | INFO: Starting glTF 2.0 export
+20:42:55 | INFO: Extracting primitive: town_house_01
+20:42:55 | INFO: Primitives created: 1
+20:42:55 | INFO: Finished glTF 2.0 export in 0.013234138488769531 s
+00:04.312  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_01_front.png'
+00:22.250  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_01_back.png'
+00:36.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_01_side.png'
+00:54.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_01.fbx'
+export finished in 0.0052 sec.
+Info: Saved as "town_house_01.blend"
+BUILDGEN_ASSET town_house_01 1686
+20:43:49 | INFO: Starting glTF 2.0 export
+20:43:49 | INFO: Extracting primitive: town_house_02
+20:43:50 | INFO: Primitives created: 1
+20:43:50 | INFO: Finished glTF 2.0 export in 0.07153487205505371 s
+01:13.516  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_02_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_02.fbx'
+export finished in 0.0267 sec.
+Info: Saved as "town_house_02.blend"
+BUILDGEN_ASSET town_house_02 2608
+20:44:08 | INFO: Starting glTF 2.0 export
+20:44:08 | INFO: Extracting primitive: town_house_03
+20:44:08 | INFO: Primitives created: 1
+20:44:08 | INFO: Finished glTF 2.0 export in 0.055895090103149414 s
+01:32.500  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_03_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_03.fbx'
+export finished in 0.0208 sec.
+Info: Saved as "town_house_03.blend"
+BUILDGEN_ASSET town_house_03 1740
+20:44:27 | INFO: Starting glTF 2.0 export
+20:44:27 | INFO: Extracting primitive: town_house_04
+20:44:27 | INFO: Primitives created: 1
+20:44:27 | INFO: Finished glTF 2.0 export in 0.07143139839172363 s
+01:51.672  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_04_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_04.fbx'
+export finished in 0.0258 sec.
+Info: Saved as "town_house_04.blend"
+BUILDGEN_ASSET town_house_04 2608
+20:44:46 | INFO: Starting glTF 2.0 export
+20:44:46 | INFO: Extracting primitive: town_house_05
+20:44:46 | INFO: Primitives created: 1
+20:44:46 | INFO: Finished glTF 2.0 export in 0.06078505516052246 s
+02:11.016  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_05_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_05.fbx'
+export finished in 0.0222 sec.
+Info: Saved as "town_house_05.blend"
+BUILDGEN_ASSET town_house_05 2026
+20:45:06 | INFO: Starting glTF 2.0 export
+20:45:06 | INFO: Extracting primitive: town_house_06
+20:45:06 | INFO: Primitives created: 1
+20:45:06 | INFO: Finished glTF 2.0 export in 0.062262773513793945 s
+02:30.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_06_front.png'
+02:48.609  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_06_back.png'
+03:03.219  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_06_side.png'
+03:21.625  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_06_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_06.fbx'
+export finished in 0.0259 sec.
+Info: Saved as "town_house_06.blend"
+BUILDGEN_ASSET town_house_06 3018
+20:46:16 | INFO: Starting glTF 2.0 export
+20:46:16 | INFO: Extracting primitive: town_house_07
+20:46:16 | INFO: Primitives created: 1
+20:46:16 | INFO: Finished glTF 2.0 export in 0.05877041816711426 s
+03:40.406  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_07_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_07.fbx'
+export finished in 0.0282 sec.
+Info: Saved as "town_house_07.blend"
+BUILDGEN_ASSET town_house_07 1808
+20:46:35 | INFO: Starting glTF 2.0 export
+20:46:35 | INFO: Extracting primitive: town_house_08
+20:46:35 | INFO: Primitives created: 1
+20:46:35 | INFO: Finished glTF 2.0 export in 0.0655825138092041 s
+03:59.656  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_08_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_08.fbx'
+export finished in 0.0236 sec.
+Info: Saved as "town_house_08.blend"
+BUILDGEN_ASSET town_house_08 3214
+20:46:54 | INFO: Starting glTF 2.0 export
+20:46:54 | INFO: Extracting primitive: town_house_09
+20:46:54 | INFO: Primitives created: 1
+20:46:54 | INFO: Finished glTF 2.0 export in 0.06196141242980957 s
+04:18.437  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_09_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_09.fbx'
+export finished in 0.0217 sec.
+Info: Saved as "town_house_09.blend"
+BUILDGEN_ASSET town_house_09 1600
+20:47:13 | INFO: Starting glTF 2.0 export
+20:47:13 | INFO: Extracting primitive: town_house_10
+20:47:13 | INFO: Primitives created: 1
+20:47:13 | INFO: Finished glTF 2.0 export in 0.05640268325805664 s
+04:39.312  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_10_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_10.fbx'
+export finished in 0.0246 sec.
+Info: Saved as "town_house_10.blend"
+BUILDGEN_ASSET town_house_10 2656
+20:47:34 | INFO: Starting glTF 2.0 export
+20:47:34 | INFO: Extracting primitive: town_house_11
+20:47:34 | INFO: Primitives created: 1
+20:47:34 | INFO: Finished glTF 2.0 export in 0.06445765495300293 s
+05:03.312  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_11_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_11.fbx'
+export finished in 0.0218 sec.
+Info: Saved as "town_house_11.blend"
+BUILDGEN_ASSET town_house_11 1778
+20:47:58 | INFO: Starting glTF 2.0 export
+20:47:58 | INFO: Extracting primitive: town_house_12
+20:47:58 | INFO: Primitives created: 1
+20:47:58 | INFO: Finished glTF 2.0 export in 0.07441282272338867 s
+05:28.656  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_12_front.png'
+05:45.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_12_back.png'
+06:01.969  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_12_side.png'
+06:31.078  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_12_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_12.fbx'
+export finished in 0.0255 sec.
+Info: Saved as "town_house_12.blend"
+BUILDGEN_ASSET town_house_12 2948
+20:49:26 | INFO: Starting glTF 2.0 export
+20:49:26 | INFO: Extracting primitive: town_house_13
+20:49:26 | INFO: Primitives created: 1
+20:49:26 | INFO: Finished glTF 2.0 export in 0.06571340560913086 s
+07:01.016  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_13_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_13.fbx'
+export finished in 0.0230 sec.
+Info: Saved as "town_house_13.blend"
+BUILDGEN_ASSET town_house_13 1710
+20:49:56 | INFO: Starting glTF 2.0 export
+20:49:56 | INFO: Extracting primitive: town_house_14
+20:49:56 | INFO: Primitives created: 1
+20:49:56 | INFO: Finished glTF 2.0 export in 0.07749128341674805 s
+07:29.766  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_14_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_14.fbx'
+export finished in 0.0261 sec.
+Info: Saved as "town_house_14.blend"
+BUILDGEN_ASSET town_house_14 3242
+20:50:24 | INFO: Starting glTF 2.0 export
+20:50:24 | INFO: Extracting primitive: town_house_15
+20:50:24 | INFO: Primitives created: 1
+20:50:24 | INFO: Finished glTF 2.0 export in 0.05847573280334473 s
+07:55.047  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_15_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_15.fbx'
+export finished in 0.0213 sec.
+Info: Saved as "town_house_15.blend"
+BUILDGEN_ASSET town_house_15 1722
+20:50:50 | INFO: Starting glTF 2.0 export
+20:50:50 | INFO: Extracting primitive: town_house_16
+20:50:50 | INFO: Primitives created: 1
+20:50:50 | INFO: Finished glTF 2.0 export in 0.06875872611999512 s
+08:18.328  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\town_house_16_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\town_house_16.fbx'
+export finished in 0.0318 sec.
+Info: Saved as "town_house_16.blend"
+BUILDGEN_ASSET town_house_16 2650
+BUILDGEN_DONE town_house 16
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

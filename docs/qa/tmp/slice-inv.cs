@@ -1,0 +1,7 @@
+var sb=new System.Text.StringBuilder();
+string[] names={"CornerShop","CornerShopB","CornerShopC","RepairGarage","RepairGarageB","CoastalHouse","CoastalHouseB","CoastalHouseC","CoastalHouseD","CoastalHouseE","CoastalHouseF","UtilityPole","Awning","CrateStack","Crate","Wall3m","CoastalTree","TireStack","Barrel","Stall","Curb","Sidewalk2x4","Road7x8","Bollard","Shrub","Planter"};
+foreach(var n in names){ var p=UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Art/LofiPilot/"+n+".prefab"); if(!p){sb.Append(n+"=MISSING; ");continue;} var rs=p.GetComponentsInChildren<Renderer>(); if(rs.Length==0){sb.Append(n+"=norenderer; ");continue;} var b=rs[0].bounds; foreach(var r in rs) b.Encapsulate(r.bounds); sb.Append(n+" c="+b.center.ToString("F1")+" s="+b.size.ToString("F1")+" col="+p.GetComponentsInChildren<Collider>().Length+"; "); }
+sb.Append("\nVEH: "); var sv=GameObject.Find("StreetVehicles"); foreach(Transform t in sv.transform){ sb.Append(t.name+"<"+UnityEditor.PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(t.gameObject)+"> "); }
+sb.Append("\nBLD: "); var bl=GameObject.Find("Buildings"); int i=0; foreach(Transform t in bl.transform){ if(i++>12) break; sb.Append(t.name+"<"+UnityEditor.PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(t.gameObject)+"> "); }
+sb.Append("\nCT: "); var ct=GameObject.Find("CoastalTown"); foreach(Transform t in ct.transform){ sb.Append(t.name+"("+t.childCount+") "); foreach(Transform u in t){ if(i++>40) break; sb.Append(u.name+","); } }
+return sb.ToString();

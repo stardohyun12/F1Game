@@ -1,0 +1,453 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "cliff_villa_01",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_01.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_01.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 1874,
+      "dimensions_m": [
+        6.725000059604644,
+        7.420000076293945,
+        8.724999964237213
+      ],
+      "bounds_min": [
+        -3.200000047683716,
+        0.0,
+        -7.425000011920929
+      ],
+      "bounds_max": [
+        3.525000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_01",
+        "type": "cliff_villa",
+        "width": 6.2,
+        "depth": 7.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "none",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": false
+        },
+        "seed": 140400,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        6.2,
+        7.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "cliff_villa_02",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_02.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_02.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 2110,
+      "dimensions_m": [
+        7.924999964237213,
+        7.420000076293945,
+        9.724999964237213
+      ],
+      "bounds_min": [
+        -3.799999952316284,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        4.125000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_02",
+        "type": "cliff_villa",
+        "width": 7.4,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "regular",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "chalk",
+        "wear": "medium",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": true
+        },
+        "seed": 140401,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        7.4,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "cliff_villa_03",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_03.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_03.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 2216,
+      "dimensions_m": [
+        9.125000107288361,
+        7.420000076293945,
+        10.724999964237213
+      ],
+      "bounds_min": [
+        -4.400000095367432,
+        0.0,
+        -9.425000011920929
+      ],
+      "bounds_max": [
+        4.725000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_03",
+        "type": "cliff_villa",
+        "width": 8.6,
+        "depth": 9.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "offset",
+        "balcony": "full",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "sand",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": false
+        },
+        "seed": 140402,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        8.6,
+        9.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "cliff_villa_04",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_04.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_04.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 2040,
+      "dimensions_m": [
+        10.125000107288361,
+        7.420000076293945,
+        8.724999964237213
+      ],
+      "bounds_min": [
+        -4.900000095367432,
+        0.0,
+        -7.425000011920929
+      ],
+      "bounds_max": [
+        5.225000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_04",
+        "type": "cliff_villa",
+        "width": 9.6,
+        "depth": 7.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "paired",
+        "balcony": "alternating",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "ochre",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": true
+        },
+        "seed": 140403,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        9.6,
+        7.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "cliff_villa_05",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_05.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_05.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 1850,
+      "dimensions_m": [
+        6.725000059604644,
+        7.420000076293945,
+        9.724999964237213
+      ],
+      "bounds_min": [
+        -3.200000047683716,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        3.525000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_05",
+        "type": "cliff_villa",
+        "width": 6.2,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "blue",
+        "wear": "medium",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": false
+        },
+        "seed": 140404,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        6.2,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "cliff_villa_06",
+      "type": "cliff_villa",
+      "model": "art/models/bayloop_variety_v01/cliff_villa_06.glb",
+      "fbx": "art/models/bayloop_variety_v01/cliff_villa_06.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 2190,
+      "dimensions_m": [
+        7.924999964237213,
+        7.420000076293945,
+        10.724999964237213
+      ],
+      "bounds_min": [
+        -3.799999952316284,
+        0.0,
+        -9.425000011920929
+      ],
+      "bounds_max": [
+        4.125000011920929,
+        7.420000076293945,
+        1.2999999523162842
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "cliff_villa_06",
+        "type": "cliff_villa",
+        "width": 7.4,
+        "depth": 9.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "entry_steps",
+        "opening_rhythm": "offset",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "mist",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": true
+        },
+        "seed": 140405,
+        "zone": "sparse",
+        "front_space_m": 1.8
+      },
+      "footprint_m": [
+        7.4,
+        9.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "sparse",
+      "front_space_m": 1.8,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    }
+  ]
+}

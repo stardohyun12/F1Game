@@ -1,0 +1,176 @@
+[
+  {
+    "id": "parked_car_01",
+    "triangles": 1314,
+    "faces": 567,
+    "zero_area": 0,
+    "bounds": [
+      1.6799999475479126,
+      3.315999984741211,
+      1.429999951273203
+    ],
+    "min_z": -3.725290298461914e-09,
+    "parts": [
+      "body",
+      "chassis",
+      "glass",
+      "lights",
+      "trim",
+      "wheel_left_front",
+      "wheel_left_rear",
+      "wheel_right_front",
+      "wheel_right_rear"
+    ],
+    "spec": {
+      "form": "rounded_european_hatch",
+      "design_body_dimensions_m": [
+        1.48,
+        3.2,
+        1.43
+      ],
+      "wheelbase_m": 1.98,
+      "track_m": 1.33,
+      "wheel_radius_m": 0.265,
+      "wheel_count": 4,
+      "front_overhang_m": 0.6100000000000001,
+      "rear_overhang_m": 0.6100000000000001,
+      "cabin_front_rear_m": [
+        -0.91,
+        1.12
+      ],
+      "roof_front_rear_m": [
+        -0.4,
+        0.61
+      ],
+      "ground_footprint_m": [
+        1.48,
+        3.2
+      ],
+      "maxtris": 1500,
+      "front_axis": "-Y",
+      "rigged": false,
+      "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+      "wear_locations": [
+        "tire tread",
+        "bumper ends",
+        "door handles"
+      ]
+    }
+  },
+  {
+    "id": "parked_car_02",
+    "triangles": 1314,
+    "faces": 567,
+    "zero_area": 0,
+    "bounds": [
+      1.7400000095367432,
+      3.75600004196167,
+      1.440000057220459
+    ],
+    "min_z": 0.0,
+    "parts": [
+      "body",
+      "chassis",
+      "glass",
+      "lights",
+      "trim",
+      "wheel_left_front",
+      "wheel_left_rear",
+      "wheel_right_front",
+      "wheel_right_rear"
+    ],
+    "spec": {
+      "form": "angular_european_hatch",
+      "design_body_dimensions_m": [
+        1.54,
+        3.64,
+        1.44
+      ],
+      "wheelbase_m": 2.28,
+      "track_m": 1.3900000000000001,
+      "wheel_radius_m": 0.28,
+      "wheel_count": 4,
+      "front_overhang_m": 0.6800000000000002,
+      "rear_overhang_m": 0.6800000000000002,
+      "cabin_front_rear_m": [
+        -1.05,
+        1.43
+      ],
+      "roof_front_rear_m": [
+        -0.57,
+        0.79
+      ],
+      "ground_footprint_m": [
+        1.54,
+        3.64
+      ],
+      "maxtris": 1500,
+      "front_axis": "-Y",
+      "rigged": false,
+      "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+      "wear_locations": [
+        "tire tread",
+        "bumper ends",
+        "door handles"
+      ]
+    }
+  },
+  {
+    "id": "parked_car_03",
+    "triangles": 1386,
+    "faces": 603,
+    "zero_area": 0,
+    "bounds": [
+      1.5950000286102295,
+      3.4110000133514404,
+      1.6799999475479126
+    ],
+    "min_z": 0.0,
+    "parts": [
+      "body",
+      "chassis",
+      "glass",
+      "lights",
+      "trim",
+      "wheel_left_front",
+      "wheel_left_rear",
+      "wheel_right_front",
+      "wheel_right_rear"
+    ],
+    "spec": {
+      "form": "tall_japanese_kei",
+      "design_body_dimensions_m": [
+        1.395,
+        3.295,
+        1.68
+      ],
+      "wheelbase_m": 2.335,
+      "track_m": 1.245,
+      "wheel_radius_m": 0.255,
+      "wheel_count": 4,
+      "front_overhang_m": 0.48,
+      "rear_overhang_m": 0.48,
+      "cabin_front_rear_m": [
+        -1.01,
+        1.43
+      ],
+      "roof_front_rear_m": [
+        -0.75,
+        1.28
+      ],
+      "ground_footprint_m": [
+        1.395,
+        3.295
+      ],
+      "maxtris": 1500,
+      "front_axis": "-Y",
+      "rigged": false,
+      "skill_applied": "vehicle-artist: proportion blockout and separate systems",
+      "wear_locations": [
+        "tire tread",
+        "bumper ends",
+        "door handles"
+      ]
+    }
+  }
+]

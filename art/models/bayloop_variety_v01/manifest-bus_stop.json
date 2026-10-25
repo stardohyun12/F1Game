@@ -1,0 +1,89 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "bus_stop_01",
+      "type": "bus_stop",
+      "model": "art/models/bayloop_variety_v01/bus_stop_01.glb",
+      "fbx": "art/models/bayloop_variety_v01/bus_stop_01.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 218,
+      "dimensions_m": [
+        5.0,
+        2.7200000286102295,
+        2.6574999690055847
+      ],
+      "bounds_min": [
+        -2.5,
+        0.0,
+        -2.3949999809265137
+      ],
+      "bounds_max": [
+        2.5,
+        2.7200000286102295,
+        0.26249998807907104
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "bus_stop_01",
+        "type": "bus_stop",
+        "width": 4.8,
+        "depth": 2.2,
+        "floors": 1,
+        "roof": "flat",
+        "ground_floor": "windows",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "cream",
+        "wear": "medium",
+        "life": {
+          "sign_count": 0,
+          "ac_unit": false,
+          "planters": 0,
+          "laundry": false
+        },
+        "seed": 140800,
+        "zone": "medium",
+        "front_space_m": 0
+      },
+      "footprint_m": [
+        4.8,
+        2.2
+      ],
+      "storeys": 1,
+      "front_wall_z": 0,
+      "form": "open roadside shelter, worn metal sloping roof, bench, stop pole and timetable case",
+      "life_layer": "human-scale notice boards, seating and service attachments",
+      "wear_locations": [
+        "entrance threshold",
+        "lower masonry",
+        "roof edge",
+        "handled wood and metal"
+      ],
+      "parameter_profile": "fixed_functional_facility: width/depth/palette; fixed roof/floors/openings; seed records identity",
+      "zone": "medium",
+      "front_space_m": 0
+    }
+  ]
+}

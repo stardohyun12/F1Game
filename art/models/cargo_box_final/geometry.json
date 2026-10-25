@@ -1,0 +1,444 @@
+{
+  "tris": 144,
+  "dimensions_m": [
+    0.4000000059604645,
+    0.30000001192092896,
+    0.30000001192092896
+  ],
+  "density": 64,
+  "instance_seed": 0,
+  "bevel_m": 0.005,
+  "bevel_segments": 1,
+  "flap_gap_m": 0.004,
+  "lid_sag_m": 0.0025,
+  "tape_height_m": 0.0005,
+  "tape_returns": "texture only",
+  "tape_shear": 0.025,
+  "dent_m": [
+    0.005,
+    0.003,
+    0.003
+  ],
+  "face_regions": [
+    {
+      "object": "cargo_box_v02_body",
+      "face": 0,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 1,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 2,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 3,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 4,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 5,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 6,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 7,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 8,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 9,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 10,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 11,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 12,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 13,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 14,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 15,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 16,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 17,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 18,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 19,
+      "region": "bevel"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 20,
+      "region": "bottom"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 21,
+      "region": "left"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 22,
+      "region": "front"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 23,
+      "region": "top"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 24,
+      "region": "back"
+    },
+    {
+      "object": "cargo_box_v02_body",
+      "face": 25,
+      "region": "right"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 0,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 1,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 2,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 3,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 4,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 5,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 6,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 7,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 8,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 9,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 10,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 11,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 12,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 13,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 14,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 15,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 16,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 17,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 18,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 19,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 20,
+      "region": "bottom"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 21,
+      "region": "left"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 22,
+      "region": "front"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 23,
+      "region": "top"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 24,
+      "region": "back"
+    },
+    {
+      "object": "lid_flap_-1",
+      "face": 25,
+      "region": "right"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 0,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 1,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 2,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 3,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 4,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 5,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 6,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 7,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 8,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 9,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 10,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 11,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 12,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 13,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 14,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 15,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 16,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 17,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 18,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 19,
+      "region": "bevel"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 20,
+      "region": "bottom"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 21,
+      "region": "left"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 22,
+      "region": "front"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 23,
+      "region": "top"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 24,
+      "region": "back"
+    },
+    {
+      "object": "lid_flap_1",
+      "face": 25,
+      "region": "right"
+    },
+    {
+      "object": "tape_top",
+      "face": 0,
+      "region": "left"
+    },
+    {
+      "object": "tape_top",
+      "face": 1,
+      "region": "back"
+    },
+    {
+      "object": "tape_top",
+      "face": 2,
+      "region": "right"
+    },
+    {
+      "object": "tape_top",
+      "face": 3,
+      "region": "front"
+    },
+    {
+      "object": "tape_top",
+      "face": 4,
+      "region": "bottom"
+    },
+    {
+      "object": "tape_top",
+      "face": 5,
+      "region": "top"
+    }
+  ]
+}

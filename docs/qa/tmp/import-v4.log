@@ -1,0 +1,84 @@
+텍스처 Italy_cream_Atlas 1024x1024 Point RGB24
+텍스처 Italy_ochre_Atlas 1024x1024 Point RGB24
+텍스처 Italy_blue_Atlas 1024x1024 Point RGB24
+텍스처 harbor_warehouse_Atlas 1024x1024 Point RGB24
+텍스처 BayLoopShared_01 1024x1024 Point RGB24
+텍스처 BayLoopShared_03 1024x1024 Point RGB24
+텍스처 BayLoopShared_02 1024x1024 Point RGB24
+텍스처 BayLoopShared_04 1024x1024 Point RGB24
+프리팹 shop_house_a [Italy_cream_Atlas] bounds min(-3.08, 0.00, -8.33) max(2.83, 7.92, 1.07) flipTrue 박스 (5.50, 7.92, 8.00) tris 2646
+프리팹 shop_house_b [Italy_ochre_Atlas] bounds min(-3.71, 0.00, -8.33) max(3.45, 10.92, 1.07) flipTrue 박스 (6.75, 10.92, 8.00) tris 3598
+프리팹 shop_house_c [Italy_blue_Atlas] bounds min(-3.46, 0.00, -8.33) max(3.20, 8.08, 1.07) flipTrue 박스 (6.25, 8.08, 8.00) tris 2771
+프리팹 terrace_house_a [Italy_cream_Atlas] bounds min(-3.17, 0.00, -6.42) max(2.81, 6.27, 0.86) flipTrue 박스 (5.50, 6.27, 6.00) tris 2227
+프리팹 terrace_house_b [Italy_ochre_Atlas] bounds min(-4.48, 0.00, -6.42) max(3.44, 9.07, 0.51) flipTrue 박스 (6.75, 9.07, 6.00) tris 3845
+프리팹 terrace_house_c [Italy_blue_Atlas] bounds min(-3.17, 0.00, -6.42) max(2.81, 7.47, 0.86) flipTrue 박스 (5.50, 7.47, 6.00) tris 2323
+프리팹 cliff_villa_a [Italy_cream_Atlas] bounds min(-4.33, 0.00, -7.61) max(4.10, 7.92, 1.33) flipTrue 박스 (8.00, 7.92, 7.00) tris 3747
+프리팹 harbor_warehouse_a [harbor_warehouse_Atlas] bounds min(-5.11, 0.00, -8.92) max(4.88, 5.99, 1.47) flipTrue 박스 (9.00, 5.99, 8.50) tris 1432
+프리팹 harbor_warehouse_b [harbor_warehouse_Atlas] bounds min(-5.92, 0.00, -9.92) max(5.88, 7.19, 1.47) flipTrue 박스 (11.00, 7.19, 9.50) tris 1774
+프리팹 cliff_villa_01 [BayLoopShared_01] bounds min(-3.53, 0.00, -7.43) max(3.20, 7.42, 1.30) flipTrue 박스 (6.20, 7.42, 7.00) tris 1874
+프리팹 cliff_villa_02 [BayLoopShared_01] bounds min(-4.13, 0.00, -8.43) max(3.80, 7.42, 1.30) flipTrue 박스 (7.40, 7.42, 8.00) tris 2110
+프리팹 cliff_villa_03 [BayLoopShared_02] bounds min(-4.73, 0.00, -9.43) max(4.40, 7.42, 1.30) flipTrue 박스 (8.60, 7.42, 9.00) tris 2216
+프리팹 cliff_villa_04 [BayLoopShared_02] bounds min(-5.23, 0.00, -7.43) max(4.90, 7.42, 1.30) flipTrue 박스 (9.60, 7.42, 7.00) tris 2040
+프리팹 cliff_villa_05 [BayLoopShared_03] bounds min(-3.53, 0.00, -8.43) max(3.20, 7.42, 1.30) flipTrue 박스 (6.20, 7.42, 8.00) tris 1850
+프리팹 cliff_villa_06 [BayLoopShared_03] bounds min(-4.13, 0.00, -9.43) max(3.80, 7.42, 1.30) flipTrue 박스 (7.40, 7.42, 9.00) tris 2190
+프리팹 detached_house_01 [BayLoopShared_02] bounds min(-3.53, 0.00, -7.63) max(3.51, 4.62, 3.31) flipTrue 박스 (6.20, 4.62, 7.20) tris 1156
+프리팹 detached_house_02 [BayLoopShared_02] bounds min(-4.13, 0.00, -8.43) max(4.11, 7.43, 3.76) flipTrue 박스 (7.40, 7.43, 8.00) tris 2146
+프리팹 detached_house_03 [BayLoopShared_03] bounds min(-4.73, 0.00, -7.03) max(4.71, 4.62, 4.21) flipTrue 박스 (8.60, 4.62, 6.60) tris 1422
+프리팹 detached_house_05 [BayLoopShared_04] bounds min(-3.53, 0.00, -7.63) max(3.51, 4.62, 3.76) flipTrue 박스 (6.20, 4.62, 7.20) tris 1132
+프리팹 detached_house_06 [BayLoopShared_04] bounds min(-4.13, 0.00, -8.43) max(4.11, 7.43, 4.21) flipTrue 박스 (7.40, 7.43, 8.00) tris 2380
+프리팹 detached_house_07 [BayLoopShared_01] bounds min(-4.73, 0.00, -7.03) max(4.71, 4.63, 3.31) flipTrue 박스 (8.60, 4.63, 6.60) tris 1186
+프리팹 detached_house_08 [BayLoopShared_01] bounds min(-5.23, 0.00, -6.43) max(5.21, 7.42, 3.76) flipTrue 박스 (9.60, 7.42, 6.00) tris 2394
+프리팹 detached_house_04 [BayLoopShared_01] bounds min(-5.23, 0.00, -6.43) max(5.21, 7.43, 3.31) flipTrue 박스 (9.60, 7.43, 6.00) tris 2020
+프리팹 fuel_stand_01 [BayLoopShared_02] bounds min(-3.50, 0.00, -6.90) max(3.50, 3.76, 0.18) flipTrue 박스 (7.00, 3.76, 5.00) tris 576
+프리팹 shop_house_02 [BayLoopShared_03] bounds min(-3.13, 0.00, -7.03) max(3.08, 10.23, 0.70) flipTrue 박스 (5.40, 10.23, 6.60) tris 2574
+프리팹 shop_house_03 [BayLoopShared_04] bounds min(-3.55, 0.00, -6.43) max(3.19, 7.42, 1.07) flipTrue 박스 (6.25, 7.42, 6.00) tris 1858
+프리팹 shop_house_04 [BayLoopShared_04] bounds min(-4.03, 0.00, -7.63) max(3.66, 12.05, 1.07) flipTrue 박스 (7.20, 12.05, 7.20) tris 3358
+프리팹 shop_house_05 [BayLoopShared_01] bounds min(-4.48, 0.00, -8.43) max(4.12, 7.42, 0.59) flipTrue 박스 (8.10, 7.42, 8.00) tris 2003
+프리팹 shop_house_06 [BayLoopShared_01] bounds min(-5.03, 0.00, -7.03) max(4.97, 10.23, 1.07) flipTrue 박스 (9.20, 10.23, 6.60) tris 3277
+프리팹 shop_house_07 [BayLoopShared_02] bounds min(-3.33, 0.00, -6.43) max(3.27, 7.43, 1.07) flipTrue 박스 (5.80, 7.43, 6.00) tris 1800
+프리팹 shop_house_08 [BayLoopShared_02] bounds min(-4.25, 0.00, -7.63) max(3.89, 13.02, 0.70) flipTrue 박스 (7.65, 13.02, 7.20) tris 3340
+프리팹 shop_house_09 [BayLoopShared_03] bounds min(-2.73, 0.00, -8.43) max(2.37, 7.42, 1.07) flipTrue 박스 (4.60, 7.42, 8.00) tris 1766
+프리팹 shop_house_10 [BayLoopShared_03] bounds min(-3.13, 0.00, -7.03) max(3.08, 10.23, 1.07) flipTrue 박스 (5.40, 10.23, 6.60) tris 2634
+프리팹 shop_house_11 [BayLoopShared_04] bounds min(-3.55, 0.00, -6.43) max(3.19, 7.42, 0.70) flipTrue 박스 (6.25, 7.42, 6.00) tris 1746
+프리팹 shop_house_12 [BayLoopShared_04] bounds min(-4.03, 0.00, -7.63) max(3.66, 12.05, 1.07) flipTrue 박스 (7.20, 12.05, 7.20) tris 3410
+프리팹 shop_house_01 [BayLoopShared_01] bounds min(-2.73, 0.00, -8.43) max(2.37, 7.42, 1.07) flipTrue 박스 (4.60, 7.42, 8.00) tris 1788
+프리팹 terrace_house_01 [BayLoopShared_04] bounds min(-2.73, 0.00, -7.03) max(2.30, 7.42, 0.60) flipTrue 박스 (4.60, 7.42, 6.60) tris 1790
+프리팹 terrace_house_02 [BayLoopShared_04] bounds min(-3.13, 0.00, -6.43) max(2.70, 10.22, 0.60) flipTrue 박스 (5.40, 10.22, 6.00) tris 2722
+프리팹 terrace_house_03 [BayLoopShared_01] bounds min(-3.55, 0.00, -7.63) max(3.13, 7.42, 0.60) flipTrue 박스 (6.25, 7.42, 7.20) tris 1862
+프리팹 terrace_house_04 [BayLoopShared_01] bounds min(-4.03, 0.00, -8.43) max(3.60, 13.02, 0.60) flipTrue 박스 (7.20, 13.02, 8.00) tris 3716
+프리팹 terrace_house_05 [BayLoopShared_02] bounds min(-4.48, 0.00, -7.03) max(4.05, 7.42, 0.60) flipTrue 박스 (8.10, 7.42, 6.60) tris 2196
+프리팹 terrace_house_07 [BayLoopShared_03] bounds min(-3.33, 0.00, -7.63) max(2.90, 7.42, 0.60) flipTrue 박스 (5.80, 7.42, 7.20) tris 1826
+프리팹 terrace_house_08 [BayLoopShared_03] bounds min(-4.25, 0.00, -8.43) max(3.83, 13.02, 0.60) flipTrue 박스 (7.65, 13.02, 8.00) tris 3728
+프리팹 terrace_house_09 [BayLoopShared_04] bounds min(-2.73, 0.00, -7.03) max(2.30, 7.42, 0.60) flipTrue 박스 (4.60, 7.42, 6.60) tris 1814
+프리팹 terrace_house_10 [BayLoopShared_04] bounds min(-3.13, 0.00, -6.43) max(2.70, 10.22, 0.60) flipTrue 박스 (5.40, 10.22, 6.00) tris 2746
+프리팹 terrace_house_11 [BayLoopShared_01] bounds min(-3.55, 0.00, -7.63) max(3.13, 7.42, 0.60) flipTrue 박스 (6.25, 7.42, 7.20) tris 1814
+프리팹 terrace_house_06 [BayLoopShared_02] bounds min(-5.03, 0.00, -6.43) max(4.60, 10.22, 0.60) flipTrue 박스 (9.20, 10.22, 6.00) tris 3702
+프리팹 terrace_house_12 [BayLoopShared_02] bounds min(-4.03, 0.00, -8.43) max(3.60, 13.02, 0.60) flipTrue 박스 (7.20, 13.02, 8.00) tris 3928
+프리팹 town_house_01 [BayLoopShared_01] bounds min(-2.73, 0.00, -6.43) max(2.37, 7.42, 0.60) flipTrue 박스 (4.60, 7.42, 6.00) tris 1686
+프리팹 town_house_02 [BayLoopShared_01] bounds min(-3.13, 0.00, -7.63) max(3.08, 10.23, 0.70) flipTrue 박스 (5.40, 10.23, 7.20) tris 2608
+프리팹 town_house_03 [BayLoopShared_02] bounds min(-3.55, 0.00, -8.43) max(3.19, 7.42, 0.70) flipTrue 박스 (6.25, 7.42, 8.00) tris 1740
+프리팹 town_house_04 [BayLoopShared_02] bounds min(-4.03, 0.00, -7.03) max(3.66, 9.25, 0.70) flipTrue 박스 (7.20, 9.25, 6.60) tris 2608
+프리팹 town_house_05 [BayLoopShared_03] bounds min(-4.48, 0.00, -6.43) max(4.12, 7.42, 0.59) flipTrue 박스 (8.10, 7.42, 6.00) tris 2026
+프리팹 town_house_06 [BayLoopShared_03] bounds min(-5.03, 0.00, -7.63) max(4.97, 10.23, 0.70) flipTrue 박스 (9.20, 10.23, 7.20) tris 3018
+프리팹 town_house_07 [BayLoopShared_04] bounds min(-3.33, 0.00, -8.43) max(3.27, 7.43, 0.70) flipTrue 박스 (5.80, 7.43, 8.00) tris 1808
+프리팹 town_house_08 [BayLoopShared_04] bounds min(-4.25, 0.00, -7.03) max(3.89, 10.22, 0.70) flipTrue 박스 (7.65, 10.22, 6.60) tris 3214
+프리팹 town_house_09 [BayLoopShared_01] bounds min(-2.73, 0.00, -6.43) max(2.37, 7.42, 0.59) flipTrue 박스 (4.60, 7.42, 6.00) tris 1600
+프리팹 town_house_10 [BayLoopShared_01] bounds min(-3.13, 0.00, -7.63) max(3.08, 10.23, 0.70) flipTrue 박스 (5.40, 10.23, 7.20) tris 2656
+프리팹 town_house_11 [BayLoopShared_02] bounds min(-3.55, 0.00, -8.43) max(3.19, 7.42, 0.70) flipTrue 박스 (6.25, 7.42, 8.00) tris 1778
+프리팹 town_house_12 [BayLoopShared_02] bounds min(-4.03, 0.00, -7.03) max(3.66, 9.25, 0.70) flipTrue 박스 (7.20, 9.25, 6.60) tris 2948
+프리팹 town_house_13 [BayLoopShared_03] bounds min(-4.48, 0.00, -6.43) max(4.12, 7.42, 0.60) flipTrue 박스 (8.10, 7.42, 6.00) tris 1710
+프리팹 town_house_14 [BayLoopShared_03] bounds min(-5.03, 0.00, -7.63) max(4.97, 10.23, 0.70) flipTrue 박스 (9.20, 10.23, 7.20) tris 3242
+프리팹 town_house_15 [BayLoopShared_04] bounds min(-3.33, 0.00, -8.43) max(3.27, 7.43, 0.70) flipTrue 박스 (5.80, 7.43, 8.00) tris 1722
+프리팹 town_house_16 [BayLoopShared_04] bounds min(-4.25, 0.00, -7.03) max(3.89, 10.22, 0.70) flipTrue 박스 (7.65, 10.22, 6.60) tris 2650
+변형 프리팹 55개(장부 63)
+텍스처 PropsPhotoAtlas 1024x1024 Point RGB24
+소품 vending_machine [PropsPhotoAtlas] bounds min(-0.59, 0.00, 0.00) max(0.59, 1.83, 0.89) flipTrue wallFalse tris 552
+소품 small_signs_a [PropsPhotoAtlas] bounds min(-0.39, 0.00, 0.00) max(0.39, 0.40, 0.10) flipTrue wallTrue tris 38
+소품 small_signs_c [PropsPhotoAtlas] bounds min(-0.55, 0.00, 0.00) max(0.55, 0.50, 0.10) flipTrue wallTrue tris 38
+소품 ac_unit [PropsPhotoAtlas] bounds min(-0.42, 0.00, 0.00) max(0.42, 0.63, 0.38) flipTrue wallFalse tris 300
+소품 mailbox [PropsPhotoAtlas] bounds min(-0.20, 0.00, 0.00) max(0.20, 0.50, 0.29) flipTrue wallTrue tris 50
+텍스처 PropsPhotoAtlas_r2 1024x1024 Point RGB24
+소품 bicycle [PropsPhotoAtlas_r2] bounds min(-0.88, 0.00, -0.25) max(0.88, 1.05, 0.25) flipTrue wallFalse tris 764
+텍스처 PropsPhotoAtlas_r3 1024x1024 Point RGB24
+소품 planter_row [PropsPhotoAtlas_r3] bounds min(-0.78, 0.00, -0.30) max(0.78, 0.78, 0.30) flipTrue wallFalse tris 786
+

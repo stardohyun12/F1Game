@@ -1,0 +1,892 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "max_tris": 4000,
+  "source_manifests": [
+    "art/textures/2026-10-24-kp-v2/source_wood_e.json",
+    "art/textures/2026-10-24-kp-v2/source_roof_candidates.json",
+    "art/textures/2026-10-24-kp/source_plaster.json",
+    "art/textures/2026-10-24-kp/source_stone.json",
+    "art/source/hillhouse-surfaces/sources.json",
+    "art/models/bayloop_buildings_v01/metal-source.json"
+  ],
+  "assets": [
+    {
+      "id": "shop_house_02",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_02.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_02.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 2574,
+      "dimensions_m": [
+        6.203837645053864,
+        10.229999542236328,
+        7.725
+      ],
+      "bounds_min": [
+        -3.0788376331329346,
+        0.0,
+        -7.025000011920929
+      ],
+      "bounds_max": [
+        3.125000011920929,
+        10.229999542236328,
+        0.699999988079071
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_02",
+        "type": "shop_house",
+        "width": 5.4,
+        "depth": 6.6,
+        "floors": 3,
+        "roof": "terracotta_gable",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "mist",
+        "wear": "medium",
+        "life": {
+          "sign_count": 2,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": true
+        },
+        "seed": 140201,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        5.4,
+        6.6
+      ],
+      "storeys": 3,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_03",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_03.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_03.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 1858,
+      "dimensions_m": [
+        6.740000069141388,
+        7.420000076293945,
+        7.490000069141388
+      ],
+      "bounds_min": [
+        -3.190000057220459,
+        0.0,
+        -6.425000011920929
+      ],
+      "bounds_max": [
+        3.550000011920929,
+        7.420000076293945,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_03",
+        "type": "shop_house",
+        "width": 6.25,
+        "depth": 6.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "offset",
+        "balcony": "full",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "rose",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 3,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": false
+        },
+        "seed": 140202,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        6.25,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_04",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_04.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_04.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 3358,
+      "dimensions_m": [
+        7.685000097751617,
+        12.050000190734863,
+        8.690000069141387
+      ],
+      "bounds_min": [
+        -3.6600000858306885,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        4.025000011920929,
+        12.050000190734863,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_04",
+        "type": "shop_house",
+        "width": 7.2,
+        "depth": 7.2,
+        "floors": 4,
+        "roof": "vault",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "paired",
+        "balcony": "alternating",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "warm_grey",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": true
+        },
+        "seed": 140203,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        7.2,
+        7.2
+      ],
+      "storeys": 4,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_05",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_05.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_05.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 2003,
+      "dimensions_m": [
+        8.589999783039094,
+        7.420000076293945,
+        9.014999985694885
+      ],
+      "bounds_min": [
+        -4.114999771118164,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        4.475000011920929,
+        7.420000076293945,
+        0.5899999737739563
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_05",
+        "type": "shop_house",
+        "width": 8.1,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "cream",
+        "wear": "medium",
+        "life": {
+          "sign_count": 2,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": false
+        },
+        "seed": 140204,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        8.1,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_06",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_06.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_06.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 3277,
+      "dimensions_m": [
+        9.99343911409378,
+        10.229999542236328,
+        8.090000069141388
+      ],
+      "bounds_min": [
+        -4.968439102172852,
+        0.0,
+        -7.025000011920929
+      ],
+      "bounds_max": [
+        5.025000011920929,
+        10.229999542236328,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_06",
+        "type": "shop_house",
+        "width": 9.2,
+        "depth": 6.6,
+        "floors": 3,
+        "roof": "terracotta_gable",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "offset",
+        "balcony": "single",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "chalk",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 3,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": true
+        },
+        "seed": 140205,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        9.2,
+        6.6
+      ],
+      "storeys": 3,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_07",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_07.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_07.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 1800,
+      "dimensions_m": [
+        6.5916700005531315,
+        7.429999828338623,
+        7.490000069141388
+      ],
+      "bounds_min": [
+        -3.266669988632202,
+        0.0,
+        -6.425000011920929
+      ],
+      "bounds_max": [
+        3.325000011920929,
+        7.429999828338623,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_07",
+        "type": "shop_house",
+        "width": 5.8,
+        "depth": 6.0,
+        "floors": 2,
+        "roof": "metal",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "paired",
+        "balcony": "full",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "sand",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": false
+        },
+        "seed": 140206,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        5.8,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_08",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_08.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_08.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_02.png",
+      "tris": 3340,
+      "dimensions_m": [
+        8.140000116825103,
+        13.020000457763672,
+        8.325
+      ],
+      "bounds_min": [
+        -3.890000104904175,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        4.250000011920929,
+        13.020000457763672,
+        0.699999988079071
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_08",
+        "type": "shop_house",
+        "width": 7.65,
+        "depth": 7.2,
+        "floors": 4,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "alternating",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "ochre",
+        "wear": "medium",
+        "life": {
+          "sign_count": 2,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": true
+        },
+        "seed": 140207,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        7.65,
+        7.2
+      ],
+      "storeys": 4,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_09",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_09.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_09.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 1766,
+      "dimensions_m": [
+        5.090000021457672,
+        7.420000076293945,
+        9.490000069141388
+      ],
+      "bounds_min": [
+        -2.365000009536743,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        2.7250000119209288,
+        7.420000076293945,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_09",
+        "type": "shop_house",
+        "width": 4.6,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "offset",
+        "balcony": "none",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "blue",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 3,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": false
+        },
+        "seed": 140208,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        4.6,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_10",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_10.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_10.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_03.png",
+      "tris": 2634,
+      "dimensions_m": [
+        6.203837645053864,
+        10.229999542236328,
+        8.090000069141388
+      ],
+      "bounds_min": [
+        -3.0788376331329346,
+        0.0,
+        -7.025000011920929
+      ],
+      "bounds_max": [
+        3.125000011920929,
+        10.229999542236328,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_10",
+        "type": "shop_house",
+        "width": 5.4,
+        "depth": 6.6,
+        "floors": 3,
+        "roof": "terracotta_gable",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "paired",
+        "balcony": "single",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "mist",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 1,
+          "laundry": true
+        },
+        "seed": 140209,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        5.4,
+        6.6
+      ],
+      "storeys": 3,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_11",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_11.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_11.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 1746,
+      "dimensions_m": [
+        6.740000069141388,
+        7.420000076293945,
+        7.125
+      ],
+      "bounds_min": [
+        -3.190000057220459,
+        0.0,
+        -6.425000011920929
+      ],
+      "bounds_max": [
+        3.550000011920929,
+        7.420000076293945,
+        0.699999988079071
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_11",
+        "type": "shop_house",
+        "width": 6.25,
+        "depth": 6.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "regular",
+        "balcony": "full",
+        "shutter_color": "green",
+        "awning": false,
+        "wall_color": "rose",
+        "wear": "medium",
+        "life": {
+          "sign_count": 2,
+          "ac_unit": false,
+          "planters": 2,
+          "laundry": false
+        },
+        "seed": 140210,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        6.25,
+        6.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_12",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_12.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_12.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_04.png",
+      "tris": 3410,
+      "dimensions_m": [
+        7.685000097751617,
+        12.050000190734863,
+        8.690000069141387
+      ],
+      "bounds_min": [
+        -3.6600000858306885,
+        0.0,
+        -7.625000011920929
+      ],
+      "bounds_max": [
+        4.025000011920929,
+        12.050000190734863,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_12",
+        "type": "shop_house",
+        "width": 7.2,
+        "depth": 7.2,
+        "floors": 4,
+        "roof": "vault",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "offset",
+        "balcony": "alternating",
+        "shutter_color": "green",
+        "awning": true,
+        "wall_color": "warm_grey",
+        "wear": "heavy",
+        "life": {
+          "sign_count": 3,
+          "ac_unit": false,
+          "planters": 3,
+          "laundry": true
+        },
+        "seed": 140211,
+        "zone": "dense",
+        "front_space_m": 1.25
+      },
+      "footprint_m": [
+        7.2,
+        7.2
+      ],
+      "storeys": 4,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    },
+    {
+      "id": "shop_house_01",
+      "type": "shop_house",
+      "model": "art/models/bayloop_variety_v01/shop_house_01.glb",
+      "fbx": "art/models/bayloop_variety_v01/shop_house_01.fbx",
+      "texture": "art/models/bayloop_variety_v01/BayLoopShared_01.png",
+      "tris": 1788,
+      "dimensions_m": [
+        5.090000021457672,
+        7.420000076293945,
+        9.490000069141388
+      ],
+      "bounds_min": [
+        -2.365000009536743,
+        0.0,
+        -8.425000011920929
+      ],
+      "bounds_max": [
+        2.7250000119209288,
+        7.420000076293945,
+        1.065000057220459
+      ],
+      "source_urls": [
+        "https://polyhaven.com/a/ceramic_roof_01",
+        "https://polyhaven.com/a/fabric_pattern_05",
+        "https://polyhaven.com/a/grey_roof_tiles",
+        "https://polyhaven.com/a/painted_plaster_wall",
+        "https://polyhaven.com/a/rusty_painted_metal",
+        "https://polyhaven.com/a/stone_brick_wall_001",
+        "https://polyhaven.com/a/stone_pavers",
+        "https://polyhaven.com/a/wooden_rough_planks"
+      ],
+      "parameters": {
+        "id": "shop_house_01",
+        "type": "shop_house",
+        "width": 4.6,
+        "depth": 8.0,
+        "floors": 2,
+        "roof": "flat",
+        "ground_floor": "shop_arch",
+        "opening_rhythm": "paired",
+        "balcony": "none",
+        "shutter_color": "brown",
+        "awning": true,
+        "wall_color": "cream",
+        "wear": "light",
+        "life": {
+          "sign_count": 1,
+          "ac_unit": true,
+          "planters": 0,
+          "laundry": false
+        },
+        "seed": 140200,
+        "zone": "dense",
+        "front_space_m": 1.25,
+        "shop_display": true
+      },
+      "footprint_m": [
+        4.6,
+        8.0
+      ],
+      "storeys": 2,
+      "front_wall_z": 0,
+      "zone": "dense",
+      "front_space_m": 1.25,
+      "front_space_owner": "private yard/entry furniture; public pavement supplied by map builder",
+      "wear_locations": [
+        "lower entry wall",
+        "drainpipe foot",
+        "shutter edges",
+        "threshold"
+      ],
+      "parameter_profile": "full_house_grammar"
+    }
+  ]
+}

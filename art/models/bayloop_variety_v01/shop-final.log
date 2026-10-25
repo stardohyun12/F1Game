@@ -1,0 +1,147 @@
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:47:18 | INFO: Starting glTF 2.0 export
+20:47:18 | INFO: Extracting primitive: shop_house_01
+20:47:18 | INFO: Primitives created: 1
+20:47:18 | INFO: Finished glTF 2.0 export in 0.013354778289794922 s
+00:06.531  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_front.png'
+00:30.234  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_back.png'
+00:49.250  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_side.png'
+01:10.578  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_01_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_01.fbx'
+export finished in 0.0039 sec.
+Info: Saved as "shop_house_01.blend"
+BUILDGEN_ASSET shop_house_01 1704
+20:48:28 | INFO: Starting glTF 2.0 export
+20:48:28 | INFO: Extracting primitive: shop_house_02
+20:48:28 | INFO: Primitives created: 1
+20:48:28 | INFO: Finished glTF 2.0 export in 0.04831385612487793 s
+01:27.656  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_02_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_02.fbx'
+export finished in 0.0090 sec.
+Info: Saved as "shop_house_02.blend"
+BUILDGEN_ASSET shop_house_02 2564
+20:48:45 | INFO: Starting glTF 2.0 export
+20:48:45 | INFO: Extracting primitive: shop_house_03
+20:48:45 | INFO: Primitives created: 1
+20:48:45 | INFO: Finished glTF 2.0 export in 0.03647875785827637 s
+01:53.718  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_03_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_03.fbx'
+export finished in 0.0139 sec.
+Info: Saved as "shop_house_03.blend"
+BUILDGEN_ASSET shop_house_03 1848
+20:49:11 | INFO: Starting glTF 2.0 export
+20:49:11 | INFO: Extracting primitive: shop_house_04
+20:49:11 | INFO: Primitives created: 1
+20:49:11 | INFO: Finished glTF 2.0 export in 0.0589747428894043 s
+02:23.000  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_04_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_04.fbx'
+export finished in 0.0238 sec.
+Info: Saved as "shop_house_04.blend"
+BUILDGEN_ASSET shop_house_04 3348
+20:49:40 | INFO: Starting glTF 2.0 export
+20:49:40 | INFO: Extracting primitive: shop_house_05
+20:49:40 | INFO: Primitives created: 1
+20:49:40 | INFO: Finished glTF 2.0 export in 0.057024240493774414 s
+02:50.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_05_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_05.fbx'
+export finished in 0.0253 sec.
+Info: Saved as "shop_house_05.blend"
+BUILDGEN_ASSET shop_house_05 1989
+20:50:08 | INFO: Starting glTF 2.0 export
+20:50:08 | INFO: Extracting primitive: shop_house_06
+20:50:08 | INFO: Primitives created: 1
+20:50:08 | INFO: Finished glTF 2.0 export in 0.0669550895690918 s
+03:18.547  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_front.png'
+03:41.797  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_back.png'
+03:58.734  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_side.png'
+04:23.562  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_06_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_06.fbx'
+export finished in 0.0241 sec.
+Info: Saved as "shop_house_06.blend"
+BUILDGEN_ASSET shop_house_06 3263
+20:51:41 | INFO: Starting glTF 2.0 export
+20:51:41 | INFO: Extracting primitive: shop_house_07
+20:51:41 | INFO: Primitives created: 1
+20:51:41 | INFO: Finished glTF 2.0 export in 0.06197237968444824 s
+04:51.203  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_07_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_07.fbx'
+export finished in 0.0231 sec.
+Info: Saved as "shop_house_07.blend"
+BUILDGEN_ASSET shop_house_07 1790
+20:52:09 | INFO: Starting glTF 2.0 export
+20:52:09 | INFO: Extracting primitive: shop_house_08
+20:52:09 | INFO: Primitives created: 1
+20:52:09 | INFO: Finished glTF 2.0 export in 0.04505658149719238 s
+05:28.656  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_08_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_08.fbx'
+export finished in 0.0122 sec.
+Info: Saved as "shop_house_08.blend"
+BUILDGEN_ASSET shop_house_08 3330
+20:52:46 | INFO: Starting glTF 2.0 export
+20:52:46 | INFO: Extracting primitive: shop_house_09
+20:52:46 | INFO: Primitives created: 1
+20:52:46 | INFO: Finished glTF 2.0 export in 0.06878352165222168 s
+05:52.625  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_09_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_09.fbx'
+export finished in 0.0228 sec.
+Info: Saved as "shop_house_09.blend"
+BUILDGEN_ASSET shop_house_09 1756
+20:53:10 | INFO: Starting glTF 2.0 export
+20:53:10 | INFO: Extracting primitive: shop_house_10
+20:53:10 | INFO: Primitives created: 1
+20:53:10 | INFO: Finished glTF 2.0 export in 0.05922222137451172 s
+06:14.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_10_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_10.fbx'
+export finished in 0.0215 sec.
+Info: Saved as "shop_house_10.blend"
+BUILDGEN_ASSET shop_house_10 2624
+20:53:32 | INFO: Starting glTF 2.0 export
+20:53:32 | INFO: Extracting primitive: shop_house_11
+20:53:32 | INFO: Primitives created: 1
+20:53:32 | INFO: Finished glTF 2.0 export in 0.062164306640625 s
+06:35.687  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_11_front.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_11.fbx'
+export finished in 0.1591 sec.
+Info: Saved as "shop_house_11.blend"
+BUILDGEN_ASSET shop_house_11 1736
+20:53:53 | INFO: Starting glTF 2.0 export
+20:53:53 | INFO: Extracting primitive: shop_house_12
+20:53:53 | INFO: Primitives created: 1
+20:53:53 | INFO: Finished glTF 2.0 export in 0.06279826164245605 s
+06:59.453  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_12_front.png'
+07:17.547  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_12_back.png'
+07:31.515  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_12_side.png'
+07:51.468  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-25-bayloop-variety\shop_house_12_top.png'
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\models\\bayloop_variety_v01\\shop_house_12.fbx'
+export finished in 0.0217 sec.
+Info: Saved as "shop_house_12.blend"
+BUILDGEN_ASSET shop_house_12 3400
+BUILDGEN_DONE shop_house 12
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

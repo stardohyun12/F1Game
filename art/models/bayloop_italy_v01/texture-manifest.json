@@ -1,0 +1,430 @@
+{
+  "palette": "art/source/palette/pitcrew_d123_32.json",
+  "density_px_m": 32,
+  "atlas_size": 1024,
+  "cell_size": 256,
+  "interior": 252,
+  "tiles": [
+    {
+      "id": "plaster",
+      "index": 0,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        17,
+        4,
+        4,
+        4
+      ],
+      "atlas_rect_xywh": [
+        2,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wood",
+      "index": 1,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        9,
+        21,
+        24,
+        17
+      ],
+      "atlas_rect_xywh": [
+        258,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "wood_dark",
+      "index": 2,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        5
+      ],
+      "atlas_rect_xywh": [
+        514,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "roof",
+      "index": 3,
+      "source_url": "https://polyhaven.com/a/grey_roof_tiles",
+      "source_path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/grey_roof_tiles/grey_roof_tiles_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        3.0,
+        3.0
+      ],
+      "source_pixels_at_32ppm": [
+        96,
+        96
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7
+      ],
+      "atlas_rect_xywh": [
+        770,
+        2,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "roof_clay",
+      "index": 4,
+      "source_url": "https://polyhaven.com/a/ceramic_roof_01",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_roof_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        2,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "stone",
+      "index": 5,
+      "source_url": "https://polyhaven.com/a/stone_pavers",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_stone_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": null,
+      "atlas_rect_xywh": [
+        258,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "metal",
+      "index": 6,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.1875,
+        2.1875
+      ],
+      "source_pixels_at_32ppm": [
+        70,
+        70
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7
+      ],
+      "atlas_rect_xywh": [
+        514,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "glass",
+      "index": 7,
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+      "physical_photo_repeat_m": [
+        0.5,
+        0.5
+      ],
+      "source_pixels_at_32ppm": [
+        16,
+        16
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        17,
+        4
+      ],
+      "atlas_rect_xywh": [
+        770,
+        258,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "cloth",
+      "index": 8,
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_path": "art/source/hillhouse-surfaces/photos/fabric_pattern_05_col_01_1k.jpg",
+      "physical_photo_repeat_m": [
+        0.5,
+        0.5
+      ],
+      "source_pixels_at_32ppm": [
+        16,
+        16
+      ],
+      "palette_ladder": [
+        17,
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        2,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "trim",
+      "index": 9,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        258,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "rose_wall",
+      "index": 10,
+      "source_url": "https://polyhaven.com/a/painted_plaster_wall",
+      "source_path": "art/textures/2026-10-24-kp-v2/original_reduced/plaster_photo_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        15,
+        4,
+        0,
+        25
+      ],
+      "atlas_rect_xywh": [
+        514,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "teal",
+      "index": 11,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        2,
+        26,
+        5,
+        18
+      ],
+      "atlas_rect_xywh": [
+        770,
+        514,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "stonewall",
+      "index": 12,
+      "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+      "source_path": "art/source/hillhouse-surfaces/photos/stone_brick_wall_001_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        2.5,
+        2.5
+      ],
+      "source_pixels_at_32ppm": [
+        80,
+        80
+      ],
+      "palette_ladder": [
+        9,
+        5,
+        8,
+        7,
+        17
+      ],
+      "atlas_rect_xywh": [
+        2,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "sign",
+      "index": 13,
+      "source_url": "https://polyhaven.com/a/wooden_rough_planks",
+      "source_path": "art/textures/2026-10-24-kp-v2/albedo/A1_KP_wood_64ppm.png",
+      "physical_photo_repeat_m": [
+        2.0,
+        2.0
+      ],
+      "source_pixels_at_32ppm": [
+        64,
+        64
+      ],
+      "palette_ladder": [
+        6,
+        2,
+        9,
+        21
+      ],
+      "atlas_rect_xywh": [
+        258,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "rust",
+      "index": 14,
+      "source_url": "https://polyhaven.com/a/rusty_painted_metal",
+      "source_path": "art/source/photos/course-signs/rusty_painted_metal_diff_1k.png",
+      "physical_photo_repeat_m": [
+        2.1875,
+        2.1875
+      ],
+      "source_pixels_at_32ppm": [
+        70,
+        70
+      ],
+      "palette_ladder": [
+        9,
+        15,
+        21,
+        4
+      ],
+      "atlas_rect_xywh": [
+        514,
+        770,
+        252,
+        252
+      ]
+    },
+    {
+      "id": "darkroof",
+      "index": 15,
+      "source_url": "https://polyhaven.com/a/grey_roof_tiles",
+      "source_path": "art/textures/2026-10-24-kp-v2/sources/roof-candidates/grey_roof_tiles/grey_roof_tiles_diff_1k.jpg",
+      "physical_photo_repeat_m": [
+        3.0,
+        3.0
+      ],
+      "source_pixels_at_32ppm": [
+        96,
+        96
+      ],
+      "palette_ladder": [
+        6,
+        9,
+        5,
+        8
+      ],
+      "atlas_rect_xywh": [
+        770,
+        770,
+        252,
+        252
+      ]
+    }
+  ],
+  "process": "D137 close-value colour ladders of existing CC0 photographs; all texture details retain world32px/m; signs Pretendard OFL Korean",
+  "variants": {
+    "cream": [
+      19,
+      14
+    ],
+    "ochre": [
+      29,
+      30
+    ],
+    "blue": [
+      13,
+      19
+    ]
+  }
+}

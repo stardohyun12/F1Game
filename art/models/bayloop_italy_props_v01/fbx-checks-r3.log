@@ -1,0 +1,50 @@
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node vending_machine
+20:00:56 | INFO: glTF import finished in 0.00s
+D:\Github\F1Game\tools\asset-gen\check_bayloop_fbx.py:35: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not material or not material.use_nodes:continue
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node small_signs_a
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node ac_unit
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node mailbox
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node small_signs_c
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node bicycle
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node small_signs_b
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node small_signs_d
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:56 | INFO: Data are loaded, start creating Blender stuff
+20:00:56 | INFO: Blender create Mesh node planter_row
+20:00:56 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:57 | INFO: Data are loaded, start creating Blender stuff
+20:00:57 | INFO: Blender create Mesh node meter_box
+20:00:57 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+20:00:57 | INFO: Data are loaded, start creating Blender stuff
+20:00:57 | INFO: Blender create Mesh node lemon_tree_pot
+20:00:57 | INFO: glTF import finished in 0.00s
+FBX version: 7400
+{"pass": true, "assets": [{"id": "vending_machine", "pass": true, "error": null}, {"id": "small_signs_a", "pass": true, "error": null}, {"id": "ac_unit", "pass": true, "error": null}, {"id": "mailbox", "pass": true, "error": null}, {"id": "small_signs_c", "pass": true, "error": null}, {"id": "bicycle", "pass": true, "error": null}, {"id": "small_signs_b", "pass": true, "error": null}, {"id": "small_signs_d", "pass": true, "error": null}, {"id": "planter_row", "pass": true, "error": null}, {"id": "meter_box", "pass": true, "error": null}, {"id": "lemon_tree_pot", "pass": true, "error": null}]}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
