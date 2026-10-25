@@ -30,7 +30,11 @@ if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
   fi
   echo "$ROLE" > "$LOCK"; HOLD_LOCK=1
 fi
-cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; echo "idle $(date +%H:%M)" > "$STATE"; }
+cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; echo "idle $(date +%H:%M)" > "$STATE"
+  # Hermes 백그라운드 완료 알림이 텔레그램에 안 와서 직접 알린다 (TEAM_NOTIFY_TO 로 대상 변경, 빈 값이면 끔)
+  local to="${TEAM_NOTIFY_TO-telegram:7449275102:5864}"
+  [ -n "$to" ] && hermes send -q -t "$to" "🔔 PitCrew $ROLE 끝 ($(date +%H:%M)) — $(tail -1 "$LIVE" 2>/dev/null | cut -c1-200)
+'다음' 이라고 하면 PD 가 결과 확인하고 이어서 진행" >/dev/null 2>&1 || true; }
 trap cleanup EXIT
 
 STAMP=$(date +%Y%m%d-%H%M)
