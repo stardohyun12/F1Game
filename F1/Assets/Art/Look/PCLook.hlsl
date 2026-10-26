@@ -13,8 +13,8 @@
 //                 · 디더 없음 · 어파인 _PCAffine(기본 0, 아직 미사용 — 옵션 자리만)
 // _PCLook 은 씬의 PCLookScene 이 넣는다 → 그 컴포넌트가 없는 씬(ComplexTrack)은 0 = 지금 판.
 float _PCLook;
-float4 _PCFogColor, _PCFogParams, _PCLight;   // _PCFogParams = (시작 m, 끝 m, 최대 섞임, -)
-float _PCSnapK, _PCKeep, _PCAffine;            // 렌더러별(MaterialPropertyBlock): 스냅 배수(0=1px) · 1=손픽셀(차·사람 — 블러 제외, 규칙 12)
+float4 _PCFogColor, _PCFogParams, _PCLight;   // _PCFogParams = (시작 m, 끝 m, 최대 섞임, 그늘 면 배수 — 5b)
+float _PCSnapK, _PCKeep, _PCAffine, _PCField;  // _PCField = 1: 밭(라임 → 바랜 올리브/황토, 5b)           // 렌더러별(MaterialPropertyBlock): 스냅 배수(0=1px) · 1=손픽셀(차·사람 — 블러 제외, 규칙 12)
 SamplerState sampler_linear_clamp;
 int PCMode() { return (int)(_PCLook + 0.5); }
 
@@ -47,7 +47,7 @@ half3 PCTex(TEXTURE2D_PARAM(tex, samp), float2 uv, float4 ts, float4 rect)
         // 규칙 2: 텍셀 네모가 안 보이게. 바이리니어 9탭(1-2-1) — 간격 = 1.5텍셀, 화면 한 픽셀이 텍셀 여러 개를 덮으면(멀리) 그만큼 넓힌다(밉맵 대용, 원본 텍스처는 밉맵 없음).
         float2 tx = uv * ts.zw;
         float fp = min(max(length(ddx(tx)), length(ddy(tx))), 12);   // 타일 경계 frac 점프에서 폭주하지 않게 상한
-        float2 st = sqrt(4.4 + fp * fp * .5) * ts.xy;   // 1-2-1 간격 2.1텍셀 ≈ σ1.5텍셀(규칙 2 수치)
+        float2 st = sqrt(3.6 + fp * fp * .45) * ts.xy;   // 1-2-1 간격 1.9텍셀 ≈ σ1.35텍셀 (5b: 2.1 뭉개짐 / 1.7 반점 1~2.7% → 중간)
         half3 c5 = 0;
         [unroll] for (int y5 = -1; y5 <= 1; y5++) [unroll] for (int x5 = -1; x5 <= 1; x5++)
             c5 += (x5 == 0 ? 2 : 1) * (y5 == 0 ? 2 : 1) * tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(x5, y5) * st, rect.xy, rect.zw), 0).rgb;
@@ -56,7 +56,7 @@ half3 PCTex(TEXTURE2D_PARAM(tex, samp), float2 uv, float4 ts, float4 rect)
         half3 m5 = 0;
         [unroll] for (int k5 = 0; k5 < 4; k5++) m5 += tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(k5 < 2 ? -3 : 3, k5 % 2 ? -3 : 3) * st, rect.xy, rect.zw), 0).rgb;
         m5 = (m5 * .25 + c5) * .5;
-        return lerp(m5, c5, .6);
+        return lerp(m5, c5, .72);   // 5b: 대비 40%↓ → 28%↓ (검은 창·문틀이 살게, .78 은 반점 과다)
     }
     #define PCS(o) SAMPLE_TEXTURE2D_LOD(tex, samp, clamp(o, rect.xy, rect.zw), 0).rgb
     if (m == 3)
@@ -89,9 +89,12 @@ float3 PCShade(float3 amb, float3 sunCol, float ndl, float att, float faceShade)
     if (m == 5)
     {
         // 규칙 7: 실시간 그림자 무시(att 안 씀), 해 쪽/반대쪽 2단 차 13%, 해 쪽만 해 색 틴트 ≤20%. 밝기·시간대 색은 _PCLight(씬 전역) 하나.
+        // 5b(D-148 밝고 맑게): 해 쪽 = 해 색 35% + 따뜻하게, 그늘 쪽 = ×_PCFogParams.w(≈.75, 차 25%) + 차갑게
         float t = ndl > .2 ? 1 : 0;
         float3 tint = sunCol / max(max(sunCol.r, max(sunCol.g, sunCol.b)), 1e-3);
-        float3 face = (.87 + .13 * t) * lerp(float3(1, 1, 1), tint, .2 * t);
+        float3 warm = lerp(float3(1, 1, 1), tint, .35) * float3(1.05, 1.0, .90);
+        float3 cool = (_PCFogParams.w > 0 ? _PCFogParams.w : .75) * float3(.90, .97, 1.12);
+        float3 face = t > .5 ? warm : cool;
         return _PCLight.rgb * lerp(float3(1, 1, 1), face, saturate(faceShade * 2));
     }
     if (m == 1) { s = s < .12 ? 0 : (s < .5 ? .55 : 1); faceShade = max(faceShade, .5); }   // 3단: 그늘·반그늘·해
@@ -120,12 +123,16 @@ half3 PCPost(half3 col, float3 wpos, float3 n)
     {
         if (_PCKeep < .5)
         {
-            col = lerp(dot(col, half3(.299, .587, .114)), col, .6);   // 규칙 4: 세계 채도 ×0.6(손픽셀 차·사람은 제외 — 작은 고채도)
+            // 5b: 라임(노란 기 도는 진한 초록) → 바랜 올리브/황토. 밭(_PCField)은 세게, 나머지(풀 등)는 약하게
+            half L0 = dot(col, half3(.299, .587, .114));
+            half lime = saturate((col.g - max(col.r, col.b)) * 6) * saturate((col.g - col.b) * 3);
+            col = lerp(col, L0 * half3(1.10, 1.0, .66), _PCField > .5 ? .85 : lime * .35);   // 밭 라임은 노랑 쪽(r≈g)이라 색 검출에 안 걸림 → 밭은 무조건
+            col = lerp(dot(col, half3(.299, .587, .114)), col, .66);   // 규칙 4: 세계 채도 ×0.66 (5b 측정: ×0.6 → 장면 0.05~0.10, ×0.8 → 0.18~0.24; 목표 0.12~0.18)
             // 규칙 3 "평평 금지": 0.3~1.5m 월드 얼룩 ±5%(텍스처 없는 도로·단색 면도 저주파 std 3 이상)
             float3 an = abs(n); float2 p = an.y > .5 ? wpos.xz : (an.x > an.z ? wpos.zy : wpos.xy);
             col *= 1 + (pcNoise(p * 1.3) * .55 + pcNoise(p * .45 + 3.7) * .45 - .5) * .10;
         }
-        col = .55 + (col - .55) * .82;   // 규칙 5: 휘도 p5~p95 폭(142 → ≤110 쪽으로) — 밝은 오후는 유지
+        // 5b: 휘도 압축(.82) 뺌 — 물 빠짐의 원인. 대비는 그대로 둔다
     }
     else if (m == 1) col *= 1 + (pcNoise(wpos.xz * .05 + wpos.y * .03) - .5) * .03;
     else if (m == 2)

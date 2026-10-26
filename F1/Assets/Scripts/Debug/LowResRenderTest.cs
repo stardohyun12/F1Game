@@ -14,6 +14,9 @@ public class LowResRenderTest : MonoBehaviour
     [Tooltip("실제 렌더 세로 해상도(270 / 360 / 540). 가로는 화면 비율.")]
     public int targetHeight = 270;
 
+    [Tooltip("켜면 화면 = RT × 정수배(k = 화면 세로 ÷ targetHeight 반올림). RT 를 화면÷k 로 잡고 이미지를 k배 크기로 가운데 둔다 → 픽셀이 고르게 Nearest(넘치는 건 k−1px 이하 잘림).")]
+    public bool integerScale;
+
     Camera cam;
     RenderTexture rt;
     GameObject canvasGO;
@@ -49,16 +52,34 @@ public class LowResRenderTest : MonoBehaviour
 
     void LateUpdate()
     {
-        int h = Mathf.Max(16, targetHeight);
-        int w = Mathf.Max(16, Mathf.RoundToInt(h * (float)Screen.width / Mathf.Max(1, Screen.height)));
+        Size(out int w, out int h, out _);
         if (w != RenderSize.x || h != RenderSize.y) Rebuild();
+    }
+
+    void Size(out int w, out int h, out int k)
+    {
+        int sw = Mathf.Max(1, Screen.width), sh = Mathf.Max(1, Screen.height);
+        if (integerScale)
+        {
+            k = Mathf.Max(1, Mathf.RoundToInt(sh / (float)Mathf.Max(16, targetHeight)));
+            w = Mathf.Max(16, Mathf.CeilToInt(sw / (float)k)); h = Mathf.Max(16, Mathf.CeilToInt(sh / (float)k));
+            return;
+        }
+        k = 0;
+        h = Mathf.Max(16, targetHeight);
+        w = Mathf.Max(16, Mathf.RoundToInt(h * (float)sw / sh));
     }
 
     void Rebuild()
     {
-        int h = Mathf.Max(16, targetHeight);
-        int w = Mathf.Max(16, Mathf.RoundToInt(h * (float)Screen.width / Mathf.Max(1, Screen.height)));
+        Size(out int w, out int h, out int k);
         RenderSize = new Vector2Int(w, h);
+        if (image != null)
+        {
+            var r = image.rectTransform;
+            if (k > 0) { r.anchorMin = r.anchorMax = new Vector2(.5f, .5f); r.sizeDelta = new Vector2(w * k, h * k); r.anchoredPosition = Vector2.zero; }
+            else { r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = r.offsetMax = Vector2.zero; }
+        }
         float scale = 1f;
         // PitCrew asmdef 는 URP 를 참조하지 않는다 → renderScale 은 리플렉션으로 읽는다.
         var rp = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline;

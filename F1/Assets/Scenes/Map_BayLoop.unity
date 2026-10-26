@@ -81097,6 +81097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PitCrew::LowResRenderTest
   targetHeight: 270
+  integerScale: 0
 --- !u!1001 &347206266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -388428,6 +388429,7 @@ MonoBehaviour:
   discShader: {fileID: 4800000, guid: e14fde3ed202bac4e99e01ba21be3fcd, type: 3}
   lowResHeight: 270
   animFps: 12
+  skyShader: {fileID: 4800000, guid: 0a99adfd92b4eab47b4174cf510f18f2, type: 3}
 --- !u!4 &1753512478
 Transform:
   m_ObjectHideFlags: 0
