@@ -17,8 +17,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 12
     localAABB:
-      m_Center: {x: 271.285, y: 0.31, z: -287.82}
-      m_Extent: {x: 2.323639, y: 0.030000001, z: 1.0199738}
+      m_Center: {x: 271.285, y: 1.78, z: -287.82}
+      m_Extent: {x: 2.323639, y: 0.01999998, z: 1.0199738}
   m_Shapes:
     vertices: []
     shapes: []
@@ -97,7 +97,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 288
-    _typelessdata: b2cb8843295c8f3e846b90c37d49543c7ffa7f3f13afeab8e8cd8843295c8f3e866b8fc37d49543c7ffa7f3f0dafeab82b5588430681953e7e6a90c37e49543c80fa7f3f10afeab8615788430681953e806a8fc37e49543c80fa7f3f0cafeab8a4de8743e3a59b3e786990c3ef48543c80fa7f3f72aeeab8dae08743e3a59b3e7a698fc36048543c80fa7f3fdaadeab81c688743c1caa13e716890c36148543c80fa7f3fe0adeab8526a8743c1caa13e73688fc3f048543c80fa7f3f79aeeab895f186439eefa73e6b6790c37e49543c80fa7f3f10afeab8cbf386439eefa73e6d678fc37e49543c80fa7f3f0cafeab80e7b86437b14ae3e656690c37d49543c7ffa7f3f0dafeab8447d86437b14ae3e67668fc37d49543c7ffa7f3f08afeab8
+    _typelessdata: b2cb88436666e63f846b90c31c880dbc8ffd7f3fb0769c38e8cd88436666e63f866b8fc31c880dbc8ffd7f3fb6769c382b5588434160e53f7e6a90c31b880dbc8dfd7f3fb3769c38615788434160e53f806a8fc31b880dbc8dfd7f3fb7769c38a4de87431c5ae43f786990c386870dbc8efd7f3f0f769c38dae087431c5ae43f7a698fc3f1860dbc8efd7f3f68759c381c688743f853e33f716890c3f2860dbc8efd7f3f65759c38526a8743f853e33f73688fc387870dbc8efd7f3f0e769c3895f18643d34de23f6b6790c31b880dbc8dfd7f3fb3769c38cbf38643d34de23f6d678fc31b880dbc8dfd7f3fb7769c380e7b8643ae47e13f656690c31c880dbc8ffd7f3fb6769c38447d8643ae47e13f67668fc31c880dbc8ffd7f3fbd769c38
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -151,8 +151,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 271.285, y: 0.31, z: -287.82}
-    m_Extent: {x: 2.323639, y: 0.030000001, z: 1.0199738}
+    m_Center: {x: 271.285, y: 1.78, z: -287.82}
+    m_Extent: {x: 2.323639, y: 0.01999998, z: 1.0199738}
   m_MeshUsageFlags: 0
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 

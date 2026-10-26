@@ -17,8 +17,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 12
     localAABB:
-      m_Center: {x: 162.23001, y: -4.215, z: -279.61}
-      m_Extent: {x: 2.5970688, y: 1.105, z: 1.8101959}
+      m_Center: {x: 162.23001, y: 1.165, z: -279.61}
+      m_Extent: {x: 2.5970688, y: 0.045000017, z: 1.8101959}
   m_Shapes:
     vertices: []
     shapes: []
@@ -97,7 +97,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 288
-    _typelessdata: 08a21f43713daac0a7c78bc3f35cc7beda7d683f05571dbef85d2043713daac0c9b58cc3f35cc7beda7d683f05571dbe6286204394189cc0999a8bc3265dc7becc7d683f2e571dbe5242214394189cc0bb888cc3d95cc7bed97d683f80571dbebb6a2143b7f38dc08b6d8bc3675cc7bef27d683fb5571dbead262243b7f38dc0ad5b8cc3bf5bc7be157e683fbe571dbe164f2243b29d7fc07c408bc3bf5bc7be157e683fbe571dbe080b2343b29d7fc09e2e8cc3675cc7bef27d683fb5571dbe71332343f85363c06e138bc3d95cc7bed97d683f80571dbe61ef2343f85363c090018cc3265dc7becc7d683f2e571dbecb1724433e0a47c060e68ac3f35cc7beda7d683f05571dbebbd324433e0a47c082d48bc3f35cc7beda7d683f05571dbe
+    _typelessdata: 08a21f4348e19a3fa7c78bc3fb028f3c76f47f3fb8bbe13bf85d204348e19a3fc9b58cc3fb028f3c76f47f3fb8bbe13b628620437593983f999a8bc328038f3c74f47f3ffebbe13b524221437593983fbb888cc3e8028f3c74f47f3f68bce13bbb6a2143a245963f8b6d8bc385028f3c75f47f3f97bce13bad262243a245963fad5b8cc3f2018f3c75f47f3f7fbce13b164f2243cff7933f7c408bc3f2018f3c75f47f3f7ebce13b080b2343cff7933f9e2e8cc385028f3c75f47f3f98bce13b71332343fca9913f6e138bc3e8028f3c74f47f3f68bce13b61ef2343fca9913f90018cc328038f3c74f47f3f00bce13bcb172443295c8f3f60e68ac3fb028f3c76f47f3fb8bbe13bbbd32443295c8f3f82d48bc3fb028f3c76f47f3fb8bbe13b
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -151,8 +151,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 162.23001, y: -4.215, z: -279.61}
-    m_Extent: {x: 2.5970688, y: 1.105, z: 1.8101959}
+    m_Center: {x: 162.23001, y: 1.165, z: -279.61}
+    m_Extent: {x: 2.5970688, y: 0.045000017, z: 1.8101959}
   m_MeshUsageFlags: 0
   m_CookingOptions: 30
   m_BakedConvexCollisionMesh: 

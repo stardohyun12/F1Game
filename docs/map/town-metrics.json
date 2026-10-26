@@ -1,0 +1,205 @@
+{
+ "tomonoura": {
+  "name": "도모노우라",
+  "buildings": 2138,
+  "carM": 15832,
+  "footM": 4685,
+  "stepsM": 327,
+  "carFootRatio": 3.38,
+  "carWidthM": {
+   "1.5": 207,
+   "3.0": 203,
+   "3.5": 767,
+   "4.0": 430,
+   "5.0": 4648,
+   "6": 5068,
+   "7.0": 142,
+   "8.0": 41,
+   "10": 4326
+  },
+  "junctionsCar": 94,
+  "junctionsAll": 161,
+  "spacingCar": [
+   39,
+   58,
+   96
+  ],
+  "spacingAll": [
+   23,
+   46,
+   72
+  ],
+  "blocks": 58,
+  "blockArea": [
+   1736,
+   3424,
+   4244
+  ],
+  "blockLong": [
+   61,
+   84,
+   101
+  ],
+  "blockShort": [
+   30,
+   43,
+   55
+  ],
+  "contour": {
+   "carParallel": 0.5,
+   "carOnSlopeM": 7730.5,
+   "stepsDirect": 0.53,
+   "stepsOnSlopeM": 250.29
+  },
+  "hairpins": 1,
+  "hairpinR": [
+   11.9,
+   11.9,
+   11.9
+  ],
+  "coverage": {
+   "cellMedian": 0.319,
+   "cellP90": 0.579,
+   "overall": 0.316,
+   "bands": {
+    "0-15": 0.367,
+    "15-40": 0.19,
+    "40+": 0.074
+   },
+   "builtCells": 232
+  }
+ },
+ "camogli": {
+  "name": "카몰리",
+  "buildings": 744,
+  "carM": 17126,
+  "footM": 15783,
+  "stepsM": 4760,
+  "carFootRatio": 1.09,
+  "carWidthM": {
+   "3": 224,
+   "3.5": 4005,
+   "5.0": 360,
+   "6": 7518,
+   "8": 857,
+   "9": 2375,
+   "10": 1788
+  },
+  "junctionsCar": 103,
+  "junctionsAll": 377,
+  "spacingCar": [
+   22,
+   48,
+   101
+  ],
+  "spacingAll": [
+   13,
+   28,
+   56
+  ],
+  "blocks": 73,
+  "blockArea": [
+   424,
+   1188,
+   4068
+  ],
+  "blockLong": [
+   34,
+   59,
+   129
+  ],
+  "blockShort": [
+   11,
+   24,
+   39
+  ],
+  "contour": {
+   "carParallel": 0.64,
+   "carOnSlopeM": 16515.09,
+   "stepsDirect": 0.57,
+   "stepsOnSlopeM": 4499.06
+  },
+  "hairpins": 32,
+  "hairpinR": [
+   9.3,
+   12.7,
+   16.9
+  ],
+  "coverage": {
+   "cellMedian": 0.091,
+   "cellP90": 0.343,
+   "overall": 0.136,
+   "bands": {
+    "0-15": 0.239,
+    "15-40": 0.24,
+    "40+": 0.108
+   },
+   "builtCells": 292
+  }
+ },
+ "positano": {
+  "name": "포지타노",
+  "buildings": 1061,
+  "carM": 8890,
+  "footM": 18469,
+  "stepsM": 8171,
+  "carFootRatio": 0.48,
+  "carWidthM": {
+   "3.5": 335,
+   "6": 3144,
+   "8": 2109,
+   "10": 3301
+  },
+  "junctionsCar": 8,
+  "junctionsAll": 212,
+  "spacingCar": [
+   219,
+   223,
+   573
+  ],
+  "spacingAll": [
+   14,
+   35,
+   71
+  ],
+  "blocks": 46,
+  "blockArea": [
+   688,
+   1576,
+   4388
+  ],
+  "blockLong": [
+   41,
+   70,
+   100
+  ],
+  "blockShort": [
+   18,
+   30,
+   52
+  ],
+  "contour": {
+   "carParallel": 0.64,
+   "carOnSlopeM": 8864.18,
+   "stepsDirect": 0.32,
+   "stepsOnSlopeM": 7798.08
+  },
+  "hairpins": 9,
+  "hairpinR": [
+   12.2,
+   14.4,
+   21.2
+  ],
+  "coverage": {
+   "cellMedian": 0.177,
+   "cellP90": 0.528,
+   "overall": 0.237,
+   "bands": {
+    "0-15": 0.052,
+    "15-40": 0.243,
+    "40+": 0.24
+   },
+   "builtCells": 265
+  }
+ }
+}

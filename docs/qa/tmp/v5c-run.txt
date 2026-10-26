@@ -1,0 +1,26 @@
+parcels 1334 roads 105
+  cut/fill main 16.0
+  cut/fill V_pasitea 4.9
+  cut/fill SC_ramp0 4.1
+  cut/fill SC_ramp2 5.2
+  cut/fill L_b2 4.9
+  cut/fill L_b3 4.9
+  cut/fill L_b4 4.6
+  cut/fill V_harbor 6.1
+  cut/fill V_stem 7.2
+  cut/fill V_cape 3.9
+  cut/fill SC_shore 3.6
+  cut/fill V_west 5.7
+  cut/fill V_front 3.3
+  cut/fill L_f0 7.3
+  cut/fill L_f1 7.1
+  cut/fill L_e0 3.3
+  cut/fill SC_ridge 6.4
+  cut/fill V_field 5.4
+  cut/fill V_hill_w 4.9
+{"name": "마을 v5c", "buildings": 1334, "carM": 9390, "footM": 4804, "stepsM": 2899, "carFootRatio": 1.95, "carWidthM": {"3.0": 1132, "3.2": 1722, "3.4": 1480, "3.6": 655, "3.8": 851, "4.0": 1978, "4.5": 284, "5.0": 293, "6.0": 995}, "junctionsCar": 122, "junctionsAll": 297, "spacingCar": [42, 66, 92], "spacingAll": [28, 46, 68], "blocks": 87, "blockArea": [352, 796, 1656], "blockLong": [32, 40, 76], "blockShort": [12, 19, 31], "contour": {"carParallel": 0.69, "carOnSlopeM": 8713.49, "stepsDirect": 0.97, "stepsOnSlopeM": 2722.51}, "hairpins": 10, "hairpinR": [11.4, 16.0, 22.1], "coverage": {"cellMedian": 0.232, "cellP90": 0.355, "overall": 0.219, "bands": {"0-15": 0.275, "15-40": 0.262, "40+": 0.167}, "builtCells": 171}}
+{"pair": "garage→tea", "cargo": "Box", "big": {"m": 380, "t": 23.5, "tRough": 23.5, "hairpins": 0, "straightMax": 76, "roughM": 0, "gradeMax": 16.0, "roads": ["main", "V_front", "V_harbor", "V_quay"], "breath": []}, "short": {"m": 248, "t": 16.0, "tRough": 19.0, "hairpins": 0, "straightMax": 48, "roughM": 120, "gradeMax": 12.8, "roads": ["main", "L_mid", "L_a2", "V_quay"], "breath": []}, "ratio": 0.68, "ratioRough": 0.81}
+{"pair": "garage→top_house", "cargo": "Eggs", "big": {"m": 1480, "t": 84.5, "tRough": 84.5, "hairpins": 4, "straightMax": 168, "roughM": 0, "gradeMax": 14.8, "roads": ["main", "V_pasitea", "V_field"], "breath": [[156, 84], [632, 88], [1312, 168]]}, "short": {"m": 596, "t": 43.2, "tRough": 52.6, "hairpins": 2, "straightMax": 160, "roughM": 372, "gradeMax": 36.1, "roads": ["main", "L_a1", "L_mid", "V_stem", "SC_ramp1", "V_pasitea", "SC_ramp2", "SC_ridge", "SC_ramp3"], "breath": [[436, 160]]}, "ratio": 0.51, "ratioRough": 0.62}
+{"pair": "garage→lighthouse", "cargo": "Glass", "big": {"m": 452, "t": 28.6, "tRough": 28.6, "hairpins": 2, "straightMax": 88, "roughM": 0, "gradeMax": 14.0, "roads": ["main", "V_cape"], "breath": []}, "short": {"m": 372, "t": 24.5, "tRough": 28.2, "hairpins": 0, "straightMax": 88, "roughM": 184, "gradeMax": 19.6, "roads": ["main", "L_w", "SC_shore", "V_cape"], "breath": []}, "ratio": 0.86, "ratioRough": 0.99}
+{"pair": "garage→hill_field", "cargo": "Box", "big": {"m": 1388, "t": 78.8, "tRough": 78.8, "hairpins": 3, "straightMax": 124, "roughM": 0, "gradeMax": 14.8, "roads": ["main", "V_pasitea", "V_field"], "breath": [[156, 84], [632, 88], [1264, 124]]}, "short": {"m": 536, "t": 38.6, "tRough": 53.5, "hairpins": 1, "straightMax": 92, "roughM": 484, "gradeMax": 36.1, "roads": ["main", "L_a1", "L_mid", "V_stem", "SC_ramp1", "V_pasitea", "SC_ramp2", "SC_ridge"], "breath": []}, "ratio": 0.49, "ratioRough": 0.68}
+{"pair": "mart→top_house", "cargo": "Eggs", "big": {"m": 1816, "t": 99.8, "tRough": 99.8, "hairpins": 4, "straightMax": 168, "roughM": 0, "gradeMax": 14.8, "roads": ["main", "V_pasitea", "V_field"], "breath": [[492, 84], [968, 88], [1648, 168]]}, "short": {"m": 676, "t": 42.1, "tRough": 57.8, "hairpins": 2, "straightMax": 164, "roughM": 372, "gradeMax": 20.5, "roads": ["L_e1", "main", "V_front", "SC_ridge", "SC_ramp3", "V_pasitea"], "breath": [[512, 164]]}, "ratio": 0.42, "ratioRough": 0.58}

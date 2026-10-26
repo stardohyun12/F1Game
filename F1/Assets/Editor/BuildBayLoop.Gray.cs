@@ -69,6 +69,7 @@ public static partial class BuildBayLoop
             if (ks.Count > 0) g.pts.Add(ks[ks.Count - 1]);
             if (g.pts.Count >= 2) rs.Add(g);
         }
+        var ends = DeadEnds(rs, lg);   // v6c(과제 0214-3): 이음매 잘림은 잇고(rs 에 추가 → 지형 마감·RoadSurface 도 같이), 진짜 막다른 끝은 이유를 둔다
 
         gH = new float[GN, GN];
         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) gH[i, j] = CpAt(GX0 + i * GStep, GZ0 + j * GStep);
@@ -112,6 +113,8 @@ public static partial class BuildBayLoop
             rsf.centerline = r.pts.Select(p => p + Vector3.up * lift).ToArray(); rsf.closed = false; EditorUtility.SetDirty(rsf);
         }
         lg.Add($"길 {rs.Count}(차길 {carN}개 {carM / 1000f:F1}km)");
+        DeadEndMarks(top, ends);
+        Piers(top, (Dictionary<string, object>)plan["sea"], lg);
 
         // 건물: 폴리곤 압출, 상자 안(±390)만
         int nb = Buildings(top, (List<object>)plan["buildings"]); lg.Add($"건물 {nb}채");
@@ -173,6 +176,85 @@ public static partial class BuildBayLoop
     }
 
     static Vector3 Fl(Vector3 v) => new Vector3(v.x, 0f, v.z);   // BuildBayLoop.Flat 은 정규화까지 한다 — 길이용
+
+    // ------------------------------------------------------------------ v6c: 막다른 끝 · 부두
+    class DeadEnd { public GRoad r; public Vector3 p, dir; public string why; }
+
+    /// 차길 끝마다: 다른 차길 3 m 안 = 이어짐. 칸 안(±372)에서 끊긴 끝은
+    ///  ① 25 m 안에 다른 차길 → 이음매 잘림으로 보고 잇는 차길을 만든다
+    ///  ② 10 m 안에 계단·골목 → '사람길로 이어짐'(말뚝 2개)
+    ///  ③ 길 폭 ≥ 5 m → 돌아 나오는 광장(14×14) + 낮은 담   ④ 그 밖 → 담(집 문 앞 골목 끝)
+    static List<DeadEnd> DeadEnds(List<GRoad> rs, List<string> lg)
+    {
+        var cars = rs.Where(x => x.Car).ToList(); var outp = new List<DeadEnd>(); var add = new List<GRoad>();
+        int nJoin = 0;
+        foreach (var r in cars)
+            for (int e = 0; e < 2; e++)
+            {
+                var p = e == 0 ? r.pts[0] : r.pts[r.pts.Count - 1];
+                if (Mathf.Abs(p.x) > 372f || Mathf.Abs(p.z) > 372f) continue;
+                var q = e == 0 ? r.pts[Mathf.Min(4, r.pts.Count - 1)] : r.pts[Mathf.Max(0, r.pts.Count - 5)];
+                var dir = Fl(p - q).normalized;
+                float bd = 1e9f; Vector3 bp = p; GRoad br = null;
+                foreach (var o in cars.Concat(add))
+                {
+                    int skip = o == r ? 12 : 0;   // 제 길은 끝 근처 12점을 빼고(고리로 돌아오는 경우만)
+                    for (int i = 0; i < o.pts.Count; i++)
+                    {
+                        if (o == r && (e == 0 ? i < skip : i > o.pts.Count - 1 - skip)) continue;
+                        float d = Fl(o.pts[i] - p).magnitude; if (d < bd) { bd = d; bp = o.pts[i]; br = o; }
+                    }
+                }
+                if (bd <= 3f) continue;
+                if (bd <= 25f && br != null && br != r)
+                {
+                    var j = new GRoad { id = $"join_{r.id}_{e}", kind = "village", width = Mathf.Min(r.width, br.width), rough = 0f };
+                    int n = Mathf.Max(2, Mathf.CeilToInt(bd)); for (int s = 0; s <= n; s++) j.pts.Add(Vector3.Lerp(p, bp, s / (float)n));
+                    add.Add(j); nJoin++; continue;
+                }
+                bool foot = rs.Where(x => !x.Car).Any(x => x.pts.Any(t => Fl(t - p).magnitude < 10f));
+                outp.Add(new DeadEnd { r = r, p = p, dir = dir, why = foot ? "foot" : r.width >= 5f ? "plaza" : "wall" });
+            }
+        rs.AddRange(add);
+        lg.Add($"막다른 끝: 이음 {nJoin} · 사람길 {outp.Count(x => x.why == "foot")} · 광장 {outp.Count(x => x.why == "plaza")} · 담 {outp.Count(x => x.why == "wall")}");
+        return outp;
+    }
+
+    static void DeadEndMarks(Transform top, List<DeadEnd> ends)
+    {
+        var t = new GameObject("DeadEnds").transform; t.SetParent(top);
+        var wall = GM("DeadEndWall", new Color(.80f, .76f, .66f)); var post = GM("DeadEndPost", new Color(.25f, .25f, .27f)); var pad = GM("Village", new Color(.72f, .72f, .70f));
+        foreach (var d in ends)
+        {
+            var s = new GameObject($"DEADEND_{d.why}_{d.r.id}").transform; s.SetParent(t); s.position = d.p;
+            var rot = Quaternion.LookRotation(d.dir); var rt = rot * Vector3.right;
+            if (d.why == "foot")      // 차는 여기까지, 사람길이 이어진다
+                foreach (float k in new[] { -.5f, .5f }) Box(s, "Bollard", new Vector3(.35f, 1f, .35f), d.p + rt * (d.r.width * k) + d.dir * 1.2f + Vector3.up * .5f, rot, post, true);
+            else if (d.why == "plaza")
+            {
+                Box(s, "Plaza", new Vector3(14f, .6f, 14f), d.p + d.dir * 7f + Vector3.up * -.24f, rot, pad, true);
+                Box(s, "Wall", new Vector3(14f, 1.2f, .6f), d.p + d.dir * 14.3f + Vector3.up * .6f, rot, wall, true);
+            }
+            else Box(s, "Wall", new Vector3(d.r.width + 1.2f, 1.6f, .6f), d.p + d.dir * 1.5f + Vector3.up * .8f, rot, wall, true);
+        }
+    }
+
+    /// OSM man_made=pier/breakwater 꺾은선 → 폭 3.5 m 둑(바닥 −2 m ~ 윗면 1.3 m). 물에 닿게 해면 아래까지 내린다.
+    static void Piers(Transform top, Dictionary<string, object> sea, List<string> lg)
+    {
+        if (!sea.TryGetValue("piers", out var po)) return;
+        var t = new GameObject("Piers").transform; t.SetParent(top); var mat = GM("Pier", new Color(.55f, .55f, .55f)); int n = 0;
+        foreach (List<object> line in (List<object>)po)
+        {
+            var ps = line.Cast<List<object>>().Select(k => new Vector3(F(k[0]), 0f, F(k[1]))).ToList();
+            for (int i = 0; i + 1 < ps.Count; i++)
+            {
+                var a = ps[i]; var b = ps[i + 1]; float L = (b - a).magnitude; if (L < .3f) continue;
+                Box(t, "Pier", new Vector3(3.5f, 3.3f, L + 1.5f), (a + b) * .5f + Vector3.up * -.35f, Quaternion.LookRotation(b - a), mat, true); n++;
+            }
+        }
+        lg.Add($"부두·방파제 {n}칸");
+    }
 
     static float CpAt(float x, float z)
     {

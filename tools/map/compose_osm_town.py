@@ -145,6 +145,56 @@ def h_fill(x, z):
 
 
 def H(x, z):
+    """v6c: 조각 안 바다는 SRTM(해면 0~3 m)이라 해면 위로 떴다 → OSM coastline 부호 거리로 물 쪽은 해면 아래, 뭍 쪽 물가는 1 m 이상."""
+    h = H_raw(x, z)
+    if not SEA: return h
+    sd = sea_sd(x, z)
+    # 해안선은 조각 사각형으로 잘린 꺾은선이라 사각형 밖에선 열린 끝 부호가 흔들린다 → 해안 가진 조각 안(+이음 틈 12 m)만
+    if sd is None or not any(p.edge(x, z) > -12 for p in PCS if p.pid in SEA_PCS): return h
+    if sd < 0: return min(h, max(-6.0, -1.5 + 0.12 * sd))      # 물: 물가 −1.5 m → 37 m 밖 −6 m
+    return max(h, 1.0 + 0.05 * min(sd, 20.0))                  # 물가 뭍: 부두 턱 1 m 이상(해면과 맞닿아 깜빡이지 않게)
+
+
+SEA, SEA_PCS = {}, set()
+
+
+def build_sea(x0=-420, x1=420, z0=-420, z1=-80, step=4, reach=150.0):
+    """OSM coastline(물 = 진행 방향 오른쪽) → 부호 거리 격자(뭍 +, 물 −). 꼭짓점이 가장 가까우면 양옆 방향의 합으로 부호를 정한다."""
+    segs = []
+    for s in COAST:
+        for k in range(len(s) - 1):
+            a, b = s[k], s[k + 1]
+            if math.dist(a, b) < 1e-6: continue
+            pv = s[k - 1] if k > 0 else None; nx = s[k + 2] if k + 2 < len(s) else None
+            segs.append((a, b, pv, nx))
+    def unit(p, q):
+        L_ = math.dist(p, q) or 1; return ((q[0] - p[0]) / L_, (q[1] - p[1]) / L_)
+    def sd(x, z):
+        best, sg = 1e9, 1
+        for a, b, pv, nx in segs:
+            dx, dz = b[0] - a[0], b[1] - a[1]; t = ((x - a[0]) * dx + (z - a[1]) * dz) / (dx * dx + dz * dz)
+            tc = min(1.0, max(0.0, t)); px, pz = a[0] + dx * tc, a[1] + dz * tc
+            d = math.hypot(x - px, z - pz)
+            if d < best - 1e-9:
+                best = d; u = unit(a, b)
+                if tc <= 0 and pv is not None: w = unit(pv, a); u = (u[0] + w[0], u[1] + w[1])
+                elif tc >= 1 and nx is not None: w = unit(b, nx); u = (u[0] + w[0], u[1] + w[1])
+                sg = 1 if u[0] * (z - pz) - u[1] * (x - px) >= 0 else -1     # 왼쪽 = 뭍
+        return sg * best
+    nx_, nz_ = int((x1 - x0) / step) + 1, int((z1 - z0) / step) + 1
+    SEA.update(x0=x0, z0=z0, step=step, nx=nx_, nz=nz_, reach=reach,
+               g=[[sd(x0 + i * step, z0 + j * step) for j in range(nz_)] for i in range(nx_)])
+
+
+def sea_sd(x, z):
+    st = SEA['step']; fx, fz = (x - SEA['x0']) / st, (z - SEA['z0']) / st
+    if not (0 <= fx < SEA['nx'] - 1 and 0 <= fz < SEA['nz'] - 1): return None
+    i, j = int(fx), int(fz); tx, tz = fx - i, fz - j; g = SEA['g']
+    v = g[i][j] * (1 - tx) * (1 - tz) + g[i + 1][j] * tx * (1 - tz) + g[i][j + 1] * (1 - tx) * tz + g[i + 1][j + 1] * tx * tz
+    return v if abs(v) < SEA['reach'] else None
+
+
+def H_raw(x, z):
     ws, hs = [], []
     for p in PCS:
         e = p.edge(x, z)
@@ -222,7 +272,8 @@ def cut_pieces():
                 if pc.inside(*pc.local(cx, cz)):
                     BLDS.append({'poly': [pc.world(*pc.local(*q)) for q in pts], 'piece': pc.pid, 'osm': oid})
             elif tg.get('natural') == 'coastline':
-                COAST.extend(seg for seg, _, _ in clip_line(pts, pc))
+                cs = [seg for seg, _, _ in clip_line(pts, pc)]; COAST.extend(cs)
+                if cs: SEA_PCS.add(pc.pid)
             elif tg.get('man_made') in ('pier', 'breakwater'):
                 PIER.extend(seg for seg, _, _ in clip_line(pts, pc))
             elif tg.get('landuse') or tg.get('natural') in ('wood', 'scrub'):
@@ -427,7 +478,8 @@ def graph():
     return nodes, adj
 
 
-def cost_big(r):        # 안전한 길: 큰길 1 · 넓은 마을 차길 1.8 · 좁거나 거친 길 4 (가설)
+def cost_big(r):        # 안전한 길: 큰길 1 · 넓은 마을 차길 1.8 · 좁거나 거친 길 4 (가설) · v6c 급경사 돌길은 안전한 길이 아니다(30)
+    if r.get('grade'): return 30.0
     return 1.0 if r['kind'] == 'main' else 1.8 if (r['width'] >= 5.0 and r['roughness'] < 0.4) else 4.0
 
 
@@ -560,6 +612,17 @@ def add_shortcuts(stops):
 # ── v6b ──────────────────────────────────────────────────────────────
 CHAIN_DBG, CHAIN_GAIN, FREE_RATIO = [], 0.8, 0.75     # 고정 쌍은 거리 0.8 이하, 배달점 옮길 땐 0.75 이하 + 60 m 이상 줄 때만
 G_ROAD, G_PIN, PIN_R = 0.15, 0.18, 20.0     # 차길 경사 상한 15 %, 헤어핀(R < 20 m) 18 % (과제 0122)
+G_STEEP = 0.22                              # v6c: 계단 옆 급경사 돌길 상한 22 % (과제 0214 안 a)
+
+
+def side(pts, off):
+    """꺾은선을 진행 방향 오른쪽으로 off m 민다(끝점 포함, 앞뒤 방향 평균)."""
+    out = []
+    for i, q in enumerate(pts):
+        a, b = pts[max(0, i - 1)], pts[min(len(pts) - 1, i + 1)]
+        dx, dz = b[0] - a[0], b[1] - a[1]; L_ = math.hypot(dx, dz) or 1
+        out.append((q[0] + dz / L_ * off, q[1] - dx / L_ * off))
+    return out
 
 
 def solve_heights():
@@ -578,6 +641,11 @@ def solve_heights():
             if L.radius3(dp[i - 6], dp[i], dp[i + 6]) < PIN_R:
                 k = idx.get(KEY(dp[i]))
                 if k is not None: gk[k] = G_PIN
+    for r in ROADS:                                  # v6c: 급경사 돌길은 제 상한(22 %)
+        if r.get('grade'):
+            for q in dens(r['pts']):
+                k = idx.get(KEY(q))
+                if k is not None: gk[k] = max(gk[k], r['grade'])
     def env(sign):
         dist = [sign * h for h in h0]; pq = [(v, k) for k, v in enumerate(dist)]; heapq.heapify(pq)
         while pq:
@@ -631,7 +699,7 @@ def H2(x, z):
     return h + v(i, j) * (1 - tx) * (1 - tz) + v(i, j + 1) * tx * (1 - tz) + v(i + 1, j) * (1 - tx) * tz + v(i + 1, j + 1) * tx * tz
 
 
-def chain_shortcut(a, b, pos, banned, tag, free=None):
+def chain_shortcut(a, b, pos, banned, tag, free=None, stairs=False, grade=None):
     """실제 사람길(계단 제외) 여러 개를 이은 사슬 가운데, 차길 a 쪽 끝과 b 쪽 끝을 15 m 안에서 잇고
     a→b 거리를 가장 많이 줄이는 것. 사슬 평균 경사 ≤ 15 % 만(그 이상은 깎아도 너무 깊다).
     free=(조각, 최저 높이): b 를 고정하지 않고, 사슬이 닿는 그 조각 차길 끝(높이 ≥ 최저) 가운데 줄이는 거리가 가장 큰 곳을 배달점으로."""
@@ -655,7 +723,7 @@ def chain_shortcut(a, b, pos, banned, tag, free=None):
         if k not in fid: fid[k] = len(fp); fp.append(q)
         return fid[k]
     for r in ROADS:
-        if r['kind'] != 'alley' or r['piece'] not in ('tomo', 'camo', 'posi') or r['id'] in banned: continue
+        if r['kind'] not in (('alley', 'stairs') if stairs else ('alley',)) or r['piece'] not in ('tomo', 'camo', 'posi') or r['id'] in banned: continue
         ids = [nid(q) for q in r['pts']]
         for u, v in zip(ids, ids[1:]):
             if u != v: d = math.dist(fp[u], fp[v]); fadj[u].append((v, d, r)); fadj[v].append((u, d, r))
@@ -690,18 +758,22 @@ def chain_shortcut(a, b, pos, banned, tag, free=None):
         while prev[k][0] != 'car':
             k, r = prev[k]; chain.append(fp[k]); rs.append(r)
         kstart = prev[k][1]; chain.reverse()
+        if stairs and any(r['kind'] == 'stairs' for r in rs): chain = side(chain, 4.5)     # v6c 안 (a): 계단은 두고 4.5 m 옆 비탈에
         pts = [nodes[kstart][0]] + chain + [nodes[kend][0]]
-        Lc = plen(pts); dh = abs(H(*pts[-1]) - H(*pts[0]))
+        g_ok = grade or G_ROAD; yh = lambda k: YN.get(KEY(nodes[k][0]), H(*nodes[k][0]))
+        Lc = plen(pts); dh = abs(yh(kend) - yh(kstart)) if stairs else abs(H(*pts[-1]) - H(*pts[0]))
         CHAIN_DBG.append(('cand', round(tot), round(Lc), round(dh / Lc, 3)))
-        if Lc < 20 or dh / Lc > G_ROAD: continue
+        if Lc < 20 or dh / Lc > g_ok * 0.9: continue
         ways = list(dict.fromkeys(r['id'] for r in rs)); osm = list(dict.fromkeys(r['osm'] for r in rs))
         surf = [r['surface'] for r in rs if r['surface']]
         rough = min(0.6, max(0.3, max((ROUGH_SURF.get(s, 0.5) for s in surf), default=0.5)))
+        if stairs: rough = 0.6                                   # 급경사 돌길(과제 0214: 0.5~0.7)
         piece = rs[0]['piece']
         ROADS.append({'id': f'sc_{tag}', 'kind': 'village', 'width': 3.2, 'roughness': rough, 'pts': pts, 'cut': (False, False), 'piece': piece,
-                      'osm': osm, 'cls': '+'.join(dict.fromkeys(r['cls'] for r in rs)) + '→car', 'name': '골목 돌길', 'surface': surf[0] if surf else ''})
+                      'osm': osm, 'cls': '+'.join(dict.fromkeys(r['cls'] for r in rs)) + '→car', 'name': '급경사 돌길' if stairs else '골목 돌길', 'surface': surf[0] if surf else '',
+                      **({'grade': g_ok} if stairs else {})})
         keys = {KEY(q) for q in chain}
-        gone = [r['id'] for r in ROADS if r['id'] in ways and all(KEY(q) in keys for q in r['pts'])]
+        gone = [r['id'] for r in ROADS if r['id'] in ways and r['kind'] != 'stairs' and all(KEY(q) in keys for q in r['pts'])]
         ROADS[:] = [r for r in ROADS if r['id'] not in gone]
         why = ('계단 옆 골목' if any(r['kind'] == 'stairs' and min(math.dist(q, s) for q in pts[::3] for s in r['pts'][::2]) < 12 for r in ROADS if r['piece'] == piece) else '실제 골목·산책로')
         EDITS.append({'road': f'sc_{tag}', 'osm': osm, 'from': f'사람길 {len(ways)}개 사슬', 'to': f'차 가능한 돌길 3.2 m · 요철 {rough}',
@@ -828,7 +900,7 @@ def render(stops, path, title, debug=False):
     for i in range(N):
         for j in range(N):
             y = ys[i][j]
-            if y <= 1: c = (150, 190, 210); mask.putpixel((j, i), 255)
+            if y <= 0: c = (150, 190, 210); mask.putpixel((j, i), 255)     # v6c: Unity 해면(0)과 같은 기준
             else:
                 t = min(1, y / max(80, emax)); c = (int(238 - 60 * t), int(232 - 45 * t), int(218 - 70 * t))
             small.putpixel((j, i), c)
@@ -890,6 +962,7 @@ def main():
     seam_offsets()
     build_grid()
     cut_pieces()
+    build_sea()
     widen()
     tip = outer_roads()
     nseam, nloose = seams()
@@ -907,8 +980,9 @@ def main():
         chains = []
         for sid, free in (('top_house', ('posi', 40.0)), ('hill_field', ('camo', 20.0))):
             st = {s['id']: s for s in stops}
-            res = chain_shortcut('garage', sid, {k: v['pos'] for k, v in st.items()}, set(), f'garage_{sid}', free=free)
-            print('relocate', sid, st[sid]['pos'], res)
+            res = chain_shortcut('garage', sid, {k: v['pos'] for k, v in st.items()}, set(), f'garage_{sid}', free=free,
+                                 **({'stairs': True, 'grade': G_STEEP} if sid == 'hill_field' else {}))   # v6c: 언덕 밭은 실제 사슬이 늘 더 길다 → 계단 옆 비탈 끝으로 배달점을 옮겨 본다
+            print('relocate', sid, st[sid]['pos'], res, CHAIN_DBG[-3:])
             if res:
                 EDITS.append({'stop': sid, 'from': st[sid]['pos'], 'to': res['end'],
                               'why': f'{sid}: 원래 자리엔 차로 갈 실제 골목 사슬이 없음 → 실제 골목이 닿는 차길 끝(높이 ≥ {free[1]:.0f} m)으로 배달점을 옮김'})
@@ -920,8 +994,8 @@ def main():
             print('round', rnd, [(r['pair'], r.get('ratioRough')) for r in fun])
             if len(fun) - len(bad) >= 5 or not bad: break
             for a, b in bad:
-                res = chain_shortcut(a, b, {s['id']: s['pos'] for s in stops}, set(), f'{a}_{b}_{rnd}')
-                print('chain', a, b, res); chains.append(res or {'pair': f'{a}→{b}', 'id': None})
+                res = chain_shortcut(a, b, {s['id']: s['pos'] for s in stops}, set(), f'{a}_{b}_{rnd}', stairs=True, grade=G_STEEP)
+                print('chain', a, b, res, 'dbg', CHAIN_DBG[-4:]); chains.append(res or {'pair': f'{a}→{b}', 'id': None})
             extra['heights'] = solve_heights()
         extra['chains'] = chains
         extra['removed'] = clean_overlaps()
@@ -965,7 +1039,8 @@ def main():
                  'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어' + ('. 차길 knots y = 경사 상한(15 %/헤어핀 18 %) 매끈 높이, controlPoints = 길에 맞춰 깎고 메운 지형' if v6b else '')},
         'pieces': [{'id': p.pid, 'town': p.tid, 'srcCenter': p.c, 'rotDeg': p.rot, 'rect': p.rect, 'at': p.at, 'dy': p.dy, 'why': p.why} for p in PCS],
         'terrain': {'method': 'grid', 'step': cstep, 'blend': BLEND, 'controlPoints': ctrl},
-        'sea': {'level': 0},
+        'sea': {'level': 0, 'coast': [[[round(q[0], 2), round(q[1], 2)] for q in c] for c in COAST],
+                'piers': [[[round(q[0], 2), round(q[1], 2)] for q in c] for c in PIER]},
         'roads': roads,
         'buildings': [{'poly': [[round(q[0], 2), round(q[1], 2)] for q in b['poly']], 'y': round(H2(*b['poly'][0]), 1), 'piece': b['piece'], 'osm_way': b['osm']} for b in BLDS],
         'garage': stops[0], 'mart': stops[1], 'stops': stops[2:],

@@ -1,0 +1,60 @@
+seam ends 40 cands 13 {'tomo': 11, 'camo': 21, 'posi': 8}
+shortcuts [('garage', 'top_house', 'posi_1425727239_388'), ('garage', 'hill_field', None), ('garage', 'lighthouse', None), ('mart', 'top_house', None)]
+relocate top_house [-295.4, 357.9] None [('garage', 'top_house', 1627, 0, [])]
+relocate hill_field [181.4, 5.7] None [('garage', 'top_house', 1627, 0, []), ('garage', 'hill_field', 330, 0, [])]
+round 0 [('garage→tea', 0.72), ('garage→top_house', 1.06), ('garage→lighthouse', 0.77), ('garage→hill_field', 1.0), ('mart→top_house', 1.0)]
+chain garage top_house {'pair': 'garage→top_house', 'id': 'sc_garage_top_house_0', 'end': [-282.5, 351.7], 'ways': 5, 'm': 198, 'base': 1627, 'via': 895, 'avgGrade': 0.183} dbg [('garage', 'hill_field', 330, 0, []), ('garage', 'top_house', 1627, 417, 879), ('cand', 879, 183, 0.2), ('cand', 895, 198, 0.183)]
+chain garage hill_field None dbg [('garage', 'top_house', 1627, 417, 879), ('cand', 879, 183, 0.2), ('cand', 895, 198, 0.183), ('garage', 'hill_field', 330, 406, 442)]
+chain mart top_house None dbg [('cand', 879, 183, 0.2), ('cand', 895, 198, 0.183), ('garage', 'hill_field', 330, 406, 442), ('mart', 'top_house', 890, 419, 868)]
+round 1 [('garage→tea', 0.72), ('garage→top_house', 0.73), ('garage→lighthouse', 0.77), ('garage→hill_field', 1.0), ('mart→top_house', 0.68)]
+chain garage hill_field None dbg [('cand', 895, 198, 0.183), ('garage', 'hill_field', 330, 406, 442), ('mart', 'top_house', 890, 419, 868), ('garage', 'hill_field', 330, 406, 442)]
+round 2 [('garage→tea', 0.72), ('garage→top_house', 0.73), ('garage→lighthouse', 0.77), ('garage→hill_field', 1.0), ('mart→top_house', 0.68)]
+chain garage hill_field None dbg [('garage', 'hill_field', 330, 406, 442), ('mart', 'top_house', 890, 419, 868), ('garage', 'hill_field', 330, 406, 442), ('garage', 'hill_field', 330, 406, 442)]
+heights {'nodes': 5299, 'pinNodes': 367, 'gradeMax': 0.22, 'gradeP99': 0.182, 'gradeP90': 0.15, 'rawTerrainGradeMax': 1.296, 'rawP90': 0.194, 'cutFillP50': 0.0, 'cutFillP90': 3.703, 'cutFillMax': 15.02} removed 21 seamfix [{'road': 'seam2_tomo_camo', 'R_before': 11.6, 'R_after': 18.3, 'ks': 0.25, 'at': [155, -63]}, {'road': 'seam3_tomo_camo', 'R_before': 11.8, 'R_after': 17.7, 'ks': 0.25, 'at': [155, -151]}]
+posi.dy -57.7 roads 443 blds 1378 in-box 1120 seams 9 loose cut ends 27 edits 5
+chainres {"pair": "garage→top_house", "id": "sc_garage_top_house_0", "end": [-282.5, 351.7], "ways": 5, "m": 198, "base": 1627, "via": 895, "avgGrade": 0.183}
+chainres {"pair": "garage→hill_field", "id": null}
+chainres {"pair": "mart→top_house", "id": null}
+chainres {"pair": "garage→hill_field", "id": null}
+chainres {"pair": "garage→hill_field", "id": null}
+seamfix {"road": "seam2_tomo_camo", "R_before": 11.6, "R_after": 18.3, "ks": 0.25, "at": [155, -63]}
+seamfix {"road": "seam3_tomo_camo", "R_before": 11.8, "R_after": 17.7, "ks": 0.25, "at": [155, -151]}
+loose {"road": "tomo_118266982_4", "piece": "tomo", "at": [128, 70], "kind": "village"}
+loose {"road": "tomo_118266995_7", "piece": "tomo", "at": [-180, 70], "kind": "village"}
+loose {"road": "camo_19796997_70", "piece": "camo", "at": [790, -76], "kind": "main"}
+loose {"road": "camo_23267502_72", "piece": "camo", "at": [790, -220], "kind": "village"}
+loose {"road": "camo_23267507_74", "piece": "camo", "at": [790, -207], "kind": "village"}
+loose {"road": "camo_26347876_80", "piece": "camo", "at": [782, 160], "kind": "village"}
+loose {"road": "camo_199288363_103", "piece": "camo", "at": [790, -102], "kind": "village"}
+loose {"road": "camo_309369480_161", "piece": "camo", "at": [790, -95], "kind": "main"}
+loose {"road": "camo_309379549_166", "piece": "camo", "at": [421, 160], "kind": "main"}
+loose {"road": "camo_309379549_166", "piece": "camo", "at": [761, 160], "kind": "main"}
+loose {"road": "camo_422387513_199", "piece": "camo", "at": [704, 160], "kind": "village"}
+loose {"road": "camo_422387513_200", "piece": "camo", "at": [695, 160], "kind": "village"}
+loose {"road": "camo_422387513_200", "piece": "camo", "at": [641, 160], "kind": "village"}
+loose {"road": "camo_422394746_201", "piece": "camo", "at": [455, 160], "kind": "village"}
+loose {"road": "camo_422394746_202", "piece": "camo", "at": [469, 160], "kind": "village"}
+loose {"road": "camo_422394748_203", "piece": "camo", "at": [444, 160], "kind": "village"}
+loose {"road": "camo_875761797_277", "piece": "camo", "at": [790, 36], "kind": "village"}
+loose {"road": "camo_1011718592_279", "piece": "camo", "at": [790, -169], "kind": "village"}
+loose {"road": "camo_1203812052_288", "piece": "camo", "at": [790, -238], "kind": "village"}
+loose {"road": "posi_134657049_311", "piece": "posi", "at": [-363, 428], "kind": "main"}
+loose {"road": "posi_190982121_315", "piece": "posi", "at": [-214, 500], "kind": "main"}
+loose {"road": "posi_937295595_344", "piece": "posi", "at": [143, 398], "kind": "village"}
+loose {"road": "posi_1056444327_348", "piece": "posi", "at": [-363, 378], "kind": "main"}
+loose {"road": "posi_1056444329_349", "piece": "posi", "at": [138, 500], "kind": "main"}
+loose {"road": "posi_1056444329_349", "piece": "posi", "at": [143, 483], "kind": "main"}
+loose {"road": "posi_1058329867_350", "piece": "posi", "at": [-312, 500], "kind": "main"}
+loose {"road": "posi_1424903208_375", "piece": "posi", "at": [15, 500], "kind": "village"}
+removed [{"piece": "tomo", "osm": 1355585878, "at": [-322, -214], "why": "차길 main_west 위"}, {"piece": "tomo", "osm": 1355585999, "at": [-325, -205], "why": "차길 main_west 위"}, {"piece": "tomo", "osm": 1355595106, "at": [152, -89], "why": "차길 seam7_tomo_camo_T 위"}, {"piece": "tomo", "osm": 1355595942, "at": [0, 62], "why": "차길 seam6_tomo_posi_T 위"}, {"piece": "tomo", "osm": 1355596080, "at": [46, 65], "why": "차길 seam4_tomo_posi_T 위"}, {"piece": "camo", "osm": 204695515, "at": [162, -155], "why": "차길 seam3_tomo_camo 위"}, {"piece": "camo", "osm": 204701985, "at": [293, -149], "why": "차길 camo_1442397596_297 위"}, {"piece": "posi", "osm": 481197229, "at": [-290, 320], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 481197230, "at": [-284, 321], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 481197233, "at": [-283, 348], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 481343772, "at": [-34, 247], "why": "차길 posi_1425727239_388 위"}, {"piece": "posi", "osm": 1424919165, "at": [43, 99], "why": "차길 seam4_tomo_posi_T 위"}, {"piece": "posi", "osm": 1424919169, "at": [-7, 90], "why": "차길 seam6_tomo_posi_T 위"}, {"piece": "posi", "osm": 1424919170, "at": [8, 97], "why": "차길 seam6_tomo_posi_T 위"}, {"piece": "posi", "osm": 1425727237, "at": [-33, 248], "why": "차길 posi_1425727239_388 위"}, {"piece": "posi", "osm": 1425728397, "at": [-282, 250], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 1425728399, "at": [-281, 220], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 1425728400, "at": [-241, 232], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 1426493247, "at": [-290, 288], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 1426493249, "at": [-292, 282], "why": "차길 sc_garage_top_house_0 위"}, {"piece": "posi", "osm": 1426493250, "at": [-268, 267], "why": "차길 sc_garage_top_house_0 위"}]
+{"name": "마을 v6-OSM", "buildings": 1120, "carM": 7611, "footM": 7586, "stepsM": 3550, "carFootRatio": 1.0, "carWidthM": {"3.2": 530, "3.5": 931, "4.0": 457, "5.0": 1404, "6": 3286, "7.0": 324, "8.0": 41, "9": 243, "10": 395}, "junctionsCar": 160, "junctionsAll": 541, "spacingCar": [38, 52, 84], "spacingAll": [24, 40, 56], "blocks": 71, "blockArea": [560, 1192, 3568], "blockLong": [36, 52, 91], "blockShort": [16, 30, 48], "contour": {"carParallel": 0.62, "carOnSlopeM": 5366.28, "stepsDirect": 0.49, "stepsOnSlopeM": 3091.14}, "hairpins": 11, "hairpinR": [7.4, 11.6, 18.3], "coverage": {"cellMedian": 0.309, "cellP90": 0.633, "overall": 0.324, "bands": {"0-15": 0.38, "15-40": 0.292, "40+": 0.222}, "builtCells": 161}}
+{"pair": "garage→tea", "cargo": "Box", "big": {"m": 460, "t": 32.5, "tRough": 33.0, "hairpins": 2, "straightMax": 116, "roughM": 56, "gradeMax": 13.5, "gradeP90": 9.1, "narrowM": 56, "snapM": 0}, "short": {"m": 344, "t": 21.9, "tRough": 23.6, "hairpins": 0, "straightMax": 116, "roughM": 100, "gradeMax": 9.2, "gradeP90": 8.5, "narrowM": 100, "snapM": 0}, "ratio": 0.67, "ratioRough": 0.72}
+{"pair": "garage→top_house", "cargo": "Eggs", "big": {"m": 1436, "t": 85.2, "tRough": 85.4, "hairpins": 3, "straightMax": 164, "roughM": 48, "gradeMax": 21.4, "gradeP90": 12.4, "narrowM": 48, "snapM": 0}, "short": {"m": 840, "t": 58.4, "tRough": 62.6, "hairpins": 3, "straightMax": 168, "roughM": 320, "gradeMax": 65.5, "gradeP90": 22.0, "narrowM": 176, "snapM": 0}, "ratio": 0.69, "ratioRough": 0.73}
+{"pair": "garage→lighthouse", "cargo": "Glass", "big": {"m": 540, "t": 37.3, "tRough": 37.3, "hairpins": 3, "straightMax": 132, "roughM": 0, "gradeMax": 7.5, "gradeP90": 2.9, "narrowM": 0, "snapM": 0}, "short": {"m": 456, "t": 27.9, "tRough": 28.7, "hairpins": 0, "straightMax": 132, "roughM": 56, "gradeMax": 7.5, "gradeP90": 2.9, "narrowM": 56, "snapM": 0}, "ratio": 0.75, "ratioRough": 0.77}
+{"pair": "garage→hill_field", "cargo": "Box", "big": {"m": 308, "t": 18.4, "tRough": 18.4, "hairpins": 0, "straightMax": 116, "roughM": 0, "gradeMax": 15.1, "gradeP90": 15.0, "narrowM": 36, "snapM": 0}, "short": {"m": 308, "t": 18.4, "tRough": 18.4, "hairpins": 0, "straightMax": 116, "roughM": 0, "gradeMax": 15.1, "gradeP90": 15.0, "narrowM": 36, "snapM": 0}, "ratio": 1.0, "ratioRough": 1.0}
+{"pair": "mart→top_house", "cargo": "Eggs", "big": {"m": 1404, "t": 87.3, "tRough": 87.4, "hairpins": 3, "straightMax": 164, "roughM": 48, "gradeMax": 21.4, "gradeP90": 12.7, "narrowM": 48, "snapM": 0}, "short": {"m": 800, "t": 57.5, "tRough": 59.4, "hairpins": 3, "straightMax": 164, "roughM": 176, "gradeMax": 43.7, "gradeP90": 22.0, "narrowM": 176, "snapM": 0}, "ratio": 0.66, "ratioRough": 0.68}
+edit {"road": "tomo_118267009_9", "osm": 118267009, "from": 1.5, "to": 3.2, "why": "건물 14채를 0.5~1 m 물림"}
+edit {"road": "tomo_118267049_14", "osm": 118267049, "from": 3.0, "to": "alley", "why": "벽까지 0.0 m — 1 m 넘게 물려야 해서 사람길로"}
+edit {"road": "cape_shore", "osm": null, "from": "없음(바탕 지형)", "to": "차 가능한 돌길 3.2 m · 요철 0.5", "why": "등대: 큰길+곶 길(헤어핀 3)뿐 → 곶 기슭 해안 산책로를 좁은 돌길로. 실제 카몰리·포지타노 해안 산책로가 좁은 포장 돌길"}
+edit {"road": "posi_1425727239_388", "osm": 1425727239, "from": "사람길(footway)", "to": "차 가능한 돌길 3.2 m · 요철 0.5", "why": "garage→top_house 지름길 없음 → 실제 사람길을 좁은 돌길로(거리 1929→1627 m, 경사 최대 25 %)"}
+edit {"road": "sc_garage_top_house_0", "osm": [407484846, 1244884416, 1244884417, 1426493252, 407484847], "from": "사람길 5개 사슬", "to": "차 가능한 돌길 3.2 m · 요철 0.6", "why": "garage→top_house: 계단 옆 골목(실제 길, 표면 태그 없음) — 거리 1627→895 m, 평균 경사 18 %, 사슬 198 m"}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f271fe002b5584a8bbcaa42cab620b, type: 3}
+  m_Name: Order_D2
+  m_EditorClassIdentifier: PitCrew::OrderJob
+  displayName: "2 \uBC14\uB2F7\uAC00 \uCE74\uD398 \u2014 \uC0C1\uC790"
+  color: {r: 0.4, g: 0.7, b: 1, a: 1}
+  destinationLabels:
+  - CoastCafe
+  timeLimitSec: 0
+  baseReward: 500
+  timeBonus: 0
+  weightTier: 0
+  cargoType: 0
+  callerName: 
+  urgentSituation: 

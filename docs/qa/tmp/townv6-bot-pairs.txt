@@ -1,0 +1,12 @@
+﻿# pairs: 노드 12495 갈림목 연결 1996
+pair	route	m	roughM	result	time	dmg%	peakLongG	peakLatG	maxDev
+GARAGE_Return->STOP_tea	큰길	-	-	경로없음
+GARAGE_Return->STOP_tea	지름길	366	108	끼임	18.8	1	1.79	0.13	0.5
+GARAGE_Return->STOP_top_house	큰길	1937	0	끼임	32.6	32	8.35	1.98	1.8
+GARAGE_Return->STOP_top_house	지름길	904	343	끼임	35.7	13	2.73	0.56	1.9
+GARAGE_Return->STOP_lighthouse	큰길	573	0	ok	74.5	32	2.29	0.53	1.7
+GARAGE_Return->STOP_lighthouse	지름길	505	52	ok	50.8	0	1.83	0.54	1.6
+GARAGE_Return->STOP_hill_field	큰길	331	0	못오름	37.2	5	8.35	1.98	1.8
+GARAGE_Return->STOP_hill_field	지름길	331	0	큰길과 같은 경로(갈래 없음)
+STOP_MART->STOP_top_house	큰길	1908	0	끼임	32.5	16	1.43	0.45	1.7
+STOP_MART->STOP_top_house	지름길	879	191	끼임	32.5	16	1.33	0.45	1.7
