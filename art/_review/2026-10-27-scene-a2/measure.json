@@ -1,0 +1,100 @@
+{
+ "measure": {
+  "A": {
+   "cam": {
+    "back": 5.6,
+    "height": 2.8,
+    "vfov": 64,
+    "look_ahead": 6,
+    "look_h": 1.0
+   },
+   "area_pct": {
+    "near": 5.9,
+    "near_ground": 31.5,
+    "mid": 22.7,
+    "mid_ground": 11.5,
+    "far": 8.0,
+    "sky": 19.3,
+    "kart": 1.1
+   },
+   "objects_pct": 37.7,
+   "row_bands_pct": {
+    "sky": [
+     0,
+     25
+    ],
+    "mid": [
+     25,
+     63
+    ],
+    "far": [
+     38,
+     38
+    ],
+    "near": [
+     53,
+     100
+    ]
+   },
+   "bottom_third_bare_ground_pct": 93.2,
+   "visible_items": {
+    "near": 14,
+    "mid": 15,
+    "far": 19
+   }
+  },
+  "D": {
+   "cam": {
+    "back": 3.9,
+    "height": 2.0,
+    "vfov": 64,
+    "look_ahead": 5,
+    "look_h": 0.3
+   },
+   "area_pct": {
+    "near": 9.2,
+    "near_ground": 37.0,
+    "mid": 19.7,
+    "mid_ground": 7.0,
+    "far": 7.9,
+    "sky": 17.0,
+    "kart": 2.3
+   },
+   "objects_pct": 39.1,
+   "row_bands_pct": {
+    "sky": [
+     0,
+     22
+    ],
+    "mid": [
+     22,
+     58
+    ],
+    "far": [
+     30,
+     35
+    ],
+    "near": [
+     46,
+     100
+    ]
+   },
+   "bottom_third_bare_ground_pct": 90.2,
+   "visible_items": {
+    "near": 14,
+    "mid": 15,
+    "far": 19
+   }
+  }
+ },
+ "fog": {
+  "color": [
+   0.86,
+   0.85,
+   0.8
+  ],
+  "start": 12,
+  "end": 140,
+  "max": 0.65
+ }
+}

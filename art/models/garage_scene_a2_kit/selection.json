@@ -1,0 +1,292 @@
+[
+  {
+    "name": "tires_01",
+    "source": "art/thirdparty/polypizza-misc/Tires_Quaternius_mmq7GmG1AK.glb",
+    "pack": "polypizza-misc",
+    "height": 0.85,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "tires_02",
+    "source": "art/thirdparty/polypizza-misc/WheelsStack_Quaternius_o1MJrkMUPN.glb",
+    "pack": "polypizza-misc",
+    "height": 1.05,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "drum_01",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "red",
+    "lean": 0
+  },
+  {
+    "name": "drum_02",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "teal",
+    "lean": 0
+  },
+  {
+    "name": "drum_03",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "cream",
+    "lean": 0
+  },
+  {
+    "name": "pole_01",
+    "source": "art/thirdparty/polypizza-misc/TelephonePole_PolyByGoogle_4Hazwkymnyg.glb",
+    "pack": "polypizza-misc",
+    "height": 8,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 6
+  },
+  {
+    "name": "streetlight_01",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Traffic lights/street_light.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 5.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "transformer_01",
+    "source": "art/thirdparty/chillydurango-plumbing-wiring/Transformer.blend",
+    "pack": "chillydurango-plumbing-wiring",
+    "height": 1.7,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "bicycle_01",
+    "source": "art/thirdparty/polypizza-misc/Bicycle_PolyByGoogle_19VoUuA2pcN.glb",
+    "pack": "polypizza-misc",
+    "height": 1.05,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "fence_01",
+    "source": "art/thirdparty/valsekamerplant-fences/Fences/low_wooden_fence/wooden_fence_beam.glb",
+    "pack": "valsekamerplant-fences",
+    "height": 1.2,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "fence_02",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Chainlink Fence.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 1.8,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "pallet_01",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Pallet.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.15,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "pallet_02",
+    "source": "art/thirdparty/kenney-retro-urban-kit/Models/GLB format/pallet.glb",
+    "pack": "kenney-retro-urban-kit",
+    "height": null,
+    "scale": 1.2,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "cone_01",
+    "source": "art/thirdparty/valsekamerplant-barriers/Cones & Barriers/Cones/Construction_cone.glb",
+    "pack": "valsekamerplant-barriers",
+    "height": 0.65,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "cone_02",
+    "source": "art/thirdparty/valsekamerplant-barriers/Cones & Barriers/Cones/Construction_cone.glb",
+    "pack": "valsekamerplant-barriers",
+    "height": 0.8,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "pot_01",
+    "source": "art/thirdparty/valsekamerplant-plants-pots/pots & plants/Pots/pot.glb",
+    "pack": "valsekamerplant-plants-pots",
+    "height": 0.55,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "pot_02",
+    "source": "art/thirdparty/valsekamerplant-plants-pots/pots & plants/Pots/pot3.glb",
+    "pack": "valsekamerplant-plants-pots",
+    "height": 0.7,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "bench_01",
+    "source": "art/thirdparty/kenney-retro-urban-kit/Models/GLB format/detail-bench.glb",
+    "pack": "kenney-retro-urban-kit",
+    "height": 0.85,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "autumn_tree_01",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree01.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 13.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "autumn_tree_02",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree02.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 14,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "autumn_tree_03",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree03.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 12.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "autumn_tree_04",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree04.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 15,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "autumn_tree_05",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree05.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 13,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "old_car_01",
+    "source": "art/thirdparty/ggbot-psx-style-cars/Car 01/Car.obj",
+    "pack": "ggbot-psx-style-cars",
+    "height": null,
+    "scale": 0.67,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0
+  },
+  {
+    "name": "background_building_01",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/flat_square_concrete.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 10,
+    "scale": null,
+    "zone": "원",
+    "tint": "cream",
+    "lean": 0
+  },
+  {
+    "name": "background_building_02",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/flat_Lshape.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 12,
+    "scale": null,
+    "zone": "원",
+    "tint": "teal",
+    "lean": 0
+  },
+  {
+    "name": "background_building_03",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/Hangar1.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 5.3,
+    "scale": null,
+    "zone": "중",
+    "tint": "ochre",
+    "lean": 0
+  },
+  {
+    "name": "background_building_04",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Large Shed A.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 6,
+    "scale": null,
+    "zone": "중",
+    "tint": "cream",
+    "lean": 0
+  },
+  {
+    "name": "background_building_05",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Shack A.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 3.5,
+    "scale": null,
+    "zone": "중",
+    "tint": "teal",
+    "lean": 0
+  }
+]

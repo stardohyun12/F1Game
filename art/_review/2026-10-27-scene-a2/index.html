@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8"><title>장면 A2 구성안</title><style>body{background:#888;margin:0;font:14px sans-serif}
+#b{position:fixed;top:0;left:0;background:#fff;padding:6px;z-index:2}img{image-rendering:pixelated;display:block;margin-top:40px}
+.sil{filter:brightness(0)}</style><div id="b">배율 <button onclick="z(1)">1×</button><button onclick="z(2)">2×</button><button onclick="z(4)">4×</button>
+<button onclick="s()">흑실루엣</button> 배경 <button onclick="g('#888')">회</button><button onclick="g('#fff')">흰</button><button onclick="g('#222')">검</button>
+ · 판정 순서 1× → 흑실루엣 → 4× · 도현 승인 필요</div><img id="i" src="sheet.png"><script>const i=document.getElementById('i');
+function z(k){i.style.width=(i.naturalWidth*k)+'px'}function s(){i.classList.toggle('sil')}function g(c){document.body.style.background=c}</script>

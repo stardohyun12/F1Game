@@ -1,0 +1,901 @@
+[
+  {
+    "name": "tires_01",
+    "source": "art/thirdparty/polypizza-misc/Tires_Quaternius_mmq7GmG1AK.glb",
+    "pack": "polypizza-misc",
+    "height": 0.85,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.7816009018374807,
+    "native_size": [
+      1.7555633783340454,
+      1.1444182395935059,
+      1.0875115394592285
+    ],
+    "size": [
+      1.37214994430542,
+      0.8944783210754395,
+      0.8500000238418579
+    ],
+    "tris": 1776,
+    "atlas": [
+      1024,
+      512
+    ],
+    "texels_per_m": 32,
+    "images_used": [],
+    "source_sha256": "f3ea0e8a9dffcce018647de649435ae9295d5ea2ad0d82eddb0c5ced04abf526"
+  },
+  {
+    "name": "tires_02",
+    "source": "art/thirdparty/polypizza-misc/WheelsStack_Quaternius_o1MJrkMUPN.glb",
+    "pack": "polypizza-misc",
+    "height": 1.05,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.7174350780490701,
+    "native_size": [
+      0.6575685143470764,
+      0.5718692541122437,
+      0.6113768219947815
+    ],
+    "size": [
+      1.1293312311172485,
+      0.982148289680481,
+      1.0500000715255737
+    ],
+    "tris": 1824,
+    "atlas": [
+      1024,
+      512
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "fb51f837aed438f6e179835cda457be46e3146e51f81a2b03429b69915e9f551"
+  },
+  {
+    "name": "pole_01",
+    "source": "art/thirdparty/polypizza-misc/TelephonePole_PolyByGoogle_4Hazwkymnyg.glb",
+    "pack": "polypizza-misc",
+    "height": 8,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 6,
+    "scale_applied": 0.0006728549278943788,
+    "native_size": [
+      4763.109375,
+      52373.984375,
+      11889.6357421875
+    ],
+    "size": [
+      3.2105295658111572,
+      35.24009704589844,
+      7.975708484649658
+    ],
+    "tris": 3948,
+    "atlas": [
+      2048,
+      4096
+    ],
+    "texels_per_m": 32,
+    "images_used": [],
+    "source_sha256": "e9347538c0f36c55415d50814805f0826501689815e0f073b20a614bc5323c64"
+  },
+  {
+    "name": "streetlight_01",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Traffic lights/street_light.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 5.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.8323450215686108,
+    "native_size": [
+      2.060609817504883,
+      0.7062606811523438,
+      6.607836723327637
+    ],
+    "size": [
+      1.7151386737823486,
+      0.5878525972366333,
+      5.5
+    ],
+    "tris": 346,
+    "atlas": [
+      1024,
+      256
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "6a9e2f48c28b6799f1e8b966addbd94f941cb893eca580e82b18b3aea8325043"
+  },
+  {
+    "name": "bicycle_01",
+    "source": "art/thirdparty/polypizza-misc/Bicycle_PolyByGoogle_19VoUuA2pcN.glb",
+    "pack": "polypizza-misc",
+    "height": 1.05,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.49738565346804703,
+    "native_size": [
+      3.6132090091705322,
+      1.2430260181427002,
+      2.1110379695892334
+    ],
+    "size": [
+      1.7971582412719727,
+      0.618263304233551,
+      1.0499999523162842
+    ],
+    "tris": 1714,
+    "atlas": [
+      1024,
+      256
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "197063f35b41c2c571666792ac7154d45a11d7c96c7f2aa9030e91c5037dc23e"
+  },
+  {
+    "name": "fence_01",
+    "source": "art/thirdparty/valsekamerplant-fences/Fences/low_wooden_fence/wooden_fence_beam.glb",
+    "pack": "valsekamerplant-fences",
+    "height": 1.2,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 6.724174489486974,
+    "native_size": [
+      1.9974454641342163,
+      0.12811943888664246,
+      0.17846056818962097
+    ],
+    "size": [
+      13.431172370910645,
+      0.8614975214004517,
+      1.1999999284744263
+    ],
+    "tris": 36,
+    "atlas": [
+      1024,
+      128
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "78a2ed7e7dc487b40f3a58b24ccbed8fb34839e8bc09fd0befd4ce1f550cd9be"
+  },
+  {
+    "name": "cone_01",
+    "source": "art/thirdparty/valsekamerplant-barriers/Cones & Barriers/Cones/Construction_cone.glb",
+    "pack": "valsekamerplant-barriers",
+    "height": 0.65,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.8546816141248464,
+    "native_size": [
+      0.6302167177200317,
+      0.72771155834198,
+      0.7605171203613281
+    ],
+    "size": [
+      0.5386346578598022,
+      0.6219617128372192,
+      0.6499999761581421
+    ],
+    "tris": 68,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "c6420cc5c37c990d54685f41017c8b7167bed90b88b70879886ef883e7ca12fc"
+  },
+  {
+    "name": "cone_02",
+    "source": "art/thirdparty/valsekamerplant-barriers/Cones & Barriers/Cones/Construction_cone.glb",
+    "pack": "valsekamerplant-barriers",
+    "height": 0.8,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.0519158327690417,
+    "native_size": [
+      0.6302167177200317,
+      0.72771155834198,
+      0.7605171203613281
+    ],
+    "size": [
+      0.6629349589347839,
+      0.7654913663864136,
+      0.800000011920929
+    ],
+    "tris": 68,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "c6420cc5c37c990d54685f41017c8b7167bed90b88b70879886ef883e7ca12fc"
+  },
+  {
+    "name": "pot_01",
+    "source": "art/thirdparty/valsekamerplant-plants-pots/pots & plants/Pots/pot.glb",
+    "pack": "valsekamerplant-plants-pots",
+    "height": 0.55,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.609291314715661,
+    "native_size": [
+      0.4103497564792633,
+      0.47383108735084534,
+      0.3417653441429138
+    ],
+    "size": [
+      0.660372257232666,
+      0.7625322341918945,
+      0.550000011920929
+    ],
+    "tris": 80,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "ad635c044aebe079a6f5b38b5bc5bc2831eee86190b4a85c7687cd8edf6f8b76"
+  },
+  {
+    "name": "pot_02",
+    "source": "art/thirdparty/valsekamerplant-plants-pots/pots & plants/Pots/pot3.glb",
+    "pack": "valsekamerplant-plants-pots",
+    "height": 0.7,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 2.6190261698537216,
+    "native_size": [
+      0.3558935523033142,
+      0.3558935523033142,
+      0.2672749161720276
+    ],
+    "size": [
+      0.9320945143699646,
+      0.9320945143699646,
+      0.699999988079071
+    ],
+    "tris": 76,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "671fcafb5c683f7c71db17dda3db49a6335227086d5b74cfd6304e7247e1708c"
+  },
+  {
+    "name": "old_car_01",
+    "source": "art/thirdparty/ggbot-psx-style-cars/Car 01/Car.obj",
+    "pack": "ggbot-psx-style-cars",
+    "height": null,
+    "scale": 0.67,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.67,
+    "native_size": [
+      2.5579569339752197,
+      6.150345802307129,
+      2.1744024753570557
+    ],
+    "size": [
+      1.7138311862945557,
+      4.120731830596924,
+      1.4568495750427246
+    ],
+    "tris": 438,
+    "atlas": [
+      1024,
+      256
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\ggbot-psx-style-cars\\Car 01\\car.png"
+    ],
+    "source_sha256": "88de04afe087cd95c1eef048cb97aa1e1207d337a1c5b0b0a2f9a83579963a83"
+  },
+  {
+    "name": "background_building_01",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/flat_square_concrete.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 10,
+    "scale": null,
+    "zone": "원",
+    "tint": "cream",
+    "lean": 0,
+    "scale_applied": 0.5882352941176471,
+    "native_size": [
+      17.00000762939453,
+      17.000003814697266,
+      17.0
+    ],
+    "size": [
+      10.000004768371582,
+      10.000004768371582,
+      10.0
+    ],
+    "tris": 1164,
+    "atlas": [
+      1024,
+      2048
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "79e57cd50b2b747faf28fdd9a5ccbd759dcc6e20546ebfe1421027171d24fa1f"
+  },
+  {
+    "name": "background_building_02",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/flat_Lshape.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 12,
+    "scale": null,
+    "zone": "원",
+    "tint": "teal",
+    "lean": 0,
+    "scale_applied": 0.7058823529411765,
+    "native_size": [
+      21.000009536743164,
+      27.0,
+      17.0
+    ],
+    "size": [
+      14.823534965515137,
+      19.058828353881836,
+      12.0
+    ],
+    "tris": 1708,
+    "atlas": [
+      1024,
+      4096
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "12e39c5d2013c98a2db835fff9787b5ef0223d11296aaebef79f77da14efccaa"
+  },
+  {
+    "name": "background_building_03",
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/Hangar1.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 5.3,
+    "scale": null,
+    "zone": "중",
+    "tint": "ochre",
+    "lean": 0,
+    "scale_applied": 0.9999999640122912,
+    "native_size": [
+      11.569299697875977,
+      8.0,
+      5.300000190734863
+    ],
+    "size": [
+      11.569297790527344,
+      7.999999523162842,
+      5.299999713897705
+    ],
+    "tris": 338,
+    "atlas": [
+      1024,
+      1024
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      ""
+    ],
+    "source_sha256": "4803ebf50a6b77028207375fbe5ef94f1661fce0b264962621849ef0d6f05715"
+  },
+  {
+    "name": "pallet_02",
+    "source": "art/thirdparty/kenney-retro-urban-kit/Models/GLB format/pallet.glb",
+    "pack": "kenney-retro-urban-kit",
+    "height": null,
+    "scale": 1.2,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.2,
+    "native_size": [
+      1.0,
+      1.0,
+      0.15000000596046448
+    ],
+    "size": [
+      1.2000000476837158,
+      1.2000000476837158,
+      0.18000000715255737
+    ],
+    "tris": 84,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\kenney-retro-urban-kit\\Models\\GLB format\\Textures\\planks.png"
+    ],
+    "source_sha256": "1844660dfffda177d42efc35db47c22e7476f991737f4c35f6b5fbaf0d2ccf8b"
+  },
+  {
+    "name": "bench_01",
+    "source": "art/thirdparty/kenney-retro-urban-kit/Models/GLB format/detail-bench.glb",
+    "pack": "kenney-retro-urban-kit",
+    "height": 0.85,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 2.0777712828050356,
+    "native_size": [
+      0.6039000153541565,
+      0.32212501764297485,
+      0.4090921878814697
+    ],
+    "size": [
+      1.2547661066055298,
+      0.6693021059036255,
+      0.8499999642372131
+    ],
+    "tris": 84,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\kenney-retro-urban-kit\\Models\\GLB format\\Textures\\metal.png",
+      "D:\\Github\\F1Game\\art\\thirdparty\\kenney-retro-urban-kit\\Models\\GLB format\\Textures\\planks.png"
+    ],
+    "source_sha256": "ccf6f0a95b04db1720c9a7040404ca0d676a0f850815aee90de5edc33b96c47c"
+  },
+  {
+    "name": "drum_01",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "red",
+    "lean": 0,
+    "scale_applied": 1.0000000264909539,
+    "native_size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "tris": 20,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Barrel-Texture.png"
+    ],
+    "source_sha256": "b404cff53b5531698178c3bc739eef805365fd078fb6a4f18e6399b38b36c214"
+  },
+  {
+    "name": "drum_02",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "teal",
+    "lean": 0,
+    "scale_applied": 1.0000000264909539,
+    "native_size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "tris": 20,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Barrel-Texture.png"
+    ],
+    "source_sha256": "b404cff53b5531698178c3bc739eef805365fd078fb6a4f18e6399b38b36c214"
+  },
+  {
+    "name": "drum_03",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Barrel.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.9,
+    "scale": null,
+    "zone": "앞",
+    "tint": "cream",
+    "lean": 0,
+    "scale_applied": 1.0000000264909539,
+    "native_size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "size": [
+      0.7999998927116394,
+      0.69282066822052,
+      0.8999999761581421
+    ],
+    "tris": 20,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Barrel-Texture.png"
+    ],
+    "source_sha256": "b404cff53b5531698178c3bc739eef805365fd078fb6a4f18e6399b38b36c214"
+  },
+  {
+    "name": "transformer_01",
+    "source": "art/thirdparty/chillydurango-plumbing-wiring/Transformer.blend",
+    "pack": "chillydurango-plumbing-wiring",
+    "height": 1.7,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.015999905386541,
+    "native_size": [
+      0.6397638320922852,
+      0.8858270645141602,
+      1.6732285022735596
+    ],
+    "size": [
+      0.6499999761581421,
+      0.9000002145767212,
+      1.7000000476837158
+    ],
+    "tris": 20,
+    "atlas": [
+      1024,
+      64
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-plumbing-wiring\\Transformer-Texture.png"
+    ],
+    "source_sha256": "34c182350caf107fa34fc99a9c23ec9e5f36910bf7f95287f6a665458568ba07"
+  },
+  {
+    "name": "fence_02",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Chainlink Fence.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 1.8,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 0.72,
+    "native_size": [
+      2.460824966430664,
+      0.12000058591365814,
+      2.5
+    ],
+    "size": [
+      1.771794080734253,
+      0.08640042692422867,
+      1.8000000715255737
+    ],
+    "tris": 16,
+    "atlas": [
+      1024,
+      128
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Chainlink-Fence.png",
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Pole Texture.png"
+    ],
+    "source_sha256": "2da0c8f42e9c0c01a65761e27b579a25ca8ec18e7992820633b060d399b7d3a4"
+  },
+  {
+    "name": "pallet_01",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Pallet.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 0.15,
+    "scale": null,
+    "zone": "앞",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 1.499995619071404,
+    "native_size": [
+      0.8999999761581421,
+      1.1999999284744263,
+      0.1000002920627594
+    ],
+    "size": [
+      1.3499959707260132,
+      1.7999945878982544,
+      0.15000000596046448
+    ],
+    "tris": 32,
+    "atlas": [
+      1024,
+      128
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\chillydurango-shacks-sheds\\Pallet-Texture.png"
+    ],
+    "source_sha256": "d3ce9daacc8c03b0000eb256cb9f6e730d881495c2b2d4e8d3e8757c0d6c116d"
+  },
+  {
+    "name": "autumn_tree_01",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree01.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 13.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 3.3437287559081903,
+    "native_size": [
+      3.3600003719329834,
+      3.3600010871887207,
+      4.037408828735352
+    ],
+    "size": [
+      11.234930038452148,
+      11.234931945800781,
+      13.499998092651367
+    ],
+    "tris": 360,
+    "atlas": [
+      1024,
+      8192
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\elegantcrow-retro-nature-pack\\textures\\trees\\tree01_fall.png"
+    ],
+    "source_sha256": "66ad96e96a811c8af28b226229756d9443773d85b499021dabc2ff432e7a6f94"
+  },
+  {
+    "name": "autumn_tree_02",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree02.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 14,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 3.6116830301888516,
+    "native_size": [
+      2.400001049041748,
+      2.40000057220459,
+      3.8763091564178467
+    ],
+    "size": [
+      8.66804313659668,
+      8.668041229248047,
+      14.0
+    ],
+    "tris": 350,
+    "atlas": [
+      1024,
+      8192
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\elegantcrow-retro-nature-pack\\textures\\trees\\tree02_fall.png"
+    ],
+    "source_sha256": "209aeb73e41ec1026590b62fa1761bd28340af72990f9c9c1e7f705f8e34efb6"
+  },
+  {
+    "name": "autumn_tree_03",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree03.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 12.5,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 3.1755603571972393,
+    "native_size": [
+      3.359999418258667,
+      3.360001564025879,
+      3.9363131523132324
+    ],
+    "size": [
+      10.669880867004395,
+      10.66988754272461,
+      12.500000953674316
+    ],
+    "tris": 366,
+    "atlas": [
+      1024,
+      8192
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\elegantcrow-retro-nature-pack\\textures\\trees\\tree03_fall.png"
+    ],
+    "source_sha256": "4d43918b85627c006ef00886501d7ff0b1140b2771a3645fa1ac0d1e95b2f087"
+  },
+  {
+    "name": "autumn_tree_04",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree04.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 15,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 3.4710600448209314,
+    "native_size": [
+      2.960002899169922,
+      2.9600040912628174,
+      4.321446418762207
+    ],
+    "size": [
+      10.274347305297852,
+      10.274352073669434,
+      15.0
+    ],
+    "tris": 368,
+    "atlas": [
+      1024,
+      8192
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\elegantcrow-retro-nature-pack\\textures\\trees\\tree04_fall.png"
+    ],
+    "source_sha256": "fe6ce29a2863343a3a9c605d2eac45533b9fca6f9f0c4c9bae8dfff8e356b30c"
+  },
+  {
+    "name": "autumn_tree_05",
+    "source": "art/thirdparty/elegantcrow-retro-nature-pack/models/FBX/trees/tree05.fbx",
+    "pack": "elegantcrow-retro-nature-pack",
+    "height": 13,
+    "scale": null,
+    "zone": "중",
+    "tint": null,
+    "lean": 0,
+    "scale_applied": 3.0991758751743665,
+    "native_size": [
+      3.3600001335144043,
+      3.3600008487701416,
+      4.1946635246276855
+    ],
+    "size": [
+      10.41323184967041,
+      10.413233757019043,
+      13.000000953674316
+    ],
+    "tris": 374,
+    "atlas": [
+      1024,
+      4096
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\thirdparty\\elegantcrow-retro-nature-pack\\textures\\trees\\tree05_fall.png"
+    ],
+    "source_sha256": "663eb69df8c378e94076585b413f4506f225e1f0abf1cca681a2d9fbde792e74"
+  },
+  {
+    "name": "background_building_04",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Large Shed A.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 6,
+    "scale": null,
+    "zone": "중",
+    "tint": "cream",
+    "lean": 0,
+    "scale_applied": 0.9675850958710288,
+    "native_size": [
+      8.79999828338623,
+      14.322001457214355,
+      6.201004981994629
+    ],
+    "size": [
+      8.51474666595459,
+      13.857755661010742,
+      6.000001430511475
+    ],
+    "tris": 268,
+    "atlas": [
+      1024,
+      2048
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png"
+    ],
+    "source_sha256": "4b7fdba1d7a5290d4e8d626de804e70406f91379a9bf9b4f2ad4f2296c52dd32"
+  },
+  {
+    "name": "background_building_05",
+    "source": "art/thirdparty/chillydurango-shacks-sheds/Shack A.blend",
+    "pack": "chillydurango-shacks-sheds",
+    "height": 3.5,
+    "scale": null,
+    "zone": "중",
+    "tint": "teal",
+    "lean": 0,
+    "scale_applied": 1.1429910622070174,
+    "native_size": [
+      3.5703859329223633,
+      6.249340534210205,
+      3.062141180038452
+    ],
+    "size": [
+      4.08091926574707,
+      7.142940521240234,
+      3.500000238418579
+    ],
+    "tris": 36,
+    "atlas": [
+      1024,
+      512
+    ],
+    "texels_per_m": 32,
+    "images_used": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png"
+    ],
+    "source_sha256": "a49405871370ea808589d8738605bb2fc6d22832fb4c30750e8ffc7e15e2a437"
+  }
+]
