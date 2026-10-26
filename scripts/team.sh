@@ -67,6 +67,7 @@ $PROMPT"
 else
   # ---- Claude Code ----
   EXTRA_TOOLS=""; [ "$ROLE" = "research" ] && EXTRA_TOOLS="WebSearch WebFetch"
+  [ "$ROLE" = "art2" ] && EXTRA_TOOLS="Bash(D:/Tools/Blender/blender.exe:*) Bash(/d/Tools/Blender/blender.exe:*) Bash(\"D:/Tools/Blender/blender.exe\":*)"   # 아트 2 = Blender 필요
   COSTFILE=".claude/team/sessions/$ROLE.cost"
   if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")"); export TEAM_PREV_COST=$(cat "$COSTFILE" 2>/dev/null || echo 0)
   else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); export TEAM_PREV_COST=0; fi
