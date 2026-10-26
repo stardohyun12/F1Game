@@ -1,7 +1,7 @@
 """마을 v6-OSM: 실제 OSM 조각(도모노우라 심장·카몰리 해안 띠·포지타노 비탈)을 잘라 한 해안선 위에 붙인다 (D-156, PD 0109).
 데이터: docs/map/real-towns/<id>.json 캐시(OSM Overpass + SRTM 25×25). © OpenStreetMap contributors (ODbL) — docs/map/ATTRIBUTION.md.
 좌표: x=동, z=북, 칸 중심 (0,0), 그림은 1200 m 사방(real_towns 와 같은 축척), 플레이 칸 760 m.
-사용: python -X utf8 tools/map/compose_osm_town.py [--debug]
+사용: python -X utf8 tools/map/compose_osm_town.py [--debug] [--v6b | --v6e]   (--v6e = v6b + 겹친 차길 정리 · 매끈한 높이, 과제 0421)
 """
 import heapq, json, math, os, sys
 from collections import defaultdict
@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFilter
 sys.path.insert(0, os.path.dirname(__file__))
 import planlib as L
 import town_metrics as TM
+import road_check as RC
 
 ROOT = L.ROOT
 OUT = os.path.join(ROOT, 'docs', 'map')
@@ -876,6 +877,206 @@ def clean_overlaps():
     return len(drop)
 
 
+# ── v6e (과제 0421): 겹친 차길 정리 · 갈림목까지 이어지는 매끈한 높이 ─────────────
+OVL, JUNC = [], []                   # 겹친 쌍 처리 기록 · 갈림목(여러 차길이 공유한 점) 목록
+OVL_SAME = 0.6                       # 겹친 구간 평균 높이차 < 0.6 m → 같은 길을 두 번 그린 것(합침), 이상 → 실제 다른 층(사람길·계단으로)
+K_LIM, K_LIM_STONE = 0.029, 0.059    # 경사 변화 한도(3 %/m · 돌길 6 %/m) 에서 0.1 %/m 여유
+
+
+def car_samples(r):
+    """차길 → 1 m 표본 [(x, z, y)], y = solve_heights 노드 높이(원래 점) 직선 보간."""
+    return RC.resample([(q[0], q[1], YN.get(KEY(q), H(*q))) for q in r['pts']], 1.0)
+
+
+def _rank(r):                        # 남길 쪽: 큰길 > 지름길 돌길(sc_) > 넓은 길 > 긴 길
+    return (r['kind'] == 'main', r['id'].startswith('sc_'), r['width'], plen(r['pts']))
+
+
+def _snap_into(o, q):
+    """q 에서 길 o 위 가장 가까운 점을 o['pts'] 에 끼워 넣고 그 점을 돌려준다(이미 점이면 그 점)."""
+    best = None
+    for k, (a, b) in enumerate(zip(o['pts'], o['pts'][1:])):
+        dx, dz = b[0] - a[0], b[1] - a[1]; ll = dx * dx + dz * dz or 1
+        t = max(0.0, min(1.0, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dz) / ll)); p = (a[0] + dx * t, a[1] + dz * t)
+        d = math.dist(p, q)
+        if best is None or d < best[0]: best = (d, k, t, p)
+    d, k, t, p = best
+    if t < 0.02 or math.dist(p, o['pts'][k]) < 0.5: return o['pts'][k]
+    if t > 0.98 or math.dist(p, o['pts'][k + 1]) < 0.5: return o['pts'][k + 1]
+    o['pts'].insert(k + 1, p); return p
+
+
+PROTECT = set()                      # 배달 지름길로 바꾼 길(EDITS 에서 '돌길' 로 간 것) — 사람길로 돌리지 않는다
+
+
+def push_apart(lo, hi, Q, i0, i1, taper=12.0):
+    """lo 의 표본 Q[i0..i1] 을 hi 에서 멀어지는 쪽으로, 간격이 (두 폭 합/2 + 2.5 m) 가 되게 민다. 앞뒤 taper m 는 S 자로 줄인다.
+    민 자리가 바다(H < 0.8)면 포기(None). 돌려주는 값 = 가장 많이 민 거리."""
+    thr = (lo['width'] + hi['width']) / 2 + RC.GAP_EXTRA + 0.5
+    hp = dens(hi['pts'], 1.0)
+    def away(q):
+        p = min(hp, key=lambda s: (s[0] - q[0]) ** 2 + (s[1] - q[1]) ** 2); d = math.dist(p, q[:2]) or 1e-3
+        return d, ((q[0] - p[0]) / d, (q[1] - p[1]) / d)
+    acc = [0.0]
+    for a, b in zip(Q, Q[1:]): acc.append(acc[-1] + math.dist(a[:2], b[:2]))
+    s0, s1 = acc[i0], acc[i1]
+    need = max(thr - away(Q[k])[0] for k in range(i0, i1 + 1))
+    if need <= 0: return 0.0
+    out, mx = [], 0.0
+    for k, q in enumerate(Q):
+        s = acc[k]
+        w = 1.0 if s0 <= s <= s1 else S((taper - (s0 - s)) / taper) if s0 - taper < s < s0 else S((taper - (s - s1)) / taper) if s1 < s < s1 + taper else 0.0
+        if k in (0, len(Q) - 1): w = 0.0
+        if w <= 0: out.append((q[0], q[1])); continue
+        d, (ux, uz) = away(q); m = w * max(0.0, thr - d) if s0 <= s <= s1 else w * need
+        p = (q[0] + ux * m, q[1] + uz * m)
+        if H(*p) < 0.8: return None
+        out.append(p); mx = max(mx, m)
+    lo['pts'] = out
+    return mx
+
+
+def reach_ok(stops):
+    nodes, adj = graph()
+    near = lambda pt: min(range(len(nodes)), key=lambda k: math.dist(nodes[k][0], pt))
+    st = {x['id']: x['pos'] for x in stops}; dd = dijk(nodes, adj, near(st['garage']))
+    return all(math.dist(nodes[k][0], p) < 15 and k in dd for p in st.values() for k in [near(p)])
+
+
+def resolve_overlaps(stops, rounds=8):
+    """나란히 겹친 차길 쌍(RC.overlaps)을 정리한다. 낮은 쪽(_rank) 길의 겹친 구간을
+    · 높이차 < OVL_SAME: 지운다(같은 길 두 번) — 잘린 끝은 남는 길 위로 붙인다.
+    · 높이차 ≥ OVL_SAME: 사람길(경사 > 15 % 면 계단)로 돌린다 — 실제로 다른 높이의 길이 나란히 있는 것."""
+    done = set()
+    PROTECT.update(e['road'] for e in EDITS if 'road' in e and '돌길' in str(e.get('to', '')))
+    PROTECT.update(r['id'] for r in ROADS if r['id'].startswith('sc_'))
+    for rnd in range(rounds):
+        car = [r for r in ROADS if r['kind'] in ('main', 'village')]
+        sm = {r['id']: {'id': r['id'], 'kind': r['kind'], 'width': r['width'], 'roughness': r['roughness'], 'pts': car_samples(r)} for r in car}
+        ov = [o for o in RC.overlaps(list(sm.values())) if (o['a'], o['b']) not in done and (o['b'], o['a']) not in done]
+        if not ov: return rnd
+        byid = {r['id']: r for r in car}; touched = set()
+        for o in ov:
+            if o['a'] in touched or o['b'] in touched: continue
+            ra, rb = byid[o['a']], byid[o['b']]
+            lo, hi = (ra, rb) if _rank(ra) < _rank(rb) else (rb, ra)
+            rec = [x for x in RC.overlaps([sm[lo['id']], sm[hi['id']]], both=True) if x['a'] == lo['id']] or \
+                  [x for x in RC.overlaps([sm[lo['id']], sm[hi['id']]], run_min=4, both=True) if x['a'] == lo['id']]
+            done.add((o['a'], o['b']))
+            if not rec: continue
+            x = rec[0]; S = sm[lo['id']]['pts']; i0, i1 = max(0, x['i0'] - 1), min(len(S) - 1, x['i1'] + 1)
+            pre, mid, post = S[:i0 + 1], S[i0:i1 + 1], S[i1:]
+            same = o['dy'] < OVL_SAME
+            mlen = sum(math.dist(a[:2], b[:2]) for a, b in zip(mid, mid[1:]))
+            gr = abs(mid[-1][2] - mid[0][2]) / max(1.0, mlen)
+            rec0 = {k: o[k] for k in ('a', 'b', 'm', 'gapMin', 'dy', 'dyMax', 'at')}; dyv = o['dy']
+            self_pair = lo['id'].split('~')[0] == hi['id'].split('~')[0]           # 한 길의 두 다리(헤어핀) — 끊지 않는다
+            prot = lo['id'].split('~')[0] in PROTECT
+            def try_push(why):
+                moved = push_apart(lo, hi, S, x['i0'], x['i1'])
+                if moved is None:
+                    OVL.append({**rec0, 'keep': hi['id'], 'cut': None, 'action': 'unresolved', 'fix': f'{why} → 옆으로 밀 자리가 바다라 그대로 둠'}); return
+                OVL.append({**rec0, 'keep': hi['id'], 'cut': lo['id'], 'action': 'push', 'fix': f'{why} → 끊지 않고 {lo["id"]} 를 최대 {moved:.1f} m 옆으로 밀어 간격 확보'})
+            touched |= {lo['id'], hi['id']}
+            if lo.get('piece') == 'outer' and hi.get('piece') == 'outer':     # 곶 끝: 합성기가 그린 등대 길 셋 — 합치면 등대 지름길이 사라진다(0.77→0.98 실측)
+                OVL.append({**rec0, 'keep': hi['id'], 'cut': None, 'action': 'unresolved', 'fix': '곶 끝 합성 길(등대 지름길 포함) — 합치면 등대 시간비 0.77→0.98, 다음 판에 곶 길 다시 그림'}); continue
+            if self_pair: try_push(f'헤어핀 두 다리(높이차 {dyv:.1f} m)'); continue
+            if prot and not same: try_push(f'높이차가 실제({dyv:.1f} m)지만 {lo["id"]} 는 배달 지름길'); continue
+            save_roads, save_hi = list(ROADS), list(hi['pts'])
+            base = {k: v for k, v in lo.items() if k not in ('pts', 'id')}
+            new = []
+            for tag, seg, at_end in (('a', pre, True), ('b', post, False)):
+                if len(seg) < 2: continue
+                pts = [(q[0], q[1]) for q in seg]
+                if same:
+                    s = _snap_into(hi, pts[-1] if at_end else pts[0])
+                    if math.dist(s, pts[-1] if at_end else pts[0]) > 0.3: pts = pts + [s] if at_end else [s] + pts
+                if plen(pts) < 6 and not same: continue
+                if plen(pts) < 4: continue
+                new.append({**base, 'id': f"{lo['id']}~{tag}", 'pts': pts})
+            if not same:
+                kind = 'stairs' if gr > 0.15 else 'alley'
+                new.append({**base, 'id': f"{lo['id']}~{kind}", 'kind': kind, 'width': 2.0, 'pts': [(q[0], q[1]) for q in mid], 'grade': None})
+            ROADS[:] = [r for r in ROADS if r is not lo] + new
+            if not reach_ok(stops):                          # 배달점이 끊기면 되돌리고 옆으로 민다
+                ROADS[:] = save_roads; hi['pts'] = save_hi
+                try_push(('같은 길 두 번' if same else f'높이차 {dyv:.1f} m') + '이지만 지우면 배달점이 끊김'); continue
+            fix = (f'같은 길 두 번 → {lo["id"]} 의 겹친 {mlen:.0f} m 를 지우고 끝을 {hi["id"]} 에 붙임' if same else
+                   f'높이차가 실제({dyv:.1f} m) → {lo["id"]} 의 겹친 {mlen:.0f} m 를 ' + ('계단' if kind == 'stairs' else '사람길') + f'으로(경사 {100 * gr:.0f} %)')
+            OVL.append({**rec0, 'keep': hi['id'], 'cut': lo['id'], 'action': 'merge' if same else ('stairs' if kind == 'stairs' else 'foot'), 'fix': fix})
+    return rounds
+
+
+def smooth_profiles(it_max=20000):
+    """모든 차길 중심선을 1 m 표본으로 바꾸고, 경사 변화(2차 차분)를 한도 안으로 — 갈림목 점은 여러 길이 같은 변수를 공유하므로
+    판 없이 들어오는 길 모두가 그 점 높이로 긴 곡선을 그리며 모인다. 끝끼리 일직선으로 이어진 두 길(갈림목 통과)도 한 줄로 잰다.
+    방법: 위반한 3점 묶음마다 최소 이동 사영(POCS) 을 반복. 고정점 없음(지형과 다른 만큼은 build_cut_fill 이 깎고 메운다)."""
+    car = [r for r in ROADS if r['kind'] in ('main', 'village')]
+    S = {r['id']: car_samples(r) for r in car}
+    cnt = defaultdict(int)
+    for r in car:
+        for k in {KEY(q) for q in S[r['id']]}: cnt[k] += 1
+    nid, Y, P, seqs = {}, [], [], {}
+    for r in car:
+        ids = []
+        for q in S[r['id']]:
+            k = KEY(q)
+            if ids and math.dist(P[ids[-1]], q[:2]) < 0.5 and cnt[k] < 2 and q is not S[r['id']][-1]: continue   # 0.5 m 보다 촘촘한 점(갈림목 아님) 버림
+            if k not in nid: nid[k] = len(Y); Y.append(q[2]); P.append((q[0], q[1]))
+            if not ids or ids[-1] != nid[k]: ids.append(nid[k])
+        seqs[r['id']] = ids
+    tri = []
+    def add(p, i, n, lim):
+        h0, h1 = math.dist(P[p], P[i]), math.dist(P[i], P[n])
+        if h0 < 0.2 or h1 < 0.2: return
+        hm = (h0 + h1) / 2; ap, ai, an = 1 / (h0 * hm), -(1 / h0 + 1 / h1) / hm, 1 / (h1 * hm)
+        tri.append((p, i, n, lim, ap, ai, an, ap * ap + ai * ai + an * an))
+    for r in car:
+        ids, lim = seqs[r['id']], (K_LIM_STONE if r['roughness'] >= RC.STONE else K_LIM)
+        for t in range(1, len(ids) - 1): add(ids[t - 1], ids[t], ids[t + 1], lim)
+    thr = RC.through_pairs([{'id': r['id'], 'pts': S[r['id']]} for r in car])
+    rb_ = {r['id']: r for r in car}
+    for ra, sa, rb, sb in thr:
+        A, B = seqs[ra['id']], seqs[rb['id']]
+        if len(A) < 2 or len(B) < 2: continue
+        lim = min(K_LIM_STONE if rb_[x['id']]['roughness'] >= RC.STONE else K_LIM for x in (ra, rb))
+        add(A[1] if sa else A[-2], A[0] if sa else A[-1], B[1] if sb else B[-2], lim)
+    # 경사 상한: 2 m 떨어진 두 점 사이 ≤ 그 길 상한(돌길 grade · 그 밖 헤어핀 상한 18 %) — 원래 더 가팔랐던 길은 원래 값까지(나빠지지만 않게)
+    duo = []
+    for r in car:
+        ids = seqs[r['id']]; cap0 = r.get('grade') or G_PIN; j = 0
+        for t in range(len(ids)):
+            j = max(j, t)
+            while j < len(ids) - 1 and math.dist(P[ids[j]], P[ids[t]]) < 2: j += 1
+            d = math.dist(P[ids[j]], P[ids[t]])
+            if d >= 2: duo.append((ids[t], ids[j], d, max(cap0, abs(Y[ids[j]] - Y[ids[t]]) / d)))
+    Y0 = list(Y); it = 0
+    for it in range(it_max):
+        worst = 0.0
+        for a, b, d, cap in duo:
+            g = (Y[b] - Y[a]) / d
+            if g > cap: e = (g - cap) * d / 2; Y[b] -= e; Y[a] += e
+            elif g < -cap: e = (-cap - g) * d / 2; Y[b] += e; Y[a] -= e
+        for p, i, n, lim, ap, ai, an, ss in tri:
+            k = ap * Y[p] + ai * Y[i] + an * Y[n]
+            if k > lim: e = k - lim
+            elif k < -lim: e = k + lim
+            else: continue
+            if abs(e) > worst: worst = abs(e)
+            d = e / ss; Y[p] -= d * ap; Y[i] -= d * ai; Y[n] -= d * an
+        if worst < 2e-4: break
+    for r in car:
+        r['pts'] = [P[k] for k in seqs[r['id']]]
+    for k, q in enumerate(P): YN[KEY(q)] = Y[k]
+    on = defaultdict(list)
+    for r in car:
+        for k in set(seqs[r['id']]): on[k].append(r['id'])
+    JUNC[:] = [{'pos': [round(P[k][0], 2), round(P[k][1], 2)], 'y': round(Y[k], 3), 'roads': on[k]} for k in on if len(on[k]) >= 2]
+    mv = sorted(abs(a - b) for a, b in zip(Y, Y0))
+    return {'samples': len(Y), 'triples': len(tri), 'throughPairs': len(thr), 'iters': it + 1, 'worstLeft': round(worst, 5),
+            'moveP50': round(mv[len(mv) // 2], 3), 'moveP99': round(mv[int(len(mv) * .99)], 3), 'moveMax': round(mv[-1], 3), 'junctions': len(JUNC)}
+
+
 def car_nodes(pid=None):
     return [(q, r) for r in ROADS if r['kind'] in ('main', 'village') and (pid is None or r['piece'] == pid) for q in r['pts']]
 
@@ -986,9 +1187,10 @@ def main():
     tip = outer_roads()
     nseam, nloose = seams()
     stops = pick_stops(tip)
-    v6b = '--v6b' in sys.argv
-    TAG = 'v6b' if v6b else 'v6osm'
-    title = '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
+    v6e = '--v6e' in sys.argv
+    v6b = '--v6b' in sys.argv or v6e
+    TAG = 'v6e' if v6e else 'v6b' if v6b else 'v6osm'
+    title = '마을 v6e (겹친 길 정리 · 매끈한 높이)' if v6e else '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
     if debug:
         render(stops, os.path.join(OUT, f'town-{TAG}-debug.png'), title, True); return
     print('shortcuts', add_shortcuts(stops))
@@ -1018,7 +1220,11 @@ def main():
             extra['heights'] = solve_heights()
         extra['chains'] = chains
         extra['removed'] = clean_overlaps()
+        if v6e:
+            extra['overlapRounds'] = resolve_overlaps(stops)
         extra['heights'] = solve_heights()
+        if v6e:
+            extra['profile'] = smooth_profiles(); print('profile', extra['profile'], 'overlaps', len(OVL))
         build_cut_fill()
         print('heights', extra['heights'], 'removed', extra['removed'], 'seamfix', SEAMFIX)
     fun = fun_check(stops)
@@ -1044,7 +1250,8 @@ def main():
     roads = []
     for r in ROADS:
         o = {'id': r['id'], 'kind': r['kind'], 'width': r['width'], 'roughness': r['roughness'], 'closed': False,
-             'knots': [[round(q[0], 2), round(q[1], 2), round(YN.get(KEY(q), H2(*q)), 2)] for q in r['pts']], 'interp': 'linear',
+             'knots': [[round(q[0], 3), round(q[1], 3), round(YN.get(KEY(q), H2(*q)), 4)] if v6e and r['kind'] in ('main', 'village') else
+                       [round(q[0], 2), round(q[1], 2), round(YN.get(KEY(q), H2(*q)), 2)] for q in r['pts']], 'interp': 'linear',
              'source': {'piece': r['piece'], 'osm_way': r['osm'], 'highway': r['cls'], 'name': r['name'], 'surface': r['surface']}}
         if r['kind'] in ('alley', 'stairs'): o['terrainFollows'] = False
         if r.get('out'): o['out'] = r['out']
@@ -1052,7 +1259,7 @@ def main():
     cstep = 8 if v6b else 20     # v6b: 깎고 메운 길 띠(폭+30 m)가 격자에 남도록 8 m
     ctrl = [[x, z, round(H2(x, z), 1)] for x in range(-HALF, HALF + 1, cstep) for z in range(-HALF, HALF + 1, cstep)]
     plan = {
-        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
+        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0421 v6e)' if v6e else 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
                  'source': '© OpenStreetMap contributors (ODbL) + SRTM 30 m — docs/map/ATTRIBUTION.md',
                  'rhythmModel': '최고속 85 km/h · 가속 10.7 · 제동 8 m/s² · 굽이 √(5.82·R) + 요철 상한 가설 ROUGH_CAP',
                  'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어' + ('. 차길 knots y = 경사 상한(15 %/헤어핀 18 %) 매끈 높이, controlPoints = 길에 맞춰 깎고 메운 지형' if v6b else '')},
@@ -1066,9 +1273,11 @@ def main():
         'boundary': {'play': [[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF]]},
         'edits': EDITS, 'fun': fun, 'metrics': m,
         **({'v6b': {**extra, 'seamFix': SEAMFIX, 'looseEnds': LOOSE, 'removedBuildings': REMOVED}} if v6b else {}),
+        **({'v6e': {'overlaps': OVL, 'junctions': JUNC, 'profileFinal': True,
+                    'note': '차길 knots = 1 m 표본, y = 최종 노면 높이(경사 변화 ≤3 %/m · 돌길 ≤6 %/m, 갈림목 공유점 같은 높이). 빌더는 갈림목 판·경사 변화 반복 완화를 다시 하지 말 것'}} if v6e else {}),
     }
     json.dump(plan, open(os.path.join(OUT, f'town-{TAG}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    others, sheet_name = (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
+    others, sheet_name = (('town-v6b.png',), 'v6b-vs-v6e.png') if v6e else (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
     ims = [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others] + [img] if v6b else [img] + [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others]
     sm = 900 if v6b else 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
     for k, im in enumerate(ims): sheet.paste(im.resize((sm, sm), Image.Resampling.LANCZOS), (k * sm, 0))
