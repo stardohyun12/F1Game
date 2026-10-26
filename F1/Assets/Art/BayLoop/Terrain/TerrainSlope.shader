@@ -84,7 +84,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float d=deg+j;
     // 투영 면도 다듬은 경사로 고른다(삼각형마다 xz/측면 투영이 바뀌던 이음매 제거)
     float3 an=abs(n); float2 worldUV=(inRect?deg<60:an.y>.5)?i.pos.xz:(an.x>an.z?i.pos.zy:i.pos.xy);
-    half3 col;
+    half3 col; int gk=3;   // 2203: 땅 종류(PCGround — Look 5 에서만 늦가을 리맵)
     // 과제 1943: 포장 = 빌더가 G 에 구운 경계 거리(m)가 음수인 곳. 2m 칸 조각 대신 보간된 매끈한 경계, 땅 자체라 겹침 없음.
     //  큰 면 한 색 + 판석 줄눈(1/8m 텍셀 = 레트로 큰 텍셀) + 가장자리 30cm 테두리돌(살짝 어둡게)
     if(sg.g<0){
@@ -93,13 +93,14 @@ Shader "PitCrew/BayLoop/TerrainSlope"
      col=_PaveColor.rgb*(joint?.88:1)*(sg.g>-.35?.9:1);
     }
     else if(d>=_RockDeg||(sg.b>.5&&d>=26)) col=Tile(_TileRock,worldUV);   // 1943: 길가 깎은 면(B)은 26° 부터 바위
-    else if(d>=_DryDeg) col=Tile(_TileDry,worldUV);
+    else if(d>=_DryDeg) { col=Tile(_TileDry,worldUV); gk=2; }
     else {
-     col=Tile(_TileGrass,worldUV);
+     col=Tile(_TileGrass,worldUV); gk=0;
      float2 q=floor(i.pos.xz*32)/32*_PatchScale;   // 패치 경계를 텍셀(1/32m) 격자에 맞춘다 — 매끈한 곡선 대신 픽셀 계단
      float nz=vnoise(q)*.62+vnoise(q*2.6+float2(11.3,7.1))*.38;
-     if(_SoilAmount>0 && nz>_PatchThreshold) col=Tile(_TileSoil,worldUV);
+     if(_SoilAmount>0 && nz>_PatchThreshold) { col=Tile(_TileSoil,worldUV); gk=1; }
     }
+    if(sg.g>=0) col=PCGround(col,i.pos,gk);
     col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.pos.xz)); col=PCPost(col,i.pos,n);
     return half4(PCFog(col,i.pos,_FogColor.rgb,_FogStart,_FogEnd),1);
    }

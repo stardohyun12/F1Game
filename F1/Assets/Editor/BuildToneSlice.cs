@@ -74,6 +74,7 @@ public static class BuildToneSlice
     }
 
     // PS1 느낌 임시 사람(1.7m): 다리·몸·머리 박스. arm=true 면 오른팔을 어깨 피벗 자식으로(ToneSway 로 흔듦).
+    static Material blobMat;
     static Transform Person(Transform p, string n, Vector3 pos, Vector3 face, Material coat, Material legs, Material skin, Transform armParent = null)
     {
         var g = new GameObject(n).transform; g.SetParent(p, false);
@@ -82,11 +83,12 @@ public static class BuildToneSlice
         Box(g, "Body", new Vector3(0, 1.12f, 0), new Vector3(.46f, .6f, .3f), coat);
         Box(g, "Head", new Vector3(0, 1.56f, 0), new Vector3(.24f, .26f, .24f), skin);
         Box(g, "ArmL", new Vector3(-.3f, 1.1f, 0), new Vector3(.12f, .56f, .14f), coat);
-        g.localScale = Vector3.one * 1.15f;   // 2144: 1.7→1.95m·굵게 — 30~60m 에서 1× 실루엣이 읽히게
+        g.localScale = Vector3.one * 1.25f;   // 2144→2203: 1.7→2.1m·굵게 — 30~40m 에서 1× 실루엣이 읽히게
+        Box(g, "BlobShadow", new Vector3(0, .02f, 0), new Vector3(.95f, .02f, .7f), blobMat);   // 2203: 발밑 블롭 그림자(실시간 그림자 끔, 규칙 7)
         if (armParent != null)
         {
             var sh = new GameObject(n + "_Shoulder").transform; sh.SetParent(armParent, false);
-            sh.position = g.TransformPoint(new Vector3(.3f, 1.36f, 0)); sh.localScale = Vector3.one * 1.15f; sh.rotation = g.rotation * Quaternion.Euler(0, 0, 150f);   // 팔을 머리 위로
+            sh.position = g.TransformPoint(new Vector3(.3f, 1.36f, 0)); sh.localScale = Vector3.one * 1.25f; sh.rotation = g.rotation * Quaternion.Euler(0, 0, 150f);   // 팔을 머리 위로
             Box(sh, "ArmR", new Vector3(0, -.28f, 0), new Vector3(.12f, .56f, .14f), coat);
         }
         else Box(g, "ArmR", new Vector3(.3f, 1.1f, 0), new Vector3(.12f, .56f, .14f), coat);
@@ -148,9 +150,9 @@ public static class BuildToneSlice
         var gs = grass.gameObject.AddComponent<ToneSway>(); gs.amplitude = 7f; gs.frequency = .45f; gs.waveLength = 18f; gs.axis = Vector3.forward;
         log.Append($"grass={nGrass} ");
 
-        // ── 2) 비어 있는 쉼 자리: 1075 바다 쪽 어깨에 포장 판 + 벤치(바다를 봄) + 낮은 돌 경계. 아무도 없음.
+        // ── 2) 쉼 자리: 1095 바다 쪽 어깨에 포장 판 + 벤치(바다를 봄) + 낮은 돌 경계. 아무도 없음.
         {
-            int i = 1075; var f = Fwd(i); var s = Sea(i);
+            int i = 1095; var f = Fwd(i); var s = Sea(i);   // 2203: 1075 → 1095(1060 시점 35m 앞, 사람이 서는 쉼 자리)
             var p = c[i] + s * (hw + 3.2f); p.y = Gnd(p, root);
             var rest = new GameObject("RestSpot_Empty").transform; rest.SetParent(root, false);
             rest.position = p; rest.rotation = Quaternion.LookRotation(s);
@@ -172,20 +174,27 @@ public static class BuildToneSlice
             log.Append($"rest@{p:F0} ");
         }
 
-        // ── 4) 멀리 사람 3 — 모두 길에서 25m 넘게(가까이 마주침 없음, TONE 6)
+        // ── 4) 사람 3(2203): 30~40m 길가 쉼 자리 2명(동작 + 화면에서 가장 또렷한 작은 색 하나씩) + 진입 때 길가를 오가는 1명
+        blobMat = Mat("BlobShadow", new Color(.20f, .19f, .24f));
+        var red = Mat("CoatBrightRed", new Color(.88f, .14f, .10f)); var yellow = Mat("CoatBrightYellow", new Color(.98f, .80f, .14f)); var denim = Mat("CoatDenim", new Color(.30f, .42f, .62f));
         var swayArms = new GameObject("WavingArms").transform; swayArms.SetParent(root, false);
+        var laundryArms = new GameObject("LaundryArms").transform; laundryArms.SetParent(root, false);
         var laundrySway = new GameObject("LaundryCloths").transform; laundrySway.SetParent(root, false);
         {
-            // 4a) 빨래 너는 사람 + 빨래 줄: 육지 쪽 농가 근처(1060 에서 왼쪽 앞 50~60m)
-            // 1차: 농가 옆에 뒀더니 1060 시점 차 뒤쪽이라 안 보였음 → 진행 방향 앞, 육지 쪽 밭 위(1080, 22m)로. 1060 에서 약 45m 앞 왼쪽.
-            Vector3 lp = c[1095] - Sea(1095) * 12f;   // 2144: 1060 시점 35m 앞·12m 옆(1×에서 보이게)
-            lp.y = Gnd(lp, root);
-            var lf = Fwd(1070);
-            var line = new GameObject("LaundryLine").transform; line.SetParent(root, false); line.position = lp; line.rotation = Quaternion.LookRotation(lf);
+            // 4a) 쉼 자리 벤치 옆에 선 사람(빨강) — 길 쪽을 보고 손 흔듦
+            var rest = root.Find("RestSpot_Empty");
+            var wp = rest.TransformPoint(new Vector3(-2.4f, 0, .2f)); wp.y = Gnd(wp, root);
+            Person(root, "Person_Waving", wp, c[1088] - wp, red, trDark, skin, swayArms);
+            var ws = swayArms.gameObject.AddComponent<ToneSway>(); ws.amplitude = 28f; ws.frequency = .9f; ws.waveLength = 1f; ws.axis = Vector3.forward;
+            log.Append($"waver@{wp:F0} d={(wp - c[1060]).magnitude:F0}m ");
+
+            // 4b) 빨래 줄 + 너는 사람(노랑): 1100 육지 쪽 길가(길 끝에서 5m)
+            Vector3 lp = c[1100] - Sea(1100) * (hw + 5f); lp.y = Gnd(lp, root);
+            var line = new GameObject("LaundryLine").transform; line.SetParent(root, false); line.position = lp; line.rotation = Quaternion.LookRotation(Fwd(1100));
             Box(line, "PoleA", new Vector3(0, 1.0f, -2.4f), new Vector3(.1f, 2.0f, .1f), wood);
             Box(line, "PoleB", new Vector3(0, 1.0f, 2.4f), new Vector3(.1f, 2.0f, .1f), wood);
             Box(line, "Rope", new Vector3(0, 1.92f, 0), new Vector3(.06f, .06f, 4.8f), stone);   // 6cm: 더 가늘면 저해상도에서 끊겨 깜빡임
-            var cloths = new[] { clothW, clothR, clothB, clothW, clothY };
+            var cloths = new[] { clothW, clothB, clothW, clothW, clothB };   // 빨강·노랑은 사람 옷에만(가장 또렷한 작은 색)
             for (int k = 0; k < 5; k++)
             {
                 var piv = new GameObject("Cloth" + k).transform; piv.SetParent(laundrySway, false);
@@ -194,24 +203,65 @@ public static class BuildToneSlice
                 Box(piv, "Sheet", new Vector3(0, -h * .5f, 0), new Vector3(.04f, h, .7f), cloths[k]);
             }
             var ls = laundrySway.gameObject.AddComponent<ToneSway>(); ls.amplitude = 10f; ls.frequency = .5f; ls.waveLength = 6f; ls.axis = Vector3.forward;
-            Person(root, "Person_HangingLaundry", line.TransformPoint(new Vector3(.7f, 0, -2.9f)) + Vector3.up * 0f, -Sea(1070), coatWine, trDark, skin);
+            var hp = line.TransformPoint(new Vector3(-.7f, 0, 2.9f)); hp.y = Gnd(hp, root);
+            Person(root, "Person_HangingLaundry", hp, line.position - hp + line.right * -.5f, yellow, trDark, skin, laundryArms);
+            var la = laundryArms.gameObject.AddComponent<ToneSway>(); la.amplitude = 18f; la.frequency = .55f; la.waveLength = 1f; la.axis = Vector3.forward;
             log.Append($"laundry@{lp:F0} d={(lp - c[1060]).magnitude:F0}m ");
 
-            // 4b) 손 흔드는 사람: 바다 쪽 아래 둑길(1100, 바다 쪽 30m)에서 길을 올려다봄
-            // 물에 빠지지 않게: 30m 부터 안쪽으로 줄이며 해면(0.5m) 위 땅을 찾음
-            var wp = c[1120]; for (float d = 10f; d >= 6f; d -= 1f) { wp = c[1120] + Sea(1120) * d; wp.y = Gnd(wp, root); if (wp.y > .5f) break; }
-            Person(root, "Person_Waving", wp, c[1100] - wp, coatCream, trDark, skin, swayArms);   // 2144: 바다 앞 = 흰 옷
-            var ws = swayArms.gameObject.AddComponent<ToneSway>(); ws.amplitude = 28f; ws.frequency = .9f; ws.waveLength = 1f; ws.axis = Vector3.forward;
-            log.Append($"waver@{wp:F0} ");
+            // 4c) 진입 때 길가(육지 쪽 길 끝 3.5m)를 오가는 사람 — 1060 출발 시점에서 15~20m 앞
+            var walkP = c[1076] - Sea(1076) * (hw + 3.5f); walkP.y = Gnd(walkP, root);
+            var walker = Person(root, "Person_Walker", walkP, Fwd(1076), denim, trDark, skin);
+            var tw = walker.gameObject.AddComponent<ToneWalker>(); tw.dir = Fwd(1076); tw.span = 6f; tw.speed = .9f;
+            log.Append($"walker@{walkP:F0} d={(walkP - c[1060]).magnitude:F0}m ");
+        }
 
-            // 4c) 자전거 타는 사람(정지 자세, 이동은 다음 과제): 내리막 끝 앞쪽 1125 육지 쪽 30m — 1060 에서 보면 멀리 앞
-            var cp = c[1112] - Sea(1112) * 8f; cp.y = Gnd(cp, root);
-            var rider = Person(root, "Person_Cyclist", cp + Vector3.up * .35f, Fwd(1125), coatDark, trDark, skin);
-            var rb = new GameObject("Bike").transform; rb.SetParent(rider, false);
-            Box(rb, "WheelF", new Vector3(0, -.01f, .55f), new Vector3(.08f, .66f, .66f), iron, Quaternion.Euler(45f, 0, 0));
-            Box(rb, "WheelB", new Vector3(0, -.01f, -.55f), new Vector3(.08f, .66f, .66f), iron, Quaternion.Euler(45f, 0, 0));
-            Box(rb, "Frame", new Vector3(0, .3f, 0), new Vector3(.08f, .1f, 1.0f), bikeRed);
-            log.Append($"cyclist@{cp:F0} ");
+        // ── 7) 길 가장자리 세월(TONE 6, 2203): 낮은 돌 연석 줄(두 가지 회색, 이 빠짐) + 바깥 가장자리로 넘어오는 마른 풀
+        {
+            var kerbA = Mat("KerbStoneA", new Color(.64f, .62f, .58f)); var kerbB = Mat("KerbStoneB", new Color(.55f, .53f, .50f));
+            var kerb = new GameObject("KerbStones").transform; kerb.SetParent(root, false);
+            var edge = new GameObject("EdgeGrass").transform; edge.SetParent(root, false);
+            var er = new System.Random(2203); int nK = 0, nE = 0;
+            for (int i = I0; i <= I1; i++)
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    if (er.NextDouble() < .06) continue;   // 이 빠진 연석
+                    var kp = c[i] + Right(i) * side * (hw + .14f); kp.y = Gnd(kp, root) + .05f;
+                    if (Mathf.Abs(kp.y - c[i].y) > 1.5f) continue;
+                    var kb = Box(kerb, "Kerb", Vector3.zero, new Vector3(.24f, .14f, .9f), er.NextDouble() < .5 ? kerbA : kerbB);
+                    kb.transform.position = kp; kb.transform.rotation = Quaternion.LookRotation(Fwd(i)) * Quaternion.Euler(0, (float)(er.NextDouble() * 4 - 2), 0); nK++;
+                    if (er.NextDouble() < .45)
+                    {
+                        var gp = c[i] + Right(i) * side * (hw + 1.4f + (float)er.NextDouble() * 1.4f) + Fwd(i) * (float)(er.NextDouble() - .5); gp.y = Gnd(gp, root) - .03f;
+                        if (Mathf.Abs(gp.y - c[i].y) > 1.5f) continue;
+                        var g = new GameObject("EdgeClump"); g.transform.SetParent(edge, false);
+                        g.transform.position = gp; g.transform.rotation = Quaternion.Euler(0, (float)er.NextDouble() * 360f, 0);
+                        float sc = .45f + (float)er.NextDouble() * .3f; g.transform.localScale = new Vector3(sc, sc * .8f, sc);
+                        g.AddComponent<MeshFilter>().sharedMesh = clumps[er.Next(3)];
+                        g.AddComponent<MeshRenderer>().sharedMaterial = er.NextDouble() < .65 ? straw : olive; nE++;
+                    }
+                }
+            var eg = edge.gameObject.AddComponent<ToneSway>(); eg.amplitude = 5f; eg.frequency = .45f; eg.waveLength = 18f; eg.axis = Vector3.forward;
+            log.Append($"kerb={nK} edgeGrass={nE} ");
+        }
+
+        // ── 8) 가로등 불(2203): 구간 근처 가로등 머리 아래에 작은 등 상자 — ToneWindowGlow(노을·초저녁에 켜짐)
+        {
+            var lampOn = Mat("LampGlass", new Color(.40f, .40f, .38f)); int nL = 0;
+            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsSortMode.None))
+            {
+                if (t.name != "StreetLamp" || t.parent == null || t.parent.name != "Poles") continue;
+                bool near = false; for (int i = I0 - 20; i <= Mathf.Min(I1 + 20, c.Length - 1); i += 10) if ((t.position - c[i]).sqrMagnitude < 35f * 35f) { near = true; break; }
+                if (!near) continue;
+                var mf = t.GetComponentInChildren<MeshFilter>(); if (mf == null || mf.sharedMesh == null) continue;
+                var vs = mf.sharedMesh.vertices; var tr = mf.transform; float top = -1e9f;
+                foreach (var v in vs) top = Mathf.Max(top, tr.TransformPoint(v).y);
+                Vector3 head = t.position; float far = -1f;
+                foreach (var v in vs) { var w = tr.TransformPoint(v); if (w.y < top - .5f) continue; var dxz = new Vector2(w.x - t.position.x, w.z - t.position.z).magnitude; if (dxz > far) { far = dxz; head = w; } }
+                var g = Box(root, "LampGlow_" + nL, Vector3.zero, new Vector3(.34f, .12f, .34f), lampOn);
+                g.transform.position = new Vector3(head.x, top - .22f, head.z);
+                var tg = g.AddComponent<ToneWindowGlow>(); tg.off = new Color(.42f, .42f, .40f); tg.on = new Color(1.9f, 1.4f, .75f); nL++;
+            }
+            log.Append($"lamps={nL} ");
         }
 
         // ── 5) 창 불빛: 구간에서 보이는 집 3채, 길 쪽 벽 가운데 높이에 창 2장. 오후엔 어두운 유리, 노을·초저녁엔 켜짐.

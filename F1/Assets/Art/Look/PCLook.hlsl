@@ -15,6 +15,8 @@
 float _PCLook;
 float4 _PCFogColor, _PCFogParams, _PCLight, _PCSkyColor;   // _PCSkyColor = 하늘 위쪽 색(2144: 그늘 틴트에도 씀) · _PCFogParams = (시작 m, 끝 m, 최대 섞임, 그늘 면 배수 — 5b)
 float _PCSnapK, _PCKeep, _PCAffine, _PCField;  // _PCField = 1: 밭(라임 → 바랜 올리브/황토, 5b)           // 렌더러별(MaterialPropertyBlock): 스냅 배수(0=1px) · 1=손픽셀(차·사람 — 블러 제외, 규칙 12)
+float4 _PCSunDir, _PCSunGlow;   // 2203: 해 쪽 방향(월드, 해를 향함) · 해 쪽 지평선 금빛(a = 세기, 오후 0)
+float _PCSea;   // 2203 렌더러별: 1 = 바다(노을에 차가운 청보라 + 해 반사 띠)
 float _PCSnapOn, _PCMip;   // 5c 전역(PCLookScene): 정점 스냅 켬 · 1 = 밉맵 읽기(먼 곳 텍셀 크롤링 제거)
 SamplerState sampler_linear_clamp;
 int PCMode() { return (int)(_PCLook + 0.5); }
@@ -32,11 +34,29 @@ float4 PCSnap(float4 cs)
 half3 PCFog(half3 col, float3 wpos, float3 matFog, float s, float e)
 {
     float d = distance(wpos, _WorldSpaceCameraPos);
-    if (PCMode() == 5) return lerp(col, _PCFogColor.rgb, saturate((d - _PCFogParams.x) / max(1, _PCFogParams.y - _PCFogParams.x)) * _PCFogParams.z);
+    if (PCMode() == 5)
+    {
+        // 2203(TONE 4 노을 색 분리): 해 쪽을 보면 금빛, 반대쪽은 안개색(노을 = 라벤더) — 먼 산이 라벤더로 녹는다
+        float3 fc = lerp(_PCFogColor.rgb, _PCSunGlow.rgb, pow(saturate(dot((wpos - _WorldSpaceCameraPos) / max(d, 1e-3), _PCSunDir.xyz)), 8) * _PCSunGlow.a);   // 3→8: 해 쪽 좁게, 먼 산은 라벤더
+        return lerp(col, fc, saturate((d - _PCFogParams.x) / max(1, _PCFogParams.y - _PCFogParams.x)) * _PCFogParams.z);
+    }
     return lerp(col, matFog, saturate((d - s) / max(1, e - s)));
 }
 float pcHash(float2 p) { p = frac(p * float2(123.34, 345.45)); p += dot(p, p + 34.345); return frac(p.x * p.y); }
 float pcNoise(float2 p) { float2 i = floor(p), f = frac(p); f = f * f * (3 - 2 * f); return lerp(lerp(pcHash(i), pcHash(i + float2(1, 0)), f.x), lerp(pcHash(i + float2(0, 1)), pcHash(i + 1), f.x), f.y); }
+
+// 2203(TONE 5 바랜 가을색): Look 5 땅(TerrainSlope) 늦가을 리맵. kind 0 풀 · 1 흙(그루터기) · 2 마른 풀 · 3 바위(그대로)
+//  아틀라스 풀 칸의 짙은 녹색·줄무늬 → 밝기를 .30 쪽으로 60% 당겨 줄을 약하게, 색은 옅은 올리브 ↔ 바랜 황금(월드 저주파 얼룩)
+half3 PCGround(half3 col, float3 wpos, int kind)
+{
+    if (PCMode() != 5 || kind == 3) return col;
+    half L = dot(col, half3(.299, .587, .114));
+    half Lm = lerp(L, kind == 1 ? .27 : .30, .6);
+    float nz = pcNoise(wpos.xz * .05 + 2.1) * .65 + pcNoise(wpos.xz * .19 + 5.3) * .35;
+    half3 olive = half3(.92, 1.0, .64), straw = half3(1.20, 1.0, .56), stub = half3(1.12, .95, .74);
+    half3 t = kind == 1 ? stub : lerp(olive, straw, saturate((nz - (kind == 2 ? .15 : .40)) * 2.2));
+    return Lm * t;
+}
 
 // 아틀라스 읽기. ts = _MainTex_TexelSize, rect = 이 칸 uv 범위(xy 최소, zw 최대) — 탭이 이웃 칸으로 새지 않게 가둔다
 half3 PCTex(TEXTURE2D_PARAM(tex, samp), float2 uv, float4 ts, float4 rect)
@@ -142,6 +162,14 @@ half3 PCPost(half3 col, float3 wpos, float3 n)
             float nearK = 1 - saturate((distance(wpos, _WorldSpaceCameraPos) - 25) / 35);
             col = lerp(dot(col, half3(.299, .587, .114)), col, lerp(.64, .86, nearK));   // 규칙 4: 세계 채도 (5b 측정: ×0.6 → 장면 0.05~0.10, ×0.8 → 0.18~0.24; 목표 0.12~0.18)
             col = max(0, (col - .18) * (1 + .10 * nearK) + .18);
+            if (_PCSea > .5 && _PCSunGlow.a > 0)
+            {
+                // 2203: 노을 바다 = 차가운 청보라 + 해 쪽 반사 띠(정지 — 반짝임 없음, D-149)
+                half Ls = dot(col, half3(.299, .587, .114));
+                col = lerp(col, Ls * half3(.80, .82, 1.30), .65 * _PCSunGlow.a);
+                float3 v = normalize(wpos - _WorldSpaceCameraPos); float3 rf = reflect(v, float3(0, 1, 0));
+                col += _PCSunGlow.rgb * pow(saturate(dot(rf, _PCSunDir.xyz)), 18) * .9 * _PCSunGlow.a;
+            }
             // 규칙 3 "평평 금지": 0.3~1.5m 월드 얼룩 ±5%(텍스처 없는 도로·단색 면도 저주파 std 3 이상)
             float3 an = abs(n); float2 p = an.y > .5 ? wpos.xz : (an.x > an.z ? wpos.zy : wpos.xy);
             col *= 1 + (pcNoise(p * 1.3) * .55 + pcNoise(p * .45 + 3.7) * .45 - .5) * .10;

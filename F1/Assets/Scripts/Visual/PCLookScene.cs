@@ -22,19 +22,22 @@ public sealed class PCLookScene : MonoBehaviour
     // 시간대 표(규칙 6). fog = 무드 안개색(MoodSwitcher BuildDayProfiles 와 같은 값, 가까운 줄을 고르는 열쇠), s/e = 선형 안개 m, max = 최대 섞임(원경 실루엣이 70~85% 로 남게),
     // light = 면 밝기(그늘 쪽 = ×0.87), pool = 빛 웅덩이 세기. 오후는 D-146 "어둡고 탁함 금지" → 가장 밝고 안개 최대 .7 로 연하게(가설).
     // 5b(D-148 밝고 맑게): sky = 하늘 꼭대기 색(지평선은 fog), shade = 그늘 면 배수(해 쪽 대비 차 20~28%). 안개는 시작을 2배 멀리·최대 섞임 ↓ → 원경까지 대비가 남는다.
-    struct Tod { public Color fog, sky; public float s, e, max, shade; public Color light; public float pool; }
+    // 2203: fog 는 "열쇠"(무드 에셋 fogColor 와 같아야 이 줄이 골린다) — 실제 안개색을 바꾸려면 haze(a>0 이면 무드 색 대신), glow = 해 쪽 지평선 금빛(a = 세기).
+    struct Tod { public Color fog, sky; public float s, e, max, shade; public Color light; public float pool; public Color haze, glow; }
     static readonly Tod[] Table =
     {
         new Tod { fog = new Color(0.88f, 0.90f, 0.92f), sky = new Color(0.60f, 0.72f, 0.86f), s = 35, e = 380, max = .62f, shade = .78f, light = new Color(1.30f, 1.30f, 1.30f), pool = 0f },    // 아침
         new Tod { fog = new Color(0.80f, 0.88f, 0.96f), sky = new Color(0.44f, 0.62f, 0.86f), s = 40, e = 600, max = .55f, shade = .75f, light = new Color(1.34f, 1.32f, 1.28f), pool = 0f },    // 오후 (2144: 헤이즈 40m 부터·근경 흰 날림 줄이게 빛 -4%)
         // 2124(D-150 TONE 4 「돌아오는 길 × 노을」): 안개 주황 ↓·시작 멀리·최대 ↓ → 근경 또렷, 바다 회청색 남음. 그늘 .72→.64 → 따뜻한 면/차가운 그늘 대비.
-        new Tod { fog = new Color(1.00f, 0.78f, 0.52f), sky = new Color(0.60f, 0.56f, 0.74f), s = 40, e = 620, max = .55f, shade = .70f, light = new Color(1.42f, 1.20f, 0.96f), pool = .7f },   // 노을 (2144: 지평선 금빛·위 라벤더, 그늘은 하늘 보라 틴트)
+        new Tod { fog = new Color(0.96f, 0.76f, 0.62f), sky = new Color(0.50f, 0.52f, 0.74f), s = 40, e = 620, max = .55f, shade = .66f, light = new Color(1.46f, 1.18f, 0.90f), pool = .7f,
+                  haze = new Color(0.78f, 0.70f, 0.82f, 1f), glow = new Color(1.00f, 0.72f, 0.40f, 1f) },   // 노을 (2203: 열쇠를 Sunset_Backlight 값으로 되돌림 — 2124·2144 의 fog 변경은 열쇠만 바꿔 화면엔 안 먹었음. 안개 = 라벤더, 해 쪽만 금빛, 그늘은 하늘 보라 틴트)
         new Tod { fog = new Color(0.40f, 0.46f, 0.66f), sky = new Color(0.16f, 0.21f, 0.42f), s = 30, e = 240, max = .75f, shade = .80f, light = new Color(0.68f, 0.73f, 0.90f), pool = 1f },    // 초저녁
     };
 
     static readonly int LookId = Shader.PropertyToID("_PCLook"), FogCId = Shader.PropertyToID("_PCFogColor"), FogPId = Shader.PropertyToID("_PCFogParams"),
         LightId = Shader.PropertyToID("_PCLight"), PoolId = Shader.PropertyToID("_PCPool"), SnapId = Shader.PropertyToID("_PCSnapK"), KeepId = Shader.PropertyToID("_PCKeep"),
-        SkyId = Shader.PropertyToID("_PCSkyColor"), FieldId = Shader.PropertyToID("_PCField");
+        SkyId = Shader.PropertyToID("_PCSkyColor"), FieldId = Shader.PropertyToID("_PCField"),
+        SunDirId = Shader.PropertyToID("_PCSunDir"), SunGlowId = Shader.PropertyToID("_PCSunGlow"), SeaId = Shader.PropertyToID("_PCSea");
 
     public Color FogColor { get; private set; }
     public Shader skyShader;
@@ -121,6 +124,18 @@ public sealed class PCLookScene : MonoBehaviour
             float w = 1f / ((d + 1e-4f) * (d + 1e-4f));
             ws += w; s += t.s * w; e += t.e * w; mx += t.max * w; sh += t.shade * w; li += t.light * w; sky += t.sky * w; pool += t.pool * w;
         }
+        // 2203: haze 를 준 줄은 무드 안개색 대신 그 색(가중 섞기 — 이웃 줄은 무드 색)
+        Color hz = Color.clear, gl = Color.clear; float hw = 0;
+        foreach (var t in Table)
+        {
+            float d = (t.fog.r - fc.r) * (t.fog.r - fc.r) + (t.fog.g - fc.g) * (t.fog.g - fc.g) + (t.fog.b - fc.b) * (t.fog.b - fc.b);
+            float w = 1f / ((d + 1e-4f) * (d + 1e-4f)) / ws;
+            hz += (t.haze.a > 0 ? t.haze : fc) * w; gl += t.glow * w; hw += w;
+        }
+        fc = hz / hw; fc.a = 1; FogColor = fc;
+        var sl = sun != null ? sun : RenderSettings.sun;
+        Shader.SetGlobalVector(SunDirId, sl != null ? -sl.transform.forward : Vector3.up);
+        Shader.SetGlobalVector(SunGlowId, new Vector4(gl.linear.r, gl.linear.g, gl.linear.b, gl.a / hw));
         Shader.SetGlobalColor(FogCId, fc.linear);   // 전역 색은 Linear 변환을 안 해 준다(머티리얼 색과 달리) — 빼면 안개가 0.40→170 으로 떠서 하늘(배경)과 갈린다
         Shader.SetGlobalColor(SkyId, (sky / ws).linear);
         Shader.SetGlobalFloat(SnapOnId, vertexSnap ? 1 : 0);
@@ -146,9 +161,10 @@ public sealed class PCLookScene : MonoBehaviour
             var ext = r.bounds.size; bool small = Mathf.Max(ext.x, Mathf.Max(ext.y, ext.z)) < 2f;
             float k = on && (person || small || isCar) ? 2f : 0f, keep = on && (person || isCar) ? 1f : 0f;
             float field = on && r.sharedMaterial.name.StartsWith("BL_Field") ? 1f : 0f;   // 5b: 라임 밭 → 바랜 올리브/황토
+            float sea = on && r.sharedMaterial.name == "BL_Sea" ? 1f : 0f;   // 2203: 노을 바다 청보라 + 해 반사
             r.GetPropertyBlock(mpb);
-            if (Mathf.Approximately(mpb.GetFloat(SnapId), k) && Mathf.Approximately(mpb.GetFloat(KeepId), keep) && Mathf.Approximately(mpb.GetFloat(FieldId), field)) continue;
-            mpb.SetFloat(SnapId, k); mpb.SetFloat(KeepId, keep); mpb.SetFloat(FieldId, field); r.SetPropertyBlock(mpb);
+            if (Mathf.Approximately(mpb.GetFloat(SnapId), k) && Mathf.Approximately(mpb.GetFloat(KeepId), keep) && Mathf.Approximately(mpb.GetFloat(FieldId), field) && Mathf.Approximately(mpb.GetFloat(SeaId), sea)) continue;
+            mpb.SetFloat(SnapId, k); mpb.SetFloat(KeepId, keep); mpb.SetFloat(FieldId, field); mpb.SetFloat(SeaId, sea); r.SetPropertyBlock(mpb);
         }
     }
 
