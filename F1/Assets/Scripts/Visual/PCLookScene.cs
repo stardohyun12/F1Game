@@ -16,7 +16,7 @@ public sealed class PCLookScene : MonoBehaviour
     [Tooltip("0 Current · 1 Clean · 2 Painterly · 3 Pixel-Soft · 4 Retro-Clean · 5 EDC-PS1")]
     public int look;
     public Shader discShader;
-    public int lowResHeight = 270;
+    public int lowResHeight = 540;
     public float animFps = 12f;
 
     // 시간대 표(규칙 6). fog = 무드 안개색(MoodSwitcher BuildDayProfiles 와 같은 값, 가까운 줄을 고르는 열쇠), s/e = 선형 안개 m, max = 최대 섞임(원경 실루엣이 70~85% 로 남게),
