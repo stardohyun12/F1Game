@@ -1,0 +1,26 @@
+[
+  {
+    "name": "V5 combo32",
+    "path": "art/_review/2026-10-27-scene-a-v5-combo/game_1080.png",
+    "face_uniform_frac": 0.4212678103310107,
+    "face_std_median": 2.418494754232331,
+    "empty_cell_frac_bottom": 0.3125,
+    "val_p5_p95": 0.6509803921568628
+  },
+  {
+    "name": "V5 prequantization",
+    "path": "art/_review/2026-10-27-scene-a-v5-combo/game_raw_bake_1080.png",
+    "face_uniform_frac": 0.29281049054410857,
+    "face_std_median": 2.492166387911231,
+    "empty_cell_frac_bottom": 0.3,
+    "val_p5_p95": 0.6470588235294118
+  },
+  {
+    "name": "V4 baked24",
+    "path": "art/_review/2026-10-27-scene-a-v4-baked/game_1080.png",
+    "face_uniform_frac": 0.7028449680411079,
+    "face_std_median": 0.0,
+    "empty_cell_frac_bottom": 0.35,
+    "val_p5_p95": 0.6470588235294118
+  }
+]

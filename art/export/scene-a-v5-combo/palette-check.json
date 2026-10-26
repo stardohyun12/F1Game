@@ -1,0 +1,13 @@
+{
+  "global_palette_colors": 32,
+  "dither": false,
+  "texture_colors": {
+    "garage": 28,
+    "kart": 28,
+    "ground": 24,
+    "dirt": 23,
+    "quay": 18,
+    "sea": 6,
+    "props": 31
+  }
+}
