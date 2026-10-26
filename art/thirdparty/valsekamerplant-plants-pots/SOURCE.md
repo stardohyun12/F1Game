@@ -1,0 +1,11 @@
+# PSX style house plants and pots
+- 출처: https://valsekamerplant.itch.io/psx-style-house-plants-and-pots
+- 제작자: valsekamerplant
+- 라이선스: CC0
+- 원문: "These assets are free to use in any project, commercial or non-commercial and have been released under the CC0..." · "the textures come from photos i took from my plants and pots."
+- AI 표기: Content: "No generative AI was used" + "No AI"
+- 출시/등재: 2024-04 (첫 댓글 2024-04-25)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: glb 10
+- 원래 축척: 실물(화분 0.3m)
+- 우리 적합도: 상

@@ -1,0 +1,12 @@
+# PS1 styled barrels
+- 출처: https://xiiixvv.itch.io/ps1-styled-barrels
+- 제작자: xiiixvv
+- 라이선스: 상업 사용 가능(명시 라이선스 없음) + Textures.com/Pixabay 텍스처
+- 원문: "a pair of 3d models of metal barrels made in a PS1/PSX style that can be used for commercial or personal purposes." · "These assets use textures or modified versions of textures from ... textures.com ... pixabay"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2021-03 (첫 댓글 2021-03-23)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: glb 2 + atlas png 2
+- 원래 축척: 높이 2m → ×0.45
+- 우리 적합도: 중
+- 메모: CC0 표기는 아님(Miziziziz 컬렉션 등재). Textures.com 조건(원본 재배포 금지) 따름.

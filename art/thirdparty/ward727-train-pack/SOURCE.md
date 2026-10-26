@@ -1,0 +1,11 @@
+# Train Pack 1.0
+- 출처: https://ward727.itch.io/train-pack
+- 제작자: Ward727
+- 라이선스: CC0
+- 원문: 팩 License.txt: "License - Creative Commons Zero, CC0 ... free to use in personal projects..." · 페이지 "available free and CC0 (free to use in commercial, personal and educational projects)"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2024-03-31 (License.txt "Date of creation")
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: 전신주(electic_line)·컨테이너 4·탱크 fbx + 팔레트 png 2
+- 원래 축척: 장난감 축척(컨테이너 0.75m) → ×8
+- 우리 적합도: 중

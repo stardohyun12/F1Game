@@ -1,0 +1,12 @@
+# PS1 style industrial buildings
+- 출처: https://nartier.itch.io/ps1-style-industrial-buildings
+- 제작자: miziziziz
+- 라이선스: CC0(모델) + Textures.com(텍스처)
+- 원문: "license on models is cc0 textures are from textures.com and use their licensing ... These images may not be redistributed by default"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2022-12 이전(첫 댓글 2022-12-13)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: glb 5 + png 4 (blend 제외)
+- 원래 축척: 실물(정면 판 8×8m, 길 4m)
+- 우리 적합도: 중
+- 메모: 텍스처는 Textures.com 조건: 게임 안 사용 OK, 원본 텍스처 단독 재배포 금지 → 리포 공개 시 주의. 정면 판(facade)만 있음.

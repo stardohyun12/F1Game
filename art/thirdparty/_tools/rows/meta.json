@@ -1,0 +1,1523 @@
+[
+ {
+  "label": "kenney-retro-urban-kit",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row00.png",
+  "w": 901,
+  "h": 102,
+  "labels": [
+   [
+    "wall-a-garage",
+    76,
+    76
+   ],
+   [
+    "wall-a-flat-garage",
+    132,
+    76
+   ],
+   [
+    "wall-b-door",
+    187,
+    76
+   ],
+   [
+    "wall-a-roof",
+    250,
+    76
+   ],
+   [
+    "detail-awning-wide",
+    308,
+    76
+   ],
+   [
+    "truck-green",
+    368,
+    76
+   ],
+   [
+    "truck-grey-cargo",
+    432,
+    76
+   ],
+   [
+    "detail-light-single",
+    476,
+    76
+   ],
+   [
+    "detail-light-double",
+    503,
+    76
+   ],
+   [
+    "detail-bench",
+    538,
+    76
+   ],
+   [
+    "detail-dumpster-closed",
+    580,
+    76
+   ],
+   [
+    "pallet",
+    633,
+    76
+   ],
+   [
+    "detail-cables-type-a",
+    688,
+    76
+   ],
+   [
+    "tree-large",
+    749,
+    76
+   ],
+   [
+    "tree-small",
+    814,
+    76
+   ],
+   [
+    "tree-shrub",
+    867,
+    76
+   ]
+  ],
+  "report": [
+   [
+    "kenney-retro-urban-kit/Models/GLB format/wall-a-garage.glb",
+    "native L1.00 W1.00 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/wall-a-flat-garage.glb",
+    "native L1.00 W0.10 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/wall-b-door.glb",
+    "native L1.00 W1.00 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/wall-a-roof.glb",
+    "native L1.00 W1.00 H0.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-awning-wide.glb",
+    "native L1.00 W0.30 H0.28",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/truck-green.glb",
+    "native L1.64 W0.83 H1.01",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/truck-grey-cargo.glb",
+    "native L1.17 W0.83 H0.74",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-light-single.glb",
+    "native L0.26 W0.09 H0.96",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-light-double.glb",
+    "native L0.44 W0.09 H0.96",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-bench.glb",
+    "native L0.60 W0.32 H0.41",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-dumpster-closed.glb",
+    "native L0.60 W0.45 H0.54",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/pallet.glb",
+    "native L1.00 W1.00 H0.15",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/detail-cables-type-a.glb",
+    "native L1.00 W0.00 H0.14",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/tree-large.glb",
+    "native L1.30 W1.30 H1.70",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/tree-small.glb",
+    "native L0.78 W0.78 H0.30",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "kenney-retro-urban-kit/Models/GLB format/tree-shrub.glb",
+    "native L0.78 W0.78 H0.30",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   76
+  ]
+ },
+ {
+  "label": "chillydurango-shacks-sheds",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row01.png",
+  "w": 1693,
+  "h": 387,
+  "labels": [
+   [
+    "Large Shed A",
+    290,
+    287
+   ],
+   [
+    "Large Shed B",
+    783,
+    287
+   ],
+   [
+    "Leanto A",
+    1105,
+    287
+   ],
+   [
+    "Shack A",
+    1290,
+    287
+   ],
+   [
+    "Barrel",
+    1426,
+    287
+   ],
+   [
+    "Pallet",
+    1483,
+    287
+   ],
+   [
+    "Concrete Barricade",
+    1556,
+    287
+   ],
+   [
+    "Chainlink Fence",
+    1642,
+    287
+   ]
+  ],
+  "report": [
+   [
+    "chillydurango-shacks-sheds/Large Shed A.blend",
+    "native L14.32 W8.80 H6.20",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-shacks-sheds/Large Shed B.blend",
+    "native L14.32 W8.80 H5.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-shacks-sheds/Leanto A.blend",
+    "native L3.57 W2.12 H3.06",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "chillydurango-shacks-sheds/Shack A.blend",
+    "native L6.25 W3.57 H3.06",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "chillydurango-shacks-sheds/Barrel.blend",
+    "native L0.80 W0.69 H0.90",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-shacks-sheds/Pallet.blend",
+    "native L1.20 W0.90 H0.10",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-shacks-sheds/Concrete Barricade.blend",
+    "native L2.00 W0.50 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-shacks-sheds/Chainlink Fence.blend",
+    "native L2.46 W0.12 H2.50",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   287
+  ]
+ },
+ {
+  "label": "miziziziz-ps1-industrial-buildings",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row02.png",
+  "w": 880,
+  "h": 324,
+  "labels": [
+   [
+    "BrickBuilding",
+    167,
+    280
+   ],
+   [
+    "IndustrialBuilding",
+    412,
+    280
+   ],
+   [
+    "Road",
+    630,
+    280
+   ],
+   [
+    "SideWalk",
+    800,
+    280
+   ]
+  ],
+  "report": [
+   [
+    "miziziziz-ps1-industrial-buildings/BrickBuilding.glb",
+    "native L8.00 W0.33 H8.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "miziziziz-ps1-industrial-buildings/IndustrialBuilding.glb",
+    "native L8.00 W0.07 H8.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "miziziziz-ps1-industrial-buildings/Road.glb",
+    "native L4.00 W4.00 H0.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "miziziziz-ps1-industrial-buildings/SideWalk.glb",
+    "native L4.00 W1.00 H0.10",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   280
+  ]
+ },
+ {
+  "label": "chillydurango-plumbing-wiring",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row03.png",
+  "w": 302,
+  "h": 111,
+  "labels": [
+   [
+    "Generator",
+    90,
+    80
+   ],
+   [
+    "Transformer",
+    162,
+    80
+   ],
+   [
+    "Circuit Breaker",
+    202,
+    80
+   ],
+   [
+    "Pump",
+    241,
+    80
+   ],
+   [
+    "Switch",
+    281,
+    80
+   ]
+  ],
+  "report": [
+   [
+    "chillydurango-plumbing-wiring/Generator.blend",
+    "native L2.61 W1.13 H1.67",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-plumbing-wiring/Transformer.blend",
+    "native L0.89 W0.64 H1.67",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-plumbing-wiring/Circuit Breaker.blend",
+    "native L0.40 W0.16 H0.30",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "chillydurango-plumbing-wiring/Pump.blend",
+    "native L0.84 W0.50 H0.39",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "chillydurango-plumbing-wiring/Switch.blend",
+    "native L0.50 W0.05 H0.20",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   80
+  ]
+ },
+ {
+  "label": "valsekamerplant-urban-stacked",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row04.png",
+  "w": 2106,
+  "h": 779,
+  "labels": [
+   [
+    "Hangar1",
+    278,
+    648
+   ],
+   [
+    "flat_square_brick",
+    893,
+    648
+   ],
+   [
+    "busstop_clean_bench",
+    1349,
+    648
+   ],
+   [
+    "dumpster_diagonal_closed_blue",
+    1491,
+    648
+   ],
+   [
+    "metaltrashcan_closed",
+    1586,
+    648
+   ],
+   [
+    "trash_can_full",
+    1643,
+    648
+   ],
+   [
+    "light",
+    1696,
+    648
+   ],
+   [
+    "light_top",
+    1741,
+    648
+   ],
+   [
+    "street_light",
+    1808,
+    648
+   ],
+   [
+    "street_light_clean",
+    1895,
+    648
+   ],
+   [
+    "traffic_ligh_pole_L",
+    1988,
+    648
+   ],
+   [
+    "traffic_light",
+    2068,
+    648
+   ]
+  ],
+  "report": [
+   [
+    "valsekamerplant-urban-stacked/Buildings Prebuild/Hangar1.glb",
+    "native L11.57 W8.00 H5.30",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Buildings Prebuild/flat_square_brick.glb",
+    "native L17.00 W17.00 H17.00",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Bus stops/busstop_clean_bench.glb",
+    "native L4.26 W2.26 H3.08",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Litter/Dumpsters/dumpster_diagonal_closed_blue.glb",
+    "native L3.67 W2.03 H1.89",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Litter/Metal trashcan/metaltrashcan_closed.glb",
+    "native L0.88 W0.76 H0.94",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Litter/TrashCan/trash_can_full.glb",
+    "native L1.03 W0.78 H2.10",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/light.glb",
+    "native L0.73 W0.37 H1.12",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/light_top.glb",
+    "native L0.73 W0.37 H1.12",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/street_light.glb",
+    "native L2.06 W0.71 H6.61",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/street_light_clean.glb",
+    "native L2.06 W0.71 H6.61",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/traffic_ligh_pole_L.glb",
+    "native L3.56 W0.80 H5.66",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-urban-stacked/Traffic lights/traffic_light.glb",
+    "native L1.07 W0.80 H5.66",
+    "scale=1",
+    "notex=1"
+   ]
+  ],
+  "bar": [
+   22,
+   648
+  ]
+ },
+ {
+  "label": "valsekamerplant-fences/barriers/plants",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row05.png",
+  "w": 854,
+  "h": 99,
+  "labels": [
+   [
+    "gate",
+    69,
+    73
+   ],
+   [
+    "metal_fence_gate_with_gate",
+    119,
+    73
+   ],
+   [
+    "metalfence_both_sides_no_topbar",
+    193,
+    73
+   ],
+   [
+    "metalfence_both_sides_topbar",
+    287,
+    73
+   ],
+   [
+    "metalfence_gate_only_sides",
+    361,
+    73
+   ],
+   [
+    "metalfence_one_side_no_topbar",
+    435,
+    73
+   ],
+   [
+    "Construction_cone",
+    506,
+    73
+   ],
+   [
+    "Jersey_barrier_dirty",
+    581,
+    73
+   ],
+   [
+    "retro_bollard",
+    648,
+    73
+   ],
+   [
+    "pot",
+    683,
+    73
+   ],
+   [
+    "pot3",
+    720,
+    73
+   ],
+   [
+    "Bird_of_paradise_cluster_1",
+    767,
+    73
+   ],
+   [
+    "sanseveria",
+    822,
+    73
+   ]
+  ],
+  "report": [
+   [
+    "valsekamerplant-fences/Fences/metal_fence/gate.glb",
+    "native L1.03 W0.05 H1.25",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-fences/Fences/metal_fence/metal_fence_gate_with_gate.glb",
+    "native L1.19 W0.04 H1.67",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-fences/Fences/metal_fence/metalfence_both_sides_no_topbar.glb",
+    "native L2.70 W0.04 H1.67",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-fences/Fences/metal_fence/metalfence_both_sides_topbar.glb",
+    "native L2.70 W0.04 H1.67",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-fences/Fences/metal_fence/metalfence_gate_only_sides.glb",
+    "native L1.19 W0.04 H1.67",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-fences/Fences/metal_fence/metalfence_one_side_no_topbar.glb",
+    "native L2.69 W0.04 H1.67",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "valsekamerplant-barriers/Cones & Barriers/Cones/Construction_cone.glb",
+    "native L0.73 W0.63 H0.76",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "valsekamerplant-barriers/Cones & Barriers/Concrete Barriers/Jersey_barrier_dirty.glb",
+    "native L2.48 W0.81 H1.14",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "valsekamerplant-barriers/Cones & Barriers/Bollards/retro_bollard.glb",
+    "native L0.34 W0.30 H1.30",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "valsekamerplant-plants-pots/pots & plants/Pots/pot.glb",
+    "native L0.47 W0.41 H0.34",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-plants-pots/pots & plants/Pots/pot3.glb",
+    "native L0.36 W0.36 H0.27",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-plants-pots/pots & plants/Plants/Bird_of_paradise_cluster_1.glb",
+    "native L1.57 W0.57 H1.33",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "valsekamerplant-plants-pots/pots & plants/Plants/sanseveria.glb",
+    "native L0.72 W0.69 H0.99",
+    "scale=1",
+    "notex=1"
+   ]
+  ],
+  "bar": [
+   22,
+   73
+  ]
+ },
+ {
+  "label": "elegantcrow-retro-house-pack",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row06.png",
+  "w": 2197,
+  "h": 368,
+  "labels": [
+   [
+    "house1",
+    292,
+    269
+   ],
+   [
+    "house2",
+    739,
+    269
+   ],
+   [
+    "house3",
+    1131,
+    269
+   ],
+   [
+    "house4",
+    1543,
+    269
+   ],
+   [
+    "house5",
+    1976,
+    269
+   ]
+  ],
+  "report": [
+   [
+    "elegantcrow-retro-house-pack/models/fbx/house1.fbx",
+    "native L14.15 W9.05 H5.60",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-house-pack/models/fbx/house2.fbx",
+    "native L9.00 W8.00 H5.60",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-house-pack/models/fbx/house3.fbx",
+    "native L11.80 W6.48 H5.60",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-house-pack/models/fbx/house4.fbx",
+    "native L12.20 W8.00 H5.60",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-house-pack/models/fbx/house5.fbx",
+    "native L10.00 W8.30 H5.60",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   269
+  ]
+ },
+ {
+  "label": "elegantcrow-modular-house-pack",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row07.png",
+  "w": 802,
+  "h": 149,
+  "labels": [
+   [
+    "wall_0.5x1",
+    69,
+    122
+   ],
+   [
+    "wall_1x1",
+    120,
+    122
+   ],
+   [
+    "wall_1x2",
+    183,
+    122
+   ],
+   [
+    "wall_2x1",
+    247,
+    122
+   ],
+   [
+    "roof_01_L",
+    322,
+    122
+   ],
+   [
+    "roof_01_R",
+    420,
+    122
+   ],
+   [
+    "roof_01_middle",
+    521,
+    122
+   ],
+   [
+    "door_single_01",
+    612,
+    122
+   ],
+   [
+    "stair_medium_01",
+    696,
+    122
+   ],
+   [
+    "foundation",
+    768,
+    122
+   ]
+  ],
+  "report": [
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_0.5x1.fbx",
+    "native L1.00 W0.20 H0.60",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_1x1.fbx",
+    "native L1.00 W0.20 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_1x2.fbx",
+    "native L2.00 W0.20 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_2x1.fbx",
+    "native L1.00 W0.20 H2.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/roofs/roof_01/roof_01_L.fbx",
+    "native L2.50 W0.60 H2.70",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/roofs/roof_01/roof_01_R.fbx",
+    "native L2.50 W0.60 H2.70",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/roofs/roof_01/roof_01_middle.fbx",
+    "native L2.50 W1.00 H2.70",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/doors/single_doors/door_single_01.fbx",
+    "native L2.00 W0.20 H3.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/misc/stairs/stair_medium_01.fbx",
+    "native L2.00 W1.00 H3.20",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/floors/foundation/foundation.fbx",
+    "native L1.00 W0.40 H0.99",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   122
+  ]
+ },
+ {
+  "label": "elegantcrow-retro-nature-pack",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row08.png",
+  "w": 1660,
+  "h": 237,
+  "labels": [
+   [
+    "tree01",
+    127,
+    206
+   ],
+   [
+    "tree02",
+    272,
+    206
+   ],
+   [
+    "tree03",
+    418,
+    206
+   ],
+   [
+    "tree04",
+    575,
+    206
+   ],
+   [
+    "tree05",
+    732,
+    206
+   ],
+   [
+    "tree06",
+    894,
+    206
+   ],
+   [
+    "tree07",
+    1035,
+    206
+   ],
+   [
+    "tree08",
+    1152,
+    206
+   ],
+   [
+    "bush01",
+    1233,
+    206
+   ],
+   [
+    "bush02",
+    1289,
+    206
+   ],
+   [
+    "bush03",
+    1353,
+    206
+   ],
+   [
+    "bush04",
+    1408,
+    206
+   ],
+   [
+    "grass01",
+    1449,
+    206
+   ],
+   [
+    "grass02",
+    1488,
+    206
+   ],
+   [
+    "grass03",
+    1525,
+    206
+   ],
+   [
+    "grass_patch",
+    1598,
+    206
+   ]
+  ],
+  "report": [
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree01.fbx",
+    "native L3.36 W3.36 H4.04",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree02.fbx",
+    "native L2.40 W2.40 H3.88",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree03.fbx",
+    "native L3.36 W3.36 H3.94",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree04.fbx",
+    "native L2.96 W2.96 H4.32",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree05.fbx",
+    "native L3.36 W3.36 H4.19",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree06.fbx",
+    "native L3.16 W3.16 H4.13",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree07.fbx",
+    "native L2.40 W2.40 H5.75",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/trees/tree08.fbx",
+    "native L2.10 W2.10 H5.09",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/bushes/bush01.fbx",
+    "native L0.70 W0.70 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/bushes/bush02.fbx",
+    "native L1.02 W1.02 H0.70",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/bushes/bush03.fbx",
+    "native L1.02 W1.02 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/bushes/bush04.fbx",
+    "native L0.60 W0.60 H1.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/grass/grass01.fbx",
+    "native L0.41 W0.40 H0.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/grass/grass02.fbx",
+    "native L0.50 W0.50 H0.25",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/grass/grass03.fbx",
+    "native L0.33 W0.33 H0.42",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-retro-nature-pack/models/FBX/grass/grass_patch.fbx",
+    "native L2.10 W2.10 H0.50",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   206
+  ]
+ },
+ {
+  "label": "elegantcrow-tree-pack",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row09.png",
+  "w": 3620,
+  "h": 542,
+  "labels": [
+   [
+    "tree01",
+    185,
+    445
+   ],
+   [
+    "tree02",
+    467,
+    445
+   ],
+   [
+    "tree03",
+    748,
+    445
+   ],
+   [
+    "tree04",
+    1030,
+    445
+   ],
+   [
+    "tree05",
+    1311,
+    445
+   ],
+   [
+    "tree06",
+    1593,
+    445
+   ],
+   [
+    "tree07",
+    1874,
+    445
+   ],
+   [
+    "tree08",
+    2182,
+    445
+   ],
+   [
+    "bush01",
+    2542,
+    445
+   ],
+   [
+    "bush02",
+    3007,
+    445
+   ],
+   [
+    "bush03",
+    3446,
+    445
+   ]
+  ],
+  "report": [
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree01.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree02.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree03.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree04.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree05.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree06.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree07.fbx",
+    "native L6.00 W6.00 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/tree08.fbx",
+    "native L7.20 W7.20 H12.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/bush01.fbx",
+    "native L8.40 W8.40 H7.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/bush02.fbx",
+    "native L12.00 W12.00 H7.50",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "elegantcrow-tree-pack/tree_pack_1.1/models/bush03.fbx",
+    "native L7.20 W7.20 H7.50",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   445
+  ]
+ },
+ {
+  "label": "ggbot-psx-style-cars",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row10.png",
+  "w": 2109,
+  "h": 206,
+  "labels": [
+   [
+    "Car",
+    139,
+    151
+   ],
+   [
+    "Car2",
+    335,
+    151
+   ],
+   [
+    "Car3",
+    528,
+    151
+   ],
+   [
+    "Car4",
+    726,
+    151
+   ],
+   [
+    "Car5",
+    940,
+    151
+   ],
+   [
+    "Car5_Police",
+    1155,
+    151
+   ],
+   [
+    "Car5_Taxi",
+    1368,
+    151
+   ],
+   [
+    "Car6",
+    1570,
+    151
+   ],
+   [
+    "Car7",
+    1754,
+    151
+   ],
+   [
+    "Car8",
+    1952,
+    151
+   ],
+   [
+    "Wheel",
+    2081,
+    151
+   ]
+  ],
+  "report": [
+   [
+    "ggbot-psx-style-cars/Car 01/Car.obj",
+    "native L6.15 W2.56 H2.17",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 02/Car2.obj",
+    "native L6.53 W2.90 H2.20",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 03/Car3.obj",
+    "native L5.61 W2.65 H2.14",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 04/Car4.obj",
+    "native L6.30 W3.40 H2.74",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 05/Car5.obj",
+    "native L7.37 W2.78 H2.05",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 05/Car5_Police.obj",
+    "native L7.37 W2.78 H2.24",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 05/Car5_Taxi.obj",
+    "native L7.30 W2.78 H2.24",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 06/Car6.obj",
+    "native L6.36 W2.48 H1.67",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 07/Car7.obj",
+    "native L5.78 W2.43 H2.86",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Car 08/Car8.obj",
+    "native L6.89 W3.17 H3.23",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "ggbot-psx-style-cars/Wheel/Wheel.obj",
+    "native L0.92 W0.27 H0.92",
+    "scale=1",
+    "notex=0"
+   ]
+  ],
+  "bar": [
+   22,
+   151
+  ]
+ },
+ {
+  "label": "ward727 / xiiixvv / polypizza",
+  "file": "D:/Github/F1Game/art/thirdparty/_tools/rows/row11.png",
+  "w": 1380,
+  "h": 501,
+  "labels": [
+   [
+    "electic_line",
+    61,
+    410
+   ],
+   [
+    "red_container",
+    97,
+    410
+   ],
+   [
+    "liquid_tank",
+    136,
+    410
+   ],
+   [
+    "Barrel1",
+    208,
+    410
+   ],
+   [
+    "Barrel2",
+    312,
+    410
+   ],
+   [
+    "Bicycle_PolyByGoogle_19VoUuA2pcN*",
+    400,
+    410
+   ],
+   [
+    "OldBike_AeronQuick_bgT_0ItQRxd*",
+    462,
+    410
+   ],
+   [
+    "TelephonePole_PolyByGoogle_4Hazwkymnyg*",
+    814,
+    410
+   ],
+   [
+    "Tire_PolyByGoogle_cV6yx0v8Bfy*",
+    1161,
+    410
+   ],
+   [
+    "Tires_Quaternius_mmq7GmG1AK",
+    1223,
+    410
+   ],
+   [
+    "VendingMachine_dook_yNG4vqWVq0*",
+    1296,
+    410
+   ],
+   [
+    "WheelsStack_Quaternius_o1MJrkMUPN",
+    1350,
+    410
+   ]
+  ],
+  "report": [
+   [
+    "ward727-train-pack/fbx/electic_line.fbx",
+    "native L0.47 W0.09 H1.05",
+    "scale=1",
+    "notex=3"
+   ],
+   [
+    "ward727-train-pack/fbx/red_container.fbx",
+    "native L0.75 W0.27 H0.31",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "ward727-train-pack/fbx/liquid_tank.fbx",
+    "native L0.71 W0.27 H0.31",
+    "scale=1",
+    "notex=2"
+   ],
+   [
+    "xiiixvv-ps1-barrels/Barrel1.glb",
+    "native L2.00 W2.00 H2.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "xiiixvv-ps1-barrels/Barrel2.glb",
+    "native L1.86 W1.86 H2.00",
+    "scale=1",
+    "notex=0"
+   ],
+   [
+    "polypizza-misc/Bicycle_PolyByGoogle_19VoUuA2pcN.glb",
+    "native L3.61 W1.24 H2.11",
+    "scale=0.474",
+    "notex=1"
+   ],
+   [
+    "polypizza-misc/OldBike_AeronQuick_bgT_0ItQRxd.glb",
+    "native L1.79 W0.51 H1.08",
+    "scale=0.929",
+    "notex=11"
+   ],
+   [
+    "polypizza-misc/TelephonePole_PolyByGoogle_4Hazwkymnyg.glb",
+    "native L52373.98 W4763.11 H11889.64",
+    "scale=0.000673",
+    "notex=70"
+   ],
+   [
+    "polypizza-misc/Tire_PolyByGoogle_cV6yx0v8Bfy.glb",
+    "native L18.34 W7.30 H18.34",
+    "scale=0.0354",
+    "notex=1"
+   ],
+   [
+    "polypizza-misc/Tires_Quaternius_mmq7GmG1AK.glb",
+    "native L1.76 W1.14 H1.09",
+    "scale=1",
+    "notex=1"
+   ],
+   [
+    "polypizza-misc/VendingMachine_dook_yNG4vqWVq0.glb",
+    "native L5.26 W5.04 H9.71",
+    "scale=0.185",
+    "notex=7"
+   ],
+   [
+    "polypizza-misc/WheelsStack_Quaternius_o1MJrkMUPN.glb",
+    "native L0.66 W0.57 H0.61",
+    "scale=1",
+    "notex=1"
+   ]
+  ],
+  "bar": [
+   22,
+   410
+  ]
+ }
+]

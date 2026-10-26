@@ -1,0 +1,11 @@
+# 3D Retro Plumbing, Wiring & Machinery
+- 출처: https://chilly-durango.itch.io/3d-retro-plumbing-wiring
+- 제작자: chilly_durango
+- 라이선스: CC0
+- 원문: "licensed under the CC0 1.0 Universal license, requiring no attribution" · "all are CC0" (텍스처)
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2021-08 이전(첫 댓글 2021-08-03)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: .blend 9 + png
+- 원래 축척: 실물(발전기 2.6m, 변압기 1.7m)
+- 우리 적합도: 중

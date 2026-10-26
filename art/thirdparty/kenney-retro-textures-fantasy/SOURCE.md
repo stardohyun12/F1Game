@@ -1,0 +1,11 @@
+# Retro Textures Fantasy
+- 출처: https://kenney.nl/assets/retro-textures-fantasy
+- 제작자: Kenney
+- 라이선스: CC0
+- 원문: 팩 안 License.txt: CC0 1.0 Universal
+- AI 표기: 표기 칸 없음
+- 출시/등재: 현 zip 2026-03 갱신(최초 출시일 미확인)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: PNG 115장 전체
+- 원래 축척: -
+- 우리 적합도: 중

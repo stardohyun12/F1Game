@@ -1,0 +1,11 @@
+# Retro Urban Kit
+- 출처: https://kenney.nl/assets/retro-urban-kit (미러 https://kenney-assets.itch.io/retro-urban-kit)
+- 제작자: Kenney
+- 라이선스: CC0
+- 원문: "License: CC0 1.0 Universal. You're allowed to use these game assets in any project including commercial ones." (itch 페이지) / 팩 안 License.txt
+- AI 표기: 표기 칸 없음(kenney.nl) · itch 미러 Content: "No generative AI was used"
+- 출시/등재: Miziziziz 컬렉션(2021) 초기 등재 · 현 zip 2025-01-29 갱신
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: Models/GLB format/*.glb(+Textures) 124개, Preview.png, License.txt
+- 원래 축척: 1 unit ≈ 벽 1칸(1m 높이) → 실물 맞추려면 ×2.5~3
+- 우리 적합도: 중

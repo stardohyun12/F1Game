@@ -1,0 +1,13 @@
+# Poly Pizza 낱개 7종
+- 출처: https://poly.pizza
+- 제작자: Poly by Google ×3 / dook / Aeron Quick / Quaternius ×2
+- 라이선스: CC-BY 3.0 (5개) + CC0 (Quaternius 2개)
+- 원문: 모델 페이지 Licence 필드: "CC-BY 3.0" / "CC0 1.0"
+- AI 표기: Google Poly(2017~2021 서비스) 시절 사람 업로드 — AI 표기 칸 없음
+- 출시/등재: Google Poly 시대(≤2021)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: Bicycle(19VoUuA2pcN), OldBike(bgT_0ItQRxd), TelephonePole(4Hazwkymnyg), VendingMachine(yNG4vqWVq0), Tire(cV6yx0v8Bfy) [CC-BY] / Tires(mmq7GmG1AK), WheelsStack(o1MJrkMUPN) [CC0]
+- 원래 축척: 단위 제각각(전신주 11889, 타이어 18) — 시트에서는 실물로 맞춤(*)
+- 우리 적합도: 중
+- 메모: 단색 플랫 셰이딩(텍스처 없음) → 공용 팔레트·텍스처로 재칠 필요.
+- CREDIT: "Bicycle" by Poly by Google [CC-BY 3.0] via Poly Pizza; "old bike" by Aeron Quick [CC-BY 3.0] via Poly Pizza; "Telephone pole" by Poly by Google [CC-BY 3.0] via Poly Pizza; "Vending Machine" by dook [CC-BY 3.0] via Poly Pizza; "Tire" by Poly by Google [CC-BY 3.0] via Poly Pizza

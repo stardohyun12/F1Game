@@ -1,0 +1,12 @@
+# Retro House Pack
+- 출처: https://elegantcrow.itch.io/retro-house-pack
+- 제작자: Elegant Crow
+- 라이선스: CC0
+- 원문: "License: The models on this pack are under the CC0 license" · "Textures come from AmbientCG.com. Additional textures com from Pixabay, Pexels and Unsplash."
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2021-12 이전(첫 댓글 2021-12-10)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: fbx 5 + textures/256x256 (512·1024·glb·obj 제외, 원본 33MB)
+- 원래 축척: 실물(집 9~14m, 높이 5.6m)
+- 우리 적합도: 중
+- 메모: 미국 교외 목조 단층집 — 해안 마을 실루엣과는 다름, 재칠·지붕 교체 필요. 내부 모델 있음.

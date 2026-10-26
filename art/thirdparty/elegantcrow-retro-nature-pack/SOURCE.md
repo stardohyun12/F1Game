@@ -1,0 +1,12 @@
+# Retro PSX Nature Pack
+- 출처: https://elegantcrow.itch.io/retro-psx-nature-pack
+- 제작자: Elegant Crow
+- 라이선스: CC0
+- 원문: "License: The models on this pack are under CC0 License. Credit is not mandatory but greatly appreciated."
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2022 무렵(Miziziziz 컬렉션 등재)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: models/FBX 40 + textures(봄·여름·가을·겨울) 전체
+- 원래 축척: 실물(나무 4~5.7m, 덤불 1m)
+- 우리 적합도: 상
+- 메모: 가을(fall) 텍스처 있음 → 늦가을 톤에 바로 맞음.

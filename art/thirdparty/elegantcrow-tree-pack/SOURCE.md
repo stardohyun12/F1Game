@@ -1,0 +1,12 @@
+# Retro PSX Style Tree Pack
+- 출처: https://elegantcrow.itch.io/psx-retro-style-tree-pack
+- 제작자: Elegant Crow
+- 라이선스: CC0
+- 원문: "License: The models on this pack are under the CC0 license" · "Textures come from CC0Textures.com. Most tree images come from Pixabay ... transformative content"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2021 (Miziziziz 컬렉션 초기)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: fbx 44 + png
+- 원래 축척: 나무 12.5m·덤불 7.5m(큼) → ×0.4~0.6
+- 우리 적합도: 중
+- 메모: 잎 텍스처 일부 Pixabay 사진 가공(Pixabay 라이선스: 상업 OK).

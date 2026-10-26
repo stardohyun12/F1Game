@@ -1,0 +1,11 @@
+# PSX Style Cars
+- 출처: https://ggbot.itch.io/psx-style-cars (미러 https://opengameart.org/content/psx-style-cars)
+- 제작자: GGBotNet
+- 라이선스: CC0
+- 원문: "This game assets is licensed under a CC0 1.0 Universal." / Asset license: Creative Commons Zero v1.0 Universal
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2022-05 이전(첫 댓글 2022-05-12), 파일 August 2023 갱신
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: Car 01~08·Wheel·Shadow 의 obj/mtl/png/blend (소리 ogg 제외)
+- 원래 축척: 승용차 길이 6.2~7.4 → 실물 ×0.65~0.7
+- 우리 적합도: 상

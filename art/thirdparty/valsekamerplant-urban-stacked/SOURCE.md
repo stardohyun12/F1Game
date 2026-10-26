@@ -1,0 +1,12 @@
+# PSX style Urban stacked pack
+- 출처: https://valsekamerplant.itch.io/psx-style-urban-stacked-pack
+- 제작자: valsekamerplant
+- 라이선스: CC0
+- 원문: "This pack is CC0 and all textures where obtained by using CC0 textures or my own photos."
+- AI 표기: Content: "No generative AI was used" + 태그 "No AI"
+- 출시/등재: 2025-06 (첫 댓글 2025-06-13) — 2023 이후지만 No AI 명시
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: Buildings Prebuild·Bus stops·Litter·Traffic lights·Pipes·Vents 의 glb 157개(텍스처 내장). Roads·Building Parts·Fences 중복분 제외(원본 84MB)
+- 원래 축척: 실물(Hangar 11.6×8×5.3m, 가로등 6.6m)
+- 우리 적합도: 상
+- 메모: Hangar1 = 정비소/창고 후보. 원본 zip 의 Building Parts(23MB)·Roads 는 필요 시 다시 받기.

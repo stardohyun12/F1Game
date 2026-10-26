@@ -1,0 +1,11 @@
+# PSX style walls & fences
+- 출처: https://valsekamerplant.itch.io/psx-style-walls-fences
+- 제작자: valsekamerplant
+- 라이선스: CC0
+- 원문: "These assets are free to use in any project, commercial or non-commercial and have been released under the CC0/Public Domain license." · "Textures used are all under CC0 licence"
+- AI 표기: Content: "No generative AI was used" + 태그 "No AI"
+- 출시/등재: Miziziziz 컬렉션 등재(정확 일자 미확인)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: glb 79 (fbx 중복 제외)
+- 원래 축척: 실물(철망 2.7×1.67m)
+- 우리 적합도: 상

@@ -1,0 +1,11 @@
+# 3D Retro Shacks, Shanties, Sheds & Gantries
+- 출처: https://chilly-durango.itch.io/3dretroshacks
+- 제작자: chilly_durango
+- 라이선스: CC0
+- 원문: "These assets are provided for free, are licensed under the CC0 1.0 Universal license, requiring no attribution" · 텍스처 "all either CC0 or original"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2021 (Miziziziz 컬렉션 등재; 자매팩 2021-08)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: .blend 13 + 텍스처 png 전체(16색 128px)
+- 원래 축척: 실물(대형 창고 14×9×6m, 드럼 0.9m)
+- 우리 적합도: 상

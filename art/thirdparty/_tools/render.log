@@ -1,0 +1,338 @@
+ROW 0 kenney-retro-urban-kit 16
+04:58:41 | INFO: Data are loaded, start creating Blender stuff
+04:58:41 | INFO: Blender create Mesh node wall-a-garage
+04:58:42 | INFO: glTF import finished in 0.12s
+D:\Github\F1Game\art\thirdparty\_tools\contact_render.py:84: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node wall-a-flat-garage
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node wall-b-door
+04:58:42 | INFO: glTF import finished in 0.01s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node wall-a-roof
+04:58:42 | INFO: glTF import finished in 0.01s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-awning-wide
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node truck-green
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node truck-grey-cargo
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-light-single
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-light-double
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-bench
+04:58:42 | INFO: glTF import finished in 0.01s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-dumpster-closed
+04:58:42 | INFO: glTF import finished in 0.01s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node pallet
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node detail-cables-type-a
+04:58:42 | INFO: glTF import finished in 0.01s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node tree-large
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node tree-small
+04:58:42 | INFO: glTF import finished in 0.00s
+04:58:42 | INFO: Data are loaded, start creating Blender stuff
+04:58:42 | INFO: Blender create Mesh node tree-shrub
+04:58:42 | INFO: glTF import finished in 0.01s
+00:03.734  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row00.png'
+00:04.078  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row01.png'
+ROW 1 chillydurango-shacks-sheds 8
+ROW 2 miziziziz-ps1-industrial-buildings 4
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane
+04:58:45 | INFO: glTF import finished in 0.00s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.001
+04:58:45 | INFO: glTF import finished in 0.00s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.004
+04:58:45 | INFO: glTF import finished in 0.00s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.008
+04:58:45 | INFO: glTF import finished in 0.00s
+00:04.296  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row02.png'
+00:04.484  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row03.png'
+ROW 3 chillydurango-plumbing-wiring 5
+ROW 4 valsekamerplant-urban-stacked 12
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.059
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.148
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Cube.010
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.120
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Circle.017
+04:58:45 | INFO: glTF import finished in 0.00s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.219
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Cube.008
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Cube.007
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.049
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.046
+04:58:45 | INFO: glTF import finished in 0.01s
+04:58:45 | INFO: Data are loaded, start creating Blender stuff
+04:58:45 | INFO: Blender create Mesh node Plane.045
+04:58:45 | INFO: glTF import finished in 0.01s
+00:05.171  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row04.png'
+ROW 5 valsekamerplant-fences/barriers/plants 13
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.005
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.001
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node TexturesCom_MetalVarious0026_1_seamless_S.004
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.002
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.007
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Circle.004
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Plane.015
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.002
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.002
+04:58:46 | INFO: glTF import finished in 0.00s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node Cylinder.011
+04:58:46 | INFO: glTF import finished in 0.01s
+04:58:46 | INFO: Data are loaded, start creating Blender stuff
+04:58:46 | INFO: Blender create Mesh node leaf.007
+04:58:46 | INFO: glTF import finished in 0.01s
+00:05.484  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row05.png'
+00:05.937  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row06.png'
+00:06.312  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row07.png'
+00:06.828  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row08.png'
+00:07.437  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row09.png'
+00:07.500  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car.png'
+00:07.500  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car2.png'
+00:07.515  io.obj           | WARNING MTL texture map type not supported: 'map_Ka Car3.png'
+00:07.515  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car4.png'
+00:07.515  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car5.png'
+00:07.515  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car5_police.png'
+00:07.531  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car5_taxi.png'
+00:07.531  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car6.png'
+00:07.531  io.obj           | WARNING MTL texture map type not supported: 'map_Ka car7.png'
+00:07.546  io.obj           | WARNING MTL texture map type not supported: 'map_Ka Car8.png'
+00:07.546  io.obj           | WARNING MTL texture map type not supported: 'map_Ka wheel.png'
+00:07.687  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row10.png'
+ROW 6 elegantcrow-retro-house-pack 5
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW 7 elegantcrow-modular-house-pack 10
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW 8 elegantcrow-retro-nature-pack 16
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW 9 elegantcrow-tree-pack 11
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW 10 ggbot-psx-style-cars 11
+ROW 11 ward727 / xiiixvv / polypizza 12
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Cylinder
+04:58:48 | INFO: glTF import finished in 0.00s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Cylinder
+04:58:48 | INFO: glTF import finished in 0.00s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Bike_mesh_1
+04:58:48 | INFO: glTF import finished in 0.02s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Wheel_b-Mesh
+04:58:48 | INFO: Blender create Mesh node Helm-Mesh
+04:58:48 | INFO: Blender create Mesh node Pedal_b-Mesh
+04:58:48 | INFO: Blender create Mesh node b-Mesh
+04:58:48 | INFO: Blender create Mesh node a-Mesh
+04:58:48 | INFO: Blender create Mesh node c-Mesh
+04:58:48 | INFO: Blender create Mesh node Pedal_a-Mesh
+04:58:48 | INFO: Blender create Mesh node Frame-Mesh
+04:58:48 | INFO: Blender create Mesh node Pedal_c-Mesh
+04:58:48 | INFO: Blender create Mesh node Saddle-Mesh
+04:58:48 | INFO: Blender create Mesh node Wheel_a-Mesh
+04:58:48 | INFO: glTF import finished in 0.05s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Cylinder053_1
+04:58:48 | INFO: Blender create Mesh node Cylinder054_1
+04:58:48 | INFO: Blender create Mesh node Cylinder055_1
+04:58:48 | INFO: Blender create Mesh node Cylinder056_1
+04:58:48 | INFO: Blender create Mesh node Cylinder057_1
+04:58:48 | INFO: Blender create Mesh node Cylinder058_1
+04:58:48 | INFO: Blender create Mesh node Cylinder059_1
+04:58:48 | INFO: Blender create Mesh node Cylinder060_1
+04:58:48 | INFO: Blender create Mesh node Box20197_1
+04:58:48 | INFO: Blender create Mesh node Cylinder061_1
+04:58:48 | INFO: Blender create Mesh node Cylinder062_1
+04:58:48 | INFO: Blender create Mesh node Cylinder063_1
+04:58:48 | INFO: Blender create Mesh node Cylinder064_1
+04:58:48 | INFO: Blender create Mesh node Cylinder065_1
+04:58:48 | INFO: Blender create Mesh node Cylinder066_1
+04:58:48 | INFO: Blender create Mesh node Cylinder067_1
+04:58:48 | INFO: Blender create Mesh node Box20198_1
+04:58:48 | INFO: Blender create Mesh node Cylinder068_1
+04:58:48 | INFO: Blender create Mesh node Cylinder069_1
+04:58:48 | INFO: Blender create Mesh node Cylinder070_1
+04:58:48 | INFO: Blender create Mesh node Cylinder071_1
+04:58:48 | INFO: Blender create Mesh node Cylinder072_1
+04:58:48 | INFO: Blender create Mesh node Cylinder073_1
+04:58:48 | INFO: Blender create Mesh node Cylinder074_1
+04:58:48 | INFO: Blender create Mesh node Cylinder075_1
+04:58:48 | INFO: Blender create Mesh node Cylinder076_1
+04:58:48 | INFO: Blender create Mesh node Cylinder077_1
+04:58:48 | INFO: Blender create Mesh node Cylinder078_1
+04:58:48 | INFO: Blender create Mesh node Cylinder079_1
+04:58:48 | INFO: Blender create Mesh node Box20199_1
+04:58:48 | INFO: Blender create Mesh node Box20200_1
+04:58:48 | INFO: Blender create Mesh node Box20201_1
+04:58:48 | INFO: Blender create Mesh node Box20202_1
+04:58:48 | INFO: Blender create Mesh node Box20203_1
+04:58:48 | INFO: Blender create Mesh node Box20204_1
+04:58:48 | INFO: Blender create Mesh node Box20205_1
+04:58:48 | INFO: Blender create Mesh node Cylinder080_1
+04:58:48 | INFO: Blender create Mesh node Cylinder081_1
+04:58:48 | INFO: Blender create Mesh node Cylinder082_1
+04:58:48 | INFO: Blender create Mesh node Cylinder083_1
+04:58:48 | INFO: Blender create Mesh node Cylinder084_1
+04:58:48 | INFO: Blender create Mesh node Cylinder085_1
+04:58:48 | INFO: Blender create Mesh node Box20206_1
+04:58:48 | INFO: Blender create Mesh node Cylinder086_1
+04:58:48 | INFO: Blender create Mesh node Box20207_1
+04:58:48 | INFO: Blender create Mesh node Box20208_1
+04:58:48 | INFO: Blender create Mesh node Cylinder087_1
+04:58:48 | INFO: Blender create Mesh node Cylinder088_1
+04:58:48 | INFO: Blender create Mesh node Cylinder089_1
+04:58:48 | INFO: Blender create Mesh node Box20209_1
+04:58:48 | INFO: Blender create Mesh node Cylinder090_1
+04:58:48 | INFO: Blender create Mesh node Cylinder091_1
+04:58:48 | INFO: Blender create Mesh node Cylinder092_1
+04:58:48 | INFO: Blender create Mesh node Cylinder093_1
+04:58:48 | INFO: Blender create Mesh node Cylinder094_1
+04:58:48 | INFO: Blender create Mesh node Cylinder095_1
+04:58:48 | INFO: Blender create Mesh node Cylinder096_1
+04:58:48 | INFO: Blender create Mesh node Cylinder097_1
+04:58:48 | INFO: Blender create Mesh node Cylinder098_1
+04:58:48 | INFO: Blender create Mesh node Box20210_1
+04:58:48 | INFO: Blender create Mesh node Box20211_1
+04:58:48 | INFO: Blender create Mesh node Cylinder099_1
+04:58:48 | INFO: Blender create Mesh node Cylinder100_1
+04:58:48 | INFO: Blender create Mesh node Cylinder101_1
+04:58:48 | INFO: Blender create Mesh node Cylinder102_1
+04:58:48 | INFO: Blender create Mesh node Cylinder103_1
+04:58:48 | INFO: Blender create Mesh node Cylinder104_1
+04:58:48 | INFO: Blender create Mesh node Box20212_1
+04:58:48 | INFO: Blender create Mesh node Box20213_1
+04:58:48 | INFO: Blender create Mesh node Box20214_1
+04:58:48 | INFO: glTF import finished in 0.10s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Tire_1
+04:58:48 | INFO: glTF import finished in 0.01s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node Debris_Tires
+04:58:48 | INFO: glTF import finished in 0.02s
+04:58:48 | INFO: Data are loaded, start creating Blender stuff
+04:58:48 | INFO: Blender create Mesh node conk vendo
+04:58:48 | INFO: glTF import finished in 0.04s
+04:58:49 | INFO: Data are loaded, start creating Blender stuff
+04:58:49 | INFO: Blender create Mesh node Wheels_Stack
+04:58:49 | INFO: glTF import finished in 0.02s
+00:08.453  render           | Saved: 'D:\Github\F1Game\art\thirdparty\_tools\rows\row11.png'
+DONE
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+OBJ import of 'Car.obj' took 2.45 ms
+OBJ import of 'Car2.obj' took 1.82 ms
+OBJ import of 'Car3.obj' took 1.95 ms
+OBJ import of 'Car4.obj' took 2.24 ms
+OBJ import of 'Car5.obj' took 2.04 ms
+OBJ import of 'Car5_Police.obj' took 2.05 ms
+OBJ import of 'Car5_Taxi.obj' took 1.78 ms
+OBJ import of 'Car6.obj' took 2.15 ms
+OBJ import of 'Car7.obj' took 2.15 ms
+OBJ import of 'Car8.obj' took 2.04 ms
+OBJ import of 'Wheel.obj' took 0.96 ms
+
+Blender quit

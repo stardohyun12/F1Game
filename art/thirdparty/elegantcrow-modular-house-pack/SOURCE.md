@@ -1,0 +1,11 @@
+# Retro Modular House Pack
+- 출처: https://elegantcrow.itch.io/retro-modular-house-pack
+- 제작자: Elegant Crow
+- 라이선스: CC0
+- 원문: "License: The models on this pack are under the CC0 license" · "All textures come from AmbientCG.com." · "Additional images comes from Pexels"
+- AI 표기: Content: "No generative AI was used"
+- 출시/등재: 2022-06 이전(첫 댓글 2022-06-02)
+- 받은 날: 2026-10-27 (로그인 없이 무료 다운로드)
+- 보관한 것: fbx 175 + png 3
+- 원래 축척: 1m 격자(벽 1×1·1×2), 문 3m
+- 우리 적합도: 중
