@@ -168,3 +168,4 @@ __pycache__/
 /.claude/team/editor.lock
 /.claude/team/waits.json
 /.claude/team/watchdog.json
+docs/map/real-towns/*.json
