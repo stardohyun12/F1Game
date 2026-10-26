@@ -9,7 +9,7 @@ import json, math, os, sys, collections
 from PIL import Image, ImageDraw, ImageFont
 
 tag = sys.argv[1] if len(sys.argv) > 1 else 'before'
-T = 'docs/qa/tmp/'; OUT = 'docs/qa/evidence/townv6-feel/'; os.makedirs(OUT, exist_ok=True)
+T = 'docs/qa/tmp/'; OUT = sys.argv[2] if len(sys.argv) > 2 else 'docs/qa/evidence/townv6-feel/'; os.makedirs(OUT, exist_ok=True)
 CLASS = lambda kind: '돌길' if kind == 'shortcut' else ('큰길' if kind == 'main' else '마을길')
 TYPES = ['bump', 'step', 'float', 'buried', 'gap', 'cross', 'air', 'az']
 NAME = {'bump': '덜컹(경사변화>3%/m)', 'step': '단차>2cm', 'float': '뜸>5cm', 'buried': '묻힘>5cm', 'gap': '길 아래 빈틈>5cm',

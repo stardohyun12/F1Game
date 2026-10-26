@@ -1,0 +1,53 @@
+diff --git a/F1/Assets/Editor/BuildBayLoop.Gray.cs b/F1/Assets/Editor/BuildBayLoop.Gray.cs
+index 78e263d1..104952de 100644
+--- a/F1/Assets/Editor/BuildBayLoop.Gray.cs
++++ b/F1/Assets/Editor/BuildBayLoop.Gray.cs
+@@ -15,7 +15,7 @@
+ public static partial class BuildBayLoop
+ {
+     public const string TownV6Scene = "Assets/Scenes/Map_TownV6.unity";
+-    static string TownV6Json => System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/map/town-v6b.json"));
++    static string TownV6Json => System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/map/town-v6e.json"));   // 0444: v6b → v6e(겹친 길 정리·높이 최종)
+ 
+     [MenuItem("PitCrew/Map/Build Town V6 Gray (D-157)")]
+     public static void MenuTownV6() { Debug.Log("[TownV6] " + Build(TownV6Json, TownV6Scene)); }
+@@ -70,7 +70,10 @@ static string BuildGray(Dictionary<string, object> plan, string scenePath)
+             if (g.pts.Count >= 2) rs.Add(g);
+         }
+         var ends = DeadEnds(rs, lg);   // v6c(과제 0214-3): 이음매 잘림은 잇고(rs 에 추가 → 지형 마감·RoadSurface 도 같이), 진짜 막다른 끝은 이유를 둔다
+-        lg.Add(SmoothProfiles(rs));
++        // v6e(과제 0444): 합성기가 높이를 최종으로 풀었다(profileFinal) → 평면 완화·갈림목 판·경사 완화를 모두 건너뛴다
++        var v6e = plan.TryGetValue("v6e", out var vo) ? vo as Dictionary<string, object> : null;
++        bool final = v6e != null && v6e.TryGetValue("profileFinal", out var pf) && pf is bool pfb && pfb;
++        lg.Add(SmoothProfiles(rs, final));
+ 
+         gH = new float[GN, GN];
+         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) gH[i, j] = CpAt(GX0 + i * GStep, GZ0 + j * GStep);
+@@ -248,15 +251,17 @@ static List<DeadEnd> DeadEnds(List<GRoad> rs, List<string> lg)
+     ///  ② 갈림목 = 평평한 판: 다른 차길 위에 얹힌 끝(T) · 가로지름(X, 1.2 m 안) · 끝끼리 맞닿음 — 높이 차 1.2 m 넘으면 겹쳐 지나가는 다른 층이라 묶지 않는다 → 그 자리 둘레(큰 쪽 반폭+1 m)를
+     ///     참여한 길 전부 같은 높이(평균)로 눌러 고정한다.
+     ///  ③ 경사 변화 제한: 1 m 마다 경사가 바뀌는 양을 2.5 %/m 이하로(고정점 사이를 반복 완화) — 볼록·오목이 긴 곡선이 된다.
+-    static string SmoothProfiles(List<GRoad> rs)
++    static string SmoothProfiles(List<GRoad> rs, bool final = false)
+     {
+         var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList();
++        int dropped = 0;
+         foreach (var r in car)
+         {
+             var q = new List<Vector3> { r.pts[0] };
+             for (int i = 1; i < r.pts.Count - 1; i++) if (Fl(r.pts[i] - q[q.Count - 1]).magnitude >= .3f) q.Add(r.pts[i]);
+             if (Fl(r.pts[r.pts.Count - 1] - q[q.Count - 1]).magnitude < .3f && q.Count > 1) q.RemoveAt(q.Count - 1);
+-            q.Add(r.pts[r.pts.Count - 1]); r.pts = q;
++            q.Add(r.pts[r.pts.Count - 1]); dropped += r.pts.Count - q.Count; r.pts = q;
++            if (final) continue;   // v6e(과제 0444): 높이·평면은 합성기 값 그대로 — 0.3 m 보다 촘촘한 점(리본 꼬임)만 지운다
+             for (int pass = 0; pass < 2; pass++)
+             {
+                 var o = r.pts.ToArray(); int n = o.Length;
+@@ -267,6 +272,7 @@ static string SmoothProfiles(List<GRoad> rs)
+                 }
+             }
+         }
++        if (final) return $"v6e 높이 그대로(profileFinal) · 0.3 m 미만 촘촘한 점 {dropped}개 지움";
+         System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 1; i + 1 < p.Count; i++) { float d0 = Fl(p[i] - p[i - 1]).magnitude, d1 = Fl(p[i + 1] - p[i]).magnitude; if (d0 < .3f || d1 < .3f) continue; m = Mathf.Max(m, Mathf.Abs(((p[i + 1].y - p[i].y) / d1 - (p[i].y - p[i - 1].y) / d0) / ((d0 + d1) * .5f))); } return m; };
+         float maxBefore = car.Max(r => brk(r.pts));
+ 
