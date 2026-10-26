@@ -83,20 +83,50 @@ def bld_hits(rs, blds):
     return hits
 
 
-def _on(rs_idx, r, p):
-    """점 p 에서 길 r 중심선까지 거리와 그 자리 높이(선분 투영 보간)."""
+def _on(rs_idx, r, p, bank=None):
+    """점 p 에서 길 r 중심선까지 거리와 그 자리 노면 높이(선분 투영 보간 + 판 옆 가로 기울기 bank)."""
     q = r['pts']; best = (1e9, 0.0)
     j = min(range(len(q)), key=lambda k: (q[k][0] - p[0]) ** 2 + (q[k][1] - p[1]) ** 2)
     for k in (j - 1, j):
         if k < 0 or k + 1 >= len(q): continue
         d, t = L.seg_dist(p[0], p[1], q[k][0], q[k][1], q[k + 1][0], q[k + 1][1])
         if (k == 0 and t <= 0) or (k + 2 == len(q) and t >= 1): continue    # 길 끝 너머는 노면이 아니다(빌더 띠는 끝에서 잘린다)
-        if d < best[0]: best = (d, q[k][2] + (q[k + 1][2] - q[k][2]) * t)
+        if d < best[0]:
+            y = q[k][2] + (q[k + 1][2] - q[k][2]) * t
+            if bank:
+                bk = bank.get(k, 0.0) * (1 - t) + bank.get(k + 1, 0.0) * t
+                if bk:
+                    dx, dz = q[k + 1][0] - q[k][0], q[k + 1][1] - q[k][1]; l = math.hypot(dx, dz) or 1
+                    y += bk * ((p[0] - q[k][0]) * -dz / l + (p[1] - q[k][1]) * dx / l)
+            best = (d, y)
     return best
 
 
-def ledges(rs, plates=()):
-    """옆면 턱 [(|높이차|, 0, 길A↔길B, x, z)]. plates = [(다각형, 높이)] — 그 안의 점은 판 높이."""
+def banks(d, rs):
+    """v6g 판 옆 가로 기울기: {길 id: {표본 번호: bank}} — 팔 끝에서 arm.bank, 바깥(outward)으로 bankFade m 동안 0 으로."""
+    byid = {r['id']: r for r in rs}; out = defaultdict(dict)
+    for j in d.get('junctions', []):
+        fade = j.get('bankFade')
+        if not fade: continue
+        for a in j['arms']:
+            r = byid.get(a['road'])
+            if not r or not a.get('bank'): continue
+            q = r['pts']; e = min(range(len(q)), key=lambda k: (q[k][0] - a['edge'][0]) ** 2 + (q[k][1] - a['edge'][1]) ** 2)
+            s, k = 0.0, e
+            while 0 <= k < len(q) and s < fade:
+                out[r['id']][k] = a['bank'] * (1 - s / fade)
+                k2 = k + a['outward']
+                if 0 <= k2 < len(q): s += math.hypot(q[k2][0] - q[k][0], q[k2][1] - q[k][1])
+                k = k2
+            k = e - a['outward']                                  # 판 안 쪽 표본도 같은 기울기(띠는 판 안에서 안 그리지만 보간용)
+            while 0 <= k < len(q) and L.in_poly(q[k][0], q[k][1], [(v[0], v[1]) for v in j['poly']]):
+                out[r['id']][k] = a['bank']; k -= a['outward']
+    return out
+
+
+def ledges(rs, plates=(), bank=None):
+    """옆면 턱 [(|높이차|, 0, 길A↔길B, x, z)]. plates = [(다각형, 높이)] — 그 안의 점은 판 위라 뺀다."""
+    bank = bank or {}
     cell = defaultdict(set)
     for n, r in enumerate(rs):
         for q in r['pts']: cell[(int(q[0] // 8), int(q[1] // 8))].add(n)
@@ -119,25 +149,32 @@ def ledges(rs, plates=()):
             steps = max(1, int(hw / 0.5))
             for s in range(-steps, steps + 1):
                 o = hw * s / steps; p = (q[i][0] + nx * o, q[i][1] + nz * o)
-                ya = q[i][2]; py = plate_y(*p) if pb else None
-                if py is not None: continue                   # 판 위: 빌더가 판 높이 하나로 깐다
+                ya = q[i][2] + bank.get(r['id'], {}).get(i, 0.0) * o; py = plate_y(*p) if pb else None
+                if py is not None: continue                   # 판 위: 빌더가 판을 깐다
                 for m in near:
-                    d, yb = _on(None, rs[m], p)
+                    d, yb = _on(None, rs[m], p, bank.get(rs[m]['id']))
                     if d < rs[m]['width'] / 2 - 0.05:
                         out.append((abs(ya - yb), 0, f"{r['id']}↔{rs[m]['id']}", p[0], p[1]))
     return out
 
 
 def plate_edges(d, rs):
-    """판 경계에서 각 팔(길) 중심선 높이 − 판 높이."""
+    """판 경계에서 각 팔 띠 높이 − 판 평면 높이: 중심과 양쪽 가장자리(띠 가로 기울기 = arm.bank, 검사기 자신의 법선으로 다시 잼)."""
     out = []
     byid = {r['id']: r for r in rs}
     for j in d.get('junctions', []):
+        gx, gz = j.get('grad', (0.0, 0.0)); px, pz = j['pos']
+        yat = lambda x, z: j['y'] + gx * (x - px) + gz * (z - pz)
         for a in j.get('arms', []):
             r = byid.get(a['road'])
             if not r: continue
-            y = min(r['pts'], key=lambda q: (q[0] - a['edge'][0]) ** 2 + (q[1] - a['edge'][1]) ** 2)[2]   # 팔 끝 = 그 길의 표본 하나
-            out.append((abs(y - j['y']), 0, f"{j['id']}:{a['road']}", a['edge'][0], a['edge'][1]))
+            q = r['pts']; e = min(range(len(q)), key=lambda k: (q[k][0] - a['edge'][0]) ** 2 + (q[k][1] - a['edge'][1]) ** 2)   # 팔 끝 = 그 길의 표본 하나
+            u, v = q[max(0, e - 1)], q[min(len(q) - 1, e + 1)]
+            dx, dz = v[0] - u[0], v[1] - u[1]; l = math.hypot(dx, dz) or 1; nx, nz = -dz / l, dx / l
+            bk = a.get('bank', 0.0) if j.get('bankFade') else 0.0
+            for o in (-a['width'] / 2, 0.0, a['width'] / 2):
+                x, z = q[e][0] + nx * o, q[e][1] + nz * o
+                out.append((abs(q[e][2] + bk * o - yat(x, z)), 0, f"{j['id']}:{a['road']}", x, z))
     return out
 
 
@@ -146,8 +183,9 @@ def check(tag):
     s = RC.summary(rs)
     blds = [b['poly'] for b in d['buildings']]
     bh = bld_hits(rs, blds)
-    plates = [(j['poly'], j['y']) for j in d.get('junctions', []) if j.get('poly')]
-    lg = ledges(rs, plates)
+    plates = [([(v[0], v[1]) for v in j['poly']], j['y']) for j in d.get('junctions', []) if j.get('poly')]
+    tilt = max((math.hypot(*j['grad']) for j in d.get('junctions', []) if j.get('grad')), default=0.0)
+    lg = ledges(rs, plates, banks(d, rs))
     lgp = places([x for x in lg if x[0] > LEDGE])
     pe = plate_edges(d, rs)
     gs = grades(rs)
@@ -157,7 +195,8 @@ def check(tag):
     return {'tag': tag, 'bldHit': len({h[0] for h in bh}), 'bldHitM': len({(h[1], round(h[2]), round(h[3])) for h in bh}),
             'bldTop': sorted(defaultdict(int, {}).items()),
             'ledgePlaces': len(lgp), 'ledgeMax': max((x[0] for x in lg), default=0), 'ledgeTop': [(round(o[0][0], 2), o[0][2], round(o[0][3]), round(o[0][4])) for o in lgp[:8]],
-            'plateEdgeMax': max((x[0] for x in pe), default=None), 'plates': len(plates),
+            'plateEdgeMax': max((x[0] for x in pe), default=None), 'plates': len(plates), 'plateTiltMax': round(tilt, 4),
+            'fun': {f['pair']: f.get('ratioRough') for f in d.get('fun', [])},
             'gradeOver': len(over), 'gradeOverTop': [(round(o[0][0], 3), o[0][1], o[0][2], round(o[0][3]), round(o[0][4])) for o in over[:10]],
             'gradeMaxCar': gmax(lambda g: g[2] not in stone_ids), 'gradeMaxStone': gmax(lambda g: g[2] in stone_ids),
             'bump': s['count'], 'bumpMax': s['max'], 'overlaps': len(s['overlaps']), 'bh': bh}
@@ -174,7 +213,8 @@ def main():
         print(c['tag'], {k: v for k, v in c.items() if k not in ('bh', 'bldTop')}, 'bldRoads', sorted(by.items(), key=lambda t: -t[1])[:8])
         lines += [f"## {c['tag']}", '',
                   f"- 길↔건물: 건물 {c['bldHit']}채 · 닿는 길 {c['bldHitM']} m · 많이 닿는 길 {sorted(by.items(), key=lambda t: -t[1])[:6]}",
-                  f"- 갈림목 옆면 턱 > 2 cm: {c['ledgePlaces']}곳 · 최대 {100 * c['ledgeMax']:.0f} cm · 판 {c['plates']}개 · 판 경계 높이 어긋남 최대 {c['plateEdgeMax']}",
+                  f"- 갈림목 옆면 턱 > 2 cm: {c['ledgePlaces']}곳 · 최대 {100 * c['ledgeMax']:.0f} cm · 판 {c['plates']}개 · 판 경계 높이 어긋남 최대 {c['plateEdgeMax']} · 판 기울기 최대 {100 * c['plateTiltMax']:.1f} %",
+                  f"- 배달 시간비(요철): {c['fun']}",
                   f"  - 상위: {c['ledgeTop']}",
                   f"- 경사 한도 넘는 곳: {c['gradeOver']} · 최대 차길 {100 * c['gradeMaxCar']:.1f} % / 돌길 {100 * c['gradeMaxStone']:.1f} %",
                   f"  - 상위: {c['gradeOverTop']}",
