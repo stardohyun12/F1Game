@@ -1,0 +1,17 @@
+DONE sites=40L:Band_main_L_curb,77L:Band_main_L_curb,1187L:Band_main_L_curb_coast,1224L:Band_main_L_curb_coast,1261L:Band_main_L_curb_coast lh=3.5
+15 넘음=3 ; 15 느림=1 ; 15 멈춤=1 ; 45 넘음=4 ; 45 멈춤=1 ; 90 넘음=3 ; 90 멈춤=2
+15° 20km/h #40L 느림 minV=55 % vy=0.28 tilt=3° G(long/lat)=0.42/0.00 최대감속=40m/s² 겹침[Road_main+Road_SC_ridge@lat1.30]
+45° 20km/h #40L 넘음 minV=77 % vy=0.42 tilt=3° G(long/lat)=0.91/1.51 최대감속=149m/s² 겹침[Band_main_L_curb+Road_main@lat1.50]
+90° 20km/h #40L 멈춤 minV=9 % vy=0.14 tilt=3° G(long/lat)=2.36/1.98 최대감속=131m/s² 겹침[Band_main_L_curb+Road_main@lat2.14]
+15° 25km/h #77L 멈춤 minV=19 % vy=0.44 tilt=4° G(long/lat)=3.23/1.63 최대감속=1043m/s² 겹침[Plinth_P007+Band_main_L_curb@lat4.43]
+45° 25km/h #77L 멈춤 minV=28 % vy=0.58 tilt=4° G(long/lat)=2.77/1.99 최대감속=813m/s² 겹침[PROP_shop_display_01+Band_main_L_curb+Road_main@lat3.65]
+90° 25km/h #77L 멈춤 minV=22 % vy=0.18 tilt=4° G(long/lat)=3.09/2.09 최대감속=201m/s² 겹침[Band_main_L_curb+Road_main+PROP_CrateStack@lat4.25]
+15° 30km/h #1187L 넘음 minV=89 % vy=0.35 tilt=3° G(long/lat)=7.80/1.29 최대감속=119m/s² 겹침[Road_main@lat1.50]
+45° 30km/h #1187L 넘음 minV=84 % vy=0.75 tilt=6° G(long/lat)=1.25/2.57 최대감속=134m/s² 겹침[Road_main+Band_main_L_curb_coast@lat2.21]
+90° 30km/h #1187L 넘음 minV=74 % vy=0.31 tilt=3° G(long/lat)=2.11/3.56 최대감속=60m/s² 겹침[Road_main+Band_main_L_curb_coast@lat4.71]
+15° 35km/h #1224L 넘음 minV=90 % vy=0.95 tilt=3° G(long/lat)=5.36/4.12 최대감속=96m/s² 겹침[Road_main@lat1.61]
+45° 35km/h #1224L 넘음 minV=85 % vy=0.75 tilt=3° G(long/lat)=1.34/3.01 최대감속=171m/s² 겹침[Road_main+Band_main_L_curb_coast@lat2.53]
+90° 35km/h #1224L 넘음 minV=80 % vy=0.82 tilt=5° G(long/lat)=2.42/4.19 최대감속=303m/s² 겹침[Road_main+Band_main_L_curb_coast@lat3.26]
+15° 40km/h #1261L 넘음 minV=84 % vy=0.46 tilt=3° G(long/lat)=5.75/5.31 최대감속=10m/s² 겹침[Band_main_L_curb_coast@lat4.37]
+45° 40km/h #1261L 넘음 minV=86 % vy=0.78 tilt=4° G(long/lat)=1.54/3.45 최대감속=144m/s² 겹침[Road_main+Band_main_L_curb_coast@lat4.10]
+90° 40km/h #1261L 넘음 minV=78 % vy=1.48 tilt=7° G(long/lat)=2.70/4.75 최대감속=293m/s² 겹침[Road_main+Band_main_L_curb_coast@lat3.65]

@@ -1,0 +1,17 @@
+DONE sites=40L:Band_main_L_curb,77L:Band_main_L_curb,1187L:Band_main_L_curb_coast,1224L:Band_main_L_curb_coast,1261L:Band_main_L_curb_coast lh=3.5
+15 느림=5 ; 45 넘음=4 ; 45 멈춤=1 ; 90 넘음=3 ; 90 멈춤=2
+15° 20km/h #40L 느림 minV=55 % vy=0.28 tilt=3° G(long/lat)=0.42/0.00 최대감속=105m/s² 끝lat=4.12 겹침[Road_main+Road_SC_ridge@lat1.30 y-0.19]
+45° 20km/h #40L 넘음 minV=77 % vy=0.42 tilt=3° G(long/lat)=0.75/1.26 최대감속=89m/s² 끝lat=5.16 겹침[Band_main_L_curb+Road_main@lat1.50 y-0.09]
+90° 20km/h #40L 멈춤 minV=7 % vy=0.17 tilt=3° G(long/lat)=2.02/1.99 최대감속=174m/s² 끝lat=4.10 겹침[Band_main_L_curb+Road_main@lat2.14 y-0.05]
+15° 20km/h #77L 느림 minV=76 % vy=0.31 tilt=4° G(long/lat)=2.41/1.26 최대감속=184m/s² 끝lat=4.19 겹침[Road_main@lat1.37 y-0.19]
+45° 20km/h #77L 멈춤 minV=26 % vy=0.43 tilt=3° G(long/lat)=1.85/1.24 최대감속=528m/s² 끝lat=3.66 겹침[PROP_shop_display_01+Band_main_L_curb+Road_main@lat3.65 y0.07]
+90° 20km/h #77L 멈춤 minV=22 % vy=0.35 tilt=4° G(long/lat)=2.40/1.52 최대감속=414m/s² 끝lat=4.22 겹침[Band_main_L_curb+Road_main+PROP_CrateStack@lat4.21 y0.01]
+15° 20km/h #1187L 느림 minV=84 % vy=0.18 tilt=3° G(long/lat)=5.92/1.14 최대감속=67m/s² 끝lat=4.23 겹침[Road_main@lat1.29 y-0.01]
+45° 20km/h #1187L 넘음 minV=81 % vy=0.29 tilt=4° G(long/lat)=0.85/1.55 최대감속=121m/s² 끝lat=5.15 겹침[Road_main+Band_main_L_curb_coast@lat1.50 y-0.08]
+90° 20km/h #1187L 넘음 minV=78 % vy=0.37 tilt=3° G(long/lat)=1.40/2.06 최대감속=116m/s² 끝lat=5.14 겹침[Road_main+Band_main_L_curb_coast@lat2.13 y-0.05]
+15° 20km/h #1224L 느림 minV=85 % vy=0.21 tilt=3° G(long/lat)=2.76/2.72 최대감속=65m/s² 끝lat=4.23 겹침[Road_main@lat1.29 y-0.01]
+45° 20km/h #1224L 넘음 minV=80 % vy=0.29 tilt=4° G(long/lat)=0.71/1.30 최대감속=75m/s² 끝lat=5.15 겹침[Road_main+Band_main_L_curb_coast@lat1.50 y-0.08]
+90° 20km/h #1224L 넘음 minV=78 % vy=0.35 tilt=3° G(long/lat)=1.39/2.05 최대감속=111m/s² 끝lat=5.11 겹침[Road_main+Band_main_L_curb_coast@lat2.13 y-0.05]
+15° 20km/h #1261L 느림 minV=85 % vy=0.20 tilt=3° G(long/lat)=2.65/2.67 최대감속=83m/s² 끝lat=4.22 겹침[Road_main@lat1.29 y-0.01]
+45° 20km/h #1261L 넘음 minV=80 % vy=0.29 tilt=3° G(long/lat)=0.71/1.30 최대감속=151m/s² 끝lat=5.15 겹침[Road_main+Band_main_L_curb_coast@lat1.50 y-0.08]
+90° 20km/h #1261L 넘음 minV=78 % vy=0.37 tilt=3° G(long/lat)=1.38/2.06 최대감속=163m/s² 끝lat=5.13 겹침[Road_main+Band_main_L_curb_coast@lat2.13 y-0.05]

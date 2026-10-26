@@ -2,7 +2,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
 {
  // 과제 0226: BayLoop 땅 전용. WorldSurface(CoastalTown) 와 같은 빛·안개 식에, 아틀라스 네 칸을 경사로 고른다.
  //  평지 = 풀 + 흙 패치(큰 덩어리 무늬) / _DryDeg 넘으면 마른 풀 / _RockDeg 넘으면 바위.
- //  경계는 계단식(step) + 세계 고정 2m 격자 흔들림 — 부드러운 섞임 없이 픽셀 규칙 유지. 기존 WorldSurface 는 건드리지 않는다(Proto·ComplexTrack 보호).
+ //  경계는 계단식(step, 1/32m 텍셀) + 저주파 흔들림(1448) — 부드러운 섞임 없이 픽셀 규칙 유지. 기존 WorldSurface 는 건드리지 않는다(Proto·ComplexTrack 보호).
  Properties {
   _MainTex("Terrain atlas (2x2: grass soil / dry rock)",2D)="white" {}
   _TileGrass("Grass tile",Vector)=(0,0.5,0.5,0.5)
@@ -24,6 +24,9 @@ Shader "PitCrew/BayLoop/TerrainSlope"
   _FogEnd("Fog end",Float)=105
   _CloudShadow("Cloud shadow strength (0404)",Range(0,1))=0.24
   _CloudScale("Cloud shadow size m",Float)=70
+  _SlopeTex("Smoothed slope deg/90 (1448, builder bakes)",2D)="black" {}
+  _SlopeRect("Slope rect x0 z0 1/w 1/d (1448)",Vector)=(0,0,0,0)
+  _JitterScale("Jitter wave size m (1448)",Float)=9
  }
  SubShader {
   Tags {"RenderType"="Opaque" "RenderPipeline"="UniversalPipeline"}
@@ -43,7 +46,9 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float4 _TileGrass, _TileSoil, _TileDry, _TileRock;
     float _DryDeg, _RockDeg, _EdgeJitter, _SoilAmount, _PatchScale, _PatchThreshold;
     float _CloudShadow, _CloudScale;
+    float4 _SlopeRect; float _JitterScale;
    CBUFFER_END
+   TEXTURE2D(_SlopeTex); SAMPLER(sampler_SlopeTex);
    float4 _CloudOffset;   // 과제 0404: CloudDrift 가 매 프레임 넣는 전역 — 구름 그림자가 바람 따라 흐른다
    float hash21(float2 p){p=frac(p*float2(123.34,345.45));p+=dot(p,p+34.345);return frac(p.x*p.y);}
    float vnoise(float2 p){float2 i=floor(p),f=frac(p);f=f*f*(3-2*f);float a=hash21(i),b=hash21(i+float2(1,0)),c=hash21(i+float2(0,1)),d=hash21(i+1);return lerp(lerp(a,b,f.x),lerp(c,d,f.x),f.y);}
@@ -62,11 +67,17 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float diffuse=saturate(dot(n,sun.direction));
     float3 lit=_Ambient.rgb*0.36+sun.color.rgb*(diffuse*sun.shadowAttenuation)*1.0;   // WorldSurface v4 와 같은 식
     float3 shade=lerp(float3(1,1,1),lit,_FaceShade);
-    float3 an=abs(n); float2 worldUV=an.y>.5?i.pos.xz:(an.x>an.z?i.pos.zy:i.pos.xy);
-    // 경사(도) + 2m 칸 단위 흔들림 → 경계가 칸 모양 계단으로 선다
-    float deg=degrees(acos(saturate(n.y)));
-    float j=(hash21(floor(i.pos.xz*.5))-.5)*2*_EdgeJitter;
+    // 과제 1448: 경사는 빌더가 높이맵에서 구워 둔 텍스처(2m 격자, 한 번 다듬음)를 텍셀(1/32m) 자리에서 읽는다.
+    //  예전엔 면 법선 보간이라 2m 삼각형마다 경계가 꺾여 큰 톱니가 됐다. 이제 경계는 등고선을 따라 휘고 화면에선 1/32m 계단.
+    float2 tx=floor(i.pos.xz*32)/32+1.0/64;
+    float2 suv=(tx-_SlopeRect.xy)*_SlopeRect.zw;
+    bool inRect=_SlopeRect.z>0&&all(suv>0)&&all(suv<1);
+    float deg=inRect?SAMPLE_TEXTURE2D(_SlopeTex,sampler_SlopeTex,suv).r*90:degrees(acos(saturate(n.y)));
+    // 흔들림 = 2m 칸 해시 → 9m 물결(저주파, 같은 텍셀 격자)
+    float j=(vnoise(tx/_JitterScale+float2(3.7,1.3))-.5)*2*_EdgeJitter;
     float d=deg+j;
+    // 투영 면도 다듬은 경사로 고른다(삼각형마다 xz/측면 투영이 바뀌던 이음매 제거)
+    float3 an=abs(n); float2 worldUV=(inRect?deg<60:an.y>.5)?i.pos.xz:(an.x>an.z?i.pos.zy:i.pos.xy);
     half3 col;
     if(d>=_RockDeg) col=Tile(_TileRock,worldUV);
     else if(d>=_DryDeg) col=Tile(_TileDry,worldUV);

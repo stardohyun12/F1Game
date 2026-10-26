@@ -536,7 +536,44 @@ public static partial class BuildBayLoop
                 tris.Add(a); tris.Add(c); tris.Add(b); tris.Add(b); tris.Add(c); tris.Add(d);
             }
         MeshGo(parent, "BayTerrain", verts, uvs, subs, new[] { mat }.Concat(LotMats.Select(M)).ToArray(), true);
+        BakeSlope(mat, nx, nz);
         log.Add($"지면 포장 {pavedCells}칸({pavedCells * Step * Step:F0}㎡, 차길 사이 섬 {islandCells}칸)");
+    }
+
+    /// <summary>
+    /// 과제 1448: 땅 경사를 텍스처로 굽는다(격자점 하나 = 텍셀 하나, 값 = 도/90). 높이를 3×3(가운데 4배)로 한 번 다듬고 중앙 차분.
+    /// TerrainSlope 셰이더가 1/32m 텍셀 자리에서 쌍선형으로 읽는다 → 2m 삼각형 면 법선 톱니 대신 등고선을 따르는 경계.
+    /// </summary>
+    static void BakeSlope(Material mat, int nx, int nz)
+    {
+        var sm = new float[nx, nz];
+        for (int j = 0; j < nz; j++) for (int i = 0; i < nx; i++)
+            {
+                float s = 0, w = 0;
+                for (int dj = -1; dj <= 1; dj++) for (int di = -1; di <= 1; di++)
+                    {
+                        int a = Mathf.Clamp(i + di, 0, nx - 1), b = Mathf.Clamp(j + dj, 0, nz - 1); float k = di == 0 && dj == 0 ? 4f : 1f;
+                        s += terr[a, b] * k; w += k;
+                    }
+                sm[i, j] = s / w;
+            }
+        var tex = new Texture2D(nx, nz, TextureFormat.RHalf, false, true) { name = "BL_TerrainSlopeTex", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+        var px = new Color[nx * nz];
+        for (int j = 0; j < nz; j++) for (int i = 0; i < nx; i++)
+            {
+                int i0 = Mathf.Max(0, i - 1), i1 = Mathf.Min(nx - 1, i + 1), j0 = Mathf.Max(0, j - 1), j1 = Mathf.Min(nz - 1, j + 1);
+                float gx = (sm[i1, j] - sm[i0, j]) / ((i1 - i0) * Step), gz = (sm[i, j1] - sm[i, j0]) / ((j1 - j0) * Step);
+                px[j * nx + i] = new Color(Mathf.Atan(Mathf.Sqrt(gx * gx + gz * gz)) * Mathf.Rad2Deg / 90f, 0, 0, 1);
+            }
+        tex.SetPixels(px); tex.Apply(false);
+        string tp = MatDir + "/BL_TerrainSlopeTex.asset"; AssetDatabase.DeleteAsset(tp); AssetDatabase.CreateAsset(tex, tp);
+        if (mat.HasProperty("_SlopeTex"))
+        {
+            // 텍셀 i 의 중심 = 격자점 X0 + i·Step → 사각형은 반 칸 바깥에서 시작
+            mat.SetTexture("_SlopeTex", tex);
+            mat.SetVector("_SlopeRect", new Vector4(X0 - Step * .5f, Z0 - Step * .5f, 1f / (nx * Step), 1f / (nz * Step)));
+            EditorUtility.SetDirty(mat);
+        }
     }
 
     static void FarTerrainMesh(Transform parent, Material mat)
@@ -687,6 +724,7 @@ public static partial class BuildBayLoop
         {
             // 단면 종류별 메시: key = edge
             var parts = new Dictionary<string, (List<Vector3> v, List<Vector2> uv, List<int> tEdge, List<int> tWalk)>();
+            var colParts = new Dictionary<string, (List<Vector3> v, List<int> t)>();
             var rail = new List<(Vector3 a, Vector3 b)>();
             float s = 0;
             for (int i = 0; i < last; i++)
@@ -700,7 +738,7 @@ public static partial class BuildBayLoop
                 string key = edge == "curb" && r.coast != null && r.coast[i] ? "curb_coast" : edge;
                 // v5 (D-138·D-141 ⑦): 연석 10cm → 최대 6cm (넘어갈 수 있는 낮은 경계석)
                 float h = edge == "curb" ? Mathf.Min(0.06f, sd != null && sd.TryGetValue("curbH", out var ch) ? F(ch) : 0.1f) : edge == "gutter" ? -0.03f : 0f;
-                var row = new Vector3[2][];
+                var row = new Vector3[2][]; var crow = new Vector3[2][];
                 bool skip = wk < 0.3f;
                 for (int e = 0; e < 2 && !skip; e++)
                 {
@@ -709,16 +747,23 @@ public static partial class BuildBayLoop
                     float strip = edge == "white_line" ? 0.15f : edge == "curb" ? 0.18f : 0.25f;
                     float[] off = { lh, lh, lh + strip, lh + wk, lh + wk };
                     float[] hy = { 0f, h, h, (edge == "gutter" ? 0f : h) + 0.02f, -0.35f };
-                    row[e] = new Vector3[5];
+                    // 과제 1448: 콜라이더만 연석 면을 경사로(30cm 에 6cm ≈ 11°). 차는 바퀴 없는 모서리 날카로운 상자라
+                    // 수직 6cm 면에 앞·옆면이 그대로 부딪혀 멈췄다(Band_*_curb 겹침, 측정). 보이는 메시는 수직 그대로.
+                    float ramp = Mathf.Min(0.3f, wk * 0.5f);
+                    float[] coff = { lh, lh + ramp, lh + Mathf.Max(strip, ramp + 0.02f), lh + wk, lh + wk };
+                    row[e] = new Vector3[5]; crow[e] = new Vector3[5];
                     for (int c = 0; c < 5; c++)
                     {
                         var v = p[k] + nrm * off[c]; v.y = y0 + hy[c];
+                        var cv = p[k] + nrm * coff[c]; cv.y = y0 + hy[c];
                         foreach (var par in parents)
                         {
                             float d = ParentSurface(par, v.x, v.z, out float py, out float phalf);
                             if (d < phalf + 0.2f && c < 4 && v.y > py - 0.03f + hy[c]) v.y = py - 0.03f + Mathf.Max(0f, hy[c]);
+                            d = ParentSurface(par, cv.x, cv.z, out py, out phalf);
+                            if (d < phalf + 0.2f && c < 4 && cv.y > py - 0.03f + hy[c]) cv.y = py - 0.03f + Mathf.Max(0f, hy[c]);
                         }
-                        row[e][c] = v;
+                        row[e][c] = v; crow[e][c] = cv;
                         if (c >= 1 && c <= 3) foreach (var o in others)
                             {
                                 float d = ParentSurface(o, v.x, v.z, out _, out float oh);
@@ -728,6 +773,7 @@ public static partial class BuildBayLoop
                 }
                 if (skip) continue;
                 if (!parts.TryGetValue(key, out var pt)) parts[key] = pt = (new List<Vector3>(), new List<Vector2>(), new List<int>(), new List<int>());
+                if (!colParts.TryGetValue(key, out var cp)) colParts[key] = cp = (new List<Vector3>(), new List<int>());
                 for (int c = 0; c < 4; c++)
                 {
                     int b = pt.v.Count;
@@ -736,6 +782,10 @@ public static partial class BuildBayLoop
                     var l = c == 3 ? pt.tWalk : c == 2 ? pt.tWalk : pt.tEdge;
                     if (side < 0) { l.Add(b); l.Add(b + 2); l.Add(b + 1); l.Add(b + 1); l.Add(b + 2); l.Add(b + 3); }   // 오른쪽 = 차로와 같은 감김
                     else { l.Add(b); l.Add(b + 1); l.Add(b + 2); l.Add(b + 1); l.Add(b + 3); l.Add(b + 2); }
+                    int cb = cp.v.Count;
+                    cp.v.Add(crow[0][c]); cp.v.Add(crow[0][c + 1]); cp.v.Add(crow[1][c]); cp.v.Add(crow[1][c + 1]);
+                    if (side < 0) { cp.t.Add(cb); cp.t.Add(cb + 2); cp.t.Add(cb + 1); cp.t.Add(cb + 1); cp.t.Add(cb + 2); cp.t.Add(cb + 3); }
+                    else { cp.t.Add(cb); cp.t.Add(cb + 1); cp.t.Add(cb + 2); cp.t.Add(cb + 1); cp.t.Add(cb + 3); cp.t.Add(cb + 2); }
                 }
                 if (edge == "curb") curbM += 1f;
                 // 난간: 단면이 railing 을 달고, 인도 바깥 1.5m 땅이 노면보다 2m 넘게 낮으면
@@ -751,7 +801,12 @@ public static partial class BuildBayLoop
                 string key = kv.Key, edge = key == "curb_coast" ? "curb" : key; var pt = kv.Value;
                 string eMat = key == "curb_coast" ? "White" : edge == "curb" ? "CurbDark" : edge == "gutter" ? "Gutter" : edge == "white_line" ? "White" : "Paving";
                 var wMat = edge == "curb" ? M("Pavement") : edge == "gutter" ? M("Curb") : edge == "white_line" ? lane : M("Paving");
-                var go = MeshGo(parent, $"Band_{r.id}_{(side > 0 ? "L" : "R")}_{key}", pt.v, pt.uv, new[] { pt.tEdge, pt.tWalk }, new[] { M(eMat), wMat }, true);
+                var go = MeshGo(parent, $"Band_{r.id}_{(side > 0 ? "L" : "R")}_{key}", pt.v, pt.uv, new[] { pt.tEdge, pt.tWalk }, new[] { M(eMat), wMat }, false);
+                var cpv = colParts[key];
+                var cmesh = new Mesh { name = go.name + "_col", indexFormat = cpv.v.Count > 65000 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16 };
+                cmesh.SetVertices(cpv.v); cmesh.SetTriangles(cpv.t, 0); cmesh.RecalculateNormals(); cmesh.RecalculateBounds();
+                string cmp = MatDir + "/Mesh_" + go.name + "_col.asset"; AssetDatabase.DeleteAsset(cmp); AssetDatabase.CreateAsset(cmesh, cmp);
+                go.AddComponent<MeshCollider>().sharedMesh = cmesh;
                 var rs = go.AddComponent<RoadSurface>(); rs.roadId = r.id; rs.kind = "walk_" + edge; rs.width = 0f;
                 rs.roughness = edge == "curb" ? 0.6f : edge == "gutter" ? 0.45f : Mathf.Min(1f, r.rough + 0.1f);   // 가설: 연석을 넘으면 화물이 크게 흔들린다
                 bandCount++;
