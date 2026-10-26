@@ -836,66 +836,33 @@
   },
   {
     "name": "background_building_04",
-    "source": "art/thirdparty/chillydurango-shacks-sheds/Large Shed A.blend",
-    "pack": "chillydurango-shacks-sheds",
-    "height": 6,
+    "source": "art/thirdparty/valsekamerplant-urban-stacked/Buildings Prebuild/flat_square_brick_alt.glb",
+    "pack": "valsekamerplant-urban-stacked",
+    "height": 8,
     "scale": null,
-    "zone": "중",
+    "zone": "원",
     "tint": "cream",
     "lean": 0,
-    "scale_applied": 0.9675850958710288,
+    "scale_applied": 0.47058823529411764,
     "native_size": [
-      8.79999828338623,
-      14.322001457214355,
-      6.201004981994629
+      17.00000762939453,
+      17.0,
+      17.0
     ],
     "size": [
-      8.51474666595459,
-      13.857755661010742,
-      6.000001430511475
+      8.000003814697266,
+      8.000003814697266,
+      8.0
     ],
-    "tris": 268,
+    "tris": 1138,
     "atlas": [
       1024,
       2048
     ],
     "texels_per_m": 32,
     "images_used": [
-      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
-      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png"
+      ""
     ],
-    "source_sha256": "4b7fdba1d7a5290d4e8d626de804e70406f91379a9bf9b4f2ad4f2296c52dd32"
-  },
-  {
-    "name": "background_building_05",
-    "source": "art/thirdparty/chillydurango-shacks-sheds/Shack A.blend",
-    "pack": "chillydurango-shacks-sheds",
-    "height": 3.5,
-    "scale": null,
-    "zone": "중",
-    "tint": "teal",
-    "lean": 0,
-    "scale_applied": 1.1429910622070174,
-    "native_size": [
-      3.5703859329223633,
-      6.249340534210205,
-      3.062141180038452
-    ],
-    "size": [
-      4.08091926574707,
-      7.142940521240234,
-      3.500000238418579
-    ],
-    "tris": 36,
-    "atlas": [
-      1024,
-      512
-    ],
-    "texels_per_m": 32,
-    "images_used": [
-      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
-      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png"
-    ],
-    "source_sha256": "a49405871370ea808589d8738605bb2fc6d22832fb4c30750e8ffc7e15e2a437"
+    "source_sha256": "50f37d1788026fe3b4ec875926f0472482e75f71aa1a0a003b22113306e89e25"
   }
 ]

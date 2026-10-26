@@ -1,0 +1,450 @@
+[
+  {
+    "name": "tires_01",
+    "triangles": 1776,
+    "size_m": [
+      1.37214994430542,
+      0.8944782316684723,
+      0.8499998415239602
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      64,
+      53
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "tires_02",
+    "triangles": 1824,
+    "size_m": [
+      1.1293312311172485,
+      0.9821484088897705,
+      1.0500001301609672
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      60,
+      57
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "pole_01",
+    "triangles": 3948,
+    "size_m": [
+      3.210529327392578,
+      35.24009895324707,
+      7.974821577182638
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      500,
+      396
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "streetlight_01",
+    "triangles": 346,
+    "size_m": [
+      1.7151387333869934,
+      0.5878535211086273,
+      5.500000047886676
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      67,
+      160
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "bicycle_01",
+    "triangles": 1714,
+    "size_m": [
+      1.7971582412719727,
+      0.6182634830474854,
+      1.0500000026802212
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      69,
+      57
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "fence_01",
+    "triangles": 36,
+    "size_m": [
+      13.431172370910645,
+      0.8614977300167084,
+      1.2000001178615918
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      317,
+      94
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "cone_01",
+    "triangles": 68,
+    "size_m": [
+      0.5386346578598022,
+      0.6219618320465088,
+      0.6500000864279976
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      43,
+      44
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "cone_02",
+    "triangles": 68,
+    "size_m": [
+      0.6629349589347839,
+      0.7654914855957031,
+      0.8000001338827545
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      47,
+      49
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "pot_01",
+    "triangles": 80,
+    "size_m": [
+      0.660372257232666,
+      0.7625323235988617,
+      0.5500001336417029
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      47,
+      43
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "pot_02",
+    "triangles": 76,
+    "size_m": [
+      0.9320945143699646,
+      0.9320946335792542,
+      0.7000001236124476
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      55,
+      48
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "old_car_01",
+    "triangles": 438,
+    "size_m": [
+      1.7138311862945557,
+      4.120732069015503,
+      1.4568500690437531
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      108,
+      84
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "background_building_01",
+    "triangles": 1164,
+    "size_m": [
+      10.000004768371582,
+      10.000006198883057,
+      10.000001936573426
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      350,
+      335
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "background_building_02",
+    "triangles": 1708,
+    "size_m": [
+      14.823534965515137,
+      19.05883026123047,
+      12.000003459887921
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      557,
+      441
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "background_building_03",
+    "triangles": 338,
+    "size_m": [
+      11.569298267364502,
+      8.000000238418579,
+      5.300000842417489
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      360,
+      220
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "pallet_02",
+    "triangles": 84,
+    "size_m": [
+      1.2000000476837158,
+      1.2000000476837158,
+      0.180000209213091
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      64,
+      38
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "bench_01",
+    "triangles": 84,
+    "size_m": [
+      1.2547661066055298,
+      0.6693022549152374,
+      0.8500000783634327
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      59,
+      51
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "drum_01",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.692820817232132,
+      0.900000092200191
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      49,
+      51
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "drum_02",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.692820817232132,
+      0.900000092200191
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      49,
+      51
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "drum_03",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.692820817232132,
+      0.900000092200191
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      49,
+      51
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "transformer_01",
+    "triangles": 20,
+    "size_m": [
+      0.6499999761581421,
+      0.9000004827976227,
+      1.7000002402073235
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      49,
+      70
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "fence_02",
+    "triangles": 16,
+    "size_m": [
+      1.771794080734253,
+      0.08640071377158165,
+      1.8000000785637598
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      63,
+      72
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "pallet_01",
+    "triangles": 32,
+    "size_m": [
+      1.3499959707260132,
+      1.7999945878982544,
+      0.1500003016002438
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      74,
+      41
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "autumn_tree_01",
+    "triangles": 360,
+    "size_m": [
+      11.234930038452148,
+      11.23493242263794,
+      13.49999996152684
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      391,
+      426
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "autumn_tree_02",
+    "triangles": 350,
+    "size_m": [
+      8.66804313659668,
+      8.668042659759521,
+      14.000001480961828
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      307,
+      418
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "autumn_tree_03",
+    "triangles": 366,
+    "size_m": [
+      10.669880867004395,
+      10.669889450073242,
+      12.500002776521228
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      372,
+      399
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "autumn_tree_04",
+    "triangles": 368,
+    "size_m": [
+      10.274347305297852,
+      10.274352550506592,
+      15.000001701219503
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      359,
+      454
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "autumn_tree_05",
+    "triangles": 374,
+    "size_m": [
+      10.41323184967041,
+      10.413233757019043,
+      13.000002636404702
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      364,
+      408
+    ],
+    "preview_pixels_per_m": 24
+  },
+  {
+    "name": "background_building_04",
+    "triangles": 1138,
+    "size_m": [
+      8.000003337860107,
+      8.000004768371582,
+      8.000001605357852
+    ],
+    "size_pass": true,
+    "passed": true,
+    "preview_px": [
+      285,
+      273
+    ],
+    "preview_pixels_per_m": 24
+  }
+]

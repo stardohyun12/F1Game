@@ -49,7 +49,7 @@ for item in items:
    if key not in cache:
     ma=ob.data.materials[old].copy();ma['tintrole']=role;ob.data.materials.append(ma);cache[key]=len(ob.data.materials)-1
    f.material_index=cache[key]
- if name in ['background_building_04','background_building_05']:
+ if name in ['background_building_04','background_building_05'] and item['pack']=='chillydurango-shacks-sheds':
   uv=ob.data.uv_layers['SourceUV']
   for f in ob.data.polygons:
    ax=max(range(3),key=lambda k:abs(f.normal[k]))
@@ -59,11 +59,11 @@ for item in items:
  for m in mats:
   m.use_nodes=True;n=m.node_tree.nodes;L=m.node_tree.links
   old=next((x.image for x in n if x.type=='TEX_IMAGE' and x.image),None);pr=next((x for x in n if x.type=='BSDF_PRINCIPLED'),None);basecolor=tuple(pr.inputs['Base Color'].default_value) if pr else tuple(m.diffuse_color)
-  if name in ['background_building_04','background_building_05']:
+  if name in ['background_building_04','background_building_05'] and item['pack']=='chillydurango-shacks-sheds':
    texname='tin_roof.png' if m.get('tintrole')=='roof' else 'tin_wall.png';old=bpy.data.images.load(str(R/'art/export/scene-a-v1b-photobash/garage_v1b.fbm'/texname),check_existing=True)
   if name.startswith('autumn_tree'):
    fall=R/'art/thirdparty/elegantcrow-retro-nature-pack/textures/trees'/(src.stem+'_fall.png');old=bpy.data.images.load(str(fall),check_existing=True)
-  n.clear();out=n.new('ShaderNodeOutputMaterial');bs=n.new('ShaderNodeBsdfDiffuse');bs.inputs['Roughness'].default_value=.5;L.new(bs.outputs[0],out.inputs[0]);alpha=None
+  n.clear();out=n.new('ShaderNodeOutputMaterial');bs=n.new('ShaderNodeBsdfDiffuse');bs.inputs['Roughness'].default_value=.5;geo=n.new('ShaderNodeNewGeometry');L.new(geo.outputs['True Normal'],bs.inputs['Normal']);L.new(bs.outputs[0],out.inputs[0]);alpha=None
   if old:
    tx=n.new('ShaderNodeTexImage');tx.image=old;tx.interpolation='Closest';uv=n.new('ShaderNodeUVMap');uv.uv_map='SourceUV';L.new(uv.outputs[0],tx.inputs[0]);color=tx.outputs['Color'];alpha=tx.outputs['Alpha'];images_used.append(old.filepath)
   else:
@@ -101,13 +101,14 @@ for item in items:
  sc.cycles.device='GPU';sc.cycles.samples=64;sc.cycles.max_bounces=3;sc.render.bake.margin=3;sc.render.bake.use_clear=True;sc.render.bake.use_pass_color=True;sc.render.bake.use_pass_direct=True;sc.render.bake.use_pass_indirect=True;sc.view_settings.view_transform='Standard'
  bpy.ops.object.select_all(action='DESELECT');ob.select_set(True);bpy.context.view_layer.objects.active=ob
  for typ,suffix in [('DIFFUSE','raw'),('AO','ao')]:
-  bpy.ops.object.bake(type=typ);image.filepath_raw=str(O/(name+'_'+suffix+'.png'));image.file_format='PNG';image.save()
+  ob.visible_shadow=not(name in ['background_building_04','background_building_05'] and typ=='DIFFUSE')
+  bpy.ops.object.bake(type=typ,uv_layer='BakedUV');image.filepath_raw=str(O/(name+'_'+suffix+'.png'));image.file_format='PNG';image.save()
  # Alpha is baked separately so foliage cards remain cut out with no new geometry.
  for m in mats:
   bs,out=colors[m];em=m.node_tree.nodes.new('ShaderNodeEmission');em.inputs[0].default_value=(1,1,1,1)
   if alphas[m]:m.node_tree.links.new(alphas[m],em.inputs[0])
   m.node_tree.links.new(em.outputs[0],out.inputs[0])
- bpy.ops.object.bake(type='EMIT');image.filepath_raw=str(O/(name+'_alpha.png'));image.save()
+ bpy.ops.object.bake(type='EMIT',uv_layer='BakedUV');image.filepath_raw=str(O/(name+'_alpha.png'));image.save()
  for m in mats:
   bs,out=colors[m];m.node_tree.links.new(bs.outputs[0],out.inputs[0])
  tris=sum(len(f.vertices)-2 for f in ob.data.polygons)

@@ -1,0 +1,198 @@
+[
+  {
+    "name": "tires_01",
+    "colors": 7,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "tires_02",
+    "colors": 15,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "pole_01",
+    "colors": 25,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "streetlight_01",
+    "colors": 26,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "bicycle_01",
+    "colors": 18,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "fence_01",
+    "colors": 23,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "cone_01",
+    "colors": 19,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "cone_02",
+    "colors": 18,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "pot_01",
+    "colors": 23,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "pot_02",
+    "colors": 23,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "old_car_01",
+    "colors": 27,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "background_building_01",
+    "colors": 25,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "background_building_02",
+    "colors": 28,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "background_building_03",
+    "colors": 26,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "pallet_02",
+    "colors": 16,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "bench_01",
+    "colors": 24,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "drum_01",
+    "colors": 26,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "drum_02",
+    "colors": 26,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "drum_03",
+    "colors": 26,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "transformer_01",
+    "colors": 17,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "fence_02",
+    "colors": 20,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "pallet_01",
+    "colors": 23,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "autumn_tree_01",
+    "colors": 31,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "autumn_tree_02",
+    "colors": 32,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "autumn_tree_03",
+    "colors": 31,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "autumn_tree_04",
+    "colors": 27,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "autumn_tree_05",
+    "colors": 31,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  },
+  {
+    "name": "background_building_04",
+    "colors": 25,
+    "palette_pass": true,
+    "power_of_two": true,
+    "alpha_cutout": true
+  }
+]
