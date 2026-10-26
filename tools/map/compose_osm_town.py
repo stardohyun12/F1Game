@@ -192,6 +192,9 @@ def plen(p):
 
 DBG = []
 ROADS, BLDS, COAST, WATER, GREEN, PIER, EDITS = [], [], [], [], [], [], []
+LOOSE, SEAMFIX, REMOVED = [], [], []          # v6b: 끊긴 끝 · 이음매 곡선 다듬기 · 겹쳐서 뺀 건물
+YN, CF = {}, {}                               # v6b: 차길 노드 높이 · 길 따라 깎고 메운 지형 보정 격자
+KEY = lambda q: (round(q[0], 1), round(q[1], 1))
 
 
 def kind_of(hw):
@@ -278,8 +281,8 @@ def end_dir(pts, at_start):
     return dx / ln, dz / ln          # 끝에서 바깥쪽
 
 
-def bezier(p0, d0, p1, d1, step=4.0):
-    D = math.dist(p0, p1); k = D * 0.4
+def bezier(p0, d0, p1, d1, step=4.0, ks=0.4):
+    D = math.dist(p0, p1); k = D * ks
     c0 = (p0[0] + d0[0] * k, p0[1] + d0[1] * k); c1 = (p1[0] + d1[0] * k, p1[1] + d1[1] * k)
     n = max(4, int(D / step))
     return [((1 - t) ** 3 * p0[0] + 3 * (1 - t) ** 2 * t * c0[0] + 3 * (1 - t) * t * t * c1[0] + t ** 3 * p1[0],
@@ -316,7 +319,7 @@ def seams(maxd=120.0):
         kind = 'main' if ra['kind'] == 'main' and rb['kind'] == 'main' else 'village'
         ROADS.append({'id': f'seam{n}_{ra["piece"]}_{rb["piece"]}', 'kind': kind, 'width': min(ra['width'], rb['width']),
                       'roughness': max(ra['roughness'], rb['roughness']), 'pts': pts, 'cut': (False, False), 'piece': 'seam', 'osm': None,
-                      'cls': 'seam', 'name': '이음매', 'surface': ''})
+                      'cls': 'seam', 'name': '이음매', 'surface': '', 'tan': (end_dir(ra['pts'], sa), end_dir(rb['pts'], sb))})
         n += 1
     # 짝 없는 끝: 다른 조각 차길의 가장 가까운 꼭짓점으로 T 자 연결(70 m 안, 방향 맞을 때)
     loose = 0
@@ -330,7 +333,7 @@ def seams(maxd=120.0):
                 if 8 < D < 70 and ((q[0] - pa[0]) * da[0] + (q[1] - pa[1]) * da[1]) / D > 0.45 and (best is None or D < best[0]):
                     best = (D, rb, i)
         if not best:
-            loose += 1; continue
+            loose += 1; LOOSE.append({'road': ra['id'], 'piece': ra['piece'], 'at': [round(pa[0]), round(pa[1])], 'kind': ra['kind']}); continue
         D, rb, i = best; q = rb['pts'][i]
         j0, j1 = max(0, i - 1), min(len(rb['pts']) - 1, i + 1)
         tx, tz = rb['pts'][j1][0] - rb['pts'][j0][0], rb['pts'][j1][1] - rb['pts'][j0][1]; ln = math.hypot(tx, tz) or 1
@@ -338,7 +341,7 @@ def seams(maxd=120.0):
         if (pa[0] - q[0]) * nx + (pa[1] - q[1]) * nz < 0: nx, nz = -nx, -nz
         pts = bezier(pa, da, q, (nx, nz))
         ROADS.append({'id': f'seam{n}_{ra["piece"]}_{rb["piece"]}_T', 'kind': 'village', 'width': min(ra['width'], rb['width'], 6.0),
-                      'roughness': ra['roughness'], 'pts': pts, 'cut': (False, False), 'piece': 'seam', 'osm': None, 'cls': 'seam', 'name': '이음매(T)', 'surface': ''})
+                      'roughness': ra['roughness'], 'pts': pts, 'cut': (False, False), 'piece': 'seam', 'osm': None, 'cls': 'seam', 'name': '이음매(T)', 'surface': '', 'tan': (da, (nx, nz))})
         used.add((id(ra), sa)); n += 1
     return n, loose
 
@@ -455,11 +458,12 @@ def drive(path, rough):
     q, rs, acc, last = [], [], 0.0, None
     for p, r in path:
         if last is not None: acc += math.dist(p, last)
-        if last is None or acc >= L.RSTEP: q.append((p[0], p[1], H(*p))); rs.append(r); acc = 0.0
+        if last is None or acc >= L.RSTEP: q.append((p[0], p[1], YN.get(KEY(p), H(*p)))); rs.append(r); acc = 0.0
         last = p
     n = len(q)
-    ys = [p[2] for p in q]   # 길 높이 = 지형 ±12 m 평균(이음매·격자 뾰족함 제거, 나머지는 깎고 메움)
-    q = [(p[0], p[1], sum(ys[max(0, i - 3):i + 4]) / len(ys[max(0, i - 3):i + 4])) for i, p in enumerate(q)]
+    if not YN:               # v6: 길 높이 = 지형 ±12 m 평균. v6b 는 solve_heights 의 매끈한 노드 높이를 그대로
+        ys = [p[2] for p in q]
+        q = [(p[0], p[1], sum(ys[max(0, i - 3):i + 4]) / len(ys[max(0, i - 3):i + 4])) for i, p in enumerate(q)]
     Rr = [1e9 if (i < L.RH or i >= n - L.RH) else L.radius3(q[i - L.RH], q[i], q[i + L.RH]) for i in range(n)]
     cap = []
     for r in rs:
@@ -487,9 +491,10 @@ def fun_check(stops):
             Ls = len(q) * L.RSTEP
             hp = TM.hairpins([(Ls, [(p[0], p[1]) for p in q], True)])
             st = L.runs([x >= L.STRAIGHT_R for x in Rr])
-            g = max((abs(q[i + 2][2] - q[i][2]) / (2 * L.RSTEP) for i in range(len(q) - 2) if rs[i] is rs[i + 2]), default=0)
+            gd = lambda i: abs(q[i + 2][2] - q[i][2]) / max(1.0, math.dist(q[i][:2], q[i + 2][:2]))     # 실제 수평거리로(샘플 간격 4~6 m)
+            g = max((gd(i) for i in range(len(q) - 2) if rs[i] is rs[i + 2]), default=0)
             row[tag] = {'m': round(Ls), 't': round(t0, 1), 'tRough': round(t1, 1), 'hairpins': len(hp), 'straightMax': round(max((x for _, x in st), default=0)),
-                        'roughM': round(sum(L.RSTEP for r in rs if r['roughness'] >= 0.4)), 'gradeMax': round(g * 100, 1), 'gradeP90': round(100 * sorted(abs(q[i + 2][2] - q[i][2]) / (2 * L.RSTEP) for i in range(len(q) - 2))[int(0.9 * (len(q) - 3))], 1),
+                        'roughM': round(sum(L.RSTEP for r in rs if r['roughness'] >= 0.4)), 'gradeMax': round(g * 100, 1), 'gradeP90': round(100 * sorted(gd(i) for i in range(len(q) - 2))[int(0.9 * (len(q) - 3))], 1),
                         'narrowM': round(sum(L.RSTEP for r in rs if r['width'] < 4)), 'snapM': round(math.dist(path[0][0], pos[a]) + math.dist(path[-1][0], pos[b]))}
         if row.get('big') and row.get('short'):
             row['ratio'] = round(row['short']['t'] / row['big']['t'], 2); row['ratioRough'] = round(row['short']['tRough'] / row['big']['tRough'], 2)
@@ -537,7 +542,6 @@ def add_shortcuts(stops):
             Ls = plen(r['pts']) + s0[0] + s1[0]
             via = min(da.get(s0[1], 1e18) + Ls + db.get(s1[1], 1e18), da.get(s1[1], 1e18) + Ls + db.get(s0[1], 1e18))
             gain = base - via
-            DBG.append((round(gain), a, b, r['cls'], r['piece']))
             if gain < 0.12 * base: continue
             dp = dens(r['pts'], 4.0); hy = [H(*q) for q in dp]
             gm = max((abs(hy[i + 2] - hy[i]) / 8 for i in range(len(hy) - 2)), default=0)
@@ -551,6 +555,234 @@ def add_shortcuts(stops):
         r.update(kind='village', width=3.2, roughness=0.5, cls=r['cls'] + '→car')
         done.append((a, b, r['id']))
     return done
+
+
+# ── v6b ──────────────────────────────────────────────────────────────
+CHAIN_DBG, CHAIN_GAIN, FREE_RATIO = [], 0.8, 0.75     # 고정 쌍은 거리 0.8 이하, 배달점 옮길 땐 0.75 이하 + 60 m 이상 줄 때만
+G_ROAD, G_PIN, PIN_R = 0.15, 0.18, 20.0     # 차길 경사 상한 15 %, 헤어핀(R < 20 m) 18 % (과제 0122)
+
+
+def solve_heights():
+    """차길 노드 높이: 위 덮개 U(i)=min_j(H_j+g·길거리), 아래 받침 Lo(i)=max_j(H_j−g·길거리) 의 가운데.
+    U·Lo 둘 다 어느 두 노드 사이도 경사 ≤ g 라, 가운데도 ≤ g 가 보장된다. 지형과 다른 만큼은 깎고 메운다.
+    계단·사람길은 그래프에 없어서 예외(지형 그대로)."""
+    YN.clear()
+    nodes, adj = graph()
+    n = len(nodes); idx = {KEY(q): k for k, (q, _) in enumerate(nodes)}
+    h0 = [max(1.5, H(*q)) for q, _ in nodes]
+    gk = [G_ROAD] * n
+    for r in ROADS:
+        if r['kind'] not in ('main', 'village'): continue
+        dp = dens(r['pts'])
+        for i in range(6, len(dp) - 6):
+            if L.radius3(dp[i - 6], dp[i], dp[i + 6]) < PIN_R:
+                k = idx.get(KEY(dp[i]))
+                if k is not None: gk[k] = G_PIN
+    def env(sign):
+        dist = [sign * h for h in h0]; pq = [(v, k) for k, v in enumerate(dist)]; heapq.heapify(pq)
+        while pq:
+            dd, k = heapq.heappop(pq)
+            if dd > dist[k]: continue
+            for k2, w, _ in adj[k]:
+                nd = dd + w * max(gk[k], gk[k2])
+                if nd < dist[k2]: dist[k2] = nd; heapq.heappush(pq, (nd, k2))
+        return [sign * v for v in dist]
+    U, Lo = env(1), env(-1)
+    ys = [(u + l) / 2 for u, l in zip(U, Lo)]
+    for k, (q, _) in enumerate(nodes): YN[KEY(q)] = ys[k]
+    # 통계: 실제 경사(노드 사이), 원래 지형 경사(8 m), 깎고 메운 깊이
+    gr = sorted(abs(ys[k] - ys[k2]) / w for k in range(n) for k2, w, _ in adj[k] if w > 0.5)
+    raw = []
+    for r in ROADS:
+        if r['kind'] not in ('main', 'village'): continue
+        dp = dens(r['pts'], 4.0); hy = [H(*q) for q in dp]
+        raw += [abs(hy[i + 2] - hy[i]) / 8 for i in range(len(hy) - 2)]
+    raw.sort(); cf = sorted(abs(ys[k] - h0[k]) for k in range(n))
+    pc = lambda a, p: round(a[min(len(a) - 1, int(p * len(a)))], 3) if a else 0
+    return {'nodes': n, 'pinNodes': sum(1 for g in gk if g == G_PIN), 'gradeMax': pc(gr, 1), 'gradeP99': pc(gr, .99), 'gradeP90': pc(gr, .9),
+            'rawTerrainGradeMax': pc(raw, 1), 'rawP90': pc(raw, .9), 'cutFillP50': pc(cf, .5), 'cutFillP90': pc(cf, .9), 'cutFillMax': pc(cf, 1)}
+
+
+def build_cut_fill(step=4, band=15.0):
+    """지형을 차길에 맞춘다: 길 폭/2+1 m 안은 길 높이, 그 밖 15 m 에 걸쳐 원래 지형으로 S 자 복귀. 가장 가까운 길이 이긴다."""
+    g = {}
+    for r in ROADS:
+        if r['kind'] not in ('main', 'village'): continue
+        hw = r['width'] / 2 + 1; R = hw + band; m = int(R / step) + 1
+        for q in dens(r['pts'], 2.0):
+            y = YN.get(KEY(q))
+            if y is None: continue
+            d0 = y - H(*q); ci, cj = int(round((q[1] + 650) / step)), int(round((q[0] + 650) / step))
+            for i in range(ci - m, ci + m + 1):
+                for j in range(cj - m, cj + m + 1):
+                    d = math.hypot(-650 + j * step - q[0], -650 + i * step - q[1])
+                    if d > R: continue
+                    w = 1.0 if d <= hw else S(1 - (d - hw) / band)
+                    if w > g.get((i, j), (0, 0))[0]: g[(i, j)] = (w, w * d0)
+    CF['step'] = step; CF['g'] = g
+
+
+def H2(x, z):
+    h = H(x, z)
+    if not CF: return h
+    st, g = CF['step'], CF['g']; fx, fz = (x + 650) / st, (z + 650) / st
+    j, i = int(math.floor(fx)), int(math.floor(fz)); tx, tz = fx - j, fz - i
+    v = lambda a, b: g.get((a, b), (0, 0.0))[1]
+    return h + v(i, j) * (1 - tx) * (1 - tz) + v(i, j + 1) * tx * (1 - tz) + v(i + 1, j) * (1 - tx) * tz + v(i + 1, j + 1) * tx * tz
+
+
+def chain_shortcut(a, b, pos, banned, tag, free=None):
+    """실제 사람길(계단 제외) 여러 개를 이은 사슬 가운데, 차길 a 쪽 끝과 b 쪽 끝을 15 m 안에서 잇고
+    a→b 거리를 가장 많이 줄이는 것. 사슬 평균 경사 ≤ 15 % 만(그 이상은 깎아도 너무 깊다).
+    free=(조각, 최저 높이): b 를 고정하지 않고, 사슬이 닿는 그 조각 차길 끝(높이 ≥ 최저) 가운데 줄이는 거리가 가장 큰 곳을 배달점으로."""
+    nodes, adj = graph()
+    near = lambda pt: min(range(len(nodes)), key=lambda k: math.dist(nodes[k][0], pt))
+    na, nb = near(pos[a]), near(pos[b]); da = dijk(nodes, adj, na); db = {} if free else dijk(nodes, adj, nb)
+    base = da.get(nb, 1e18)
+    cg = defaultdict(list)
+    for k, (q, _) in enumerate(nodes): cg[(int(q[0] // 15), int(q[1] // 15))].append(k)
+    def snap(q):
+        best = None
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                for k in cg.get((int(q[0] // 15) + dx, int(q[1] // 15) + dz), ()):
+                    d = math.dist(nodes[k][0], q)
+                    if d < 15 and (best is None or d < best[0]): best = (d, k)
+        return best
+    fid, fp, fadj = {}, [], defaultdict(list)
+    def nid(q):
+        k = KEY(q)
+        if k not in fid: fid[k] = len(fp); fp.append(q)
+        return fid[k]
+    for r in ROADS:
+        if r['kind'] != 'alley' or r['piece'] not in ('tomo', 'camo', 'posi') or r['id'] in banned: continue
+        ids = [nid(q) for q in r['pts']]
+        for u, v in zip(ids, ids[1:]):
+            if u != v: d = math.dist(fp[u], fp[v]); fadj[u].append((v, d, r)); fadj[v].append((u, d, r))
+    sn = [snap(q) for q in fp]
+    dist, prev, pq = {}, {}, []
+    for f, s in enumerate(sn):
+        if s and s[1] in da:
+            c = da[s[1]] + s[0]; dist[f] = c; prev[f] = ('car', s[1]); pq.append((c, f))
+    heapq.heapify(pq)
+    while pq:
+        dd, f = heapq.heappop(pq)
+        if dd > dist[f]: continue
+        for f2, w, r in fadj[f]:
+            nd = dd + w
+            if nd < dist.get(f2, 1e18): dist[f2] = nd; prev[f2] = (f, r); heapq.heappush(pq, (nd, f2))
+    cands = []
+    for f, dd in dist.items():
+        s = sn[f]
+        if not s or prev[f][0] == 'car': continue
+        if free:
+            if s[1] not in da: continue
+            q = nodes[s[1]][0]; bs = da[s[1]]
+            if nodes[s[1]][1]['piece'] != free[0] or H(*q) < free[1] or abs(q[0]) > HALF - 20 or abs(q[1]) > HALF - 20: continue
+            if dd + s[0] <= FREE_RATIO * bs and bs - dd - s[0] >= 60: cands.append((dd + s[0] - bs, f, s[1], bs))
+        elif s[1] in db:
+            cands.append((dd + s[0] + db[s[1]], f, s[1], base))
+    CHAIN_DBG.append((a, b, round(base), len(cands), sorted(cands)[:1] and round(sorted(cands)[0][0])))
+    for key, f, kend, base in sorted(cands)[:60]:
+        tot = key + base if free else key
+        if tot > CHAIN_GAIN * base: break
+        chain, rs, k = [fp[f]], [], f
+        while prev[k][0] != 'car':
+            k, r = prev[k]; chain.append(fp[k]); rs.append(r)
+        kstart = prev[k][1]; chain.reverse()
+        pts = [nodes[kstart][0]] + chain + [nodes[kend][0]]
+        Lc = plen(pts); dh = abs(H(*pts[-1]) - H(*pts[0]))
+        CHAIN_DBG.append(('cand', round(tot), round(Lc), round(dh / Lc, 3)))
+        if Lc < 20 or dh / Lc > G_ROAD: continue
+        ways = list(dict.fromkeys(r['id'] for r in rs)); osm = list(dict.fromkeys(r['osm'] for r in rs))
+        surf = [r['surface'] for r in rs if r['surface']]
+        rough = min(0.6, max(0.3, max((ROUGH_SURF.get(s, 0.5) for s in surf), default=0.5)))
+        piece = rs[0]['piece']
+        ROADS.append({'id': f'sc_{tag}', 'kind': 'village', 'width': 3.2, 'roughness': rough, 'pts': pts, 'cut': (False, False), 'piece': piece,
+                      'osm': osm, 'cls': '+'.join(dict.fromkeys(r['cls'] for r in rs)) + '→car', 'name': '골목 돌길', 'surface': surf[0] if surf else ''})
+        keys = {KEY(q) for q in chain}
+        gone = [r['id'] for r in ROADS if r['id'] in ways and all(KEY(q) in keys for q in r['pts'])]
+        ROADS[:] = [r for r in ROADS if r['id'] not in gone]
+        why = ('계단 옆 골목' if any(r['kind'] == 'stairs' and min(math.dist(q, s) for q in pts[::3] for s in r['pts'][::2]) < 12 for r in ROADS if r['piece'] == piece) else '실제 골목·산책로')
+        EDITS.append({'road': f'sc_{tag}', 'osm': osm, 'from': f'사람길 {len(ways)}개 사슬', 'to': f'차 가능한 돌길 3.2 m · 요철 {rough}',
+                      'why': f'{a}→{b}: {why}(실제 길, 표면 {surf[0] if surf else "태그 없음"}) — 거리 {base:.0f}→{tot:.0f} m, 평균 경사 {100 * dh / Lc:.0f} %, 사슬 {Lc:.0f} m'})
+        return {'pair': f'{a}→{b}', 'id': f'sc_{tag}', 'end': [round(nodes[kend][0][0], 1), round(nodes[kend][0][1], 1)], 'ways': len(ways), 'm': round(Lc), 'base': round(base), 'via': round(tot), 'avgGrade': round(dh / Lc, 3)}
+    return None
+
+
+def seam_radius(pts):
+    dp = dens(pts, 2.0)
+    return min((L.radius3(dp[i - 3], dp[i], dp[i + 3]) for i in range(3, len(dp) - 3)), default=1e9)
+
+
+def fix_seams():
+    """이음매 곡선 반경이 12 m 미만이면 손잡이 길이(0.25~0.6)를 바꿔 가장 완만한 것으로."""
+    for r in ROADS:
+        if r['piece'] != 'seam' or 'tan' not in r: continue
+        R0 = seam_radius(r['pts'])
+        if R0 >= 12: continue
+        p0, p1 = r['pts'][0], r['pts'][-1]
+        best = max(((seam_radius(bezier(p0, r['tan'][0], p1, r['tan'][1], ks=ks)), ks) for ks in (0.25, 0.3, 0.35, 0.45, 0.5, 0.6)))
+        if best[0] > R0: r['pts'] = bezier(p0, r['tan'][0], p1, r['tan'][1], ks=best[1])
+        SEAMFIX.append({'road': r['id'], 'R_before': round(R0, 1), 'R_after': round(max(best[0], R0), 1), 'ks': best[1] if best[0] > R0 else 0.4,
+                        'at': [round((p0[0] + p1[0]) / 2), round((p0[1] + p1[1]) / 2)]})
+
+
+def _shrink(poly, s=0.35):
+    cx = sum(q[0] for q in poly) / len(poly); cz = sum(q[1] for q in poly) / len(poly)
+    out = []
+    for q in poly:
+        d = math.dist(q, (cx, cz)) or 1; t = max(0.0, 1 - s / d); out.append((cx + (q[0] - cx) * t, cz + (q[1] - cz) * t))
+    return out
+
+
+def _seg_x(a, b, c, d):
+    o = lambda p, q, r: (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+    return o(a, b, c) * o(a, b, d) < 0 and o(c, d, a) * o(c, d, b) < 0
+
+
+def clean_overlaps():
+    """건물 겹침 0: (1) 차길 노면(중심선±폭/2) 위 건물, (2) 다른 조각 건물끼리 겹침 → 조각 안쪽 깊이가 얕은 쪽을 뺀다."""
+    pcd = {p.pid: p for p in PCS}
+    sp = [_shrink(b['poly']) for b in BLDS]
+    bb = [(min(q[0] for q in p), max(q[0] for q in p), min(q[1] for q in p), max(q[1] for q in p)) for p in sp]
+    rg = defaultdict(list)
+    for r in ROADS:
+        if r['kind'] not in ('main', 'village'): continue
+        for q in dens(r['pts'], 1.5): rg[(int(q[0] // 10), int(q[1] // 10))].append((q, r))
+    drop = {}
+    for i, b in enumerate(BLDS):
+        x0, x1, z0, z1 = bb[i]
+        for gx in range(int((x0 - 5) // 10), int((x1 + 5) // 10) + 1):
+            for gz in range(int((z0 - 5) // 10), int((z1 + 5) // 10) + 1):
+                for q, r in rg.get((gx, gz), ()):
+                    hw = r['width'] / 2 if r['piece'] != b['piece'] else 0.0      # 같은 조각 실제 길은 중심선만(폭은 widen 이 처리)
+                    if not (x0 - hw <= q[0] <= x1 + hw and z0 - hw <= q[1] <= z1 + hw): continue
+                    p = sp[i]
+                    if L.in_poly(q[0], q[1], p) or (hw and min(L.seg_dist(q[0], q[1], *p[k], *p[(k + 1) % len(p)])[0] for k in range(len(p))) < hw):
+                        drop.setdefault(i, f"차길 {r['id']} 위"); break
+                if i in drop: break
+            if i in drop: break
+    bg = defaultdict(list)
+    for i in range(len(BLDS)): bg[(int(bb[i][0] // 20), int(bb[i][2] // 20))].append(i)
+    for i, b in enumerate(BLDS):
+        if i in drop: continue
+        for gx in (-1, 0, 1):
+            for gz in (-1, 0, 1):
+                for j in bg.get((int(bb[i][0] // 20) + gx, int(bb[i][2] // 20) + gz), ()):
+                    if j <= i or j in drop or BLDS[j]['piece'] == b['piece']: continue
+                    A, B = bb[i], bb[j]
+                    if A[1] < B[0] or B[1] < A[0] or A[3] < B[2] or B[3] < A[2]: continue
+                    pa, pb = sp[i], sp[j]
+                    hit = any(L.in_poly(*q, pb) for q in pa) or any(L.in_poly(*q, pa) for q in pb) or \
+                        any(_seg_x(pa[k], pa[(k + 1) % len(pa)], pb[m], pb[(m + 1) % len(pb)]) for k in range(len(pa)) for m in range(len(pb)))
+                    if hit:
+                        ei = pcd[b['piece']].edge(*b['poly'][0]); ej = pcd[BLDS[j]['piece']].edge(*BLDS[j]['poly'][0])
+                        k = i if ei < ej else j; drop[k] = f"다른 조각 건물과 겹침({b['piece']}↔{BLDS[j]['piece']})"
+    for i, why in drop.items():
+        REMOVED.append({'piece': BLDS[i]['piece'], 'osm': BLDS[i]['osm'], 'at': [round(BLDS[i]['poly'][0][0]), round(BLDS[i]['poly'][0][1])], 'why': why})
+    BLDS[:] = [b for i, b in enumerate(BLDS) if i not in drop]
+    return len(drop)
 
 
 def car_nodes(pid=None):
@@ -591,7 +823,7 @@ def to_px(x, z):
 
 def render(stops, path, title, debug=False):
     N = 300; small = Image.new('RGB', (N, N)); mask = Image.new('L', (N, N))
-    ys = [[H(-600 + (j + .5) * 4, 600 - (i + .5) * 4) for j in range(N)] for i in range(N)]
+    ys = [[H2(-600 + (j + .5) * 4, 600 - (i + .5) * 4) for j in range(N)] for i in range(N)]
     emax = max(max(r) for r in ys)
     for i in range(N):
         for j in range(N):
@@ -662,13 +894,44 @@ def main():
     tip = outer_roads()
     nseam, nloose = seams()
     stops = pick_stops(tip)
-    title = '마을 v6-OSM (실제 조각 합성)'
-    nb_in = sum(1 for b in BLDS if all(abs(q[0]) <= HALF and abs(q[1]) <= HALF for q in b['poly']))
-    img = render(stops, os.path.join(OUT, 'town-v6osm' + ('-debug' if debug else '') + '.png'), f'{title} — 건물 {nb_in}채(칸 안), 760 m 사방', debug)
-    print('posi.dy', PCS[2].dy, 'roads', len(ROADS), 'blds', len(BLDS), 'in-box', nb_in, 'seams', nseam, 'loose cut ends', nloose, 'edits', len(EDITS))
-    if debug: return
-    print('shortcuts', add_shortcuts(stops)); print('dbg', sorted(DBG, reverse=True)[:12], len(DBG))
+    v6b = '--v6b' in sys.argv
+    TAG = 'v6b' if v6b else 'v6osm'
+    title = '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
+    if debug:
+        render(stops, os.path.join(OUT, f'town-{TAG}-debug.png'), title, True); return
+    print('shortcuts', add_shortcuts(stops))
+    extra = {}
+    if v6b:
+        fix_seams()
+        extra['heights0'] = solve_heights()
+        chains = []
+        for sid, free in (('top_house', ('posi', 40.0)), ('hill_field', ('camo', 20.0))):
+            st = {s['id']: s for s in stops}
+            res = chain_shortcut('garage', sid, {k: v['pos'] for k, v in st.items()}, set(), f'garage_{sid}', free=free)
+            print('relocate', sid, st[sid]['pos'], res)
+            if res:
+                EDITS.append({'stop': sid, 'from': st[sid]['pos'], 'to': res['end'],
+                              'why': f'{sid}: 원래 자리엔 차로 갈 실제 골목 사슬이 없음 → 실제 골목이 닿는 차길 끝(높이 ≥ {free[1]:.0f} m)으로 배달점을 옮김'})
+                st[sid]['pos'] = res['end']; chains.append(res)
+        solve_heights()
+        for rnd in range(3):
+            fun = fun_check(stops)
+            bad = [r['pair'].split('→') for r in fun if (r.get('ratioRough') or 1) > 0.8]
+            print('round', rnd, [(r['pair'], r.get('ratioRough')) for r in fun])
+            if len(fun) - len(bad) >= 5 or not bad: break
+            for a, b in bad:
+                res = chain_shortcut(a, b, {s['id']: s['pos'] for s in stops}, set(), f'{a}_{b}_{rnd}')
+                print('chain', a, b, res); chains.append(res or {'pair': f'{a}→{b}', 'id': None})
+            extra['heights'] = solve_heights()
+        extra['chains'] = chains
+        extra['removed'] = clean_overlaps()
+        extra['heights'] = solve_heights()
+        build_cut_fill()
+        print('heights', extra['heights'], 'removed', extra['removed'], 'seamfix', SEAMFIX)
     fun = fun_check(stops)
+    nb_in = sum(1 for b in BLDS if all(abs(q[0]) <= HALF and abs(q[1]) <= HALF for q in b['poly']))
+    img = render(stops, os.path.join(OUT, f'town-{TAG}.png'), f'{title} — 건물 {nb_in}채(칸 안), 760 m 사방')
+    print('posi.dy', PCS[2].dy, 'roads', len(ROADS), 'blds', len(BLDS), 'in-box', nb_in, 'seams', nseam, 'loose cut ends', nloose, 'edits', len(EDITS))
     # 측정: 칸 안(760 m)만 잘라 실제 마을과 같은 함수로
     def inb(q): return abs(q[0]) <= HALF and abs(q[1]) <= HALF
     net_roads = []
@@ -682,37 +945,45 @@ def main():
             if len(sg) > 1:
                 net_roads.append({'pts': sg, 'car': r['kind'] in ('main', 'village'), 'steps': r['kind'] == 'stairs', 'cls': r['cls'], 'w': r['width']})
     net = {'name': '마을 v6-OSM', 'roads': net_roads, 'bld': [[(q[0] + 600, q[1] + 600) for q in b['poly']] for b in BLDS if all(inb(q) for q in b['poly'])],
-           'h': lambda X, Z: H(X - 600, Z - 600)}
+           'h': lambda X, Z: H2(X - 600, Z - 600)}
     m = TM.measure(net, geometric=True)
     # 저장(bayloop-plan 호환 필드 최대한)
     roads = []
     for r in ROADS:
         o = {'id': r['id'], 'kind': r['kind'], 'width': r['width'], 'roughness': r['roughness'], 'closed': False,
-             'knots': [[round(q[0], 2), round(q[1], 2), round(H(*q), 2)] for q in r['pts']], 'interp': 'linear',
+             'knots': [[round(q[0], 2), round(q[1], 2), round(YN.get(KEY(q), H2(*q)), 2)] for q in r['pts']], 'interp': 'linear',
              'source': {'piece': r['piece'], 'osm_way': r['osm'], 'highway': r['cls'], 'name': r['name'], 'surface': r['surface']}}
         if r['kind'] in ('alley', 'stairs'): o['terrainFollows'] = False
         if r.get('out'): o['out'] = r['out']
         roads.append(o)
-    ctrl = [[x, z, round(H(x, z), 1)] for x in range(-HALF, HALF + 1, 20) for z in range(-HALF, HALF + 1, 20)]
+    cstep = 8 if v6b else 20     # v6b: 깎고 메운 길 띠(폭+30 m)가 격자에 남도록 8 m
+    ctrl = [[x, z, round(H2(x, z), 1)] for x in range(-HALF, HALF + 1, cstep) for z in range(-HALF, HALF + 1, cstep)]
     plan = {
-        'meta': {'name': 'town-v6osm', 'version': 6, 'decision': 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
+        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
                  'source': '© OpenStreetMap contributors (ODbL) + SRTM 30 m — docs/map/ATTRIBUTION.md',
                  'rhythmModel': '최고속 85 km/h · 가속 10.7 · 제동 8 m/s² · 굽이 √(5.82·R) + 요철 상한 가설 ROUGH_CAP',
-                 'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어'},
+                 'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어' + ('. 차길 knots y = 경사 상한(15 %/헤어핀 18 %) 매끈 높이, controlPoints = 길에 맞춰 깎고 메운 지형' if v6b else '')},
         'pieces': [{'id': p.pid, 'town': p.tid, 'srcCenter': p.c, 'rotDeg': p.rot, 'rect': p.rect, 'at': p.at, 'dy': p.dy, 'why': p.why} for p in PCS],
-        'terrain': {'method': 'grid', 'step': 20, 'blend': BLEND, 'controlPoints': ctrl},
+        'terrain': {'method': 'grid', 'step': cstep, 'blend': BLEND, 'controlPoints': ctrl},
         'sea': {'level': 0},
         'roads': roads,
-        'buildings': [{'poly': [[round(q[0], 2), round(q[1], 2)] for q in b['poly']], 'y': round(H(*b['poly'][0]), 1), 'piece': b['piece'], 'osm_way': b['osm']} for b in BLDS],
+        'buildings': [{'poly': [[round(q[0], 2), round(q[1], 2)] for q in b['poly']], 'y': round(H2(*b['poly'][0]), 1), 'piece': b['piece'], 'osm_way': b['osm']} for b in BLDS],
         'garage': stops[0], 'mart': stops[1], 'stops': stops[2:],
         'boundary': {'play': [[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF]]},
         'edits': EDITS, 'fun': fun, 'metrics': m,
+        **({'v6b': {**extra, 'seamFix': SEAMFIX, 'looseEnds': LOOSE, 'removedBuildings': REMOVED}} if v6b else {}),
     }
-    json.dump(plan, open(os.path.join(OUT, 'town-v6osm.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    ims = [img] + [Image.open(os.path.join(OUT, q)).convert('RGB') for q in ('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png')]
-    sm = 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
+    json.dump(plan, open(os.path.join(OUT, f'town-{TAG}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    others, sheet_name = (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
+    ims = [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others] + [img] if v6b else [img] + [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others]
+    sm = 900 if v6b else 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
     for k, im in enumerate(ims): sheet.paste(im.resize((sm, sm), Image.Resampling.LANCZOS), (k * sm, 0))
-    sheet.paste(legend(sm * len(ims)), (0, sm)); sheet.save(os.path.join(OUT, 'v6osm-vs-real.png'))
+    sheet.paste(legend(sm * len(ims)), (0, sm)); sheet.save(os.path.join(OUT, sheet_name))
+    if v6b:
+        for c in extra.get('chains', []): print('chainres', json.dumps(c, ensure_ascii=False))
+        for x in SEAMFIX: print('seamfix', json.dumps(x, ensure_ascii=False))
+        for x in LOOSE: print('loose', json.dumps(x, ensure_ascii=False))
+        print('removed', json.dumps(REMOVED, ensure_ascii=False))
     print(json.dumps(m, ensure_ascii=False))
     for row in fun: print(json.dumps(row, ensure_ascii=False))
     for e in EDITS: print('edit', json.dumps(e, ensure_ascii=False))
