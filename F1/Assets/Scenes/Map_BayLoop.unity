@@ -418863,12 +418863,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: PitCrew::PCLookScene
   look: 5
   discShader: {fileID: 4800000, guid: e14fde3ed202bac4e99e01ba21be3fcd, type: 3}
-  lowResHeight: 540
+  lowResHeight: 720
   animFps: 12
   skyShader: {fileID: 4800000, guid: 0a99adfd92b4eab47b4174cf510f18f2, type: 3}
   vertexSnap: 0
   mipmaps: 1
-  smoothUpscale: 1
+  smoothUpscale: 0
   msaa: 4
   presentShader: {fileID: 4800000, guid: 8d1b0333dfb13c944bfb56cf88b016fd, type: 3}
 --- !u!4 &1753512478

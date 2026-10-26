@@ -16,7 +16,7 @@ public sealed class PCLookScene : MonoBehaviour
     [Tooltip("0 Current · 1 Clean · 2 Painterly · 3 Pixel-Soft · 4 Retro-Clean · 5 EDC-PS1")]
     public int look;
     public Shader discShader;
-    public int lowResHeight = 540;
+    public int lowResHeight = 720;   // 과제 0320-4(도현 확정): 720 + Nearest
     public float animFps = 12f;
 
     // 시간대 표(규칙 6). fog = 무드 안개색(MoodSwitcher BuildDayProfiles 와 같은 값, 가까운 줄을 고르는 열쇠), s/e = 선형 안개 m, max = 최대 섞임(원경 실루엣이 70~85% 로 남게),
@@ -47,7 +47,7 @@ public sealed class PCLookScene : MonoBehaviour
     [Header("5c 시간적 안정성")]
     public bool vertexSnap = false;      // 정점 스냅(움직이면 1px씩 튐) — 옵션만 남김
     public bool mipmaps = true;          // 밉맵 단계 읽기(먼 곳 텍셀 크롤링)
-    public bool smoothUpscale = true;    // 바이리니어 확대 + 블룸·헤이즈(Present.shader)
+    public bool smoothUpscale = false;   // 켜면 바이리니어 확대 + 블룸·헤이즈(Present.shader). 과제 0320-4: 기본 끔 = Nearest
     [Range(1, 8)] public int msaa = 4;   // 저해상도 RT 멀티샘플(가장자리 크롤링)
     public Shader presentShader;
     Material presentMat;
@@ -102,7 +102,7 @@ public sealed class PCLookScene : MonoBehaviour
                 if (!cam.TryGetComponent<LowResRenderTest>(out var lr)) lr = cam.gameObject.AddComponent<LowResRenderTest>();
                 if (presentShader == null) presentShader = Shader.Find("PitCrew/Look/Present");
                 if (presentMat == null && presentShader != null) presentMat = new Material(presentShader) { hideFlags = HideFlags.DontSave };
-                lr.targetHeight = lowResHeight; lr.integerScale = true;   // 5b: 화면 = 정수배
+                lr.targetHeight = lowResHeight; lr.integerScale = false;   // 과제 0320-4: 정수배 끔 — 켜면 1080 화면에서 k=2 로 반올림돼 540 이 된다. 720 그대로 Point 로 늘린다
                 lr.smooth = smoothUpscale && presentMat != null; lr.presentMaterial = presentMat; lr.msaa = msaa;   // 5c: 부드러운 확대
                 if (!lr.enabled) lr.enabled = true;
             }

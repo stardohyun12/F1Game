@@ -84,18 +84,28 @@ public static partial class BuildBayLoop
                 gH[i, j] = sum / 9f;
             }
         }
-        // 차길 띠(반폭+2m) 안은 노면 0.25m 아래로 맞춘다 — 8m 격자가 좁은 길을 덮거나 띄우지 않게(대조표: 깎고 메운 지형은 생성기 몫, 여기선 마감만)
-        var best = new float[GN, GN];
+        // v6e(과제 0320-2): 길 가장자리에서 바깥 3 m 까지는 노면 높이(−4.5 cm)로 깎고 메우고(어깨), 그 바깥 5 m 에 걸쳐 원래 지형으로 녹인다.
+        // 예전엔 띠 안을 노면 0.25 m 아래로 내려 길이 떠 보이고(뜸), 띠 바로 밖은 원래 지형이라 둑·도랑이 졌다.
+        // 가까움 = 가장자리까지 거리(중심거리 − 반폭). 2 m 격자 삼각형이 가장자리+0.5 m 를 덮어도 어깨 안이 되게 3 m.
+        const float shoulder = 3f, blend = 5f;
+        var best = new float[GN, GN]; var bestY = new float[GN, GN];
         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) best[i, j] = 1e9f;
         foreach (var r in rs.Where(x => x.Car)) foreach (var p in r.pts)
         {
-            float reach = r.width * .5f + 2f; int i0 = Mathf.FloorToInt((p.x - reach - GX0) / GStep), i1 = Mathf.CeilToInt((p.x + reach - GX0) / GStep);
+            float hw = r.width * .5f, reach = hw + shoulder + blend; int i0 = Mathf.FloorToInt((p.x - reach - GX0) / GStep), i1 = Mathf.CeilToInt((p.x + reach - GX0) / GStep);
             int j0 = Mathf.FloorToInt((p.z - reach - GZ0) / GStep), j1 = Mathf.CeilToInt((p.z + reach - GZ0) / GStep);
             for (int i = Mathf.Max(0, i0); i <= Mathf.Min(GN - 1, i1); i++) for (int j = Mathf.Max(0, j0); j <= Mathf.Min(GN - 1, j1); j++)
             {
-                float d = new Vector2(GX0 + i * GStep - p.x, GZ0 + j * GStep - p.z).magnitude;
-                if (d <= reach && d < best[i, j]) { best[i, j] = d; gH[i, j] = p.y - .25f; }
+                float e = new Vector2(GX0 + i * GStep - p.x, GZ0 + j * GStep - p.z).magnitude - hw;
+                if (e <= shoulder + blend && e < best[i, j]) { best[i, j] = e; bestY[i, j] = p.y + RoadColLift - .045f; }
             }
+        }
+        for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++)
+        {
+            if (best[i, j] > 1e8f) continue;
+            float t = Mathf.Clamp01((best[i, j] - shoulder) / blend); t = t * t * (3f - 2f * t);
+            gH[i, j] = Mathf.Lerp(bestY[i, j], gH[i, j], t);
+            if (best[i, j] > shoulder) best[i, j] = 1e9f;   // 녹이는 띠는 걷는 길 마감이 덮어도 된다
         }
         // 걷는 길(골목·계단)은 지형 위로 묻히지 않게만
         foreach (var r in rs.Where(x => !x.Car)) foreach (var p in r.pts)
@@ -119,9 +129,10 @@ public static partial class BuildBayLoop
             float lift = r.kind == "main" ? .06f : r.Car ? .04f : .02f;   // 겹친 갈림목에서 위계가 위로
             var go = Ribbon(roadsT, "ROAD_" + r.id, r.pts, r.width, lift, GM(key, c), r.Car);
             if (!r.Car) continue;
+            if (rough) StoneBumps(go.transform, r);
             carN++; for (int i = 1; i < r.pts.Count; i++) carM += Fl(r.pts[i] - r.pts[i - 1]).magnitude;
             var rsf = go.AddComponent<RoadSurface>(); rsf.roadId = r.id; rsf.kind = rough ? "shortcut" : r.kind; rsf.roughness = r.rough; rsf.width = r.width;
-            rsf.centerline = r.pts.Select(p => p + Vector3.up * lift).ToArray(); rsf.closed = false; EditorUtility.SetDirty(rsf);
+            rsf.centerline = r.pts.Select(p => p + Vector3.up * RoadColLift).ToArray(); rsf.closed = false; EditorUtility.SetDirty(rsf);
         }
         lg.Add($"길 {rs.Count}(차길 {carN}개 {carM / 1000f:F1}km)");
         DeadEndMarks(top, ends);
@@ -231,46 +242,96 @@ public static partial class BuildBayLoop
         return outp;
     }
 
-    /// v6d(과제 0246-1): 매듭 사이를 직선으로 이어 매듭마다 경사가 확 꺾인다(0 %→26 %). 바퀴 없이 상자로 미끄러지는 차는
-    /// 바닥 틈이 8 cm 라 오목하게 꺾인 곳에 앞 모서리가 박혀 선다(봇 실패 24건의 원인). 차길 높이를 ±4 m 평균 3번으로 둥글리고(끝점 고정),
-    /// 다른 차길 위에 얹힌 끝은 그 길의 새 높이로 맞춘 뒤 8 m 에 걸쳐 녹인다(갈림목 턱).
+    /// v6e(과제 0320-2): "갈 수 있음"이 아니라 "달리기 좋음". 매듭을 직선으로 이으면 매듭마다 경사가 꺾여(0 %→26 %) 덜컹하고,
+    /// 갈림목은 두 띠가 서로 다른 높이로 겹쳐 턱이 진다.
+    ///  ① 평면 곡선 완화: 차길 x·z 를 ±2점 평균 2번(끝 고정) — 매듭에서 꺾이던 모서리를 둥글린다. 0.3 m 보다 촘촘한 점은 지운다.
+    ///  ② 갈림목 = 평평한 판: 다른 차길 위에 얹힌 끝(T) · 가로지름(X, 1.2 m 안) · 끝끼리 맞닿음 — 높이 차 1.2 m 넘으면 겹쳐 지나가는 다른 층이라 묶지 않는다 → 그 자리 둘레(큰 쪽 반폭+1 m)를
+    ///     참여한 길 전부 같은 높이(평균)로 눌러 고정한다.
+    ///  ③ 경사 변화 제한: 1 m 마다 경사가 바뀌는 양을 2.5 %/m 이하로(고정점 사이를 반복 완화) — 볼록·오목이 긴 곡선이 된다.
     static string SmoothProfiles(List<GRoad> rs)
     {
-        var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList(); float maxBefore = 0, maxAfter = 0;
-        System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 2; i + 2 < p.Count; i++) { float g0 = (p[i].y - p[i - 2].y) / Mathf.Max(.3f, Fl(p[i] - p[i - 2]).magnitude), g1 = (p[i + 2].y - p[i].y) / Mathf.Max(.3f, Fl(p[i + 2] - p[i]).magnitude); m = Mathf.Max(m, Mathf.Abs(g1 - g0)); } return m; };
+        var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList();
         foreach (var r in car)
         {
-            maxBefore = Mathf.Max(maxBefore, brk(r.pts));
-            for (int pass = 0; pass < 3; pass++)
+            var q = new List<Vector3> { r.pts[0] };
+            for (int i = 1; i < r.pts.Count - 1; i++) if (Fl(r.pts[i] - q[q.Count - 1]).magnitude >= .3f) q.Add(r.pts[i]);
+            if (Fl(r.pts[r.pts.Count - 1] - q[q.Count - 1]).magnitude < .3f && q.Count > 1) q.RemoveAt(q.Count - 1);
+            q.Add(r.pts[r.pts.Count - 1]); r.pts = q;
+            for (int pass = 0; pass < 2; pass++)
             {
-                var y = r.pts.Select(p => p.y).ToArray(); int n = y.Length;
+                var o = r.pts.ToArray(); int n = o.Length;
                 for (int i = 1; i < n - 1; i++)
                 {
-                    int w = Mathf.Min(4, Mathf.Min(i, n - 1 - i)); float s = 0; for (int k = -w; k <= w; k++) s += y[i + k];
-                    var p = r.pts[i]; p.y = s / (2 * w + 1); r.pts[i] = p;
+                    int w = Mathf.Min(2, Mathf.Min(i, n - 1 - i)); float x = 0, z = 0; for (int k = -w; k <= w; k++) { x += o[i + k].x; z += o[i + k].z; }
+                    r.pts[i] = new Vector3(x / (2 * w + 1), o[i].y, z / (2 * w + 1));
                 }
             }
         }
-        int snapped = 0;
-        foreach (var r in car) foreach (bool atEnd in new[] { false, true })
+        System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 1; i + 1 < p.Count; i++) { float d0 = Fl(p[i] - p[i - 1]).magnitude, d1 = Fl(p[i + 1] - p[i]).magnitude; if (d0 < .3f || d1 < .3f) continue; m = Mathf.Max(m, Mathf.Abs(((p[i + 1].y - p[i].y) / d1 - (p[i].y - p[i - 1].y) / d0) / ((d0 + d1) * .5f))); } return m; };
+        float maxBefore = car.Max(r => brk(r.pts));
+
+        // ② 갈림목 찾기 — (길, 점) 묶음을 모은다
+        var juncs = new List<List<(GRoad r, int i)>>();
+        void AddJ(GRoad a, int ia, GRoad b, int ib)
         {
-            var e = atEnd ? r.pts[r.pts.Count - 1] : r.pts[0]; float bd = 2.5f, ty = 0; bool hit = false;
-            foreach (var o in car) if (o != r) for (int i = 3; i < o.pts.Count - 3; i++)
+            var c = (Fl(a.pts[ia]) + Fl(b.pts[ib])) * .5f;
+            foreach (var j in juncs) if (j.Any(t => Fl(t.r.pts[t.i] - c).magnitude < 4f && Mathf.Abs(t.r.pts[t.i].y - a.pts[ia].y) < 1.2f)) { j.Add((a, ia)); j.Add((b, ib)); return; }
+            juncs.Add(new List<(GRoad, int)> { (a, ia), (b, ib) });
+        }
+        for (int ai = 0; ai < car.Count; ai++)
+        {
+            var a = car[ai];
+            foreach (int ea in new[] { 0, a.pts.Count - 1 })   // 끝 → 다른 길 아무 점(2.5 m 안)
             {
-                float d = Fl(o.pts[i] - e).magnitude; if (d < bd) { bd = d; ty = o.pts[i].y; hit = true; }
+                GRoad br = null; int bi = 0; float bd = 2.5f;
+                foreach (var b in car) if (b != a) for (int i = 0; i < b.pts.Count; i++) { float d = Fl(b.pts[i] - a.pts[ea]).magnitude; if (d < bd && Mathf.Abs(b.pts[i].y - a.pts[ea].y) < 1.2f) { bd = d; br = b; bi = i; } }
+                if (br != null) AddJ(a, ea, br, bi);
             }
-            if (!hit || Mathf.Abs(ty - e.y) < .005f) continue;
-            float dy = ty - e.y, acc = 0; snapped++;
-            for (int k = 0; k < r.pts.Count; k++)
+            for (int bi2 = ai + 1; bi2 < car.Count; bi2++)   // 가로지름: 두 길 안쪽 점이 1.2 m 안
             {
-                int i = atEnd ? r.pts.Count - 1 - k : k;
-                if (k > 0) acc += Fl(r.pts[i] - r.pts[atEnd ? i + 1 : i - 1]).magnitude;
-                if (acc > 8f) break;
-                var p = r.pts[i]; p.y += dy * (1f - acc / 8f); r.pts[i] = p;
+                var b = car[bi2]; int last = -99;
+                for (int i = 2; i < a.pts.Count - 2; i++)
+                {
+                    if (i - last < 6) continue;
+                    for (int k = 2; k < b.pts.Count - 2; k++) if (Fl(a.pts[i] - b.pts[k]).magnitude < 1.2f && Mathf.Abs(a.pts[i].y - b.pts[k].y) < 1.2f) { AddJ(a, i, b, k); last = i; break; }
+                }
             }
         }
-        foreach (var r in car) maxAfter = Mathf.Max(maxAfter, brk(r.pts));
-        return $"차길 높이 둥글림 {car.Count}개 · 꺾임 최대 {maxBefore * 100:F0}%→{maxAfter * 100:F0}%(2 m 현) · 갈림목 끝 맞춤 {snapped}";
+        // 판 높이 = 참여 점 평균. 판 반경 안 점은 그 높이로 고정
+        var pin = car.ToDictionary(r => r, r => new bool[r.pts.Count]);
+        foreach (var r in car) { pin[r][0] = true; pin[r][r.pts.Count - 1] = true; }
+        foreach (var j in juncs)
+        {
+            float y = j.Average(t => t.r.pts[t.i].y); var c = j.Aggregate(Vector3.zero, (s, t) => s + Fl(t.r.pts[t.i])) / j.Count;
+            float rad = j.Max(t => t.r.width) * .5f + 1f;
+            foreach (var r in j.Select(t => t.r).Distinct())
+                for (int i = 0; i < r.pts.Count; i++) if ((Fl(r.pts[i]) - c).magnitude <= rad && Mathf.Abs(r.pts[i].y - y) < 1.2f) { var p = r.pts[i]; p.y = y; r.pts[i] = p; pin[r][i] = true; }
+        }
+        // ③ 경사 변화 제한(고정점은 그대로) — 가우스-자이델 반복
+        const float lim = .025f; int iters = 0;
+        foreach (var r in car)
+        {
+            var P = r.pts; int n = P.Count; var h = new float[n]; for (int i = 1; i < n; i++) h[i] = Mathf.Max(.3f, Fl(P[i] - P[i - 1]).magnitude);
+            var y = P.Select(p => p.y).ToArray(); var pn = pin[r];
+            for (int it = 0; it < 4000; it++)
+            {
+                float worst = 0;
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (pn[i]) continue;
+                    float h0 = h[i], h1 = h[i + 1], hm = (h0 + h1) * .5f;
+                    float c = ((y[i + 1] - y[i]) / h1 - (y[i] - y[i - 1]) / h0) / hm;
+                    if (Mathf.Abs(c) <= lim) continue;
+                    worst = Mathf.Max(worst, Mathf.Abs(c));
+                    float cc = Mathf.Clamp(c, -lim, lim);
+                    y[i] = (y[i + 1] / h1 + y[i - 1] / h0 - cc * hm) / (1f / h1 + 1f / h0);
+                }
+                iters++; if (worst <= lim + .002f) break;
+            }
+            for (int i = 0; i < n; i++) { var p = P[i]; p.y = y[i]; P[i] = p; }
+        }
+        float maxAfter = car.Max(r => brk(r.pts));
+        return $"차길 다듬기 {car.Count}개 · 갈림목 판 {juncs.Count} · 경사변화 최대 {maxBefore * 100:F0}→{maxAfter * 100:F1}%/m (반복 {iters})";
     }
 
     static void DeadEndMarks(Transform top, List<DeadEnd> ends)
@@ -355,18 +416,54 @@ public static partial class BuildBayLoop
         MeshGo(parent, "TownV6_Terrain", m, GM("Terrain", new Color(.62f, .66f, .48f)), true);
     }
 
+    /// 차가 밟는 면(콜라이더)은 모든 차길이 같은 높이(+4 cm) — 겹친 갈림목에서 위계 들림(큰길 6 cm·마을길 4 cm)이 2 cm 턱이 되지 않게(과제 0320-2).
+    /// 보이는 띠는 위계 들림 그대로 + 양 가장자리에서 0.6 m 내려가는 치마(콜라이더 없음) — 지형과 틈이 보이지 않게.
+    const float RoadColLift = .04f;
+
     static GameObject Ribbon(Transform parent, string name, List<Vector3> pts, float width, float lift, Material mat, bool collider)
     {
-        var v = new List<Vector3>(); var t = new List<int>(); float h = width * .5f;
-        for (int i = 0; i < pts.Count; i++)
+        Mesh Band(float lf, bool skirt)
         {
-            var f = Fl(pts[Mathf.Min(i + 1, pts.Count - 1)] - pts[Mathf.Max(i - 1, 0)]).normalized;
-            var rt = new Vector3(f.z, 0, -f.x); var c = pts[i] + Vector3.up * lift;
-            v.Add(c - rt * h); v.Add(c + rt * h);
-            if (i > 0) { int a = (i - 1) * 2; t.AddRange(new[] { a, a + 2, a + 1, a + 1, a + 2, a + 3 }); }
+            var v = new List<Vector3>(); var t = new List<int>(); float h = width * .5f; int n = pts.Count;
+            for (int i = 0; i < n; i++)
+            {
+                var f = Fl(pts[Mathf.Min(i + 1, n - 1)] - pts[Mathf.Max(i - 1, 0)]).normalized;
+                var rt = new Vector3(f.z, 0, -f.x); var c = pts[i] + Vector3.up * lf;
+                v.Add(c - rt * h); v.Add(c + rt * h);
+                if (i > 0) { int a = (i - 1) * 2; t.AddRange(new[] { a, a + 2, a + 1, a + 1, a + 2, a + 3 }); }
+            }
+            if (skirt)
+            {
+                int b0 = v.Count;
+                for (int i = 0; i < n; i++) { v.Add(v[i * 2]); v.Add(v[i * 2] - Vector3.up * .6f); v.Add(v[i * 2 + 1]); v.Add(v[i * 2 + 1] - Vector3.up * .6f); }
+                for (int i = 1; i < n; i++)
+                {
+                    int a = b0 + (i - 1) * 4, b = b0 + i * 4;
+                    foreach (int s0 in new[] { 0, 2 })   // 양면(어느 쪽이 바깥인지 길 방향마다 달라서)
+                        t.AddRange(new[] { a + s0, a + s0 + 1, b + s0, b + s0, a + s0 + 1, b + s0 + 1, a + s0, b + s0, a + s0 + 1, a + s0 + 1, b + s0, b + s0 + 1 });
+                }
+            }
+            var m = new Mesh { indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 }; m.SetVertices(v); m.SetTriangles(t, 0); m.RecalculateNormals(); m.RecalculateBounds();
+            return m;
         }
-        var m = new Mesh { indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 }; m.SetVertices(v); m.SetTriangles(t, 0);
-        return MeshGo(parent, name, m, mat, collider);
+        var go = MeshGo(parent, name, Band(lift, true), mat, false);
+        if (collider) { var cm = Band(RoadColLift, false); cm.name = name + "_col"; string mp = grayMatDir + "/Mesh_" + cm.name + ".asset"; AssetDatabase.DeleteAsset(mp); AssetDatabase.CreateAsset(cm, mp); go.AddComponent<MeshCollider>().sharedMesh = cm; }
+        return go;
+    }
+
+    /// 돌길 요철 = 콜라이더 범프(과제 0320-2). 메시는 매끈하게 두고, 2.5 m 마다 길을 가로지르는 눕힌 캡슐(반지름 0.3 m)을
+    /// 노면 위로 2~5 cm(roughness 비례)만 내민다 — 둥근 혹이라 상자 차 앞 모서리가 걸리지 않고 타 넘는다. 렌더러 없음.
+    static void StoneBumps(Transform road, GRoad r)
+    {
+        float rough = Mathf.Max(.3f, r.rough), up = .02f + .03f * rough, acc = 0f; int n = 0;
+        for (int i = 1; i < r.pts.Count - 1; i++)
+        {
+            acc += Fl(r.pts[i] - r.pts[i - 1]).magnitude; if (acc < 2.5f) continue; acc = 0f;
+            var f = (r.pts[i + 1] - r.pts[i - 1]).normalized; var rt = Vector3.Cross(Vector3.up, f).normalized; var nUp = Vector3.Cross(f, rt).normalized;
+            var g = new GameObject("BUMP_" + n++); g.transform.SetParent(road, false);
+            g.transform.SetPositionAndRotation(r.pts[i] + Vector3.up * RoadColLift + nUp * (up - .3f), Quaternion.LookRotation(f, nUp));
+            var cc = g.AddComponent<CapsuleCollider>(); cc.direction = 0; cc.radius = .3f; cc.height = r.width - .4f;
+        }
     }
 
     static int Buildings(Transform parent, List<object> bs)

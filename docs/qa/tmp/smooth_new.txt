@@ -1,0 +1,92 @@
+    /// v6e(과제 0320-2): "갈 수 있음"이 아니라 "달리기 좋음". 매듭을 직선으로 이으면 매듭마다 경사가 꺾여(0 %→26 %) 덜컹하고,
+    /// 갈림목은 두 띠가 서로 다른 높이로 겹쳐 턱이 진다.
+    ///  ① 평면 곡선 완화: 차길 x·z 를 ±2점 평균 2번(끝 고정) — 매듭에서 꺾이던 모서리를 둥글린다. 0.3 m 보다 촘촘한 점은 지운다.
+    ///  ② 갈림목 = 평평한 판: 다른 차길 위에 얹힌 끝(T) · 가로지름(X, 1.2 m 안) · 끝끼리 맞닿음 → 그 자리 둘레(큰 쪽 반폭+1 m)를
+    ///     참여한 길 전부 같은 높이(평균)로 눌러 고정한다.
+    ///  ③ 경사 변화 제한: 1 m 마다 경사가 바뀌는 양을 2.5 %/m 이하로(고정점 사이를 반복 완화) — 볼록·오목이 긴 곡선이 된다.
+    static string SmoothProfiles(List<GRoad> rs)
+    {
+        var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList();
+        foreach (var r in car)
+        {
+            var q = new List<Vector3> { r.pts[0] };
+            for (int i = 1; i < r.pts.Count - 1; i++) if (Fl(r.pts[i] - q[q.Count - 1]).magnitude >= .3f) q.Add(r.pts[i]);
+            if (Fl(r.pts[r.pts.Count - 1] - q[q.Count - 1]).magnitude < .3f && q.Count > 1) q.RemoveAt(q.Count - 1);
+            q.Add(r.pts[r.pts.Count - 1]); r.pts = q;
+            for (int pass = 0; pass < 2; pass++)
+            {
+                var o = r.pts.ToArray(); int n = o.Length;
+                for (int i = 1; i < n - 1; i++)
+                {
+                    int w = Mathf.Min(2, Mathf.Min(i, n - 1 - i)); float x = 0, z = 0; for (int k = -w; k <= w; k++) { x += o[i + k].x; z += o[i + k].z; }
+                    r.pts[i] = new Vector3(x / (2 * w + 1), o[i].y, z / (2 * w + 1));
+                }
+            }
+        }
+        System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 1; i + 1 < p.Count; i++) { float d0 = Fl(p[i] - p[i - 1]).magnitude, d1 = Fl(p[i + 1] - p[i]).magnitude; if (d0 < .3f || d1 < .3f) continue; m = Mathf.Max(m, Mathf.Abs(((p[i + 1].y - p[i].y) / d1 - (p[i].y - p[i - 1].y) / d0) / ((d0 + d1) * .5f))); } return m; };
+        float maxBefore = car.Max(r => brk(r.pts));
+
+        // ② 갈림목 찾기 — (길, 점) 묶음을 모은다
+        var juncs = new List<List<(GRoad r, int i)>>();
+        void AddJ(GRoad a, int ia, GRoad b, int ib)
+        {
+            var c = (Fl(a.pts[ia]) + Fl(b.pts[ib])) * .5f;
+            foreach (var j in juncs) if (j.Any(t => Fl(t.r.pts[t.i] - c).magnitude < 4f)) { j.Add((a, ia)); j.Add((b, ib)); return; }
+            juncs.Add(new List<(GRoad, int)> { (a, ia), (b, ib) });
+        }
+        for (int ai = 0; ai < car.Count; ai++)
+        {
+            var a = car[ai];
+            foreach (int ea in new[] { 0, a.pts.Count - 1 })   // 끝 → 다른 길 아무 점(2.5 m 안)
+            {
+                GRoad br = null; int bi = 0; float bd = 2.5f;
+                foreach (var b in car) if (b != a) for (int i = 0; i < b.pts.Count; i++) { float d = Fl(b.pts[i] - a.pts[ea]).magnitude; if (d < bd) { bd = d; br = b; bi = i; } }
+                if (br != null) AddJ(a, ea, br, bi);
+            }
+            for (int bi2 = ai + 1; bi2 < car.Count; bi2++)   // 가로지름: 두 길 안쪽 점이 1.2 m 안
+            {
+                var b = car[bi2]; int last = -99;
+                for (int i = 2; i < a.pts.Count - 2; i++)
+                {
+                    if (i - last < 6) continue;
+                    for (int k = 2; k < b.pts.Count - 2; k++) if (Fl(a.pts[i] - b.pts[k]).magnitude < 1.2f) { AddJ(a, i, b, k); last = i; break; }
+                }
+            }
+        }
+        // 판 높이 = 참여 점 평균. 판 반경 안 점은 그 높이로 고정
+        var pin = car.ToDictionary(r => r, r => new bool[r.pts.Count]);
+        foreach (var r in car) { pin[r][0] = true; pin[r][r.pts.Count - 1] = true; }
+        foreach (var j in juncs)
+        {
+            float y = j.Average(t => t.r.pts[t.i].y); var c = j.Aggregate(Vector3.zero, (s, t) => s + Fl(t.r.pts[t.i])) / j.Count;
+            float rad = j.Max(t => t.r.width) * .5f + 1f;
+            foreach (var r in j.Select(t => t.r).Distinct())
+                for (int i = 0; i < r.pts.Count; i++) if (Fl(r.pts[i]).magnitude >= 0f && (Fl(r.pts[i]) - c).magnitude <= rad) { var p = r.pts[i]; p.y = y; r.pts[i] = p; pin[r][i] = true; }
+        }
+        // ③ 경사 변화 제한(고정점은 그대로) — 가우스-자이델 반복
+        const float lim = .025f; int iters = 0;
+        foreach (var r in car)
+        {
+            var P = r.pts; int n = P.Count; var h = new float[n]; for (int i = 1; i < n; i++) h[i] = Mathf.Max(.3f, Fl(P[i] - P[i - 1]).magnitude);
+            var y = P.Select(p => p.y).ToArray(); var pn = pin[r];
+            for (int it = 0; it < 4000; it++)
+            {
+                float worst = 0;
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (pn[i]) continue;
+                    float h0 = h[i], h1 = h[i + 1], hm = (h0 + h1) * .5f;
+                    float c = ((y[i + 1] - y[i]) / h1 - (y[i] - y[i - 1]) / h0) / hm;
+                    if (Mathf.Abs(c) <= lim) continue;
+                    worst = Mathf.Max(worst, Mathf.Abs(c));
+                    float cc = Mathf.Clamp(c, -lim, lim);
+                    y[i] = (y[i + 1] / h1 + y[i - 1] / h0 - cc * hm) / (1f / h1 + 1f / h0);
+                }
+                iters++; if (worst <= lim + .002f) break;
+            }
+            for (int i = 0; i < n; i++) { var p = P[i]; p.y = y[i]; P[i] = p; }
+        }
+        float maxAfter = car.Max(r => brk(r.pts));
+        return $"차길 다듬기 {car.Count}개 · 갈림목 판 {juncs.Count} · 경사변화 최대 {maxBefore * 100:F0}→{maxAfter * 100:F1}%/m (반복 {iters})";
+    }
+

@@ -30,12 +30,15 @@ public class TownPathBot : MonoBehaviour
         Application.runInBackground = true;
         car = FindFirstObjectByType<ArcadeCarController>(); rb = car.GetComponent<Rigidbody>(); cargo = FindFirstObjectByType<CargoBox>();
         moveF = typeof(ArcadeCarController).GetField("moveInput", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        groundF = typeof(ArcadeCarController).GetField("isGrounded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        FeelLog.Clear();
         Time.timeScale = timeScale;
         var roads = FindObjectsByType<RoadSurface>(FindObjectsSortMode.None).Where(r => r.centerline != null && r.centerline.Length >= 2).OrderBy(r => r.roadId).ToList();
         if (mode == "cover") yield return Cover(roads); else yield return Pairs(roads);
         Time.timeScale = 1f; Set(Vector2.zero);
         string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, $"../../docs/qa/tmp/townv6-bot-{mode}{(Only != "" ? "-only" : "")}.txt"));
         System.IO.File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
+        System.IO.File.WriteAllText(path.Replace(".txt", "-feel.tsv"), FeelLog.ToString(), Encoding.UTF8);
         Status = "done " + mode + " → " + path; Debug.Log("[TownPathBot] " + Status);
     }
 
@@ -57,7 +60,11 @@ public class TownPathBot : MonoBehaviour
     /// 비면 전부, 아니면 roadId 가 이 중 하나를 포함하는 길만(쉼표). 실패 재현용.
     public static string Only = "";
 
-    public class RunResult { public string result = "ok"; public float time, maxDev, dmg, peakLong, peakLat; public Vector3 at; public int stalls; public string why = ""; }
+    public class RunResult { public string result = "ok"; public float time, maxDev, dmg, peakLong, peakLat; public Vector3 at; public int stalls; public string why = "";
+        public float azSum, azPeak; public int azN, air; }   // 과제 0320-1e: 차체 수직 가속도·접지 끊김
+    public static readonly StringBuilder FeelLog = new StringBuilder();   // x z 종류 값 — 히트맵용(road_feel.py)
+    System.Reflection.FieldInfo groundF;
+    string curRoad = "";
 
     /// 멈춘 순간 진단: 차 앞뒤 기울기·바퀴 아래 지면·차 몸에 닿은 콜라이더
     string Why(float thr)
@@ -76,7 +83,7 @@ public class TownPathBot : MonoBehaviour
     IEnumerator Drive(List<Vector3> pts, List<float> half, RunResult res)
     {
         var cum = new float[pts.Count]; for (int i = 1; i < pts.Count; i++) cum[i] = cum[i - 1] + Vector3.Distance(pts[i], pts[i - 1]);
-        float len = cum[pts.Count - 1], timeout = len / 3f + 20f, t0 = Time.time, slow = 0f, off = 0f, lastThr = 0f; int idx = 0;
+        float len = cum[pts.Count - 1], timeout = len / 3f + 20f, t0 = Time.time, slow = 0f, off = 0f, lastThr = 0f, vyPrev = rb.linearVelocity.y, airT = 0f; int idx = 0; bool wasAir = false;
         while (true)
         {
             yield return new WaitForFixedUpdate();
@@ -84,6 +91,16 @@ public class TownPathBot : MonoBehaviour
             int best = idx; float bd = float.MaxValue;
             for (int i = idx; i < Mathf.Min(pts.Count, idx + 40); i++) { float d = (new Vector2(pts[i].x - p.x, pts[i].z - p.z)).sqrMagnitude; if (d < bd) { bd = d; best = i; } }
             idx = best; float dev = Mathf.Sqrt(bd); res.maxDev = Mathf.Max(res.maxDev, dev);
+            // 수직 가속도: 놓은 뒤 2초는 내려앉는 중이라 뺀다. 접지 끊김 = 레이 접지가 0.06초(3스텝) 넘게 빠진 횟수
+            float vy = rb.linearVelocity.y, az = (vy - vyPrev) / Time.fixedDeltaTime; vyPrev = vy;
+            if (t > 2f)
+            {
+                res.azSum += az * az; res.azN++; if (Mathf.Abs(az) > res.azPeak) res.azPeak = Mathf.Abs(az);
+                if (Mathf.Abs(az) > 6f) FeelLog.AppendLine($"{p.x:F1}	{p.z:F1}	az	{az:F1}	{curRoad}");
+                bool g = groundF == null || (bool)groundF.GetValue(car);
+                if (!g) { airT += Time.fixedDeltaTime; if (airT > .06f && !wasAir) { wasAir = true; res.air++; FeelLog.AppendLine($"{p.x:F1}	{p.z:F1}	air	1	{curRoad}"); } }
+                else { airT = 0f; wasAir = false; }
+            }
             if (cargo != null) { res.peakLong = Mathf.Max(res.peakLong, cargo.PeakLongG); res.peakLat = Mathf.Max(res.peakLat, cargo.PeakLatG); }
             if (idx >= pts.Count - 3 || len - cum[idx] < 3f) break;
             if (p.y < -2f) { res.result = "추락"; break; }
@@ -120,7 +137,7 @@ public class TownPathBot : MonoBehaviour
 
     IEnumerator Cover(List<RoadSurface> roads)
     {
-        sb.AppendLine("road\tdir\tlen\tgrade\tresult\ttime\tmaxDev\tat");
+        sb.AppendLine("road\tdir\tlen\tgrade\tresult\ttime\tmaxDev\tat\twhy\tazRms\tazPeak\tair\tkind");
         int ok = 0, fail = 0, skip = 0, n = 0; var counts = new Dictionary<string, int>();
         foreach (var r in roads)
         {
@@ -135,11 +152,11 @@ public class TownPathBot : MonoBehaviour
                 Place(P[0], P[Mathf.Min(3, P.Count - 1)] - P[0]);
                 yield return new WaitForFixedUpdate();
                 var res = new RunResult(); var half = Enumerable.Repeat(r.width * .5f, P.Count).ToList();
-                Status = $"cover {n}/{roads.Count} {r.roadId} ok{ok} fail{fail}";
+                Status = $"cover {n}/{roads.Count} {r.roadId} ok{ok} fail{fail}"; curRoad = r.roadId;
                 yield return Drive(P, half, res);
                 if (res.result == "ok") ok++; else fail++;
                 counts[res.result] = counts.TryGetValue(res.result, out var c) ? c + 1 : 1;
-                sb.AppendLine($"{r.roadId}\t{(dir > 0 ? "+" : "-")}\t{len:F0}\t{g * 100:F1}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F1},{res.at.z:F0}\t{res.why}");
+                sb.AppendLine($"{r.roadId}\t{(dir > 0 ? "+" : "-")}\t{len:F0}\t{g * 100:F1}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F1},{res.at.z:F0}\t{res.why}\t{Mathf.Sqrt(res.azSum / Mathf.Max(1, res.azN)):F2}\t{res.azPeak:F1}\t{res.air}\t{r.kind}");
             }
         }
         sb.Insert(0, $"# cover: 길 {roads.Count} 주행 {ok + fail} 성공 {ok} 실패 {fail} 짧아서 건넘(<8m) {skip} | " + string.Join(" ", counts.Select(kv => kv.Key + "=" + kv.Value)) + "\n");

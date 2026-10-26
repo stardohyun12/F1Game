@@ -112,6 +112,7 @@ public class LowResRenderTest : MonoBehaviour
         rt = new RenderTexture(rw, rh, 24) { name = "LowResRenderTest_RT", filterMode = smooth ? FilterMode.Bilinear : FilterMode.Point, antiAliasing = aa };
         rt.Create();
         builtW = rw; builtH = rh; builtAA = aa;
+        Debug.Log($"[LowResRenderTest] RT {rw}×{rh} (렌더 {w}×{h}, 화면 {Screen.width}×{Screen.height}, k={k}, smooth={smooth}, filter={rt.filterMode})");
         cam.targetTexture = rt;
         if (image != null) image.texture = rt;
     }
