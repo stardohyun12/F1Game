@@ -19,6 +19,7 @@ q(a).save(A + 'Gen/asphalt_tile.png')
 # 돌담·연석: stone_block_wall (가설 2 m) → 64 px
 w = Image.open(photo + 'stone_block_wall_diff_1k.jpg').convert('RGB').resize((64, 64), Image.LANCZOS)
 q(norm(soft(w, 0.8, 1), (158, 152, 112))).save(A + 'Gen/wall_tile.png')
+q(norm(soft(w, 0.2, 4), (118, 108, 100))).save(A + 'Gen/wall_tile_grey.png')   # 0619: 노란 짚단 → 회녹색은 판정에서 "차갑고 점무늬" → 따뜻한 회갈색 돌, 점무늬 대비 45 %
 # 대비 낮춤: 풀 타일, 마당 판, 나무 5장
 q(soft(Image.open(A + 'Gen/grass_tile.png'), 0.45, 3)).save(A + 'Gen/grass_tile_soft.png')
 q(soft(Image.open(A + 'far/yard_ground_baked32.png'), 0.5, 3)).save(A + 'Gen/yard_ground_soft.png')
