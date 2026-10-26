@@ -1,0 +1,22 @@
+[
+  {
+    "file": "garage_pixel_v1.glb",
+    "samplers": [
+      {
+        "magFilter": 9728,
+        "minFilter": 9984
+      }
+    ],
+    "passed": true
+  },
+  {
+    "file": "kart_pixel_v1.glb",
+    "samplers": [
+      {
+        "magFilter": 9728,
+        "minFilter": 9984
+      }
+    ],
+    "passed": true
+  }
+]

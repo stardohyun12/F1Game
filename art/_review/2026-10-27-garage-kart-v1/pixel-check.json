@@ -1,0 +1,26 @@
+[
+  {
+    "name": "garage_pixel_v1",
+    "max_colors_per_face": 6,
+    "min_colors_per_face": 1,
+    "face_count": 570,
+    "density_range_faces_over_25cm": [
+      12.50000027939678,
+      15.384615948919734
+    ],
+    "passed": true,
+    "small_face_note": "integer pixel rounding increases density on narrow edges; 14px/m target"
+  },
+  {
+    "name": "kart_pixel_v1",
+    "max_colors_per_face": 4,
+    "min_colors_per_face": 1,
+    "face_count": 354,
+    "density_range_faces_over_25cm": [
+      12.820513290766446,
+      16.0
+    ],
+    "passed": true,
+    "small_face_note": "integer pixel rounding increases density on narrow edges; 14px/m target"
+  }
+]

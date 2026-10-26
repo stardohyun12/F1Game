@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "assets": [
+    {
+      "id": "garage_pixel_v1",
+      "tris": 1162,
+      "bounds_blender": [
+        [
+          -5.698915004730225,
+          -4.480000019073486,
+          -6.102570750954328e-07
+        ],
+        [
+          4.32763147354126,
+          3.9000000953674316,
+          5.742042541503906
+        ]
+      ],
+      "bounds_error": 6.102570750954328e-07,
+      "checks": {
+        "triangle_budget": true,
+        "tris_match": true,
+        "bounds_match": true,
+        "finite": true,
+        "uv_present": true,
+        "uv_unit_range": true,
+        "no_cameras_lights": true,
+        "ground": true
+      },
+      "passed": true
+    },
+    {
+      "id": "kart_pixel_v1",
+      "tris": 748,
+      "bounds_blender": [
+        [
+          -0.5475000143051147,
+          -0.8389999866485596,
+          0.0
+        ],
+        [
+          0.5475000143051147,
+          1.0299999713897705,
+          0.6939287781715393
+        ]
+      ],
+      "bounds_error": 0.0,
+      "checks": {
+        "triangle_budget": true,
+        "tris_match": true,
+        "bounds_match": true,
+        "finite": true,
+        "uv_present": true,
+        "uv_unit_range": true,
+        "no_cameras_lights": true,
+        "ground": true,
+        "four_separate_wheels": true
+      },
+      "passed": true
+    }
+  ],
+  "scope": "actual FBX reimport; no Unity import or collision test"
+}
