@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import planlib as L
 import town_metrics as TM
 import road_check as RC
+import drive_check as DC
 
 ROOT = L.ROOT
 OUT = os.path.join(ROOT, 'docs', 'map')
@@ -953,7 +954,7 @@ def resolve_overlaps(stops, rounds=8):
     for rnd in range(rounds):
         car = [r for r in ROADS if r['kind'] in ('main', 'village')]
         sm = {r['id']: {'id': r['id'], 'kind': r['kind'], 'width': r['width'], 'roughness': r['roughness'], 'pts': car_samples(r)} for r in car}
-        ov = [o for o in RC.overlaps(list(sm.values())) if (o['a'], o['b']) not in done and (o['b'], o['a']) not in done]
+        ov = [o for o in (RC.overlaps(list(sm.values()), gap_extra=1.0, run_min=5) if V6F else RC.overlaps(list(sm.values()))) if (o['a'], o['b']) not in done and (o['b'], o['a']) not in done]
         if not ov: return rnd
         byid = {r['id']: r for r in car}; touched = set()
         for o in ov:
@@ -973,6 +974,19 @@ def resolve_overlaps(stops, rounds=8):
             self_pair = lo['id'].split('~')[0] == hi['id'].split('~')[0]           # 한 길의 두 다리(헤어핀) — 끊지 않는다
             prot = lo['id'].split('~')[0] in PROTECT
             def try_push(why):
+                nonlocal lo, hi
+                if V6F:                                      # v6f: 어느 쪽을 밀지 — 민 띠가 건물에 덜 닿는 쪽(0444: ~a 68 m·~b 38 m 건물 위)
+                    best = None
+                    for a_, b_ in ((lo, hi), (hi, lo)):
+                        Sa = car_samples(a_); r_ = [y for y in RC.overlaps([{**a_, 'pts': Sa}, {**b_, 'pts': car_samples(b_)}], run_min=4, both=True) if y['a'] == a_['id']]
+                        if not r_: continue
+                        keep = list(a_['pts']); mv = push_apart(a_, b_, Sa, r_[0]['i0'], r_[0]['i1'])
+                        cost = bld_cost(a_) if mv is not None else 1e9; a_['pts'] = keep
+                        if best is None or cost < best[0]: best = (cost, a_, b_, Sa, r_[0])
+                    if best and best[0] < 1e9:
+                        _, lo, hi, Sb, xb = best; moved = push_apart(lo, hi, Sb, xb['i0'], xb['i1'])
+                        OVL.append({**rec0, 'keep': hi['id'], 'cut': lo['id'], 'action': 'push', 'fix': f'{why} → 끊지 않고 {lo["id"]} 를 최대 {moved:.1f} m 옆으로(건물에 덜 닿는 쪽, 닿는 표본 {best[0]})'})
+                        return
                 moved = push_apart(lo, hi, S, x['i0'], x['i1'])
                 if moved is None:
                     OVL.append({**rec0, 'keep': hi['id'], 'cut': None, 'action': 'unresolved', 'fix': f'{why} → 옆으로 밀 자리가 바다라 그대로 둠'}); return
@@ -1005,6 +1019,233 @@ def resolve_overlaps(stops, rounds=8):
                    f'높이차가 실제({dyv:.1f} m) → {lo["id"]} 의 겹친 {mlen:.0f} m 를 ' + ('계단' if kind == 'stairs' else '사람길') + f'으로(경사 {100 * gr:.0f} %)')
             OVL.append({**rec0, 'keep': hi['id'], 'cut': lo['id'], 'action': 'merge' if same else ('stairs' if kind == 'stairs' else 'foot'), 'fix': fix})
     return rounds
+
+
+# ── v6f (과제 0506): 주행 기준 — 갈림목 판 · 경사 한도 12/15 % · 길↔건물 겹침 0 ──────────
+V6F = False
+PLATES, BLDFIX, PROFILE_LEFT = [], [], []
+PLATE_RMAX = 14.0
+
+
+def _hull(pts):
+    pts = sorted(set((round(a, 3), round(b, 3)) for a, b in pts))
+    if len(pts) < 3: return pts
+    cr = lambda o, a, b: (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+    lo, up = [], []
+    for p in pts:
+        while len(lo) >= 2 and cr(lo[-2], lo[-1], p) <= 0: lo.pop()
+        lo.append(p)
+    for p in reversed(pts):
+        while len(up) >= 2 and cr(up[-2], up[-1], p) <= 0: up.pop()
+        up.append(p)
+    return lo[:-1] + up[:-1]
+
+
+def join_crossings():
+    """노드 없이 만나는 차길을 갈림목으로: (1) 중심선이 서로 교차 → 교차점을 두 길에 끼워 공유. (2) 길 끝이 다른 길 노면(폭/2 + 1 m) 안
+    → 끝을 그 길 위로 붙임(T). 둘 다 안 하면 빌더 띠 두 개가 다른 높이로 같은 자리를 지나가 옆면 턱이 된다(0506 검사 3.8 m)."""
+    car = [r for r in ROADS if r['kind'] in ('main', 'village')]
+    n_x = n_t = 0
+    box = lambda r: (min(q[0] for q in r['pts']), max(q[0] for q in r['pts']), min(q[1] for q in r['pts']), max(q[1] for q in r['pts']))
+    for ia, A in enumerate(car):
+        for B in car[ia + 1:]:
+            ba, bb_ = box(A), box(B)
+            if ba[1] < bb_[0] or bb_[1] < ba[0] or ba[3] < bb_[2] or bb_[3] < ba[2]: continue
+            k = 0
+            while k < len(A['pts']) - 1:
+                a, b = A['pts'][k], A['pts'][k + 1]; hit = None
+                for m in range(len(B['pts']) - 1):
+                    c, d = B['pts'][m], B['pts'][m + 1]
+                    if KEY(a) in (KEY(c), KEY(d)) or KEY(b) in (KEY(c), KEY(d)): continue
+                    if _seg_x(a, b, c, d):
+                        o = lambda p, q, r: (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+                        t = o(c, d, a) / (o(c, d, a) - o(c, d, b)); hit = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t); break
+                if hit:
+                    p = _snap_into(B, hit); A['pts'].insert(k + 1, p); n_x += 1; k += 2
+                else: k += 1
+    for A in car:
+        for at in (0, -1):
+            e = A['pts'][at]
+            for B in car:
+                if B is A: continue
+                if any(KEY(q) == KEY(e) for q in B['pts']): continue
+                d = min(L.seg_dist(e[0], e[1], *u, *v)[0] for u, v in zip(B['pts'], B['pts'][1:]))
+                if d < B['width'] / 2 + A['width'] / 2 + 0.5:                 # 두 띠가 겹친다
+
+                    p = _snap_into(B, e)
+                    if KEY(p) != KEY(e): A['pts'].insert(0, p) if at == 0 else A['pts'].append(p)
+                    n_t += 1; break
+    return {'crossings': n_x, 'tees': n_t}
+
+
+def plates_of(car, seqs, P):
+    """갈림목 판: 차길 2개 이상이 만나는 점(일직선으로 이어지기만 한 두 길은 빼고).
+    팔(들어오는 길 한 방향)마다 다른 팔의 노면을 다 건너갈 거리 R = (wi/2 + wj/2) / sin θ + 0.5 (≤ 14 m).
+    판 안(중심에서 R 안)의 팔 표본은 한 높이 변수로 묶는다. 판이 겹치면 하나로 합친다. 다각형 = 팔 끝 모서리 + 중심 원의 볼록 껍질."""
+    W = {r['id']: r['width'] for r in car}
+    pos = defaultdict(list)
+    for r in car:
+        for t, k in enumerate(seqs[r['id']]): pos[k].append((r['id'], t))
+    raw = []
+    for k, occ in pos.items():
+        if len({rid for rid, _ in occ}) < 2: continue
+        arms = []
+        for rid, t in occ:
+            ids = seqs[rid]
+            for step in (-1, 1):
+                u = t + step * 3
+                if not 0 <= t + step < len(ids): continue
+                u = max(0, min(len(ids) - 1, u)); q = P[ids[u]]
+                dx, dz = q[0] - P[k][0], q[1] - P[k][1]; l = math.hypot(dx, dz) or 1
+                arms.append({'road': rid, 't': t, 'step': step, 'dir': (dx / l, dz / l), 'w': W[rid]})
+        if len(arms) == 2 and arms[0]['dir'][0] * arms[1]['dir'][0] + arms[0]['dir'][1] * arms[1]['dir'][1] < -0.87: continue   # 150° 넘게 일직선 = 그냥 이어진 길
+        for a in arms:                               # 팔마다: 이 팔의 띠가 다른 팔의 띠와 겹치는 길이까지만 평평(wj/2 + wi/2·|cos|)/sin + 0.3
+            Ra = max(b['w'] for b in arms if b is not a) / 2 + 0.3
+            for b in arms:
+                if b is a: continue
+                c = a['dir'][0] * b['dir'][0] + a['dir'][1] * b['dir'][1]
+                if c < -0.87: continue                                      # 맞은편(지나가는 길의 다른 쪽) — 겹치지 않음
+                s = max(0.35, math.sqrt(max(0.0, 1 - c * c)))
+                Ra = max(Ra, (b['w'] / 2 + a['w'] / 2 * abs(c)) / s + 0.3)
+            a['R'] = min(PLATE_RMAX, Ra)
+        raw.append({'k': k, 'arms': arms, 'R': max(a['R'] for a in arms)})
+    groups = []
+    for j in raw:
+        ids, edges = {j['k']}, []
+        for a in j['arms']:
+            seq = seqs[a['road']]; t = a['t']; last = t
+            while 0 <= t + a['step'] < len(seq) and math.dist(P[seq[t + a['step']]], P[j['k']]) <= a['R']:
+                t += a['step']; ids.add(seq[t]); last = t
+            edges.append({**a, 'edge': P[seq[last]], 'edgeT': last})
+        groups.append({'ids': ids, 'arms': edges, 'pos': P[j['k']], 'R': j['R'], 'n': 1})
+    merged = True                                    # 겹치는 판 합치기
+    while merged:
+        merged = False
+        for a in range(len(groups)):
+            for b in range(a + 1, len(groups)):
+                if groups[a]['ids'] & groups[b]['ids']:
+                    ga, gb = groups[a], groups.pop(b)
+                    na = ga['n'] + gb['n']
+                    ga['pos'] = ((ga['pos'][0] * ga['n'] + gb['pos'][0] * gb['n']) / na, (ga['pos'][1] * ga['n'] + gb['pos'][1] * gb['n']) / na)
+                    ga['ids'] |= gb['ids']; ga['arms'] = ga['arms'] + gb['arms']; ga['R'] = max(ga['R'], gb['R']); ga['n'] = na
+                    merged = True; break
+            if merged: break
+    for g in groups:                                 # 판 안 표본을 다 품는 팔 끝: 같은 길 같은 방향에서 가장 바깥 것만
+        far = {}
+        for a in g['arms']:
+            key = (a['road'], a['step'])
+            if key not in far or abs(a['edgeT'] - a['t']) > abs(far[key]['edgeT'] - far[key]['t']): far[key] = a
+        arms = list(far.values()); g['arms'] = arms
+        pts = []
+        for a in arms:
+            seq = seqs[a['road']]; e = a['edgeT']; q0 = P[seq[max(0, min(len(seq) - 1, e - a['step']))]]; q1 = P[seq[e]]
+            dx, dz = q1[0] - q0[0], q1[1] - q0[1]; l = math.hypot(dx, dz) or 1; nx, nz = -dz / l, dx / l
+            pts += [(q1[0] + nx * a['w'] / 2, q1[1] + nz * a['w'] / 2), (q1[0] - nx * a['w'] / 2, q1[1] - nz * a['w'] / 2)]
+        for k in g['ids']:
+            pts.append(P[k])
+        wmax = max(a['w'] for a in arms) / 2 if arms else 2
+        cx, cz = g['pos']
+        pts += [(cx + wmax * math.cos(t * math.pi / 6), cz + wmax * math.sin(t * math.pi / 6)) for t in range(12)]
+        g['poly'] = _hull(pts)
+    return groups
+
+
+_BG = {}
+
+
+def _bld_index():
+    if _BG.get('n') == len(BLDS) and _BG.get('id') == id(BLDS[0] if BLDS else None): return _BG['g']
+    g = defaultdict(list)
+    for i, b in enumerate(BLDS):
+        xs = [q[0] for q in b['poly']]; zs = [q[1] for q in b['poly']]
+        for gx in range(int(min(xs) // 10), int(max(xs) // 10) + 1):
+            for gz in range(int(min(zs) // 10), int(max(zs) // 10) + 1): g[(gx, gz)].append(i)
+    _BG.update(n=len(BLDS), id=id(BLDS[0] if BLDS else None), g=g)
+    return g
+
+
+def bld_cost(r):
+    """길 r 의 띠(폭/2 + 어깨 1 m)에 닿는 (건물, 1 m 표본) 수."""
+    return len(DC.bld_hits([{'id': r['id'], 'width': r['width'], 'pts': [(q[0], q[1], 0) for q in dens(r['pts'], 1.0)]}], [b['poly'] for b in BLDS]))
+
+
+def _clip(poly, p, n, off):
+    """다각형에서 (x − p)·n ≥ off 쪽만 남김(Sutherland–Hodgman 반평면)."""
+    f = lambda q: (q[0] - p[0]) * n[0] + (q[1] - p[1]) * n[1] - off
+    out = []
+    for a, b in zip(poly, poly[1:] + poly[:1]):
+        fa, fb = f(a), f(b)
+        if fa >= 0: out.append(a)
+        if (fa >= 0) != (fb >= 0):
+            t = fa / (fa - fb); out.append((a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t))
+    return out
+
+
+def _area(poly):
+    return abs(sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(poly, poly[1:] + poly[:1]))) / 2
+
+
+def clear_buildings(keep_frac=0.4, min_area=12.0):
+    """길↔건물 겹침 0: 차길 띠(폭/2 + 1 m)나 갈림목 판에 닿는 건물의 앞면을 길에서 물린다(반평면으로 잘라냄, 여러 번).
+    남는 넓이가 원래의 40 % 미만이거나 12 m² 미만이면 지운다. 중심이 띠 안이면 지운다."""
+    car = [r for r in ROADS if r['kind'] in ('main', 'village')]
+    samp = defaultdict(list)
+    for r in car:
+        hw = r['width'] / 2 + DC.SHOULDER; d = dens(r['pts'], 0.5)
+        for i, q in enumerate(d):
+            a, b = d[max(0, i - 1)], d[min(len(d) - 1, i + 1)]
+            samp[(int(q[0] // 10), int(q[1] // 10))].append((q, (b[0] - a[0], b[1] - a[1]), hw, r['id']))
+    plates = [(pl['poly'], pl['pos']) for pl in PLATES]
+    keep, n_clip, n_del = [], 0, 0
+    for b in BLDS:
+        poly = [tuple(q) for q in b['poly']]
+        if len(poly) > 3 and poly[0] == poly[-1]: poly = poly[:-1]
+        a0 = _area(poly); why = None; cut = 0
+        for _ in range(12):
+            xs = [q[0] for q in poly]; zs = [q[1] for q in poly]
+            worst = None
+            for gx in range(int((min(xs) - 9) // 10), int((max(xs) + 9) // 10) + 1):
+                for gz in range(int((min(zs) - 9) // 10), int((max(zs) + 9) // 10) + 1):
+                    for q, t, hw, rid in samp.get((gx, gz), ()):
+                        if q[0] < min(xs) - hw or q[0] > max(xs) + hw or q[1] < min(zs) - hw or q[1] > max(zs) + hw: continue
+                        ins = L.in_poly(q[0], q[1], poly)
+                        dd = L.poly_edge_dist(q[0], q[1], poly)
+                        pen = hw + dd if ins else hw - dd
+                        if pen > 0 and (worst is None or pen > worst[0]): worst = (pen, q, t, hw, rid, ins)
+            hitp = None
+            for pp, c in plates:
+                if any(L.in_poly(q[0], q[1], pp) for q in poly) or any(L.in_poly(q[0], q[1], poly) for q in pp):
+                    hitp = (pp, c); break
+            if worst is None and hitp is None: break
+            if worst is not None:
+                pen, q, t, hw, rid, ins = worst
+                cx, cz = sum(v[0] for v in poly) / len(poly), sum(v[1] for v in poly) / len(poly)
+                l = math.hypot(*t) or 1; nx, nz = -t[1] / l, t[0] / l
+                if (cx - q[0]) * nx + (cz - q[1]) * nz < 0: nx, nz = -nx, -nz
+                if abs((cx - q[0]) * nx + (cz - q[1]) * nz) < hw: why = f'중심이 차길 {rid} 띠 안'; poly = []; break
+                poly = _clip(poly, q, (nx, nz), hw + 0.05); cut += 1
+            else:
+                pp, c = hitp                               # 판: 건물 중심이 가장 바깥에 있는 판 모서리의 반평면으로
+                cx, cz = sum(v[0] for v in poly) / len(poly), sum(v[1] for v in poly) / len(poly)
+                best = None
+                for a, bb in zip(pp, pp[1:] + pp[:1]):
+                    ex, ez = bb[0] - a[0], bb[1] - a[1]; l = math.hypot(ex, ez) or 1; nx, nz = ez / l, -ex / l
+                    if (c[0] - a[0]) * nx + (c[1] - a[1]) * nz > 0: nx, nz = -nx, -nz
+                    s = (cx - a[0]) * nx + (cz - a[1]) * nz
+                    if best is None or s > best[0]: best = (s, a, (nx, nz))
+                if best[0] <= 0: why = '중심이 갈림목 판 안'; poly = []; break
+                poly = _clip(poly, best[1], best[2], 0.05); cut += 1
+            if len(poly) < 3 or _area(poly) < max(min_area, keep_frac * a0): why = why or f'물리면 남는 넓이 {(_area(poly) if len(poly) >= 3 else 0):.0f}/{a0:.0f} m²'; poly = []; break
+        else:
+            why = '12번 물려도 닿음'; poly = []
+        if not poly:
+            n_del += 1; BLDFIX.append({'action': 'delete', 'osm': b['osm'], 'at': [round(b['poly'][0][0]), round(b['poly'][0][1])], 'why': why}); continue
+        if cut:
+            n_clip += 1; BLDFIX.append({'action': 'setback', 'osm': b['osm'], 'at': [round(poly[0][0]), round(poly[0][1])], 'cuts': cut, 'areaKept': round(_area(poly) / a0, 2)})
+            b = {**b, 'poly': poly}
+        keep.append(b)
+    BLDS[:] = keep
+    return {'setback': n_clip, 'deleted': n_del, 'kept': len(keep)}
 
 
 def smooth_profiles(it_max=20000):
@@ -1043,16 +1284,29 @@ def smooth_profiles(it_max=20000):
         add(A[1] if sa else A[-2], A[0] if sa else A[-1], B[1] if sb else B[-2], lim)
     # 경사 상한: 2 m 떨어진 두 점 사이 ≤ 그 길 상한(돌길 grade · 그 밖 헤어핀 상한 18 %) — 원래 더 가팔랐던 길은 원래 값까지(나빠지지만 않게)
     duo = []
+    capN = {}
+    if V6F:                                          # v6f: 표본마다 한도 12 % · 헤어핀 안쪽 15 % · 돌길 15 % (drive_check.caps 와 같은 판정)
+        for r in car:
+            for q, c in zip(S[r['id']], DC.caps({**r, 'pts': S[r['id']]})):
+                k = nid.get(KEY(q))
+                if k is not None: capN[k] = max(capN.get(k, 0), c)
     for r in car:
         ids = seqs[r['id']]; cap0 = r.get('grade') or G_PIN; j = 0
         for t in range(len(ids)):
             j = max(j, t)
             while j < len(ids) - 1 and math.dist(P[ids[j]], P[ids[t]]) < 2: j += 1
             d = math.dist(P[ids[j]], P[ids[t]])
-            if d >= 2: duo.append((ids[t], ids[j], d, max(cap0, abs(Y[ids[j]] - Y[ids[t]]) / d)))
+            if d < 2: continue
+            if V6F: duo.append((ids[t], ids[j], d, max(capN.get(ids[t], DC.G_CAR), capN.get(ids[j], DC.G_CAR)) - 0.002))
+            else: duo.append((ids[t], ids[j], d, max(cap0, abs(Y[ids[j]] - Y[ids[t]]) / d)))
+    groups = plates_of(car, seqs, P) if V6F else []
     Y0 = list(Y); it = 0
     for it in range(it_max):
         worst = 0.0
+        for g in groups:                             # 갈림목 판: 판 안 표본은 모두 한 높이(옆면 턱 0)
+            m = sum(Y[k] for k in g['ids']) / len(g['ids'])
+            for k in g['ids']:
+                worst = max(worst, abs(Y[k] - m)); Y[k] = m
         for a, b, d, cap in duo:
             g = (Y[b] - Y[a]) / d
             if g > cap: e = (g - cap) * d / 2; Y[b] -= e; Y[a] += e
@@ -1065,6 +1319,9 @@ def smooth_profiles(it_max=20000):
             if abs(e) > worst: worst = abs(e)
             d = e / ss; Y[p] -= d * ap; Y[i] -= d * ai; Y[n] -= d * an
         if worst < 2e-4: break
+    for g in groups:                                 # 마지막은 판 높이 맞춤으로 끝낸다(턱 정확히 0)
+        m = sum(Y[k] for k in g['ids']) / len(g['ids'])
+        for k in g['ids']: Y[k] = m
     for r in car:
         r['pts'] = [P[k] for k in seqs[r['id']]]
     for k, q in enumerate(P): YN[KEY(q)] = Y[k]
@@ -1072,8 +1329,17 @@ def smooth_profiles(it_max=20000):
     for r in car:
         for k in set(seqs[r['id']]): on[k].append(r['id'])
     JUNC[:] = [{'pos': [round(P[k][0], 2), round(P[k][1], 2)], 'y': round(Y[k], 3), 'roads': on[k]} for k in on if len(on[k]) >= 2]
+    PLATES[:] = []
+    for n, g in enumerate(groups):
+        y = sum(Y[k] for k in g['ids']) / len(g['ids'])
+        PLATES.append({'id': f'J{n}', 'pos': [round(g['pos'][0], 2), round(g['pos'][1], 2)], 'y': round(y, 4), 'radius': round(g['R'], 2),
+                       'poly': [[round(a, 2), round(b, 2)] for a, b in g['poly']], 'roads': sorted({a['road'] for a in g['arms']}),
+                       'arms': [{'road': a['road'], 'edge': [round(a['edge'][0], 3), round(a['edge'][1], 3)], 'width': a['w']} for a in g['arms']]})
     mv = sorted(abs(a - b) for a, b in zip(Y, Y0))
-    return {'samples': len(Y), 'triples': len(tri), 'throughPairs': len(thr), 'iters': it + 1, 'worstLeft': round(worst, 5),
+    left = sorted(((abs(ap * Y[p] + ai * Y[i] + an * Y[n]) - lim, i) for p, i, n, lim, ap, ai, an, ss in tri), reverse=True)
+    left = [(round(e, 3), round(P[i][0]), round(P[i][1])) for e, i in left if e > 0.003]
+    PROFILE_LEFT[:] = left
+    return {'left': len(left), 'leftTop': left[:12], 'plates': len(groups), 'samples': len(Y), 'triples': len(tri), 'throughPairs': len(thr), 'iters': it + 1, 'worstLeft': round(worst, 5),
             'moveP50': round(mv[len(mv) // 2], 3), 'moveP99': round(mv[int(len(mv) * .99)], 3), 'moveMax': round(mv[-1], 3), 'junctions': len(JUNC)}
 
 
@@ -1187,10 +1453,12 @@ def main():
     tip = outer_roads()
     nseam, nloose = seams()
     stops = pick_stops(tip)
-    v6e = '--v6e' in sys.argv
+    global V6F, G_ROAD, G_PIN
+    V6F = '--v6f' in sys.argv
+    v6e = '--v6e' in sys.argv or V6F
     v6b = '--v6b' in sys.argv or v6e
-    TAG = 'v6e' if v6e else 'v6b' if v6b else 'v6osm'
-    title = '마을 v6e (겹친 길 정리 · 매끈한 높이)' if v6e else '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
+    TAG = 'v6f' if V6F else 'v6e' if v6e else 'v6b' if v6b else 'v6osm'
+    title = '마을 v6f (주행 기준: 갈림목 판·경사 12 %·건물 물림)' if V6F else '마을 v6e (겹친 길 정리 · 매끈한 높이)' if v6e else '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
     if debug:
         render(stops, os.path.join(OUT, f'town-{TAG}-debug.png'), title, True); return
     print('shortcuts', add_shortcuts(stops))
@@ -1222,9 +1490,16 @@ def main():
         extra['removed'] = clean_overlaps()
         if v6e:
             extra['overlapRounds'] = resolve_overlaps(stops)
+        if V6F:                                      # 과제 0506: 차길 12 % · 헤어핀 15 % · 돌길(급경사 사슬 포함) 15 % — 지름길 고르기는 끝난 뒤라 경로 선택엔 영향 없음
+            G_ROAD, G_PIN = DC.G_CAR, DC.G_PIN
+            extra['joined'] = join_crossings(); print('joined', extra['joined'])
+            for r in ROADS:
+                if r['kind'] in ('main', 'village') and (r.get('grade') or r['roughness'] >= RC.STONE or r['id'].startswith('sc_')): r['grade'] = DC.G_STONE
         extra['heights'] = solve_heights()
         if v6e:
-            extra['profile'] = smooth_profiles(); print('profile', extra['profile'], 'overlaps', len(OVL))
+            extra['profile'] = smooth_profiles(60000 if V6F else 20000); print('profile', extra['profile'], 'overlaps', len(OVL))
+        if V6F:
+            extra['buildings'] = clear_buildings(); print('buildings', extra['buildings'])
         build_cut_fill()
         print('heights', extra['heights'], 'removed', extra['removed'], 'seamfix', SEAMFIX)
     fun = fun_check(stops)
@@ -1259,7 +1534,7 @@ def main():
     cstep = 8 if v6b else 20     # v6b: 깎고 메운 길 띠(폭+30 m)가 격자에 남도록 8 m
     ctrl = [[x, z, round(H2(x, z), 1)] for x in range(-HALF, HALF + 1, cstep) for z in range(-HALF, HALF + 1, cstep)]
     plan = {
-        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0421 v6e)' if v6e else 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
+        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0506 v6f)' if V6F else 'D-157 (PD 0421 v6e)' if v6e else 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
                  'source': '© OpenStreetMap contributors (ODbL) + SRTM 30 m — docs/map/ATTRIBUTION.md',
                  'rhythmModel': '최고속 85 km/h · 가속 10.7 · 제동 8 m/s² · 굽이 √(5.82·R) + 요철 상한 가설 ROUGH_CAP',
                  'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어' + ('. 차길 knots y = 경사 상한(15 %/헤어핀 18 %) 매끈 높이, controlPoints = 길에 맞춰 깎고 메운 지형' if v6b else '')},
@@ -1275,9 +1550,14 @@ def main():
         **({'v6b': {**extra, 'seamFix': SEAMFIX, 'looseEnds': LOOSE, 'removedBuildings': REMOVED}} if v6b else {}),
         **({'v6e': {'overlaps': OVL, 'junctions': JUNC, 'profileFinal': True,
                     'note': '차길 knots = 1 m 표본, y = 최종 노면 높이(경사 변화 ≤3 %/m · 돌길 ≤6 %/m, 갈림목 공유점 같은 높이). 빌더는 갈림목 판·경사 변화 반복 완화를 다시 하지 말 것'}} if v6e else {}),
+        **({'junctions': PLATES,
+            'v6f': {'gradeCaps': {'car': DC.G_CAR, 'hairpinInner': DC.G_PIN, 'stone': DC.G_STONE, 'hairpinR': DC.PIN_R},
+                    'buildings': extra.get('buildings'), 'buildingFixes': BLDFIX,
+                    'note': 'junctions[] = 갈림목 판: poly(볼록 다각형, [x,z]) 를 높이 y 의 수평 판으로 깐다. 판 안을 지나는 차길 knots 는 모두 정확히 y '
+                            '(판 경계 arms[].edge 에서도 y) — 옆면 턱 0. 차길 knots y 는 최종(완화·리미터·판 다시 하지 말 것)'}} if V6F else {}),
     }
     json.dump(plan, open(os.path.join(OUT, f'town-{TAG}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    others, sheet_name = (('town-v6b.png',), 'v6b-vs-v6e.png') if v6e else (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
+    others, sheet_name = (('town-v6e.png',), 'v6e-vs-v6f.png') if V6F else (('town-v6b.png',), 'v6b-vs-v6e.png') if v6e else (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
     ims = [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others] + [img] if v6b else [img] + [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others]
     sm = 900 if v6b else 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
     for k, im in enumerate(ims): sheet.paste(im.resize((sm, sm), Image.Resampling.LANCZOS), (k * sm, 0))
