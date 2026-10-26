@@ -39,8 +39,10 @@ Shader "PitCrew/BayLoop/WindGrass"
    #pragma multi_compile_fragment _ _SHADOWS_SOFT
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+   #include "Assets/Art/Look/PCLook.hlsl"   // 과제 1548: 그림체 3안(_PCLook 0 = 이전과 같음)
    TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
    CBUFFER_START(UnityPerMaterial)
+    float4 _MainTex_TexelSize;
     float4 _MainTex_ST, _TileGrass, _Tint, _Ambient, _FogColor, _WindDir;
     float _WorldScale, _SoilAmount, _PatchScale, _PatchThreshold, _TipLift, _FaceShade, _FogStart, _FogEnd, _WaveLen, _WaveSpeed, _Sway, _Band, _CloudShadow, _CloudScale;
    CBUFFER_END
@@ -71,12 +73,12 @@ Shader "PitCrew/BayLoop/WindGrass"
     Light sun=GetMainLight(TransformWorldToShadowCoord(i.pos));
     float diffuse=saturate(sun.direction.y);                              // 땅 평지와 같은 빛(위를 향한 면)
     float3 lit=_Ambient.rgb*0.36+sun.color.rgb*(diffuse*sun.shadowAttenuation);
-    float3 shade=lerp(float3(1,1,1),lit,_FaceShade);
+    float3 shade=PCShade(_Ambient.rgb,sun.color.rgb,diffuse,sun.shadowAttenuation,_FaceShade);
     float2 uv=_TileGrass.xy+(.035+frac(i.root*_WorldScale)*.93)*_TileGrass.zw;
-    float3 col=SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,uv).rgb*i.color.rgb;
+    float3 col=PCTex(TEXTURE2D_ARGS(_MainTex,sampler_MainTex),uv,_MainTex_TexelSize,float4(_TileGrass.xy+.035*_TileGrass.zw,_TileGrass.xy+.965*_TileGrass.zw))*i.color.rgb;
     col*=i.color.a>.55?_TipLift:1;                                        // 끝 한 단 밝게
     col*=1+_Band*step(.35,i.wave);                                        // 물결 마루 한 단 밝게
-    col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.root));
+    col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.root)); col=PCPost(col,i.pos,float3(0,1,0));
     float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
     return half4(lerp(col,_FogColor.rgb,fog),1);
    }

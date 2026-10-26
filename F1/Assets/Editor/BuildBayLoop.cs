@@ -165,6 +165,7 @@ public static partial class BuildBayLoop
         log.Add(Motion(Group("Motion"), mainR));   // 과제 0131 갭 #1·#2 움직임·소리 최소
         log.Add(Hilltop(Group("Hilltop"), mainR));   // 과제 0404 갭 #9 바람 풀·구름·홀로 선 집
         log.Add(MapEdge(Group("MapEdge")));          // 과제 0404 갭 #6 육지 쪽 맵 끝
+        log.Add(Coast(Group("Coast"), mainR));        // 과제 1514 D-145 해안 구조물(갯바위·거품·옹벽·테트라포드·깎은 면)
         log.Add(BuildWindowGlow.Run());   // D-137 초저녁 창 불(기본 꺼짐, 무드가 켠다)
 
         // ── 차·카메라·주행 ──
@@ -469,7 +470,7 @@ public static partial class BuildBayLoop
     /// <summary>열린 땅 겉면: 2m 칸 중심이 다각형 안이면 지형+2cm(평탄한 곳은 콜라이더·노면 태그) / +4cm(밭·풀밭·모래, 보기만).</summary>
     static string OpenGroundMeshes(Transform parent)
     {
-        int n = 0;
+        int n = 0, steep = 0; ogSteep.Clear();
         foreach (var (g, poly) in OG())
         {
             string kind = (string)g["kind"]; if (kind == "field") continue;   // 밭은 Fields() 가 띠로 깐다
@@ -481,10 +482,29 @@ public static partial class BuildBayLoop
                 {
                     if (!InP(poly, x + 1f, z + 1f)) continue;
                     if (NearCar(new Vector3(x + 1f, 0f, z + 1f), 1.2f)) continue;   // 차로 위에 겹치면 턱이 된다(방파제 +0.14)
+                    // 과제 1514: 평탄 겉면(부두·광장)이 비탈 칸(네 귀 높이차 0.8m 초과)에 +2cm 로 걸치면 지형과 겹쳐 큰 삼각 톱니(도현 2.png) → 빼고 Coast() 가 석축 호안으로 덮는다
+                    if (flat) { float c00 = H(x, z), c10 = H(x + 2f, z), c01 = H(x, z + 2f), c11 = H(x + 2f, z + 2f); if (Mathf.Max(Mathf.Max(c00, c10), Mathf.Max(c01, c11)) - Mathf.Min(Mathf.Min(c00, c10), Mathf.Min(c01, c11)) > 0.8f) { ogSteep.Add((x, z)); steep++; continue; } }
                     int b = verts.Count;
                     foreach (var (dx, dz) in new[] { (0f, 0f), (2f, 0f), (0f, 2f), (2f, 2f) }) { verts.Add(new Vector3(x + dx, H(x + dx, z + dz) + lift, z + dz)); uvs.Add(new Vector2(x + dx, z + dz)); }
                     tris.Add(b); tris.Add(b + 2); tris.Add(b + 1); tris.Add(b + 1); tris.Add(b + 2); tris.Add(b + 3);
                 }
+            // 과제 1514: 부두 다각형 바깥 16m 안의 낮은 비탈 칸(가장자리 2m 칸 계단 아래 풀 삼각 톱니로 보였다) → 석축 호안 후보(Coast() 가 길·건물 거름)
+            if (kind == "quay" && verts.Count > 0)
+            {
+                float top = verts.Average(q => q.y) - lift;
+                for (float x = Mathf.Floor(minX / 2f) * 2f - 16f; x < maxX + 16f; x += 2f)
+                    for (float z = Mathf.Floor(minZ / 2f) * 2f - 16f; z < maxZ + 16f; z += 2f)
+                    {
+                        if (InP(poly, x + 1f, z + 1f) || ogSteep.Contains((x, z))) continue;
+                        float c00 = H(x, z), c10 = H(x + 2f, z), c01 = H(x, z + 2f), c11 = H(x + 2f, z + 2f);
+                        float hi = Mathf.Max(Mathf.Max(c00, c10), Mathf.Max(c01, c11)), lo = Mathf.Min(Mathf.Min(c00, c10), Mathf.Min(c01, c11));
+                        if (hi - lo < 0.3f || hi > top + 0.3f || hi < -0.5f) continue;
+                        var cpt = new Vector2(x + 1f, z + 1f); float dmin = float.MaxValue;
+                        for (int e = 0; e < poly.Count; e++) dmin = Mathf.Min(dmin, DistSeg(cpt, poly[e], poly[(e + 1) % poly.Count], out _));
+                        if (dmin > 16f || NearCar(new Vector3(x + 1f, 0f, z + 1f), 1.2f)) continue;
+                        ogSteep.Add((x, z)); steep++;
+                    }
+            }
             if (verts.Count == 0) continue;
             string mat = kind == "plaza" ? "Paving" : kind == "quay" ? "Concrete" : kind == "beach" ? "Sand" : kind == "lot" ? "Gravel" : "Meadow";
             // 과제 0226: 풀밭 면도 지형과 같은 질감(경사 셰이더) — 단색 연두가 질감 있는 땅 옆에서 다른 게임처럼 보였다
@@ -497,7 +517,7 @@ public static partial class BuildBayLoop
             }
             n++;
         }
-        return $"열린 땅 겉면 {n}장";
+        return $"열린 땅 겉면 {n}장(비탈 칸 {steep} 뺌 → 석축)";
     }
 
     public static float H(float x, float z)
@@ -725,7 +745,7 @@ public static partial class BuildBayLoop
             // 단면 종류별 메시: key = edge
             var parts = new Dictionary<string, (List<Vector3> v, List<Vector2> uv, List<int> tEdge, List<int> tWalk)>();
             var colParts = new Dictionary<string, (List<Vector3> v, List<int> t)>();
-            var rail = new List<(Vector3 a, Vector3 b)>();
+            var rail = new List<(Vector3 a, Vector3 b, float s)>();
             float s = 0;
             for (int i = 0; i < last; i++)
             {
@@ -750,7 +770,8 @@ public static partial class BuildBayLoop
                     // 과제 1448: 콜라이더만 연석 면을 경사로(30cm 에 6cm ≈ 11°). 차는 바퀴 없는 모서리 날카로운 상자라
                     // 수직 6cm 면에 앞·옆면이 그대로 부딪혀 멈췄다(Band_*_curb 겹침, 측정). 보이는 메시는 수직 그대로.
                     float ramp = Mathf.Min(0.3f, wk * 0.5f);
-                    float[] coff = { lh, lh + ramp, lh + Mathf.Max(strip, ramp + 0.02f), lh + wk, lh + wk };
+                    // 과제 1514: 인도 바깥 치마(−0.35m 수직)도 콜라이더만 2m 경사로(≈12°) — 지형이 인도보다 조금 낮은 곳에서 14cm 턱이 됐다
+                    float[] coff = { lh, lh + ramp, lh + Mathf.Max(strip, ramp + 0.02f), lh + wk, lh + wk + 2.0f };
                     row[e] = new Vector3[5]; crow[e] = new Vector3[5];
                     for (int c = 0; c < 5; c++)
                     {
@@ -793,7 +814,7 @@ public static partial class BuildBayLoop
                 {
                     var o0 = row[0][3]; var o1 = row[1][3]; var f0 = Fwd(p, i, r.closed); var nrm0 = -side * new Vector3(f0.z, 0, -f0.x);
                     var g = o0 + nrm0 * 1.5f;
-                    if (o0.y - H(g.x, g.z) > 2f) rail.Add((o0 - nrm0 * 0.15f, o1 - nrm0 * 0.15f));
+                    if (o0.y - H(g.x, g.z) > 2f) rail.Add((o0 - nrm0 * 0.15f, o1 - nrm0 * 0.15f, s));
                 }
             }
             foreach (var kv in parts)
@@ -817,10 +838,22 @@ public static partial class BuildBayLoop
                 var g = new GameObject($"Railing_{r.id}_{(side > 0 ? "L" : "R")}").transform; g.SetParent(parent);
                 for (int k = 0; k < rail.Count; k++)
                 {
-                    var (a, b) = rail[k]; var mid = (a + b) * .5f; var dir = b - a; float len = dir.magnitude; if (len < 0.05f) continue;
+                    var (a, b, rs0) = rail[k]; var mid = (a + b) * .5f; var dir = b - a; float len = dir.magnitude; if (len < 0.05f) continue;
                     var rot = Quaternion.LookRotation(dir);
-                    Box(g, "Rail", new Vector3(0.06f, 0.06f, len + 0.02f), mid + Vector3.up * 1.0f, rot, M("Dark"), false);
-                    if (k % 2 == 0) Box(g, "Post", new Vector3(0.07f, 1.0f, 0.07f), a + Vector3.up * 0.5f, rot, M("Dark"), false);
+                    // 과제 1514: 해안 난간 섞기 — 40m 마디마다 가드레일(아연 W빔·기둥 2m) / 석조 난간(낮은 돌 담) / 옛 철 난간. 막이(INTENT_Guard)는 셋 다 같다
+                    int style = (Mathf.FloorToInt(rs0 / 40f) * 7 + r.id.Length * 3 + (side > 0 ? 1 : 0)) % 3;
+                    if (style == 0)
+                    {
+                        Box(g, "GuardBeam", new Vector3(0.05f, 0.32f, len + 0.02f), mid + Vector3.up * 0.62f, rot, M("Rail"), false);
+                        if (k % 2 == 0) Box(g, "GuardPost", new Vector3(0.1f, 0.75f, 0.1f), a + Vector3.up * 0.375f, rot, M("Rail"), false);
+                    }
+                    else if (style == 1)
+                        Box(g, "StoneParapet", new Vector3(0.36f, 0.8f, len + 0.02f), mid + Vector3.up * 0.4f, rot, M("Concrete"), false);
+                    else
+                    {
+                        Box(g, "Rail", new Vector3(0.06f, 0.06f, len + 0.02f), mid + Vector3.up * 1.0f, rot, M("Dark"), false);
+                        if (k % 2 == 0) Box(g, "Post", new Vector3(0.07f, 1.0f, 0.07f), a + Vector3.up * 0.5f, rot, M("Dark"), false);
+                    }
                     var guard = Box(g, "INTENT_Guard", new Vector3(0.3f, 1.4f, len + 0.05f), mid + Vector3.up * 0.6f, rot, M("Dark"), true);
                     Object.DestroyImmediate(guard.GetComponent<MeshRenderer>());
                     railM += len;
@@ -2167,6 +2200,7 @@ public static partial class BuildBayLoop
                 "LotStone" => new Color(.70f, .66f, .60f), "LotConcrete" => new Color(.72f, .71f, .68f), "LotGravel" => new Color(.63f, .58f, .50f), "LotDark" => new Color(.56f, .54f, .51f),
                 "PatchDark" => new Color(.30f, .30f, .31f), "PatchLight" => new Color(.50f, .49f, .47f), "PaintWhite" => new Color(.90f, .90f, .86f), "MirrorGlass" => new Color(.75f, .85f, .92f),
                 "Soil" => new Color(.42f, .32f, .22f), "PathDirt" => new Color(.60f, .52f, .40f), "Gutter" => new Color(.42f, .42f, .42f), "Pink" => new Color(.92f, .62f, .66f),
+                "Rock" => new Color(.56f, .54f, .50f), "RockDark" => new Color(.42f, .41f, .39f), "WetRock" => new Color(.27f, .28f, .29f), "Foam" => new Color(.95f, .97f, .96f), "Rail" => new Color(.74f, .76f, .78f),   // 과제 1514 해안 구조물 4묶음(Rock·Concrete·Rail·Foam)
                 "Cloud" => new Color(.97f, .97f, .95f), "Ridge1" => new Color(.40f, .48f, .42f), "Ridge2" => new Color(.46f, .54f, .56f),   // 과제 0404: 구름·먼 능선 2겹(안쪽 초록빛, 바깥 푸른빛)
                 _ => Color.magenta
             };

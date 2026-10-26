@@ -39,8 +39,10 @@ Shader "PitCrew/BayLoop/TerrainSlope"
    #pragma multi_compile_fragment _ _SHADOWS_SOFT
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+   #include "Assets/Art/Look/PCLook.hlsl"   // 과제 1548: 그림체 3안(_PCLook 0 = 이전과 같음)
    TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
    CBUFFER_START(UnityPerMaterial)
+    float4 _MainTex_TexelSize;
     float4 _MainTex_ST, _Tint, _Ambient, _FogColor;
     float _FaceShade, _FogStart, _FogEnd, _WorldScale;
     float4 _TileGrass, _TileSoil, _TileDry, _TileRock;
@@ -60,13 +62,13 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     Varyings o;o.pos=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.pos);
     o.normal=TransformObjectToWorldNormal(v.normalOS);return o;
    }
-   half3 Tile(float4 t, float2 worldUV){ return SAMPLE_TEXTURE2D(_MainTex,sampler_MainTex,t.xy+(.035+frac(worldUV*_WorldScale)*.93)*t.zw).rgb; }
+   half3 Tile(float4 t, float2 worldUV){ return PCTex(TEXTURE2D_ARGS(_MainTex,sampler_MainTex),t.xy+(.035+frac(worldUV*_WorldScale)*.93)*t.zw,_MainTex_TexelSize,float4(t.xy+.035*t.zw,t.xy+.965*t.zw)); }
    half4 frag(Varyings i):SV_Target {
     float3 n=normalize(i.normal);
     Light sun=GetMainLight(TransformWorldToShadowCoord(i.pos));
     float diffuse=saturate(dot(n,sun.direction));
     float3 lit=_Ambient.rgb*0.36+sun.color.rgb*(diffuse*sun.shadowAttenuation)*1.0;   // WorldSurface v4 와 같은 식
-    float3 shade=lerp(float3(1,1,1),lit,_FaceShade);
+    float3 shade=PCShade(_Ambient.rgb,sun.color.rgb,diffuse,sun.shadowAttenuation,_FaceShade);
     // 과제 1448: 경사는 빌더가 높이맵에서 구워 둔 텍스처(2m 격자, 한 번 다듬음)를 텍셀(1/32m) 자리에서 읽는다.
     //  예전엔 면 법선 보간이라 2m 삼각형마다 경계가 꺾여 큰 톱니가 됐다. 이제 경계는 등고선을 따라 휘고 화면에선 1/32m 계단.
     float2 tx=floor(i.pos.xz*32)/32+1.0/64;
@@ -87,7 +89,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
      float nz=vnoise(q)*.62+vnoise(q*2.6+float2(11.3,7.1))*.38;
      if(_SoilAmount>0 && nz>_PatchThreshold) col=Tile(_TileSoil,worldUV);
     }
-    col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.pos.xz));
+    col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.pos.xz)); col=PCPost(col,i.pos,n);
     float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
     return half4(lerp(col,_FogColor.rgb,fog),1);
    }
