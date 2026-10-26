@@ -1,0 +1,106 @@
+[
+  {
+    "file": "garage_v3_front",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "garage_v3_threequarter",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "garage_v3_interior",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "garage_v3_1x_6m",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "kart_v3_front",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "kart_v3_threequarter",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "kart_v3_side",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  },
+  {
+    "file": "kart_v3_1x_6m",
+    "source": [
+      960,
+      540
+    ],
+    "output": [
+      1920,
+      1080
+    ],
+    "exact_nearest": true,
+    "all_four_pixels_equal": true
+  }
+]
