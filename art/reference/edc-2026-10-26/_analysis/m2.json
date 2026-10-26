@@ -1,0 +1,325 @@
+{
+ "edc_01": {
+  "native": [
+   454,
+   255
+  ],
+  "lum_mean": 43.3,
+  "lum_p5": 34.6,
+  "lum_p95": 58.4,
+  "lum_std": 15.1,
+  "sat_mean": 0.154,
+  "sat_p90": 0.2,
+  "colors_4bit_sig": 18,
+  "colors_4bit_cover90": 4,
+  "tile_std_median": 0.68,
+  "tile_std_p75": 1.41,
+  "lap_mean": 2.0,
+  "lap_p90": 4.08,
+  "isolated_px_pct": 0.04
+ },
+ "edc_02": {
+  "native": [
+   452,
+   254
+  ],
+  "lum_mean": 125.6,
+  "lum_p5": 63.1,
+  "lum_p95": 169.5,
+  "lum_std": 34.3,
+  "sat_mean": 0.037,
+  "sat_p90": 0.074,
+  "colors_4bit_sig": 47,
+  "colors_4bit_cover90": 17,
+  "tile_std_median": 2.29,
+  "tile_std_p75": 6.39,
+  "lap_mean": 7.14,
+  "lap_p90": 11.0,
+  "isolated_px_pct": 0.77
+ },
+ "edc_03": {
+  "native": [
+   395,
+   222
+  ],
+  "lum_mean": 38.0,
+  "lum_p5": 3.4,
+  "lum_p95": 91.1,
+  "lum_std": 28.4,
+  "sat_mean": 0.248,
+  "sat_p90": 0.667,
+  "colors_4bit_sig": 44,
+  "colors_4bit_cover90": 19,
+  "tile_std_median": 3.08,
+  "tile_std_p75": 11.32,
+  "lap_mean": 10.95,
+  "lap_p90": 26.92,
+  "isolated_px_pct": 0.79
+ },
+ "edc_04": {
+  "native": [
+   454,
+   255
+  ],
+  "lum_mean": 117.5,
+  "lum_p5": 44.5,
+  "lum_p95": 206.9,
+  "lum_std": 50.2,
+  "sat_mean": 0.116,
+  "sat_p90": 0.451,
+  "colors_4bit_sig": 75,
+  "colors_4bit_cover90": 43,
+  "tile_std_median": 5.05,
+  "tile_std_p75": 16.92,
+  "lap_mean": 12.61,
+  "lap_p90": 28.08,
+  "isolated_px_pct": 0.57
+ },
+ "edc_05": {
+  "native": [
+   454,
+   255
+  ],
+  "lum_mean": 43.2,
+  "lum_p5": 26.6,
+  "lum_p95": 100.8,
+  "lum_std": 25.0,
+  "sat_mean": 0.131,
+  "sat_p90": 0.167,
+  "colors_4bit_sig": 28,
+  "colors_4bit_cover90": 11,
+  "tile_std_median": 1.5,
+  "tile_std_p75": 4.01,
+  "lap_mean": 4.32,
+  "lap_p90": 11.0,
+  "isolated_px_pct": 0.96
+ },
+ "edc_06": {
+  "native": [
+   452,
+   254
+  ],
+  "lum_mean": 127.5,
+  "lum_p5": 70.5,
+  "lum_p95": 163.5,
+  "lum_std": 32.0,
+  "sat_mean": 0.029,
+  "sat_p90": 0.061,
+  "colors_4bit_sig": 38,
+  "colors_4bit_cover90": 15,
+  "tile_std_median": 3.23,
+  "tile_std_p75": 12.37,
+  "lap_mean": 8.42,
+  "lap_p90": 21.0,
+  "isolated_px_pct": 0.88
+ },
+ "edc_07": {
+  "native": [
+   452,
+   254
+  ],
+  "lum_mean": 22.7,
+  "lum_p5": 10.2,
+  "lum_p95": 60.0,
+  "lum_std": 17.0,
+  "sat_mean": 0.56,
+  "sat_p90": 1.0,
+  "colors_4bit_sig": 22,
+  "colors_4bit_cover90": 9,
+  "tile_std_median": 1.33,
+  "tile_std_p75": 2.6,
+  "lap_mean": 4.34,
+  "lap_p90": 11.29,
+  "isolated_px_pct": 0.4
+ },
+ "edc_08": {
+  "native": [
+   454,
+   255
+  ],
+  "lum_mean": 177.1,
+  "lum_p5": 138.4,
+  "lum_p95": 215.1,
+  "lum_std": 24.7,
+  "sat_mean": 0.038,
+  "sat_p90": 0.048,
+  "colors_4bit_sig": 28,
+  "colors_4bit_cover90": 12,
+  "tile_std_median": 1.43,
+  "tile_std_p75": 4.2,
+  "lap_mean": 5.7,
+  "lap_p90": 9.64,
+  "isolated_px_pct": 0.4
+ },
+ "edc_09": {
+  "native": [
+   341,
+   191
+  ],
+  "lum_mean": 40.6,
+  "lum_p5": 0.0,
+  "lum_p95": 87.4,
+  "lum_std": 33.9,
+  "sat_mean": 0.184,
+  "sat_p90": 0.362,
+  "colors_4bit_sig": 44,
+  "colors_4bit_cover90": 14,
+  "tile_std_median": 1.89,
+  "tile_std_p75": 5.68,
+  "lap_mean": 5.71,
+  "lap_p90": 11.35,
+  "isolated_px_pct": 0.76
+ },
+ "a_car_look0": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 108.2,
+  "lum_p5": 47.6,
+  "lum_p95": 185.2,
+  "lum_std": 38.0,
+  "sat_mean": 0.221,
+  "sat_p90": 0.348,
+  "colors_4bit_sig": 64,
+  "colors_4bit_cover90": 34,
+  "tile_std_median": 2.02,
+  "tile_std_p75": 7.03,
+  "lap_mean": 7.95,
+  "lap_p90": 17.0,
+  "isolated_px_pct": 0.52
+ },
+ "a_car_look4": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 119.2,
+  "lum_p5": 58.0,
+  "lum_p95": 184.0,
+  "lum_std": 35.5,
+  "sat_mean": 0.205,
+  "sat_p90": 0.421,
+  "colors_4bit_sig": 61,
+  "colors_4bit_cover90": 29,
+  "tile_std_median": 1.25,
+  "tile_std_p75": 9.07,
+  "lap_mean": 7.66,
+  "lap_p90": 20.76,
+  "isolated_px_pct": 0.28
+ },
+ "b_street_look0": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 87.9,
+  "lum_p5": 42.9,
+  "lum_p95": 148.2,
+  "lum_std": 30.6,
+  "sat_mean": 0.161,
+  "sat_p90": 0.318,
+  "colors_4bit_sig": 58,
+  "colors_4bit_cover90": 27,
+  "tile_std_median": 2.11,
+  "tile_std_p75": 8.1,
+  "lap_mean": 6.5,
+  "lap_p90": 16.15,
+  "isolated_px_pct": 0.25
+ },
+ "b_street_look4": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 98.7,
+  "lum_p5": 52.0,
+  "lum_p95": 155.6,
+  "lum_std": 34.3,
+  "sat_mean": 0.199,
+  "sat_p90": 0.27,
+  "colors_4bit_sig": 51,
+  "colors_4bit_cover90": 23,
+  "tile_std_median": 0.0,
+  "tile_std_p75": 9.25,
+  "lap_mean": 5.79,
+  "lap_p90": 19.21,
+  "isolated_px_pct": 0.2
+ },
+ "c_town_look0": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 84.7,
+  "lum_p5": 35.5,
+  "lum_p95": 160.1,
+  "lum_std": 42.5,
+  "sat_mean": 0.268,
+  "sat_p90": 0.444,
+  "colors_4bit_sig": 79,
+  "colors_4bit_cover90": 42,
+  "tile_std_median": 4.24,
+  "tile_std_p75": 16.7,
+  "lap_mean": 9.82,
+  "lap_p90": 28.57,
+  "isolated_px_pct": 1.16
+ },
+ "c_town_look4": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 98.9,
+  "lum_p5": 51.1,
+  "lum_p95": 171.5,
+  "lum_std": 43.7,
+  "sat_mean": 0.258,
+  "sat_p90": 0.427,
+  "colors_4bit_sig": 83,
+  "colors_4bit_cover90": 44,
+  "tile_std_median": 3.13,
+  "tile_std_p75": 18.34,
+  "lap_mean": 9.38,
+  "lap_p90": 29.92,
+  "isolated_px_pct": 0.97
+ },
+ "f_grass_look0": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 121.6,
+  "lum_p5": 41.0,
+  "lum_p95": 176.4,
+  "lum_std": 52.4,
+  "sat_mean": 0.313,
+  "sat_p90": 0.479,
+  "colors_4bit_sig": 87,
+  "colors_4bit_cover90": 52,
+  "tile_std_median": 2.22,
+  "tile_std_p75": 11.46,
+  "lap_mean": 7.01,
+  "lap_p90": 18.27,
+  "isolated_px_pct": 0.23
+ },
+ "f_grass_look4": {
+  "native": [
+   640,
+   360
+  ],
+  "lum_mean": 131.5,
+  "lum_p5": 63.8,
+  "lum_p95": 187.7,
+  "lum_std": 46.3,
+  "sat_mean": 0.305,
+  "sat_p90": 0.435,
+  "colors_4bit_sig": 80,
+  "colors_4bit_cover90": 43,
+  "tile_std_median": 1.49,
+  "tile_std_p75": 11.96,
+  "lap_mean": 6.68,
+  "lap_p90": 20.85,
+  "isolated_px_pct": 0.19
+ }
+}

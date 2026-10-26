@@ -1,0 +1,1033 @@
+{
+ "art/reference/edc-2026-10-26/edc_01.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   4,
+   0.61
+  ],
+  "period_y": [
+   8,
+   0.765
+  ],
+  "ac_x": [
+   0.119,
+   0.185,
+   0.61,
+   0.245,
+   0.113,
+   0.13,
+   0.544
+  ],
+  "runlen_hist": [
+   0.0,
+   0.503,
+   0.068,
+   0.051,
+   0.213,
+   0.053,
+   0.015,
+   0.018,
+   0.044,
+   0.011,
+   0.007,
+   0.018
+  ],
+  "phase_x": [
+   0.7400000095367432,
+   0.7599999904632568,
+   0.800000011920929,
+   1.7000000476837158
+  ],
+  "full": {
+   "lum_mean": 43.3,
+   "lum_p5": 34.6,
+   "lum_p95": 58.4,
+   "lum_std": 15.1,
+   "sat_mean": 0.154,
+   "sat_p90": 0.203,
+   "colors_4bit_sig": 17,
+   "colors_4bit_cover90": 5,
+   "tile_std_median": 0.0,
+   "tile_std_p75": 0.74,
+   "lap_mean": 0.74,
+   "lap_p90": 2.0,
+   "isolated_px_pct": 0.01
+  },
+  "block": {
+   "lum_mean": 43.3,
+   "lum_p5": 34.6,
+   "lum_p95": 58.3,
+   "lum_std": 15.0,
+   "sat_mean": 0.154,
+   "sat_p90": 0.203,
+   "colors_4bit_sig": 18,
+   "colors_4bit_cover90": 5,
+   "tile_std_median": 0.7,
+   "tile_std_p75": 1.43,
+   "lap_mean": 2.16,
+   "lap_p90": 4.73,
+   "isolated_px_pct": 0.06
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_02.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   4,
+   0.77
+  ],
+  "period_y": [
+   4,
+   0.841
+  ],
+  "ac_x": [
+   0.465,
+   0.551,
+   0.77,
+   0.644,
+   0.42,
+   0.45,
+   0.693
+  ],
+  "runlen_hist": [
+   0.0,
+   0.764,
+   0.068,
+   0.053,
+   0.032,
+   0.012,
+   0.016,
+   0.018,
+   0.014,
+   0.007,
+   0.003,
+   0.011
+  ],
+  "phase_x": [
+   0.9300000071525574,
+   0.9700000286102295,
+   0.9599999785423279,
+   1.1399999856948853
+  ],
+  "full": {
+   "lum_mean": 125.5,
+   "lum_p5": 62.9,
+   "lum_p95": 169.5,
+   "lum_std": 34.4,
+   "sat_mean": 0.038,
+   "sat_p90": 0.075,
+   "colors_4bit_sig": 48,
+   "colors_4bit_cover90": 18,
+   "tile_std_median": 0.75,
+   "tile_std_p75": 1.55,
+   "lap_mean": 1.69,
+   "lap_p90": 3.0,
+   "isolated_px_pct": 0.05
+  },
+  "block": {
+   "lum_mean": 125.4,
+   "lum_p5": 62.9,
+   "lum_p95": 169.5,
+   "lum_std": 34.5,
+   "sat_mean": 0.038,
+   "sat_p90": 0.075,
+   "colors_4bit_sig": 48,
+   "colors_4bit_cover90": 18,
+   "tile_std_median": 2.19,
+   "tile_std_p75": 6.3,
+   "lap_mean": 7.76,
+   "lap_p90": 11.14,
+   "isolated_px_pct": 1.06
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_03.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   5,
+   0.688
+  ],
+  "period_y": [
+   4,
+   0.577
+  ],
+  "ac_x": [
+   0.292,
+   0.305,
+   0.579,
+   0.688,
+   0.468,
+   0.307,
+   0.376
+  ],
+  "runlen_hist": [
+   0.0,
+   0.676,
+   0.029,
+   0.036,
+   0.069,
+   0.047,
+   0.025,
+   0.016,
+   0.029,
+   0.046,
+   0.022,
+   0.006
+  ],
+  "phase_x": [
+   0.9700000286102295,
+   1.0299999713897705,
+   1.059999942779541,
+   1.0,
+   0.9300000071525574
+  ],
+  "full": {
+   "lum_mean": 38.1,
+   "lum_p5": 3.1,
+   "lum_p95": 90.9,
+   "lum_std": 28.8,
+   "sat_mean": 0.248,
+   "sat_p90": 0.667,
+   "colors_4bit_sig": 44,
+   "colors_4bit_cover90": 19,
+   "tile_std_median": 0.69,
+   "tile_std_p75": 2.34,
+   "lap_mean": 2.47,
+   "lap_p90": 4.58,
+   "isolated_px_pct": 0.07
+  },
+  "block": {
+   "lum_mean": 38.1,
+   "lum_p5": 3.1,
+   "lum_p95": 90.8,
+   "lum_std": 29.0,
+   "sat_mean": 0.247,
+   "sat_p90": 0.667,
+   "colors_4bit_sig": 44,
+   "colors_4bit_cover90": 19,
+   "tile_std_median": 3.21,
+   "tile_std_p75": 11.8,
+   "lap_mean": 12.44,
+   "lap_p90": 29.16,
+   "isolated_px_pct": 1.3
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_04.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   13,
+   0.542
+  ],
+  "period_y": [
+   13,
+   0.677
+  ],
+  "ac_x": [
+   -0.038,
+   0.112,
+   0.53,
+   0.307,
+   -0.027,
+   0.012,
+   0.446
+  ],
+  "runlen_hist": [
+   0.0,
+   0.517,
+   0.039,
+   0.089,
+   0.14,
+   0.032,
+   0.008,
+   0.026,
+   0.087,
+   0.038,
+   0.006,
+   0.019
+  ],
+  "phase_x": [
+   1.0800000429153442,
+   0.9800000190734863,
+   0.8600000143051147,
+   1.2000000476837158,
+   1.1299999952316284,
+   0.9800000190734863,
+   1.1200000047683716,
+   0.8799999952316284,
+   1.0299999713897705,
+   0.8899999856948853,
+   0.8500000238418579,
+   1.0700000524520874,
+   0.9399999976158142
+  ],
+  "full": {
+   "lum_mean": 117.5,
+   "lum_p5": 44.6,
+   "lum_p95": 206.9,
+   "lum_std": 50.0,
+   "sat_mean": 0.116,
+   "sat_p90": 0.45,
+   "colors_4bit_sig": 78,
+   "colors_4bit_cover90": 43,
+   "tile_std_median": 1.16,
+   "tile_std_p75": 3.17,
+   "lap_mean": 3.21,
+   "lap_p90": 5.72,
+   "isolated_px_pct": 0.12
+  },
+  "block": {
+   "lum_mean": 117.4,
+   "lum_p5": 44.5,
+   "lum_p95": 206.9,
+   "lum_std": 49.9,
+   "sat_mean": 0.116,
+   "sat_p90": 0.449,
+   "colors_4bit_sig": 75,
+   "colors_4bit_cover90": 43,
+   "tile_std_median": 17.09,
+   "tile_std_p75": 32.39,
+   "lap_mean": 29.63,
+   "lap_p90": 83.14,
+   "isolated_px_pct": 3.91
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_05.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   4,
+   0.786
+  ],
+  "period_y": [
+   4,
+   0.8
+  ],
+  "ac_x": [
+   0.217,
+   0.375,
+   0.786,
+   0.565,
+   0.236,
+   0.272,
+   0.741
+  ],
+  "runlen_hist": [
+   0.0,
+   0.387,
+   0.032,
+   0.097,
+   0.269,
+   0.058,
+   0.004,
+   0.011,
+   0.095,
+   0.042,
+   0.001,
+   0.005
+  ],
+  "phase_x": [
+   0.8799999952316284,
+   0.949999988079071,
+   0.8799999952316284,
+   1.2899999618530273
+  ],
+  "full": {
+   "lum_mean": 43.2,
+   "lum_p5": 26.6,
+   "lum_p95": 101.3,
+   "lum_std": 25.1,
+   "sat_mean": 0.131,
+   "sat_p90": 0.167,
+   "colors_4bit_sig": 28,
+   "colors_4bit_cover90": 11,
+   "tile_std_median": 0.5,
+   "tile_std_p75": 1.62,
+   "lap_mean": 1.24,
+   "lap_p90": 3.0,
+   "isolated_px_pct": 0.01
+  },
+  "block": {
+   "lum_mean": 43.2,
+   "lum_p5": 26.6,
+   "lum_p95": 101.6,
+   "lum_std": 25.1,
+   "sat_mean": 0.131,
+   "sat_p90": 0.167,
+   "colors_4bit_sig": 28,
+   "colors_4bit_cover90": 11,
+   "tile_std_median": 1.49,
+   "tile_std_p75": 4.0,
+   "lap_mean": 4.16,
+   "lap_p90": 10.5,
+   "isolated_px_pct": 0.86
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_06.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   4,
+   0.777
+  ],
+  "period_y": [
+   4,
+   0.878
+  ],
+  "ac_x": [
+   0.479,
+   0.568,
+   0.777,
+   0.655,
+   0.433,
+   0.465,
+   0.688
+  ],
+  "runlen_hist": [
+   0.0,
+   0.773,
+   0.06,
+   0.047,
+   0.025,
+   0.012,
+   0.021,
+   0.019,
+   0.013,
+   0.007,
+   0.007,
+   0.015
+  ],
+  "phase_x": [
+   0.9800000190734863,
+   0.9700000286102295,
+   0.9100000262260437,
+   1.1399999856948853
+  ],
+  "full": {
+   "lum_mean": 127.2,
+   "lum_p5": 69.3,
+   "lum_p95": 163.8,
+   "lum_std": 32.8,
+   "sat_mean": 0.031,
+   "sat_p90": 0.061,
+   "colors_4bit_sig": 37,
+   "colors_4bit_cover90": 15,
+   "tile_std_median": 0.92,
+   "tile_std_p75": 2.59,
+   "lap_mean": 2.22,
+   "lap_p90": 4.0,
+   "isolated_px_pct": 0.06
+  },
+  "block": {
+   "lum_mean": 127.1,
+   "lum_p5": 68.8,
+   "lum_p95": 163.9,
+   "lum_std": 32.9,
+   "sat_mean": 0.031,
+   "sat_p90": 0.061,
+   "colors_4bit_sig": 38,
+   "colors_4bit_cover90": 15,
+   "tile_std_median": 2.97,
+   "tile_std_p75": 13.92,
+   "lap_mean": 11.02,
+   "lap_p90": 24.15,
+   "isolated_px_pct": 1.47
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_07.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   4,
+   0.834
+  ],
+  "period_y": [
+   4,
+   0.704
+  ],
+  "ac_x": [
+   0.054,
+   0.321,
+   0.834,
+   0.574,
+   0.098,
+   0.167,
+   0.81
+  ],
+  "runlen_hist": [
+   0.0,
+   0.678,
+   0.034,
+   0.06,
+   0.046,
+   0.014,
+   0.009,
+   0.011,
+   0.103,
+   0.011,
+   0.006,
+   0.026
+  ],
+  "phase_x": [
+   0.9300000071525574,
+   0.9900000095367432,
+   0.9100000262260437,
+   1.1699999570846558
+  ],
+  "full": {
+   "lum_mean": 22.6,
+   "lum_p5": 10.2,
+   "lum_p95": 59.9,
+   "lum_std": 17.1,
+   "sat_mean": 0.569,
+   "sat_p90": 1.0,
+   "colors_4bit_sig": 22,
+   "colors_4bit_cover90": 9,
+   "tile_std_median": 1.17,
+   "tile_std_p75": 2.72,
+   "lap_mean": 1.66,
+   "lap_p90": 4.29,
+   "isolated_px_pct": 0.0
+  },
+  "block": {
+   "lum_mean": 22.5,
+   "lum_p5": 10.2,
+   "lum_p95": 59.9,
+   "lum_std": 17.0,
+   "sat_mean": 0.569,
+   "sat_p90": 1.0,
+   "colors_4bit_sig": 22,
+   "colors_4bit_cover90": 9,
+   "tile_std_median": 1.77,
+   "tile_std_p75": 3.41,
+   "lap_mean": 8.01,
+   "lap_p90": 23.69,
+   "isolated_px_pct": 9.61
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_08.jpg": {
+  "size": [
+   2560,
+   1440
+  ],
+  "period_x": [
+   11,
+   0.599
+  ],
+  "period_y": [
+   11,
+   0.717
+  ],
+  "ac_x": [
+   -0.065,
+   -0.103,
+   0.029,
+   0.41,
+   0.588,
+   0.062,
+   -0.056
+  ],
+  "runlen_hist": [
+   0.0,
+   0.381,
+   0.007,
+   0.009,
+   0.03,
+   0.174,
+   0.213,
+   0.001,
+   0.002,
+   0.002,
+   0.021,
+   0.16
+  ],
+  "phase_x": [
+   0.949999988079071,
+   0.9599999785423279,
+   1.0199999809265137,
+   1.100000023841858,
+   0.9800000190734863,
+   0.9300000071525574,
+   1.0199999809265137,
+   1.0099999904632568,
+   1.0499999523162842,
+   1.0399999618530273,
+   0.9399999976158142
+  ],
+  "full": {
+   "lum_mean": 177.0,
+   "lum_p5": 137.9,
+   "lum_p95": 215.1,
+   "lum_std": 24.8,
+   "sat_mean": 0.038,
+   "sat_p90": 0.048,
+   "colors_4bit_sig": 27,
+   "colors_4bit_cover90": 12,
+   "tile_std_median": 0.61,
+   "tile_std_p75": 0.98,
+   "lap_mean": 1.43,
+   "lap_p90": 2.86,
+   "isolated_px_pct": 0.04
+  },
+  "block": {
+   "lum_mean": 176.9,
+   "lum_p5": 137.9,
+   "lum_p95": 215.1,
+   "lum_std": 24.8,
+   "sat_mean": 0.038,
+   "sat_p90": 0.048,
+   "colors_4bit_sig": 26,
+   "colors_4bit_cover90": 12,
+   "tile_std_median": 2.88,
+   "tile_std_p75": 8.01,
+   "lap_mean": 9.13,
+   "lap_p90": 21.06,
+   "isolated_px_pct": 1.39
+  }
+ },
+ "art/reference/edc-2026-10-26/edc_09.jpg": {
+  "size": [
+   1920,
+   1080
+  ],
+  "period_x": [
+   6,
+   0.327
+  ],
+  "period_y": [
+   11,
+   0.642
+  ],
+  "ac_x": [
+   -0.058,
+   -0.102,
+   0.015,
+   0.237,
+   0.327,
+   0.01,
+   -0.063
+  ],
+  "runlen_hist": [
+   0.0,
+   0.424,
+   0.021,
+   0.012,
+   0.039,
+   0.146,
+   0.199,
+   0.002,
+   0.003,
+   0.005,
+   0.019,
+   0.13
+  ],
+  "phase_x": [
+   0.8999999761581421,
+   1.0299999713897705,
+   0.9599999785423279,
+   1.1399999856948853,
+   0.8299999833106995,
+   1.1399999856948853
+  ],
+  "full": {
+   "lum_mean": 40.6,
+   "lum_p5": 0.0,
+   "lum_p95": 87.1,
+   "lum_std": 33.9,
+   "sat_mean": 0.184,
+   "sat_p90": 0.359,
+   "colors_4bit_sig": 45,
+   "colors_4bit_cover90": 14,
+   "tile_std_median": 1.24,
+   "tile_std_p75": 1.82,
+   "lap_mean": 1.84,
+   "lap_p90": 3.79,
+   "isolated_px_pct": 0.02
+  },
+  "block": {
+   "lum_mean": 40.6,
+   "lum_p5": 0.0,
+   "lum_p95": 87.2,
+   "lum_std": 33.7,
+   "sat_mean": 0.185,
+   "sat_p90": 0.36,
+   "colors_4bit_sig": 47,
+   "colors_4bit_cover90": 14,
+   "tile_std_median": 2.24,
+   "tile_std_p75": 6.44,
+   "lap_mean": 8.07,
+   "lap_p90": 18.14,
+   "isolated_px_pct": 2.43
+  }
+ },
+ "docs/qa/evidence/retro-v1/a_car_look0.png": {
+  "size": [
+   1280,
+   720
+  ],
+  "period_x": [
+   2,
+   0.857
+  ],
+  "period_y": [
+   2,
+   0.924
+  ],
+  "ac_x": [
+   0.857,
+   -0.71,
+   0.838,
+   -0.71,
+   0.828,
+   -0.709,
+   0.818
+  ],
+  "runlen_hist": [
+   0.0,
+   0.0,
+   0.516,
+   0.0,
+   0.205,
+   0.0,
+   0.117,
+   0.0,
+   0.081,
+   0.0,
+   0.081,
+   0.0
+  ],
+  "phase_x": [
+   0.0,
+   2.0
+  ],
+  "full": {
+   "lum_mean": 108.2,
+   "lum_p5": 47.5,
+   "lum_p95": 185.5,
+   "lum_std": 38.1,
+   "sat_mean": 0.221,
+   "sat_p90": 0.348,
+   "colors_4bit_sig": 63,
+   "colors_4bit_cover90": 35,
+   "tile_std_median": 1.29,
+   "tile_std_p75": 3.7,
+   "lap_mean": 5.22,
+   "lap_p90": 11.26,
+   "isolated_px_pct": 0.0
+  },
+  "block": {
+   "lum_mean": 108.2,
+   "lum_p5": 47.5,
+   "lum_p95": 185.5,
+   "lum_std": 38.1,
+   "sat_mean": 0.221,
+   "sat_p90": 0.348,
+   "colors_4bit_sig": 63,
+   "colors_4bit_cover90": 35,
+   "tile_std_median": 2.49,
+   "tile_std_p75": 7.32,
+   "lap_mean": 9.73,
+   "lap_p90": 22.01,
+   "isolated_px_pct": 1.38
+  }
+ },
+ "docs/qa/evidence/retro-v1/a_car_look4.png": {
+  "size": [
+   1280,
+   720
+  ],
+  "period_x": [
+   2,
+   0.812
+  ],
+  "period_y": [
+   2,
+   0.9
+  ],
+  "ac_x": [
+   0.812,
+   -0.572,
+   0.764,
+   -0.572,
+   0.758,
+   -0.572,
+   0.735
+  ],
+  "runlen_hist": [
+   0.0,
+   0.0,
+   0.457,
+   0.0,
+   0.189,
+   0.0,
+   0.131,
+   0.0,
+   0.115,
+   0.0,
+   0.108,
+   0.0
+  ],
+  "phase_x": [
+   0.0,
+   2.0
+  ],
+  "full": {
+   "lum_mean": 119.1,
+   "lum_p5": 57.9,
+   "lum_p95": 184.1,
+   "lum_std": 35.5,
+   "sat_mean": 0.205,
+   "sat_p90": 0.421,
+   "colors_4bit_sig": 63,
+   "colors_4bit_cover90": 29,
+   "tile_std_median": 0.38,
+   "tile_std_p75": 4.26,
+   "lap_mean": 4.57,
+   "lap_p90": 10.79,
+   "isolated_px_pct": 0.0
+  },
+  "block": {
+   "lum_mean": 119.1,
+   "lum_p5": 57.9,
+   "lum_p95": 184.1,
+   "lum_std": 35.5,
+   "sat_mean": 0.205,
+   "sat_p90": 0.421,
+   "colors_4bit_sig": 63,
+   "colors_4bit_cover90": 29,
+   "tile_std_median": 1.55,
+   "tile_std_p75": 9.31,
+   "lap_mean": 8.77,
+   "lap_p90": 24.82,
+   "isolated_px_pct": 0.64
+  }
+ },
+ "docs/qa/evidence/retro-v1/b_street_look0.png": {
+  "size": [
+   1280,
+   720
+  ],
+  "period_x": [
+   2,
+   0.775
+  ],
+  "period_y": [
+   2,
+   0.889
+  ],
+  "ac_x": [
+   0.775,
+   0.691,
+   0.662,
+   0.571,
+   0.562,
+   0.507,
+   0.531
+  ],
+  "runlen_hist": [
+   0.0,
+   0.658,
+   0.135,
+   0.043,
+   0.04,
+   0.027,
+   0.021,
+   0.019,
+   0.015,
+   0.013,
+   0.021,
+   0.009
+  ],
+  "phase_x": [
+   0.8999999761581421,
+   1.100000023841858
+  ],
+  "full": {
+   "lum_mean": 87.9,
+   "lum_p5": 42.2,
+   "lum_p95": 148.2,
+   "lum_std": 30.7,
+   "sat_mean": 0.161,
+   "sat_p90": 0.32,
+   "colors_4bit_sig": 57,
+   "colors_4bit_cover90": 28,
+   "tile_std_median": 1.55,
+   "tile_std_p75": 4.19,
+   "lap_mean": 2.81,
+   "lap_p90": 6.64,
+   "isolated_px_pct": 0.04
+  },
+  "block": {
+   "lum_mean": 87.9,
+   "lum_p5": 42.3,
+   "lum_p95": 148.2,
+   "lum_std": 30.7,
+   "sat_mean": 0.161,
+   "sat_p90": 0.32,
+   "colors_4bit_sig": 58,
+   "colors_4bit_cover90": 28,
+   "tile_std_median": 2.2,
+   "tile_std_p75": 8.41,
+   "lap_mean": 7.61,
+   "lap_p90": 19.14,
+   "isolated_px_pct": 0.77
+  }
+ },
+ "docs/qa/evidence/retro-v1/b_street_look4.png": {
+  "size": [
+   1280,
+   720
+  ],
+  "period_x": [
+   2,
+   0.718
+  ],
+  "period_y": [
+   2,
+   0.839
+  ],
+  "ac_x": [
+   0.718,
+   0.646,
+   0.582,
+   0.504,
+   0.455,
+   0.421,
+   0.428
+  ],
+  "runlen_hist": [
+   0.0,
+   0.689,
+   0.134,
+   0.025,
+   0.045,
+   0.015,
+   0.028,
+   0.011,
+   0.023,
+   0.006,
+   0.015,
+   0.009
+  ],
+  "phase_x": [
+   0.949999988079071,
+   1.0499999523162842
+  ],
+  "full": {
+   "lum_mean": 98.7,
+   "lum_p5": 50.4,
+   "lum_p95": 155.6,
+   "lum_std": 34.3,
+   "sat_mean": 0.199,
+   "sat_p90": 0.275,
+   "colors_4bit_sig": 50,
+   "colors_4bit_cover90": 23,
+   "tile_std_median": 0.0,
+   "tile_std_p75": 3.37,
+   "lap_mean": 2.25,
+   "lap_p90": 7.14,
+   "isolated_px_pct": 0.03
+  },
+  "block": {
+   "lum_mean": 98.7,
+   "lum_p5": 50.4,
+   "lum_p95": 155.6,
+   "lum_std": 34.3,
+   "sat_mean": 0.199,
+   "sat_p90": 0.273,
+   "colors_4bit_sig": 51,
+   "colors_4bit_cover90": 23,
+   "tile_std_median": 0.0,
+   "tile_std_p75": 9.7,
+   "lap_mean": 6.5,
+   "lap_p90": 20.91,
+   "isolated_px_pct": 0.56
+  }
+ },
+ "docs/qa/evidence/dohyun-1940/1.png": {
+  "size": [
+   859,
+   577
+  ],
+  "period_x": [
+   2,
+   0.532
+  ],
+  "period_y": [
+   2,
+   0.914
+  ],
+  "ac_x": [
+   0.532,
+   0.451,
+   0.354,
+   0.357,
+   0.374,
+   0.353,
+   0.331
+  ],
+  "runlen_hist": [
+   0.0,
+   0.222,
+   0.314,
+   0.184,
+   0.069,
+   0.06,
+   0.043,
+   0.028,
+   0.019,
+   0.021,
+   0.021,
+   0.021
+  ],
+  "phase_x": [
+   1.0,
+   1.0
+  ],
+  "full": {
+   "lum_mean": 54.1,
+   "lum_p5": 43.6,
+   "lum_p95": 63.3,
+   "lum_std": 6.0,
+   "sat_mean": 0.411,
+   "sat_p90": 0.571,
+   "colors_4bit_sig": 7,
+   "colors_4bit_cover90": 3,
+   "tile_std_median": 1.53,
+   "tile_std_p75": 2.97,
+   "lap_mean": 3.02,
+   "lap_p90": 10.62,
+   "isolated_px_pct": 0.33
+  },
+  "block": {
+   "lum_mean": 54.2,
+   "lum_p5": 43.6,
+   "lum_p95": 63.3,
+   "lum_std": 6.0,
+   "sat_mean": 0.411,
+   "sat_p90": 0.571,
+   "colors_4bit_sig": 7,
+   "colors_4bit_cover90": 3,
+   "tile_std_median": 2.13,
+   "tile_std_p75": 3.18,
+   "lap_mean": 4.53,
+   "lap_p90": 12.04,
+   "isolated_px_pct": 2.48
+  }
+ }
+}
