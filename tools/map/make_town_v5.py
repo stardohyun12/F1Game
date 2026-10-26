@@ -17,6 +17,7 @@ ROOT = L.ROOT
 OUT = os.path.join(ROOT, 'docs', 'map')
 HALF = 380                      # 760 m 사방
 rnd = random.Random(156)
+TAG, TITLE, PREV, DISTRICTS, DY_LINK = 'v5', '마을 v5 (D-156 층 합성)', [], None, 1.5   # v5b 가 덮어씀(make_town_v5b.py)
 S = L.smooth
 
 
@@ -193,6 +194,8 @@ def finalize():
         dense = L.sample({'knots': [[x, zz, 0.0] for x, zz in r['xy']]}, step=1.0)   # Catmull-Rom → 모서리가 둥글어진다
         pts = L.resample(dense, step=6.0) + ([dense[-1]] if math.dist(dense[-1][:2], L.resample(dense, step=6.0)[-1][:2]) > 2 else [])
         ys = [h(p[0], p[1]) for p in pts]
+        for x0, x1, yy in r.get('yFix', ()):          # 터널·다리 구간 높이 고정(v5b)
+            ys = [yy if x0 <= p[0] <= x1 else y for p, y in zip(pts, ys)]
         g = GRADE.get(r['kind'])
         pin0 = pin1 = None
         for key, idx in (('start', 0), ('end', -1)):
@@ -328,7 +331,7 @@ def buildings():
                 continue
             _, a, b, rid = best
             ang = math.degrees(math.atan2(a[1] - gz, a[0] - gx)) + 180      # 안쪽 = 길에서 멀어지는 방향
-            w, d = rnd.uniform(4.5, 7), rnd.uniform(6, 9)
+            w, d = rnd.uniform(*ZP[zn][0]), rnd.uniform(*ZP[zn][1])   # 구역 필지 크기(v5b 가 심장을 더 크게)
             rr = math.radians(ang)
             p0 = {'x': gx, 'z': gz, 'w': round(w, 2), 'd': round(d, 2), 'rot': round(ang, 1), 'front': {'road': rid, 'side': 0},
                   'frontMid': [round(gx - math.cos(rr) * d / 2, 2), round(gz - math.sin(rr) * d / 2, 2)], 'density': zn, 'facing': 'back'}
@@ -369,7 +372,7 @@ def net_graph():
         for dx in (-1, 0, 1):
             for dz in (-1, 0, 1):
                 for k2 in grid.get((int(p[0] // 4) + dx, int(p[1] // 4) + dz), ()):
-                    if nodes[k2][1] is not r and math.dist(p[:2], nodes[k2][0][:2]) < 3.2 and abs(p[2] - nodes[k2][0][2]) < 1.5:   # 높이 다른 곳 = 입체 교차, 못 갈아탐
+                    if nodes[k2][1] is not r and math.dist(p[:2], nodes[k2][0][:2]) < 3.2 and abs(p[2] - nodes[k2][0][2]) < DY_LINK:   # 높이 다른 곳 = 입체 교차, 못 갈아탐
                         adj[k].append((k2, math.dist(p[:2], nodes[k2][0][:2])))
     return nodes, adj
 
@@ -444,7 +447,7 @@ def fun_check():
             hp = TM.hairpins([(Ls, [(p[0], p[1]) for p in q], True)])
             st = L.runs([x >= L.STRAIGHT_R for x in Rr])
             rough = sum(L.RSTEP for r in rs if r.get('roughness', 0) >= 0.4)
-            g = max((abs(q[i + 2][2] - q[i][2]) / (2 * L.RSTEP) for i in range(len(q) - 2)), default=0)
+            g = max((abs(q[i + 2][2] - q[i][2]) / (2 * L.RSTEP) for i in range(len(q) - 2) if rs[i] is rs[i + 2]), default=0)   # 한 길 안에서만(갈아타는 점 제외)
             # 숨 쉬는 곳: 요철(0.4+) 덩어리가 끝나고 60 m 안에 시작하는 R≥150 직선 80 m+
             rf = L.runs([r.get('roughness', 0) >= 0.4 or Rr[i] < 20 for i, r in enumerate(rs)]); breath = []   # 긴장 = 요철 또는 R<20 굽이
             for s0, ln in st:
@@ -503,7 +506,7 @@ def render(plan, path):
         dr.ellipse([u - 9, v - 9, u + 9, v + 9], fill=(40, 90, 200) if lab in 'GM' else (220, 60, 50), outline=(255, 255, 255), width=2)
         dr.text((u, v), lab, fill=(255, 255, 255), font=fs, anchor='mm'); dr.text((u + 11, v - 9), s['name'], fill=(20, 20, 20), font=fs)
     dr.rectangle([0, 0, PX, 34], fill=(255, 255, 255))
-    dr.text((10, 5), f"마을 v5 (D-156 층 합성) — 건물 {len(plan['parcels'])}채, 760 m 사방", fill=(30, 30, 30), font=f)
+    dr.text((10, 5), f"{TITLE} — 건물 {len(plan['parcels'])}채, 760 m 사방", fill=(30, 30, 30), font=f)
     bar = 200 * M2PX; dr.rectangle([12, PX - 30, 12 + bar, PX - 24], fill=(30, 30, 30))
     dr.text((16 + bar, PX - 38), '200 m   고도 최고 %.0f m' % max(h(0, 380), h(300, 380)), fill=(30, 30, 30), font=fb)
     a = to_px(-HALF, HALF); b = to_px(HALF, -HALF); dr.rectangle([a, b], outline=(90, 90, 90), width=1)
@@ -536,7 +539,7 @@ def to_net(plan):
         pts = [(p[0] + 600, p[1] + 600) for p in L.sample(r, 2.0)]
         roads.append({'pts': pts, 'car': r['kind'] in GRADE, 'steps': r['kind'] == 'stairs', 'cls': r['kind'], 'w': r['width']})
     blds = [[(c[0] + 600, c[1] + 600) for c in L.rect_corners(p)] for p in plan['parcels']]
-    return {'name': '마을 v5', 'roads': roads, 'bld': blds, 'h': lambda X, Z: h(X - 600, Z - 600)}
+    return {'name': TITLE.split(' (')[0], 'roads': roads, 'bld': blds, 'h': lambda X, Z: h(X - 600, Z - 600)}
 
 
 def main():
@@ -563,13 +566,13 @@ def main():
                 car = r['kind'] in GRADE
                 juncs.append({'pos': p[:2], 'roads': [r['id'], jr], 'fillet': 5.0 if car else 2.0, 'note': '모서리 둥글게(차 5 m / 사람 2 m) — 가설'})
     plan = {
-        'meta': {'name': 'town-v5', 'version': 5, 'decision': 'D-155, D-156', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
+        'meta': {'name': 'town-' + TAG, 'version': 5, 'decision': 'D-155, D-156', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
                  'rhythmModel': '최고속 85 km/h · 가속 10.7 · 제동 8 m/s² · 굽이 √(5.82·R) (planlib.rhythm) + 요철 상한 가설 ROUGH_CAP',
                  'layers': '지형→해안선→항구 심장→해안 큰길→비탈→건물→둥글게→재미 검사', 'note': 'main 은 이제 고리가 아니다(closed=false, 양 끝 터널)'},
         'terrain': {'method': 'idw', 'power': 3, 'softening': 6.0, 'cliffWidth': 8.0, 'seaFloor': -6.0, 'beaches': [], 'controlPoints': ctrl},
         'sea': {'level': 0, 'landPolygon': land},
         'roads': roads,
-        'districts': [
+        'districts': DISTRICTS() if DISTRICTS else [
             {'id': 'D_harbor', 'density': 'dense', 'name': '항구 심장(도모노우라)', 'poly': [list(W(u, 0)) for u in range(-125, 131, 15)] + [list(W(u, 100)) for u in range(130, -126, -15)]},
             {'id': 'D_slope', 'density': 'medium', 'name': '비탈 층층 마을(포지타노·카몰리)', 'poly': [list(W(u, 100)) for u in range(-205, 256, 20)] + [list(W(u, 310)) for u in range(255, -206, -20)]},
         ],
@@ -580,13 +583,13 @@ def main():
     plan['fun'] = fun_check()
     m = TM.measure(to_net(plan), geometric=True)
     plan['metrics'] = m
-    json.dump(plan, open(os.path.join(OUT, 'town-v5.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    img = render(plan, os.path.join(OUT, 'town-v5.png'))
+    json.dump(plan, open(os.path.join(OUT, f'town-{TAG}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    img = render(plan, os.path.join(OUT, f'town-{TAG}.png'))
     # 나란히: v5 · 도모노우라 · 카몰리 · 포지타노 (모두 1200 m 칸)
-    ims = [img] + [Image.open(os.path.join(OUT, 'real-towns', t + '.png')).convert('RGB') for t in ('tomonoura', 'camogli', 'positano')]
-    sm = 600; sheet = Image.new('RGB', (sm * 4, sm + 40), (255, 255, 255))
+    ims = [img] + [Image.open(q).convert('RGB') for q in PREV] + [Image.open(os.path.join(OUT, 'real-towns', t + '.png')).convert('RGB') for t in ('tomonoura', 'camogli', 'positano')]
+    sm = 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
     for k, im in enumerate(ims): sheet.paste(im.resize((sm, sm), Image.Resampling.LANCZOS), (k * sm, 0))
-    sheet.paste(legend(sm * 4), (0, sm)); sheet.save(os.path.join(OUT, 'v5-vs-real.png'))
+    sheet.paste(legend(sm * len(ims)), (0, sm)); sheet.save(os.path.join(OUT, f'{TAG}-vs-real.png'))
     print('parcels', len(parcels), 'roads', len(roads))
     for r in roads:
         if r.get('cutFillMax', 0) > 3: print('  cut/fill', r['id'], r['cutFillMax'])
