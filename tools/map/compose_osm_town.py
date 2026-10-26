@@ -808,6 +808,53 @@ def seam_radius(pts):
     return min((L.radius3(dp[i - 3], dp[i], dp[i + 3]) for i in range(3, len(dp) - 3)), default=1e9)
 
 
+def _trim_end(r, at_start, want, keep=10.0, shared=()):
+    """길 r 의 한쪽 끝을 want m 까지 물린다(남는 길이 ≥ keep, 다른 길과 공유한 꼭짓점 앞에서 멈춤). 물린 길이를 돌려준다."""
+    Q = r['pts'] if not at_start else r['pts'][::-1]
+    total = plen(Q); want = min(want, total - keep)
+    if want <= 0.5: return 0.0
+    acc, i = 0.0, len(Q) - 1
+    while i > 0:
+        seg = math.dist(Q[i][:2], Q[i - 1][:2])
+        if acc + seg >= want:
+            t = (want - acc) / seg
+            Q = Q[:i] + [(Q[i][0] + (Q[i - 1][0] - Q[i][0]) * t, Q[i][1] + (Q[i - 1][1] - Q[i][1]) * t)]; acc = want; break
+        acc += seg
+        if KEY(Q[i - 1]) in shared: Q = Q[:i]; break          # 다른 길과 공유한 꼭짓점에서 멈춤(그 점이 새 끝)
+        i -= 1
+    r['pts'] = Q if not at_start else Q[::-1]
+    return acc
+
+
+def stretch_seams(min_len=30.0, pull=15.0):
+    """0604: 30 m 보다 짧은 이음매는 양쪽 길 끝을 최대 15 m 씩 물리고 베지어로 다시 잇는다(이음 구간 30~50 m → 경사 변화가 길게 풀린다)."""
+    car = [r for r in ROADS if r['kind'] in ('main', 'village')]
+    out = []
+    for s in [r for r in car if r['piece'] == 'seam' and 'tan' in r and not r['id'].endswith('_T')]:
+        if plen(s['pts']) >= min_len: continue
+        ends = []
+        for p in (s['pts'][0], s['pts'][-1]):
+            hit = None
+            for r in car:
+                if r is s or r['piece'] == 'seam': continue
+                for at in (True, False):
+                    if KEY(r['pts'][0 if at else -1]) == KEY(p): hit = (r, at)
+            ends.append(hit)
+        if None in ends: continue
+        moved = []
+        for (r, at) in ends:
+            shared = {KEY(q) for o in car if o is not r and o is not s for q in o['pts']}
+            moved.append(round(_trim_end(r, at, pull, shared=shared), 1))
+        (ra, sa), (rb, sb) = ends
+        p0, p1 = ra['pts'][0 if sa else -1], rb['pts'][0 if sb else -1]
+        t0, t1 = end_dir(ra['pts'], sa), end_dir(rb['pts'], sb)
+        L0 = plen(s['pts'])
+        s['pts'] = max((bezier(p0, t0, p1, t1, ks=ks) for ks in (0.3, 0.35, 0.4, 0.45, 0.5)), key=seam_radius)
+        s['tan'] = (t0, t1)
+        out.append({'seam': s['id'], 'from_m': round(L0, 1), 'to_m': round(plen(s['pts']), 1), 'pulled': moved, 'R': round(seam_radius(s['pts']), 1)})
+    return out
+
+
 def fix_seams():
     """이음매 곡선 반경이 12 m 미만이면 손잡이 길이(0.25~0.6)를 바꿔 가장 완만한 것으로."""
     for r in ROADS:
@@ -1079,12 +1126,19 @@ def join_crossings():
             e = A['pts'][at]
             for B in car:
                 if B is A: continue
-                if any(KEY(q) == KEY(e) for q in B['pts']): continue
+                if len(B['pts']) < 2 or any(KEY(q) == KEY(e) for q in B['pts']): continue
                 d = min(L.seg_dist(e[0], e[1], *u, *v)[0] for u, v in zip(B['pts'], B['pts'][1:]))
                 if d < B['width'] / 2 + A['width'] / 2 + 0.5:                 # 두 띠가 겹친다
 
                     p = _snap_into(B, e)
-                    if KEY(p) != KEY(e): A['pts'].insert(0, p) if at == 0 else A['pts'].append(p)
+                    if KEY(p) != KEY(e):
+                        Q = A['pts']; rng = range(1, min(len(Q) - 1, 12)) if at == 0 else range(len(Q) - 2, max(0, len(Q) - 13), -1)   # 점 2개는 남긴다
+                        back = [m for m in rng if math.dist(Q[m][:2], p[:2]) < 1.5]   # 0604: 끝이 갈림목을 넘어갔다 → 붙이면 되돌아오는 꼬리(J0·J49 판 경계 14 cm 의 원인). 넘은 만큼 잘라낸다
+                        if back:
+                            m = back[0]
+                            A['pts'] = [p] + Q[m + 1:] if at == 0 else Q[:m] + [p]
+                            JOINS.append({'kind': 'trim', 'at': [round(p[0], 1), round(p[1], 1)], 'roads': [A['id'], B['id']], 'cut': m if at == 0 else len(Q) - 1 - m})
+                        else: A['pts'].insert(0, p) if at == 0 else A['pts'].append(p)
                     JOINS.append({'kind': 'tee', 'at': [round(p[0], 1), round(p[1], 1)], 'roads': [A['id'], B['id']]})
                     n_t += 1; break
     return {'crossings': n_x, 'tees': n_t}
@@ -1370,7 +1424,7 @@ def smooth_profiles(it_max=20000):
             q0, q1 = P[seq[max(0, e - 1)]], P[seq[min(len(seq) - 1, e + 1)]]
             dx, dz = q1[0] - q0[0], q1[1] - q0[1]; l = math.hypot(dx, dz) or 1
             arms.append({'road': a['road'], 'edge': [round(a['edge'][0], 3), round(a['edge'][1], 3)], 'width': a['w'],
-                         'y': round(yat(*a['edge']), 4), 'bank': round(gx * (-dz / l) + gz * (dx / l), 5), 'outward': a['step']})
+                         'y': round(yat(*a['edge']), 4), 'bank': round(gx * (-dz / l) + gz * (dx / l), 5), 'outward': a['step'], 'edgeIndex': e})
         PLATES.append({'id': f'J{n}', 'pos': [round(cx, 2), round(cz, 2)], 'y': round(g['c'], 4), 'grad': [round(gx, 5), round(gz, 5)], 'radius': round(g['R'], 2),
                        'poly': [[round(a, 2), round(b, 2), round(yat(a, b), 4)] for a, b in g['poly']], 'roads': sorted({a['road'] for a in g['arms']}),
                        'bankFade': BANK_FADE, 'arms': arms})
@@ -1493,19 +1547,22 @@ def main():
     nseam, nloose = seams()
     stops = pick_stops(tip)
     global V6F, G_ROAD, G_PIN, PLATE_TILT
-    V6G = '--v6g' in sys.argv
+    V6H = '--v6h' in sys.argv
+    V6G = '--v6g' in sys.argv or V6H
     V6F = '--v6f' in sys.argv or V6G
     PLATE_TILT = V6G
     v6e = '--v6e' in sys.argv or V6F
     v6b = '--v6b' in sys.argv or v6e
-    TAG = 'v6g' if V6G else 'v6f' if V6F else 'v6e' if v6e else 'v6b' if v6b else 'v6osm'
-    title = '마을 v6g (기울어진 갈림목 판 ≤6 %·경사 12 %·건물 물림)' if V6G else '마을 v6f (주행 기준: 갈림목 판·경사 12 %·건물 물림)' if V6F else '마을 v6e (겹친 길 정리 · 매끈한 높이)' if v6e else '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
+    extra = {}
+    TAG = 'v6h' if V6H else 'v6g' if V6G else 'v6f' if V6F else 'v6e' if v6e else 'v6b' if v6b else 'v6osm'
+    title = '마을 v6h (이음매 길게·기울어진 판·경사 12 %)' if V6H else '마을 v6g (기울어진 갈림목 판 ≤6 %·경사 12 %·건물 물림)' if V6G else '마을 v6f (주행 기준: 갈림목 판·경사 12 %·건물 물림)' if V6F else '마을 v6e (겹친 길 정리 · 매끈한 높이)' if v6e else '마을 v6b (실제 조각 합성 · 길 고르기·경사 보강)' if v6b else '마을 v6-OSM (실제 조각 합성)'
     if debug:
         render(stops, os.path.join(OUT, f'town-{TAG}-debug.png'), title, True); return
+    if V6H:
+        extra['stretched'] = stretch_seams(); print('stretched', extra['stretched'])
     if V6G:                                          # 0540: 끊겨 있던 실제 이음(끝 1.1 m 간격 등)을 지름길 고르기 전에 — 등대 안전 경로가 v6f 에서 508→460 m 로 짧아진 원인
         print('joined-early', join_crossings())
     print('shortcuts', add_shortcuts(stops))
-    extra = {}
     if v6b:
         fix_seams()
         extra['heights0'] = solve_heights()
@@ -1571,6 +1628,11 @@ def main():
     net = {'name': '마을 v6-OSM', 'roads': net_roads, 'bld': [[(q[0] + 600, q[1] + 600) for q in b['poly']] for b in BLDS if all(inb(q) for q in b['poly'])],
            'h': lambda X, Z: H2(X - 600, Z - 600)}
     m = TM.measure(net, geometric=True)
+    byid = {r['id']: r for r in ROADS}               # 0604: clear_buildings 가 판 만든 뒤 점을 넣고 빼서 edgeIndex 가 밀린다(J35 1.5 m) → 최종 점으로 다시 맞춤
+    for pl in PLATES:
+        for a in pl.get('arms', []):
+            q = byid[a['road']]['pts'] if a['road'] in byid else None
+            if q: a['edgeIndex'] = min(range(len(q)), key=lambda k: math.dist(q[k][:2], a['edge'][:2]))
     # 저장(bayloop-plan 호환 필드 최대한)
     roads = []
     for r in ROADS:
@@ -1584,7 +1646,7 @@ def main():
     cstep = 8 if v6b else 20     # v6b: 깎고 메운 길 띠(폭+30 m)가 격자에 남도록 8 m
     ctrl = [[x, z, round(H2(x, z), 1)] for x in range(-HALF, HALF + 1, cstep) for z in range(-HALF, HALF + 1, cstep)]
     plan = {
-        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0540 v6g)' if V6G else 'D-157 (PD 0506 v6f)' if V6F else 'D-157 (PD 0421 v6e)' if v6e else 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
+        'meta': {'name': f'town-{TAG}', 'version': 6, 'decision': 'D-157 (PD 0604 v6h)' if V6H else 'D-157 (PD 0540 v6g)' if V6G else 'D-157 (PD 0506 v6f)' if V6F else 'D-157 (PD 0421 v6e)' if v6e else 'D-157 (PD 0122)' if v6b else 'D-156 (PD 0109)', 'units': 'm', 'axes': 'x=동, z=북, y=높이(해면 0). 점은 [x, z, y]',
                  'source': '© OpenStreetMap contributors (ODbL) + SRTM 30 m — docs/map/ATTRIBUTION.md',
                  'rhythmModel': '최고속 85 km/h · 가속 10.7 · 제동 8 m/s² · 굽이 √(5.82·R) + 요철 상한 가설 ROUGH_CAP',
                  'note': 'knots 는 OSM 원본 꺾은선(interp=linear). 이음매(seam*)만 3차 베지어' + ('. 차길 knots y = 경사 상한(15 %/헤어핀 18 %) 매끈 높이, controlPoints = 길에 맞춰 깎고 메운 지형' if v6b else '')},
@@ -1610,7 +1672,7 @@ def main():
                              '(판 경계 arms[].edge 에서도 y) — 옆면 턱 0. 차길 knots y 는 최종(완화·리미터·판 다시 하지 말 것)')}} if V6F else {}),
     }
     json.dump(plan, open(os.path.join(OUT, f'town-{TAG}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    others, sheet_name = (('town-v6f.png',), 'v6f-vs-v6g.png') if V6G else (('town-v6e.png',), 'v6e-vs-v6f.png') if V6F else (('town-v6b.png',), 'v6b-vs-v6e.png') if v6e else (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
+    others, sheet_name = (('town-v6g.png',), 'v6g-vs-v6h.png') if V6H else (('town-v6f.png',), 'v6f-vs-v6g.png') if V6G else (('town-v6e.png',), 'v6e-vs-v6f.png') if V6F else (('town-v6b.png',), 'v6b-vs-v6e.png') if v6e else (('town-v6osm.png',), 'v6-vs-v6b.png') if v6b else (('town-v5b.png', 'real-towns/tomonoura.png', 'real-towns/camogli.png', 'real-towns/positano.png'), 'v6osm-vs-real.png')
     ims = [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others] + [img] if v6b else [img] + [Image.open(os.path.join(OUT, q)).convert('RGB') for q in others]
     sm = 900 if v6b else 600; sheet = Image.new('RGB', (sm * len(ims), sm + 40), (255, 255, 255))
     for k, im in enumerate(ims): sheet.paste(im.resize((sm, sm), Image.Resampling.LANCZOS), (k * sm, 0))

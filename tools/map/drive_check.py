@@ -102,6 +102,13 @@ def _on(rs_idx, r, p, bank=None):
     return best
 
 
+def _edge_i(q, a):
+    """팔 끝 표본 번호. edgeIndex 는 json knots 번호라 RC.load 가 점을 더 넣은 길에선 밀린다(0604 J35 1.5 m) → 자리가 맞을 때만 쓰고 아니면 가장 가까운 점."""
+    e = a.get('edgeIndex')
+    if e is not None and e < len(q) and math.dist(q[e][:2], a['edge'][:2]) < 0.05: return e
+    return min(range(len(q)), key=lambda k: (q[k][0] - a['edge'][0]) ** 2 + (q[k][1] - a['edge'][1]) ** 2)
+
+
 def banks(d, rs):
     """v6g 판 옆 가로 기울기: {길 id: {표본 번호: bank}} — 팔 끝에서 arm.bank, 바깥(outward)으로 bankFade m 동안 0 으로."""
     byid = {r['id']: r for r in rs}; out = defaultdict(dict)
@@ -111,7 +118,7 @@ def banks(d, rs):
         for a in j['arms']:
             r = byid.get(a['road'])
             if not r or not a.get('bank'): continue
-            q = r['pts']; e = min(range(len(q)), key=lambda k: (q[k][0] - a['edge'][0]) ** 2 + (q[k][1] - a['edge'][1]) ** 2)
+            q = r['pts']; e = _edge_i(q, a)
             s, k = 0.0, e
             while 0 <= k < len(q) and s < fade:
                 out[r['id']][k] = a['bank'] * (1 - s / fade)
@@ -168,7 +175,7 @@ def plate_edges(d, rs):
         for a in j.get('arms', []):
             r = byid.get(a['road'])
             if not r: continue
-            q = r['pts']; e = min(range(len(q)), key=lambda k: (q[k][0] - a['edge'][0]) ** 2 + (q[k][1] - a['edge'][1]) ** 2)   # 팔 끝 = 그 길의 표본 하나
+            q = r['pts']; e = _edge_i(q, a)   # 팔 끝 = 그 길의 표본 하나
             u, v = q[max(0, e - 1)], q[min(len(q) - 1, e + 1)]
             dx, dz = v[0] - u[0], v[1] - u[1]; l = math.hypot(dx, dz) or 1; nx, nz = -dz / l, dx / l
             bk = a.get('bank', 0.0) if j.get('bankFade') else 0.0
