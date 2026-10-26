@@ -1,0 +1,73 @@
+{
+  "direction": "D-146",
+  "density": 12,
+  "photographs": false,
+  "assets": [
+    {
+      "id": "people_young_01_v3",
+      "fbx": "art/models/bayloop_people_v03/people_young_01_v3.fbx",
+      "tris": 933,
+      "height": 1.3149999380111694,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_young_01.blend"
+    },
+    {
+      "id": "people_young_02_v3",
+      "fbx": "art/models/bayloop_people_v03/people_young_02_v3.fbx",
+      "tris": 901,
+      "height": 1.2899999618530273,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_young_02.blend"
+    },
+    {
+      "id": "people_young_03_v3",
+      "fbx": "art/models/bayloop_people_v03/people_young_03_v3.fbx",
+      "tris": 901,
+      "height": 1.2899999618530273,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_young_03.blend"
+    },
+    {
+      "id": "people_elder_01_v3",
+      "fbx": "art/models/bayloop_people_v03/people_elder_01_v3.fbx",
+      "tris": 1001,
+      "height": 1.2925000190734863,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_elder_01.blend"
+    },
+    {
+      "id": "people_elder_02_v3",
+      "fbx": "art/models/bayloop_people_v03/people_elder_02_v3.fbx",
+      "tris": 901,
+      "height": 1.2725774049758911,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_elder_02.blend"
+    },
+    {
+      "id": "people_elder_03_v3",
+      "fbx": "art/models/bayloop_people_v03/people_elder_03_v3.fbx",
+      "tris": 901,
+      "height": 1.2725774049758911,
+      "bones": 17,
+      "head_ratio_design": 3.909090909090909,
+      "leg_design_m": 0.45,
+      "torso_design_m": 0.51,
+      "source": "art/models/bayloop_people_v01/people_elder_03.blend"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "source": "art/models/bayloop_people_v02/people_young_01_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_young_01_v2.fbx",
+    "sha256": "1f926cfd71b968a4c705257ac9073e9f5702a24ea06450367b10ee2ad83f439b"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/people_young_02_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_young_02_v2.fbx",
+    "sha256": "a7c7dbab0dd09c0fc1694a1a4dc9bb512446b7331158e4db03a88a42b9b95455"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/people_young_03_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_young_03_v2.fbx",
+    "sha256": "b30d7b9d300c1ddec6ca0c502a40f8392e67974f7ecf722d6b3ef482374c4dbc"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/people_elder_01_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_elder_01_v2.fbx",
+    "sha256": "193d095cc781ee687e216a28909a869acec9e69032ba8fee28cdf815fa0b40cd"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/people_elder_02_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_elder_02_v2.fbx",
+    "sha256": "ff13219b99697a7744a1711466e3873a711d0e402e2accedea58ae7702428f1a"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/people_elder_03_v2.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_elder_03_v2.fbx",
+    "sha256": "80b9c9cfceedc9da2f3bce70ab4f4667dc50670df5bb078382aebc3820153288"
+  },
+  {
+    "source": "art/models/bayloop_people_v02/PeopleRetroAtlas.png",
+    "target": "F1/Assets/Art/BayLoop/People/PeopleRetroAtlas.png",
+    "sha256": "fb6dd6fcbaf85334e7de840c4dc74a37a7471c0543e0664b9c845fdae8956764"
+  }
+]

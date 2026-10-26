@@ -230,16 +230,7 @@ public static partial class BuildBayLoop
                     else if (h3 > p.y + 2.0f)
                     {
                         var rot = Quaternion.LookRotation(f);
-                        // 층 무늬 바위: 길 방향으로 긴 납작한 판(두 색 번갈아), 비탈에 반쯤 박힘
-                        for (int k = 0; k < 4; k++)
-                        {
-                            float d = 1.6f + k * 1.1f + Rf(rnd, -.3f, .3f); var q = o + nrm * d + f * Rf(rnd, -.8f, .8f); float hq = H(q.x, q.z);
-                            if (hq < p.y + 1.0f || NearAnyRoad(q.x, q.z, 1.0f) || NearBuilding(q, .5f)) continue;
-                            q.y = hq - .1f;
-                            var sz = new Vector3(Rf(rnd, 1.2f, 1.8f), Rf(rnd, .35f, .8f), Rf(rnd, 2.6f, 4.8f));
-                            BoxM(ch.Get(k % 2 == 0 ? "Rock" : "RockDark", q), q, sz, rot * Quaternion.Euler(Rf(rnd, -4f, 4f), Rf(rnd, -8f, 8f), Rf(rnd, -7f, 7f)));
-                            strata++;
-                        }
+                        // 과제 1943: 층무늬 바위판 뺌 — 깨진 판자로 읽혔다(도현 1940-4·5). 깎은 면은 지형 셰이더가 바위 칸으로 칠한다(경사 텍스처 B, BakeSlope).
                         // 발치 짧은 석축(콜라이더 있음 — 담이니까) + 배수로
                         float h15 = H(o.x + nrm.x * 1.5f, o.z + nrm.z * 1.5f);
                         var wc = o + nrm * 1.05f;
@@ -251,14 +242,7 @@ public static partial class BuildBayLoop
                             var gb = ch.Get("Gutter", gc);
                             Quad(gb, gc - f * 1.55f - nrm * .25f, gc + f * 1.55f - nrm * .25f, gc - f * 1.55f + nrm * .25f, gc + f * 1.55f + nrm * .25f, gc - up);
                         }
-                        // 낙석 방지망: 5m 앞 땅이 노면보다 5.5m 넘게 높은 면 — 1.8~8m 를 지형 +0.35 에 붙인 어두운 띠, 12m 마다 기둥
-                        if (H(o.x + nrm.x * 5f, o.z + nrm.z * 5f) > p.y + 5.5f)
-                        {
-                            net = new Vector3[7];
-                            for (int k = 0; k < 7; k++) { var q = o + nrm * (1.8f + k * 1.05f); q.y = H(q.x, q.z) + .35f; net[k] = q; }
-                            if (NearAnyRoad(net[0].x, net[0].z, .5f) || NearBuilding(net[3], .5f)) net = null;
-                            else if (i % 12 == 0) { var top = net[6]; Cyl(gR, "NetPost", new Vector3(.12f, 1.2f, .12f), top + up * 1.0f, M("Dark")); posts++; }
-                        }
+                        // 과제 1943: 낙석 방지망(어두운 띠·기둥) 뺌 — 지형 +0.35 띠가 검은 덩어리로 보였다(도현 1940-4).
                     }
                     // 반사봉: 해안 구간·인도 있는 쪽·난간 없는 곳(바깥 1.5m 땅이 노면 −2m 위), 12m 마다
                     if (r.coast != null && r.coast[i] && i % 12 == 0 && wk >= .3f && H(o.x + nrm.x * 1.5f, o.z + nrm.z * 1.5f) > p.y - 2f)

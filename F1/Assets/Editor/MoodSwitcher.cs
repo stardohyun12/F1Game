@@ -111,52 +111,52 @@ public static class MoodSwitcher
     public static void BuildDayProfiles(bool force)
     {
         if (!AssetDatabase.IsValidFolder(Dir)) AssetDatabase.CreateFolder("Assets/Settings", "Mood");
-        // 1 아침 안개(7시): 동북동 낮은 해, 옅은 회백 안개가 가깝게(8–150m) — 먼 집이 안개에 녹는다. 채도 빼고 검정 들뜸.
-        var hazeM = new Color(0.82f, 0.85f, 0.86f);
+        // 1943 (D-146 "시간대마다 다르되 어둡고 탁함 금지"): 4종 재조정. 이전 값은 git 기록(D-137).
+        //   공통 — 그늘을 밝게(그림자 세기↓·월드 주변광↑), 노출은 0 이상(초저녁만 약간 아래), 대비는 낮게(레트로 큰 면이 뭉개지지 않게).
+        // 1 아침 옅은 안개(7시): 낮은 동쪽 해, 안개는 옅게 멀리(30–320m — 이전 8–150m 는 회색 막), 밝고 서늘한 흰빛.
+        var hazeM = new Color(0.88f, 0.90f, 0.92f);
         Make(PathMorning, force, p =>
         {
-            p.sunRotationEuler = new Vector3(12f, 250f, 0f); p.sunColor = new Color(1f, 0.91f, 0.80f); p.sunIntensity = 1.1f; p.shadowStrength = 0.45f;
-            p.fogColor = hazeM; p.fogStart = 8f; p.fogEnd = 150f; p.worldAmbientScale = 1.05f;
-            p.railTint = new Color(0.80f, 0.74f, 0.56f, 1f); p.seaTint = new Color(0.52f, 0.66f, 0.70f, 1f);
-            p.skybox = MakeSky(Dir + "/Morning_Mist_Sky.mat", new Color(0.58f, 0.68f, 0.78f), hazeM, hazeM);
-            p.postProfile = MakePost(Dir + "/Morning_Mist_Post.asset", exposure: 0.08f, contrast: 4f, saturation: -20f, temperature: -3f, tint: 0f, lift: 0.035f,
+            p.sunRotationEuler = new Vector3(14f, 250f, 0f); p.sunColor = new Color(1f, 0.93f, 0.84f); p.sunIntensity = 1.3f; p.shadowStrength = 0.4f;
+            p.fogColor = hazeM; p.fogStart = 30f; p.fogEnd = 320f; p.worldAmbientScale = 1.2f;
+            p.railTint = new Color(0.82f, 0.76f, 0.56f, 1f); p.seaTint = new Color(0.56f, 0.70f, 0.76f, 1f);
+            p.skybox = MakeSky(Dir + "/Morning_Mist_Sky.mat", new Color(0.62f, 0.74f, 0.86f), hazeM, hazeM);
+            p.postProfile = MakePost(Dir + "/Morning_Mist_Post.asset", exposure: 0.3f, contrast: 0f, saturation: -10f, temperature: -4f, tint: 0f, lift: 0.03f,
                 filter: new Color(0.98f, 0.99f, 1f));
         });
-        // 2 맑은 가을 오후(3~4시, D-127 서늘·맑음): 남서 30° 해, 연한 금색 빛·서늘한 그늘, 안개는 멀리(90–950m), 진한 가을 파랑.
-        var hazeA = new Color(0.74f, 0.83f, 0.90f);
+        // 2 맑은 오후(2~3시): 높은 해(42°)·흰 금빛, 그늘도 밝게(그림자 .5·주변광 1.3), 안개 아주 멀리, 노출 +0.4 — 네 시간대 중 가장 밝다.
+        var hazeA = new Color(0.80f, 0.88f, 0.96f);
         Make(PathAfternoon, force, p =>
         {
-            p.sunRotationEuler = new Vector3(30f, 45f, 0f); p.sunColor = new Color(1f, 0.90f, 0.72f); p.sunIntensity = 1.5f; p.shadowStrength = 0.85f;
-            p.fogColor = hazeA; p.fogStart = 90f; p.fogEnd = 950f; p.worldAmbientScale = 0.95f;
-            p.railTint = new Color(0.82f, 0.72f, 0.46f, 1f); p.seaTint = new Color(0.20f, 0.52f, 0.70f, 1f);
-            p.skybox = MakeSky(Dir + "/Autumn_Afternoon_Sky.mat", new Color(0.16f, 0.40f, 0.76f), hazeA, hazeA);
-            p.postProfile = MakePost(Dir + "/Autumn_Afternoon_Post.asset", exposure: 0.05f, contrast: 18f, saturation: 2f, temperature: 4f, tint: 0f, lift: 0.005f,
-                filter: new Color(1f, 0.98f, 0.95f));
+            p.sunRotationEuler = new Vector3(42f, 45f, 0f); p.sunColor = new Color(1f, 0.96f, 0.86f); p.sunIntensity = 1.6f; p.shadowStrength = 0.5f;
+            p.fogColor = hazeA; p.fogStart = 140f; p.fogEnd = 1200f; p.worldAmbientScale = 1.3f;
+            p.railTint = new Color(0.86f, 0.76f, 0.48f, 1f); p.seaTint = new Color(0.22f, 0.58f, 0.78f, 1f);
+            p.skybox = MakeSky(Dir + "/Autumn_Afternoon_Sky.mat", new Color(0.22f, 0.50f, 0.86f), hazeA, hazeA);
+            p.postProfile = MakePost(Dir + "/Autumn_Afternoon_Post.asset", exposure: 0.4f, contrast: 6f, saturation: 8f, temperature: 2f, tint: 0f, lift: 0.02f,
+                filter: Color.white);
         });
-        // 3 해 질 녘 주황 역광: 서남서 6° 해(바다 쪽으로 달리면 정면), 주황 해·복숭아빛 안개(40–600m), 하늘 위는 청보라.
-        //   여름 노을처럼 끈적하지 않게 채도는 빼고(-4) 색온도는 +14 까지만.
-        var hazeS = new Color(0.86f, 0.68f, 0.58f);
+        // 3 노을: 낮은 서쪽 해, 주황빛이 화면 전체를 데우되 밝게 — 복숭아빛 안개, 그늘은 분홍 보라로 들뜸(주변광 1.15).
+        var hazeS = new Color(0.96f, 0.76f, 0.62f);
         Make(PathSunset, force, p =>
         {
-            p.sunRotationEuler = new Vector3(6f, 70f, 0f); p.sunColor = new Color(1f, 0.56f, 0.28f); p.sunIntensity = 1.7f; p.shadowStrength = 0.9f;
-            p.fogColor = hazeS; p.fogStart = 40f; p.fogEnd = 600f; p.worldAmbientScale = 0.9f;
-            p.railTint = new Color(0.86f, 0.60f, 0.36f, 1f); p.seaTint = new Color(0.30f, 0.42f, 0.55f, 1f);
-            p.skybox = MakeSky(Dir + "/Sunset_Backlight_Sky.mat", new Color(0.36f, 0.42f, 0.66f), hazeS, hazeS);
-            p.postProfile = MakePost(Dir + "/Sunset_Backlight_Post.asset", exposure: 0f, contrast: 14f, saturation: -4f, temperature: 14f, tint: 0f, lift: 0.01f,
-                filter: new Color(1f, 0.93f, 0.86f));
+            p.sunRotationEuler = new Vector3(8f, 70f, 0f); p.sunColor = new Color(1f, 0.62f, 0.34f); p.sunIntensity = 1.7f; p.shadowStrength = 0.6f;
+            p.fogColor = hazeS; p.fogStart = 60f; p.fogEnd = 700f; p.worldAmbientScale = 1.15f;
+            p.railTint = new Color(0.90f, 0.64f, 0.38f, 1f); p.seaTint = new Color(0.40f, 0.46f, 0.62f, 1f);
+            p.skybox = MakeSky(Dir + "/Sunset_Backlight_Sky.mat", new Color(0.42f, 0.46f, 0.72f), hazeS, hazeS);
+            p.postProfile = MakePost(Dir + "/Sunset_Backlight_Post.asset", exposure: 0.2f, contrast: 6f, saturation: 6f, temperature: 18f, tint: 2f, lift: 0.02f,
+                filter: new Color(1f, 0.92f, 0.84f));
         });
-        // 4 초저녁 창에 불: 해는 졌고 푸른 하늘빛만(남남동 40°, 약하게), 남색 안개(25–380m), 노출 -0.8 로 전체를 낮추고 창(WindowGlow)을 켠다.
-        //   1차(-1.3, 안개 .22/.27/.40)는 길·집 윤곽이 다 묻혀서 한 단계 올림(2026-10-25 캡처 판정).
-        var hazeD = new Color(0.26f, 0.32f, 0.46f);
+        // 4 초저녁 창에 불: 해 진 뒤 푸른 하늘빛. 이전(-0.8 노출·남색 안개)은 길·집이 묻혔다 → 노출 -0.3, 안개·주변광 밝은 청보라로 형태가 다 읽히게.
+        var hazeD = new Color(0.40f, 0.46f, 0.66f);
         Make(PathDusk, force, p =>
         {
-            p.sunRotationEuler = new Vector3(40f, 160f, 0f); p.sunColor = new Color(0.42f, 0.52f, 0.80f); p.sunIntensity = 0.55f; p.shadowStrength = 0.3f;
-            p.fogColor = hazeD; p.fogStart = 25f; p.fogEnd = 380f; p.worldAmbientScale = 1f;
-            p.railTint = new Color(0.50f, 0.48f, 0.42f, 1f); p.seaTint = new Color(0.14f, 0.24f, 0.36f, 1f);
+            p.sunRotationEuler = new Vector3(40f, 160f, 0f); p.sunColor = new Color(0.55f, 0.62f, 0.90f); p.sunIntensity = 0.8f; p.shadowStrength = 0.25f;
+            p.fogColor = hazeD; p.fogStart = 40f; p.fogEnd = 500f; p.worldAmbientScale = 1.35f;
+            p.railTint = new Color(0.62f, 0.58f, 0.50f, 1f); p.seaTint = new Color(0.20f, 0.30f, 0.46f, 1f);
             p.windowsLit = true;
-            p.skybox = MakeSky(Dir + "/Dusk_Lights_Sky.mat", new Color(0.13f, 0.18f, 0.36f), hazeD, hazeD);
-            p.postProfile = MakePost(Dir + "/Dusk_Lights_Post.asset", exposure: -0.8f, contrast: 12f, saturation: -12f, temperature: -12f, tint: 0f, lift: 0.01f,
-                filter: new Color(0.72f, 0.80f, 1f));
+            p.skybox = MakeSky(Dir + "/Dusk_Lights_Sky.mat", new Color(0.20f, 0.26f, 0.50f), hazeD, hazeD);
+            p.postProfile = MakePost(Dir + "/Dusk_Lights_Post.asset", exposure: -0.3f, contrast: 4f, saturation: -4f, temperature: -10f, tint: 0f, lift: 0.025f,
+                filter: new Color(0.82f, 0.88f, 1f));
         });
     }
 

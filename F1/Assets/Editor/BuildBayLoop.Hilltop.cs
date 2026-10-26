@@ -54,9 +54,9 @@ public static partial class BuildBayLoop
         foreach (var poly in hard) if (InP(poly, x, z)) return false;
         foreach (var fr in fieldRects) if (fr.Contains(new Vector2(x, z))) return false;
         int pc = pavedCells, ic = islandCells;
-        int k = GroundKind(x, z, h - .3f, h + .3f, green);
+        float pd = PaveDist(x, z, h - .3f, h + .3f, green);   // 과제 1943: 포장은 거리 마스크(셰이더와 같은 판정) — 칸 판정과 어긋나면 포장 위에 풀이 났다
         pavedCells = pc; islandCells = ic;   // 지면 포장 집계(이미 로그됨)는 건드리지 않는다
-        return k < 0;
+        return pd > .3f;
     }
 
     static string Hilltop(Transform parent, Road main)

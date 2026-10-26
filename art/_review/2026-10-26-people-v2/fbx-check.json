@@ -1,0 +1,384 @@
+{
+  "passed": true,
+  "assets": [
+    {
+      "id": "people_young_01_v2",
+      "sha256": "1f926cfd71b968a4c705257ac9073e9f5702a24ea06450367b10ee2ad83f439b",
+      "height_m": 1.3019999364722095,
+      "tris": 901,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07440626621246338,
+          "ground_min": -0.005125164985656738,
+          "ground_max": -0.005125164985656738
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 3.552713678800501e-15,
+          "motion_matrix_delta": 0.08125299960374832,
+          "ground_min": -0.005743690300732851,
+          "ground_max": -0.005615603178739548
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3880000412464142,
+          "ground_min": -0.013548008166253567,
+          "ground_max": -0.004747217521071434
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    },
+    {
+      "id": "people_young_02_v2",
+      "sha256": "a7c7dbab0dd09c0fc1694a1a4dc9bb512446b7331158e4db03a88a42b9b95455",
+      "height_m": 1.3019999364722095,
+      "tris": 901,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07440626621246338,
+          "ground_min": -0.005125164985656738,
+          "ground_max": -0.005125164985656738
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 3.552713678800501e-15,
+          "motion_matrix_delta": 0.08125299960374832,
+          "ground_min": -0.005743690300732851,
+          "ground_max": -0.005615603178739548
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3880000412464142,
+          "ground_min": -0.013548008166253567,
+          "ground_max": -0.004747217521071434
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    },
+    {
+      "id": "people_young_03_v2",
+      "sha256": "b30d7b9d300c1ddec6ca0c502a40f8392e67974f7ecf722d6b3ef482374c4dbc",
+      "height_m": 1.3019999364722095,
+      "tris": 901,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07440626621246338,
+          "ground_min": -0.005125164985656738,
+          "ground_max": -0.005125164985656738
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 3.552713678800501e-15,
+          "motion_matrix_delta": 0.08125299960374832,
+          "ground_min": -0.005743690300732851,
+          "ground_max": -0.005615603178739548
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3880000412464142,
+          "ground_min": -0.013548008166253567,
+          "ground_max": -0.004747217521071434
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    },
+    {
+      "id": "people_elder_01_v2",
+      "sha256": "193d095cc781ee687e216a28909a869acec9e69032ba8fee28cdf815fa0b40cd",
+      "height_m": 1.2280797956078873,
+      "tris": 937,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07460254430770874,
+          "ground_min": -0.004942101892083883,
+          "ground_max": -0.004942101892083883
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.08086928725242615,
+          "ground_min": -0.00553858233615756,
+          "ground_max": -0.005415033083409071
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3879993557929993,
+          "ground_min": -0.013064135797321796,
+          "ground_max": -0.0045776208862662315
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    },
+    {
+      "id": "people_elder_02_v2",
+      "sha256": "ff13219b99697a7744a1711466e3873a711d0e402e2accedea58ae7702428f1a",
+      "height_m": 1.2280797956078873,
+      "tris": 901,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07460254430770874,
+          "ground_min": -0.004942101892083883,
+          "ground_max": -0.004942101892083883
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.08086928725242615,
+          "ground_min": -0.00553858233615756,
+          "ground_max": -0.005415033083409071
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3879993557929993,
+          "ground_min": -0.013064135797321796,
+          "ground_max": -0.0045776208862662315
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    },
+    {
+      "id": "people_elder_03_v2",
+      "sha256": "80b9c9cfceedc9da2f3bce70ab4f4667dc50670df5bb078382aebc3820153288",
+      "height_m": 1.2280797956078873,
+      "tris": 901,
+      "bones": 17,
+      "actions": [
+        {
+          "name": "ResidentRig|ResidentRig|Sit",
+          "frames": [
+            1,
+            51
+          ],
+          "fps": 30.0,
+          "duration_s": 1.6666666666666667,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.07460254430770874,
+          "ground_min": -0.004942101892083883,
+          "ground_max": -0.004942101892083883
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Stand",
+          "frames": [
+            1,
+            76
+          ],
+          "fps": 30.0,
+          "duration_s": 2.5,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 0.08086928725242615,
+          "ground_min": -0.00553858233615756,
+          "ground_max": -0.005415033083409071
+        },
+        {
+          "name": "ResidentRig|ResidentRig|Walk",
+          "frames": [
+            1,
+            41
+          ],
+          "fps": 30.0,
+          "duration_s": 1.3333333333333333,
+          "loop_matrix_error": 0.0,
+          "motion_matrix_delta": 1.3879993557929993,
+          "ground_min": -0.013064135797321796,
+          "ground_max": -0.0045776208862662315
+        }
+      ],
+      "weight_errors": [],
+      "checks": {
+        "one_rig": true,
+        "meshes_present": true,
+        "tri_budget": true,
+        "height": true,
+        "skin_normalized": true,
+        "armature_modifier": true,
+        "Stand_baked_loop": true,
+        "Walk_baked_loop": true,
+        "Sit_baked_loop": true,
+        "ground_penetration_absent": true,
+        "ground_contact_every_frame": true
+      },
+      "passed": true
+    }
+  ],
+  "scope": "Actual FBX reimport: rest bounds, triangles, weights, bone matrices all baked frames, loop closure and floor penetration. Visual gait/seat contacts require independent rendered review; Unity import not run."
+}

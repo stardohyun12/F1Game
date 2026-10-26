@@ -27,6 +27,8 @@ Shader "PitCrew/BayLoop/TerrainSlope"
   _SlopeTex("Smoothed slope deg/90 (1448, builder bakes)",2D)="black" {}
   _SlopeRect("Slope rect x0 z0 1/w 1/d (1448)",Vector)=(0,0,0,0)
   _JitterScale("Jitter wave size m (1448)",Float)=9
+  _PaveColor("Paved ground (1943, slope tex G<0)",Color)=(0.74,0.70,0.63,1)
+  _PaveSlab("Paving slab size m (1943)",Float)=1.5
  }
  SubShader {
   Tags {"RenderType"="Opaque" "RenderPipeline"="UniversalPipeline"}
@@ -49,6 +51,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float _DryDeg, _RockDeg, _EdgeJitter, _SoilAmount, _PatchScale, _PatchThreshold;
     float _CloudShadow, _CloudScale;
     float4 _SlopeRect; float _JitterScale;
+    float4 _PaveColor; float _PaveSlab;
    CBUFFER_END
    TEXTURE2D(_SlopeTex); SAMPLER(sampler_SlopeTex);
    float4 _CloudOffset;   // 과제 0404: CloudDrift 가 매 프레임 넣는 전역 — 구름 그림자가 바람 따라 흐른다
@@ -74,14 +77,22 @@ Shader "PitCrew/BayLoop/TerrainSlope"
     float2 tx=floor(i.pos.xz*32)/32+1.0/64;
     float2 suv=(tx-_SlopeRect.xy)*_SlopeRect.zw;
     bool inRect=_SlopeRect.z>0&&all(suv>0)&&all(suv<1);
-    float deg=inRect?SAMPLE_TEXTURE2D(_SlopeTex,sampler_SlopeTex,suv).r*90:degrees(acos(saturate(n.y)));
+    float3 sg=inRect?SAMPLE_TEXTURE2D(_SlopeTex,sampler_SlopeTex,suv).rgb:float3(0,8,0);
+    float deg=inRect?sg.r*90:degrees(acos(saturate(n.y)));
     // 흔들림 = 2m 칸 해시 → 9m 물결(저주파, 같은 텍셀 격자)
     float j=(vnoise(tx/_JitterScale+float2(3.7,1.3))-.5)*2*_EdgeJitter;
     float d=deg+j;
     // 투영 면도 다듬은 경사로 고른다(삼각형마다 xz/측면 투영이 바뀌던 이음매 제거)
     float3 an=abs(n); float2 worldUV=(inRect?deg<60:an.y>.5)?i.pos.xz:(an.x>an.z?i.pos.zy:i.pos.xy);
     half3 col;
-    if(d>=_RockDeg) col=Tile(_TileRock,worldUV);
+    // 과제 1943: 포장 = 빌더가 G 에 구운 경계 거리(m)가 음수인 곳. 2m 칸 조각 대신 보간된 매끈한 경계, 땅 자체라 겹침 없음.
+    //  큰 면 한 색 + 판석 줄눈(1/8m 텍셀 = 레트로 큰 텍셀) + 가장자리 30cm 테두리돌(살짝 어둡게)
+    if(sg.g<0){
+     float2 e=floor(i.pos.xz*8)/8; float2 f=frac(e/_PaveSlab+float2(0,.5*step(.5,frac(e.x/_PaveSlab*.5))));
+     bool joint=any(f<1.0/(8*_PaveSlab)-1e-4);
+     col=_PaveColor.rgb*(joint?.88:1)*(sg.g>-.35?.9:1);
+    }
+    else if(d>=_RockDeg||(sg.b>.5&&d>=26)) col=Tile(_TileRock,worldUV);   // 1943: 길가 깎은 면(B)은 26° 부터 바위
     else if(d>=_DryDeg) col=Tile(_TileDry,worldUV);
     else {
      col=Tile(_TileGrass,worldUV);

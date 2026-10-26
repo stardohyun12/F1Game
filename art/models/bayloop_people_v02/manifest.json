@@ -1,0 +1,61 @@
+{
+  "direction": "D-146",
+  "density": 12,
+  "photographs": false,
+  "assets": [
+    {
+      "id": "people_young_01_v2",
+      "fbx": "art/models/bayloop_people_v02/people_young_01_v2.fbx",
+      "tris": 901,
+      "height": 1.3019999265670776,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_young_01.blend"
+    },
+    {
+      "id": "people_young_02_v2",
+      "fbx": "art/models/bayloop_people_v02/people_young_02_v2.fbx",
+      "tris": 901,
+      "height": 1.3019999265670776,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_young_02.blend"
+    },
+    {
+      "id": "people_young_03_v2",
+      "fbx": "art/models/bayloop_people_v02/people_young_03_v2.fbx",
+      "tris": 901,
+      "height": 1.3019999265670776,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_young_03.blend"
+    },
+    {
+      "id": "people_elder_01_v2",
+      "fbx": "art/models/bayloop_people_v02/people_elder_01_v2.fbx",
+      "tris": 937,
+      "height": 1.228079915046692,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_elder_01.blend"
+    },
+    {
+      "id": "people_elder_02_v2",
+      "fbx": "art/models/bayloop_people_v02/people_elder_02_v2.fbx",
+      "tris": 901,
+      "height": 1.228079915046692,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_elder_02.blend"
+    },
+    {
+      "id": "people_elder_03_v2",
+      "fbx": "art/models/bayloop_people_v02/people_elder_03_v2.fbx",
+      "tris": 901,
+      "height": 1.228079915046692,
+      "bones": 17,
+      "head_ratio": 4.4,
+      "source": "art/models/bayloop_people_v01/people_elder_03.blend"
+    }
+  ]
+}

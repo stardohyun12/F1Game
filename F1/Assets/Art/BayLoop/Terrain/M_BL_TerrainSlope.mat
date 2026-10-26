@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 51ae96a967a346d41b5b1d848cf0e631, type: 3}
+        m_Texture: {fileID: 2800000, guid: 85ae1884dca38df4488c2139b6835e2b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SlopeTex:
@@ -38,17 +38,19 @@ Material:
     - _DryDeg: 46
     - _EdgeJitter: 5
     - _FaceShade: 0.9
-    - _FogEnd: 950
-    - _FogStart: 90
+    - _FogEnd: 1200
+    - _FogStart: 140
     - _JitterScale: 9
     - _PatchScale: 0.07
     - _PatchThreshold: 0.7
+    - _PaveSlab: 1.5
     - _RockDeg: 62
     - _SoilAmount: 1
     - _WorldScale: 0.53763443
     m_Colors:
-    - _Ambient: {r: 0.7029999, g: 0.7885, b: 0.85499996, a: 1}
-    - _FogColor: {r: 0.74, g: 0.83, b: 0.9, a: 1}
+    - _Ambient: {r: 1.04, g: 1.1439999, b: 1.2479999, a: 1}
+    - _FogColor: {r: 0.8, g: 0.88, b: 0.96, a: 1}
+    - _PaveColor: {r: 0.74, g: 0.7, b: 0.63, a: 1}
     - _SlopeRect: {r: -209, g: -241, b: 0.0024875621, a: 0.0018867925}
     - _TileDry: {r: 0, g: 0, b: 0.5, a: 0.5}
     - _TileGrass: {r: 0, g: 0.5, b: 0.5, a: 0.5}

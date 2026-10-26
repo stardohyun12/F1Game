@@ -117,6 +117,34 @@ public static partial class BuildBayLoop
         return u < 45 ? 0 : u < 75 ? 1 : u < 90 ? 2 : 3;
     }
 
+    /// <summary>
+    /// 과제 1943: GroundKind 의 연속판 — 이 점에서 "포장 구역" 경계까지 부호 거리(m, 음수 = 포장 안).
+    /// 격자점에서 재고 셰이더가 쌍선형으로 읽으면 경계가 2m 칸 계단 대신 매끈한 선이 된다.
+    /// 규칙은 GroundKind 와 같다: 밀집·보통 필지 둘레 3.5m / 두 차길 사이 섬(길 5m 안) / 밀집·보통 구역(14m) 길가 4m.
+    /// </summary>
+    static float PaveDist(float x, float z, float hMin, float hMax, List<(Dictionary<string, object> g, List<Vector2> poly)> green)
+    {
+        if (hMax - hMin > 3f || hMin < 0.6f) return 4f;                       // 벼랑·물가(3×3 격자점 = 4m 폭이라 문턱을 칸 기준 1.5 의 두 배로)
+        foreach (var (g, poly) in green) if (InP(poly, x, z)) return 4f;
+        float best = 8f;
+        if (pGrid.TryGetValue((Mathf.FloorToInt(x / PG), Mathf.FloorToInt(z / PG)), out var l))
+        {
+            var q = new Vector2(x, z);
+            foreach (int id in l)
+            {
+                var r = pRects[id]; if (r.dens != "dense" && r.dens != "medium") continue;
+                var v = q - r.c;
+                float u = Mathf.Abs(Vector2.Dot(v, r.ax)) - r.hw, w = Mathf.Abs(Vector2.Dot(v, r.az)) - r.hd;
+                float dd = new Vector2(Mathf.Max(0, u), Mathf.Max(0, w)).magnitude + Mathf.Min(0, Mathf.Max(u, w));
+                best = Mathf.Min(best, dd - 3.5f);
+            }
+        }
+        int nRoads = RoadsNear(x, z, 6f, out float rd);
+        if (nRoads >= 2 && rd - 5f < best) { if (rd <= 5f && best >= 0) islandCells++; best = rd - 5f; }
+        if (rd - 4f < best && DensAt(x, z, 14f) >= 1) best = rd - 4f;
+        return best;
+    }
+
     // ------------------------------------------------------------------ 2) 건물 줄 상태(Buildings 에서 씀)
     class RowSt { public float prevEnd = -1e9f, lastGap = float.NaN, next; public List<float> sbs = new List<float>(); public float lastH = -1f; public Vector3 prevEdge; public float prevW; }
     struct Gap { public Vector3 edge, dir; public float w, d; public int dens; public string road; }

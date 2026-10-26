@@ -543,21 +543,18 @@ public static partial class BuildBayLoop
         int nx = terr.GetLength(0), nz = terr.GetLength(1);
         var verts = new List<Vector3>(nx * nz); var uvs = new List<Vector2>(nx * nz);
         for (int j = 0; j < nz; j++) for (int i = 0; i < nx; i++) { float x = X0 + i * Step, z = Z0 + j * Step; verts.Add(new Vector3(x, terr[i, j], z)); uvs.Add(new Vector2(x, z)); }
-        // v5 (D-141 ①): 칸마다 겉 — 풀 / 포장 4종(GroundKind). 밀집·보통 구역 인도~건물 사이 잔디 띠를 없앤다.
-        var subs = new List<int>[1 + LotMats.Length]; for (int k = 0; k < subs.Length; k++) subs[k] = new List<int>();
-        var green = OG().Where(o => (string)o.g["kind"] == "field" || (string)o.g["kind"] == "meadow").ToList();
+        // 과제 1943: 포장은 더 이상 2m 칸 서브메시가 아니다(칸 = 계단 모양 조각, 도현 스샷 1940-2·3).
+        //  격자점마다 "포장 경계까지 거리"를 경사 텍스처 G 에 굽고(BakeSlope), 셰이더가 G<0 을 포장으로 칠한다 → 경계가 보간된 다각형, 땅에 붙어 겹침 없음.
+        var tris = new List<int>();
         for (int j = 0; j + 1 < nz; j++)
             for (int i = 0; i + 1 < nx; i++)
             {
                 int a = j * nx + i, b = a + 1, c = a + nx, d = c + 1;
-                float h0 = terr[i, j], h1 = terr[i + 1, j], h2 = terr[i, j + 1], h3 = terr[i + 1, j + 1];
-                int kind = GroundKind(X0 + (i + .5f) * Step, Z0 + (j + .5f) * Step, Mathf.Min(Mathf.Min(h0, h1), Mathf.Min(h2, h3)), Mathf.Max(Mathf.Max(h0, h1), Mathf.Max(h2, h3)), green);
-                var tris = subs[kind + 1];
                 tris.Add(a); tris.Add(c); tris.Add(b); tris.Add(b); tris.Add(c); tris.Add(d);
             }
-        MeshGo(parent, "BayTerrain", verts, uvs, subs, new[] { mat }.Concat(LotMats.Select(M)).ToArray(), true);
+        MeshGo(parent, "BayTerrain", verts, uvs, new[] { tris }, new[] { mat }, true);
         BakeSlope(mat, nx, nz);
-        log.Add($"지면 포장 {pavedCells}칸({pavedCells * Step * Step:F0}㎡, 차길 사이 섬 {islandCells}칸)");
+        log.Add($"지면 포장 격자점 {pavedCells}({pavedCells * Step * Step:F0}㎡, 차길 사이 섬 {islandCells}) — 거리 마스크");
     }
 
     /// <summary>
@@ -577,13 +574,21 @@ public static partial class BuildBayLoop
                     }
                 sm[i, j] = s / w;
             }
-        var tex = new Texture2D(nx, nz, TextureFormat.RHalf, false, true) { name = "BL_TerrainSlopeTex", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+        var tex = new Texture2D(nx, nz, TextureFormat.RGBAHalf, false, true) { name = "BL_TerrainSlopeTex", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
         var px = new Color[nx * nz];
+        var green = OG().Where(o => (string)o.g["kind"] == "field" || (string)o.g["kind"] == "meadow").ToList();
         for (int j = 0; j < nz; j++) for (int i = 0; i < nx; i++)
             {
                 int i0 = Mathf.Max(0, i - 1), i1 = Mathf.Min(nx - 1, i + 1), j0 = Mathf.Max(0, j - 1), j1 = Mathf.Min(nz - 1, j + 1);
                 float gx = (sm[i1, j] - sm[i0, j]) / ((i1 - i0) * Step), gz = (sm[i, j1] - sm[i, j0]) / ((j1 - j0) * Step);
-                px[j * nx + i] = new Color(Mathf.Atan(Mathf.Sqrt(gx * gx + gz * gz)) * Mathf.Rad2Deg / 90f, 0, 0, 1);
+                float hMin = float.MaxValue, hMax = float.MinValue;
+                for (int dj = -1; dj <= 1; dj++) for (int di = -1; di <= 1; di++) { float h = terr[Mathf.Clamp(i + di, 0, nx - 1), Mathf.Clamp(j + dj, 0, nz - 1)]; hMin = Mathf.Min(hMin, h); hMax = Mathf.Max(hMax, h); }
+                float sd = PaveDist(X0 + i * Step, Z0 + j * Step, hMin, hMax, green);
+                if (sd < 0) pavedCells++;
+                float deg = Mathf.Atan(Mathf.Sqrt(gx * gx + gz * gz)) * Mathf.Rad2Deg;
+                // B = 길가 깎은 면(차길 바깥선 9m 안, 28° 넘는 비탈) → 셰이더가 바위 칸으로(1943: 층무늬판 대신 지형 자체가 바위)
+                float cut = deg > 28f && RoadsNear(X0 + i * Step, Z0 + j * Step, 9f, out _) > 0 ? 1f : 0f;
+                px[j * nx + i] = new Color(deg / 90f, Mathf.Clamp(sd, -8f, 8f), cut, 1);
             }
         tex.SetPixels(px); tex.Apply(false);
         string tp = MatDir + "/BL_TerrainSlopeTex.asset"; AssetDatabase.DeleteAsset(tp); AssetDatabase.CreateAsset(tex, tp);
@@ -1654,9 +1659,13 @@ public static partial class BuildBayLoop
             {
                 float z0 = z + d * b / bands + 0.4f, z1 = z + d * (b + 1) / bands - 0.4f;
                 var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
-                int nx = Mathf.CeilToInt(w / 2f) + 1, nz = Mathf.CeilToInt((z1 - z0) / 2f) + 1;
+                // 과제 1943: 꼭짓점을 지형 격자선(X0+i·Step)에 맞춘다. 예전엔 w/(n-1) 간격이라 지형 삼각형 꺾임과 어긋나
+                //  휜 언덕에서 땅이 밭을 뚫고 나와 초록/노랑 삼각형으로 찢어졌다(도현 스샷 1940-5). 격자선 + 사각형 끝만 쓰면 밭 = 땅 + 0.08.
+                List<float> Lines(float a0, float a1, float g0) { var l = new List<float> { a0 }; for (float g = g0 + Mathf.Ceil((a0 - g0) / Step + 1e-3f) * Step; g < a1 - 1e-3f; g += Step) l.Add(g); l.Add(a1); return l; }
+                var xs = Lines(x, x + w, X0); var zs = Lines(z0, z1, Z0);
+                int nx = xs.Count, nz = zs.Count;
                 for (int j = 0; j < nz; j++) for (int i = 0; i < nx; i++)
-                    { float px = x + w * i / (nx - 1), pz = z0 + (z1 - z0) * j / (nz - 1); verts.Add(new Vector3(px, H(px, pz) + 0.06f, pz)); uvs.Add(new Vector2(px, pz)); }
+                    { float px = xs[i], pz = zs[j]; verts.Add(new Vector3(px, H(px, pz) + 0.08f, pz)); uvs.Add(new Vector2(px, pz)); }
                 for (int j = 0; j + 1 < nz; j++) for (int i = 0; i + 1 < nx; i++) { int a = j * nx + i, bb = a + 1, c = a + nx, dd = c + 1; tris.Add(a); tris.Add(c); tris.Add(bb); tris.Add(bb); tris.Add(c); tris.Add(dd); }
                 MeshGo(parent, "Field_" + f["id"] + "_" + b, verts, uvs, new[] { tris }, new[] { M(b % 2 == 0 ? "FieldA" : "FieldB") }, false);
             }
