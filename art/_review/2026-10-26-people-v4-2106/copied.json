@@ -1,0 +1,22 @@
+[
+  {
+    "source": "art/models/bayloop_people_v04/people_young_01_v4.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_young_01_v4.fbx",
+    "sha256": "f7647cf5f3ccdee6bb7db0f7740430520d71c45bdcafe0892f25c6b62728a84e"
+  },
+  {
+    "source": "art/models/bayloop_people_v04/people_young_03_v4.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_young_03_v4.fbx",
+    "sha256": "52a359ebea29a979a849a26885ae4a86366b27bcfbc98ba1833365968eda7842"
+  },
+  {
+    "source": "art/models/bayloop_people_v04/people_elder_01_v4.fbx",
+    "target": "F1/Assets/Art/BayLoop/People/people_elder_01_v4.fbx",
+    "sha256": "d34958098dbd26d654b00387207eeb21db3d8ad8246b049850a8204536ff51d9"
+  },
+  {
+    "source": "art/models/bayloop_people_v04/PeoplePS1Atlas_v4_2106.png",
+    "target": "F1/Assets/Art/BayLoop/People/PeoplePS1Atlas_v4_2106.png",
+    "sha256": "9d47f71634ee27b08fe0d6763dc9c0b4990c2352ac5a28dc6e937b42e02d8cc8"
+  }
+]

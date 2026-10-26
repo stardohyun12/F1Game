@@ -27,7 +27,8 @@ public sealed class PCLookScene : MonoBehaviour
     {
         new Tod { fog = new Color(0.88f, 0.90f, 0.92f), sky = new Color(0.60f, 0.72f, 0.86f), s = 35, e = 380, max = .62f, shade = .78f, light = new Color(1.30f, 1.30f, 1.30f), pool = 0f },    // 아침
         new Tod { fog = new Color(0.80f, 0.88f, 0.96f), sky = new Color(0.44f, 0.62f, 0.86f), s = 80, e = 600, max = .50f, shade = .75f, light = new Color(1.40f, 1.38f, 1.34f), pool = 0f },    // 오후
-        new Tod { fog = new Color(0.96f, 0.76f, 0.62f), sky = new Color(0.54f, 0.58f, 0.76f), s = 60, e = 450, max = .62f, shade = .72f, light = new Color(1.36f, 1.16f, 1.02f), pool = .7f },   // 노을
+        // 2124(D-150 TONE 4 「돌아오는 길 × 노을」): 안개 주황 ↓·시작 멀리·최대 ↓ → 근경 또렷, 바다 회청색 남음. 그늘 .72→.64 → 따뜻한 면/차가운 그늘 대비.
+        new Tod { fog = new Color(0.95f, 0.80f, 0.70f), sky = new Color(0.54f, 0.58f, 0.76f), s = 90, e = 620, max = .50f, shade = .64f, light = new Color(1.40f, 1.16f, 0.98f), pool = .7f },   // 노을
         new Tod { fog = new Color(0.40f, 0.46f, 0.66f), sky = new Color(0.16f, 0.21f, 0.42f), s = 30, e = 240, max = .75f, shade = .80f, light = new Color(0.68f, 0.73f, 0.90f), pool = 1f },    // 초저녁
     };
 
@@ -39,6 +40,15 @@ public sealed class PCLookScene : MonoBehaviour
     public Shader skyShader;
     Material skyMat;
 
+    // 5c(D-149 지글거림 금지 — 은은하게): 기본값이 5c. 끄면 5b 와 같다(전/후 비교용 토글).
+    [Header("5c 시간적 안정성")]
+    public bool vertexSnap = false;      // 정점 스냅(움직이면 1px씩 튐) — 옵션만 남김
+    public bool mipmaps = true;          // 밉맵 단계 읽기(먼 곳 텍셀 크롤링)
+    public bool smoothUpscale = true;    // 바이리니어 확대 + 블룸·헤이즈(Present.shader)
+    [Range(1, 8)] public int msaa = 4;   // 저해상도 RT 멀티샘플(가장자리 크롤링)
+    public Shader presentShader;
+    Material presentMat;
+    static readonly int SnapOnId = Shader.PropertyToID("_PCSnapOn"), MipId = Shader.PropertyToID("_PCMip");
     /// <summary>카메라에 5b 하늘(지평선 안개 → 위 파랑)을 건다. 캡처 스크립트의 임시 카메라도 부른다.</summary>
     public void ApplySky(Camera cam)
     {
@@ -87,7 +97,11 @@ public sealed class PCLookScene : MonoBehaviour
                 if (lookCam != cam) { lookCam = cam; camFlags = cam.clearFlags; }
                 ApplySky(cam);   // 5b: 지평선만 안개, 위는 맑은 파랑
                 if (!cam.TryGetComponent<LowResRenderTest>(out var lr)) lr = cam.gameObject.AddComponent<LowResRenderTest>();
-                lr.targetHeight = lowResHeight; lr.integerScale = true; if (!lr.enabled) lr.enabled = true;   // 5b: 화면 = 정수배 Nearest
+                if (presentShader == null) presentShader = Shader.Find("PitCrew/Look/Present");
+                if (presentMat == null && presentShader != null) presentMat = new Material(presentShader) { hideFlags = HideFlags.DontSave };
+                lr.targetHeight = lowResHeight; lr.integerScale = true;   // 5b: 화면 = 정수배
+                lr.smooth = smoothUpscale && presentMat != null; lr.presentMaterial = presentMat; lr.msaa = msaa;   // 5c: 부드러운 확대
+                if (!lr.enabled) lr.enabled = true;
             }
             if (sun == null) { sun = RenderSettings.sun; if (sun == null) foreach (var l in FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.type == LightType.Directional) { sun = l; break; } }
             if (sun != null && sun.shadows != LightShadows.None) { sunShadows = sun.shadows; sun.shadows = LightShadows.None; }   // 규칙 7(무드가 다시 켜도 끈다)
@@ -109,6 +123,8 @@ public sealed class PCLookScene : MonoBehaviour
         }
         Shader.SetGlobalColor(FogCId, fc.linear);   // 전역 색은 Linear 변환을 안 해 준다(머티리얼 색과 달리) — 빼면 안개가 0.40→170 으로 떠서 하늘(배경)과 갈린다
         Shader.SetGlobalColor(SkyId, (sky / ws).linear);
+        Shader.SetGlobalFloat(SnapOnId, vertexSnap ? 1 : 0);
+        Shader.SetGlobalFloat(MipId, mipmaps ? 1 : 0);
         Shader.SetGlobalVector(FogPId, new Vector4(s / ws, e / ws, mx / ws, sh / ws));
         Shader.SetGlobalColor(LightId, li / ws);
         Shader.SetGlobalFloat(PoolId, pool / ws);
@@ -251,8 +267,7 @@ public sealed class PCLookScene : MonoBehaviour
         {
             MarkRenderers(false);
             if (lookCam != null) { lookCam.clearFlags = camFlags; var lr = lookCam.GetComponent<LowResRenderTest>(); if (lr != null) lr.enabled = false; var sb = lookCam.GetComponent<Skybox>(); if (sb != null) sb.enabled = false; }
-            if (sun != null && sunShadows != LightShadows.None) sun.shadows = sunShadows;
-            lookCam = null;
+            if (sun != null && sunShadows != LightShadows.None) sun.shadows = sunShadows;            lookCam = null;
         }
         discRoot = null;
     }

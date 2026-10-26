@@ -1,0 +1,55 @@
+{
+  "direction": "D-148",
+  "texture": "PeoplePS1Atlas_v4_2106.png",
+  "assets": [
+    {
+      "id": "people_young_01_v4",
+      "fbx": "art/models/bayloop_people_v04/people_young_01_v4.fbx",
+      "tris": 585,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_young_01.blend",
+      "fps": 12
+    },
+    {
+      "id": "people_young_02_v4",
+      "fbx": "art/models/bayloop_people_v04/people_young_02_v4.fbx",
+      "tris": 585,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_young_02.blend",
+      "fps": 12
+    },
+    {
+      "id": "people_young_03_v4",
+      "fbx": "art/models/bayloop_people_v04/people_young_03_v4.fbx",
+      "tris": 585,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_young_03.blend",
+      "fps": 12
+    },
+    {
+      "id": "people_elder_01_v4",
+      "fbx": "art/models/bayloop_people_v04/people_elder_01_v4.fbx",
+      "tris": 621,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_elder_01.blend",
+      "fps": 12
+    },
+    {
+      "id": "people_elder_02_v4",
+      "fbx": "art/models/bayloop_people_v04/people_elder_02_v4.fbx",
+      "tris": 585,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_elder_02.blend",
+      "fps": 12
+    },
+    {
+      "id": "people_elder_03_v4",
+      "fbx": "art/models/bayloop_people_v04/people_elder_03_v4.fbx",
+      "tris": 585,
+      "bones": 17,
+      "source": "art/models/bayloop_people_v01/people_elder_03.blend",
+      "fps": 12
+    }
+  ],
+  "revision": "20261026-2106"
+}

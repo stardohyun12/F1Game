@@ -1,0 +1,14 @@
+{
+  "resolution": [
+    480,
+    270
+  ],
+  "shades": [
+    0.88,
+    1.0
+  ],
+  "normal_dot_threshold": 0.15,
+  "point": true,
+  "scene": "authored cream wall, blue sky, warm paving",
+  "engine": "Blender Cycles emission, not Unity"
+}

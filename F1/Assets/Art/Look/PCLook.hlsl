@@ -15,13 +15,14 @@
 float _PCLook;
 float4 _PCFogColor, _PCFogParams, _PCLight;   // _PCFogParams = (시작 m, 끝 m, 최대 섞임, 그늘 면 배수 — 5b)
 float _PCSnapK, _PCKeep, _PCAffine, _PCField;  // _PCField = 1: 밭(라임 → 바랜 올리브/황토, 5b)           // 렌더러별(MaterialPropertyBlock): 스냅 배수(0=1px) · 1=손픽셀(차·사람 — 블러 제외, 규칙 12)
+float _PCSnapOn, _PCMip;   // 5c 전역(PCLookScene): 정점 스냅 켬 · 1 = 밉맵 읽기(먼 곳 텍셀 크롤링 제거)
 SamplerState sampler_linear_clamp;
 int PCMode() { return (int)(_PCLook + 0.5); }
 
 // 규칙 9: 클립 좌표 xy 를 내부 해상도 격자에 붙인다(정적 = 1px, _PCSnapK=2 → 2px)
 float4 PCSnap(float4 cs)
 {
-    if (PCMode() != 5 || cs.w <= 0) return cs;
+    if (PCMode() != 5 || _PCSnapOn < .5 || cs.w <= 0) return cs;   // 5c(D-149): 기본 끔 — 움직일 때 정점이 1px씩 튀어 지글거림
     float2 g = float2(240, 135) / max(_PCSnapK, 1);   // NDC 폭 2 = 480px → 반폭당 240칸
     cs.xy = round(cs.xy / cs.w * g) / g * cs.w;
     return cs;
@@ -48,13 +49,17 @@ half3 PCTex(TEXTURE2D_PARAM(tex, samp), float2 uv, float4 ts, float4 rect)
         float2 tx = uv * ts.zw;
         float fp = min(max(length(ddx(tx)), length(ddy(tx))), 12);   // 타일 경계 frac 점프에서 폭주하지 않게 상한
         float2 st = sqrt(3.6 + fp * fp * .45) * ts.xy;   // 1-2-1 간격 1.9텍셀 ≈ σ1.35텍셀 (5b: 2.1 뭉개짐 / 1.7 반점 1~2.7% → 중간)
+        // 5c: 밉맵이 있으면 화면 한 픽셀 몫(fp)만큼 미리 걸러진 단계를 읽는다 — 9탭이 fp 간격으로 띄엄띄엄 찍혀 생기던 먼 곳 크롤링 제거.
+        //     간격은 그 단계 텍셀 기준 1.9 로(뭉개짐 정도는 가까운 곳과 같게). 아틀라스 칸 번짐 때문에 3단계까지만.
+        float lod5 = _PCMip > .5 ? clamp(log2(max(fp, 1)) + .3, 0, 3) : 0;
+        if (_PCMip > .5) st = 1.9 * exp2(lod5) * ts.xy;
         half3 c5 = 0;
         [unroll] for (int y5 = -1; y5 <= 1; y5++) [unroll] for (int x5 = -1; x5 <= 1; x5++)
-            c5 += (x5 == 0 ? 2 : 1) * (y5 == 0 ? 2 : 1) * tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(x5, y5) * st, rect.xy, rect.zw), 0).rgb;
+            c5 += (x5 == 0 ? 2 : 1) * (y5 == 0 ? 2 : 1) * tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(x5, y5) * st, rect.xy, rect.zw), lod5).rgb;
         c5 /= 16;
         // 규칙 3: 국소 평균(±3간격 4탭) 쪽으로 대비 40% 줄임 — 1px 반점·센 얼룩(저주파 std 16~21 → ≤10)을 낮추고 더 큰 얼룩은 남긴다
         half3 m5 = 0;
-        [unroll] for (int k5 = 0; k5 < 4; k5++) m5 += tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(k5 < 2 ? -3 : 3, k5 % 2 ? -3 : 3) * st, rect.xy, rect.zw), 0).rgb;
+        [unroll] for (int k5 = 0; k5 < 4; k5++) m5 += tex.SampleLevel(sampler_linear_clamp, clamp(uv + float2(k5 < 2 ? -3 : 3, k5 % 2 ? -3 : 3) * st, rect.xy, rect.zw), _PCMip > .5 ? lod5 + 1 : 0).rgb;
         m5 = (m5 * .25 + c5) * .5;
         return lerp(m5, c5, .72);   // 5b: 대비 40%↓ → 28%↓ (검은 창·문틀이 살게, .78 은 반점 과다)
     }
