@@ -8,7 +8,7 @@ Shader "PitCrew/Look/Present"
     {
         [PerRendererData] _MainTex ("RT", 2D) = "white" {}
         _Bloom ("Bloom (threshold, strength, radius texels)", Vector) = (.72, .28, 2.5, 0)
-        _Haze ("Haze", Range(0, .2)) = .035
+        _Haze ("Haze", Range(0, .2)) = 0   // 2144: 화면 전체 헤이즈가 근경까지 우윳빛 막 → 끔(헤이즈는 거리 안개만)
         _Soft ("Soft (tent texels)", Range(0, 1.5)) = .6
     }
     SubShader

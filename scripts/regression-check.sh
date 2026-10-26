@@ -19,6 +19,11 @@ say() {
 }
 
 echo "=== PitCrew 회귀 점검 ==="
+# 2144: 기준 씬 고정. 다른 씬(Map_BayLoop 등)이 열린 채 돌리면 ZoneUnlock·목적지·fog 가 줄줄이 FAIL 로 보인다(실제로 8P/5F 오탐).
+# 열린 씬에 저장 안 된 변경이 있으면 버리지 않고 멈춘다.
+scene=$("$UCLI" exec "var s=UnityEngine.SceneManagement.SceneManager.GetActiveScene(); if(s.path==\"Assets/ComplexTrack.unity\") return \"scene ok\"; if(s.isDirty) return \"DIRTY \"+s.path; UnityEditor.SceneManagement.EditorSceneManager.OpenScene(\"Assets/ComplexTrack.unity\"); return \"scene opened (was \"+s.path+\")\";" 2>/dev/null)
+echo "$scene"
+case "$scene" in *DIRTY*) echo "⚠ 열린 씬에 저장 안 된 변경 — 저장/되돌린 뒤 다시 실행"; exit 2 ;; esac
 "$UCLI" editor play --wait >/dev/null 2>&1
 sleep 1
 # 프레임 틱 보장(백그라운드면 Update 멈춤) + 메인메뉴 시작

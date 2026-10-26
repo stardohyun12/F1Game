@@ -82,10 +82,11 @@ public static class BuildToneSlice
         Box(g, "Body", new Vector3(0, 1.12f, 0), new Vector3(.46f, .6f, .3f), coat);
         Box(g, "Head", new Vector3(0, 1.56f, 0), new Vector3(.24f, .26f, .24f), skin);
         Box(g, "ArmL", new Vector3(-.3f, 1.1f, 0), new Vector3(.12f, .56f, .14f), coat);
+        g.localScale = Vector3.one * 1.15f;   // 2144: 1.7→1.95m·굵게 — 30~60m 에서 1× 실루엣이 읽히게
         if (armParent != null)
         {
             var sh = new GameObject(n + "_Shoulder").transform; sh.SetParent(armParent, false);
-            sh.position = g.TransformPoint(new Vector3(.3f, 1.36f, 0)); sh.rotation = g.rotation * Quaternion.Euler(0, 0, 150f);   // 팔을 머리 위로
+            sh.position = g.TransformPoint(new Vector3(.3f, 1.36f, 0)); sh.localScale = Vector3.one * 1.15f; sh.rotation = g.rotation * Quaternion.Euler(0, 0, 150f);   // 팔을 머리 위로
             Box(sh, "ArmR", new Vector3(0, -.28f, 0), new Vector3(.12f, .56f, .14f), coat);
         }
         else Box(g, "ArmR", new Vector3(.3f, 1.1f, 0), new Vector3(.12f, .56f, .14f), coat);
@@ -115,7 +116,9 @@ public static class BuildToneSlice
         var straw = Mat("Straw", new Color(.62f, .54f, .36f)); var olive = Mat("Olive", new Color(.44f, .46f, .29f)); var rust = Mat("Rust", new Color(.58f, .40f, .26f));
         var wood = Mat("Wood", new Color(.55f, .40f, .28f)); var stone = Mat("Stone", new Color(.82f, .78f, .70f)); var iron = Mat("Iron", new Color(.25f, .27f, .29f));
         var coatA = Mat("CoatNavy", new Color(.24f, .30f, .45f)); var coatB = Mat("CoatMustard", new Color(.78f, .60f, .22f)); var coatC = Mat("CoatRed", new Color(.72f, .26f, .20f));
-        var trousers = Mat("Trousers", new Color(.30f, .28f, .26f)); var skin = Mat("Skin", new Color(.86f, .68f, .55f));
+        // 2144(c): 배경 대비용 — 밝은 밭 앞은 짙은 색, 바다·하늘 앞은 흰 색(명도 차로 실루엣)
+        var coatDark = Mat("CoatDeepNavy", new Color(.10f, .13f, .24f)); var coatWine = Mat("CoatWine", new Color(.42f, .10f, .09f)); var coatCream = Mat("CoatCream", new Color(.97f, .95f, .88f));
+        var trousers = Mat("Trousers", new Color(.30f, .28f, .26f)); var trDark = Mat("TrousersDark", new Color(.12f, .11f, .10f)); var skin = Mat("Skin", new Color(.86f, .68f, .55f));
         var clothW = Mat("ClothWhite", new Color(.95f, .94f, .90f)); var clothR = Mat("ClothRed", new Color(.80f, .24f, .22f)); var clothB = Mat("ClothBlue", new Color(.30f, .48f, .74f)); var clothY = Mat("ClothYellow", new Color(.92f, .76f, .30f));
         var bikeRed = Mat("BikeRed", new Color(.75f, .22f, .18f)); var glass = Mat("WindowGlass", new Color(.30f, .34f, .40f));
 
@@ -175,7 +178,7 @@ public static class BuildToneSlice
         {
             // 4a) 빨래 너는 사람 + 빨래 줄: 육지 쪽 농가 근처(1060 에서 왼쪽 앞 50~60m)
             // 1차: 농가 옆에 뒀더니 1060 시점 차 뒤쪽이라 안 보였음 → 진행 방향 앞, 육지 쪽 밭 위(1080, 22m)로. 1060 에서 약 45m 앞 왼쪽.
-            Vector3 lp = c[1080] - Sea(1080) * 22f;
+            Vector3 lp = c[1095] - Sea(1095) * 12f;   // 2144: 1060 시점 35m 앞·12m 옆(1×에서 보이게)
             lp.y = Gnd(lp, root);
             var lf = Fwd(1070);
             var line = new GameObject("LaundryLine").transform; line.SetParent(root, false); line.position = lp; line.rotation = Quaternion.LookRotation(lf);
@@ -191,19 +194,19 @@ public static class BuildToneSlice
                 Box(piv, "Sheet", new Vector3(0, -h * .5f, 0), new Vector3(.04f, h, .7f), cloths[k]);
             }
             var ls = laundrySway.gameObject.AddComponent<ToneSway>(); ls.amplitude = 10f; ls.frequency = .5f; ls.waveLength = 6f; ls.axis = Vector3.forward;
-            Person(root, "Person_HangingLaundry", line.TransformPoint(new Vector3(.7f, 0, -2.9f)) + Vector3.up * 0f, -Sea(1070), coatB, trousers, skin);
+            Person(root, "Person_HangingLaundry", line.TransformPoint(new Vector3(.7f, 0, -2.9f)) + Vector3.up * 0f, -Sea(1070), coatWine, trDark, skin);
             log.Append($"laundry@{lp:F0} d={(lp - c[1060]).magnitude:F0}m ");
 
             // 4b) 손 흔드는 사람: 바다 쪽 아래 둑길(1100, 바다 쪽 30m)에서 길을 올려다봄
             // 물에 빠지지 않게: 30m 부터 안쪽으로 줄이며 해면(0.5m) 위 땅을 찾음
-            var wp = c[1100]; for (float d = 18f; d >= 12f; d -= 2f) { wp = c[1100] + Sea(1100) * d; wp.y = Gnd(wp, root); if (wp.y > .5f) break; }
-            Person(root, "Person_Waving", wp, c[1100] - wp, coatC, trousers, skin, swayArms);
+            var wp = c[1120]; for (float d = 10f; d >= 6f; d -= 1f) { wp = c[1120] + Sea(1120) * d; wp.y = Gnd(wp, root); if (wp.y > .5f) break; }
+            Person(root, "Person_Waving", wp, c[1100] - wp, coatCream, trDark, skin, swayArms);   // 2144: 바다 앞 = 흰 옷
             var ws = swayArms.gameObject.AddComponent<ToneSway>(); ws.amplitude = 28f; ws.frequency = .9f; ws.waveLength = 1f; ws.axis = Vector3.forward;
             log.Append($"waver@{wp:F0} ");
 
             // 4c) 자전거 타는 사람(정지 자세, 이동은 다음 과제): 내리막 끝 앞쪽 1125 육지 쪽 30m — 1060 에서 보면 멀리 앞
-            var cp = c[1118] - Sea(1118) * 14f; cp.y = Gnd(cp, root);
-            var rider = Person(root, "Person_Cyclist", cp + Vector3.up * .35f, Fwd(1125), coatA, trousers, skin);
+            var cp = c[1112] - Sea(1112) * 8f; cp.y = Gnd(cp, root);
+            var rider = Person(root, "Person_Cyclist", cp + Vector3.up * .35f, Fwd(1125), coatDark, trDark, skin);
             var rb = new GameObject("Bike").transform; rb.SetParent(rider, false);
             Box(rb, "WheelF", new Vector3(0, -.01f, .55f), new Vector3(.08f, .66f, .66f), iron, Quaternion.Euler(45f, 0, 0));
             Box(rb, "WheelB", new Vector3(0, -.01f, -.55f), new Vector3(.08f, .66f, .66f), iron, Quaternion.Euler(45f, 0, 0));

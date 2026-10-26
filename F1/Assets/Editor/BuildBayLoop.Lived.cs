@@ -224,13 +224,15 @@ public static partial class BuildBayLoop
                     var pos = c + rt * lat; pos.y = c.y + lift + 0.004f;
                     bool patch = id.StartsWith("road_patch");
                     float sc = patch ? 0.7f + (float)rnd.NextDouble() * 0.6f : 1f;
-                    if (Decal(gD, id, pos, yaw + (patch || id == "OilStain" ? (float)rnd.NextDouble() * 40f - 20f : 0f), sc) != null) wear++;
-                    // 땜질 옆 색 다른 긴 포장 띠(가끔, 집 앞 포장 이음 자국)
+                    // 2144(D-149/TONE): road_patch 아틀라스 데칼과 옆 포장 띠는 Look 5 에서 길 위 고정 검은 톱니 조각으로 읽혀 놓지 않는다.
+                    // 난수 소비 순서는 그대로 둬서 다른 생활 소품 배치가 바뀌지 않게 한다.
+                    float yawJ = yaw + (patch || id == "OilStain" ? (float)rnd.NextDouble() * 40f - 20f : 0f);
+                    if (!patch && Decal(gD, id, pos, yawJ, sc) != null) wear++;
+                    // 땜질 옆 색 다른 긴 포장 띠(가끔, 집 앞 포장 이음 자국) — 2144 부터 끔(위와 같은 이유)
                     if (patch && dz >= 1 && rnd.NextDouble() < 0.35)
                     {
                         float len = 3f + (float)rnd.NextDouble() * 5f, side = rnd.Next(2) == 0 ? -1 : 1;
-                        var q = c + rt * side * (lh - 0.55f); q.y = c.y + lift + 0.006f;
-                        Flat2(gD, "PatchStrip", q, new Vector2(0.9f, len), Quaternion.LookRotation(Flat(f)), rnd.Next(2) == 0 ? "PatchDark" : "PatchLight"); wear++;
+                        rnd.Next(2); // 색 고르기 자리(난수 순서 유지용)
                     }
                 }
                 s += step * (0.7f + (float)rnd.NextDouble() * 0.8f);

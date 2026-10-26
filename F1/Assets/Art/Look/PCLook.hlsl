@@ -13,7 +13,7 @@
 //                 · 디더 없음 · 어파인 _PCAffine(기본 0, 아직 미사용 — 옵션 자리만)
 // _PCLook 은 씬의 PCLookScene 이 넣는다 → 그 컴포넌트가 없는 씬(ComplexTrack)은 0 = 지금 판.
 float _PCLook;
-float4 _PCFogColor, _PCFogParams, _PCLight;   // _PCFogParams = (시작 m, 끝 m, 최대 섞임, 그늘 면 배수 — 5b)
+float4 _PCFogColor, _PCFogParams, _PCLight, _PCSkyColor;   // _PCSkyColor = 하늘 위쪽 색(2144: 그늘 틴트에도 씀) · _PCFogParams = (시작 m, 끝 m, 최대 섞임, 그늘 면 배수 — 5b)
 float _PCSnapK, _PCKeep, _PCAffine, _PCField;  // _PCField = 1: 밭(라임 → 바랜 올리브/황토, 5b)           // 렌더러별(MaterialPropertyBlock): 스냅 배수(0=1px) · 1=손픽셀(차·사람 — 블러 제외, 규칙 12)
 float _PCSnapOn, _PCMip;   // 5c 전역(PCLookScene): 정점 스냅 켬 · 1 = 밉맵 읽기(먼 곳 텍셀 크롤링 제거)
 SamplerState sampler_linear_clamp;
@@ -99,6 +99,9 @@ float3 PCShade(float3 amb, float3 sunCol, float ndl, float att, float faceShade)
         float3 tint = sunCol / max(max(sunCol.r, max(sunCol.g, sunCol.b)), 1e-3);
         float3 warm = lerp(float3(1, 1, 1), tint, .35) * float3(1.05, 1.0, .90);
         float3 cool = (_PCFogParams.w > 0 ? _PCFogParams.w : .75) * float3(.90, .97, 1.12);
+        // 2144(TONE 4 "그늘은 하늘빛"): 그늘에 하늘색(밝기로 정규화)을 15% — 오후 청, 노을 보라
+        float3 skN = _PCSkyColor.rgb / max(dot(_PCSkyColor.rgb, float3(.299, .587, .114)), 1e-3);
+        if (_PCSkyColor.a > 0 || dot(_PCSkyColor.rgb, 1) > 0) cool *= lerp(float3(1, 1, 1), clamp(skN, .5, 2), .15);
         float3 face = t > .5 ? warm : cool;
         return _PCLight.rgb * lerp(float3(1, 1, 1), face, saturate(faceShade * 2));
     }
@@ -131,8 +134,14 @@ half3 PCPost(half3 col, float3 wpos, float3 n)
             // 5b: 라임(노란 기 도는 진한 초록) → 바랜 올리브/황토. 밭(_PCField)은 세게, 나머지(풀 등)는 약하게
             half L0 = dot(col, half3(.299, .587, .114));
             half lime = saturate((col.g - max(col.r, col.b)) * 6) * saturate((col.g - col.b) * 3);
-            col = lerp(col, L0 * half3(1.10, 1.0, .66), _PCField > .5 ? .85 : lime * .35);   // 밭 라임은 노랑 쪽(r≈g)이라 색 검출에 안 걸림 → 밭은 무조건
-            col = lerp(dot(col, half3(.299, .587, .114)), col, .66);   // 규칙 4: 세계 채도 ×0.66 (5b 측정: ×0.6 → 장면 0.05~0.10, ×0.8 → 0.18~0.24; 목표 0.12~0.18)
+            // 2144(TONE 4·6): 밭은 진흙 갈색 대신 밝기를 끌어올린 바랜 올리브 ↔ 황금 풀(월드 저주파 얼룩으로 섞음)
+            half Lf = lerp(L0, .30, .5);
+            half3 fieldCol = Lf * lerp(half3(.94, 1.0, .62), half3(1.16, 1.02, .58), pcNoise(wpos.xz * .07 + 1.3));
+            col = _PCField > .5 ? lerp(col, fieldCol, .85) : lerp(col, L0 * half3(1.10, 1.0, .66), lime * .35);   // 밭 라임은 노랑 쪽(r≈g)이라 색 검출에 안 걸림 → 밭은 무조건
+            // 2144(TONE 3 "가까운 것은 또렷"): 채도·대비를 거리로 나눈다. 25m 안 = 채도 ×.86 + 대비 +10%, 60m 밖 = ×.64(먼 것은 안개가 녹임)
+            float nearK = 1 - saturate((distance(wpos, _WorldSpaceCameraPos) - 25) / 35);
+            col = lerp(dot(col, half3(.299, .587, .114)), col, lerp(.64, .86, nearK));   // 규칙 4: 세계 채도 (5b 측정: ×0.6 → 장면 0.05~0.10, ×0.8 → 0.18~0.24; 목표 0.12~0.18)
+            col = max(0, (col - .18) * (1 + .10 * nearK) + .18);
             // 규칙 3 "평평 금지": 0.3~1.5m 월드 얼룩 ±5%(텍스처 없는 도로·단색 면도 저주파 std 3 이상)
             float3 an = abs(n); float2 p = an.y > .5 ? wpos.xz : (an.x > an.z ? wpos.zy : wpos.xy);
             col *= 1 + (pcNoise(p * 1.3) * .55 + pcNoise(p * .45 + 3.7) * .45 - .5) * .10;

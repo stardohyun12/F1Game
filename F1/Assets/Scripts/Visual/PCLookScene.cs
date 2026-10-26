@@ -26,9 +26,9 @@ public sealed class PCLookScene : MonoBehaviour
     static readonly Tod[] Table =
     {
         new Tod { fog = new Color(0.88f, 0.90f, 0.92f), sky = new Color(0.60f, 0.72f, 0.86f), s = 35, e = 380, max = .62f, shade = .78f, light = new Color(1.30f, 1.30f, 1.30f), pool = 0f },    // 아침
-        new Tod { fog = new Color(0.80f, 0.88f, 0.96f), sky = new Color(0.44f, 0.62f, 0.86f), s = 80, e = 600, max = .50f, shade = .75f, light = new Color(1.40f, 1.38f, 1.34f), pool = 0f },    // 오후
+        new Tod { fog = new Color(0.80f, 0.88f, 0.96f), sky = new Color(0.44f, 0.62f, 0.86f), s = 40, e = 600, max = .55f, shade = .75f, light = new Color(1.34f, 1.32f, 1.28f), pool = 0f },    // 오후 (2144: 헤이즈 40m 부터·근경 흰 날림 줄이게 빛 -4%)
         // 2124(D-150 TONE 4 「돌아오는 길 × 노을」): 안개 주황 ↓·시작 멀리·최대 ↓ → 근경 또렷, 바다 회청색 남음. 그늘 .72→.64 → 따뜻한 면/차가운 그늘 대비.
-        new Tod { fog = new Color(0.95f, 0.80f, 0.70f), sky = new Color(0.54f, 0.58f, 0.76f), s = 90, e = 620, max = .50f, shade = .64f, light = new Color(1.40f, 1.16f, 0.98f), pool = .7f },   // 노을
+        new Tod { fog = new Color(1.00f, 0.78f, 0.52f), sky = new Color(0.60f, 0.56f, 0.74f), s = 40, e = 620, max = .55f, shade = .70f, light = new Color(1.42f, 1.20f, 0.96f), pool = .7f },   // 노을 (2144: 지평선 금빛·위 라벤더, 그늘은 하늘 보라 틴트)
         new Tod { fog = new Color(0.40f, 0.46f, 0.66f), sky = new Color(0.16f, 0.21f, 0.42f), s = 30, e = 240, max = .75f, shade = .80f, light = new Color(0.68f, 0.73f, 0.90f), pool = 1f },    // 초저녁
     };
 
@@ -140,6 +140,8 @@ public sealed class PCLookScene : MonoBehaviour
         {
             if (r is ParticleSystemRenderer || r.sharedMaterial == null) continue;
             bool person = r.GetComponentInParent<Resident>() != null || r.GetComponentInParent<Pedestrian>() != null;
+            // 2144: 톤 구간 임시 사람(BuildToneSlice — Person_* / *_Shoulder 박스)도 손픽셀 취급 → 블러·채도 감쇠 제외, 실루엣 대비 유지
+            var pt = r.transform.parent; if (!person && pt != null && (pt.name.StartsWith("Person_") || pt.name.EndsWith("_Shoulder"))) person = true;
             bool isCar = car != null && r.transform.IsChildOf(car.transform);
             var ext = r.bounds.size; bool small = Mathf.Max(ext.x, Mathf.Max(ext.y, ext.z)) < 2f;
             float k = on && (person || small || isCar) ? 2f : 0f, keep = on && (person || isCar) ? 1f : 0f;
