@@ -1,0 +1,17 @@
+seam ends 40 cands 13 {'tomo': 11, 'camo': 21, 'posi': 8}
+joined-early {'crossings': 3, 'tees': 17}
+shortcuts [('garage', 'top_house', 'posi_1425727239_388'), ('garage', 'hill_field', None), ('garage', 'lighthouse', None), ('mart', 'top_house', None)]
+relocate top_house [-295.4, 357.9] None [('garage', 'top_house', 1627, 0, [])]
+relocate hill_field [181.4, 5.7] None [('garage', 'top_house', 1627, 0, []), ('garage', 'hill_field', 330, 0, [])]
+round 0 [('garage→tea', 0.72), ('garage→top_house', 1.06), ('garage→lighthouse', 0.86), ('garage→hill_field', 1.0), ('mart→top_house', 1.0)]
+chain garage top_house {'pair': 'garage→top_house', 'id': 'sc_garage_top_house_0', 'end': [-8.8, 198.2], 'ways': 1, 'm': 91, 'base': 1627, 'via': 946, 'avgGrade': 0.185} dbg [('cand', 895, 168, 0.215), ('cand', 895, 167, 0.217), ('cand', 897, 162, 0.221), ('cand', 946, 91, 0.185)]
+chain garage lighthouse None dbg [('cand', 895, 167, 0.217), ('cand', 897, 162, 0.221), ('cand', 946, 91, 0.185), ('garage', 'lighthouse', 505, 401, 910)]
+chain garage hill_field None dbg [('cand', 897, 162, 0.221), ('cand', 946, 91, 0.185), ('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442)]
+chain mart top_house None dbg [('cand', 946, 91, 0.185), ('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442), ('mart', 'top_house', 927, 429, 855)]
+round 1 [('garage→tea', 0.72), ('garage→top_house', 0.76), ('garage→lighthouse', 0.86), ('garage→hill_field', 1.0), ('mart→top_house', 0.7)]
+chain garage lighthouse None dbg [('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442), ('mart', 'top_house', 927, 429, 855), ('garage', 'lighthouse', 505, 401, 910)]
+chain garage hill_field None dbg [('garage', 'hill_field', 330, 401, 442), ('mart', 'top_house', 927, 429, 855), ('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442)]
+round 2 [('garage→tea', 0.72), ('garage→top_house', 0.76), ('garage→lighthouse', 0.86), ('garage→hill_field', 1.0), ('mart→top_house', 0.7)]
+chain garage lighthouse None dbg [('mart', 'top_house', 927, 429, 855), ('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442), ('garage', 'lighthouse', 505, 401, 910)]
+chain garage hill_field None dbg [('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442), ('garage', 'lighthouse', 505, 401, 910), ('garage', 'hill_field', 330, 401, 442)]
+joined {'crossings': 0, 'tees': 13}

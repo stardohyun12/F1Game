@@ -83,6 +83,96 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         Debug.Log($"[ArcadeCarController] Engine restored: maxSpeedMul={maxSpeedMul:F2} accelMul={accelMul:F2}");
     }
 
+    // ── 주행 방식 비교판 (과제 0506) — 기본 Box, F9 로 Wheels 와 바꿔 탄다 ──
+    public enum DriveMode { Box, Wheels }
+    [Header("주행 방식 비교판 (0506) — F9 전환")]
+    [Tooltip("Box = 지금(차체 상자가 바닥을 미끄러짐). Wheels = 바퀴 4개 레이캐스트 서스펜션, 차체는 바닥에서 띄움.")]
+    [SerializeField] private DriveMode driveMode = DriveMode.Box;
+    [Tooltip("바퀴 반지름(월드 m). 연석 모서리를 굴러 넘는 크기.")]
+    [SerializeField] private float wheelRadius = 0.28f;
+    [Tooltip("바퀴 하나 스프링(N/m). 차 질량 100 기준 정지 눌림 ≈ 질량×9.81/4/이 값.")]
+    [SerializeField] private float wheelSpring = 5000f;
+    [Tooltip("바퀴 하나 댐퍼(N·s/m).")]
+    [SerializeField] private float wheelDamper = 560f;
+    [Tooltip("Wheels 때 차체 콜라이더 바닥을 이만큼(월드 m) 띄움 — 모서리 박힘 방지.")]
+    [SerializeField] private float bodyLift = 0.25f;
+    [Tooltip("바퀴 위치 = 차체 상자 반폭·반길이에 곱하는 비율.")]
+    [SerializeField] private Vector2 wheelInset = new Vector2(0.8f, 0.72f);
+    [Tooltip("Wheels 구름 저항(m/s²). Box 는 상자 바닥 마찰로 이만큼 덜 나간다 — 0→60 시간을 맞추는 값.")]
+    [SerializeField] private float wheelRollDrag = 3.2f;
+    [Tooltip("이보다 가파른 면(법선 y)은 바퀴가 밟지 않음 — 벽 윗모서리에 튀어 오르는 것 방지.")]
+    [SerializeField] private float wheelMinNormalY = 0.35f;
+    [Tooltip("바퀴 하나 힘 상한 = 질량 × 이 값(m/s²).")]
+    [SerializeField] private float wheelMaxAccel = 25f;
+
+    public DriveMode Mode => driveMode;
+    public int WheelsGrounded { get; private set; }
+    /// <summary>바퀴별 눌림(m, 0 = 공중). 화물·QA 측정용.</summary>
+    public readonly float[] WheelCompression = new float[4];
+    private BoxCollider bodyBox;
+    private Vector3 bodyBoxCenter0, bodyBoxSize0;
+    private DriveMode appliedMode = DriveMode.Box;
+    private readonly float[] wheelPrevComp = new float[4];
+
+    public void SetDriveMode(DriveMode m) { driveMode = m; ApplyDriveMode(); }
+
+    void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.f9Key.wasPressedThisFrame)
+        {
+            SetDriveMode(driveMode == DriveMode.Box ? DriveMode.Wheels : DriveMode.Box);
+            Debug.Log($"[ArcadeCarController] 주행 방식 → {driveMode} (F9)");
+        }
+        else if (driveMode != appliedMode) ApplyDriveMode(); // 인스펙터에서 바꾼 경우
+    }
+
+    void ApplyDriveMode()
+    {
+        if (bodyBox == null) return;
+        appliedMode = driveMode;
+        for (int i = 0; i < 4; i++) { WheelCompression[i] = 0f; wheelPrevComp[i] = 0f; }
+        if (driveMode == DriveMode.Box) { bodyBox.center = bodyBoxCenter0; bodyBox.size = bodyBoxSize0; return; }
+        // 상자 바닥만 올린다(윗면은 그대로) → 바퀴가 받치는 높이는 Box 때 바닥 높이와 같게 맞춘다.
+        float liftLocal = Mathf.Min(bodyLift / Mathf.Max(0.01f, transform.lossyScale.y), bodyBoxSize0.y * 0.6f);
+        bodyBox.center = bodyBoxCenter0 + Vector3.up * (liftLocal * 0.5f);
+        bodyBox.size = new Vector3(bodyBoxSize0.x, bodyBoxSize0.y - liftLocal, bodyBoxSize0.z);
+    }
+
+    /// <summary>바퀴 4개: 차체 안 높은 곳에서 바퀴 반지름 구를 아래로 쏘고, 맞으면 스프링·댐퍼 힘을 접지 법선 방향으로.</summary>
+    bool ApplyWheels()
+    {
+        float sy = transform.lossyScale.y;
+        float bottomLocal = bodyBoxCenter0.y - bodyBoxSize0.y * 0.5f;          // Box 때 바닥면 = 바퀴가 땅에 닿을 높이
+        float startAbove = bodyLift + wheelRadius + 0.1f;                       // 바닥면 위 구 중심 시작 높이(월드)
+        float travelEq = startAbove - wheelRadius;                              // 평형 때 구가 내려간 거리
+        float travelRest = travelEq + rb.mass * -Physics.gravity.y / 4f / Mathf.Max(1f, wheelSpring);
+        int grounded = 0;
+        float hx = bodyBoxSize0.x * 0.5f * wheelInset.x, hz = bodyBoxSize0.z * 0.5f * wheelInset.y;
+        for (int i = 0; i < 4; i++)
+        {
+            var local = new Vector3(bodyBoxCenter0.x + (i % 2 == 0 ? -hx : hx), bottomLocal + startAbove / sy, bodyBoxCenter0.z + (i < 2 ? hz : -hz));
+            Vector3 start = transform.TransformPoint(local);
+            float comp = 0f;
+            if (Physics.SphereCast(start, wheelRadius, -transform.up, out var hit, travelRest + 0.05f, groundLayer, QueryTriggerInteraction.Ignore)
+                && hit.distance < travelRest && hit.normal.y >= wheelMinNormalY && !hit.collider.attachedRigidbody)
+            {
+                comp = travelRest - hit.distance;
+                float compVel = (comp - wheelPrevComp[i]) / Time.fixedDeltaTime;
+                float f = Mathf.Clamp(wheelSpring * comp + wheelDamper * compVel, 0f, rb.mass * wheelMaxAccel);
+                rb.AddForceAtPosition(hit.normal * f, start - transform.up * hit.distance, ForceMode.Force);
+                grounded++;
+            }
+            wheelPrevComp[i] = comp; WheelCompression[i] = comp;
+        }
+        WheelsGrounded = grounded;
+        if (grounded > 0 && wheelRollDrag > 0f)
+        {
+            Vector3 hv = Vector3.ProjectOnPlane(rb.linearVelocity, transform.up);
+            if (hv.sqrMagnitude > 0.01f) rb.AddForce(-hv.normalized * Mathf.Min(wheelRollDrag, hv.magnitude / Time.fixedDeltaTime), ForceMode.Acceleration);
+        }
+        return grounded > 0;
+    }
+
     [Header("Ground Check")]
     [SerializeField] private float groundCheckDistance = 1.5f;
     [SerializeField] private LayerMask groundLayer = ~0;
@@ -130,6 +220,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         tireSystem = GetComponent<TireSystem>();
         if (tireSystem == null) tireSystem = Services.Tires as TireSystem;
         RecalculateForces();
+        bodyBox = GetComponent<BoxCollider>();
+        if (bodyBox != null) { bodyBoxCenter0 = bodyBox.center; bodyBoxSize0 = bodyBox.size; }
+        ApplyDriveMode();
     }
 
     /// <summary>
@@ -188,7 +281,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         // 0.5m 위에서 쏘고 distance 보정 (+0.5).
         Vector3 groundOrigin = transform.position + Vector3.up * 0.5f;
         // 트리거(DeliveryPoint SphereCollider 등) 무시 — 트리거 위에서 grounded 오판 차단.
-        isGrounded = Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
+        isGrounded = driveMode == DriveMode.Wheels && bodyBox != null
+            ? ApplyWheels()
+            : Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
         IsDrifting = (handbrakeAction != null && handbrakeAction.IsPressed()) || qaForceHandbrake;
         RecordSafePoint();
 
