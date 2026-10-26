@@ -1,0 +1,205 @@
+diff --git a/F1/Assets/Editor/BuildBayLoop.Gray.cs b/F1/Assets/Editor/BuildBayLoop.Gray.cs
+index 78e263d1..44918071 100644
+--- a/F1/Assets/Editor/BuildBayLoop.Gray.cs
++++ b/F1/Assets/Editor/BuildBayLoop.Gray.cs
+@@ -15,7 +15,7 @@
+ public static partial class BuildBayLoop
+ {
+     public const string TownV6Scene = "Assets/Scenes/Map_TownV6.unity";
+-    static string TownV6Json => System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/map/town-v6b.json"));
++    static string TownV6Json => System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/map/town-v6h.json"));   // 0640: v6b → v6h(높이 최종 · 갈림목 기울어진 판 · 판 옆 띠 bank)
+ 
+     [MenuItem("PitCrew/Map/Build Town V6 Gray (D-157)")]
+     public static void MenuTownV6() { Debug.Log("[TownV6] " + Build(TownV6Json, TownV6Scene)); }
+@@ -70,7 +70,12 @@ static string BuildGray(Dictionary<string, object> plan, string scenePath)
+             if (g.pts.Count >= 2) rs.Add(g);
+         }
+         var ends = DeadEnds(rs, lg);   // v6c(과제 0214-3): 이음매 잘림은 잇고(rs 에 추가 → 지형 마감·RoadSurface 도 같이), 진짜 막다른 끝은 이유를 둔다
+-        lg.Add(SmoothProfiles(rs));
++        // v6h(과제 0640): 합성기가 높이를 최종으로 풀었다(profileFinal) → 평면 완화·빌더 갈림목 판·경사 완화를 건너뛰고 json 판(junctions[])을 그대로 깐다
++        var v6e = plan.TryGetValue("v6e", out var vo) ? vo as Dictionary<string, object> : null;
++        bool final = v6e != null && v6e.TryGetValue("profileFinal", out var pf) && pf is bool pfb && pfb;
++        lg.Add(SmoothProfiles(rs, final));
++        plates.Clear(); banks.Clear();
++        if (final && plan.TryGetValue("junctions", out var jo)) lg.Add(ReadPlates((List<object>)jo, rs));
+ 
+         gH = new float[GN, GN];
+         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) gH[i, j] = CpAt(GX0 + i * GStep, GZ0 + j * GStep);
+@@ -107,6 +112,17 @@ static string BuildGray(Dictionary<string, object> plan, string scenePath)
+             gH[i, j] = Mathf.Lerp(bestY[i, j], gH[i, j], t);
+             if (best[i, j] > shoulder) best[i, j] = 1e9f;   // 녹이는 띠는 걷는 길 마감이 덮어도 된다
+         }
++        // v6h(과제 0640): 판 안 격자 = 판 평면(어깨와 같은 −4.5 cm)
++        foreach (var pl in plates)
++        {
++            int i0 = Mathf.Max(0, Mathf.FloorToInt((pl.minX - GX0) / GStep)), i1 = Mathf.Min(GN - 1, Mathf.CeilToInt((pl.maxX - GX0) / GStep));
++            int j0 = Mathf.Max(0, Mathf.FloorToInt((pl.minZ - GZ0) / GStep)), j1 = Mathf.Min(GN - 1, Mathf.CeilToInt((pl.maxZ - GZ0) / GStep));
++            for (int i = i0; i <= i1; i++) for (int j = j0; j <= j1; j++)
++            {
++                float x = GX0 + i * GStep, z = GZ0 + j * GStep; if (!pl.In(x, z)) continue;
++                gH[i, j] = pl.Y(x, z) + RoadColLift - .045f; best[i, j] = 0f;
++            }
++        }
+         // 걷는 길(골목·계단)은 지형 위로 묻히지 않게만
+         foreach (var r in rs.Where(x => !x.Car)) foreach (var p in r.pts)
+         {
+@@ -127,7 +143,7 @@ static string BuildGray(Dictionary<string, object> plan, string scenePath)
+             string key = r.kind == "stairs" ? "Stairs" : r.kind == "main" ? "Main" : rough ? "Stone" : "Village";
+             Color c = key switch { "Main" => new Color(.45f, .45f, .47f), "Village" => new Color(.72f, .72f, .70f), "Stone" => new Color(.72f, .56f, .30f), _ => new Color(1f, .45f, .12f) };
+             float lift = r.kind == "main" ? .06f : r.Car ? .04f : .02f;   // 겹친 갈림목에서 위계가 위로
+-            var go = Ribbon(roadsT, "ROAD_" + r.id, r.pts, r.width, lift, GM(key, c), r.Car);
++            var go = Ribbon(roadsT, "ROAD_" + r.id, r.pts, r.width, lift, GM(key, c), r.Car, r);
+             if (!r.Car) continue;
+             if (rough) StoneBumps(go.transform, r);
+             carN++; for (int i = 1; i < r.pts.Count; i++) carM += Fl(r.pts[i] - r.pts[i - 1]).magnitude;
+@@ -135,6 +151,7 @@ static string BuildGray(Dictionary<string, object> plan, string scenePath)
+             rsf.centerline = r.pts.Select(p => p + Vector3.up * RoadColLift).ToArray(); rsf.closed = false; EditorUtility.SetDirty(rsf);
+         }
+         lg.Add($"길 {rs.Count}(차길 {carN}개 {carM / 1000f:F1}km)");
++        PlateMeshes(roadsT, lg);
+         DeadEndMarks(top, ends);
+         Piers(top, (Dictionary<string, object>)plan["sea"], lg);
+ 
+@@ -248,15 +265,17 @@ static List<DeadEnd> DeadEnds(List<GRoad> rs, List<string> lg)
+     ///  ② 갈림목 = 평평한 판: 다른 차길 위에 얹힌 끝(T) · 가로지름(X, 1.2 m 안) · 끝끼리 맞닿음 — 높이 차 1.2 m 넘으면 겹쳐 지나가는 다른 층이라 묶지 않는다 → 그 자리 둘레(큰 쪽 반폭+1 m)를
+     ///     참여한 길 전부 같은 높이(평균)로 눌러 고정한다.
+     ///  ③ 경사 변화 제한: 1 m 마다 경사가 바뀌는 양을 2.5 %/m 이하로(고정점 사이를 반복 완화) — 볼록·오목이 긴 곡선이 된다.
+-    static string SmoothProfiles(List<GRoad> rs)
++    static string SmoothProfiles(List<GRoad> rs, bool final = false)
+     {
+         var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList();
++        int dropped = 0;
+         foreach (var r in car)
+         {
+             var q = new List<Vector3> { r.pts[0] };
+             for (int i = 1; i < r.pts.Count - 1; i++) if (Fl(r.pts[i] - q[q.Count - 1]).magnitude >= .3f) q.Add(r.pts[i]);
+             if (Fl(r.pts[r.pts.Count - 1] - q[q.Count - 1]).magnitude < .3f && q.Count > 1) q.RemoveAt(q.Count - 1);
+-            q.Add(r.pts[r.pts.Count - 1]); r.pts = q;
++            q.Add(r.pts[r.pts.Count - 1]); dropped += r.pts.Count - q.Count; r.pts = q;
++            if (final) continue;   // v6h(과제 0640): 높이·평면은 합성기 값 그대로 — 0.3 m 보다 촘촘한 점(리본 꼬임)만 지운다
+             for (int pass = 0; pass < 2; pass++)
+             {
+                 var o = r.pts.ToArray(); int n = o.Length;
+@@ -267,6 +286,7 @@ static string SmoothProfiles(List<GRoad> rs)
+                 }
+             }
+         }
++        if (final) return $"높이 그대로(profileFinal) · 0.3 m 미만 촘촘한 점 {dropped}개 지움";
+         System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 1; i + 1 < p.Count; i++) { float d0 = Fl(p[i] - p[i - 1]).magnitude, d1 = Fl(p[i + 1] - p[i]).magnitude; if (d0 < .3f || d1 < .3f) continue; m = Mathf.Max(m, Mathf.Abs(((p[i + 1].y - p[i].y) / d1 - (p[i].y - p[i - 1].y) / d0) / ((d0 + d1) * .5f))); } return m; };
+         float maxBefore = car.Max(r => brk(r.pts));
+ 
+@@ -334,6 +354,96 @@ void AddJ(GRoad a, int ia, GRoad b, int ib)
+         return $"차길 다듬기 {car.Count}개 · 갈림목 판 {juncs.Count} · 경사변화 최대 {maxBefore * 100:F0}→{maxAfter * 100:F1}%/m (반복 {iters})";
+     }
+ 
++    // ------------------------------------------------------------------ v6h(과제 0640): 갈림목 = json 의 기울어진 판
++    /// 판 높이 y(x,z) = y + grad·(xz − pos). 판 안 차길 knots 는 이 평면 위에 있다(mapgen 0540).
++    /// 팔 끝 edge 에서 띠 가로 높이 = 중심 + bank·오프셋(왼쪽 법선 +), outward 쪽으로 bankFade 동안 0 까지.
++    class Plate
++    {
++        public string id; public Vector3 c; public Vector2 g; public List<Vector3> poly; public HashSet<string> roads; public float minX, maxX, minZ, maxZ;
++        public float Y(float x, float z) => c.y + g.x * (x - c.x) + g.y * (z - c.z);
++        public bool In(float x, float z)
++        {
++            if (x < minX || x > maxX || z < minZ || z > maxZ) return false;
++            bool ins = false;
++            for (int i = 0, j = poly.Count - 1; i < poly.Count; j = i++)
++                if ((poly[i].z > z) != (poly[j].z > z) && x < (poly[j].x - poly[i].x) * (z - poly[i].z) / (poly[j].z - poly[i].z) + poly[i].x) ins = !ins;
++            return ins;
++        }
++    }
++    class Bank { public int i0, dir; public float bank, fade; }
++    static readonly List<Plate> plates = new List<Plate>();
++    static readonly Dictionary<GRoad, List<Bank>> banks = new Dictionary<GRoad, List<Bank>>();
++    static readonly Dictionary<GRoad, float[]> cumLen = new Dictionary<GRoad, float[]>();
++
++    static string ReadPlates(List<object> js, List<GRoad> rs)
++    {
++        var byId = rs.GroupBy(r => r.id).ToDictionary(g => g.Key, g => g.First()); cumLen.Clear();
++        int nArm = 0, miss = 0;
++        foreach (Dictionary<string, object> j in js)
++        {
++            var pos = (List<object>)j["pos"]; var gr = (List<object>)j["grad"];
++            var pl = new Plate { id = (string)j["id"], c = new Vector3(F(pos[0]), F(j["y"]), F(pos[1])), g = new Vector2(F(gr[0]), F(gr[1])),
++                poly = ((List<object>)j["poly"]).Cast<List<object>>().Select(p => new Vector3(F(p[0]), F(p[2]), F(p[1]))).ToList(),
++                roads = new HashSet<string>(((List<object>)j["roads"]).Cast<string>()) };
++            pl.minX = pl.poly.Min(p => p.x); pl.maxX = pl.poly.Max(p => p.x); pl.minZ = pl.poly.Min(p => p.z); pl.maxZ = pl.poly.Max(p => p.z);
++            plates.Add(pl);
++            float fade = j.TryGetValue("bankFade", out var bf) ? F(bf) : 8f;
++            foreach (Dictionary<string, object> a in (List<object>)j["arms"])
++            {
++                nArm++;
++                if (!byId.TryGetValue((string)a["road"], out var r)) { miss++; continue; }
++                var e = (List<object>)a["edge"]; var ep = new Vector2(F(e[0]), F(e[1]));
++                int bi = -1; float bd = 2f;   // edgeIndex 는 knots 번호 — 1 m 로 다시 깐 pts 와 안 맞아 edge 좌표로 찾는다
++                for (int i = 0; i < r.pts.Count; i++) { float d = (new Vector2(r.pts[i].x, r.pts[i].z) - ep).magnitude; if (d < bd) { bd = d; bi = i; } }
++                if (bi < 0) { miss++; continue; }
++                if (!banks.TryGetValue(r, out var bl)) banks[r] = bl = new List<Bank>();
++                bl.Add(new Bank { i0 = bi, dir = System.Convert.ToInt32(a["outward"]) >= 0 ? 1 : -1, bank = F(a["bank"]), fade = fade });
++                if (!cumLen.ContainsKey(r)) { var cl = new float[r.pts.Count]; for (int i = 1; i < cl.Length; i++) cl[i] = cl[i - 1] + Fl(r.pts[i] - r.pts[i - 1]).magnitude; cumLen[r] = cl; }
++            }
++        }
++        return $"갈림목 판 {plates.Count}(json) · 팔 {nArm} 중 bank 못 붙임 {miss}";
++    }
++
++    /// 띠 꼭짓점 높이: 그 길이 속한 판 안이면 판 평면, 판 옆 bankFade 안이면 중심 + bank·오프셋·(1 − s/fade)
++    static float VY(GRoad r, int i, Vector3 v, float off, float lf)
++    {
++        if (r == null || plates.Count == 0) return v.y;
++        float cy = r.pts[i].y;
++        foreach (var p in plates) if (p.roads.Contains(r.id) && p.In(v.x, v.z)) { float py = p.Y(v.x, v.z); if (Mathf.Abs(py - cy) < 1.2f) return py + lf; }
++        if (!banks.TryGetValue(r, out var bl)) return v.y;
++        var cl = cumLen[r]; float bestS = 1e9f, add = 0f;
++        foreach (var b in bl)
++        {
++            if ((i - b.i0) * b.dir < 0) continue;
++            float s = Mathf.Abs(cl[i] - cl[b.i0]); if (s >= b.fade || s >= bestS) continue;
++            bestS = s; add = b.bank * off * (1f - s / b.fade);
++        }
++        return v.y + add;
++    }
++
++    static void PlateMeshes(Transform parent, List<string> lg)
++    {
++        if (plates.Count == 0) return;
++        var mat = GM("Village", new Color(.72f, .72f, .70f)); int n = 0;
++        foreach (var pl in plates)
++        {
++            var poly = pl.poly.ToList(); if (poly.Count < 3) continue;
++            var p2 = poly.Select(p => new Vector2(p.x, p.z)).ToList();
++            if (Area(p2) < 0) { poly.Reverse(); p2.Reverse(); }
++            var tris = EarClip(p2).ToList();
++            Mesh M(float lf)
++            {
++                var m = new Mesh(); m.SetVertices(poly.Select(p => new Vector3(p.x, pl.Y(p.x, p.z) + lf, p.z)).ToList());
++                var t = new List<int>(); foreach (var tr in tris) { t.Add(tr.x); t.Add(tr.z); t.Add(tr.y); }
++                m.SetTriangles(t, 0); m.RecalculateNormals(); m.RecalculateBounds(); return m;
++            }
++            var go = MeshGo(parent, "ROAD_PLATE_" + pl.id, M(.05f), mat, false);   // 이름 ROAD_ = 측정 도구가 노면으로 센다
++            var cm = M(RoadColLift); cm.name = go.name + "_col"; string mp = grayMatDir + "/Mesh_" + cm.name + ".asset"; AssetDatabase.DeleteAsset(mp); AssetDatabase.CreateAsset(cm, mp);
++            go.AddComponent<MeshCollider>().sharedMesh = cm; n++;
++        }
++        lg.Add($"판 메시 {n}");
++    }
++
+     static void DeadEndMarks(Transform top, List<DeadEnd> ends)
+     {
+         var t = new GameObject("DeadEnds").transform; t.SetParent(top);
+@@ -420,7 +530,7 @@ static void TerrainGray(Transform parent)
+     /// 보이는 띠는 위계 들림 그대로 + 양 가장자리에서 0.6 m 내려가는 치마(콜라이더 없음) — 지형과 틈이 보이지 않게.
+     const float RoadColLift = .04f;
+ 
+-    static GameObject Ribbon(Transform parent, string name, List<Vector3> pts, float width, float lift, Material mat, bool collider)
++    static GameObject Ribbon(Transform parent, string name, List<Vector3> pts, float width, float lift, Material mat, bool collider, GRoad road = null)
+     {
+         Mesh Band(float lf, bool skirt)
+         {
+@@ -429,7 +539,7 @@ Mesh Band(float lf, bool skirt)
+             {
+                 var f = Fl(pts[Mathf.Min(i + 1, n - 1)] - pts[Mathf.Max(i - 1, 0)]).normalized;
+                 var rt = new Vector3(f.z, 0, -f.x); var c = pts[i] + Vector3.up * lf;
+-                v.Add(c - rt * h); v.Add(c + rt * h);
++                var vl = c - rt * h; var vr = c + rt * h; vl.y = VY(road, i, vl, h, lf); vr.y = VY(road, i, vr, -h, lf); v.Add(vl); v.Add(vr);   // 0640: 왼쪽 법선(−dz,dx) 쪽 = +
+                 if (i > 0) { int a = (i - 1) * 2; t.AddRange(new[] { a, a + 2, a + 1, a + 1, a + 2, a + 3 }); }
+             }
+             if (skirt)
