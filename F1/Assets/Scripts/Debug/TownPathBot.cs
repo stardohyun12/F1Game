@@ -34,7 +34,7 @@ public class TownPathBot : MonoBehaviour
         var roads = FindObjectsByType<RoadSurface>(FindObjectsSortMode.None).Where(r => r.centerline != null && r.centerline.Length >= 2).OrderBy(r => r.roadId).ToList();
         if (mode == "cover") yield return Cover(roads); else yield return Pairs(roads);
         Time.timeScale = 1f; Set(Vector2.zero);
-        string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, $"../../docs/qa/tmp/townv6-bot-{mode}.txt"));
+        string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, $"../../docs/qa/tmp/townv6-bot-{mode}{(Only != "" ? "-only" : "")}.txt"));
         System.IO.File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
         Status = "done " + mode + " → " + path; Debug.Log("[TownPathBot] " + Status);
     }
@@ -54,13 +54,29 @@ public class TownPathBot : MonoBehaviour
         return g;
     }
 
-    public class RunResult { public string result = "ok"; public float time, maxDev, dmg, peakLong, peakLat; public Vector3 at; public int stalls; }
+    /// 비면 전부, 아니면 roadId 가 이 중 하나를 포함하는 길만(쉼표). 실패 재현용.
+    public static string Only = "";
+
+    public class RunResult { public string result = "ok"; public float time, maxDev, dmg, peakLong, peakLat; public Vector3 at; public int stalls; public string why = ""; }
+
+    /// 멈춘 순간 진단: 차 앞뒤 기울기·바퀴 아래 지면·차 몸에 닿은 콜라이더
+    string Why(float thr)
+    {
+        var t = car.transform; var hit = new List<string>();
+        foreach (var c in car.GetComponentsInChildren<Collider>()) if (!c.isTrigger)
+        {
+            var b = c.bounds; foreach (var o in Physics.OverlapBox(b.center, b.extents + Vector3.one * .05f, Quaternion.identity, ~0, QueryTriggerInteraction.Ignore))
+                if (o.GetComponentInParent<ArcadeCarController>() == null && Physics.ComputePenetration(c, c.transform.position, c.transform.rotation, o, o.transform.position, o.transform.rotation, out var dir, out var dist))
+                    hit.Add($"{o.name}({dir.x:F1},{dir.y:F1},{dir.z:F1})");
+        }
+        return $"pitch{-t.eulerAngles.x:F0} upY{t.up.y:F2} thr{thr:F2} hit[{string.Join(" ", hit.Distinct().Take(4))}]";
+    }
 
     /// 순수 추종: 앞 4+0.5v m 점을 보고 조향, 굽이 R 로 목표속도 √(5.8R) (기획 리듬 모델 그대로), 상한 22 m/s.
     IEnumerator Drive(List<Vector3> pts, List<float> half, RunResult res)
     {
         var cum = new float[pts.Count]; for (int i = 1; i < pts.Count; i++) cum[i] = cum[i - 1] + Vector3.Distance(pts[i], pts[i - 1]);
-        float len = cum[pts.Count - 1], timeout = len / 3f + 20f, t0 = Time.time, slow = 0f, off = 0f; int idx = 0;
+        float len = cum[pts.Count - 1], timeout = len / 3f + 20f, t0 = Time.time, slow = 0f, off = 0f, lastThr = 0f; int idx = 0;
         while (true)
         {
             yield return new WaitForFixedUpdate();
@@ -77,10 +93,10 @@ public class TownPathBot : MonoBehaviour
             if (slow > 4f)
             {
                 var ahead = pts.Skip(idx).Take(12).ToList();
-                res.result = Grade(ahead) > .10f ? "못오름" : "끼임"; break;
+                res.result = Grade(ahead) > .10f ? "못오름" : "끼임"; res.why = Why(lastThr); break;
             }
             if (dev > half[idx] + 3f) off += Time.fixedDeltaTime; else off = 0f;
-            if (off > 1f) { res.result = "이탈"; break; }
+            if (off > 1f) { res.result = "이탈"; res.why = Why(lastThr); break; }
             // 조향
             float look = 4f + v * .5f; int ti = idx; while (ti < pts.Count - 1 && cum[ti] - cum[idx] < look) ti++;
             var fw = car.transform.forward; fw.y = 0; var to = pts[ti] - p; to.y = 0;
@@ -95,7 +111,7 @@ public class TownPathBot : MonoBehaviour
             float R = maxAng < .5f ? 999f : 5f / (maxAng * Mathf.Deg2Rad);
             float vt = Mathf.Clamp(Mathf.Sqrt(5.8f * R), 4f, 22f);
             float thr = Mathf.Clamp((vt - v) * .4f, -1f, 1f); if (v < 3f) thr = Mathf.Max(thr, .8f);
-            Set(new Vector2(steer, thr));
+            Set(new Vector2(steer, thr)); lastThr = thr;
         }
         Set(Vector2.zero);
     }
@@ -109,6 +125,7 @@ public class TownPathBot : MonoBehaviour
         foreach (var r in roads)
         {
             n++;
+            if (Only != "" && !Only.Split(',').Any(s => r.roadId.Contains(s))) continue;
             var pts = r.centerline.ToList(); float len = 0; for (int i = 1; i < pts.Count; i++) len += Vector3.Distance(pts[i], pts[i - 1]);
             if (len < 8f) { skip++; continue; }
             float g = Grade(pts);
@@ -122,7 +139,7 @@ public class TownPathBot : MonoBehaviour
                 yield return Drive(P, half, res);
                 if (res.result == "ok") ok++; else fail++;
                 counts[res.result] = counts.TryGetValue(res.result, out var c) ? c + 1 : 1;
-                sb.AppendLine($"{r.roadId}\t{(dir > 0 ? "+" : "-")}\t{len:F0}\t{g * 100:F1}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F1},{res.at.z:F0}");
+                sb.AppendLine($"{r.roadId}\t{(dir > 0 ? "+" : "-")}\t{len:F0}\t{g * 100:F1}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F1},{res.at.z:F0}\t{res.why}");
             }
         }
         sb.Insert(0, $"# cover: 길 {roads.Count} 주행 {ok + fail} 성공 {ok} 실패 {fail} 짧아서 건넘(<8m) {skip} | " + string.Join(" ", counts.Select(kv => kv.Key + "=" + kv.Value)) + "\n");

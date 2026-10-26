@@ -76,7 +76,8 @@ public class LowResRenderTest : MonoBehaviour
     void Size(out int w, out int h, out int k)
     {
         int sw = Mathf.Max(1, Screen.width), sh = Mathf.Max(1, Screen.height);
-        if (integerScale)
+        // 과제 0246-4: 1080 화면에 720 이면 반올림 k=2 → 540 으로 떨어진다. 화면이 목표의 정수배일 때만 정수배, 아니면 목표 높이 그대로(부드러운 확대).
+        if (integerScale && sh % Mathf.Max(16, targetHeight) == 0)
         {
             k = Mathf.Max(1, Mathf.RoundToInt(sh / (float)Mathf.Max(16, targetHeight)));
             w = Mathf.Max(16, Mathf.CeilToInt(sw / (float)k)); h = Mathf.Max(16, Mathf.CeilToInt(sh / (float)k));

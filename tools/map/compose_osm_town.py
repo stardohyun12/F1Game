@@ -625,6 +625,24 @@ def side(pts, off):
     return out
 
 
+def unfold(pts, max_turn=95.0, min_seg=3.0):
+    """v6d: 옆으로 민 사슬의 접힘을 편다 — 꺾임 > max_turn 도인 점, min_seg m 보다 짧은 마디를 지운다(끝점은 둔다).
+    접힌 곳은 수평거리가 짧아져 같은 높이차가 경사 46 % 로 잡힌다(봇 실측, 과제 0246)."""
+    pts = list(pts)
+    while len(pts) > 2:
+        bad = None
+        for i in range(1, len(pts) - 1):
+            a, b, c = pts[i - 1], pts[i], pts[i + 1]
+            u, v = (b[0] - a[0], b[1] - a[1]), (c[0] - b[0], c[1] - b[1])
+            lu, lv = math.hypot(*u), math.hypot(*v)
+            if lu < min_seg or lv < min_seg: bad = i; break
+            cs = (u[0] * v[0] + u[1] * v[1]) / (lu * lv)
+            if math.degrees(math.acos(max(-1, min(1, cs)))) > max_turn: bad = i; break
+        if bad is None: break
+        del pts[bad]
+    return pts
+
+
 def solve_heights():
     """차길 노드 높이: 위 덮개 U(i)=min_j(H_j+g·길거리), 아래 받침 Lo(i)=max_j(H_j−g·길거리) 의 가운데.
     U·Lo 둘 다 어느 두 노드 사이도 경사 ≤ g 라, 가운데도 ≤ g 가 보장된다. 지형과 다른 만큼은 깎고 메운다.
@@ -760,6 +778,7 @@ def chain_shortcut(a, b, pos, banned, tag, free=None, stairs=False, grade=None):
         kstart = prev[k][1]; chain.reverse()
         if stairs and any(r['kind'] == 'stairs' for r in rs): chain = side(chain, 4.5)     # v6c 안 (a): 계단은 두고 4.5 m 옆 비탈에
         pts = [nodes[kstart][0]] + chain + [nodes[kend][0]]
+        if stairs: pts = unfold(pts)                                 # v6d: 민 사슬 접힘 펴기
         g_ok = grade or G_ROAD; yh = lambda k: YN.get(KEY(nodes[k][0]), H(*nodes[k][0]))
         Lc = plen(pts); dh = abs(yh(kend) - yh(kstart)) if stairs else abs(H(*pts[-1]) - H(*pts[0]))
         CHAIN_DBG.append(('cand', round(tot), round(Lc), round(dh / Lc, 3)))

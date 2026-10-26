@@ -1,0 +1,3 @@
+var car = UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>(); var rb = car.GetComponent<Rigidbody>();
+var cols = Physics.OverlapBox(rb.position, new Vector3(1.2f, .8f, 2.8f), rb.rotation).Where(x => x.GetComponentInParent<ArcadeCarController>() == null).Select(x => x.name).Distinct();
+return $"pos {rb.position} v {rb.linearVelocity.magnitude:F2} slope {car.CurrentSlopeDeg:F1} grounded {typeof(ArcadeCarController).GetField("isGrounded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(car)} near[{string.Join(",", cols)}] ts {Time.timeScale}";

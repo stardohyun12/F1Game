@@ -70,9 +70,20 @@ public static partial class BuildBayLoop
             if (g.pts.Count >= 2) rs.Add(g);
         }
         var ends = DeadEnds(rs, lg);   // v6c(과제 0214-3): 이음매 잘림은 잇고(rs 에 추가 → 지형 마감·RoadSurface 도 같이), 진짜 막다른 끝은 이유를 둔다
+        lg.Add(SmoothProfiles(rs));
 
         gH = new float[GN, GN];
         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) gH[i, j] = CpAt(GX0 + i * GStep, GZ0 + j * GStep);
+        // v6d(과제 0246-3): 8 m 격자를 쌍선형으로 펴면 8 m 네모마다 면이 꺾여 위에서 음영이 칸으로 얼룩진다 → 3×3 평균 4번(±8 m)으로 꺾임을 녹인다
+        for (int pass = 0; pass < 4; pass++)
+        {
+            var s = (float[,])gH.Clone();
+            for (int i = 1; i < GN - 1; i++) for (int j = 1; j < GN - 1; j++)
+            {
+                float sum = 0; for (int di = -1; di <= 1; di++) for (int dj = -1; dj <= 1; dj++) sum += s[i + di, j + dj];
+                gH[i, j] = sum / 9f;
+            }
+        }
         // 차길 띠(반폭+2m) 안은 노면 0.25m 아래로 맞춘다 — 8m 격자가 좁은 길을 덮거나 띄우지 않게(대조표: 깎고 메운 지형은 생성기 몫, 여기선 마감만)
         var best = new float[GN, GN];
         for (int i = 0; i < GN; i++) for (int j = 0; j < GN; j++) best[i, j] = 1e9f;
@@ -218,6 +229,48 @@ public static partial class BuildBayLoop
         rs.AddRange(add);
         lg.Add($"막다른 끝: 이음 {nJoin} · 사람길 {outp.Count(x => x.why == "foot")} · 광장 {outp.Count(x => x.why == "plaza")} · 담 {outp.Count(x => x.why == "wall")}");
         return outp;
+    }
+
+    /// v6d(과제 0246-1): 매듭 사이를 직선으로 이어 매듭마다 경사가 확 꺾인다(0 %→26 %). 바퀴 없이 상자로 미끄러지는 차는
+    /// 바닥 틈이 8 cm 라 오목하게 꺾인 곳에 앞 모서리가 박혀 선다(봇 실패 24건의 원인). 차길 높이를 ±4 m 평균 3번으로 둥글리고(끝점 고정),
+    /// 다른 차길 위에 얹힌 끝은 그 길의 새 높이로 맞춘 뒤 8 m 에 걸쳐 녹인다(갈림목 턱).
+    static string SmoothProfiles(List<GRoad> rs)
+    {
+        var car = rs.Where(r => r.Car && r.pts.Count >= 3).ToList(); float maxBefore = 0, maxAfter = 0;
+        System.Func<List<Vector3>, float> brk = p => { float m = 0; for (int i = 2; i + 2 < p.Count; i++) { float g0 = (p[i].y - p[i - 2].y) / Mathf.Max(.3f, Fl(p[i] - p[i - 2]).magnitude), g1 = (p[i + 2].y - p[i].y) / Mathf.Max(.3f, Fl(p[i + 2] - p[i]).magnitude); m = Mathf.Max(m, Mathf.Abs(g1 - g0)); } return m; };
+        foreach (var r in car)
+        {
+            maxBefore = Mathf.Max(maxBefore, brk(r.pts));
+            for (int pass = 0; pass < 3; pass++)
+            {
+                var y = r.pts.Select(p => p.y).ToArray(); int n = y.Length;
+                for (int i = 1; i < n - 1; i++)
+                {
+                    int w = Mathf.Min(4, Mathf.Min(i, n - 1 - i)); float s = 0; for (int k = -w; k <= w; k++) s += y[i + k];
+                    var p = r.pts[i]; p.y = s / (2 * w + 1); r.pts[i] = p;
+                }
+            }
+        }
+        int snapped = 0;
+        foreach (var r in car) foreach (bool atEnd in new[] { false, true })
+        {
+            var e = atEnd ? r.pts[r.pts.Count - 1] : r.pts[0]; float bd = 2.5f, ty = 0; bool hit = false;
+            foreach (var o in car) if (o != r) for (int i = 3; i < o.pts.Count - 3; i++)
+            {
+                float d = Fl(o.pts[i] - e).magnitude; if (d < bd) { bd = d; ty = o.pts[i].y; hit = true; }
+            }
+            if (!hit || Mathf.Abs(ty - e.y) < .005f) continue;
+            float dy = ty - e.y, acc = 0; snapped++;
+            for (int k = 0; k < r.pts.Count; k++)
+            {
+                int i = atEnd ? r.pts.Count - 1 - k : k;
+                if (k > 0) acc += Fl(r.pts[i] - r.pts[atEnd ? i + 1 : i - 1]).magnitude;
+                if (acc > 8f) break;
+                var p = r.pts[i]; p.y += dy * (1f - acc / 8f); r.pts[i] = p;
+            }
+        }
+        foreach (var r in car) maxAfter = Mathf.Max(maxAfter, brk(r.pts));
+        return $"차길 높이 둥글림 {car.Count}개 · 꺾임 최대 {maxBefore * 100:F0}%→{maxAfter * 100:F0}%(2 m 현) · 갈림목 끝 맞춤 {snapped}";
     }
 
     static void DeadEndMarks(Transform top, List<DeadEnd> ends)
