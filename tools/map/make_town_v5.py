@@ -343,6 +343,196 @@ def buildings():
     return parcels
 
 
+
+# ── v5c: 길에 면한 연속 필지(가로 벽면) ──
+PLAZAS = []          # [{'pos':[x,z],'r':m,'name':str}] — 건물을 못 짓는 광장
+WPROF = {}           # 길 id → [(s, 폭)] 구간마다 다른 폭(v5c)
+FARMS = 0
+INFILL = {'dense': 0.0, 'medium': 0.0, 'sparse': 0.0}   # v5c 가 켠다(블록 안쪽 채움 확률)
+DBG = defaultdict(int)
+ROWP = {  # 앞폭, 깊이, 틈 확률(0)·틈, 들여씀, 날개(ㄱ·ㄷ) 확률, 뒷채 확률
+    'dense': dict(w=(4.5, 9.5), d=(8, 15), g0=0.72, g=(0.3, 0.9), sb=(0.1, 0.5), wing=0.38, back=0.6),
+    'medium': dict(w=(6, 10.5), d=(7, 12), g0=0.35, g=(0.5, 4.0), sb=(0.5, 1.6), wing=0.22, back=0.28),
+    'sparse': dict(w=(7, 11), d=(7, 10), g0=0.0, g=(18, 55), sb=(2, 6), wing=0.4, back=0.0),
+}
+
+
+def road_w(r, i):
+    pr = WPROF.get(r['id'])
+    if not pr:
+        return r['width']
+    s = float(i)
+    if s <= pr[0][0]: return pr[0][1]
+    for (a, wa), (b, wb) in zip(pr, pr[1:]):
+        if s <= b: return wa + (wb - wa) * (s - a) / max(1e-6, b - a)
+    return pr[-1][1]
+
+
+def make_wprof(r, n, rng):
+    """구간 40~90 m 마다 폭이 0.8~1.3배로 바뀌고 사이는 부드럽게(길 폭이 구간마다 다름)."""
+    out = []; s = 0.0
+    while s < n:
+        out.append((round(s, 1), round(r['width'] * rng.choice((0.8, 0.9, 1.0, 1.0, 1.15, 1.3)), 2))); s += rng.uniform(40, 90)
+    out.append((n, out[-1][1])); return out
+
+
+def quad_cells(occ, q, shrink=0.2):
+    cx = sum(p[0] for p in q) / 4; cz = sum(p[1] for p in q) / 4
+    qs = []
+    for p in q:
+        dx, dz = p[0] - cx, p[1] - cz; m = math.hypot(dx, dz) or 1
+        qs.append((p[0] - dx / m * shrink, p[1] - dz / m * shrink))
+    xs = [p[0] for p in qs]; zs = [p[1] for p in qs]
+    out = []
+    x = math.floor(min(xs) * 2) / 2
+    while x <= max(xs):
+        z = math.floor(min(zs) * 2) / 2
+        while z <= max(zs):
+            ok = True; sg = 0
+            for k in range(4):
+                a, b = qs[k], qs[(k + 1) % 4]
+                c = (b[0] - a[0]) * (z - a[1]) - (b[1] - a[1]) * (x - a[0])
+                if c * sg < 0: ok = False; break
+                if c: sg = 1 if c > 0 else -1
+            if ok: out.append(occ.idx(x, z))
+            z += 0.5
+        x += 0.5
+    return out
+
+
+def quad_area(q):
+    return abs(sum(q[k][0] * q[(k + 1) % 4][1] - q[(k + 1) % 4][0] * q[k][1] for k in range(4))) / 2
+
+
+def corners(p):
+    return p['poly'] if 'poly' in p else L.rect_corners(p)
+
+
+def buildings_rows():
+    rng = random.Random(1527)
+    occ = Occ()
+    for i in range(GN):
+        for j in range(GN):
+            if h(G0 + j + .5, G0 + i + .5) <= 1.5: occ.a[i * GN + j] = 1
+    for r in ROADS:
+        m = 0.8 if r['kind'] in GRADE else 0.3
+        for i, p in enumerate(SAMP[r['id']]): occ.disk(p[0], p[1], road_w(r, i) / 2 + m)
+    for pl in PLAZAS: occ.disk(pl['pos'][0], pl['pos'][1], pl['r'])
+    parcels = []
+
+    def put(q, rid, side, zn, kind):
+        if quad_area(q) < 12: return None
+        cells = quad_cells(occ, q)
+        if not cells or not occ.free(cells):
+            DBG[(rid, 'occ')] += 1; return None
+        occ.mark(cells)
+        cx = sum(p[0] for p in q) / 4; cz = sum(p[1] for p in q) / 4
+        w = (math.dist(q[0], q[1]) + math.dist(q[2], q[3])) / 2
+        ax, az = (q[3][0] + q[2][0]) / 2 - (q[0][0] + q[1][0]) / 2, (q[3][1] + q[2][1]) / 2 - (q[0][1] + q[1][1]) / 2
+        dd = math.hypot(ax, az) or 1
+        p0 = {'x': round(cx, 2), 'z': round(cz, 2), 'w': round(w, 2), 'd': round(dd, 2), 'rot': round(math.degrees(math.atan2(az, ax)), 1),
+              'front': {'road': rid, 'side': side}, 'frontMid': [round((q[0][0] + q[1][0]) / 2, 2), round((q[0][1] + q[1][1]) / 2, 2)],
+              'density': zn, 'shape': kind, 'poly': [[round(a, 2), round(b, 2)] for a, b in q]}
+        parcels.append(p0); return p0
+
+    order = sorted(ROADS, key=lambda r: {'alley': 0, 'village': 1, 'stairs': 9, 'shortcut': 2, 'main': 3}[r['kind']])
+    for r in order:
+        if r['kind'] == 'stairs': continue
+        pts = SAMP[r['id']]; n = len(pts)
+        if n < 12: continue
+        for side in (1, -1):
+            s = 3.0
+
+            def nrm_at(i):
+                a = pts[max(0, i - 2)]; b = pts[min(n - 1, i + 2)]
+                fx, fz = b[0] - a[0], b[1] - a[1]; m = math.hypot(fx, fz) or 1
+                return (-fz / m * side, fx / m * side)
+            while s < n - 4:
+                i0 = int(s); zn = zone(pts[i0][0], pts[i0][1]); P = ROWP[zn]
+                gscale = 1 + 2.2 * S((h(pts[i0][0], pts[i0][1]) - 25) / 45) if zn == 'medium' else 1.0
+                w = rng.uniform(*P['w']); d = rng.uniform(*P['d']); sb = rng.uniform(*P['sb'])
+                j1 = min(n - 1, int(s + w)); wm = road_w(r, (i0 + j1) // 2)
+                placed = None
+                for dm in (1.0, 0.7):
+                    dd = d * dm; o0 = wm / 2 + (0.8 if r['kind'] in GRADE else 0.3) + 0.35 + sb; n0 = nrm_at(i0); n1 = nrm_at(j1)
+                    A = (pts[i0][0] + n0[0] * o0, pts[i0][1] + n0[1] * o0); B = (pts[j1][0] + n1[0] * o0, pts[j1][1] + n1[1] * o0)
+                    free = dd                                  # 앞 두 모서리에서 안쪽으로 비어 있는 깊이만큼만 짓는다(남는 땅에 맞춰 깊이가 달라짐)
+                    for t in range(0, int(dd) + 1):
+                        if any(occ.idx(px + nn[0] * t, pz + nn[1] * t) is None or occ.a[occ.idx(px + nn[0] * t, pz + nn[1] * t)] for (px, pz), nn in ((A, n0), (B, n1))):
+                            free = t - 0.3; break
+                    if free < 4.5: continue
+                    dd = min(dd, free)
+                    C = (B[0] + n1[0] * dd, B[1] + n1[1] * dd); D = (A[0] + n0[0] * dd, A[1] + n0[1] * dd)
+                    q = [A, B, C, D]
+                    kind = 'rect' if abs(math.atan2(n0[1], n0[0]) - math.atan2(n1[1], n1[0])) < 0.05 else 'trapezoid'
+                    if quad_area(q) < 0.55 * w * dd:
+                        DBG[(r['id'], 'shape')] += 1; continue
+                    placed = put(q, r['id'], side, zn, kind)
+                    if placed: break
+                if placed:
+                    cx, cz = placed['x'], placed['z']; a = math.radians(placed['rot']); ix, iz = math.cos(a), math.sin(a); tx, tz = -iz, ix
+                    pd, pw = placed['d'], placed['w']
+                    if rng.random() < P['wing'] and pw > 5.5:
+                        sides = [rng.choice((-1, 1))] if rng.random() < 0.6 else [-1, 1]
+                        for sg in sides:
+                            ww = rng.uniform(3.2, 4.6); ee = rng.uniform(5, 11)
+                            wc = (cx + ix * (pd / 2 + ee / 2 - 0.1) + tx * sg * (pw / 2 - ww / 2), cz + iz * (pd / 2 + ee / 2 - 0.1) + tz * sg * (pw / 2 - ww / 2))
+                            put(L.rect_corners({'x': wc[0], 'z': wc[1], 'w': ww, 'rot': placed['rot'], 'd': ee}), r['id'], side, zn, 'wing' if len(sides) == 1 else 'wingU')
+                    if rng.random() < P['back']:
+                        yard = rng.uniform(2.5, 6.0); d2 = rng.uniform(6, 10); w2 = pw * rng.uniform(0.7, 1.1)
+                        bc = (cx + ix * (pd / 2 + yard + d2 / 2), cz + iz * (pd / 2 + yard + d2 / 2))
+                        put(L.rect_corners({'x': bc[0], 'z': bc[1], 'w': w2, 'd': d2, 'rot': placed['rot']}), r['id'], side, zn, 'back')
+                    g = 0.0 if rng.random() < P['g0'] else rng.uniform(*P['g']) * gscale
+                    s += w + g + 0.2
+                else:
+                    s += rng.uniform(2, 4)
+    # 블록 안쪽 마당 건물: 길에서 40 m 안 빈 곳에 가까운 길과 나란히(들어서지 못하면 마당으로 남는다)
+    grid = defaultdict(list)
+    for r in ROADS:
+        if r['kind'] == 'stairs': continue
+        pts = SAMP[r['id']]
+        for i in range(2, len(pts) - 2, 3):
+            grid[(int(pts[i][0] // 12), int(pts[i][1] // 12))].append((pts[i], pts[i - 2], pts[i + 2], r['id']))
+    for gz in range(-HALF, HALF, 5):
+        for gx in range(-HALF, HALF, 5):
+            zn = zone(gx, gz); pr = INFILL[zn]
+            if rng.random() > pr or h(gx, gz) < 2.0: continue
+            k0 = occ.idx(gx, gz)
+            if k0 is None or occ.a[k0]: continue
+            best = None
+            for dx in (-3, -2, -1, 0, 1, 2, 3):
+                for dz in (-3, -2, -1, 0, 1, 2, 3):
+                    for p, a, b, rid in grid.get((int(gx // 12) + dx, int(gz // 12) + dz), ()):
+                        dd = math.dist(p[:2], (gx, gz))
+                        if best is None or dd < best[0]: best = (dd, a, b, rid)
+            if best is None or best[0] > 42: continue
+            _, a, b, rid = best
+            rot = math.degrees(math.atan2(b[1] - a[1], b[0] - a[0])) + rng.choice((90, -90)) + rng.uniform(-6, 6)
+            w, d = rng.uniform(*ROWP[zn]['w']), rng.uniform(6, 11)
+            put(L.rect_corners({'x': gx, 'z': gz, 'w': w, 'd': d, 'rot': rot}), rid, 0, zn, 'infill')
+    # 성긴 언덕 농가: 길에서 25~110 m 안 빈 땅에 본채 + 헛간 1~2
+    cand = [(p[0], p[1]) for r in ROADS if r['kind'] != 'stairs' for p in SAMP[r['id']][::9]]
+    tries = 0; made = 0
+    while made < FARMS and tries < FARMS * 60:
+        tries += 1
+        bx, bz = rng.choice(cand); a = rng.uniform(0, 6.283); dist = rng.uniform(25, 110)
+        x, zz = bx + math.cos(a) * dist, bz + math.sin(a) * dist
+        if not (-HALF + 6 < x < HALF - 6 and -HALF + 6 < zz < HALF - 6) or h(x, zz) < 18: continue
+        rot = rng.uniform(0, 360)
+        mp = {'x': x, 'z': zz, 'w': rng.uniform(8, 12), 'd': rng.uniform(6, 8), 'rot': rot}
+        if not put(L.rect_corners(mp), 'farm', 0, 'sparse', 'farm'): continue
+        made += 1
+        for _ in range(rng.choice((1, 1, 2))):
+            ox, oz = rng.uniform(8, 16) * rng.choice((-1, 1)), rng.uniform(-6, 6); ar = math.radians(rot)
+            bp = {'x': x + ox * math.cos(ar) - oz * math.sin(ar), 'z': zz + ox * math.sin(ar) + oz * math.cos(ar), 'w': rng.uniform(4, 7), 'd': rng.uniform(5, 9), 'rot': rot + rng.choice((0, 90))}
+            put(L.rect_corners(bp), 'farm', 0, 'sparse', 'barn')
+    for k, p in enumerate(parcels):
+        p['id'] = f'P{k:03d}'; p['baseY'] = round(max(0.6, h(p['x'], p['z'])), 2)
+        p['floors'] = 3 if p['density'] == 'dense' and rng.random() < .4 else 2 if p['density'] != 'sparse' else 1 + (rng.random() < .5)
+        p.setdefault('facing', 'front')
+    return parcels
+
+
 # ── 장소 ──
 STOPS = [
     {'n': 1, 'id': 'tea', 'name': '찻집', 'pos': list(W(30, 9)), 'cargo': 'Box', 'why': '부두 가운데 바다 쪽 찻집 — 넓은 길로는 동쪽 항구 길로 돌아 들어와야 하고, 옛 골목으로는 곧장 내려온다'},
@@ -481,8 +671,10 @@ def render(plan, path):
     img = small.resize((PX, PX), Image.Resampling.BILINEAR); dr = ImageDraw.Draw(img)
     for f in plan['fields']:
         x, zz, w, d = f['rect']; a = to_px(x - w / 2, zz + d / 2); b = to_px(x + w / 2, zz - d / 2); dr.rectangle([a, b], fill=(196, 206, 160))
+    for pl in plan.get('plazas', []):
+        u, v = to_px(*pl['pos']); rr = pl['r'] * M2PX; dr.ellipse([u - rr, v - rr, u + rr, v + rr], fill=(226, 214, 180), outline=(190, 170, 120))
     for p in plan['parcels']:
-        dr.polygon([to_px(*c) for c in L.rect_corners(p)], fill=(196, 120, 95), outline=(150, 90, 70))
+        dr.polygon([to_px(*c) for c in corners(p)], fill=(196, 120, 95), outline=(150, 90, 70))
     coast = [to_px(x, zc(x)) for x in range(-600, 601, 4)]
     dr.line(coast, fill=(40, 100, 150), width=3)
     order = {'alley': 0, 'stairs': 1, 'shortcut': 2, 'village': 3, 'main': 4}
@@ -496,7 +688,13 @@ def render(plan, path):
         else:
             col = (70, 60, 55) if k == 'main' else (110, 95, 80) if (k == 'village' and w >= 4.0) else (150, 130, 110) if k == 'village' else (170, 120, 50)
             wd = max(2, int(w * M2PX * 1.6))
-            dr.line(pts, fill=col, width=wd, joint='curve')
+            if r.get('widthProfile'):
+                WPROF[r['id']] = [tuple(x) for x in r['widthProfile']]
+                for i in range(len(pts) - 1):
+                    wi = max(2, int(road_w(r, i) * M2PX * 1.6)); dr.line([pts[i], pts[i + 1]], fill=col, width=wi)
+                    dr.ellipse([pts[i][0] - wi / 2, pts[i][1] - wi / 2, pts[i][0] + wi / 2, pts[i][1] + wi / 2], fill=col)
+            else:
+                dr.line(pts, fill=col, width=wd, joint='curve')
             for e in (pts[0], pts[-1]): dr.ellipse([e[0] - wd / 2, e[1] - wd / 2, e[0] + wd / 2, e[1] + wd / 2], fill=col)
             if k == 'shortcut':
                 for i in range(0, len(pts) - 1, 6): dr.line([pts[i], pts[min(len(pts) - 1, i + 2)]], fill=(240, 220, 160), width=1)
@@ -538,7 +736,7 @@ def to_net(plan):
     for r in plan['roads']:
         pts = [(p[0] + 600, p[1] + 600) for p in L.sample(r, 2.0)]
         roads.append({'pts': pts, 'car': r['kind'] in GRADE, 'steps': r['kind'] == 'stairs', 'cls': r['kind'], 'w': r['width']})
-    blds = [[(c[0] + 600, c[1] + 600) for c in L.rect_corners(p)] for p in plan['parcels']]
+    blds = [[(c[0] + 600, c[1] + 600) for c in corners(p)] for p in plan['parcels']]
     return {'name': TITLE.split(' (')[0], 'roads': roads, 'bld': blds, 'h': lambda X, Z: h(X - 600, Z - 600)}
 
 
@@ -554,6 +752,7 @@ def main():
         o['crossSection'] = {'left': {'edge': e, 'walk': wk}, 'right': {'edge': e, 'walk': wk}}
         if r['kind'] in ('alley', 'stairs'): o['terrainFollows'] = False
         o['closed'] = False
+        if r['id'] in WPROF: o['widthProfile'] = WPROF[r['id']]
         roads.append(o)
     ctrl = [[x, zz, round(h(x, zz), 1)] for x in range(-HALF, HALF + 1, 40) for zz in range(-HALF, HALF + 1, 40) if zz > zc(x) + 3]
     land = [[x, round(zc(x), 1)] for x in range(-420, 421, 6)] + [[420, 440], [-420, 440]]
@@ -576,7 +775,7 @@ def main():
             {'id': 'D_harbor', 'density': 'dense', 'name': '항구 심장(도모노우라)', 'poly': [list(W(u, 0)) for u in range(-125, 131, 15)] + [list(W(u, 100)) for u in range(130, -126, -15)]},
             {'id': 'D_slope', 'density': 'medium', 'name': '비탈 층층 마을(포지타노·카몰리)', 'poly': [list(W(u, 100)) for u in range(-205, 256, 20)] + [list(W(u, 310)) for u in range(255, -206, -20)]},
         ],
-        'garage': GARAGE, 'mart': MART, 'stops': STOPS, 'fields': FIELDS,
+        'garage': GARAGE, 'mart': MART, 'stops': STOPS, 'fields': FIELDS, 'plazas': PLAZAS,
         'boundary': {'play': [[-HALF, -HALF], [HALF, -HALF], [HALF, HALF], [-HALF, HALF]]},
         'parcels': parcels, 'junctions': juncs, 'trees': {'points': []},
     }
