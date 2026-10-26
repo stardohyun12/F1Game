@@ -1,0 +1,68 @@
+{
+ "① A Short Hike": {
+  "face_uniform_frac": 0.4539661384035486,
+  "face_std_median": 2.080801801277927,
+  "empty_cell_frac_bottom": 0.0125,
+  "val_p5_p95": 0.5490196078431373
+ },
+ "⑥ Easy Delivery Co.": {
+  "face_uniform_frac": 0.45543019266297174,
+  "face_std_median": 1.672556852541108,
+  "empty_cell_frac_bottom": 0.1875,
+  "val_p5_p95": 0.6352941176470588
+ },
+ "⑫ Crow Country": {
+  "face_uniform_frac": 0.07747827182264769,
+  "face_std_median": 3.425483127163881,
+  "empty_cell_frac_bottom": 0.075,
+  "val_p5_p95": 0.7176470588235294
+ },
+ "V0 v5 그대로 · game": {
+  "face_uniform_frac": 0.8166731380416181,
+  "face_std_median": 0.09043106644149503,
+  "empty_cell_frac_bottom": 0.1875,
+  "val_p5_p95": 0.5372549019607843
+ },
+ "V0 v5 그대로 · intro": {
+  "face_uniform_frac": 0.916819538670285,
+  "face_std_median": 0.0,
+  "empty_cell_frac_bottom": 0.4625,
+  "val_p5_p95": 0.41960784313725485
+ },
+ "V1 포토배싱+EDC · game": {
+  "face_uniform_frac": 0.404323960497151,
+  "face_std_median": 2.0971990172586734,
+  "empty_cell_frac_bottom": 0.3125,
+  "val_p5_p95": 0.6196078431372549
+ },
+ "V1 포토배싱+EDC · intro": {
+  "face_uniform_frac": 0.46190716938573123,
+  "face_std_median": 1.8576886690327679,
+  "empty_cell_frac_bottom": 0.3125,
+  "val_p5_p95": 0.4549019607843138
+ },
+ "V2 팔레트+계단 · game": {
+  "face_uniform_frac": 0.7822898848215304,
+  "face_std_median": 0.0,
+  "empty_cell_frac_bottom": 0.1875,
+  "val_p5_p95": 0.47058823529411764
+ },
+ "V2 팔레트+계단 · intro": {
+  "face_uniform_frac": 0.8405042344008566,
+  "face_std_median": 0.0,
+  "empty_cell_frac_bottom": 0.5125,
+  "val_p5_p95": 0.39607843137254906
+ },
+ "V3 V1+면 변화 · game": {
+  "face_uniform_frac": 0.41920883290852773,
+  "face_std_median": 1.8649520817122662,
+  "empty_cell_frac_bottom": 0.3125,
+  "val_p5_p95": 0.6235294117647059
+ },
+ "V3 V1+면 변화 · intro": {
+  "face_uniform_frac": 0.4934089530393922,
+  "face_std_median": 1.5347519699914745,
+  "empty_cell_frac_bottom": 0.4,
+  "val_p5_p95": 0.47450980392156866
+ }
+}
