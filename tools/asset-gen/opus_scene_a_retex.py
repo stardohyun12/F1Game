@@ -16,14 +16,18 @@ from mathutils import Matrix, Vector
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 VAR = sys.argv[sys.argv.index('--') + 1] if '--' in sys.argv else 'v1'
-REV = os.path.join(ROOT, 'art', '_review', '2026-10-27-scene-a-tex')
-EXP = os.path.join(ROOT, 'art', 'export', {'v1': 'scene-a-v1-photobash', 'v2': 'scene-a-v2-palette'}[VAR])
-V1TEX = os.path.join(ROOT, 'art', 'source', 'scene-a-v1', 'tex')
+B = VAR.endswith('b')  # v1b·v2b = 과제 0430(직전 판 약점 고침) — 폴더·파일만 다르고 방법은 같음
+REV = os.path.join(ROOT, 'art', '_review', '2026-10-27-scene-a-tex' + ('-b' if B else ''))
+EXP = os.path.join(ROOT, 'art', 'export', {'v1': 'scene-a-v1-photobash', 'v2': 'scene-a-v2-palette',
+                                           'v1b': 'scene-a-v1b-photobash', 'v2b': 'scene-a-v2b-palette'}[VAR])
+V1TEX = os.path.join(ROOT, 'art', 'source', 'scene-a-v1b' if B else 'scene-a-v1', 'tex')
 PAL = os.path.join(ROOT, 'art', 'palette')
+PAL_JSON = 'palette_b.json' if B else 'palette.json'
+PER_OBJ = {'apron': 'path'} if B else {}  # 정비소 앞 마당 길(콘크리트 띠) → 흙·자갈·바퀴 자국. apron 재질은 사람 옷과 같이 써서 물체 단위로 새 재질
 FOG = (0.80, 0.84, 0.82)  # 늦가을 옅은 회청 — v5 시트 하늘 지평선색(208,218,208) 근처
 SUN = Vector((.5, -.6, .62)).normalized()
 KART_AT, KART_ROT, D = Vector((.7, -2.3, 0)), math.radians(-10), 12.0
-WORLD_UV = ('tin_wall', 'tin_roof', 'planks', 'planks_dark', 'wood', 'floor', 'dirt', 'ground', 'metal')
+WORLD_UV = ('tin_wall', 'tin_roof', 'planks', 'planks_dark', 'wood', 'floor', 'dirt', 'ground', 'metal', 'path')
 SWAP_ONLY = ('crate', 'drum_red', 'drum_blue', 'drum_top', 'tire')
 
 
@@ -61,10 +65,15 @@ def v1():
         if tn in WORLD_UV or tn in SWAP_ONLY:
             n = img_node(m); n.image = bpy.data.images.load(os.path.join(V1TEX, tn + '.png'), check_existing=True)
             m['v1'] = tn
+    for on, tn in PER_OBJ.items():
+        o = bpy.data.objects[on]; m = o.material_slots[0].material.copy(); m.name = tn
+        img_node(m).image = bpy.data.images.load(os.path.join(V1TEX, tn + '.png'), check_existing=True); m['v1'] = tn
+        for s in o.material_slots: s.material = m
     for o in meshes():
         me = o.data
         if not me.uv_layers: me.uv_layers.new()
         uv = me.uv_layers.active.data; mw = o.matrix_world; n3 = mw.to_3x3()
+        cx = sum((mw @ v.co).x for v in me.vertices) / max(len(me.vertices), 1)  # 길은 가운데 = 텍스처 가운데(바퀴 자국 정렬)
         for p in me.polygons:
             m = o.material_slots[p.material_index].material if o.material_slots else None
             tn = m.get('v1') if m else None
@@ -75,12 +84,13 @@ def v1():
                 u, v = ((c.x, c.y), (c.y, c.z), (c.x, c.z))[(2, 0, 1).index(ax)]
                 if ax == 0 and nw.x < 0: u = -u
                 if ax == 1 and nw.y > 0: u = -u
+                if tn == 'path' and ax == 2: uv[li].uv = ((c.x - cx) / tu + .5, v / tv); continue
                 uv[li].uv = (u / tu, v / tv)
 
 
 def v2():
-    P = json.load(open(os.path.join(PAL, 'palette.json'))); W, H = P['size']
-    img = bpy.data.images.load(os.path.join(PAL, 'autumn.png'), check_existing=True)
+    P = json.load(open(os.path.join(PAL, PAL_JSON))); W, H = P['size']
+    img = bpy.data.images.load(os.path.join(PAL, P['image']), check_existing=True)
     pm = bpy.data.materials.new('autumn_palette'); pm.use_nodes = True; nt = pm.node_tree; nt.nodes.clear()
     t = nt.nodes.new('ShaderNodeTexImage'); t.image = img; t.interpolation = 'Closest'
     em = nt.nodes.new('ShaderNodeEmission'); o_ = nt.nodes.new('ShaderNodeOutputMaterial')
@@ -157,7 +167,7 @@ def export(cname, path, M):
 
 
 def main():
-    info = v1() if VAR == 'v1' else v2()
+    info = v1() if VAR.startswith('v1') else v2()
     render()
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(ROOT, 'art', 'models', f'opus_scene_a_{VAR}.blend'))
     os.makedirs(EXP, exist_ok=True); to_principled()
