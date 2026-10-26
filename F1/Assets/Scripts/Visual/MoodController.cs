@@ -104,6 +104,7 @@ public sealed class MoodController : MonoBehaviour
     public static System.Collections.Generic.List<Material> WorldMaterials()
     {
         var set = new System.Collections.Generic.HashSet<Material>();
+        if (PCLookScene.OwnsWorld) return new System.Collections.Generic.List<Material>();   // 2024: Look 5 는 안개·빛을 셰이더 전역으로 받는다 → 공유 머티리얼 에셋에 쓰지 않는다
         foreach (var r in FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             foreach (var m in r.sharedMaterials)
                 if (m != null && m.HasProperty(FogColorId) && m.HasProperty(AmbientId) && m.HasProperty(FogStartId) && m.HasProperty(FogEndId)) set.Add(m);

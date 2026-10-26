@@ -62,7 +62,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
    struct Attributes {float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0;};
    struct Varyings {float4 positionCS:SV_POSITION;float3 normal:TEXCOORD1;float3 pos:TEXCOORD2;};
    Varyings vert(Attributes v) {
-    Varyings o;o.pos=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=TransformWorldToHClip(o.pos);
+    Varyings o;o.pos=TransformObjectToWorld(v.positionOS.xyz);o.positionCS=PCSnap(TransformWorldToHClip(o.pos));
     o.normal=TransformObjectToWorldNormal(v.normalOS);return o;
    }
    half3 Tile(float4 t, float2 worldUV){ return PCTex(TEXTURE2D_ARGS(_MainTex,sampler_MainTex),t.xy+(.035+frac(worldUV*_WorldScale)*.93)*t.zw,_MainTex_TexelSize,float4(t.xy+.035*t.zw,t.xy+.965*t.zw)); }
@@ -101,8 +101,7 @@ Shader "PitCrew/BayLoop/TerrainSlope"
      if(_SoilAmount>0 && nz>_PatchThreshold) col=Tile(_TileSoil,worldUV);
     }
     col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.pos.xz)); col=PCPost(col,i.pos,n);
-    float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
-    return half4(lerp(col,_FogColor.rgb,fog),1);
+    return half4(PCFog(col,i.pos,_FogColor.rgb,_FogStart,_FogEnd),1);
    }
    ENDHLSL
   }

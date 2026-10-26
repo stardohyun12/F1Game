@@ -10,20 +10,28 @@ public static class PitCrewLookMenu
 {
     const string Key = "PitCrew.Look";
     const string Root = "PitCrew/Look/";
-    static readonly string[] Names = { "0 Current", "1 Clean", "2 Painterly", "3 Pixel-Soft", "4 Retro-Clean" };
+    static readonly string[] Names = { "0 Current", "1 Clean", "2 Painterly", "3 Pixel-Soft", "4 Retro-Clean", "5 EDC-PS1" };
 
     [MenuItem(Root + "0 Current", false, 0)] static void L0() => Set(0);
     [MenuItem(Root + "1 Clean", false, 1)] static void L1() => Set(1);
     [MenuItem(Root + "2 Painterly", false, 2)] static void L2() => Set(2);
     [MenuItem(Root + "3 Pixel-Soft", false, 3)] static void L3() => Set(3);
     [MenuItem(Root + "4 Retro-Clean", false, 4)] static void L4() => Set(4);
+    [MenuItem(Root + "5 EDC-PS1", false, 5)] static void L5() => Set(5);
 
-    public static int Current => EditorPrefs.GetInt(Key, 0);
+    // 2024 (D-147): Look 은 씬마다 — 활성 씬의 PCLookScene.look 이 진짜 값(씬에 저장). 컴포넌트가 없는 씬은 0.
+    public static int Current { get { var c = Object.FindFirstObjectByType<PCLookScene>(); return c != null ? c.look : 0; } }
 
     public static void Set(int mode)
     {
         mode = Mathf.Clamp(mode, 0, Names.Length - 1);
-        EditorPrefs.SetInt(Key, mode);
+        var c = Object.FindFirstObjectByType<PCLookScene>();
+        if (c == null && mode != 0) c = new GameObject("PCLook").AddComponent<PCLookScene>();
+        if (c != null)
+        {
+            c.look = mode; c.discShader = Shader.Find("PitCrew/Look/FloorDisc");
+            EditorUtility.SetDirty(c); UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(c.gameObject.scene);
+        }
         int n = SwapRetro(mode == 4);
         Apply();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
@@ -34,7 +42,9 @@ public static class PitCrewLookMenu
     public static int SwapRetro(bool on)
     {
         int n = 0;
-        foreach (var g in AssetDatabase.FindAssets("t:Material", new[] { "Assets/Art", "Assets/Scenes" }))
+        // 2024: 켤 때는 Map_BayLoop 전용 폴더(Art/BayLoop)만 — 공유 머티리얼(CoastalTown·LofiPilot·StreetFurniture·CoastalFormula)은 ComplexTrack 도 써서 안 건드린다.
+        //  끌 때는 예전에 바뀐 것까지 되돌리게 전체에서 찾는다.
+        foreach (var g in AssetDatabase.FindAssets("t:Material", on ? new[] { "Assets/Art/BayLoop" } : new[] { "Assets/Art", "Assets/Scenes" }))
         {
             var m = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g));
             if (m == null || !m.HasProperty("_MainTex")) continue;
@@ -65,8 +75,8 @@ public static class PitCrewLookMenu
     [InitializeOnLoadMethod]
     static void Apply()
     {
-        int m = Current;
-        Shader.SetGlobalFloat("_PCLook", m);
+        int m = Current;   // 전역 _PCLook 은 PCLookScene 이 넣는다(없는 씬 = 0)
+        if (Object.FindFirstObjectByType<PCLookScene>() == null) Shader.SetGlobalFloat("_PCLook", 0);
         for (int i = 0; i < Names.Length; i++) Menu.SetChecked(Root + Names[i], i == m);
     }
 }

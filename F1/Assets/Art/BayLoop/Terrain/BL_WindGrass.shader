@@ -64,7 +64,7 @@ Shader "PitCrew/BayLoop/WindGrass"
     float w=Wave(v.uv); float k=v.color.a;
     float2 d=normalize(_WindDir.xz+1e-4);
     p.xz+=d*(w*0.5+0.5)*_Sway*k; p.y-=(w*0.5+0.5)*_Sway*0.35*k;
-    o.pos=p; o.positionCS=TransformWorldToHClip(p); o.root=v.uv; o.color=v.color; o.wave=w; return o;
+    o.pos=p; o.positionCS=PCSnap(TransformWorldToHClip(p)); o.root=v.uv; o.color=v.color; o.wave=w; return o;
    }
    half4 frag(Varyings i):SV_Target {
     float2 q=floor(i.root*32)/32*_PatchScale;
@@ -79,8 +79,7 @@ Shader "PitCrew/BayLoop/WindGrass"
     col*=i.color.a>.55?_TipLift:1;                                        // 끝 한 단 밝게
     col*=1+_Band*step(.35,i.wave);                                        // 물결 마루 한 단 밝게
     col*=_Tint.rgb*shade*(1-_CloudShadow*CloudStep(i.root)); col=PCPost(col,i.pos,float3(0,1,0));
-    float fog=saturate((distance(i.pos,_WorldSpaceCameraPos)-_FogStart)/max(1,_FogEnd-_FogStart));
-    return half4(lerp(col,_FogColor.rgb,fog),1);
+    return half4(PCFog(col,i.pos,_FogColor.rgb,_FogStart,_FogEnd),1);
    }
    ENDHLSL
   }
