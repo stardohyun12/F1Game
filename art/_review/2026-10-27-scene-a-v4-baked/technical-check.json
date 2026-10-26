@@ -1,0 +1,1920 @@
+{
+  "geometry_pass": true,
+  "all_surfaces_emission": true,
+  "mesh_objects": 311,
+  "triangles": 3512,
+  "geometry": [
+    {
+      "name": "wall_-1_planks_dark",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wall_-1_tin_wall",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wall_1_planks_dark",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wall_1_tin_wall",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "win_L",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "win_R",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "back",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "back_gable",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "front_-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "front_1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "front_gable",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "header",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "roof",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib3",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib4",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rib5",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "post_-1_0",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "post_-1_12.0",
+      "coordinate_error": 4.77856748569788e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "post_1_0",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "post_1_12.0",
+      "coordinate_error": 4.77856748569788e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rail",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "patch0",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "patch1",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "patch2",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "patch3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "loose_plank",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "floor",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "apron",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bench",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "leg4.053.2",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "leg4.653.2",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "leg4.056.4",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "leg4.656.4",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bench_shelf",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pegboard",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "vise",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "toolbox",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost-1-1.1-0.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost-1-1.10.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost-11.1-0.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost-11.10.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf-10.4",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf-11.15",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf-11.9",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-10",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-11",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-12",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-13",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-14",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-15",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part-16",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost1-1.1-0.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost1-1.10.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost11.1-0.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shpost11.10.25",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf10.4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf11.15",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shelf11.9",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part10",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part11",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part12",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part13",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part14",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part15",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part16",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tA0",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tA1",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tA2",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tA3",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tA3_cap",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tB0",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tB1",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tB2",
+      "coordinate_error": 2.457562461863554e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tB2_cap",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tO0",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tO1",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tO2",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tO2_cap",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tLean",
+      "coordinate_error": 1.4901161193847656e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum0",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum0_cap",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum1",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum1_cap",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum2",
+      "coordinate_error": 2.421438694000244e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum2_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum3",
+      "coordinate_error": 4.915124923727108e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum3_cap",
+      "coordinate_error": 4.915124923727108e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum_lying",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "cable0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shade0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bulb0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "cable1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "shade1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bulb1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "posterA",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "posterB",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "posterC",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "record",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "slots",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "slots_frame",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "crate1",
+      "coordinate_error": 1.3328003749250113e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "crate2",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "lad-4.85",
+      "coordinate_error": 9.830249847454215e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "lad-4.35",
+      "coordinate_error": 9.830249847454215e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rung0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rung1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rung2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rung3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rung4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "table",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "trest-0.7",
+      "coordinate_error": 1.2223608791828156e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "trest0.7",
+      "coordinate_error": 1.2223608791828156e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "engine",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "engine_fly",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "part_box",
+      "coordinate_error": 1.4901161193847656e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "hoist_beam",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "chain",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "hook",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tC0",
+      "coordinate_error": 1.228781230931777e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tC1",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tC2",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tC3",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tC3_cap",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tD0",
+      "coordinate_error": 1.228781230931777e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tD1",
+      "coordinate_error": 2.457562461863554e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tD1_cap",
+      "coordinate_error": 2.457562461863554e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tE0",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tE1",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tE2",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tE2_cap",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "icrate0",
+      "coordinate_error": 2.7939677238464355e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "icrate1",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "icrate2",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "icrate3",
+      "coordinate_error": 2.3850769292827736e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can0",
+      "coordinate_error": 4.889443516731262e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can0_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can1",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can1_cap",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can2",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can2_cap",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can3",
+      "coordinate_error": 1.1921389377879429e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "can3_cap",
+      "coordinate_error": 6.664001874625056e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tWall",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wall_top-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wall_top1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sh_box",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sh_roll",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sh_lip",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sh_guide-1",
+      "coordinate_error": 1.1408701539039612e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sh_guide1",
+      "coordinate_error": 1.1408701539039612e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sign_main",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sign_br-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sign_br1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pdoor",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pdoor_fr",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pdoor_knob",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rail-1",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerf-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerfc-1-0.18",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerfc-10.24",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_bstrut-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rup-1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rail1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerf1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerfc1-0.18",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nerfc10.24",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_bstrut1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rup1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_pan",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_bumper",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rbumper",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_nose",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_numF",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_numS-1",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_numS1",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_seat",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_back",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_wing-1",
+      "coordinate_error": 2.388837865275353e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_wing1",
+      "coordinate_error": 2.388837865275353e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_col",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_wheel",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_wheel_cap",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire0.440.58",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire0.440.58_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub0.440.58",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub0.440.58_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire-0.440.58",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire-0.440.58_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub-0.440.58",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub-0.440.58_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire0.53-0.52",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire0.53-0.52_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub0.53-0.52",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub0.53-0.52_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire-0.53-0.52",
+      "coordinate_error": 1.862645149230957e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_tire-0.53-0.52_cap",
+      "coordinate_error": 1.862645149230957e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub-0.53-0.52",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_hub-0.53-0.52_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_axle",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_eng",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_fin0",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_fin1",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_fin2",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_ftank",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_starter",
+      "coordinate_error": 1.4901161193847656e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_starter_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_carb",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_chain",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_exh",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_muf",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_muf_cap",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_rack",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_crate",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_strap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "k_plate",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ground",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "dirt",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "quay",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "sea",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pole",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pole_arm",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "insul0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "insul1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "insul2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA0",
+      "coordinate_error": 7.450580596923828e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA1",
+      "coordinate_error": 1.4901161193847656e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA2",
+      "coordinate_error": 7.450580596923828e-09,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wA5",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB0",
+      "coordinate_error": 6.743495761743046e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB5",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB6",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wB7",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC0",
+      "coordinate_error": 9.313225746154785e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC2",
+      "coordinate_error": 1.9073486328125e-06,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC5",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC6",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wC7",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD0",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD1",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD2",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD4",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD5",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD6",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "wD7",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeL_trunk",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeL_crown0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeL_crown1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeL_crown2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeL_crown3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeR_trunk",
+      "coordinate_error": 4.76837158203125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeR_crown0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeR_crown1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeR_crown2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "treeR_crown3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bush_trunk",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bush_crown0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bush_crown1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bush_crown2",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bush_crown3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_top",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_leg-0.3-0.8",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_leg-0.30.8",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_leg0.3-0.8",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_leg0.30.8",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_vise",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_tire",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_tire_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "ob_tool",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum_lid",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "drum_lid_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rs_leg-1",
+      "coordinate_error": 4.307366907596588e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rs_leg1",
+      "coordinate_error": 4.307366907596588e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "rs_board",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "crate3",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tire_loose",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "tire_loose_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_wheel0",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_wheel1",
+      "coordinate_error": 8.429369702178807e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_top",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_down",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_seatp",
+      "coordinate_error": 5.960464477539063e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_fork",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_seat",
+      "coordinate_error": 2.384185791015625e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_bar",
+      "coordinate_error": 1.3328003749250113e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "bk_basket",
+      "coordinate_error": 2.9802322387695312e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot0",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot0_leaf",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot1",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot1_leaf",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot2",
+      "coordinate_error": 1.4901161193847656e-08,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "pot2_leaf",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_legL",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_legR",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_body",
+      "coordinate_error": 1.1920928955078125e-07,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_armL",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_armR",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_head",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    },
+    {
+      "name": "p_cap",
+      "coordinate_error": 0.0,
+      "tris_match": true,
+      "passed": true
+    }
+  ],
+  "fbx": [
+    {
+      "group": "garage",
+      "tris": 1580,
+      "expected": 1580,
+      "passed": true
+    },
+    {
+      "group": "kart",
+      "tris": 560,
+      "expected": 560,
+      "passed": true
+    },
+    {
+      "group": "ground",
+      "tris": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "group": "dirt",
+      "tris": 18,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "group": "quay",
+      "tris": 10,
+      "expected": 10,
+      "passed": true
+    },
+    {
+      "group": "sea",
+      "tris": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "group": "props",
+      "tris": 1340,
+      "expected": 1340,
+      "passed": true
+    }
+  ],
+  "source_original_sha256": "e2cb3f632d9cfc4d95f8c78cb0fd6deed9318745d040a67302e76ce1e4376d37",
+  "source_copy_sha256": "e2cb3f632d9cfc4d95f8c78cb0fd6deed9318745d040a67302e76ce1e4376d37"
+}

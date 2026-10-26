@@ -1,0 +1,6 @@
+{
+  "test": "Emission vs added 100000-energy red area light",
+  "different_pixels": 0,
+  "max_channel_difference": 0,
+  "pass": true
+}

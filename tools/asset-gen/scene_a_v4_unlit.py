@@ -27,7 +27,7 @@ views={'game':(at-fwd*5.6+Vector((0,0,2.8)),at+fwd*4+Vector((0,0,.5)),64),'intro
 for name,(loc,tgt,fov) in views.items():
  bpy.ops.object.camera_add(location=loc);cam=bpy.context.object;cam.data.sensor_fit='VERTICAL';cam.data.angle_y=math.radians(fov);cam.rotation_euler=(tgt-loc).to_track_quat('-Z','Y').to_euler();sc.camera=cam;sc.render.filepath=str(V/(name+'_720.png'));bpy.ops.render.render(write_still=True)
  if name=='game':
-  for key,tex in images.items():tex.image=bpy.data.images.load(str(O/(key+'_baked_raw.png')))
+  for key,tex in images.items():tex.image=bpy.data.images.load(str(O/(key+'_baked_ao.png')))
   sc.render.filepath=str(V/'game_raw_bake_720.png');bpy.ops.render.render(write_still=True)
   for key,tex in images.items():tex.image=bpy.data.images.load(str(E/(key+'_baked24.png')))
 # Save runnable unlit scene; source untouched.

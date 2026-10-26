@@ -4,9 +4,18 @@ import numpy as np,json
 R=Path(__file__).resolve().parents[2];O=R/'art/models/garage_scene_a_v4_baked';E=R/'art/export/scene-a-v4-baked'
 meta=json.loads((O/'manifest.json').read_text());samples=[];processed={}
 for m in meta:
- name=m['group'];im=Image.open(O/(name+'_baked_raw.png')).convert('RGB').filter(ImageFilter.GaussianBlur(.55));a=np.asarray(im);valid=a.reshape(-1,3);valid=valid[valid.max(1)>12];step=max(1,len(valid)//30000);samples.append(valid[::step][:30000]);processed[name]=im
-pool=np.concatenate(samples);n=int(np.ceil(len(pool)/512));canvas=np.zeros((n*512,3),dtype=np.uint8);canvas[:len(pool)]=pool;canvas[len(pool):]=pool[0];palette=Image.fromarray(canvas.reshape(n,512,3)).quantize(colors=24,method=Image.Quantize.MEDIANCUT,dither=Image.Dither.NONE)
-colors=palette.getpalette()[:72];pal=Image.new('P',(1,1));pal.putpalette(colors+[colors[i%72] for i in range(768-72)]);counts={}
+ name=m['group'];raw=Image.open(O/(name+'_baked_raw.png')).convert('RGB');ao=np.asarray(Image.open(O/(name+'_ao.png')).convert('L'),dtype=np.float32)/255;arr=np.asarray(raw,dtype=np.float32);factor=.70+.30*ao;arr=arr*factor[:,:,None];shade=(1-ao)*.16;arr[:,:,1]+=shade*24;arr[:,:,2]+=shade*28;srgb=np.clip(arr/255,0,1);lin=np.where(srgb<=.04045,srgb/12.92,((srgb+.055)/1.055)**2.4);lift=(1-srgb.max(2))**2;lin=lin*2.0+lift[:,:,None]*np.array([.009,.017,.019]);enc=np.where(lin<=.0031308,lin*12.92,1.055*np.maximum(lin,0)**(1/2.4)-.055);im=Image.fromarray(np.clip(enc*255,0,255).astype('uint8')).filter(ImageFilter.MedianFilter(3)).filter(ImageFilter.GaussianBlur(.65));im.save(O/(name+'_baked_ao.png'));a=np.asarray(im);valid=a.reshape(-1,3);valid=valid[valid.max(1)>12];step=max(1,len(valid)//30000);samples.append(valid[::step][:30000]);processed[name]=im
+pool=np.concatenate(samples)
+view=R/'art/_review/2026-10-27-scene-a-v4-baked/game_raw_bake_720.png'
+if view.exists():pool=np.concatenate([np.asarray(Image.open(view).convert('RGB')).reshape(-1,3)[::2],pool[::8]])
+n=int(np.ceil(len(pool)/512));canvas=np.zeros((n*512,3),dtype=np.uint8);canvas[:len(pool)]=pool;canvas[len(pool):]=pool[0];palette=Image.fromarray(canvas.reshape(n,512,3)).quantize(colors=24,method=Image.Quantize.MEDIANCUT,dither=Image.Dither.NONE)
+colors=palette.getpalette()[:72]
+# Freeze the delivered palette for deterministic subsequent exports; delete GPL to relearn.
+frozen=E/'palette24.gpl'
+if frozen.exists():
+ rows=[line.split() for line in frozen.read_text().splitlines() if line and line[0].isdigit()]
+ if len(rows)==24:colors=[int(v) for row in rows for v in row[:3]]
+pal=Image.new('P',(1,1));pal.putpalette(colors+[colors[i%72] for i in range(768-72)]);counts={}
 for name,im in processed.items():
  q=im.quantize(palette=pal,dither=Image.Dither.NONE).convert('RGB');q.save(E/(name+'_baked24.png'));counts[name]=len(q.getcolors(100000))
 swatch=Image.new('RGB',(384,64));d=ImageDraw.Draw(swatch)

@@ -24,22 +24,21 @@ for m in list(bpy.data.materials):
  if m.name.startswith(('planks','tin_wall','ground','dirt','floor','tin_roof','drum_red','tire')):
   colors={'planks':(.68,.56,.37,1),'tin_wall':(.22,.44,.40,1),'ground':(.43,.39,.20,1),'dirt':(.53,.37,.18,1),'floor':(.38,.35,.25,1),'tin_roof':(.65,.29,.12,1),'drum_red':(.62,.11,.07,1),'tire':(.035,.055,.055,1)}
   key=next(k for k in colors if m.name.startswith(k));mix=n.new('ShaderNodeMixRGB');mix.inputs[0].default_value=.40;L.new(base,mix.inputs[1]);mix.inputs[2].default_value=colors[key];base=mix.outputs[0]
- geom=n.new('ShaderNodeNewGeometry');sep=n.new('ShaderNodeSeparateXYZ');L.new(geom.outputs['Position'],sep.inputs[0])
- # Authored smooth colour washes, no high-frequency/random noise.
- waves=[]
- for axis,freq,phase in [('X',2.4,.8),('Y',1.7,1.3),('Z',1.2,.4)]:
-  mul=n.new('ShaderNodeMath');mul.operation='MULTIPLY_ADD';mul.inputs[1].default_value=freq;mul.inputs[2].default_value=phase;L.new(sep.outputs[axis],mul.inputs[0]);si=n.new('ShaderNodeMath');si.operation='SINE';L.new(mul.outputs[0],si.inputs[0]);waves.append(si.outputs[0])
- add=n.new('ShaderNodeMath');add.operation='ADD';L.new(waves[0],add.inputs[0]);L.new(waves[1],add.inputs[1]);mul=n.new('ShaderNodeMath');mul.operation='MULTIPLY_ADD';mul.inputs[1].default_value=.16;mul.inputs[2].default_value=.70;L.new(add.outputs[0],mul.inputs[0])
- wash=n.new('ShaderNodeMixRGB');wash.blend_type='MULTIPLY';wash.inputs[0].default_value=1;L.new(base,wash.inputs[1]);L.new(mul.outputs[0],wash.inputs[2])
- ao=n.new('ShaderNodeAmbientOcclusion');ao.inputs['Distance'].default_value=2.0;ao.samples=16
- shade=n.new('ShaderNodeMixRGB');shade.inputs[1].default_value=(.04,.105,.105,1);L.new(ao.outputs['AO'],shade.inputs[0]);L.new(wash.outputs[0],shade.inputs[2]);L.new(shade.outputs[0],bs.inputs[0])
+ geom=n.new('ShaderNodeNewGeometry');level=n.new('ShaderNodeValue');level.outputs[0].default_value=.83;acc=level.outputs[0]
+ # Eight authored, nonperiodic broad brush dabs in scene space; no grid/no random pixels.
+ for pos,radius,amplitude in [((-4,-5,.2),2.3,.22),((2,-4,.1),1.4,-.18),((-.5,-8,.1),2.5,.18),((5,1,1.3),3.0,-.15),((-3,3,2),2.1,.17),((2,7,.1),2.8,-.17),((0,-.2,4),2.0,.16),((-7,-1,.1),1.8,-.12)]:
+  dist=n.new('ShaderNodeVectorMath');dist.operation='DISTANCE';L.new(geom.outputs['Position'],dist.inputs[0]);dist.inputs[1].default_value=pos
+  fall=n.new('ShaderNodeMapRange');fall.clamp=True;fall.interpolation_type='SMOOTHSTEP';fall.inputs['From Min'].default_value=0;fall.inputs['From Max'].default_value=radius;fall.inputs['To Min'].default_value=amplitude;fall.inputs['To Max'].default_value=0;L.new(dist.outputs['Value'],fall.inputs['Value'])
+  ad=n.new('ShaderNodeMath');ad.operation='ADD';L.new(acc,ad.inputs[0]);L.new(fall.outputs[0],ad.inputs[1]);acc=ad.outputs[0]
+ wash=n.new('ShaderNodeMixRGB');wash.blend_type='MULTIPLY';wash.inputs[0].default_value=1;L.new(base,wash.inputs[1]);L.new(acc,wash.inputs[2])
+ L.new(wash.outputs[0],bs.inputs[0])
 for ob in list(sc.objects):
  if ob.type=='LIGHT':bpy.data.objects.remove(ob,do_unlink=True)
 bpy.ops.object.light_add(type='SUN',location=(-15,-18,14));sun=bpy.context.object;sun.name='Bake_low_autumn_sun';sun.data.energy=2.4;sun.data.color=(1,.83,.60);sun.data.angle=.10;sun.rotation_euler=Vector((.7,.65,-.45)).to_track_quat('-Z','Y').to_euler()
 sc.world.use_nodes=True;wn=sc.world.node_tree.nodes;wn.clear();bg=wn.new('ShaderNodeBackground');bg.inputs[0].default_value=(.30,.52,.65,1);bg.inputs[1].default_value=.65;out=wn.new('ShaderNodeOutputWorld');sc.world.node_tree.links.new(bg.outputs[0],out.inputs[0])
 sc.render.engine='CYCLES';prefs=bpy.context.preferences.addons['cycles'].preferences;prefs.compute_device_type='OPTIX';prefs.get_devices()
 for device in prefs.devices:device.use=device.type=='OPTIX'
-sc.cycles.device='GPU';sc.cycles.samples=32;sc.cycles.use_denoising=True;sc.cycles.max_bounces=4;sc.view_settings.view_transform='Standard';sc.view_settings.exposure=0;sc.render.bake.margin=3;sc.render.bake.use_clear=True;sc.render.bake.use_pass_direct=True;sc.render.bake.use_pass_indirect=True;sc.render.bake.use_pass_color=True
+sc.cycles.device='GPU';sc.cycles.samples=128;sc.cycles.use_denoising=True;sc.cycles.max_bounces=4;sc.view_settings.view_transform='Standard';sc.view_settings.exposure=0;sc.render.bake.margin=3;sc.render.bake.use_clear=True;sc.render.bake.use_pass_direct=True;sc.render.bake.use_pass_indirect=True;sc.render.bake.use_pass_color=True
 # Source UV remains separate from unique lightmap UV. Density is literal world metres.
 groups={}
 for o in original:
@@ -78,10 +77,12 @@ for key,obs in groups.items():
  bpy.context.view_layer.objects.active=obs[0]
  print('BAKE_START',key,width,height,flush=True)
  # Bake one temporary joined surface instead of re-tracing the entire atlas per small object.
- bpy.ops.object.duplicate();dups=list(bpy.context.selected_objects);bpy.context.view_layer.objects.active=dups[0];bpy.ops.object.join();joined=bpy.context.object
+ print('DUP_START',key,flush=True);bpy.ops.object.duplicate();dups=list(bpy.context.selected_objects);print('JOIN_START',key,len(dups),flush=True);bpy.context.view_layer.objects.active=dups[0];bpy.ops.object.join();joined=bpy.context.object;print('JOIN_DONE',key,flush=True)
  for o in obs:o.hide_render=True
- bpy.ops.object.bake(type='DIFFUSE')
+ print('TRACE_START',key,flush=True);bpy.ops.object.bake(type='DIFFUSE');print('TRACE_DONE',key,flush=True)
+ img.filepath_raw=str(O/(key+'_baked_raw.png'));img.file_format='PNG';img.save()
+ bpy.ops.object.bake(type='AO');img.filepath_raw=str(O/(key+'_ao.png'));img.save();print('AO_DONE',key,flush=True)
  bpy.data.objects.remove(joined,do_unlink=True)
  for o in obs:o.hide_render=False
- img.filepath_raw=str(O/(key+'_baked_raw.png'));img.file_format='PNG';img.save();print('BAKE_DONE',key,flush=True)
+ img.filepath_raw=str(O/(key+'_baked_raw.png'));img.reload();print('BAKE_DONE',key,flush=True)
 (O/'manifest.json').write_text(json.dumps(manifest,indent=2));(O/'source-geometry.json').write_text(json.dumps(before));bpy.ops.wm.save_as_mainfile(filepath=str(O/'baked-lit.blend'))
