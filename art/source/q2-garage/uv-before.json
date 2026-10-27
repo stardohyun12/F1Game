@@ -1,0 +1,2141 @@
+[
+  {
+    "name": "memory_frame_0",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "race_photo_0",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "race_photo_0_Photo"
+    ]
+  },
+  {
+    "name": "memory_frame_1",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "race_photo_1",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "race_photo_1_Photo"
+    ]
+  },
+  {
+    "name": "memory_frame_2",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "race_photo_2",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "race_photo_2_Photo"
+    ]
+  },
+  {
+    "name": "festival_board",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "festival_registration",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "festival_registration_Photo"
+    ]
+  },
+  {
+    "name": "owner_chair_seat",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "owner_chair_leg",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "owner_chair_leg.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "chair_backpost",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "owner_chair_leg.002",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "owner_chair_leg.003",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "chair_backpost.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "chair_back",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "chair_back.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "chair_repair",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "old_race_helmet",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.002",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.003",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.004",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.005",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_visor.006",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_chin",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "helmet_strap",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench_jaw",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench_jaw.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench.002",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wrench_jaw.002",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "key_hook_strip",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "key_hook",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "key_shaft",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "key_hook.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "key_shaft.001",
+    "uv": [
+      "UVMap"
+    ],
+    "active": "UVMap",
+    "material": [
+      "Garage_Details_Photo"
+    ]
+  },
+  {
+    "name": "wall_-1_planks_dark",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "wall_-1_tin_wall",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "wall_1_planks_dark",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "wall_1_tin_wall",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "win_L",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "win_R",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "back",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "back_gable",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "front_-1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "front_1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "front_gable",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "header",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "roof",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rib5",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "post_-1_0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "post_-1_12.0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "post_1_0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "post_1_12.0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rail",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "patch0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "patch1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "patch2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "patch3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "loose_plank",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "floor",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "apron",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "bench",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "leg4.053.2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "leg4.653.2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "leg4.056.4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "leg4.656.4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "bench_shelf",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "pegboard",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "vise",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "toolbox",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost-1-1.1-0.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost-1-1.10.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost-11.1-0.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost-11.10.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf-10.4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf-11.15",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf-11.9",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-10",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-11",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-12",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-13",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-14",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-15",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part-16",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost1-1.1-0.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost1-1.10.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost11.1-0.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shpost11.10.25",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf10.4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf11.15",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shelf11.9",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part10",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part11",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part12",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part13",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part14",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part15",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part16",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tA0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tA1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tA2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tA3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tA3_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tB0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tB1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tB2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tB2_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tO0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tO1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tO2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tO2_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tLean",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum0_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum1_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum2_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum3_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "drum_lying",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "cable0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shade0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "bulb0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "cable1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "shade1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "bulb1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "posterA",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "posterB",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "posterC",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "record",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "slots",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "slots_frame",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "crate1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "crate2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "lad-4.85",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "lad-4.35",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rung0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rung1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rung2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rung3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "rung4",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "table",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "trest-0.7",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "trest0.7",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "engine",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "engine_fly",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "part_box",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "hoist_beam",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "chain",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "hook",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tC0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tC1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tC2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tC3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tC3_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tD0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tD1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tD1_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tE0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tE1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tE2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tE2_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "icrate0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "icrate1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "icrate2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "icrate3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can0",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can0_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can1_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can2",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can2_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can3",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "can3_cap",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "tWall",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "wall_top-1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "wall_top1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sh_box",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sh_roll",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sh_lip",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sh_guide-1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sh_guide1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sign_main",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Sign_Photo"
+    ]
+  },
+  {
+    "name": "sign_br-1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "sign_br1",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "pdoor",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "pdoor_fr",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  },
+  {
+    "name": "pdoor_knob",
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ],
+    "active": "BakedUV",
+    "material": [
+      "Garage_Albedo"
+    ]
+  }
+]

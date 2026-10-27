@@ -1,0 +1,42 @@
+{
+  "A7_reference": "F1\\Assets\\Art\\SceneA7\\Tex\\garage_tin_F2_atlas_clean.png",
+  "A7_sha256": "ea08f54f31b66617de5dacf6791b9482fc600a63f738a4ceae8c47c424f27b77",
+  "floor_pixels": 170696,
+  "floor_RGB_min": [
+    100,
+    104,
+    104
+  ],
+  "floor_RGB_max": [
+    106,
+    110,
+    110
+  ],
+  "dirt_RGB_min": [
+    128,
+    120,
+    102
+  ],
+  "dirt_RGB_max": [
+    136,
+    128,
+    108
+  ],
+  "floor_navy_pixels": 0,
+  "dirt_red_speck_pixels": 0,
+  "sources": [
+    {
+      "path": "art\\source\\photos\\scene-a\\Concrete042A\\Concrete042A_1K-JPG_Color.jpg",
+      "sha256": "22986233ff2b78703bc6808a351cafea0da80bfb76a932675034722a356f691c",
+      "license": "CC0-1.0",
+      "url": "https://ambientcg.com/view?id=Concrete042A"
+    },
+    {
+      "path": "art\\source\\photos\\scene-a\\Ground081\\Ground081_1K-JPG_Color.jpg",
+      "sha256": "906661af2859c4fe5c47e283cf100f3c25fdf9eca35e94ae20d320118c593352",
+      "license": "CC0-1.0",
+      "url": "https://ambientcg.com/view?id=Ground081"
+    }
+  ],
+  "light_bake": false
+}

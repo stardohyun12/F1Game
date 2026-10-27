@@ -23,6 +23,6 @@
     0.0,
     0.0
   ],
-  "dirt_fbx_byte_identical": true,
-  "uv_change": "existing sign_main only; original garage islands retained; new items 64 texel/m"
+  "dirt_fbx_byte_identical": false,
+  "uv_change": "All meshes normalized to one first UVMap before join; existing geometry unchanged; see uv-fix-v2.json"
 }

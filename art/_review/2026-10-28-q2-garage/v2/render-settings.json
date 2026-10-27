@@ -1,0 +1,47 @@
+{
+  "same_camera_lighting": true,
+  "views": {
+    "inside": [
+      [
+        0,
+        10.7,
+        1.8
+      ],
+      [
+        0,
+        0,
+        2.0
+      ]
+    ],
+    "outside15": [
+      [
+        0,
+        -15,
+        2.8
+      ],
+      [
+        0,
+        2,
+        2.3
+      ]
+    ],
+    "board": [
+      [
+        -2.4,
+        4.65,
+        2.15
+      ],
+      [
+        -4.85,
+        4.65,
+        2.12
+      ]
+    ]
+  },
+  "engine": "EEVEE",
+  "ambient_approximation": 0.7,
+  "sun": 1,
+  "lighting_baked": false,
+  "v1_uv_workaround": "Albedo only UV0<-BakedUV, same as programmer 0535",
+  "v2_uv_workaround": null
+}

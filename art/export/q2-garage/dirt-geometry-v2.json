@@ -1,0 +1,10 @@
+{
+  "vertices_unchanged_within_0_1mm": true,
+  "max_position_error": 1.00000761449337e-05,
+  "old_uv": [
+    "BakedUV"
+  ],
+  "new_uv": [
+    "UVMap"
+  ]
+}

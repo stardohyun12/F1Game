@@ -1,0 +1,1087 @@
+{
+  "A7_color_placement_exact_outside_cleaned_roof_floor": true,
+  "F2_is_default_byte_identical": true,
+  "fbm_copies_match": {
+    "garage_v5_combo.fbm\\garage_baked32.png": true,
+    "garage_v5_combo.fbm\\garage_details.png": true,
+    "garage_v5_combo.fbm\\garage_festival.png": true,
+    "garage_v5_combo.fbm\\garage_memory_1.png": true,
+    "garage_v5_combo.fbm\\garage_memory_2.png": true,
+    "garage_v5_combo.fbm\\garage_memory_3.png": true,
+    "garage_v5_combo.fbm\\garage_sign.png": true,
+    "dirt_v5_combo.fbm\\dirt_baked32.png": true
+  },
+  "texture": {
+    "A7_reference": "F1\\Assets\\Art\\SceneA7\\Tex\\garage_tin_F2_atlas_clean.png",
+    "A7_sha256": "ea08f54f31b66617de5dacf6791b9482fc600a63f738a4ceae8c47c424f27b77",
+    "floor_pixels": 170696,
+    "floor_RGB_min": [
+      100,
+      104,
+      104
+    ],
+    "floor_RGB_max": [
+      106,
+      110,
+      110
+    ],
+    "dirt_RGB_min": [
+      128,
+      120,
+      102
+    ],
+    "dirt_RGB_max": [
+      136,
+      128,
+      108
+    ],
+    "floor_navy_pixels": 0,
+    "dirt_red_speck_pixels": 0,
+    "sources": [
+      {
+        "path": "art\\source\\photos\\scene-a\\Concrete042A\\Concrete042A_1K-JPG_Color.jpg",
+        "sha256": "22986233ff2b78703bc6808a351cafea0da80bfb76a932675034722a356f691c",
+        "license": "CC0-1.0",
+        "url": "https://ambientcg.com/view?id=Concrete042A"
+      },
+      {
+        "path": "art\\source\\photos\\scene-a\\Ground081\\Ground081_1K-JPG_Color.jpg",
+        "sha256": "906661af2859c4fe5c47e283cf100f3c25fdf9eca35e94ae20d320118c593352",
+        "license": "CC0-1.0",
+        "url": "https://ambientcg.com/view?id=Ground081"
+      }
+    ],
+    "light_bake": false
+  },
+  "uv": {
+    "geometry_unchanged": true,
+    "geometry_hash": "40424a7dc5410f84fd21ead27d1882e991bf29b74e3b4474a0242439e8b09e64",
+    "tris": 2406,
+    "reimport_uv_channels": [
+      "UVMap"
+    ],
+    "per_material_uv_sets_equal": true,
+    "per_object_source_uv": [
+      {
+        "object": "memory_frame_0",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "race_photo_0",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "memory_frame_1",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "race_photo_1",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "memory_frame_2",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "race_photo_2",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "festival_board",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "festival_registration",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "owner_chair_seat",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "owner_chair_leg",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "owner_chair_leg.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "chair_backpost",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "owner_chair_leg.002",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "owner_chair_leg.003",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "chair_backpost.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "chair_back",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "chair_back.001",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "chair_repair",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "old_race_helmet",
+        "source": "UVMap",
+        "loops": 384
+      },
+      {
+        "object": "helmet_visor",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.001",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.002",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.003",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.004",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.005",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_visor.006",
+        "source": "UVMap",
+        "loops": 4
+      },
+      {
+        "object": "helmet_chin",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "helmet_strap",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench_jaw",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench_jaw.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench.002",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wrench_jaw.002",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "key_hook_strip",
+        "source": "UVMap",
+        "loops": 24
+      },
+      {
+        "object": "key_hook",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "key_shaft",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "key_hook.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "key_shaft.001",
+        "source": "UVMap",
+        "loops": 48
+      },
+      {
+        "object": "wall_-1_planks_dark",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "wall_-1_tin_wall",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "wall_1_planks_dark",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "wall_1_tin_wall",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "win_L",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "win_R",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "back",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "back_gable",
+        "source": "BakedUV",
+        "loops": 18
+      },
+      {
+        "object": "front_-1",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "front_1",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "front_gable",
+        "source": "BakedUV",
+        "loops": 18
+      },
+      {
+        "object": "header",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "roof",
+        "source": "BakedUV",
+        "loops": 216
+      },
+      {
+        "object": "rib0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rib1",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rib2",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rib3",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rib4",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rib5",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "post_-1_0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "post_-1_12.0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "post_1_0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "post_1_12.0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rail",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "patch0",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "patch1",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "patch2",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "patch3",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "loose_plank",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "floor",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "apron",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "bench",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "leg4.053.2",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "leg4.653.2",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "leg4.056.4",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "leg4.656.4",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "bench_shelf",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "pegboard",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "vise",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "toolbox",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shpost-1-1.1-0.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost-1-1.10.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost-11.1-0.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost-11.10.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shelf-10.4",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shelf-11.15",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shelf-11.9",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-10",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-11",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-12",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-13",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-14",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-15",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part-16",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shpost1-1.1-0.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost1-1.10.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost11.1-0.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shpost11.10.25",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shelf10.4",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shelf11.15",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "shelf11.9",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part10",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part11",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part12",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part13",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part14",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part15",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "part16",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "tA0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tA1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tA2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tA3",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tA3_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "tB0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tB1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tB2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tB2_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "tO0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tO1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tO2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tO2_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "tLean",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "drum0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "drum0_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "drum1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "drum1_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "drum2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "drum2_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "drum3",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "drum3_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "drum_lying",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "cable0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shade0",
+        "source": "BakedUV",
+        "loops": 18
+      },
+      {
+        "object": "bulb0",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "cable1",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "shade1",
+        "source": "BakedUV",
+        "loops": 18
+      },
+      {
+        "object": "bulb1",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "posterA",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "posterB",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "posterC",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "record",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "slots",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "slots_frame",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "crate1",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "crate2",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "lad-4.85",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "lad-4.35",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rung0",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rung1",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rung2",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rung3",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "rung4",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "table",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "trest-0.7",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "trest0.7",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "engine",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "engine_fly",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "part_box",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "hoist_beam",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "chain",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "hook",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "tC0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tC1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tC2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tC3",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tC3_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "tD0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tD1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tD1_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "tE0",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tE1",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tE2",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "tE2_cap",
+        "source": "BakedUV",
+        "loops": 8
+      },
+      {
+        "object": "icrate0",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "icrate1",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "icrate2",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "icrate3",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "can0",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "can0_cap",
+        "source": "BakedUV",
+        "loops": 6
+      },
+      {
+        "object": "can1",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "can1_cap",
+        "source": "BakedUV",
+        "loops": 6
+      },
+      {
+        "object": "can2",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "can2_cap",
+        "source": "BakedUV",
+        "loops": 6
+      },
+      {
+        "object": "can3",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "can3_cap",
+        "source": "BakedUV",
+        "loops": 6
+      },
+      {
+        "object": "tWall",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "wall_top-1",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "wall_top1",
+        "source": "BakedUV",
+        "loops": 4
+      },
+      {
+        "object": "sh_box",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "sh_roll",
+        "source": "BakedUV",
+        "loops": 32
+      },
+      {
+        "object": "sh_lip",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "sh_guide-1",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "sh_guide1",
+        "source": "BakedUV",
+        "loops": 16
+      },
+      {
+        "object": "sign_main",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "sign_br-1",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "sign_br1",
+        "source": "BakedUV",
+        "loops": 24
+      },
+      {
+        "object": "pdoor",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "pdoor_fr",
+        "source": "BakedUV",
+        "loops": 20
+      },
+      {
+        "object": "pdoor_knob",
+        "source": "BakedUV",
+        "loops": 24
+      }
+    ],
+    "material_names": [
+      "Garage_Details_Photo",
+      "race_photo_0_Photo",
+      "race_photo_1_Photo",
+      "race_photo_2_Photo",
+      "festival_registration_Photo",
+      "Garage_Albedo",
+      "Garage_Sign_Photo"
+    ],
+    "origin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "details_unique_uv": 290
+  },
+  "output_sha256": {
+    "ceiling_photo.png": "bbe034076b6abb47d8f75862858b411a49575d9057855cf074ed79fb4818cfaf",
+    "dirt_baked32.png": "1f5d77bbc8d2837c9022c4c0e8f904d2ed748435b9c49b98f77009df8255075d",
+    "dirt_v5_combo.fbx": "8ed28fff447c4ce4fa78af17ff4bad46049c7626e24bf7a3edea35e83a723833",
+    "garage_baked32.png": "9c5520e4d4c9e5ccd6eec3cd36323e477ee6fb73a0e8955abe5519acab3ce5a6",
+    "garage_details.png": "3d09dcdf1e6f69db04dcedefbf4ad080c19ad588c270d5cd463e77afa8cfbb26",
+    "garage_festival.png": "981cae2ccea95b4cd47792abed68882f64b36338518273d2dd4f3425608817ca",
+    "garage_memory_1.png": "e2fa4e548d967b093b6858bc967efabd8f4f6703b31aca167eff5b929a0697fa",
+    "garage_memory_2.png": "61dc445ea174104aeb7d03c3a6a6b3ae3d7d2519440b3443b20f6c4c2bf0dec1",
+    "garage_memory_3.png": "2dbc7c9a75d19dab985851e22a8acb1935e579896159466c7141f223be42aeeb",
+    "garage_sign.png": "79a61e30db905c2364b5c72f24055c976606d910428f1f72a97d156ff5072b2c",
+    "garage_tin_F2_atlas.png": "9c5520e4d4c9e5ccd6eec3cd36323e477ee6fb73a0e8955abe5519acab3ce5a6",
+    "garage_tin_F3_atlas.png": "47665f9e8e7d792724f3924250bb66b988f74903821420c4c0f660034e63024b",
+    "garage_v5_combo.fbx": "0b366a67adba9356f257406fda8bea1060caed4146fe9804fc1dd1d2b7bcbc6c"
+  }
+}
