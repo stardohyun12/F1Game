@@ -1,0 +1,122 @@
+{
+  "pass_geometry": true,
+  "triangles": 1864,
+  "mesh_objects": 59,
+  "size_xyz": [
+    1.2799999713897705,
+    1.800000011920929,
+    0.8200000673532486
+  ],
+  "wheel_checks": {
+    "FL": {
+      "tire": {
+        "name": "k_tire_FL",
+        "center": [
+          -0.4399999976158142,
+          0.5400000214576721,
+          0.24000000953674316
+        ],
+        "center_error": 1.4901161193847656e-08,
+        "origin_error": 0.0,
+        "radius": 0.14800000935792923
+      },
+      "hub": {
+        "name": "k_hub_FL",
+        "center": [
+          -0.4399999976158142,
+          0.5400000214576721,
+          0.23999997973442078
+        ],
+        "center_error": 1.4901161193847656e-08,
+        "origin_error": 0.0,
+        "radius": 0.07103999704122543
+      }
+    },
+    "FR": {
+      "tire": {
+        "name": "k_tire_FR",
+        "center": [
+          0.4399999976158142,
+          0.5400000214576721,
+          0.24000000953674316
+        ],
+        "center_error": 1.4901161193847656e-08,
+        "origin_error": 0.0,
+        "radius": 0.14800000935792923
+      },
+      "hub": {
+        "name": "k_hub_FR",
+        "center": [
+          0.4399999976158142,
+          0.5400000214576721,
+          0.23999997973442078
+        ],
+        "center_error": 1.4901161193847656e-08,
+        "origin_error": 0.0,
+        "radius": 0.07103999704122543
+      }
+    },
+    "RL": {
+      "tire": {
+        "name": "k_tire_RL",
+        "center": [
+          -0.5199999809265137,
+          -0.5099999904632568,
+          0.3400000333786011
+        ],
+        "center_error": 2.9802322387695312e-08,
+        "origin_error": 0.0,
+        "radius": 0.22200001776218414
+      },
+      "hub": {
+        "name": "k_hub_RL",
+        "center": [
+          -0.5199999809265137,
+          -0.5099999904632568,
+          0.3400000035762787
+        ],
+        "center_error": 0.0,
+        "origin_error": 0.0,
+        "radius": 0.10656001418828964
+      }
+    },
+    "RR": {
+      "tire": {
+        "name": "k_tire_RR",
+        "center": [
+          0.5199999809265137,
+          -0.5099999904632568,
+          0.3400000333786011
+        ],
+        "center_error": 2.9802322387695312e-08,
+        "origin_error": 0.0,
+        "radius": 0.22200001776218414
+      },
+      "hub": {
+        "name": "k_hub_RR",
+        "center": [
+          0.5199999809265137,
+          -0.5099999904632568,
+          0.3400000035762787
+        ],
+        "center_error": 0.0,
+        "origin_error": 0.0,
+        "radius": 0.10656001418828964
+      }
+    }
+  },
+  "uv0_valid": true,
+  "unity_imported": false,
+  "palette_pass": true,
+  "used_colors": 29,
+  "palette_identical_to_garage": true,
+  "texture_size": [
+    1024,
+    256
+  ],
+  "sha256": {
+    "kart_v6.fbx": "ff0f7b1c3ba1b6b4c85350ae146378db944b828ec8ecb5829df1105f1ddc3433",
+    "kart_v6_baked32.png": "06544be9fe54ee6a854829e31e10a2d568cdd44368c5ee2041448d6684228aaf",
+    "palette32.gpl": "ec3ab21933e49ab7c509ae735308f8e50b249dae2caf5a17b323a0e6e2c973db"
+  }
+}

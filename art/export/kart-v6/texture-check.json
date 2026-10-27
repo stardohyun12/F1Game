@@ -1,0 +1,11 @@
+{
+  "size": [
+    1024,
+    256
+  ],
+  "palette_colors": 32,
+  "used_colors": 29,
+  "no_black": true,
+  "texels_per_m": 32,
+  "method": "V5 diffuse + AO(.70+.30*AO), teal shadow lift, +1 stop, nearest palette, no dither"
+}

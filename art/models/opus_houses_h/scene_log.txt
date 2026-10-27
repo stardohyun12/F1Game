@@ -1,0 +1,40 @@
+D:\Github\F1Game\tools\asset-gen\opus_houses_h_scene.py:25: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  im, _ = pix(png); m = bpy.data.materials.new('u_' + os.path.basename(png)); m.use_nodes = True; nt = m.node_tree; nt.nodes.clear()
+FBX version: 7400
+GARAGE bbox [-6.16 -3.5  -0.07] [ 7.31 12.91  5.7 ]
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW h 64.0
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+ROW e 64.0
+D:\Github\F1Game\tools\asset-gen\opus_houses_h_scene.py:73: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; wd.node_tree.nodes['Background'].inputs[0].default_value = (.62, .72, .78, 1)
+00:04.297  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-27-houses-h\row_h.png'
+RENDER h
+00:04.828  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-27-houses-h\row_e.png'
+RENDER e
+M garage_v5b {'texels_per_m': 32.33, 'colors_texture': 32, 'wall_L_mean': 59.3, 'wall_faces': 44}
+M house_narrow_a_h {'texels_per_m': 25.5, 'colors_texture': 29, 'wall_L_mean': 119.7, 'wall_faces': 111}
+M house_narrow_b_h {'texels_per_m': 24.2, 'colors_texture': 28, 'wall_L_mean': 125.2, 'wall_faces': 87}
+M house_shop_h {'texels_per_m': 26.03, 'colors_texture': 29, 'wall_L_mean': 116.6, 'wall_faces': 86}
+M house_slope_h {'texels_per_m': 25.36, 'colors_texture': 28, 'wall_L_mean': 107.6, 'wall_faces': 78}
+M house_warehouse_h {'texels_per_m': 25.95, 'colors_texture': 27, 'wall_L_mean': 118.6, 'wall_faces': 103}
+M house_cafe_h {'texels_per_m': 26.64, 'colors_texture': 28, 'wall_L_mean': 103.0, 'wall_faces': 26}
+M house_narrow_a_e {'texels_per_m': 6.06, 'colors_texture': 28, 'wall_L_mean': 148.9, 'wall_faces': 95}
+M house_narrow_b_e {'texels_per_m': 5.64, 'colors_texture': 29, 'wall_L_mean': 175.4, 'wall_faces': 69}
+M house_shop_e {'texels_per_m': 6.4, 'colors_texture': 28, 'wall_L_mean': 145.6, 'wall_faces': 70}
+M house_slope_e {'texels_per_m': 6.39, 'colors_texture': 28, 'wall_L_mean': 150.1, 'wall_faces': 62}
+M house_warehouse_e {'texels_per_m': 6.44, 'colors_texture': 25, 'wall_L_mean': 176.7, 'wall_faces': 85}
+M house_cafe_e {'texels_per_m': 6.63, 'colors_texture': 30, 'wall_L_mean': 164.7, 'wall_faces': 26}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

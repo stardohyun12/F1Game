@@ -1,0 +1,108 @@
+D:\Github\F1Game\tools\asset-gen\opus_houses_h.py:163: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; wn = wd.node_tree.nodes; wn.clear(); bg = wn.new('ShaderNodeBackground')
+00:06.438  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+D:\Github\F1Game\tools\asset-gen\opus_houses_h.py:171: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  gnd = bpy.data.objects.new('ground', gm); sc.collection.objects.link(gnd); gmat = bpy.data.materials.new('ground'); gmat.use_nodes = True
+opus_houses.py:97: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+15:54:57 | INFO: Data are loaded, start creating Blender stuff
+15:54:57 | INFO: Blender create Mesh node calathea
+15:54:57 | INFO: glTF import finished in 0.02s
+BUILT house_narrow_a tris 1868 tex 2048 1024 win 18 9
+D:\Github\F1Game\tools\asset-gen\opus_houses_h.py:195: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat = bpy.data.materials.new('bake_' + h['name']); mat.use_nodes = True; nt = mat.node_tree; nt.nodes.clear()
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_narrow_a DIFFUSE 13
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_narrow_a AO 15
+D:\Tools\Blender\5.2\python\Lib\site-packages\numpy\_core\fromnumeric.py:3860: RuntimeWarning: Mean of empty slice.
+  return _methods._mean(a, axis=axis, dtype=dtype,
+D:\Tools\Blender\5.2\python\Lib\site-packages\numpy\_core\_methods.py:136: RuntimeWarning: invalid value encountered in divide
+  ret = um.true_divide(
+D:\Tools\Blender\5.2\python\Lib\site-packages\numpy\_core\_methods.py:144: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+GLYPH house_narrow_a appended 0 kept 0 px 0
+opus_houses.py:649: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_narrow_a.fbx'
+export finished in 0.0192 sec.
+MEAS house_narrow_a {'texels_per_m': 32, 'size': [2048, 1024], 'colors_visible': 22, 'wall_colors': 18, 'L_wall_mean': 140.4, 'L_visible_mean': 134.0, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 18.46, 'grime_wall_pct': 15.2, 'glyph_px': 0, 'tris': 1868, 'speckle_1px_pct': 0.98} 24
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+BUILT house_narrow_b tris 1552 tex 2048 1024 win 22 29
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_narrow_b DIFFUSE 33
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_narrow_b AO 35
+GLYPH house_narrow_b appended 0 kept 0 px 0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_narrow_b.fbx'
+export finished in 0.0152 sec.
+MEAS house_narrow_b {'texels_per_m': 32, 'size': [2048, 1024], 'colors_visible': 21, 'wall_colors': 18, 'L_wall_mean': 153.9, 'L_visible_mean': 142.9, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 16.13, 'grime_wall_pct': 16.7, 'glyph_px': 0, 'tris': 1552, 'speckle_1px_pct': 0.634} 44
+FBX version: 7400
+FBX version: 7400
+BUILT house_shop tris 1090 tex 2048 1024 win 14 47
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_shop DIFFUSE 50
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_shop AO 53
+GLYPH house_shop appended 0 kept 0 px 0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_shop.fbx'
+export finished in 0.0136 sec.
+MEAS house_shop {'texels_per_m': 32, 'size': [2048, 1024], 'colors_visible': 22, 'wall_colors': 18, 'L_wall_mean': 134.1, 'L_visible_mean': 126.1, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 20.76, 'grime_wall_pct': 23.6, 'glyph_px': 0, 'tris': 1090, 'speckle_1px_pct': 0.67} 61
+FBX version: 7400
+15:55:55 | INFO: Data are loaded, start creating Blender stuff
+15:55:55 | INFO: Blender create Mesh node Cylinder.011
+15:55:55 | INFO: glTF import finished in 0.02s
+15:55:57 | INFO: Data are loaded, start creating Blender stuff
+15:55:57 | INFO: Blender create Mesh node Cylinder.012
+15:55:57 | INFO: glTF import finished in 0.02s
+15:55:58 | INFO: Data are loaded, start creating Blender stuff
+15:55:58 | INFO: Blender create Mesh node Cylinder.014
+15:55:58 | INFO: glTF import finished in 0.02s
+BUILT house_slope tris 2466 tex 2048 1024 win 16 69
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_slope DIFFUSE 73
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_slope AO 75
+GLYPH house_slope appended 0 kept 0 px 0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_slope.fbx'
+export finished in 0.0329 sec.
+MEAS house_slope {'texels_per_m': 32, 'size': [2048, 1024], 'colors_visible': 22, 'wall_colors': 14, 'L_wall_mean': 139.1, 'L_visible_mean': 134.3, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 11.08, 'grime_wall_pct': 19.0, 'glyph_px': 0, 'tris': 2466, 'speckle_1px_pct': 0.687} 84
+FBX version: 7400
+15:56:18 | INFO: Data are loaded, start creating Blender stuff
+15:56:18 | INFO: Blender create Mesh node leaf.007
+15:56:18 | INFO: glTF import finished in 0.02s
+BUILT house_warehouse tris 1290 tex 2048 1024 win 8 88
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_warehouse DIFFUSE 93
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_warehouse AO 97
+GLYPH house_warehouse appended 0 kept 0 px 0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_warehouse.fbx'
+export finished in 0.0178 sec.
+MEAS house_warehouse {'texels_per_m': 32, 'size': [2048, 1024], 'colors_visible': 20, 'wall_colors': 15, 'L_wall_mean': 150.8, 'L_visible_mean': 140.8, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 13.12, 'grime_wall_pct': 15.2, 'glyph_px': 0, 'tris': 1290, 'speckle_1px_pct': 0.81} 107
+BUILT house_cafe tris 1122 tex 2048 256 win 10 109
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_cafe DIFFUSE 111
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE house_cafe AO 113
+GLYPH house_cafe appended 0 kept 0 px 0
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\scene-a4-houses-h\\house_cafe.fbx'
+export finished in 0.0141 sec.
+MEAS house_cafe {'texels_per_m': 32, 'size': [2048, 256], 'colors_visible': 21, 'wall_colors': 19, 'L_wall_mean': 121.7, 'L_visible_mean': 122.9, 'p5_visible': 64.4, 'p5_glass': 64.4, 'under55_visible_pct': 0.0, 'lifted_px_pct': 21.08, 'grime_wall_pct': 24.0, 'glyph_px': 0, 'tris': 1122, 'speckle_1px_pct': 1.707} 115
+DONE 115
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

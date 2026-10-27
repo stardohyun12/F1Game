@@ -1,0 +1,14 @@
+00:00.906  blend            | Read blend: "D:\Github\F1Game\art\models\garage_scene_a_v5_combo\baked-lit.blend"
+MASK faces 507 px 411464
+00:01.031  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+BAKE_START 0
+Info: Baking map saved to internal image, save it externally or pack it
+BAKE_DONE 4
+V5 replica |diff| mean 0.456
+k 1.89 Lext 149.3 floor 74.7 lifted px 205732
+MEAS {"task": "20261027-1248", "luma": "0.299R+0.587G+0.114B, 텍스처 픽셀(Blender 이미지 버퍼), 실내 면 마스크 안", "interior_px": 411464, "interior_faces": 507, "before_v5_32": {"mean": 35.8, "p5": 33.0, "p50": 33.0, "p95": 48.6, "std": 7.6, "colors": 15, "under40_pct": 89.01}, "after_v5b_32": {"mean": 116.7, "p5": 77.7, "p50": 91.8, "p95": 205.3, "std": 35.3, "colors": 24, "under40_pct": 0.0}, "outside_lit_p90": 149.3, "floor": 74.7, "k_added_light": 1.89, "changed_px_outside_mask": 0, "v5_replica_abs_diff": 0.456, "lights": [{"name": "ceil_lamp0", "loc": [0.09, 5.0, 3.42], "power_W": 160.0, "color": [1.0, 0.9700000286102295, 0.8999999761581421], "size": [1.2000000476837158, 0.30000001192092896]}, {"name": "ceil_lamp1", "loc": [2.49, 8.5, 3.42], "power_W": 160.0, "color": [1.0, 0.9700000286102295, 0.8999999761581421], "size": [1.2000000476837158, 0.30000001192092896]}, {"name": "door_bounce", "loc": [0.0, 0.35, 1.4], "power_W": 420.0, "color": [1.0, 0.800000011920929, 0.5799999833106995], "size": [7.0, 2.799999952316284]}]}
+Info: Saved copy as "v5b-baked.blend"
+GARAGE DONE 23
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
