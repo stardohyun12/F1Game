@@ -1,0 +1,346 @@
+{
+ "luma": "0.299R+0.587G+0.114B (양자화 뒤, 텍스처 픽셀)",
+ "palette": "palette40.gpl",
+ "paint_slots": [
+  [
+   [
+    236,
+    202,
+    140
+   ],
+   [
+    "narrow_a 해"
+   ]
+  ],
+  [
+   [
+    131,
+    134,
+    110
+   ],
+   [
+    "narrow_a 그늘",
+    "shop 그늘",
+    "cafe 그늘"
+   ]
+  ],
+  [
+   [
+    244,
+    235,
+    200
+   ],
+   [
+    "narrow_b 해",
+    "warehouse 해"
+   ]
+  ],
+  [
+   [
+    135,
+    157,
+    150
+   ],
+   [
+    "narrow_b 그늘",
+    "warehouse 그늘"
+   ]
+  ],
+  [
+   [
+    231,
+    185,
+    140
+   ],
+   [
+    "shop 해"
+   ]
+  ],
+  [
+   [
+    178,
+    209,
+    183
+   ],
+   [
+    "slope 해"
+   ]
+  ],
+  [
+   [
+    98,
+    142,
+    141
+   ],
+   [
+    "slope 그늘"
+   ]
+  ],
+  [
+   [
+    166,
+    148,
+    117
+   ],
+   [
+    "cafe 해"
+   ]
+  ]
+ ],
+ "dropped_near_garage": [],
+ "wall_faces": "넓은 벽 면(≥2m²)마다 3% 넘게 쓴 색 수·외톨이 텍셀 %(4이웃 모두 다른 색) — h 는 같은 배치로 잼",
+ "files": {
+  "house_narrow_a": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 25,
+   "paint_slots_used": 2,
+   "wall_colors": 20,
+   "L_wall_mean": 145.0,
+   "p5_visible": 74.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.001,
+   "under60_visible_pct": 0.001,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 74.4,
+   "unbaked_filled_px": 135047,
+   "accent_chroma_p99": 68.0,
+   "accent_chroma_max": 80,
+   "window_frame_px": 6278,
+   "band_px": 0,
+   "seam_px": 22347,
+   "eave_px": 0,
+   "grime_wall_pct": 8.7,
+   "glyph_px": 424,
+   "tris": 1868,
+   "repicked_under55_px": 1526,
+   "wall_faces_h2": {
+    "faces": 36,
+    "colors_per_face_mean": 2.33,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 36.1,
+    "isolated_px_pct": 0.01
+   },
+   "wall_faces_h": {
+    "faces": 36,
+    "colors_per_face_mean": 3.97,
+    "colors_per_face_max": 8,
+    "faces_3plus_pct": 72.2,
+    "isolated_px_pct": 2.75
+   }
+  },
+  "house_narrow_b": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 22,
+   "paint_slots_used": 2,
+   "wall_colors": 19,
+   "L_wall_mean": 168.3,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "under60_visible_pct": 0.0,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 64.4,
+   "unbaked_filled_px": 113328,
+   "accent_chroma_p99": 61.0,
+   "accent_chroma_max": 68,
+   "window_frame_px": 8193,
+   "band_px": 2307,
+   "seam_px": 18490,
+   "eave_px": 0,
+   "grime_wall_pct": 8.8,
+   "glyph_px": 1026,
+   "tris": 1552,
+   "repicked_under55_px": 1226,
+   "wall_faces_h2": {
+    "faces": 36,
+    "colors_per_face_mean": 2.36,
+    "colors_per_face_max": 8,
+    "faces_3plus_pct": 30.6,
+    "isolated_px_pct": 0.01
+   },
+   "wall_faces_h": {
+    "faces": 36,
+    "colors_per_face_mean": 2.97,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 58.3,
+    "isolated_px_pct": 1.15
+   }
+  },
+  "house_shop": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 24,
+   "paint_slots_used": 2,
+   "wall_colors": 17,
+   "L_wall_mean": 138.0,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.001,
+   "under60_visible_pct": 0.001,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 64.4,
+   "unbaked_filled_px": 108598,
+   "accent_chroma_p99": 95.0,
+   "accent_chroma_max": 95,
+   "window_frame_px": 4765,
+   "band_px": 2961,
+   "seam_px": 12193,
+   "eave_px": 0,
+   "grime_wall_pct": 18.9,
+   "glyph_px": 856,
+   "tris": 1090,
+   "repicked_under55_px": 1131,
+   "wall_faces_h2": {
+    "faces": 32,
+    "colors_per_face_mean": 2.47,
+    "colors_per_face_max": 9,
+    "faces_3plus_pct": 43.8,
+    "isolated_px_pct": 0.01
+   },
+   "wall_faces_h": {
+    "faces": 32,
+    "colors_per_face_mean": 3.53,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 65.6,
+    "isolated_px_pct": 2.29
+   }
+  },
+  "house_slope": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 23,
+   "paint_slots_used": 2,
+   "wall_colors": 14,
+   "L_wall_mean": 146.3,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "under60_visible_pct": 0.0,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 64.4,
+   "unbaked_filled_px": 173997,
+   "accent_chroma_p99": 33.0,
+   "accent_chroma_max": 33,
+   "window_frame_px": 5749,
+   "band_px": 0,
+   "seam_px": 11237,
+   "eave_px": 0,
+   "grime_wall_pct": 11.1,
+   "glyph_px": 0,
+   "tris": 2466,
+   "repicked_under55_px": 453,
+   "wall_faces_h2": {
+    "faces": 26,
+    "colors_per_face_mean": 2.88,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 57.7,
+    "isolated_px_pct": 0.02
+   },
+   "wall_faces_h": {
+    "faces": 26,
+    "colors_per_face_mean": 2.77,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 42.3,
+    "isolated_px_pct": 0.58
+   }
+  },
+  "house_warehouse": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 26,
+   "paint_slots_used": 2,
+   "wall_colors": 15,
+   "L_wall_mean": 165.1,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.028,
+   "under60_visible_pct": 0.028,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 64.4,
+   "unbaked_filled_px": 163030,
+   "accent_chroma_p99": 44.0,
+   "accent_chroma_max": 68,
+   "window_frame_px": 3852,
+   "band_px": 3912,
+   "seam_px": 15218,
+   "eave_px": 0,
+   "grime_wall_pct": 8.8,
+   "glyph_px": 1260,
+   "tris": 1290,
+   "repicked_under55_px": 1853,
+   "wall_faces_h2": {
+    "faces": 38,
+    "colors_per_face_mean": 2.08,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 28.9,
+    "isolated_px_pct": 0.01
+   },
+   "wall_faces_h": {
+    "faces": 38,
+    "colors_per_face_mean": 4.34,
+    "colors_per_face_max": 8,
+    "faces_3plus_pct": 73.7,
+    "isolated_px_pct": 2.84
+   }
+  },
+  "house_cafe": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    256
+   ],
+   "colors_visible": 23,
+   "paint_slots_used": 2,
+   "wall_colors": 21,
+   "L_wall_mean": 129.3,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "under60_visible_pct": 0.0,
+   "near0_visible_pct": 0.0,
+   "p5_visible_j": 64.4,
+   "unbaked_filled_px": 56432,
+   "accent_chroma_p99": 95.0,
+   "accent_chroma_max": 95,
+   "window_frame_px": 3289,
+   "band_px": 3026,
+   "seam_px": 0,
+   "eave_px": 0,
+   "grime_wall_pct": 17.9,
+   "glyph_px": 630,
+   "tris": 1122,
+   "repicked_under55_px": 752,
+   "wall_faces_h2": {
+    "faces": 6,
+    "colors_per_face_mean": 3.67,
+    "colors_per_face_max": 5,
+    "faces_3plus_pct": 83.3,
+    "isolated_px_pct": 0.0
+   },
+   "wall_faces_h": {
+    "faces": 6,
+    "colors_per_face_mean": 5.67,
+    "colors_per_face_max": 7,
+    "faces_3plus_pct": 100.0,
+    "isolated_px_pct": 3.26
+   }
+  }
+ }
+}
