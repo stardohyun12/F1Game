@@ -1,0 +1,32 @@
+{
+  "fbx_reimport": true,
+  "tris": 2304,
+  "mesh_count": 11,
+  "uv_in_0_1": true,
+  "root_origin": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "front_4m_clear": true,
+  "textures_byte_identical_to_kit": {
+    "wall": true,
+    "trim": true,
+    "floor": true,
+    "roof": true,
+    "decals": true
+  },
+  "bounds_blender": [
+    [
+      -5.0,
+      -1.7249999046325684,
+      -1.140444737757207e-06
+    ],
+    [
+      5.0,
+      7.000000476837158,
+      3.999999523162842
+    ]
+  ],
+  "unity_not_run": true
+}

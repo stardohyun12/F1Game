@@ -1,0 +1,7277 @@
+{
+  "tris": 2304,
+  "mesh_count": 11,
+  "body_m": [
+    10,
+    7,
+    4
+  ],
+  "front": "Unity +Z / Blender -Y",
+  "pivot": "bottom front centre",
+  "local_clear_parking_unity": {
+    "x": [
+      -2.6,
+      2.6
+    ],
+    "z": [
+      0,
+      4
+    ]
+  },
+  "textures": {
+    "wall": "08e33cdf3dd725281cab2572b67c75a10c36735112e00180b89ba4191a34c5e8",
+    "trim": "1f96edab456873ed8c570edcbf625e12fcbcd6557e088416d43be6d57722c986",
+    "floor": "ef2d068a6d12909b63468d1979f9d683d1e3983d8e7a3d17abac4ed09d68b61e",
+    "roof": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
+    "decals": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263"
+  },
+  "light_bake": false,
+  "uv_edges": [
+    {
+      "object": "rear_wall_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rear_wall_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rear_wall_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "rear_wall_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rear_wall_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "left_wall_0",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        31.999997930398457,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "left_wall_1",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        31.999997930398457,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "left_wall_2",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "left_wall_3",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "left_wall_4",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        31.999997930398457,
+        31.999998598825503
+      ]
+    },
+    {
+      "object": "left_wall_5",
+      "cell": "wall_apricot",
+      "texel_per_m": [
+        31.999997930398457,
+        31.999998598825503
+      ]
+    },
+    {
+      "object": "right_wall_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999936877092797,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "right_wall_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999936877092797,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "right_wall_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999998598825503,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "right_wall_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999998598825503,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "right_wall_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999936877092797,
+        31.999998598825503
+      ]
+    },
+    {
+      "object": "right_wall_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999936877092797,
+        31.999998598825503
+      ]
+    },
+    {
+      "object": "front_pier_left_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_left_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_left_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_left_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_left_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_pier_left_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_pier_mid_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969732001244,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_mid_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969732001244,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_mid_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_mid_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_pier_mid_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969732001244,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_pier_mid_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969732001244,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_left_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999966548402917,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_window_left_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999966548402917,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_window_left_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_window_left_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_window_left_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999966548402917,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_left_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999966548402917,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_door_bay_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99999266178634,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_door_bay_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99999266178634,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_door_bay_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_door_bay_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999996467872457
+      ]
+    },
+    {
+      "object": "front_door_bay_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99999266178634,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_door_bay_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99999266178634,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_lower_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999992214902274
+      ]
+    },
+    {
+      "object": "front_window_lower_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999992214902274
+      ]
+    },
+    {
+      "object": "front_window_lower_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999992214902274
+      ]
+    },
+    {
+      "object": "front_window_lower_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999992214902274
+      ]
+    },
+    {
+      "object": "front_window_lower_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_lower_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_upper_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999985813103844
+      ]
+    },
+    {
+      "object": "front_window_upper_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999985813103844
+      ]
+    },
+    {
+      "object": "front_window_upper_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999985813103844
+      ]
+    },
+    {
+      "object": "front_window_upper_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        31.999985813103844
+      ]
+    },
+    {
+      "object": "front_window_upper_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "front_window_upper_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99998704886377,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "shutter_lintel_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999993659782124,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_lintel_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999993659782124,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_lintel_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_lintel_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_lintel_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999993659782124,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "shutter_lintel_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999993659782124,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "floor_slab_0",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_1",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_2",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_3",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_4",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_5",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_0",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_1",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_2",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_3",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_4",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "floor_slab_5",
+      "cell": "floor_concrete",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "tile_roof_front",
+      "cell": "roof_E2",
+      "texel_per_m": [
+        32.0,
+        31.9999958400581
+      ]
+    },
+    {
+      "object": "tile_roof_back",
+      "cell": "roof_E2",
+      "texel_per_m": [
+        32.0,
+        31.9999958400581
+      ]
+    },
+    {
+      "object": "tile_roof_front",
+      "cell": "roof_E2",
+      "texel_per_m": [
+        32.0,
+        31.9999958400581
+      ]
+    },
+    {
+      "object": "tile_roof_back",
+      "cell": "roof_E2",
+      "texel_per_m": [
+        32.0,
+        31.9999958400581
+      ]
+    },
+    {
+      "object": "eave_long_0",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_1",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_2",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_3",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_4",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "eave_long_5",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "eave_long_0",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_1",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_2",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_3",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_long_4",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "eave_long_5",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "eave_side_0",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_1",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_2",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_3",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_4",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "eave_side_5",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "eave_side_0",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_1",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_2",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_3",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "eave_side_4",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "eave_side_5",
+      "cell": "eaves",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "downpipe_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "downpipe_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "downpipe_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "downpipe_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "downpipe_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "downpipe_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "shutter_track_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "shutter_track_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "shutter_track_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99981522508081
+      ]
+    },
+    {
+      "object": "shutter_track_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99981522508081
+      ]
+    },
+    {
+      "object": "shutter_track_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        31.999998246619683,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "shutter_track_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "half_open_shutter_0",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.99998929549209
+      ]
+    },
+    {
+      "object": "half_open_shutter_1",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.99998929549209
+      ]
+    },
+    {
+      "object": "half_open_shutter_2",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.99998929549209
+      ]
+    },
+    {
+      "object": "half_open_shutter_3",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.99998929549209
+      ]
+    },
+    {
+      "object": "half_open_shutter_4",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "half_open_shutter_5",
+      "cell": "shutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "shutter_bottom_rail_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999969990702454
+      ]
+    },
+    {
+      "object": "shutter_casing_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.99999809265131,
+        31.99989655377841
+      ]
+    },
+    {
+      "object": "shutter_casing_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.99999809265131,
+        31.99989655377841
+      ]
+    },
+    {
+      "object": "shutter_casing_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99989655377841
+      ]
+    },
+    {
+      "object": "shutter_casing_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99989655377841
+      ]
+    },
+    {
+      "object": "shutter_casing_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.99999809265131,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "shutter_casing_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.99999809265131,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "person_door_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "person_door_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "person_door_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "person_door_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "person_door_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "person_door_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "door_jamb_0",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_jamb_1",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_jamb_2",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_3",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_4",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_5",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_0",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_jamb_1",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_jamb_2",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_3",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_4",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_jamb_5",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_header_0",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_header_1",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_header_2",
+      "cell": "door_frame",
+      "texel_per_m": [
+        31.999996958947165,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_header_3",
+      "cell": "door_frame",
+      "texel_per_m": [
+        31.999996958947165,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "door_header_4",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_header_5",
+      "cell": "door_frame",
+      "texel_per_m": [
+        32.0,
+        31.999857070204328
+      ]
+    },
+    {
+      "object": "door_handle_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "door_handle_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "door_handle_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "door_handle_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "door_handle_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "door_handle_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "reception_glass_0",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.999982660462823
+      ]
+    },
+    {
+      "object": "reception_glass_1",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.999982660462823
+      ]
+    },
+    {
+      "object": "reception_glass_2",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.999982660462823
+      ]
+    },
+    {
+      "object": "reception_glass_3",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.999982660462823
+      ]
+    },
+    {
+      "object": "reception_glass_4",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "reception_glass_5",
+      "cell": "glass",
+      "texel_per_m": [
+        32.0,
+        31.99986011124387
+      ]
+    },
+    {
+      "object": "window_jamb_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99982714594675
+      ]
+    },
+    {
+      "object": "window_jamb_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99982714594675
+      ]
+    },
+    {
+      "object": "window_jamb_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "window_jamb_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "window_jamb_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_jamb_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_sill_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999809264652836
+      ]
+    },
+    {
+      "object": "window_sill_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999809264652836
+      ]
+    },
+    {
+      "object": "window_sill_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.999998160350465,
+        31.999809264652836
+      ]
+    },
+    {
+      "object": "window_sill_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.999998160350465,
+        31.999809264652836
+      ]
+    },
+    {
+      "object": "window_sill_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99988410187273
+      ]
+    },
+    {
+      "object": "window_sill_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99988410187273
+      ]
+    },
+    {
+      "object": "window_sill_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "window_sill_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "window_sill_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.999998160350465,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "window_sill_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        31.999998160350465,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "window_sill_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99988410187273
+      ]
+    },
+    {
+      "object": "window_sill_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.99988410187273
+      ]
+    },
+    {
+      "object": "window_mullion_0",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999890521686968
+      ]
+    },
+    {
+      "object": "window_mullion_1",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999890521686968
+      ]
+    },
+    {
+      "object": "window_mullion_2",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_mullion_3",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_mullion_4",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "window_mullion_5",
+      "cell": "window_frame",
+      "texel_per_m": [
+        32.0,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "reception_counter_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "reception_counter_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "reception_counter_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "reception_counter_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "reception_counter_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "reception_counter_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        31.99999809265131,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        31.99999809265131,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        31.99999809265131,
+        32.0
+      ]
+    },
+    {
+      "object": "sign_back_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        31.99999809265131,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "rack_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "rack_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999770521952193
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999977924185906,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99993770595447,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99993770595447
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "rack_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "rack_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999952269733342
+      ]
+    },
+    {
+      "object": "rack_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999846517382313
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99991787794286
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965517963297,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        32.00001324546787
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "rack_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "rack_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.9999929126468,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99998411204484
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999957688063123,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.99997413846202,
+        32.0
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999959063871955,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.999959063871955
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.99992317612102
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "stored_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999682314596853,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "packing_table_top_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002354750784,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_top_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002354750784,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_top_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_top_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_top_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002354750784,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_top_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002354750784,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99983075057406
+      ]
+    },
+    {
+      "object": "packing_table_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99983075057406
+      ]
+    },
+    {
+      "object": "packing_table_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "packing_table_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99983075057406
+      ]
+    },
+    {
+      "object": "packing_table_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99983075057406
+      ]
+    },
+    {
+      "object": "packing_table_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999724051229194
+      ]
+    },
+    {
+      "object": "packing_table_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002639929356,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002639929356,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002639929356,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_table_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.000002639929356,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999959015616184,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999959015616184,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.00000946105541,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.00000946105541,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999959015616184,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999959015616184,
+        32.0
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99997372449459,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99997372449459,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.99997372449459
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.99997372449459
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.999976199515707
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.999976199515707
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999976199515707
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999976199515707
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "egg_delivery_box_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_box_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_box_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999968725943514,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_box_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999968725943514,
+        32.0
+      ]
+    },
+    {
+      "object": "packing_box_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        31.999998160350465
+      ]
+    },
+    {
+      "object": "packing_box_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        31.999998160350465
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.00001067895993,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.00001067895993,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001067895993
+      ]
+    },
+    {
+      "object": "packing_box_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.00001067895993
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999969732001244
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "packing_box_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "inside_workbench_top_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_top_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_top_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_top_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_top_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_top_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.00004231188093
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.00004231188093
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.00004231188093
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.00004231188093
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974612686815
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_leg_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "inside_workbench_shelf_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999993797643185,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999993797643185,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999993797643185,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999993797643185,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999970201859128,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "sort_box_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999970201859128
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99996721743395
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99996721743395
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99713869867119,
+        31.99996721743395
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99713869867119,
+        31.99996721743395
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "sort_box_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99713869867119
+      ]
+    },
+    {
+      "object": "sort_box_small_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999934799803544,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999934799803544,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999977425349332,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.999977425349332,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999977425349332
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999977425349332
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999966548402917
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999966548402917
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.999966548402917
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.999966548402917
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "sort_box_small_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "outside_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999971687777936
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_parcel_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_top_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999969990702454,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.000004037639386,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_top_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        32.000004037639386
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.999989053325802
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.999989053325802
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999989053325802
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.997615225784106,
+        31.999989053325802
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "outside_top_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99961815778105,
+        31.997615225784106
+      ]
+    },
+    {
+      "object": "handcart_toe_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99950527784346
+      ]
+    },
+    {
+      "object": "handcart_toe_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99950527784346
+      ]
+    },
+    {
+      "object": "handcart_toe_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99950527784346
+      ]
+    },
+    {
+      "object": "handcart_toe_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99950527784346
+      ]
+    },
+    {
+      "object": "handcart_toe_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999990580990275
+      ]
+    },
+    {
+      "object": "handcart_toe_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999990580990275
+      ]
+    },
+    {
+      "object": "handcart_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "handcart_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "handcart_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_0",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "handcart_upright_1",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.99974543700191
+      ]
+    },
+    {
+      "object": "handcart_upright_2",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_3",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_4",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_upright_5",
+      "cell": "gutter",
+      "texel_per_m": [
+        32.0,
+        31.999714393149464
+      ]
+    },
+    {
+      "object": "handcart_handle_0",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_handle_1",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_handle_2",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_handle_3",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_handle_4",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_handle_5",
+      "cell": "wood_door",
+      "texel_per_m": [
+        32.0,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_0",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965856129315,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_1",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965856129315,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_2",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999945504286064,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_3",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999945504286064,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_4",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965856129315,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_5",
+      "cell": "wall_apricot_B",
+      "texel_per_m": [
+        31.999965856129315,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        32.0,
+        31.99785349732463
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_tape_top_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        32.0
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_0",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.9999929126468
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_1",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.9999929126468
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_2",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.9999929126468
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_3",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.998091774188136,
+        31.9999929126468
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_4",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    },
+    {
+      "object": "handcart_load_tape_face_5",
+      "cell": "wall_cream",
+      "texel_per_m": [
+        31.99974543700191,
+        31.998091774188136
+      ]
+    }
+  ],
+  "mesh_count_before_merge": 163,
+  "semantic_groups": [
+    "building",
+    "shutter",
+    "person_door",
+    "reception_glass",
+    "sign",
+    "decals",
+    "racks",
+    "inside_parcels",
+    "packing_station",
+    "inside_workbench",
+    "front_goods"
+  ]
+}

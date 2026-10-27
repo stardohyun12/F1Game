@@ -1,0 +1,54 @@
+{
+  "attempt": 2,
+  "rows": [
+    {
+      "name": "reference",
+      "path": "art/_review/2026-10-28-q3-depot/reference_architecture.png",
+      "face_uniform_frac": 0.5366687641730087,
+      "face_std_median": 1.0375605681341882
+    },
+    {
+      "name": "depot",
+      "path": "art/_review/2026-10-28-q3-depot/depot_architecture.png",
+      "face_uniform_frac": 0.5411209953836704,
+      "face_std_median": 1.3519906223342062
+    }
+  ],
+  "limits": {
+    "face_uniform_frac": [
+      0.4867,
+      0.5867
+    ],
+    "face_std_median": [
+      0.83,
+      1.25
+    ]
+  },
+  "passed": {
+    "face_uniform_frac": true,
+    "face_std_median": false
+  },
+  "rois_at_1280": {
+    "reference": [
+      580,
+      195,
+      955,
+      435
+    ],
+    "depot_5m": [
+      650,
+      235,
+      1025,
+      475
+    ]
+  },
+  "source_roi_size": [
+    375,
+    240
+  ],
+  "display_size": [
+    640,
+    410
+  ],
+  "scope": "architecture only; bottom emptiness and brightness spread excluded"
+}

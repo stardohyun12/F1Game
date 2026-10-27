@@ -1,0 +1,106 @@
+{
+  "fbx_reimport": true,
+  "tris": 2304,
+  "mesh_count": 11,
+  "uv_in_0_1": true,
+  "root_origin": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "front_4m_clear": true,
+  "textures_byte_identical_to_kit": {
+    "wall": true,
+    "trim": true,
+    "floor": true,
+    "roof": true,
+    "decals": true
+  },
+  "bounds_blender": [
+    [
+      -5.0,
+      -1.7249999046325684,
+      -1.140444737757207e-06
+    ],
+    [
+      5.0,
+      7.000000476837158,
+      3.999999523162842
+    ]
+  ],
+  "unity_not_run": true,
+  "output_sha256": {
+    "decals.png": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263",
+    "floor.png": "ef2d068a6d12909b63468d1979f9d683d1e3983d8e7a3d17abac4ed09d68b61e",
+    "q3_depot.fbx": "4e7f11d7141636c4bed4b956fad00c7d4b2b41d4ef7ac3123092b51fdbb358c3",
+    "roof.png": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
+    "trim.png": "1f96edab456873ed8c570edcbf625e12fcbcd6557e088416d43be6d57722c986",
+    "wall.png": "08e33cdf3dd725281cab2572b67c75a10c36735112e00180b89ba4191a34c5e8"
+  },
+  "numeric_gate": {
+    "attempt": 2,
+    "rows": [
+      {
+        "name": "reference",
+        "path": "art/_review/2026-10-28-q3-depot/reference_architecture.png",
+        "face_uniform_frac": 0.5366687641730087,
+        "face_std_median": 1.0375605681341882
+      },
+      {
+        "name": "depot",
+        "path": "art/_review/2026-10-28-q3-depot/depot_architecture.png",
+        "face_uniform_frac": 0.5411209953836704,
+        "face_std_median": 1.3519906223342062
+      }
+    ],
+    "limits": {
+      "face_uniform_frac": [
+        0.4867,
+        0.5867
+      ],
+      "face_std_median": [
+        0.83,
+        1.25
+      ]
+    },
+    "passed": {
+      "face_uniform_frac": true,
+      "face_std_median": false
+    },
+    "rois_at_1280": {
+      "reference": [
+        580,
+        195,
+        955,
+        435
+      ],
+      "depot_5m": [
+        650,
+        235,
+        1025,
+        475
+      ]
+    },
+    "source_roi_size": [
+      375,
+      240
+    ],
+    "display_size": [
+      640,
+      410
+    ],
+    "scope": "architecture only; bottom emptiness and brightness spread excluded"
+  },
+  "approval": "pending Dohyun; Unity import not run",
+  "visual_review": {
+    "attempt_1": {
+      "same_game": true,
+      "score": 6
+    },
+    "attempt_2": {
+      "same_game": false,
+      "score": 6
+    },
+    "status": "hold: same score twice; lessons/art.md rule 8"
+  }
+}
