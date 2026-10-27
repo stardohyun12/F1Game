@@ -106,8 +106,9 @@ rep("# ---------- 굽기 ----------", '''def nearest_g(img, pal, cls, blm, cap=1
         if d.min() < 1e18: nb[i] = d.argmin()
     idx = np.where(blm & (cls == RID['wall']), nb[idx], idx)
     cnt = np.bincount(idx[vis], minlength=len(P)); keep = []
-    sg = vis & np.isin(cls, [RID['sign'], RID['board']])
-    if sg.any(): c2 = np.bincount(idx[sg], minlength=len(P)); keep += [int(i) for i in np.argsort(-c2)[:3] if c2[i] > 0]
+    for role, top in (('sign', 2), ('board', 2), ('shutter', 1), ('door', 1), ('awning', 2)):  # 이야기 색 먼저(1차: 면적 순만 → 빨간 덧창·サカナ 빨강이 밀려남)
+        m = vis & (cls == RID[role])
+        if m.any(): c2 = np.bincount(idx[m], minlength=len(P)); keep += [int(i) for i in np.argsort(-c2)[:top] if c2[i] > 0 and int(i) not in keep]
     pr = vis & (cls == RID['prop']) & green[idx]
     if pr.any(): keep.append(int(np.bincount(idx[pr]).argmax()))
     for i in np.argsort(-cnt):

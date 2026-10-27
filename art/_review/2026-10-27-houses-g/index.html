@@ -1,0 +1,6 @@
+<!doctype html><meta charset=utf-8><title>집 g판</title>
+<style>body{margin:0;background:#ece8de;font:14px sans-serif}img{image-rendering:pixelated;display:block}#b{position:sticky;top:0;background:#fff;padding:6px}</style>
+<div id=b>배율 <button onclick=z(.5)>1×</button><button onclick=z(1)>2×</button><button onclick=z(2)>4×</button>
+<button onclick="i.style.filter=i.style.filter?'':'brightness(0)'">흑실루엣</button>
+<button onclick="document.body.style.background=document.body.style.background=='rgb(32, 32, 32)'?'#ece8de':'#202020'">배경</button></div>
+<img id=i src=sheet.png><script>const i=document.getElementById('i');function z(k){i.style.width=(i.naturalWidth*k/2)+'px'}</script>

@@ -1,0 +1,94 @@
+{
+ "집 g (미리보기)": {
+  "texel_px": 4,
+  "colors90": 12,
+  "light_steps": 7
+ },
+ "집 f (미리보기)": {
+  "texel_px": 4,
+  "colors90": 20,
+  "light_steps": 6
+ },
+ "집 e (게임 컷)": {
+  "texel_px": 3,
+  "colors90": 30,
+  "light_steps": 5
+ },
+ "나무 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 8,
+  "light_steps": 2
+ },
+ "길 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 15,
+  "light_steps": 4
+ },
+ "풀·땅 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 6,
+  "light_steps": 4
+ },
+ "per_house_close": {
+  "house_narrow_a": {
+   "f": {
+    "colors": 32,
+    "light_steps": 5
+   },
+   "g": {
+    "colors": 32,
+    "light_steps": 7
+   }
+  },
+  "house_narrow_b": {
+   "f": {
+    "colors": 22,
+    "light_steps": 3
+   },
+   "g": {
+    "colors": 24,
+    "light_steps": 5
+   }
+  },
+  "house_shop": {
+   "f": {
+    "colors": 35,
+    "light_steps": 6
+   },
+   "g": {
+    "colors": 38,
+    "light_steps": 7
+   }
+  },
+  "house_slope": {
+   "f": {
+    "colors": 39,
+    "light_steps": 6
+   },
+   "g": {
+    "colors": 35,
+    "light_steps": 5
+   }
+  },
+  "house_warehouse": {
+   "f": {
+    "colors": 33,
+    "light_steps": 7
+   },
+   "g": {
+    "colors": 38,
+    "light_steps": 6
+   }
+  },
+  "house_cafe": {
+   "f": {
+    "colors": 31,
+    "light_steps": 7
+   },
+   "g": {
+    "colors": 30,
+    "light_steps": 6
+   }
+  }
+ }
+}

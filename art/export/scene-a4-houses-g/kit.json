@@ -1,0 +1,233 @@
+{
+ "task": "20261027-1516",
+ "style": "docs/design/STYLE.md",
+ "mullions_removed": 4,
+ "note": "도현 승인 전. F1/Assets 에 넣지 않음. Unity 임포트 미확인. 원점 = 집 바닥(축대 집은 축대 바닥) 가운데 — c판과 같은 이름·원점·바닥 크기.",
+ "axis": "Blender: 정면 -Y, 위 +Z → FBX axis_forward -Z, axis_up Y, 1u = 1m",
+ "method": "형태·이야기: f판(opus_houses_f.py → e → c) 그대로. 이 파일은 f판 소스를 읽어 아래만 바꿔 실행한다.\n  명암 = 4단만: 해(1.0) / 옆(.88, 청록 16%) / 그늘(.74, 청록 34%) / 접지(.60, 청록 42%). 면 방향으로 단을 정하고 텍셀마다 단 번호만 올림.\n    짙은 테두리선 = 그늘 단 색 재사용(그늘 면 위에선 접지 단). 처마 밑 = 그늘 단. 바닥 0.4m(띠 있는 집은 띠 높이) = 접지 단.\n    처마 끝 밝은 선·기와 줄·함석 줄·처마 밑판 .8배 = 뺌(새 단 금지).\n  얼룩 = 벽 한 면(앞·뒤·옆)마다 덩어리 1~2개, 면 넓이의 1/4~1/2(풀·땅 큰 얼룩 크기감), 가장자리 2텍셀 계단 + 느린 굴곡. 잔 얼룩 없음.\n    색은 굽기 뒤 「같은 단 안 한 칸 옆 칸」(style32 에서 밝기 ±14 안, 초록 제외, 가장 가까운 다른 칸).\n  집 한 채 ≤12색: 보이는 텍셀에서 간판·판자 글자 3색 + 소품 초록 1색을 먼저 잡고 나머지는 많이 쓴 순, 남는 칸은 가장 가까운 잡힌 색으로.\n  모듈 창 가운데 가는 살(창 유리 범위 안, 면 폭 < 0.09m = 1텍셀) = 유리(문은 문짝)로 칠해 지움. 유리 겹창 가운데 살은 칠한 1텍셀(0.09m)로 남김.\n  팔레트 = art/palette/style32.gpl 그대로(f판과 같음).",
+ "sun_dir": [
+  -0.436,
+  -0.726,
+  0.532
+ ],
+ "palette": "palette32.gpl",
+ "texels_per_m": 11,
+ "cards": "docs/design/HOUSES.md",
+ "palette_note": "art/palette/style32.gpl — 게임 컷 b_game 환경 20 + 집 앵커 12",
+ "license": "CC0 — elegantcrow Retro Modular House(모듈) · valsekamerplant PSX house plants(화분). 자판기(CC-BY) 는 e판에서 뺌. 글자·소품은 직접 만든 상자.",
+ "files": [
+  {
+   "name": "house_narrow_a",
+   "fbx": "house_narrow_a.fbx",
+   "png": "house_narrow_a.png",
+   "note": "좁은 3층 · 황토 회반죽 · 초록 덧창 · 2층 발코니 · 낮은 박공 기와",
+   "place": "길가 줄집 — 길 양옆에 반복(좌우 반전·색 바꿔 쓰기 권장 안 함: 형태가 달라야 함, 다른 집과 섞어서)",
+   "size_m": [
+    6.0,
+    7.48,
+    10.07
+   ],
+   "footprint_m": [
+    5.0,
+    6.0
+   ],
+   "wall_top_m": 9.0,
+   "tris": 1868,
+   "tex": [
+    512,
+    512
+   ],
+   "wall": [
+    238,
+    204,
+    146
+   ],
+   "roof": [
+    204,
+    136,
+    100
+   ]
+  },
+  {
+   "name": "house_narrow_b",
+   "fbx": "house_narrow_b.fbx",
+   "png": "house_narrow_b.png",
+   "note": "좁은 3층 · 크림 회반죽 · 청록 덧창 · 평지붕 난간벽(포지타노)",
+   "place": "길가 줄집 — 경사 지붕 집 사이에 끼워 지붕선을 끊는 용",
+   "size_m": [
+    4.88,
+    6.36,
+    11.5
+   ],
+   "footprint_m": [
+    4.0,
+    5.0
+   ],
+   "wall_top_m": 9.0,
+   "tris": 1552,
+   "tex": [
+    512,
+    512
+   ],
+   "wall": [
+    246,
+    232,
+    204
+   ],
+   "roof": [
+    199,
+    179,
+    141
+   ]
+  },
+  {
+   "name": "house_shop",
+   "fbx": "house_shop.fbx",
+   "png": "house_shop.png",
+   "note": "가게 딸린 2층 · 연황토 · 1층 가게(겹문+겹창) · 줄무늬 차양 · 세로 간판 · 자판기",
+   "place": "교차로·정류장 앞 — 길 쪽에 차양·간판·자판기(눈높이 생활)",
+   "size_m": [
+    6.96,
+    7.78,
+    7.07
+   ],
+   "footprint_m": [
+    6.0,
+    6.0
+   ],
+   "wall_top_m": 6.0,
+   "tris": 1090,
+   "tex": [
+    512,
+    512
+   ],
+   "wall": [
+    242,
+    192,
+    152
+   ],
+   "roof": [
+    166,
+    109,
+    93
+   ]
+  },
+  {
+   "name": "house_slope",
+   "fbx": "house_slope.fbx",
+   "png": "house_slope.png",
+   "note": "비탈 집 · 연청록 회반죽 · 1.6m 돌 축대 + 앞마당 + 계단 · 갈색 덧창",
+   "place": "언덕 쪽 비탈길 — 축대 바닥(z=0)을 낮은 쪽 길에 맞춤, 계단이 길 쪽",
+   "size_m": [
+    8.58,
+    8.39,
+    8.51
+   ],
+   "footprint_m": [
+    6.0,
+    5.0
+   ],
+   "wall_top_m": 7.6,
+   "tris": 2466,
+   "tex": [
+    512,
+    512
+   ],
+   "wall": [
+    172,
+    210,
+    200
+   ],
+   "roof": [
+    204,
+    136,
+    100
+   ]
+  },
+  {
+   "name": "house_warehouse",
+   "fbx": "house_warehouse.fbx",
+   "png": "house_warehouse.png",
+   "note": "창고형 · 흰 회반죽 · 큰 겹문 2 · 높은 띠벽 · 낮은 박공",
+   "place": "항구 부두 쪽 — 문이 물 쪽 또는 길 쪽",
+   "size_m": [
+    8.86,
+    9.15,
+    7.25
+   ],
+   "footprint_m": [
+    8.0,
+    7.0
+   ],
+   "wall_top_m": 6.0,
+   "tris": 1290,
+   "tex": [
+    512,
+    512
+   ],
+   "wall": [
+    242,
+    240,
+    230
+   ],
+   "roof": [
+    166,
+    109,
+    93
+   ]
+  },
+  {
+   "name": "house_cafe",
+   "fbx": "house_cafe.fbx",
+   "png": "house_cafe.png",
+   "note": "작은 카페 · 크림 · 큰 겹창 + 문 · 테라코타 줄무늬 차양 · 화분",
+   "place": "바다 보이는 길 모퉁이 — 차양이 길 쪽",
+   "size_m": [
+    6.9,
+    6.3,
+    3.91
+   ],
+   "footprint_m": [
+    6.0,
+    4.0
+   ],
+   "wall_top_m": 3.0,
+   "tris": 1122,
+   "tex": [
+    512,
+    256
+   ],
+   "wall": [
+    248,
+    216,
+    180
+   ],
+   "roof": [
+    204,
+    136,
+    100
+   ]
+  }
+ ],
+ "sources_used": [
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/doors/double_doors/door_double_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/doors/double_doors/door_double_03.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/doors/single_doors/door_single_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/doors/single_doors/door_single_02.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/misc/stairs/stair_big_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/misc/window_shutters/shutters_single_closed_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/misc/window_shutters/shutters_single_open_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/railings/railing_balcony_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_3x1.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/walls/wall_3x2.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/windows/double_windows/window_double_02.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/windows/single_windows/window_single_01.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/windows/single_windows/window_single_02.fbx",
+  "elegantcrow-modular-house-pack/retro_modular_house/retro_modular_house/models/windows/single_windows/window_single_03.fbx",
+  "valsekamerplant-plants-pots/pots & plants/Plants/Bird_of_paradise_cluster_1.glb",
+  "valsekamerplant-plants-pots/pots & plants/Plants/Bird_of_paradise_cluster_2.glb",
+  "valsekamerplant-plants-pots/pots & plants/Plants/Bird_of_paradise_single.glb",
+  "valsekamerplant-plants-pots/pots & plants/Plants/calathea.glb",
+  "valsekamerplant-plants-pots/pots & plants/Plants/sanseveria.glb"
+ ]
+}

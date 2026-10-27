@@ -1,0 +1,94 @@
+{
+ "files": {
+  "house_narrow_a": {
+   "L_visible": 143.9,
+   "L_wall": 146.4,
+   "speckle_1px_pct": 0.004,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 28367,
+   "keep": 12,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 1868
+  },
+  "house_narrow_b": {
+   "L_visible": 172.2,
+   "L_wall": 183.3,
+   "speckle_1px_pct": 0.008,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 19067,
+   "keep": 12,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 1552
+  },
+  "house_shop": {
+   "L_visible": 138.4,
+   "L_wall": 142.7,
+   "speckle_1px_pct": 0.026,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 18669,
+   "keep": 12,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 1090
+  },
+  "house_slope": {
+   "L_visible": 150.7,
+   "L_wall": 153.3,
+   "speckle_1px_pct": 0.0,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 19843,
+   "keep": 12,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 2466
+  },
+  "house_warehouse": {
+   "L_visible": 166.3,
+   "L_wall": 174.2,
+   "speckle_1px_pct": 0.003,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 27255,
+   "keep": 12,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 1290
+  },
+  "house_cafe": {
+   "L_visible": 160.8,
+   "L_wall": 164.0,
+   "speckle_1px_pct": 0.003,
+   "colors": 12,
+   "colors_visible": 12,
+   "blotch_texels": 7009,
+   "keep": 12,
+   "size": [
+    512,
+    256
+   ],
+   "wall_colors": 6,
+   "tris": 1122
+  }
+ }
+}

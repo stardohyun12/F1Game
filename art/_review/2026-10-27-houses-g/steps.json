@@ -1,0 +1,162 @@
+{
+ "house_narrow_a": {
+  "f": {
+   "visible_colors": 23,
+   "wall_colors": 5,
+   "wall_L": [
+    115,
+    129,
+    168,
+    175,
+    195
+   ],
+   "light_steps": 3
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 6,
+   "wall_L": [
+    115,
+    129,
+    173,
+    175,
+    192,
+    195
+   ],
+   "light_steps": 3
+  }
+ },
+ "house_narrow_b": {
+  "f": {
+   "visible_colors": 21,
+   "wall_colors": 4,
+   "wall_L": [
+    129,
+    168,
+    190,
+    216
+   ],
+   "light_steps": 4
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 6,
+   "wall_L": [
+    129,
+    168,
+    175,
+    190,
+    205,
+    216
+   ],
+   "light_steps": 4
+  }
+ },
+ "house_shop": {
+  "f": {
+   "visible_colors": 23,
+   "wall_colors": 5,
+   "wall_L": [
+    115,
+    129,
+    168,
+    173,
+    192
+   ],
+   "light_steps": 3
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 6,
+   "wall_L": [
+    115,
+    129,
+    173,
+    175,
+    192,
+    195
+   ],
+   "light_steps": 3
+  }
+ },
+ "house_slope": {
+  "f": {
+   "visible_colors": 21,
+   "wall_colors": 5,
+   "wall_L": [
+    98,
+    129,
+    156,
+    167,
+    190
+   ],
+   "light_steps": 4
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 5,
+   "wall_L": [
+    98,
+    156,
+    167,
+    182,
+    190
+   ],
+   "light_steps": 3
+  }
+ },
+ "house_warehouse": {
+  "f": {
+   "visible_colors": 16,
+   "wall_colors": 5,
+   "wall_L": [
+    129,
+    156,
+    167,
+    190,
+    216
+   ],
+   "light_steps": 4
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 6,
+   "wall_L": [
+    115,
+    129,
+    156,
+    167,
+    205,
+    216
+   ],
+   "light_steps": 3
+  }
+ },
+ "house_cafe": {
+  "f": {
+   "visible_colors": 25,
+   "wall_colors": 5,
+   "wall_L": [
+    129,
+    168,
+    182,
+    205,
+    216
+   ],
+   "light_steps": 4
+  },
+  "g": {
+   "visible_colors": 12,
+   "wall_colors": 6,
+   "wall_L": [
+    129,
+    168,
+    175,
+    182,
+    192,
+    205
+   ],
+   "light_steps": 2
+  }
+ }
+}
