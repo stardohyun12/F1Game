@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ref01",
+    "title": "Go-kart at Lanier Raceplex, June 2019 1.jpg",
+    "path": "art/reference/kart-v6/ref01.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Go-kart_at_Lanier_Raceplex,_June_2019_1.jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Go-kart_at_Lanier_Raceplex%2C_June_2019_1.jpg/1280px-Go-kart_at_Lanier_Raceplex%2C_June_2019_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "author": "Thomson200",
+    "license": "CC0",
+    "sha256": "1b5a5d0e91dddb4c0e2a178826157730300cb668d1bca16b9a9a86ef572e16a2",
+    "observation": "Leisure track overview; silhouette only; distant karts."
+  },
+  {
+    "id": "ref02",
+    "title": "Go-kart at Lanier Raceplex, June 2019 2.jpg",
+    "path": "art/reference/kart-v6/ref02.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Go-kart_at_Lanier_Raceplex,_June_2019_2.jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Go-kart_at_Lanier_Raceplex%2C_June_2019_2.jpg/1280px-Go-kart_at_Lanier_Raceplex%2C_June_2019_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "author": "Thomson200",
+    "license": "CC0",
+    "sha256": "514d6512167c95f7f25c0e9a7b4ff514ba0eb8bd244231aa446774f6b0d14178",
+    "observation": "Same Lanier track another shot; not independent design evidence."
+  },
+  {
+    "id": "ref03",
+    "title": "Go-kart with Honda engine.jpg",
+    "path": "art/reference/kart-v6/ref03.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Go-kart_with_Honda_engine.jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Go-kart_with_Honda_engine.jpg/1280px-Go-kart_with_Honda_engine.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "author": "Syced",
+    "license": "CC0",
+    "sha256": "5b74f7453625d7aa8fb4645d8fb8ea47ea08ca1b27566957873c02eb091332d3",
+    "observation": "Honda display sport kart; exposed tube frame, nose, side pods, bucket seat, small wheel, right rear engine, wide rear tires; rental status unverified."
+  },
+  {
+    "id": "ref04",
+    "title": "Go Kart 081121-F-6909S-005.jpg",
+    "path": "art/reference/kart-v6/ref04.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Go_Kart_081121-F-6909S-005.jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Go_Kart_081121-F-6909S-005.jpg/960px-Go_Kart_081121-F-6909S-005.jpg",
+    "author": "Airman 1st Class John D. Strong II",
+    "license": "Public domain",
+    "sha256": "43ad87c76ebfc47c2fd3fe1f21a4750991ebf626fd4b6e0299a9d1919a805845",
+    "observation": "USAF leisure Scorpion kart; perimeter bumper, low seat, large footwell; shell differs from target."
+  },
+  {
+    "id": "ref05",
+    "title": "Honda go-kart engine.jpg",
+    "path": "art/reference/kart-v6/ref05.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Honda_go-kart_engine.jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Honda_go-kart_engine.jpg/1280px-Honda_go-kart_engine.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "author": "Syced",
+    "license": "CC0",
+    "sha256": "5457fef44c1e10e2c5c43e01213216a0e87c1bf08f0bb646a2cdeeeb3dd934d3",
+    "observation": "Same Honda engine close-up; red starter case, dark intake/tank; supplemental only."
+  },
+  {
+    "id": "ref06",
+    "title": "Airmen kart, compete in SAI event (3251828).jpg",
+    "path": "art/reference/kart-v6/ref06.jpg",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Airmen_kart,_compete_in_SAI_event_(3251828).jpg",
+    "download_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Airmen_kart%2C_compete_in_SAI_event_%283251828%29.jpg/960px-Airmen_kart%2C_compete_in_SAI_event_%283251828%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "author": "U.S. Space Force 50SW by Airman William Tracy",
+    "license": "Public domain",
+    "sha256": "25de6c3a887bbae8e764557add828e6f62d011aaf4d75cce81943ad0230560be",
+    "observation": "Indoor leisure kart at USAF SAI event; front nose, wide low bumper, side pods; high protective bar excluded."
+  }
+]

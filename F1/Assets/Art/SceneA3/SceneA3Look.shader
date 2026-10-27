@@ -57,6 +57,9 @@ Shader "PitCrew/SceneA3/Look"
         _WB ("A2d white balance (곱)", Color) = (1,1,1,1)
         _Lift ("A2d shadow lift (0 = 그대로)", Range(0,0.6)) = 0
         _LiftTint ("A2d shadow lift color (그늘 청록)", Color) = (0.55,0.75,0.78,1)
+        // A6d(과제 1726) 표면 고정 노이즈 — 0 이면 그대로. 물체 좌표 칸(1/_SNDens m)마다 명도만 ±_SN (색상 그대로), 칸이 화면 1px 보다 작아지면 사라짐(지글거림 방지)
+        _SN ("A6d surface grain ±", Range(0,0.15)) = 0
+        _SNDens ("A6d surface grain cells per m", Float) = 8
     }
     SubShader
     {
@@ -71,6 +74,7 @@ Shader "PitCrew/SceneA3/Look"
             float _S1; float4 _S1P; float _S2; float4 _Warm; float _WarmAmt; float4 _ShadeTeal; float _SplitAmt; float _S3; float _S3Flat; float4 _Haze; float4 _HazeP; float _T1; float _T2;
             float4 _FogColor; float _FogStart; float _FogEnd; float _FogMax;
             float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff; float _Sat; float4 _WB; float _Lift; float4 _LiftTint;
+            float _SN; float _SNDens;
         CBUFFER_END
         half4 SampleBase(float2 uv)
         {
@@ -117,12 +121,15 @@ Shader "PitCrew/SceneA3/Look"
             #pragma fragment frag
 
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
-            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; float3 n : TEXCOORD2; };
+            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; float3 n : TEXCOORD2; float3 op : TEXCOORD3; };
 
             V vert(A i)
             {
                 V o; o.wp = TransformObjectToWorld(i.pos.xyz); o.pos = TransformWorldToHClip(o.wp);
-                o.n = TransformObjectToWorldNormal(i.n); o.uv = TRANSFORM_TEX(i.uv, _BaseMap); return o;
+                o.n = TransformObjectToWorldNormal(i.n); o.uv = TRANSFORM_TEX(i.uv, _BaseMap);
+                // A6d: 물체에 붙은 미터 좌표(움직이는 카트도 결이 따라감). 면 안쪽으로 칸 0.37 만큼 밀어 칸 경계에 걸친 평면의 깜빡임을 막음
+                float3 s = float3(length(unity_ObjectToWorld._m00_m10_m20), length(unity_ObjectToWorld._m01_m11_m21), length(unity_ObjectToWorld._m02_m12_m22));
+                o.op = i.pos.xyz * s * _SNDens - normalize(i.n) * 0.37; return o;
             }
 
             float h3(float3 p) { p = frac(p * 0.3183099 + 0.1); p *= 17.0; return frac(p.x * p.y * p.z * (p.x + p.y + p.z)); }
@@ -161,6 +168,11 @@ Shader "PitCrew/SceneA3/Look"
                     b = b * 2 - 1;
                     c *= 1 + _Blotch * b;
                     c = lerp(c, c * _BlotchHue.rgb, saturate(b) * _Blotch * 2);
+                }
+                if (_SN > 0)
+                {
+                    float px = max(max(fwidth(i.op.x), fwidth(i.op.y)), fwidth(i.op.z));   // 화면 1px 당 칸 수
+                    c *= 1 + _SN * (h3(floor(i.op) + 0.5) * 2 - 1) * saturate((1 - px) * 2);
                 }
                 float lum = dot(c, float3(0.299, 0.587, 0.114));
                 c = max(0, lerp(lum.xxx, c, _Sat)) * _WB.rgb;

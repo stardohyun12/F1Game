@@ -1,0 +1,86 @@
+{
+  "triangles": 1864,
+  "objects": 59,
+  "bounds_min": [
+    -0.6399999856948853,
+    -0.8100000023841858,
+    0.09199999272823334
+  ],
+  "bounds_max": [
+    0.6399999856948853,
+    0.9900000095367432,
+    0.9120000004768372
+  ],
+  "dimensions_xyz": [
+    1.2799999713897705,
+    1.800000011920929,
+    0.8200000077486038
+  ],
+  "wheels": {
+    "FL": {
+      "center_blender": [
+        -0.44,
+        0.54,
+        0.24
+      ],
+      "center_unity": [
+        -0.44,
+        0.24,
+        0.54
+      ],
+      "radius": 0.148,
+      "width": 0.16
+    },
+    "FR": {
+      "center_blender": [
+        0.44,
+        0.54,
+        0.24
+      ],
+      "center_unity": [
+        0.44,
+        0.24,
+        0.54
+      ],
+      "radius": 0.148,
+      "width": 0.16
+    },
+    "RL": {
+      "center_blender": [
+        -0.52,
+        -0.51,
+        0.34
+      ],
+      "center_unity": [
+        -0.52,
+        0.34,
+        -0.51
+      ],
+      "radius": 0.222,
+      "width": 0.24
+    },
+    "RR": {
+      "center_blender": [
+        0.52,
+        -0.51,
+        0.34
+      ],
+      "center_unity": [
+        0.52,
+        0.34,
+        -0.51
+      ],
+      "radius": 0.222,
+      "width": 0.24
+    }
+  },
+  "track_width_parameter": 0.96,
+  "wheelbase": 1.05,
+  "atlas": [
+    1024,
+    256
+  ],
+  "density": 32,
+  "forward": "Blender +Y -> Unity +Z",
+  "datum": "Race-relative metres; original visual wheel centres kept; do not reapply 1.47 scaling or rear -0.08 correction"
+}
