@@ -1,0 +1,182 @@
+{
+ "task": "20261027-2023",
+ "decision": "D-185",
+ "source": "scene-a4-houses-j5 + opus_houses_j albedo",
+ "method": "집 6채 albedo — j5 에서 빛 굽기(해·하늘빛·AO·그늘 청록)만 뺀 판 (아트2, 과제 20261027-2023, D-185). Blender:\n    D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/opus_houses_alb.py\n형태·UV·간판·사진 부품·덧창 칸 그대로 — FBX 는 j5 를 그대로 복사, PNG 만 다시 만든다.\n 1) j 단계 굽기 전 albedo(art/models/opus_houses_j/<이름>_albedo.png, j 아틀라스와 같은 자리)가 있다.\n    j5 텍셀 == j 최종 텍셀(나중에 손 안 댄 곳) → 그 자리 albedo 를 씀. 같은 면·같은 역할 안에서 중앙값 ±4% 로 눌러 결만 남김(그보다 큰 차 = 칠한 무늬(창틀·띠·줄눈)라 둠).\n 2) j2~j5 가 나중에 칠한 텍셀(옆벽 창·홈통, 사진 부품, 한 색 칸) → 그 면 방향의 빛 비율(j 최종 밝기 ÷ albedo 밝기, 방향별 중앙값)로 나눠 빛을 뺌.\n 3) 간판(크림 판·짙은 글자·판 테두리) = 원래 재료색이라 그대로.\n 4) 덧창(j5 바랜 파랑·초록 3단): 그늘 쪽 면에 쓴 (중간, 그늘) → (밝음, 중간) 으로 올려 어느 면이든 같은 색.\n 5) 40색(+ 덧창 6) 양자화 — 유리·짙은 무늬는 팔레트 전부, 나머지는 밝기 ≥60. 외톨이 1텍셀 → 이웃 최빈색.\n출력: art/export/scene-a4-houses-alb/ (fbx·png·palette46.gpl·measure.json) · 끝에 READY\n",
+ "files": {
+  "house_narrow_a": {
+   "texels": 346258,
+   "from_albedo": 304128,
+   "unlit_later_paint": 29737,
+   "sign_kept": 1716,
+   "shutter": 15240,
+   "inside": 0,
+   "grime_flattened": 14893,
+   "light_ratio_by_dir": {
+    "(0.0, -0.3, 1.0)": 1.07,
+    "(-1.0, 0.0, 0.0)": 0.99,
+    "(0.0, 0.3, 1.0)": 0.93,
+    "(0.0, 0.0, 1.0)": 0.92,
+    "(0.0, -1.0, 0.0)": 0.82,
+    "(1.0, -0.0, 0.0)": 0.69
+   },
+   "p5": 91.8,
+   "p5_non_dark": 119.6,
+   "dark_pct": 5.12,
+   "isolated_pct": 0.103,
+   "in_palette": true,
+   "colors": 29,
+   "wall_colors": 11,
+   "wall_L_spread": [
+    193.6,
+    205.1,
+    205.1
+   ]
+  },
+  "house_narrow_b": {
+   "texels": 282231,
+   "from_albedo": 256872,
+   "unlit_later_paint": 5701,
+   "sign_kept": 5221,
+   "shutter": 17581,
+   "inside": 0,
+   "grime_flattened": 29817,
+   "light_ratio_by_dir": {
+    "(0.0, -0.1, 1.0)": 1.15,
+    "(-1.0, -0.1, 0.0)": 1.03,
+    "(0.0, -1.0, 0.0)": 1.02,
+    "(-1.0, -0.0, 0.0)": 1.0,
+    "(0.0, 0.0, 1.0)": 0.93,
+    "(1.0, 0.0, 0.0)": 0.66
+   },
+   "p5": 91.8,
+   "p5_non_dark": 102.4,
+   "dark_pct": 8.3,
+   "isolated_pct": 0.069,
+   "in_palette": true,
+   "colors": 29,
+   "wall_colors": 9,
+   "wall_L_spread": [
+    233.7,
+    233.7,
+    233.7
+   ]
+  },
+  "house_shop": {
+   "texels": 315846,
+   "from_albedo": 260969,
+   "unlit_later_paint": 40491,
+   "sign_kept": 10036,
+   "shutter": 10160,
+   "inside": 0,
+   "grime_flattened": 18668,
+   "light_ratio_by_dir": {
+    "(0.0, -0.3, 1.0)": 1.17,
+    "(0.0, -0.2, 1.0)": 1.03,
+    "(0.0, 0.3, 1.0)": 0.99,
+    "(0.0, 0.0, 1.0)": 0.96,
+    "(-1.0, 0.0, 0.0)": 0.96,
+    "(0.0, -0.0, -1.0)": 0.67
+   },
+   "p5": 77.7,
+   "p5_non_dark": 90.9,
+   "dark_pct": 4.65,
+   "isolated_pct": 0.066,
+   "in_palette": true,
+   "colors": 25,
+   "wall_colors": 11,
+   "wall_L_spread": [
+    193.6,
+    205.1,
+    205.1
+   ]
+  },
+  "house_slope": {
+   "texels": 381928,
+   "from_albedo": 357778,
+   "unlit_later_paint": 22922,
+   "sign_kept": 1021,
+   "shutter": 8879,
+   "inside": 0,
+   "grime_flattened": 29516,
+   "light_ratio_by_dir": {
+    "(0.0, -0.3, 1.0)": 1.09,
+    "(-0.2, 0.0, 1.0)": 1.07,
+    "(0.0, -1.0, 0.0)": 0.99,
+    "(0.0, 0.0, 1.0)": 0.98,
+    "(-1.0, 0.0, 0.0)": 0.96,
+    "(0.0, 0.3, 1.0)": 0.93
+   },
+   "p5": 110.7,
+   "p5_non_dark": 123.3,
+   "dark_pct": 4.19,
+   "isolated_pct": 0.091,
+   "in_palette": true,
+   "colors": 28,
+   "wall_colors": 4,
+   "wall_L_spread": [
+    196.8,
+    196.8,
+    196.8
+   ]
+  },
+  "house_warehouse": {
+   "texels": 387728,
+   "from_albedo": 324564,
+   "unlit_later_paint": 63518,
+   "sign_kept": 6846,
+   "shutter": 0,
+   "inside": 0,
+   "grime_flattened": 55319,
+   "light_ratio_by_dir": {
+    "(0.0, -0.3, 1.0)": 1.17,
+    "(0.0, -0.2, 1.0)": 1.05,
+    "(-1.0, 0.0, 0.0)": 1.0,
+    "(0.0, 0.3, 1.0)": 0.99,
+    "(0.0, -1.0, 0.0)": 0.98,
+    "(0.0, 0.0, 1.0)": 0.96
+   },
+   "p5": 90.9,
+   "p5_non_dark": 90.9,
+   "dark_pct": 2.86,
+   "isolated_pct": 0.042,
+   "in_palette": true,
+   "colors": 25,
+   "wall_colors": 8,
+   "wall_L_spread": [
+    233.7,
+    233.7,
+    233.7
+   ]
+  },
+  "house_cafe": {
+   "texels": 167422,
+   "from_albedo": 149019,
+   "unlit_later_paint": 18193,
+   "sign_kept": 4046,
+   "shutter": 0,
+   "inside": 0,
+   "grime_flattened": 16311,
+   "light_ratio_by_dir": {
+    "(0.0, -0.3, 1.0)": 1.08,
+    "(-1.0, -0.1, 0.0)": 0.94,
+    "(0.0, 0.3, 1.0)": 0.93,
+    "(0.0, -0.3, 0.9)": 0.93,
+    "(-1.0, -0.0, 0.0)": 0.93,
+    "(0.0, 0.0, 1.0)": 0.93
+   },
+   "p5": 90.9,
+   "p5_non_dark": 119.6,
+   "dark_pct": 5.71,
+   "isolated_pct": 0.067,
+   "in_palette": true,
+   "colors": 26,
+   "wall_colors": 12,
+   "wall_L_spread": [
+    179.7,
+    233.7,
+    233.7
+   ]
+  }
+ }
+}

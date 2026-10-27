@@ -18,7 +18,8 @@ ROLES = ['hidden', 'wall', 'roof', 'glass', 'frame', 'door', 'shutter', 'rail', 
 RI = {r: i for i, r in enumerate(ROLES)}; LUM = np.array((.299, .587, .114)); BG = np.array((23., 37, 40)); KEY = np.array((65536., 256., 1.))
 PALX = np.array([[int(v) for v in l.split()[:3]] for l in open(J5 + 'palette46.gpl') if l.split() and l.split()[0].isdigit()], float)
 PAL = PALX[:40]; SH = PALX[40:]; PL = PAL @ LUM
-FLAT = {RI[r] for r in ('wall', 'stone', 'soffit', 'slab', 'tin', 'roof', 'flat')}; BANDH = ('house_narrow_b', 'house_shop', 'house_warehouse', 'house_cafe')
+# 지붕은 사진 기와(E2·E3)라 FLAT 에서 뺌
+FLAT = {RI[r] for r in ('wall', 'stone', 'soffit', 'slab', 'tin', 'flat')}; BANDH = ('house_narrow_b', 'house_shop', 'house_warehouse', 'house_cafe')
 INSIDE = np.array((84., 74, 64))  # 실내 안쪽 짙은 회갈
 SIGNC = {tuple(c) for c in PAL[[((PAL - np.array(c)) ** 2).sum(1).argmin() for c in ((244, 235, 200), (52, 70, 68), (195, 188, 160))]]}  # j3·j4 간판 판·글자·테두리
 
@@ -26,6 +27,13 @@ SIGNC = {tuple(c) for c in PAL[[((PAL - np.array(c)) ** 2).sum(1).argmin() for c
 def quant(c, dark=False):
     c = np.asarray(c, float).reshape(-1, 3); i = np.nonzero(PL >= (0 if dark else 60))[0]
     return PAL[i[((c[:, None, :] - PAL[i][None]) ** 2).sum(-1).argmin(1)]]
+
+
+def grainq(med, dv):
+    """벽 계열: 중앙값 색의 양자화 칸 + 같은 색조(밝기로 나눈 색 차 <.05)·밝기 ±6% 칸만 후보 → 텍셀 밝기에 가까운 칸"""
+    m0 = quant(med)[0]; Lm = m0 @ LUM; hn = PAL / np.maximum(PL, 1)[:, None]; h0 = m0 / max(Lm, 1)
+    ok = (PL >= 60) & (np.abs(PL - Lm) <= .06 * Lm) & (np.abs(hn - h0).max(1) < .05)
+    c = PAL[ok] if ok.any() else m0[None]; Lt = dv * Lm; return c[np.abs(Lt[:, None] - (c @ LUM)[None]).argmin(1)]
 
 
 def load(p):
@@ -67,7 +75,7 @@ for n in NAMES:
     kd = {k: float(np.median(v)) for k, v in kd.items()}; kall = float(np.median(list(kd.values())))
     def kof(nv):
         b = max(kd, key=lambda k: np.dot(k, nv)); return kd[b] if np.dot(b, nv) > .7 else kall
-    out = X.copy(); done = np.zeros((H, W), bool); dark = np.zeros((H, W), bool); stat = dict(albedo=0, unlit=0, sign=0, shutter=0, inside=0, flattened=0)
+    FG = []; out = X.copy(); done = np.zeros((H, W), bool); dark = np.zeros((H, W), bool); stat = dict(albedo=0, unlit=0, sign=0, shutter=0, inside=0, flattened=0)
     shk = {tuple(c) for c in SH}
     for f, tt, nv in FT:
         if tt is None: continue
@@ -87,6 +95,7 @@ for n in NAMES:
                     sm = ~keep; stat['flattened'] += int((sm & (np.abs(dv - 1) > .04)).sum())
                 else: sm = np.abs(dv - 1) <= .12
                 a2[np.nonzero(q)[0][sm]] = med * np.clip(dv[sm], .96, 1.04)[:, None]
+                if rr in FLAT: qi = np.nonzero(q)[0][sm]; FG.append((ys[s][qi], xs[s][qi], med, np.clip(dv[sm], .96, 1.04)))
             gl = (r == RI['glass']) | (r == RI['hidden']) | ((a2 @ LUM) < 60); out[ys[s], xs[s]] = np.where(gl[:, None], quant(a2, True), quant(a2))
             dark[ys[s][gl], xs[s][gl]] = True; stat['albedo'] += int(s.sum())
         e = ~s
@@ -112,10 +121,11 @@ for n in NAMES:
                 q = np.nonzero(r == rr)[0]; keep = (zs[q] >= 2.38) & (zs[q] <= 2.77) & (n in BANDH) & (rr == RI['wall']); q = q[~keep]
                 if len(q) < 4: continue
                 med = np.median(u[q], 0); dv = (u[q] @ LUM) / max(med @ LUM, 1); stat['flattened'] += int((np.abs(dv - 1) > .04).sum())
-                u[q] = med * np.clip(dv, .96, 1.04)[:, None]
+                u[q] = med * np.clip(dv, .96, 1.04)[:, None]; FG.append((ye[ot][q], xe[ot][q], med, np.clip(dv, .96, 1.04)))
             gl = (u @ LUM) < 60
             out[ye[ot], xe[ot]] = np.where(gl[:, None], quant(u, True), quant(u)); dark[ye[ot][gl], xe[ot][gl]] = True; stat['unlit'] += int(ot.sum())
     bm.free()
+    for gy, gx, med, dv in FG: out[gy, gx] = grainq(med, dv)
     # 외톨이 1텍셀 → 이웃 최빈색 (면이 쓰는 텍셀만)
     key = out @ KEY; iso = done.copy()
     for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)): iso &= np.roll(key, (dy, dx), (0, 1)) != key
