@@ -1,0 +1,127 @@
+{
+  "method": "original v6 luminance at original UV positions, normalized by material mean; v6b mean color; chroma gamut compression; nearest 4x preserves source block scale",
+  "groups": {
+    "plastic": {
+      "v6_mean": 87.05779564030055,
+      "v6b_mean": 82.25310622283267,
+      "v6c_mean": 82.32344605316314,
+      "v6_relative_std": 0.44130504424105393,
+      "v6c_relative_std": 0.441831221618106,
+      "luminance_correlation": 0.9999961348560052,
+      "v6_relative_p10_p90": [
+        0.4408634484449656,
+        1.509077952568596
+      ],
+      "v6c_relative_p10_p90": [
+        0.44139308717147435,
+        1.5102356128254293
+      ],
+      "source_horizontal_run_texels_p50_p90": [
+        2.0,
+        6.0
+      ],
+      "rgb_spread_max": 113,
+      "gamut_luminance_cap_pixels": 0
+    },
+    "tire": {
+      "v6_mean": 71.91482933180893,
+      "v6b_mean": 25.965489498644985,
+      "v6c_mean": 25.93146595528455,
+      "v6_relative_std": 0.4630949217396832,
+      "v6c_relative_std": 0.4637486953281553,
+      "luminance_correlation": 0.9997640867984081,
+      "v6_relative_p10_p90": [
+        0.4761215498686456,
+        1.784127156973573
+      ],
+      "v6c_relative_p10_p90": [
+        0.4627582575043171,
+        1.7739066537665489
+      ],
+      "source_horizontal_run_texels_p50_p90": [
+        2.0,
+        4.0
+      ],
+      "rgb_spread_max": 0,
+      "gamut_luminance_cap_pixels": 0
+    },
+    "metal": {
+      "v6_mean": 58.03862031941109,
+      "v6b_mean": 58.814040187033996,
+      "v6c_mean": 58.914444584860355,
+      "v6_relative_std": 0.6190435688677391,
+      "v6c_relative_std": 0.6164720127163695,
+      "luminance_correlation": 0.9999883139272544,
+      "v6_relative_p10_p90": [
+        0.5899554436608192,
+        1.8659575193895457
+      ],
+      "v6c_relative_p10_p90": [
+        0.5940818121366824,
+        1.8671142667152876
+      ],
+      "source_horizontal_run_texels_p50_p90": [
+        2.0,
+        7.0
+      ],
+      "rgb_spread_max": 0,
+      "gamut_luminance_cap_pixels": 0
+    },
+    "seat": {
+      "v6_mean": 75.59043523622904,
+      "v6b_mean": 56.58575937295884,
+      "v6c_mean": 56.580512440670574,
+      "v6_relative_std": 0.4077683490803024,
+      "v6c_relative_std": 0.4106943195881709,
+      "luminance_correlation": 0.9999959207645878,
+      "v6_relative_p10_p90": [
+        0.507744132972063,
+        1.5907277107774802
+      ],
+      "v6c_relative_p10_p90": [
+        0.5046331107364853,
+        1.5953832177581133
+      ],
+      "source_horizontal_run_texels_p50_p90": [
+        2.0,
+        8.0
+      ],
+      "rgb_spread_max": 14,
+      "gamut_luminance_cap_pixels": 0
+    },
+    "warm": {
+      "v6_mean": 59.26062507598783,
+      "v6b_mean": 88.14605319148934,
+      "v6c_mean": 87.95399240121581,
+      "v6_relative_std": 0.5280478542356943,
+      "v6c_relative_std": 0.5243262825789837,
+      "luminance_correlation": 0.9994443465896581,
+      "v6_relative_p10_p90": [
+        0.5777900580038599,
+        1.973495889556317
+      ],
+      "v6c_relative_p10_p90": [
+        0.5766946856558935,
+        1.9751530914883013
+      ],
+      "source_horizontal_run_texels_p50_p90": [
+        2.0,
+        5.0
+      ],
+      "rgb_spread_max": 52,
+      "gamut_luminance_cap_pixels": 64
+    }
+  },
+  "texture_size": [
+    4096,
+    1024
+  ],
+  "used_colors": 72,
+  "plate_identical_to_v6b": true,
+  "source_hashes": {
+    "art\\export\\kart-v6\\kart_v6.fbx": "ff0f7b1c3ba1b6b4c85350ae146378db944b828ec8ecb5829df1105f1ddc3433",
+    "art\\export\\kart-v6\\kart_v6_baked32.png": "06544be9fe54ee6a854829e31e10a2d568cdd44368c5ee2041448d6684228aaf",
+    "art\\export\\kart-v6b\\kart_v6b.fbx": "a350715c19645fe4ffea2d36abcf174c212f6ac801fca94c2fe32ed87b2ec694",
+    "art\\export\\kart-v6b\\kart_v6b.png": "a69eeae54818bbaaeff8d26195b1e0394c6f5625bc75b07d6f941db50a419146"
+  }
+}
