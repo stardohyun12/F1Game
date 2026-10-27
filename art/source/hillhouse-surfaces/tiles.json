@@ -1,0 +1,581 @@
+{
+  "atlas": "extension_atlas.png",
+  "tiles": [
+    {
+      "name": "wall_repaint",
+      "label_ko": "덧칠한 벽",
+      "index": 51,
+      "path": "art/source/hillhouse-surfaces/tiles/wall_repaint.png",
+      "atlas_xy_topdown": [
+        192,
+        64
+      ],
+      "blender_cell_xy": [
+        3,
+        6
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          151,
+          130,
+          106
+        ],
+        [
+          196,
+          166,
+          135
+        ],
+        [
+          228,
+          214,
+          191
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 3,
+      "dominant_color_fraction": 0.771484375,
+      "sha256": "9714efef47d0b9905bf9d75a36da07ec0d92d865e6614522ba0ba66ec13c04aa",
+      "source_id": "worn_plaster_wall",
+      "source_url": "https://polyhaven.com/a/worn_plaster_wall",
+      "source_photo_sha256": "f769bee35504ff713e89e89d2b64c1eb3c373dd184973ac8706310f19fd63efe",
+      "prepared_photo_sha256": "e08a5f36badb9c0e05ebeaef17a02a82d6641bb7df95103deaf4799166d32cd3",
+      "graded_photo_sha256": "2c0c2e86980be47b5b707ec84f3bd7b0db65b347c1c274781905b83fbd3e8346",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/wall_repaint.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/wall_repaint.json",
+      "color_ladder_indices": [
+        4,
+        0,
+        19,
+        25
+      ],
+      "wear_reason_ko": "상단은 밝은 새 회벽, 아래 0.65m 이내의 한쪽 옛 도료 경계에만 사진 기반 박락. 윗벽 UV는 PNG y4..32, 낮은 벽은 y34..62 사용.",
+      "ai_generated": false
+    },
+    {
+      "name": "wood_handworn",
+      "label_ko": "손때 탄 문틀",
+      "index": 52,
+      "path": "art/source/hillhouse-surfaces/tiles/wood_handworn.png",
+      "atlas_xy_topdown": [
+        256,
+        64
+      ],
+      "blender_cell_xy": [
+        4,
+        6
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          82,
+          83,
+          80
+        ],
+        [
+          103,
+          123,
+          128
+        ],
+        [
+          151,
+          130,
+          106
+        ],
+        [
+          196,
+          166,
+          135
+        ],
+        [
+          196,
+          199,
+          201
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 5,
+      "dominant_color_fraction": 0.87158203125,
+      "sha256": "73a44f18c45ed2dba3ccffddb4f9c92e98cb2d87bc0c20cc318a32a71b86c408",
+      "source_id": "wood_peeling_paint_weathered",
+      "source_url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+      "source_photo_sha256": "7311e60ec0ca3de10383dd5f2d398819e2198ea78244cf4f6627d1cb26cf4b53",
+      "prepared_photo_sha256": "a3a7125ca5dcde81f98c2282ee444ea0cff88d47f869a3699add405694a05dfa",
+      "graded_photo_sha256": "3cb208cb039d6c7b8ccbd2eaeaf7b796d90789050c507a952f5ef8858b40b50f",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/wood_handworn.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/wood_handworn.json",
+      "color_ladder_indices": [
+        4,
+        5,
+        18,
+        19
+      ],
+      "wear_reason_ko": "회청색 재도장 아래 목재가 드러남. 손잡이 높이 접촉부와 하단 물튐 부위만 추가 마모.",
+      "ai_generated": false,
+      "handwear_region_topdown_xywh": [
+        50,
+        23,
+        8,
+        17
+      ]
+    },
+    {
+      "name": "roof_repair",
+      "label_ko": "기와 수리 바탕",
+      "index": 53,
+      "path": "art/source/hillhouse-surfaces/tiles/roof_repair.png",
+      "atlas_xy_topdown": [
+        320,
+        64
+      ],
+      "blender_cell_xy": [
+        5,
+        6
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          121,
+          82,
+          68
+        ],
+        [
+          136,
+          121,
+          99
+        ],
+        [
+          138,
+          70,
+          49
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 3,
+      "dominant_color_fraction": 0.80859375,
+      "sha256": "c4930275bc8861c2763b9094e61553a3d647522912de67e0c39b10bbf0d8a3b6",
+      "source_id": "clay_roof_tiles",
+      "source_url": "https://polyhaven.com/a/clay_roof_tiles",
+      "source_photo_sha256": "aac0f4e742a2cce21afb5dfb523b47c720c6a8e2782a312b823608fe3f80eae6",
+      "prepared_photo_sha256": "d984e8b5ba9dabd811355e4744ed46b31139fe7e107fbd2698e98a86876890ae",
+      "graded_photo_sha256": "0055d93feb3b396e817fd30623ffe9c79d6d23b2cd89021fdb89f85b05dd24ce",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/roof_repair.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/roof_repair.json",
+      "color_ladder_indices": [
+        15,
+        28,
+        17
+      ],
+      "wear_reason_ko": "실제 곡면 기와 사진으로 교체. 적갈색 2색 큰 명암과 사진에서 연속된 세로 하이라이트 5개만 회갈색으로 유지. 노랑 점 없음. 넓은 수리는 모델 한 위치에만 배치.",
+      "ai_generated": false
+    },
+    {
+      "name": "paver_worn",
+      "label_ko": "닳은 보도블록",
+      "index": 54,
+      "path": "art/source/hillhouse-surfaces/tiles/paver_worn.png",
+      "atlas_xy_topdown": [
+        384,
+        64
+      ],
+      "blender_cell_xy": [
+        6,
+        6
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          113,
+          106,
+          101
+        ],
+        [
+          136,
+          121,
+          99
+        ],
+        [
+          151,
+          130,
+          106
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 3,
+      "dominant_color_fraction": 0.51220703125,
+      "sha256": "5ce98848b2e2f8b61f4e33ac162aa8f3c1bf3fa9ad29a9570bb06d9b9f4c15e9",
+      "source_id": "rectangular_paving",
+      "source_url": "https://polyhaven.com/a/rectangular_paving",
+      "source_photo_sha256": "23f3da5644a95fbcc1916165c8b03ac74d0836ce4b6f5bf2a28b0266dcdf84c5",
+      "prepared_photo_sha256": "54e38042211e4e7e1175d7f7891bf51388fad1bdf5143b06421b566d37535e28",
+      "graded_photo_sha256": "32c2e79f44d1877e4f5bbdb4358fefc70d221dc890ce0f58b4c430cdb4b780bf",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/paver_worn.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/paver_worn.json",
+      "color_ladder_indices": [
+        7,
+        17,
+        4
+      ],
+      "wear_reason_ko": "사진 속 20×40cm 포장 블록의 실제 줄눈을 1px로 보강. 중앙 보행 접촉부만 밝게 닳고 잔점은 제거.",
+      "ai_generated": false
+    },
+    {
+      "name": "layered_sign",
+      "label_ko": "간판 위 간판",
+      "index": 55,
+      "path": "art/source/hillhouse-surfaces/tiles/layered_sign.png",
+      "atlas_xy_topdown": [
+        448,
+        64
+      ],
+      "blender_cell_xy": [
+        7,
+        6
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          55,
+          53,
+          47
+        ],
+        [
+          82,
+          83,
+          80
+        ],
+        [
+          103,
+          123,
+          128
+        ],
+        [
+          112,
+          81,
+          46
+        ],
+        [
+          151,
+          130,
+          106
+        ],
+        [
+          168,
+          136,
+          104
+        ],
+        [
+          196,
+          166,
+          135
+        ],
+        [
+          228,
+          214,
+          191
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 8,
+      "dominant_color_fraction": 0.344482421875,
+      "sha256": "b9fb7e00d9bc2e8e2cf97e5ce86d628193f4be6e5d59e740ee60b9a34032aa83",
+      "source_id": "wood_peeling_paint_weathered",
+      "source_url": "https://polyhaven.com/a/wood_peeling_paint_weathered",
+      "source_photo_sha256": "7311e60ec0ca3de10383dd5f2d398819e2198ea78244cf4f6627d1cb26cf4b53",
+      "prepared_photo_sha256": "a3a7125ca5dcde81f98c2282ee444ea0cff88d47f869a3699add405694a05dfa",
+      "graded_photo_sha256": "7d7cf2e4eb023f9e6458fc9283663ea42eed671db915fddd0bdd130caad6e86a",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/layered_sign.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/layered_sign.json",
+      "color_ladder_indices": [
+        21,
+        4,
+        16,
+        0
+      ],
+      "wear_reason_ko": "이전 상회 간판의 하단 글자와 못 구멍을 남긴 채 작은 수선 간판을 덧댐. Galmuri11 실제 글리프.",
+      "ai_generated": false
+    },
+    {
+      "name": "asphalt_patch",
+      "label_ko": "도로 수리",
+      "index": 56,
+      "path": "art/source/hillhouse-surfaces/tiles/asphalt_patch.png",
+      "atlas_xy_topdown": [
+        0,
+        0
+      ],
+      "blender_cell_xy": [
+        0,
+        7
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          82,
+          83,
+          80
+        ],
+        [
+          101,
+          94,
+          94
+        ],
+        [
+          113,
+          106,
+          101
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 3,
+      "dominant_color_fraction": 0.561279296875,
+      "sha256": "112ac80508c5269e55953ae11266dc2ed1da637021a1fa0436532203d43fa773",
+      "source_id": "worn_asphalt",
+      "source_url": "https://polyhaven.com/a/worn_asphalt",
+      "source_photo_sha256": "3bf71ad290730092ad2aee85e246b2e43318bc1f32261826ba91250e815b5f72",
+      "prepared_photo_sha256": "91366a4defcc47c7b27705a0fd74673a055d3358f2ccbb91ba504a4ec09b41e7",
+      "graded_photo_sha256": "68ffc871b23fbfd09cdba7a745312ba0e9e064e1591c80f4410692c8a0bc53b0",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/asphalt_patch.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/asphalt_patch.json",
+      "color_ladder_indices": [
+        5,
+        8,
+        7
+      ],
+      "wear_reason_ko": "구멍을 메운 국소 불규칙 패치. 직선 띠를 없애고 원천 사진 골재의 큰 평균값만 회색 3색으로 유지.",
+      "ai_generated": false
+    },
+    {
+      "name": "foundation_repair",
+      "label_ko": "기단 모르타르 수리",
+      "index": 57,
+      "path": "art/source/hillhouse-surfaces/tiles/foundation_repair.png",
+      "atlas_xy_topdown": [
+        64,
+        0
+      ],
+      "blender_cell_xy": [
+        1,
+        7
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          96,
+          89,
+          89
+        ],
+        [
+          113,
+          106,
+          101
+        ],
+        [
+          136,
+          121,
+          99
+        ],
+        [
+          151,
+          130,
+          106
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 4,
+      "dominant_color_fraction": 0.588623046875,
+      "sha256": "9383da1c95aae52a4be612a62e57d1bb70479b366d204365cb2d49604a4f90e7",
+      "source_id": "stone_brick_wall_001",
+      "source_url": "https://polyhaven.com/a/stone_brick_wall_001",
+      "source_photo_sha256": "15fb31a178401eda2a2b86da539fa39021a08c7a43e902af785f99e18cba6311",
+      "prepared_photo_sha256": "32cd5262df7f02a8e54df9049f89e531b7abab57ba191153f3d148ee9244a969",
+      "graded_photo_sha256": "99f81e644f78d680b6e819a8a2f39baa72e731100727181091ed9ce41d210020",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/foundation_repair.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/foundation_repair.json",
+      "color_ladder_indices": [
+        12,
+        7,
+        17,
+        4
+      ],
+      "wear_reason_ko": "사진 속 석재 블록·줄눈을 회갈색의 좁은 명도 사다리로 읽힘. 한쪽의 짧은 이음만 새 모르타르로 보수.",
+      "ai_generated": false
+    },
+    {
+      "name": "faded_cloth",
+      "label_ko": "바랜 생활 천",
+      "index": 58,
+      "path": "art/source/hillhouse-surfaces/tiles/faded_cloth.png",
+      "atlas_xy_topdown": [
+        128,
+        0
+      ],
+      "blender_cell_xy": [
+        2,
+        7
+      ],
+      "tile_size_px": [
+        64,
+        64
+      ],
+      "physical_size_m": [
+        2,
+        2
+      ],
+      "density_px_m": 32,
+      "sampling": "Point/Closest",
+      "uv_recommended_inset_px": 2,
+      "usable_extent_m_with_inset": 1.875,
+      "colors_rgb": [
+        [
+          196,
+          199,
+          201
+        ],
+        [
+          228,
+          214,
+          191
+        ]
+      ],
+      "palette_outside_count": 0,
+      "color_count": 2,
+      "dominant_color_fraction": 0.792236328125,
+      "sha256": "950e58fc8a59c0fe68577a0668466a7ce5e162d498539ef1aa2394b0d334cc73",
+      "source_id": "fabric_pattern_05",
+      "source_url": "https://polyhaven.com/a/fabric_pattern_05",
+      "source_photo_sha256": "b9ece89a45044945ce4d1402672cfd605f1f074b313cb3cc12b7b2ea66fad7fe",
+      "prepared_photo_sha256": "06833bd3f3e82a796b56441c302d3b5ae185298c4dc8d617a857b636ac6d5a0f",
+      "graded_photo_sha256": "1ceb9e4a63d6051e7fe4aeb73fae8f9b0731c9f6573d88899710e1d52759db46",
+      "baseline_pipeline_metadata": "art/source/hillhouse-surfaces/baseline/faded_cloth.json",
+      "grade_method": "BOX 64px footprint luminance percentiles -> material ladder -> nearest-expanded exposure guide -> photo_to_pixel; raw photo baseline also archived",
+      "photo_to_pixel_metadata": "art/source/hillhouse-surfaces/quantized/faded_cloth.json",
+      "color_ladder_indices": [
+        18,
+        19,
+        25
+      ],
+      "wear_reason_ko": "CC0 면직물 사진의 직조를 가장자리 봉제에만 남기고 중앙은 바랜 밝은 면. 두 접힘선만 보강해 빨래가 너덜거리지 않게 절제.",
+      "ai_generated": false
+    }
+  ],
+  "checks": {
+    "pass": true,
+    "legacy_original_sha256": "de515064b94fb1df83f7e2b80cce3fa56e2913e5cc6446f8c8e6475c2e4f3679",
+    "legacy_file_untouched": true,
+    "original_pixels_unchanged_outside_51_58": true,
+    "append_slots": [
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58
+    ],
+    "new_tiles": 8,
+    "new_tile_size_px": [
+      64,
+      64
+    ],
+    "atlas_size_px": [
+      512,
+      512
+    ],
+    "new_tiles_palette_outside_count": 0,
+    "extension_palette_outside_count": 0,
+    "legacy_palette_claim": "Existing 0..50 cells retain legacy colors; shared32 check applies to extension only, not merged preview.",
+    "source_md5_all_match_provider": true,
+    "density_px_m": [
+      32,
+      32
+    ],
+    "density_deviation": 0,
+    "ai_generated_asset_files": 0
+  }
+}

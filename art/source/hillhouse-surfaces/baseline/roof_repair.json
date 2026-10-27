@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "tool": "photo_to_pixel.py",
+  "pillow_version": "12.3.0",
+  "source": {
+    "id": "clay_roof_tiles",
+    "path": "D:\\Github\\F1Game\\art\\source\\hillhouse-surfaces\\prepared\\roof_repair_2m-photo.png",
+    "sha256": "d984e8b5ba9dabd811355e4744ed46b31139fe7e107fbd2698e98a86876890ae",
+    "url": "https://polyhaven.com/a/clay_roof_tiles",
+    "license_url": "https://polyhaven.com/license",
+    "license_verification": "caller responsibility; see SOURCES.md",
+    "oriented_size_px": [
+      1024,
+      1024
+    ],
+    "crop_ltrb_px": [
+      0,
+      0,
+      1024,
+      1024
+    ]
+  },
+  "palette": {
+    "path": "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.json",
+    "sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+    "colors_rgb": [
+      [
+        196,
+        166,
+        135
+      ],
+      [
+        105,
+        98,
+        99
+      ],
+      [
+        55,
+        53,
+        47
+      ],
+      [
+        136,
+        162,
+        192
+      ],
+      [
+        151,
+        130,
+        106
+      ],
+      [
+        82,
+        83,
+        80
+      ],
+      [
+        35,
+        31,
+        27
+      ],
+      [
+        113,
+        106,
+        101
+      ],
+      [
+        101,
+        94,
+        94
+      ],
+      [
+        72,
+        70,
+        66
+      ],
+      [
+        110,
+        102,
+        100
+      ],
+      [
+        101,
+        96,
+        95
+      ],
+      [
+        96,
+        89,
+        89
+      ],
+      [
+        174,
+        188,
+        202
+      ],
+      [
+        203,
+        212,
+        222
+      ],
+      [
+        121,
+        82,
+        68
+      ],
+      [
+        168,
+        136,
+        104
+      ],
+      [
+        136,
+        121,
+        99
+      ],
+      [
+        103,
+        123,
+        128
+      ],
+      [
+        196,
+        199,
+        201
+      ],
+      [
+        110,
+        99,
+        96
+      ],
+      [
+        112,
+        81,
+        46
+      ],
+      [
+        150,
+        117,
+        72
+      ],
+      [
+        184,
+        147,
+        96
+      ],
+      [
+        123,
+        86,
+        47
+      ],
+      [
+        228,
+        214,
+        191
+      ],
+      [
+        48,
+        54,
+        47
+      ],
+      [
+        62,
+        74,
+        45
+      ],
+      [
+        138,
+        70,
+        49
+      ],
+      [
+        137,
+        112,
+        68
+      ],
+      [
+        146,
+        119,
+        76
+      ],
+      [
+        160,
+        131,
+        85
+      ]
+    ]
+  },
+  "physical_size_m": [
+    2,
+    2
+  ],
+  "target_density_px_m": 32,
+  "actual_density_px_m": [
+    32.0,
+    32.0
+  ],
+  "density_deviation_fraction": [
+    0.0,
+    0.0
+  ],
+  "patch_size_px": [
+    64,
+    64
+  ],
+  "patch_rect_xywh": [
+    0,
+    0,
+    64,
+    64
+  ],
+  "output_size_px": [
+    64,
+    64
+  ],
+  "output_sha256": "152506dcadbf9920e8728190547f09210047854cc261a913d9e210f136f39e58",
+  "resample": "box",
+  "dither": "none",
+  "quantization": "exact squared RGB distance",
+  "sampling_intent": "Point/Closest; configure in engine/material; PNG cannot enforce filtering"
+}

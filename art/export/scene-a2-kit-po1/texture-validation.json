@@ -1,0 +1,460 @@
+{
+  "transformer_01": {
+    "source": "F1\\Assets\\Art\\SceneA6d\\Tex\\transformer_01_mono.png",
+    "size": [
+      1024,
+      64
+    ],
+    "changed_pixels": 8640,
+    "edited_surface_pixels": 6592,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      81.22845873786407,
+      99.96283373786407,
+      104.13607402912622
+    ],
+    "surface_colors": [
+      [
+        48,
+        66,
+        73
+      ],
+      [
+        50,
+        68,
+        74
+      ],
+      [
+        53,
+        69,
+        74
+      ],
+      [
+        57,
+        77,
+        83
+      ],
+      [
+        63,
+        68,
+        60
+      ],
+      [
+        71,
+        92,
+        99
+      ],
+      [
+        72,
+        94,
+        101
+      ],
+      [
+        73,
+        96,
+        103
+      ],
+      [
+        76,
+        83,
+        82
+      ],
+      [
+        98,
+        122,
+        127
+      ],
+      [
+        100,
+        124,
+        130
+      ],
+      [
+        102,
+        126,
+        133
+      ],
+      [
+        111,
+        134,
+        138
+      ],
+      [
+        144,
+        161,
+        162
+      ],
+      [
+        147,
+        164,
+        165
+      ],
+      [
+        150,
+        167,
+        168
+      ],
+      [
+        160,
+        173,
+        169
+      ],
+      [
+        191,
+        170,
+        104
+      ]
+    ],
+    "source_sha256": "10e32bf943a09a4c2ca5676aa0532a880ebe8cf2483291fcdf946d0ff22ff769"
+  },
+  "tires_01": {
+    "source": "F1\\Assets\\Art\\SceneA6d\\Tex\\tires_01_mono.png",
+    "size": [
+      1024,
+      512
+    ],
+    "changed_pixels": 62378,
+    "edited_surface_pixels": 13052,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      69.48590254367147,
+      69.48590254367147,
+      69.48590254367147
+    ],
+    "surface_colors": [
+      [
+        40,
+        40,
+        40
+      ],
+      [
+        70,
+        70,
+        70
+      ],
+      [
+        104,
+        104,
+        104
+      ]
+    ],
+    "source_sha256": "d55f09c8ab06da683dcd5bc4e002403f4465e9f2806bfe72e8aa785d5dbb835e"
+  },
+  "tires_02": {
+    "source": "F1\\Assets\\Art\\SceneA6d\\Tex\\tires_02_mono.png",
+    "size": [
+      1024,
+      512
+    ],
+    "changed_pixels": 71763,
+    "edited_surface_pixels": 15111,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      70.34795844087088,
+      70.34795844087088,
+      70.34795844087088
+    ],
+    "surface_colors": [
+      [
+        40,
+        40,
+        40
+      ],
+      [
+        70,
+        70,
+        70
+      ],
+      [
+        104,
+        104,
+        104
+      ]
+    ],
+    "source_sha256": "4c053e932e8f0712f84c3e7409ac0ebdbaf4370fd048b53bfd1d73fb95f69fa8"
+  },
+  "autumn_tree_01": {
+    "source": "F1\\Assets\\Art\\SceneA3\\Gen\\autumn_tree_01_r2.png",
+    "size": [
+      491,
+      3924
+    ],
+    "changed_pixels": 39964,
+    "edited_surface_pixels": 8619,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      109.75437985845225,
+      80.90822601229841,
+      59.872142940016246
+    ],
+    "surface_colors": [
+      [
+        77,
+        58,
+        47
+      ],
+      [
+        80,
+        60,
+        49
+      ],
+      [
+        107,
+        77,
+        57
+      ],
+      [
+        111,
+        80,
+        59
+      ],
+      [
+        136,
+        101,
+        70
+      ],
+      [
+        142,
+        105,
+        73
+      ]
+    ],
+    "source_sha256": "4e549a5338e25fa48241bc138f71fe78a862ca10bbbc6634b6665147dab8570a"
+  },
+  "autumn_tree_02": {
+    "source": "F1\\Assets\\Art\\SceneA3\\Gen\\autumn_tree_02_r2.png",
+    "size": [
+      510,
+      4077
+    ],
+    "changed_pixels": 39030,
+    "edited_surface_pixels": 7037,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      109.52167116669035,
+      80.66633508597414,
+      59.730140684950975
+    ],
+    "surface_colors": [
+      [
+        77,
+        58,
+        47
+      ],
+      [
+        80,
+        60,
+        49
+      ],
+      [
+        107,
+        77,
+        57
+      ],
+      [
+        111,
+        80,
+        59
+      ],
+      [
+        136,
+        101,
+        70
+      ],
+      [
+        142,
+        105,
+        73
+      ]
+    ],
+    "source_sha256": "9dd01e669ed6825dd482b65d77731b0789590d0691ce9d8b6e3d25447a2dd8ed"
+  },
+  "autumn_tree_03": {
+    "source": "F1\\Assets\\Art\\SceneA3\\Gen\\autumn_tree_03_r2.png",
+    "size": [
+      611,
+      4891
+    ],
+    "changed_pixels": 44964,
+    "edited_surface_pixels": 8191,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      110.12916615797828,
+      81.25540227078501,
+      60.083384202173114
+    ],
+    "surface_colors": [
+      [
+        77,
+        58,
+        47
+      ],
+      [
+        80,
+        60,
+        49
+      ],
+      [
+        107,
+        77,
+        57
+      ],
+      [
+        111,
+        80,
+        59
+      ],
+      [
+        136,
+        101,
+        70
+      ],
+      [
+        142,
+        105,
+        73
+      ]
+    ],
+    "source_sha256": "afc5928cd673d4c6f6e661351ecfa5c09438910764bc826acd026444a84bc8f5"
+  },
+  "autumn_tree_04": {
+    "source": "F1\\Assets\\Art\\SceneA2\\Gen\\autumn_tree_04_soft.png",
+    "size": [
+      1024,
+      8192
+    ],
+    "changed_pixels": 110629,
+    "edited_surface_pixels": 27674,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      109.51712799017128,
+      80.72096552720966,
+      59.77469827274698
+    ],
+    "surface_colors": [
+      [
+        77,
+        58,
+        47
+      ],
+      [
+        80,
+        60,
+        49
+      ],
+      [
+        107,
+        77,
+        57
+      ],
+      [
+        111,
+        80,
+        59
+      ],
+      [
+        136,
+        101,
+        70
+      ],
+      [
+        142,
+        105,
+        73
+      ]
+    ],
+    "source_sha256": "f2853abbe687df82dcd637579fe093bdd5e4eab88f1ce3a96e783db55f7bf490"
+  },
+  "autumn_tree_05": {
+    "source": "F1\\Assets\\Art\\SceneA3\\Gen\\autumn_tree_05_r2.png",
+    "size": [
+      706,
+      2825
+    ],
+    "changed_pixels": 60600,
+    "edited_surface_pixels": 11894,
+    "leaf_overlap_pixels": 0,
+    "alpha_identical": true,
+    "leaf_only_pixels_identical": true,
+    "edited_rgb_mean": [
+      109.59113838910375,
+      80.78569026399866,
+      59.81133344543467
+    ],
+    "surface_colors": [
+      [
+        77,
+        58,
+        47
+      ],
+      [
+        80,
+        60,
+        49
+      ],
+      [
+        107,
+        77,
+        57
+      ],
+      [
+        111,
+        80,
+        59
+      ],
+      [
+        136,
+        101,
+        70
+      ],
+      [
+        142,
+        105,
+        73
+      ]
+    ],
+    "source_sha256": "38aba350dd10c2939a704d60d9b9604977fe8b1bd0c951c49180052d01ab9c15"
+  },
+  "kart": {
+    "before": {
+      "mean_saturation": 0.7534482838488423,
+      "luma_p10_p90": [
+        36.337,
+        124.3278
+      ],
+      "mean_rgb": [
+        155.33966227680375,
+        64.40463763432173,
+        44.82045729983033
+      ]
+    },
+    "after": {
+      "mean_saturation": 0.8377594939666769,
+      "luma_p10_p90": [
+        31.411800000000003,
+        132.5386
+      ],
+      "mean_rgb": [
+        163.8392502221863,
+        66.05613638199887,
+        30.867269936171933
+      ]
+    },
+    "other_surface_pixels_identical": true,
+    "source_sha256": "01a7ddd83cc1ca1fb1d6dfaf445764c511dca1744cfca9451e7ebd4b8e830655"
+  }
+}

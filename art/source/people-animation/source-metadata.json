@@ -1,0 +1,20 @@
+{
+  "checked_utc": "2026-10-25T16:36:05.605652+00:00",
+  "sources": {
+    "publisher": "https://quaternius.com/packs/universalanimationlibrary.html",
+    "itch": "https://quaternius.itch.io/universal-animation-library",
+    "cc0_deed": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "cc0_legalcode": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+  },
+  "license": "CC0 1.0 Universal; verified included License.txt and publisher listing",
+  "author": "Quaternius; listing credits animation contribution by Gonzalo Furnier",
+  "download": "Public anonymous free Standard download flow; no account, email, payment",
+  "itch_upload_id": 17958403,
+  "filename": "Universal Animation Library[Standard].zip",
+  "bytes": 15904933,
+  "sha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+  "original_archive_preserved": true,
+  "product_revision": "v3.0, 2026-06-16 per publisher itch changelog",
+  "standard_animation_count_observed": 43,
+  "pro_or_source_purchased": false
+}

@@ -1,0 +1,45 @@
+{
+  "name": "Rubberized Track",
+  "categories": [
+    "floor",
+    "man made"
+  ],
+  "type": 1,
+  "tags": [
+    "rubber",
+    "gym",
+    "gym floor",
+    "athletics",
+    "track",
+    "running",
+    "rubberized"
+  ],
+  "authors": {
+    "Charlotte Baglioni": "All"
+  },
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "dimensions": [
+    2000,
+    2000
+  ],
+  "date_published": 1731974400,
+  "staging": null,
+  "files_hash": "be19382801ca1303a220e5b762a9e82fca1cef19",
+  "description": "Free 8K rubber texture of deep red-brown, finely granulated rubberized track surface - matte, slightly rough microtexture with low gloss.",
+  "category_id": "c6dfcaea-a256-5f57-b5ee-403f74ad2b1b",
+  "category": "Plastic & Rubber/Rubber/Athletic Track Surfaces",
+  "attributes": {
+    "surface_use": "floor",
+    "origin": "man_made",
+    "setting": "outdoor",
+    "condition": [
+      "clean"
+    ]
+  },
+  "img_version": "531d3981",
+  "download_count": 20250,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rubberized_track.png?width=256&height=256&format=webp&v=531d3981"
+}

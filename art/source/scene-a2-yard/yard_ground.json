@@ -1,0 +1,26 @@
+{
+ "texels_per_m": 32,
+ "area_m": {
+  "x": [
+   -10,
+   10
+  ],
+  "y": [
+   -9,
+   4.5
+  ]
+ },
+ "size_px": [
+  640,
+  432
+ ],
+ "sources": [
+  "art/source/scene-a-v1b/tex/ground.png",
+  "art/source/scene-a-v1b/tex/dirt.png",
+  "ambientCG Ground081 (CC0)",
+  "ambientCG Rubber004 (CC0)",
+  "ambientCG Gravel022 (CC0)"
+ ],
+ "stain_pct": 1.7,
+ "track_pct": 1.7
+}

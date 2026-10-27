@@ -1,0 +1,89 @@
+{
+ "cell_px": 512,
+ "tile_m": 4.0,
+ "rects": {
+  "wall": [
+   0.0,
+   0.5,
+   0.25,
+   1.0
+  ],
+  "roof": [
+   0.25,
+   0.5,
+   0.5,
+   1.0
+  ],
+  "shutter": [
+   0.5,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "window": [
+   0.75,
+   0.5,
+   1.0,
+   1.0
+  ],
+  "door": [
+   0.0,
+   0.0,
+   0.25,
+   0.5
+  ],
+  "eave": [
+   0.25,
+   0.0,
+   0.5,
+   0.5
+  ],
+  "awning": [
+   0.5,
+   0.0,
+   0.75,
+   0.5
+  ],
+  "pave": [
+   0.75,
+   0.0,
+   1.0,
+   0.5
+  ]
+ },
+ "check": {
+  "wall": {
+   "speck": 0.0,
+   "lumStd": 6.3
+  },
+  "roof": {
+   "speck": 0.0,
+   "lumStd": 7.7
+  },
+  "shutter": {
+   "speck": 0.0,
+   "lumStd": 16.4
+  },
+  "window": {
+   "speck": 0.0,
+   "lumStd": 83.1
+  },
+  "door": {
+   "speck": 0.0,
+   "lumStd": 23.6
+  },
+  "eave": {
+   "speck": 0.0,
+   "lumStd": 11.5
+  },
+  "awning": {
+   "speck": 0.0,
+   "lumStd": 59.0
+  },
+  "pave": {
+   "speck": 0.0,
+   "lumStd": 5.6
+  }
+ },
+ "note": "wall/roof/shutter/door 는 중성색 — 건물별 _Tint 곱하기. 칸마다 이음매 없음."
+}

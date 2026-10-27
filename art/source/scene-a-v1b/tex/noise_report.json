@@ -1,0 +1,155 @@
+{
+ "tin_wall": {
+  "size": [
+   256,
+   192
+  ],
+  "colors": 10,
+  "speck": 0.122,
+  "src": "CorrugatedSteel007A+Rust009",
+  "ok": true,
+  "rust_pct": 19.5,
+  "rust_pct_all": 12.7
+ },
+ "tin_roof": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 9,
+  "speck": 0.0,
+  "src": "CorrugatedSteel005",
+  "ok": true
+ },
+ "planks": {
+  "size": [
+   256,
+   96
+  ],
+  "colors": 10,
+  "speck": 0.017,
+  "src": "WoodSiding008+Rust009",
+  "ok": true,
+  "rust_pct": 14.4
+ },
+ "planks_dark": {
+  "size": [
+   256,
+   96
+  ],
+  "colors": 8,
+  "speck": 0.071,
+  "src": "WoodSiding008+Rust009",
+  "ok": true
+ },
+ "wood": {
+  "size": [
+   128,
+   128
+  ],
+  "colors": 8,
+  "speck": 0.0,
+  "src": "PaintedWood008C",
+  "ok": true
+ },
+ "crate": {
+  "size": [
+   64,
+   64
+  ],
+  "colors": 8,
+  "speck": 0.13,
+  "src": "PaintedWood008C",
+  "ok": true
+ },
+ "floor": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 12,
+  "speck": 0.076,
+  "src": "Concrete042A",
+  "ok": true
+ },
+ "dirt": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 8,
+  "speck": 0.019,
+  "src": "Ground079S",
+  "ok": true
+ },
+ "ground": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 14,
+  "speck": 0.011,
+  "src": "Ground037",
+  "ok": true
+ },
+ "metal": {
+  "size": [
+   128,
+   128
+  ],
+  "colors": 8,
+  "speck": 0.05,
+  "src": "Metal021",
+  "ok": true
+ },
+ "drum_red": {
+  "size": [
+   128,
+   64
+  ],
+  "colors": 10,
+  "speck": 0.269,
+  "src": "PaintedMetal004+Rust009",
+  "ok": true
+ },
+ "drum_blue": {
+  "size": [
+   128,
+   64
+  ],
+  "colors": 10,
+  "speck": 0.205,
+  "src": "PaintedMetal006+Rust009",
+  "ok": true
+ },
+ "drum_top": {
+  "size": [
+   64,
+   64
+  ],
+  "colors": 8,
+  "speck": 0.208,
+  "src": "Metal041B",
+  "ok": true
+ },
+ "tire": {
+  "size": [
+   128,
+   32
+  ],
+  "colors": 9,
+  "speck": 0.106,
+  "src": "Rubber004",
+  "ok": true
+ },
+ "path": {
+  "size": [
+   128,
+   256
+  ],
+  "colors": 10,
+  "speck": 0.184,
+  "src": "Ground081+Gravel022",
+  "ok": true
+ }
+}

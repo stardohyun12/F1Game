@@ -1,0 +1,170 @@
+{
+ "tin_wall": {
+  "size": [
+   256,
+   192
+  ],
+  "colors": 10,
+  "speck": 0.226,
+  "mid": 9.52,
+  "low": 16.15,
+  "src": "CorrugatedSteel007B",
+  "ok": true
+ },
+ "tin_roof": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 9,
+  "speck": 0.0,
+  "mid": 2.06,
+  "low": 3.45,
+  "src": "CorrugatedSteel005",
+  "ok": true
+ },
+ "planks": {
+  "size": [
+   256,
+   96
+  ],
+  "colors": 8,
+  "speck": 0.0,
+  "mid": 1.4,
+  "low": 1.67,
+  "src": "WoodSiding008",
+  "ok": true
+ },
+ "planks_dark": {
+  "size": [
+   256,
+   96
+  ],
+  "colors": 8,
+  "speck": 0.0,
+  "mid": 1.7,
+  "low": 1.97,
+  "src": "WoodSiding008",
+  "ok": true
+ },
+ "wood": {
+  "size": [
+   128,
+   128
+  ],
+  "colors": 8,
+  "speck": 0.0,
+  "mid": 2.72,
+  "low": 2.65,
+  "src": "PaintedWood008C",
+  "ok": true
+ },
+ "crate": {
+  "size": [
+   64,
+   64
+  ],
+  "colors": 8,
+  "speck": 0.13,
+  "mid": 3.92,
+  "low": 3.41,
+  "src": "PaintedWood008C",
+  "ok": true
+ },
+ "floor": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 7,
+  "speck": 0.0,
+  "mid": 2.0,
+  "low": 3.91,
+  "src": "Concrete042A",
+  "ok": true
+ },
+ "dirt": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 8,
+  "speck": 0.019,
+  "mid": 3.46,
+  "low": 2.73,
+  "src": "Ground079S",
+  "ok": true
+ },
+ "ground": {
+  "size": [
+   256,
+   256
+  ],
+  "colors": 14,
+  "speck": 0.011,
+  "mid": 2.83,
+  "low": 3.49,
+  "src": "Ground037",
+  "ok": true
+ },
+ "metal": {
+  "size": [
+   128,
+   128
+  ],
+  "colors": 8,
+  "speck": 0.05,
+  "mid": 2.99,
+  "low": 3.74,
+  "src": "Metal021",
+  "ok": true
+ },
+ "drum_red": {
+  "size": [
+   128,
+   64
+  ],
+  "colors": 10,
+  "speck": 0.218,
+  "mid": 5.54,
+  "low": 8.25,
+  "src": "Metal041B",
+  "ok": true
+ },
+ "drum_blue": {
+  "size": [
+   128,
+   64
+  ],
+  "colors": 10,
+  "speck": 0.205,
+  "mid": 6.13,
+  "low": 9.34,
+  "src": "Metal041B",
+  "ok": true
+ },
+ "drum_top": {
+  "size": [
+   64,
+   64
+  ],
+  "colors": 8,
+  "speck": 0.208,
+  "mid": 5.45,
+  "low": 7.19,
+  "src": "Metal041B",
+  "ok": true
+ },
+ "tire": {
+  "size": [
+   128,
+   32
+  ],
+  "colors": 9,
+  "speck": 0.106,
+  "mid": 5.12,
+  "low": 0.86,
+  "src": "Rubber004",
+  "ok": true
+ }
+}

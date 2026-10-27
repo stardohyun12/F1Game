@@ -1,0 +1,68 @@
+[
+  {
+    "type": "blend",
+    "test": "original",
+    "data_min_z": 0.0,
+    "to_mesh_min_z": 0.0,
+    "Hips_connected": false,
+    "Hips_head": [
+      0.0,
+      0.0,
+      0.5669075846672058
+    ],
+    "Hips_location": [
+      0.0,
+      -0.3601412773132324,
+      0.0
+    ],
+    "Root_head": [
+      0.0,
+      0.0,
+      0.047048892825841904
+    ]
+  },
+  {
+    "type": "fbx",
+    "test": "original",
+    "data_min_z": 0.3601413369178772,
+    "to_mesh_min_z": 0.3601413369178772,
+    "Hips_connected": true,
+    "Hips_head": [
+      0.0,
+      -1.4337020104449039e-07,
+      0.9270488619804382
+    ],
+    "Hips_location": [
+      0.0,
+      -0.3601412773132324,
+      0.0
+    ],
+    "Root_head": [
+      0.0,
+      0.0,
+      0.047048892825841904
+    ]
+  },
+  {
+    "type": "fbx",
+    "test": "disconnect_hips_memory_only",
+    "data_min_z": 3.570750095605035e-08,
+    "to_mesh_min_z": 3.570750095605035e-08,
+    "Hips_connected": false,
+    "Hips_head": [
+      0.0,
+      -8.469574197533802e-08,
+      0.5669075846672058
+    ],
+    "Hips_location": [
+      0.0,
+      -0.3601412773132324,
+      0.0
+    ],
+    "Root_head": [
+      0.0,
+      0.0,
+      0.047048892825841904
+    ]
+  }
+]

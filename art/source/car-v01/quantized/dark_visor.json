@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "tool": "photo_to_pixel.py",
+  "pillow_version": "12.3.0",
+  "source": {
+    "id": "rubberized_track",
+    "path": "D:\\Github\\F1Game\\art\\source\\car-v01\\graded\\dark_visor.png",
+    "sha256": "cefdbfd930e2e8f367daa6533fcedac80ef69e9ac94be757b4bfea93e71fe6b2",
+    "url": "https://polyhaven.com/a/rubberized_track",
+    "license_url": "https://polyhaven.com/license",
+    "license_verification": "caller responsibility; see SOURCES.md",
+    "oriented_size_px": [
+      480,
+      480
+    ],
+    "crop_ltrb_px": [
+      0,
+      0,
+      480,
+      480
+    ]
+  },
+  "palette": {
+    "path": "D:\\Github\\F1Game\\art\\source\\palette\\pitcrew_d123_32.json",
+    "sha256": "00495c7e181c8012e293951df176997f724086104a472e9da4ee1ea90bfbcf82",
+    "colors_rgb": [
+      [
+        196,
+        166,
+        135
+      ],
+      [
+        105,
+        98,
+        99
+      ],
+      [
+        55,
+        53,
+        47
+      ],
+      [
+        136,
+        162,
+        192
+      ],
+      [
+        151,
+        130,
+        106
+      ],
+      [
+        82,
+        83,
+        80
+      ],
+      [
+        35,
+        31,
+        27
+      ],
+      [
+        113,
+        106,
+        101
+      ],
+      [
+        101,
+        94,
+        94
+      ],
+      [
+        72,
+        70,
+        66
+      ],
+      [
+        110,
+        102,
+        100
+      ],
+      [
+        101,
+        96,
+        95
+      ],
+      [
+        96,
+        89,
+        89
+      ],
+      [
+        174,
+        188,
+        202
+      ],
+      [
+        203,
+        212,
+        222
+      ],
+      [
+        121,
+        82,
+        68
+      ],
+      [
+        168,
+        136,
+        104
+      ],
+      [
+        136,
+        121,
+        99
+      ],
+      [
+        103,
+        123,
+        128
+      ],
+      [
+        196,
+        199,
+        201
+      ],
+      [
+        110,
+        99,
+        96
+      ],
+      [
+        112,
+        81,
+        46
+      ],
+      [
+        150,
+        117,
+        72
+      ],
+      [
+        184,
+        147,
+        96
+      ],
+      [
+        123,
+        86,
+        47
+      ],
+      [
+        228,
+        214,
+        191
+      ],
+      [
+        48,
+        54,
+        47
+      ],
+      [
+        62,
+        74,
+        45
+      ],
+      [
+        138,
+        70,
+        49
+      ],
+      [
+        137,
+        112,
+        68
+      ],
+      [
+        146,
+        119,
+        76
+      ],
+      [
+        160,
+        131,
+        85
+      ]
+    ]
+  },
+  "physical_size_m": [
+    1.875,
+    1.875
+  ],
+  "target_density_px_m": 64,
+  "actual_density_px_m": [
+    64.0,
+    64.0
+  ],
+  "density_deviation_fraction": [
+    0.0,
+    0.0
+  ],
+  "patch_size_px": [
+    120,
+    120
+  ],
+  "patch_rect_xywh": [
+    0,
+    0,
+    120,
+    120
+  ],
+  "output_size_px": [
+    120,
+    120
+  ],
+  "output_sha256": "41d272151b657c6283e2a4b9802fb430e6c8582739389f30f9516d2134a16097",
+  "resample": "box",
+  "dither": "none",
+  "quantization": "exact squared RGB distance",
+  "sampling_intent": "Point/Closest; configure in engine/material; PNG cannot enforce filtering"
+}

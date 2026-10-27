@@ -1,0 +1,51 @@
+{
+  "SA6d_autumn_tree_01_soft.mat": {
+    "_R2": "1",
+    "_HasR2": "1",
+    "_Sat": "1",
+    "_Ramp": "1",
+    "_R1Ok": "0"
+  },
+  "SA6d_autumn_tree_02_soft.mat": {
+    "_R2": "1",
+    "_HasR2": "1",
+    "_Sat": "1",
+    "_Ramp": "1",
+    "_R1Ok": "0"
+  },
+  "SA6d_autumn_tree_03_soft.mat": {
+    "_R2": "1",
+    "_HasR2": "1",
+    "_Sat": "1",
+    "_Ramp": "1",
+    "_R1Ok": "0"
+  },
+  "SA6d_autumn_tree_05_soft.mat": {
+    "_R2": "1",
+    "_HasR2": "1",
+    "_Sat": "1",
+    "_Ramp": "1",
+    "_R1Ok": "0"
+  },
+  "SA6d_tires_01.mat": {
+    "_R2": "1",
+    "_HasR2": "0",
+    "_Sat": "1.3",
+    "_Ramp": "1",
+    "_R1Ok": "1"
+  },
+  "SA6d_tires_02.mat": {
+    "_R2": "1",
+    "_HasR2": "0",
+    "_Sat": "1.3",
+    "_Ramp": "1",
+    "_R1Ok": "1"
+  },
+  "SA6d_transformer_01.mat": {
+    "_R2": "1",
+    "_HasR2": "0",
+    "_Sat": "2.6",
+    "_Ramp": "1",
+    "_R1Ok": "1"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "type": 1,
+  "name": "Rectangular Paving",
+  "categories": [
+    "floor",
+    "outdoor",
+    "man made"
+  ],
+  "tags": [
+    "coarse",
+    "driveway texture",
+    "paving",
+    "driveway stones",
+    "stone paving",
+    "multicoloured",
+    "outdoor flooring",
+    "decorative paving",
+    "outdoor walkway",
+    "exterior flooring"
+  ],
+  "authors": {
+    "Dimitrios Savva": "All"
+  },
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "dimensions": [
+    2000,
+    2000
+  ],
+  "staging": null,
+  "date_published": 1747699200,
+  "files_hash": "a144ac237eb760c6de37688d793f6eb83acda849",
+  "description": "Free 8K texture of rectangular stone paving with coarse, worn surfaces, narrow grout lines and multicoloured warm brown-tan tones, subtle dirt and matte finish.",
+  "attributes": {
+    "surface_use": "paving",
+    "condition": [
+      "weathered",
+      "worn"
+    ],
+    "origin": "man_made",
+    "setting": "outdoor"
+  },
+  "category_id": "ed387a11-4ceb-5ff1-ab45-46a821ddbd0e",
+  "category": "Stone/Slabs & Tiles/Flagstones",
+  "img_version": "1c8fd930",
+  "download_count": 8224,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/rectangular_paving.png?width=256&height=256&format=webp&v=1c8fd930"
+}
