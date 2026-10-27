@@ -22,6 +22,8 @@ public class OpeningTutorial : MonoBehaviour
     [SerializeField] int raceFee = 30000;
     [Tooltip("끄면 시네마틱 없이 바로 튜토리얼")]
     [SerializeField] bool playCinematic = true;
+    [Tooltip("짐 주는 사람 말풍선 이름 — BayLoop=MART 주인, TownV6=택배 보관소 직원(D-187)")]
+    [SerializeField] string packerName = "MART 주인";
 
     public const float CinematicLength = 46f;
 
@@ -192,7 +194,8 @@ public class OpeningTutorial : MonoBehaviour
         {
             if (s.m == null) continue;
             s.m.SetColor("_Ambient", s.amb); s.m.SetColor("_FogColor", s.fogC); s.m.SetFloat("_FogStart", s.fs); s.m.SetFloat("_FogEnd", s.fe);
-            if (s.hasTint) s.m.SetColor("_Tint", s.tint);
+            // _Tint 는 BlendMood 가 바꾼 Sea·BoundaryRail 만 되돌린다 — 전부 다시 쓰면 공유 .mat 에 소수점 잡음(0.47→0.4699998)이 남는다
+            if (s.hasTint && (s.m.name == "Sea" || s.m.name == "BoundaryRail")) s.m.SetColor("_Tint", s.tint);
         }
     }
 
@@ -236,7 +239,7 @@ public class OpeningTutorial : MonoBehaviour
             subOn = false;
             Sub(t, 5f, 10.5f, "라디오: …선두, 해안 직선으로 들어섭니다!");
             Sub(t, 17.5f, 22.5f, "정비소: 또 그걸로 배달 가?");
-            Sub(t, 24f, 28.5f, "MART 주인: 첫 주문이야. 계란 한 판, 언덕 위 찻집!");
+            Sub(t, 24f, 28.5f, packerName + ": 첫 주문이야. 계란 한 판, 언덕 위 찻집!");
             if (subtitle.transform.parent.gameObject.activeSelf != subOn) subtitle.transform.parent.gameObject.SetActive(subOn);
             slip.gameObject.SetActive(t >= 28.3f && t < 34f);
             CamPose(t);
@@ -343,7 +346,7 @@ public class OpeningTutorial : MonoBehaviour
         job.destinationLabels = new List<string> { "TeaHouse" }; job.timeLimitSec = 0f; job.baseReward = baseReward; job.timeBonus = 0; job.callerName = "언덕 위 찻집";
         rc.EnterPacking();
         Mark("T1_Packing");
-        ShowTopLine("MART 주인: 계란이야. 빈 데 없이 꼭꼭 싸 줘.", 6f);
+        ShowTopLine(packerName + ": 계란이야. 빈 데 없이 꼭꼭 싸 줘.", 6f);
         Services.Packing.Show(job);
         while (!rc.RunActive) yield return null;
         if (progress != null) progress.gameObject.SetActive(true);

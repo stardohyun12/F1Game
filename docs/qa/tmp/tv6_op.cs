@@ -39,9 +39,10 @@ System.Action<float> Drive = vT =>
     int hi = (!turned && rev > 0) ? rev : n - 1;   // 되돌이 전엔 되돌이 점을 넘어 찾지 않는다(같은 길 되밟기라 인덱스가 튐)
     for (int k = -6; k <= 25; k++) { int ii = Mathf.Min(cur + k, hi); var c = At(ii); float d = (new Vector2(c.x - p.x, c.z - p.z)).sqrMagnitude; if (d < bd) { bd = d; bi = ii; } }
     if (bi > cur) { cur = bi; lastProg = Time.realtimeSinceStartup; }
-    var to = At(Mathf.Min(cur + 7, hi)) - p; to.y = 0; var fw = car.transform.forward; fw.y = 0;
-    float ang = Vector3.SignedAngle(fw, to, Vector3.up);
     float turn = Vector3.Angle(Fw(cur), Fw(Mathf.Min(cur + 25, hi)));
+    int la = turn > 35f ? 4 : 7;   // 0422: 급한 굽이에선 앞 8m 만 본다(14m 를 보면 안쪽 모서리를 깎아 벽·턱에 걸림)
+    var to = At(Mathf.Min(cur + la, hi)) - p; to.y = 0; var fw = car.transform.forward; fw.y = 0;
+    float ang = Vector3.SignedAngle(fw, to, Vector3.up);
     float tv = Mathf.Min(vT, turn > 70f ? 6f : turn > 35f ? 9f : cap), v = rb.linearVelocity.magnitude;
     if (!turned && rev > 0 && cur >= rev - 8) tv = Mathf.Min(tv, 4f);
     mi.SetValue(car, new Vector2(Mathf.Clamp(ang / 25f, -1, 1), Mathf.Clamp((tv - v) / 3f, -1f, 1f)));
