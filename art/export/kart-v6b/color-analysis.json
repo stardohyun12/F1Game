@@ -1,0 +1,497 @@
+{
+  "groups": {
+    "plastic": {
+      "v6_raw": {
+        "pixels": 61885,
+        "mean_rgb": [
+          29.2,
+          70.26,
+          75.86
+        ],
+        "mean_G_minus_R": 41.06,
+        "mean_B_minus_R": 46.66,
+        "cool_pixel_percent": 93.89,
+        "rgb_spread_max": 82
+      },
+      "reconstructed": {
+        "pixels": 61885,
+        "mean_rgb": [
+          29.2,
+          70.26,
+          75.86
+        ],
+        "mean_G_minus_R": 41.06,
+        "mean_B_minus_R": 46.66,
+        "cool_pixel_percent": 93.89,
+        "rgb_spread_max": 82
+      },
+      "neutral_sky": {
+        "pixels": 61885,
+        "mean_rgb": [
+          33.63,
+          68.68,
+          68.53
+        ],
+        "mean_G_minus_R": 35.05,
+        "mean_B_minus_R": 34.9,
+        "cool_pixel_percent": 93.29,
+        "rgb_spread_max": 75
+      },
+      "v6_png": {
+        "pixels": 61885,
+        "mean_rgb": [
+          58.63,
+          94.34,
+          98.61
+        ],
+        "mean_G_minus_R": 35.71,
+        "mean_B_minus_R": 39.98,
+        "cool_pixel_percent": 98.74,
+        "rgb_spread_max": 109
+      },
+      "v6b_png": {
+        "pixels": 61885,
+        "mean_rgb": [
+          156.71,
+          63.98,
+          44.05
+        ],
+        "mean_G_minus_R": -92.73,
+        "mean_B_minus_R": -112.66,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 143
+      }
+    },
+    "tire": {
+      "v6_raw": {
+        "pixels": 47232,
+        "mean_rgb": [
+          37.89,
+          46.89,
+          45.8
+        ],
+        "mean_G_minus_R": 9.0,
+        "mean_B_minus_R": 7.91,
+        "cool_pixel_percent": 73.13,
+        "rgb_spread_max": 27
+      },
+      "reconstructed": {
+        "pixels": 47232,
+        "mean_rgb": [
+          37.89,
+          46.89,
+          45.8
+        ],
+        "mean_G_minus_R": 9.0,
+        "mean_B_minus_R": 7.91,
+        "cool_pixel_percent": 73.13,
+        "rgb_spread_max": 27
+      },
+      "neutral_sky": {
+        "pixels": 47232,
+        "mean_rgb": [
+          42.73,
+          45.87,
+          41.36
+        ],
+        "mean_G_minus_R": 3.14,
+        "mean_B_minus_R": -1.37,
+        "cool_pixel_percent": 29.41,
+        "rgb_spread_max": 16
+      },
+      "v6_png": {
+        "pixels": 47232,
+        "mean_rgb": [
+          59.72,
+          75.75,
+          69.87
+        ],
+        "mean_G_minus_R": 16.02,
+        "mean_B_minus_R": 10.15,
+        "cool_pixel_percent": 92.9,
+        "rgb_spread_max": 61
+      },
+      "v6b_png": {
+        "pixels": 47232,
+        "mean_rgb": [
+          25.97,
+          25.97,
+          25.97
+        ],
+        "mean_G_minus_R": 0.0,
+        "mean_B_minus_R": 0.0,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 0
+      }
+    },
+    "metal": {
+      "v6_raw": {
+        "pixels": 126608,
+        "mean_rgb": [
+          27.54,
+          34.56,
+          32.35
+        ],
+        "mean_G_minus_R": 7.02,
+        "mean_B_minus_R": 4.81,
+        "cool_pixel_percent": 63.71,
+        "rgb_spread_max": 47
+      },
+      "reconstructed": {
+        "pixels": 126608,
+        "mean_rgb": [
+          27.54,
+          34.56,
+          32.35
+        ],
+        "mean_G_minus_R": 7.02,
+        "mean_B_minus_R": 4.81,
+        "cool_pixel_percent": 63.71,
+        "rgb_spread_max": 47
+      },
+      "neutral_sky": {
+        "pixels": 126608,
+        "mean_rgb": [
+          31.21,
+          33.78,
+          29.04
+        ],
+        "mean_G_minus_R": 2.57,
+        "mean_B_minus_R": -2.17,
+        "cool_pixel_percent": 31.87,
+        "rgb_spread_max": 61
+      },
+      "v6_png": {
+        "pixels": 126608,
+        "mean_rgb": [
+          47.48,
+          61.11,
+          58.64
+        ],
+        "mean_G_minus_R": 13.63,
+        "mean_B_minus_R": 11.16,
+        "cool_pixel_percent": 89.57,
+        "rgb_spread_max": 68
+      },
+      "v6b_png": {
+        "pixels": 126608,
+        "mean_rgb": [
+          58.81,
+          58.81,
+          58.81
+        ],
+        "mean_G_minus_R": 0.0,
+        "mean_B_minus_R": 0.0,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 0
+      }
+    },
+    "seat": {
+      "v6_raw": {
+        "pixels": 22965,
+        "mean_rgb": [
+          40.87,
+          54.56,
+          52.62
+        ],
+        "mean_G_minus_R": 13.7,
+        "mean_B_minus_R": 11.75,
+        "cool_pixel_percent": 90.11,
+        "rgb_spread_max": 29
+      },
+      "reconstructed": {
+        "pixels": 22965,
+        "mean_rgb": [
+          40.87,
+          54.57,
+          52.62
+        ],
+        "mean_G_minus_R": 13.7,
+        "mean_B_minus_R": 11.75,
+        "cool_pixel_percent": 90.11,
+        "rgb_spread_max": 29
+      },
+      "neutral_sky": {
+        "pixels": 22965,
+        "mean_rgb": [
+          47.17,
+          53.21,
+          47.0
+        ],
+        "mean_G_minus_R": 6.04,
+        "mean_B_minus_R": -0.17,
+        "cool_pixel_percent": 74.52,
+        "rgb_spread_max": 29
+      },
+      "v6_png": {
+        "pixels": 22965,
+        "mean_rgb": [
+          63.18,
+          79.46,
+          73.82
+        ],
+        "mean_G_minus_R": 16.28,
+        "mean_B_minus_R": 10.64,
+        "cool_pixel_percent": 95.16,
+        "rgb_spread_max": 61
+      },
+      "v6b_png": {
+        "pixels": 22965,
+        "mean_rgb": [
+          63.45,
+          55.24,
+          49.66
+        ],
+        "mean_G_minus_R": -8.2,
+        "mean_B_minus_R": -13.78,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 17
+      }
+    },
+    "warm": {
+      "v6_raw": {
+        "pixels": 10528,
+        "mean_rgb": [
+          41.61,
+          32.27,
+          18.73
+        ],
+        "mean_G_minus_R": -9.34,
+        "mean_B_minus_R": -22.88,
+        "cool_pixel_percent": 0.15,
+        "rgb_spread_max": 93
+      },
+      "reconstructed": {
+        "pixels": 10528,
+        "mean_rgb": [
+          41.61,
+          32.27,
+          18.73
+        ],
+        "mean_G_minus_R": -9.34,
+        "mean_B_minus_R": -22.88,
+        "cool_pixel_percent": 0.15,
+        "rgb_spread_max": 93
+      },
+      "neutral_sky": {
+        "pixels": 10528,
+        "mean_rgb": [
+          46.69,
+          31.54,
+          16.59
+        ],
+        "mean_G_minus_R": -15.15,
+        "mean_B_minus_R": -30.1,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 106
+      },
+      "v6_png": {
+        "pixels": 10528,
+        "mean_rgb": [
+          60.3,
+          59.88,
+          50.08
+        ],
+        "mean_G_minus_R": -0.42,
+        "mean_B_minus_R": -10.22,
+        "cool_pixel_percent": 40.35,
+        "rgb_spread_max": 95
+      },
+      "v6b_png": {
+        "pixels": 10528,
+        "mean_rgb": [
+          110.5,
+          84.41,
+          59.35
+        ],
+        "mean_G_minus_R": -26.1,
+        "mean_B_minus_R": -51.15,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 65
+      }
+    },
+    "plate": {
+      "v6_raw": {
+        "pixels": 2103,
+        "mean_rgb": [
+          86.89,
+          99.4,
+          87.14
+        ],
+        "mean_G_minus_R": 12.51,
+        "mean_B_minus_R": 0.25,
+        "cool_pixel_percent": 71.85,
+        "rgb_spread_max": 43
+      },
+      "reconstructed": {
+        "pixels": 2103,
+        "mean_rgb": [
+          86.89,
+          99.4,
+          87.14
+        ],
+        "mean_G_minus_R": 12.51,
+        "mean_B_minus_R": 0.25,
+        "cool_pixel_percent": 71.85,
+        "rgb_spread_max": 43
+      },
+      "neutral_sky": {
+        "pixels": 2103,
+        "mean_rgb": [
+          99.38,
+          97.08,
+          78.26
+        ],
+        "mean_G_minus_R": -2.31,
+        "mean_B_minus_R": -21.13,
+        "cool_pixel_percent": 16.74,
+        "rgb_spread_max": 63
+      },
+      "v6_png": {
+        "pixels": 2103,
+        "mean_rgb": [
+          154.79,
+          162.09,
+          143.17
+        ],
+        "mean_G_minus_R": 7.3,
+        "mean_B_minus_R": -11.62,
+        "cool_pixel_percent": 33.62,
+        "rgb_spread_max": 68
+      },
+      "v6b_png": {
+        "pixels": 2103,
+        "mean_rgb": [
+          161.27,
+          161.27,
+          161.27
+        ],
+        "mean_G_minus_R": 0.0,
+        "mean_B_minus_R": 0.0,
+        "cool_pixel_percent": 0.0,
+        "rgb_spread_max": 0
+      }
+    }
+  },
+  "neutral_gray_quantization_probes": [
+    {
+      "input": [
+        24,
+        24,
+        24
+      ],
+      "nearest": [
+        30,
+        36,
+        38
+      ],
+      "G_minus_R": 6
+    },
+    {
+      "input": [
+        32,
+        32,
+        32
+      ],
+      "nearest": [
+        30,
+        36,
+        38
+      ],
+      "G_minus_R": 6
+    },
+    {
+      "input": [
+        48,
+        48,
+        48
+      ],
+      "nearest": [
+        50,
+        49,
+        43
+      ],
+      "G_minus_R": -1
+    },
+    {
+      "input": [
+        64,
+        64,
+        64
+      ],
+      "nearest": [
+        52,
+        70,
+        68
+      ],
+      "G_minus_R": 18
+    },
+    {
+      "input": [
+        80,
+        80,
+        80
+      ],
+      "nearest": [
+        74,
+        77,
+        62
+      ],
+      "G_minus_R": 3
+    },
+    {
+      "input": [
+        96,
+        96,
+        96
+      ],
+      "nearest": [
+        99,
+        112,
+        99
+      ],
+      "G_minus_R": 13
+    },
+    {
+      "input": [
+        128,
+        128,
+        128
+      ],
+      "nearest": [
+        112,
+        135,
+        110
+      ],
+      "G_minus_R": 23
+    }
+  ],
+  "reconstruction_raw_MAE": 0.00031451061043315237,
+  "neutral_sky_RGB": [
+    0.482614,
+    0.482614,
+    0.482614
+  ],
+  "original_sky_RGB": [
+    0.3,
+    0.52,
+    0.65
+  ],
+  "lighting_note": "neutral sky keeps Rec709 luminance; source textures, sun, samples and geometry unchanged",
+  "new_palette_size": 79,
+  "new_used_colors": 47,
+  "noise_scalar": [
+    0.96,
+    1,
+    1.04
+  ],
+  "shade_levels": [
+    0.7,
+    0.9,
+    1.1
+  ],
+  "source_hashes": {
+    "art\\export\\kart-v6\\kart_v6.fbx": "ff0f7b1c3ba1b6b4c85350ae146378db944b828ec8ecb5829df1105f1ddc3433",
+    "art\\export\\kart-v6\\kart_v6_baked32.png": "06544be9fe54ee6a854829e31e10a2d568cdd44368c5ee2041448d6684228aaf"
+  }
+}
