@@ -1,0 +1,65 @@
+[
+  {
+    "name": "vending_G1",
+    "geometry_unchanged_before_export": true,
+    "tris": 92,
+    "dimensions": [
+      1.180999994277954,
+      0.7310004830360413,
+      1.8300001187857404
+    ],
+    "uv_changed": true,
+    "uv_layers": 1,
+    "front_pixels": [
+      76,
+      114
+    ],
+    "front_texels_per_m": [
+      64.35224386113462,
+      64.04494382022472
+    ],
+    "bake_passes": 0
+  },
+  {
+    "name": "vending_G2",
+    "geometry_unchanged_before_export": true,
+    "tris": 92,
+    "dimensions": [
+      1.180999994277954,
+      0.7310004830360413,
+      1.8300001187857404
+    ],
+    "uv_changed": true,
+    "uv_layers": 1,
+    "front_pixels": [
+      76,
+      114
+    ],
+    "front_texels_per_m": [
+      64.35224386113462,
+      64.04494382022472
+    ],
+    "bake_passes": 0
+  },
+  {
+    "name": "ac_G3",
+    "geometry_unchanged_before_export": true,
+    "tris": 92,
+    "dimensions": [
+      0.800000011920929,
+      0.28500013053417206,
+      0.5500001071303764
+    ],
+    "uv_changed": true,
+    "uv_layers": 1,
+    "front_pixels": [
+      52,
+      32
+    ],
+    "front_texels_per_m": [
+      65.0,
+      64.0
+    ],
+    "bake_passes": 0
+  }
+]

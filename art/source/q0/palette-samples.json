@@ -1,0 +1,137 @@
+{
+  "cream": {
+    "file": "vending_G1.png",
+    "box": [
+      12,
+      280,
+      55,
+      310
+    ],
+    "RGB": [
+      203,
+      201,
+      189
+    ],
+    "neutral": false
+  },
+  "orange": {
+    "file": "vending_G2.png",
+    "box": [
+      12,
+      300,
+      35,
+      380
+    ],
+    "RGB": [
+      192,
+      132,
+      35
+    ],
+    "neutral": false
+  },
+  "blue": {
+    "file": "vending_G1.png",
+    "box": [
+      90,
+      240,
+      130,
+      280
+    ],
+    "RGB": [
+      52,
+      165,
+      206
+    ],
+    "neutral": false
+  },
+  "red": {
+    "file": "vending_G1.png",
+    "box": [
+      228,
+      247,
+      243,
+      267
+    ],
+    "RGB": [
+      135,
+      62,
+      63
+    ],
+    "neutral": false
+  },
+  "green": {
+    "file": "vending_G1.png",
+    "box": [
+      235,
+      45,
+      245,
+      65
+    ],
+    "RGB": [
+      200,
+      210,
+      210
+    ],
+    "neutral": false
+  },
+  "label": {
+    "file": "ac_G3.png",
+    "box": [
+      165,
+      38,
+      192,
+      43
+    ],
+    "RGB": [
+      158,
+      158,
+      158
+    ],
+    "neutral": true
+  },
+  "charcoal": {
+    "file": "ac_G3.png",
+    "box": [
+      45,
+      20,
+      58,
+      35
+    ],
+    "RGB": [
+      35,
+      35,
+      35
+    ],
+    "neutral": true
+  },
+  "metal": {
+    "file": "ac_G3.png",
+    "box": [
+      155,
+      95,
+      195,
+      108
+    ],
+    "RGB": [
+      158,
+      158,
+      158
+    ],
+    "neutral": true
+  },
+  "F3 blue": {
+    "file": "tin_F3.png",
+    "box": [
+      14,
+      12,
+      230,
+      180
+    ],
+    "RGB": [
+      82,
+      140,
+      187
+    ],
+    "neutral": false
+  }
+}

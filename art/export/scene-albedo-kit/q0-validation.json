@@ -1,0 +1,157 @@
+{
+  "stage": "r2",
+  "textures": [
+    {
+      "file": "vending_G1.png",
+      "size": [
+        256,
+        256
+      ],
+      "colors": 10,
+      "sha256": "713706c054b97f36bea1947f32f4ab3c5c6e1c0d805881ab384139fe3f8bf8ee",
+      "albedo": true,
+      "baked_light": false,
+      "uv_changed": true
+    },
+    {
+      "file": "vending_G2.png",
+      "size": [
+        256,
+        256
+      ],
+      "colors": 11,
+      "sha256": "f83d923d71ed4c7255657ffe91ad7ad7d5769c27d33faa8f461213acb432e0cf",
+      "albedo": true,
+      "baked_light": false,
+      "uv_changed": true
+    },
+    {
+      "file": "ac_G3.png",
+      "size": [
+        256,
+        256
+      ],
+      "colors": 8,
+      "sha256": "5e55659ea7c3f12e13b813cc845d19db6ffdbab954bdb7c9d8514afd7a9a4368",
+      "albedo": true,
+      "baked_light": false,
+      "uv_changed": true
+    },
+    {
+      "file": "tin_F3.png",
+      "size": [
+        32,
+        64
+      ],
+      "colors": 5,
+      "sha256": "96c7cf9d1e5824fa9e2e83231df5706a6d48ece3d87cefcb66c46deab4370403",
+      "albedo": true,
+      "baked_light": false,
+      "uv_changed": false
+    },
+    {
+      "file": "garage_tin_F3_atlas.png",
+      "size": [
+        4096,
+        1024
+      ],
+      "colors": 69,
+      "sha256": "7440733ff7f80474f2e84a6e00815498c277241751c0c9c2a4e096e35a55fba8",
+      "albedo": true,
+      "baked_light": false,
+      "uv_changed": false
+    }
+  ],
+  "postbox_png_identical": true,
+  "f3_blue": true,
+  "f3_tile_edges_identical": true,
+  "geometry": [
+    {
+      "name": "vending_G1",
+      "geometry_unchanged_before_export": true,
+      "tris": 92,
+      "dimensions": [
+        1.180999994277954,
+        0.7310004830360413,
+        1.8300001187857404
+      ],
+      "uv_changed": true,
+      "uv_layers": 1,
+      "front_pixels": [
+        76,
+        114
+      ],
+      "front_texels_per_m": [
+        64.35224386113462,
+        64.04494382022472
+      ],
+      "bake_passes": 0
+    },
+    {
+      "name": "vending_G2",
+      "geometry_unchanged_before_export": true,
+      "tris": 92,
+      "dimensions": [
+        1.180999994277954,
+        0.7310004830360413,
+        1.8300001187857404
+      ],
+      "uv_changed": true,
+      "uv_layers": 1,
+      "front_pixels": [
+        76,
+        114
+      ],
+      "front_texels_per_m": [
+        64.35224386113462,
+        64.04494382022472
+      ],
+      "bake_passes": 0
+    },
+    {
+      "name": "ac_G3",
+      "geometry_unchanged_before_export": true,
+      "tris": 92,
+      "dimensions": [
+        0.800000011920929,
+        0.28500013053417206,
+        0.5500001071303764
+      ],
+      "uv_changed": true,
+      "uv_layers": 1,
+      "front_pixels": [
+        52,
+        32
+      ],
+      "front_texels_per_m": [
+        65.0,
+        64.0
+      ],
+      "bake_passes": 0
+    }
+  ],
+  "lighting": {
+    "sun_count": 1,
+    "sun_energy": 1.6,
+    "sun_color": [
+      1,
+      0.92,
+      0.79
+    ],
+    "sky_color": [
+      0.55,
+      0.65,
+      0.75
+    ],
+    "sky_strength": 0.55,
+    "game_distance_m": 8,
+    "game_vertical_fov": 64,
+    "game_render": [
+      1600,
+      900
+    ],
+    "downsample": "Nearest to 1280x720",
+    "texture_bake": false,
+    "approximation": "Scene_A7_Light intention only, not Unity shader reproduction"
+  }
+}

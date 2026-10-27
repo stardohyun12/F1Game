@@ -1,0 +1,24 @@
+{
+  "sun_count": 1,
+  "sun_energy": 1.6,
+  "sun_color": [
+    1,
+    0.92,
+    0.79
+  ],
+  "sky_color": [
+    0.55,
+    0.65,
+    0.75
+  ],
+  "sky_strength": 0.55,
+  "game_distance_m": 8,
+  "game_vertical_fov": 64,
+  "game_render": [
+    1600,
+    900
+  ],
+  "downsample": "Nearest to 1280x720",
+  "texture_bake": false,
+  "approximation": "Scene_A7_Light intention only, not Unity shader reproduction"
+}

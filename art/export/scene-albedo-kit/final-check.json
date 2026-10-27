@@ -9,5 +9,13 @@
   "kart_tire_metal_neutral": true,
   "kit_tires_neutral": true,
   "tree_limitation": "Painted clump vs historical baked lighting cannot be separated exactly after R2 quantization; conservative +/-4% correction retained",
-  "unity_executed": false
+  "unity_executed": false,
+  "superseded_targets_by_q0": [
+    "vending_G1",
+    "vending_G2",
+    "ac_G3",
+    "tin_F3",
+    "garage_tin_F3_atlas"
+  ],
+  "current_q0_validation": "q0-validation.json"
 }
