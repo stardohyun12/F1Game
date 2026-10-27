@@ -6,7 +6,8 @@ import bpy, math, os
 from mathutils import Vector
 
 R = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')); J = lambda *p: os.path.join(R, *p)
-EXP = J('art', 'export', 'scene-a4-houses'); REV = J('art', '_review', '2026-10-27-houses'); os.makedirs(REV, exist_ok=True)
+import sys; ARG = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []  # -- <export 폴더> <review 폴더>
+EXP = J('art', 'export', ARG[0] if ARG else 'scene-a4-houses'); REV = J('art', '_review', *(ARG[1] if len(ARG) > 1 else '2026-10-27-houses').split('/')); os.makedirs(REV, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene; sc.render.engine = 'BLENDER_EEVEE' if 'BLENDER_EEVEE' in [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items] else 'BLENDER_EEVEE_NEXT'
 sc.view_settings.view_transform = 'Standard'; sc.render.filter_size = .5

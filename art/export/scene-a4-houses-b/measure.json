@@ -1,0 +1,166 @@
+{
+ "luma": "0.299R+0.587G+0.114B (32색 뒤)",
+ "speckle": "네 이웃과 모두 다른 픽셀 %",
+ "files": {
+  "house_narrow_a": {
+   "L_all": 171.6,
+   "L_visible": 161.9,
+   "L_wall": 178.0,
+   "by_role": {
+    "hidden": 180.5,
+    "wall": 178.0,
+    "roof": 137.6,
+    "glass": 98.3,
+    "frame": 193.1,
+    "door": 119.6,
+    "shutter": 104.4,
+    "rail": 83.0,
+    "slab": 193.7,
+    "ac": 165.3,
+    "prop": 102.2,
+    "soffit": 129.4
+   },
+   "p5_visible": 91.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 74.4,
+   "speckle_1px_pct": 0.0,
+   "colors": 30,
+   "size": [
+    1024,
+    2048
+   ]
+  },
+  "house_narrow_b": {
+   "L_all": 179.3,
+   "L_visible": 176.3,
+   "L_wall": 191.6,
+   "by_role": {
+    "hidden": 189.0,
+    "wall": 191.6,
+    "glass": 97.0,
+    "frame": 189.8,
+    "door": 124.2,
+    "shutter": 101.4,
+    "slab": 204.8,
+    "ac": 165.3,
+    "prop": 103.0,
+    "flat": 180.3
+   },
+   "p5_visible": 91.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 74.4,
+   "speckle_1px_pct": 0.0,
+   "colors": 27,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_shop": {
+   "L_all": 158.3,
+   "L_visible": 151.8,
+   "L_wall": 170.8,
+   "by_role": {
+    "hidden": 180.2,
+    "wall": 170.8,
+    "roof": 124.8,
+    "glass": 100.4,
+    "frame": 183.0,
+    "door": 115.0,
+    "shutter": 105.0,
+    "rail": 84.5,
+    "awning": 172.6,
+    "sign": 134.1,
+    "ac": 165.3,
+    "prop": 103.2,
+    "soffit": 128.9
+   },
+   "p5_visible": 74.4,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 74.4,
+   "speckle_1px_pct": 0.0,
+   "colors": 29,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_slope": {
+   "L_all": 162.9,
+   "L_visible": 159.0,
+   "L_wall": 178.5,
+   "by_role": {
+    "hidden": 180.0,
+    "wall": 178.5,
+    "roof": 139.0,
+    "glass": 97.4,
+    "frame": 194.9,
+    "door": 86.0,
+    "shutter": 103.0,
+    "rail": 83.0,
+    "slab": 204.6,
+    "stone": 144.6,
+    "prop": 102.2,
+    "soffit": 129.1
+   },
+   "p5_visible": 74.4,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 74.4,
+   "speckle_1px_pct": 0.001,
+   "colors": 29,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_warehouse": {
+   "L_all": 174.3,
+   "L_visible": 166.2,
+   "L_wall": 183.8,
+   "by_role": {
+    "hidden": 189.4,
+    "wall": 183.8,
+    "roof": 124.2,
+    "glass": 91.8,
+    "frame": 188.3,
+    "door": 124.2,
+    "soffit": 129.4
+   },
+   "p5_visible": 124.2,
+   "under40_visible_pct": 0.0,
+   "prop_p5": null,
+   "speckle_1px_pct": 0.0,
+   "colors": 23,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_cafe": {
+   "L_all": 168.4,
+   "L_visible": 160.0,
+   "L_wall": 179.6,
+   "by_role": {
+    "hidden": 189.2,
+    "wall": 179.6,
+    "roof": 138.1,
+    "glass": 98.2,
+    "frame": 181.6,
+    "door": 119.8,
+    "awning": 186.0,
+    "ac": 165.3,
+    "prop": 103.0,
+    "soffit": 128.9
+   },
+   "p5_visible": 91.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 74.4,
+   "speckle_1px_pct": 0.0,
+   "colors": 28,
+   "size": [
+    1024,
+    512
+   ]
+  }
+ }
+}

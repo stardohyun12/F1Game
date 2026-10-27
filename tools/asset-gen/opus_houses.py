@@ -15,11 +15,15 @@ import numpy as np
 from mathutils import Matrix, Vector
 
 R = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')); J = lambda *p: os.path.join(R, *p)
-OUT = J('art', 'export', 'scene-a4-houses'); WORK = J('art', 'models', 'opus_houses')
+import sys
+VARIANT = (sys.argv[sys.argv.index('--') + 1:] or [None])[0] if '--' in sys.argv else None
+VARIANT = VARIANT or os.environ.get('HOUSES_VARIANT', 'b')  # 실행: ... -P opus_houses.py -- c  # 'a' = 과제 1232 원본, 'b' = 과제 1248(따뜻한 벽·밝은 화분·유리)
+SUF = {'a': '', 'b': '-b', 'c': '-c'}[VARIANT]  # 'c' = 과제 1302(D-173): 깔끔한 칠 벽 + 9텍셀/m 손도트, 형태는 b 와 같음
+OUT = J('art', 'export', 'scene-a4-houses' + SUF); WORK = J('art', 'models', 'opus_houses' + SUF.replace('-', '_'))
 os.makedirs(OUT, exist_ok=True); os.makedirs(WORK, exist_ok=True)
 TP = J('art', 'thirdparty'); MOD = os.path.join(TP, 'elegantcrow-modular-house-pack', 'retro_modular_house', 'retro_modular_house', 'models')
 PH = J('art', 'source', 'hillhouse-surfaces', 'photos')
-DENS = 32; AW = 1024; GAP = 2
+DENS, AW, GAP = (9, 256, 2) if VARIANT == 'c' else (32, 1024, 2)
 SUN = np.array((-.45, -.75, .55)); SUN /= np.linalg.norm(SUN)
 TEAL = np.array((150, 190, 192)) / 255
 ROLES = ['hidden', 'wall', 'roof', 'glass', 'frame', 'door', 'shutter', 'rail', 'slab', 'awning', 'sign', 'stone', 'ac', 'prop', 'flat', 'soffit']
@@ -68,6 +72,14 @@ HOUSES = [
          awning=((204, 136, 100), (231, 220, 195)), ac='left', pots=3, place='바다 보이는 길 모퉁이 — 차양이 길 쪽'),
 ]
 
+if VARIANT in ('b', 'c'):  # 1248: ① A Short Hike 처럼 살구·크림 쪽으로 (회녹 벽 없앰)
+    WARM = dict(house_narrow_a=(242, 204, 158), house_narrow_b=(244, 226, 198), house_shop=(238, 196, 150),
+                house_slope=(242, 196, 166), house_warehouse=(238, 222, 194), house_cafe=(246, 214, 184))
+    if VARIANT == 'c':  # 1302: 집마다 깨끗한 칠 한 색 — 연황토·크림·살구·연청록·흰색·살구크림
+        WARM = dict(house_narrow_a=(238, 204, 146), house_narrow_b=(246, 232, 204), house_shop=(242, 192, 152),
+                    house_slope=(172, 210, 200), house_warehouse=(242, 240, 230), house_cafe=(248, 216, 180))
+    for h_ in HOUSES: h_['wall'] = WARM[h_['name']]
+
 
 # ---------- 조각 불러오기(한 번만, 로컬 미터로 굳힘) ----------
 LIB = {}
@@ -85,7 +97,11 @@ def mat_color(m):
     if not m or not m.use_nodes: return (.6, .6, .6)
     for n in m.node_tree.nodes:
         if n.type == 'TEX_IMAGE' and n.image and n.image.size[0]:
-            px = np.array(n.image.pixels[:]).reshape(-1, 4)[:, :3]; return tuple(px.mean(0))
+            px = np.array(n.image.pixels[:]).reshape(-1, 4)
+            if VARIANT in ('b', 'c'):  # 1248: 투명 칸(RGB 0)까지 평균 내서 화분이 L 48 로 검게 나왔다 → 불투명 픽셀만, 최소 밝기 .45
+                px = px[px[:, 3] > .5] if (px[:, 3] > .5).sum() > 16 else px; c = px[:, :3].mean(0); l = c @ (.299, .587, .114)
+                return tuple(np.clip(c * max(1, .45 / max(l, 1e-3)), 0, 1))
+            return tuple(px[:, :3].mean(0))
     for n in m.node_tree.nodes:
         if n.type == 'BSDF_PRINCIPLED': return tuple(np.clip(n.inputs['Base Color'].default_value[:3], 0, 1) ** (1 / 2.2))  # 선형 → sRGB
     return (.6, .6, .6)
@@ -315,14 +331,16 @@ def pack_paint(o, h, g, seed):
             blot = (vnoise(P[..., 0] / 3 + P[..., 1] / 3, z / 3, seed) - .5) * .08
             streak = (vnoise(u * 2.2, 0 * u, seed + 3) > .62) * np.clip(1 - (g['Hw'] - z) / 2.8, 0, 1) * .05
             grime = np.where(z - g['zb'] < .8, .10 * (1 - np.clip((z - g['zb']) / .8, 0, 1)), 0)
-            col = base * (1 + det + blot - streak - grime)[..., None]
+            k_ = (1 + det + blot - streak - grime)[..., None]; col = base * k_
+            if VARIANT == 'b': col = col * (1 - np.clip(1 - k_, 0, 1) * np.array((0, .25, .7)))  # 1248: 어두운 얼룩은 회녹 대신 회갈·황토 쪽
         elif role == 'roof':
             col = srgb(h['roof_c']) * (1 + sample('roof', u, v) * .09 + (vnoise(u / 2.5, v / 2.5, seed + 7) - .5) * .08)[..., None]
         elif role == 'flat': col = srgb(h['roof_c']) * (1 + sample('wall', u, v) * .04)[..., None]
         elif role == 'soffit': col = srgb(h['wall']) * .78 * one[..., None]
         elif role == 'glass':
             zz = (v - r['lo'][1]) / max(r['hi'][1] - r['lo'][1], 1e-6)
-            col = np.where((zz < .3)[..., None], srgb((74, 114, 118)), srgb((54, 84, 90))) * one[..., None]
+            g1, g2 = ((92, 132, 134), (70, 104, 108)) if VARIANT == 'b' else ((74, 114, 118), (54, 84, 90))
+            col = np.where((zz < .3)[..., None], srgb(g1), srgb(g2)) * one[..., None]
             diag = ((u - r['lo'][0]) - (v - r['lo'][1]) * .6) % 1.4 < .18; col[diag] = srgb((95, 128, 126))
         elif role == 'door': col = srgb(h['door']) * (1 + sample('wood', u, v) * .07)[..., None]
         elif role == 'shutter': col = srgb(h['shutter']) * (1 + sample('wood', u, v) * .07)[..., None]
@@ -362,6 +380,104 @@ def pack_paint(o, h, g, seed):
             uvl.data[li].uv = ((r['x'] + .5 + (qq[0] - r['lo'][0]) / max(r['hi'][0] - r['lo'][0], 1e-8) * (w - 1)) / AW,
                                (r['y'] + .5 + (qq[1] - r['lo'][1]) / max(r['hi'][1] - r['lo'][1], 1e-8) * (hh - 1)) / AH)
     return img, cls, len(rects)
+
+
+# ---------- c판(1302): 깔끔한 칠 + 손도트 ----------
+def pack_paint_c(o, h, g, seed):
+    """면마다 9텍셀/m 칸. 사진·얼룩·AO 없음 — 역할별 단색 + 면 단위 빛 3단(해/옆/그늘) + 처마 밑·바닥 0.6m 한 단 어둡게.
+    디테일은 텍셀 단위로 그림: 창·문 1텍셀 짙은 테두리, 유리 반사 2텍셀, 덧창 살, 기와 2텍셀 줄, 처마 끝 밝은 선, 건물 모서리·바닥 짙은 선, 간판 도트 기호, 돌 줄눈.
+    한 변이 3텍셀 미만인 작은 면(창틀 두께·화분·난간 등)은 같은 색끼리 1텍셀 칸 하나를 같이 쓴다."""
+    me = o.data; V = np.array([v.co for v in me.vertices]); roles = np.zeros(len(me.polygons), np.int32); me.attributes['role'].data.foreach_get('value', roles)
+    pc = np.zeros(len(me.polygons) * 4, np.float32); me.attributes['pcol'].data.foreach_get('color', pc); pc = pc.reshape(-1, 4)[:, :3]
+    wv = np.array([V[list(f.vertices)].mean(0) for f in me.polygons if roles[f.index] == RID['wall']]); wall_v = np.concatenate([V[list(f.vertices)] for f in me.polygons if roles[f.index] == RID['wall']])
+    bx0, by0 = wall_v[:, :2].min(0); bx1, by1 = wall_v[:, :2].max(0); tx = .5 / DENS + 1e-4
+    W_ = srgb(h['wall']); DARK = lambda c: c * .52 + srgb((70, 52, 44)) * .18  # 짙은 선: 같은 색을 따뜻한 갈색 쪽으로 어둡게
+    BASE = dict(wall=W_, frame=srgb((244, 240, 230)), roof=srgb(h['roof_c']), flat=srgb(h['roof_c']), soffit=W_ * .80, glass=srgb((58, 98, 104)),
+                door=srgb(h['door']), shutter=srgb(h['shutter']), rail=srgb((81, 98, 88)), slab=srgb((214, 210, 192)), stone=srgb((190, 184, 160)),
+                ac=srgb((222, 216, 196)), hidden=W_ * .7)
+
+    def light(n, col):
+        d = float(n @ SUN); f, tint = (1.0, 0) if d > .45 else (.86, .06) if d > .10 else (.74, .12)
+        return col * f * (1 - tint) + TEAL * f * tint
+    rects = []; swatch = {}
+    for f in me.polygons:
+        ps = V[list(f.vertices)]; n = np.array(f.normal); role = ROLES[roles[f.index]]
+        if abs(n[2]) < .999: U = np.cross((0, 0, 1.), n); U /= np.linalg.norm(U)
+        else: U = np.array((1., 0, 0))
+        Vv = np.cross(n, U); Vv /= max(np.linalg.norm(Vv), 1e-9)
+        q = np.stack([ps @ U, ps @ Vv], 1); lo_, hi_ = q.min(0), q.max(0)
+        w, hgt = (max(1, math.ceil((hi_[k] - lo_[k]) * DENS)) for k in (0, 1))
+        r = dict(i=f.index, n=n, U=U, V=Vv, q=q, lo=lo_, hi=hi_, w=w, h=hgt, role=role, pc=pc[f.index], c=ps.mean(0))
+        if role == 'hidden' or w < 3 or hgt < 3 or role in ('prop', 'rail'):  # 작은 면 → 같은 색 칸 공유
+            base = np.clip(r['pc'], 0, 1) if role == 'prop' else BASE.get(role, W_)
+            if role == 'awning': base = srgb(h['awning'][0])
+            if role == 'sign': base = srgb(h['sign'][0])
+            if role == 'wall': base = DARK(W_)  # 모서리 기둥(0.2m)·창 안쪽 턱 = 짙은 테두리 몫
+            col = np.round(np.clip(light(n, base), 0, 1) * 255 / 6) * 6
+            key = tuple(col.astype(int)); r['swatch'] = key; swatch.setdefault(key, dict(w=1, h=1, col=col / 255, role=role, faces=[]))['faces'].append(r)
+        else: rects.append(r)
+    cells = rects + list(swatch.values())
+    x = y = GAP; rh = 0
+    for r in sorted(cells, key=lambda r: (r['h'], r['w']), reverse=True):
+        if x + r['w'] + GAP > AW: x = GAP; y += rh + GAP; rh = 0
+        r['x'], r['y'] = x, y; x += r['w'] + GAP; rh = max(rh, r['h'])
+    AH = 2 ** math.ceil(math.log2(y + rh + GAP))
+    img = np.zeros((AH, AW, 3)); img[:] = W_ * .8; cls = np.zeros((AH, AW), np.uint8); uvl = me.uv_layers['BakedUV']
+    for s_ in swatch.values():
+        img[s_['y'] - 1:s_['y'] + 2, s_['x'] - 1:s_['x'] + 2] = s_['col']; cls[s_['y'] - 1:s_['y'] + 2, s_['x'] - 1:s_['x'] + 2] = RID[s_['role']]
+        for r in s_['faces']:
+            for li in me.polygons[r['i']].loop_indices: uvl.data[li].uv = ((s_['x'] + .5) / AW, (s_['y'] + .5) / AH)
+    for r in rects:
+        w, hh = r['w'], r['h']; I = np.clip(np.arange(-1, w + 1), 0, w - 1)[None, :]; Jj = np.clip(np.arange(-1, hh + 1), 0, hh - 1)[:, None]
+        u = r['lo'][0] + I / max(w - 1, 1) * (r['hi'][0] - r['lo'][0]); v = r['lo'][1] + Jj / max(hh - 1, 1) * (r['hi'][1] - r['lo'][1])
+        u, v = np.broadcast_arrays(u, v); I, Jj = np.broadcast_arrays(I, Jj)
+        n = r['n']; P = u[..., None] * r['U'] + v[..., None] * r['V'] + n * float(r['c'] @ n); z = P[..., 2]; role = r['role']
+        edge = (I == 0) | (I == w - 1) | (Jj == 0) | (Jj == hh - 1)
+        col = np.broadcast_to(BASE.get(role, W_), u.shape + (3,)).copy(); dark = np.zeros(u.shape, bool); bright = np.zeros(u.shape, bool)
+        if role == 'wall':
+            if abs(n[1]) > .7: dark |= (np.abs(P[..., 0] - bx0) < tx) | (np.abs(P[..., 0] - bx1) < tx)  # 건물 모서리
+            if abs(n[0]) > .7: dark |= (np.abs(P[..., 1] - by0) < tx) | (np.abs(P[..., 1] - by1) < tx)
+            dark |= np.abs(z - g['zb']) < tx  # 바닥 닿는 줄
+        elif role == 'roof':
+            col[(I // 1) % 2 == 1] *= .86  # 기와 줄: 2텍셀 간격 명암
+            bright |= Jj == 0  # 처마 끝 밝은 선
+        elif role == 'flat': bright |= edge
+        elif role == 'glass':
+            dark |= edge
+            if w >= 4 and hh >= 5: col[(I == 1) & ((Jj == hh - 2) | (Jj == hh - 3))] = srgb((176, 214, 210))  # 반사 2텍셀
+            if w >= 9: dark |= I == w // 2  # 겹창 가운데 살
+        elif role == 'door':
+            dark |= edge
+            if w >= 7: dark |= I == w // 2
+            if hh >= 8: col[(I == (w - 2 if w < 7 else w // 2 - 1)) & ((Jj == hh // 2) | (Jj == hh // 2 + 1))] = srgb((226, 196, 120))  # 손잡이 2텍셀
+        elif role == 'shutter':
+            dark |= edge | ((Jj % 3 == 1) & (I > 0) & (I < w - 1))  # 살
+        elif role == 'awning':
+            a, b = h['awning']; st = (np.floor((P[..., 0] + 10) / .44) % 2)[..., None]; col = srgb(a) * st + srgb(b) * (1 - st); dark |= Jj == 0
+        elif role == 'sign':
+            a, b = h['sign']; inner = (I > 0) & (I < w - 1) & (Jj > 0) & (Jj < hh - 1); col[:] = srgb(a); col[inner] = srgb(b)
+            ci = w // 2
+            for k, cj in enumerate(range(hh - 4, 2, -5)):  # 도트 기호: 네모 고리 · 십자 번갈아
+                ring = (np.maximum(np.abs(I - ci), np.abs(Jj - cj)) == 1) if k % 2 == 0 else (((I == ci) & (np.abs(Jj - cj) <= 1)) | ((Jj == cj) & (np.abs(I - ci) <= 1)))
+                col[ring & inner] = srgb((128, 80, 50))
+        elif role == 'stone':
+            dark |= (Jj % 3 == 0) | (((I + 3 * ((Jj // 3) % 2)) % 5 == 0))  # 줄눈
+        elif role in ('slab', 'ac'): dark |= edge if role == 'ac' else Jj == 0
+        col[dark] = DARK(col[dark]); col[bright] = np.clip(col[bright] * 1.18 + .04, 0, 1)
+        if role in ('wall', 'frame', 'glass', 'door', 'shutter', 'stone'):  # 처마·발코니·차양 밑, 바닥 0.6m → 한 단 어둡게(흐림 없음)
+            sh = (z - g['zb'] < .6) & (role == 'wall')
+            for oh in g['overhangs']:
+                if oh[0] == 'eave': sh |= (z > oh[1] - .45) & (z < oh[1] + .2)
+                else:
+                    _, x0, x1, y0, y1, zb_ = oh; sh |= (P[..., 0] >= x0) & (P[..., 0] <= x1) & (P[..., 1] >= y0 - .05) & (P[..., 1] <= y1) & (z < zb_) & (z > zb_ - .9)
+            col[sh] = col[sh] * .84 * .9 + TEAL * .84 * .1
+        col = light(n, col)
+        y0, x0 = r['y'] - 1, r['x'] - 1
+        img[y0:y0 + hh + 2, x0:x0 + w + 2] = np.clip(col, 0, 1); cls[y0:y0 + hh + 2, x0:x0 + w + 2] = RID[role]
+        for li, qq in zip(me.polygons[r['i']].loop_indices, r['q']):
+            uvl.data[li].uv = ((r['x'] + .5 + (qq[0] - r['lo'][0]) / max(r['hi'][0] - r['lo'][0], 1e-8) * (w - 1)) / AW,
+                               (r['y'] + .5 + (qq[1] - r['lo'][1]) / max(r['hi'][1] - r['lo'][1], 1e-8) * (hh - 1)) / AH)
+    return img, cls, len(rects) + sum(len(s_['faces']) for s_ in swatch.values())
 
 
 # ---------- 팔레트 ----------
@@ -411,7 +527,7 @@ PH_KEEP = PHOTOS  # 사진은 위에서 이미 읽음(빈 장면으로 바꾸기
 built = []
 for k, h in enumerate(HOUSES):
     o, g = build(h)
-    img, cls, nf = pack_paint(o, h, g, k * 13 + 5)
+    img, cls, nf = (pack_paint_c if VARIANT == 'c' else pack_paint)(o, h, g, k * 13 + 5)
     tris = sum(len(p.vertices) - 2 for p in o.data.polygons)
     pts = np.array([v.co for v in o.data.vertices]); lo, hi = pts.min(0), pts.max(0)
     built.append((h, o, img, cls, g, tris, nf, lo, hi)); print('BUILT', h['name'], 'W', g['W'], 'D', g['D'], 'Hw', round(g['Hw'], 2), 'tris', tris, 'tex', img.shape[1], img.shape[0], flush=True)
@@ -421,9 +537,28 @@ cnt = np.zeros(len(union))
 for b in built:
     idx = nearest(b[2], union); vis = b[3] != RID['hidden']; cnt += np.bincount(idx[vis], minlength=len(union))
 pal = [union[i] for i in np.argsort(-cnt)[:32]]
-open(os.path.join(OUT, 'palette32.gpl'), 'w').write('GIMP Palette\nName: scene-a4-houses (아트1 키트 + 건물 밝히기 합집합 중 32)\nColumns: 8\n#\n' +
+if VARIANT == 'b':  # 1248: 공용 64색엔 살구·황토 벽 단계가 없다 → 공용 많이 쓴 20색 + 벽·처마밑 픽셀 k-means 12색
+    cool = lambda c: c[1] >= c[0] and (c[0] * .299 + c[1] * .587 + c[2] * .114) > 140  # 밝은 회녹 = 벽 얼룩이 붙던 색
+    pal = [union[i] for i in np.argsort(-cnt) if not cool(union[i])][:20]
+    wp = np.concatenate([b[2][np.isin(b[3], [RID['wall'], RID['soffit'], RID['frame']])] for b in built]) * 255
+    rng = np.random.default_rng(5); wp = wp[rng.choice(len(wp), min(60000, len(wp)), replace=False)]
+    cen = wp[rng.choice(len(wp), 12, replace=False)]
+    for _ in range(25):
+        lab = ((wp[:, None] - cen[None]) ** 2).sum(2).argmin(1); cen = np.array([wp[lab == i].mean(0) if (lab == i).any() else cen[i] for i in range(12)])
+    pal += [tuple(int(round(v)) for v in c) for c in cen]
+if VARIANT == 'c':  # 1302: b판 공용 32색 바탕 — 덜 쓰이는 10색만 c판 칠에서 오차 큰 픽셀의 k-means 10색으로 바꿈(같은 색이 계단을 잃지 않게)
+    pal = read_gpl(J('art', 'export', 'scene-a4-houses-b', 'palette32.gpl')); P0 = np.array(pal, np.float64)
+    vp = np.concatenate([b[2][b[3] != RID['hidden']] for b in built]) * 255
+    d2 = ((vp[:, None] - P0[None]) ** 2).sum(2); use = np.bincount(d2.argmin(1), minlength=32); err = np.sqrt(d2.min(1))
+    wp = vp[err > 6]; rng = np.random.default_rng(5); wp = wp[rng.choice(len(wp), min(60000, len(wp)), replace=False)]
+    cen = wp[rng.choice(len(wp), 10, replace=False)]
+    for _ in range(25):
+        lab = ((wp[:, None] - cen[None]) ** 2).sum(2).argmin(1); cen = np.array([wp[lab == i].mean(0) if (lab == i).any() else cen[i] for i in range(10)])
+    keep = sorted(np.argsort(-use)[:22]); pal = [pal[i] for i in keep] + [tuple(int(round(v)) for v in c) for c in cen]
+    print('PAL c: keep 22, new 10, err>6 px %', round(float((err > 6).mean() * 100), 1), flush=True)
+open(os.path.join(OUT, 'palette32.gpl'), 'w').write('GIMP Palette\nName: scene-a4-houses' + ('-b (공용 20 + 따뜻한 벽 12)' if VARIANT == 'b' else '-c (b판 32 중 22 + c판 칠 10)' if VARIANT == 'c' else ' (아트1 키트 + 건물 밝히기 합집합 중 32)') + '\nColumns: 8\n#\n' +
                                                     ''.join(f'{r} {g_} {b_} c{i}\n' for i, (r, g_, b_) in enumerate(pal)))
-kit = dict(task='20261027-1232', note='도현 승인 전. F1/Assets 에 넣지 않음. Unity 임포트 미확인. 원점 = 집 바닥(축대 집은 축대 바닥) 가운데.',
+kit = dict(task={'a': '20261027-1232', 'b': '20261027-1248', 'c': '20261027-1302'}[VARIANT], note='도현 승인 전. F1/Assets 에 넣지 않음. Unity 임포트 미확인. 원점 = 집 바닥(축대 집은 축대 바닥) 가운데.',
            axis='Blender: 정면 -Y, 위 +Z → FBX axis_forward -Z, axis_up Y, 1u = 1m', method=__doc__.split('이번 방법 —')[1].split('출력:')[0].strip(),
            sun_dir=SUN.round(3).tolist(), palette='palette32.gpl', texels_per_m=DENS,
            license='CC0 — elegantcrow Retro Modular House(모듈) · valsekamerplant PSX house plants(화분) · Poly Haven 사진(worn_plaster_wall, clay_roof_tiles, wood_peeling_paint_weathered, stone_block_wall, rough_linen). '
@@ -431,12 +566,15 @@ kit = dict(task='20261027-1232', note='도현 승인 전. F1/Assets 에 넣지 �
            files=[])
 meas = {}
 for h, o, img, cls, g, tris, nf, lo, hi in built:
-    idx = despeckle(nearest(img, pal)); q = np.array(pal, np.float64)[idx] / 255
+    idx = nearest(img, pal) if VARIANT == 'c' else despeckle(nearest(img, pal)); q = np.array(pal, np.float64)[idx] / 255  # c: 1텍셀 선이 지워지지 않게 반점 지우기 안 함(측정만)
     png = os.path.join(OUT, h['name'] + '.png'); im = save_png(q, png); np.save(os.path.join(WORK, h['name'] + '_cls.npy'), cls[::-1])
     Lm = q @ np.array((.299, .587, .114)) * 255; vis = cls != RID['hidden']
     by = {r: round(float(Lm[cls == RID[r]].mean()), 1) for r in ROLES if (cls == RID[r]).any()}
     meas[h['name']] = dict(L_all=round(float(Lm.mean()), 1), L_visible=round(float(Lm[vis].mean()), 1), L_wall=by.get('wall'), by_role=by,
-                           speckle_1px_pct=round(speckle(idx), 3), colors=int(len(np.unique(idx))), size=[img.shape[1], img.shape[0]])
+                           p5_visible=round(float(np.percentile(Lm[vis], 5)), 1), under40_visible_pct=round(float((Lm[vis] < 40).mean() * 100), 3),
+                           prop_p5=round(float(np.percentile(Lm[cls == RID['prop']], 5)), 1) if (cls == RID['prop']).any() else None,
+                           speckle_1px_pct=round(speckle(idx), 3), colors=int(len(np.unique(idx))), size=[img.shape[1], img.shape[0]],
+                           wall_colors=int(len(np.unique(idx[cls == RID['wall']]))), texels_per_m=DENS)
     srcs = sorted({os.path.relpath(p, TP).replace('\\', '/') for p in LIB})
     export(o, im, os.path.join(OUT, h['name'] + '.fbx'))
     kit['files'].append(dict(name=h['name'], fbx=h['name'] + '.fbx', png=h['name'] + '.png', note=h['note'], place=h['place'],
