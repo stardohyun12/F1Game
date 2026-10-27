@@ -1,0 +1,6 @@
+<!doctype html><meta charset=utf-8><title>집 j2판</title>
+<style>body{margin:0;background:#ece8de;font:14px sans-serif}img{image-rendering:pixelated;display:block}#b{position:sticky;top:0;background:#fff;padding:6px}</style>
+<div id=b>판정 순서 1× → 흑실루엣 → 4× &nbsp; <button onclick="i.src='row_j2.png';z(2)">1×</button><button onclick="i.src='row_j2_silhouette.png';z(2)">흑실루엣</button>
+<button onclick="i.src='row_j2.png';z(8)">4×</button><button onclick="i.src='row_j.png';z(2)">j 1×</button><button onclick="i.src='sheet.png';z(1)">시트</button>
+<button onclick="document.body.style.background=document.body.style.background=='rgb(32, 32, 32)'?'#ece8de':'#202020'">배경</button></div>
+<img id=i src=row_j2.png><script>const i=document.getElementById('i');function z(k){i.onload=()=>i.style.width=(i.naturalWidth*k/2)+'px';if(i.complete)i.onload()}</script>

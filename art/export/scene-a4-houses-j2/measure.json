@@ -1,0 +1,135 @@
+{
+ "task": "20261027-1807",
+ "source": "scene-a4-houses-j",
+ "method": "집 j2판 — j판 고치기만 (아트2, 과제 20261027-1807, 결함 1·2·4·5). 새로 굽지 않고 j 의 fbx·png·cls 를 손질.\n    D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/opus_houses_j2.py\n원인(진단 opus_houses_j2_diag.py): 작은 면(창턱·홈통·난간·처마 밑·문 아래 판자…)은 UV 가 한 점(넓이 0)이라 구워지지 않고,\n  그 점이 아틀라스 바탕색 (23,37,40) 위에 있어 게임에서 짙은 남색으로 나옴 → 1·2번 결함.\n고침 —\n  1·2. UV 가 점인 면마다 둘레 16방향 광선으로 '밖에서 보이는가' 판정(14개 이상이 제 메시에 맞으면 안 보임). 보이는 면은\n       1.2m 안에서 같은 쪽(법선 내적 ≥.8)을 보는 구운 면들의 텍셀 중앙값(없으면 2.5m·≥.5) 색 → 빈 바탕 자리에 3×3 칸을 새로 칠하고 UV 를 그 칸으로.\n       색은 팔레트 40색 중 밝기 ≥60 에서 가장 가까운 색.\n  4. 강조 텍셀(덧창·간판·판·차양 역할) 중 채도(max−min) > 80 → 팔레트에서 채도 ≤80 인 가장 가까운 색.\n  5. ROOMS 판(57×29텍셀)의 3×5 글자 2배(38×10) → 5×7 글자 2배·글자 사이 1텍셀(54×14텍셀)로 다시 그림. 판 크기는 그대로.\n출력: art/export/scene-a4-houses-j2/<이름>.fbx·.png, measure.json · 로그 art/models/opus_houses_j2_log.txt\n",
+ "files": {
+  "house_narrow_a": {
+   "faces": 1502,
+   "uv_point_faces": 859,
+   "uv_point_hidden": 472,
+   "uv_point_visible_fixed": 387,
+   "fixed_area_m2_by_dir": {
+    "side": 89.541,
+    "down": 4.767,
+    "up": 3.63
+   },
+   "new_cells": 23,
+   "p5_used": 74.4,
+   "under60_used_pct": 0.001,
+   "accent_chroma_max_before": 80,
+   "accent_chroma_max_after": 80,
+   "accent_repicked_px": 0,
+   "rooms": {
+    "board_texels": [
+     57,
+     29
+    ],
+    "glyph_scale": 2,
+    "text_texels": [
+     48,
+     12
+    ],
+    "ink": [
+     102,
+     72,
+     43
+    ],
+    "bg": [
+     207,
+     209,
+     182
+    ]
+   }
+  },
+  "house_narrow_b": {
+   "faces": 1146,
+   "uv_point_faces": 555,
+   "uv_point_hidden": 315,
+   "uv_point_visible_fixed": 240,
+   "fixed_area_m2_by_dir": {
+    "side": 74.14,
+    "down": 3.463,
+    "up": 2.986
+   },
+   "new_cells": 18,
+   "p5_used": 64.4,
+   "under60_used_pct": 0.0,
+   "accent_chroma_max_before": 68,
+   "accent_chroma_max_after": 68,
+   "accent_repicked_px": 0,
+   "rooms": null
+  },
+  "house_shop": {
+   "faces": 802,
+   "uv_point_faces": 364,
+   "uv_point_hidden": 186,
+   "uv_point_visible_fixed": 178,
+   "fixed_area_m2_by_dir": {
+    "side": 94.332,
+    "down": 5.394,
+    "up": 2.779
+   },
+   "new_cells": 18,
+   "p5_used": 64.4,
+   "under60_used_pct": 0.001,
+   "accent_chroma_max_before": 95,
+   "accent_chroma_max_after": 80,
+   "accent_repicked_px": 1110,
+   "rooms": null
+  },
+  "house_slope": {
+   "faces": 2180,
+   "uv_point_faces": 1534,
+   "uv_point_hidden": 678,
+   "uv_point_visible_fixed": 856,
+   "fixed_area_m2_by_dir": {
+    "side": 26.39,
+    "down": 51.987,
+    "up": 3.593
+   },
+   "new_cells": 18,
+   "p5_used": 64.4,
+   "under60_used_pct": 0.0,
+   "accent_chroma_max_before": 33,
+   "accent_chroma_max_after": 33,
+   "accent_repicked_px": 0,
+   "rooms": null
+  },
+  "house_warehouse": {
+   "faces": 998,
+   "uv_point_faces": 484,
+   "uv_point_hidden": 203,
+   "uv_point_visible_fixed": 281,
+   "fixed_area_m2_by_dir": {
+    "side": 150.796,
+    "down": 6.134,
+    "up": 3.931
+   },
+   "new_cells": 19,
+   "p5_used": 64.4,
+   "under60_used_pct": 0.009,
+   "accent_chroma_max_before": 68,
+   "accent_chroma_max_after": 68,
+   "accent_repicked_px": 0,
+   "rooms": null
+  },
+  "house_cafe": {
+   "faces": 893,
+   "uv_point_faces": 650,
+   "uv_point_hidden": 257,
+   "uv_point_visible_fixed": 393,
+   "fixed_area_m2_by_dir": {
+    "side": 63.699,
+    "down": 2.76,
+    "up": 2.411
+   },
+   "new_cells": 15,
+   "p5_used": 64.4,
+   "under60_used_pct": 0.0,
+   "accent_chroma_max_before": 95,
+   "accent_chroma_max_after": 80,
+   "accent_repicked_px": 216,
+   "rooms": null
+  }
+ }
+}
