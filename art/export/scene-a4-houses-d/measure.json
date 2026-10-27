@@ -1,0 +1,144 @@
+{
+ "luma": "0.299R+0.587G+0.114B (32색 뒤)",
+ "speckle": "네 이웃과 모두 다른 픽셀 %",
+ "files": {
+  "house_narrow_a": {
+   "L_all": 154.3,
+   "L_visible": 154.7,
+   "L_wall": 166.6,
+   "by_role": {
+    "hidden": 153.8,
+    "wall": 166.6,
+    "roof": 128.0,
+    "prop": 51.6,
+    "soffit": 129.1
+   },
+   "p5_visible": 99.2,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 51.6,
+   "speckle_1px_pct": 0.201,
+   "colors": 24,
+   "size": [
+    256,
+    256
+   ],
+   "wall_colors": 23,
+   "texels_per_m": 10
+  },
+  "house_narrow_b": {
+   "L_all": 157.1,
+   "L_visible": 176.5,
+   "L_wall": 175.2,
+   "by_role": {
+    "hidden": 143.0,
+    "wall": 175.2,
+    "prop": 51.6,
+    "flat": 189.1
+   },
+   "p5_visible": 112.5,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 51.6,
+   "speckle_1px_pct": 0.008,
+   "colors": 31,
+   "size": [
+    256,
+    256
+   ],
+   "wall_colors": 31,
+   "texels_per_m": 10
+  },
+  "house_shop": {
+   "L_all": 145.4,
+   "L_visible": 146.1,
+   "L_wall": 161.9,
+   "by_role": {
+    "hidden": 144.7,
+    "wall": 161.9,
+    "roof": 128.0,
+    "prop": 95.8,
+    "soffit": 121.2
+   },
+   "p5_visible": 76.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 51.6,
+   "speckle_1px_pct": 0.027,
+   "colors": 29,
+   "size": [
+    256,
+    256
+   ],
+   "wall_colors": 28,
+   "texels_per_m": 10
+  },
+  "house_slope": {
+   "L_all": 139.4,
+   "L_visible": 146.7,
+   "L_wall": 153.0,
+   "by_role": {
+    "hidden": 128.0,
+    "wall": 153.0,
+    "roof": 128.0,
+    "slab": 198.8,
+    "stone": 140.3,
+    "prop": 51.6,
+    "soffit": 112.0
+   },
+   "p5_visible": 76.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 51.6,
+   "speckle_1px_pct": 0.047,
+   "colors": 31,
+   "size": [
+    256,
+    256
+   ],
+   "wall_colors": 31,
+   "texels_per_m": 10
+  },
+  "house_warehouse": {
+   "L_all": 154.4,
+   "L_visible": 154.8,
+   "L_wall": 181.4,
+   "by_role": {
+    "hidden": 153.8,
+    "wall": 181.4,
+    "roof": 128.0,
+    "soffit": 129.2
+   },
+   "p5_visible": 99.2,
+   "under40_visible_pct": 0.0,
+   "prop_p5": null,
+   "speckle_1px_pct": 0.046,
+   "colors": 28,
+   "size": [
+    256,
+    256
+   ],
+   "wall_colors": 27,
+   "texels_per_m": 10
+  },
+  "house_cafe": {
+   "L_all": 145.1,
+   "L_visible": 139.2,
+   "L_wall": 150.8,
+   "by_role": {
+    "hidden": 153.8,
+    "wall": 150.8,
+    "roof": 128.5,
+    "prop": 51.6,
+    "soffit": 127.7
+   },
+   "p5_visible": 76.8,
+   "under40_visible_pct": 0.0,
+   "prop_p5": 51.6,
+   "speckle_1px_pct": 0.067,
+   "colors": 32,
+   "size": [
+    256,
+    128
+   ],
+   "wall_colors": 31,
+   "texels_per_m": 10
+  }
+ }
+}

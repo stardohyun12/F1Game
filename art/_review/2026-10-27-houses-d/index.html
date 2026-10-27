@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>houses-d</title>
+<style>body{margin:0;font:14px sans-serif;background:#ece6d8}#bar{position:sticky;top:0;padding:8px;background:#fff8}img{image-rendering:pixelated;display:block;margin:10px}</style>
+<div id="bar"><select id="s"><option>sheet.png</option><option>street_B.png</option><option>candidates.png</option><option>close_house_narrow_a.png</option><option>close_house_narrow_b.png</option><option>close_house_shop.png</option><option>close_house_slope.png</option><option>close_house_warehouse.png</option><option>close_house_cafe.png</option></select> 배율 <button onclick="z(1)">1×</button><button onclick="z(2)">2×</button><button onclick="z(4)">4×</button>
+<label><input type="checkbox" onchange="i.style.filter=this.checked?'brightness(0)':''">흑실루엣</label>
+배경 <button onclick="document.body.style.background='#ece6d8'">밝게</button><button onclick="document.body.style.background='#222'">어둡게</button><button onclick="document.body.style.background='#7fb0d0'">하늘</button></div>
+<img id="i" src="sheet.png"><script>const i=document.getElementById('i'),s=document.getElementById('s');let f=1;
+function z(n){f=n;i.onload();}i.onload=function(){i.style.width=(i.naturalWidth*f)+'px'};s.onchange=()=>{i.src=s.value};</script>
