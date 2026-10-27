@@ -1,0 +1,164 @@
+{
+ "house_narrow_a": {
+  "tris": 68,
+  "tex": [
+   512,
+   128
+  ],
+  "colors": 29,
+  "wall_faces": {
+   "F": {
+    "colors": 7,
+    "plain_share": 0.611
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.875
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.939
+   },
+   "R": {
+    "colors": 5,
+    "plain_share": 0.923
+   }
+  },
+  "faces": 33
+ },
+ "house_narrow_b": {
+  "tris": 52,
+  "tex": [
+   512,
+   128
+  ],
+  "colors": 27,
+  "wall_faces": {
+   "F": {
+    "colors": 7,
+    "plain_share": 0.559
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.844
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.867
+   },
+   "R": {
+    "colors": 4,
+    "plain_share": 0.867
+   }
+  },
+  "faces": 26
+ },
+ "house_shop": {
+  "tris": 60,
+  "tex": [
+   512,
+   128
+  ],
+  "colors": 30,
+  "wall_faces": {
+   "F": {
+    "colors": 6,
+    "plain_share": 0.424
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.899
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.958
+   },
+   "R": {
+    "colors": 5,
+    "plain_share": 0.95
+   }
+  },
+  "faces": 29
+ },
+ "house_slope": {
+  "tris": 82,
+  "tex": [
+   512,
+   128
+  ],
+  "colors": 30,
+  "wall_faces": {
+   "F": {
+    "colors": 7,
+    "plain_share": 0.759
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.899
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.895
+   },
+   "R": {
+    "colors": 5,
+    "plain_share": 0.866
+   }
+  },
+  "faces": 40
+ },
+ "house_warehouse": {
+  "tris": 48,
+  "tex": [
+   512,
+   128
+  ],
+  "colors": 27,
+  "wall_faces": {
+   "F": {
+    "colors": 6,
+    "plain_share": 0.76
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.924
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.965
+   },
+   "R": {
+    "colors": 5,
+    "plain_share": 0.961
+   }
+  },
+  "faces": 23
+ },
+ "house_cafe": {
+  "tris": 58,
+  "tex": [
+   512,
+   64
+  ],
+  "colors": 30,
+  "wall_faces": {
+   "F": {
+    "colors": 6,
+    "plain_share": 0.181
+   },
+   "B": {
+    "colors": 4,
+    "plain_share": 0.91
+   },
+   "L": {
+    "colors": 4,
+    "plain_share": 0.882
+   },
+   "R": {
+    "colors": 5,
+    "plain_share": 0.868
+   }
+  },
+  "faces": 29
+ }
+}

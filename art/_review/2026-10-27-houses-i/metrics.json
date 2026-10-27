@@ -1,0 +1,97 @@
+{
+ "texel_px_edge_median": {
+  "edc_shop": [
+   3,
+   599
+  ],
+  "ours_shop": [
+   4.0,
+   380
+  ],
+  "edc_apt": [
+   5,
+   525
+  ],
+  "ours_apt": [
+   4,
+   451
+  ]
+ },
+ "wall_patch": {
+  "edc_apt": {
+   "colors_over2pct": 10,
+   "colors_exact": 143,
+   "L_std": 5.8
+  },
+  "ours_apt": {
+   "colors_over2pct": 1,
+   "colors_exact": 1,
+   "L_std": 0.0
+  },
+  "edc_shop_green": {
+   "colors_over2pct": 10,
+   "colors_exact": 103,
+   "L_std": 10.6
+  }
+ },
+ "ours_analytic": {
+  "house_slope": {
+   "px_per_texel_h": 4.29,
+   "px_per_texel_v": 4.04,
+   "front_center_px": [
+    195,
+    441
+   ]
+  },
+  "house_narrow_a": {
+   "px_per_texel_h": 3.97,
+   "px_per_texel_v": 3.92,
+   "front_center_px": [
+    427,
+    427
+   ]
+  },
+  "house_shop": {
+   "px_per_texel_h": 3.65,
+   "px_per_texel_v": 3.76,
+   "front_center_px": [
+    638,
+    411
+   ]
+  },
+  "house_narrow_b": {
+   "px_per_texel_h": 3.36,
+   "px_per_texel_v": 3.6,
+   "front_center_px": [
+    812,
+    393
+   ]
+  },
+  "house_cafe": {
+   "px_per_texel_h": 3.1,
+   "px_per_texel_v": 3.45,
+   "front_center_px": [
+    972,
+    377
+   ]
+  },
+  "house_warehouse": {
+   "px_per_texel_h": 2.89,
+   "px_per_texel_v": 3.38,
+   "front_center_px": [
+    1198,
+    370
+   ]
+  },
+  "anchors": {
+   "shop": [
+    638,
+    440
+   ],
+   "apt": [
+    423,
+    316
+   ]
+  }
+ }
+}

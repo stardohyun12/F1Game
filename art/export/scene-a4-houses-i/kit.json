@@ -1,0 +1,291 @@
+{
+ "task": "20261027-1627",
+ "decision": "D-177",
+ "note": "도현 승인 전. F1/Assets 에 넣지 않음. Unity 임포트 미확인 — Unlit + Point(필터 없음)·밉맵 끔 권장.",
+ "axis": "Blender: 정면 -Y, 위 +Z → FBX axis_forward -Z, axis_up Y, 1u = 1m. 원점 = 집 바닥 가운데(e판과 같음).",
+ "method": "형태: e판 parts.json 의 치수·창·문·덧붙임 위치를 그대로 읽어 단순 상자로 다시 짓는다(변형·잔부품 없음).\n  표면: 1m = 8텍셀 Point. 벽 = 한 색 평면, 창 = 짙은 회색 유리 + 1텍셀 밝은 창틀·중간살, 처마·지붕 끝 = 짙은 갈색 2텍셀 띠,\n        1층 가게 = 큰 유리 띠 + 색 띠 한 줄, 간판 = 단색 판 + 3×5·5×5 픽셀 글자.\n        굽기 없음 — 면 방향 명도만 정면 1.00 · 왼 0.95 · 오른/뒤 0.93 · 지붕 앞 1.05 · 지붕 뒤 0.96 · 아랫면 0.92.\n        사진 무늬·얼룩·보수 칠 없음. 손댄 흔적은 형태로만(덧댄 차양·막은 창·새로 뚫은 창 틀 색).",
+ "texels_per_m": 8,
+ "shade": {
+  "F": 1.0,
+  "L": 0.95,
+  "R": 0.93,
+  "B": 0.93,
+  "RF": 1.05,
+  "RB": 0.96,
+  "T": 1.03,
+  "D": 0.92
+ },
+ "palette_colors": 85,
+ "files": [
+  {
+   "name": "house_narrow_a",
+   "fbx": "house_narrow_a.fbx",
+   "png": "house_narrow_a.png",
+   "wall": [
+    198,
+    186,
+    158
+   ],
+   "band": [
+    112,
+    92,
+    72
+   ],
+   "roof": [
+    140,
+    104,
+    88
+   ],
+   "tris": 68,
+   "tex": [
+    512,
+    128
+   ],
+   "colors": 29,
+   "wall_faces": {
+    "F": {
+     "colors": 7,
+     "plain_share": 0.611
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.875
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.939
+    },
+    "R": {
+     "colors": 5,
+     "plain_share": 0.923
+    }
+   },
+   "faces": 33
+  },
+  {
+   "name": "house_narrow_b",
+   "fbx": "house_narrow_b.fbx",
+   "png": "house_narrow_b.png",
+   "wall": [
+    206,
+    204,
+    192
+   ],
+   "band": [
+    84,
+    104,
+    110
+   ],
+   "roof": [
+    128,
+    128,
+    126
+   ],
+   "tris": 52,
+   "tex": [
+    512,
+    128
+   ],
+   "colors": 27,
+   "wall_faces": {
+    "F": {
+     "colors": 7,
+     "plain_share": 0.559
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.844
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.867
+    },
+    "R": {
+     "colors": 4,
+     "plain_share": 0.867
+    }
+   },
+   "faces": 26
+  },
+  {
+   "name": "house_shop",
+   "fbx": "house_shop.fbx",
+   "png": "house_shop.png",
+   "wall": [
+    204,
+    180,
+    164
+   ],
+   "band": [
+    150,
+    74,
+    64
+   ],
+   "roof": [
+    112,
+    112,
+    116
+   ],
+   "tris": 60,
+   "tex": [
+    512,
+    128
+   ],
+   "colors": 30,
+   "wall_faces": {
+    "F": {
+     "colors": 6,
+     "plain_share": 0.424
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.899
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.958
+    },
+    "R": {
+     "colors": 5,
+     "plain_share": 0.95
+    }
+   },
+   "faces": 29
+  },
+  {
+   "name": "house_slope",
+   "fbx": "house_slope.fbx",
+   "png": "house_slope.png",
+   "wall": [
+    166,
+    184,
+    178
+   ],
+   "band": [
+    82,
+    104,
+    112
+   ],
+   "roof": [
+    146,
+    108,
+    92
+   ],
+   "tris": 82,
+   "tex": [
+    512,
+    128
+   ],
+   "colors": 30,
+   "wall_faces": {
+    "F": {
+     "colors": 7,
+     "plain_share": 0.759
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.899
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.895
+    },
+    "R": {
+     "colors": 5,
+     "plain_share": 0.866
+    }
+   },
+   "faces": 40
+  },
+  {
+   "name": "house_warehouse",
+   "fbx": "house_warehouse.fbx",
+   "png": "house_warehouse.png",
+   "wall": [
+    194,
+    196,
+    194
+   ],
+   "band": [
+    92,
+    116,
+    96
+   ],
+   "roof": [
+    116,
+    120,
+    118
+   ],
+   "tris": 48,
+   "tex": [
+    512,
+    128
+   ],
+   "colors": 27,
+   "wall_faces": {
+    "F": {
+     "colors": 6,
+     "plain_share": 0.76
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.924
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.965
+    },
+    "R": {
+     "colors": 5,
+     "plain_share": 0.961
+    }
+   },
+   "faces": 23
+  },
+  {
+   "name": "house_cafe",
+   "fbx": "house_cafe.fbx",
+   "png": "house_cafe.png",
+   "wall": [
+    212,
+    200,
+    180
+   ],
+   "band": [
+    150,
+    92,
+    70
+   ],
+   "roof": [
+    150,
+    110,
+    92
+   ],
+   "tris": 58,
+   "tex": [
+    512,
+    64
+   ],
+   "colors": 30,
+   "wall_faces": {
+    "F": {
+     "colors": 6,
+     "plain_share": 0.181
+    },
+    "B": {
+     "colors": 4,
+     "plain_share": 0.91
+    },
+    "L": {
+     "colors": 4,
+     "plain_share": 0.882
+    },
+    "R": {
+     "colors": 5,
+     "plain_share": 0.868
+    }
+   },
+   "faces": 29
+  }
+ ]
+}
