@@ -1,22 +1,22 @@
-ATLAS 1024 512 517
-D:\Github\F1Game\tools\asset-gen\q1_room.py:425: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+ATLAS 1024 512 611
+D:\Github\F1Game\tools\asset-gen\q1_room.py:444: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   mat = bpy.data.materials.new(name); mat.use_nodes = True; nt = mat.node_tree; nt.nodes.clear()
 
 FBX export starting... 'D:/Github/F1Game/art/export/q1-room/room.fbx'
-export finished in 0.0319 sec.
-MEAS {'tris': 1034, 'objects': ['ROOM_shell', 'ROOM_props', 'ROOM_furniture', 'ROOM_vest'], 'atlas': [1024, 512], 'texels_per_m': {'big': 32.73, 'small': 64.39}, 'colors': 66, 'palette': 'palette_q1v2.gpl (palette53 + 결 단계 45)', 'isolated_pct': np.float64(0.0), 'p5': 90.9, 'p50': 149.8, 'p95': 233.7, 'photo_src': ['fine_grained_wood', 'painted_plaster_wall', 'rough_linen', 'tatami_mat'], 'photo_amp': 0.45, 'size_m': {'w': 3.5, 'd': 3.0, 'h': 2.4}, 'pivot': '바닥 가운데', 'forward': '창 = Blender -Y → FBX/Unity +Z', 'note': '창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을'}
-D:\Github\F1Game\tools\asset-gen\q1_room.py:454: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+export finished in 0.0326 sec.
+MEAS {'tris': 1222, 'objects': ['ROOM_shell', 'ROOM_props', 'ROOM_furniture', 'ROOM_vest'], 'atlas': [1024, 512], 'texels_per_m': {'big': 32.73, 'small': 64.68}, 'colors': 68, 'palette': 'palette_q1v2.gpl (palette53 + 결 단계 45)', 'isolated_pct': np.float64(0.0), 'p5': 90.9, 'p50': 149.8, 'p95': 233.7, 'photo_src': ['clay_plaster', 'fine_grained_wood', 'painted_plaster_wall', 'rough_linen', 'tatami_mat'], 'photo_amp': 0.45, 'size_m': {'w': 3.5, 'd': 3.0, 'h': 2.4}, 'pivot': '바닥 가운데', 'forward': '창 = Blender -Y → FBX/Unity +Z', 'note': '창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을'}
+D:\Github\F1Game\tools\asset-gen\q1_room.py:473: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
   mb = bpy.data.materials.new('BG'); mb.use_nodes = True; nt = mb.node_tree; nt.nodes.clear(); tx = nt.nodes.new('ShaderNodeTexImage'); tx.image = BG; tx.interpolation = 'Closest'
-D:\Github\F1Game\tools\asset-gen\q1_room.py:462: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+D:\Github\F1Game\tools\asset-gen\q1_room.py:481: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
   wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; bgn = wd.node_tree.nodes['Background']; bgn.inputs[0].default_value = (.62, .72, .78, 1); bgn.inputs[1].default_value = float(os.environ.get("WORLD", .45))
-00:11.422  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
-01:27.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\door_raw.png'
+00:10.390  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+01:32.969  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\door_raw.png'
 RENDER door
-02:29.266  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\desk_raw.png'
+02:39.062  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\desk_raw.png'
 RENDER desk
-03:25.984  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\window_raw.png'
+03:45.750  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\window_raw.png'
 RENDER window
-04:52.781  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\back_raw.png'
+05:15.547  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q1-room\back_raw.png'
 RENDER back
 Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
 

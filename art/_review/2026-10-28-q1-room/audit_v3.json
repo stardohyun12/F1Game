@@ -1,0 +1,74 @@
+{
+ "ref": {
+  "name": "ref",
+  "path": "art/_review/2026-10-28-q1-room/ref_cut.png",
+  "face_uniform_frac": 0.6327247842627819,
+  "face_std_median": 0.8164965809285925,
+  "empty_cell_frac_bottom": 0.1875,
+  "val_p5_p95": 0.5333333333333333
+ },
+ "v2_door": {
+  "name": "v2_door",
+  "path": "art/_review/2026-10-28-q1-room/v2/door.png",
+  "face_uniform_frac": 0.43243493391581206,
+  "face_std_median": 2.0547488348114524,
+  "empty_cell_frac_bottom": 0.0125,
+  "val_p5_p95": 0.6666666666666667
+ },
+ "v2_desk": {
+  "name": "v2_desk",
+  "path": "art/_review/2026-10-28-q1-room/v2/desk.png",
+  "face_uniform_frac": 0.5926418180755973,
+  "face_std_median": 0.9344766001935574,
+  "empty_cell_frac_bottom": 0.0875,
+  "val_p5_p95": 0.6666666666666667
+ },
+ "v2_window": {
+  "name": "v2_window",
+  "path": "art/_review/2026-10-28-q1-room/v2/window.png",
+  "face_uniform_frac": 0.5264577225192455,
+  "face_std_median": 1.2919831982351573,
+  "empty_cell_frac_bottom": 0.05,
+  "val_p5_p95": 0.43921568627450974
+ },
+ "v2_back": {
+  "name": "v2_back",
+  "path": "art/_review/2026-10-28-q1-room/v2/back.png",
+  "face_uniform_frac": 0.5335531716547703,
+  "face_std_median": 1.2646402804996704,
+  "empty_cell_frac_bottom": 0.05,
+  "val_p5_p95": 0.5568627450980392
+ },
+ "v3_door": {
+  "name": "v3_door",
+  "path": "art/_review/2026-10-28-q1-room/door.png",
+  "face_uniform_frac": 0.5536121260355243,
+  "face_std_median": 1.1965927686767104,
+  "empty_cell_frac_bottom": 0.0125,
+  "val_p5_p95": 0.6666666666666667
+ },
+ "v3_desk": {
+  "name": "v3_desk",
+  "path": "art/_review/2026-10-28-q1-room/desk.png",
+  "face_uniform_frac": 0.723326560061254,
+  "face_std_median": 0.682498219490495,
+  "empty_cell_frac_bottom": 0.0875,
+  "val_p5_p95": 0.6627450980392158
+ },
+ "v3_window": {
+  "name": "v3_window",
+  "path": "art/_review/2026-10-28-q1-room/window.png",
+  "face_uniform_frac": 0.623420834829864,
+  "face_std_median": 0.9231717784608902,
+  "empty_cell_frac_bottom": 0.0625,
+  "val_p5_p95": 0.41568627450980394
+ },
+ "v3_back": {
+  "name": "v3_back",
+  "path": "art/_review/2026-10-28-q1-room/back.png",
+  "face_uniform_frac": 0.6978607382550336,
+  "face_std_median": 0.7866695605342372,
+  "empty_cell_frac_bottom": 0.025,
+  "val_p5_p95": 0.5647058823529412
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "ref": {
+  "name": "ref",
+  "path": "art/_review/2026-10-28-q1-room/ref_cut.png",
+  "face_uniform_frac": 0.6327247842627819,
+  "face_std_median": 0.8164965809285925,
+  "empty_cell_frac_bottom": 0.1875,
+  "val_p5_p95": 0.5333333333333333
+ },
+ "v1_door": {
+  "name": "v1_door",
+  "path": "art/_review/2026-10-28-q1-room/v1/door.png",
+  "face_uniform_frac": 0.6314462690867185,
+  "face_std_median": 0.9508886144298191,
+  "empty_cell_frac_bottom": 0.0125,
+  "val_p5_p95": 0.6705882352941177
+ },
+ "v1_desk": {
+  "name": "v1_desk",
+  "path": "art/_review/2026-10-28-q1-room/v1/desk.png",
+  "face_uniform_frac": 0.8032525235096195,
+  "face_std_median": 0.6125192244034348,
+  "empty_cell_frac_bottom": 0.1,
+  "val_p5_p95": 0.6627450980392157
+ },
+ "v1_window": {
+  "name": "v1_window",
+  "path": "art/_review/2026-10-28-q1-room/v1/window.png",
+  "face_uniform_frac": 0.7167354522333734,
+  "face_std_median": 0.6993660178223775,
+  "empty_cell_frac_bottom": 0.05,
+  "val_p5_p95": 0.5882352941176471
+ },
+ "v2_door": {
+  "name": "v2_door",
+  "path": "art/_review/2026-10-28-q1-room/door.png",
+  "face_uniform_frac": 0.43243493391581206,
+  "face_std_median": 2.0547488348114524,
+  "empty_cell_frac_bottom": 0.0125,
+  "val_p5_p95": 0.6666666666666667
+ },
+ "v2_desk": {
+  "name": "v2_desk",
+  "path": "art/_review/2026-10-28-q1-room/desk.png",
+  "face_uniform_frac": 0.5926418180755973,
+  "face_std_median": 0.9344766001935574,
+  "empty_cell_frac_bottom": 0.0875,
+  "val_p5_p95": 0.6666666666666667
+ },
+ "v2_window": {
+  "name": "v2_window",
+  "path": "art/_review/2026-10-28-q1-room/window.png",
+  "face_uniform_frac": 0.5264577225192455,
+  "face_std_median": 1.2919831982351573,
+  "empty_cell_frac_bottom": 0.05,
+  "val_p5_p95": 0.43921568627450974
+ }
+}

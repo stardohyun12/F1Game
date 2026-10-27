@@ -1,7 +1,8 @@
 ﻿part,photo_id,file,source_url,license,author,"crop_quad_px(TL,TR,BR,BL)",used_on,what
 all,-,tools/asset-gen/q1_room.py,-,프로젝트 자체 제작(코드 생성),art2(Claude) 절차 생성,-,ROOM 형태·바탕색·그림(포스터 등),AI 이미지 0 — 포스터 리그 이름 MARE GP 는 가상
+plaster,clay_plaster,art/source/q1-room-cc0/clay_plaster.jpg,https://polyhaven.com/a/clay_plaster,CC0 1.0,Amal Kumar,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","회벽 섞음용(.9m 기준, 90° 돌림) — 3차",Poly Haven diffuse 1k
 wood,fine_grained_wood,art/source/q1-room-cc0/fine_grained_wood.jpg,https://polyhaven.com/a/fine_grained_wood,CC0 1.0,Rob Tuytel,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","바닥·천장·보·책상·의자·책장·침대 틀(1.2m 기준)",Poly Haven diffuse 1k
-plaster,painted_plaster_wall,art/source/q1-room-cc0/painted_plaster_wall.jpg,https://polyhaven.com/a/painted_plaster_wall,CC0 1.0,Amal Kumar,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","회벽·판벽·창 두께(2m 기준) / 종이 결(포스터·달력·잡지·책 .7m 기준)",Poly Haven diffuse 1k
-fabric,rough_linen,art/source/q1-room-cc0/rough_linen.jpg,https://polyhaven.com/a/rough_linen,CC0 1.0,colormass, Rico Cilliers,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","홑청·이불·베개·커튼·수건·셔츠·조끼(1m 기준)",Poly Haven diffuse 1k
+plaster,painted_plaster_wall,art/source/q1-room-cc0/painted_plaster_wall.jpg,https://polyhaven.com/a/painted_plaster_wall,CC0 1.0,Amal Kumar,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","회벽·판벽·창 두께(.7m 기준, 흙벽 사진과 섞음) / 종이 결(포스터·달력·잡지·책)",Poly Haven diffuse 1k
+fabric,rough_linen,art/source/q1-room-cc0/rough_linen.jpg,https://polyhaven.com/a/rough_linen,CC0 1.0,colormass, Rico Cilliers,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","홑청·이불·베개·커튼·수건·셔츠·조끼·가방·운동화(1m 기준)",Poly Haven diffuse 1k
 weave,tatami_mat,art/source/q1-room-cc0/tatami_mat.jpg,https://polyhaven.com/a/tatami_mat,CC0 1.0,Charlotte Baglioni,"0,0 1024,0 1024,1024 0,1024 (전체 · 큰 블러로 나눠 빛 평평 · 명도 비율만)","다다미 깔개(1.8m)",Poly Haven diffuse 1k
 sheet-only,street_on,docs/qa/evidence/scene-a7b/street_on.png,-,프로젝트 자체 게임 캡처,QA,-,시트 렌더 창밖 임시 배경(내보내지 않음),우리 게임 화면 — AI 아님

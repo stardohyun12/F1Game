@@ -1,5 +1,5 @@
 {
- "tris": 1034,
+ "tris": 1222,
  "objects": [
   "ROOM_shell",
   "ROOM_props",
@@ -12,15 +12,16 @@
  ],
  "texels_per_m": {
   "big": 32.73,
-  "small": 64.39
+  "small": 64.68
  },
- "colors": 66,
+ "colors": 68,
  "palette": "palette_q1v2.gpl (palette53 + 결 단계 45)",
  "isolated_pct": 0.0,
  "p5": 90.9,
  "p50": 149.8,
  "p95": 233.7,
  "photo_src": [
+  "clay_plaster",
   "fine_grained_wood",
   "painted_plaster_wall",
   "rough_linen",
