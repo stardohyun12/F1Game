@@ -1,0 +1,8 @@
+<!doctype html><meta charset=utf-8><title>건물 밝히기 전후 (과제 1134)</title>
+<style>body{margin:0;background:#f5f2e8;font:14px sans-serif}#bar{position:sticky;top:0;padding:8px;background:#fff8}button{margin-right:6px}
+img{image-rendering:pixelated;display:block}</style>
+<div id=bar>배율 <button onclick=z(1)>1×</button><button onclick=z(2)>2×</button><button onclick=z(4)>4×</button>
+<button onclick=s()>흑실루엣</button> 배경 <button onclick="bg('#f5f2e8')">밝게</button><button onclick="bg('#222')">어둡게</button> · 도현 승인 필요</div>
+<img id=i src=sheet.png><script>let k=1,sil=0;const i=document.getElementById('i');i.onload=()=>z(1);
+function z(n){k=n;i.style.width=(i.naturalWidth*n/2)+'px'}function s(){sil^=1;i.style.filter=sil?'brightness(0)':''}
+function bg(c){document.body.style.background=c}</script>

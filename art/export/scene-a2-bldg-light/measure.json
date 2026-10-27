@@ -1,0 +1,282 @@
+{
+ "luma": "0.299R+0.587G+0.114B",
+ "palette": "art/export/scene-a2-bldg-light/palette32.gpl (median cut, 6장 공용)",
+ "files": {
+  "far_town": {
+   "before": {
+    "file": "art/export/scene-a2-far/far_town_baked32.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "mean_rgb": [
+     36,
+     48,
+     47
+    ],
+    "L": 44.3,
+    "speckle_1px_pct": 2.91,
+    "colors": 30
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/far_town_baked32.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "mean_rgb": [
+     196,
+     189,
+     166
+    ],
+    "L": 188.6,
+    "speckle_1px_pct": 0.0,
+    "colors": 28,
+    "by_class": {
+     "wall": {
+      "L": 191.3,
+      "px_pct": 44.4
+     },
+     "roof": {
+      "L": 153.8,
+      "px_pct": 6.3
+     },
+     "window": {
+      "L": 142.1,
+      "px_pct": 1.3
+     },
+     "flat": {
+      "L": 181.0,
+      "px_pct": 1.5
+     }
+    }
+   }
+  },
+  "far_terrace": {
+   "before": {
+    "file": "art/export/scene-a2-far/far_terrace_baked32.png",
+    "size": [
+     256,
+     256
+    ],
+    "mean_rgb": [
+     97,
+     108,
+     88
+    ],
+    "L": 102.5,
+    "speckle_1px_pct": 3.71,
+    "colors": 24
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/far_terrace_baked32.png",
+    "size": [
+     256,
+     512
+    ],
+    "mean_rgb": [
+     194,
+     190,
+     165
+    ],
+    "L": 188.3,
+    "speckle_1px_pct": 0.0,
+    "colors": 8,
+    "by_class": {
+     "ter_top": {
+      "L": 192.0,
+      "px_pct": 12.5
+     },
+     "ter_wall": {
+      "L": 181.9,
+      "px_pct": 30.8
+     }
+    }
+   }
+  },
+  "background_building_01": {
+   "before": {
+    "file": "art/export/scene-a2-kit/background_building_01.png",
+    "size": [
+     1024,
+     2048
+    ],
+    "mean_rgb": [
+     65,
+     74,
+     65
+    ],
+    "L": 70.4,
+    "speckle_1px_pct": 2.44,
+    "colors": 29
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/background_building_01.png",
+    "size": [
+     1024,
+     2048
+    ],
+    "mean_rgb": [
+     191,
+     178,
+     155
+    ],
+    "L": 179.0,
+    "speckle_1px_pct": 0.0,
+    "colors": 9,
+    "by_class": {
+     "wall": {
+      "L": 176.3,
+      "px_pct": 42.3
+     },
+     "window": {
+      "L": 79.0,
+      "px_pct": 4.1
+     },
+     "flat": {
+      "L": 152.0,
+      "px_pct": 10.8
+     }
+    }
+   }
+  },
+  "background_building_02": {
+   "before": {
+    "file": "art/export/scene-a2-kit/background_building_02.png",
+    "size": [
+     1024,
+     4096
+    ],
+    "mean_rgb": [
+     55,
+     66,
+     59
+    ],
+    "L": 61.8,
+    "speckle_1px_pct": 2.29,
+    "colors": 29
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/background_building_02.png",
+    "size": [
+     1024,
+     4096
+    ],
+    "mean_rgb": [
+     198,
+     171,
+     134
+    ],
+    "L": 175.3,
+    "speckle_1px_pct": 0.0,
+    "colors": 8,
+    "by_class": {
+     "wall": {
+      "L": 172.0,
+      "px_pct": 44.0
+     },
+     "window": {
+      "L": 79.0,
+      "px_pct": 2.5
+     },
+     "flat": {
+      "L": 152.0,
+      "px_pct": 12.6
+     }
+    }
+   }
+  },
+  "background_building_03": {
+   "before": {
+    "file": "art/export/scene-a2-kit/background_building_03.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "mean_rgb": [
+     54,
+     60,
+     52
+    ],
+    "L": 57.5,
+    "speckle_1px_pct": 6.89,
+    "colors": 26
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/background_building_03.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "mean_rgb": [
+     184,
+     174,
+     158
+    ],
+    "L": 174.9,
+    "speckle_1px_pct": 0.0,
+    "colors": 9,
+    "by_class": {
+     "wall": {
+      "L": 179.5,
+      "px_pct": 36.4
+     },
+     "roof": {
+      "L": 124.0,
+      "px_pct": 17.7
+     },
+     "window": {
+      "L": 79.0,
+      "px_pct": 3.5
+     }
+    }
+   }
+  },
+  "background_building_04": {
+   "before": {
+    "file": "art/export/scene-a2-kit/background_building_04.png",
+    "size": [
+     1024,
+     2048
+    ],
+    "mean_rgb": [
+     52,
+     60,
+     54
+    ],
+    "L": 56.9,
+    "speckle_1px_pct": 3.73,
+    "colors": 28
+   },
+   "after": {
+    "file": "art/export/scene-a2-bldg-light/background_building_04.png",
+    "size": [
+     1024,
+     1024
+    ],
+    "mean_rgb": [
+     156,
+     166,
+     150
+    ],
+    "L": 160.7,
+    "speckle_1px_pct": 0.0,
+    "colors": 8,
+    "by_class": {
+     "wall": {
+      "L": 165.3,
+      "px_pct": 55.0
+     },
+     "window": {
+      "L": 79.0,
+      "px_pct": 9.1
+     },
+     "flat": {
+      "L": 152.0,
+      "px_pct": 14.1
+     }
+    }
+   }
+  }
+ }
+}
