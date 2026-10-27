@@ -1,0 +1,475 @@
+{
+ "task": "20261027-1902",
+ "source": "scene-a4-houses-j2",
+ "method": "집 j3판 — j2 고치기만 (아트2, 과제 20261027-1902, 도현 페인트오버 D2·D4). 다시 굽지 않고 j2 fbx·png 를 손질.\n    D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/opus_houses_j3.py\nD2 간판(ROOMS·FISH·サカナ·REPAIR·ATELIER 7·CAFE):\n  판 상자를 판 면 안에서 키움(SCALE) → 텍스처 빈 자리에 판 앞면 칸을 1m=32텍셀로 새로 잡고, 밝은 판 + 2텍셀 테두리 + 짙은 글자를 마지막에 찍음\n  (굽기·양자화 뒤라 글자가 뭉개지지 않음). 글자 = 3×5(サカナ 5×5) 를 정수배 s≥2(판 폭-6, 판 높이 70% 안에서 가장 크게) → 획 = s 텍셀.\n  판·글자 색 = 팔레트 40색 안: 판은 밝기 ≥185 중 크림에 가까운 색, 글자는 밝기 55~80 중 채도 낮은 색. 면 방향 빛은 같은 쪽 벽의 구운 밝기 비율.\nD4 옆 벽:\n  ① 벽·처마밑 텍셀에서 1텍셀 선·점(양옆 또는 위아래 이웃과 밝기 차 >4, 이웃끼리는 비슷)을 이웃 색으로 바꿈 → 층 줄눈·결 점선 사라짐.\n  ② UV 섬 둘레 빈 칸을 섬 색으로 2텍셀 메움(Point 샘플이 섬 밖 바탕색을 집어 생기는 점선 막기).\n  ③ 옆면(±X) 벽 중 넓이 ≥14m² 에 창이 1개 이하인 면: 창 2~3개(크기 3종)·창턱·홈통·실외기를 상자로 붙이고 앞면 칸을 칠함.\n출력: art/export/scene-a4-houses-j3/<이름>.fbx·.png, measure.json, signs.json · 로그 art/models/opus_houses_j3_log.txt\n",
+ "files": {
+  "house_narrow_a": {
+   "tris": 1868,
+   "thin_line_pct_before": 0.436,
+   "thin_fixed_px": 2223,
+   "thin_line_pct_after": 0.004,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 73.1,
+     "windows": 4,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 73.0,
+     "windows": 2,
+     "added": []
+    }
+   ],
+   "signs": [
+    {
+     "text": "ROOMS",
+     "scaled": true,
+     "scale": [
+      1.24,
+      1.25
+     ],
+     "center": [
+      -1.6,
+      -3.16,
+      2.79
+     ],
+     "normal": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "board_m": [
+      2.11,
+      1.02
+     ],
+     "board_texels": [
+      67,
+      33
+     ],
+     "glyph_scale": 3,
+     "stroke_texels": 3,
+     "text_texels": [
+      57,
+      15
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 1
+    }
+   ],
+   "colors": 34
+  },
+  "house_narrow_b": {
+   "tris": 1552,
+   "thin_line_pct_before": 0.432,
+   "thin_fixed_px": 1735,
+   "thin_line_pct_after": 0.003,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 62.1,
+     "windows": 3,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 62.2,
+     "windows": 3,
+     "added": []
+    }
+   ],
+   "signs": [
+    {
+     "text": "REPAIR",
+     "scaled": false,
+     "scale": [
+      1.0,
+      1.0
+     ],
+     "center": [
+      -0.65,
+      -0.36,
+      10.33
+     ],
+     "normal": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "board_m": [
+      2.93,
+      0.95
+     ],
+     "board_texels": [
+      94,
+      30
+     ],
+     "glyph_scale": 3,
+     "stroke_texels": 3,
+     "text_texels": [
+      69,
+      15
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 1
+    }
+   ],
+   "colors": 33
+  },
+  "house_shop": {
+   "tris": 1198,
+   "thin_line_pct_before": 0.412,
+   "thin_fixed_px": 1575,
+   "thin_line_pct_after": 0.004,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 50.0,
+     "windows": 2,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 50.0,
+     "windows_before": 1,
+     "added": [
+      {
+       "kind": "window",
+       "u": 1.24,
+       "z": 4.0,
+       "w": 0.9,
+       "h": 1.2
+      },
+      {
+       "kind": "window",
+       "u": -0.0,
+       "z": 1.0,
+       "w": 0.6,
+       "h": 0.8
+      },
+      {
+       "kind": "window",
+       "u": 1.24,
+       "z": 1.0,
+       "w": 0.75,
+       "h": 1.0
+      },
+      {
+       "kind": "downpipe",
+       "u": -2.9
+      },
+      {
+       "kind": "ac_unit",
+       "u": -1.24,
+       "z": 2.1
+      }
+     ]
+    }
+   ],
+   "signs": [
+    {
+     "text": "FISH",
+     "scaled": true,
+     "scale": [
+      1.2,
+      1.3
+     ],
+     "center": [
+      0.0,
+      -4.29,
+      2.84
+     ],
+     "normal": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "board_m": [
+      2.4,
+      0.88
+     ],
+     "board_texels": [
+      77,
+      28
+     ],
+     "glyph_scale": 4,
+     "stroke_texels": 4,
+     "text_texels": [
+      60,
+      20
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 1
+    },
+    {
+     "text": "サカナ",
+     "scaled": true,
+     "scale": [
+      1.0,
+      1.1
+     ],
+     "center": [
+      2.9,
+      -3.65,
+      4.15
+     ],
+     "normal": [
+      1.0,
+      0.0,
+      0.0
+     ],
+     "board_m": [
+      0.8,
+      2.31
+     ],
+     "board_texels": [
+      26,
+      74
+     ],
+     "glyph_scale": 3,
+     "stroke_texels": 3,
+     "text_texels": [
+      15,
+      51
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 2
+    }
+   ],
+   "colors": 33
+  },
+  "house_slope": {
+   "tris": 2466,
+   "thin_line_pct_before": 0.279,
+   "thin_fixed_px": 947,
+   "thin_line_pct_after": 0.002,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 42.0,
+     "windows": 3,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 41.9,
+     "windows": 2,
+     "added": []
+    }
+   ],
+   "signs": [],
+   "colors": 31
+  },
+  "house_warehouse": {
+   "tris": 1398,
+   "thin_line_pct_before": 0.645,
+   "thin_fixed_px": 3243,
+   "thin_line_pct_after": 0.011,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 61.7,
+     "windows": 2,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 61.7,
+     "windows_before": 1,
+     "added": [
+      {
+       "kind": "window",
+       "u": -0.0,
+       "z": 4.0,
+       "w": 0.9,
+       "h": 1.2
+      },
+      {
+       "kind": "window",
+       "u": -1.44,
+       "z": 4.0,
+       "w": 0.6,
+       "h": 0.8
+      },
+      {
+       "kind": "window",
+       "u": 1.44,
+       "z": 4.0,
+       "w": 0.75,
+       "h": 1.0
+      },
+      {
+       "kind": "downpipe",
+       "u": -3.4
+      },
+      {
+       "kind": "ac_unit",
+       "u": 0.72,
+       "z": 2.1
+      }
+     ]
+    }
+   ],
+   "signs": [
+    {
+     "text": "ATELIER 7",
+     "scaled": true,
+     "scale": [
+      1.0,
+      1.25
+     ],
+     "center": [
+      0.0,
+      -3.66,
+      3.49
+     ],
+     "normal": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "board_m": [
+      4.2,
+      0.91
+     ],
+     "board_texels": [
+      134,
+      29
+     ],
+     "glyph_scale": 3,
+     "stroke_texels": 3,
+     "text_texels": [
+      102,
+      15
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 1
+    }
+   ],
+   "colors": 33
+  },
+  "house_cafe": {
+   "tris": 1134,
+   "thin_line_pct_before": 0.86,
+   "thin_fixed_px": 1845,
+   "thin_line_pct_after": 0.017,
+   "side_walls": [
+    {
+     "side": 1,
+     "area": 18.2,
+     "windows": 2,
+     "added": []
+    },
+    {
+     "side": -1,
+     "area": 18.2,
+     "windows_before": 1,
+     "added": [
+      {
+       "kind": "downpipe",
+       "u": -1.9
+      }
+     ]
+    }
+   ],
+   "signs": [
+    {
+     "text": "CAFE",
+     "scaled": false,
+     "scale": [
+      1.1,
+      1.0
+     ],
+     "center": [
+      0.0,
+      -2.72,
+      3.47
+     ],
+     "normal": [
+      0.0,
+      -1.0,
+      0.0
+     ],
+     "board_m": [
+      2.0,
+      0.85
+     ],
+     "board_texels": [
+      64,
+      27
+     ],
+     "glyph_scale": 3,
+     "stroke_texels": 3,
+     "text_texels": [
+      45,
+      15
+     ],
+     "bg": [
+      244,
+      235,
+      200
+     ],
+     "ink": [
+      52,
+      70,
+      68
+     ],
+     "dL": 169.3,
+     "faces": 1
+    }
+   ],
+   "colors": 30
+  }
+ }
+}
