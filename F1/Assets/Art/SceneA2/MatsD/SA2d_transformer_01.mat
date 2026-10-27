@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SA2d_transformer_01
+  m_Shader: {fileID: 4800000, guid: 509facd444689b74083bf03913cfcc1c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 884ea30f39874dc449689d165ec366ad, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blotch: 0
+    - _BlotchSize: 1.2
+    - _Cutoff: 0.5
+    - _FogEnd: 220
+    - _FogMax: 0.4
+    - _FogStart: 40
+    - _FootDark: 0
+    - _FootH: 0.5
+    - _GradAmt: 0
+    - _GradH: 4
+    - _GroundY: 0
+    - _Lift: 0.16
+    - _LightAmt: 0
+    - _Sat: 2.6
+    - _Steps: 0
+    - _Sun: 1
+    m_Colors:
+    - _Ambient: {r: 0.8, g: 0.8399999, b: 0.82, a: 1}
+    - _BlotchHue: {r: 1.06, g: 0.97999996, b: 0.9, a: 1}
+    - _FogColor: {r: 0.8, g: 0.87, b: 0.93, a: 1}
+    - _LiftTint: {r: 0.46, g: 0.58, b: 0.62, a: 1}
+    - _SunDir: {r: 0.4, g: 0.8, b: -0.45, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _WB: {r: 1.04, g: 0.97, b: 0.86, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

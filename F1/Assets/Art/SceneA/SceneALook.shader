@@ -24,6 +24,10 @@ Shader "PitCrew/SceneA/Look"
         _BlotchSize ("V3 blotch size (m)", Float) = 1.2
         _BlotchHue ("V3 blotch warm/cool tint", Color) = (1.06, 0.98, 0.9, 1)
         _Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
+        _Sat ("A2d saturation (1 = 그대로)", Range(0,3)) = 1
+        _WB ("A2d white balance (곱)", Color) = (1,1,1,1)
+        _Lift ("A2d shadow lift (0 = 그대로)", Range(0,0.6)) = 0
+        _LiftTint ("A2d shadow lift color (그늘 청록)", Color) = (0.55,0.75,0.78,1)
     }
     SubShader
     {
@@ -41,7 +45,7 @@ Shader "PitCrew/SceneA/Look"
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST; float4 _Tint; float4 _SunDir; float4 _Ambient; float _Sun; float _LightAmt; float _Steps;
                 float4 _FogColor; float _FogStart; float _FogEnd; float _FogMax;
-                float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff;
+                float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff; float _Sat; float4 _WB; float _Lift; float4 _LiftTint;
             CBUFFER_END
 
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
@@ -81,6 +85,11 @@ Shader "PitCrew/SceneA/Look"
                     c *= 1 + _Blotch * b;
                     c = lerp(c, c * _BlotchHue.rgb, saturate(b) * _Blotch * 2);
                 }
+
+                // A2d 색 보정(과제 1046): 채도 → 화이트밸런스 → 어두운 쪽만 청록으로 들어올림(검게 안 떨어지게). 기본값이면 그대로
+                float lum = dot(c, float3(0.299, 0.587, 0.114));
+                c = max(0, lerp(lum.xxx, c, _Sat)) * _WB.rgb;
+                c = lerp(c, _LiftTint.rgb, _Lift * saturate(1 - lum * 1.6));
 
                 float d = distance(_WorldSpaceCameraPos, i.wp);
                 c = lerp(c, _FogColor.rgb, saturate((d - _FogStart) / max(0.01, _FogEnd - _FogStart)) * _FogMax);

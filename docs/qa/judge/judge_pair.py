@@ -59,6 +59,15 @@ def main():
     model = "sonnet"
     if "--model" in args:
         i = args.index("--model"); model = args[i + 1]; del args[i:i + 2]
+    global PROMPT
+    if "--refs156" in args:   # 과제 1046: 색 판정용 — ⑫ Crow Country(어두운 공포) 자리에 ⑤ Wheel World. 자격 시험은 ①⑥⑫ 로만 했다
+        args.remove("--refs156")
+        PROMPT = open(os.path.join(HERE, "prompts", "p2c_pair_picks_156.txt"), encoding="utf-8").read()
+        ANCH["targets"][2] = dict(ANCH["targets"][2], path="art/reference/dotlp-2026-10-27/wheel-world_1.jpg")
+    if "--refs16" in args:    # 과제 1058: 기준 ①·⑥ 두 장만(⑫ 뺌). 자격 시험은 ①⑥⑫ 로만 했다
+        args.remove("--refs16")
+        PROMPT = open(os.path.join(HERE, "prompts", "p2c_pair_picks_16.txt"), encoding="utf-8").read()
+        del ANCH["targets"][2:]
     tmp = tempfile.mkdtemp(prefix="judge_")
     try:
         if args and args[0] == "--qualify":
