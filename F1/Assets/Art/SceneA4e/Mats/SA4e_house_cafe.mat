@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SA4e_house_cafe
+  m_Shader: {fileID: 4800000, guid: 183154f9343e5ee4db163f273d87f4ea, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: a3d066670c06eea40a2167a6f1bb4296, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMapR2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Blotch: 0
+    - _BlotchSize: 1.2
+    - _Cutoff: 0.5
+    - _FogEnd: 220
+    - _FogMax: 0.4
+    - _FogStart: 40
+    - _FootDark: 0
+    - _FootH: 0.5
+    - _GradAmt: 0
+    - _GradH: 4
+    - _GroundY: 0
+    - _HasR2: 0
+    - _Lift: 0
+    - _LightAmt: 0
+    - _Outline: 1
+    - _OutlineDark: 0.45
+    - _OutlinePx: 1
+    - _R1Ok: 0
+    - _R2: 1
+    - _R3Ok: 1
+    - _Ramp: 1
+    - _RampDark: 0.72
+    - _RampMid: 0.5
+    - _S1: 1
+    - _S2: 1
+    - _S3: 1
+    - _S3Flat: 0.12
+    - _Sat: 1
+    - _SplitAmt: 0.2
+    - _Steps: 0
+    - _Sun: 1
+    - _T1: 0
+    - _T2: 0
+    - _WarmAmt: 0.16
+    m_Colors:
+    - _Ambient: {r: 0.8, g: 0.8399999, b: 0.82, a: 1}
+    - _BlotchHue: {r: 1.06, g: 0.97999996, b: 0.9, a: 1}
+    - _FogColor: {r: 0.8, g: 0.87, b: 0.93, a: 1}
+    - _Haze: {r: 0.86, g: 0.8399999, b: 0.76, a: 1}
+    - _HazeP: {r: 20, g: 220, b: 0.22, a: 0}
+    - _LiftTint: {r: 0.46, g: 0.58, b: 0.62, a: 1}
+    - _RampSun: {r: -0.5, g: 0.75, b: 0.45, a: 0}
+    - _RampT: {r: 0.6, g: 0.2, b: 0, a: 0}
+    - _S1P: {r: 0.5, g: 0.45, b: 0.95, a: 0}
+    - _ShadeTeal: {r: 0.62, g: 0.78, b: 0.8, a: 1}
+    - _SunDir: {r: 0.4, g: 0.8, b: -0.45, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _WB: {r: 1, g: 1, b: 1, a: 1}
+    - _Warm: {r: 1, g: 0.9, b: 0.78, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
