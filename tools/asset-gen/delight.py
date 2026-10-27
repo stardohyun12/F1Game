@@ -11,7 +11,7 @@ import cv2
 import numpy as np
 from PIL import Image
 
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 # Linear sRGB values, physicallybased.info (snapshot 2026-10-28).
 PBR = {'asphalt': [0.043, 0.041, 0.040], 'brick': [0.262, 0.095, 0.061],
        'concrete': [0.510]*3, 'plaster': [0.510]*3}
@@ -91,7 +91,16 @@ def process(job, root=Path('.'), colors=None):
     # Avoid an O(image_size * thousand-pixel kernel) pass on rectified photos.
     proxy_scale=min(1.,128/float(max(raw)))
     proxy=cv2.resize(y,None,fx=proxy_scale,fy=proxy_scale,interpolation=cv2.INTER_AREA)
-    low=cv2.GaussianBlur(proxy,(0,0),max(1,float(min(raw))*proxy_scale*job.get('blur_fraction',1/6)))
+    if 'shadow_radius_m' in job:
+        radius=float(job['shadow_radius_m'])
+        if radius<1: raise ValueError('shadow_radius_m must be >= 1 metre')
+        # Physical Gaussian sigma, separately along rectified U/V. At sigma=1m,
+        # 10..60cm wavelengths remain in the residual, rather than being removed.
+        sx=max(1,radius*raw[0]/physical[0]*proxy_scale)
+        sy=max(1,radius*raw[1]/physical[1]*proxy_scale)
+        low=cv2.GaussianBlur(proxy,(0,0),sigmaX=sx,sigmaY=sy)
+    else:
+        low=cv2.GaussianBlur(proxy,(0,0),max(1,float(min(raw))*proxy_scale*job.get('blur_fraction',1/6)))
     low=cv2.resize(low,tuple(raw),interpolation=cv2.INTER_LINEAR)
     flat=a*(max(float(y.mean()),1e-8)/np.maximum(low,1e-6))[:,:,None]
     # Restore each channel's mean: division removes light falloff, not paint color.
@@ -104,7 +113,9 @@ def process(job, root=Path('.'), colors=None):
     # Keep actual photograph's grain locations; fixed smooth sampling suppresses isolated specks.
     detail=cv2.GaussianBlur(detail,(0,0),job.get('grain_sigma_px',.65))
     scale=max(float(np.percentile(np.abs(detail),85)),1e-6)
-    detail=np.clip(detail/scale,-1,1)
+    strength=float(job.get('texture_strength',1))
+    if not np.isfinite(strength) or not 0<=strength<=4: raise ValueError('texture_strength must be 0..4')
+    detail=np.clip(detail/scale*strength,-1,1)
     amp=float(job.get('amplitude',.04))
     if not 0<=amp<=.04: raise ValueError('albedo grain amplitude must be 0..0.04')
     out=srgb(base)[None,None,:]*(1+amp*detail[:,:,None])
@@ -115,6 +126,8 @@ def process(job, root=Path('.'), colors=None):
     info={'tool_version':VERSION,'input':str(job['input']),'input_sha256':sha(path),'job':job,
           'output_size':size.tolist(),'rectification_matrix':matrix.tolist(),
           'mean_linear_luminance':float((linear(out)@LUMA).mean()),'base_srgb':srgb(base).round(4).tolist(),
+          'shadow_radius_m':job.get('shadow_radius_m'),'texture_strength':strength,
+          'detail_clip_fraction':float((np.abs(detail)>=1).mean()),
           'light_bake':False,'randomness':False,'photo_mean_restored_before_style':True}
     return out,info
 

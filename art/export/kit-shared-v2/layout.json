@@ -1,0 +1,468 @@
+{
+  "version": 2,
+  "px_per_m": 32,
+  "size": [
+    512,
+    512
+  ],
+  "palette": "palette.gpl",
+  "wall": [
+    {
+      "name": "wall_apricot",
+      "rect_px": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "wall_cream",
+      "rect_px": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "wall_mint",
+      "rect_px": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "wall_apricot_B",
+      "rect_px": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    }
+  ],
+  "floor": [
+    {
+      "name": "floor_stone",
+      "rect_px": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "floor_wood",
+      "rect_px": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "floor_concrete",
+      "rect_px": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "floor_asphalt",
+      "rect_px": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    }
+  ],
+  "roof": [
+    {
+      "name": "roof_E2",
+      "rect_px": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "roof_E3",
+      "rect_px": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "roof_F2",
+      "rect_px": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "roof_F3",
+      "rect_px": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "tile_m": [
+        8,
+        8
+      ],
+      "ppm": 32
+    }
+  ],
+  "trim": [
+    {
+      "name": "eaves",
+      "rect_px": [
+        0,
+        0,
+        512,
+        16
+      ],
+      "tile_m": [
+        16,
+        0.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "window_frame",
+      "rect_px": [
+        0,
+        16,
+        512,
+        16
+      ],
+      "tile_m": [
+        16,
+        0.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "door_frame",
+      "rect_px": [
+        0,
+        32,
+        512,
+        16
+      ],
+      "tile_m": [
+        16,
+        0.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "skirting",
+      "rect_px": [
+        0,
+        48,
+        512,
+        16
+      ],
+      "tile_m": [
+        16,
+        0.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "gutter",
+      "rect_px": [
+        0,
+        64,
+        512,
+        16
+      ],
+      "tile_m": [
+        16,
+        0.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "shutter",
+      "rect_px": [
+        0,
+        80,
+        512,
+        48
+      ],
+      "tile_m": [
+        16,
+        1.5
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "glass",
+      "rect_px": [
+        0,
+        128,
+        512,
+        128
+      ],
+      "tile_m": [
+        16,
+        4.0
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    },
+    {
+      "name": "wood_door",
+      "rect_px": [
+        0,
+        256,
+        512,
+        256
+      ],
+      "tile_m": [
+        16,
+        8.0
+      ],
+      "tile_axes": [
+        "U"
+      ],
+      "ppm": 32
+    }
+  ],
+  "decals": [
+    {
+      "name": "sign_cream",
+      "rect_px": [
+        8,
+        8,
+        192,
+        48
+      ],
+      "size_m": [
+        6.0,
+        1.5
+      ]
+    },
+    {
+      "name": "sign_wood",
+      "rect_px": [
+        216,
+        8,
+        192,
+        48
+      ],
+      "size_m": [
+        6.0,
+        1.5
+      ]
+    },
+    {
+      "name": "poster_festival",
+      "rect_px": [
+        8,
+        80,
+        48,
+        64
+      ],
+      "size_m": [
+        1.5,
+        2.0
+      ]
+    },
+    {
+      "name": "poster_harbor",
+      "rect_px": [
+        120,
+        80,
+        48,
+        64
+      ],
+      "size_m": [
+        1.5,
+        2.0
+      ]
+    },
+    {
+      "name": "poster_tea",
+      "rect_px": [
+        232,
+        80,
+        48,
+        64
+      ],
+      "size_m": [
+        1.5,
+        2.0
+      ]
+    },
+    {
+      "name": "flyer",
+      "rect_px": [
+        344,
+        80,
+        64,
+        96
+      ],
+      "size_m": [
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "name": "number_07",
+      "rect_px": [
+        424,
+        80,
+        32,
+        20
+      ],
+      "size_m": [
+        1.0,
+        0.625
+      ]
+    },
+    {
+      "name": "edge_chip",
+      "rect_px": [
+        8,
+        240,
+        128,
+        128
+      ],
+      "size_m": [
+        4,
+        4
+      ],
+      "alpha_coverage": 0.06280517578125,
+      "source": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+      "source_crop_px": [
+        340,
+        780,
+        640,
+        900
+      ],
+      "mask_method": "photographed exposed plaster chroma threshold, median7, corner only"
+    },
+    {
+      "name": "rain_trace",
+      "rect_px": [
+        152,
+        240,
+        128,
+        128
+      ],
+      "size_m": [
+        4,
+        4
+      ],
+      "alpha_coverage": 0.10107421875
+    },
+    {
+      "name": "sample_tea",
+      "rect_px": [
+        8,
+        392,
+        64,
+        24
+      ],
+      "size_m": [
+        2.0,
+        0.75
+      ]
+    }
+  ],
+  "tiling": "Repeat inside named cell only; split mesh at cell boundaries. Trim U only; never repeat full multi-material atlas.",
+  "filter": "Point, no mipmaps, no compression; half-texel edge guard",
+  "surface": "albedo only; photographic grain; no lighting/AO bake",
+  "derived_from": "kit-shared-v1",
+  "approval": "pending Dohyun; numeric gate passed, independent visual review 6/10"
+}

@@ -1,0 +1,23 @@
+{
+  "roof_decals_byte_identical": true,
+  "v1_job_backward_compatible_pixels": true,
+  "v2_wall_cli_byte_identical": true,
+  "sub_metre_shadow_rejected": true,
+  "proof_geometry_uv_camera_lighting_settings_equal": true,
+  "palette_colors": 206,
+  "hashes": {
+    "decals.png": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263",
+    "floor.png": "ef2d068a6d12909b63468d1979f9d683d1e3983d8e7a3d17abac4ed09d68b61e",
+    "roof.png": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
+    "trim.png": "1f96edab456873ed8c570edcbf625e12fcbcd6557e088416d43be6d57722c986",
+    "wall.png": "08e33cdf3dd725281cab2572b67c75a10c36735112e00180b89ba4191a34c5e8"
+  },
+  "parameters": {
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "amplitude": 0.04,
+    "px_per_m": 32
+  },
+  "source_provenance": "provenance.csv; identical v1 source photographs and quads"
+}
