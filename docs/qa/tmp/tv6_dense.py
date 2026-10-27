@@ -14,3 +14,7 @@ for p in out[1:]:
     if math.dist(p, o2[-1]) > .3: o2.append(p)
 open(os.path.join(D, "tv6_go_pts.txt" if GO else "tv6_loop_pts.txt"), "w").write("\n".join(f"{x:.2f} {z:.2f}" for x, z in o2))
 print(len(o2), "pts")
+# 되돌이(꺾임 > 150°) 위치 — 봇은 여기서 차를 돌려 놓는다
+for i in range(1, len(o2) - 1):
+    a = (o2[i][0] - o2[i - 1][0], o2[i][1] - o2[i - 1][1]); b = (o2[i + 1][0] - o2[i][0], o2[i + 1][1] - o2[i][1])
+    if (a[0] * b[0] + a[1] * b[1]) / max(1e-6, math.hypot(*a) * math.hypot(*b)) < -0.85: print("REV", i, o2[i])

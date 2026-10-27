@@ -34,7 +34,7 @@ public class TownPathBot : MonoBehaviour
         FeelLog.Clear();
         Time.timeScale = timeScale;
         var roads = FindObjectsByType<RoadSurface>(FindObjectsSortMode.None).Where(r => r.centerline != null && r.centerline.Length >= 2).OrderBy(r => r.roadId).ToList();
-        if (mode == "cover") yield return Cover(roads); else yield return Pairs(roads);
+        if (mode == "cover") yield return Cover(roads); else if (mode.StartsWith("loop")) yield return Loop(); else yield return Pairs(roads);
         Time.timeScale = 1f; Set(Vector2.zero);
         string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, $"../../docs/qa/tmp/townv6-bot-{mode}{(Only != "" ? "-only" : "")}.txt"));
         System.IO.File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
@@ -134,6 +134,36 @@ public class TownPathBot : MonoBehaviour
     }
 
     static Vector3 Flat(Vector3 v) { v.y = 0; return v; }
+
+    /// 과제 0248: 튜토리얼 고리(LoopPts, 2m 간격 XZ) 를 정방향·역방향 각 LoopN 회. 실패는 위치·원인 줄로.
+    public static List<Vector3> LoopPts = new List<Vector3>();
+    public static int LoopN = 20; public static float LoopHalf = 3.5f;
+    IEnumerator Loop()
+    {
+        sb.AppendLine("run\tdir\tresult\ttime\tmaxDev\tat\twhy\tair");
+        int ok = 0, fail = 0;
+        for (int n = 0; n < LoopN; n++) foreach (var dir in new[] { 1, -1 })
+        {
+            var P = dir > 0 ? LoopPts.ToList() : Enumerable.Reverse(LoopPts).ToList();
+            for (int i = 0; i < P.Count; i++) { var q = P[i]; if (Physics.Raycast(new Vector3(q.x, 200f, q.z), Vector3.down, out var h, 400f, ~0, QueryTriggerInteraction.Ignore)) q.y = h.point.y; P[i] = q; }
+            // 막다른 길 끝(되돌이, 꺾임 > 150°)에서 다리를 나눈다 — 거기선 차를 돌려 놓고 이어 감(배달 뒤 플레이어가 돌리는 자리)
+            var legs = new List<List<Vector3>> { new List<Vector3> { P[0] } };
+            for (int i = 1; i < P.Count; i++) { legs[legs.Count - 1].Add(P[i]); if (i + 1 < P.Count && Vector3.Angle(Flat(P[i] - P[i - 1]), Flat(P[i + 1] - P[i])) > 150f) legs.Add(new List<Vector3> { P[i] }); }
+            var res = new RunResult(); float tSum = 0f;
+            foreach (var L in legs.Where(l => l.Count > 4))
+            {
+                Place(L[0], L[3] - L[0]); yield return new WaitForFixedUpdate();
+                var r1 = new RunResult(); yield return Drive(L, Enumerable.Repeat(LoopHalf, L.Count).ToList(), r1);
+                tSum += r1.time; res.maxDev = Mathf.Max(res.maxDev, r1.maxDev); res.air += r1.air; res.at = r1.at;
+                if (r1.result != "ok") { res.result = r1.result; res.why = r1.why; break; }
+            }
+            res.time = tSum; res.why += $" legs{legs.Count}";
+            if (res.result == "ok") ok++; else fail++;
+            sb.AppendLine($"{n}\t{dir}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F0},{res.at.z:F0}\t{res.why}\t{res.air}");
+            Status = $"loop {n}/{LoopN} ok{ok} fail{fail}";
+        }
+        sb.Insert(0, $"# loop ok {ok} fail {fail}\n");
+    }
 
     IEnumerator Cover(List<RoadSurface> roads)
     {

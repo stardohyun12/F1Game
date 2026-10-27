@@ -35,6 +35,6 @@ Material:
     m_Colors:
     - _Ambient: {r: 0.7029999, g: 0.7885, b: 0.85499996, a: 1}
     - _FogColor: {r: 0.74, g: 0.83, b: 0.9, a: 1}
-    - _Tint: {r: 0.86, g: 0.44, b: 0.22, a: 1}
+    - _Tint: {r: 0.86, g: 0.43999982, b: 0.21999982, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

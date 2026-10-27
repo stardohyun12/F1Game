@@ -4,7 +4,10 @@ var sc = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes
 foreach (var g in sc.GetRootGameObjects()) if (g.name == "TV6_Loop") UnityEngine.Object.DestroyImmediate(g);
 string dir = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/qa/tmp/"));
 System.Func<string, List<Vector3>> Load = f => System.IO.File.ReadAllLines(dir + f).Where(l => l.Trim() != "").Select(l => { var a = l.Split(' '); return new Vector3(float.Parse(a[0]), 0, float.Parse(a[1])); }).ToList();
-var loop = Load("tv6_loop_pts.txt"); var go = Load("tv6_go_pts.txt");
+var loop = Load("tv6_loop_pts.txt");
+// D-187: 고리 출발 = 정비소, 첫 짐 = 택배 보관소(Q3_Depot) → 정비소→보관소 구간 = 고리 앞부분
+int di = 0; { float bd = 1e9f; for (int i = 0; i < loop.Count / 2; i++) { float d = (loop[i].x - 15f) * (loop[i].x - 15f) + (loop[i].z + 80f) * (loop[i].z + 80f); if (d < bd) { bd = d; di = i; } } }
+var go = loop.Take(di + 1).ToList();
 System.Func<Vector3, Vector3> G = p => { foreach (var h in Physics.RaycastAll(new Vector3(p.x, 300f, p.z), Vector3.down, 600f, ~0, QueryTriggerInteraction.Ignore).OrderBy(h => h.distance)) if (h.collider.GetComponentInParent<RoadSurface>() || h.collider is TerrainCollider || h.collider is MeshCollider) return h.point; return p; };
 System.Func<List<Vector3>, float, float, int> Near = (L, x, z) => { int bi = 0; float bd = 1e9f; for (int i = 0; i < L.Count; i++) { float d = (L[i].x - x) * (L[i].x - x) + (L[i].z - z) * (L[i].z - z); if (d < bd) { bd = d; bi = i; } } return bi; };
 System.Func<List<Vector3>, int, Vector3> Fw = (L, i) => { var f = L[Mathf.Min(L.Count - 1, i + 3)] - L[Mathf.Max(0, i - 3)]; f.y = 0; return f.normalized; };
@@ -37,13 +40,14 @@ K("TUT_CoastGateStart").position = G(loop[c0]); K("TUT_CoastGateEnd").position =
 var sg = K("TUT_CoastStraightEnd_Sign"); if (sg) sg.position = G(loop[c1]) + Vector3.Cross(Vector3.up, Fw(loop, c1)) * 5f;
 // 2) Q 자리 상자: 길 옆 7m, 콜라이더 없음
 var box = new GameObject("AssetSlots"); box.transform.SetParent(root.transform);
-var Q = new (string n, float x, float z)[] { ("Q1_MART", 225.1f, -78.5f), ("Q2_Plaza", 118f, -88f), ("Q3_Shops", 95f, -30f), ("Q4_Teahouse", 181.4f, 5.7f), ("Q5_CoastRail", 100f, -180f) };
+// 이름 = ASSET-QUEUE 번호(D-187 순서). onLoop=false 는 고리 밖 자리(그 좌표 그대로).
+var Q = new (string n, float x, float z, bool onLoop)[] { ("Q1_HomeRoom", -75f, -35f, false), ("Q2_Garage", -90.7f, -77.7f, true), ("Q3_Depot", 15f, -80f, true), ("Q4_PostOffice", 68f, -54f, true), ("Q_MART", 225.1f, -78.5f, false), ("Q_Teahouse", 181.4f, 5.7f, true), ("Q5_CoastRail", 100f, -180f, true) };
 foreach (var q in Q)
 {
-    int i = Near(loop, q.x, q.z); var side = Vector3.Cross(Vector3.up, Fw(loop, i));
-    var p = G(loop[i] + side * 7f);
+    int i = Near(loop, q.x, q.z); var f0 = Fw(loop, i); if (f0.sqrMagnitude < .5f) f0 = Fw(loop, Mathf.Max(0, i - 6)); var side = Vector3.Cross(Vector3.up, f0);
+    var p = q.onLoop ? G(loop[i] + side * 7f) : G(new Vector3(q.x, 0, q.z) + (q.n == "Q_MART" ? new Vector3(0, 0, 7f) : Vector3.zero));
     var c = GameObject.CreatePrimitive(PrimitiveType.Cube); c.name = q.n; UnityEngine.Object.DestroyImmediate(c.GetComponent<Collider>());
-    c.transform.SetParent(box.transform); c.transform.position = p + Vector3.up * 1.5f; c.transform.localScale = new Vector3(4f, 3f, 4f); c.transform.rotation = Quaternion.LookRotation(Fw(loop, i));
+    c.transform.SetParent(box.transform); c.transform.position = p + Vector3.up * 1.5f; c.transform.localScale = new Vector3(4f, 3f, 4f); c.transform.rotation = Quaternion.LookRotation(f0);
     sb.Append(q.n + " " + c.transform.position.ToString("F1") + " road" + G(loop[i]).ToString("F1") + "; ");
 }
 sb.Append(" carStart " + cs.position.ToString("F1") + " pack " + K("TUT_PackTrigger").position.ToString("F1") + " tea " + K("TUT_TeaDelivery").position.ToString("F1") + " gates " + K("TUT_CoastGateStart").position.ToString("F1") + "→" + K("TUT_CoastGateEnd").position.ToString("F1") + " return " + K("TUT_ReturnGarage").position.ToString("F1") + " room " + K("TUT_Room").position.ToString("F1"));
