@@ -1,0 +1,6 @@
+<!doctype html><meta charset=utf-8><title>집 j4</title><style>body{background:#28282c;color:#ddd;font:15px sans-serif;margin:12px}
+button{margin:2px;padding:4px 10px}img{image-rendering:pixelated;display:block}.sil{filter:brightness(0)}#v{overflow:auto}</style>
+<h3>집 j4 — 도현 승인 필요</h3><div><button onclick="src('row_j4.png')">j4 정면</button><button onclick="src('row_j3.png')">j3 정면</button><button onclick="src('left/row_j4.png')">j4 왼쪽</button><button onclick="src('left/row_j3.png')">j3 왼쪽</button><button onclick="src('zoom_left_j4.png')">j4 근접 3×</button><button onclick="src('zoom_left_j3.png')">j3 근접 3×</button><button onclick="src('sheet.png')">시트 전체</button> | <button onclick="z(1)">1×</button><button onclick="z(4)">4×</button><button onclick="document.getElementById('i').src='sil_j4.png'">흑실루엣</button>
+ | 배경 <button onclick="bg('#28282c')">어둠</button><button onclick="bg('#e8e2d0')">종이</button><button onclick="bg('#7fa7b8')">하늘</button></div>
+<div id=v><img id=i src=row_j4.png></div><script>let k=1;const i=document.getElementById('i');
+function src(f){i.src=f;i.onload=()=>z(k)}function z(n){k=n;i.style.width=(i.naturalWidth*n)+'px'}function bg(c){document.body.style.background=c}</script>

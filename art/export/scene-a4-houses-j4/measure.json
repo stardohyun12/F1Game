@@ -1,0 +1,115 @@
+{
+ "task": "20261027-2002",
+ "source": "scene-a4-houses-j3",
+ "method": "집 j4 — j3 위에 도현이 고른 사진 부품을 칠함 (아트2, 과제 20261027-2002). 형태·간판 글자·배치 그대로, 다시 굽지 않음.\n    python tools/asset-gen/opus_houses_j4_photos.py   (사진 → 부품, 먼저)\n    D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/opus_houses_j4.py\n부품 한 장 = 원근 편 사진 조각(_work/parts). 여기서: 큰 그늘 빼기(밝기 ÷ 넓게 흐린 밝기) → 대비 줄이기 → 면 크기 텍셀로 면적 평균 축소\n  → 빛: 세로 면은 같은 방향 벽의 구운 밝기 비율(j3 와 같은 빛), 지붕은 j3 그 면의 밝기 중앙값에 맞춤, 텍셀마다 j3 의 AO 결(0.8~1.1)을 곱함\n  → 팔레트 40색(밝기 ≥60, 채도 ≤80) → 외톨이 1텍셀 정리. 사진을 통째로 깔지 않는다 — 덧창 한 짝·셔터 한 칸·노렌·기와 줄만.\n적용: 덧창 C1 → narrow_b·shop, C2 → narrow_a·slope / 1층 문 칸 D1 → shop, D2 → cafe, B1 → warehouse / 지붕 E2 → narrow_a·shop·warehouse, E3 → slope·cafe.\n남은 결함: D2 ROOMS 판 2.4×0.86m(아래 차양·오른 발코니 피해), 4×6 글자 3배(획 3텍셀), 글자는 맨 마지막.\n          D4 세로 점선 = UV 폭 <2텍셀인 가는 띠 면(모서리 띠·홈통 등)이 텍셀 줄을 번갈아 집던 것 → 띠 면 하나를 한 색 칸으로.\n출력: art/export/scene-a4-houses-j4/ · 로그 art/models/opus_houses_j4_log.txt\n",
+ "files": {
+  "house_narrow_a": {
+   "faces_painted": {
+    "plank:shutter_C2": 12,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 58809,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.088,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 26,
+   "wall_edge_ring_texels": 111093,
+   "rooms": {
+    "faces": 7,
+    "front_faces": 2,
+    "board_m": [
+     2.06,
+     0.66
+    ],
+    "board_texels": [
+     66,
+     21
+    ],
+    "font": "3x5",
+    "stroke_texels": 3,
+    "text_texels": [
+     57,
+     15
+    ],
+    "dL": 169.3
+   },
+   "tris": 1868,
+   "colors": 34
+  },
+  "house_narrow_b": {
+   "faces_painted": {
+    "shutter:shutter_C1": 32
+   },
+   "painted_texels": 17725,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.237,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 16,
+   "wall_edge_ring_texels": 97235,
+   "rooms": null,
+   "tris": 1552,
+   "colors": 33
+  },
+  "house_shop": {
+   "faces_painted": {
+    "plank:shutter_C1": 8,
+    "door:front_D1": 4,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 65812,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.011,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 20,
+   "wall_edge_ring_texels": 75758,
+   "rooms": null,
+   "tris": 1198,
+   "colors": 33
+  },
+  "house_slope": {
+   "faces_painted": {
+    "shutter:shutter_C2": 16,
+    "roof:roof_E3": 2
+   },
+   "painted_texels": 53880,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.015,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 110,
+   "wall_edge_ring_texels": 79680,
+   "rooms": null,
+   "tris": 2466,
+   "colors": 31
+  },
+  "house_warehouse": {
+   "faces_painted": {
+    "door:shutter_B1": 8,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 84811,
+   "painted_p5": 90.9,
+   "painted_isolated_pct": 0.024,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 39,
+   "wall_edge_ring_texels": 96405,
+   "rooms": null,
+   "tris": 1398,
+   "colors": 33
+  },
+  "house_cafe": {
+   "faces_painted": {
+    "door:front_D2": 2,
+    "roof:roof_E3": 2
+   },
+   "painted_texels": 38492,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.0,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 12,
+   "wall_edge_ring_texels": 38823,
+   "rooms": null,
+   "tris": 1134,
+   "colors": 30
+  }
+ }
+}

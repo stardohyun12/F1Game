@@ -1,0 +1,80 @@
+{
+ "garage_v5b": {
+  "texels_per_m": 32.33,
+  "colors_texture": 32,
+  "wall_L_mean": 59.3,
+  "wall_faces": 44
+ },
+ "house_narrow_a_j4": {
+  "texels_per_m": 25.36,
+  "colors_texture": 34,
+  "wall_L_mean": 139.5,
+  "wall_faces": 111
+ },
+ "house_narrow_b_j4": {
+  "texels_per_m": 24.17,
+  "colors_texture": 33,
+  "wall_L_mean": 165.0,
+  "wall_faces": 85
+ },
+ "house_shop_j4": {
+  "texels_per_m": 25.72,
+  "colors_texture": 33,
+  "wall_L_mean": 133.3,
+  "wall_faces": 87
+ },
+ "house_slope_j4": {
+  "texels_per_m": 25.31,
+  "colors_texture": 31,
+  "wall_L_mean": 137.7,
+  "wall_faces": 76
+ },
+ "house_warehouse_j4": {
+  "texels_per_m": 25.61,
+  "colors_texture": 33,
+  "wall_L_mean": 159.4,
+  "wall_faces": 102
+ },
+ "house_cafe_j4": {
+  "texels_per_m": 26.46,
+  "colors_texture": 30,
+  "wall_L_mean": 122.3,
+  "wall_faces": 26
+ },
+ "house_narrow_a_j3": {
+  "texels_per_m": 25.43,
+  "colors_texture": 34,
+  "wall_L_mean": 141.2,
+  "wall_faces": 111
+ },
+ "house_narrow_b_j3": {
+  "texels_per_m": 24.2,
+  "colors_texture": 33,
+  "wall_L_mean": 165.0,
+  "wall_faces": 85
+ },
+ "house_shop_j3": {
+  "texels_per_m": 25.8,
+  "colors_texture": 33,
+  "wall_L_mean": 135.5,
+  "wall_faces": 87
+ },
+ "house_slope_j3": {
+  "texels_per_m": 25.36,
+  "colors_texture": 31,
+  "wall_L_mean": 137.4,
+  "wall_faces": 76
+ },
+ "house_warehouse_j3": {
+  "texels_per_m": 25.72,
+  "colors_texture": 33,
+  "wall_L_mean": 157.9,
+  "wall_faces": 104
+ },
+ "house_cafe_j3": {
+  "texels_per_m": 26.59,
+  "colors_texture": 30,
+  "wall_L_mean": 124.0,
+  "wall_faces": 26
+ }
+}
