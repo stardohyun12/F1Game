@@ -1,0 +1,163 @@
+{
+ "task": "20261027-2015",
+ "source": "scene-a4-houses-j3 (+ j4 과정)",
+ "palette": "palette46.gpl = 40 + 덧창 6",
+ "shutter_palette": {
+  "C1": [
+   [
+    112,
+    120,
+    166
+   ],
+   [
+    92,
+    100,
+    142
+   ],
+   [
+    72,
+    80,
+    116
+   ]
+  ],
+  "C2": [
+   [
+    100,
+    140,
+    98
+   ],
+   [
+    80,
+    118,
+    80
+   ],
+   [
+    62,
+    94,
+    66
+   ]
+  ]
+ },
+ "files": {
+  "house_narrow_a": {
+   "faces_painted": {
+    "plank:shutter_C2": 12,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 62373,
+   "painted_p5": 81.2,
+   "painted_isolated_pct": 0.048,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 422,
+   "wall_edge_ring_texels": 111093,
+   "rooms": {
+    "faces": 7,
+    "front_faces": 2,
+    "board_m": [
+     2.06,
+     0.66
+    ],
+    "board_texels": [
+     66,
+     21
+    ],
+    "font": "3x5",
+    "stroke_texels": 3,
+    "text_texels": [
+     57,
+     15
+    ],
+    "dL": 169.3
+   },
+   "shutter_texels": 14688,
+   "shutter_colors": 3,
+   "tris": 1868,
+   "colors": 37
+  },
+  "house_narrow_b": {
+   "faces_painted": {
+    "shutter:shutter_C1": 32
+   },
+   "painted_texels": 20776,
+   "painted_p5": 81.7,
+   "painted_isolated_pct": 0.0,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 355,
+   "wall_edge_ring_texels": 97235,
+   "rooms": null,
+   "shutter_texels": 17581,
+   "shutter_colors": 3,
+   "tris": 1552,
+   "colors": 36
+  },
+  "house_shop": {
+   "faces_painted": {
+    "plank:shutter_C1": 8,
+    "door:front_D1": 4,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 68098,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.01,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 274,
+   "wall_edge_ring_texels": 75758,
+   "rooms": null,
+   "shutter_texels": 9792,
+   "shutter_colors": 2,
+   "tris": 1198,
+   "colors": 35
+  },
+  "house_slope": {
+   "faces_painted": {
+    "shutter:shutter_C2": 16,
+    "roof:roof_E3": 2
+   },
+   "painted_texels": 56256,
+   "painted_p5": 81.2,
+   "painted_isolated_pct": 0.004,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 374,
+   "wall_edge_ring_texels": 79680,
+   "rooms": null,
+   "shutter_texels": 8879,
+   "shutter_colors": 3,
+   "tris": 2466,
+   "colors": 34
+  },
+  "house_warehouse": {
+   "faces_painted": {
+    "door:shutter_B1": 8,
+    "roof:roof_E2": 2
+   },
+   "painted_texels": 87835,
+   "painted_p5": 90.9,
+   "painted_isolated_pct": 0.023,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 375,
+   "wall_edge_ring_texels": 96405,
+   "rooms": null,
+   "shutter_texels": 0,
+   "shutter_colors": 0,
+   "tris": 1398,
+   "colors": 33
+  },
+  "house_cafe": {
+   "faces_painted": {
+    "door:front_D2": 2,
+    "roof:roof_E3": 2
+   },
+   "painted_texels": 39779,
+   "painted_p5": 64.4,
+   "painted_isolated_pct": 0.0,
+   "painted_in_palette": true,
+   "strip_faces_flattened": 155,
+   "wall_edge_ring_texels": 38823,
+   "rooms": null,
+   "shutter_texels": 0,
+   "shutter_colors": 0,
+   "tris": 1134,
+   "colors": 30
+  }
+ }
+}
