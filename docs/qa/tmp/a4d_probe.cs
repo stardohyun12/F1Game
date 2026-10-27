@@ -1,0 +1,17 @@
+// 과제 1331 탐색: A4c 의 Race(차) 값 — 트랜스폼·콜라이더·리지드바디·컨트롤러 직렬값·외형 경계·자식 구조
+var sc = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/Scene_A4c_Town.unity");
+var car = GameObject.Find("Race"); var sb = new System.Text.StringBuilder();
+sb.Append("pos " + car.transform.position.ToString("F2") + " rot " + car.transform.eulerAngles.ToString("F0") + " scale " + car.transform.lossyScale.ToString("F2") + "\n");
+foreach (var c in car.GetComponents<Component>()) sb.Append(c.GetType().Name + ", "); sb.Append("\n");
+foreach (var c in car.GetComponents<Collider>()) { sb.Append(c.GetType().Name + " mat " + (c.sharedMaterial ? c.sharedMaterial.name + " f" + c.sharedMaterial.dynamicFriction + "/" + c.sharedMaterial.staticFriction + " comb " + c.sharedMaterial.frictionCombine : "none"));
+  if (c is BoxCollider b) sb.Append(" center " + b.center.ToString("F2") + " size " + b.size.ToString("F2")); sb.Append(" world " + c.bounds.size.ToString("F2") + " minY " + c.bounds.min.y.ToString("F2") + "\n"); }
+var rb = car.GetComponent<Rigidbody>(); sb.Append("rb mass " + rb.mass + " lin " + rb.linearDamping + " ang " + rb.angularDamping + " interp " + rb.interpolation + " cd " + rb.collisionDetectionMode + " constraints " + rb.constraints + "\n");
+var so = new SerializedObject(car.GetComponent<ArcadeCarController>()); var it = so.GetIterator(); it.NextVisible(true);
+while (it.NextVisible(false)) { if (it.propertyType == SerializedPropertyType.Float || it.propertyType == SerializedPropertyType.Integer || it.propertyType == SerializedPropertyType.Boolean || it.propertyType == SerializedPropertyType.Enum || it.propertyType == SerializedPropertyType.Vector2 || it.propertyType == SerializedPropertyType.Vector3)
+  sb.Append(it.name + "=" + (it.propertyType == SerializedPropertyType.Float ? it.floatValue.ToString() : it.propertyType == SerializedPropertyType.Integer ? it.intValue.ToString() : it.propertyType == SerializedPropertyType.Boolean ? it.boolValue.ToString() : it.propertyType == SerializedPropertyType.Enum ? it.enumValueIndex.ToString() : it.propertyType == SerializedPropertyType.Vector2 ? it.vector2Value.ToString() : it.vector3Value.ToString()) + " "); }
+sb.Append("\n");
+foreach (Transform t in car.transform) { var rs = t.GetComponentsInChildren<Renderer>(true); var bb = new Bounds(); bool f = false; foreach (var r in rs) { if (r is TrailRenderer || r is ParticleSystemRenderer) continue; if (!f) { bb = r.bounds; f = true; } else bb.Encapsulate(r.bounds); }
+  sb.Append(" child " + t.name + " active " + t.gameObject.activeSelf + " lpos " + t.localPosition.ToString("F2") + " lscale " + t.localScale.ToString("F2") + " comps "); foreach (var c in t.GetComponents<Component>()) sb.Append(c.GetType().Name + ","); sb.Append(" rends " + rs.Length + (f ? " size " + bb.size.ToString("F2") + " minY " + bb.min.y.ToString("F2") : "") + "\n"); }
+var kv = car.transform.Find("A4_KartVisual"); if (kv) { foreach (var t in kv.GetComponentsInChildren<Transform>(true)) sb.Append("   kv " + t.name + (t.GetComponent<MeshFilter>() ? " mesh " + t.GetComponent<MeshFilter>().sharedMesh.name + " v" + t.GetComponent<MeshFilter>().sharedMesh.vertexCount + " sub" + t.GetComponent<MeshFilter>().sharedMesh.subMeshCount : "") + "\n"); }
+foreach (var l in UnityEngine.Object.FindObjectsByType<CarVisualLean>(FindObjectsInactive.Include, FindObjectsSortMode.None)) sb.Append("lean on " + l.name + "\n");
+return sb.ToString();
