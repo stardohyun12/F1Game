@@ -1,4 +1,4 @@
-"""에셋 루프 #1 MART — 항구 앞 동네 마트 (과제 20261028-0236). Blender bpy 절차 생성:
+"""에셋 루프 #1 MART (2차 20261028-0252: 간판 6텍셀 칸·R 곧은 다리, 처마 짙은 아랫띠·난간 색 띠·계단실 판 지붕, 걸레받이·화분 줄·홈통) — 항구 앞 동네 마트 (과제 20261028-0236). Blender bpy 절차 생성:
     D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/q1_mart.py
 형태: 9×7m 회벽 2층(평지붕+난간, 지붕 위 계단실), 1층 큰 진열창+유리문, 줄무늬 차양, 간판 "MART"(글자 0.875m·획 4텍셀),
       앞 진열대(과일·계란 상자), 오른쪽 자판기, 옆벽 B1 사진 셔터. 앞면 = Blender -Y (집 j판과 같은 축 → FBX 앞 +Z), 피벗 = 바닥 앞면 가운데.
@@ -25,7 +25,7 @@ with open(OUT + 'palette50.gpl', 'w', encoding='utf-8') as f:
     for c, n in PAL: f.write('%3d %3d %3d\t%s\n' % (*c, n))
 P = np.array([c for c, _ in PAL], float)
 WALL = (244, 235, 200); WALL2 = (231, 185, 140); STONE = (154, 164, 89)
-C = dict(wall=WALL, patch=(236, 202, 140), stone=(138, 142, 86), joint=(112, 135, 110), glass=(52, 70, 68), glass2=(62, 148, 171),
+C = dict(skirt=(99, 122, 113), skirtline=(81, 98, 88), hutsoffit=(74, 77, 62), band=(161, 109, 66), wall=WALL, patch=(236, 202, 140), stone=(138, 142, 86), joint=(112, 135, 110), glass=(52, 70, 68), glass2=(62, 148, 171),
          frame=(207, 209, 182), shelf=(161, 109, 66), red=NEW[0][0], ink=NEW[1][0], orange=NEW[2][0], yellow=NEW[3][0], cream=(244, 235, 200),
          green=(100, 140, 98), green2=(80, 118, 80), wood=(177, 148, 106), wood2=(158, 127, 78), dark=(50, 49, 43), roof=(169, 158, 108),
          soffit=(131, 134, 110), metal=(146, 148, 91), blue=(112, 120, 166), egg=(236, 202, 140), tray=(174, 166, 106), leaf=(150, 158, 87))
@@ -41,11 +41,8 @@ def grain(A, amt, seed, cell=6):
     A *= (1 + g)[..., None]
 def wallbase(A, seed, plinth=True):
     A[:] = WALL; grain(A, .03, seed)
-    if plinth:
-        rect(A, 0, 99, 0, .45, C['stone']); h, w = A.shape[:2]
-        for u in range(0, w, 13): A[:T(.45), u] = C['joint']
-        A[T(.22), :] = C['joint']; A[T(.45):T(.45) + 1, :] = C['soffit']
-    A[T(.45) + 1:T(.45) + 6] *= .97  # 튄 빗물 자리(아래만, 약하게)
+    if plinth:  # 걸레받이 30cm — 다시 칠한 낡은 초록회 띠(한 색 + 윗선, 얼룩 없음) (2차)
+        rect(A, 0, 99, 0, .30, C['skirt']); rect(A, 0, 99, .30, .33, C['skirtline'])
 
 def window(A, x0, x1, z0, z1, shut=None, bars=1):
     rect(A, x0 - .07, x1 + .07, z0 - .1, z1 + .07, C['frame']); rect(A, x0, x1, z0, z1, C['glass'])
@@ -76,10 +73,10 @@ def p_front(A):
     rect(A, 1.95 + o, 3.45 + o, 1.05, 1.1, C['metal']); rect(A, 2.0 + o, 2.4 + o, 2.1, 2.4, C['glass2'])
     rect(A, 3.8 + o, 4.35 + o, 1.2, 1.9, C['wood2']); rect(A, 3.85 + o, 4.3 + o, 1.25, 1.85, C['cream'])  # 게시판
     # 층 사이 줄눈 + 2층
-    rect(A, 0, 99, 4.3, 4.34, C['patch'])
-    window(A, -3.2 + o, -2.1 + o, 4.62, 5.8, 'green'); window(A, .9 + o, 2.0 + o, 4.62, 5.8, 'green')
-    window(A, 3.45 + o, 4.0 + o, 4.95, 5.6, None, 0)  # 작은 창(화장실)
-    rect(A, -1.4 + o, -.4 + o, 4.45, 5.2, (236, 226, 192))  # 보수 칠 자국
+    rect(A, 0, 99, 4.55, 4.59, C['patch'])
+    window(A, -3.2 + o, -2.1 + o, 4.8, 5.85, 'green'); window(A, .9 + o, 2.0 + o, 4.8, 5.85, 'green')
+    window(A, 3.45 + o, 4.0 + o, 5.05, 5.7, None, 0)  # 작은 창(화장실)
+    rect(A, -1.4 + o, -.4 + o, 4.7, 5.4, (236, 226, 192))  # 보수 칠 자국
     rect(A, 0, 99, 6.0, 9, C['wall'])
 def p_side(A, right):
     wallbase(A, 3 if right else 4)
@@ -107,19 +104,21 @@ def p_awning(A):
 def p_valance(A):
     p_awning(A); h, w = A.shape[:2]; A[:2] = C['ink']
     for u in range(w): A[:max(1, 3 - abs((u % T(.36)) - T(.18)) // 3)] = C['ink']  # 아래 물결 끝
-GLY = {'M': ['10001', '11011', '11111', '10101', '10001', '10001', '10001'], 'A': ['01110', '10001', '10001', '11111', '10001', '10001', '10001'],
+GLY = {'M': ['10001', '11011', '11111', '10101', '10001', '10001', '10001'], 'A': ['01110', '10001', '10001', '10001', '11111', '10001', '10001'],
        'R': ['11110', '10001', '10001', '11110', '10100', '10010', '10001'], 'T': ['11111'] + ['00100'] * 6}
 def p_sign(A):
     h, w = A.shape[:2]; A[:] = C['cream']; grain(A, .02, 9)
-    A[:3] = C['ink']; A[-3:] = C['ink']; A[:, :3] = C['ink']; A[:, -3:] = C['ink']
-    A[3:5, 3:-3] = C['red']; A[-5:-3, 3:-3] = C['red']
-    cell = 5; gw = 5 * cell; gap = 11; tw = 4 * gw + 3 * gap; u0 = (w - tw) // 2; v0 = (h - 7 * cell) // 2
+    A[:2] = C['ink']; A[-2:] = C['ink']; A[:, :3] = C['ink']; A[:, -3:] = C['ink']  # 2차: 안쪽 빨간 줄 뺌 — 글자와 붙어 획이 녹았다(글자 위아래 크림 3텍셀)
+    cell = 6; gw = 5 * cell; gap = 12; tw = 4 * gw + 3 * gap; u0 = (w - tw) // 2; v0 = (h - 7 * cell) // 2
     for i, ch in enumerate('MART'):
         for r, row in enumerate(GLY[ch]):
             for c, b in enumerate(row):
-                if b == '1': A[v0 + (6 - r) * cell:v0 + (7 - r) * cell, u0 + i * (gw + gap) + c * cell:u0 + i * (gw + gap) + (c + 1) * cell] = C['ink']
+                if b == '1':
+                    g = GLY[ch]; diag = r > 0 and c > 0 and g[r - 1][c - 1] == '1' and row[c - 1] == '0' and g[r - 1][c] == '0'
+                    ul = u0 + i * (gw + gap) + c * cell - (cell // 2 if diag else 0)  # 계단 대각선은 반 칸 왼쪽으로 늘려 이어지게(20m 에서 점으로 끊김 방지)
+                    A[v0 + (6 - r) * cell:v0 + (7 - r) * cell, ul:u0 + i * (gw + gap) + (c + 1) * cell] = C['ink']
     yy, xx = np.mgrid[0:h, 0:w]
-    for cx, col in ((u0 - 48, 'egg'), (u0 + tw + 48, 'red')):  # 왼: 계란, 오: 사과
+    for cx, col in ((u0 - 36, 'egg'), (u0 + tw + 36, 'red')):  # 왼: 계란, 오: 사과
         m = ((xx - cx) / 12.0) ** 2 + ((yy - h / 2) / (16.0 if col == 'egg' else 13.5)) ** 2 <= 1; A[m] = C[col]
         if col == 'red': A[int(h / 2) + 12:int(h / 2) + 18, cx:cx + 8] = C['green']
         else: A[m & (((xx - cx) / 12.0) ** 2 + ((yy - h / 2) / 16.0) ** 2 > .7)] = C['wood']
@@ -177,17 +176,20 @@ PT = dict(front=p_front, sideR=lambda A: p_side(A, True), sideL=lambda A: p_side
           hut=p_flat(WALL, .03, 8), hutroof=p_flat(C['roof'], .03, 9, (10, C['wood2'])), bluebox=p_flat(C['blue'], .02, 10, (6, (92, 100, 142))),
           pot=p_flat(C['wood2'], .02, 12), plant=p_fruit([C['green'], C['green2'], C['leaf']]), card=p_flat(C['cream'], 0, 1), stick=p_flat(C['dark'], 0, 1))
 PT['shutter'] = 'PHOTO_B1'
+def p_cornice(A): A[:] = C['frame']; grain(A, .02, 4); A[:3] = C['joint']  # 처마 끝 짙은 아랫띠(수평이 읽히게)
+def p_parapet(A): A[:] = C['frame']; grain(A, .02, 13); A[-6:] = C['band']  # 난간 윗단 색 띠 19cm
+PT.update(cornice=p_cornice, parapet=p_parapet, railtop=p_flat(C['band'], .02, 14), hutsoffit=p_flat(C['hutsoffit'], 0, 1),
+          flowers=p_fruit([C['green'], C['red'], C['leaf'], C['yellow'], C['red']]))
 W0, W1, D, H = -4.5, 4.5, 7.0, 6.0
 box('MART_body', W0, W1, 0, D, 0, H, dict(front='front', back='back', right='sideR', left='sideL', top='roof'), skip=('bottom',))
 # 처마 띠(코니스) + 난간
-box('MART_body', W0 - .15, W1 + .15, -.15, D + .15, H, H + .22, dict({'*': 'cornice'}, bottom='soffit', top=None))
+box('MART_body', W0 - .15, W1 + .15, -.15, D + .15, H, H + .22, dict({'*': 'cornice'}, bottom='hutsoffit', top=None))
 for x0, x1, y0, y1 in ((W0 - .15, W1 + .15, -.15, .05), (W0 - .15, W1 + .15, D - .05, D + .15), (W0 - .15, W0 + .05, .05, D - .05), (W1 - .05, W1 + .15, .05, D - .05)):
-    box('MART_body', x0, x1, y0, y1, H + .22, H + .62, dict({'*': 'cornice'}, top='rail', bottom=None))
+    box('MART_body', x0, x1, y0, y1, H + .22, H + .62, dict({'*': 'parapet'}, top='railtop', bottom=None))
 box('MART_body', W0 + .6, W0 + 3.0, 3.8, D - .4, H, H + 2.2, dict({'*': 'hut'}, top=None, bottom=None))  # 지붕 위 계단실
-Q('MART_body', (W0 + .45, 3.6, H + 2.45), (2.7, 0, 0), (0, 3.25, -.3), 'hutroof')
-Q('MART_body', (W0 + .45, D - .25, H + 2.11), (2.7, 0, 0), (0, -3.25, .3), 'soffit')
+box('MART_body', W0 + .5, W0 + 3.1, 3.7, D - .3, H + 2.2, H + 2.32, dict({'*': 'cornice'}, top='hutroof', bottom='hutsoffit'))  # 계단실 지붕: 수평 얇은 판(2차)
 # 간판 (앞으로 .15)
-box('MART_body', -4.3, 4.3, -.15, 0, 2.85, 4.2, dict({'*': 'signedge'}, front='sign', back=None))
+box('MART_body', -4.3, 4.3, -.15, 0, 2.82, 4.45, dict({'*': 'signedge'}, front='sign', back=None))
 # 차양 (벽 2.78 → 앞 1.6m 에서 2.38) + 앞 드림
 Q('MART_body', (-4.6, -1.6, 2.38), (9.2, 0, 0), (0, 1.6, .4), 'awning')
 Q('MART_body', (-4.6, 0, 2.76), (9.2, 0, 0), (0, -1.6, -.4), 'awning')  # 아랫면(2cm 아래, 겹침 방지)
@@ -198,6 +200,9 @@ for x in (-4.6, 4.6):  # 옆 삼각 대신 얇은 판(쿼드)
 box('MART_body', W1 - .02, W1 + .1, -.1, .02, 0, H, 'pipe')
 box('MART_body', W1, W1 + .3, 1.2, 2.05, 3.2, 3.8, dict({'*': 'acs'}, right='ac'))
 Q('MART_body', (W1 + .02, 2.35, .45), (0, 2.5, 0), (0, 0, 2.25), 'shutter')
+box('MART_body', -3.3, -2.0, -.24, 0, 4.5, 4.68, dict({'*': 'pot'}, top='flowers'))  # 2층 창 화분 줄(2차)
+box('MART_body', -3.25, -2.05, -.2, -.04, 4.68, 4.86, 'flowers')
+box('MART_body', W1, W1 + .12, 5.45, 5.57, 0, H, 'pipe')  # 옆벽 홈통(2차)
 # 진열대: 2단 탁자 + 상자
 box('MART_display', -3.95, -.35, -1.25, -.2, 0, .55, 'table')  # 진열대: 앞으로 35° 기운 2줄 받침(낮은 카메라에서 물건 면이 보이게)
 box('MART_display', -3.95, -.35, -.25, -.2, .55, 1.3, 'table')
@@ -278,7 +283,7 @@ uvA = sum(i[2] * i[3] for i in items); wA = sum(q[1].length * q[2].length for qs
 meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per_m=round(math.sqrt(uvA / wA), 2), colors=int(len(np.unique(idx[USED]))),
             palette='palette50.gpl (palette46 + mart 4)', in_palette=True, isolated_pct=round(100 * m.sum() / USED.sum(), 3),
             p5=round(float(np.percentile(Lq, 5)), 1), p50=round(float(np.percentile(Lq, 50)), 1), p95=round(float(np.percentile(Lq, 95)), 1),
-            photo_texels=int(PHOTO.sum()), size_m=dict(w=round(W1 - W0, 2), d=D, h_body=H, h_max=round(H + 2.45, 2), front_protrude=1.6 + .25),
+            photo_texels=int(PHOTO.sum()), size_m=dict(w=round(W1 - W0, 2), d=D, h_body=H, h_max=round(H + 2.32, 2), front_protrude=1.6 + .25),
             pivot='바닥 앞면 가운데 (앞벽 면 = 0)', forward='Blender -Y → FBX/Unity +Z (집 j판과 같은 설정)')
 json.dump(meas, open(OUT + 'measure.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False); print('MEAS', meas, flush=True)
 
