@@ -1,0 +1,90 @@
+{
+ "c_house_shop": {
+  "colors90": 12,
+  "flat8": 32,
+  "blockstd": 13.8,
+  "edge": 18.3,
+  "asym": 1.05,
+  "S": 0.26,
+  "V": 0.68,
+  "huefam": 7,
+  "huestd": 64
+ },
+ "e_house_shop": {
+  "colors90": 18,
+  "flat8": 31,
+  "blockstd": 13.1,
+  "edge": 19.7,
+  "asym": 0.94,
+  "S": 0.29,
+  "V": 0.7,
+  "huefam": 6,
+  "huestd": 58
+ },
+ "c_house_narrow_a": {
+  "colors90": 12,
+  "flat8": 31,
+  "blockstd": 17.6,
+  "edge": 20.5,
+  "asym": 1.07,
+  "S": 0.29,
+  "V": 0.7,
+  "huefam": 7,
+  "huestd": 65
+ },
+ "e_house_narrow_a": {
+  "colors90": 18,
+  "flat8": 31,
+  "blockstd": 19.0,
+  "edge": 24.1,
+  "asym": 1.19,
+  "S": 0.29,
+  "V": 0.71,
+  "huefam": 5,
+  "huestd": 56
+ },
+ "c_house_slope": {
+  "colors90": 8,
+  "flat8": 46,
+  "blockstd": 7.8,
+  "edge": 15.6,
+  "asym": 1.02,
+  "S": 0.15,
+  "V": 0.67,
+  "huefam": 5,
+  "huestd": 69
+ },
+ "e_house_slope": {
+  "colors90": 10,
+  "flat8": 47,
+  "blockstd": 8.3,
+  "edge": 14.9,
+  "asym": 1.05,
+  "S": 0.18,
+  "V": 0.71,
+  "huefam": 4,
+  "huestd": 32
+ },
+ "REF1": {
+  "colors90": 62,
+  "flat8": 24,
+  "blockstd": 6.6,
+  "edge": 16.6,
+  "asym": 1.4,
+  "S": 0.62,
+  "V": 0.8,
+  "huefam": 4,
+  "huestd": 25
+ },
+ "REF6": {
+  "colors90": 36,
+  "flat8": 32,
+  "blockstd": 5.6,
+  "edge": 12.9,
+  "asym": 0.96,
+  "S": 0.21,
+  "V": 0.41,
+  "huefam": 1,
+  "huestd": 19
+ }
+}
