@@ -1,0 +1,76 @@
+{
+ "files": {
+  "house_narrow_a": {
+   "L_visible": 150.5,
+   "L_wall": 154.9,
+   "speckle_1px_pct": 0.004,
+   "colors": 23,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 7,
+   "tris": 1868
+  },
+  "house_narrow_b": {
+   "L_visible": 174.0,
+   "L_wall": 185.0,
+   "speckle_1px_pct": 0.008,
+   "colors": 21,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 5,
+   "tris": 1552
+  },
+  "house_shop": {
+   "L_visible": 145.6,
+   "L_wall": 152.8,
+   "speckle_1px_pct": 0.024,
+   "colors": 23,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 7,
+   "tris": 1090
+  },
+  "house_slope": {
+   "L_visible": 151.8,
+   "L_wall": 157.8,
+   "speckle_1px_pct": 0.0,
+   "colors": 21,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 6,
+   "tris": 2466
+  },
+  "house_warehouse": {
+   "L_visible": 166.5,
+   "L_wall": 179.6,
+   "speckle_1px_pct": 0.003,
+   "colors": 16,
+   "size": [
+    512,
+    512
+   ],
+   "wall_colors": 5,
+   "tris": 1290
+  },
+  "house_cafe": {
+   "L_visible": 158.0,
+   "L_wall": 167.3,
+   "speckle_1px_pct": 0.003,
+   "colors": 25,
+   "size": [
+    512,
+    256
+   ],
+   "wall_colors": 6,
+   "tris": 1122
+  }
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "집 f (미리보기)": {
+  "texel_px": 4,
+  "colors90": 20,
+  "light_steps": 6
+ },
+ "집 e (미리보기)": {
+  "texel_px": 4,
+  "colors90": 20,
+  "light_steps": 7
+ },
+ "집 e (게임 컷)": {
+  "texel_px": 3,
+  "colors90": 30,
+  "light_steps": 5
+ },
+ "나무 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 8,
+  "light_steps": 2
+ },
+ "길 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 15,
+  "light_steps": 4
+ },
+ "풀·땅 (게임 컷)": {
+  "texel_px": 4,
+  "colors90": 6,
+  "light_steps": 4
+ }
+}
