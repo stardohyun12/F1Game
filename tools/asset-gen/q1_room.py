@@ -30,6 +30,15 @@ C = dict(wall=(244, 235, 200), wain=(178, 209, 183), wainline=(135, 157, 150), r
          char=(74, 77, 62), grey=(131, 134, 110), red=(186, 78, 60), orange=(214, 118, 52), yellow=(226, 192, 78), cream=(244, 235, 200), egg=(236, 202, 140),
          blue=(112, 120, 166), blue2=(92, 100, 142), teal=(62, 148, 171), sea=(98, 142, 141), sea2=(95, 128, 126), green=(100, 140, 98), green2=(80, 118, 80), green3=(62, 94, 66),
          sky1=NEW[0][0], sky2=NEW[1][0], pink=NEW[2][0], apricot=(231, 185, 140), straw=(191, 185, 123), straw2=(174, 166, 106), terra=(161, 109, 66))
+# 2차(과제 0406): 결 단계 — 큰 면 바탕색마다 어둠2·어둠1·밝음1 (사진 결이 양자화에서 살아남게)
+for k in ['wall', 'wain', 'wainline', 'rail', 'skirt', 'wood', 'wood2', 'wood3', 'dkwood2', 'straw', 'straw2', 'green3', 'frame', 'egg', 'orange']:
+    for f, t in ((.86, '어둠2'), (.93, '어둠1'), (1.05, '밝음1')):
+        c = tuple(int(min(255, round(v * f))) for v in C[k])
+        if c not in [q for q, _ in PAL]: PAL.append((c, f'q1v2 결 {t} {k}'))
+with open(OUT + 'palette_q1v2.gpl', 'w', encoding='utf-8') as f:
+    f.write('GIMP Palette\nName: q1-room v2 (palette53 + 결 단계)\nColumns: 8\n#\n')
+    for c, n in PAL: f.write('%3d %3d %3d\t%s\n' % (*c, n))
+P = np.array([c for c, _ in PAL], float)
 
 # ---------- 칠하기 도구 (A[v,u], v=0 아래, 단위 m — 밀도 CD[0]) ----------
 def T(m): return int(round(m * CD[0]))
@@ -42,6 +51,32 @@ def disk(A, cu, cv, r, col, ring=0):
 def grain(A, amt, seed, cell=6):
     rs = np.random.default_rng(seed); h, w = A.shape[:2]
     g = rs.uniform(-amt, amt, (h // cell + 2, w // cell + 2)); g = np.kron(g, np.ones((cell, cell)))[:h, :w]; A *= (1 + g)[..., None]
+# 2차: CC0 재료 사진 결(art/source/q1-room-cc0, Poly Haven) — 명도 비율만: 큰 블러로 나눠 빛·그늘 평평 → 밀도로 BOX 축소 → 표준화 → 바탕색에 곱
+PH = {'plaster': ('painted_plaster_wall', 2.0), 'wood': ('fine_grained_wood', 1.2), 'tatami': ('tatami_mat', 1.8), 'fabric': ('rough_linen', 1.0), 'paper': ('painted_plaster_wall', .7)}
+PHC = {}; PHUSE = set()
+def ph_tile(key, d):
+    if (key, d) in PHC: return PHC[key, d]
+    fid, S = PH[key]; im = bpy.data.images.load(R + 'art/source/q1-room-cc0/' + fid + '.jpg'); W0, H0 = im.size
+    a = np.empty(W0 * H0 * 4, np.float32); im.pixels.foreach_get(a); a = a.reshape(H0, W0, 4)[..., :3] @ np.array((.299, .587, .114), np.float32) + 1e-3; bpy.data.images.remove(im)
+    fy, fx = np.fft.fftfreq(H0)[:, None], np.fft.fftfreq(W0)[None]; sg = W0 / 8
+    low = np.real(np.fft.ifft2(np.fft.fft2(a) * np.exp(-2 * (math.pi * sg) ** 2 * (fx ** 2 + fy ** 2))))
+    r = np.log(a / np.maximum(low, 1e-3)); n = max(4, int(round(S * d)))
+    ey, ex = np.linspace(0, H0, n + 1).astype(int), np.linspace(0, W0, n + 1).astype(int)
+    t = np.add.reduceat(np.add.reduceat(r, ey[:-1], 0), ex[:-1], 1) / np.outer(np.diff(ey), np.diff(ex))
+    t = t - t.mean(); gy, gx = np.fft.fftfreq(n)[:, None], np.fft.fftfreq(n)[None]; bs = BL * d / 32  # 결을 얼룩 덩어리로(기준 화면 집 벽처럼)
+    t = np.real(np.fft.ifft2(np.fft.fft2(t) * np.exp(-2 * (math.pi * bs) ** 2 * (gx ** 2 + gy ** 2))))
+    PHC[key, d] = np.clip((t - t.mean()) / (t.std() + 1e-6), -2.5, 2.5); return PHC[key, d]
+def photo(A, key, amp, seed):
+    t = ph_tile(key, CD[0]); h, w = A.shape[:2]; rs = np.random.default_rng(seed); PHUSE.add(PH[key][0])
+    t = np.roll(t, (rs.integers(t.shape[0]), rs.integers(t.shape[1])), (0, 1)); t = np.tile(t, (h // t.shape[0] + 1, w // t.shape[1] + 1))[:h, :w]
+    A *= (1 + amp * t)[..., None]
+AMP = float(os.environ.get('AMP', .7)); BL = float(os.environ.get('BL', 1.6))
+def ph_of(pt):
+    for keys, v in ((('floor', 'ceiling', 'beam', 'doorframe', 'winframe', 'sill', 'desk', 'drawers', 'chair', 'shelf', 'bedwood', 'hook', 'radio'), ('wood', .08)),
+                    (('tatami',), ('tatami', .10)), (('reveal',), ('plaster', .07)),
+                    (('sheet', 'pillow', 'futon', 'curtain', 'towel', 'shirt', 'vest', 'slipper'), ('fabric', .08)),
+                    (('poster', 'calendar', 'magazine', 'notebook', 'cert', 'box', 'photo', 'book', 'plate', 'socket'), ('paper', .05))):
+        if pt.startswith(keys): return v[0], v[1] * AMP
 F5 = {'M': ['10001', '11011', '11111', '10101', '10001', '10001', '10001'], 'A': ['01110', '10001', '10001', '10001', '11111', '10001', '10001'],
       'R': ['11110', '10001', '10001', '11110', '10010', '10011', '10001'], 'E': ['11111', '10000', '10000', '11110', '10000', '10000', '11111'],
       'G': ['01110', '10001', '10000', '10111', '10001', '10001', '01110'], 'P': ['11110', '10001', '10001', '11110', '10000', '10000', '10000'],
@@ -83,11 +118,8 @@ def wall_paint(name):
         rect(A, 2.35, 3.15, 0, 1.95, C['wood2']); rect(A, 2.45, 3.05, .2, .9, C['wood']); rect(A, 2.45, 3.05, 1.05, 1.82, C['wood'])
         rect(A, 2.47, 3.03, .22, .25, C['dkwood']); rect(A, 2.47, 3.03, 1.07, 1.1, C['dkwood'])
         for z in (1.12, 1.31, 1.47): rect(A, 2.2, 2.29, z, z + 1 / 32, C['dkwood2'])
-        for uu, zz in ((1.15, 1.35), (1.62, 1.35), (1.15, 1.95), (1.62, 1.95)): rect(A, uu, uu + 2 / 32, zz, zz + 2 / 32, C['frame'])
-        rect(A, 1.2, 1.4, 1.42, 1.48, C['frame'])  # 남은 종이 조각 한 줄
-    if name == 'R':  # 스위치 판
-        rect(A, .22, .3, 1.1, 1.2, C['frame']); rect(A, .25, .27, 1.13, 1.17, C['grey'])
-        rect(A, 1.8, 1.9, .3, .38, C['frame'])  # 콘센트
+    # 2차: 테이프 자국 지움, 스위치·콘센트는 64 물체로(아래 기하)
+    photo(A, 'plaster', .075 * AMP, len(name) * 7)
     return np.clip(A, 0, 255)
 WCACHE = {}
 def wall_crop(name, u0, z0, h, w):
@@ -152,7 +184,18 @@ def p_view(A):  # 창밖 아침 만: 하늘 계단 + 계단 구름 + 바다 + �
 def p_curtain(A):
     A[:] = C['wain']; A[:, ::3] = C['wainline']
 def p_bedwood(A): A[:] = C['terra']; A[::4] = C['dkwood']
-def p_sheet(A): A[:] = C['sky1']; A[:2] = C['frame']; A[::6] = C['frame']  # 3차: 흰 덩어리 → 옅은 하늘색 홑청
+def p_sheet(A): A[:] = C['frame']; A[:2] = C['wain']  # 2차: 바랜 크림 홑청 + 연초록 단
+def p_futonend(A):  # 개어 둔 끝: 세 겹 접힌 줄
+    h = A.shape[0]; A[:] = C['wain']
+    for f in (1 / 3, 2 / 3): A[int(h * f)] = C['wainline']
+def p_vestbody(A):  # 조끼 몸판: 반사 띠 2줄 + 주머니 + 앞 지퍼
+    h, w = A.shape[:2]; A[:] = C['orange']
+    for z in (.2, .5): A[int(h * z):int(h * z) + 2] = C['cream']
+    px(A, 3, w // 2 - 3, 2, int(h * .18), C['terra']); px(A, 4, w // 2 - 4, 3, int(h * .18) - 1, C['orange'])
+    px(A, w // 2, w // 2 + 1, 0, h, C['terra'])
+def p_vestsh(A): A[:] = C['orange']; A[:, :1] = C['terra']; A[:, -1:] = C['terra']
+def p_plate(A): A[:] = C['frame']; h, w = A.shape[:2]; px(A, w // 2 - 1, w // 2 + 1, h // 2 - 2, h // 2 + 2, C['egg'])
+def p_socket(A): A[:] = C['frame']; h, w = A.shape[:2]; px(A, w // 3 - 1, w // 3, h // 2 - 1, h // 2 + 1, C['char']); px(A, 2 * w // 3, 2 * w // 3 + 1, h // 2 - 1, h // 2 + 1, C['char'])
 def p_futon(c1, c2, check=True):
     def f(A):
         A[:] = c1
@@ -235,7 +278,8 @@ def p_cap(A): A[:] = C['blue2']; h, w = A.shape[:2]; px(A, w // 2 - 2, w // 2 + 
 
 PT = dict(floor=p_floor, ceiling=p_ceiling, tatami=p_tatami, view=p_view, curtain=p_curtain, reveal=p_flat(C['wall'], .02, 3), sill=p_flat(C['wood'], .02, 4, (4, C['wood3'])),
           winframe=p_flat(C['terra'], 0, 1), doorframe=p_flat(C['dkwood'], 0, 1), beam=p_flat(C['dkwood'], 0, 1, (5, C['dkwood2'])), metal=p_flat(C['egg'], 0, 1),
-          bedwood=p_bedwood, sheet=p_sheet, pillow=p_futon(C['frame'], C['sky1'], False), futonA=p_futon(C['blue'], C['sky1'], False), futonB=p_futon(C['cream'], C['blue'], False),
+          bedwood=p_bedwood, sheet=p_sheet, pillow=p_futon(C['egg'], C['frame'], False), futon=p_futon(C['wain'], C['frame'], False), futonend=p_futonend,
+          vestbody=p_vestbody, vestsh=p_vestsh, vestin=p_flat(C['terra'], 0, 1), plate=p_plate, socket=p_socket,
           desk=p_desk, drawers=p_drawers, chair=p_flat(C['terra'], 0, 1, (6, C['dkwood'])), shelf=p_flat(C['wood2'], 0, 1), shelfback=p_flat(C['wood3'], .02, 6, (6, C['wood2']), True),
           poster1=p_poster1, poster2=p_poster2, calendar=p_calendar, clock=p_clock, magazine=p_magazine, notebook=p_notebook, cert=p_cert,
           radiof=p_radio_front, radio=p_flat(C['dkwood2'], 0, 1), radiotop=p_flat(C['dkwood'], 0, 1, (3, C['dkwood2'])), antenna=p_flat(C['grey'], 0, 1),
@@ -249,6 +293,8 @@ for i in range(9): PT['book%d' % i] = p_book(i)
 # ---------- 기하 ----------
 quads = {}
 def Q(mesh, o, U, V, pt, dens=32): quads.setdefault(mesh, []).append((Vector(o), Vector(U), Vector(V), pt, dens))
+def Q4(mesh, pts, pt, dens=32):  # 일반 사각(볼록) — 텍스처 크기는 첫 꼭짓점의 두 변 길이
+    p = [Vector(v) for v in pts]; quads.setdefault(mesh, []).append((p[0], p[1] - p[0], p[3] - p[0], pt, dens, p))
 def box(mesh, x0, x1, y0, y1, z0, z1, pt, dens=32, skip=()):
     g = (lambda k: pt.get(k, pt.get('*'))) if isinstance(pt, dict) else (lambda k: pt)
     dx, dy, dz = x1 - x0, y1 - y0, z1 - z0
@@ -283,15 +329,21 @@ box(Pr, .08, .5, 1.47, 1.5, 1.6, 1.66, 'hook', 64); box(Pr, .16, .36, 1.455, 1.4
 wallQ(Pr, 'door', 2.62, 2.88, 2.06, 2.32, 'clock', .005, 64)
 for y0 in (-.55, .55): box(S, -1.75, 1.75, y0, y0 + .12, 2.28, HH, 'beam', skip=('top',))
 box(Pr, -.01, .01, .05, .07, 1.95, 2.28, 'cord', 64); box(Pr, -.13, .13, -.07, .19, 1.8, 1.95, 'shade', 64)
-# 창밖 판 (Unity 에선 Unlit 권장)
-Q('ROOM_view', (7, -7, -1.6), (-14, 0, 0), (0, 0, 5.8), 'view', 16)
+# 2차: 창밖 판 없앰(창틀만, 유리 없음 = 투명). 스위치·콘센트 = 64 물체(+X 벽)
+box(Pr, 1.735, 1.75, 1.2, 1.28, 1.1, 1.2, 'plate', 64, skip=('right', 'bottom')); box(Pr, 1.735, 1.75, -.4, -.3, .3, .38, 'socket', 64, skip=('right', 'bottom'))
 # 깔개
 box(Fu, -.7, .9, -.6, .85, 0, .012, dict(top='tatami'), skip=('bottom',))
 # 침대(-X 벽): 틀·머리판·요·베개·개어 둔 이불 3단
 box(Fu, -1.75, -.8, -1.0, .95, 0, .28, 'bedwood', skip=('bottom', 'left')); box(Fu, -1.75, -.8, -1.0, -.95, .28, .72, 'bedwood', skip=('left',))
 box(Fu, -1.73, -.83, -.95, .92, .28, .42, dict({'*': 'sheet'}), skip=('bottom', 'left'))
 box(Fu, -1.6, -.98, -.92, -.62, .42, .52, 'pillow', 64, skip=('bottom',))
-for k, (z0, pt) in enumerate(((.42, 'futonA'), (.5, 'futonB'), (.58, 'futonA'))): box(Fu, -1.66 + k * .015, -.9 - k * .02, .4 + k * .02, .9, z0, z0 + .08, pt, skip=('bottom',))
+# 2차: 이불 = 세 겹 개어 둔 한 덩어리, 앞(접힌 쪽) 모서리 둥글게 — 옆 단면 8각을 X 로 밀어 냄
+FP = [(.9, .42), (.46, .42), (.415, .445), (.4, .5), (.412, .575), (.46, .625), (.875, .625), (.9, .6)]
+x0, x1 = -1.66, -.9
+for i in range(1, 8):
+    (ya, za), (yb, zb) = FP[i], FP[(i + 1) % 8]; Q(Fu, (x0, ya, za), (x1 - x0, 0, 0), (0, yb - ya, zb - za), 'futon')
+for a, b, c, d in ((0, 1, 2, 3), (0, 3, 4, 7), (4, 5, 6, 7)):
+    Q4(Fu, [(x1, *FP[j]) for j in (a, b, c, d)], 'futonend'); Q4(Fu, [(x0, *FP[j]) for j in (d, c, b, a)], 'futonend')
 box(Pr, -1.45, -1.05, .05, .33, .42, .435, 'shirt', 64, skip=('bottom',)); box(Pr, -.66, -.42, -.98, -.78, 0, .09, 'box', 64, skip=('bottom',))
 box(Pr, -.72, -.62, .3, .56, 0, .04, 'slipper', 64, skip=('bottom',)); box(Pr, -.58, -.48, .26, .52, 0, .04, 'slipper', 64, skip=('bottom',))
 # 책상(+X 벽, 창 옆)·서랍·의자·조끼
@@ -300,10 +352,14 @@ box(Fu, 1.17, 1.73, -1.43, -1.39, 0, .69, 'desk', skip=('right', 'bottom', 'top'
 box(Fu, .55, .95, -1.05, -.65, .42, .46, 'chair')
 for x, y in ((.56, -1.04), (.91, -1.04), (.56, -.69), (.91, -.69)): box(Fu, x, x + .03, y, y + .03, 0, .42, 'chair', skip=('top', 'bottom'))
 for y in (-1.05, -.68): box(Fu, .55, .58, y, y + .03, .46, .92, 'chair', skip=('bottom',))
-for x0, x1 in ((.5, .53), (.59, .62)):  # 2차: 상자 → 등받이에 걸친 몸판 2장 + 어깨끈(목·팔 구멍)
-    box('ROOM_vest', x0, x1, -1.06, -.64, .55, .86, 'vest', 64, skip=('top',))
-    for y0 in (-1.06, -.74): box('ROOM_vest', x0, x1, y0, y0 + .1, .86, .96, 'strap', 64, skip=('bottom',))
-for y0 in (-1.06, -.74): box('ROOM_vest', .53, .59, y0, y0 + .1, .945, .96, 'strap', 64, skip=('bottom',))
+# 2차: 조끼 = 옷 실루엣(몸판 + 팔 구멍 + V 목 + 어깨), 등받이 넘어 앞뒤로 늘어지고 아래가 벌어짐. 안쪽 면도 있음(속 빈 뒤 안 보이게)
+VB = [(-1.08, .50), (-.62, .50), (-.63, .72), (-1.07, .72)]; VL = [(-1.0, .72), (-.86, .72), (-.93, .95), (-.99, .95)]; VR = [(-.84, .72), (-.70, .72), (-.71, .95), (-.77, .95)]
+for xt, xb, out in ((.535, .49, -1), (.595, .645, 1)):  # 뒤판(벽 쪽) · 앞판(자리 쪽)
+    X = lambda z: xt + (xb - xt) * (.95 - z) / .45
+    for poly, pt in ((VB, 'vestbody'), (VL, 'vestsh'), (VR, 'vestsh')):
+        P3 = [(X(z), y, z) for y, z in poly]; o = P3 if out > 0 else P3[::-1]
+        Q4('ROOM_vest', o, pt, 64); Q4('ROOM_vest', o[::-1], 'vestin', 64)
+for ya, yb in ((-.99, -.93), (-.77, -.71)): Q4('ROOM_vest', [(.535, ya, .95), (.535, yb, .95), (.595, yb, .95), (.595, ya, .95)][::-1], 'vestsh', 64)
 # 책상 위: 라디오(창 쪽 구석)·잡지·공책·연필·저금통·머그
 box(Pr, 1.42, 1.7, -1.42, -1.1, .72, .92, dict({'*': 'radio'}, left='radiof', top='radiotop'), 64, skip=('bottom', 'right')); box(Pr, 1.62, 1.635, -1.15, -1.135, .92, 1.3, 'antenna', 64, skip=('bottom',))
 Q(Pr, (1.2, -.76, .722), (0, -.21, 0), (.28, 0, 0), 'magazine', 64)
@@ -333,7 +389,7 @@ wallQ(Pr, 'door', .82, 1.06, 1.06, 1.24, 'cert', .015, 64, -3); box(Pr, -.98, -.
 # ---------- 아틀라스(선반 쌓기) ----------
 items = []
 for mesh, qs in quads.items():
-    for qi, (o, U, V, pt, dn) in enumerate(qs): items.append([mesh, qi, max(2, int(round(U.length * dn))), max(2, int(round(V.length * dn))), pt, dn])
+    for qi, (o, U, V, pt, dn, *_) in enumerate(qs): items.append([mesh, qi, max(2, int(round(U.length * dn))), max(2, int(round(V.length * dn))), pt, dn])
 AW = 1024; order = sorted(range(len(items)), key=lambda k: -items[k][3]); x = y = rowh = 0; PAD = 2
 for k in order:
     w, h = items[k][2], items[k][3]
@@ -343,7 +399,10 @@ AH = 1 << max(9, int(math.ceil(math.log2(y + rowh + 1)))); print('ATLAS', AW, AH
 A = np.zeros((AH, AW, 3)); A[:] = C['char']; USED = np.zeros((AH, AW), bool)
 for mesh, qi, w, h, pt, dn, ux, uy in items:
     if isinstance(pt, tuple): blk = wall_crop(pt[1], pt[2], pt[3], h, w)
-    else: CD[0] = dn; blk = np.zeros((h, w, 3)); blk[:] = C['wall']; PT[pt](blk); CD[0] = 32
+    else:
+        CD[0] = dn; blk = np.zeros((h, w, 3)); blk[:] = C['wall']; PT[pt](blk); pm = ph_of(pt)
+        if pm: photo(blk, pm[0], pm[1], qi * 7 + w * 3 + h)
+        CD[0] = 32
     A[uy:uy + h, ux:ux + w] = blk; USED[uy:uy + h, ux:ux + w] = True
 
 # ---------- 양자화 + 외톨이 정리 ----------
@@ -351,7 +410,7 @@ flat = A.reshape(-1, 3); idx = np.concatenate([np.argmin(((flat[i:i + 65536, Non
 def iso_mask(I):
     p = np.pad(I, 1, mode='edge'); nb = [p[:-2, 1:-1], p[2:, 1:-1], p[1:-1, :-2], p[1:-1, 2:]]
     return np.all([n != I for n in nb], 0) & USED, nb
-for _ in range(2):
+for _ in range(4):
     m, nb = iso_mask(idx); st = np.stack(nb, -1)
     for yy, xx in zip(*np.nonzero(m)):
         v, cnt = np.unique(st[yy, xx], return_counts=True); idx[yy, xx] = v[np.argmax(cnt)]
@@ -372,8 +431,8 @@ for mesh in quads:
     me = bpy.data.meshes.new(mesh); bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
     for mname, qi, w, h, pt, dn, ux, uy in items:
         if mname != mesh: continue
-        o, U, V = quads[mesh][qi][:3]
-        f = bm.faces.new([bm.verts.new(p) for p in (o, o + U, o + U + V, o + V)])
+        q = quads[mesh][qi]; o, U, V = q[:3]
+        f = bm.faces.new([bm.verts.new(p) for p in (q[5] if len(q) > 5 else (o, o + U, o + U + V, o + V))])
         for lp, (a, b) in zip(f.loops, ((ux + .02, uy + .02), (ux + w - .02, uy + .02), (ux + w - .02, uy + h - .02), (ux + .02, uy + h - .02))): lp[uvl].uv = (a / AW, b / AH)
     bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(mesh, me); sc.collection.objects.link(ob); me.materials.append(MATV if mesh == 'ROOM_view' else MAT); obs.append(ob)
     tris += sum(len(p.vertices) - 2 for p in me.polygons)
@@ -385,11 +444,19 @@ bpy.ops.export_scene.fbx(filepath=OUT + 'room.fbx', use_selection=True, axis_for
                          path_mode='STRIP', embed_textures=False, mesh_smooth_type='FACE', object_types={'MESH'})
 def dens_of(sel):
     a = sum(i[2] * i[3] for i in items if sel(i)); wa = sum(quads[i[0]][i[1]][1].length * quads[i[0]][i[1]][2].length for i in items if sel(i)); return round(math.sqrt(a / wa), 2)
-meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per_m=dict(big=dens_of(lambda i: i[5] == 32), small=dens_of(lambda i: i[5] == 64), view=dens_of(lambda i: i[5] == 16)),
-            colors=int(len(np.unique(idx[USED]))), palette='palette53.gpl (palette50 + room 3)', isolated_pct=round(100 * m.sum() / USED.sum(), 3),
-            p5=round(float(np.percentile(Lq, 5)), 1), p50=round(float(np.percentile(Lq, 50)), 1), p95=round(float(np.percentile(Lq, 95)), 1), photo_texels=0,
-            size_m=dict(w=3.5, d=3.0, h=HH), pivot='바닥 가운데', forward='창 = Blender -Y → FBX/Unity +Z', note='ROOM_view = 창밖 판(Unlit 권장, 그림자 안 드리움)')
+meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per_m=dict(big=dens_of(lambda i: i[5] == 32), small=dens_of(lambda i: i[5] == 64)),
+            colors=int(len(np.unique(idx[USED]))), palette='palette_q1v2.gpl (palette53 + 결 단계 %d)' % (len(PAL) - 53), isolated_pct=round(100 * m.sum() / USED.sum(), 3),
+            p5=round(float(np.percentile(Lq, 5)), 1), p50=round(float(np.percentile(Lq, 50)), 1), p95=round(float(np.percentile(Lq, 95)), 1), photo_src=sorted(PHUSE), photo_amp=AMP,
+            size_m=dict(w=3.5, d=3.0, h=HH), pivot='바닥 가운데', forward='창 = Blender -Y → FBX/Unity +Z', note='창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을')
 json.dump(meas, open(OUT + 'measure.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False); print('MEAS', meas, flush=True)
+# 시트 전용(내보내지 않음): 창밖 = 실제 게임 캡처 임시 배경. Unity 에선 맵의 주인공 집 안에 놓아 진짜 마을이 보인다.
+BG = bpy.data.images.load(R + 'docs/qa/evidence/scene-a7b/street_on.png'); bw_, bh_ = BG.size
+mb = bpy.data.materials.new('BG'); mb.use_nodes = True; nt = mb.node_tree; nt.nodes.clear(); tx = nt.nodes.new('ShaderNodeTexImage'); tx.image = BG
+em = nt.nodes.new('ShaderNodeEmission'); mo = nt.nodes.new('ShaderNodeOutputMaterial'); nt.links.new(tx.outputs[0], em.inputs[0]); nt.links.new(em.outputs[0], mo.inputs[0])
+WB = 18.0; HB = WB * bh_ / bw_; meb = bpy.data.meshes.new('BG'); meb.from_pydata([(WB / 2, -7, -5.0), (-WB / 2, -7, -5.0), (-WB / 2, -7, -5.0 + HB), (WB / 2, -7, -5.0 + HB)], [], [(0, 1, 2, 3)])
+uvb = meb.uv_layers.new(name='UV')
+for k, uv in enumerate(((0, 0), (1, 0), (1, 1), (0, 1))): uvb.data[k].uv = uv
+obb = bpy.data.objects.new('BG_capture', meb); sc.collection.objects.link(obb); meb.materials.append(mb); obb.visible_shadow = False
 
 # ---------- 게이트 렌더: 창으로 드는 아침 해 1 + 창 하늘빛 근사 ----------
 wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; bgn = wd.node_tree.nodes['Background']; bgn.inputs[0].default_value = (.62, .72, .78, 1); bgn.inputs[1].default_value = .9

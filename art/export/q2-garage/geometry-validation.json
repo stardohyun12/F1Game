@@ -1,0 +1,28 @@
+{
+  "original_geometry_hash": "85df4a23d6f92f7bdee1c1e2565272ae4a3f44da80903b786df3e5d7790d2d6e",
+  "original_geometry_unchanged": true,
+  "original_objects": 159,
+  "new_objects": 39,
+  "added_tris": 826,
+  "total_tris": 2406,
+  "reimport_tris": 2406,
+  "bounds": [
+    [
+      -6.162607192993164,
+      -3.5,
+      -0.0679711252450943
+    ],
+    [
+      7.310445308685303,
+      12.905954360961914,
+      5.701432228088379
+    ]
+  ],
+  "origin": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "dirt_fbx_byte_identical": true,
+  "uv_change": "existing sign_main only; original garage islands retained; new items 64 texel/m"
+}

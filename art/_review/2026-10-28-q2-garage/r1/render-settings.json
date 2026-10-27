@@ -1,0 +1,70 @@
+{
+  "views": {
+    "outside15": [
+      [
+        0,
+        -15,
+        2.8
+      ],
+      [
+        0,
+        2,
+        2.3
+      ]
+    ],
+    "front5": [
+      [
+        0,
+        -5,
+        1.8
+      ],
+      [
+        0,
+        4,
+        1.9
+      ]
+    ],
+    "inside": [
+      [
+        0,
+        10.7,
+        1.8
+      ],
+      [
+        0,
+        0,
+        2.0
+      ]
+    ],
+    "sign20": [
+      [
+        0,
+        -20,
+        2.8
+      ],
+      [
+        0,
+        0,
+        3.6
+      ]
+    ]
+  },
+  "vertical_fov": 64,
+  "render": [
+    1600,
+    900
+  ],
+  "final": [
+    1280,
+    720
+  ],
+  "resize": "Nearest",
+  "sun_energy": 1.6,
+  "sun_count": 1,
+  "sky_strength": 0.85,
+  "no_added_interior_lights": true,
+  "engine": "EEVEE",
+  "render_only_ambient_mix": 0.7,
+  "ambient_note": "Unoccluded sky ambient approximation, identical before/after; not exported",
+  "no_light_bake": true
+}

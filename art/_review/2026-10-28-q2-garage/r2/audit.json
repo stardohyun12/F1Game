@@ -1,0 +1,81 @@
+{
+  "threshold_source": "docs/qa/tmp/scene_a_audit.py",
+  "thresholds": {
+    "face_uniform_frac": "<=0.50",
+    "face_std_median": ">=1.5",
+    "empty_cell_frac_bottom": "<=0.20",
+    "val_p5_p95": ">=0.55"
+  },
+  "frames": [
+    {
+      "name": "Unity left reference",
+      "path": "art/_review/2026-10-28-q2-garage/game_reference_left.png",
+      "face_uniform_frac": 0.3801632835328266,
+      "face_std_median": 1.8344913823993432,
+      "empty_cell_frac_bottom": 0.4125,
+      "val_p5_p95": 0.30588235294117644,
+      "gate": [
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender before inside",
+      "path": "art/_review/2026-10-28-q2-garage/r2/before_inside_720.png",
+      "face_uniform_frac": 0.3280939095646681,
+      "face_std_median": 2.050382862729626,
+      "empty_cell_frac_bottom": 0.3125,
+      "val_p5_p95": 0.4352941176470589,
+      "gate": [
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender after inside",
+      "path": "art/_review/2026-10-28-q2-garage/r2/after_inside_720.png",
+      "face_uniform_frac": 0.3602089459146396,
+      "face_std_median": 1.8047629451579086,
+      "empty_cell_frac_bottom": 0.2875,
+      "val_p5_p95": 0.3490196078431373,
+      "gate": [
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender after 15m",
+      "path": "art/_review/2026-10-28-q2-garage/r2/after_outside15_720.png",
+      "face_uniform_frac": 0.5945494743491404,
+      "face_std_median": 0.8447714811552322,
+      "empty_cell_frac_bottom": 0.5125,
+      "val_p5_p95": 0.32156862745098036,
+      "gate": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender after 5m",
+      "path": "art/_review/2026-10-28-q2-garage/r2/after_front5_720.png",
+      "face_uniform_frac": 0.27136471845697907,
+      "face_std_median": 2.4989247955477367,
+      "empty_cell_frac_bottom": 0.175,
+      "val_p5_p95": 0.3921568627450981,
+      "gate": [
+        true,
+        true,
+        true,
+        false
+      ]
+    }
+  ]
+}

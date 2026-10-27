@@ -1,0 +1,81 @@
+{
+  "threshold_source": "docs/qa/tmp/scene_a_audit.py",
+  "thresholds": {
+    "face_uniform_frac": "<=0.50",
+    "face_std_median": ">=1.5",
+    "empty_cell_frac_bottom": "<=0.20",
+    "val_p5_p95": ">=0.55"
+  },
+  "frames": [
+    {
+      "name": "Unity left reference",
+      "path": "art/_review/2026-10-28-q2-garage/game_reference_left.png",
+      "face_uniform_frac": 0.3801632835328266,
+      "face_std_median": 1.8344913823993432,
+      "empty_cell_frac_bottom": 0.4125,
+      "val_p5_p95": 0.30588235294117644,
+      "gate": [
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender before inside",
+      "path": "art/_review/2026-10-28-q2-garage/r1/before_inside_720.png",
+      "face_uniform_frac": 0.32025236593059936,
+      "face_std_median": 2.086945875077345,
+      "empty_cell_frac_bottom": 0.3125,
+      "val_p5_p95": 0.4352941176470589,
+      "gate": [
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender after inside",
+      "path": "art/_review/2026-10-28-q2-garage/r1/after_inside_720.png",
+      "face_uniform_frac": 0.5327721846289266,
+      "face_std_median": 1.4052597823910167,
+      "empty_cell_frac_bottom": 0.2875,
+      "val_p5_p95": 0.34117647058823536,
+      "gate": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "name": "Blender after 15m",
+      "path": "art/_review/2026-10-28-q2-garage/r1/after_outside15_720.png",
+      "face_uniform_frac": 0.5830192608016658,
+      "face_std_median": 0.0,
+      "empty_cell_frac_bottom": 0.2,
+      "val_p5_p95": 0.32156862745098036,
+      "gate": [
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    {
+      "name": "Blender after 5m",
+      "path": "art/_review/2026-10-28-q2-garage/r1/after_front5_720.png",
+      "face_uniform_frac": 0.3136466357252205,
+      "face_std_median": 2.385119168752444,
+      "empty_cell_frac_bottom": 0.175,
+      "val_p5_p95": 0.3921568627450981,
+      "gate": [
+        true,
+        true,
+        true,
+        false
+      ]
+    }
+  ]
+}
