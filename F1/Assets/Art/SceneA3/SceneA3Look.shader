@@ -26,6 +26,20 @@ Shader "PitCrew/SceneA3/Look"
         _R3Ok ("R3 eligible", Float) = 0
         _OutlinePx ("R3 outline px @ render size", Float) = 1
         _OutlineDark ("R3 outline = colour ×", Range(0,1)) = 0.45
+        // A3s(과제 1141) 색 보정 — 전부 0 이면 A3 와 같음. 계산은 화면 감마(≈sRGB) 값에서
+        _S1 ("S1 highlight rolloff on", Float) = 0
+        _S1P ("S1 (knee, shoulder, exposure, -)", Vector) = (0.5, 0.45, 0.95, 0)
+        _S2 ("S2 one-light tint on", Float) = 0
+        _Warm ("S2 warm (곱)", Color) = (1, 0.9, 0.78, 1)
+        _WarmAmt ("S2 warm amount", Range(0,1)) = 0.16
+        _ShadeTeal ("S2 shadow tone", Color) = (0.62, 0.78, 0.8, 1)
+        _SplitAmt ("S2 shadow tone amount", Range(0,1)) = 0.2
+        _S3 ("S3 soft borders on", Float) = 0
+        _S3Flat ("S3 lightness pull to mid", Range(0,0.5)) = 0.12
+        _Haze ("S3 haze color", Color) = (0.86, 0.84, 0.76, 1)
+        _HazeP ("S3 haze (start, end, max, -)", Vector) = (20, 220, 0.22, 0)
+        _T1 ("T1 sun-side bright outline on", Float) = 0
+        _T2 ("T2 lambert ambient in shade on", Float) = 0
         _FogColor ("Fog color", Color) = (0.8, 0.84, 0.82, 1)
         _FogStart ("Fog start", Float) = 12
         _FogEnd ("Fog end", Float) = 70
@@ -54,6 +68,7 @@ Shader "PitCrew/SceneA3/Look"
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST; float4 _BaseMapR2_ST; float _R2; float _HasR2; float4 _Tint; float4 _SunDir; float4 _Ambient; float _Sun; float _LightAmt; float _Steps;
             float _Ramp; float _R1Ok; float4 _RampSun; float4 _RampT; float _RampMid; float _RampDark; float _Outline; float _R3Ok; float _OutlinePx; float _OutlineDark;
+            float _S1; float4 _S1P; float _S2; float4 _Warm; float _WarmAmt; float4 _ShadeTeal; float _SplitAmt; float _S3; float _S3Flat; float4 _Haze; float4 _HazeP; float _T1; float _T2;
             float4 _FogColor; float _FogStart; float _FogEnd; float _FogMax;
             float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff; float _Sat; float4 _WB; float _Lift; float4 _LiftTint;
         CBUFFER_END
@@ -66,6 +81,30 @@ Shader "PitCrew/SceneA3/Look"
         {
             float d = distance(_WorldSpaceCameraPos, wp);
             return lerp(c, _FogColor.rgb, saturate((d - _FogStart) / max(0.01, _FogEnd - _FogStart)) * _FogMax);
+        }
+        // A3s 색 보정(안개 뒤 마지막). S3 공기층 → S1 어깨 → S3 명도 차 줄임 → S2 한 빛
+        float3 Grade(float3 c, float3 wp)
+        {
+            if (_S1 + _S2 + _S3 < 0.5) return c;
+            const float3 W = float3(0.299, 0.587, 0.114);
+            float3 g = pow(max(c, 0), 1.0 / 2.2);
+            if (_S3 > 0.5) g = lerp(g, _Haze.rgb, saturate((distance(_WorldSpaceCameraPos, wp) - _HazeP.x) / max(1, _HazeP.y - _HazeP.x)) * _HazeP.z);
+            float L = max(1e-4, dot(g, W));
+            if (_S1 > 0.5)
+            {
+                float x = L * _S1P.z, k = _S1P.x;
+                float L2 = x > k ? k + (x - k) / (1 + (x - k) / _S1P.y) : x;
+                g *= L2 / L; L = max(1e-4, L2);
+            }
+            if (_S3 > 0.5) { float L3 = lerp(L, 0.55, _S3Flat); g *= L3 / L; L = max(1e-4, L3); }
+            if (_S2 > 0.5)
+            {
+                g = lerp(g, g * _Warm.rgb / dot(_Warm.rgb, W), _WarmAmt);                       // 밝기는 두고 색만 크림~살구로
+                float sh = saturate(1 - L / 0.5);                                                // 어두운 쪽일수록
+                g = lerp(g, L * _ShadeTeal.rgb / dot(_ShadeTeal.rgb, W), sh * _SplitAmt);          // 그늘 = 같은 청록 한 색
+                g = min(g, 0.93);                                                                // 순백 없앰
+            }
+            return pow(max(g, 0), 2.2);
         }
         ENDHLSL
 
@@ -110,6 +149,7 @@ Shader "PitCrew/SceneA3/Look"
                     float k = dot(n, normalize(_RampSun.xyz));
                     float lv = k > _RampT.x ? 1.0 : (k > _RampT.y ? _RampMid : 0.0);
                     c *= lerp(_FogColor.rgb * _RampDark, 1.0.xxx, lv);
+                    if (_T2 > 0.5 && lv < 0.25) c *= n.y > 0.35 ? 1.0 : (n.y > -0.2 ? 0.9 : 0.8);   // T2: 그늘 안에서도 위/옆/아래 면 2단 차
                 }
 
                 float h = i.wp.y - _GroundY;
@@ -125,7 +165,7 @@ Shader "PitCrew/SceneA3/Look"
                 float lum = dot(c, float3(0.299, 0.587, 0.114));
                 c = max(0, lerp(lum.xxx, c, _Sat)) * _WB.rgb;
                 c = lerp(c, _LiftTint.rgb, _Lift * saturate(1 - lum * 1.6));
-                return half4(Fog(c, i.wp), 1);
+                return half4(Grade(Fog(c, i.wp), i.wp), 1);
             }
             ENDHLSL
         }
@@ -140,11 +180,12 @@ Shader "PitCrew/SceneA3/Look"
             #pragma vertex vert
             #pragma fragment frag
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
-            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; };
+            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; float sun : TEXCOORD2; };
             V vert(A i)
             {
                 V o; o.wp = TransformObjectToWorld(i.pos.xyz); float4 cp = TransformWorldToHClip(o.wp);
-                float3 nc = mul((float3x3)UNITY_MATRIX_VP, TransformObjectToWorldNormal(i.n));
+                float3 nw = TransformObjectToWorldNormal(i.n); o.sun = dot(normalize(nw), normalize(_RampSun.xyz));
+                float3 nc = mul((float3x3)UNITY_MATRIX_VP, nw);
                 float2 dir = nc.xy / max(1e-5, length(nc.xy));
                 cp.xy += dir * (_OutlinePx * 2.0 / _ScreenParams.xy) * cp.w;
                 o.pos = (_Outline > 0.5 && _R3Ok > 0.5) ? cp : float4(0, 0, -2, 1);
@@ -155,7 +196,8 @@ Shader "PitCrew/SceneA3/Look"
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
                 float3 c = max(0, lerp(dot(t.rgb, float3(0.299, 0.587, 0.114)).xxx, t.rgb, _Sat * 1.15)) * _WB.rgb * _OutlineDark;
-                return half4(Fog(c, i.wp), 1);
+                if (_T1 > 0.5 && i.sun > 0.45) c = min(1, t.rgb * _WB.rgb * 1.35 + 0.04);   // T1(약식): 해를 보는 쪽 실루엣은 밝은 선
+                return half4(Grade(Fog(c, i.wp), i.wp), 1);
             }
             ENDHLSL
         }

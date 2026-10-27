@@ -85,7 +85,10 @@ for x, y, r, frac in SPOT:  # 자리마다 사진의 다른 곳을 잘라 가장
     a, b = px(x - r, y + r); stain.paste(ImageChops.lighter(stain.crop((int(a), int(b), int(a) + s, int(b) + s)), blob), (int(a), int(b)))
 grav = photo_gray('Gravel022', (W, H), 1.2); grav = ImageOps.autocontrast(grav, cutoff=1).point(lambda v: 150 if v < 14 else 0)
 stain = ImageChops.lighter(stain,ImageChops.multiply(grav, fade.point(lambda v: max(0, v - 120) * 2)))
-oil = Image.new('RGB', (W, H), (58, 54, 48)); img = Image.composite(oil, img, stain.point(lambda v: int(v * .8)))
+oil = Image.new('RGB', (W, H), (70, 56, 42)); img = Image.composite(oil, img, stain.point(lambda v: int(v * .8)))
+# 굽기·32색에서 올리브로 떨어지지 않게 붉은 흙 쪽으로(공용 팔레트의 (177,148,106)·(158,127,78) 근처로 가게), 대비도 조금 줄임
+img = Image.merge('RGB', [c.point(lambda v, k=k: int(min(255, v * k))) for c, k in zip(img.split(), (1.0, .86, .74))])
+img = Image.blend(img, img.filter(ImageFilter.GaussianBlur(1.2)), .35)
 img.save(os.path.join(OUT, 'yard_ground.png'))
 json.dump(dict(texels_per_m=D, area_m=dict(x=[X0, X1], y=[Y0, Y1]), size_px=[W, H],
                sources=['art/source/scene-a-v1b/tex/ground.png', 'art/source/scene-a-v1b/tex/dirt.png',

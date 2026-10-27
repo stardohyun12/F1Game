@@ -51,7 +51,7 @@ Material:
     - _OutlineDark: 0.45
     - _OutlinePx: 1
     - _R1Ok: 1
-    - _R2: 0
+    - _R2: 1
     - _R3Ok: 1
     - _Ramp: 1
     - _RampDark: 0.72
