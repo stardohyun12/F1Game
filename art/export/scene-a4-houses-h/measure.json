@@ -1,0 +1,119 @@
+{
+ "luma": "0.299R+0.587G+0.114B (32색 뒤, 텍스처 픽셀)",
+ "files": {
+  "house_narrow_a": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 22,
+   "wall_colors": 18,
+   "L_wall_mean": 140.4,
+   "L_visible_mean": 134.0,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 18.46,
+   "grime_wall_pct": 15.2,
+   "glyph_px": 0,
+   "tris": 1868,
+   "speckle_1px_pct": 0.98
+  },
+  "house_narrow_b": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 21,
+   "wall_colors": 18,
+   "L_wall_mean": 153.9,
+   "L_visible_mean": 142.9,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 16.13,
+   "grime_wall_pct": 16.7,
+   "glyph_px": 0,
+   "tris": 1552,
+   "speckle_1px_pct": 0.634
+  },
+  "house_shop": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 22,
+   "wall_colors": 18,
+   "L_wall_mean": 134.1,
+   "L_visible_mean": 126.1,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 20.76,
+   "grime_wall_pct": 23.6,
+   "glyph_px": 0,
+   "tris": 1090,
+   "speckle_1px_pct": 0.67
+  },
+  "house_slope": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 22,
+   "wall_colors": 14,
+   "L_wall_mean": 139.1,
+   "L_visible_mean": 134.3,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 11.08,
+   "grime_wall_pct": 19.0,
+   "glyph_px": 0,
+   "tris": 2466,
+   "speckle_1px_pct": 0.687
+  },
+  "house_warehouse": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    1024
+   ],
+   "colors_visible": 20,
+   "wall_colors": 15,
+   "L_wall_mean": 150.8,
+   "L_visible_mean": 140.8,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 13.12,
+   "grime_wall_pct": 15.2,
+   "glyph_px": 0,
+   "tris": 1290,
+   "speckle_1px_pct": 0.81
+  },
+  "house_cafe": {
+   "texels_per_m": 32,
+   "size": [
+    2048,
+    256
+   ],
+   "colors_visible": 21,
+   "wall_colors": 19,
+   "L_wall_mean": 121.7,
+   "L_visible_mean": 122.9,
+   "p5_visible": 64.4,
+   "p5_glass": 64.4,
+   "under55_visible_pct": 0.0,
+   "lifted_px_pct": 21.08,
+   "grime_wall_pct": 24.0,
+   "glyph_px": 0,
+   "tris": 1122,
+   "speckle_1px_pct": 1.707
+  }
+ }
+}
