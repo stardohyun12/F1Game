@@ -1,0 +1,34 @@
+{
+ "tris": 1076,
+ "objects": [
+  "ROOM_shell",
+  "ROOM_props",
+  "ROOM_view",
+  "ROOM_furniture",
+  "ROOM_vest"
+ ],
+ "atlas": [
+  1024,
+  512
+ ],
+ "texels_per_m": {
+  "big": 32.73,
+  "small": 64.42,
+  "view": 16.02
+ },
+ "colors": 32,
+ "palette": "palette53.gpl (palette50 + room 3)",
+ "isolated_pct": 0.0,
+ "p5": 90.9,
+ "p50": 149.8,
+ "p95": 233.7,
+ "photo_texels": 0,
+ "size_m": {
+  "w": 3.5,
+  "d": 3.0,
+  "h": 2.4
+ },
+ "pivot": "바닥 가운데",
+ "forward": "창 = Blender -Y → FBX/Unity +Z",
+ "note": "ROOM_view = 창밖 판(Unlit 권장, 그림자 안 드리움)"
+}

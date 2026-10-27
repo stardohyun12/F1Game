@@ -1,9 +1,8 @@
 {
- "tris": 1076,
+ "tris": 1034,
  "objects": [
   "ROOM_shell",
   "ROOM_props",
-  "ROOM_view",
   "ROOM_furniture",
   "ROOM_vest"
  ],
@@ -13,16 +12,21 @@
  ],
  "texels_per_m": {
   "big": 32.73,
-  "small": 64.42,
-  "view": 16.02
+  "small": 64.39
  },
- "colors": 32,
- "palette": "palette53.gpl (palette50 + room 3)",
+ "colors": 66,
+ "palette": "palette_q1v2.gpl (palette53 + 결 단계 45)",
  "isolated_pct": 0.0,
  "p5": 90.9,
  "p50": 149.8,
  "p95": 233.7,
- "photo_texels": 0,
+ "photo_src": [
+  "fine_grained_wood",
+  "painted_plaster_wall",
+  "rough_linen",
+  "tatami_mat"
+ ],
+ "photo_amp": 0.45,
  "size_m": {
   "w": 3.5,
   "d": 3.0,
@@ -30,5 +34,5 @@
  },
  "pivot": "바닥 가운데",
  "forward": "창 = Blender -Y → FBX/Unity +Z",
- "note": "ROOM_view = 창밖 판(Unlit 권장, 그림자 안 드리움)"
+ "note": "창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을"
 }

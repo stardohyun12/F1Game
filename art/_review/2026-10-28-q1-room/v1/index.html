@@ -1,0 +1,5 @@
+<!doctype html><meta charset=utf-8><title>q1 주인공 방</title><style>body{background:#28282c;color:#ddd;font:15px sans-serif;margin:12px}
+button{margin:2px;padding:4px 10px}img{image-rendering:pixelated;display:block}#v{overflow:auto}</style><h3>q1 주인공 방 — 도현 승인 필요</h3><div><button onclick="src('door.png')">① 문에서 들어서며</button><button onclick="src('desk.png')">② 책상 쪽</button><button onclick="src('window.png')">③ 창 쪽(창밖 만)</button><button onclick="src('back.png')">④ 뒤 — 문·책장 (벽 4면 확인용)</button><button onclick="src('../../export/q1-room/room.png')">아틀라스</button><button onclick="src('sheet.png')">시트</button> | <button onclick="z(1)">1×</button><button onclick="z(4)">4×</button><button onclick="i.style.filter=i.style.filter?'':'brightness(0)'">흑실루엣</button>
+ | 배경 <button onclick="bg('#28282c')">어둠</button><button onclick="bg('#e8e2d0')">종이</button><button onclick="bg('#7fa7b8')">하늘</button></div>
+<div id=v><img id=i src=door.png></div><script>let k=1;const i=document.getElementById('i');
+function src(f){i.src=f;i.onload=()=>z(k)}function z(n){k=n;i.style.width=(i.naturalWidth*n)+'px'}function bg(c){document.body.style.background=c}</script>

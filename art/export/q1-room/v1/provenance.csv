@@ -1,0 +1,2 @@
+﻿part,photo_id,file,source_url,license,author,"crop_quad_px(TL,TR,BR,BL)",used_on,what
+all,-,tools/asset-gen/q1_room.py,-,프로젝트 자체 제작(코드 생성),art2(Claude) 절차 생성,-,ROOM 전체(벽·가구·포스터·창밖 판),사진·외부 에셋·AI 이미지 0 — 포스터 리그 이름 MARE GP 는 가상
