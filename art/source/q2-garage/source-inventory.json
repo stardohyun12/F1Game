@@ -1,0 +1,3182 @@
+[
+  {
+    "name": "wall_-1_planks_dark",
+    "low": [
+      -4.999577522277832,
+      0.0,
+      0.06497804820537567
+    ],
+    "high": [
+      -4.983977317810059,
+      12.0,
+      1.265282154083252
+    ],
+    "materials": [
+      "planks_dark.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "wall_-1_tin_wall",
+    "low": [
+      -4.983977317810059,
+      0.0,
+      1.265282154083252
+    ],
+    "high": [
+      -4.957977294921875,
+      12.0,
+      3.265789270401001
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "wall_1_planks_dark",
+    "low": [
+      4.999577522277832,
+      0.0,
+      -0.06497804820537567
+    ],
+    "high": [
+      5.0151777267456055,
+      12.0,
+      1.1353261470794678
+    ],
+    "materials": [
+      "planks_dark.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "wall_1_tin_wall",
+    "low": [
+      5.0151777267456055,
+      0.0,
+      1.1353261470794678
+    ],
+    "high": [
+      5.041177749633789,
+      12.0,
+      3.1358330249786377
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "win_L",
+    "low": [
+      -5.0000762939453125,
+      4.5,
+      1.5656181573867798
+    ],
+    "high": [
+      -4.987076282501221,
+      6.5,
+      2.5658717155456543
+    ],
+    "materials": [
+      "window.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\window.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "win_R",
+    "low": [
+      5.03907585144043,
+      7.5,
+      1.435142159461975
+    ],
+    "high": [
+      5.0520758628845215,
+      9.5,
+      2.4353957176208496
+    ],
+    "materials": [
+      "window.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\window.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "back",
+    "low": [
+      -4.999577522277832,
+      12.0,
+      -0.06497804820537567
+    ],
+    "high": [
+      5.041177749633789,
+      12.0,
+      3.265789270401001
+    ],
+    "materials": [
+      "planks.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "back_gable",
+    "low": [
+      -4.957977294921875,
+      12.0,
+      3.1358330249786377
+    ],
+    "high": [
+      5.041177749633789,
+      12.0,
+      5.601418972015381
+    ],
+    "materials": [
+      "planks.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "front_-1",
+    "low": [
+      -4.999577522277832,
+      0.0,
+      0.04678419232368469
+    ],
+    "high": [
+      -3.558095932006836,
+      0.0,
+      3.265789270401001
+    ],
+    "materials": [
+      "planks.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "front_1",
+    "low": [
+      3.599695920944214,
+      0.0,
+      -0.06497804820537567
+    ],
+    "high": [
+      5.041177749633789,
+      0.0,
+      3.154026985168457
+    ],
+    "materials": [
+      "planks.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "front_gable",
+    "low": [
+      -4.957977294921875,
+      0.0,
+      3.1358330249786377
+    ],
+    "high": [
+      5.041177749633789,
+      0.0,
+      5.601418972015381
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "header",
+    "low": [
+      -3.6211674213409424,
+      -0.1599999964237213,
+      2.9118857383728027
+    ],
+    "high": [
+      3.781327486038208,
+      0.0,
+      3.2481141090393066
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "roof",
+    "low": [
+      -6.162607192993164,
+      -1.2045756578445435,
+      2.757528781890869
+    ],
+    "high": [
+      6.247647285461426,
+      12.905953407287598,
+      5.701432228088379
+    ],
+    "materials": [
+      "tin_roof.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib0",
+    "low": [
+      5.169435501098633,
+      -1.290000081062317,
+      2.97289776802063
+    ],
+    "high": [
+      6.084855079650879,
+      -1.149999976158142,
+      4.287102699279785
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib1",
+    "low": [
+      3.051724672317505,
+      -1.290000081062317,
+      4.145383358001709
+    ],
+    "high": [
+      5.2916059494018555,
+      -1.149999976158142,
+      5.193077564239502
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib2",
+    "low": [
+      0.11011075973510742,
+      -1.290000081062317,
+      5.017046928405762
+    ],
+    "high": [
+      3.1288890838623047,
+      -1.149999976158142,
+      5.521413803100586
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib3",
+    "low": [
+      -2.8656859397888184,
+      -1.290000081062317,
+      5.0555100440979
+    ],
+    "high": [
+      0.17468607425689697,
+      -1.149999976158142,
+      5.482950687408447
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib4",
+    "low": [
+      -5.078347682952881,
+      -1.290000081062317,
+      4.166581630706787
+    ],
+    "high": [
+      -2.7793831825256348,
+      -1.149999976158142,
+      5.171879291534424
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rib5",
+    "low": [
+      -5.919674396514893,
+      -1.290000081062317,
+      2.9681355953216553
+    ],
+    "high": [
+      -4.957096576690674,
+      -1.149999976158142,
+      4.291864395141602
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "post_-1_0",
+    "low": [
+      -5.274638652801514,
+      -0.15000000596046448,
+      -0.009678959846496582
+    ],
+    "high": [
+      -4.742161273956299,
+      0.15000000596046448,
+      3.209679126739502
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "post_-1_12.0",
+    "low": [
+      -5.179187297821045,
+      11.850000381469727,
+      -0.002354860305786133
+    ],
+    "high": [
+      -4.837612628936768,
+      12.149999618530273,
+      3.202354907989502
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "post_1_0",
+    "low": [
+      4.906259059906006,
+      -0.21386714279651642,
+      -0.006719708442687988
+    ],
+    "high": [
+      5.276941776275635,
+      0.21386714279651642,
+      3.2067198753356934
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "post_1_12.0",
+    "low": [
+      4.920813083648682,
+      11.850000381469727,
+      -0.002354860305786133
+    ],
+    "high": [
+      5.262387752532959,
+      12.149999618530273,
+      3.202354907989502
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rail",
+    "low": [
+      -5.220512866973877,
+      -0.25,
+      2.951112985610962
+    ],
+    "high": [
+      5.379632472991943,
+      -0.1899999976158142,
+      3.16888689994812
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "patch0",
+    "low": [
+      -5.02926778793335,
+      1.5418064594268799,
+      0.5230600833892822
+    ],
+    "high": [
+      -4.994332790374756,
+      2.45819354057312,
+      0.8769398927688599
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "patch1",
+    "low": [
+      -4.992023468017578,
+      8.84999942779541,
+      1.9747732877731323
+    ],
+    "high": [
+      -4.958776473999023,
+      9.550000190734863,
+      2.225226402282715
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "patch2",
+    "low": [
+      5.025545120239258,
+      2.842586040496826,
+      0.32704976201057434
+    ],
+    "high": [
+      5.060455322265625,
+      3.957414150238037,
+      0.672950267791748
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "patch3",
+    "low": [
+      -4.544399738311768,
+      -0.044999998062849045,
+      2.0710697174072266
+    ],
+    "high": [
+      -3.9412004947662354,
+      -0.014999999664723873,
+      2.328930377960205
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "loose_plank",
+    "low": [
+      -3.505352020263672,
+      -0.5019521713256836,
+      -0.053006887435913086
+    ],
+    "high": [
+      -3.0400476455688477,
+      -0.19804784655570984,
+      2.1530067920684814
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "floor",
+    "low": [
+      -4.999447345733643,
+      0.0,
+      -0.054975513368844986
+    ],
+    "high": [
+      4.9997076988220215,
+      12.0,
+      0.07498057931661606
+    ],
+    "materials": [
+      "floor.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\floor.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "apron",
+    "low": [
+      -5.999362945556641,
+      -3.5,
+      -0.0679711252450943
+    ],
+    "high": [
+      5.9996232986450195,
+      0.0,
+      0.08797618746757507
+    ],
+    "materials": [
+      "path.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\path.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "bench",
+    "low": [
+      3.97343373298645,
+      3.1000001430511475,
+      0.8747916221618652
+    ],
+    "high": [
+      4.7744059562683105,
+      6.5,
+      0.9652084112167358
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "leg4.053.2",
+    "low": [
+      4.0158538818359375,
+      3.1600000858306885,
+      -0.0006338655948638916
+    ],
+    "high": [
+      4.107546806335449,
+      3.240000009536743,
+      0.9006338119506836
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "leg4.653.2",
+    "low": [
+      4.615853786468506,
+      3.1600000858306885,
+      -0.0006338655948638916
+    ],
+    "high": [
+      4.707546710968018,
+      3.240000009536743,
+      0.9006338119506836
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "leg4.056.4",
+    "low": [
+      4.0158538818359375,
+      6.360000133514404,
+      -0.0006338655948638916
+    ],
+    "high": [
+      4.107546806335449,
+      6.440000057220459,
+      0.9006338119506836
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "leg4.656.4",
+    "low": [
+      4.615853786468506,
+      6.360000133514404,
+      -0.0006338655948638916
+    ],
+    "high": [
+      4.707546710968018,
+      6.440000057220459,
+      0.9006338119506836
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "bench_shelf",
+    "low": [
+      4.006204128265381,
+      3.200000286102295,
+      0.2204452008008957
+    ],
+    "high": [
+      4.7067952156066895,
+      6.400000095367432,
+      0.2795547842979431
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "pegboard",
+    "low": [
+      4.976480960845947,
+      3.200000047683716,
+      1.2358711957931519
+    ],
+    "high": [
+      4.993381023406982,
+      6.400000095367432,
+      2.536200761795044
+    ],
+    "materials": [
+      "pegboard.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\pegboard.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "vise",
+    "low": [
+      4.136007308959961,
+      3.4699997901916504,
+      0.9588100910186768
+    ],
+    "high": [
+      4.318072319030762,
+      3.7300000190734863,
+      1.121189832687378
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "toolbox",
+    "low": [
+      4.251275062561035,
+      5.449999809265137,
+      0.9577003717422485
+    ],
+    "high": [
+      4.603845596313477,
+      5.949999809265137,
+      1.1622995138168335
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost-1-1.1-0.25",
+    "low": [
+      -4.31569766998291,
+      11.320000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      -4.227102279663086,
+      11.380000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost-1-1.10.25",
+    "low": [
+      -4.31569766998291,
+      11.820000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      -4.227102279663086,
+      11.880000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost-11.1-0.25",
+    "low": [
+      -2.1156973838806152,
+      11.320000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      -2.027102470397949,
+      11.380000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost-11.10.25",
+    "low": [
+      -2.1156973838806152,
+      11.820000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      -2.027102470397949,
+      11.880000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf-10.4",
+    "low": [
+      -4.339827537536621,
+      11.300000190734863,
+      0.36004871129989624
+    ],
+    "high": [
+      -2.039372205734253,
+      11.90000057220459,
+      0.4399513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf-11.15",
+    "low": [
+      -4.3203277587890625,
+      11.300000190734863,
+      1.1100486516952515
+    ],
+    "high": [
+      -2.0198721885681152,
+      11.90000057220459,
+      1.1899513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf-11.9",
+    "low": [
+      -4.300827980041504,
+      11.300000190734863,
+      1.8600486516952515
+    ],
+    "high": [
+      -2.0003721714019775,
+      11.90000057220459,
+      1.9399513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-10",
+    "low": [
+      -2.6668548583984375,
+      11.350000381469727,
+      0.4276227355003357
+    ],
+    "high": [
+      -2.302985191345215,
+      11.75,
+      0.7323772311210632
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-11",
+    "low": [
+      -3.1761996746063232,
+      11.350000381469727,
+      0.42683035135269165
+    ],
+    "high": [
+      -2.691040277481079,
+      11.75,
+      0.8331696391105652
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-12",
+    "low": [
+      -3.9558722972869873,
+      11.350000381469727,
+      0.42643412947654724
+    ],
+    "high": [
+      -3.4100677967071533,
+      11.75,
+      0.8835657835006714
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-13",
+    "low": [
+      -2.777027130126953,
+      11.350000381469727,
+      1.1772265434265137
+    ],
+    "high": [
+      -2.352512836456299,
+      11.75,
+      1.532773494720459
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-14",
+    "low": [
+      -3.41768217086792,
+      11.350000381469727,
+      1.1780189275741577
+    ],
+    "high": [
+      -3.114457607269287,
+      11.75,
+      1.4319809675216675
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-15",
+    "low": [
+      -4.027854919433594,
+      11.350000381469727,
+      1.927622675895691
+    ],
+    "high": [
+      -3.663985252380371,
+      11.75,
+      2.232377052307129
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part-16",
+    "low": [
+      -3.0278549194335938,
+      11.350000381469727,
+      1.927622675895691
+    ],
+    "high": [
+      -2.663985252380371,
+      11.75,
+      2.232377052307129
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost1-1.1-0.25",
+    "low": [
+      2.0843024253845215,
+      11.320000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      2.1728973388671875,
+      11.380000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost1-1.10.25",
+    "low": [
+      2.0843024253845215,
+      11.820000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      2.1728973388671875,
+      11.880000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost11.1-0.25",
+    "low": [
+      4.284302711486816,
+      11.320000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      4.372898101806641,
+      11.380000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shpost11.10.25",
+    "low": [
+      4.284302711486816,
+      11.820000648498535,
+      -0.000668644905090332
+    ],
+    "high": [
+      4.372898101806641,
+      11.880000114440918,
+      2.2006688117980957
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf10.4",
+    "low": [
+      2.0601723194122314,
+      11.300000190734863,
+      0.36004871129989624
+    ],
+    "high": [
+      4.360628128051758,
+      11.90000057220459,
+      0.4399513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf11.15",
+    "low": [
+      2.079672336578369,
+      11.300000190734863,
+      1.1100486516952515
+    ],
+    "high": [
+      4.380127906799316,
+      11.90000057220459,
+      1.1899513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shelf11.9",
+    "low": [
+      2.099172353744507,
+      11.300000190734863,
+      1.8600486516952515
+    ],
+    "high": [
+      4.399627685546875,
+      11.90000057220459,
+      1.9399513006210327
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part10",
+    "low": [
+      2.3331451416015625,
+      11.350000381469727,
+      0.4276227355003357
+    ],
+    "high": [
+      2.697014808654785,
+      11.75,
+      0.7323772311210632
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part11",
+    "low": [
+      2.7238004207611084,
+      11.350000381469727,
+      0.42683035135269165
+    ],
+    "high": [
+      3.2089598178863525,
+      11.75,
+      0.8331696391105652
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part12",
+    "low": [
+      3.4441277980804443,
+      11.350000381469727,
+      0.42643412947654724
+    ],
+    "high": [
+      3.9899322986602783,
+      11.75,
+      0.8835657835006714
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part13",
+    "low": [
+      2.4229726791381836,
+      11.350000381469727,
+      1.1772265434265137
+    ],
+    "high": [
+      2.847486972808838,
+      11.75,
+      1.532773494720459
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part14",
+    "low": [
+      3.1823177337646484,
+      11.350000381469727,
+      1.1780189275741577
+    ],
+    "high": [
+      3.4855422973632812,
+      11.75,
+      1.4319809675216675
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part15",
+    "low": [
+      3.7721452713012695,
+      11.350000381469727,
+      1.927622675895691
+    ],
+    "high": [
+      4.136014938354492,
+      11.75,
+      2.232377052307129
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part16",
+    "low": [
+      2.7721452713012695,
+      11.350000381469727,
+      1.927622675895691
+    ],
+    "high": [
+      3.136014938354492,
+      11.75,
+      2.232377052307129
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tA0",
+    "low": [
+      -4.628143310546875,
+      0.9699999690055847,
+      -0.0056235939264297485
+    ],
+    "high": [
+      -3.764575958251953,
+      1.8299999237060547,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tA1",
+    "low": [
+      -4.551656723022461,
+      0.9889311790466309,
+      0.27437666058540344
+    ],
+    "high": [
+      -3.726503372192383,
+      1.8110687732696533,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tA2",
+    "low": [
+      -4.606220245361328,
+      0.9768085479736328,
+      0.5543774962425232
+    ],
+    "high": [
+      -3.7573795318603516,
+      1.8231914043426514,
+      0.8456224799156189
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tA3",
+    "low": [
+      -4.553478240966797,
+      0.9719513058662415,
+      0.8341069221496582
+    ],
+    "high": [
+      -3.6955626010894775,
+      1.8280487060546875,
+      1.1258931159973145
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tA3_cap",
+    "low": [
+      -4.549838066101074,
+      0.973709762096405,
+      1.1141724586486816
+    ],
+    "high": [
+      -3.6955626010894775,
+      1.8280487060546875,
+      1.1258931159973145
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tB0",
+    "low": [
+      -4.678143501281738,
+      1.869999885559082,
+      -0.0056235939264297485
+    ],
+    "high": [
+      -3.8145761489868164,
+      2.7300000190734863,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tB1",
+    "low": [
+      -4.601656436920166,
+      1.888931155204773,
+      0.27437666058540344
+    ],
+    "high": [
+      -3.776503086090088,
+      2.711068868637085,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tB2",
+    "low": [
+      -4.656220436096191,
+      1.876808524131775,
+      0.5543774962425232
+    ],
+    "high": [
+      -3.807379722595215,
+      2.723191261291504,
+      0.8456224799156189
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tB2_cap",
+    "low": [
+      -4.652580261230469,
+      1.8779345750808716,
+      0.8344461917877197
+    ],
+    "high": [
+      -3.807379722595215,
+      2.723191261291504,
+      0.8456224799156189
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tO0",
+    "low": [
+      -6.128143310546875,
+      -1.630000114440918,
+      -0.0056235939264297485
+    ],
+    "high": [
+      -5.264575958251953,
+      -0.7700000405311584,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tO1",
+    "low": [
+      -6.051656723022461,
+      -1.611068844795227,
+      0.27437666058540344
+    ],
+    "high": [
+      -5.226503372192383,
+      -0.7889312505722046,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tO2",
+    "low": [
+      -6.106220245361328,
+      -1.623191475868225,
+      0.5543774962425232
+    ],
+    "high": [
+      -5.257379531860352,
+      -0.7768086194992065,
+      0.8456224799156189
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tO2_cap",
+    "low": [
+      -6.1025800704956055,
+      -1.6220654249191284,
+      0.8344461917877197
+    ],
+    "high": [
+      -5.257379531860352,
+      -0.7768086194992065,
+      0.8456224799156189
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tLean",
+    "low": [
+      -4.933042526245117,
+      2.9700000286102295,
+      -0.009150803089141846
+    ],
+    "high": [
+      -4.549277305603027,
+      3.629999876022339,
+      0.6891508102416992
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum0",
+    "low": [
+      -4.68224573135376,
+      5.844440937042236,
+      -0.003253340721130371
+    ],
+    "high": [
+      -3.887594699859619,
+      6.555558681488037,
+      1.1632533073425293
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum0_cap",
+    "low": [
+      -4.6675286293029785,
+      5.844440937042236,
+      1.130515217781067
+    ],
+    "high": [
+      -3.887594699859619,
+      6.4988226890563965,
+      1.1632533073425293
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum1",
+    "low": [
+      -4.6810736656188965,
+      6.608648777008057,
+      -0.010209977626800537
+    ],
+    "high": [
+      -3.8887667655944824,
+      7.391351222991943,
+      1.1702098846435547
+    ],
+    "materials": [
+      "drum_blue.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum1_cap",
+    "low": [
+      -4.665863513946533,
+      6.614201545715332,
+      1.1600732803344727
+    ],
+    "high": [
+      -3.8887667655944824,
+      7.391351222991943,
+      1.1702098846435547
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum2",
+    "low": [
+      -3.976834774017334,
+      6.209283351898193,
+      -0.011715948581695557
+    ],
+    "high": [
+      -3.193005084991455,
+      6.990716457366943,
+      1.1717159748077393
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum2_cap",
+    "low": [
+      -3.961625576019287,
+      6.2220964431762695,
+      1.158510446548462
+    ],
+    "high": [
+      -3.193005084991455,
+      6.990716457366943,
+      1.1717159748077393
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum3",
+    "low": [
+      5.394733428955078,
+      -1.2648990154266357,
+      -0.006077945232391357
+    ],
+    "high": [
+      6.1354265213012695,
+      -0.5351008772850037,
+      1.1660778522491455
+    ],
+    "materials": [
+      "drum_blue.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum3_cap",
+    "low": [
+      5.458475589752197,
+      -1.244645357131958,
+      1.1285052299499512
+    ],
+    "high": [
+      6.1354265213012695,
+      -0.5351008772850037,
+      1.1660778522491455
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "drum_lying",
+    "low": [
+      5.909834384918213,
+      -3.4227194786071777,
+      -0.007699131965637207
+    ],
+    "high": [
+      7.310445308685303,
+      -2.1772804260253906,
+      0.7876991033554077
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "cable0",
+    "low": [
+      0.09920084476470947,
+      4.989999771118164,
+      3.7996671199798584
+    ],
+    "high": [
+      0.1399991512298584,
+      5.010000228881836,
+      5.400332450866699
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shade0",
+    "low": [
+      -0.22767296433448792,
+      4.722871780395508,
+      3.5458414554595947
+    ],
+    "high": [
+      0.41227295994758606,
+      5.277128219604492,
+      3.800063371658325
+    ],
+    "materials": [
+      "lamp.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "bulb0",
+    "low": [
+      0.0308750718832016,
+      4.940000057220459,
+      3.469207525253296
+    ],
+    "high": [
+      0.15216493606567383,
+      5.059999942779541,
+      3.5707924365997314
+    ],
+    "materials": [
+      "lamp.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "cable1",
+    "low": [
+      2.4992010593414307,
+      8.489999771118164,
+      3.7996671199798584
+    ],
+    "high": [
+      2.53999924659729,
+      8.510000228881836,
+      5.400332450866699
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "shade1",
+    "low": [
+      2.1723270416259766,
+      8.222871780395508,
+      3.5458414554595947
+    ],
+    "high": [
+      2.8122730255126953,
+      8.777128219604492,
+      3.800063371658325
+    ],
+    "materials": [
+      "lamp.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "bulb1",
+    "low": [
+      2.430875301361084,
+      8.4399995803833,
+      3.469207525253296
+    ],
+    "high": [
+      2.5521650314331055,
+      8.5600004196167,
+      3.5707924365997314
+    ],
+    "materials": [
+      "lamp.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "posterA",
+    "low": [
+      -4.941380977630615,
+      8.600000381469727,
+      1.464812994003296
+    ],
+    "high": [
+      -4.921880722045898,
+      9.600000381469727,
+      2.965193271636963
+    ],
+    "materials": [
+      "poster_a.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_a.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "posterB",
+    "low": [
+      -4.932681560516357,
+      -0.029999999329447746,
+      1.3516621589660645
+    ],
+    "high": [
+      -3.91326642036438,
+      -0.029999999329447746,
+      2.865037679672241
+    ],
+    "materials": [
+      "poster_b.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_b.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "posterC",
+    "low": [
+      -4.938780784606934,
+      1.899999976158142,
+      1.6648638248443604
+    ],
+    "high": [
+      -4.925130844116211,
+      2.5999999046325684,
+      2.715129852294922
+    ],
+    "materials": [
+      "poster_a.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_a.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "record",
+    "low": [
+      -4.942680835723877,
+      5.599999904632568,
+      1.3647876977920532
+    ],
+    "high": [
+      -4.929680824279785,
+      7.599999904632568,
+      2.3650410175323486
+    ],
+    "materials": [
+      "record.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\record.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "slots",
+    "low": [
+      -0.9674155116081238,
+      11.949999809265137,
+      2.487637996673584
+    ],
+    "high": [
+      1.0454155206680298,
+      11.949999809265137,
+      3.513882637023926
+    ],
+    "materials": [
+      "slots.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\slots.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "slots_frame",
+    "low": [
+      -1.0367271900177002,
+      11.880000114440918,
+      2.3956947326660156
+    ],
+    "high": [
+      1.1641271114349365,
+      11.980000495910645,
+      2.504305362701416
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "crate1",
+    "low": [
+      6.161201477050781,
+      -1.8442823886871338,
+      -0.0055477917194366455
+    ],
+    "high": [
+      7.059078216552734,
+      -0.9557175636291504,
+      0.7855477333068848
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "crate2",
+    "low": [
+      6.331851482391357,
+      -1.6921722888946533,
+      0.775787353515625
+    ],
+    "high": [
+      7.022228717803955,
+      -1.0078277587890625,
+      1.3042125701904297
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "lad-4.85",
+    "low": [
+      -4.861942768096924,
+      10.31079387664795,
+      -0.03268694877624512
+    ],
+    "high": [
+      -4.765257358551025,
+      10.889206886291504,
+      2.8326869010925293
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "lad-4.35",
+    "low": [
+      -4.361942768096924,
+      10.31079387664795,
+      -0.03268694877624512
+    ],
+    "high": [
+      -4.265257358551025,
+      10.889206886291504,
+      2.8326869010925293
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rung0",
+    "low": [
+      -4.84113883972168,
+      10.479999542236328,
+      0.32674601674079895
+    ],
+    "high": [
+      -4.34066104888916,
+      10.520000457763672,
+      0.3732539713382721
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rung1",
+    "low": [
+      -4.826838970184326,
+      10.379999160766602,
+      0.8767459988594055
+    ],
+    "high": [
+      -4.326361179351807,
+      10.420000076293945,
+      0.9232539534568787
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rung2",
+    "low": [
+      -4.8125386238098145,
+      10.279999732971191,
+      1.426746129989624
+    ],
+    "high": [
+      -4.312060832977295,
+      10.320000648498535,
+      1.4732539653778076
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rung3",
+    "low": [
+      -4.798238754272461,
+      10.179999351501465,
+      1.9767460823059082
+    ],
+    "high": [
+      -4.297760963439941,
+      10.220000267028809,
+      2.023253917694092
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "rung4",
+    "low": [
+      -4.783938884735107,
+      10.079999923706055,
+      2.5267460346221924
+    ],
+    "high": [
+      -4.283461093902588,
+      10.120000839233398,
+      2.573253870010376
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "table",
+    "low": [
+      -1.379652500152588,
+      6.75,
+      0.7495933771133423
+    ],
+    "high": [
+      0.22125238180160522,
+      7.649999618530273,
+      0.8504066467285156
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "trest-0.7",
+    "low": [
+      -1.3347965478897095,
+      6.799999713897705,
+      -0.0006211996078491211
+    ],
+    "high": [
+      -1.2444032430648804,
+      7.599999904632568,
+      0.8006212115287781
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "trest0.7",
+    "low": [
+      0.06520337611436844,
+      6.799999713897705,
+      -0.0006211996078491211
+    ],
+    "high": [
+      0.15559661388397217,
+      7.599999904632568,
+      0.8006212115287781
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "engine",
+    "low": [
+      -1.075534701347351,
+      6.974999904632568,
+      0.8360505700111389
+    ],
+    "high": [
+      -0.4703853130340576,
+      7.424999713897705,
+      1.243949294090271
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "engine_fly",
+    "low": [
+      -0.4155566096305847,
+      7.026794910430908,
+      0.8394294381141663
+    ],
+    "high": [
+      -0.330363392829895,
+      7.373204708099365,
+      1.2405705451965332
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "part_box",
+    "low": [
+      -0.20171521604061127,
+      6.849999904632568,
+      0.8376978635787964
+    ],
+    "high": [
+      0.15111522376537323,
+      7.150000095367432,
+      1.0623021125793457
+    ],
+    "materials": [
+      "parts.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "hoist_beam",
+    "low": [
+      -1.9914532899856567,
+      7.139999866485596,
+      4.120491027832031
+    ],
+    "high": [
+      1.0098532438278198,
+      7.259999752044678,
+      4.279508590698242
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "chain",
+    "low": [
+      -0.7519487142562866,
+      7.184999942779541,
+      1.8495136499404907
+    ],
+    "high": [
+      -0.6920512914657593,
+      7.214999675750732,
+      4.150486469268799
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "hook",
+    "low": [
+      -0.8135849237442017,
+      7.179999828338623,
+      1.7492026090621948
+    ],
+    "high": [
+      -0.6917750835418701,
+      7.21999979019165,
+      1.89079749584198
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tC0",
+    "low": [
+      1.17185640335083,
+      10.769999504089355,
+      -0.0056235939264297485
+    ],
+    "high": [
+      2.035423755645752,
+      11.630000114440918,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tC1",
+    "low": [
+      1.2483434677124023,
+      10.788930892944336,
+      0.27437666058540344
+    ],
+    "high": [
+      2.0734965801239014,
+      11.611068725585938,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tC2",
+    "low": [
+      1.193779706954956,
+      10.776808738708496,
+      0.5543774962425232
+    ],
+    "high": [
+      2.0426204204559326,
+      11.623190879821777,
+      0.8456224799156189
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tC3",
+    "low": [
+      1.2465221881866455,
+      10.771950721740723,
+      0.8341069221496582
+    ],
+    "high": [
+      2.104437828063965,
+      11.62804889678955,
+      1.1258931159973145
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tC3_cap",
+    "low": [
+      1.2501622438430786,
+      10.773709297180176,
+      1.1141724586486816
+    ],
+    "high": [
+      2.104437828063965,
+      11.62804889678955,
+      1.1258931159973145
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tD0",
+    "low": [
+      1.9718563556671143,
+      10.969999313354492,
+      -0.0056235939264297485
+    ],
+    "high": [
+      2.835423707962036,
+      11.829999923706055,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tD1",
+    "low": [
+      2.0483434200286865,
+      10.988930702209473,
+      0.27437666058540344
+    ],
+    "high": [
+      2.8734967708587646,
+      11.811068534851074,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tD1_cap",
+    "low": [
+      2.05198335647583,
+      10.989480972290039,
+      0.5544470548629761
+    ],
+    "high": [
+      2.8734967708587646,
+      11.811068534851074,
+      0.5656232833862305
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tE0",
+    "low": [
+      -2.2281436920166016,
+      10.869999885559082,
+      -0.0056235939264297485
+    ],
+    "high": [
+      -1.3645762205123901,
+      11.730000495910645,
+      0.28562361001968384
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tE1",
+    "low": [
+      -2.1516566276550293,
+      10.888931274414062,
+      0.27437666058540344
+    ],
+    "high": [
+      -1.3265032768249512,
+      11.711069107055664,
+      0.5656232833862305
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tE2",
+    "low": [
+      -2.2062201499938965,
+      10.876809120178223,
+      0.5543774962425232
+    ],
+    "high": [
+      -1.357379674911499,
+      11.723191261291504,
+      0.8456224799156189
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tE2_cap",
+    "low": [
+      -2.202580213546753,
+      10.877934455871582,
+      0.8344461917877197
+    ],
+    "high": [
+      -1.357379674911499,
+      11.723191261291504,
+      0.8456224799156189
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "icrate0",
+    "low": [
+      -4.245420455932617,
+      9.049999237060547,
+      -0.0046371519565582275
+    ],
+    "high": [
+      -3.536379814147949,
+      9.75,
+      0.7046371698379517
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "icrate1",
+    "low": [
+      -4.206147193908691,
+      9.071722030639648,
+      0.6960299015045166
+    ],
+    "high": [
+      -3.5444531440734863,
+      9.728277206420898,
+      1.2039700746536255
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "icrate2",
+    "low": [
+      -3.6202824115753174,
+      9.174139022827148,
+      -0.00561872124671936
+    ],
+    "high": [
+      -2.764117479324341,
+      10.025861740112305,
+      0.6056187152862549
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "icrate3",
+    "low": [
+      3.215646266937256,
+      9.909040451049805,
+      -0.006630390882492065
+    ],
+    "high": [
+      3.9999537467956543,
+      10.690959930419922,
+      0.6066304445266724
+    ],
+    "materials": [
+      "crate.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can0",
+    "low": [
+      3.772610902786255,
+      7.287416934967041,
+      -0.0017401278018951416
+    ],
+    "high": [
+      4.0377888679504395,
+      7.512583255767822,
+      0.4017401337623596
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can0_cap",
+    "low": [
+      3.777811050415039,
+      7.287416934967041,
+      0.3983612656593323
+    ],
+    "high": [
+      4.0377888679504395,
+      7.512583255767822,
+      0.4017401337623596
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can1",
+    "low": [
+      3.972754716873169,
+      7.683060646057129,
+      -0.001735091209411621
+    ],
+    "high": [
+      4.237645149230957,
+      7.916939735412598,
+      0.4017350971698761
+    ],
+    "materials": [
+      "drum_blue.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can1_cap",
+    "low": [
+      3.977954864501953,
+      7.685901641845703,
+      0.39835622906684875
+    ],
+    "high": [
+      4.237645149230957,
+      7.916939735412598,
+      0.4017350971698761
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can2",
+    "low": [
+      3.5731916427612305,
+      7.880123615264893,
+      -0.0018279701471328735
+    ],
+    "high": [
+      3.8372082710266113,
+      8.119876861572266,
+      0.40182799100875854
+    ],
+    "materials": [
+      "drum_red.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can2_cap",
+    "low": [
+      3.5783915519714355,
+      7.880123615264893,
+      0.3982594609260559
+    ],
+    "high": [
+      3.8372082710266113,
+      8.116537094116211,
+      0.40182799100875854
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can3",
+    "low": [
+      -2.526087999343872,
+      0.8791856169700623,
+      -0.001740187406539917
+    ],
+    "high": [
+      -2.263512372970581,
+      1.120814323425293,
+      0.4017401933670044
+    ],
+    "materials": [
+      "drum_blue.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "can3_cap",
+    "low": [
+      -2.520887613296509,
+      0.8791856169700623,
+      0.39836105704307556
+    ],
+    "high": [
+      -2.263512372970581,
+      1.1204454898834229,
+      0.4017401933670044
+    ],
+    "materials": [
+      "drum_top.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "tWall",
+    "low": [
+      4.74031925201416,
+      8.670000076293945,
+      1.768486738204956
+    ],
+    "high": [
+      4.968880653381348,
+      9.329999923706055,
+      2.4315130710601807
+    ],
+    "materials": [
+      "tire.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "wall_top-1",
+    "low": [
+      -4.957977294921875,
+      0.0,
+      3.265789270401001
+    ],
+    "high": [
+      -4.944398403167725,
+      12.0,
+      4.310616493225098
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "wall_top1",
+    "low": [
+      5.041177749633789,
+      0.0,
+      3.1358330249786377
+    ],
+    "high": [
+      5.0547566413879395,
+      12.0,
+      4.180660247802734
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sh_box",
+    "low": [
+      -3.668410301208496,
+      -0.550000011920929,
+      2.9462523460388184
+    ],
+    "high": [
+      3.8374104499816895,
+      -0.050000011920928955,
+      3.5537476539611816
+    ],
+    "materials": [
+      "tin_wall.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sh_roll",
+    "low": [
+      -3.524815797805786,
+      -0.5,
+      2.7331655025482178
+    ],
+    "high": [
+      3.6797759532928467,
+      -0.10000000894069672,
+      3.226834535598755
+    ],
+    "materials": [
+      "tin_roof.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sh_lip",
+    "low": [
+      -3.4788498878479004,
+      -0.3700000047683716,
+      2.653852939605713
+    ],
+    "high": [
+      3.62185001373291,
+      -0.26999998092651367,
+      2.846147060394287
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sh_guide-1",
+    "low": [
+      -3.6591949462890625,
+      -0.22999998927116394,
+      -0.001185297966003418
+    ],
+    "high": [
+      -3.4976048469543457,
+      -0.08999999612569809,
+      3.2011852264404297
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sh_guide1",
+    "low": [
+      3.5808048248291016,
+      -0.22999998927116394,
+      -0.001185297966003418
+    ],
+    "high": [
+      3.7423949241638184,
+      -0.08999999612569809,
+      3.2011852264404297
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sign_main",
+    "low": [
+      -1.5597957372665405,
+      -0.4899999797344208,
+      3.5622408390045166
+    ],
+    "high": [
+      1.775595784187317,
+      -0.3499999940395355,
+      4.737759590148926
+    ],
+    "materials": [
+      "sign_shop.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\sign_shop.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sign_br-1",
+    "low": [
+      -1.2326165437698364,
+      -0.45000001788139343,
+      4.109470367431641
+    ],
+    "high": [
+      -1.1515833139419556,
+      -0.15000000596046448,
+      4.190529823303223
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "sign_br1",
+    "low": [
+      1.367383360862732,
+      -0.45000001788139343,
+      4.109470367431641
+    ],
+    "high": [
+      1.4484165906906128,
+      -0.15000000596046448,
+      4.190529823303223
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "pdoor",
+    "low": [
+      3.8630383014678955,
+      -0.09000000357627869,
+      -0.006101489067077637
+    ],
+    "high": [
+      4.788962364196777,
+      -0.010000001639127731,
+      2.006101608276367
+    ],
+    "materials": [
+      "planks_dark.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "pdoor_fr",
+    "low": [
+      3.822824716567993,
+      -0.09000000357627869,
+      1.9930970668792725
+    ],
+    "high": [
+      4.8842949867248535,
+      0.010000001639127731,
+      2.1269028186798096
+    ],
+    "materials": [
+      "wood.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  },
+  {
+    "name": "pdoor_knob",
+    "low": [
+      3.9756126403808594,
+      -0.14999999105930328,
+      0.9696025252342224
+    ],
+    "high": [
+      4.0363874435424805,
+      -0.08999999612569809,
+      1.0303974151611328
+    ],
+    "materials": [
+      "metal.001"
+    ],
+    "images": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ]
+  }
+]

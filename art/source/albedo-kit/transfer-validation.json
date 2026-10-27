@@ -1,0 +1,362 @@
+[
+  {
+    "name": "autumn_tree_01",
+    "geometry_uv_hash": "0e681ff3b44eaf6cd3d42503a3b73a0065b25cd76191043df11b514a412b158b",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      491,
+      3924
+    ]
+  },
+  {
+    "name": "autumn_tree_02",
+    "geometry_uv_hash": "8b4c079c8faddf25360c320aaa398e35aa7bee8a12588cb996fafc5ec7ff362c",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      510,
+      4077
+    ]
+  },
+  {
+    "name": "autumn_tree_03",
+    "geometry_uv_hash": "c29941367141b04237dce5b53b6c41d98f3a563a02186e3b5bdb7b5124c4a82e",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      611,
+      4891
+    ]
+  },
+  {
+    "name": "autumn_tree_04",
+    "geometry_uv_hash": "c72c1d20f075f5ec490b3378b15f24a5b869d593a62779c4e1cfe5ce08dcecf0",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      8192
+    ]
+  },
+  {
+    "name": "autumn_tree_05",
+    "geometry_uv_hash": "c7e850581d72306e2c104cbe2b471e134c857e2088d18cd9bedb4fae491c47f6",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      706,
+      2825
+    ]
+  },
+  {
+    "name": "bench_01",
+    "geometry_uv_hash": "63b2d9fefb8c71611c7d999945c2b402abe712616fabfdcf9db854fc32d3b817",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "bicycle_01",
+    "geometry_uv_hash": "a7181328d71239adad211d06909ade71d3873a7595fbe133641e19b540b8ce0d",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      256
+    ]
+  },
+  {
+    "name": "cone_01",
+    "geometry_uv_hash": "721f4b0845ac649295865b261642cae8ca56d76b04aa852ba68aa658ef4f8425",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "cone_02",
+    "geometry_uv_hash": "a56205de53e72e6547181c9f5cb0ca577d9427430dae589533835e77d03041f4",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "drum_01",
+    "geometry_uv_hash": "f156f09765ac49a02a5baa18c469d28a8a71bbe0c83c697a98c2decf48df96fe",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "drum_02",
+    "geometry_uv_hash": "bdcd09c418cae787c9c18efa9cf7bd8eefbd7314c3c13c595ea15395893a1d9e",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "drum_03",
+    "geometry_uv_hash": "812b0e579693ba7b4bcb7430842bf5a0df798b6d9d7d7629a9519a6f5f857b44",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "fence_01",
+    "geometry_uv_hash": "9dc678a9579968334654caecd9701543bb4126652d77fdb91507df0716173816",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      128
+    ]
+  },
+  {
+    "name": "fence_02",
+    "geometry_uv_hash": "1115682d55db19492514e69b7900fa4183d47bc53c61fe2025e3887a186ae5dd",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      128
+    ]
+  },
+  {
+    "name": "pole_01",
+    "geometry_uv_hash": "aab87907c6fe132ce3cf5d34c9554c36ba80b398921def4428f620c2b02adfbc",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      2048,
+      4096
+    ]
+  },
+  {
+    "name": "pot_01",
+    "geometry_uv_hash": "8391e1a32c7f7df67e7f413dae42d76034ad278a23c159ae8b73a7370f09518b",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "pot_02",
+    "geometry_uv_hash": "7e5a281c400f539097dcbab5d3bc81453477646f2d158dfe7127d7a5061ea6dc",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      64
+    ]
+  },
+  {
+    "name": "streetlight_01",
+    "geometry_uv_hash": "045171bb59cc20616cf13050c78631f00c213249969c96368de24aae40b97331",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      1024,
+      256
+    ]
+  },
+  {
+    "name": "garage",
+    "geometry_uv_hash": "8683e89b60eb21a9d024f4942ab77b9a1e87c967a482598d3654dc9a7a74db27",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      4096,
+      1024
+    ]
+  },
+  {
+    "name": "dirt",
+    "geometry_uv_hash": "c567da350e3110c6e649b2c10277a48c12c42d5522997d82e74ca64a03ce9707",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      2048,
+      1024
+    ]
+  },
+  {
+    "name": "vending_G1",
+    "geometry_uv_hash": "5ff6d64cde14518c96ba84e3c70ecd343c611c1a64bf7dd1d9e98d8a4cb13b31",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      256,
+      256
+    ]
+  },
+  {
+    "name": "vending_G2",
+    "geometry_uv_hash": "aa9e3504715d80f7f8a3bcd5e647e19691e09da5d3bf9669674f40aaacfdbd34",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      256,
+      256
+    ]
+  },
+  {
+    "name": "postbox_G1",
+    "geometry_uv_hash": "d8366e1d7d176c1aec42e9ca1cab008cf17f12ddb27444219c5348879f736b03",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      256,
+      128
+    ]
+  },
+  {
+    "name": "ac_G3",
+    "geometry_uv_hash": "c8dc6babd4961a01d9b293985d555de51f6608cde34906e8d39950e5e729f410",
+    "geometry_uv_unchanged": true,
+    "pass_type": "EMIT",
+    "direct": false,
+    "indirect": false,
+    "ao": false,
+    "lights": 0,
+    "world_strength": 0,
+    "dimensions": [
+      256,
+      128
+    ]
+  }
+]

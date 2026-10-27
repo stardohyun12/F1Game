@@ -1,0 +1,210 @@
+[
+  {
+    "photo": "art\\source\\photos\\scene-a\\CorrugatedSteel005\\CorrugatedSteel005_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=CorrugatedSteel005",
+    "license": "CC0-1.0",
+    "sha256": "82d50f2081aa71ad6bbfe5733e94eeac228e9e9ddc8df1a9e3c801fa30342ca2",
+    "output_size": [
+      256,
+      256
+    ],
+    "base": [
+      164,
+      104,
+      67
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\Ground081\\Ground081_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=Ground081",
+    "license": "CC0-1.0",
+    "sha256": "906661af2859c4fe5c47e283cf100f3c25fdf9eca35e94ae20d320118c593352",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      132,
+      124,
+      100
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      138,
+      104,
+      65
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\Metal021\\Metal021_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=Metal021",
+    "license": "CC0-1.0",
+    "sha256": "7fccdbb7cf962691f763c39130c5be8dbd7b96b1d4688ab81d9fa93e683bb807",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      77,
+      77,
+      77
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedMetal004\\PaintedMetal004_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedMetal004",
+    "license": "CC0-1.0",
+    "sha256": "bdaaee01e7fc92c7601c806fc697155d64e820cab561994f01032e3b2ab1ac0d",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      164,
+      76,
+      52
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\Rubber004\\Rubber004_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=Rubber004",
+    "license": "CC0-1.0",
+    "sha256": "95f9182e8564db9a8c6510cd0c9e0656beec0e5a0212cc177e2abf8eb03820b9",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      57,
+      57,
+      57
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      183,
+      176,
+      153
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\Metal041B\\Metal041B_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=Metal041B",
+    "license": "CC0-1.0",
+    "sha256": "d3aa6dcf420c38a61bb3d70f5c0e70d09097b64de5bff57d2d6a3f3b3efd4d2d",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      124,
+      124,
+      115
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      256,
+      128
+    ],
+    "base": [
+      186,
+      178,
+      151
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      128,
+      128
+    ],
+    "base": [
+      184,
+      175,
+      144
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      68,
+      48
+    ],
+    "base": [
+      180,
+      168,
+      138
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      68,
+      48
+    ],
+    "base": [
+      180,
+      168,
+      138
+    ],
+    "amplitude": 0.04
+  },
+  {
+    "photo": "art\\source\\photos\\scene-a\\PaintedWood008C\\PaintedWood008C_1K-JPG_Color.jpg",
+    "source_url": "https://ambientcg.com/view?id=PaintedWood008C",
+    "license": "CC0-1.0",
+    "sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "output_size": [
+      68,
+      48
+    ],
+    "base": [
+      180,
+      168,
+      138
+    ],
+    "amplitude": 0.04
+  }
+]

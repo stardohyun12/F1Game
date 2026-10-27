@@ -1,0 +1,52 @@
+[
+  {
+    "name": "autumn_tree_01",
+    "alpha_identical": true,
+    "leaf_face_count": 266,
+    "irradiance_reference": 0.05398875652076626,
+    "gain_min": 0.96,
+    "gain_max": 1.04,
+    "method": "Retain current PO1/R2 painted leaf colour regions; compare face-mean original diffuse+AO irradiance against colour-only source; conservative correction limited to +/-4% to avoid changing authored leaf clumps",
+    "limitation": "R2 palette and smoothing are irreversible. Exact removal of historical lighting inside the painted leaf clumps cannot be verified. Strong inverse correction created triangle artifacts and was rejected. Clump contrast intentionally retained."
+  },
+  {
+    "name": "autumn_tree_02",
+    "alpha_identical": true,
+    "leaf_face_count": 256,
+    "irradiance_reference": 0.03861399735999235,
+    "gain_min": 0.96,
+    "gain_max": 1.04,
+    "method": "Retain current PO1/R2 painted leaf colour regions; compare face-mean original diffuse+AO irradiance against colour-only source; conservative correction limited to +/-4% to avoid changing authored leaf clumps",
+    "limitation": "R2 palette and smoothing are irreversible. Exact removal of historical lighting inside the painted leaf clumps cannot be verified. Strong inverse correction created triangle artifacts and was rejected. Clump contrast intentionally retained."
+  },
+  {
+    "name": "autumn_tree_03",
+    "alpha_identical": true,
+    "leaf_face_count": 272,
+    "irradiance_reference": 0.04378691774449749,
+    "gain_min": 0.96,
+    "gain_max": 1.04,
+    "method": "Retain current PO1/R2 painted leaf colour regions; compare face-mean original diffuse+AO irradiance against colour-only source; conservative correction limited to +/-4% to avoid changing authored leaf clumps",
+    "limitation": "R2 palette and smoothing are irreversible. Exact removal of historical lighting inside the painted leaf clumps cannot be verified. Strong inverse correction created triangle artifacts and was rejected. Clump contrast intentionally retained."
+  },
+  {
+    "name": "autumn_tree_04",
+    "alpha_identical": true,
+    "leaf_face_count": 274,
+    "irradiance_reference": 0.09205407631715892,
+    "gain_min": 0.96,
+    "gain_max": 1.04,
+    "method": "Retain current PO1/R2 painted leaf colour regions; compare face-mean original diffuse+AO irradiance against colour-only source; conservative correction limited to +/-4% to avoid changing authored leaf clumps",
+    "limitation": "R2 palette and smoothing are irreversible. Exact removal of historical lighting inside the painted leaf clumps cannot be verified. Strong inverse correction created triangle artifacts and was rejected. Clump contrast intentionally retained."
+  },
+  {
+    "name": "autumn_tree_05",
+    "alpha_identical": true,
+    "leaf_face_count": 280,
+    "irradiance_reference": 0.048261654308754426,
+    "gain_min": 0.96,
+    "gain_max": 1.04,
+    "method": "Retain current PO1/R2 painted leaf colour regions; compare face-mean original diffuse+AO irradiance against colour-only source; conservative correction limited to +/-4% to avoid changing authored leaf clumps",
+    "limitation": "R2 palette and smoothing are irreversible. Exact removal of historical lighting inside the painted leaf clumps cannot be verified. Strong inverse correction created triangle artifacts and was rejected. Clump contrast intentionally retained."
+  }
+]

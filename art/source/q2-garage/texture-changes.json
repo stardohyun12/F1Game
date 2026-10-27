@@ -1,0 +1,7 @@
+{
+  "roof_pixels": 468318,
+  "other_pixels_unchanged": true,
+  "dirt_byte_identical": true,
+  "roof_cause": "painted circular stains in original tin_roof.png, inherited through emission-only atlas transfer",
+  "light_bake": false
+}

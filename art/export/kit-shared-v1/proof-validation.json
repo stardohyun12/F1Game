@@ -1,0 +1,31 @@
+{
+  "bounds": [
+    [
+      -3.0,
+      -2.5,
+      0.0
+    ],
+    [
+      3.0,
+      2.5,
+      7.0
+    ]
+  ],
+  "dimensions": [
+    6.0,
+    5.0,
+    7.0
+  ],
+  "tris": 478,
+  "material_slots": [
+    "wall",
+    "trim",
+    "floor",
+    "roof",
+    "decals"
+  ],
+  "texel_edge_min": 31.99974543700191,
+  "texel_edge_max": 32.00000293528553,
+  "windows": 4,
+  "doors": 1
+}

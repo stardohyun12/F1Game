@@ -1,0 +1,295 @@
+[
+  {
+    "name": "autumn_tree_01",
+    "file": "autumn_tree_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\autumn_tree_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\autumn_tree_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\autumn_tree_01.blend",
+    "objects": [
+      "autumn_tree_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "autumn_tree_02",
+    "file": "autumn_tree_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\autumn_tree_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\autumn_tree_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\autumn_tree_02.blend",
+    "objects": [
+      "autumn_tree_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "autumn_tree_03",
+    "file": "autumn_tree_03.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\autumn_tree_03.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\autumn_tree_03.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\autumn_tree_03.blend",
+    "objects": [
+      "autumn_tree_03"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "autumn_tree_04",
+    "file": "autumn_tree_04.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\autumn_tree_04.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\autumn_tree_04.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\autumn_tree_04.blend",
+    "objects": [
+      "autumn_tree_04"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "autumn_tree_05",
+    "file": "autumn_tree_05.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\autumn_tree_05.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\autumn_tree_05.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\autumn_tree_05.blend",
+    "objects": [
+      "autumn_tree_05"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "bench_01",
+    "file": "bench_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\bench_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\bench_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\bench_01.blend",
+    "objects": [
+      "bench_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "bicycle_01",
+    "file": "bicycle_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\bicycle_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\bicycle_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\bicycle_01.blend",
+    "objects": [
+      "bicycle_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "cone_01",
+    "file": "cone_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\cone_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\cone_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\cone_01.blend",
+    "objects": [
+      "cone_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "cone_02",
+    "file": "cone_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\cone_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\cone_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\cone_02.blend",
+    "objects": [
+      "cone_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "drum_01",
+    "file": "drum_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\drum_01.blend",
+    "objects": [
+      "drum_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "drum_02",
+    "file": "drum_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\drum_02.blend",
+    "objects": [
+      "drum_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "drum_03",
+    "file": "drum_03.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_03.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\drum_03.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\drum_03.blend",
+    "objects": [
+      "drum_03"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "fence_01",
+    "file": "fence_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\fence_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\fence_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\fence_01.blend",
+    "objects": [
+      "fence_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "fence_02",
+    "file": "fence_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\fence_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\fence_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\fence_02.blend",
+    "objects": [
+      "fence_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "pole_01",
+    "file": "pole_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pole_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pole_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\pole_01.blend",
+    "objects": [
+      "pole_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "pot_01",
+    "file": "pot_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pot_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pot_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\pot_01.blend",
+    "objects": [
+      "pot_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "pot_02",
+    "file": "pot_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pot_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\pot_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\pot_02.blend",
+    "objects": [
+      "pot_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "streetlight_01",
+    "file": "streetlight_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\streetlight_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\streetlight_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\streetlight_01.blend",
+    "objects": [
+      "streetlight_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "tires_01",
+    "file": "tires_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\tires_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\tires_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\tires_01.blend",
+    "objects": [
+      "tires_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "tires_02",
+    "file": "tires_02.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\tires_02.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\tires_02.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\tires_02.blend",
+    "objects": [
+      "tires_02"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "transformer_01",
+    "file": "transformer_01.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit-po1\\transformer_01.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a2-kit\\transformer_01.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a2_kit\\transformer_01.blend",
+    "objects": [
+      "transformer_01"
+    ],
+    "kind": "kit"
+  },
+  {
+    "name": "garage",
+    "file": "garage_baked32.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a-v5b-garage\\garage_baked32.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a-v5b-garage\\garage_v5_combo.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\baked-lit.blend",
+    "kind": "garage",
+    "group": "garage"
+  },
+  {
+    "name": "dirt",
+    "file": "dirt_baked32.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a-v5b-garage\\dirt_baked32.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a-v5b-garage\\dirt_v5_combo.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\baked-lit.blend",
+    "kind": "garage",
+    "group": "dirt"
+  },
+  {
+    "name": "vending_G1",
+    "file": "vending_G1.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G1.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G1.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\source\\photo-kit\\vending_G1.blend",
+    "objects": [
+      "vending_G1"
+    ],
+    "kind": "photo"
+  },
+  {
+    "name": "vending_G2",
+    "file": "vending_G2.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G2.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G2.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\source\\photo-kit\\vending_G2.blend",
+    "objects": [
+      "vending_G2"
+    ],
+    "kind": "photo"
+  },
+  {
+    "name": "postbox_G1",
+    "file": "postbox_G1.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\postbox_G1.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\postbox_G1.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\source\\photo-kit\\postbox_G1.blend",
+    "objects": [
+      "postbox_G1"
+    ],
+    "kind": "photo"
+  },
+  {
+    "name": "ac_G3",
+    "file": "ac_G3.png",
+    "before": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\ac_G3.png",
+    "fbx": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\ac_G3.fbx",
+    "blend": "D:\\Github\\F1Game\\art\\source\\photo-kit\\ac_G3.blend",
+    "objects": [
+      "ac_G3"
+    ],
+    "kind": "photo"
+  }
+]

@@ -1,0 +1,68 @@
+{
+  "measure_tool": "audit_compare.py (equivalent diagnostic)",
+  "reference_crop_original": [
+    0,
+    31,
+    960,
+    570
+  ],
+  "architecture_rois_at_1280": {
+    "reference": [
+      580,
+      195,
+      955,
+      435
+    ],
+    "proof": [
+      510,
+      200,
+      770,
+      520
+    ]
+  },
+  "rows": [
+    {
+      "name": "reference full",
+      "path": "art/_review/2026-10-28-kit-shared-v1/reference_720.png",
+      "face_uniform_frac": 0.6320237418995838,
+      "face_std_median": 0.821637021357684
+    },
+    {
+      "name": "kit full",
+      "path": "art/_review/2026-10-28-kit-shared-v1/assembly_720.png",
+      "face_uniform_frac": 0.6152749440770876,
+      "face_std_median": 0.0
+    },
+    {
+      "name": "reference architecture",
+      "path": "art/_review/2026-10-28-kit-shared-v1/reference_architecture.png",
+      "face_uniform_frac": 0.5366687641730087,
+      "face_std_median": 1.0375605681341884
+    },
+    {
+      "name": "kit architecture",
+      "path": "art/_review/2026-10-28-kit-shared-v1/proof_architecture.png",
+      "face_uniform_frac": 0.5809654370222666,
+      "face_std_median": 1.3270890438525424
+    }
+  ],
+  "provisional_limits": {
+    "face_uniform_frac": [
+      0.4866687641730087,
+      0.5866687641730087
+    ],
+    "face_std_median": [
+      0.8300484545073508,
+      1.245072681761026
+    ]
+  },
+  "passed": {
+    "face_uniform_frac": true,
+    "face_std_median": false
+  },
+  "tolerance_status": "artist proposal: +/-5 percentage points and +/-20%; no PD reply yet",
+  "excluded": [
+    "empty_cell_frac_bottom",
+    "val_p5_p95"
+  ]
+}

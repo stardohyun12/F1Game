@@ -1,0 +1,332 @@
+{
+  "autumn_tree_01.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\autumn_tree_01.png",
+    "size": [
+      491,
+      3924
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "720eeedd137164c53b65992952946b2c1d72a052d1872d568b5e2f8fe1b7dcec"
+  },
+  "autumn_tree_02.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\autumn_tree_02.png",
+    "size": [
+      510,
+      4077
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "6d3ac2235380eaa9880a38d9b826e640d8ced2d437cc6cfb4fe55c8e4a3bd645"
+  },
+  "autumn_tree_03.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\autumn_tree_03.png",
+    "size": [
+      611,
+      4891
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "7bf83dd4656c0153c9692fef4cf1ef896ea9d1b880f5d9ab651898cb4195c806"
+  },
+  "autumn_tree_04.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\autumn_tree_04.png",
+    "size": [
+      1024,
+      8192
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "1333f85ad5890c7d0323d8c3e55d915d7046a95ed04d14d2544df16782f84f6e"
+  },
+  "autumn_tree_05.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\autumn_tree_05.png",
+    "size": [
+      706,
+      2825
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "f535873a17411fe37931e02617a7a90488410ee6ad2f9c438f4584e798a6927b"
+  },
+  "bench_01.png": {
+    "source": "art\\export\\scene-a2-kit\\bench_01.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "473f558ca95ba7735f0e5e975e0c17f3f39a0e6e48812928d0ea10978bfb7e16"
+  },
+  "bicycle_01.png": {
+    "source": "art\\export\\scene-a2-kit\\bicycle_01.png",
+    "size": [
+      1024,
+      256
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "4690c1372ee53ca0fcde69f81e3c90c4cfb50a88ed6801f2a11a919621710e0a"
+  },
+  "cone_01.png": {
+    "source": "art\\export\\scene-a2-kit\\cone_01.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "25f4b6a407f33f2547d1bc0422782447d5237c72e2ff140866fdfb58a683c28d"
+  },
+  "cone_02.png": {
+    "source": "art\\export\\scene-a2-kit\\cone_02.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "c8f1e464cc58f6b351b094ba4d3dba48d1bdc4097cecfe5dea666f21ddece463"
+  },
+  "drum_01.png": {
+    "source": "art\\export\\scene-a2-kit\\drum_01.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "adceaa10eaacf5d3ab07f546eda1c241571ee2dc16917ad4f7cb9672a5b7121f"
+  },
+  "drum_02.png": {
+    "source": "art\\export\\scene-a2-kit\\drum_02.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "f3e398e3473556c3399d6a7304e89844d7107a3c9cddca3a62e237ace1bfab86"
+  },
+  "drum_03.png": {
+    "source": "art\\export\\scene-a2-kit\\drum_03.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "fe80a90be6f6e9e68495d4a78628047f1dee2f86397654b93ecc7202ed69cdef"
+  },
+  "fence_01.png": {
+    "source": "art\\export\\scene-a2-kit\\fence_01.png",
+    "size": [
+      1024,
+      128
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "a37eed77d8fa1d7be90d9b8cc577b37744293c98e0d269e9cada1e2fbb0e9588"
+  },
+  "fence_02.png": {
+    "source": "art\\export\\scene-a2-kit\\fence_02.png",
+    "size": [
+      1024,
+      128
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "e1f50ba6c4de95481043ebf0c63406f68153570bbc9fa103b7eec227bc9e1167"
+  },
+  "pole_01.png": {
+    "source": "art\\export\\scene-a2-kit\\pole_01.png",
+    "size": [
+      2048,
+      4096
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "ab3cc95a542521ed6a4f3dd097e3212029ae36147f4c70fdc17520409d11c7a9"
+  },
+  "pot_01.png": {
+    "source": "art\\export\\scene-a2-kit\\pot_01.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "2a63b7f8f80e68da3f95236e6e6ce4a12e7309f915252c56712f2f33f8004076"
+  },
+  "pot_02.png": {
+    "source": "art\\export\\scene-a2-kit\\pot_02.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "9355f361af6d8b62f2d30ed49ae03adf7e36275d711cfa76f8c96cde95dfeb71"
+  },
+  "streetlight_01.png": {
+    "source": "art\\export\\scene-a2-kit\\streetlight_01.png",
+    "size": [
+      1024,
+      256
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "cec034fd42712c5869de0c6991898a06e3ec5c4d62442adb272ebf463ed0f3d7"
+  },
+  "tires_01.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\tires_01.png",
+    "size": [
+      1024,
+      512
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "e2d06014120d7785513fc6b6b53f3d010b1852dc0950fbf6c0e68d8431fa45bd"
+  },
+  "tires_02.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\tires_02.png",
+    "size": [
+      1024,
+      512
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "93f371c7bb11b1e053b6c30f943fa0a976c9925bc380d378310d2496b446c768"
+  },
+  "transformer_01.png": {
+    "source": "art\\export\\scene-a2-kit-po1\\transformer_01.png",
+    "size": [
+      1024,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "7ef57d09fcc2a4afc41f733c4d80f233859f807becce1e366e012e605179c494"
+  },
+  "garage_baked32.png": {
+    "source": "art\\export\\scene-a-v5b-garage\\garage_baked32.png",
+    "size": [
+      4096,
+      1024
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "108a5049dbf802bf5daf90d889f646ea4b03feb01aad6a1d0dd33fbace72e540"
+  },
+  "dirt_baked32.png": {
+    "source": "art\\export\\scene-a-v5b-garage\\dirt_baked32.png",
+    "size": [
+      2048,
+      1024
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "9d7d6f8b3c01feb37d63df012a4b5a34423191baa5b2c5e668ea4b8f3dd3f8e8"
+  },
+  "vending_G1.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\vending_G1.png",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "9e07340839805b88cf264c67d2c1451e8d02be39108da493913fca49bd19c5e8"
+  },
+  "vending_G2.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\vending_G2.png",
+    "size": [
+      256,
+      256
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "19cfbdcd4f3edd5faf4d5bce245c25a940dfbcf97ccd76e3cb052dce6af9a10c"
+  },
+  "postbox_G1.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\postbox_G1.png",
+    "size": [
+      256,
+      128
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "b003e25e312b6d397fce27f49e6e3e80ab70162ebc978420514970bf9651bf99"
+  },
+  "ac_G3.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\ac_G3.png",
+    "size": [
+      256,
+      128
+    ],
+    "alpha_identical": true,
+    "method": "Original Base Color -> emission-only UV transfer; PO1 painted features restored; no lighting/AO/tone lift",
+    "source_sha256": "0c16d454a97325c1dc7404da0e80f1929a08ffde68d45107e6015da5669cb2ac"
+  },
+  "tin_F2.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\tin_F2.png",
+    "size": [
+      64,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Pre-light, perspective-corrected photo tile; no sun/sky/AO",
+    "source_sha256": "97d708eedd1f617536da91f892695a14eae06f05a7c622e8e34398dfe7371a9a"
+  },
+  "tin_F3.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\tin_F3.png",
+    "size": [
+      32,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Pre-light, perspective-corrected photo tile; no sun/sky/AO",
+    "source_sha256": "905902b723c02511866876f64196ff0db5fb58858bc1742a2b22155dd7cb61ae"
+  },
+  "stone_H1.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\stone_H1.png",
+    "size": [
+      64,
+      48
+    ],
+    "alpha_identical": true,
+    "method": "Pre-light, perspective-corrected photo tile; no sun/sky/AO",
+    "source_sha256": "04c12609ee965062aea3b0f8be5394e94ebc62770da49426bb6569e7e497d5cb"
+  },
+  "stone_H2.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\stone_H2.png",
+    "size": [
+      64,
+      42
+    ],
+    "alpha_identical": true,
+    "method": "Pre-light, perspective-corrected photo tile; no sun/sky/AO",
+    "source_sha256": "fdd4379f0286b85ed2ca5a7f5894545cb643337f47e3e4d3b5e3d6e34fd6a9f7"
+  },
+  "stone_H3.png": {
+    "source": "art\\export\\scene-a6-photo-kit\\stone_H3.png",
+    "size": [
+      64,
+      64
+    ],
+    "alpha_identical": true,
+    "method": "Pre-light, perspective-corrected photo tile; no sun/sky/AO",
+    "source_sha256": "a99301efe61e1fb04bbfaf53d3c14714c5fd53d69b15f22d7b8985eb179007f0"
+  },
+  "kart_v6e.png": {
+    "source": "art\\export\\kart-v6e\\kart_v6e.png",
+    "size": [
+      4096,
+      1024
+    ],
+    "alpha_identical": true,
+    "method": "Per-material lighting ramp removed, v6e mean hue preserved, grain limited to +/-4%; plate identical; carton shading divided out",
+    "source_sha256": "10bb186fc6ad0faa11b122a834f2a824f867f4ed27f6c2082c4f70a6a3fc292c"
+  }
+}

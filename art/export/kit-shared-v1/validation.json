@@ -1,0 +1,214 @@
+{
+  "wall": {
+    "colors": 15,
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "7136f5bcbeaab5a659ab5be3a78d51f3afb0498f7221261d02cde974299d4a60",
+    "parts": [
+      {
+        "part": "wall_apricot",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "wall_cream",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "wall_mint",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "wall_apricot_B",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      }
+    ]
+  },
+  "trim": {
+    "colors": 35,
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "6a2167b2ee43b64d539beb9f95750ed90ae632936f0a2d488d0db4383f7b2684",
+    "parts": [
+      {
+        "part": "eaves",
+        "edge_U_max": 0,
+        "edge_V_max": 10,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "window_frame",
+        "edge_U_max": 0,
+        "edge_V_max": 12,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "door_frame",
+        "edge_U_max": 0,
+        "edge_V_max": 10,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "skirting",
+        "edge_U_max": 0,
+        "edge_V_max": 10,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "gutter",
+        "edge_U_max": 0,
+        "edge_V_max": 6,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "shutter",
+        "edge_U_max": 0,
+        "edge_V_max": 57,
+        "isolated_fraction": 0.0008138020833333334
+      },
+      {
+        "part": "glass",
+        "edge_U_max": 0,
+        "edge_V_max": 4,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "wood_door",
+        "edge_U_max": 0,
+        "edge_V_max": 8,
+        "isolated_fraction": 0.0
+      }
+    ]
+  },
+  "floor": {
+    "colors": 20,
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "e7b4be83fb0ccb2f25f944d961cf7ca01e1f27be7440a16127c20e58db562e7b",
+    "parts": [
+      {
+        "part": "floor_stone",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "floor_wood",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "floor_concrete",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "floor_asphalt",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      }
+    ]
+  },
+  "roof": {
+    "colors": 20,
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
+    "parts": [
+      {
+        "part": "roof_E2",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "roof_E3",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "roof_F2",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      },
+      {
+        "part": "roof_F3",
+        "edge_U_max": 0,
+        "edge_V_max": 0,
+        "isolated_fraction": 0.0
+      }
+    ]
+  },
+  "decals": {
+    "colors": 32,
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263",
+    "parts": []
+  },
+  "determinism": {
+    "import_vs_CLI_sha256": "f03dc9fcdcde7496d4b31874b2bbc3ddb05382fbf0e15968d0825da8882d9ce7",
+    "byte_identical": true
+  },
+  "material_order_linear": {
+    "asphalt": 0.041465374495212814,
+    "brick": 0.12837687108062662,
+    "concrete": 0.5116714245046807,
+    "plaster": 0.5116714245046807
+  },
+  "crossed_quad_rejected": true,
+  "wall_grain_correlation": [
+    [
+      1.0,
+      0.96144040928376,
+      0.9618193500838932
+    ],
+    [
+      0.9614404092837598,
+      1.0,
+      0.9904554805165245
+    ],
+    [
+      0.9618193500838932,
+      0.9904554805165245,
+      1.0
+    ]
+  ],
+  "F3_mean_RGB": [
+    113.06283569335938,
+    149.17193603515625,
+    171.12014770507812
+  ],
+  "decal_alpha_range": [
+    0,
+    255
+  ],
+  "dependencies": {
+    "python": "3.13.14",
+    "numpy": "2.5.1",
+    "Pillow": "12.3.0",
+    "OpenCV": "5.0.0"
+  }
+}

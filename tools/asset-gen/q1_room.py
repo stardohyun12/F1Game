@@ -33,7 +33,7 @@ C = dict(wall=(244, 235, 200), wain=(178, 209, 183), wainline=(135, 157, 150), r
 # 2차(과제 0406): 결 단계 — 큰 면 바탕색마다 어둠2·어둠1·밝음1 (사진 결이 양자화에서 살아남게)
 for k in ['wall', 'wain', 'wainline', 'rail', 'skirt', 'wood', 'wood2', 'wood3', 'dkwood2', 'straw', 'straw2', 'green3', 'frame', 'egg', 'orange']:
     for f, t in ((.86, '어둠2'), (.93, '어둠1'), (1.05, '밝음1')):
-        c = tuple(int(min(255, round(v * f))) for v in C[k])
+        c = tuple(int(min(255, round(v * f * (tt if f < 1 else 1)))) for v, tt in zip(C[k], (1, .965, .88)))  # 어둠 단계는 황토 쪽(회색 얼룩 금지)
         if c not in [q for q, _ in PAL]: PAL.append((c, f'q1v2 결 {t} {k}'))
 with open(OUT + 'palette_q1v2.gpl', 'w', encoding='utf-8') as f:
     f.write('GIMP Palette\nName: q1-room v2 (palette53 + 결 단계)\nColumns: 8\n#\n')
@@ -70,7 +70,7 @@ def photo(A, key, amp, seed):
     t = ph_tile(key, CD[0]); h, w = A.shape[:2]; rs = np.random.default_rng(seed); PHUSE.add(PH[key][0])
     t = np.roll(t, (rs.integers(t.shape[0]), rs.integers(t.shape[1])), (0, 1)); t = np.tile(t, (h // t.shape[0] + 1, w // t.shape[1] + 1))[:h, :w]
     A *= (1 + amp * t)[..., None]
-AMP = float(os.environ.get('AMP', .7)); BL = float(os.environ.get('BL', 1.6))
+AMP = float(os.environ.get('AMP', .45)); BL = float(os.environ.get('BL', 2.0))
 def ph_of(pt):
     for keys, v in ((('floor', 'ceiling', 'beam', 'doorframe', 'winframe', 'sill', 'desk', 'drawers', 'chair', 'shelf', 'bedwood', 'hook', 'radio'), ('wood', .08)),
                     (('tatami',), ('tatami', .10)), (('reveal',), ('plaster', .07)),
@@ -190,7 +190,7 @@ def p_futonend(A):  # 개어 둔 끝: 세 겹 접힌 줄
     for f in (1 / 3, 2 / 3): A[int(h * f)] = C['wainline']
 def p_vestbody(A):  # 조끼 몸판: 반사 띠 2줄 + 주머니 + 앞 지퍼
     h, w = A.shape[:2]; A[:] = C['orange']
-    for z in (.2, .5): A[int(h * z):int(h * z) + 2] = C['cream']
+    A[int(h * .45):int(h * .45) + 2] = C['cream']  # 반사 띠 1줄(2줄이면 콘처럼 읽힘)
     px(A, 3, w // 2 - 3, 2, int(h * .18), C['terra']); px(A, 4, w // 2 - 4, 3, int(h * .18) - 1, C['orange'])
     px(A, w // 2, w // 2 + 1, 0, h, C['terra'])
 def p_vestsh(A): A[:] = C['orange']; A[:, :1] = C['terra']; A[:, -1:] = C['terra']
@@ -353,13 +353,13 @@ box(Fu, .55, .95, -1.05, -.65, .42, .46, 'chair')
 for x, y in ((.56, -1.04), (.91, -1.04), (.56, -.69), (.91, -.69)): box(Fu, x, x + .03, y, y + .03, 0, .42, 'chair', skip=('top', 'bottom'))
 for y in (-1.05, -.68): box(Fu, .55, .58, y, y + .03, .46, .92, 'chair', skip=('bottom',))
 # 2차: 조끼 = 옷 실루엣(몸판 + 팔 구멍 + V 목 + 어깨), 등받이 넘어 앞뒤로 늘어지고 아래가 벌어짐. 안쪽 면도 있음(속 빈 뒤 안 보이게)
-VB = [(-1.08, .50), (-.62, .50), (-.63, .72), (-1.07, .72)]; VL = [(-1.0, .72), (-.86, .72), (-.93, .95), (-.99, .95)]; VR = [(-.84, .72), (-.70, .72), (-.71, .95), (-.77, .95)]
+VB = [(-1.08, .50), (-.62, .50), (-.63, .72), (-1.07, .72)]; VL = [(-1.05, .72), (-.87, .72), (-.9, .95), (-1.03, .95)]; VR = [(-.83, .72), (-.65, .72), (-.67, .95), (-.80, .95)]  # 어깨 넓게(콘 모양 X)
 for xt, xb, out in ((.535, .49, -1), (.595, .645, 1)):  # 뒤판(벽 쪽) · 앞판(자리 쪽)
     X = lambda z: xt + (xb - xt) * (.95 - z) / .45
     for poly, pt in ((VB, 'vestbody'), (VL, 'vestsh'), (VR, 'vestsh')):
         P3 = [(X(z), y, z) for y, z in poly]; o = P3 if out > 0 else P3[::-1]
         Q4('ROOM_vest', o, pt, 64); Q4('ROOM_vest', o[::-1], 'vestin', 64)
-for ya, yb in ((-.99, -.93), (-.77, -.71)): Q4('ROOM_vest', [(.535, ya, .95), (.535, yb, .95), (.595, yb, .95), (.595, ya, .95)][::-1], 'vestsh', 64)
+for ya, yb in ((-1.03, -.9), (-.8, -.67)): Q4('ROOM_vest', [(.535, ya, .95), (.535, yb, .95), (.595, yb, .95), (.595, ya, .95)][::-1], 'vestsh', 64)
 # 책상 위: 라디오(창 쪽 구석)·잡지·공책·연필·저금통·머그
 box(Pr, 1.42, 1.7, -1.42, -1.1, .72, .92, dict({'*': 'radio'}, left='radiof', top='radiotop'), 64, skip=('bottom', 'right')); box(Pr, 1.62, 1.635, -1.15, -1.135, .92, 1.3, 'antenna', 64, skip=('bottom',))
 Q(Pr, (1.2, -.76, .722), (0, -.21, 0), (.28, 0, 0), 'magazine', 64)
@@ -450,8 +450,8 @@ meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per
             size_m=dict(w=3.5, d=3.0, h=HH), pivot='바닥 가운데', forward='창 = Blender -Y → FBX/Unity +Z', note='창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을')
 json.dump(meas, open(OUT + 'measure.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False); print('MEAS', meas, flush=True)
 # 시트 전용(내보내지 않음): 창밖 = 실제 게임 캡처 임시 배경. Unity 에선 맵의 주인공 집 안에 놓아 진짜 마을이 보인다.
-BG = bpy.data.images.load(R + 'docs/qa/evidence/scene-a7b/street_on.png'); bw_, bh_ = BG.size
-mb = bpy.data.materials.new('BG'); mb.use_nodes = True; nt = mb.node_tree; nt.nodes.clear(); tx = nt.nodes.new('ShaderNodeTexImage'); tx.image = BG
+BG = bpy.data.images.load(R + 'docs/qa/evidence/scene-a7b/street_on.png'); bw_, bh_ = BG.size; BG.scale(480, 270)  # 방 텍셀과 같은 거칠기
+mb = bpy.data.materials.new('BG'); mb.use_nodes = True; nt = mb.node_tree; nt.nodes.clear(); tx = nt.nodes.new('ShaderNodeTexImage'); tx.image = BG; tx.interpolation = 'Closest'
 em = nt.nodes.new('ShaderNodeEmission'); mo = nt.nodes.new('ShaderNodeOutputMaterial'); nt.links.new(tx.outputs[0], em.inputs[0]); nt.links.new(em.outputs[0], mo.inputs[0])
 WB = 18.0; HB = WB * bh_ / bw_; meb = bpy.data.meshes.new('BG'); meb.from_pydata([(WB / 2, -7, -5.0), (-WB / 2, -7, -5.0), (-WB / 2, -7, -5.0 + HB), (WB / 2, -7, -5.0 + HB)], [], [(0, 1, 2, 3)])
 uvb = meb.uv_layers.new(name='UV')
@@ -459,8 +459,8 @@ for k, uv in enumerate(((0, 0), (1, 0), (1, 1), (0, 1))): uvb.data[k].uv = uv
 obb = bpy.data.objects.new('BG_capture', meb); sc.collection.objects.link(obb); meb.materials.append(mb); obb.visible_shadow = False
 
 # ---------- 게이트 렌더: 창으로 드는 아침 해 1 + 창 하늘빛 근사 ----------
-wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; bgn = wd.node_tree.nodes['Background']; bgn.inputs[0].default_value = (.62, .72, .78, 1); bgn.inputs[1].default_value = .9
-sd = bpy.data.lights.new('sun', 'SUN'); sd.energy = float(os.environ.get('SUN', 3.2)); sd.angle = math.radians(2); so = bpy.data.objects.new('sun', sd); sc.collection.objects.link(so)
+wd = bpy.data.worlds.new('w'); sc.world = wd; wd.use_nodes = True; bgn = wd.node_tree.nodes['Background']; bgn.inputs[0].default_value = (.62, .72, .78, 1); bgn.inputs[1].default_value = float(os.environ.get("WORLD", .45))
+sd = bpy.data.lights.new('sun', 'SUN'); sd.energy = float(os.environ.get('SUN', 4.2)); sd.angle = math.radians(2); so = bpy.data.objects.new('sun', sd); sc.collection.objects.link(so)
 so.rotation_euler = Vector((-.3, 1, -.5)).to_track_quat('-Z', 'Y').to_euler()
 ad = bpy.data.lights.new('skywin', 'AREA'); ad.shape = 'RECTANGLE'; ad.size = 2.0; ad.size_y = 1.2; ad.energy = float(os.environ.get('SKY', 95)); ad.color = (.78, .88, 1.0)
 ao = bpy.data.objects.new('skywin', ad); sc.collection.objects.link(ao); ao.location = (0, -1.4, 1.4); ao.rotation_euler = Vector((0, 1, -.25)).to_track_quat('-Z', 'Y').to_euler()

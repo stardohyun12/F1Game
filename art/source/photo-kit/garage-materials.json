@@ -1,0 +1,2228 @@
+[
+  {
+    "name": "wall_-1_planks_dark",
+    "materials": [
+      "planks_dark.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "wall_-1_tin_wall",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "wall_1_planks_dark",
+    "materials": [
+      "planks_dark.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "wall_1_tin_wall",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "win_L",
+    "materials": [
+      "window.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\window.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "win_R",
+    "materials": [
+      "window.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\window.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "back",
+    "materials": [
+      "planks.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "back_gable",
+    "materials": [
+      "planks.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "front_-1",
+    "materials": [
+      "planks.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "front_1",
+    "materials": [
+      "planks.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "front_gable",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "header",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "roof",
+    "materials": [
+      "tin_roof.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib1",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib2",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib3",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rib5",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "post_-1_0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "post_-1_12.0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "post_1_0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "post_1_12.0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rail",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "patch0",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "patch1",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "patch2",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "patch3",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "loose_plank",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "floor",
+    "materials": [
+      "floor.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\floor.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "apron",
+    "materials": [
+      "path.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\path.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "bench",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "leg4.053.2",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "leg4.653.2",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "leg4.056.4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "leg4.656.4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "bench_shelf",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "pegboard",
+    "materials": [
+      "pegboard.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\pegboard.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "vise",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "toolbox",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost-1-1.1-0.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost-1-1.10.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost-11.1-0.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost-11.10.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf-10.4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf-11.15",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf-11.9",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-10",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-11",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-12",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-13",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-14",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-15",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part-16",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost1-1.1-0.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost1-1.10.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost11.1-0.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shpost11.10.25",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf10.4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf11.15",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shelf11.9",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part10",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part11",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part12",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part13",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part14",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part15",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part16",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tA0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tA1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tA2",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tA3",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tA3_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tB0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tB1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tB2",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tB2_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tO0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tO1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tO2",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tO2_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tLean",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum0",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum0_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum1",
+    "materials": [
+      "drum_blue.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum1_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum2",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum2_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum3",
+    "materials": [
+      "drum_blue.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum3_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "drum_lying",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "cable0",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shade0",
+    "materials": [
+      "lamp.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "bulb0",
+    "materials": [
+      "lamp.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "cable1",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "shade1",
+    "materials": [
+      "lamp.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "bulb1",
+    "materials": [
+      "lamp.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\lamp.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "posterA",
+    "materials": [
+      "poster_a.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_a.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "posterB",
+    "materials": [
+      "poster_b.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_b.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "posterC",
+    "materials": [
+      "poster_a.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\poster_a.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "record",
+    "materials": [
+      "record.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\record.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "slots",
+    "materials": [
+      "slots.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\slots.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "slots_frame",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "crate1",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "crate2",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "lad-4.85",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "lad-4.35",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rung0",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rung1",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rung2",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rung3",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "rung4",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "table",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "trest-0.7",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "trest0.7",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "engine",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "engine_fly",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "part_box",
+    "materials": [
+      "parts.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\parts.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "hoist_beam",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "chain",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "hook",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tC0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tC1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tC2",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tC3",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tC3_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tD0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tD1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tD1_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tE0",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tE1",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tE2",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tE2_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "icrate0",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "icrate1",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "icrate2",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "icrate3",
+    "materials": [
+      "crate.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\crate.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can0",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can0_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can1",
+    "materials": [
+      "drum_blue.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can1_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can2",
+    "materials": [
+      "drum_red.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_red.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can2_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can3",
+    "materials": [
+      "drum_blue.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\drum_blue.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "can3_cap",
+    "materials": [
+      "drum_top.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\drum_top.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "tWall",
+    "materials": [
+      "tire.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\tire.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "wall_top-1",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "wall_top1",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sh_box",
+    "materials": [
+      "tin_wall.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_wall.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sh_roll",
+    "materials": [
+      "tin_roof.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\tin_roof.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sh_lip",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sh_guide-1",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sh_guide1",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sign_main",
+    "materials": [
+      "sign_shop.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\sign_shop.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sign_br-1",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "sign_br1",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "pdoor",
+    "materials": [
+      "planks_dark.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_v1b.fbm\\planks_dark.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "pdoor_fr",
+    "materials": [
+      "wood.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\wood.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  },
+  {
+    "name": "pdoor_knob",
+    "materials": [
+      "metal.001"
+    ],
+    "textures": [
+      "D:\\Github\\F1Game\\art\\export\\scene-a-v1b-photobash\\garage_props_v1b.fbm\\metal.png",
+      "D:\\Github\\F1Game\\art\\models\\garage_scene_a_v5_combo\\garage_baked_raw.png"
+    ],
+    "uv": [
+      "SourceUV",
+      "BakedUV"
+    ]
+  }
+]

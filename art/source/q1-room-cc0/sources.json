@@ -1,0 +1,299 @@
+{
+ "beige_wall_001": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/beige_wall_001",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/beige_wall_001/beige_wall_001_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva, Rico Cilliers",
+  "dims_mm": [
+   3000,
+   3000.000238418579
+  ]
+ },
+ "beige_wall_002": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/beige_wall_002",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/beige_wall_002/beige_wall_002_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva, Rico Cilliers",
+  "dims_mm": [
+   3000,
+   3000.000238418579
+  ]
+ },
+ "blue_plaster_wall": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/blue_plaster_wall",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/blue_plaster_wall/blue_plaster_wall_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva",
+  "dims_mm": [
+   2000,
+   2000
+  ]
+ },
+ "blue_plaster_weathered": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/blue_plaster_weathered",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/blue_plaster_weathered/blue_plaster_weathered_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   2000,
+   2000
+  ]
+ },
+ "black_painted_planks": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/black_painted_planks",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/black_painted_planks/black_painted_planks_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva",
+  "dims_mm": [
+   1599.9999046325684,
+   1599.9999046325684
+  ]
+ },
+ "blue_painted_planks": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/blue_painted_planks",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/blue_painted_planks/blue_painted_planks_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   1000,
+   1000
+  ]
+ },
+ "brown_planks_03": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/brown_planks_03",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_planks_03/brown_planks_03_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   1000,
+   1000
+  ]
+ },
+ "brown_planks_04": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/brown_planks_04",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_planks_04/brown_planks_04_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   1000,
+   1000
+  ]
+ },
+ "bamboo_veneer": {
+  "cls": "weave",
+  "url": "https://polyhaven.com/a/bamboo_veneer",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/bamboo_veneer/bamboo_veneer_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Jenelle van Heerden",
+  "dims_mm": [
+   1000,
+   1000
+  ]
+ },
+ "bamboo_wall": {
+  "cls": "weave",
+  "url": "https://polyhaven.com/a/bamboo_wall",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/bamboo_wall/bamboo_wall_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   2000,
+   2000
+  ]
+ },
+ "bamboo_wall_02": {
+  "cls": "weave",
+  "url": "https://polyhaven.com/a/bamboo_wall_02",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/bamboo_wall_02/bamboo_wall_02_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   1700.0000476837158,
+   1700.0000476837158
+  ]
+ },
+ "bamboo_wall_03": {
+  "cls": "weave",
+  "url": "https://polyhaven.com/a/bamboo_wall_03",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/bamboo_wall_03/bamboo_wall_03_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   1850.000023841858,
+   1850.000023841858
+  ]
+ },
+ "cotton_jersey": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/cotton_jersey",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cotton_jersey/cotton_jersey_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "colormass, Rico Cilliers",
+  "dims_mm": [
+   263.6027473872483,
+   263.7999951839447
+  ]
+ },
+ "denim_fabric": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/denim_fabric",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric/denim_fabric_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   100.00000149011612,
+   99.99999403953552
+  ]
+ },
+ "denim_fabric_03": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/denim_fabric_03",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric_03/denim_fabric_03_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "colormass, Rico Cilliers",
+  "dims_mm": [
+   271.42801281852286,
+   270.9999978542328
+  ]
+ },
+ "denim_fabric_04": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/denim_fabric_04",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric_04/denim_fabric_04_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "colormass, Rico Cilliers",
+  "dims_mm": [
+   272.8973422962554,
+   269.3000137805939
+  ]
+ },
+ "decrepit_wallpaper": {
+  "cls": "paper",
+  "url": "https://polyhaven.com/a/decrepit_wallpaper",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/decrepit_wallpaper/decrepit_wallpaper_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   2500,
+   2500
+  ]
+ },
+ "painted_plaster_wall": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/painted_plaster_wall",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/painted_plaster_wall/painted_plaster_wall_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   2000,
+   2000
+  ]
+ },
+ "clay_plaster": {
+  "cls": "plaster",
+  "url": "https://polyhaven.com/a/clay_plaster",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Amal Kumar",
+  "dims_mm": [
+   1999.9996423721313,
+   1999.9996423721313
+  ]
+ },
+ "fine_grained_wood": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/fine_grained_wood",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/fine_grained_wood/fine_grained_wood_col_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Rob Tuytel",
+  "dims_mm": [
+   600.0000238418579,
+   600.0000238418579
+  ]
+ },
+ "wood_floor": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/wood_floor",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_floor/wood_floor_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva",
+  "dims_mm": [
+   1699.9996900558472,
+   1699.9996900558472
+  ]
+ },
+ "wood_floor_worn": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/wood_floor_worn",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_floor_worn/wood_floor_worn_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva",
+  "dims_mm": [
+   1999.9996423721313,
+   1999.9996423721313
+  ]
+ },
+ "wood_table_001": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/wood_table_001",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_table_001/wood_table_001_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dimitrios Savva, Rico Cilliers",
+  "dims_mm": [
+   1500,
+   1500.0001192092896
+  ]
+ },
+ "plank_flooring": {
+  "cls": "wood",
+  "url": "https://polyhaven.com/a/plank_flooring",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/plank_flooring/plank_flooring_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Dario Barresi, Dimitrios Savva, Rico Cilliers",
+  "dims_mm": [
+   1339.9999141693115,
+   1340.0001525878906
+  ]
+ },
+ "tatami_mat": {
+  "cls": "weave",
+  "url": "https://polyhaven.com/a/tatami_mat",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/tatami_mat/tatami_mat_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "Charlotte Baglioni",
+  "dims_mm": [
+   1800.0000715255737,
+   1800.0000715255737
+  ]
+ },
+ "rough_linen": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/rough_linen",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rough_linen/rough_linen_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "colormass, Rico Cilliers",
+  "dims_mm": [
+   270.7081392676629,
+   271.29998803138733
+  ]
+ },
+ "waffle_pique_cotton": {
+  "cls": "fabric",
+  "url": "https://polyhaven.com/a/waffle_pique_cotton",
+  "file_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/waffle_pique_cotton/waffle_pique_cotton_diff_1k.jpg",
+  "license": "CC0 1.0",
+  "author": "colormass, Rico Cilliers",
+  "dims_mm": [
+   280.787176718274,
+   276.8000066280365
+  ]
+ }
+}

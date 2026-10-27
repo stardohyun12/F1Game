@@ -1,0 +1,137 @@
+[
+  {
+    "name": "vending_G1",
+    "kind": "prop",
+    "tris": 92,
+    "atlas": [
+      256,
+      256
+    ],
+    "dimensions": [
+      1.180999994277954,
+      0.7310000061988831,
+      1.8299999237060547
+    ],
+    "density": 32
+  },
+  {
+    "name": "vending_G2",
+    "kind": "prop",
+    "tris": 92,
+    "atlas": [
+      256,
+      256
+    ],
+    "dimensions": [
+      1.180999994277954,
+      0.7310000061988831,
+      1.8299999237060547
+    ],
+    "density": 32
+  },
+  {
+    "name": "postbox_G1",
+    "kind": "prop",
+    "tris": 56,
+    "atlas": [
+      256,
+      128
+    ],
+    "dimensions": [
+      0.8100000023841858,
+      0.5600000023841858,
+      1.3799999952316284
+    ],
+    "density": 32
+  },
+  {
+    "name": "ac_G3",
+    "kind": "prop",
+    "tris": 92,
+    "atlas": [
+      256,
+      128
+    ],
+    "dimensions": [
+      0.800000011920929,
+      0.2849999964237213,
+      0.550000011920929
+    ],
+    "density": 32
+  },
+  {
+    "name": "tin_F2",
+    "kind": "tile",
+    "tris": 2,
+    "atlas": [
+      64,
+      64
+    ],
+    "dimensions": [
+      2.0,
+      0.0,
+      2.0
+    ],
+    "density": 32
+  },
+  {
+    "name": "tin_F3",
+    "kind": "tile",
+    "tris": 2,
+    "atlas": [
+      32,
+      64
+    ],
+    "dimensions": [
+      1.0,
+      0.0,
+      2.0
+    ],
+    "density": 32
+  },
+  {
+    "name": "stone_H1",
+    "kind": "tile",
+    "tris": 2,
+    "atlas": [
+      64,
+      48
+    ],
+    "dimensions": [
+      2.0,
+      0.0,
+      1.5
+    ],
+    "density": 32
+  },
+  {
+    "name": "stone_H2",
+    "kind": "tile",
+    "tris": 2,
+    "atlas": [
+      64,
+      42
+    ],
+    "dimensions": [
+      2.0,
+      0.0,
+      1.3125
+    ],
+    "density": 32
+  },
+  {
+    "name": "stone_H3",
+    "kind": "tile",
+    "tris": 2,
+    "atlas": [
+      64,
+      64
+    ],
+    "dimensions": [
+      2.0,
+      0.0,
+      2.0
+    ],
+    "density": 32
+  }
+]
