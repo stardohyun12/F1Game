@@ -1,0 +1,11 @@
+// 과제 1232 탐색 — A3 차 외형 구성 · SA3 재질 이름 · 하늘 재질
+UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/Scene_A3_Town.unity");
+var sb = new System.Text.StringBuilder(); var car = GameObject.Find("Race");
+sb.Append("box " + car.GetComponent<BoxCollider>().center.ToString("F2") + " " + car.GetComponent<BoxCollider>().size.ToString("F2") + " pos " + car.transform.position.ToString("F2") + "\n");
+foreach (Transform k in car.transform) { var rs = k.GetComponentsInChildren<Renderer>(true); var b = new Bounds(); bool f = false; foreach (var r in rs) if (r.enabled && r.gameObject.activeInHierarchy) { if (!f) { b = r.bounds; f = true; } else b.Encapsulate(r.bounds); }
+  sb.Append(k.name + (k.gameObject.activeSelf ? "" : "(off)") + " r" + rs.Length + " vis " + f + " b " + b.min.ToString("F2") + ".." + b.max.ToString("F2") + " comps:"); foreach (var c in k.GetComponents<Component>()) sb.Append(c.GetType().Name + ","); sb.Append("\n"); }
+var lean = car.GetComponent<CarVisualLean>(); var so = new SerializedObject(lean); var it = so.GetIterator(); it.NextVisible(true); while (it.NextVisible(false)) if (it.propertyType == SerializedPropertyType.ObjectReference) sb.Append("lean." + it.name + " = " + (it.objectReferenceValue ? it.objectReferenceValue.name : "null") + "\n");
+var acc = car.GetComponent<ArcadeCarController>(); so = new SerializedObject(acc); it = so.GetIterator(); it.NextVisible(true); while (it.NextVisible(false)) if (it.propertyType == SerializedPropertyType.ObjectReference && it.objectReferenceValue) sb.Append("acc." + it.name + " = " + it.objectReferenceValue.name + "\n");
+var root = GameObject.Find("SceneA3"); var sky = root.transform.Find("Sky"); sb.Append("sky mat " + sky.GetComponentInChildren<Renderer>().sharedMaterial.name + "\n");
+foreach (var g in AssetDatabase.FindAssets("t:Material", new[] { "Assets/Art/SceneA3/Mats" })) { var m = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g)); sb.Append(m.name + "(sat" + m.GetFloat("_Sat").ToString("F2") + " sun" + m.GetFloat("_Sun").ToString("F2") + " st" + m.GetFloat("_Steps") + " fog" + m.GetFloat("_FogMax").ToString("F2") + " r2ok" + m.GetFloat("_HasR2") + ") "); }
+return sb.ToString();
