@@ -1,0 +1,21 @@
+D:\Github\F1Game\tools\asset-gen\q4_postoffice.py:16: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new('Shared_' + s); m.use_nodes = True; nt = m.node_tree; b = nt.nodes['Principled BSDF']; b.inputs['Roughness'].default_value = .9
+D:\Github\F1Game\tools\asset-gen\q4_postoffice.py:250: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  scn.world = bpy.data.worlds.new('sky'); scn.world.use_nodes = True; scn.world.node_tree.nodes['Background'].inputs[0].default_value = (.48, .59, .64, 1); scn.world.node_tree.nodes['Background'].inputs[1].default_value = .85
+00:01.422  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+00:15.172  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q4-postoffice\15m.png'
+FBX version: 7400
+POSTBOX dims (0.81, 0.56, 1.38) ['postbox_G1']
+Info: Saved as "q4_postoffice.blend"
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\q4-postoffice\\q4_postoffice.fbx'
+export finished in 0.0596 sec.
+VAL 3668 [[-5.1, -1.08, 0.0], [5.338, 8.86, 8.16]]
+RENDER 15m
+00:30.750  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q4-postoffice\5m.png'
+RENDER 5m
+00:45.156  render           | Saved: 'D:\Github\F1Game\art\_review\2026-10-28-q4-postoffice\34.png'
+RENDER 34
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

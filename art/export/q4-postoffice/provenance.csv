@@ -1,0 +1,8 @@
+file,source,method,ai
+wall.png,art/export/kit-shared-v2/wall.png,공용 키트 v2 바이트 복사,0
+trim.png,art/export/kit-shared-v2/trim.png,공용 키트 v2 바이트 복사,0
+floor.png,art/export/kit-shared-v2/floor.png,공용 키트 v2 바이트 복사,0
+roof.png,art/export/kit-shared-v1/roof.png (v2 폴더에 같은 바이트),공용 키트 v1 바이트 복사,0
+decals.png,art/export/kit-shared-v1/decals.png (v2 폴더에 같은 바이트),공용 키트 v1 바이트 복사,0
+postbox_G1.png,art/export/scene-albedo-kit/postbox_G1.png,재사용(형상 postbox_G1.fbx 포함),0
+q4_postoffice.fbx,tools/asset-gen/q4_postoffice.py,bpy 코드 생성 기하·UV(키트 칸 배치) + 간판 글자 Blender 기본 폰트 메시,0

@@ -1,0 +1,50 @@
+{
+ "tris": 3668,
+ "body_tris": 3612,
+ "bounds_blender": [
+  [
+   -5.1,
+   -1.08,
+   0.0
+  ],
+  [
+   5.338,
+   8.86,
+   8.16
+  ]
+ ],
+ "body_m": [
+  9,
+  8,
+  6.4
+ ],
+ "ridge_m": 7.6,
+ "front": "Unity +Z / Blender -Y",
+ "pivot": "바닥 앞면 가운데",
+ "materials": [
+  "wall",
+  "trim",
+  "floor",
+  "roof",
+  "decals",
+  "postbox_G1(재사용)"
+ ],
+ "textures": {
+  "wall.png": "08e33cdf3dd725281cab2572b67c75a10c36735112e00180b89ba4191a34c5e8",
+  "trim.png": "1f96edab456873ed8c570edcbf625e12fcbcd6557e088416d43be6d57722c986",
+  "floor.png": "ef2d068a6d12909b63468d1979f9d683d1e3983d8e7a3d17abac4ed09d68b61e",
+  "roof.png": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
+  "decals.png": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263",
+  "postbox_G1.png": "81d9cefdbd8e04803aadc2b2aed7f57adb2a8ad72747b99e06692746eb51945c"
+ },
+ "kit_same_bytes": {
+  "wall.png": true,
+  "trim.png": true,
+  "floor.png": true,
+  "roof.png": true,
+  "decals.png": true
+ },
+ "light_bake": false,
+ "new_textures": 0,
+ "postbox_scale": 1.0
+}

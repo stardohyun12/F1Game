@@ -1,0 +1,44 @@
+{
+ "round": 2,
+ "roi": {
+  "reference": [
+   580,
+   195,
+   955,
+   435
+  ],
+  "postoffice_5m": [
+   452,
+   170,
+   827,
+   410
+  ]
+ },
+ "limits": {
+  "face_uniform_frac": [
+   0.4867,
+   0.5867
+  ],
+  "face_std_median": [
+   0.83,
+   1.25
+  ]
+ },
+ "rows": [
+  {
+   "name": "reference",
+   "face_uniform_frac": 0.5366687641730087,
+   "face_std_median": 1.0375605681341882
+  },
+  {
+   "name": "postoffice",
+   "face_uniform_frac": 0.6039926277620851,
+   "face_std_median": 1.1139948090885752
+  }
+ ],
+ "pass_": {
+  "face_uniform_frac": false,
+  "face_std_median": true
+ },
+ "condition": "1280×720 Nearest, ROI 375×240 → 640×410 Nearest, docs/qa/tmp/audit_lite.py"
+}
