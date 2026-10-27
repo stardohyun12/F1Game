@@ -1,0 +1,68 @@
+{
+  "palette_colors": 69,
+  "provenance_hashes_verified": 23,
+  "textures": {
+    "ac_G3.png": {
+      "palette_valid": true,
+      "colors": 7,
+      "isolated_8neighbor_percent": 0.05936757905261842
+    },
+    "garage_tin_F2_atlas.png": {
+      "palette_valid": true,
+      "colors": 38,
+      "isolated_8neighbor_percent": 0.48567566301503706,
+      "isolated_changed_pixels_percent": 0.0
+    },
+    "garage_tin_F3_atlas.png": {
+      "palette_valid": true,
+      "colors": 39,
+      "isolated_8neighbor_percent": 0.48567566301503706,
+      "isolated_changed_pixels_percent": 0.0
+    },
+    "postbox_G1.png": {
+      "palette_valid": true,
+      "colors": 36,
+      "isolated_8neighbor_percent": 0.09998750156230471
+    },
+    "stone_H1.png": {
+      "palette_valid": true,
+      "colors": 6,
+      "isolated_8neighbor_percent": 0.0,
+      "tile_edges_identical": true
+    },
+    "stone_H2.png": {
+      "palette_valid": true,
+      "colors": 6,
+      "isolated_8neighbor_percent": 0.0,
+      "tile_edges_identical": true
+    },
+    "stone_H3.png": {
+      "palette_valid": true,
+      "colors": 6,
+      "isolated_8neighbor_percent": 0.0,
+      "tile_edges_identical": true
+    },
+    "tin_F2.png": {
+      "palette_valid": true,
+      "colors": 5,
+      "isolated_8neighbor_percent": 0.0,
+      "tile_edges_identical": true
+    },
+    "tin_F3.png": {
+      "palette_valid": true,
+      "colors": 4,
+      "isolated_8neighbor_percent": 0.0,
+      "tile_edges_identical": true
+    },
+    "vending_G1.png": {
+      "palette_valid": true,
+      "colors": 40,
+      "isolated_8neighbor_percent": 0.07750015500031
+    },
+    "vending_G2.png": {
+      "palette_valid": true,
+      "colors": 48,
+      "isolated_8neighbor_percent": 0.093000186000372
+    }
+  }
+}

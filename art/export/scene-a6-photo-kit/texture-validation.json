@@ -1,0 +1,135 @@
+{
+  "vending_G1": {
+    "size": [
+      256,
+      256
+    ],
+    "colors": 40,
+    "seam_lr_max": null,
+    "seam_tb_max": null,
+    "luma_p5_p95": [
+      66.02879999999999,
+      172.55360000000002
+    ]
+  },
+  "vending_G2": {
+    "size": [
+      256,
+      256
+    ],
+    "colors": 48,
+    "seam_lr_max": null,
+    "seam_tb_max": null,
+    "luma_p5_p95": [
+      66.02879999999999,
+      137.9828
+    ]
+  },
+  "postbox_G1": {
+    "size": [
+      256,
+      128
+    ],
+    "colors": 36,
+    "seam_lr_max": null,
+    "seam_tb_max": null,
+    "luma_p5_p95": [
+      56.0628,
+      87.6964
+    ]
+  },
+  "ac_G3": {
+    "size": [
+      256,
+      128
+    ],
+    "colors": 7,
+    "seam_lr_max": null,
+    "seam_tb_max": null,
+    "luma_p5_p95": [
+      65.0,
+      105.0
+    ]
+  },
+  "tin_F2": {
+    "size": [
+      64,
+      64
+    ],
+    "colors": 5,
+    "seam_lr_max": 0,
+    "seam_tb_max": 0,
+    "luma_p5_p95": [
+      92.5784,
+      120.6098
+    ]
+  },
+  "tin_F3": {
+    "size": [
+      32,
+      64
+    ],
+    "colors": 4,
+    "seam_lr_max": 0,
+    "seam_tb_max": 0,
+    "luma_p5_p95": [
+      145.0,
+      184.99999999999997
+    ]
+  },
+  "stone_H1": {
+    "size": [
+      64,
+      48
+    ],
+    "colors": 6,
+    "seam_lr_max": 0,
+    "seam_tb_max": 0,
+    "luma_p5_p95": [
+      112.55359999999999,
+      172.55360000000002
+    ]
+  },
+  "stone_H2": {
+    "size": [
+      64,
+      42
+    ],
+    "colors": 6,
+    "seam_lr_max": 0,
+    "seam_tb_max": 0,
+    "luma_p5_p95": [
+      112.55359999999999,
+      152.5536
+    ]
+  },
+  "stone_H3": {
+    "size": [
+      64,
+      64
+    ],
+    "colors": 6,
+    "seam_lr_max": 0,
+    "seam_tb_max": 0,
+    "luma_p5_p95": [
+      92.5536,
+      152.5536
+    ]
+  },
+  "garage_tin_F2": {
+    "size": [
+      4096,
+      1024
+    ],
+    "changed_region_pixels": 281148,
+    "outside_tin_identical": true
+  },
+  "garage_tin_F3": {
+    "size": [
+      4096,
+      1024
+    ],
+    "changed_region_pixels": 281148,
+    "outside_tin_identical": true
+  }
+}

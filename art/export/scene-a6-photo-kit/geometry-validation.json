@@ -1,0 +1,66 @@
+[
+  {
+    "name": "vending_G1",
+    "tris": 92,
+    "dimensions": [
+      1.180999994277954,
+      0.7310003042221069,
+      1.829999967518681
+    ],
+    "expected": [
+      1.181,
+      0.731,
+      1.83
+    ],
+    "uv_layers": 1,
+    "texture_path": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G1.png"
+  },
+  {
+    "name": "vending_G2",
+    "tris": 92,
+    "dimensions": [
+      1.180999994277954,
+      0.7310003042221069,
+      1.829999967518681
+    ],
+    "expected": [
+      1.181,
+      0.731,
+      1.83
+    ],
+    "uv_layers": 1,
+    "texture_path": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\vending_G2.png"
+  },
+  {
+    "name": "postbox_G1",
+    "tris": 56,
+    "dimensions": [
+      0.8100000023841858,
+      0.5600001215934753,
+      1.3800000098944896
+    ],
+    "expected": [
+      0.81,
+      0.56,
+      1.38
+    ],
+    "uv_layers": 1,
+    "texture_path": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\postbox_G1.png"
+  },
+  {
+    "name": "ac_G3",
+    "tris": 92,
+    "dimensions": [
+      0.800000011920929,
+      0.2850000709295273,
+      0.5500000324815186
+    ],
+    "expected": [
+      0.8,
+      0.285,
+      0.55
+    ],
+    "uv_layers": 1,
+    "texture_path": "D:\\Github\\F1Game\\art\\export\\scene-a6-photo-kit\\ac_G3.png"
+  }
+]
