@@ -1,0 +1,30 @@
+{
+ "tris": 272,
+ "objects": [
+  "MART_body",
+  "MART_display",
+  "MART_vending"
+ ],
+ "atlas": [
+  1024,
+  1024
+ ],
+ "texels_per_m": 32.04,
+ "colors": 25,
+ "palette": "palette50.gpl (palette46 + mart 4)",
+ "in_palette": true,
+ "isolated_pct": 0.0,
+ "p5": 77.8,
+ "p50": 161.6,
+ "p95": 233.7,
+ "photo_texels": 5760,
+ "size_m": {
+  "w": 9.0,
+  "d": 7.0,
+  "h_body": 6.0,
+  "h_max": 8.45,
+  "front_protrude": 1.85
+ },
+ "pivot": "바닥 앞면 가운데 (앞벽 면 = 0)",
+ "forward": "Blender -Y → FBX/Unity +Z (집 j판과 같은 설정)"
+}

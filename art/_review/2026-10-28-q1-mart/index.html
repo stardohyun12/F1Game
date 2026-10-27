@@ -1,0 +1,5 @@
+<!doctype html><meta charset=utf-8><title>q1 MART</title><style>body{background:#28282c;color:#ddd;font:15px sans-serif;margin:12px}
+button{margin:2px;padding:4px 10px}img{image-rendering:pixelated;display:block}#v{overflow:auto}</style><h3>q1 MART — 도현 승인 필요</h3><div><button onclick="src('game720.png')">게임 20m</button><button onclick="src('game720_zoom3.png')">20m 3×</button><button onclick="src('front.png')">정면</button><button onclick="src('q34.png')">3/4</button><button onclick="src('../../export/q1-mart/mart.png')">아틀라스</button><button onclick="src('sheet.png')">시트</button> | <button onclick="z(1)">1×</button><button onclick="z(4)">4×</button><button onclick="i.style.filter=i.style.filter?'':'brightness(0)'">흑실루엣</button>
+ | 배경 <button onclick="bg('#28282c')">어둠</button><button onclick="bg('#e8e2d0')">종이</button><button onclick="bg('#7fa7b8')">하늘</button></div>
+<div id=v><img id=i src=game720.png></div><script>let k=1;const i=document.getElementById('i');
+function src(f){i.src=f;i.onload=()=>z(k)}function z(n){k=n;i.style.width=(i.naturalWidth*n)+'px'}function bg(c){document.body.style.background=c}</script>

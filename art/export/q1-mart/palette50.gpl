@@ -1,0 +1,54 @@
+GIMP Palette
+Name: q1-mart 50 (houses palette46 + mart 4)
+Columns: 8
+#
+207 209 182	garage00
+191 185 123	garage01
+174 166 106	garage02
+154 164  89	garage03
+169 158 108	garage04
+155 157  95	garage05
+150 158  87	garage06
+177 148 106	garage07
+152 150  95	garage08
+146 148  91	garage09
+138 142  86	garage10
+112 135 110	garage11
+ 62 148 171	garage12
+158 127  78	garage13
+103 126 114	garage14
+ 95 128 126	garage15
+ 99 122 113	garage16
+161 109  66	garage17
+ 99 112  99	garage18
+128  80  50	garage19
+102  72  43	garage20
+ 90 120 117	garage21
+ 81  98  88	garage22
+ 74  77  62	garage23
+ 52  70  68	garage24
+ 50  49  43	garage25
+ 28  41  43	garage26
+ 28  37  39	garage27
+ 23  37  40	garage28
+ 23  37  39	garage29
+ 22  37  41	garage30
+ 30  36  38	garage31
+236 202 140	paint narrow_a 해
+131 134 110	paint narrow_a 그늘/shop 그늘/cafe 그늘
+244 235 200	paint narrow_b 해/warehouse 해
+135 157 150	paint narrow_b 그늘/warehouse 그늘
+231 185 140	paint shop 해
+178 209 183	paint slope 해
+ 98 142 141	paint slope 그늘
+166 148 117	paint cafe 해
+112 120 166	shutter_blue_light
+ 92 100 142	shutter_blue_mid
+ 72  80 116	shutter_blue_shade
+100 140  98	shutter_green_light
+ 80 118  80	shutter_green_mid
+ 62  94  66	shutter_green_shade
+186  78  60	mart 차양 빨강
+146  50  42	mart 간판 글자
+214 118  52	mart 자판기 주황
+226 192  78	mart 과일 노랑
