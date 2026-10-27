@@ -1,0 +1,16 @@
+{
+  "size": [
+    4096,
+    1024
+  ],
+  "original_occupied_region_byte_identical": true,
+  "changed_pixels": 42479,
+  "carton_base": [
+    190,
+    163,
+    114
+  ],
+  "carton_noise_percent": 3,
+  "carton_texels_per_m": 32,
+  "source_sha256": "126c8a178e55e6c233053aa4ab1e08a99c34b6efca29dcad46b29b7b32e56f11"
+}

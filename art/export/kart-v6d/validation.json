@@ -1,0 +1,150 @@
+{
+  "tris": 1980,
+  "objects": 66,
+  "dimensions": [
+    1.2799999713897705,
+    1.800000011920929,
+    0.8200000077486038
+  ],
+  "bounds": [
+    [
+      -0.6399999856948853,
+      -0.8100000023841858,
+      0.09199999272823334
+    ],
+    [
+      0.6399999856948853,
+      0.9900000095367432,
+      0.9120000004768372
+    ]
+  ],
+  "unchanged_original_objects": [
+    "cargo_rack",
+    "chain_guard",
+    "cooling_fin_0",
+    "cooling_fin_1",
+    "cooling_fin_2",
+    "cross_-0.08",
+    "cross_-0.48",
+    "cross_0.45",
+    "engine_block",
+    "exhaust",
+    "floor_pan",
+    "frame_0",
+    "frame_1",
+    "frame_2",
+    "frame_3",
+    "frame_4",
+    "frame_5",
+    "frame_6",
+    "frame_7",
+    "front_07",
+    "front_bumper",
+    "front_bumper_support_-0.25",
+    "front_bumper_support_0.25",
+    "fuel_cap",
+    "fuel_tank",
+    "k_hub_FL",
+    "k_hub_FR",
+    "k_hub_RL",
+    "k_hub_RR",
+    "k_tire_FL",
+    "k_tire_FR",
+    "k_tire_RL",
+    "k_tire_RR",
+    "nose",
+    "pedal",
+    "pedal.001",
+    "rack_post",
+    "rack_post.001",
+    "rack_rail",
+    "rack_rail.001",
+    "rack_strap",
+    "rack_strap.001",
+    "rear_07",
+    "rear_axle",
+    "rear_bumper",
+    "recoil_cover",
+    "seat_bolster_-1",
+    "seat_bolster_1",
+    "seat_pan",
+    "side_pod_-1",
+    "side_pod_1",
+    "side_stripe_-1",
+    "side_stripe_1",
+    "steering_column",
+    "steering_rim",
+    "steering_spoke",
+    "steering_spoke.001",
+    "steering_spoke.002"
+  ],
+  "changed_original_objects": [
+    "seat_back"
+  ],
+  "new_objects": [
+    "delivery_box",
+    "delivery_strap_front_0",
+    "delivery_strap_front_1",
+    "delivery_strap_rear_0",
+    "delivery_strap_rear_1",
+    "delivery_strap_top_0",
+    "delivery_strap_top_1"
+  ],
+  "max_export_error": 1.6292067073209182e-07,
+  "wheel_pivots": {
+    "k_hub_FL": [
+      -0.4399999976158142,
+      0.5400000214576721,
+      0.23999999463558197
+    ],
+    "k_hub_FR": [
+      0.4399999976158142,
+      0.5400000214576721,
+      0.23999999463558197
+    ],
+    "k_hub_RL": [
+      -0.5199999809265137,
+      -0.5099999904632568,
+      0.3400000035762787
+    ],
+    "k_hub_RR": [
+      0.5199999809265137,
+      -0.5099999904632568,
+      0.3400000035762787
+    ],
+    "k_tire_FL": [
+      -0.4399999976158142,
+      0.5400000214576721,
+      0.23999999463558197
+    ],
+    "k_tire_FR": [
+      0.4399999976158142,
+      0.5400000214576721,
+      0.23999999463558197
+    ],
+    "k_tire_RL": [
+      -0.5199999809265137,
+      -0.5099999904632568,
+      0.3400000035762787
+    ],
+    "k_tire_RR": [
+      0.5199999809265137,
+      -0.5099999904632568,
+      0.3400000035762787
+    ]
+  },
+  "seat_back_top_before": 0.912,
+  "seat_back_top_after": 0.6672,
+  "seat_back_rise_before": 0.612,
+  "seat_back_rise_after": 0.3672,
+  "cargo_size": [
+    0.4,
+    0.235,
+    0.4035
+  ],
+  "unity_executed": false,
+  "sha256": {
+    "kart_v6d.fbx": "36649c1d3c4301ca656255ec55db36670d20011db88069177a88519fbf114f39",
+    "kart_v6d.png": "01a7ddd83cc1ca1fb1d6dfaf445764c511dca1744cfca9451e7ebd4b8e830655"
+  }
+}
