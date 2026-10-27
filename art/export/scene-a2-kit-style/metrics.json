@@ -1,0 +1,573 @@
+[
+  {
+    "name": "bench_01",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 84,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        140,
+        127,
+        111
+      ],
+      [
+        175,
+        169,
+        143
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "473f558ca95ba7735f0e5e975e0c17f3f39a0e6e48812928d0ea10978bfb7e16",
+    "fbx_sha256": "3c959848b5e3757955dbf49e3d1e2515640b8c46868160cd25474e66b523c9a9"
+  },
+  {
+    "name": "bicycle_01",
+    "size": [
+      1024,
+      256
+    ],
+    "triangles": 1714,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        146,
+        176,
+        174
+      ],
+      [
+        168,
+        196,
+        188
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "4690c1372ee53ca0fcde69f81e3c90c4cfb50a88ed6801f2a11a919621710e0a",
+    "fbx_sha256": "8789001b24f94bd2b9fc15f3cc03331cb86739c49ffe6264ed8f95a449c31b76"
+  },
+  {
+    "name": "cone_01",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 68,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        180,
+        79,
+        58
+      ],
+      [
+        222,
+        185,
+        149
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "25f4b6a407f33f2547d1bc0422782447d5237c72e2ff140866fdfb58a683c28d",
+    "fbx_sha256": "ae978a107ac039dba5b55dcacd8213c48538ee3535c07657841fc19b2ff63e1b"
+  },
+  {
+    "name": "cone_02",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 68,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        180,
+        79,
+        58
+      ],
+      [
+        222,
+        185,
+        149
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "c8f1e464cc58f6b351b094ba4d3dba48d1bdc4097cecfe5dea666f21ddece463",
+    "fbx_sha256": "6e3e885b60106134714b0871840bf2e0da415976354fc859d45a9b0839266782"
+  },
+  {
+    "name": "drum_01",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 20,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        180,
+        79,
+        58
+      ],
+      [
+        191,
+        101,
+        64
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "adceaa10eaacf5d3ab07f546eda1c241571ee2dc16917ad4f7cb9672a5b7121f",
+    "fbx_sha256": "9d26e034104f3dc4a98d3a73f47035bc341526689230cdd53cdccf2f1d9460da"
+  },
+  {
+    "name": "drum_02",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 20,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        140,
+        127,
+        111
+      ],
+      [
+        189,
+        153,
+        101
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "f3e398e3473556c3399d6a7304e89844d7107a3c9cddca3a62e237ace1bfab86",
+    "fbx_sha256": "9894f056ff3ec5b8d6ebe595f800f8314ead629342f4abcd6241f056d7bf31af"
+  },
+  {
+    "name": "drum_03",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 20,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        146,
+        176,
+        174
+      ],
+      [
+        168,
+        196,
+        188
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "fe80a90be6f6e9e68495d4a78628047f1dee2f86397654b93ecc7202ed69cdef",
+    "fbx_sha256": "2d1856337d8915a55dd70ccc47e11a4cb336970ed9ee3b9d3f35f11b886c1076"
+  },
+  {
+    "name": "fence_01",
+    "size": [
+      1024,
+      128
+    ],
+    "triangles": 36,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        140,
+        127,
+        111
+      ],
+      [
+        175,
+        169,
+        143
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "a37eed77d8fa1d7be90d9b8cc577b37744293c98e0d269e9cada1e2fbb0e9588",
+    "fbx_sha256": "192098b216ed745e97d9ea5e65f549bb7721844d51d5cba59218d6186b9de461"
+  },
+  {
+    "name": "fence_02",
+    "size": [
+      1024,
+      128
+    ],
+    "triangles": 16,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        140,
+        127,
+        111
+      ],
+      [
+        175,
+        169,
+        143
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "e1f50ba6c4de95481043ebf0c63406f68153570bbc9fa103b7eec227bc9e1167",
+    "fbx_sha256": "ef48ee80da8b736c6e555382df12002c7bf29cbe4a591bc580b4f405acd85be7"
+  },
+  {
+    "name": "pole_01",
+    "size": [
+      2048,
+      4096
+    ],
+    "triangles": 3948,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        140,
+        127,
+        111
+      ],
+      [
+        189,
+        153,
+        101
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "ab3cc95a542521ed6a4f3dd097e3212029ae36147f4c70fdc17520409d11c7a9",
+    "fbx_sha256": "dfe00e3fba812246e58751b6659714be610b60636d877f2c5c01a9488894ae99"
+  },
+  {
+    "name": "pot_01",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 80,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        180,
+        79,
+        58
+      ],
+      [
+        191,
+        101,
+        64
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "2a63b7f8f80e68da3f95236e6e6ce4a12e7309f915252c56712f2f33f8004076",
+    "fbx_sha256": "4ec92eaff234814196d9222f958bec6222f6f2e14fb199a1062615fbcc080f1a"
+  },
+  {
+    "name": "pot_02",
+    "size": [
+      1024,
+      64
+    ],
+    "triangles": 76,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        180,
+        79,
+        58
+      ],
+      [
+        191,
+        101,
+        64
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "9355f361af6d8b62f2d30ed49ae03adf7e36275d711cfa76f8c96cde95dfeb71",
+    "fbx_sha256": "4baa099988b986f1ba4622ababf80c492a3f4f887be529c27d17cf7911cb77c5"
+  },
+  {
+    "name": "tires_01",
+    "size": [
+      1024,
+      512
+    ],
+    "triangles": 1776,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        97,
+        97,
+        84
+      ],
+      [
+        107,
+        108,
+        91
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "88878b668d91d2da51888dcf76f6b7f72b12270606c240fef08e6915d91b6e4a",
+    "fbx_sha256": "7560ee61381496ea08346d09b5a4e1e3c8813282f28c97efc61e6cb0ad03c4b2"
+  },
+  {
+    "name": "tires_02",
+    "size": [
+      1024,
+      512
+    ],
+    "triangles": 1824,
+    "world_cell_m": 0.09090909090909091,
+    "texels_per_m": 11,
+    "colors_rgb": [
+      [
+        97,
+        97,
+        84
+      ],
+      [
+        107,
+        108,
+        91
+      ],
+      [
+        78,
+        107,
+        108
+      ],
+      [
+        76,
+        79,
+        68
+      ]
+    ],
+    "color_count": 4,
+    "shade_steps": 3,
+    "contact_steps": 1,
+    "alpha_identical": true,
+    "source_png_sha256": "8cbdc01cce1937a1a77a7fd4c7fd57c4dcddf62fb5434a8a7c9c49e567ce48cb",
+    "fbx_sha256": "452e346c346dddc8d0ef698287d96f6f3762db68998e6d795794a01028fdb024"
+  },
+  {
+    "name": "bush_style",
+    "size": [
+      32,
+      32
+    ],
+    "texels_per_m": 11,
+    "repeat_metres": 2.909090909090909,
+    "color_count": 3,
+    "shade_steps": 3,
+    "contact_steps": 0,
+    "contact_note": "mesh-local contact band required in shader; tile must not contain repeating contact"
+  },
+  {
+    "name": "mound_style",
+    "size": [
+      32,
+      32
+    ],
+    "texels_per_m": 11,
+    "repeat_metres": 2.909090909090909,
+    "color_count": 3,
+    "shade_steps": 3,
+    "contact_steps": 0,
+    "contact_note": "mesh-local contact band required in shader; tile must not contain repeating contact"
+  },
+  {
+    "name": "rock_style",
+    "size": [
+      32,
+      32
+    ],
+    "texels_per_m": 11,
+    "repeat_metres": 2.909090909090909,
+    "color_count": 3,
+    "shade_steps": 3,
+    "contact_steps": 0,
+    "contact_note": "mesh-local contact band required in shader; tile must not contain repeating contact"
+  }
+]

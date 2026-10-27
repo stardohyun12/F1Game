@@ -1,0 +1,36 @@
+GIMP Palette
+Name: style32 (b_game 환경 20 + 집 앵커 12, D-175)
+Columns: 8
+#
+76 79 68 env0
+97 97 84 env1
+107 108 91 env2
+102 126 80 env3
+120 117 95 env4
+191 101 64 env5
+118 144 53 env6
+126 134 98 env7
+140 127 111 env8
+140 163 61 env9
+144 157 93 env10
+149 156 112 env11
+199 146 56 env12
+215 141 64 env13
+140 161 173 env14
+159 172 76 env15
+189 153 101 env16
+159 165 159 env17
+205 167 73 env18
+175 169 143 env19
+226 202 169 cream
+222 185 149 apricot
+219 193 145 ochre
+168 196 188 lteal
+223 216 194 white
+195 181 155 cream_side
+192 169 140 apricot_side
+190 175 137 ochre_side
+146 176 174 lteal_side
+193 191 174 white_side
+78 107 108 shade_teal
+180 79 58 sign_red
