@@ -1,0 +1,21 @@
+=== PitCrew 회귀 점검 ===
+scene opened (was )
+[BOARD 주문보드]
+PASS: 풀 루프 시스템 10개 전부 등록됨 (Services 9 + ZoneUnlockSystem/registry)
+PASS: OrderBoard 와이어링 5필드 + cardPrefab.OrderCardUI 정상
+PASS: 주문 11개 목적지 전부 씬 DeliveryPoint와 매칭
+PASS: fog=False
+PASS: 런 비활성, 잔류 소리 없음
+PASS: 모든 화물 피벗 중심
+FAIL: 예산(3000) 초과 — Eggs(53319tris) Glass(27073tris) Fish(75080tris) Cake(54364tris) (CargoDecimator로 깎아 카탈로그에 먹일 것)
+[PACKING 포장]
+PASS: 실제 입력경로 랩 생성됨 verts=85
+[DRIVING 주행]
+PASS: fog=True
+PASS: engineMute=False
+[RESULT 정산]
+PASS: 런 비활성, 잔류 소리 없음
+PASS: engineMute=True
+PASS: fog=False
+=== 결과: 12 PASS / 1 FAIL / 0 SKIP ===
+⚠ 회귀 1건 — 위 FAIL 확인 (완료 보고 금지)
