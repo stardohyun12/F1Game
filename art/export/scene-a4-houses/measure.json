@@ -1,0 +1,148 @@
+{
+ "luma": "0.299R+0.587G+0.114B (32색 뒤)",
+ "speckle": "네 이웃과 모두 다른 픽셀 %",
+ "files": {
+  "house_narrow_a": {
+   "L_all": 171.7,
+   "L_visible": 162.2,
+   "L_wall": 179.8,
+   "by_role": {
+    "hidden": 180.5,
+    "wall": 179.8,
+    "roof": 137.0,
+    "glass": 82.4,
+    "frame": 188.9,
+    "door": 114.0,
+    "shutter": 105.8,
+    "rail": 77.9,
+    "slab": 193.2,
+    "ac": 165.2,
+    "prop": 48.6,
+    "soffit": 136.6
+   },
+   "speckle_1px_pct": 0.0,
+   "colors": 32,
+   "size": [
+    1024,
+    2048
+   ]
+  },
+  "house_narrow_b": {
+   "L_all": 173.4,
+   "L_visible": 169.4,
+   "L_wall": 185.3,
+   "by_role": {
+    "hidden": 186.2,
+    "wall": 185.3,
+    "glass": 80.5,
+    "frame": 186.8,
+    "door": 119.6,
+    "shutter": 102.2,
+    "slab": 203.3,
+    "ac": 165.2,
+    "prop": 48.6,
+    "flat": 181.0
+   },
+   "speckle_1px_pct": 0.0,
+   "colors": 26,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_shop": {
+   "L_all": 149.0,
+   "L_visible": 143.1,
+   "L_wall": 165.4,
+   "by_role": {
+    "hidden": 168.7,
+    "wall": 165.4,
+    "roof": 119.2,
+    "glass": 85.4,
+    "frame": 181.0,
+    "door": 111.0,
+    "shutter": 106.5,
+    "rail": 80.4,
+    "awning": 166.0,
+    "sign": 133.7,
+    "ac": 165.2,
+    "prop": 77.8,
+    "soffit": 110.7
+   },
+   "speckle_1px_pct": 0.0,
+   "colors": 32,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_slope": {
+   "L_all": 154.8,
+   "L_visible": 152.6,
+   "L_wall": 171.5,
+   "by_role": {
+    "hidden": 164.3,
+    "wall": 171.5,
+    "roof": 138.6,
+    "glass": 81.0,
+    "frame": 189.4,
+    "door": 90.9,
+    "shutter": 100.7,
+    "rail": 77.9,
+    "slab": 203.4,
+    "stone": 144.6,
+    "prop": 48.6,
+    "soffit": 121.4
+   },
+   "speckle_1px_pct": 0.001,
+   "colors": 27,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_warehouse": {
+   "L_all": 164.6,
+   "L_visible": 158.1,
+   "L_wall": 173.7,
+   "by_role": {
+    "hidden": 176.4,
+    "wall": 173.7,
+    "roof": 118.2,
+    "glass": 73.0,
+    "frame": 185.9,
+    "door": 119.6,
+    "soffit": 128.8
+   },
+   "speckle_1px_pct": 0.0,
+   "colors": 23,
+   "size": [
+    1024,
+    1024
+   ]
+  },
+  "house_cafe": {
+   "L_all": 165.2,
+   "L_visible": 156.7,
+   "L_wall": 179.4,
+   "by_role": {
+    "hidden": 186.4,
+    "wall": 179.4,
+    "roof": 137.6,
+    "glass": 82.4,
+    "frame": 179.1,
+    "door": 113.1,
+    "awning": 185.7,
+    "ac": 165.2,
+    "prop": 48.6,
+    "soffit": 128.6
+   },
+   "speckle_1px_pct": 0.0,
+   "colors": 25,
+   "size": [
+    1024,
+    512
+   ]
+  }
+ }
+}

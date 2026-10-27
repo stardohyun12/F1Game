@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>해안 집 6채 — 도현 승인 필요</title>
+<style>body{margin:0;font:14px sans-serif;background:#eee}#bar{position:sticky;top:0;background:#fff;padding:6px}#v{overflow:auto}
+img{image-rendering:pixelated;display:block}.sil{filter:brightness(0)}</style>
+<div id="bar">판정 순서 1× → 흑실루엣 → 4× · <select id="f"><option>sheet.png</option><option>street_B.png</option><option>close_house_narrow_a.png</option><option>close_house_narrow_b.png</option><option>close_house_shop.png</option><option>close_house_slope.png</option><option>close_house_warehouse.png</option><option>close_house_cafe.png</option></select>
+<button onclick="z(1)">1×</button><button onclick="z(2)">2×</button><button onclick="z(4)">4×</button>
+<button onclick="i.classList.toggle('sil')">흑실루엣</button>
+<button onclick="b()">배경</button></div><div id="v"><img id="i" src="sheet.png"></div>
+<script>const i=document.getElementById('i'),f=document.getElementById('f');let k=1,bg=0;const B=['#eee','#222','#7aa0c8'];
+function z(n){k=n;i.onload=()=>i.style.width=i.naturalWidth*k+'px';i.style.width=i.naturalWidth*k+'px'}
+f.onchange=()=>{i.src=f.value;z(k)};function b(){bg=(bg+1)%3;document.body.style.background=B[bg]}z(1)</script>
