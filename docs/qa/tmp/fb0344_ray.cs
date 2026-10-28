@@ -1,0 +1,15 @@
+var sb = new System.Text.StringBuilder();
+var go = new GameObject("tmpcam"); var cam = go.AddComponent<Camera>(); cam.fieldOfView = 60; cam.aspect = 1280f/552f;
+System.Action<Vector3, Vector3, float[]> R = (pos, tg, a) => {
+  cam.transform.position = pos; cam.transform.LookAt(tg); sb.Append("#");
+  for (int k = 0; k < a.Length; k += 2) {
+    var ray = cam.ViewportPointToRay(new Vector3(a[k], 1f - a[k+1], 0));
+    RaycastHit h; if (Physics.Raycast(ray, out h, 2000f)) sb.Append($"{h.point.x:F1},{h.point.y:F1},{h.point.z:F1},{h.collider.name.Substring(0, System.Math.Min(14, h.collider.name.Length))};");
+  }
+  sb.Append("\n");
+};
+R(new Vector3(285.184f,58.269f,-74.919f), new Vector3(230.228f,3.744f,-97.477f), new float[]{0.28f,0.68f,0.27f,0.68f,0.25f,0.68f,0.24f,0.68f,0.22f,0.68f,0.21f,0.69f,0.2f,0.7f,0.2f,0.72f,0.2f,0.74f,0.2f,0.75f,0.2f,0.76f,0.21f,0.77f,0.24f,0.79f,0.27f,0.79f,0.29f,0.79f,0.32f,0.79f,0.34f,0.79f,0.38f,0.8f,0.42f,0.8f,0.46f,0.78f,0.5f,0.78f,0.53f,0.77f,0.56f,0.76f,0.58f,0.76f,0.61f,0.74f,0.63f,0.72f,0.64f,0.71f,0.65f,0.69f,0.67f,0.68f,0.68f,0.65f,0.69f,0.63f,0.69f,0.62f,0.69f,0.6f,0.67f,0.58f,0.65f,0.58f,0.63f,0.58f,0.61f,0.58f,0.6f,0.58f,0.57f,0.58f,0.53f,0.59f,0.51f,0.6f,0.49f,0.61f,0.47f,0.62f,0.44f,0.63f,0.4f,0.64f,0.38f,0.65f,0.35f,0.65f,0.33f,0.65f,0.31f,0.66f,0.29f,0.66f,0.27f,0.66f,0.26f,0.67f});
+R(new Vector3(265.647f,52.385f,-57.127f), new Vector3(210.614f,-0.333f,-83.474f), new float[]{0.48f,0.54f,0.47f,0.54f,0.46f,0.56f,0.46f,0.58f,0.45f,0.61f,0.45f,0.65f,0.45f,0.68f,0.46f,0.71f,0.48f,0.73f,0.5f,0.74f,0.53f,0.76f,0.56f,0.77f,0.59f,0.79f,0.61f,0.8f,0.63f,0.81f,0.66f,0.81f,0.68f,0.8f,0.7f,0.8f,0.74f,0.76f,0.74f,0.74f,0.75f,0.73f,0.75f,0.7f,0.75f,0.68f,0.75f,0.66f,0.75f,0.63f,0.75f,0.61f,0.75f,0.59f,0.75f,0.58f,0.75f,0.57f,0.74f,0.55f,0.74f,0.54f,0.74f,0.52f,0.74f,0.5f,0.74f,0.49f,0.73f,0.47f,0.73f,0.47f,0.73f,0.46f,0.49f,0.54f,0.51f,0.55f,0.54f,0.56f,0.58f,0.56f,0.6f,0.55f,0.62f,0.53f,0.63f,0.52f,0.64f,0.51f,0.65f,0.5f,0.65f,0.49f,0.66f,0.47f,0.68f,0.45f,0.69f,0.44f,0.69f,0.43f,0.7f,0.42f,0.7f,0.41f,0.71f,0.41f,0.71f,0.41f,0.72f,0.41f,0.72f,0.41f});
+R(new Vector3(298.88f,75.59f,-46.751f), new Vector3(254.524f,8.641f,-39.504f), new float[]{0.37f,0.37f,0.36f,0.38f,0.35f,0.37f,0.34f,0.36f,0.33f,0.33f,0.34f,0.3f,0.36f,0.27f,0.37f,0.25f,0.39f,0.24f,0.41f,0.22f,0.44f,0.21f,0.45f,0.21f,0.47f,0.22f,0.49f,0.25f,0.5f,0.28f,0.5f,0.31f,0.51f,0.35f,0.52f,0.38f,0.53f,0.41f,0.54f,0.45f,0.54f,0.48f,0.55f,0.51f,0.55f,0.53f,0.56f,0.57f,0.56f,0.6f,0.57f,0.63f,0.57f,0.68f,0.58f,0.72f,0.59f,0.77f,0.59f,0.81f,0.59f,0.86f,0.58f,0.88f,0.56f,0.88f,0.55f,0.85f,0.54f,0.8f,0.53f,0.74f,0.53f,0.69f,0.52f,0.65f,0.52f,0.62f,0.51f,0.59f,0.5f,0.54f,0.49f,0.51f,0.48f,0.47f,0.48f,0.44f,0.47f,0.4f,0.45f,0.36f,0.44f,0.34f,0.42f,0.33f,0.4f,0.33f,0.39f,0.33f,0.37f,0.35f,0.37f,0.37f});
+UnityEngine.Object.DestroyImmediate(go);
+return sb.ToString();
