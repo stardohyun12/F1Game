@@ -149,17 +149,20 @@ def s_check(c):
 def g_source(c):  # 텍스처: textures.py(지붕 사진·세부·간판·게시판·사진 액자) → fix_textures_v2.py(바닥·흙) → props_1709.py(소품 64px/m·포스터·게시판, 공구 1.3배)
     py = os.environ.get('PY_CV2', os.path.expanduser('~/AppData/Local/Programs/Python/Python313/python.exe'))  # textures.py 가 cv2 를 씀
     for s in ('textures.py', 'fix_textures_v2.py', 'props_1709.py'): run([py if os.path.exists(py) else sys.executable, '-X', 'utf8', str(c['src'] / s)])
-def g_overlap(c): print('   정비소: 겹침(바닥·앞마당 z 0.03/0.02/0.01)은 fix_1709 가 garage.blend 에 반영 — 여기선 할 일 없음')
+def g_overlap(c):  # 겹침(바닥·앞마당 z 0.03/0.02/0.01)은 fix_1709 가 garage.blend 에 반영. 2130: 원통 16면(의자 다리·플라이휠)을 원본에 한 번만
+    blender(c['src'] / 'fix_2130_cyl.py')
 def g_split(c): blender(c['src'] / 'split_1857.py')  # 타이어 이동(q2_moved_1846 표시, 한 번만) + 물건별 이름 TIRE_/DRUM_/POSTER_… + 피벗 바닥 가운데 → fbx
 def g_snap(c): print('   정비소: 접지 단계 없음(물건 피벗은 split 이 바닥 가운데로)')
 def g_uv(c):
     blender(R / 'tools/art/build_garage_bpy.py', str(c['exp'] / c['fbx']), str(c['tmp'] / 'uv.json'))
-    Image.new('RGBA', (32, 32), (250, 228, 178, 255)).save(c['exp'] / 'garage_lamp.png')  # 전등 원판 전용(옛: props 사본 한 점)
 def g_grain(c):
     E = c['exp']; log = {}
-    for s in c['pngs']:  # 입력은 늘 uv 단계 스냅샷(결 두 번 방지)
-        sp = c['tmp'] / '04_uv' / (s + '.png')
-        if sp.exists(): shutil.copy2(sp, E / sp.name)
+    # 2130: 입력은 source 스냅샷(정비소 uv 단계는 텍스처를 안 건드림). 옛날처럼 04_uv 를 쓰면 --from split 재실행 때 결 입힌 export 가
+    # 04_uv 로 찍혀 결이 두 번·세 번 들어갔다(반점 2%→44%). → --from 은 source 를 한 번 돌린 뒤에만 의미 있음.
+    for s in c['pngs']:
+        sp = c['tmp'] / '00_source' / (s + '.png')
+        if sp.exists() and s != 'garage_lamp': shutil.copy2(sp, E / sp.name)
+    Image.new('RGBA', (32, 32), (250, 228, 178, 255)).save(E / 'garage_lamp.png')  # 전등 원판 전용(옛: props 사본 한 점)
     for s in c['paint'] + c['paper']:
         a = np.asarray(Image.open(E / (s + '.png')).convert('RGBA'), np.float64); rgb = a[..., :3]
         lum = rgb @ [.299, .587, .114]; H, W = lum.shape; op = a[..., 3] >= 128
