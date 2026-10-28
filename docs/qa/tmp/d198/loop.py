@@ -6,7 +6,8 @@ from PIL import Image, ImageDraw, ImageFont
 H = os.path.dirname(os.path.abspath(__file__)); R = os.path.abspath(os.path.join(H, "../../../.."))
 j = json.load(open(os.path.join(R, "docs/map/town-v6b.json"), encoding="utf8"))
 SKIP = set(json.load(open(os.path.join(H, "skip_roads.json"))))       # 정비소 밑으로 끈 길(인덱스)
-car = [r for i, r in enumerate(j["roads"]) if r["kind"] in ("main", "village") and i not in SKIP]
+AVOID = {51}   # 2차: 마을길 51 은 46 과 3 m 나란히 달려 서쪽 끝(-87,-20)에서만 만남 → 경로가 머리핀 되돌이를 만들고 봇이 (-80,-16) 집벽에 낌. 경로는 46 만 씀(그림엔 51 그대로)
+car = [r for i, r in enumerate(j["roads"]) if r["kind"] in ("main", "village") and i not in SKIP and i not in AVOID]
 def key(x, z): return (round(x), round(z))
 pos, adj = {}, {}
 def add(a, b, w): adj.setdefault(a, []).append((b, w)); adj.setdefault(b, []).append((a, w))
@@ -61,8 +62,21 @@ def proj(x, z):
     return best
 A = json.load(open(os.path.join(H, "anchors_in.json"), encoding="utf8"))   # 새 건물 정면 가운데
 g = proj(*A["garage_front"]); d = proj(*A["depot_front"])
-pts = [("Garage", (g[1], g[2])), ("Depot", (d[1], d[2])), ("Plaza", (68, -54)), ("Q_Shops", (95, -30)), ("Q_Teahouse", (181.4, 5.7)),
-       ("v_down", (137, -45)), ("Q5_CoastRail", (100, -180)), ("c_west", (55, -203)), ("Garage_end", (g[1], g[2]))]
+# 경유점을 가장 가까운 선분 위 노드로 끼워 넣음(가까운 꼭짓점으로 튀지 않게)
+def insert(x, z):
+    best = None
+    for sj, a, b in segs:
+        if car[sj] is None: continue
+        dx, dz = b[0] - a[0], b[1] - a[1]; L = dx * dx + dz * dz
+        t = 0 if L == 0 else max(0, min(1, ((x - a[0]) * dx + (z - a[1]) * dz) / L))
+        px, pz = a[0] + t * dx, a[1] + t * dz; dd = math.hypot(x - px, z - pz)
+        if best is None or dd < best[0]: best = (dd, px, pz, a[2] + t * (b[2] - a[2]), a, b)
+    dd, px, pz, py, a, b = best; k = key(px, pz); pos.setdefault(k, (px, pz, py))
+    add(key(a[0], a[1]), k, math.dist(a[:2], (px, pz))); add(key(b[0], b[1]), k, math.dist(b[:2], (px, pz)))
+    return (px, pz)
+GP = insert(g[1], g[2]); DP = insert(*A["pack_on_46"])
+pts = [("Garage", GP), ("Depot", DP), ("Q_Shops", (91.2, -21.3)), ("Q_Teahouse", (181.4, 5.7)),
+       ("v_down", (137, -45)), ("Q5_CoastRail", (100, -180)), ("c_west", (55, -203)), ("Garage_end", GP)]
 full = []; legs = []
 for (an, a), (bn, b) in zip(pts, pts[1:]):
     p, L = path(near(*a), near(*b)); full += p if not full else p[1:]; legs.append((an, bn, round(L, 1)))
@@ -73,10 +87,22 @@ for a, b in zip(poly, poly[1:]):
     L = math.dist(a, b); n = max(1, int(L / 2.1))
     for i in range(1, n + 1): dense.append((a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n))
 dense = [p for i, p in enumerate(dense) if i == 0 or math.dist(p, dense[i - 1]) > 0.3]
+# 2차: 90~150° 꺾임(길 이음)은 봇이 (93,16,-15) 에서 끼였음 → 앞뒤 2점(±4 m)을 이차 베지어로 둥글게. 150° 넘는 되돌이(찻집)는 봇이 다리를 나누므로 그대로
+def turn(a, b, c):
+    u = (b[0] - a[0], b[1] - a[1]); v = (c[0] - b[0], c[1] - b[1]); d = math.hypot(*u) * math.hypot(*v)
+    return 0 if d == 0 else math.degrees(math.acos(max(-1, min(1, (u[0] * v[0] + u[1] * v[1]) / d))))
+#   2차 재시도: 귀환 다리의 61→16 꺾임(68°)에서 또 낌 → 기준 50°, 앞뒤 3점(±6 m)
+i = 3
+while i < len(dense) - 3:
+    if 50 < turn(dense[i - 1], dense[i], dense[i + 1]) < 150:
+        A, B, C = dense[i - 3], dense[i], dense[i + 3]
+        arc = [((1 - t) ** 2 * A[0] + 2 * (1 - t) * t * B[0] + t * t * C[0], (1 - t) ** 2 * A[1] + 2 * (1 - t) * t * B[1] + t * t * C[1]) for t in (1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6)]
+        dense = dense[:i - 2] + arc + dense[i + 3:]; i += 5
+    else: i += 1
 tot = sum(math.dist(a, b) for a, b in zip(dense, dense[1:]))
 open(os.path.join(H, "loop_pts.txt"), "w").write("\n".join(f"{x:.2f} {z:.2f}" for x, z in dense) + "\n")
 json.dump([[round(x, 1), round(z, 1)] for x, z in dense[::3]] + [[round(dense[-1][0], 1), round(dense[-1][1], 1)]], open(os.path.join(H, "route_world.json"), "w"))
-json.dump({"garage_road": g, "depot_road": d, "legs": legs, "total_m": round(tot, 1)}, open(os.path.join(H, "anchors.json"), "w"), indent=1)
+json.dump({"garage_road": g, "depot_road": d, "garage_pt": GP, "pack_pt": DP, "legs": legs, "total_m": round(tot, 1)}, open(os.path.join(H, "anchors.json"), "w"), indent=1)
 # 그림 (tv6_plan.py 와 같은 바탕: 1600×1600, 1px = 0.5 m)
 S, O = 2.0, 400
 img = Image.new("RGB", (int(800 * S), int(800 * S)), (40, 70, 95)); dr = ImageDraw.Draw(img)
