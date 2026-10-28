@@ -230,10 +230,19 @@ def p_grain(c):
     im = Image.open(E / 'postbox_G1.png').convert('RGBA'); im.resize((im.width * 2, im.height * 2), Image.NEAREST).save(E / 'postbox_G1.png')  # 우체통 = 작은 물건 64px/m(원래 32)
     for s in ('wall', 'roof', 'floor', 'trim', 'postbox_G1'):  # 사진 결 — 보관소와 같은 사진, 결 위치를 (37,71)px 밀어 바이트가 다르게(D-196)
         a = np.asarray(Image.open(E / (s + '.png')).convert('RGBA'), np.float64); rgb = a[..., :3]; lum = rgb @ [.299, .587, .114]; H, W = lum.shape
+        # 2251: 사서함 손잡이·막대(trim gutter 칸, 명도 80)는 ±10% 결이 양자화 뒤 잔결 0.023~0.027 로 기준 0.027 아래 → 이 칸만 고역 결 ±6·±12%(D-197 범위 안)
+        boost = np.zeros((H, W), bool)
+        if s == 'trim':
+            for cc in json.loads((E / 'layout.json').read_text(encoding='utf-8'))['trim']:
+                if cc['name'] == 'gutter': x0, y0, w0, h0 = cc['rect_px']; boost[y0:y0 + h0, x0:x0 + w0] = True
         for kind in ('paint', 'rubber'):
             sel = (lum < 70) if kind == 'rubber' else (lum >= 70)
             st = STEPS[kind]; f = np.roll(field(kind, W + 128, H + 128), (ry, rx), (0, 1))[:H, :W] * (st[2] + st[3]) / 2
-            q = st[np.abs(f[..., None] - st).argmin(-1)]; rgb[sel] *= (1 + q[sel])[:, None]
+            q = st[np.abs(f[..., None] - st).argmin(-1)]
+            if kind == 'paint' and boost.any():  # 손잡이는 2~3px 면이라 큰 얼룩 성분이 한 면을 한 색으로 덮는다 → 같은 사진의 잔결(고역)만 써서 ±12%
+                fp = np.pad(f, 1, mode='edge'); fh = f - sum(fp[i:i + H, j:j + W] for i in range(3) for j in range(3)) / 9; fh = fh / fh[boost].std() * (st[2] + st[3]) / 2
+                stb = np.array([-0.12, -0.06, 0.06, 0.12]); q = np.where(boost, stb[np.abs(fh[..., None] - stb).argmin(-1)], q)
+            rgb[sel] *= (1 + q[sel])[:, None]
         a[..., :3] = np.clip(rgb, 0, 255); Image.fromarray(a.round().astype(np.uint8)).save(E / (s + '.png')); log[s] = [W, H]
     for s, n in (('icons', 88), ('decals', 160)):  # 글씨 텍스처 64px/m 격자(보관소와 같은 축척)
         Image.open(E / (s + '.png')).convert('RGBA').resize((n, n), Image.NEAREST).save(E / (s + '.png')); log[s] = n

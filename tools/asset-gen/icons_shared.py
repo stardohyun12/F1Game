@@ -41,4 +41,28 @@ im.save(R / 'art/export/q3-depot/icons.png'); print('icons', 'art/export/q3-depo
 # 번호표 표시기(검은 판 + 빨간 숫자 블록 0 7)
 x, y = 176, 64; d.rectangle((x, y, x + 47, y + 23), fill=DARK)
 for rect in ((6, 4, 18, 6), (6, 17, 18, 19), (6, 4, 8, 19), (16, 4, 18, 19), (26, 4, 40, 6), (37, 4, 40, 19)): d.rectangle((x + rect[0], y + rect[1], x + rect[2], y + rect[3]), fill=RED)
+# 우체국 전표(2251): 최종 88px 아틀라스 크기로 직접 그린 11×17 2색(종이·잉크) 비트맵. 회색 중간톤이 글씨 가장자리 AA 40% 를 만들던 것.
+# 88 로 줄일 때 Nearest 가 고르는 원본 픽셀 = 그 목표 픽셀의 비트맵 값이 되게 원본 32×48 칸을 채운다(새 색·번짐 0).
+TGT = 88; SLIP = ['DDDDDDDDDDD',
+                  'D.........D',
+                  'D.DDDDDDD.D',
+                  'D.........D',
+                  'D.DDDDD...D',
+                  'D.........D',
+                  'D.DDDDDDD.D',
+                  'D.........D',
+                  'D.DDDD....D',
+                  'D.........D',
+                  'D.........D',
+                  'D.D.DD.D..D',
+                  'D.D.DD.D..D',
+                  'D.D.DD.D..D',
+                  'D.........D',
+                  'D.........D',
+                  'DDDDDDDDDDD']
+x, y, w, h = CELLS['slip']; tx0, ty0 = x * TGT // 256, y * TGT // 256
+for sy in range(y, y + h):
+    for sx in range(x, x + w):
+        bx = min(max(sx * TGT // 256 - tx0, 0), 10); by = min(max(sy * TGT // 256 - ty0, 0), 16)
+        im.putpixel((sx, sy), DARK + (255,) if SLIP[by][bx] == 'D' else WHITE + (255,))
 for out in ('art/export/q4-postoffice',): im.save(R / out / 'icons.png'); print('icons', out)

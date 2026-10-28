@@ -530,6 +530,11 @@ def main():
     if a.gate:
         gate = {r[0] for r in RULES if r[5]}
         bad = [(r['building'], r['object'], k) for r in res['rows'] if r['building'] != 'ref' for k, v in r['pass'].items() if v is False and k in gate]
+        # 2251: 위반을 전부 노드·텍스처·규칙으로 드러낸다(최악 15 목록 밖이 안 보이던 문제)
+        for r in res['rows']:
+            if r['building'] == 'ref': continue
+            for k, v in r['pass'].items():
+                if v is False and k in gate: print(f"  위반 {k:10s} {r['building']}/{r['object']} [{Path(r['tex']).name}] " + '; '.join(r['why']))
         print(f"GATE {'FAIL' if bad else 'PASS'} ({len(bad)} 위반)"); sys.exit(1 if bad else 0)
 
 if __name__ == '__main__': main()
