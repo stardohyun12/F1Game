@@ -25,6 +25,11 @@ STATE=".claude/team/sessions/$ROLE.state"
 
 HOLD_LOCK=0
 if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
+  # 도현이 Unity 기획 창(PitCrew/기획 창)을 쓰는 동안은 기다린다 — 창이 .claude/team/editor.lock 에 "director <time>" 을 30초마다 씀
+  dlock_fresh() { [ -f "$LOCK" ] && grep -q '^director' "$LOCK" && [ $(( $(date +%s) - $(stat -c %Y "$LOCK") )) -lt 60 ]; }
+  W=0; while dlock_fresh && [ $W -lt 1800 ]; do [ $W = 0 ] && echo "대기: 도현이 Unity 기획 창 사용 중"; sleep 15; W=$((W+15)); done
+  dlock_fresh && { echo "FAIL: 도현 기획 창 30분 넘게 사용 중 — 나중에 다시"; exit 3; }
+  [ -f "$LOCK" ] && grep -q '^director' "$LOCK" && rm -f "$LOCK"   # 60초 넘게 안 갱신된 director 잠금 = 창은 열렸지만 자리 비움
   if [ -f "$LOCK" ] && [ "$(cat "$LOCK")" != "$ROLE" ]; then
     echo "FAIL: 에디터 잠금을 $(cat "$LOCK") 가 갖고 있음 — 끝난 뒤 다시"; exit 3
   fi
