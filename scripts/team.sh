@@ -40,6 +40,8 @@ if [ "$ROLE" != "artlive" ] && printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
   echo "$ROLE" > "$LOCK"; HOLD_LOCK=1
 fi
 cleanup() { [ "$HOLD_LOCK" = 1 ] && rm -f "$LOCK"; echo "idle $(date +%H:%M)" > "$STATE"
+  bash scripts/pd-log.sh "📥 $ROLE 끝 — $(tail -1 "$LIVE" 2>/dev/null | cut -c1-90)" >/dev/null 2>&1
+  grep -l '^working' .claude/team/sessions/*.state 2>/dev/null | grep -qv 'pd.state' || bash scripts/pd-log.sh "" idle >/dev/null 2>&1
   # Hermes 백그라운드 완료 알림이 텔레그램에 안 와서 직접 알린다 (TEAM_NOTIFY_TO 로 대상 변경, 빈 값이면 끔)
   local to="${TEAM_NOTIFY_TO:-}" # off                 
   [ -n "$to" ] && hermes send -q -t "$to" "🔔 PitCrew $ROLE 끝 ($(date +%H:%M)) — $(tail -1 "$LIVE" 2>/dev/null | cut -c1-200)
@@ -53,6 +55,8 @@ $TASK
 보고 파일: docs/team/reports/$ROLE-$STAMP.md"
 echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" > "$STATE"
 printf '%s' "$TASK" > ".claude/team/sessions/$ROLE.task"   # 워치독 자동 재시작이 원문을 쓴다
+# PD 칸(대시보드)에 자동 기록 — PD 가 pd-log.sh 를 잊어도 배분·완료가 보이게 (10/29)
+bash scripts/pd-log.sh "📤 $ROLE ← $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 70)" task "팀 관리: $ROLE 배분" >/dev/null 2>&1 || true
 printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +%H:%M:%S)" "$ROLE" \
   "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
 
