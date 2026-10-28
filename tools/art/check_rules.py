@@ -30,13 +30,16 @@ REF_HOUSES = sorted((R / 'F1/Assets/Art/SceneA7/houses').glob('house_*.png'))
 TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'decals', 'clock_dial'}  # 2041: 시계판 = 픽셀 숫자·눈금
 # 2041: 1857 낱개 분리 뒤 이름(PARCEL_·SHELF_… — 원래 Q3_inside_parcels 등 소품 묶음이던 것)도 소품
 PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle|'
-                      r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER)_\d+$|^CLOCK')  # 2230 우체국 낱개
+                      r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER)_\d+$|^CLOCK|'
+                      r'^(RUG|BED|PILLOW|FUTON|DESK|VEST|BOOK|BOOKS|CALENDAR|PHOTO|WALLCLOCK|CERT|RADIO|MAGAZINE|NOTEBOOK|PENCIL|PIGGY|MUG|SHIRT|BOX|'
+                      r'SLIPPER|SHOE|BAG|CORD|PLANT|KART|KNOB|HOOK|TOWEL|LAMP|SWITCH|SOCKET)_\d+$')  # 2230 우체국 낱개 · 2303 방 낱개
+PRINT_OBJ = re.compile(r'^(PHOTO|CERT|CALENDAR|WALLCLOCK|POSTER)_\d+$')  # 2303: 인쇄물(사진·상장·달력·시계판·포스터) = 글씨 판정 — 옛 obj 'poster' · 정비소 memory 사진과 같은 취급(그림 자체가 잔결이라 결 상한 대신 AA)
 BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
               'garage_posters', 'garage_festival', 'postbox_G1'}
 B = {
     'room': dict(fbx=LIB / 'room/room.fbx', dir=LIB / 'room', gpl={'*': R / 'art/export/q1-room/palette_q1v2.gpl'},
-                 tex=lambda mat, img: 'room.png'),
+                 tex=lambda mat, img: '' if 'glass' in mat.lower() else 'room.png'),  # 2303: 창 유리(텍스처 없음)는 측정 제외
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
                    # artlive 2117: build_asset.py garage 가 결 뒤 전 텍스처를 칸별 median-cut → 합친 색을 이 palette.gpl 로(보관소와 같은 방식)
                    gpl={'*': R / 'art/export/q2-garage/palette.gpl'},
@@ -229,7 +232,7 @@ def text_metrics(t, mask):
 # ---------- 행(노드 × 재질 칸) 측정 ----------
 def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
     t = tex(tpath); W, H = t['W'], t['H']; stem = tpath.stem
-    is_text = (stem in TEXT_STEMS or obj in ('sign', 'poster', 'number', 'Q3_sign')) and not obj.startswith('wear')
+    is_text = (stem in TEXT_STEMS or obj in ('sign', 'poster', 'number', 'Q3_sign') or bool(PRINT_OBJ.search(obj))) and not obj.startswith('wear')
     is_prop = bool(PROP_OBJ.search(obj)) or stem in PROP_STEMS
     is_board = bool(BOARD_OBJ.search(obj))  # 2148 PD: 그림·글씨 판은 판이 커도 작은 물건(공구·글씨)을 담으니 64 허용
     r = dict(building=bname, object=obj, tex=str(tpath.relative_to(R)).replace('\\', '/'), W=W, H=H, text=is_text, prop=is_prop)

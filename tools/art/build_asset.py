@@ -35,7 +35,9 @@ CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot
                       lib_name={'dirt_baked32': 'garage_dirt'}),
        # 2230 우체국: 원본 = tools/asset-gen/q4_postoffice.py(키트 조립 생성기). 1846 export 덧칠(창 구멍·유리, 겹친 면 띄움)은 생성기·overlap 단계로
        'postoffice': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q4-postoffice', lib=R / 'F1/Assets/Art/Library/Buildings/postoffice', fbx='q4_postoffice.fbx',
-                          pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'postbox_G1'], lib_name={}, roll=(37, 71))}
+                          pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'postbox_G1'], lib_name={}, roll=(37, 71)),
+       # 2303 주인공 방: 원본 = tools/asset-gen/q1_room.py(사진 결·palette_q1v2 양자화까지 생성기 안). 옛 grain_1736 export 덧칠은 생성기로
+       'room': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q1-room', lib=R / 'F1/Assets/Art/Library/Buildings/room', fbx='room.fbx', pngs=['room'], lib_name={})}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
 STEPS = {'paint': np.array([-0.10, -0.04, 0.04, 0.10]), 'rubber': np.array([-0.14, -0.05, 0.05, 0.14])}
@@ -256,12 +258,30 @@ def p_unity(c):
     E, Lb = c['exp'], c['lib']
     for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: shutil.copy2(p, Lb / p.name)
     out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "postoffice" };')); print('  ', out[:300])
+# ---------- 주인공 방(room) 단계 — 2303 ----------
+def r_source(c):  # Blender 는 생성기 SyntaxError 에도 exit 0 → 끝 줄 MEAS 가 없으면 실패로
+    if 'MEAS' not in blender(c['src'] / 'q1_room.py', '--no-render'): raise SystemExit('q1_room.py 가 끝까지 안 돌았다(MEAS 없음)')
+    # 낱개 이름·피벗·64 텍셀·1~3cm 띄움·유리·실내 캠·문짝 결 → room.fbx·room.png(palette_q1v2)
+def r_overlap(c):
+    for m, f in ((('fix',), 'overlap_fix.json'), (('check', 'both'), 'overlap_both.json')):
+        blender(R / 'tools/asset-gen/fix_1846.py', 'room', *m); shutil.copy2(R / ('docs/qa/tmp/fix_1846_room_' + '_'.join(m) + '.json'), c['tmp'] / f)
+        d = json.loads((c['tmp'] / f).read_text(encoding='utf-8')); d = d.get('after') or d['before']; print(f'   {f}: 겹친 쌍 {d["pairs"]} · 같은 덩어리 중복 {d["same_island_dups"]}')
+def r_split(c): print('   방: 낱개(BED_·DESK_·CHAIR_·VEST_·BOOK_ …)는 생성기가 이름·피벗까지 만든다')
+def r_snap(c): print('   방: 접지는 생성기 좌표(바닥·책상·선반 윗면에 바로)')
+def r_uv(c): print('   방: 텍셀 32/64 는 생성기 _dn(면 ≤1.5m 작은 물건 = 64)')
+def r_grain(c): print('   방: 사진 결은 생성기 photo()·문짝 결(±8% 아래쪽)에서. export 덧칠 없음')
+def r_quant(c): print('   방: 생성기가 palette_q1v2.gpl 로 양자화')
+def r_unity(c):
+    E, Lb = c['exp'], c['lib']
+    for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: shutil.copy2(p, Lb / p.name)
+    out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "room" };')); print('  ', out[:300])
+ROOM = {'source': r_source, 'overlap': r_overlap, 'split': r_split, 'snap': r_snap, 'uv': r_uv, 'grain': r_grain, 'quant': r_quant, 'unity': r_unity, 'check': g_check}
 POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
 GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}
 
 STAGES = [('source', s_source), ('overlap', s_overlap), ('split', s_split), ('snap', s_snap), ('uv', s_uv), ('grain', s_grain), ('quant', s_quant),
           ('unity', s_unity), ('viewer', s_viewer), ('check', s_check)]
-PER = {'garage': GARAGE, 'postoffice': POSTOFFICE}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
+PER = {'garage': GARAGE, 'postoffice': POSTOFFICE, 'room': ROOM}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
 if __name__ == '__main__':
     name = sys.argv[1]; c = dict(CFG[name], name=name); c['tmp'] = R / f'docs/qa/tmp/build/{name}'; c['tmp'].mkdir(parents=True, exist_ok=True)
     start = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else 'source'

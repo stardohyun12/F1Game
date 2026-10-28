@@ -6,7 +6,7 @@
 축: 창 = Blender -Y → FBX/Unity +Z. 피벗 = 바닥 가운데. 큰 면 32텍셀/m, 작은 물건 64텍셀/m. albedo(빛 없음, D-185) → palette53 양자화.
 출력: art/export/q1-room/{room.fbx, room.png, palette53.gpl, measure.json} · 렌더 art/_review/2026-10-28-q1-room/{door,desk,window,back}_raw.png
 """
-import bpy, bmesh, os, json, math
+import bpy, bmesh, os, sys, json, math
 import numpy as np
 from mathutils import Vector, Matrix
 R = 'D:/Github/F1Game/'; OUT = R + 'art/export/q1-room/'; RV = R + 'art/_review/2026-10-28-q1-room/'
@@ -32,7 +32,8 @@ C = dict(wall=(244, 235, 200), wain=(178, 209, 183), wainline=(135, 157, 150), r
          sky1=NEW[0][0], sky2=NEW[1][0], pink=NEW[2][0], apricot=(231, 185, 140), straw=(191, 185, 123), straw2=(174, 166, 106), terra=(161, 109, 66))
 def ramp(k, f): return tuple(int(min(255, round(v * f * (tt if f < 1 else 1)))) for v, tt in zip(C[k], (1, .965, .88)))
 # 2차(과제 0406): 결 단계 — 큰 면 바탕색마다 어둠2·어둠1·밝음1 (사진 결이 양자화에서 살아남게)
-for k in ['wall', 'wain', 'wainline', 'rail', 'skirt', 'wood', 'wood2', 'wood3', 'dkwood2', 'straw', 'straw2', 'green3', 'frame', 'egg', 'orange']:
+for k in ['wall', 'wain', 'wainline', 'rail', 'skirt', 'wood', 'wood2', 'wood3', 'dkwood2', 'straw', 'straw2', 'green3', 'frame', 'egg', 'orange',
+          'red', 'blue', 'blue2', 'green', 'green2', 'teal', 'char']:  # 2303: 낱개가 된 책·줄도 결 단계(제 색 어둠·밝음)가 있어야 단색 칸이 안 된다
     for f, t in ((.86, '어둠2'), (.93, '어둠1'), (1.05, '밝음1')):
         c = ramp(k, f)  # 어둠 단계는 황토 쪽(회색 얼룩 금지)
         if c not in [q for q, _ in PAL]: PAL.append((c, f'q1v2 결 {t} {k}'))
@@ -77,7 +78,8 @@ def photo(A, key, amp, seed, mix=None):  # mix: 다른 사진을 90° 돌려 다
     A *= (1 + amp * t)[..., None]; return t
 AMP = float(os.environ.get('AMP', .45)); BL = float(os.environ.get('BL', 2.0))
 def ph_of(pt):
-    for keys, v in ((('floor', 'ceiling', 'beam', 'doorframe', 'winframe', 'sill', 'desk', 'drawers', 'chair', 'shelf', 'bedwood', 'hook', 'radio'), ('wood', .08)),
+    for keys, v in ((('hook', 'shelf'), ('wood', .18)), (('pillow', 'cord'), ('fabric', .18)), (('book',), ('paper', .18)),  # 2303: 낱개 작은 물건 결 ±8%(D-197 아래쪽) — 옛 ±3.6% 는 양자화에서 단색
+                    (('floor', 'ceiling', 'beam', 'doorframe', 'winframe', 'sill', 'desk', 'drawers', 'chair', 'shelf', 'bedwood', 'hook', 'radio'), ('wood', .08)),
                     (('tatami',), ('tatami', .10)), (('reveal',), ('plaster', .07)),
                     (('sheet', 'pillow', 'futon', 'curtain', 'towel', 'shirt', 'vest', 'slipper', 'bag', 'shoe'), ('fabric', .08)),
                     (('poster', 'calendar', 'magazine', 'notebook', 'cert', 'box', 'photo', 'book', 'plate', 'socket'), ('paper', .05))):
@@ -124,6 +126,10 @@ def wall_paint(name):
         rect(A, 2.47, 3.03, .22, .25, C['dkwood']); rect(A, 2.47, 3.03, 1.07, 1.1, C['dkwood'])
         for z in (1.12, 1.31, 1.47): rect(A, 2.2, 2.29, z, z + 1 / 32, C['dkwood2'])
     # 2차: 테이프 자국 지움, 스위치·콘센트는 64 물체로(아래 기하)
+    if name == 'door':  # 2303: 문짝 결 = 나무 사진, 단계 어둠1(-7%)·밝음1(+5%)만 → D-197 아래쪽 ±8% 안(옛 grain_1736 export 덧칠 대체)
+        dv = A[:T(1.95), T(2.35):T(3.15)]; tw = ph_lay('wood', dv.shape[0], dv.shape[1], np.random.default_rng(31))
+        for k in ('wood', 'wood2', 'dkwood', 'dkwood2'):
+            mk = (dv == C[k]).all(-1); dv[mk & (tw > .9)] = ramp(k, 1.05); dv[mk & (tw < -.9)] = ramp(k, .93)
     m = (A == C['wall']).all(-1); t = photo(A, 'plaster', .075 * AMP * .5, len(name) * 7, mix='plasterB')  # 3차: 대비 절반(은은한 결, 손질된 낡은 칠)
     A[m] = C['wall']; A[m & (t > 1.75)] = ramp('wall', 1.05); A[m & (t < -2.1)] = ramp('wall', .93)  # 밝은 칸 위주(기준 집 벽처럼 거의 평평), 어두운 점은 드물게  # 윗벽은 제 단계(크림 3단)만 — 차가운 회색 얼룩 금지
     return np.clip(A, 0, 255)
@@ -205,7 +211,7 @@ def p_bag(A): h, w = A.shape[:2]; A[:] = C['blue2']; A[:, w // 2:w // 2 + 1] = C
 def p_bagflap(A): h, w = A.shape[:2]; A[:] = C['blue']; A[:, w // 4:w // 4 + 2] = C['egg']; A[:, 3 * w // 4 - 2:3 * w // 4] = C['egg']
 def p_shoe(A): h, w = A.shape[:2]; A[:] = C['red']; A[h // 2:h // 2 + 2] = C['cream']  # 운동화(줄 하나, 로고 없음)
 def p_leaf(A): h, w = A.shape[:2]; A[:] = C['green']; A[:, w // 2] = C['green2']; A[:2] = C['green2']
-def p_socket(A): A[:] = C['frame']; h, w = A.shape[:2]; px(A, w // 3 - 1, w // 3, h // 2 - 1, h // 2 + 1, C['char']); px(A, 2 * w // 3, 2 * w // 3 + 1, h // 2 - 1, h // 2 + 1, C['char'])
+def p_socket(A): A[:] = C['frame']; h, w = A.shape[:2]; px(A, w // 3 - 1, w // 3, h // 2 - 1, h // 2 + 1, C['grey']); px(A, 2 * w // 3, 2 * w // 3 + 1, h // 2 - 1, h // 2 + 1, C['grey'])  # 2303: 구멍 회색(6×5px 판에 검정 점 = 잔결 0.35)
 def p_futon(c1, c2, check=True):
     def f(A):
         A[:] = c1
@@ -301,10 +307,15 @@ for i in range(4): PT['photo%d' % i] = p_photo(i)
 for i in range(9): PT['book%d' % i] = p_book(i)
 
 # ---------- 기하 ----------
-quads = {}
-def Q(mesh, o, U, V, pt, dens=32): quads.setdefault(mesh, []).append((Vector(o), Vector(U), Vector(V), pt, dens))
+quads = {}; NM = [None]
+def nm(n): NM[0] = n  # 2303: 만질 수 있는 물건 = 낱개 오브젝트(NAME_NN, 피벗 바닥 가운데). 껍데기(ROOM_shell)는 그대로
+def _dn(mesh, pts, dens):  # 2303: 작은 물건(면의 가장 긴 축 ≤1.5m) = 64, 그 밖 32 — check_rules 섬 기대값과 같은 규칙
+    if mesh == 'ROOM_shell': return mesh, dens
+    ext = max(max(v[k] for v in pts) - min(v[k] for v in pts) for k in range(3)); return NM[0] or mesh, 64 if ext <= 1.5 else 32
+def Q(mesh, o, U, V, pt, dens=32):
+    o, U, V = Vector(o), Vector(U), Vector(V); mesh, dens = _dn(mesh, (o, o + U, o + U + V, o + V), dens); quads.setdefault(mesh, []).append((o, U, V, pt, dens))
 def Q4(mesh, pts, pt, dens=32):  # 일반 사각(볼록) — 텍스처 크기는 첫 꼭짓점의 두 변 길이
-    p = [Vector(v) for v in pts]; quads.setdefault(mesh, []).append((p[0], p[1] - p[0], p[3] - p[0], pt, dens, p))
+    p = [Vector(v) for v in pts]; mesh, dens = _dn(mesh, p, dens); quads.setdefault(mesh, []).append((p[0], p[1] - p[0], p[3] - p[0], pt, dens, p))
 def box(mesh, x0, x1, y0, y1, z0, z1, pt, dens=32, skip=()):
     g = (lambda k: pt.get(k, pt.get('*'))) if isinstance(pt, dict) else (lambda k: pt)
     dx, dy, dz = x1 - x0, y1 - y0, z1 - z0
@@ -334,45 +345,46 @@ for sg, yy in ((-1, -1.565), (1, -1.528)):  # 2차: 미닫이 두 짝 대칭(가
 box(S, -1.25, 1.3, -1.47, -1.43, 2.12, 2.15, 'winframe'); box(S, 1.0, 1.24, -1.47, -1.41, .66, 2.12, 'curtain'); box(S, -1.2, -1.02, -1.47, -1.42, .7, 2.12, 'curtain')
 # 문틀·손잡이·고리·시계·천장 보·전등
 for x0, x1, z1 in ((.55, .6, 2.0), (1.4, 1.45, 2.0), (.55, 1.45, 2.0)): box(S, x0, x1, 1.47, 1.5, 1.95 if x1 - x0 > .5 else 0, z1, 'doorframe', skip=('back',))
-box(Pr, .66, .7, 1.43, 1.48, .95, .99, 'metal', 64)
-box(Pr, .08, .5, 1.47, 1.5, 1.6, 1.66, 'hook', 64); box(Pr, .16, .36, 1.455, 1.47, 1.18, 1.62, 'towel', 64)
-wallQ(Pr, 'door', 2.62, 2.88, 2.06, 2.32, 'clock', .005, 64)
+nm('KNOB_01'); box(Pr, .66, .7, 1.43, 1.5, .95, .99, 'metal', 64, skip=('back',))  # 2303: 벽에 붙임(옛: 2cm 뜸)
+nm('HOOK_01'); box(Pr, .08, .5, 1.47, 1.5, 1.6, 1.66, 'hook', 64, skip=('back',)); nm('TOWEL_01'); box(Pr, .16, .36, 1.455, 1.47, 1.18, 1.62, 'towel', 64, skip=('back',))  # 2303: 벽·고리와 같은 면 0
+nm('WALLCLOCK_01'); wallQ(Pr, 'door', 2.62, 2.88, 2.06, 2.32, 'clock', .012, 64); nm(None)
 for y0 in (-.55, .55): box(S, -1.75, 1.75, y0, y0 + .12, 2.28, HH, 'beam', skip=('top',))
-box(Pr, -.01, .01, .05, .07, 1.95, 2.28, 'cord', 64); box(Pr, -.13, .13, -.07, .19, 1.8, 1.95, 'shade', 64)
+nm('LAMP_01'); box(Pr, -.01, .01, .05, .07, 1.95, HH, 'cord', 64, skip=('top',)); box(Pr, -.13, .13, -.07, .19, 1.8, 1.95, 'shade', 64)  # 2303: 줄이 천장까지(옛: 12cm 아래에서 뜸)
 # 2차: 창밖 판 없앰(창틀만, 유리 없음 = 투명). 스위치·콘센트 = 64 물체(+X 벽)
-box(Pr, 1.735, 1.75, 1.2, 1.28, 1.1, 1.2, 'plate', 64, skip=('right', 'bottom')); box(Pr, 1.735, 1.75, -.4, -.3, .3, .38, 'socket', 64, skip=('right', 'bottom'))
+nm(None); box(Pr, 1.735, 1.75, 1.2, 1.28, 1.1, 1.2, 'plate', 64, skip=('right', 'bottom')); box(Pr, 1.735, 1.75, -.4, -.3, .3, .38, 'socket', 64, skip=('right', 'bottom'))  # 2303: 스위치·콘센트·전기선 = 벽 설비(만지는 물건 아님) → ROOM_props 한 덩어리
 # 3차 생활 물건(벽 밑에 무리, 흩뿌림 X): 책상 옆 책가방 · 라디오 전기선 → 콘센트 · 창턱 작은 화분 · 문 옆 운동화 · 책장 옆 바닥 책 더미 · 책상 벽 쪽 책 2권
-box(Pr, 1.45, 1.72, -.2, .06, 0, .3, 'bag', 64, skip=('bottom', 'right')); box(Pr, 1.43, 1.72, -.21, .07, .22, .34, dict({'*': 'bagflap'}), 64, skip=('bottom', 'right'))
+nm('BAG_01'); box(Pr, 1.45, 1.72, -.2, .06, 0, .3, 'bag', 64, skip=('bottom', 'right')); box(Pr, 1.43, 1.72, -.21, .07, .22, .34, dict({'*': 'bagflap'}), 64, skip=('bottom', 'right'))
 box(Pr, 1.40, 1.45, -.15, .01, .04, .19, 'bagflap', 64, skip=('right', 'bottom')); box(Pr, 1.56, 1.6, -.13, -.01, .34, .40, 'bagflap', 64, skip=('bottom',))
-box(Pr, 1.71, 1.725, -1.2, -1.185, .3, .72, 'cord', 64, skip=('right',)); box(Pr, 1.725, 1.74, -1.2, -.38, .3, .315, 'cord', 64, skip=('right', 'bottom'))
-box(Pr, .55, .67, -1.6, -1.48, .8, .9, 'pot', 64, skip=('bottom',)); box(Pr, .52, .70, -1.545, -1.535, .9, 1.1, 'leaf', 64); box(Pr, .605, .615, -1.63, -1.45, .9, 1.06, 'leaf', 64); box(Pr, .56, .66, -1.58, -1.5, 1.0, 1.04, 'leaf', 64)
-for x0 in (.2, .34):
-    box(Pr, x0, x0 + .1, 1.15, 1.43, 0, .03, 'sole', 64, skip=('bottom',)); box(Pr, x0 + .01, x0 + .09, 1.22, 1.42, .03, .09, 'shoe', 64, skip=('bottom',))
+nm(None); box(Pr, 1.71, 1.725, -1.2, -1.185, .3, .72, 'cord', 64, skip=('right',)); box(Pr, 1.725, 1.74, -1.2, -.38, .3, .315, 'cord', 64, skip=('right', 'bottom'))
+nm('PLANT_01'); box(Pr, .55, .67, -1.6, -1.48, .8, .9, 'pot', 64, skip=('bottom',)); box(Pr, .52, .70, -1.545, -1.535, .9, 1.1, 'leaf', 64); box(Pr, .605, .615, -1.63, -1.45, .9, 1.06, 'leaf', 64); box(Pr, .56, .66, -1.58, -1.5, 1.0, 1.04, 'leaf', 64)
+for k, x0 in enumerate((.2, .34)):
+    nm('SHOE_%02d' % (k + 1)); box(Pr, x0, x0 + .1, 1.15, 1.43, 0, .03, 'sole', 64, skip=('bottom',)); box(Pr, x0 + .01, x0 + .09, 1.22, 1.42, .03, .09, 'shoe', 64, skip=('bottom',))
+nm('BOOKS_01')
 for j in range(3): box(Fu, -.66 + j * .015, -.42 - j * .01, 1.22 + j * .01, 1.45, j * .035, (j + 1) * .035, 'book%d' % (j + 5), 64, skip=('bottom',))
-box(Pr, 1.58, 1.73, -.98, -.78, .72, .75, 'book1', 64, skip=('bottom',)); box(Pr, 1.6, 1.72, -.96, -.8, .75, .77, 'book6', 64, skip=('bottom',))
+nm('BOOKS_02'); box(Pr, 1.58, 1.73, -.98, -.78, .72, .75, 'book1', 64, skip=('bottom',)); box(Pr, 1.6, 1.72, -.96, -.8, .75, .77, 'book6', 64, skip=('bottom',))
 # 깔개
-box(Fu, -.7, .9, -.6, .85, 0, .012, dict(top='tatami'), skip=('bottom',))
+nm('RUG_01'); box(Fu, -.7, .9, -.6, .85, 0, .012, dict(top='tatami'), skip=('bottom',))
 # 침대(-X 벽): 틀·머리판·요·베개·개어 둔 이불 3단
-box(Fu, -1.75, -.8, -1.0, .95, 0, .28, 'bedwood', skip=('bottom', 'left')); box(Fu, -1.75, -.8, -1.0, -.95, .28, .72, 'bedwood', skip=('left',))
+nm('BED_01'); box(Fu, -1.75, -.8, -1.0, .95, 0, .28, 'bedwood', skip=('bottom', 'left')); box(Fu, -1.75, -.8, -1.0, -.95, .28, .72, 'bedwood', skip=('left',))
 box(Fu, -1.73, -.83, -.95, .92, .28, .42, dict({'*': 'sheet'}), skip=('bottom', 'left'))
-box(Fu, -1.6, -.98, -.92, -.62, .42, .52, 'pillow', 64, skip=('bottom',))
+nm('PILLOW_01'); box(Fu, -1.6, -.98, -.92, -.62, .42, .52, 'pillow', 64, skip=('bottom',))
 # 2차: 이불 = 세 겹 개어 둔 한 덩어리, 앞(접힌 쪽) 모서리 둥글게 — 옆 단면 8각을 X 로 밀어 냄
 FP = [(.9, .42), (.46, .42), (.415, .445), (.4, .5), (.412, .575), (.46, .625), (.875, .625), (.9, .6)]
-x0, x1 = -1.66, -.9
+x0, x1 = -1.66, -.9; nm('FUTON_01')
 for i in range(1, 8):
     (ya, za), (yb, zb) = FP[i], FP[(i + 1) % 8]; Q(Fu, (x0, ya, za), (x1 - x0, 0, 0), (0, yb - ya, zb - za), 'futon')
 for a, b, c, d in ((0, 1, 2, 3), (0, 3, 4, 7), (4, 5, 6, 7)):
     Q4(Fu, [(x1, *FP[j]) for j in (a, b, c, d)], 'futonend'); Q4(Fu, [(x0, *FP[j]) for j in (d, c, b, a)], 'futonend')
-box(Pr, -1.45, -1.05, .05, .33, .42, .435, 'shirt', 64, skip=('bottom',)); box(Pr, -.66, -.42, -.98, -.78, 0, .09, 'box', 64, skip=('bottom',))
-box(Pr, -.72, -.62, .3, .56, 0, .04, 'slipper', 64, skip=('bottom',)); box(Pr, -.58, -.48, .26, .52, 0, .04, 'slipper', 64, skip=('bottom',))
+nm('SHIRT_01'); box(Pr, -1.45, -1.05, .05, .33, .42, .435, 'shirt', 64, skip=('bottom',)); nm('BOX_01'); box(Pr, -.66, -.42, -.98, -.78, 0, .09, 'box', 64, skip=('bottom',))
+nm('SLIPPER_01'); box(Pr, -.72, -.62, .3, .56, 0, .04, 'slipper', 64, skip=('bottom',)); nm('SLIPPER_02'); box(Pr, -.58, -.48, .26, .52, 0, .04, 'slipper', 64, skip=('bottom',))
 # 책상(+X 벽, 창 옆)·서랍·의자·조끼
-box(Fu, 1.15, 1.75, -1.45, -.25, .69, .72, 'desk', skip=('right',)); box(Fu, 1.17, 1.73, -.62, -.27, 0, .69, dict({'*': 'desk'}, left='drawers'), skip=('right', 'bottom', 'top'))
+nm('DESK_01'); box(Fu, 1.15, 1.75, -1.45, -.25, .69, .72, 'desk', skip=('right',)); box(Fu, 1.17, 1.73, -.62, -.27, 0, .69, dict({'*': 'desk'}, left='drawers'), skip=('right', 'bottom', 'top'))
 box(Fu, 1.17, 1.73, -1.43, -1.39, 0, .69, 'desk', skip=('right', 'bottom', 'top'))
-box(Fu, .55, .95, -1.05, -.65, .42, .46, 'chair')
+nm('CHAIR_01'); box(Fu, .55, .95, -1.05, -.65, .42, .46, 'chair')
 for x, y in ((.56, -1.04), (.91, -1.04), (.56, -.69), (.91, -.69)): box(Fu, x, x + .03, y, y + .03, 0, .42, 'chair', skip=('top', 'bottom'))
 for x in (.55, .92): box(Fu, x, x + .03, -.68, -.65, .46, .92, 'chair', skip=('bottom',))  # 3차: 의자 90° — 등받이가 문 쪽
 # 2차: 조끼 = 옷 실루엣(몸판 + 팔 구멍 + V 목 + 어깨), 등받이 넘어 앞뒤로 늘어지고 아래가 벌어짐. 안쪽 면도 있음(속 빈 뒤 안 보이게)
-VB = [(-1.08, .50), (-.62, .50), (-.63, .72), (-1.07, .72)]; VL = [(-1.05, .72), (-.87, .72), (-.9, .95), (-1.03, .95)]; VR = [(-.83, .72), (-.65, .72), (-.67, .95), (-.80, .95)]  # 어깨 넓게(콘 모양 X)
+nm('VEST_01'); VB = [(-1.08, .50), (-.62, .50), (-.63, .72), (-1.07, .72)]; VL = [(-1.05, .72), (-.87, .72), (-.9, .95), (-1.03, .95)]; VR = [(-.83, .72), (-.65, .72), (-.67, .95), (-.80, .95)]  # 어깨 넓게(콘 모양 X)
 for yt, yb, out in ((-.69, -.74, -1), (-.635, -.585, 1)):  # 3차: 자리 쪽 · 문 쪽(앞판이 문을 봄)
     Y = lambda z: yt + (yb - yt) * (.95 - z) / .45
     for poly, pt in ((VB, 'vestbody'), (VL, 'vestsh'), (VR, 'vestsh')):
@@ -380,35 +392,36 @@ for yt, yb, out in ((-.69, -.74, -1), (-.635, -.585, 1)):  # 3차: 자리 쪽 ·
         Q4('ROOM_vest', o, pt, 64); Q4('ROOM_vest', o[::-1], 'vestin', 64)
 for ya, yb in ((-1.03, -.9), (-.8, -.67)): xa, xb = .75 + ya + .85, .75 + yb + .85; Q4('ROOM_vest', [(xa, -.69, .95), (xb, -.69, .95), (xb, -.635, .95), (xa, -.635, .95)], 'vestsh', 64)
 # 책상 위: 라디오(창 쪽 구석)·잡지·공책·연필·저금통·머그
-box(Pr, 1.42, 1.7, -1.42, -1.1, .72, .92, dict({'*': 'radio'}, left='radiof', top='radiotop'), 64, skip=('bottom', 'right')); box(Pr, 1.62, 1.635, -1.15, -1.135, .92, 1.3, 'antenna', 64, skip=('bottom',))
-Q(Pr, (1.2, -.76, .722), (0, -.21, 0), (.28, 0, 0), 'magazine', 64)
-Q(Pr, (1.18, -.28, .722), (0, -.42, 0), (.3, 0, 0), 'notebook', 64); box(Pr, 1.2, 1.36, -.25, -.24, .722, .73, 'pencil', 64, skip=('bottom',))
-box(Pr, 1.52, 1.68, -.58, -.46, .74, .86, dict({'*': 'pig'}, top='pigtop'), 64, skip=('bottom',)); box(Pr, 1.49, 1.52, -.55, -.49, .78, .82, 'snout', 64, skip=('right',))
+nm('RADIO_01'); box(Pr, 1.42, 1.7, -1.42, -1.1, .72, .92, dict({'*': 'radio'}, left='radiof', top='radiotop'), 64, skip=('bottom', 'right')); box(Pr, 1.62, 1.635, -1.15, -1.135, .92, 1.3, 'antenna', 64, skip=('bottom',))
+nm('MAGAZINE_01'); Q(Pr, (1.2, -.76, .722), (0, -.21, 0), (.28, 0, 0), 'magazine', 64)
+nm('NOTEBOOK_01'); Q(Pr, (1.18, -.28, .722), (0, -.42, 0), (.3, 0, 0), 'notebook', 64); nm('PENCIL_01'); box(Pr, 1.2, 1.36, -.25, -.24, .722, .73, 'pencil', 64, skip=('bottom',))
+nm('PIGGY_01'); box(Pr, 1.52, 1.68, -.58, -.46, .74, .86, dict({'*': 'pig'}, top='pigtop'), 64, skip=('bottom',)); box(Pr, 1.49, 1.52, -.55, -.49, .78, .82, 'snout', 64, skip=('right',))
 for x, y in ((1.54, -.57), (1.64, -.57), (1.54, -.49), (1.64, -.49)): box(Pr, x, x + .02, y, y + .02, .72, .74, 'pig', 64, skip=('top', 'bottom'))
 for y0 in (-.575, -.485): box(Pr, 1.53, 1.555, y0, y0 + .03, .86, .89, 'snout', 64, skip=('bottom',))  # 3차: 귀
 box(Pr, 1.66, 1.69, -.53, -.51, .8, .83, 'snout', 64, skip=('left',))  # 꼬리
-box(Pr, 1.6, 1.68, -.36, -.28, .72, .82, dict({'*': 'mug'}, top='mugtop'), 64, skip=('bottom',))
+nm('MUG_01'); box(Pr, 1.6, 1.68, -.36, -.28, .72, .82, dict({'*': 'mug'}, top='mugtop'), 64, skip=('bottom',))
 # 벽에 붙은 것(+X 벽): 포스터 1, 아래 달력, 옆 사진 4
-wallQ(Pr, 'R', 2.0, 2.66, 1.42, 2.3, 'poster1', .006, 64); wallQ(Pr, 'R', 2.16, 2.5, .9, 1.36, 'calendar', .006, 64)
-for k, (u, z, r) in enumerate(((1.55, 1.85, -4), (1.72, 1.9, 3), (1.6, 1.6, 2), (1.77, 1.62, -3))): wallQ(Pr, 'R', u, u + .13, z, z + .18, 'photo%d' % k, .006 + k * .001, 64, r)
+nm('POSTER_01'); wallQ(Pr, 'R', 2.0, 2.66, 1.42, 2.3, 'poster1', .015, 64); nm('CALENDAR_01'); wallQ(Pr, 'R', 2.16, 2.5, .9, 1.36, 'calendar', .015, 64)  # 2303: 벽에서 1.5cm
+for k, (u, z, r) in enumerate(((1.55, 1.85, -4), (1.72, 1.9, 3), (1.6, 1.6, 2), (1.77, 1.62, -3))): nm('PHOTO_%02d' % (k + 1)); wallQ(Pr, 'R', u, u + .13, z, z + .18, 'photo%d' % k, .012 + k * .003, 64, r)
 # -X 벽(침대 위): 레이스 사진 포스터(살짝 기움)
-wallQ(Pr, 'L', 1.15, 2.05, 1.15, 1.75, 'poster2', .006, 64, 1.5)
+nm('POSTER_02'); wallQ(Pr, 'L', 1.15, 2.05, 1.15, 1.75, 'poster2', .015, 64, 1.5)
 # 책장(문 벽 -X 쪽): 옆판·선반 4·뒤판, 책·카트 모형·상장·상자
-box(Fu, -1.7, -1.68, 1.2, 1.5, 0, 1.6, 'shelf', skip=('back',)); box(Fu, -.72, -.7, 1.2, 1.5, 0, 1.6, 'shelf', skip=('back',))
+nm('SHELF_01'); box(Fu, -1.7, -1.68, 1.2, 1.5, 0, 1.6, 'shelf', skip=('back',)); box(Fu, -.72, -.7, 1.2, 1.5, 0, 1.6, 'shelf', skip=('back',))
 for z in (0, .5, 1.0, 1.58): box(Fu, -1.68, -.72, 1.2, 1.5, z, z + .02, 'shelf', skip=('back',))
 Q(Fu, (-1.68, 1.49, 0), (.96, 0, 0), (0, 0, 1.6), 'shelfback')
 rs = np.random.default_rng(21); x = -1.66; k = 0
 while x < -.78:
-    bw = float(rs.choice([.03, .04, .05])); bh = float(rs.choice([.2, .24, .28])); box(Fu, x, x + bw, 1.26, 1.47, .02, .02 + bh, 'book%d' % (k % 9), 64, skip=('back', 'bottom')); x += bw + .003; k += 1
+    bw = float(rs.choice([.03, .04, .05])); bh = float(rs.choice([.2, .24, .28])); nm('BOOK_%02d' % (k + 1)); box(Fu, x, x + bw, 1.26, 1.47, .02, .02 + bh, 'book%d' % (k % 9), 64, skip=('back', 'bottom')); x += bw + .003; k += 1
+nm('BOOKS_03')
 for j in range(3): box(Fu, -1.62, -1.3 + j * .01, 1.25, 1.45, 1.6 + j * .03, 1.63 + j * .03, 'book%d' % (j + 3), 64, skip=('bottom',))  # 위: 눕힌 잡지 더미
-box(Pr, -1.5, -1.24, 1.28, 1.42, 1.04, 1.08, 'kart', 64, skip=('bottom',)); box(Pr, -1.42, -1.34, 1.32, 1.38, 1.08, 1.12, 'tire', 64, skip=('bottom',))
+nm('KART_01'); box(Pr, -1.5, -1.24, 1.28, 1.42, 1.04, 1.08, 'kart', 64, skip=('bottom',)); box(Pr, -1.42, -1.34, 1.32, 1.38, 1.08, 1.12, 'tire', 64, skip=('bottom',))
 for x, y in ((-1.5, 1.25), (-1.3, 1.25), (-1.5, 1.42), (-1.3, 1.42)): box(Pr, x, x + .05, y, y + .03, 1.02, 1.07, 'tire', 64, skip=('bottom',))
-wallQ(Pr, 'door', .82, 1.06, 1.06, 1.24, 'cert', .015, 64, -3); box(Pr, -.98, -.75, 1.3, 1.46, .52, .66, 'box', 64, skip=('bottom', 'back'))
+nm('CERT_01'); wallQ(Pr, 'door', .82, 1.06, 1.06, 1.24, 'cert', .015, 64, -3); nm('BOX_02'); box(Pr, -.98, -.75, 1.3, 1.46, .52, .66, 'box', 64, skip=('bottom', 'back'))
 
 # ---------- 아틀라스(선반 쌓기) ----------
 items = []
 for mesh, qs in quads.items():
-    for qi, (o, U, V, pt, dn, *_) in enumerate(qs): items.append([mesh, qi, max(2, int(round(U.length * dn))), max(2, int(round(V.length * dn))), pt, dn])
+    for qi, (o, U, V, pt, dn, *_) in enumerate(qs): items.append([mesh, qi, max(1, int(round(U.length * dn))), max(1, int(round(V.length * dn))), pt, dn])  # 2303: 최소 1px(옛 2px = 1.5cm 줄·연필 옆면이 90~130px/m)
 AW = 1024; order = sorted(range(len(items)), key=lambda k: -items[k][3]); x = y = rowh = 0; PAD = 2
 for k in order:
     w, h = items[k][2], items[k][3]
@@ -453,14 +466,25 @@ for mesh in quads:
         q = quads[mesh][qi]; o, U, V = q[:3]
         f = bm.faces.new([bm.verts.new(p) for p in (q[5] if len(q) > 5 else (o, o + U, o + U + V, o + V))])
         for lp, (a, b) in zip(f.loops, ((ux + .02, uy + .02), (ux + w - .02, uy + .02), (ux + w - .02, uy + h - .02), (ux + .02, uy + h - .02))): lp[uvl].uv = (a / AW, b / AH)
-    bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(mesh, me); sc.collection.objects.link(ob); me.materials.append(MATV if mesh == 'ROOM_view' else MAT); obs.append(ob)
+    if mesh != 'ROOM_shell':  # 2303: 피벗 = 바닥 가운데(D-195)
+        cs = [v.co.copy() for v in bm.verts]; pv = Vector(((min(c.x for c in cs) + max(c.x for c in cs)) / 2, (min(c.y for c in cs) + max(c.y for c in cs)) / 2, min(c.z for c in cs)))
+        for v in bm.verts: v.co -= pv
+    else: pv = Vector()
+    bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(mesh, me); ob.location = pv; sc.collection.objects.link(ob); me.materials.append(MATV if mesh == 'ROOM_view' else MAT); obs.append(ob)
     tris += sum(len(p.vertices) - 2 for p in me.polygons)
     if mesh == 'ROOM_view': ob.visible_shadow = False
+# 2303: 창 = 진짜 유리(D-189) — 미닫이 두 짝 안에 한 장씩(창살 상자 깊이 가운데라 창살과 같은 면 0). 텍스처 없음 → Unity M_room_glass 반투명
+mg = bpy.data.materials.new('ROOM_glass'); mg.diffuse_color = (.72, .86, .95, .32)
+for i, (yy, xa, xb) in enumerate(((-1.565, -.95, .02), (-1.528, -.02, .95))):
+    gy = yy + .0175; gn = 'WINDOW_glass_%02d' % (i + 1); meg = bpy.data.meshes.new(gn); meg.from_pydata([(xa + .04, gy, .89), (xb - .04, gy, .89), (xb - .04, gy, 1.91), (xa + .04, gy, 1.91)], [], [(0, 1, 2, 3)])
+    meg.uv_layers.new(name='UVMap'); meg.materials.append(mg); og = bpy.data.objects.new(gn, meg); sc.collection.objects.link(og); og.visible_shadow = False; obs.append(og)
+for en, loc in (('STUDIO_CamIn', (1.0, 1.3, 1.55)), ('STUDIO_CamInLook', (-.5, -1.2, 1.05))):  # 2303: studio_cap 실내 캠 = 렌더 door 와 같은 자리
+    e = bpy.data.objects.new(en, None); e.location = loc; sc.collection.objects.link(e); obs.append(e)
 bpy.ops.object.select_all(action='DESELECT')
 for ob in obs: ob.select_set(True)
 bpy.context.view_layer.objects.active = obs[0]
 bpy.ops.export_scene.fbx(filepath=OUT + 'room.fbx', use_selection=True, axis_forward='-Z', axis_up='Y', apply_scale_options='FBX_SCALE_ALL',
-                         path_mode='STRIP', embed_textures=False, mesh_smooth_type='FACE', object_types={'MESH'})
+                         path_mode='STRIP', embed_textures=False, mesh_smooth_type='FACE', object_types={'MESH', 'EMPTY'})
 def dens_of(sel):
     a = sum(i[2] * i[3] for i in items if sel(i)); wa = sum(quads[i[0]][i[1]][1].length * quads[i[0]][i[1]][2].length for i in items if sel(i)); return round(math.sqrt(a / wa), 2)
 meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per_m=dict(big=dens_of(lambda i: i[5] == 32), small=dens_of(lambda i: i[5] == 64)),
@@ -468,6 +492,7 @@ meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], texels_per
             p5=round(float(np.percentile(Lq, 5)), 1), p50=round(float(np.percentile(Lq, 50)), 1), p95=round(float(np.percentile(Lq, 95)), 1), photo_src=sorted(PHUSE), photo_amp=AMP,
             size_m=dict(w=3.5, d=3.0, h=HH), pivot='바닥 가운데', forward='창 = Blender -Y → FBX/Unity +Z', note='창밖 판 없음(창틀만). 창밖은 Unity 에서 맵의 진짜 마을')
 json.dump(meas, open(OUT + 'measure.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False); print('MEAS', meas, flush=True)
+if '--no-render' in sys.argv: sys.stdout.flush(); os._exit(0)  # 2303: build_asset.py room source 단계 — 시트 렌더(Cycles 4장) 생략
 # 시트 전용(내보내지 않음): 창밖 = 실제 게임 캡처 임시 배경. Unity 에선 맵의 주인공 집 안에 놓아 진짜 마을이 보인다.
 BG = bpy.data.images.load(R + 'docs/qa/evidence/scene-a7b/street_on.png'); bw_, bh_ = BG.size; BG.scale(480, 270)  # 방 텍셀과 같은 거칠기
 mb = bpy.data.materials.new('BG'); mb.use_nodes = True; nt = mb.node_tree; nt.nodes.clear(); tx = nt.nodes.new('ShaderNodeTexImage'); tx.image = BG; tx.interpolation = 'Closest'
