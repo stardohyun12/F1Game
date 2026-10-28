@@ -28,6 +28,8 @@ public class TownPathBot : MonoBehaviour
     IEnumerator Start()
     {
         Application.runInBackground = true;
+        // 씬에 저장된 채 Play 되면 LoopPts(정적)가 비어 있다 — QA 스크립트가 채운 뒤에만 돈다
+        if (mode.StartsWith("loop") && LoopPts.Count < 2) { Debug.LogWarning("[TownPathBot] LoopPts 비어 있음 — 건너뜀(" + name + ")"); yield break; }
         car = FindFirstObjectByType<ArcadeCarController>(); rb = car.GetComponent<Rigidbody>(); cargo = FindFirstObjectByType<CargoBox>();
         moveF = typeof(ArcadeCarController).GetField("moveInput", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         groundF = typeof(ArcadeCarController).GetField("isGrounded", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
