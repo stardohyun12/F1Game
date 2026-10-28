@@ -5,6 +5,7 @@
   python scripts/fb.py fixed <id> "<무엇을 고쳤나 한 줄>" [--after 경로]  판정 게이트(D-204) 통과해야 open→fixed
       --after 없으면 bash scripts/fb_shot.sh <id>(코멘트 때 카메라로 재촬영) → python scripts/fb_judge.py <id>
       판정자 둘(Claude·Astra) 다 NO(문제 안 보임)일 때만 fixed + 판정 요약. 아니면 거부(exit 1), thread 에 "판정: 아직 보임 — 이유"
+      코멘트에 공간 단어(묻·뜸·떠·땅·길·겹·박혀·공중·붙)가 있으면 그 전에 scripts/fb_geom.py(계산) — FAIL 이면 거부, 이유 = fix 칸
   python scripts/fb.py reply <id> "<글>" [--shot 경로]                    status 그대로, 글만
 
 status: open(할 일) → fixed(팀원이 고쳤음 — 도현 검토 대기) → done(도현이 [넘기기]).
@@ -137,10 +138,34 @@ def judge_gate(a):
     return r.returncode == 0 and j.get("pass"), summary, after
 
 
+SPACE_WORDS = ("묻", "뜸", "떠", "파묻", "땅", "길", "겹", "박혀", "공중", "붙")
+
+
+def geom_gate(a, d):
+    """하네스 ②: 코멘트에 공간 단어가 있으면 fb_geom(계산) 먼저 — VLM 판정자는 묻힘·뜸·겹침에 약하다. FAIL 이면 거부."""
+    text = " ".join(p.get("text") or "" for p in thread_of(d) if p.get("who") == "director")
+    if not any(w in text for w in SPACE_WORDS) or not d.get("point"):
+        return
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    import fb_geom
+    try:
+        ok, items, out = fb_geom.run(d["id"])
+    except RuntimeError as e:
+        sys.exit("fb_geom 조사 실패 — fixed 안 함: " + str(e))
+    if ok:
+        print("fb_geom PASS →", os.path.relpath(out, ROOT).replace("\\", "/"))
+        return
+    why = " | ".join(i["fix"] for i in items if i["problem"])
+    mutate(a.id, lambda d: push(d, a.who, "판정(계산): 아직 공간 결함 — " + why, None))
+    print("거부: fb_geom FAIL — status 그대로(open). 고칠 것:\n  " + why.replace(" | ", "\n  "))
+    sys.exit(1)
+
+
 def cmd_fixed(a):
     d = find(a.id)
     if status_of(d) == "done":
         sys.exit("이미 done(도현이 넘김) — 바꾸지 않음: " + a.id)
+    geom_gate(a, d)
     ok, summary, after = judge_gate(a)
     rel = os.path.relpath(os.path.abspath(after), ROOT).replace("\\", "/")
     if not ok:

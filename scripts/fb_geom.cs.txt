@@ -1,0 +1,143 @@
+// fb_geom.py 가 __PX__ 등을 채워 ucli exec 로 돌리는 조사 스니펫. 읽기만 한다(씬·물체를 바꾸지 않는다).
+// 출력 = 탭 구분 줄. B 건물 모서리 / R 길 가장자리 점 / O 건물끼리 겹침 / RB 길이 건물 발자국 안.
+if (UnityEditor.EditorApplication.isPlaying) return "FAIL\tPlay 중 — editor stop 뒤에";
+var scn = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+if (scn.name != "__SCENE__") return "FAIL\t열린 씬 " + scn.name + " != __SCENE__";
+var P = new UnityEngine.Vector3(__PX__f, __PY__f, __PZ__f);
+float RAD = __RAD__f;
+string dryName = "__DRYNAME__"; float dryDy = __DRYDY__f;
+var inv = System.Globalization.CultureInfo.InvariantCulture;
+var sb = new System.Text.StringBuilder();
+var terr = new System.Collections.Generic.List<UnityEngine.Collider>();
+foreach (var c in UnityEngine.Object.FindObjectsByType<UnityEngine.Collider>(UnityEngine.FindObjectsSortMode.None))
+  if (c.enabled && c.gameObject.activeInHierarchy && (c is UnityEngine.TerrainCollider || c.name.Contains("Terrain"))) terr.Add(c);
+if (terr.Count == 0) return "FAIL\t지형 콜라이더 없음";
+sb.Append("T\t" + terr.Count + "\n");
+System.Func<float, float, float> ground = (x, z) => {
+  float best = float.NaN;
+  var ray = new UnityEngine.Ray(new UnityEngine.Vector3(x, 500f, z), UnityEngine.Vector3.down);
+  foreach (var c in terr) { UnityEngine.RaycastHit h; if (c.Raycast(ray, out h, 1000f) && (float.IsNaN(best) || h.point.y > best)) best = h.point.y; }
+  return best;
+};
+System.Func<float, string> F = v => v.ToString("F3", inv);
+
+// ── 건물 후보: 이름이 *Buildings 인 묶음의 자식 + TownV6_Gray 밑 프리팹 루트 (가로 60m 넘는 합친 메시는 뺀다)
+var cand = new System.Collections.Generic.List<UnityEngine.Transform>();
+foreach (var r in scn.GetRootGameObjects())
+  foreach (var t in r.GetComponentsInChildren<UnityEngine.Transform>(false)) {
+    if (t.name.StartsWith("ROAD")) continue;
+    bool inGroup = t.parent != null && t.parent.name.EndsWith("Buildings");
+    bool pref = UnityEditor.PrefabUtility.IsAnyPrefabInstanceRoot(t.gameObject) && t.root.name.StartsWith("TownV6") && (t.parent == null || !t.parent.name.EndsWith("Buildings"));
+    if ((inGroup || pref) && !cand.Contains(t)) cand.Add(t);
+  }
+var bName = new System.Collections.Generic.List<string>();
+var bMin = new System.Collections.Generic.List<UnityEngine.Vector3>();   // 루트 로컬 발자국 min/max
+var bMax = new System.Collections.Generic.List<UnityEngine.Vector3>();
+var bT = new System.Collections.Generic.List<UnityEngine.Matrix4x4>();
+var bWMin = new System.Collections.Generic.List<UnityEngine.Vector3>();
+var bWMax = new System.Collections.Generic.List<UnityEngine.Vector3>();
+foreach (var t in cand) {
+  var off = (t.name == dryName) ? new UnityEngine.Vector3(0, dryDy, 0) : UnityEngine.Vector3.zero;
+  var l2w = UnityEngine.Matrix4x4.Translate(off) * UnityEngine.Matrix4x4.TRS(t.position, t.rotation, UnityEngine.Vector3.one);
+  var w2l = l2w.inverse;
+  var mn = new UnityEngine.Vector3(1e9f, 1e9f, 1e9f); var mx = -mn; bool any = false;
+  var wmn = mn; var wmx = mx;
+  foreach (var mf in t.GetComponentsInChildren<UnityEngine.MeshFilter>(false)) {
+    if (mf.sharedMesh == null) continue;
+    var rr = mf.GetComponent<UnityEngine.Renderer>(); if (rr == null || !rr.enabled) continue;
+    var b = mf.sharedMesh.bounds;
+    for (int i = 0; i < 8; i++) {
+      var c = new UnityEngine.Vector3((i & 1) == 0 ? b.min.x : b.max.x, (i & 2) == 0 ? b.min.y : b.max.y, (i & 4) == 0 ? b.min.z : b.max.z);
+      var w = mf.transform.TransformPoint(c) + off;
+      var l = w2l.MultiplyPoint3x4(w);
+      mn = UnityEngine.Vector3.Min(mn, l); mx = UnityEngine.Vector3.Max(mx, l);
+      wmn = UnityEngine.Vector3.Min(wmn, w); wmx = UnityEngine.Vector3.Max(wmx, w);
+      any = true;
+    }
+  }
+  if (!any) continue;
+  if (wmx.x - wmn.x > 60f || wmx.z - wmn.z > 60f) continue;
+  // 바닥 발자국 = 맨 아래 0.3m 안 정점들의 가로 범위 (AABB 모서리는 처마·간판까지 넓어진다)
+  var fmn = new UnityEngine.Vector3(1e9f, mn.y, 1e9f); var fmx = new UnityEngine.Vector3(-1e9f, mn.y, -1e9f);
+  foreach (var mf in t.GetComponentsInChildren<UnityEngine.MeshFilter>(false)) {
+    if (mf.sharedMesh == null) continue;
+    var rr = mf.GetComponent<UnityEngine.Renderer>(); if (rr == null || !rr.enabled) continue;
+    foreach (var vv in mf.sharedMesh.vertices) {
+      var l = w2l.MultiplyPoint3x4(mf.transform.TransformPoint(vv) + off);
+      if (l.y > mn.y + 0.3f) continue;
+      fmn.x = UnityEngine.Mathf.Min(fmn.x, l.x); fmn.z = UnityEngine.Mathf.Min(fmn.z, l.z);
+      fmx.x = UnityEngine.Mathf.Max(fmx.x, l.x); fmx.z = UnityEngine.Mathf.Max(fmx.z, l.z);
+    }
+  }
+  sb.Append("BF\t" + t.name + "\t" + F(mx.x - mn.x) + "x" + F(mx.z - mn.z) + "\t" + F(fmx.x - fmn.x) + "x" + F(fmx.z - fmn.z) + "\n");
+  mn.x = fmn.x; mn.z = fmn.z; mx.x = fmx.x; mx.z = fmx.z;
+  var cx = UnityEngine.Mathf.Clamp(P.x, wmn.x, wmx.x); var cz = UnityEngine.Mathf.Clamp(P.z, wmn.z, wmx.z);
+  if (new UnityEngine.Vector2(cx - P.x, cz - P.z).magnitude > RAD) continue;
+  bName.Add(t.name); bMin.Add(mn); bMax.Add(mx); bT.Add(l2w); bWMin.Add(wmn); bWMax.Add(wmx);
+  var pts = new UnityEngine.Vector3[] {
+    new UnityEngine.Vector3(mn.x, mn.y, mn.z), new UnityEngine.Vector3(mx.x, mn.y, mn.z),
+    new UnityEngine.Vector3(mx.x, mn.y, mx.z), new UnityEngine.Vector3(mn.x, mn.y, mx.z),
+    new UnityEngine.Vector3((mn.x + mx.x) * 0.5f, mn.y, (mn.z + mx.z) * 0.5f) };
+  string[] lab = { "모서리1", "모서리2", "모서리3", "모서리4", "중앙" };
+  for (int i = 0; i < 5; i++) {
+    var w = l2w.MultiplyPoint3x4(pts[i]);
+    var g = ground(w.x, w.z);
+    sb.Append("B\t" + t.name + "\t" + lab[i] + "\t" + F(w.x) + "\t" + F(w.z) + "\t" + F(w.y) + "\t" + (float.IsNaN(g) ? "nan" : F(g)) + "\t" + F(t.position.y + off.y) + "\n");
+  }
+}
+// ── 건물끼리 겹침 (월드 AABB, 0.2m 넘게 겹칠 때)
+for (int i = 0; i < bName.Count; i++) for (int j = i + 1; j < bName.Count; j++) {
+  float ox = UnityEngine.Mathf.Min(bWMax[i].x, bWMax[j].x) - UnityEngine.Mathf.Max(bWMin[i].x, bWMin[j].x);
+  float oz = UnityEngine.Mathf.Min(bWMax[i].z, bWMax[j].z) - UnityEngine.Mathf.Max(bWMin[i].z, bWMin[j].z);
+  float oy = UnityEngine.Mathf.Min(bWMax[i].y, bWMax[j].y) - UnityEngine.Mathf.Max(bWMin[i].y, bWMin[j].y);
+  if (ox > 0.2f && oz > 0.2f && oy > 0.2f) sb.Append("O\t" + bName[i] + "\t" + bName[j] + "\t" + F(ox) + "\t" + F(oz) + "\n");
+}
+// ── 길: 경계 변(삼각형 하나만 쓰는 변)을 1m 간격으로 → 지형 높이와 비교. 정점도 건물 발자국 안인지 본다
+foreach (var mf in UnityEngine.Object.FindObjectsByType<UnityEngine.MeshFilter>(UnityEngine.FindObjectsSortMode.None)) {
+  if (!mf.name.StartsWith("ROAD") || mf.sharedMesh == null || !mf.gameObject.activeInHierarchy) continue;
+  var rb = mf.GetComponent<UnityEngine.Renderer>().bounds;
+  var cx0 = UnityEngine.Mathf.Clamp(P.x, rb.min.x, rb.max.x); var cz0 = UnityEngine.Mathf.Clamp(P.z, rb.min.z, rb.max.z);
+  if (new UnityEngine.Vector2(cx0 - P.x, cz0 - P.z).magnitude > RAD) continue;
+  var m = mf.sharedMesh; var v = m.vertices; var tri = m.triangles;
+  var wv = new UnityEngine.Vector3[v.Length];
+  for (int i = 0; i < v.Length; i++) wv[i] = mf.transform.TransformPoint(v[i]);
+  // 같은 자리 정점 합치기(UV 이음매) — 0.01m 격자 키
+  var key = new int[v.Length]; var map = new System.Collections.Generic.Dictionary<long, int>();
+  for (int i = 0; i < v.Length; i++) {
+    long k = ((long)UnityEngine.Mathf.RoundToInt(wv[i].x * 100f) * 73856093L) ^ ((long)UnityEngine.Mathf.RoundToInt(wv[i].y * 100f) * 19349663L) ^ ((long)UnityEngine.Mathf.RoundToInt(wv[i].z * 100f) * 83492791L);
+    int id; if (!map.TryGetValue(k, out id)) { id = i; map[k] = i; } key[i] = id;
+  }
+  var cnt = new System.Collections.Generic.Dictionary<long, int>();
+  for (int t3 = 0; t3 < tri.Length; t3 += 3) for (int e = 0; e < 3; e++) {
+    int a = key[tri[t3 + e]], b = key[tri[t3 + (e + 1) % 3]];
+    long ek = a < b ? ((long)a << 32) | (uint)b : ((long)b << 32) | (uint)a;
+    int c; cnt.TryGetValue(ek, out c); cnt[ek] = c + 1;
+  }
+  int n = 0, bad = 0, covered = 0; float worst = 0f; UnityEngine.Vector3 wp = UnityEngine.Vector3.zero;
+  foreach (var kv in cnt) {
+    if (kv.Value != 1) continue;
+    var A = wv[(int)(kv.Key >> 32)]; var Bv = wv[(int)(kv.Key & 0xffffffffL)];
+    float len = UnityEngine.Vector3.Distance(A, Bv); int steps = UnityEngine.Mathf.Max(1, UnityEngine.Mathf.CeilToInt(len / 1f));
+    for (int s = 0; s < steps; s++) {
+      var q = UnityEngine.Vector3.Lerp(A, Bv, (s + 0.5f) / steps);
+      if (new UnityEngine.Vector2(q.x - P.x, q.z - P.z).magnitude > RAD) continue;
+      var g = ground(q.x, q.z); if (float.IsNaN(g)) continue;
+      float d = q.y - g; n++;
+      if (UnityEngine.Mathf.Abs(d) > 0.15f) bad++;
+      if (d < -0.02f) covered++;
+      if (UnityEngine.Mathf.Abs(d) > UnityEngine.Mathf.Abs(worst)) { worst = d; wp = q; }
+    }
+  }
+  if (n > 0) sb.Append("R\t" + mf.name + "\t" + n + "\t" + bad + "\t" + covered + "\t" + F(worst) + "\t" + F(wp.x) + "\t" + F(wp.y) + "\t" + F(wp.z) + "\n");
+  // 길 정점이 건물 발자국(로컬, 0.1m 안쪽) 안에 들어가고 바닥~지붕 높이 사이면 겹침
+  for (int bi = 0; bi < bName.Count; bi++) {
+    var w2l = bT[bi].inverse; int inside = 0;
+    for (int i = 0; i < wv.Length; i++) {
+      if (key[i] != i) continue;
+      var l = w2l.MultiplyPoint3x4(wv[i]);
+      if (l.x > bMin[bi].x + 0.1f && l.x < bMax[bi].x - 0.1f && l.z > bMin[bi].z + 0.1f && l.z < bMax[bi].z - 0.1f && l.y > bMin[bi].y - 0.5f && l.y < bMax[bi].y) inside++;
+    }
+    if (inside > 0) sb.Append("RB\t" + mf.name + "\t" + bName[bi] + "\t" + inside + "\n");
+  }
+}
+return sb.ToString();
