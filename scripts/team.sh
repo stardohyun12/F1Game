@@ -82,7 +82,7 @@ else
     --setting-sources user \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
-       "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" \
+       "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" "Bash(bash docs/qa/tmp/iter_cap.sh:*)" \
        "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout:*)" \
        "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
     --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
