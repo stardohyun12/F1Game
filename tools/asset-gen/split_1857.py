@@ -47,10 +47,19 @@ def cluster(isls):
     def f(i):
         while par[i] != i: par[i] = par[par[i]]; i = par[i]
         return i
+    # 상자: 몸통(세 변 모두 4cm 이상)끼리는 붙어 있어도 합치지 않는다 — 택배 하나 = 오브젝트 하나.
+    # 띠(얇은 덩어리)는 닿는 몸통 중 가운데가 가장 가까운 것에 붙인다.
+    def seed(x): return x['kind'] == 'box' and min(x['hi'] - x['lo']) >= 0.04
+    def ctr(x): return (x['lo'] + x['hi']) / 2
+    for i in range(n):
+        a = isls[i]
+        if a['kind'] != 'box' or seed(a): continue
+        c = [j for j, b in enumerate(isls) if seed(b) and touch(a, b)]
+        if c: par[f(i)] = f(min(c, key=lambda j: (ctr(isls[j]) - ctr(a)).length))
     for i in range(n):
         for j in range(i + 1, n):
             a, b = isls[i], isls[j]
-            if a['kind'] == b['kind'] != 'icon' and touch(a, b): par[f(i)] = f(j)
+            if a['kind'] == b['kind'] == 'furn' and touch(a, b): par[f(i)] = f(j)
     for i, a in enumerate(isls):  # 아이콘 → 가장 많이 닿는 묶음(상자 먼저)
         if a['kind'] != 'icon': continue
         c = [j for j, b in enumerate(isls) if b['kind'] != 'icon' and touch(a, b, 0.03)]

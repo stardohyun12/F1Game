@@ -16,7 +16,7 @@ System.Func<string, string, string> TexFor = (nm, slot) => { var s = slot.ToLowe
   if (s.Contains("clock_dial")) return "clock_dial";  // 1857: 보관소 시계 문자판·바늘
   foreach (var k in new[] { "icons", "wall", "trim", "floor", "roof", "decal", "postbox" }) if (s.Contains(k)) return k == "decal" ? "decals" : k == "postbox" ? "postbox_G1" : k; return null; };
 var slotT = GameObject.Find("STUDIO/STUDIO_Slot").transform;
-var ONLY = new[] { "garage", "depot" };  // 1857: 물건별 오브젝트(정비소·보관소)
+var ONLY = new[] { "room", "garage", "depot", "postoffice" };  // 1914: 하나씩 돌리면 다른 건물 프리팹 재질이 NULL 이 됐다 → 한 번에  // 1857: 물건별 오브젝트(정비소·보관소)
 foreach (var e in POSE) { if (!ONLY.Contains(e.nm)) continue;
   var dir = L + "/" + e.nm;
   foreach (var g in AssetDatabase.FindAssets("t:Texture2D", new[] { dir })) { var tp = AssetDatabase.GUIDToAssetPath(g); var ti = (TextureImporter)AssetImporter.GetAtPath(tp);

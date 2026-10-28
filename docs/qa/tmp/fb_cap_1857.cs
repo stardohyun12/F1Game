@@ -12,6 +12,8 @@ var jobs = new (string id, string asset, Vector3 c, Vector3 l, float fov, float 
   ("garage-20261028-183826-88vd", "garage", new Vector3(0.612f, 1.535f, -3.371f), new Vector3(4.597f, 0.376f, -6.16f), 50f, -1f),
   ("garage-20261028-183839-wwmp", "garage", new Vector3(-1.404f, 1.535f, -6.667f), new Vector3(-5.361f, -0.818f, -8.616f), 50f, -1f),
   ("garage-20261028-183904-q85r", "garage", new Vector3(-0.924f, 1.535f, 3.525f), new Vector3(3.083f, 1.445f, 0.536f), 50f, -1f),
+  ("depot-20261028-184108-1yzo", "depot", new Vector3(2.39f, 1.6f, 3.653f), new Vector3(3.943f, 3.106f, -0.854f), 50f, -1f),  // 1914 D-196 겉
+  ("postoffice-20261028-184329-i97z", "postoffice", new Vector3(-1.941f, 1.6f, 6.74f), new Vector3(-0.617f, 1.55f, 1.919f), 50f, -1f),
   ("clock_0310", "depot", new Vector3(0f, -0.25f, 1.3f), Vector3.zero, 40f, 190f),   // 3:10
   ("clock_1045", "depot", new Vector3(0f, -0.25f, 1.3f), Vector3.zero, 40f, 645f) }; // 10:45
 var dst = new RenderTexture(1280, 720, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB); var log = new System.Text.StringBuilder();
@@ -22,7 +24,8 @@ Camera cam = null; foreach (var c in cams) if (c.name == "Cam_ST_in") cam = c;
 foreach (var c in was.Keys) c.gameObject.SetActive(c == cam);
 var p0 = cam.transform.position; var r0 = cam.transform.rotation; float f0 = cam.fieldOfView;
 string outDir = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/qa/evidence/feedback-1028/")); System.IO.Directory.CreateDirectory(outDir);
-foreach (var j in jobs) {
+string only = UnityEditor.SessionState.GetString("fb.only", "");  // 1914: 건물 하나만
+foreach (var j in jobs) { if (only != "" && j.asset != only) continue;
   foreach (Transform t in slot.transform) t.gameObject.SetActive(t.name == j.asset);
   var mdl = slot.transform.Find(j.asset).GetChild(0);
   if (j.min >= 0) { var ck = slot.transform.Find(j.asset).GetComponentsInChildren<Transform>(true).First(t => t.name == "CLOCK");

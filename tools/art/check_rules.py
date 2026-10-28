@@ -33,7 +33,10 @@ B = {
     'room': dict(fbx=LIB / 'room/room.fbx', dir=LIB / 'room', gpl={'*': R / 'art/export/q1-room/palette_q1v2.gpl'},
                  tex=lambda mat, img: 'room.png'),
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
-                   gpl={'garage_dirt': R / 'art/export/scene-albedo-kit/dirt_baked32.gpl', '*': R / 'art/export/scene-albedo-kit/garage_baked32.gpl'},
+                   gpl={'garage_dirt': R / 'art/export/scene-albedo-kit/dirt_baked32.gpl', '*': R / 'art/export/scene-albedo-kit/garage_baked32.gpl',
+                        # artlive 1914: 결 넣은 뒤 자기 .gpl 로 다시 양자화한 텍스처(lamp = props 사본)
+                        'garage_props': R / 'art/export/q2-garage/garage_props.gpl', 'garage_lamp': R / 'art/export/q2-garage/garage_props.gpl',
+                        'garage_posters': R / 'art/export/q2-garage/garage_posters.gpl'},
                    tex=lambda mat, img: 'garage_lamp.png' if mat == 'Garage_Lamp_Emit' else ('garage_dirt.png' if img == 'dirt_baked32.png' else img)),
     'depot': dict(fbx=LIB / 'depot/q3_depot.fbx', dir=LIB / 'depot', gpl={'*': R / 'art/export/q3-depot/palette.gpl'},
                   tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img)),
@@ -385,7 +388,7 @@ def collect(only=None, dump=None):
             if bn == 'kit' and not tp.exists(): tp = R / 'art/source/kit-shared-v2/proof.fbm' / tn
             gpl = cfg['gpl'].get(Path(tn).stem, cfg['gpl']['*'])
             r, m = measure_row(bn, g, None, G['faces'], G, tp, gpl, cfg, REF, SV)
-            r['gpl'] = str(Path(gpl).relative_to(R)).replace('\\', '/'); r['gpl_proxy'] = bn == 'garage' and Path(tn).stem not in ('garage_baked32', 'garage_dirt')
+            r['gpl'] = str(Path(gpl).relative_to(R)).replace('\\', '/'); r['gpl_proxy'] = bn == 'garage' and Path(tn).stem not in ('garage_baked32', 'garage_dirt', 'garage_props', 'garage_lamp', 'garage_posters')
             r['btris'] = btris
             j = judge(r, REF, SV, btris); r['pass'] = j; r['why'] = why(r, j, REF)
             r['_mask_bbox'] = bbox(m)

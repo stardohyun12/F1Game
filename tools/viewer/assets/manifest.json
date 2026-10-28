@@ -13,7 +13,7 @@
     "mesh_nodes": 4,
     "bytes": 186092,
     "source": "art/export/q1-room/room.fbx",
-    "exported": "2026-10-28 18:56:31"
+    "exported": "2026-10-28 19:27:49"
   },
   {
     "name": "garage",
@@ -29,7 +29,7 @@
     "mesh_nodes": 79,
     "bytes": 2371428,
     "source": "art/export/q2-garage/garage_v5_combo.fbx",
-    "exported": "2026-10-28 19:07:53"
+    "exported": "2026-10-28 19:27:50"
   },
   {
     "name": "depot",
@@ -41,11 +41,11 @@
       8.01
     ],
     "tris": 3064,
-    "nodes": 68,
-    "mesh_nodes": 68,
-    "bytes": 1143884,
+    "nodes": 75,
+    "mesh_nodes": 75,
+    "bytes": 1150424,
     "source": "art/export/q3-depot/q3_depot.fbx",
-    "exported": "2026-10-28 19:07:54"
+    "exported": "2026-10-28 19:27:50"
   },
   {
     "name": "postoffice",
@@ -61,6 +61,6 @@
     "mesh_nodes": 369,
     "bytes": 1577936,
     "source": "art/export/q4-postoffice/q4_postoffice.fbx",
-    "exported": "2026-10-28 18:56:37"
+    "exported": "2026-10-28 19:27:53"
   }
 ]

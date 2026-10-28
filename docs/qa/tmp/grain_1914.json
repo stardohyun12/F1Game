@@ -1,0 +1,14 @@
+[
+ {
+  "tex": "garage_props",
+  "rs_median_before": 0.05117424243559546,
+  "rs_median_after": 0.06586786513339855,
+  "gpl_colors": 121
+ },
+ {
+  "tex": "garage_posters",
+  "rs_median_before": 0.11282346042817781,
+  "rs_median_after": 0.11249299401128247,
+  "gpl_colors": 126
+ }
+]
