@@ -31,6 +31,7 @@
   .pin3d.place .num { background:#6c7a89; border-radius:10px; min-width:14px; height:14px; padding:0; line-height:10px; }
   .pin3d.place.has .num { background:#3a86ff; }
   .pin3d.place.on .num { border-color:#ffd166; border-width:3px; }
+  .pin3d.route .num { background:#ff8c2a; color:#000; border-radius:4px; font-size:10px; }
   .pin3d .nm { font-size:11px; }
   .pin3d .bd { background:#d9534f; border-radius:7px; padding:0 4px; font-size:10px; line-height:14px; }
   .pin3d:hover .num { filter:brightness(1.2); }
@@ -39,6 +40,16 @@
   #mapBtns { position:absolute; right:8px; top:8px; display:flex; gap:4px; align-items:center; background:rgba(0,0,0,.35); padding:4px; border-radius:4px; }
   #mapBtns label { font-size:11px; display:flex; align-items:center; gap:3px; cursor:pointer; }
   #mini { position:absolute; right:8px; bottom:8px; width:200px; height:200px; border:1px solid #556; border-radius:4px; background:#1a2a36; cursor:crosshair; box-shadow:0 1px 6px rgba(0,0,0,.6); }
+  #save.dirty { background:#5b3a2c; border-color:#ffb347; color:#ffd9a8; font-weight:bold; }
+  #editBar { position:absolute; right:8px; top:42px; width:380px; max-width:calc(100% - 16px); }
+  #selPanel { background:rgba(0,0,0,.6); border:1px solid #6b5a3c; border-radius:4px; padding:6px 8px; font-size:11px; color:#e8e6e1; }
+  #selPanel .ttl { font-size:12px; color:#f3d9a4; margin-bottom:3px; }
+  #selPanel .coords { font:12px/1.6 Consolas,"Malgun Gothic",monospace; white-space:pre; color:#fff; background:rgba(255,255,255,.06); border-radius:3px; padding:2px 6px; }
+  #selPanel .coords b { color:#ffd166; }
+  #selPanel .dim { color:#aab3bd; margin:3px 0; }
+  #selPanel .chg { color:#ffb347; margin:3px 0; }
+  #selPanel .row { display:flex; gap:3px; flex-wrap:wrap; margin-top:4px; }
+  #selPanel .row button, #selPanel .mini { font-size:11px; padding:2px 6px; }
   #right { width:400px; flex:none; background:var(--panel); border-left:1px solid var(--line); overflow-y:auto; padding:10px; box-sizing:border-box; display:none; }
   #right.open { display:block; }
   .card { background:#1d2126; border:1px solid var(--line); border-radius:6px; padding:8px 10px; margin-bottom:8px; }
@@ -93,6 +104,7 @@
   <select id="quest" title="퀘스트"></select>
   <select id="cFilter" title="코멘트 표시"><option value="open" selected>남은 것만</option><option value="all">전부 (적용됨 포함)</option></select>
   <button id="reload" title="YAML·코멘트 다시 읽기">새로고침</button>
+  <button id="save" title="배치 저장 → docs/design/tutorial/placements.yaml (Ctrl+S)">저장</button><span id="dirtyDot" title="저장 안 한 배치 변경" style="display:none;color:#ffb347;font-weight:bold">●</span>
   <span class="sp"></span>
   <small id="meta"></small>
   <a href="../" style="margin-left:8px; white-space:nowrap">건물 뷰어 →</a>
@@ -113,9 +125,11 @@
     <div id="hud"></div>
     <div id="mapBtns">
       <button id="mOrbit" class="on" title="1">둘러보기</button><button id="mWalk" title="2">걷기</button>
+      <button id="mEdit" title="E — 건물·핀 배치 편집 (Unity 식 기즈모)">배치</button>
       <button id="fit" title="F — 튜토리얼 구간에 맞춤">맞춤</button>
       <label title="P"><input type="checkbox" id="pixel" checked> 픽셀 720</label>
     </div>
+    <div id="editBar" style="display:none"><div id="selPanel"></div></div>
     <canvas id="mini" width="200" height="200" title="미니맵 — 클릭하면 그 자리로"></canvas>
     <div id="mapHelp"></div>
   </div>
