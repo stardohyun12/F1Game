@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_garage_garage_sign
-  m_Shader: {fileID: 4800000, guid: a5825144e1f7988418dfc28ff0b9bcb7, type: 3}
+  m_Shader: {fileID: 4800000, guid: d661413f2862dd14096bf9f1d789af45, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -37,6 +37,7 @@ Material:
     - _Blotch: 0
     - _BlotchSize: 1.2
     - _Cutoff: 0
+    - _Emit: 0
     - _FogEnd: 220
     - _FogMax: 0.4
     - _FogStart: 40

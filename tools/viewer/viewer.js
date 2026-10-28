@@ -201,6 +201,7 @@ function walkStartZ() { return (state.box ? state.box.max.z : 5) + 9; }   // acr
 
 function toToon(m) {
   const map = pixelTex(m.map);
+  if (/lamp_emit/i.test(m.name)) { const b = new THREE.MeshBasicMaterial({ name: m.name, map, color: m.color }); m.dispose(); return b; }   // 등 발광면: 빛을 안 받는 밝은 면
   const cut = m.transparent || m.alphaTest > 0 || /decal|icon/i.test(m.name);
   const t = new THREE.MeshToonMaterial({
     name: m.name, map, color: m.color, gradientMap: ramp,
@@ -235,6 +236,14 @@ async function loadBuilding(name, { bust = false, keepView = false } = {}) {
     o.castShadow = o.receiveShadow = true;
     o.material = Array.isArray(o.material) ? o.material.map(toToon) : toToon(o.material);
     const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3;
+  });
+  // LAMP_* 빈 객체 = 갓 아래 따뜻한 등. 아래로만 비추는 스포트(유니티 프리팹과 같은 각도·색)
+  root.updateMatrixWorld(true);
+  const lamps = []; root.traverse((o) => { if (/^LAMP_/.test(o.name)) lamps.push(o); });
+  lamps.forEach((o) => {
+    const p = root.worldToLocal(o.getWorldPosition(new THREE.Vector3()));
+    const l = new THREE.SpotLight(0xffc275, 18, 7, THREE.MathUtils.degToRad(55), 0.3, 2);
+    const tg = new THREE.Object3D(); l.position.copy(p); tg.position.set(p.x, p.y - 1, p.z); l.target = tg; root.add(l, tg);
   });
   // put the building on the ground, horizontally centred at the origin; front stays +Z (faces the default camera)
   const b0 = new THREE.Box3().setFromObject(root);
