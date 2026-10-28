@@ -82,7 +82,7 @@ else
     --setting-sources user \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
-       "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" "Bash(bash docs/qa/tmp/iter_cap.sh:*)" \
+       "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" "Bash(bash tools/art/bin/*:*)" "Bash(awk:*)" "Bash(bash tools/viewer/export_all.sh:*)" \
        "Bash(git status:*)" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git checkout:*)" \
        "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
     --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
@@ -92,7 +92,8 @@ else
     | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
 fi
 
-if [ "$ROLE" != "art" ] && [ "$ROLE" != "artui" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d '' > ".claude/team/sessions/$ROLE.cost"; fi
+if [ "$ROLE" != "art" ] && [ "$ROLE" != "artui" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d '
+' > ".claude/team/sessions/$ROLE.cost"; fi
 python - "$RESULT" <<'EOF'
 import json,sys
 try: d=json.load(open(sys.argv[1],encoding="utf-8"))
