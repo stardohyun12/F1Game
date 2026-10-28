@@ -74,9 +74,12 @@ def field(kind, w, h):  # 사진 명도 결(grain_1736 과 같은 꼴: 잔결 + 
 def lay(c): return json.loads((c['exp'] / 'layout.json').read_text(encoding='utf-8'))
 def s_grain(c):
     E = c['exp']; L = lay(c); uvj = json.loads((c['tmp'] / 'uv.json').read_text(encoding='utf-8'))
-    for s in c['pngs']:  # --from grain 으로 다시 돌려도 결이 두 번 입혀지지 않게, 입력은 늘 uv 단계 스냅샷
-        sp = c['tmp'] / '04_uv' / (s + '.png')
-        if sp.exists(): shutil.copy2(sp, E / sp.name)
+    # 2148: 입력은 생성기 산출 스냅샷으로 고정(정비소와 같게) — 텍스처를 만드는 건 source(나머지 전부)와 split(clock_dial)뿐이고 uv 는 UV 만 옮긴다.
+    # 옛날엔 04_uv 를 썼는데, --from split/uv 재실행이면 결 입힌 export 가 04_uv 로 찍혀 결이 두 번 들어갔다.
+    for s in c['pngs']:
+        sp = c['tmp'] / ('02_split' if s == 'clock_dial' else '00_source') / (s + '.png')
+        if not sp.exists(): raise SystemExit(f'{sp} 없음 — source 단계부터 한 번 돌릴 것')
+        shutil.copy2(sp, E / sp.name)
     band = int(uvj.get('cream_building_top_row') or 59)  # 위 [0,band) = 테이프 크림(uv 단계가 행 4~56 에 둠), 아래 = 건물(벽·천장 6.1m) 회청
     log = {'cream_band_rows': [0, band]}
     for s in ('wall', 'roof', 'floor', 'trim'):
@@ -150,7 +153,7 @@ def g_source(c):  # 텍스처: textures.py(지붕 사진·세부·간판·게시
     py = os.environ.get('PY_CV2', os.path.expanduser('~/AppData/Local/Programs/Python/Python313/python.exe'))  # textures.py 가 cv2 를 씀
     for s in ('textures.py', 'fix_textures_v2.py', 'props_1709.py'): run([py if os.path.exists(py) else sys.executable, '-X', 'utf8', str(c['src'] / s)])
 def g_overlap(c):  # 겹침(바닥·앞마당 z 0.03/0.02/0.01)은 fix_1709 가 garage.blend 에 반영. 2130: 원통 16면(의자 다리·플라이휠)을 원본에 한 번만
-    blender(c['src'] / 'fix_2130_cyl.py')
+    blender(c['src'] / 'fix_2130_cyl.py'); blender(c['src'] / 'fix_2148_uv.py')  # 2148: UV 축척(누운 드럼·판자 띠·탁자 받침)·간판 옆면
 def g_split(c): blender(c['src'] / 'split_1857.py')  # 타이어 이동(q2_moved_1846 표시, 한 번만) + 물건별 이름 TIRE_/DRUM_/POSTER_… + 피벗 바닥 가운데 → fbx
 def g_snap(c): print('   정비소: 접지 단계 없음(물건 피벗은 split 이 바닥 가운데로)')
 def g_uv(c):

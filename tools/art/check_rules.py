@@ -31,6 +31,7 @@ TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'deca
 # 2041: 1857 낱개 분리 뒤 이름(PARCEL_·SHELF_… — 원래 Q3_inside_parcels 등 소품 묶음이던 것)도 소품
 PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle|'
                       r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET)_\d+$|^CLOCK')
+BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
               'garage_posters', 'garage_festival', 'postbox_G1'}
 B = {
@@ -230,6 +231,7 @@ def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
     t = tex(tpath); W, H = t['W'], t['H']; stem = tpath.stem
     is_text = (stem in TEXT_STEMS or obj in ('sign', 'poster', 'number', 'Q3_sign')) and not obj.startswith('wear')
     is_prop = bool(PROP_OBJ.search(obj)) or stem in PROP_STEMS
+    is_board = bool(BOARD_OBJ.search(obj))  # 2148 PD: 그림·글씨 판은 판이 커도 작은 물건(공구·글씨)을 담으니 64 허용
     r = dict(building=bname, object=obj, tex=str(tpath.relative_to(R)).replace('\\', '/'), W=W, H=H, text=is_text, prop=is_prop)
     # 텍셀
     dens, exp, wa_tot, collapse = [], [], 0.0, 0.0; mir = 0.0
@@ -239,7 +241,7 @@ def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
         dd = math.sqrt(abs(sa) * W * H / wa); wa_tot += wa
         if sa < 0: mir += wa
         if dd < 4: collapse += wa; continue
-        e = 64 if (is_prop and idim.get(str(isl), 9) <= 1.5) else 32
+        e = 64 if (is_board or (is_prop and idim.get(str(isl), 9) <= 1.5)) else 32
         dens.append((dd, wa)); exp.append(e)
     r['tris'] = len(faces); r['world_m2'] = round(wa_tot, 3)
     if dens:
@@ -248,7 +250,7 @@ def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
         r['ppm_med'] = float(dv[o][np.searchsorted(cw, .5)]); r['ppm_p10'] = float(dv[o][np.searchsorted(cw, .1)]); r['ppm_p90'] = float(dv[o][min(len(o) - 1, np.searchsorted(cw, .9))])
         r['ppm_exp'] = int(round(float((ev * wv).sum() / wv.sum())))
         ok = np.abs(dv / ev - 1) <= 0.25
-        if is_text: ok = (np.abs(dv / 32 - 1) <= 0.25) | (np.abs(dv / 64 - 1) <= 0.25)  # APPLY.md: 간판 32 · 포스터·번지 64
+        if is_text or is_board: ok = (np.abs(dv / 32 - 1) <= 0.25) | (np.abs(dv / 64 - 1) <= 0.25)  # APPLY.md: 간판 32 · 포스터·번지 64
         r['texel_in'] = float(wv[ok].sum() / wv.sum())
     else:
         r.update(ppm_med=0, ppm_p10=0, ppm_p90=0, ppm_exp=32, texel_in=0.0)

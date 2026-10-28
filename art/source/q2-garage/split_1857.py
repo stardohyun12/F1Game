@@ -55,5 +55,12 @@ for k, L in sorted(G.items()):
     bpy.ops.object.select_all(action='DESELECT')
 for j in made: j.select_set(True)
 for e in [O['LAMP_0'], O['LAMP_1']]: e.select_set(True)
+# 2148: 스튜디오 실내 캠 자리(보관소·우체국 assemble 과 같은 이름). 셔터 가운데에서 바닥 가운데 쪽으로 2m·높이 1.5 → 6m·높이 1.3 을 본다.
+def wc(n):
+    ws = [O[n].matrix_world @ v.co for v in O[n].data.vertices]; return Vector([(min(w[i] for w in ws) + max(w[i] for w in ws)) / 2 for i in range(3)])
+sh, fl = wc('sh_box'), wc('floor'); dv = fl - sh; dv.z = 0; dv.normalize()
+for nm, dist, z in (('STUDIO_CamIn', 2.0, 1.5), ('STUDIO_CamInLook', 6.0, 1.3)):
+    e = bpy.data.objects.new(nm, None); bpy.context.collection.objects.link(e); e.location = (sh.x + dv.x * dist, sh.y + dv.y * dist, fl.z + z); e.select_set(True)
+    print('CAMIN', nm, [round(v, 2) for v in e.location])
 bpy.ops.export_scene.fbx(filepath=E + '/garage_v5_combo.fbx', use_selection=True, object_types={'MESH', 'EMPTY'}, axis_forward='-Z', axis_up='Y', path_mode='COPY', bake_anim=False)
 print('EXPORT ok', len(made)); sys.stdout.flush(); os._exit(0)

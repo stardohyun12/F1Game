@@ -25,11 +25,11 @@
       24.91
     ],
     "tris": 3824,
-    "nodes": 81,
+    "nodes": 83,
     "mesh_nodes": 79,
-    "bytes": 3141256,
+    "bytes": 2991028,
     "source": "art/export/q2-garage/garage_v5_combo.fbx",
-    "exported": "2026-10-28 21:46:45"
+    "exported": "2026-10-28 21:59:24"
   },
   {
     "name": "depot",
