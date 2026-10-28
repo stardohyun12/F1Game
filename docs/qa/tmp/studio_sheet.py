@@ -3,7 +3,7 @@ import sys, glob, os
 from PIL import Image, ImageDraw
 a, n, d = sys.argv[1], int(sys.argv[2]), sys.argv[3]
 out = f"docs/qa/evidence/studio-{a}"
-cams = ["road", "front", "34", "close"]
+cams = ["road", "front", "34", "close", "in"]  # 1623: in = 실내 캠(문 안 2m)
 cur = [os.path.join(out, f"s{n:02d}_{d}_{c}.png") for c in cams]
 prev = []
 for c in cams:

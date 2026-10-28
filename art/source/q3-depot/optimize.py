@@ -15,6 +15,8 @@ def group(name):
  if name.startswith('inside_workbench'):return 'inside_workbench'
  if name.startswith(('packing_table','egg_delivery_box','packing_box')):return 'packing_station'
  if name.startswith(('handcart','outside_')):return 'front_goods'
+ if name.startswith(('reception_','scale_','slip_','stamp_','wall_shelf','tape_roll','clock_','hanger_','jacket_')):return 'interior'  # 1623
+ if name.startswith('lamp'):return 'lamp'
  return 'building'
 for o in list(bpy.context.scene.objects):
  if o.type=='MESH':groups.setdefault(group(o.name),[]).append(o)

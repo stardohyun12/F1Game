@@ -15,8 +15,10 @@ var log = new System.Text.StringBuilder(); var dst = new RenderTexture(1280, 720
 var cams = new System.Collections.Generic.List<Camera>(UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None));
 var was = new System.Collections.Generic.Dictionary<Camera, bool>(); foreach (var c in cams) if (c.GetComponent<LowResRenderTest>()) was[c] = c.gameObject.activeSelf;
 var lt = UnityEngine.Object.FindFirstObjectByType<A7LightToggles>(); if (lt) { lt.painterly = false; lt.realtimeShadows = true; lt.Apply(); }
-foreach (var v in new[] { "road", "front", "34", "close" }) {
+foreach (var v in new[] { "road", "front", "34", "close", "in" }) {
   Camera cam = null; foreach (var c in cams) if (c.name == "Cam_ST_" + v) cam = c; if (!cam) { log.Append("no Cam_ST_" + v + "; "); continue; }
+  if (v == "in") { Transform ci = null, cl = null; foreach (var t in slot.transform.Find(asset).GetComponentsInChildren<Transform>(true)) { if (t.name == "STUDIO_CamIn") ci = t; if (t.name == "STUDIO_CamInLook") cl = t; }  // 1623: 문 안 2m·높이 1.5, 건물 fbx 의 빈 객체 위치
+    if (!ci || !cl) { log.Append("no STUDIO_CamIn; "); continue; } cam.transform.position = ci.position; cam.transform.LookAt(cl.position); }
   foreach (var c in was.Keys) c.gameObject.SetActive(c == cam);
   var lr = cam.GetComponent<LowResRenderTest>(); int h0 = lr.targetHeight; bool s0 = lr.smooth; lr.targetHeight = 720; lr.smooth = false; lr.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver);
   cam.Render(); lr.Present(dst);

@@ -12,12 +12,14 @@ for f in ['wall.png', 'trim.png', 'floor.png', 'roof.png', 'decals.png', 'palett
 shutil.copy2(R / 'art/export/scene-albedo-kit/postbox_G1.png', E / 'postbox_G1.png')
 for o in list(bpy.data.objects): bpy.data.objects.remove(o)
 L = json.loads((K / 'layout.json').read_text()); mats = {}; cells = {}
-for s in ['wall', 'trim', 'floor', 'roof', 'decals']:
+PX = 32  # px/m. 작은 물건은 64(교훈 5)
+ICONS = {'parcel': (0, 0, 128, 128), 'clock': (128, 0, 64, 64), 'fragile': (192, 0, 64, 32), 'slip': (192, 32, 32, 48), 'calendar': (128, 64, 48, 64), 'ticket': (176, 64, 48, 24)}  # tools/asset-gen/icons_shared.py
+for s in ['wall', 'trim', 'floor', 'roof', 'decals', 'icons']:
     m = bpy.data.materials.new('Shared_' + s); m.use_nodes = True; nt = m.node_tree; b = nt.nodes['Principled BSDF']; b.inputs['Roughness'].default_value = .9
     t = nt.nodes.new('ShaderNodeTexImage'); t.image = bpy.data.images.load(str(E / (s + '.png'))); t.interpolation = 'Closest'; nt.links.new(t.outputs['Color'], b.inputs['Base Color'])
-    if s == 'decals': nt.links.new(t.outputs['Alpha'], b.inputs['Alpha']); m.surface_render_method = 'DITHERED'
+    if s in ('decals', 'icons'): nt.links.new(t.outputs['Alpha'], b.inputs['Alpha']); m.surface_render_method = 'DITHERED'
     mats[s] = m
-    for c in L[s]: cells[c['name']] = (s, c['rect_px'])
+    for c in (L[s] if s != 'icons' else [dict(name=k, rect_px=v) for k, v in ICONS.items()]): cells[c['name']] = (s, c['rect_px'])
 MI = {s: i for i, s in enumerate(mats)}
 G = dict(v=[], f=[], uv=[], m=[]); RNG = random.Random(4)
 
@@ -33,7 +35,7 @@ def uvmap(pts, cell, anchor=None):  # anchor: 벽은 세계 좌표로 이어 붙
     e1 = up.cross(n).normalized()
     if anchor is None:  # 비스듬한 막대: 가장 긴 변을 U 축으로
         ed = max(((P[(i + 1) % len(P)] - P[i]) for i in range(len(P))), key=lambda v: v.length); e1 = (ed - n * ed.dot(n)).normalized()
-    e2 = n.cross(e1); U = [p.dot(e1) for p in P]; W = [p.dot(e2) for p in P]; Wm, Hm = w / 32, h / 32
+    e2 = n.cross(e1); U = [p.dot(e1) for p in P]; W = [p.dot(e2) for p in P]; Wm, Hm = w / PX, h / PX
     if anchor is not None:
         U = [u + anchor for u in U]; k = math.floor(min(U) / Wm + 1e-6); U = [u - k * Wm for u in U]
     else:
@@ -45,11 +47,11 @@ def uvmap(pts, cell, anchor=None):  # anchor: 벽은 세계 좌표로 이어 붙
 def poly(pts, cell, uvm=None, anchor=None, want=None):
     if want is not None and normal(pts).dot(Vector(want)) < 0: pts = pts[::-1]; uvm = uvm[::-1] if uvm else None
     s, (x, y, w, h) = cells[cell]
-    if s == 'decals': uvm = uvm or [(0, 0), (1, 0), (1, 1), (0, 1)]; uv = [((x + .5 + u * (w - 1)) / 512, 1 - (y + h - .5 - v * (h - 1)) / 512) for u, v in uvm]
+    if s in ('decals', 'icons'): A = 512 if s == 'decals' else 256; uvm = uvm or [(0, 0), (1, 0), (1, 1), (0, 1)]; uv = [((x + .5 + u * (w - 1)) / A, 1 - (y + h - .5 - v * (h - 1)) / A) for u, v in uvm]
     else:
         uvm = uvm or uvmap(pts, cell, anchor)
-        assert all(-1e-3 <= u * 32 <= w + 1e-2 and -1e-3 <= v * 32 <= h + 1e-2 for u, v in uvm), (cell, uvm)
-        uv = [((x + .01 + min(u * 32, w - .02)) / 512, 1 - (y + h - .01 - min(v * 32, h - .02)) / 512) for u, v in uvm]
+        assert all(-1e-3 <= u * PX <= w + 1e-2 and -1e-3 <= v * PX <= h + 1e-2 for u, v in uvm), (cell, uvm)
+        uv = [((x + .01 + min(u * PX, w - .02)) / 512, 1 - (y + h - .01 - min(v * PX, h - .02)) / 512) for u, v in uvm]
     add(pts, uv, MI[s])
 def solid(pts, cell):  # 글자 같은 작은 메시: 칸 가운데 한 점
     s, (x, y, w, h) = cells[cell]; add(pts, [((x + w / 2) / 512, 1 - (y + h / 2) / 512)] * len(pts), MI[s])
@@ -135,12 +137,20 @@ def window(wn, s0, s1, z0, z1, shutters=False, cross=True):
 window('front', -3.7, -2.0, .95, 2.35); window('front', 1.45, 3.15, .95, 2.35)
 window('front', -3.45, -2.25, 4.15, 5.55, shutters=True); window('front', 1.75, 2.95, 4.15, 5.55, shutters=True); window('front', -.75, -.15, 4.75, 5.35, cross=False)
 D0, D1, DH = -.85, .75, 2.45; HOLES['front'].append((D0, D1, 0, DH)); reveal('front', D0, D1, 0, DH)
-for a, b in ((D0, (D0 + D1) / 2), ((D0 + D1) / 2, D1)): wquad('front', a, b, .28, DH - .08, -.18, 'glass')
-for a, b in ((D0, D0 + .07), ((D0 + D1) / 2 - .035, (D0 + D1) / 2 + .035), (D1 - .07, D1)): wbox('front', a, b, 0, DH, -.19, -.13, 'door_frame')
-wbox('front', D0, D1, DH - .08, DH, -.19, -.13, 'door_frame'); wbox('front', D0, D1, 0, .28, -.19, -.13, 'door_frame')
 for a, b in ((D0 - .1, D0), (D1, D1 + .1)): wbox('front', a, b, 0, DH + .1, -.02, .07, 'door_frame')
 wbox('front', D0 - .1, D1 + .1, DH, DH + .1, -.02, .07, 'door_frame'); M = (D0 + D1) / 2
-for a in (M - .15, M + .12): wbox('front', a, a + .03, .85, 1.35, -.13, -.07, 'gutter')  # 문 손잡이 막대
+# 1623: 왼짝은 닫힌 채, 오른짝(M..D1)은 경첩 x D1 에서 안쪽으로 80° 열림
+wquad('front', D0, M, .28, DH - .08, -.18, 'glass')
+for a, b in ((D0, D0 + .07), (M - .035, M)): wbox('front', a, b, 0, DH, -.19, -.13, 'door_frame')
+wbox('front', D0, M, DH - .08, DH, -.19, -.13, 'door_frame'); wbox('front', D0, M, 0, .28, -.19, -.13, 'door_frame')
+wbox('front', M - .15, M - .12, .85, 1.35, -.13, -.07, 'gutter')  # 문 손잡이 막대
+i0 = len(G['v'])
+wquad('front', M, D1, .28, DH - .08, -.18, 'glass')
+for a, b in ((M, M + .035), (D1 - .07, D1)): wbox('front', a, b, 0, DH, -.19, -.13, 'door_frame')
+wbox('front', M, D1, DH - .08, DH, -.19, -.13, 'door_frame'); wbox('front', M, D1, 0, .28, -.19, -.13, 'door_frame')
+for o0, o1 in ((-.13, -.07), (-.25, -.19)): wbox('front', M + .12, M + .15, .85, 1.35, o0, o1, 'gutter')
+_hg = Vector((D1, .16, 0)); _RZ = Matrix.Rotation(math.radians(-80), 4, 'Z')
+G['v'][i0:] = [tuple(_hg + _RZ @ (Vector(v) - _hg)) for v in G['v'][i0:]]
 box((-.05, -.35, .06), (2.3, .7, .12), 'floor_concrete', skip=('bottom',))  # 계단 한 단
 # 옆(오른쪽): 2층 덧창 · 1층 뒷방 창 / 왼쪽·뒤: 창
 window('right', 3.2, 4.3, 4.2, 5.5, shutters=True); window('right', 5.6, 6.6, 1.1, 2.2)
@@ -202,6 +212,41 @@ box((X, 2.5, .9), (.36, .3, .24), 'wood_door'); box((X, 3.8, .7), (.34, .4, .04)
 for i, (x, y, r, h, f) in enumerate(((4.8, 4.5, .2, .36, False), (4.76, 4.98, .15, .28, True), (4.84, 5.45, .24, .46, False), (5.18, 4.8, .12, .2, False))): pot(x, y, r, h, 30 + i, 6 if r > .18 else 5, f)
 pot(-4.1, -.38, .2, .36, 40, 6); pot(-3.72, -.3, .14, .24, 41, 5, True)
 
+# ---------- 1623 내부: 바닥·천장·실내등·창구 2(유리 칸막이·번호표)·사서함 벽·우편 분류 선반·대기 의자 2·포스터·달력·화분 ----------
+for x0, x1 in ((-4.45, 0), (0, 4.45)):
+    poly([(x0, .2, .01), (x1, .2, .01), (x1, 7.8, .01), (x0, 7.8, .01)], 'floor_wood', want=(0, 0, 1))
+    poly([(x0, .2, H1 - .06), (x1, .2, H1 - .06), (x1, 7.8, H1 - .06), (x0, 7.8, H1 - .06)], 'wall_cream', want=(0, 0, -1))
+for y in (2.2, 6.0): box((0, y, H1 - .12), (1.1, .22, .07), 'glass')  # 실내등(형광등 판)
+PX = 64
+box((0, 4.6, .5), (5.0, .6, 1.0), 'wood_door'); box((0, 4.55, 1.03), (5.2, .74, .06), 'wood_door')  # 창구 카운터
+for x0, x1 in ((-2.3, -.5), (.5, 2.3)): poly([(x0, 4.45, 1.06), (x1, 4.45, 1.06), (x1, 4.45, 1.95), (x0, 4.45, 1.95)], 'glass', want=(0, -1, 0))
+for x in (-2.35, -.45, .45, 2.35): box((x, 4.45, 1.5), (.06, .06, .9), 'gutter')
+box((0, 4.45, 1.98), (4.8, .08, .06), 'gutter')
+for x in (-1.4, 1.4):  # 번호표 표시기(창구마다)
+    box((x, 4.5, 2.25), (.56, .06, .3), 'shutter'); box((x, 4.5, 2.85), (.02, .02, .9), 'gutter')
+    poly([(x - .26, 4.465, 2.13), (x + .26, 4.465, 2.13), (x + .26, 4.465, 2.37), (x - .26, 4.465, 2.37)], 'ticket', want=(0, -1, 0))
+box((-4.42, 2.32, 1.55), (.12, 2.3, 1.7), 'wood_door')  # 사서함 벽(왼쪽 안벽) 바탕
+for r in range(5):
+    for c in range(7):
+        y = 1.37 + c * .3; z = .85 + r * .3
+        box((-4.345, y, z), (.03, .27, .27), 'wall_mint'); box((-4.32, y + .08, z), (.02, .03, .03), 'gutter')
+box((2.5, 7.75, 1.5), (3.6, .1, 2.0), 'wood_door')  # 우편 분류 선반(뒷벽, 뒷문 피해 오른쪽)
+for k in range(9): box((.7 + k * .45, 7.55, 1.5), (.03, .4, 2.0), 'wood_door')
+for k in range(7): box((2.5, 7.55, .5 + k * .33), (3.6, .4, .03), 'wood_door')
+for k in range(8):
+    for r in range(6):
+        if RNG.random() < .45:
+            x = .7 + k * .45 + .225; z = .5 + r * .33 + .02
+            poly([(x - .1, 7.45, z), (x + .1, 7.45, z), (x + .1, 7.45, z + .2), (x - .1, 7.45, z + .2)], 'slip', want=(0, -1, 0))
+for y in (1.4, 2.2):  # 대기 의자 2
+    box((3.4, y, .45), (.46, .46, .05), 'wood_door'); box((3.61, y, .78), (.04, .46, .6), 'wood_door')
+    for dx in (-.2, .2):
+        for dy in (-.2, .2): box((3.4 + dx, y + dy, .21), (.04, .04, .42), 'gutter')
+poly([(4.47, 3.6, 1.3), (4.47, 3.0, 1.3), (4.47, 3.0, 2.1), (4.47, 3.6, 2.1)], 'poster_harbor', want=(-1, 0, 0))  # 오른쪽 안벽 포스터
+poly([(4.47, 4.45, 1.4), (4.47, 4.0, 1.4), (4.47, 4.0, 2.0), (4.47, 4.45, 2.0)], 'calendar', want=(-1, 0, 0))
+PX = 32
+pot(-1.6, .7, .2, .36, 52, 6)  # 화분(문 옆 안쪽)
+
 # ---------- 메시 만들기 ----------
 me = bpy.data.meshes.new('Q4_PostOffice_body'); me.from_pydata(G['v'], [], G['f']); me.update()
 for m in mats.values(): me.materials.append(m)
@@ -223,18 +268,23 @@ for o in pb:
 root = bpy.data.objects.new('Q4_PostOffice', None); bpy.context.collection.objects.link(root)
 asset = [body] + pb
 for o in asset: mw = o.matrix_world.copy(); o.parent = root; o.matrix_world = mw
+EMP = []
+for nm, loc in (('STUDIO_CamIn', (-.05, 2.0, 1.5)), ('STUDIO_CamInLook', (-1.0, 6.0, 1.3)), ('STUDIO_Lamp', (0, 4.0, 3.1))):
+    e = bpy.data.objects.new(nm, None); bpy.context.collection.objects.link(e); e.location = loc; e.parent = root; EMP.append(e)
 bpy.context.view_layer.update()
 tris = sum(len(p.vertices) - 2 for o in asset for p in o.data.polygons)
 P = [body.matrix_world @ v.co for v in body.data.vertices]; bounds = [[round(min(p[i] for p in P), 3) for i in range(3)], [round(max(p[i] for p in P), 3) for i in range(3)]]
 bpy.ops.wm.save_as_mainfile(filepath=str(E / 'q4_postoffice.blend'))
 bpy.ops.object.select_all(action='DESELECT')
-for o in asset + [root]: o.select_set(True)
+for o in asset + [root] + EMP: o.select_set(True)
 bpy.context.view_layer.objects.active = root
 bpy.ops.export_scene.fbx(filepath=str(E / 'q4_postoffice.fbx'), use_selection=True, object_types={'MESH', 'EMPTY'}, axis_forward='-Z', axis_up='Y', path_mode='COPY', bake_anim=False)
 val = dict(tris=tris, body_tris=sum(len(p.vertices) - 2 for p in body.data.polygons), bounds_blender=bounds, body_m=[9, 8, 6.4], ridge_m=7.6, front='Unity +Z / Blender -Y', pivot='바닥 앞면 가운데',
-           materials=list(mats) + ['postbox_G1(재사용)'], textures={n: hashlib.sha256((E / n).read_bytes()).hexdigest() for n in ['wall.png', 'trim.png', 'floor.png', 'roof.png', 'decals.png', 'postbox_G1.png']},
+           materials=list(mats) + ['postbox_G1(재사용)'], textures={n: hashlib.sha256((E / n).read_bytes()).hexdigest() for n in ['wall.png', 'trim.png', 'floor.png', 'roof.png', 'decals.png', 'icons.png', 'postbox_G1.png']},
            kit_same_bytes={n: (E / n).read_bytes() == (K / n).read_bytes() for n in ['wall.png', 'trim.png', 'floor.png', 'roof.png', 'decals.png']}, light_bake=False, new_textures=0, postbox_scale=round(sc, 3))
-(E / 'validation.json').write_text(json.dumps(val, indent=1, ensure_ascii=False), encoding='utf-8'); print('VAL', val['tris'], bounds)
+(E / 'validation.json').write_text(json.dumps(val, indent=1, ensure_ascii=False), encoding='utf-8'); print('VAL', val['tris'], bounds, flush=True)
+import sys, os
+if '--no-render' in sys.argv: os._exit(0)
 
 # ---------- 미리보기(내보내지 않음): 같은 키트 바닥 + 해 1 + 하늘빛 (택배 보관소와 같은 조건) ----------
 G.update(v=[], f=[], uv=[], m=[])

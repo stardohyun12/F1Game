@@ -1,6 +1,6 @@
 {
- "tris": 3668,
- "body_tris": 3612,
+ "tris": 5198,
+ "body_tris": 5142,
  "bounds_blender": [
   [
    -5.1,
@@ -27,6 +27,7 @@
   "floor",
   "roof",
   "decals",
+  "icons",
   "postbox_G1(재사용)"
  ],
  "textures": {
@@ -35,6 +36,7 @@
   "floor.png": "ef2d068a6d12909b63468d1979f9d683d1e3983d8e7a3d17abac4ed09d68b61e",
   "roof.png": "a1ba92e3aa45338282957c7b2fa88bb940abef2136b69eaca160ce681cb9f1de",
   "decals.png": "a828f2193574dd9e38a498cebb45a296d9fcd60d2ab57a7f9c56ae30ba682263",
+  "icons.png": "4af28195ef1f16caa60d4d1dec6c36cc0002cc19c9c3a65804668297b911c4cf",
   "postbox_G1.png": "81d9cefdbd8e04803aadc2b2aed7f57adb2a8ad72747b99e06692746eb51945c"
  },
  "kit_same_bytes": {
