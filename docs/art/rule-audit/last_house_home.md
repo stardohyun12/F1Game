@@ -14,7 +14,7 @@
 | house_home | DOOR_BATH | house_home.png | 32 | P 32(33) | 100% | P 0.068 | P 0% | P 100% | 19 | P 0.21% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
 | house_home | DOOR_MOM | house_home.png | 32 | P 32(33) | 100% | P 0.068 | P 0% | P 100% | 19 | P 0.18% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
 | house_home | DOOR_ROOM | house_home.png | 22 | P 32(33) | 100% | P 0.069 | P 0% | P 100% | 19 | P 0.25% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
-| house_home | HOUSE_shell | house_home.png | 830 | P 32(32) | 100% | P 0.039 | P 14% | P 100% | 642 | **F** 17.23% | P 0% | **F** 1 | P 0.44/91/243 | – | – | – | P 0% | P | 3 |
+| house_home | HOUSE_shell | house_home.png | 830 | P 32(32) | 100% | P 0.039 | P 1% | P 100% | 639 | **F** 15.39% | P 0% | **F** 1 | **F** 0.44/91/249 | – | – | – | P 0% | P | 4 |
 | house_home | MAT_01 | house_home.png | 2 | P 64(64) | 100% | P 0.052 | P 0% | P 100% | 8 | **F** 8.38% | P 0% | P 0 | P 0.47/95/136 | – | – | – | P 0% | P | 1 |
 | house_home | PLANT_01 | house_home.png | 60 | P 64(64) | 100% | P 0.038 | P 2% | P 100% | 8 | **F** 4.39% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
 | house_home | PLANT_02 | house_home.png | 60 | P 64(64) | 100% | P 0.037 | P 0% | P 100% | 8 | **F** 5.40% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
@@ -34,7 +34,7 @@
 | house_home | SHUTTER_06 | house_home.png | 10 | P 64(64) | 100% | P 0.049 | P 0% | P 100% | 7 | **F** 1.49% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
 | house_home | SINK | house_home.png | 30 | P 64(64) | 100% | P 0.061 | P 0% | P 100% | 8 | **F** 8.71% | P 0% | P 0 | P 0.05/94/174 | – | – | – | P 0% | P | 1 |
 | house_home | SOFA | house_home.png | 42 | P 32(42) | 100% | P 0.041 | P 0% | P 100% | 8 | **F** 5.40% | P 0% | P 0 | P 0.26/119/154 | – | – | – | P 0% | P | 1 |
-| house_home | STAIRS | house_home.png | 92 | P 64(49) | 100% | P 0.060 | P 1% | P 100% | 11 | **F** 3.31% | P 0% | P 0 | **F** 0.61/74/230 | – | – | – | P 0% | P | 2 |
+| house_home | STAIRS | house_home.png | 92 | P 64(49) | 100% | P 0.060 | P 0% | P 100% | 50 | **F** 1.89% | P 0% | P 0 | **F** 0.61/74/248 | – | – | – | P 0% | P | 2 |
 | house_home | STOVE | house_home.png | 10 | P 64(64) | 100% | P 0.051 | P 0% | P 100% | 8 | **F** 3.55% | P 0% | P 0 | P 0.07/55/164 | – | – | – | P 0% | P | 1 |
 | house_home | TABLE_KITCHEN | house_home.png | 44 | P 64(64) | 100% | P 0.041 | P 0% | P 100% | 4 | **F** 0.69% | P 0% | P 0 | **F** 0.61/92/113 | – | – | – | P 0% | P | 2 |
 | house_home | TABLE_LIVING | house_home.png | 44 | P 64(64) | 100% | P 0.042 | P 0% | P 100% | 4 | **F** 1.05% | P 0% | P 0 | **F** 0.61/92/113 | – | – | – | P 0% | P | 2 |

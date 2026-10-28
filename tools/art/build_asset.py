@@ -334,9 +334,11 @@ def h_paint(cell, col):
         A[f > 1.75] *= 1.05; A[f < -2.1] *= .93
         return A
     if pt in ('plaster', 'ceil'):
-        # q1_room의 밝은 바탕+드문 사진 결 방식을 회벽에도 적용. 진폭은 ±8%, 면 전체를 점으로 덮지 않는다.
-        cut = 2.2 if pt == 'ceil' else 1.8
-        A[f > cut] *= 1.08; A[f < -cut - .3] *= .92
+        # D-204: 고대비 점을 임계처리하면 회벽이 회색 얼룩처럼 보인다.
+        # 기존 A2 결의 배치를 유지하되 11cm 폭으로 부드럽게 하고 따뜻한 바탕색의 명도만 변주.
+        smooth = (np.asarray(Image.fromarray(np.clip(128 + f * 20, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(3.5)), np.float64) - 128) / 20
+        smooth = np.clip(smooth / max(float(smooth.std()), .001), -2, 2)
+        A *= (1 + smooth[..., None] * (.018 if pt == 'ceil' else .025))
         return A
     if pt == 'pane' and w > 8 and h > 8: A[(np.abs(uu - w // 2) <= 1) | (np.abs(vv - h // 2) <= 1)] = col['trim']  # 창살 십자(흰 틀 색)
     if pt == 'curtain': A[(uu % 6 == 5)] *= .9  # 커튼 주름 9cm
@@ -380,7 +382,7 @@ def h_grain(c):
     col.update(terra=col['roof'] * [1.08, .98, .92], ridge=col['roof'] * .84, soffit=col['door'] * 1.6, iron=np.array([58., 66., 60.]), soil=np.array([112., 84., 60.]),
                leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]),
                pane=np.array([74., 86., 92.]), curtain=col['trim'] * [1.04, 1.02, .94])  # 0052: 유리 너머 어둠(빛 굽기 아님 = 단색 + 결) · 크림 커튼
-    col.update(plaster=np.array([230., 218., 193.]), ceil=np.array([236., 229., 210.]), wain=np.array([178., 209., 183.]), rwall=np.array([244., 235., 200.]),  # A2 계열 따뜻한 회벽, q1_room 원색 복원
+    col.update(plaster=np.array([242., 228., 200.]), ceil=np.array([246., 238., 218.]), wain=np.array([178., 209., 183.]), rwall=np.array([244., 235., 200.]),  # D-204 미색 회벽, q1_room 판벽 보존
                boards=col['door'] * 1.35, glass=np.array([186., 214., 226.]), steel=np.array([150., 156., 158.]), stove=np.array([54., 56., 58.]),
                cabinet=col['shutter'] * 1.45, sofa=np.array([98., 116., 132.]), cushion=np.array([112., 132., 148.]), apron=np.array([184., 92., 86.]),
                basket=np.array([178., 140., 92.]), mat=np.array([124., 90., 66.]))
@@ -411,7 +413,13 @@ def h_unity(c):
     for p in (E / c['fbx'], E / 'house_home.png'): copy_retry(p, Lb / p.name)
     code = (R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "house_home" };')
     code = code.replace('var dir = L + "/" + e.nm;', 'var dir = "Assets/Art/Review/house_home";')
+    # 텍스처 결 위로 중복된 12.5cm 셰이더 잡음이 미색 벽을 회색 반점으로 만들었다.
+    code = code.replace('m.SetFloat("_Sat", 1);', 'm.SetFloat("_Sat", 1); m.SetFloat("_SN", 0);')
     code = code.replace('foreach (var e in POSE) AssetDatabase.ImportAsset(L + "/" + e.nm + "/" + e.nm + ".prefab", ImportAssetOptions.ForceUpdate);', 'AssetDatabase.ImportAsset("Assets/Art/Review/house_home/house_home.prefab", ImportAssetOptions.ForceUpdate);')
+    # D-204: 편집 모드에 예전 독립 room이 함께 켜져 집 안에 방 상자가 겹쳤다.
+    # 검토 스튜디오의 대상만 활성화하여 저장; 원본 room 자산은 바꾸지 않는다.
+    code = code.replace('UnityEditor.SceneManagement.EditorSceneManager.SaveScene(',
+                        'foreach (Transform child in slotT) child.gameObject.SetActive(child.name == "house_home");\nUnityEditor.SceneManagement.EditorSceneManager.SaveScene(')
     out = unity_exec(code); print('  ', out[:800])
     if 'error' in out.lower() or 'MISS' in out: raise SystemExit('house_home Unity 임포트 확인 필요: ' + out)
 

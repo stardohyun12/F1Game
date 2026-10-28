@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261029-033845-a0bc",
+ "time": "2026-10-29T05:00:40+09:00",
+ "before": "shots/unity-Studio_Building-20261029-033845-a0bc.png",
+ "after": "shots/unity-Studio_Building-20261029-033845-a0bc_after.png",
+ "comment": "창문 실제 창같이 보이도록",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 창문은 하늘빛 유리 반사, 창틀과 십자 살, 덧창이 더 뚜렷해져서 실제 창처럼 보이고 어두운 구멍처럼 보이던 문제는 사라졌다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽은 창틀 안에 푸른 유리와 반사 표현이 생겨 실제 창문처럼 보인다."
+  }
+ },
+ "pass": true
+}
