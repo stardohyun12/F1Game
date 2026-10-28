@@ -3,8 +3,12 @@
 # 지원: exec "<C#>" | editor play [--wait] | editor stop | console
 # 포트: ~/.unity-cli/instances/*.json 중 이 리포(F1) 항목에서 읽는다.
 # 사용: UCLI="bash scripts/ucli-http.sh" 로 regression-check.sh 의 UCLI 를 바꿔 쓴다.
+# 프로젝트 고르기: 환경변수 UCLI_PROJ (기본 메인 F1). 건물 스튜디오는 UCLI_PROJ=D:/Github/F1Game/F1Studio
+#   (artlive 는 team.sh 가 자동으로 넣는다; build_asset.py·studio_cap.sh 도 스튜디오를 기본으로 쓴다).
 set -u
-PROJ="D:/Github/F1Game/F1"
+PROJ="${UCLI_PROJ:-D:/Github/F1Game/F1}"
+PROJ="${PROJ//\\//}"; PROJ="${PROJ%/}"
+LABEL=$(basename "$PROJ")
 PORT=$(python -X utf8 - "$PROJ" <<'EOF'
 import json,glob,os,sys
 proj=sys.argv[1].lower()
@@ -16,14 +20,14 @@ for f in glob.glob(os.path.expanduser("~/.unity-cli/instances/*.json")):
     if p==proj and d.get("state")!="stopped": print(d["port"]); break
 EOF
 )
-[ -z "$PORT" ] && { echo "FAIL: F1 Editor connector not ready"; exit 1; }
+[ -z "$PORT" ] && { echo "FAIL: $LABEL Editor connector not ready ($PROJ)"; exit 1; }
 U="http://127.0.0.1:$PORT/command"
 # status: 포트를 실제로 때려본다. 인스턴스 json 이 남아 있어도 Editor 가 꺼져 있으면 연결 거부 → exit 1 (stop.sh 도달성 판정용)
 [ "${1:-}" = "status" ] && {
   if python -X utf8 -c "import socket,sys; s=socket.socket(); s.settimeout(2); sys.exit(0 if s.connect_ex(('127.0.0.1',int(sys.argv[1])))==0 else 1)" "$PORT"; then
-    echo "F1 Editor connector: port $PORT"; exit 0
+    echo "$LABEL Editor connector: port $PORT ($PROJ)"; exit 0
   else
-    echo "FAIL: F1 Editor connector port $PORT not reachable"; exit 1
+    echo "FAIL: $LABEL Editor connector port $PORT not reachable"; exit 1
   fi
 }
 

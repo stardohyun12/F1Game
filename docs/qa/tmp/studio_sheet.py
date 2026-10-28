@@ -13,8 +13,9 @@ def lab(im, t):
     dr = ImageDraw.Draw(im); dr.rectangle([0, 0, 8 * len(t) + 12, 22], fill=(0, 0, 0)); dr.text((6, 5), t, fill=(255, 255, 255)); return im
 W, H = 1280, 720
 rows = 2 if any(prev) else 1
-sheet = Image.new("RGB", (W * 4, H * rows), (40, 40, 40))
+sheet = Image.new("RGB", (W * len(cams), H * rows), (40, 40, 40))
 for i, c in enumerate(cams):
     if rows == 2 and prev[i]: sheet.paste(lab(Image.open(prev[i]).convert("RGB"), os.path.basename(prev[i])), (W * i, 0))
+    if not os.path.exists(cur[i]): print("no", cur[i], "(건물에 STUDIO_CamIn 없음 등) — 칸 비움"); continue
     sheet.paste(lab(Image.open(cur[i]).convert("RGB"), os.path.basename(cur[i])), (W * i, H * (rows - 1)))
 p = os.path.join(out, f"s{n:02d}_sheet.png"); sheet.save(p); print("sheet", p, sheet.size)

@@ -24,7 +24,9 @@ LOCK=".claude/team/editor.lock"
 STATE=".claude/team/sessions/$ROLE.state"
 
 HOLD_LOCK=0
-if printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
+# artlive 는 건물 스튜디오 전용 프로젝트 F1Studio 의 에디터만 쓴다(ucli-http.sh·build_asset.py·studio_cap.sh 가 UCLI_PROJ 를 읽음) → 메인 에디터 잠금 불필요
+[ "$ROLE" = "artlive" ] && export UCLI_PROJ="D:/Github/F1Game/F1Studio"
+if [ "$ROLE" != "artlive" ] && printf '%s' "$TASK" | grep -q '\[EDITOR\]'; then
   # 도현이 Unity 기획 창(PitCrew/기획 창)을 쓰는 동안은 기다린다 — 창이 .claude/team/editor.lock 에 "director <time>" 을 30초마다 씀
   dlock_fresh() { [ -f "$LOCK" ] && grep -q '^director' "$LOCK" && [ $(( $(date +%s) - $(stat -c %Y "$LOCK") )) -lt 60 ]; }
   W=0; while dlock_fresh && [ $W -lt 1800 ]; do [ $W = 0 ] && echo "대기: 도현이 Unity 기획 창 사용 중"; sleep 15; W=$((W+15)); done

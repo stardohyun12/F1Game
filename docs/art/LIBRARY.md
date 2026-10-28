@@ -1,7 +1,15 @@
 # 건물 라이브러리 (D-191)
 
 배치는 도현이 한다. 팀은 건물 하나하나를 분위기 있게 뽑아서 여기에 올린다.
-건물을 보는 곳은 `Assets/Scenes/Studio_Building.unity` 이다. 판정은 스튜디오 캡처 `docs/qa/evidence/studio-<이름>/sNN_sheet.png` 로 한다.
+건물을 보는 곳은 **스튜디오 전용 Unity 프로젝트 `F1Studio/`** 의 `Assets/Scenes/Studio_Building.unity` 이다(메인 `F1/` 에디터와 별개 — 건물 작업이 맵 작업과 에디터를 두고 싸우지 않게). 판정은 스튜디오 캡처 `docs/qa/evidence/studio-<이름>/sNN_sheet.png` 로 한다.
+
+## 스튜디오 프로젝트 F1Studio (artlive 전용)
+
+- `F1Studio/Assets/Art/Library` 와 `F1Studio/Assets/Art/SceneA7` 은 **정션**(실체 = `F1/Assets/Art/...`, 같은 파일·같은 GUID). 스튜디오에서 만든 프리팹이 곧 메인 라이브러리다 — 복사·동기화 없음.
+- 띄우기: `powershell -NoProfile -File scripts/open-studio.ps1` (메인 에디터와 동시에 떠도 됨, 포트는 자동 8091~). 새 체크아웃이면 먼저 `bash scripts/studio-link.sh`. 자세한 것은 `F1Studio/README.md`.
+- 도구는 전부 스튜디오로 간다: `build_asset.py` unity 단계·`tools/art/bin/studio_cap.sh` 는 `UCLI_PROJ=D:/Github/F1Game/F1Studio` 가 기본값, `scripts/ucli-http.sh` 는 `UCLI_PROJ` 환경변수로 고른다(없으면 메인). team.sh 가 artlive 에 자동으로 넣는다.
+- 그래서 **artlive 는 메인 F1 에디터를 절대 쓰지 않고 `editor.lock` 도 잡지 않는다** — 프로그래머 [EDITOR] 과제와 동시에 돈다.
+- 메인 쪽 `F1/Assets/Scenes/Studio_Building.unity` 는 옛 사본이다. 스튜디오 씬을 고치면 `F1Studio/Assets/Scenes/` 쪽이 기준.
 
 ## 도현 배치 방법
 
@@ -29,7 +37,7 @@
 - 라이브러리는 `docs/qa/tmp/library_import.cs` 로 만든다.
   - 순서: export 폴더에서 파일을 복사 → 임포트 설정 → 재질 → 프리팹 → `STUDIO_Slot/<이름>` 에 꺼진 채로 둔다.
   - 자세는 그 파일의 `POSE` 표에서 정한다.
-- 캡처: `bash docs/qa/tmp/studio_cap.sh <이름> <번호> <설명>`
+- 캡처: `bash tools/art/bin/studio_cap.sh <이름> <번호> <설명>` (F1Studio 에디터로 감; 다른 씬이 열려 있으면 Studio_Building 을 자동으로 연다)
   - 카메라 5대: road(카트 눈높이 1.0, 40°, 20m) · front(8m) · 34(12m) · close(입구 3m) · in(건물 fbx 의 빈 객체 STUDIO_CamIn → STUDIO_CamInLook, 문 안 2m·높이 1.5).
   - ⚠ A7 셰이더는 점광원을 안 받는다 — 실내등은 메시(STUDIO_Lamp 빈 객체 위치)만 있고 실내 밝기는 게임 해·하늘빛 그대로.
   - `STUDIO_Slot/<이름>` 하나만 켜고 찍는다.

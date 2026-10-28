@@ -12,7 +12,7 @@
   uv       원통 16면 · 텍셀 32/64 · 점 UV 펴기 · 테이프 크림 띠 (tools/art/build_depot_bpy.py uv)
   grain    D-196 색(벽 회청·지붕 슬레이트·테이프 크림) + 사진 결(명도 4단, 칠 ±4/±10%, 고무 ±5/±14%) + 글씨 텍스처 64px/m
   quant    칸마다 median-cut → 합친 색을 그 건물 palette.gpl 로 쓰고 전 텍스처를 그 색으로(팔레트 일치 100%)
-  unity    export → F1/Assets/Art/Library/Buildings/<건물> 복사 → docs/qa/tmp/library_import.cs(ONLY=depot) → 프리팹
+  unity    export → F1/Assets/Art/Library/Buildings/<건물> 복사 → docs/qa/tmp/library_import.cs(ONLY=depot) → 프리팹  (에디터 = F1Studio, 환경변수 UCLI_PROJ 로 바꿈)
   viewer   tools/viewer/export_glb.py <건물>
   check    tools/art/check_rules.py --only <건물> --gate (텍셀·원통·글씨 포함) → docs/art/rule-audit/last_<건물>.md
 사진(CC0, Poly Haven): white_plaster_02, rubberized_track — 출처 grain_1722/1736 과 같음. AI 이미지 없음.
@@ -136,14 +136,18 @@ def s_unity(c):
     for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: shutil.copy2(p, Lb / p.name)
     out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8')); print('  ', out[:300])
     if 'error' in out.lower() and 'OK' not in out: raise SystemExit('Unity 임포트 실패')
+UCLI_PROJ = os.environ.get('UCLI_PROJ') or str(R / 'F1Studio')  # 건물 스튜디오 전용 프로젝트(정션으로 Art/Library 공유) — 메인 F1 에디터는 쓰지 않는다
 def unity_exec(code):  # scripts/ucli-http.sh exec 과 같은 HTTP — 파이썬에서 bash 를 띄우면 0xC0000005 로 죽어서 직접 보낸다
     import glob, urllib.request
-    port = None
+    port = None; proj = UCLI_PROJ.replace('\\', '/').rstrip('/').lower()
     for f in glob.glob(os.path.expanduser('~/.unity-cli/instances/*.json')):
         try: d = json.load(open(f, encoding='utf-8'))
         except Exception: continue
-        if d.get('projectPath', '').replace('\\', '/').rstrip('/').lower() == 'd:/github/f1game/f1' and d.get('state') != 'stopped': port = d['port']; break
-    if not port: raise SystemExit('F1 Editor connector 없음')
+        if d.get('projectPath', '').replace('\\', '/').rstrip('/').lower() == proj and d.get('state') != 'stopped': port = d['port']; break
+    if not port: raise SystemExit(f'{os.path.basename(proj)} Editor connector 없음 ({UCLI_PROJ}) — powershell -NoProfile -File scripts/open-studio.ps1')
+    # 스튜디오 씬이 아니면 연다(library_import.cs 는 STUDIO/STUDIO_Slot 이 필요) — studio_cap.sh 와 같은 스니펫
+    body = json.dumps({'command': 'exec', 'params': {'code': (R / 'docs/qa/tmp/studio_open.cs').read_text(encoding='utf-8')}}).encode()
+    urllib.request.urlopen(urllib.request.Request(f'http://127.0.0.1:{port}/command', data=body, headers={'Content-Type': 'application/json'}), timeout=120).read()
     body = json.dumps({'command': 'exec', 'params': {'code': code}}).encode()
     d = json.loads(urllib.request.urlopen(urllib.request.Request(f'http://127.0.0.1:{port}/command', data=body, headers={'Content-Type': 'application/json'}), timeout=280).read())
     if not d.get('success'): raise SystemExit('Unity exec 실패: ' + str(d.get('message')))

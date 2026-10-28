@@ -169,3 +169,18 @@ __pycache__/
 /.claude/team/waits.json
 /.claude/team/watchdog.json
 docs/map/real-towns/*.json
+
+# === F1Studio (건물 스튜디오 전용 Unity 프로젝트, scripts/studio-link.sh 로 재생성) ===
+# 공유 폴더는 정션(F1 쪽이 실체)이라 제외, 환경 복사본(Settings·SceneA2/3 일부)도 제외. 씬·스크립트·manifest·ProjectSettings 만 git.
+F1Studio/*
+!F1Studio/Assets/
+F1Studio/Assets/*
+!F1Studio/Assets/Scenes/
+!F1Studio/Assets/Scenes.meta
+!F1Studio/Assets/Scripts/
+!F1Studio/Assets/Scripts.meta
+!F1Studio/Packages/
+F1Studio/Packages/*
+!F1Studio/Packages/manifest.json
+!F1Studio/ProjectSettings/
+!F1Studio/README.md
