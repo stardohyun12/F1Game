@@ -21,6 +21,8 @@ R = Path(__file__).resolve().parents[2]
 LIB = R / 'F1/Assets/Art/Library/Buildings'
 BLENDER = os.environ.get('BLENDER', 'D:/Tools/Blender/blender.exe')
 A7_SHADER = 'a5825144e1f7988418dfc28ff0b9bcb7'  # F1/Assets/Art/SceneA7/SceneA7Lit.shader
+# artlive 2117: 정비소 전용 A7LitPoint_garage.shader = SceneA7Lit 사본 + 전등 점광원(1653). 같은 A7 빛 계단이라 A7 으로 친다
+A7_FAMILY = {A7_SHADER, 'd661413f2862dd14096bf9f1d789af45'}
 REF_TEX = R / 'F1/Assets/Art/SceneA7/houses/house_shop.png'
 REF_HOUSES = sorted((R / 'F1/Assets/Art/SceneA7/houses').glob('house_*.png'))
 
@@ -35,10 +37,8 @@ B = {
     'room': dict(fbx=LIB / 'room/room.fbx', dir=LIB / 'room', gpl={'*': R / 'art/export/q1-room/palette_q1v2.gpl'},
                  tex=lambda mat, img: 'room.png'),
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
-                   gpl={'garage_dirt': R / 'art/export/scene-albedo-kit/dirt_baked32.gpl', '*': R / 'art/export/scene-albedo-kit/garage_baked32.gpl',
-                        # artlive 1914: 결 넣은 뒤 자기 .gpl 로 다시 양자화한 텍스처(lamp = props 사본)
-                        'garage_props': R / 'art/export/q2-garage/garage_props.gpl', 'garage_lamp': R / 'art/export/q2-garage/garage_props.gpl',
-                        'garage_posters': R / 'art/export/q2-garage/garage_posters.gpl'},
+                   # artlive 2117: build_asset.py garage 가 결 뒤 전 텍스처를 칸별 median-cut → 합친 색을 이 palette.gpl 로(보관소와 같은 방식)
+                   gpl={'*': R / 'art/export/q2-garage/palette.gpl'},
                    tex=lambda mat, img: 'garage_lamp.png' if mat == 'Garage_Lamp_Emit' else ('garage_dirt.png' if img == 'dirt_baked32.png' else img)),
     'depot': dict(fbx=LIB / 'depot/q3_depot.fbx', dir=LIB / 'depot', gpl={'*': R / 'art/export/q3-depot/palette.gpl'},
                   tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img)),
@@ -324,7 +324,7 @@ def judge(r, REF, SV, btris):
     if 'meta' in r:
         mi = r['meta']; mats = r['mats']
         ok = bool(mi) and mi['filter'] == '0' and mi['mip'] == '0' and mi['comp'] == '0' and bool(mats)
-        ok = ok and all(m['shader'] == A7_SHADER and (m['sat'] is None or m['sat'] <= 1.2) for m in mats)
+        ok = ok and all(m['shader'] in A7_FAMILY and (m['sat'] is None or m['sat'] <= 1.2) for m in mats)
         j['mat'] = ok
     else: j['mat'] = None
     j['tris'] = btris <= 6000 and (not r['prop'] or r['isl_tris_max'] <= 500)
@@ -350,7 +350,7 @@ def why(r, j, REF):
         mi = r.get('meta') or {}; ms = r.get('mats') or []
         bits = []
         if not ms: bits.append('재질 없음')
-        if any(m['shader'] != A7_SHADER for m in ms): bits.append('A7 셰이더 아님')
+        if any(m['shader'] not in A7_FAMILY for m in ms): bits.append('A7 셰이더 아님')
         if mi and mi.get('filter') != '0': bits.append('Point 아님')
         if mi and mi.get('mip') != '0': bits.append('밉 켬')
         if mi and mi.get('comp') != '0': bits.append('압축')

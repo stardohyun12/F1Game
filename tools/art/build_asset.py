@@ -25,7 +25,14 @@ from PIL import Image, ImageFilter
 R = Path(__file__).resolve().parents[2]
 BL = os.environ.get('BLENDER', 'D:/Tools/Blender/blender.exe')
 CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot', lib=R / 'F1/Assets/Art/Library/Buildings/depot', fbx='q3_depot.fbx',
-                     pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'clock_dial'])}
+                     pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'clock_dial']),
+       # 2117 정비소: 원본 = garage.blend(1653 16각·전등, 1709 바닥·앞마당·포스터 UV, 1846 타이어 이동이 들어 있음) + 텍스처 생성기 3개
+       'garage': dict(src=R / 'art/source/q2-garage', exp=R / 'art/export/q2-garage', lib=R / 'F1/Assets/Art/Library/Buildings/garage', fbx='garage_v5_combo.fbx',
+                      pngs=['garage_baked32', 'garage_details', 'dirt_baked32', 'garage_props', 'garage_lamp', 'garage_sign', 'garage_festival',
+                            'garage_posters', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3'],
+                      paint=['garage_baked32', 'garage_details', 'dirt_baked32', 'garage_props', 'garage_lamp'],  # 칠·고무 결(D-197)
+                      paper=['garage_sign', 'garage_festival', 'garage_posters'],  # 글씨 텍스처: 종이(밝은 픽셀)만 결, 잉크는 그대로
+                      lib_name={'dirt_baked32': 'garage_dirt'})}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
 STEPS = {'paint': np.array([-0.10, -0.04, 0.04, 0.10]), 'rubber': np.array([-0.14, -0.05, 0.05, 0.14])}
@@ -138,8 +145,65 @@ def s_check(c):
     same = [s for s in ('wall', 'roof', 'trim', 'floor', 'icons', 'decals') if (po / (s + '.png')).exists() and md5(po / (s + '.png')) == md5(c['exp'] / (s + '.png'))]
     print('   우체국과 md5 같은 텍스처:', same or '없음')
 
+# ---------- 정비소(garage) 단계 — 2117: 그날 export 에만 덧칠됐던 수정을 원본·단계로 ----------
+def g_source(c):  # 텍스처: textures.py(지붕 사진·세부·간판·게시판·사진 액자) → fix_textures_v2.py(바닥·흙) → props_1709.py(소품 64px/m·포스터·게시판, 공구 1.3배)
+    py = os.environ.get('PY_CV2', os.path.expanduser('~/AppData/Local/Programs/Python/Python313/python.exe'))  # textures.py 가 cv2 를 씀
+    for s in ('textures.py', 'fix_textures_v2.py', 'props_1709.py'): run([py if os.path.exists(py) else sys.executable, '-X', 'utf8', str(c['src'] / s)])
+def g_overlap(c): print('   정비소: 겹침(바닥·앞마당 z 0.03/0.02/0.01)은 fix_1709 가 garage.blend 에 반영 — 여기선 할 일 없음')
+def g_split(c): blender(c['src'] / 'split_1857.py')  # 타이어 이동(q2_moved_1846 표시, 한 번만) + 물건별 이름 TIRE_/DRUM_/POSTER_… + 피벗 바닥 가운데 → fbx
+def g_snap(c): print('   정비소: 접지 단계 없음(물건 피벗은 split 이 바닥 가운데로)')
+def g_uv(c):
+    blender(R / 'tools/art/build_garage_bpy.py', str(c['exp'] / c['fbx']), str(c['tmp'] / 'uv.json'))
+    Image.new('RGBA', (32, 32), (250, 228, 178, 255)).save(c['exp'] / 'garage_lamp.png')  # 전등 원판 전용(옛: props 사본 한 점)
+def g_grain(c):
+    E = c['exp']; log = {}
+    for s in c['pngs']:  # 입력은 늘 uv 단계 스냅샷(결 두 번 방지)
+        sp = c['tmp'] / '04_uv' / (s + '.png')
+        if sp.exists(): shutil.copy2(sp, E / sp.name)
+    for s in c['paint'] + c['paper']:
+        a = np.asarray(Image.open(E / (s + '.png')).convert('RGBA'), np.float64); rgb = a[..., :3]
+        lum = rgb @ [.299, .587, .114]; H, W = lum.shape; op = a[..., 3] >= 128
+        for kind in ('paint', 'rubber'):
+            if s in c['paper']: sel = op & (lum >= 120) if kind == 'paint' else np.zeros_like(op)
+            else: sel = op & ((lum < 70) if kind == 'rubber' else (lum >= 70))
+            st = STEPS[kind]; f = field(kind, W, H) * (st[2] + st[3]) / 2
+            q = st[np.abs(f[..., None] - st).argmin(-1)]; rgb[sel] *= (1 + q[sel])[:, None]
+        a[..., :3] = np.clip(rgb, 0, 255); Image.fromarray(a.round().astype(np.uint8)).save(E / (s + '.png')); log[s] = [W, H]
+    (c['tmp'] / 'grain.json').write_text(json.dumps(log, indent=1), encoding='utf-8')
+def g_quant(c):  # 128px 칸마다 median-cut 32색 → 합친 색 = art/export/q2-garage/palette.gpl
+    E = c['exp']; allc = set(); log = {}
+    for s in c['pngs']:
+        a = np.asarray(Image.open(E / (s + '.png')).convert('RGBA')).copy(); H, W = a.shape[:2]; a[..., 3] = np.where(a[..., 3] >= 128, 255, 0)
+        for y in range(0, H, 128):
+            for x in range(0, W, 128):
+                reg = a[y:y + 128, x:x + 128]; op = reg[..., 3] >= 128
+                if op.sum() == 0: continue
+                qi = Image.fromarray(reg[..., :3][op][None, :, :]).quantize(colors=32, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+                pal = np.array(qi.getpalette()[:96], np.uint8).reshape(-1, 3); idx = np.asarray(qi)[0]
+                out = reg[..., :3].copy(); out[op] = pal[idx]; reg[..., :3] = out
+                allc |= {tuple(int(v) for v in p) for p in pal[np.unique(idx)]}
+        a[a[..., 3] < 128, :3] = 0; Image.fromarray(a).save(E / (s + '.png')); log[s] = int(len(np.unique(a[a[..., 3] >= 128][:, :3], axis=0)))
+    lines = ['GIMP Palette', 'Name: q2-garage (build_asset.py 2117 — 결 뒤 128px 칸별 median-cut 합집합)', 'Columns: 8', '#']
+    lines += ['%3d %3d %3d\tc%03d' % (*p, i) for i, p in enumerate(sorted(allc))]
+    (E / 'palette.gpl').write_text('\n'.join(lines) + '\n', encoding='utf-8'); log['palette'] = len(allc)
+    (c['tmp'] / 'quant.json').write_text(json.dumps(log, indent=1), encoding='utf-8'); print('   colors', log)
+def g_unity(c):
+    E, Lb = c['exp'], c['lib']; shutil.copy2(E / c['fbx'], Lb / c['fbx'])
+    for s in c['pngs']: shutil.copy2(E / (s + '.png'), Lb / (c['lib_name'].get(s, s) + '.png'))
+    code = (R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "garage" };')
+    out = unity_exec(code); print('  ', out[:300])
+def g_check(c):
+    p = subprocess.run([sys.executable, '-X', 'utf8', 'tools/art/check_rules.py', '--only', c['name'], '--gate', '--md', f'docs/art/rule-audit/last_{c["name"]}.md',
+                        '--json', str(c['tmp'] / 'rules.json')], cwd=R, capture_output=True, text=True, encoding='utf-8', errors='replace')
+    print('\n'.join(p.stdout.splitlines()[-3:]))
+    md5 = lambda f: hashlib.md5(f.read_bytes()).hexdigest(); mine = {md5(c['lib'] / (c['lib_name'].get(s, s) + '.png')): s for s in c['pngs']}
+    same = sorted({f'{mine[md5(f)]}={f.relative_to(R / "F1/Assets/Art")}' for f in (R / 'F1/Assets/Art').rglob('*.png') if f.parent != c['lib'] and f.stat().st_size < 8e6 and md5(f) in mine})
+    print('   다른 건물과 md5 같은 텍스처(D-196):', same or '없음')
+GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}
+
 STAGES = [('source', s_source), ('overlap', s_overlap), ('split', s_split), ('snap', s_snap), ('uv', s_uv), ('grain', s_grain), ('quant', s_quant),
           ('unity', s_unity), ('viewer', s_viewer), ('check', s_check)]
+PER = {'garage': GARAGE}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
 if __name__ == '__main__':
     name = sys.argv[1]; c = dict(CFG[name], name=name); c['tmp'] = R / f'docs/qa/tmp/build/{name}'; c['tmp'].mkdir(parents=True, exist_ok=True)
     start = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else 'source'
@@ -148,6 +212,6 @@ if __name__ == '__main__':
     for i, (sn, fn) in enumerate(STAGES):
         on = on or sn == start
         if not on or (only and sn != only): continue
-        print(f'[{i:02d} {sn}]'); fn(c); snapshot(c, i, sn)
+        print(f'[{i:02d} {sn}]'); PER.get(name, {}).get(sn, fn)(c); snapshot(c, i, sn)
         if '--to' in sys.argv and sn == sys.argv[sys.argv.index('--to') + 1]: break
     print('BUILD DONE', name)
