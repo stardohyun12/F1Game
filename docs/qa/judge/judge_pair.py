@@ -41,8 +41,9 @@ def ask(tmp, L, R, model):
         note = "\n\n[첨부 이미지 순서: " + ", ".join(f"{i+1}={n}" for i, n in enumerate(names)) + " — Read 대신 첨부 이미지를 본다]"
         cmd = [cx, "exec", "--skip-git-repo-check", "-m", cx_model, "-s", "read-only", "-C", tmp.replace("\\", "/")]
         for p in imgs: cmd += ["-i", p]
-        cmd += ["--", PROMPT.replace("{L}", L).replace("{R}", R) + note]
-        r = subprocess.run(cmd, cwd=tmp, capture_output=True, text=True, encoding="utf-8", timeout=500, stdin=subprocess.DEVNULL)
+        cmd += ["-"]  # 프롬프트는 stdin 으로(긴 한국어 인자가 잘리는 문제 회피)
+        r = subprocess.run(cmd, cwd=tmp, capture_output=True, text=True, encoding="utf-8", timeout=500,
+                           input=PROMPT.replace("{L}", L).replace("{R}", R) + note)
         m = re.findall(r"PICK:\s*([LR])", r.stdout)
         return (m[-1] if m else None), r.stdout
     r = subprocess.run(["claude", "-p", PROMPT.replace("{L}", L).replace("{R}", R), "--model", model,
