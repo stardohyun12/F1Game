@@ -69,6 +69,7 @@ def s_split(c):
     blender(R / 'tools/art/build_depot_bpy.py', str(c['exp'] / c['fbx']), 'names', str(c['tmp'] / 'names.json'))
 def s_snap(c):
     blender(R / 'tools/asset-gen/snap_1950.py'); shutil.copy2(R / 'docs/qa/tmp/snap_1950.json', c['tmp'] / 'snap.json')
+    blender(R / 'tools/art/depot_clearance.py', str(c['exp'] / c['fbx']), 'fix', str(c['tmp'] / 'clearance.json'))
 def s_uv(c): blender(R / 'tools/art/build_depot_bpy.py', str(c['exp'] / c['fbx']), 'uv', str(c['tmp'] / 'uv.json'))
 
 _F = {}
@@ -154,9 +155,12 @@ def unity_exec(code):  # scripts/ucli-http.sh exec 과 같은 HTTP — 파이썬
     o = d.get('data'); return o if isinstance(o, str) else json.dumps(o, ensure_ascii=False)
 def s_viewer(c): blender(R / 'tools/viewer/export_glb.py', c['name'])
 def s_check(c):
+    blender(R / 'tools/art/depot_clearance.py', str(c['exp'] / c['fbx']), 'check', str(c['tmp'] / 'clearance_final.json'))
     p = subprocess.run([sys.executable, '-X', 'utf8', 'tools/art/check_rules.py', '--only', c['name'], '--gate', '--md', f'docs/art/rule-audit/last_{c["name"]}.md',
                         '--json', str(c['tmp'] / 'rules.json')], cwd=R, capture_output=True, text=True, encoding='utf-8', errors='replace')
     print('\n'.join(p.stdout.splitlines()[-3:]))
+    if p.returncode != 0 or 'GATE PASS' not in p.stdout:
+        raise SystemExit('보관소 규칙 게이트 실패: ' + p.stderr[-500:])
     po = R / 'art/export/q4-postoffice'; md5 = lambda f: hashlib.md5(f.read_bytes()).hexdigest()
     same = [s for s in ('wall', 'roof', 'trim', 'floor', 'icons', 'decals') if (po / (s + '.png')).exists() and md5(po / (s + '.png')) == md5(c['exp'] / (s + '.png'))]
     print('   우체국과 md5 같은 텍스처:', same or '없음')

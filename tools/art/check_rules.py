@@ -234,10 +234,18 @@ def text_metrics(t, mask):
 # ---------- 행(노드 × 재질 칸) 측정 ----------
 def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
     t = tex(tpath); W, H = t['W'], t['H']; stem = tpath.stem
-    is_text = (stem in TEXT_STEMS or obj in ('sign', 'poster', 'number', 'Q3_sign') or bool(PRINT_OBJ.search(obj))) and not obj.startswith('wear')
+    # Only the depot atlas' photographed exposed-plaster mask, never a name-only exemption.
+    is_overlay = bname == 'depot' and obj.startswith('Q3_decals_WEAR_') and stem == 'decals'
+    if is_overlay:
+        layout = json.loads((R / 'art/export/q3-depot/layout.json').read_text(encoding='utf-8'))
+        chip = next(c for c in layout['decals'] if c['name'] == 'edge_chip')
+        x, y, w, h = chip['rect_px']
+        is_overlay = all(x <= uv[k] * 512 <= x+w and y <= (1-uv[k+1]) * 512 <= y+h
+                         for _, _, uv, _ in faces for k in (0, 2, 4))
+    is_text = (stem in TEXT_STEMS or obj in ('sign', 'poster', 'number', 'Q3_sign') or bool(PRINT_OBJ.search(obj))) and not obj.startswith('wear') and not is_overlay
     is_prop = bool(PROP_OBJ.search(obj)) or stem in PROP_STEMS
-    is_board = bool(BOARD_OBJ.search(obj))  # 2148 PD: 그림·글씨 판은 판이 커도 작은 물건(공구·글씨)을 담으니 64 허용
-    r = dict(building=bname, object=obj, tex=str(tpath.relative_to(R)).replace('\\', '/'), W=W, H=H, text=is_text, prop=is_prop)
+    is_board = bool(BOARD_OBJ.search(obj)) or is_overlay  # Alpha chip overlay also uses the small-decoration 64px/m grid.
+    r = dict(building=bname, object=obj, tex=str(tpath.relative_to(R)).replace('\\', '/'), W=W, H=H, text=is_text, prop=is_prop, overlay=is_overlay)
     # 텍셀
     dens, exp, wa_tot, collapse = [], [], 0.0, 0.0; mir = 0.0
     idim = objinfo.get('idim', {})
@@ -256,6 +264,7 @@ def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
         r['ppm_exp'] = int(round(float((ev * wv).sum() / wv.sum())))
         ok = np.abs(dv / ev - 1) <= 0.25
         if is_text or is_board: ok = (np.abs(dv / 32 - 1) <= 0.25) | (np.abs(dv / 64 - 1) <= 0.25)  # APPLY.md: 간판 32 · 포스터·번지 64
+        if is_overlay: ok = np.abs(dv / 64 - 1) <= 0.25
         r['texel_in'] = float(wv[ok].sum() / wv.sum())
     else:
         r.update(ppm_med=0, ppm_p10=0, ppm_p90=0, ppm_exp=32, texel_in=0.0)
@@ -280,6 +289,9 @@ def measure_row(bname, obj, slot, faces, objinfo, tpath, gpl, cfg, REF, SV):
         r['grain_med'] = float(np.median(t['d'][m])); r['grain_p25'] = float(np.percentile(t['d'][m], 25)); r['flat'] = None
     keys = t['key'][m]; pal = load_gpl(gpl)
     r['palette'] = float(np.isin(keys, pal).mean()); uk, ui = np.unique(keys, return_inverse=True); r['colors'] = int(len(uk))
+    if is_overlay and (r['alpha'] < .5 or r['colors'] != 1):
+        # Invalid masks retain the atlas' normal text checks; an opaque/name-only substitute fails.
+        is_text = True; r['text'] = True; r['overlay'] = False
     pr = np.stack([(pal >> 16) & 255, (pal >> 8) & 255, pal & 255], 1); ur = np.stack([(uk >> 16) & 255, (uk >> 8) & 255, uk & 255], 1)
     dist = np.abs(ur[:, None, :] - pr[None, :, :]).max(-1).min(1); r['palette_near6'] = float((dist[ui.ravel()] <= 6).mean())
     inner = m & np.roll(m, 1, 0) & np.roll(m, -1, 0) & np.roll(m, 1, 1) & np.roll(m, -1, 1)
@@ -309,11 +321,11 @@ def judge(r, REF, SV, btris):
         return j
     j['texel'] = r['texel_in'] >= 0.70
     j['uvcollapse'] = r['collapse'] <= 0.05
-    if r['text'] or 'memory' in r['tex']: j['grain'] = None
+    if r['text'] or r.get('overlay') or 'memory' in r['tex']: j['grain'] = None
     else: j['grain'] = REF['p25'] <= r['grain_med'] <= REF['med'] * 2.5
-    j['flat'] = None if r.get('flat') is None or r['text'] else r['flat'] <= max(REF['flat'] + 0.10, 0.30)
+    j['flat'] = None if r.get('flat') is None or r['text'] or r.get('overlay') else r['flat'] <= max(REF['flat'] + 0.10, 0.30)
     j['palette'] = r['palette'] >= 0.95
-    j['colors'] = None if r['text'] or 'memory' in r['tex'] else 4 <= r['colors'] <= 64
+    j['colors'] = None if r['text'] or r.get('overlay') or 'memory' in r['tex'] else 4 <= r['colors'] <= 64
     j['speckle'] = r['speckle'] <= 0.003
     photo = r['text'] or 'memory' in r['tex']
     j['baked'] = None if photo else r['baked'] <= 0.10

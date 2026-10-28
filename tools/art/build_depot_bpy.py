@@ -8,6 +8,8 @@ import bpy, bmesh, sys, os, json, math, re
 from mathutils import Vector, Matrix
 FBX, MODE, OUT = sys.argv[sys.argv.index('--') + 1:][:3]
 R = 'D:/Github/F1Game'
+sys.path.insert(0, R + '/tools/art')
+from mesh_parts import split_loose_props
 bpy.ops.wm.read_factory_settings(use_empty=True); bpy.ops.import_scene.fbx(filepath=FBX)
 MESH = [o for o in bpy.data.objects if o.type == 'MESH']
 LOG = {'mode': MODE}
@@ -46,6 +48,19 @@ if MODE == 'names':
             dead = [f for f in bm.faces if ('trim' in (ob.data.materials[f.material_index].name.lower() if ob.data.materials[f.material_index] else '')) != keep_trim]
             bmesh.ops.delete(bm, geom=dead, context='FACES'); bm.to_mesh(ob.data); bm.free()
         LOG['split_sign'] = [len(sg.data.polygons), len(fr.data.polygons)]
+    def decal_kind(obj, faces, fallback):
+        if obj.name != 'Q3_decals': return fallback
+        layout = json.load(open(R + '/art/export/q3-depot/layout.json', encoding='utf-8'))
+        uv = obj.data.uv_layers.active.data
+        coords = [uv[li].uv for fi in faces for li in obj.data.polygons[fi].loop_indices]
+        x = sum(v.x for v in coords) / len(coords) * 512
+        y = (1 - sum(v.y for v in coords) / len(coords)) * 512
+        for cell in layout['decals']:
+            cx, cy, w, h = cell['rect_px']
+            if cell['name'] == 'edge_chip' and cx <= x <= cx+w and cy <= y <= cy+h:
+                return 'WEAR'
+        return fallback
+    LOG['loose_props'] = split_loose_props(list(bpy.data.objects), decal_kind)
 
 PROP = re.compile(r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET)_\d+$|^CLOCK')
 LAY = json.load(open(R + '/art/export/q3-depot/layout.json', encoding='utf-8'))
@@ -81,6 +96,12 @@ def prism(vs):  # 축 정렬 n각 기둥이면 (축, 가운데, 반지름, 높�
         cx = sum(p[0] for p in P) / len(P); cy = sum(p[1] for p in P) / len(P)
         rr = [math.hypot(p[0] - cx, p[1] - cy) for p in P]; r = sum(rr) / len(rr)
         if r < 0.005 or max(abs(x - r) for x in rr) > 0.03 * r: continue
+        # FBX round-off can turn four rectangle corners into eight near-duplicate points.
+        # Equal radius alone then turns a box into a larger cylinder and reintroduces penetration.
+        angles = sorted(math.atan2(y - cy, x - cx) for x, y in P)
+        step = 2 * math.pi / len(angles)
+        gaps = [(angles[(i + 1) % len(angles)] - a) % (2 * math.pi) for i, a in enumerate(angles)]
+        if max(abs(g - step) for g in gaps) > step * .10: continue
         c = [0, 0, 0]; c[ax] = (Z[0] + Z[1]) / 2; c[a] = cx; c[b] = cy
         return ax, Vector(c), r, Z[1] - Z[0], len(P)
     return None
@@ -121,6 +142,18 @@ if MODE == 'uv':
                 if m and m.name.lower().startswith('clock_dial'): me.materials[i] = bpy.data.materials['Shared_trim']; fix['hand_trim'] += 1
         # ②③ 텍셀
         bm = bmesh.new(); bm.from_mesh(me); bm.faces.ensure_lookup_table(); uvl = bm.loops.layers.uv.active
+        # Transparent edge chips are decoration, not writing. Normalize each independent
+        # chip to 64 px/m (final decals atlas is 160px) now that group averages cannot mask it.
+        if '_WEAR_' in o.name:
+            for f in bm.faces:
+                uv = [l[uvl].uv.copy() for l in f.loops]
+                area = abs(sum(uv[k].x * uv[(k+1)%len(uv)].y - uv[(k+1)%len(uv)].x * uv[k].y for k in range(len(uv))) / 2)
+                world = [M @ v.co for v in f.verts]
+                wa = sum((world[k]-world[0]).cross(world[k+1]-world[0]).length/2 for k in range(1,len(world)-1))
+                if area > 0 and wa > 0:
+                    center = sum(uv,Vector((0,0)))/len(uv)
+                    scale = 64 / math.sqrt(area * 160 * 160 / wa)
+                    for loop, value in zip(f.loops,uv): loop[uvl].uv = center + (value-center)*scale
         isl, n = islands(bm); idim = {}
         for f in bm.faces:
             lo, hi = idim.get(isl[f.index], (Vector((9e9,) * 3), Vector((-9e9,) * 3)))
