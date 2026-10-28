@@ -84,6 +84,10 @@ namespace PitCrewPlan
             if (scene.name != TargetScene) return;
             var delta = PlanIO.WritePlacements(scene, out var err);
             if (err == null && delta.Count > 0) { Debug.Log("[기획] 배치 자동 기록 " + delta.Count + "건 → placements.yaml\n" + string.Join("\n", delta)); RefreshPins(true); }
+            // 0433: 옮긴 건물이 비탈에 묻히거나 뜨면 알려만 준다(지형 자동 수정 없음)
+            PlanIO.GroundWarnings = PlanIO.GroundCheck(scene);
+            foreach (var w in PlanIO.GroundWarnings) Debug.LogWarning("[기획] " + w);
+            foreach (var win in Resources.FindObjectsOfTypeAll<PitCrewPlanWindow>()) win.Repaint();
         }
 
         // ───────── 씬 뷰 ─────────

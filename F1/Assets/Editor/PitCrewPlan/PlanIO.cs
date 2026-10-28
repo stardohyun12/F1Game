@@ -107,6 +107,46 @@ namespace PitCrewPlan
                         list.Add(t.gameObject);
             return list;
         }
+        /// <summary>과제 0433(코멘트 042438): 저장 때 라이브러리 건물 바닥(피벗 y) 아래 땅이 ±10 cm 넘게 어긋나면 한 줄씩. 지형은 안 바꾼다.
+        /// 발자국 = 프리팹 MeshFilter 로컬 bounds(루트 축), 0.5 m 안쪽 1 m 격자, 위에서 아래로 쏴 건물 자신이 아닌 첫 콜라이더 = 땅.</summary>
+        public static List<string> GroundCheck(UnityEngine.SceneManagement.Scene sc, float tol = .1f)
+        {
+            var warn = new List<string>();
+            foreach (var go in LibraryInstances(sc))
+            {
+                if (!go.activeInHierarchy) continue;
+                var t = go.transform; Vector3 mn = Vector3.one * 1e9f, mx = -mn; bool any = false;
+                foreach (var f in go.GetComponentsInChildren<MeshFilter>())
+                {
+                    if (f.sharedMesh == null) continue; var b = f.sharedMesh.bounds; any = true;
+                    for (int k = 0; k < 8; k++)
+                    {
+                        var p = t.InverseTransformPoint(f.transform.TransformPoint(new Vector3((k & 1) == 0 ? b.min.x : b.max.x, (k & 4) == 0 ? b.min.y : b.max.y, (k & 2) == 0 ? b.min.z : b.max.z)));
+                        mn = Vector3.Min(mn, p); mx = Vector3.Max(mx, p);
+                    }
+                }
+                if (!any) continue;
+                float y0 = t.position.y, sunk = 0f, flt = 0f; int n = 0, bad = 0;
+                for (float x = mn.x + .5f; x <= mx.x - .5f; x += 1f)
+                    for (float z = mn.z + .5f; z <= mx.z - .5f; z += 1f)
+                    {
+                        var w = t.TransformPoint(new Vector3(x, 0, z));
+                        var hits = Physics.RaycastAll(new Vector3(w.x, y0 + 50f, w.z), Vector3.down, 100f, ~0, QueryTriggerInteraction.Ignore);
+                        float best = 1e9f, gy = 0f;
+                        foreach (var h in hits) if (!h.transform.IsChildOf(t) && h.distance < best) { best = h.distance; gy = h.point.y; }
+                        if (best > 1e8f) continue;
+                        n++; float d = gy - y0;
+                        if (d > tol || d < -tol) bad++;
+                        sunk = Mathf.Max(sunk, d); flt = Mathf.Max(flt, -d);
+                    }
+                if (n == 0 || bad == 0) continue;
+                string kind = sunk > tol && flt > tol ? "땅에 묻힘/뜸" : sunk > tol ? "땅에 묻힘" : "땅에서 뜸";
+                warn.Add(kind + ": " + go.name + " — 바닥 " + y0.ToString("F2") + " m, 어긋난 칸 " + bad + "/" + n + " (묻힘 최대 " + Mathf.Max(0, sunk).ToString("F2") + " m · 뜸 최대 " + Mathf.Max(0, flt).ToString("F2") + " m)");
+            }
+            return warn;
+        }
+        public static List<string> GroundWarnings = new List<string>();
+
         public static List<string> LibraryPrefabs() =>
             AssetDatabase.FindAssets("t:Prefab", new[] { LibraryDir.TrimEnd('/') }).Select(AssetDatabase.GUIDToAssetPath).OrderBy(p => p).ToList();
 

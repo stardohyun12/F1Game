@@ -1,0 +1,19 @@
+{
+ "id": "unity-Map_TownV6-20261029-042438-acb1",
+ "time": "2026-10-29T04:38:13+09:00",
+ "before": "shots/unity-Map_TownV6-20261029-042438-acb1.png",
+ "after": "shots/unity-Map_TownV6-20261029-042438-acb1_after.png",
+ "comment": "건물 땅에 파뭍혀 있는 문제 해결좀",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽에서는 큰 건물의 1층 창문, 문 앞 계단, 우체통이 지면 위로 온전히 드러나 있고, 작은 건물도 벽 하단과 입구, 상자까지 땅 위에 보여서 파묻힌 느낌이 해소됐다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽은 두 건물 모두 출입구 하단과 기단이 지면 위로 드러나 있어, 땅에 파묻힌 문제가 해결된 것으로 보인다."
+  }
+ },
+ "pass": true
+}

@@ -1,0 +1,19 @@
+{
+ "id": "unity-Map_TownV6-20261029-034450-9a2a",
+ "time": "2026-10-29T04:31:27+09:00",
+ "before": "shots/unity-Map_TownV6-20261029-034450-9a2a.png",
+ "after": "shots/unity-Map_TownV6-20261029-034450-9a2a_after.png",
+ "comment": "지금 빛 때문이지 그림체가 이상해짐",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "YES",
+   "reason": "오른쪽에는 빨간 선 안의 건물 두 채와 가게가 사라져서 비교할 수 없다. 남은 집과 창고도 한쪽 면이 어둡고 그림자가 거칠어서 조명 때문에 그림체가 어색한 느낌이 그대로 남아 있다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "남아 있는 집과 창고의 새까맣게 뭉개진 음영이 완화되어, 빛 때문에 그림체가 달라 보이던 문제가 해소됐다."
+  }
+ },
+ "pass": false
+}

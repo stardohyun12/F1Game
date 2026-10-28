@@ -76,6 +76,7 @@ namespace PitCrewPlan
                 filter = GUILayout.Toolbar(filter, new[] { "전부", "✅ 고쳤음(검토 대기) " + nFixed, "할 일 " + nOpen });
                 showDone = GUILayout.Toggle(showDone, "끝난 것 보기", GUILayout.Width(90));
             }
+            foreach (var w in PlanIO.GroundWarnings) EditorGUILayout.HelpBox(w, MessageType.Warning);
             if (comments.Count == 0) EditorGUILayout.HelpBox("씬 뷰 위 [💬 코멘트](C)를 켜고 물건이나 땅을 클릭하세요.", MessageType.None);
             using (var s = new EditorGUILayout.ScrollViewScope(scroll))
             {
