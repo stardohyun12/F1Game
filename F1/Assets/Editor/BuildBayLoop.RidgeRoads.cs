@@ -13,17 +13,32 @@ public static partial class BuildBayLoop
     [MenuItem("PitCrew/Map/TownV6 — 능선 길 3개 더하기 (ridge_up_*)")]
     public static void MenuRidgeRoads() { Debug.Log("[RidgeRoads] " + AddRidgeRoads()); }
 
-    public static string AddRidgeRoads()
+    // 과제 0628(fb 4607 2회차): 길 띠만 다시 — 지형은 0433 단계(_ridge → _0433)가 RoadSurface 중심선을 다시 읽어 깎는다.
+    [MenuItem("PitCrew/Map/TownV6 — 능선 길 띠만 다시 (ridge_up_a, 지형 안 건드림)")]
+    public static void MenuRidgeRibbonA() { Debug.Log("[RidgeRoads] " + AddRidgeRoads(false, "ridge_up_a")); }
+
+    public static string AddRidgeRoads() => AddRidgeRoads(true, null);
+
+    // carveTerrain=false 면 1) 지형 단계를 건너뛰고 2) 길 띠만. only = 이 id 하나만(null 이면 ridge_up_* 전부).
+    public static string AddRidgeRoads(bool carveTerrain, string only)
     {
         var scene = EditorSceneManager.GetActiveScene();
         if (scene.path != TownV6Scene) return "Map_TownV6 를 먼저 연다: " + scene.path;
         var plan = (Dictionary<string, object>)Json.Parse(System.IO.File.ReadAllText(TownV6Json, Encoding.UTF8));
+        var roadsT0 = GameObject.Find("TownV6_Gray/Roads")?.transform; if (roadsT0 == null) return "TownV6_Gray/Roads 없음";
+        var joinTo = roadsT0.GetComponentsInChildren<RoadSurface>().Where(x => !x.roadId.StartsWith("ridge_up_") && x.centerline != null).ToList();
+        var lgSnap = new List<string>();
         var rs = new List<GRoad>();
         foreach (Dictionary<string, object> r in (List<object>)plan["roads"])
         {
             if (!((string)r["id"]).StartsWith("ridge_up_")) continue;
+            if (only != null && (string)r["id"] != only) continue;
             var g = new GRoad { id = (string)r["id"], kind = (string)r["kind"], width = F(r["width"]), rough = F(r["roughness"]) };
             var ks = ((List<object>)r["knots"]).Cast<List<object>>().Select(k => new Vector3(F(k[0]), F(k[2]), F(k[1]))).ToList();
+            // 0628: 손으로 찍은 끝 knot 이 만나는 길을 지나쳐 옆 길(가파른 join 경사로) 띠 안에 박혔다 —
+            //  ridge_up_a 끝 (287,−63) y25.31 이 camo_874876277_276 시작(285.95,−65.14)을 2.4 m 넘어 join 띠(그 자리 26.14) 안 →
+            //  두 길이 0.8 m 높이차로 겹쳐 지형이 어느 높이를 골라도 한쪽이 묻히거나 떴다. 끝 knot 을 "높이가 가장 가까운 기존 길" 중심선에 붙인다.
+            SnapEnd(ks, 0, g.width * .5f, joinTo, g.id, lgSnap); SnapEnd(ks, ks.Count - 1, g.width * .5f, joinTo, g.id, lgSnap);
             for (int i = 0; i + 1 < ks.Count; i++)
             {
                 int n = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude));
@@ -40,8 +55,8 @@ public static partial class BuildBayLoop
         // 기존 마을길 재질을 그대로(색을 다시 쓰지 않게 GM 을 거치지 않는다)
         var oldRoads = roadsT.GetComponentsInChildren<RoadSurface>().Where(x => !x.roadId.StartsWith("ridge_up_")).ToList();
         var villageMat = oldRoads.Where(x => x.kind == "village").Select(x => x.GetComponent<MeshRenderer>().sharedMaterial).FirstOrDefault(m => m != null);
-        var lg = new List<string>();
-
+        var lg = new List<string>(lgSnap);
+        if (carveTerrain) {
         // 1) 지형 — 새 길 3개 주변 정점만. 기존 차길 띠(폭/2 + 1 m) 안 정점은 건드리지 않는다(갈림목에서 옛 길을 묻지 않게).
         var mf = terrGo.GetComponent<MeshFilter>(); var mesh = mf.sharedMesh;
         string ridgePath = grayMatDir + "/Mesh_TownV6_Terrain_ridge.asset";   // 사본에 고친다(_d203·_loopfix 와 같은 방식 — 되돌리기 = 이전 메시로 다시 꽂기)
@@ -80,6 +95,7 @@ public static partial class BuildBayLoop
         mesh.vertices = v; mesh.RecalculateNormals(); mesh.RecalculateBounds(); EditorUtility.SetDirty(mesh);
         var mc = terrGo.GetComponent<MeshCollider>(); if (mc != null) { mc.sharedMesh = null; mc.sharedMesh = mesh; }
         lg.Add($"지형 정점 {moved}개 이동(최대 {maxD:F2} m)");
+        }
 
         // 2) 길 띠 + RoadSurface (BuildGray 의 마을길과 같은 들림·콜라이더)
         foreach (var r in rs)
@@ -93,6 +109,36 @@ public static partial class BuildBayLoop
         }
         EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
         return string.Join(" | ", lg);
+    }
+
+    // 0628: 끝 knot(ks[i], y=길면) 을 기존 길에 붙인다.
+    //  ① 내 반폭+2 m 안에 기존 길의 "끝점"(갈림목 마디)이 있고 높이차 0.5 m 안이면 가장 가까운 그 끝점으로 —
+    //     중심선 최근점에 붙이면 가파른 경사로(join) 옆구리에 닿아, 내 4.5 m 띠 폭 안에서 상대 길이 0.6 m 오르내렸다(1차 시도 실측).
+    //  ② 없으면 띠가 겹치는(중심선 거리 − 상대 반폭 ≤ 내 반폭) 길 중 높이차가 가장 작은 길의 중심선 최근점. 1 m 넘으면 안 붙임(다른 층).
+    static void SnapEnd(List<Vector3> ks, int i, float hwSelf, List<RoadSurface> roads, string id, List<string> lg)
+    {
+        var p = ks[i]; float bestDy = 1f; Vector3 best = p; string bestName = null;
+        float bestEnd = hwSelf + 2f;
+        foreach (var r in roads)
+            foreach (var c in new[] { r.centerline[0], r.centerline[r.centerline.Length - 1] })
+            {
+                float d = Fl(c - p).magnitude, dy = Mathf.Abs(c.y - RoadColLift - p.y);
+                if (d < bestEnd && dy < .5f) { bestEnd = d; best = new Vector3(c.x, c.y - RoadColLift, c.z); bestName = r.roadId + "(끝점)"; }
+            }
+        if (bestName == null) foreach (var r in roads)
+        {
+            var c = r.centerline; float bd = 1e9f; Vector3 bq = p;
+            for (int j = 1; j < c.Length; j++)
+            {
+                var ab = Fl(c[j] - c[j - 1]); float t = Mathf.Clamp01(Vector3.Dot(Fl(p - c[j - 1]), ab) / Mathf.Max(1e-6f, ab.sqrMagnitude));
+                var q = Vector3.Lerp(c[j - 1], c[j], t); float d = Fl(p - q).magnitude; if (d < bd) { bd = d; bq = q; }
+            }
+            if (bd - r.width * .5f > hwSelf) continue;
+            float dy = Mathf.Abs(bq.y - RoadColLift - p.y); if (dy < bestDy) { bestDy = dy; best = new Vector3(bq.x, bq.y - RoadColLift, bq.z); bestName = r.roadId; }
+        }
+        if (bestName == null || (best - p).magnitude < .05f) return;
+        lg.Add($"{id} 끝{i} ({p.x:F2},{p.z:F2},{p.y:F2}) → {bestName} ({best.x:F2},{best.z:F2},{best.y:F2})");
+        ks[i] = best;
     }
 
     // 과제 0404: 카트가 올라가게 중심선 높이를 경사 상한 안으로 편다. 양 끝(기존 길과 만나는 점) 높이는 고정.
