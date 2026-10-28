@@ -22,14 +22,14 @@
     "size_m": [
       9.16,
       8.25,
-      7.87
+      8.15
     ],
-    "tris": 1084,
-    "nodes": 23,
-    "mesh_nodes": 19,
-    "bytes": 476524,
+    "tris": 2794,
+    "nodes": 65,
+    "mesh_nodes": 55,
+    "bytes": 934836,
     "source": "art/export/house-home/house_home.fbx",
-    "exported": "2026-10-29 01:10:14"
+    "exported": "2026-10-29 04:05:53"
   },
   {
     "name": "garage",

@@ -68,17 +68,30 @@ for za, zb in zip(zs, zs[1:]):  # 앞벽 = 높이 띠마다 구멍 사이 토막
 wall('B', -WX, WX, 0, WT); wall('L', FY, BY, 0, WT); wall('R', FY, BY, 0, WT)
 zr = WT + PIT * BY                      # 박공 꼭짓점(지붕 밑면)
 face(SHELL, [(-WX, BY, WT), (-WX, FY, WT), (-WX, 0, zr)], 'wall'); face(SHELL, [(WX, FY, WT), (WX, BY, WT), (WX, 0, zr)], 'wall')
-# 현관 문틀 안쪽 면(벽 두께 15cm 중 문짝 앞까지)
-DY = FY + .13
-face(SHELL, [(DX0, FY, 0), (DX0, DY, 0), (DX0, DY, DZ), (DX0, FY, DZ)], 'trim')
-face(SHELL, [(DX1, DY, 0), (DX1, FY, 0), (DX1, FY, DZ), (DX1, DY, DZ)], 'trim')
-face(SHELL, [(DX0, DY, DZ), (DX1, DY, DZ), (DX1, FY, DZ), (DX0, FY, DZ)], 'trim')
-def inset(x0, x1, z0, z1):  # 창 = 15cm 파인 흰 면 4 + 안쪽 유리(어두운 방 + 창살 십자)
-    yb = FY + .15
-    face(SHELL, [(x0, FY, z0), (x1, FY, z0), (x1, yb, z0), (x0, yb, z0)], 'trim'); face(SHELL, [(x0, yb, z1), (x1, yb, z1), (x1, FY, z1), (x0, FY, z1)], 'trim')
-    face(SHELL, [(x0, FY, z0), (x0, yb, z0), (x0, yb, z1), (x0, FY, z1)], 'trim'); face(SHELL, [(x1, yb, z0), (x1, FY, z0), (x1, FY, z1), (x1, yb, z1)], 'trim')
-    face(SHELL, [(x0, yb, z0), (x1, yb, z0), (x1, yb, z1), (x0, yb, z1)], 'pane')
+# 현관 문틀 안쪽 면(벽 두께 15cm 전부 — 0351: 안에서 보면 틈이 없게)
+DY = FY + .13; YI = FY + .15
+face(SHELL, [(DX0, FY, 0), (DX0, YI, 0), (DX0, YI, DZ), (DX0, FY, DZ)], 'trim')
+face(SHELL, [(DX1, YI, 0), (DX1, FY, 0), (DX1, FY, DZ), (DX1, YI, DZ)], 'trim')
+face(SHELL, [(DX0, YI, DZ), (DX1, YI, DZ), (DX1, FY, DZ), (DX0, FY, DZ)], 'trim')
+GLASS = []                              # 0351: 유리 = 낱개 GLASS_NN, 재질 HOUSE_glass(Unity M_house_home_glass 반투명)
+def inset(x0, x1, z0, z1):  # 0351 창(도현 "실제 창같이"): 벽 두께 15cm 흰 면 4 + 창틀 5cm(바깥면에서 6~10cm 안) + 창살 2cm 십자 + 반투명 유리 4장
+    face(SHELL, [(x0, FY, z0), (x1, FY, z0), (x1, YI, z0), (x0, YI, z0)], 'trim'); face(SHELL, [(x0, YI, z1), (x1, YI, z1), (x1, FY, z1), (x0, FY, z1)], 'trim')
+    face(SHELL, [(x0, FY, z0), (x0, YI, z0), (x0, YI, z1), (x0, FY, z1)], 'trim'); face(SHELL, [(x1, YI, z0), (x1, FY, z0), (x1, FY, z1), (x1, YI, z1)], 'trim')
+    fw, ya, yb = .05, FY + .06, FY + .10                # 틀: 흰 면 4 에 붙는 면은 skip
+    box(SHELL, x0, x0 + fw, ya, yb, z0, z1, 'trim', ('left', 'top', 'bottom')); box(SHELL, x1 - fw, x1, ya, yb, z0, z1, 'trim', ('right', 'top', 'bottom'))
+    box(SHELL, x0 + fw, x1 - fw, ya, yb, z0, z0 + fw, 'trim', ('left', 'right', 'bottom')); box(SHELL, x0 + fw, x1 - fw, ya, yb, z1 - fw, z1, 'trim', ('left', 'right', 'top'))
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2 + .1           # 창살(틀보다 얕게 1cm씩 = 틀 앞뒤 면과 같은 면 0)
+    box(SHELL, cx - .01, cx + .01, ya + .01, yb - .01, z0 + fw, z1 - fw, 'trim', ('top', 'bottom'))
+    for a, b in ((x0 + fw, cx - .01), (cx + .01, x1 - fw)): box(SHELL, a, b, ya + .01, yb - .01, cz - .01, cz + .01, 'trim', ('left', 'right'))
+    yg = FY + .08
+    for a, b in ((x0 + fw, cx - .01), (cx + .01, x1 - fw)):
+        for c, d in ((z0 + fw, cz - .01), (cz + .01, z1 - fw)):
+            nmg = 'GLASS_%02d' % (len(GLASS) + 1); GLASS.append(nmg); face(nmg, [(a, yg, c), (b, yg, c), (b, yg, d), (a, yg, d)], 'glass')
 for w_ in (WL, WK, W2L, W2R): inset(*w_)
+# 발코니 문 구멍: 벽 두께 흰 면 3 + 문턱(방 q1_room 의 껍데기를 버려서 집이 직접 — 0351)
+bx0, bx1, bz0, bz1 = BD
+face(SHELL, [(bx0, FY, bz0), (bx0, YI, bz0), (bx0, YI, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx1, YI, bz0), (bx1, FY, bz0), (bx1, FY, bz1), (bx1, YI, bz1)], 'trim')
+face(SHELL, [(bx0, YI, bz1), (bx1, YI, bz1), (bx1, FY, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx0, FY, bz0), (bx1, FY, bz0), (bx1, YI, bz0), (bx0, YI, bz0)], 'trim')
 # 흰 틀(2cm 돋음): 옆은 위·아래·뒤 skip(위 띠·창턱·발코니 바닥과 같은 면 0)
 def surround(x0, x1, z0, z1, sill=True, head=True):
     y0 = FY - .02
@@ -89,7 +102,13 @@ surround(DX0, DX1, 0, DZ, sill=False); surround(*BD, sill=False)
 for w_ in (WL, WK, W2L, W2R): surround(*w_)
 # ---------- 기단(비탈, 돌) = 앞 테라스 1.2m(의자 자리) · 현관 계단 한 단 ----------
 TY = FY - 1.2
-box(SHELL, -WX - .08, WX + .08, TY, BY + .08, -.9, 0, 'stone', ('bottom',))
+box(SHELL, -WX - .08, WX + .08, TY, BY + .08, -.9, 0, 'stone', ('bottom', 'top'))
+# 0351 윗면을 나눔: 바깥 테두리 = 돌 · 집 안 1층 바닥 = 테라코타 타일, 현관 앞 1.1m = 돌(신발 벗는 자리)
+for a, b, c, d in ((-WX - .08, WX + .08, TY, FY), (-WX - .08, WX + .08, BY, BY + .08), (-WX - .08, -WX, FY, BY), (WX, WX + .08, FY, BY)):
+    face(SHELL, [(a, c, 0), (b, c, 0), (b, d, 0), (a, d, 0)], 'stone')
+EX = .9; EYB = FY + 1.1
+for a, b, c, d, p in ((-WX, -EX, FY, BY, 'pavers'), (EX, WX, FY, BY, 'pavers'), (-EX, EX, EYB, BY, 'pavers'), (-EX, EX, FY, EYB, 'stone')):
+    face(SHELL, [(a, c, 0), (b, c, 0), (b, d, 0), (a, d, 0)], p)
 box(SHELL, DX0 - .25, DX1 + .25, TY - .32, TY, -.9, -.22, 'stone', ('back', 'bottom'))
 # ---------- 지붕(박공, 기와 E2) ----------
 def zu(y): return WT + PIT * (BY - abs(y))
@@ -105,10 +124,10 @@ for x in (-XE, XE):  # 옆 끝(박공 처마)
         if (x < 0) == (s < 0): q = [q[1], q[0], q[3], q[2]]
         face(SHELL, q, 'fascia')
 box(SHELL, -XE - .03, XE + .03, -.11, .11, zu(0) + RT - .06, zu(0) + RT + .07, 'ridge', ('bottom',))
-# ---------- 발코니(방 폭 3.5m = 방 문 앞, 돌판 15cm · 까치발 2) — 1층 현관 차양을 겸함 ----------
-BX = 1.75; BYF = FY - .9
+# ---------- 발코니(0351 도현 "조금 더 넓게": 폭 3.7m · 깊이 1.8m, 돌판 15cm · 까치발 2) — 1층 현관 차양을 겸함 ----------
+BX = 1.85; BYF = FY - 1.8                # 폭 = 3.7(2층 창 덧창 x 1.91 과 6cm 떨어짐)
 box(SHELL, -BX, BX, BYF, FY, H2 - .15, H2, {'*': 'trim', 'top': 'pavers'}, ('back',))
-for cx in (-1.45, 1.45): box(SHELL, cx - .08, cx + .08, BYF + .35, FY, H2 - .45, H2 - .15, 'trim', ('back', 'top'))
+for cx in (-1.55, 1.55): box(SHELL, cx - .08, cx + .08, FY - 1.2, FY, H2 - .55, H2 - .15, 'trim', ('back', 'top'))
 # ---------- 낱개 물건 ----------
 # 현관문: 문짝(문틀 안 1cm 틈) + 손잡이. 바닥 5mm 띄움(기단 윗면과 같은 면 0)
 box('DOOR_01', DX0 + .01, DX1 - .01, DY - .04, DY, .005, DZ - .01, 'door', ('bottom', 'back'))
@@ -128,13 +147,15 @@ for x0, x1, z0, z1 in (WL, W2L, W2R):
     for a, b in ((x0 - .14 - hw, x0 - .14), (x1 + .14, x1 + .14 + hw)):
         k += 1; box('SHUTTER_%02d' % k, a, b, FY - .07, FY - .04, z0, z1, 'shutter', ('bottom',))
 # 부엌 창: 커튼 2(창 머리에 매달린 천 = 앞면 한 장, 유리 2cm 앞) + 창턱 안 작은 화분(바닥 = 창 아래 면 → skip)
-x0, x1, z0, z1 = WK; yb = FY + .15
-box('CURTAIN_01', x0 + .02, x0 + .40, yb - .04, yb - .02, z0 + .02, z1, 'curtain', ('top', 'back', 'left', 'right', 'bottom'))  # 앞면 한 장(2cm 옆면 2px 칸이 검사 칸에서 빈자리와 섞였다)
-box('CURTAIN_02', x1 - .40, x1 - .02, yb - .04, yb - .02, z0 + .02, z1, 'curtain', ('top', 'back', 'left', 'right', 'bottom'))  # 앞면 한 장(2cm 옆면 2px 칸이 검사 칸에서 빈자리와 섞였다)
-cx = (x0 + x1) / 2
-box('PLANTER_03', cx - .08, cx + .08, FY + .02, FY + .10, z0, z0 + .12, {'*': 'terracotta', 'top': 'soil'}, ('bottom',))
-for dx, h, w in ((-.04, .14, .07), (.04, .18, .08)): box('PLANT_03', cx + dx - w / 2, cx + dx + w / 2, FY + .04, FY + .08, z0 + .12, z0 + .12 + h, 'leaf', ('bottom',))  # 잎 둘 5mm 떨어짐
-box('PLANT_03', cx - .015, cx + .015, FY + .02, FY + .04, z0 + .22, z0 + .26, 'flower', ('back',))
+x0, x1, z0, z1 = WK  # 0351: 창틀이 벽 안으로 들어가서 커튼·화분은 집 안(안쪽 창턱 13cm 위)으로
+face('CURTAIN_01', [(x0 - .22, YI + .03, z0 + .02), (x0 + .2, YI + .03, z0 + .02), (x0 + .2, YI + .03, z1 + .1), (x0 - .22, YI + .03, z1 + .1)][::-1], 'curtain')  # 방 쪽(+Y)을 보는 한 장
+face('CURTAIN_02', [(x1 - .15, YI + .03, z0 + .02), (x1 + .12, YI + .03, z0 + .02), (x1 + .12, YI + .03, z1 + .1), (x1 - .15, YI + .03, z1 + .1)][::-1], 'curtain')
+box('CURTAIN_01', x0 - .26, x1 + .16, YI + .01, YI + .03, z1 + .12, z1 + .14, 'brass', ('front',))  # 커튼 봉(벽에서 1cm)
+box(SHELL, x0 - .05, x1 + .05, YI, YI + .13, z0 - .04, z0, 'trim', ('front',))  # 안쪽 창턱(윗면 = 흰 면 아래와 같은 높이, 맞닿기만)
+cx = (x0 + x1) / 2; py = YI + .02
+box('PLANTER_03', cx - .08, cx + .08, py, py + .08, z0, z0 + .12, {'*': 'terracotta', 'top': 'soil'}, ('bottom',))
+for dx, h, w in ((-.04, .14, .07), (.04, .18, .08)): box('PLANT_03', cx + dx - w / 2, cx + dx + w / 2, py + .02, py + .06, z0 + .12, z0 + .12 + h, 'leaf', ('bottom',))  # 잎 둘 5mm 떨어짐
+box('PLANT_03', cx - .015, cx + .015, py + .06, py + .08, z0 + .22, z0 + .26, 'flower', ('front',))
 # 의자(엄마 의자, 현관 오른쪽 테라스): 다리 4(뒷다리 = 등받이 기둥) + 앉판 + 등받이 살. 다리 윗면은 앉판 밑면과 맞닿음 → skip
 CX0, CX1, CY0, CY1 = 1.0, 1.44, FY - .58, FY - .16
 for lx0, ly0, lh in ((CX0 + .01, CY0 + .01, .42), (CX1 - .05, CY0 + .01, .42), (CX0 + .01, CY1 - .05, .9), (CX1 - .05, CY1 - .05, .9)):
@@ -157,7 +178,7 @@ for i in range(-16, 17):
     if abs(x) < .09 or abs(x) > BX - .12: continue
     box(RL, x - .01, x + .01, FY0 + .02, FY1 - .02, z0 + .12, zt, 'iron', ('top', 'bottom')); n += 1
 for x0, x1 in SX:
-    for kk in range(5):
+    for kk in range(13):  # 0351: 깊이 1.8m → 12cm 간격 13개
         y = BYF + .2 + kk * .12
         box(RL, x0 + .02, x1 - .02, y - .01, y + .01, z0 + .12, zt, 'iron', ('top', 'bottom')); n += 1
 # 화분 2(테라코타 + 흙 + 잎·꽃) — 문 양옆(문 앞 길 비움). 잎 바닥 = 흙 윗면 → skip
@@ -168,13 +189,128 @@ for nm_, pl_, cx in (('PLANTER_01', 'PLANT_01', -1.25), ('PLANTER_02', 'PLANT_02
         box(pl_, cx + dx - w / 2, cx + dx + w / 2, lf, lf + .10, H2 + .24, H2 + .24 + h, 'leaf', ('bottom',))
         box(pl_, cx + dx - .03, cx + dx + .03, lf - .02, lf, H2 + .24 + h - .10, H2 + .24 + h - .04, 'flower', ('back',))
 
+# ========== 0351 집 안(도현 "실제 집처럼"): 1층 현관·거실 겸 부엌·계단 / 2층 바닥 슬래브·주인공 방(벽 = 집 칸막이)·복도·엄마 방·욕실 ==========
+XI, YB = WX - .15, BY - .15              # 바깥벽 안쪽 면(두께 15cm)
+C1, H2C = 2.8, WT                        # 1층 천장 2.8 · 2층 천장 = 벽 윗선 5.85(층고 2.65)
+RX, RW = 1.75, 4.1                       # 방 벽 x ±1.75(q1_room 3.5m) · 방 판벽 윗선 z(방 바닥 + 0.9)
+PB0, PB1 = .15, .25                      # 2층 복도 벽 y(방 뒷벽 = q1_room y +1.5)
+SX0, ST, SR, SN_, SY0 = -.2, .25, .2, 15, 1.85   # 계단: 첫 단 x · 디딤 25cm · 단 20cm · 15단(+ 슬래브 1단 = 3.2m) · 계단 앞선 y(뒤 = 뒷벽)
+SX1 = SX0 + SN_ * ST                     # 3.55 = 계단 끝 = 2층 도착
+def hwall(obj, p0, p1, z0, z1, holes=(), pf=lambda c, z: 'plaster', ss=(), zz=()):
+    """수직 벽 한 장(p0→p1 이 바깥에서 본 왼→오른, 법선 = (dy, -dx)). holes·ss = 벽 방향 세계 좌표(x 또는 y). 띠마다 토막, pf(좌표, z) = 칠."""
+    ax = 0 if abs(p1[0] - p0[0]) > 1e-6 else 1; c0, c1 = p0[ax], p1[ax]
+    P = lambda c: (c, p0[1]) if ax == 0 else (p0[0], c)
+    zs = sorted({z0, z1} | {z for h in holes for z in h[2:] if z0 < z < z1} | {z for z in zz if z0 < z < z1})
+    for za, zb in zip(zs, zs[1:]):
+        cs = sorted({c0, c1} | {c for c in ss if min(c0, c1) < c < max(c0, c1)} | {c for h in holes if h[2] <= za and zb <= h[3] for c in h[:2]}, reverse=c1 < c0)
+        for ca, cb in zip(cs, cs[1:]):
+            m = (ca + cb) / 2
+            if any(min(h[:2]) < m < max(h[:2]) and h[2] <= za and zb <= h[3] for h in holes): continue
+            a, b = P(ca), P(cb); face(obj, [(a[0], a[1], za), (b[0], b[1], za), (b[0], b[1], zb), (a[0], a[1], zb)], pf(m, (za + zb) / 2))
+def hface(obj, x0, x1, y0, y1, z, pt, up=True):
+    q = [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)]; face(obj, q if up else q[::-1], pt)
+def hexa(obj, c, pt, skip=()):  # 여섯 면 육면체(기운 손잡이용): c = 아래 4(x0y0,x1y0,x1y1,x0y1) + 위 4. 면 키 front(y0)·right·back·left·bottom·top, 법선은 가운데에서 바깥
+    c = [Vector(p) for p in c]; ctr = sum(c, Vector()) / 8
+    for k, ix in (('front', (0, 1, 5, 4)), ('right', (1, 2, 6, 5)), ('back', (2, 3, 7, 6)), ('left', (3, 0, 4, 7)), ('bottom', (3, 2, 1, 0)), ('top', (4, 5, 6, 7))):
+        if k in skip: continue
+        f = [c[i] for i in ix]; n = (f[1] - f[0]).cross(f[2] - f[0])
+        if n.dot(sum(f, Vector()) / 4 - ctr) < 0: f = f[::-1]
+        face(obj, f, pt)
+def roomwall(c, z, xr=True): return ('wainlow' if z < RW else 'rwall') if (abs(c) < RX if xr else True) else 'plaster'
+# --- 바깥벽 안쪽 면(1층 0~2.8 · 2층 3.2~5.85), 앞벽은 구멍 그대로 ---
+hwall(SHELL, (XI, YI), (-XI, YI), 0, C1, [(DX0, DX1, 0, DZ), WL, WK])
+hwall(SHELL, (-XI, YB), (XI, YB), 0, C1); hwall(SHELL, (-XI, YI), (-XI, YB), 0, C1); hwall(SHELL, (XI, YB), (XI, YI), 0, C1)
+hwall(SHELL, (XI, YI), (-XI, YI), H2, H2C, [BD, W2L, W2R], roomwall, (-RX - .1, -RX, RX, RX + .1), (RW,))
+hwall(SHELL, (-XI, YB), (XI, YB), H2, H2C); hwall(SHELL, (-XI, YI), (-XI, YB), H2, H2C); hwall(SHELL, (XI, YB), (XI, YI), H2, H2C)
+# --- 슬래브(1층 천장 2.8 / 2층 바닥 3.2): 계단 구멍(x SX0..SX1, y SY0..YB)만 비움 ---
+for x0, x1, y0, y1 in ((-XI, XI, YI, SY0), (-XI, SX0, SY0, YB), (SX1, XI, SY0, YB)):
+    hface(SHELL, x0, x1, y0, y1, H2, 'boards'); hface(SHELL, x0, x1, y0, y1, C1, 'ceil', up=False)
+face(SHELL, [(SX1, SY0, C1), (SX0, SY0, C1), (SX0, SY0, H2), (SX1, SY0, H2)], 'ceil')   # 구멍 가장자리 3면
+face(SHELL, [(SX0, SY0, C1), (SX0, YB, C1), (SX0, YB, H2), (SX0, SY0, H2)], 'ceil')
+face(SHELL, [(SX1, YB, C1), (SX1, SY0, C1), (SX1, SY0, H2), (SX1, YB, H2)], 'ceil')
+hface(SHELL, -XI, XI, YI, YB, H2C, 'ceil', up=False)                                   # 2층 천장
+# --- 2층 칸막이 10cm: 방 왼·오른 벽(x ±1.75..1.85) + 복도 벽(y .15..0.25, 문 3: 엄마 방 · 주인공 방 · 욕실) ---
+MD, RD, BTD = (-3.3, -2.5, H2, H2 + 2.0), (.6, 1.4, H2, H2 + 2.0), (2.6, 3.4, H2, H2 + 2.0)   # 방 문 = q1_room 문틀 x .6..1.4, 높이 2.0
+hwall(SHELL, (-RX, YI), (-RX, PB0), H2, H2C, (), lambda c, z: roomwall(0, z), (), (RW,)); hwall(SHELL, (-RX - .1, PB0), (-RX - .1, YI), H2, H2C)
+hwall(SHELL, (RX, PB0), (RX, YI), H2, H2C, (), lambda c, z: roomwall(0, z), (), (RW,)); hwall(SHELL, (RX + .1, YI), (RX + .1, PB0), H2, H2C)
+hwall(SHELL, (-XI, PB0), (XI, PB0), H2, H2C, [MD, RD, BTD], roomwall, (-RX - .1, -RX, RX, RX + .1), (RW,))
+hwall(SHELL, (XI, PB1), (-XI, PB1), H2, H2C, [MD, RD, BTD])
+for x0, x1, z0, z1 in (MD, RD, BTD):  # 문 구멍 안쪽 면 + 문틀(복도 쪽 · 방 쪽은 주인공 방만) + 닫힌 문짝 + 손잡이 양쪽
+    face(SHELL, [(x0, PB0, z0), (x0, PB1, z0), (x0, PB1, z1), (x0, PB0, z1)], 'trim'); face(SHELL, [(x1, PB1, z0), (x1, PB0, z0), (x1, PB0, z1), (x1, PB1, z1)], 'trim')
+    hface(SHELL, x0, x1, PB0, PB1, z1, 'trim', up=False)
+    for ya, yb_, sk in ((PB1, PB1 + .03, 'front'), (PB0 - .03, PB0, 'back')) if x0 == RD[0] else ((PB1, PB1 + .03, 'front'),):
+        box(SHELL, x0 - .06, x0, ya, yb_, z0, z1, 'chair', (sk, 'top', 'bottom')); box(SHELL, x1, x1 + .06, ya, yb_, z0, z1, 'chair', (sk, 'top', 'bottom'))
+        box(SHELL, x0 - .06, x1 + .06, ya, yb_, z1, z1 + .06, 'chair', (sk,))
+    dn = {MD[0]: 'DOOR_MOM', RD[0]: 'DOOR_ROOM', BTD[0]: 'DOOR_BATH'}[x0]
+    ly0 = PB0 if x0 == RD[0] else PB0 + .03            # 방 문짝 = 방 쪽 벽면과 같은 줄(q1_room 손잡이 KNOB_01 이 y .15 에 붙음)
+    box(dn, x0 + .005, x1 - .005, ly0, ly0 + .04, z0 + .005, z1 - .005, 'door')
+    box(dn, x0 + .06, x0 + .1, ly0 + .04, ly0 + .08, z0 + .95, z0 + .99, 'brass', ('front',))
+    if x0 != RD[0]: box(dn, x0 + .06, x0 + .1, ly0 - .04, ly0, z0 + .95, z0 + .99, 'brass', ('back',))
+# --- 계단(STAIRS, 1층 → 2층, 38.7°): 디딤·챌판·옆판(단마다 한 장 = 톱니 다각형 없음) ---
+for i in range(SN_):
+    xa, xb, zt = SX0 + i * ST, SX0 + (i + 1) * ST, (i + 1) * SR
+    face('STAIRS', [(xa, YB, i * SR), (xa, SY0, i * SR), (xa, SY0, zt), (xa, YB, zt)], 'boards')               # 챌판(-X 를 봄 = 오르는 사람 쪽)
+    hface('STAIRS', xa, xb, SY0, YB, zt, 'boards')                                                          # 디딤
+    face('STAIRS', [(xa, SY0, 0), (xb, SY0, 0), (xb, SY0, zt), (xa, SY0, zt)], 'plaster')                    # 옆판(계단 밑 = 막힘)
+face('STAIRS', [(SX1, SY0, 0), (SX1, YB, 0), (SX1, YB, C1), (SX1, SY0, C1)], 'plaster')                    # 끝(위는 슬래브 가장자리)
+PIVOT['STAIRS'] = Vector(((SX0 + SX1) / 2, (SY0 + YB) / 2, 0))
+zr = lambda x: SR + SR * (x - SX0) / ST + .9                                                                # 손잡이 = 단 코 + 90cm
+ry0, ry1 = SY0 + .01, SY0 + .05
+for x in (SX0 + .04, SX1 - .2):                                                                             # 기둥 2(첫 단·끝 단 위)
+    i = int((x - SX0) // ST); box('RAIL_STAIRS', x, x + .06, ry0, ry1, (i + 1) * SR, zr(x + .03) + .08, 'iron', ('bottom',))
+xa, xb = SX0 + .1, SX1 - .2
+hexa('RAIL_STAIRS', [(xa, ry0 + .005, zr(xa)), (xb, ry0 + .005, zr(xb)), (xb, ry1 - .005, zr(xb)), (xa, ry1 - .005, zr(xa)),
+                     (xa, ry0 + .005, zr(xa) + .05), (xb, ry0 + .005, zr(xb) + .05), (xb, ry1 - .005, zr(xb) + .05), (xa, ry1 - .005, zr(xa) + .05)], 'iron', ('left', 'right'))
+for i in range(1, SN_ - 1):                                                                                 # 살: 단마다 하나(디딤 가운데)
+    x = SX0 + (i + .5) * ST; box('RAIL_STAIRS', x - .01, x + .01, ry0 + .01, ry1 - .01, (i + 1) * SR, zr(x) + .02, 'iron', ('bottom', 'top'))  # 위끝 = 손잡이 속 2cm
+def rail_run(obj, x0, x1, y0, y1, z0, h=.95, skip_end=()):  # 2층 계단 구멍 난간(가로 = x 또는 y 긴 쪽): 위 손잡이 + 살 12cm
+    alongx = (x1 - x0) > (y1 - y0); L = (x1 - x0) if alongx else (y1 - y0)
+    box(obj, x0, x1, y0, y1, z0 + h, z0 + h + .05, 'iron', skip_end)
+    n = int(L / .12)
+    for k in range(n + 1):
+        t = min(max(.03, k * .12), L - .03)
+        if alongx: box(obj, x0 + t - .01, x0 + t + .01, y0 + .01, y1 - .01, z0, z0 + h, 'iron', ('bottom', 'top'))
+        else: box(obj, x0 + .01, x1 - .01, y0 + t - .01, y0 + t + .01, z0, z0 + h, 'iron', ('bottom', 'top'))
+rail_run('RAIL_02', SX0 - .05, SX1, SY0 - .05, SY0, H2)                        # 복도 쪽(도착 x SX1..XI 는 비움)
+rail_run('RAIL_02', SX0 - .05, SX0, SY0, YB, H2, skip_end=('front', 'back'))   # 끝(앞 = 위 손잡이에 닿음 · 뒤 = 뒷벽)
+# --- 1층 가구(낱개, 피벗 바닥 가운데) ---
+def chair(nm_, x0, x1, y0, y1, back_low):
+    yb0 = y0 if back_low else y1 - .04
+    for lx, ly in ((x0 + .01, y0 + .01), (x1 - .05, y0 + .01), (x0 + .01, y1 - .05), (x1 - .05, y1 - .05)):
+        tall = (ly < (y0 + y1) / 2) == back_low; box(nm_, lx, lx + .04, ly, ly + .04, 0, .9 if tall else .42, 'chair', ('bottom',) if tall else ('bottom', 'top'))
+    box(nm_, x0, x1, y0, y1, .42, .46, 'chair'); box(nm_, x0, x1, yb0 + .01, yb0 + .03, .68, .84, 'chair')
+# 거실(왼쪽): 소파(왼벽 5cm 앞) · 낮은 탁자 · 엄마 바느질 바구니
+box('SOFA', -4.1, -3.3, -1.6, -1.45, 0, .62, 'sofa', ('bottom',)); box('SOFA', -4.1, -3.3, .25, .4, 0, .62, 'sofa', ('bottom',))          # 팔걸이 2
+box('SOFA', -4.1, -3.3, -1.45, .25, 0, .42, 'sofa', ('bottom', 'front', 'back'))                                                       # 바닥 몸
+box('SOFA', -4.1, -3.85, -1.45, .25, .42, .85, 'sofa', ('bottom', 'front', 'back'))                                                   # 등받이
+box('SOFA', -3.84, -3.32, -1.44, .24, .42, .52, 'cushion', ('bottom',))                                                               # 앉는 방석
+box('TABLE_LIVING', -2.9, -2.3, -1.0, -.2, .36, .4, 'chair')
+for lx, ly in ((-2.88, -.98), (-2.36, -.98), (-2.88, -.26), (-2.36, -.26)): box('TABLE_LIVING', lx, lx + .04, ly, ly + .04, 0, .36, 'chair', ('bottom', 'top'))
+box('BASKET_01', -3.95, -3.6, .55, .85, 0, .22, 'basket', ('bottom',)); box('BASKET_01', -3.82, -3.74, .66, .74, .22, .29, 'flower', ('bottom',))  # 엄마 바느질 바구니 + 털실
+# 현관: 신발장 · 발매트(1cm 위 한 장)
+box('SHOERACK', -1.55, -.8, YI + .03, YI + .33, 0, .45, 'chair', ('bottom', 'front'))
+hface('MAT_01', -.45, .45, YI + .1, YI + .6, .012, 'mat')
+# 부엌(오른쪽 벽): 조리대(하부장 그림) · 싱크 · 가스레인지 · 찬장 · 식탁 2인 · 엄마 앞치마
+box('COUNTER', 3.55, XI - .03, YI + .03, 1.2, 0, .86, {'*': 'cabinet', 'top': 'counter'}, ('bottom', 'right', 'front'))
+box('SINK', 3.62, 4.07, -.9, -.35, .86, .88, {'*': 'steel', 'top': 'sinktop'}, ('bottom',))
+box('SINK', 4.0, 4.04, -.65, -.6, .88, 1.12, 'steel', ('bottom',)); box('SINK', 3.86, 4.0, -.65, -.6, 1.08, 1.12, 'steel', ('right',))
+box('STOVE', 3.62, 4.07, -2.2, -1.6, .86, .9, {'*': 'steel', 'top': 'stovetop'}, ('bottom',))
+box('CUPBOARD', 3.8, XI - .03, -2.3, .9, 1.45, 2.15, 'cabinet', ('right',))
+box('TABLE_KITCHEN', 1.55, 2.45, -.9, -.1, .72, .76, 'chair')
+for lx, ly in ((1.57, -.88), (2.39, -.88), (1.57, -.16), (2.39, -.16)): box('TABLE_KITCHEN', lx, lx + .04, ly, ly + .04, 0, .72, 'chair', ('bottom', 'top'))
+chair('CHAIR_02', 1.78, 2.22, -1.42, -1.0, True); chair('CHAIR_03', 1.78, 2.22, .02, .44, False)
+box('VASE_01', 1.95, 2.05, -.55, -.45, .76, .94, 'terracotta', ('bottom',)); box('VASE_01', 1.96, 2.04, -.54, -.46, .94, 1.02, 'flower', ('bottom',))  # 엄마 꽃병
+face('APRON_01', [(3.27, YI + .02, 1.0), (3.52, YI + .02, 1.0), (3.52, YI + .02, 1.6), (3.27, YI + .02, 1.6)][::-1], 'apron')
+box('APRON_01', 3.37, 3.41, YI, YI + .03, 1.6, 1.64, 'brass', ('front',))
+# 2층 방(ROOM_2F)의 전등은 Unity 에서 0.25m 올림(천장 2.4 → 2.65, library_import.cs)
+
 # ---------- UV 칸 배치(선반 쌓기) → 메시 ----------
 def local2d(pts):
     nrm = Vector()
     for i in range(len(pts)): a, b = pts[i], pts[(i + 1) % len(pts)]; nrm += Vector(((a.y - b.y) * (a.z + b.z), (a.z - b.z) * (a.x + b.x), (a.x - b.x) * (a.y + b.y)))
     nrm.normalize(); u = (pts[1] - pts[0]).normalized(); v = nrm.cross(u)
     return [((p - pts[0]).dot(u), (p - pts[0]).dot(v)) for p in pts]
-AW = 1024; items = []
+AW = 2048; items = []  # 0351: 집 안이 들어와 1024 폭이면 8192 높이
 for i, (obj, pts, pt, d) in enumerate(FACES):
     l2 = local2d(pts); u0, v0 = min(a for a, _ in l2), min(b for _, b in l2)
     um, vm = max(a for a, _ in l2) - u0, max(b for _, b in l2) - v0
@@ -193,7 +329,7 @@ objs = {}
 for t in items:
     obj, pts = FACES[t['i']][0], FACES[t['i']][1]
     objs.setdefault(obj, []).append((pts, [((t['x'] + a * t['w'] / max(t['m'][0], 1e-6)) / AW, (t['y'] + b * t['h'] / max(t['m'][1], 1e-6)) / AH) for a, b in t['l2']]))
-mat = bpy.data.materials.new('HOUSE_alb')
+mat = bpy.data.materials.new('HOUSE_alb'); gmat = bpy.data.materials.new('HOUSE_glass')  # 0351: 유리 = 따로 재질(Unity 에서 반투명)
 obs = []; tris = 0
 for name, fl in objs.items():
     me = bpy.data.meshes.new(name); bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
@@ -202,11 +338,14 @@ for name, fl in objs.items():
     for pts, uvs in fl:
         f = bm.faces.new([bm.verts.new(p - pv) for p in pts])
         for lp, uv in zip(f.loops, uvs): lp[uvl].uv = uv
-    bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(name, me); ob.location = pv; sc.collection.objects.link(ob); me.materials.append(mat); obs.append(ob)
+    bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(name, me); ob.location = pv; sc.collection.objects.link(ob); me.materials.append(gmat if name.startswith('GLASS_') else mat); obs.append(ob)
     tris += sum(len(p.vertices) - 2 for p in me.polygons)
 # 캠: 발코니 문(방 안 문턱 뒤 눈높이 → 열린 문·발코니 너머 바깥) · 1층 정면 근접(테라스 앞 → 현관·부엌 창·의자)
 for en, loc in (('STUDIO_CamBalc', (-.15, FY + .75, H2 + 1.5)), ('STUDIO_CamBalcLook', (.25, FY - 8.0, H2 - .7)),
-                ('STUDIO_CamDoor1', (.9, FY - 4.6, 1.55)), ('STUDIO_CamDoor1Look', (.9, FY, 1.15))):
+                ('STUDIO_CamDoor1', (.9, FY - 4.6, 1.55)), ('STUDIO_CamDoor1Look', (.9, FY, 1.15)),
+                ('STUDIO_Cam_living', (3.3, YI + .35, 1.6)), ('STUDIO_Cam_livingLook', (-3.2, 1.2, .7)),          # 0351: 부엌 앞 구석 → 거실·식탁·계단
+                ('STUDIO_Cam_stairs', (-2.6, .2, 1.55)), ('STUDIO_Cam_stairsLook', (2.2, 2.35, 2.3)),             # 거실 → 계단 올라감
+                ('STUDIO_Cam_hall2f', (3.85, 1.6, H2 + 1.55)), ('STUDIO_Cam_hall2fLook', (-3.6, .6, H2 + 1.0))):  # 2층 도착 → 복도·방 문·엄마 방 문
     e = bpy.data.objects.new(en, None); e.location = loc; sc.collection.objects.link(e); obs.append(e)
 bpy.ops.object.select_all(action='DESELECT')
 for ob in obs: ob.select_set(True)
@@ -216,7 +355,8 @@ bpy.ops.export_scene.fbx(filepath=OUT + 'house_home.fbx', use_selection=True, ax
 lay = dict(atlas=[AW, AH], cells=[dict(obj=t['obj'], pt=t['pt'], dens=t['dens'], rect=[t['x'], t['y'], t['w'], t['h']], m=[round(t['m'][0], 3), round(t['m'][1], 3)], seed=t['i'])
                                   for t in items])
 json.dump(lay, open(OUT + 'layout.json', 'w', encoding='utf-8'), indent=0)
-meas = dict(tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], faces=len(FACES), balusters=n, size_m=dict(w=2 * WX, d=BY - FY, wall_top=WT, ridge=round(zu(0) + RT + .07, 2)),
+meas = dict(stairs=dict(rise=SR, tread=ST, steps=SN_ + 1, deg=round(math.degrees(math.atan2(SR, ST)), 1)), ceil=dict(f1=C1, f2=round(H2C - H2, 2)),
+            balcony=dict(w=2 * BX, d=round(FY - BYF, 2)), glass=len(GLASS), tris=tris, objects=[o.name for o in obs], atlas=[AW, AH], faces=len(FACES), balusters=n, size_m=dict(w=2 * WX, d=BY - FY, wall_top=WT, ridge=round(zu(0) + RT + .07, 2)),
             room_offset_unity=[0, H2, round(-RY, 3)], pivot='기단 윗면(z 0) 가운데(방 가운데는 앞으로 1.35m)', forward='발코니·현관 = Blender -Y → FBX/Unity +Z')
 json.dump(meas, open(OUT + 'measure.json', 'w', encoding='utf-8'), indent=1, ensure_ascii=False); print('MEAS', meas, flush=True)
 sys.stdout.flush(); os._exit(0)

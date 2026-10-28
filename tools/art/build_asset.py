@@ -321,11 +321,13 @@ def h_paint(cell, col):
         return A
     base = {'wall': 'wall', 'trim': 'trim', 'fascia': 'trim', 'door': 'door', 'shutter': 'shutter', 'pavers': 'terra', 'terracotta': 'terra', 'ridge': 'ridge',
             'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass',
-            'pane': 'pane', 'curtain': 'curtain', 'chair': 'soffit'}[pt]  # 0052: 창 유리 안쪽(어두운 방) · 부엌 커튼 · 나무 의자
+            'pane': 'pane', 'curtain': 'curtain', 'chair': 'soffit',  # 0052: 창 유리 안쪽(어두운 방) · 부엌 커튼 · 나무 의자
+            'plaster': 'plaster', 'ceil': 'plaster', 'wainlow': 'wain', 'rwall': 'rwall', 'boards': 'boards', 'glass': 'glass', 'steel': 'steel', 'sinktop': 'steel',
+            'stovetop': 'stove', 'cabinet': 'cabinet', 'counter': 'trim', 'sofa': 'sofa', 'cushion': 'cushion', 'apron': 'apron', 'basket': 'basket', 'mat': 'mat'}[pt]  # 0351 집 안
     A = np.ones((h, w, 3)) * col[base]
-    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD'}.get(pt, 'A2')
+    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD', 'boards': 'WOOD', 'basket': 'WOOD', 'cabinet': 'C2'}.get(pt, 'A2')
     f = np.roll(np.tile(h_field(fk), (h // 128 + 2, w // 128 + 2)), (rs.integers(128), rs.integers(128)), (0, 1))[:h, :w]
-    if pt in ('door', 'soffit', 'chair'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
+    if pt in ('door', 'soffit', 'chair', 'boards'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
     vv, uu = np.mgrid[0:h, 0:w]
     if pt == 'pane' and w > 8 and h > 8: A[(np.abs(uu - w // 2) <= 1) | (np.abs(vv - h // 2) <= 1)] = col['trim']  # 창살 십자(흰 틀 색)
     if pt == 'curtain': A[(uu % 6 == 5)] *= .9  # 커튼 주름 9cm
@@ -333,6 +335,18 @@ def h_paint(cell, col):
         inn = (uu >= 3) & (uu < w - 3) & (vv >= 3) & (vv < h - 3); A[inn & (vv % 4 == 3)] *= .86
     if pt == 'door': A[(uu % 5 == 4)] *= .88; A[(vv == h // 3) | (vv == 2 * h // 3)] *= .9  # 판자 15cm · 가로 띠 2
     if pt == 'soffit': A[(vv % 4 == 3)] *= .9
+    m = lambda x: max(1, round(x * d))  # 0351 집 안 무늬(미터 → px)
+    if pt == 'boards': A[(vv % m(.2) == m(.2) - 1)] *= .88                                   # 마루 판 20cm
+    if pt == 'wainlow':  # 주인공 방 판벽(q1_room 과 같은 색): 판 15cm · 위 띠 6cm(나무) · 걸레받이 8cm
+        A[(uu % m(.15) == m(.15) - 1)] *= .86; A[vv >= h - m(.06)] = col['door']; A[vv < m(.08)] = col['door'] * .8
+    if pt == 'cabinet' and w > 4: A[(uu % m(.5) == 0)] *= .78; A[(vv == h - m(.16))] *= .82    # 장 문 50cm · 서랍 줄
+    if pt == 'counter': A[(uu % m(.15) == m(.15) - 1) | (vv % m(.15) == m(.15) - 1)] *= .9     # 타일 15cm
+    if pt == 'sinktop' and w > 6 and h > 6: A[3:-3, 3:-3] *= .62                             # 개수대 안(움푹 = 칠한 어둠 아님, 스테인리스 안쪽 색)
+    if pt == 'stovetop':
+        for cu in (w // 2,):
+            for cv in (h // 4, 3 * h // 4): r = np.hypot(uu - cu, vv - cv); A[(r >= m(.06)) & (r < m(.06) + 1.5)] = col['steel']  # 화구 2
+    if pt == 'mat': A[(uu < 2) | (uu >= w - 2) | (vv < 2) | (vv >= h - 2)] *= .8
+    if pt == 'apron': A[(uu % 6 < 1) | (vv % 6 < 1)] = col['trim']                            # 체크 앞치마
     if pt == 'pavers' and w > 6 and h > 6: A[(uu % 10 == 9) | (vv % 10 == 9)] *= .82  # 30cm 타일 줄눈
     lum = A @ [.299, .587, .114]
     for kind in ('paint', 'rubber'):
@@ -352,6 +366,10 @@ def h_grain(c):
     col.update(terra=col['roof'] * [1.08, .98, .92], ridge=col['roof'] * .84, soffit=col['door'] * 1.6, iron=np.array([58., 66., 60.]), soil=np.array([112., 84., 60.]),
                leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]),
                pane=np.array([74., 86., 92.]), curtain=col['trim'] * [1.04, 1.02, .94])  # 0052: 유리 너머 어둠(빛 굽기 아님 = 단색 + 결) · 크림 커튼
+    col.update(plaster=col['wall'] * .3 + col['trim'] * .7, wain=np.array([178., 209., 183.]), rwall=np.array([236., 228., 196.]),  # 0351 집 안: 석회 벽(A2 살구 30%) · 방 판벽·위 벽(q1_room 색)
+               boards=col['door'] * 1.35, glass=np.array([186., 214., 226.]), steel=np.array([150., 156., 158.]), stove=np.array([54., 56., 58.]),
+               cabinet=col['shutter'] * 1.45, sofa=np.array([98., 116., 132.]), cushion=np.array([112., 132., 148.]), apron=np.array([184., 92., 86.]),
+               basket=np.array([178., 140., 92.]), mat=np.array([124., 90., 66.]))
     A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
     for (x, y, w, h), t in P:  # 칸 사이 1px 틈 = 가장자리 색 번짐(검은 틈이 작은 물건 잔결·알파를 망쳤다, check 1차)
         e = np.pad(t, ((1, 1), (1, 1), (0, 0)), mode='edge'); y0, x0 = max(y - 1, 0), max(x - 1, 0)
