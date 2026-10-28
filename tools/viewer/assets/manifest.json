@@ -56,11 +56,11 @@
       8.17,
       9.94
     ],
-    "tris": 5120,
-    "nodes": 370,
-    "mesh_nodes": 369,
-    "bytes": 1577936,
+    "tris": 5440,
+    "nodes": 264,
+    "mesh_nodes": 259,
+    "bytes": 2014604,
     "source": "art/export/q4-postoffice/q4_postoffice.fbx",
-    "exported": "2026-10-28 19:55:39"
+    "exported": "2026-10-28 22:49:31"
   }
 ]

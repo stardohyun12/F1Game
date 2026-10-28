@@ -30,7 +30,7 @@ REF_HOUSES = sorted((R / 'F1/Assets/Art/SceneA7/houses').glob('house_*.png'))
 TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'decals', 'clock_dial'}  # 2041: 시계판 = 픽셀 숫자·눈금
 # 2041: 1857 낱개 분리 뒤 이름(PARCEL_·SHELF_… — 원래 Q3_inside_parcels 등 소품 묶음이던 것)도 소품
 PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle|'
-                      r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET)_\d+$|^CLOCK')
+                      r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER)_\d+$|^CLOCK')  # 2230 우체국 낱개
 BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
               'garage_posters', 'garage_festival', 'postbox_G1'}
@@ -43,7 +43,7 @@ B = {
                    tex=lambda mat, img: 'garage_lamp.png' if mat == 'Garage_Lamp_Emit' else ('garage_dirt.png' if img == 'dirt_baked32.png' else img)),
     'depot': dict(fbx=LIB / 'depot/q3_depot.fbx', dir=LIB / 'depot', gpl={'*': R / 'art/export/q3-depot/palette.gpl'},
                   tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img)),
-    'postoffice': dict(fbx=LIB / 'postoffice/q4_postoffice.fbx', dir=LIB / 'postoffice', gpl={'postbox_G1': R / 'art/export/scene-albedo-kit/postbox_G1.gpl', '*': R / 'art/export/q4-postoffice/palette.gpl'},
+    'postoffice': dict(fbx=LIB / 'postoffice/q4_postoffice.fbx', dir=LIB / 'postoffice', gpl={'*': R / 'art/export/q4-postoffice/palette.gpl'},  # 2230: 우체통도 build quant 가 우체국 팔레트로
                        tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img)),
     'kit': dict(fbx=R / 'art/source/kit-shared-v2/proof.fbx', dir=R / 'art/export/kit-shared-v2', gpl={'*': R / 'art/export/kit-shared-v2/palette.gpl'},
                 tex=lambda mat, img: img, group=True, nomat=True),

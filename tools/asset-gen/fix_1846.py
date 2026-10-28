@@ -7,6 +7,8 @@ import bpy, bmesh, sys, os, json, math
 from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 B, MODE = sys.argv[sys.argv.index('--') + 1:][:2]
+# 2230: 세 번째 인자 both = 마주 보는 면(법선 반대)도 센다 — 안쪽 카메라에서 보면 벽 뒷면·받침 뒷면이 앞면이 된다(양면 재질·실내 캠). 같은 덩어리 안 양면(지붕·잎)은 뺌
+BOTH = 'both' in sys.argv[sys.argv.index('--') + 1:]
 REPO = 'D:/Github/F1Game'
 ENT = {e['name']: e for e in json.load(open(REPO + '/tools/viewer/buildings.json', encoding='utf-8'))}[B]
 FBX = REPO + '/' + ENT['fbx']
@@ -73,7 +75,9 @@ def overlap(P, Q, n):
 def find():
     T, area = tris_world(); bk = {}
     for k, t in enumerate(T):
-        n = t[4]; d = n.dot(t[3][0])
+        n = t[4]
+        if BOTH and (n.x, n.y, n.z) < (0, 0, 0): n = -n  # 반대 법선도 같은 통에
+        d = n.dot(t[3][0])
         bk.setdefault((round(n.x * 40), round(n.y * 40), round(n.z * 40), round(d / 0.004)), []).append(k)
     pairs = {}; dup = []
     for key, L in bk.items():
@@ -84,7 +88,9 @@ def find():
             for j in M:
                 if j <= i and j in L: continue
                 tj = T[j]
-                if ti[4].dot(tj[4]) < 0.999 or abs(ti[4].dot(tj[3][0] - ti[3][0])) > 0.004: continue
+                dt = ti[4].dot(tj[4])
+                if (abs(dt) if BOTH else dt) < 0.999 or abs(ti[4].dot(tj[3][0] - ti[3][0])) > 0.004: continue
+                if dt < 0 and ti[2] == tj[2]: continue  # 같은 덩어리의 일부러 만든 양면
                 lo = [min(p[c] for p in ti[3]) for c in range(3)]; hi = [max(p[c] for p in ti[3]) for c in range(3)]
                 if any(max(p[c] for p in tj[3]) < lo[c] - 1e-4 or min(p[c] for p in tj[3]) > hi[c] + 1e-4 for c in range(3)): continue
                 ov = overlap(ti[3], tj[3], ti[4])
@@ -154,7 +160,7 @@ if MODE == 'fix':
             snaps.append([rid, round(gap, 3), '->0.01'])
         me.update(); LOG['decals'] = snaps; log('decals', snaps)
 
-    if B == 'postoffice':  # 창: 코멘트 184350-vpwt 의 부품 중심 근처 덩어리에서 어두운 유리 칸 → 벽까지 구멍 + 얇은 유리
+    if B == 'postoffice' and 'Q4_window_glass_1' not in bpy.data.objects:  # 2230: 생성기가 유리를 만들면(build_asset.py postoffice) 건너뜀. 창: 코멘트 184350-vpwt 의 부품 중심 근처 덩어리에서 어두운 유리 칸 → 벽까지 구멍 + 얇은 유리
         fb = [json.loads(l) for l in open(REPO + '/tools/viewer/feedback/postoffice.jsonl', encoding='utf-8') if l.strip()]
         d = [x for x in fb if x['id'] == 'postoffice-20261028-184350-vpwt'][0]
         cents = [Vector(nd['extras']['center_blender_m']) for nd in d['nodes'] if (nd.get('extras') or {}).get('center_blender_m')]
@@ -198,9 +204,9 @@ if MODE == 'fix':
     out = FBX
     bpy.ops.object.select_all(action='SELECT')
     for o in bpy.context.scene.objects:
-        if o.type != 'MESH': o.select_set(False)
-    bpy.ops.export_scene.fbx(filepath=out, use_selection=True, object_types={'MESH'}, path_mode='STRIP', mesh_smooth_type='FACE')
+        if o.type not in ('MESH', 'EMPTY'): o.select_set(False)  # 2230: 빈 객체(STUDIO_CamIn 등)도 — 옛 판은 메시만 내보내 실내 캠이 사라졌다
+    bpy.ops.export_scene.fbx(filepath=out, use_selection=True, object_types={'MESH', 'EMPTY'}, path_mode='STRIP', mesh_smooth_type='FACE')
     log('exported', out)
 
-json.dump(LOG, open(REPO + '/docs/qa/tmp/fix_1846_%s_%s.json' % (B, MODE), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+json.dump(LOG, open(REPO + '/docs/qa/tmp/fix_1846_%s_%s%s.json' % (B, MODE, '_both' if BOTH else ''), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 sys.stdout.flush(); os._exit(0)

@@ -32,7 +32,10 @@ CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot
                             'garage_posters', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3'],
                       paint=['garage_baked32', 'garage_details', 'dirt_baked32', 'garage_props', 'garage_lamp'],  # 칠·고무 결(D-197)
                       paper=['garage_sign', 'garage_festival', 'garage_posters'],  # 글씨 텍스처: 종이(밝은 픽셀)만 결, 잉크는 그대로
-                      lib_name={'dirt_baked32': 'garage_dirt'})}
+                      lib_name={'dirt_baked32': 'garage_dirt'}),
+       # 2230 우체국: 원본 = tools/asset-gen/q4_postoffice.py(키트 조립 생성기). 1846 export 덧칠(창 구멍·유리, 겹친 면 띄움)은 생성기·overlap 단계로
+       'postoffice': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q4-postoffice', lib=R / 'F1/Assets/Art/Library/Buildings/postoffice', fbx='q4_postoffice.fbx',
+                          pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'postbox_G1'], lib_name={}, roll=(37, 71))}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
 STEPS = {'paint': np.array([-0.10, -0.04, 0.04, 0.10]), 'rubber': np.array([-0.14, -0.05, 0.05, 0.14])}
@@ -106,6 +109,7 @@ def s_quant(c):
     for s in c['pngs']:
         im = Image.open(E / (s + '.png')).convert('RGBA'); a = np.asarray(im).copy(); H, W = a.shape[:2]
         if s in ('icons', 'decals', 'clock_dial'): a[..., 3] = np.where(a[..., 3] >= 128, 255, 0); rects = [[0, 0, W, H]]; N = 24
+        elif s not in L: rects = [[x, y, 128, 128] for y in range(0, H, 128) for x in range(0, W, 128)]; N = 32  # 2230: 칸 표 밖 텍스처(우체통)
         else: rects = [cl['rect_px'] for cl in L[s]]; N = 32 if s != 'trim' else 16
         for x, y, w, h in rects:
             reg = a[y:y + h, x:x + w]; op = reg[..., 3] >= 128
@@ -117,7 +121,7 @@ def s_quant(c):
             allc |= {tuple(int(v) for v in p) for p in pal[np.unique(idx)]}
         a[a[..., 3] < 128, :3] = 0
         Image.fromarray(a).save(E / (s + '.png')); log[s] = int(len(np.unique(a[a[..., 3] >= 128][:, :3], axis=0)))
-    lines = ['GIMP Palette', 'Name: q3-depot (build_asset.py 2041 — 결 뒤 칸별 median-cut 합집합)', 'Columns: 8', '#']
+    lines = ['GIMP Palette', f'Name: {c["exp"].name} (build_asset.py 2041 — 결 뒤 칸별 median-cut 합집합)', 'Columns: 8', '#']
     lines += ['%3d %3d %3d\tc%03d' % (*p, i) for i, p in enumerate(sorted(allc))]
     (E / 'palette.gpl').write_text('\n'.join(lines) + '\n', encoding='utf-8'); log['palette'] = len(allc)
     (c['tmp'] / 'quant.json').write_text(json.dumps(log, indent=1), encoding='utf-8'); print('   colors', log)
@@ -205,11 +209,50 @@ def g_check(c):
     md5 = lambda f: hashlib.md5(f.read_bytes()).hexdigest(); mine = {md5(c['lib'] / (c['lib_name'].get(s, s) + '.png')): s for s in c['pngs']}
     same = sorted({f'{mine[md5(f)]}={f.relative_to(R / "F1/Assets/Art")}' for f in (R / 'F1/Assets/Art').rglob('*.png') if f.parent != c['lib'] and f.stat().st_size < 8e6 and md5(f) in mine})
     print('   다른 건물과 md5 같은 텍스처(D-196):', same or '없음')
+# ---------- 우체국(postoffice) 단계 — 2230 ----------
+def p_source(c):
+    run([sys.executable, '-X', 'utf8', 'tools/asset-gen/icons_shared.py'])
+    out = blender(c['src'] / 'q4_postoffice.py', '--no-render')  # 키트 텍스처 복사 + 조립 + 낱개 이름 + 유리 + 1~3cm 띄움 + 16면 → fbx·blend
+def p_overlap(c):  # 남은 겹침(틀·창살 상자끼리 교차)은 작은 쪽 1cm 띄움 → 같은 방향 0 확인, 마주 보는 면(안쪽 캠)은 보고
+    blender(R / 'tools/asset-gen/fix_1846.py', c['name'], 'fix'); shutil.copy2(R / 'docs/qa/tmp/fix_1846_postoffice_fix.json', c['tmp'] / 'overlap_fix.json')
+    blender(R / 'tools/asset-gen/fix_1846.py', c['name'], 'check', 'both'); shutil.copy2(R / 'docs/qa/tmp/fix_1846_postoffice_check_both.json', c['tmp'] / 'overlap_both.json')
+    for f in ('overlap_fix.json', 'overlap_both.json'):
+        d = json.loads((c['tmp'] / f).read_text(encoding='utf-8')); d = d.get('after') or d['before']; print(f'   {f}: 겹친 쌍 {d["pairs"]} · 같은 덩어리 중복 {d["same_island_dups"]}')
+def p_split(c): print('   우체국: 낱개(MAIL_·CHAIR_·POBOX_DOOR_·BIKE_·POSTBOX_·POT_·PLANTER_·COUNTER_·SHELF_)는 생성기가 이름·피벗까지 만든다')
+def p_snap(c): print('   우체국: 접지는 생성기 좌표(의자 다리·소포는 받침에 0.5~1.5cm 박음)')
+def p_uv(c): print('   우체국: 원통 16면·텍셀 32/64(px_for)는 생성기에서')
+def p_grain(c):
+    E = c['exp']; log = {}; ry, rx = c['roll']
+    for s in c['pngs']:  # 입력 = source 스냅샷(결 중복 X)
+        sp = c['tmp'] / '00_source' / (s + '.png')
+        if not sp.exists(): raise SystemExit(f'{sp} 없음 — source 단계부터 한 번 돌릴 것')
+        shutil.copy2(sp, E / sp.name)
+    im = Image.open(E / 'postbox_G1.png').convert('RGBA'); im.resize((im.width * 2, im.height * 2), Image.NEAREST).save(E / 'postbox_G1.png')  # 우체통 = 작은 물건 64px/m(원래 32)
+    for s in ('wall', 'roof', 'floor', 'trim', 'postbox_G1'):  # 사진 결 — 보관소와 같은 사진, 결 위치를 (37,71)px 밀어 바이트가 다르게(D-196)
+        a = np.asarray(Image.open(E / (s + '.png')).convert('RGBA'), np.float64); rgb = a[..., :3]; lum = rgb @ [.299, .587, .114]; H, W = lum.shape
+        for kind in ('paint', 'rubber'):
+            sel = (lum < 70) if kind == 'rubber' else (lum >= 70)
+            st = STEPS[kind]; f = np.roll(field(kind, W + 128, H + 128), (ry, rx), (0, 1))[:H, :W] * (st[2] + st[3]) / 2
+            q = st[np.abs(f[..., None] - st).argmin(-1)]; rgb[sel] *= (1 + q[sel])[:, None]
+        a[..., :3] = np.clip(rgb, 0, 255); Image.fromarray(a.round().astype(np.uint8)).save(E / (s + '.png')); log[s] = [W, H]
+    for s, n in (('icons', 88), ('decals', 160)):  # 글씨 텍스처 64px/m 격자(보관소와 같은 축척)
+        Image.open(E / (s + '.png')).convert('RGBA').resize((n, n), Image.NEAREST).save(E / (s + '.png')); log[s] = n
+    # 데칼(전단·포스터): 종이(밝은 픽셀)만 결 — 정비소 글씨 텍스처와 같은 방식. 안 하면 보관소 decals 와 바이트가 같다(D-196, 첫 실행에서 걸림)
+    a = np.asarray(Image.open(E / 'decals.png').convert('RGBA'), np.float64); rgb = a[..., :3]; H, W = rgb.shape[:2]
+    sel = (a[..., 3] >= 128) & ((rgb @ [.299, .587, .114]) >= 120); st = STEPS['paint']
+    f = np.roll(field('paint', W + 128, H + 128), (ry, rx), (0, 1))[:H, :W] * (st[2] + st[3]) / 2; q = st[np.abs(f[..., None] - st).argmin(-1)]
+    rgb[sel] *= (1 + q[sel])[:, None]; a[..., :3] = np.clip(rgb, 0, 255); Image.fromarray(a.round().astype(np.uint8)).save(E / 'decals.png')
+    (c['tmp'] / 'grain.json').write_text(json.dumps(log, indent=1), encoding='utf-8')
+def p_unity(c):
+    E, Lb = c['exp'], c['lib']
+    for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: shutil.copy2(p, Lb / p.name)
+    out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "postoffice" };')); print('  ', out[:300])
+POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
 GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}
 
 STAGES = [('source', s_source), ('overlap', s_overlap), ('split', s_split), ('snap', s_snap), ('uv', s_uv), ('grain', s_grain), ('quant', s_quant),
           ('unity', s_unity), ('viewer', s_viewer), ('check', s_check)]
-PER = {'garage': GARAGE}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
+PER = {'garage': GARAGE, 'postoffice': POSTOFFICE}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
 if __name__ == '__main__':
     name = sys.argv[1]; c = dict(CFG[name], name=name); c['tmp'] = R / f'docs/qa/tmp/build/{name}'; c['tmp'].mkdir(parents=True, exist_ok=True)
     start = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else 'source'
