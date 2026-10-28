@@ -1,22 +1,22 @@
 # 기획 뷰어(/plan/) '배치' 저장분 — 자리만. first-delivery.yaml 은 그대로 두고 뷰어가 이 값을 위에 덮어 씀.
 # 좌표 = Unity 월드: world [x, z], y = 바닥(피벗) 높이, yaw = Unity Y 회전(도). 프로그래머는 이 값을 Map_TownV6 에 그대로.
-# 마지막 저장 2026-10-28T23:40:14+0900 (plan=first-delivery). 자동 생성 — 손으로 고쳐도 되지만 다음 저장에 통째로 덮어 씀.
+# 마지막 저장 2026-10-28T23:52:27+0900 (plan=first-delivery). 자동 생성 — 손으로 고쳐도 되지만 다음 저장에 통째로 덮어 씀.
 plan: first-delivery
-saved: 2026-10-28T23:40:14+0900
+saved: 2026-10-28T23:52:27+0900
 places:
   room:
-    world: [-116.7, -31.7]
-    y: 21.12
-    yaw: 90.9
+    world: [-117.7, -11.2]
+    y: 6.12
+    yaw: 0.9
   garage:
-    world: [-90.7, -84.7]
-    y: 5.08
-    yaw: 90.2
+    world: [-63.2, -6.7]
+    y: 8.58
+    yaw: -174.8
   depot:
-    world: [12.8, -90.3]
-    y: 5.94
-    yaw: 97.7
+    world: [-43.7, -26.8]
+    y: 8.94
+    yaw: 2.7
   postoffice:
-    world: [74.8, -58.1]
-    y: 12.11
-    yaw: 24.7
+    world: [-57.7, -25.6]
+    y: 8.61
+    yaw: -5.3
