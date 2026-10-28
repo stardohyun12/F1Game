@@ -1,0 +1,48 @@
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/HallFloor/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/HallBack/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/HallL/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/HallR/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/HallRoof/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/FrontL/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/FrontR/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/Lintel/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/RoofCap/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/Workbench/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/TireStack/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/ShutterRoll/ ch=9
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/SignBoard/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/Label_PitCrew/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/ArtSlot_GarageSign/ ch=0 SpriteRenderer
+DEL TV6_Loop/Tutorial/TUT_Garage_PitCrew/ShutterRoll/ArtSlot_GarageShutter/ ch=0 SpriteRenderer
+DEL TV6_Loop/AssetSlots/Q1_HomeRoom/ ch=0 [off] MeshRenderer
+DEL TV6_Loop/AssetSlots/Q2_Garage/ ch=0 [off] MeshRenderer
+DEL TV6_Loop/AssetSlots/Q3_Depot/ ch=0 [off] MeshRenderer
+DEL TV6_Loop/AssetSlots/Q4_PostOffice/ ch=0 [off] MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/Floor/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/Ceiling/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WallBack/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WallL/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WallR/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinWallL/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinWallR/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinWallBottom/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinWallTop/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinFrameV/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/WinFrameH/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/Bed/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/Desk/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/DeskLegs/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/Radio/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/PiggyBank/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/RacePoster/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/EntryForm/ ch=0 MeshRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/ArtSlot_RacePoster/ ch=0 SpriteRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/ArtSlot_EntryForm/ ch=0 SpriteRenderer
+DEL TV6_Loop/Tutorial/TUT_Room/ArtSlot_PiggyBank/ ch=0 SpriteRenderer
+deleted=41 missingRef=0 missingScript=0
+saved=True
+KEEP TUT_Garage_PitCrew: TUT_GarageCarSpot TUT_Mechanic Shot_2a Shot_2b 
+KEEP TUT_Room: Audio_Radio Audio_Gulls RoomLamp Shot_1a Shot_1b Shot_1c 
+KEEP GarageScreen: GarageCutscene 
+KEEP GarageCutscene: 
+
