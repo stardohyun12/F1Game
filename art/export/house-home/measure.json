@@ -1,0 +1,37 @@
+{
+ "tris": 760,
+ "objects": [
+  "HOUSE_shell",
+  "DOOR_01",
+  "SHUTTER_01",
+  "SHUTTER_02",
+  "SHUTTER_03",
+  "SHUTTER_04",
+  "RAIL_01",
+  "PLANTER_01",
+  "PLANT_01",
+  "PLANTER_02",
+  "PLANT_02",
+  "STUDIO_CamBalc",
+  "STUDIO_CamBalcLook"
+ ],
+ "atlas": [
+  1024,
+  1024
+ ],
+ "faces": 381,
+ "balusters": 34,
+ "size_m": {
+  "w": 4.4,
+  "d": 3.3,
+  "wall_top": 5.85,
+  "ridge": 6.74
+ },
+ "room_offset": [
+  0,
+  0,
+  3.2
+ ],
+ "pivot": "기단 윗면(z 0) 가운데 = 방 바닥 가운데 수직 아래",
+ "forward": "발코니·현관 = Blender -Y → FBX/Unity +Z"
+}

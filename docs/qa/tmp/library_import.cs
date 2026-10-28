@@ -6,11 +6,12 @@ const string L = "Assets/Art/Library/Buildings";
 AssetDatabase.Refresh();
 // 이름, fbx, 회전 Y, 이동 규칙("keep" = fbx 원점 그대로 / "front" = 가로 가운데·앞면 최대 z 를 0 으로)
 var POSE = new (string nm, string fbx, float yaw, string rule)[] {
-  ("room", "room.fbx", 0f, "front"), ("garage", "garage_v5_combo.fbx", 0f, "front"), ("depot", "q3_depot.fbx", 0f, "keep"), ("postoffice", "q4_postoffice.fbx", 0f, "keep") };
+  ("room", "room.fbx", 0f, "front"), ("garage", "garage_v5_combo.fbx", 0f, "front"), ("depot", "q3_depot.fbx", 0f, "keep"), ("postoffice", "q4_postoffice.fbx", 0f, "keep"), ("house_home", "house_home.fbx", 0f, "keep") };
 var tmpl = AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/SceneA7/Mats/SA7_house_shop.mat");
 foreach (var p in new[] { "_GroundY", "_FootDark", "_Blotch", "_Lift", "_Sat", "_A7Lit", "_Cutoff", "_FogStart", "_FogEnd", "_FogMax" }) if (tmpl.HasProperty(p)) log.Append(p + "=" + tmpl.GetFloat(p) + " "); log.Append("\n");
 System.Func<string, string, string> TexFor = (nm, slot) => { var s = slot.ToLower();
-  if (nm == "room") return s.Contains("glass") ? "glass" : "room";  // 2303: 방 창 유리(D-189)
+  if (nm == "room") return s.Contains("glass") ? "glass" : "room";
+  if (nm == "house_home") return "house_home";  // 0031 주인공 2층집: 아틀라스 하나  // 2303: 방 창 유리(D-189)
   if (nm == "garage") { if (s.Contains("lamp")) return "garage_lamp"; if (s.Contains("props")) return "garage_props"; if (s.Contains("posters")) return "garage_posters"; if (s.Contains("dirt")) return "garage_dirt"; if (s.Contains("albedo")) return "garage_baked32"; if (s.Contains("festival")) return "garage_festival"; if (s.Contains("race_photo_0")) return "garage_memory_1"; if (s.Contains("race_photo_1")) return "garage_memory_2"; if (s.Contains("race_photo_2")) return "garage_memory_3"; if (s.Contains("sign")) return "garage_sign"; if (s.Contains("detail")) return "garage_details"; return null; }
   if (s.Contains("glass")) return "glass";  // 1846: 우체국 창 유리
   if (s.Contains("clock_dial")) return "clock_dial";  // 1857: 보관소 시계 문자판·바늘
@@ -61,6 +62,9 @@ foreach (var e in POSE) { if (!ONLY.Contains(e.nm)) continue;
       log.Append(" clock axis " + hh.InverseTransformDirection(-root.transform.forward).normalized.ToString("F2") + " center " + hh.position.ToString("F2")); }
     else log.Append(" CLOCK MISS type=" + (wt != null) + " hands=" + (hh != null) + "/" + (hm != null)); }
   foreach (var t in root.GetComponentsInChildren<Transform>(true)) if (System.Text.RegularExpressions.Regex.IsMatch(t.name, "^LAMP_\\d$")) {  /* 1857: LAMP_01 등 = 등 메시(빛 아님) */ var lt = t.gameObject.AddComponent<Light>(); lt.type = LightType.Spot; t.rotation = Quaternion.Euler(90f, 0f, 0f); lt.spotAngle = 120f; lt.innerSpotAngle = 50f; lt.color = new Color(1f, 0.76f, 0.46f); lt.range = 6f; lt.intensity = 9f; lt.shadows = LightShadows.None; log.Append(" light " + t.name + " " + t.position.ToString("F2")); }  // 1653: 갓 아래 따뜻한 점광원
+  if (e.nm == "house_home") {  // 0031: 2층 = room 프리팹 그대로(중첩 프리팹). room 의 fbx 원점(방 바닥 가운데)을 집 (0, 3.2, 0) 에 맞춤
+    var rp = AssetDatabase.LoadAssetAtPath<GameObject>(L + "/room/room.prefab"); var ri = (GameObject)PrefabUtility.InstantiatePrefab(rp); ri.name = "ROOM_2F"; ri.transform.SetParent(root.transform, false);
+    var rm = ri.transform.Find("room"); var off = rm ? rm.localPosition : Vector3.zero; ri.transform.localPosition = new Vector3(0, 3.2f, 0) - off; log.Append(" room2F offset " + off.ToString("F3")); }
   PrefabUtility.SaveAsPrefabAssetAndConnect(root, dir + "/" + e.nm + ".prefab", InteractionMode.AutomatedAction);
   root.SetActive(false);
 }

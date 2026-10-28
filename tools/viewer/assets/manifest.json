@@ -16,6 +16,22 @@
     "exported": "2026-10-28 23:30:08"
   },
   {
+    "name": "house_home",
+    "label_ko": "주인공 2층집",
+    "file": "house_home.glb",
+    "size_m": [
+      4.96,
+      7.64,
+      4.55
+    ],
+    "tris": 760,
+    "nodes": 13,
+    "mesh_nodes": 11,
+    "bytes": 276312,
+    "source": "art/export/house-home/house_home.fbx",
+    "exported": "2026-10-29 00:45:22"
+  },
+  {
     "name": "garage",
     "label_ko": "정비소",
     "file": "garage.glb",

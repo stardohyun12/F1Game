@@ -9,6 +9,15 @@
     "notes": "재질 ROOM_alb 하나, FBX 에 이미지가 없어 room.png 를 붙임. 정면(창) = Unity +Z."
   },
   {
+    "name": "house_home",
+    "label_ko": "주인공 2층집",
+    "fbx": "art/export/house-home/house_home.fbx",
+    "tex_dir": "art/export/house-home",
+    "textures": {},
+    "default_texture": "house_home.png",
+    "notes": "재질 HOUSE_alb 하나 → house_home.png. 2층 방(room)은 fbx 에 없음(Unity 프리팹 자식 +3.2m). 정면(발코니·현관) = Unity +Z."
+  },
+  {
     "name": "garage",
     "label_ko": "정비소",
     "fbx": "art/export/q2-garage/garage_v5_combo.fbx",
@@ -57,7 +66,9 @@
       "Shared_icons": "icons.png"
     },
     "default_texture": "wall.png",
-    "split_loose": ["Q4_PostOffice_body"],
+    "split_loose": [
+      "Q4_PostOffice_body"
+    ],
     "notes": "공용 키트 5슬롯 + 우체통 postbox_G1."
   }
 ]

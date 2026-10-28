@@ -32,7 +32,7 @@ TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'deca
 PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle|'
                       r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER)_\d+$|^CLOCK|'
                       r'^(RUG|BED|PILLOW|FUTON|DESK|VEST|BOOK|BOOKS|CALENDAR|PHOTO|WALLCLOCK|CERT|RADIO|MAGAZINE|NOTEBOOK|PENCIL|PIGGY|MUG|SHIRT|BOX|'
-                      r'SLIPPER|SHOE|BAG|CORD|PLANT|KART|KNOB|HOOK|TOWEL|LAMP|SWITCH|SOCKET)_\d+$')  # 2230 우체국 낱개 · 2303 방 낱개
+                      r'SLIPPER|SHOE|BAG|CORD|PLANT|KART|KNOB|HOOK|TOWEL|LAMP|SWITCH|SOCKET|DOOR|SHUTTER|RAIL)_\d+$')  # 2230 우체국 낱개 · 2303 방 낱개
 PRINT_OBJ = re.compile(r'^(PHOTO|CERT|CALENDAR|WALLCLOCK|POSTER)_\d+$')  # 2303: 인쇄물(사진·상장·달력·시계판·포스터) = 글씨 판정 — 옛 obj 'poster' · 정비소 memory 사진과 같은 취급(그림 자체가 잔결이라 결 상한 대신 AA)
 BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
@@ -40,6 +40,8 @@ PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1'
 B = {
     'room': dict(fbx=LIB / 'room/room.fbx', dir=LIB / 'room', gpl={'*': R / 'art/export/q1-room/palette_q1v2.gpl'},
                  tex=lambda mat, img: '' if 'glass' in mat.lower() else 'room.png'),  # 2303: 창 유리(텍스처 없음)는 측정 제외
+    'house_home': dict(fbx=LIB / 'house_home/house_home.fbx', dir=LIB / 'house_home', gpl={'*': R / 'art/export/house-home/palette.gpl'},  # 0031 주인공 2층집(방은 room 으로 따로)
+                       tex=lambda mat, img: 'house_home.png'),
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
                    # artlive 2117: build_asset.py garage 가 결 뒤 전 텍스처를 칸별 median-cut → 합친 색을 이 palette.gpl 로(보관소와 같은 방식)
                    gpl={'*': R / 'art/export/q2-garage/palette.gpl'},

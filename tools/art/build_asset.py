@@ -37,7 +37,10 @@ CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot
        'postoffice': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q4-postoffice', lib=R / 'F1/Assets/Art/Library/Buildings/postoffice', fbx='q4_postoffice.fbx',
                           pngs=['wall', 'trim', 'floor', 'roof', 'decals', 'icons', 'postbox_G1'], lib_name={}, roll=(37, 71)),
        # 2303 주인공 방: 원본 = tools/asset-gen/q1_room.py(사진 결·palette_q1v2 양자화까지 생성기 안). 옛 grain_1736 export 덧칠은 생성기로
-       'room': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q1-room', lib=R / 'F1/Assets/Art/Library/Buildings/room', fbx='room.fbx', pngs=['room'], lib_name={})}
+       'room': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q1-room', lib=R / 'F1/Assets/Art/Library/Buildings/room', fbx='room.fbx', pngs=['room'], lib_name={}),
+       # 0031 주인공 2층집: 원본 = tools/asset-gen/house_home.py + 아래 h_grain(사진 칠). 2층 = room 프리팹(자식)
+       'house_home': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/house-home', lib=R / 'F1/Assets/Art/Library/Buildings/house_home', fbx='house_home.fbx',
+                          pngs=['house_home'], lib_name={})}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
 STEPS = {'paint': np.array([-0.10, -0.04, 0.04, 0.10]), 'rubber': np.array([-0.14, -0.05, 0.05, 0.14])}
@@ -281,13 +284,85 @@ def r_unity(c):
     E, Lb = c['exp'], c['lib']
     for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: copy_retry(p, Lb / p.name)
     out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "room" };')); print('  ', out[:300])
+# ---------- 주인공 2층집(house_home) 단계 — 20261029-0031 ----------
+# 원본 = tools/asset-gen/house_home.py(형태·낱개·UV 칸 표 layout.json). 텍스처는 여기 grain 이 칸마다 사진으로 칠한다(빛 없음, D-185).
+# 사진(도현 선택 PICKS.md, CC0 — 출처 art/source/photo-picks/SOURCES.md): A2 부라노 살구 벽(벽·흰 틀·문 색), C2 초록 덧창, E2 기와, H1 돌담(기단).
+# 방 결(나무 판)은 art/source/q1-room-cc0/fine_grained_wood(Poly Haven CC0). 2층 방은 fbx 에 없다 — Unity 프리팹에서 room 프리팹을 자식(+3.2m)으로.
+PP = R / 'art/source/photo-picks'
+HPH = {'A2': (PP / 'A/A2_apricot_facade_burano.jpg', (420, 640, 660, 900)), 'C2': (PP / 'C/C2_green_shutters_liguria.jpg', (360, 530, 450, 800)),
+       'E2': (PP / 'E/E2_clay_roof_tiles_02.jpg', None), 'H1': (PP / 'H/H1_round_stone_wall.jpg', None),
+       'WOOD': (R / 'art/source/q1-room-cc0/fine_grained_wood.jpg', None)}
+HCROP = {'trim': ('A2', (690, 1080, 708, 1300)), 'door': ('A2', (460, 1130, 590, 1460))}  # 흰 창틀 · 나무 문(사진 속 같은 집)
+def h_photo(k, box=None):
+    p, b = HPH[k]; im = Image.open(p).convert('RGB'); return im.crop(box or b) if (box or b) else im
+_HF = {}
+def h_field(k):  # 사진 명도 결(field() 와 같은 꼴) 128px, 표준편차 1
+    if k not in _HF:
+        p = h_photo(k).convert('L').resize((128, 128), Image.LANCZOS); a = np.asarray(p, np.float64); n = lambda x: (x - x.mean()) / (x.std() + 1e-6)
+        b1 = np.asarray(p.filter(ImageFilter.GaussianBlur(1)), np.float64); b8 = np.asarray(p.filter(ImageFilter.GaussianBlur(8)), np.float64)
+        _HF[k] = n(n(a / np.maximum(b8, 1) - 1) + 0.8 * n(a / np.maximum(b1, 1) - 1) + 0.3 * n(b8 / b8.mean() - 1))
+    return _HF[k]
+def h_med(k, box=None): return np.median(np.asarray(h_photo(k, box), np.float64).reshape(-1, 3), 0)
+def h_paint(cell, col):
+    x, y, w, h = cell['rect']; d = cell['dens']; pt = cell['pt']; rs = np.random.default_rng(cell['seed'])
+    if pt in ('roof', 'stone'):  # 사진 albedo 그대로(E2 = 2.0m, H1 = 2.5m 한 장) — 칸마다 다른 자리
+        k, span = ('E2', 2.0) if pt == 'roof' else ('H1', 2.5); n = max(8, round(span * d))
+        t = np.asarray(h_photo(k).resize((n, n), Image.BOX), np.float64)[::-1]
+        t = np.roll(t, (rs.integers(n), rs.integers(n)), (0, 1)); A = np.tile(t, (h // n + 1, w // n + 1, 1))[:h, :w].copy()
+        if pt == 'roof': A *= col['roof'] / t.reshape(-1, 3).mean(0)  # 사진 평균색 = E2 중앙값(밝기만 사진 그대로)
+        return A
+    base = {'wall': 'wall', 'trim': 'trim', 'fascia': 'trim', 'door': 'door', 'shutter': 'shutter', 'pavers': 'terra', 'terracotta': 'terra', 'ridge': 'ridge',
+            'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass'}[pt]
+    A = np.ones((h, w, 3)) * col[base]
+    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD'}.get(pt, 'A2')
+    f = np.roll(np.tile(h_field(fk), (h // 128 + 2, w // 128 + 2)), (rs.integers(128), rs.integers(128)), (0, 1))[:h, :w]
+    if pt in ('door', 'soffit'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
+    vv, uu = np.mgrid[0:h, 0:w]
+    if pt == 'shutter' and w > 8 and h > 8:  # 루버 6cm(64px/m 에서 4px) — 틀 3px 안쪽만. 판 사이 홈 = 칠한 색 어둠 한 단
+        inn = (uu >= 3) & (uu < w - 3) & (vv >= 3) & (vv < h - 3); A[inn & (vv % 4 == 3)] *= .86
+    if pt == 'door': A[(uu % 5 == 4)] *= .88; A[(vv == h // 3) | (vv == 2 * h // 3)] *= .9  # 판자 15cm · 가로 띠 2
+    if pt == 'soffit': A[(vv % 4 == 3)] *= .9
+    if pt == 'pavers' and w > 6 and h > 6: A[(uu % 10 == 9) | (vv % 10 == 9)] *= .82  # 30cm 타일 줄눈
+    lum = A @ [.299, .587, .114]
+    for kind in ('paint', 'rubber'):
+        sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]; ff = f * (st[2] + st[3]) / 2
+        q = st[np.abs(ff[..., None] - st).argmin(-1)]; A[sel] *= (1 + q[sel])[:, None]
+    return A
+def h_source(c):
+    if 'MEAS' not in blender(R / 'tools/asset-gen/house_home.py'): raise SystemExit('house_home.py 가 끝까지 안 돌았다(MEAS 없음)')
+def h_overlap(c):  # 생성기가 붙는 면 skip·덧댄 판 띄움 → 여기선 검사만(fix 는 fbx 를 덮어써서 안 씀)
+    for m, f in ((('check',), 'overlap_check.json'), (('check', 'both'), 'overlap_both.json')):
+        blender(R / 'tools/asset-gen/fix_1846.py', 'house_home', *m); shutil.copy2(R / ('docs/qa/tmp/fix_1846_house_home_' + '_'.join(m) + '.json'), c['tmp'] / f)
+        d = json.loads((c['tmp'] / f).read_text(encoding='utf-8')); d = d.get('after') or d['before']; print(f'   {f}: 겹친 쌍 {d["pairs"]} · 같은 덩어리 중복 {d["same_island_dups"]}')
+def h_grain(c):
+    L = lay(c); AW, AH = L['atlas']
+    col = {'wall': h_med('A2'), 'trim': np.minimum(h_med(*HCROP['trim']), 212) * [1, .97, .9],  # 사진 흰 틀은 하늘빛 무채 → 석회 흰색 쪽으로
+            'door': h_med(*HCROP['door']), 'shutter': h_med('C2'), 'roof': h_med('E2')}
+    col.update(terra=col['roof'] * [1.08, .98, .92], ridge=col['roof'] * .84, soffit=col['door'] * 1.6, iron=np.array([58., 66., 60.]), soil=np.array([112., 84., 60.]),
+               leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]))
+    A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
+    for (x, y, w, h), t in P:  # 칸 사이 1px 틈 = 가장자리 색 번짐(검은 틈이 작은 물건 잔결·알파를 망쳤다, check 1차)
+        e = np.pad(t, ((1, 1), (1, 1), (0, 0)), mode='edge'); y0, x0 = max(y - 1, 0), max(x - 1, 0)
+        A[y0:y + h + 1, x0:x + w + 1, :3] = e[y0 - y + 1:, x0 - x + 1:][:min(y + h + 1, AH) - y0, :min(x + w + 1, AW) - x0]; A[y0:y + h + 1, x0:x + w + 1, 3] = 255
+    for (x, y, w, h), t in P: A[y:y + h, x:x + w, :3] = t
+    Image.fromarray(np.clip(A[::-1], 0, 255).round().astype(np.uint8)).save(c['exp'] / 'house_home.png')
+    (c['tmp'] / 'grain.json').write_text(json.dumps({k: [round(float(v)) for v in val] for k, val in col.items()}, indent=1), encoding='utf-8'); print('   colors', {k: [round(float(v)) for v in val] for k, val in col.items()})
+def h_quant(c):  # 128px 칸마다 median-cut 32 → 합친 색 = art/export/house-home/palette.gpl (정비소와 같은 방식)
+    g_quant(c); p = c['exp'] / 'palette.gpl'; p.write_text(p.read_text(encoding='utf-8').replace('q2-garage (build_asset.py 2117', 'house-home (build_asset.py 0031'), encoding='utf-8')
+def h_unity(c):
+    E, Lb = c['exp'], c['lib']; Lb.mkdir(parents=True, exist_ok=True)
+    for p in (E / c['fbx'], E / 'house_home.png'): copy_retry(p, Lb / p.name)
+    out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "house_home" };')); print('  ', out[:400])
+HOUSE_HOME = {'source': h_source, 'overlap': h_overlap, 'split': lambda c: print('   낱개(DOOR_·SHUTTER_·RAIL_·PLANTER_·PLANT_)는 생성기가 이름·피벗까지'),
+              'snap': lambda c: print('   접지: 생성기 좌표(덧창 바닥 = 창턱, 화분 = 발코니 바닥, 잎 = 흙)'), 'uv': lambda c: print('   텍셀 32/64 = 생성기 dens_for'),
+              'grain': h_grain, 'quant': h_quant, 'unity': h_unity, 'check': g_check}
 ROOM = {'source': r_source, 'overlap': r_overlap, 'split': r_split, 'snap': r_snap, 'uv': r_uv, 'grain': r_grain, 'quant': r_quant, 'unity': r_unity, 'check': g_check}
 POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
 GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}
 
 STAGES = [('source', s_source), ('overlap', s_overlap), ('split', s_split), ('snap', s_snap), ('uv', s_uv), ('grain', s_grain), ('quant', s_quant),
           ('unity', s_unity), ('viewer', s_viewer), ('check', s_check)]
-PER = {'garage': GARAGE, 'postoffice': POSTOFFICE, 'room': ROOM}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
+PER = {'garage': GARAGE, 'postoffice': POSTOFFICE, 'room': ROOM, 'house_home': HOUSE_HOME}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
 if __name__ == '__main__':
     name = sys.argv[1]; c = dict(CFG[name], name=name); c['tmp'] = R / f'docs/qa/tmp/build/{name}'; c['tmp'].mkdir(parents=True, exist_ok=True)
     start = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else 'source'
