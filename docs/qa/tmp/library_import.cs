@@ -10,7 +10,7 @@ var POSE = new (string nm, string fbx, float yaw, string rule)[] {
 var tmpl = AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/SceneA7/Mats/SA7_house_shop.mat");
 foreach (var p in new[] { "_GroundY", "_FootDark", "_Blotch", "_Lift", "_Sat", "_A7Lit", "_Cutoff", "_FogStart", "_FogEnd", "_FogMax" }) if (tmpl.HasProperty(p)) log.Append(p + "=" + tmpl.GetFloat(p) + " "); log.Append("\n");
 System.Func<string, string, string> TexFor = (nm, slot) => { var s = slot.ToLower();
-  if (nm == "room") return "room";
+  if (nm == "room") return s.Contains("glass") ? "glass" : "room";  // 2303: 방 창 유리(D-189)
   if (nm == "garage") { if (s.Contains("lamp")) return "garage_lamp"; if (s.Contains("props")) return "garage_props"; if (s.Contains("posters")) return "garage_posters"; if (s.Contains("dirt")) return "garage_dirt"; if (s.Contains("albedo")) return "garage_baked32"; if (s.Contains("festival")) return "garage_festival"; if (s.Contains("race_photo_0")) return "garage_memory_1"; if (s.Contains("race_photo_1")) return "garage_memory_2"; if (s.Contains("race_photo_2")) return "garage_memory_3"; if (s.Contains("sign")) return "garage_sign"; if (s.Contains("detail")) return "garage_details"; return null; }
   if (s.Contains("glass")) return "glass";  // 1846: 우체국 창 유리
   if (s.Contains("clock_dial")) return "clock_dial";  // 1857: 보관소 시계 문자판·바늘

@@ -74,11 +74,11 @@
  ],
  "texels_per_m": {
   "big": 32.05,
-  "small": 63.89
+  "small": 63.88
  },
- "colors": 89,
- "palette": "palette_q1v2.gpl (palette53 + 결 단계 66)",
- "isolated_pct": 0.0,
+ "colors": 101,
+ "palette": "palette_q1v2.gpl (palette53 + 결 단계 72)",
+ "isolated_pct": 0.503,
  "p5": 90.9,
  "p50": 149.8,
  "p95": 233.7,

@@ -8,12 +8,12 @@
       2.4,
       3.16
     ],
-    "tris": 1166,
-    "nodes": 4,
-    "mesh_nodes": 4,
-    "bytes": 186092,
+    "tris": 1162,
+    "nodes": 66,
+    "mesh_nodes": 64,
+    "bytes": 207060,
     "source": "art/export/q1-room/room.fbx",
-    "exported": "2026-10-28 19:27:49"
+    "exported": "2026-10-28 23:30:08"
   },
   {
     "name": "garage",

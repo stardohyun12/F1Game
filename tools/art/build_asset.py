@@ -271,9 +271,15 @@ def r_snap(c): print('   방: 접지는 생성기 좌표(바닥·책상·선반 
 def r_uv(c): print('   방: 텍셀 32/64 는 생성기 _dn(면 ≤1.5m 작은 물건 = 64)')
 def r_grain(c): print('   방: 사진 결은 생성기 photo()·문짝 결(±8% 아래쪽)에서. export 덧칠 없음')
 def r_quant(c): print('   방: 생성기가 palette_q1v2.gpl 로 양자화')
+def copy_retry(a, b, n=6):  # 2318: Unity 가 막 임포트한 png 를 매핑 중이면 WinError 1224 — 몇 초 뒤엔 풀린다
+    for i in range(n):
+        try: return shutil.copy2(a, b)
+        except OSError as e:
+            if i == n - 1: raise
+            print('   잠김, 다시', b.name, e.winerror); time.sleep(3)
 def r_unity(c):
     E, Lb = c['exp'], c['lib']
-    for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: shutil.copy2(p, Lb / p.name)
+    for p in [E / c['fbx']] + [E / (s + '.png') for s in c['pngs']]: copy_retry(p, Lb / p.name)
     out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "room" };')); print('  ', out[:300])
 ROOM = {'source': r_source, 'overlap': r_overlap, 'split': r_split, 'snap': r_snap, 'uv': r_uv, 'grain': r_grain, 'quant': r_quant, 'unity': r_unity, 'check': g_check}
 POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
