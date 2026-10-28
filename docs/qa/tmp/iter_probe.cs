@@ -1,0 +1,11 @@
+// artlive 1509: Map_TownV6 조사(읽기만, 저장 안 함)
+var sc = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/Scenes/Map_TownV6.unity");
+var log = new System.Text.StringBuilder();
+foreach (var g in sc.GetRootGameObjects()) log.Append("ROOT " + g.name + " comps " + string.Join(",", g.GetComponents<Component>().Select(c => c.GetType().Name)) + " kids " + g.transform.childCount + "\n");
+foreach (var l in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None)) log.Append("LIGHT " + l.name + " " + l.type + " i" + l.intensity + " sh " + l.shadows + " act " + l.gameObject.activeInHierarchy + " rot " + l.transform.eulerAngles + "\n");
+foreach (var c in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None)) log.Append("CAM " + c.name + " act " + c.gameObject.activeInHierarchy + " pos " + c.transform.position + " comps " + string.Join(",", c.GetComponents<Component>().Select(x => x.GetType().Name)) + "\n");
+foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None)) if (t.name.Contains("Q3") || t.name.Contains("Depot")) { log.Append("Q3 " + AnimationUtility.CalculateTransformPath(t, null) + " pos " + t.position + " rot " + t.eulerAngles + " sc " + t.lossyScale + " comps " + string.Join(",", t.GetComponents<Component>().Select(c => c.GetType().Name)) + "\n"); var r = t.GetComponent<Renderer>(); if (r) log.Append("  bounds " + r.bounds + " mat " + r.sharedMaterial + "\n"); }
+log.Append("ambient " + RenderSettings.ambientMode + " " + RenderSettings.ambientLight + " sky " + RenderSettings.ambientSkyColor + " fog " + RenderSettings.fog + " " + RenderSettings.fogMode + " " + RenderSettings.fogColor + " " + RenderSettings.fogStartDistance + "-" + RenderSettings.fogEndDistance + " dens " + RenderSettings.fogDensity + " sun " + RenderSettings.sun + "\n");
+var sh = new System.Collections.Generic.Dictionary<string, int>(); foreach (var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None)) foreach (var m in r.sharedMaterials) if (m) { var k = m.shader.name; sh[k] = sh.ContainsKey(k) ? sh[k] + 1 : 1; }
+log.Append("SHADERS " + string.Join(", ", sh.Select(kv => kv.Key + ":" + kv.Value)) + "\n");
+return log.ToString();
