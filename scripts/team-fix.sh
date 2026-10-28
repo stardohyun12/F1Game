@@ -15,7 +15,7 @@ for f in glob.glob('tools/viewer/feedback/*.jsonl'):
         if not l.strip(): continue
         d=json.loads(l)
         if d.get('id','').endswith(q):
-            print(d['id']); print(f); print(d.get('scene','') or f.split('unity-')[-1].replace('.jsonl',''))
+            print(d['id']); print(f.replace(chr(92),'/')); print(d.get('scene','') or f.split('unity-')[-1].replace('.jsonl',''))
             raise SystemExit
 print('')
 EOF
@@ -37,11 +37,17 @@ TASK="$TAG[fix $ID — $TRIES/3회차] 도현 코멘트 하나를 고정 절차�
 2. 원인: 그 문제가 왜 생겼는지 한 줄(추측이면 '가설'). 보고서 맨 위.
 3. 고침: 원인을 고친다(증상만 덮지 않음). 원본(생성기·씬 빌더)에 남긴다.
 4. 계산 검사: 공간 문제(묻힘·뜸·길·겹침)면 python -X utf8 scripts/fb_geom.py $ID → PASS 까지. 아트면 bash tools/art/bin/check.sh <건물> PASS.
+4b. 25턴의 절반(12턴)이 지나면 그때까지 한 것을 보고서에 먼저 쓴다(턴 한도로 끊겨도 남게).
 5. 확인: python -X utf8 scripts/fb.py fixed $ID \"<고친 것 한 줄>\" — 같은 카메라 재촬영 + 판정자 둘. 거부되면 이유를 읽고 3으로(이 과제 안에서 최대 2번).
 6. 같은 원인: 맵/라이브러리의 다른 곳에 같은 원인이 남았는지 목록(고치지 말고 적기).
 씬 저장·콘솔 에러 0. 끝 보고 3줄: 원인 / 결과(fb_geom·판정 YES/NO) / 같은 원인 남은 곳."
 mv -f ".claude/team/sessions/$ROLE.id" ".claude/team/sessions/archive/$ROLE-fix-$(date +%H%M).id" 2>/dev/null
+T0=$(date +%s)
 TEAM_MAX_TURNS="${TEAM_MAX_TURNS:-25}" bash scripts/team.sh "$ROLE" "$TASK"
+# 하네스 3번: 끝은 하네스가 판정 — 새 보고서·geom 결과 없으면 failed
+NEWREP=$(find docs/team/reports -name "$ROLE-*.md" -newermt "@$T0" | head -1)
+[ -z "$NEWREP" ] && echo "FAILED-NOREPORT: $ID 보고서 없음(턴 한도 추정)"
+G="tools/viewer/feedback/geom/$ID.json"; [ -f "$G" ] && echo "geom: $(python -X utf8 -c "import json;d=json.load(open('$G',encoding='utf-8'));print('PASS' if d.get('pass') else 'FAIL '+str(len([i for i in d['items'] if i.get('problem')])))")"
 # 결과: fixed 로 바뀌었으면 시도 횟수 초기화
 python -X utf8 - "$FILE" "$ID" <<'EOF' && rm -f ".claude/team/fix/$ID.tries"
 import json,sys
