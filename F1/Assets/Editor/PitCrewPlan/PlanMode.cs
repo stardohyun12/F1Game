@@ -18,7 +18,6 @@ namespace PitCrewPlan
     public static class PlanMode
     {
         public const string TargetScene = "Map_TownV6";   // 배치 자동 기록을 하는 씬(placements.yaml = first-delivery 계획)
-        const string InputName = "PCPlanInput";
         static readonly int Hash = "PitCrewPlanMode".GetHashCode();
         static readonly Color Red = new Color(0.92f, 0.16f, 0.16f), PinOpen = new Color(1f, 0.45f, 0.1f), PinDone = new Color(0.55f, 0.55f, 0.55f);
 
@@ -35,8 +34,10 @@ namespace PitCrewPlan
         static List<Vector2> cur;
         static Vector2 downPos; static bool dragging;
 
-        static bool inputOpen, focusNext; static Vector2 inputPos; static string inputText = ""; static GameObject inputGo; static Vector3? inputPoint;
-        static Rect inputRect, bubbleRect;
+        static bool inputOpen => PlanInputPopup.Current != null;
+        static string inputText => PlanInputPopup.Current != null ? PlanInputPopup.Current.Text : "";
+        static GameObject inputGo; static Vector3? inputPoint;
+        static Rect bubbleRect;
         static PlanIO.Comment bubble; static int bubbleNo;
 
         static List<PlanIO.Comment> pins = new List<PlanIO.Comment>(); static DateTime pinsStamp; static string pinsScene;
@@ -100,14 +101,13 @@ namespace PitCrewPlan
             DrawPins(sv);
             if (On) DrawStrokesAndHint(sv);
             if (bubble != null) DrawBubble(sv);
-            if (inputOpen) DrawInput(sv);
             if (!string.IsNullOrEmpty(ArmedPrefab)) Hint(sv, "클릭 = " + Path.GetFileNameWithoutExtension(ArmedPrefab) + " 놓기 · Esc = 취소");
             Handles.EndGUI();
 
             if (!active) return;
             if (e.type == EventType.Layout) HandleUtility.AddDefaultControl(id);
             if (e.alt || e.button != 0) return;
-            if (inputOpen && inputRect.Contains(e.mousePosition) || bubble != null && bubbleRect.Contains(e.mousePosition)) return;
+            if (bubble != null && bubbleRect.Contains(e.mousePosition)) return;
 
             switch (e.type)
             {
@@ -171,16 +171,27 @@ namespace PitCrewPlan
             OpenInput(gp, go, point);
         }
 
+        // 입력칸 = 따로 뜨는 팝업 창(PlanInputPopup) — 씬 뷰 IMGUI 는 한글 IME 를 못 받는다. 이미 떠 있으면 글은 그대로 두고 자리만 바꾼다.
         static void OpenInput(Vector2 gp, GameObject go, Vector3? point)
         {
-            inputOpen = true; focusNext = true; inputPos = gp;
             if (go != null || point.HasValue || inputGo == null) { inputGo = go; inputPoint = point; }
+            PlanInputPopup.Open(GUIUtility.GUIToScreenPoint(gp), inputGo != null ? inputGo.name : inputPoint.HasValue ? "땅" : "화면");
         }
-        static void CloseInput() { inputOpen = false; inputText = ""; inputGo = null; inputPoint = null; GUI.FocusControl(null); }
-
-        static void Save(SceneView sv)
+        static void CloseInput()
         {
-            var text = inputText.Trim();
+            inputGo = null; inputPoint = null;
+            if (PlanInputPopup.Current != null) PlanInputPopup.Current.Close();
+        }
+
+        /// 팝업에서 Enter.
+        public static void Submit(string text) { var sv = SceneView.lastActiveSceneView; if (sv != null) Save(sv, text); else CloseInput(); }
+        /// 팝업에서 Esc.
+        public static void CancelInput() { CloseInput(); SceneView.RepaintAll(); }
+
+        static void Save(SceneView sv) => Save(sv, inputText);
+        static void Save(SceneView sv, string raw)
+        {
+            var text = (raw ?? "").Trim();
             if (text.Length == 0 && Strokes.Count == 0) { CloseInput(); return; }
             var cam = sv.camera;
             float ppp = EditorGUIUtility.pixelsPerPoint, pw = cam.pixelWidth / ppp, ph = cam.pixelHeight / ppp;
@@ -190,7 +201,7 @@ namespace PitCrewPlan
             if (!point.HasValue && Strokes.Count > 0)
             {   // 그림만 있으면 선 가운데 아래 땅을 핀 자리로
                 var all = Strokes.SelectMany(s => s).ToList(); var c = new Vector2(all.Average(p => p.x), all.Average(p => p.y));
-                if (Physics.Raycast(HandleUtility.GUIPointToWorldRay(c), out var hit, 5000f, ~0, QueryTriggerInteraction.Ignore)) point = hit.point;
+                if (Physics.Raycast(cam.ScreenPointToRay(new Vector3(c.x * ppp, cam.pixelHeight - c.y * ppp, 0)), out var hit, 5000f, ~0, QueryTriggerInteraction.Ignore)) point = hit.point;
             }
             var id = SaveComment(cam, sv.pivot, "scene", inputGo, point, text.Length > 0 ? text : "(그림)", norm, w, h);
             Debug.Log("[기획] 코멘트 저장 " + id);
@@ -262,19 +273,6 @@ namespace PitCrewPlan
                 }
                 GUI.Label(new Rect(gp.x - 12, gp.y - 10, 24, 20), (i + 1).ToString(), pinStyle);
             }
-        }
-
-        static void DrawInput(SceneView sv)
-        {
-            float ppp = EditorGUIUtility.pixelsPerPoint, pw = sv.camera.pixelWidth / ppp, ph = sv.camera.pixelHeight / ppp;
-            var r = new Rect(inputPos.x + 10, inputPos.y + 10, 280, 46);
-            r.x = Mathf.Min(r.x, pw - r.width - 6); r.y = Mathf.Min(r.y, ph - r.height - 40);
-            inputRect = r;
-            GUI.Box(r, GUIContent.none, EditorStyles.helpBox);
-            GUI.Label(new Rect(r.x + 6, r.y + 2, r.width - 12, 16), (inputGo != null ? inputGo.name : inputPoint.HasValue ? "땅" : "화면") + " — Enter 저장 · Esc 취소", EditorStyles.miniLabel);
-            GUI.SetNextControlName(InputName);
-            inputText = GUI.TextField(new Rect(r.x + 6, r.y + 20, r.width - 12, 20), inputText);
-            if (focusNext && Event.current.type == EventType.Repaint) { EditorGUI.FocusTextInControl(InputName); focusNext = false; sv.Repaint(); }
         }
 
         static void DrawBubble(SceneView sv)
