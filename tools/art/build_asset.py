@@ -312,12 +312,15 @@ def h_paint(cell, col):
         if pt == 'roof': A *= col['roof'] / t.reshape(-1, 3).mean(0)  # 사진 평균색 = E2 중앙값(밝기만 사진 그대로)
         return A
     base = {'wall': 'wall', 'trim': 'trim', 'fascia': 'trim', 'door': 'door', 'shutter': 'shutter', 'pavers': 'terra', 'terracotta': 'terra', 'ridge': 'ridge',
-            'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass'}[pt]
+            'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass',
+            'pane': 'pane', 'curtain': 'curtain', 'chair': 'soffit'}[pt]  # 0052: 창 유리 안쪽(어두운 방) · 부엌 커튼 · 나무 의자
     A = np.ones((h, w, 3)) * col[base]
-    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD'}.get(pt, 'A2')
+    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD'}.get(pt, 'A2')
     f = np.roll(np.tile(h_field(fk), (h // 128 + 2, w // 128 + 2)), (rs.integers(128), rs.integers(128)), (0, 1))[:h, :w]
-    if pt in ('door', 'soffit'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
+    if pt in ('door', 'soffit', 'chair'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
     vv, uu = np.mgrid[0:h, 0:w]
+    if pt == 'pane' and w > 8 and h > 8: A[(np.abs(uu - w // 2) <= 1) | (np.abs(vv - h // 2) <= 1)] = col['trim']  # 창살 십자(흰 틀 색)
+    if pt == 'curtain': A[(uu % 6 == 5)] *= .9  # 커튼 주름 9cm
     if pt == 'shutter' and w > 8 and h > 8:  # 루버 6cm(64px/m 에서 4px) — 틀 3px 안쪽만. 판 사이 홈 = 칠한 색 어둠 한 단
         inn = (uu >= 3) & (uu < w - 3) & (vv >= 3) & (vv < h - 3); A[inn & (vv % 4 == 3)] *= .86
     if pt == 'door': A[(uu % 5 == 4)] *= .88; A[(vv == h // 3) | (vv == 2 * h // 3)] *= .9  # 판자 15cm · 가로 띠 2
@@ -339,7 +342,8 @@ def h_grain(c):
     col = {'wall': h_med('A2'), 'trim': np.minimum(h_med(*HCROP['trim']), 212) * [1, .97, .9],  # 사진 흰 틀은 하늘빛 무채 → 석회 흰색 쪽으로
             'door': h_med(*HCROP['door']), 'shutter': h_med('C2'), 'roof': h_med('E2')}
     col.update(terra=col['roof'] * [1.08, .98, .92], ridge=col['roof'] * .84, soffit=col['door'] * 1.6, iron=np.array([58., 66., 60.]), soil=np.array([112., 84., 60.]),
-               leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]))
+               leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]),
+               pane=np.array([74., 86., 92.]), curtain=col['trim'] * [1.04, 1.02, .94])  # 0052: 유리 너머 어둠(빛 굽기 아님 = 단색 + 결) · 크림 커튼
     A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
     for (x, y, w, h), t in P:  # 칸 사이 1px 틈 = 가장자리 색 번짐(검은 틈이 작은 물건 잔결·알파를 망쳤다, check 1차)
         e = np.pad(t, ((1, 1), (1, 1), (0, 0)), mode='edge'); y0, x0 = max(y - 1, 0), max(x - 1, 0)

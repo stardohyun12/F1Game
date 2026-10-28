@@ -1,14 +1,22 @@
 | 건물 | 노드 | 텍스처 | 삼각 | 텍셀 med(기대) | 범위안 | 잔결 med | 단색칸 | 팔레트 | 색수 | 반점 | 기울기면 | 얼룩 | S/Vp5/Vp95 | 원통 | 글씨(획/AA) | 거울 | 알파 | 재질 | 실패 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| house_home | DOOR_01 | house_home.png | 18 | P 32(33) | 100% | P 0.072 | P 0% | P 100% | 10 | **F** 0.33% | P 0% | P 0 | **F** 0.61/55/73 | – | – | – | P 0% | P | 2 |
-| house_home | HOUSE_shell | house_home.png | 186 | P 32(32) | 100% | P 0.052 | P 0% | P 100% | 388 | **F** 29.30% | P 0% | P 0 | P 0.44/92/230 | – | – | – | **F** 1% | P | 3 |
-| house_home | PLANT_01 | house_home.png | 60 | P 63(64) | 97% | P 0.166 | P 0% | P 100% | 12 | **F** 5.12% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
-| house_home | PLANT_02 | house_home.png | 60 | P 63(64) | 97% | P 0.165 | P 0% | P 100% | 8 | **F** 4.16% | P 0% | P 0 | P 0.42/112/204 | – | – | – | P 0% | P | 1 |
-| house_home | PLANTER_01 | house_home.png | 10 | P 63(64) | 100% | P 0.039 | P 0% | P 100% | 13 | **F** 4.09% | P 0% | P 0 | **F** 0.74/108/173 | – | – | – | P 0% | P | 2 |
-| house_home | PLANTER_02 | house_home.png | 10 | P 63(64) | 100% | P 0.047 | P 0% | P 100% | 8 | **F** 3.97% | P 0% | P 0 | **F** 0.74/108/164 | – | – | – | P 0% | P | 2 |
-| house_home | RAIL_01 | house_home.png | 376 | P 65(57) | 100% | P 0.050 | P 0% | P 100% | 4 | P 0.22% | P 0% | P 0 | P 0.12/57/75 | – | – | – | P 0% | P | 0 |
-| house_home | SHUTTER_01 | house_home.png | 10 | P 64(64) | 100% | P 0.057 | P 0% | P 100% | 7 | **F** 0.99% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
-| house_home | SHUTTER_02 | house_home.png | 10 | P 64(64) | 100% | P 0.053 | P 0% | P 100% | 7 | **F** 1.02% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
-| house_home | SHUTTER_03 | house_home.png | 10 | P 64(64) | 100% | P 0.055 | P 0% | P 100% | 7 | **F** 1.19% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
-| house_home | SHUTTER_04 | house_home.png | 10 | P 64(64) | 100% | P 0.057 | P 0% | P 100% | 7 | **F** 0.89% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
+| house_home | CHAIR_01 | house_home.png | 60 | P 69(64) | 100% | P 0.154 | P 0% | P 100% | 9 | **F** 0.84% | P 0% | P 0 | **F** 0.61/90/114 | – | – | – | P 0% | P | 2 |
+| house_home | CURTAIN_01 | house_home.png | 2 | P 64(64) | 100% | P 0.051 | P 0% | P 100% | 8 | **F** 43.83% | P 0% | P 0 | P 0.19/190/243 | – | – | – | P 0% | P | 1 |
+| house_home | CURTAIN_02 | house_home.png | 2 | P 64(64) | 100% | P 0.051 | P 0% | P 100% | 8 | **F** 44.41% | P 0% | P 0 | P 0.19/190/243 | – | – | – | P 0% | P | 1 |
+| house_home | DOOR_01 | house_home.png | 18 | P 32(33) | 100% | P 0.074 | P 0% | P 100% | 19 | P 0.29% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
+| house_home | DOOR_BALCONY | house_home.png | 22 | P 32(32) | 94% | P 0.068 | P 0% | P 100% | 19 | P 0.19% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
+| house_home | HOUSE_shell | house_home.png | 332 | P 32(32) | 100% | P 0.060 | P 0% | P 100% | 711 | **F** 28.49% | P 0% | P 0 | P 0.44/88/230 | – | – | – | **F** 0% | P | 3 |
+| house_home | PLANT_01 | house_home.png | 60 | P 63(64) | 97% | P 0.170 | P 0% | P 100% | 8 | **F** 4.34% | P 0% | P 0 | P 0.42/112/204 | – | – | – | P 0% | P | 1 |
+| house_home | PLANT_02 | house_home.png | 60 | P 63(64) | 97% | P 0.169 | P 0% | P 100% | 8 | **F** 5.48% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
+| house_home | PLANT_03 | house_home.png | 30 | P 65(64) | 97% | P 0.039 | P 0% | P 100% | 7 | **F** 3.34% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
+| house_home | PLANTER_01 | house_home.png | 10 | P 63(64) | 100% | P 0.042 | P 0% | P 100% | 8 | **F** 5.99% | P 0% | P 0 | **F** 0.74/108/173 | – | – | – | P 0% | P | 2 |
+| house_home | PLANTER_02 | house_home.png | 10 | P 63(64) | 100% | P 0.053 | P 0% | P 100% | 8 | **F** 3.29% | P 0% | P 0 | **F** 0.74/108/164 | – | – | – | P 0% | P | 2 |
+| house_home | PLANTER_03 | house_home.png | 10 | P 65(64) | 100% | P 0.044 | P 0% | P 100% | 8 | **F** 5.98% | P 0% | P 0 | **F** 0.74/108/173 | – | – | – | P 0% | P | 2 |
+| house_home | RAIL_01 | house_home.png | 408 | P 65(57) | 100% | P 0.051 | P 0% | P 100% | 4 | P 0.24% | P 0% | P 0 | P 0.12/57/75 | – | – | – | P 0% | P | 0 |
+| house_home | SHUTTER_01 | house_home.png | 10 | P 64(64) | 100% | P 0.056 | P 0% | P 100% | 7 | **F** 1.14% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
+| house_home | SHUTTER_02 | house_home.png | 10 | P 64(64) | 100% | P 0.052 | P 0% | P 100% | 7 | **F** 0.71% | P 0% | P 0 | P 0.20/77/95 | – | – | – | P 0% | P | 1 |
+| house_home | SHUTTER_03 | house_home.png | 10 | P 64(64) | 100% | P 0.054 | P 0% | P 100% | 7 | **F** 1.10% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
+| house_home | SHUTTER_04 | house_home.png | 10 | P 64(64) | 100% | P 0.050 | P 0% | P 100% | 7 | **F** 1.17% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
+| house_home | SHUTTER_05 | house_home.png | 10 | P 64(64) | 100% | P 0.054 | P 0% | P 100% | 7 | **F** 1.26% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
+| house_home | SHUTTER_06 | house_home.png | 10 | P 64(64) | 100% | P 0.048 | P 0% | P 100% | 7 | **F** 1.37% | P 0% | P 0 | P 0.21/71/95 | – | – | – | P 0% | P | 1 |
 | ref | house_shop | house_shop.png | 1198 | P 32(32) | 100% | **F** 0.005 | **F** 48% | P 100% | 28 | **F** 3.81% | P 0% | **F** 6 | P 0.41/102/236 | – | – | – | P 0% | P | 5 |

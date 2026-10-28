@@ -5,18 +5,18 @@
  "stats": {
   "terrain_tris": 136242,
   "sea_tris": 2,
-  "road_tris": 72370,
-  "roads": 450,
-  "joins": 7,
-  "car_km": 11.61,
-  "building_tris": 24771,
-  "buildings": 1149,
+  "road_tris": 72170,
+  "roads": 448,
+  "joins": 6,
+  "car_km": 11.56,
+  "building_tris": 24721,
+  "buildings": 1147,
   "pier_tris": 828,
   "piers": 69,
   "places": 22,
-  "tris_total": 234213,
-  "bytes": 7714516,
-  "seconds": 0.9
+  "tris_total": 233963,
+  "bytes": 7704924,
+  "seconds": 0.5
  },
- "generated": "2026-10-28T22:46:25"
+ "generated": "2026-10-29T00:05:30"
 }

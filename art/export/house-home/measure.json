@@ -1,37 +1,47 @@
 {
- "tris": 760,
+ "tris": 1084,
  "objects": [
   "HOUSE_shell",
   "DOOR_01",
+  "DOOR_BALCONY",
   "SHUTTER_01",
   "SHUTTER_02",
   "SHUTTER_03",
   "SHUTTER_04",
+  "SHUTTER_05",
+  "SHUTTER_06",
+  "CURTAIN_01",
+  "CURTAIN_02",
+  "PLANTER_03",
+  "PLANT_03",
+  "CHAIR_01",
   "RAIL_01",
   "PLANTER_01",
   "PLANT_01",
   "PLANTER_02",
   "PLANT_02",
   "STUDIO_CamBalc",
-  "STUDIO_CamBalcLook"
+  "STUDIO_CamBalcLook",
+  "STUDIO_CamDoor1",
+  "STUDIO_CamDoor1Look"
  ],
  "atlas": [
   1024,
-  1024
+  2048
  ],
- "faces": 381,
- "balusters": 34,
+ "faces": 543,
+ "balusters": 38,
  "size_m": {
-  "w": 4.4,
-  "d": 3.3,
+  "w": 8.6,
+  "d": 6.0,
   "wall_top": 5.85,
-  "ridge": 6.74
+  "ridge": 7.35
  },
- "room_offset": [
+ "room_offset_unity": [
   0,
-  0,
-  3.2
+  3.2,
+  1.35
  ],
- "pivot": "기단 윗면(z 0) 가운데 = 방 바닥 가운데 수직 아래",
+ "pivot": "기단 윗면(z 0) 가운데(방 가운데는 앞으로 1.35m)",
  "forward": "발코니·현관 = Blender -Y → FBX/Unity +Z"
 }

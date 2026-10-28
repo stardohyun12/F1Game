@@ -20,16 +20,16 @@
     "label_ko": "주인공 2층집",
     "file": "house_home.glb",
     "size_m": [
-      4.96,
-      7.64,
-      4.55
+      9.16,
+      8.25,
+      7.87
     ],
-    "tris": 760,
-    "nodes": 13,
-    "mesh_nodes": 11,
-    "bytes": 276312,
+    "tris": 1084,
+    "nodes": 23,
+    "mesh_nodes": 19,
+    "bytes": 476524,
     "source": "art/export/house-home/house_home.fbx",
-    "exported": "2026-10-29 00:45:22"
+    "exported": "2026-10-29 01:10:14"
   },
   {
     "name": "garage",

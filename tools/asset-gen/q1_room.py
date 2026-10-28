@@ -76,7 +76,7 @@ def photo(A, key, amp, seed, mix=None):  # mix: 다른 사진을 90° 돌려 다
     h, w = A.shape[:2]; rs = np.random.default_rng(seed); t = ph_lay(key, h, w, rs)
     if mix: t = (t + ph_lay(mix, h, w, rs, 1)) / math.sqrt(2)
     A *= (1 + amp * t)[..., None]; return t
-AMP = float(os.environ.get('AMP', .45)); BL = float(os.environ.get('BL', 2.0))
+AMP = float(os.environ.get('AMP', .45)); BL = float(os.environ.get('BL', 2.0)); BL = float(os.environ.get('BL', 2.0))
 def ph_of(pt):
     for keys, v in ((('hook', 'shelf'), ('wood', .26)), (('pillow', 'shirt', 'shoe', 'sole'), ('fabric', .26)), (('pencil', 'metal'), ('plaster', .26)), (('desk', 'drawers'), ('wood', .26)),  # 2318: 가장자리 번짐 뒤에도 잔결 0.02 → ±12%(D-197 위쪽)
                     (('cord', 'vest', 'strap', 'slipper', 'bag', 'towel'), ('fabric', .18)), (('pig', 'snout', 'kart', 'tire'), ('plaster', .18)), (('book',), ('paper', .18)),
@@ -313,13 +313,14 @@ for i in range(4): PT['photo%d' % i] = p_photo(i)
 for i in range(9): PT['book%d' % i] = p_book(i)
 
 # ---------- 기하 ----------
-quads = {}; NM = [None]
+quads = {}; NM = [None]; PHF = [False]; PHS = set(); SN = 'ROOM_shellN'  # 0052: PHF = 옛 창 조각(칸만 예전 자리, 메시 없음) · SN = 새 문 조각(맨 뒤 줄, 메시는 ROOM_shell)
 def nm(n): NM[0] = n  # 2303: 만질 수 있는 물건 = 낱개 오브젝트(NAME_NN, 피벗 바닥 가운데). 껍데기(ROOM_shell)는 그대로
 def _dn(mesh, pts, dens):  # 2303: 작은 물건(면의 가장 긴 축 ≤1.5m) = 64, 그 밖 32 — check_rules 섬 기대값과 같은 규칙
-    if mesh == 'ROOM_shell': return mesh, dens
+    if mesh in ('ROOM_shell', SN): return mesh, dens
     ext = max(max(v[k] for v in pts) - min(v[k] for v in pts) for k in range(3)); return NM[0] or mesh, 64 if ext <= 1.5 else 32
 def Q(mesh, o, U, V, pt, dens=32):
     o, U, V = Vector(o), Vector(U), Vector(V); mesh, dens = _dn(mesh, (o, o + U, o + U + V, o + V), dens); quads.setdefault(mesh, []).append((o, U, V, pt, dens))
+    if PHF[0]: PHS.add((mesh, len(quads[mesh]) - 1))
 def Q4(mesh, pts, pt, dens=32):  # 일반 사각(볼록) — 텍스처 크기는 첫 꼭짓점의 두 변 길이
     p = [Vector(v) for v in pts]; mesh, dens = _dn(mesh, p, dens); quads.setdefault(mesh, []).append((p[0], p[1] - p[0], p[3] - p[0], pt, dens, p))
 def box(mesh, x0, x1, y0, y1, z0, z1, pt, dens=32, skip=()):
@@ -337,17 +338,25 @@ def wallpiece(wall, u0, u1, z0, z1): wallQ('ROOM_shell', wall, u0, u1, z0, z1, (
 S, Fu, Pr = 'ROOM_shell', 'ROOM_furniture', 'ROOM_props'
 # 바닥·천장
 Q(S, (-1.75, -1.5, 0), (3.5, 0, 0), (0, 3.0, 0), 'floor'); Q(S, (-1.75, 1.5, HH), (3.5, 0, 0), (0, -3.0, 0), 'ceiling')
-# 벽: 창 벽(창 구멍 u .75~2.75 · z .8~2.0), 나머지는 통짜
-wallpiece('win', 0, .75, 0, HH); wallpiece('win', 2.75, 3.5, 0, HH); wallpiece('win', .75, 2.75, 0, .8); wallpiece('win', .75, 2.75, 2.0, HH)
+# 벽: 창 벽 = 발코니 문(0052 D-200: 문 구멍 u 1.3~2.2 = x ±.45 · z 0~2.05, 문짝은 house_home.py DOOR_BALCONY), 나머지는 통짜
+# 옛 창 조각(벽 4·창 두께·창턱·틀·미닫이)은 PHF: 아틀라스 칸만 예전 순서·자리에 남긴다 → 다른 물건 칸·결·양자화가 그대로(다시 쌓으면 경계값 물건 7개가 떨어졌다)
+PHF[0] = True; wallpiece('win', 0, .75, 0, HH); wallpiece('win', 2.75, 3.5, 0, HH); wallpiece('win', .75, 2.75, 0, .8); wallpiece('win', .75, 2.75, 2.0, HH); PHF[0] = False
 wallpiece('door', 0, 3.5, 0, HH); wallpiece('L', 0, 3.0, 0, HH); wallpiece('R', 0, 3.0, 0, HH)
-# 창 두께(15cm)·창턱·틀·미닫이(왼쪽 반 열림 → 창살은 -X 반에)·커튼
+PHF[0] = True
 Q(S, (-1, -1.65, .8), (0, .15, 0), (0, 0, 1.2), 'reveal'); Q(S, (1, -1.5, .8), (0, -.15, 0), (0, 0, 1.2), 'reveal'); Q(S, (-1, -1.5, 2.0), (2, 0, 0), (0, -.15, 0), 'reveal')
 box(S, -1.06, 1.06, -1.66, -1.42, .76, .8, 'sill', skip=('back', 'bottom'))
 for x0, x1, z0, z1 in ((-1, -.95, .8, 2.0), (.95, 1, .8, 2.0), (-1, 1, 1.95, 2.0), (-1, 1, .8, .85)): box(S, x0, x1, -1.61, -1.57, z0, z1, 'winframe', skip=('back',))
-for sg, yy in ((-1, -1.565), (1, -1.528)):  # 2차: 미닫이 두 짝 대칭(가운데 4cm 겹침)
+for sg, yy in ((-1, -1.565), (1, -1.528)):
     xa, xb = (-.95, .02) if sg < 0 else (-.02, .95)
     for x0, x1, z0, z1 in ((xa, xa + .04, .85, 1.95), (xb - .04, xb, .85, 1.95), (xa, xb, .85, .89), (xa, xb, 1.91, 1.95), (xa, xb, 1.38, 1.41), ((xa + xb) / 2 - .015, (xa + xb) / 2 + .015, .85, 1.95)):
         box(S, x0, x1, yy, yy + .035, z0, z1, 'winframe', skip=('back',))
+PHF[0] = False
+# 새 문 조각(SN): 벽 3 · 문 두께(15cm)·문턱 · 방 안 문틀(3cm 돋음, 옆 기둥 윗면 = 머리 밑면 → skip, 머리 밑면은 구멍 위만)
+for u0, u1, z0, z1 in ((0, 1.3, 0, HH), (2.2, 3.5, 0, HH), (1.3, 2.2, 2.05, HH)): wallQ(SN, 'win', u0, u1, z0, z1, ('W', 'win', u0, z0))
+Q(SN, (-.45, -1.65, 0), (0, .15, 0), (0, 0, 2.05), 'reveal'); Q(SN, (.45, -1.5, 0), (0, -.15, 0), (0, 0, 2.05), 'reveal'); Q(SN, (-.45, -1.5, 2.05), (.9, 0, 0), (0, -.15, 0), 'reveal')
+Q(SN, (-.45, -1.65, 0), (.9, 0, 0), (0, .15, 0), 'sill')
+box(SN, -.51, -.45, -1.5, -1.47, 0, 2.05, 'doorframe', skip=('front', 'bottom', 'top')); box(SN, .45, .51, -1.5, -1.47, 0, 2.05, 'doorframe', skip=('front', 'bottom', 'top'))
+box(SN, -.51, .51, -1.5, -1.47, 2.05, 2.11, 'doorframe', skip=('front', 'bottom')); Q(SN, (-.45, -1.47, 2.05), (.9, 0, 0), (0, -.03, 0), 'doorframe')
 box(S, -1.25, 1.3, -1.47, -1.43, 2.12, 2.15, 'winframe'); box(S, 1.0, 1.24, -1.47, -1.41, .66, 2.12, 'curtain'); box(S, -1.2, -1.02, -1.47, -1.42, .7, 2.12, 'curtain')
 # 문틀·손잡이·고리·시계·천장 보·전등
 for x0, x1, z1 in ((.55, .6, 2.0), (1.4, 1.45, 2.0), (.55, 1.45, 2.0)): box(S, x0, x1, 1.47, 1.5, 1.95 if x1 - x0 > .5 else 0, z1, 'doorframe', skip=('back',))
@@ -362,7 +371,7 @@ nm(None); box(Pr, 1.735, 1.75, 1.2, 1.28, 1.1, 1.2, 'plate', 64, skip=('right', 
 nm('BAG_01'); box(Pr, 1.45, 1.72, -.2, .06, 0, .3, 'bag', 64, skip=('bottom', 'right')); box(Pr, 1.43, 1.72, -.21, .07, .22, .34, dict({'*': 'bagflap'}), 64, skip=('bottom', 'right'))
 box(Pr, 1.40, 1.45, -.15, .01, .04, .19, 'bagflap', 64, skip=('right', 'bottom')); box(Pr, 1.56, 1.6, -.13, -.01, .34, .40, 'bagflap', 64, skip=('bottom',))
 nm(None); box(Pr, 1.71, 1.725, -1.2, -1.185, .3, .72, 'cord', 64, skip=('right',)); box(Pr, 1.725, 1.74, -1.2, -.38, .3, .315, 'cord', 64, skip=('right', 'bottom'))
-nm('PLANT_01'); box(Pr, .55, .67, -1.6, -1.48, .8, .9, 'pot', 64, skip=('bottom',)); box(Pr, .52, .70, -1.545, -1.535, .9, 1.1, 'leaf', 64); box(Pr, .605, .615, -1.63, -1.45, .9, 1.06, 'leaf', 64); box(Pr, .56, .66, -1.58, -1.5, 1.0, 1.04, 'leaf', 64)
+nm('PLANT_01'); box(Pr, .6, .72, -1.44, -1.32, 0, .1, 'pot', 64, skip=('bottom',)); box(Pr, .57, .75, -1.385, -1.375, .1, .3, 'leaf', 64); box(Pr, .655, .665, -1.47, -1.29, .1, .26, 'leaf', 64); box(Pr, .61, .71, -1.42, -1.34, .2, .24, 'leaf', 64)  # 0052: 창턱이 문이 돼 바닥(문 오른쪽)으로
 for k, x0 in enumerate((.2, .34)):
     nm('SHOE_%02d' % (k + 1)); box(Pr, x0, x0 + .1, 1.15, 1.43, 0, .03, 'sole', 64, skip=('bottom',)); box(Pr, x0 + .01, x0 + .09, 1.22, 1.42, .03, .09, 'shoe', 64, skip=('bottom',))
 nm('BOOKS_01')
@@ -426,12 +435,14 @@ nm('CERT_01'); wallQ(Pr, 'door', .82, 1.06, 1.06, 1.24, 'cert', .015, 64, -3); n
 
 # ---------- 아틀라스(선반 쌓기) ----------
 items = []
-for mesh, qs in quads.items():
-    for qi, (o, U, V, pt, dn, *_) in enumerate(qs): items.append([mesh, qi, max(1, int(round(U.length * dn))), max(1, int(round(V.length * dn))), pt, dn])  # 2303: 최소 1px(옛 2px = 1.5cm 줄·연필 옆면이 90~130px/m)
-AW = 1024; order = sorted(range(len(items)), key=lambda k: -items[k][3]); x = y = rowh = 0; PAD = 2
+for mesh, qs in list(quads.items()) + [(SN, None)]:  # 0052: 새 문 조각(SN)은 맨 뒤
+    if mesh == SN and qs is not None: continue
+    for qi, (o, U, V, pt, dn, *_) in enumerate(quads.get(SN, []) if mesh == SN else qs): items.append([mesh, qi, max(1, int(round(U.length * dn))), max(1, int(round(V.length * dn))), pt, dn])
+NOLD = sum(1 for it in items if it[0] != SN)  # 2303: 최소 1px(옛 2px = 1.5cm 줄·연필 옆면이 90~130px/m)
+AW = 1024; order = sorted(range(NOLD), key=lambda k: -items[k][3]) + sorted(range(NOLD, len(items)), key=lambda k: -items[k][3]); x = y = rowh = 0; PAD = 2
 for k in order:
     w, h = items[k][2], items[k][3]
-    if x + w + PAD > AW: x = 0; y += rowh + PAD; rowh = 0
+    if x + w + PAD > AW or (k == order[NOLD] if NOLD < len(items) else False): x = 0; y += rowh + PAD; rowh = 0
     items[k] += [x, y]; x += w + PAD; rowh = max(rowh, h)
 AH = 1 << max(9, int(math.ceil(math.log2(y + rowh + 1)))); print('ATLAS', AW, AH, len(items), flush=True)
 A = np.zeros((AH, AW, 3)); A[:] = C['char']; USED = np.zeros((AH, AW), bool)
@@ -472,10 +483,11 @@ def mk_mat(name, emit):
 MAT = mk_mat('ROOM_alb', False); MATV = mk_mat('ROOM_view_unlit', True)
 obs = []; tris = 0
 for mesh in quads:
+    if mesh == SN: continue
     me = bpy.data.meshes.new(mesh); bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
     for mname, qi, w, h, pt, dn, ux, uy in items:
-        if mname != mesh: continue
-        q = quads[mesh][qi]; o, U, V = q[:3]
+        if not (mname == mesh or (mesh == 'ROOM_shell' and mname == SN)) or (mname, qi) in PHS: continue
+        q = quads[mname][qi]; o, U, V = q[:3]
         f = bm.faces.new([bm.verts.new(p) for p in (q[5] if len(q) > 5 else (o, o + U, o + U + V, o + V))])
         for lp, (a, b) in zip(f.loops, ((ux + .02, uy + .02), (ux + w - .02, uy + .02), (ux + w - .02, uy + h - .02), (ux + .02, uy + h - .02))): lp[uvl].uv = (a / AW, b / AH)
     if mesh != 'ROOM_shell':  # 2303: 피벗 = 바닥 가운데(D-195)
@@ -485,11 +497,7 @@ for mesh in quads:
     bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(mesh, me); ob.location = pv; sc.collection.objects.link(ob); me.materials.append(MATV if mesh == 'ROOM_view' else MAT); obs.append(ob)
     tris += sum(len(p.vertices) - 2 for p in me.polygons)
     if mesh == 'ROOM_view': ob.visible_shadow = False
-# 2303: 창 = 진짜 유리(D-189) — 미닫이 두 짝 안에 한 장씩(창살 상자 깊이 가운데라 창살과 같은 면 0). 텍스처 없음 → Unity M_room_glass 반투명
-mg = bpy.data.materials.new('ROOM_glass'); mg.diffuse_color = (.72, .86, .95, .32)
-for i, (yy, xa, xb) in enumerate(((-1.565, -.95, .02), (-1.528, -.02, .95))):
-    gy = yy + .0175; gn = 'WINDOW_glass_%02d' % (i + 1); meg = bpy.data.meshes.new(gn); meg.from_pydata([(xa + .04, gy, .89), (xb - .04, gy, .89), (xb - .04, gy, 1.91), (xa + .04, gy, 1.91)], [], [(0, 1, 2, 3)])
-    meg.uv_layers.new(name='UVMap'); meg.materials.append(mg); og = bpy.data.objects.new(gn, meg); sc.collection.objects.link(og); og.visible_shadow = False; obs.append(og)
+# 0052: 창 → 발코니 문(유리 없음)
 for en, loc in (('STUDIO_CamIn', (1.0, 1.3, 1.55)), ('STUDIO_CamInLook', (-.5, -1.2, 1.05))):  # 2303: studio_cap 실내 캠 = 렌더 door 와 같은 자리
     e = bpy.data.objects.new(en, None); e.location = loc; sc.collection.objects.link(e); obs.append(e)
 bpy.ops.object.select_all(action='DESELECT')

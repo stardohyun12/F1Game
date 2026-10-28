@@ -1,5 +1,5 @@
 {
- "tris": 1214,
+ "tris": 1068,
  "objects": [
   "ROOM_shell",
   "KNOB_01",
@@ -63,8 +63,6 @@
   "KART_01",
   "CERT_01",
   "BOX_02",
-  "WINDOW_glass_01",
-  "WINDOW_glass_02",
   "STUDIO_CamIn",
   "STUDIO_CamInLook"
  ],
@@ -73,12 +71,12 @@
   512
  ],
  "texels_per_m": {
-  "big": 32.05,
+  "big": 32.07,
   "small": 63.88
  },
  "colors": 101,
  "palette": "palette_q1v2.gpl (palette53 + 결 단계 72)",
- "isolated_pct": 0.503,
+ "isolated_pct": 0.477,
  "p5": 90.9,
  "p50": 149.8,
  "p95": 233.7,
