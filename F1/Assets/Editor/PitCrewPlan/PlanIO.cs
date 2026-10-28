@@ -95,9 +95,9 @@ namespace PitCrewPlan
             }
             return any;
         }
-        public static List<GameObject> LibraryInstances()
+        public static List<GameObject> LibraryInstances() => LibraryInstances(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        public static List<GameObject> LibraryInstances(UnityEngine.SceneManagement.Scene scene)
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             var list = new List<GameObject>();
             foreach (var r in scene.GetRootGameObjects())
                 foreach (var t in r.GetComponentsInChildren<Transform>(true))
@@ -132,7 +132,7 @@ namespace PitCrewPlan
         public class Comment
         {
             public string raw, id, time, building, comment, status, screenshot, nodePath;
-            public Vector3? camPos, camTarget; public float fov = 60f;
+            public Vector3? camPos, camTarget, point; public float fov = 60f;
             public bool Done => status == "done";
         }
 
@@ -155,6 +155,7 @@ namespace PitCrewPlan
                 if (d == null) continue;
                 var c = new Comment { raw = line, id = S(d, "id"), time = S(d, "time"), building = S(d, "building"), comment = S(d, "comment"), status = S(d, "status"), screenshot = S(d, "screenshot") };
                 if (d.TryGetValue("nodes", out var n) && n is List<object> nl && nl.Count > 0 && nl[0] is Dictionary<string, object> n0) c.nodePath = S(n0, "path");
+                c.point = V(d, "point");
                 if (d.TryGetValue("camera", out var cam) && cam is Dictionary<string, object> cd)
                 {
                     c.camPos = V(cd, "pos"); c.camTarget = V(cd, "target");
@@ -189,7 +190,8 @@ namespace PitCrewPlan
 
         // ───────── 캡처 ─────────
         /// <summary>source 카메라를 그대로 복사한 임시 카메라로 w×h PNG 를 굽는다(씬 뷰·게임 뷰 공통, URP 에서도 안전).</summary>
-        public static bool RenderPng(Camera source, string file, int w = 1280, int h = 720)
+        /// strokes = 그린 선(0~1, 왼쪽 위 원점). 있으면 빨간 선을 그림 위에 합성한다.
+        public static bool RenderPng(Camera source, string file, int w = 1280, int h = 720, List<List<Vector2>> strokes = null)
         {
             if (source == null) return false;
             var go = new GameObject("_PlanCapture") { hideFlags = HideFlags.HideAndDontSave };
@@ -205,12 +207,36 @@ namespace PitCrewPlan
                 var tex = new Texture2D(w, h, TextureFormat.RGB24, false);
                 tex.ReadPixels(new Rect(0, 0, w, h), 0, 0); tex.Apply();
                 RenderTexture.active = prev;
+                if (strokes != null && strokes.Count > 0) DrawStrokes(tex, strokes, Mathf.Max(2, w / 320));
                 Directory.CreateDirectory(Path.GetDirectoryName(file));
                 File.WriteAllBytes(file, tex.EncodeToPNG());
                 UnityEngine.Object.DestroyImmediate(tex);
                 return true;
             }
             finally { RenderTexture.ReleaseTemporary(rt); UnityEngine.Object.DestroyImmediate(go); }
+        }
+
+        /// <summary>선마다 반지름 r 픽셀 원을 1px 간격으로 찍어 굵은 빨간 선을 만든다(텍스처는 아래가 y=0).</summary>
+        public static void DrawStrokes(Texture2D tex, List<List<Vector2>> strokes, int r)
+        {
+            int w = tex.width, h = tex.height; var px = tex.GetPixels32(); var red = new Color32(235, 40, 40, 255);
+            void Dot(int cx, int cy)
+            {
+                for (int dy = -r; dy <= r; dy++) for (int dx = -r; dx <= r; dx++)
+                {
+                    if (dx * dx + dy * dy > r * r) continue;
+                    int x = cx + dx, y = cy + dy; if (x < 0 || y < 0 || x >= w || y >= h) continue;
+                    px[y * w + x] = red;
+                }
+            }
+            foreach (var s in strokes)
+                for (int i = 0; i < s.Count; i++)
+                {
+                    var a = new Vector2(s[i].x * w, (1f - s[i].y) * h); var b = i + 1 < s.Count ? new Vector2(s[i + 1].x * w, (1f - s[i + 1].y) * h) : a;
+                    int n = Mathf.Max(1, Mathf.CeilToInt(Vector2.Distance(a, b)));
+                    for (int k = 0; k <= n; k++) { var p = Vector2.Lerp(a, b, (float)k / n); Dot(Mathf.RoundToInt(p.x), Mathf.RoundToInt(p.y)); }
+                }
+            tex.SetPixels32(px); tex.Apply();
         }
 
         // ───────── 배치 yaml ─────────
@@ -247,12 +273,12 @@ namespace PitCrewPlan
         }
 
         /// <summary>씬의 라이브러리 인스턴스 → places. 바뀐 게 없으면 파일을 안 건드린다(diff 0). 바뀐 줄 목록을 돌려준다.</summary>
-        public static List<string> WritePlacements(string scene, out string error)
+        public static List<string> WritePlacements(UnityEngine.SceneManagement.Scene sc, out string error)
         {
-            error = null;
+            error = null; var scene = sc.name;
             var old = ReadPlaces(out var others);
             var now = new Dictionary<string, Place>();
-            foreach (var go in LibraryInstances())
+            foreach (var go in LibraryInstances(sc))
             {
                 var id = Path.GetFileNameWithoutExtension(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(go));
                 var key = id; for (int k = 2; now.ContainsKey(key); k++) key = id + "_" + k;
