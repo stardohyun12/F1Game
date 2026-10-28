@@ -15,9 +15,23 @@ namespace PitCrewPlan
         string label = "";
 
         public string Text => field != null ? field.value : "";
+        public bool IsReply => onSubmit != null;
+
+        /// null 이 아니면 Enter 가 새 코멘트 대신 이걸 부른다([다시] 답글). 창을 닫을 때 비운다.
+        System.Action<string> onSubmit;
+
+        /// [다시] 답글 입력: 같은 팝업(한글 IME 가 되는 UI Toolkit)을 쓰고 Enter 에 reply(text) 를 부른다.
+        public static PlanInputPopup OpenReply(Vector2 screenPos, string label, System.Action<string> reply)
+        {
+            var w = Open(screenPos, label);
+            w.onSubmit = reply;
+            w.SetText("");
+            return w;
+        }
 
         public static PlanInputPopup Open(Vector2 screenPos, string label)
         {
+            if (Current != null) Current.onSubmit = null;
             var w = Current;
             if (w == null)
             {
@@ -73,12 +87,15 @@ namespace PitCrewPlan
                 e.StopImmediatePropagation();
                 if (e.keyCode == KeyCode.None) return;   // Enter 의 글자 이벤트 — 줄바꿈이 안 들어가게 먹기만
                 // 한글 조합 중인 마지막 글자가 값에 확정된 뒤 읽도록 한 박자 미룬다
-                EditorApplication.delayCall += () => PlanMode.Submit(Text);
+                var reply = onSubmit;
+                if (reply != null) EditorApplication.delayCall += () => { var t = Text.Trim(); if (t.Length > 0) reply(t); Close(); };
+                else EditorApplication.delayCall += () => PlanMode.Submit(Text);
             }
             else if (e.keyCode == KeyCode.Escape)
             {
                 e.StopImmediatePropagation();
-                EditorApplication.delayCall += PlanMode.CancelInput;
+                if (onSubmit != null) EditorApplication.delayCall += Close;
+                else EditorApplication.delayCall += PlanMode.CancelInput;
             }
         }
     }

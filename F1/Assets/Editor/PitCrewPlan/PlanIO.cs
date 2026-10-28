@@ -23,7 +23,9 @@ namespace PitCrewPlan
         public static string RepoRoot => Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         public static string FeedbackDir => Path.Combine(RepoRoot, "tools/viewer/feedback");
         public static string PlacementsPath => Path.Combine(RepoRoot, "docs/design/tutorial/placements.yaml");
-        public static string LockPath => Path.Combine(RepoRoot, ".claude/team/editor.lock");
+        /// F1Studio(같은 폴더를 정션으로 공유)는 studio.lock, 본 F1 은 editor.lock — 두 에디터 잠금이 서로를 막지 않게.
+        public static bool IsStudio => Application.dataPath.Replace('\\', '/').Contains("/F1Studio/");
+        public static string LockPath => Path.Combine(RepoRoot, IsStudio ? ".claude/team/studio.lock" : ".claude/team/editor.lock");
         public static string JsonlPath(string scene) => Path.Combine(FeedbackDir, "unity-" + scene + ".jsonl");
 
         // ───────── 숫자·JSON 쓰기 ─────────
@@ -129,11 +131,42 @@ namespace PitCrewPlan
         }
 
         // ───────── 코멘트 jsonl ─────────
+        // status: open(할 일) → fixed(팀원이 고쳤음, 도현 검토 대기) → done(도현이 넘김). [다시] = director 글 + open.
+        // thread: [{who, time, text, screenshot?}] — 없는 옛 줄은 comment 를 첫 글로, reply/after_shot(맵 팀 옛 형식)을 둘째 글로 본다.
+        public class Post { public string who, time, text, screenshot; }
         public class Comment
         {
-            public string raw, id, time, building, comment, status, screenshot, nodePath;
+            public string raw, id, time, building, comment, status, screenshot, nodePath, kind;
             public Vector3? camPos, camTarget, point; public float fov = 60f;
+            public List<Post> thread = new List<Post>();
+            public bool IsPlacement => kind == "placement";
             public bool Done => status == "done";
+            public bool Fixed => status == "fixed";
+            public bool Open => !Done && !Fixed && !IsPlacement;
+            public Post Last => thread.Count > 0 ? thread[thread.Count - 1] : null;
+            /// 전 = 첫 글 스샷, 후 = 마지막 팀원 글 스샷.
+            public string BeforeShot => thread.Count > 0 && thread[0].screenshot != null ? thread[0].screenshot : screenshot;
+            public string AfterShot { get { for (int i = thread.Count - 1; i > 0; i--) if (thread[i].who != "director" && thread[i].screenshot != null) return thread[i].screenshot; return null; } }
+        }
+
+        /// <summary>스샷 경로: 절대 → 그대로, feedback/ 기준(shots/..)에 있으면 그것, 아니면 리포 기준.</summary>
+        public static string ShotPath(string rel)
+        {
+            if (string.IsNullOrEmpty(rel)) return null;
+            if (Path.IsPathRooted(rel)) return rel;
+            var f = Path.Combine(FeedbackDir, rel);
+            return File.Exists(f) ? f : Path.Combine(RepoRoot, rel);
+        }
+
+        /// <summary>옛 줄 → thread 목록(파일은 안 바꾼다).</summary>
+        static List<object> ThreadOf(Dictionary<string, object> d)
+        {
+            if (d.TryGetValue("thread", out var t) && t is List<object> tl) return tl;
+            var l = new List<object>();
+            l.Add(new Dictionary<string, object> { ["who"] = "director", ["time"] = S(d, "time"), ["text"] = S(d, "comment") ?? S(d, "text"), ["screenshot"] = S(d, "screenshot") });
+            var reply = S(d, "reply");
+            if (reply != null) l.Add(new Dictionary<string, object> { ["who"] = S(d, "reply_by") ?? "team", ["time"] = S(d, "fixed_time") ?? S(d, "time"), ["text"] = reply, ["screenshot"] = S(d, "after_shot") });
+            return l;
         }
 
         public static void AppendLine(string scene, string json)
@@ -153,7 +186,9 @@ namespace PitCrewPlan
                 Dictionary<string, object> d;
                 try { d = MiniJson.Parse(line) as Dictionary<string, object>; } catch { continue; }
                 if (d == null) continue;
-                var c = new Comment { raw = line, id = S(d, "id"), time = S(d, "time"), building = S(d, "building"), comment = S(d, "comment"), status = S(d, "status"), screenshot = S(d, "screenshot") };
+                var c = new Comment { raw = line, id = S(d, "id"), time = S(d, "time"), building = S(d, "building"), comment = S(d, "comment"), status = S(d, "status"), screenshot = S(d, "screenshot"), kind = S(d, "kind") };
+                foreach (var o in ThreadOf(d))
+                    if (o is Dictionary<string, object> p) c.thread.Add(new Post { who = S(p, "who"), time = S(p, "time"), text = S(p, "text"), screenshot = S(p, "screenshot") });
                 if (d.TryGetValue("nodes", out var n) && n is List<object> nl && nl.Count > 0 && nl[0] is Dictionary<string, object> n0) c.nodePath = S(n0, "path");
                 c.point = V(d, "point");
                 if (d.TryGetValue("camera", out var cam) && cam is Dictionary<string, object> cd)
@@ -169,23 +204,43 @@ namespace PitCrewPlan
         static Vector3? V(Dictionary<string, object> d, string k) =>
             d.TryGetValue(k, out var v) && v is List<object> l && l.Count == 3 ? new Vector3(Convert.ToSingle(l[0], IC), Convert.ToSingle(l[1], IC), Convert.ToSingle(l[2], IC)) : (Vector3?)null;
 
-        /// <summary>그 id 줄의 status 만 바꾼다(나머지 글자는 그대로).</summary>
-        public static bool SetStatus(string scene, string id, string status)
+        /// <summary>status 를 바꾸고, reply 가 있으면 도현(director) 글로 thread 에 붙인다. [넘기기] = (id,"done"), [다시] = (id,"open",글).</summary>
+        public static bool SetStatus(string id, string status, string reply = null) =>
+            Mutate(id, d => { d["status"] = status; if (!string.IsNullOrEmpty(reply)) Push(d, "director", reply, null); });
+
+        /// <summary>status 는 그대로 두고 thread 에 글 하나.</summary>
+        public static bool AddReply(string id, string who, string text, string screenshot = null) => Mutate(id, d => Push(d, who, text, screenshot));
+
+        static void Push(Dictionary<string, object> d, string who, string text, string shot)
         {
-            var path = JsonlPath(scene);
-            if (!File.Exists(path)) return false;
-            var lines = File.ReadAllLines(path, Encoding.UTF8);
-            bool hit = false;
-            for (int i = 0; i < lines.Length; i++)
+            var t = ThreadOf(d); d["thread"] = t;
+            var p = new Dictionary<string, object> { ["who"] = who, ["time"] = Now(), ["text"] = text };
+            if (shot != null) p["screenshot"] = shot;
+            t.Add(p);
+        }
+
+        /// <summary>feedback/*.jsonl 에서 그 id 줄을 찾아 고친다. 파일 쓰기는 여기 한 곳 — tmp 에 쓰고 바꿔치기(원자적). 줄 순서·다른 줄 글자는 그대로.</summary>
+        static bool Mutate(string id, Action<Dictionary<string, object>> edit)
+        {
+            if (!Directory.Exists(FeedbackDir)) return false;
+            var key = "\"id\":" + Q(id);
+            foreach (var path in Directory.GetFiles(FeedbackDir, "*.jsonl"))
             {
-                if (!lines[i].Contains("\"id\":" + Q(id))) continue;
-                var d = MiniJson.Parse(lines[i]) as Dictionary<string, object>;
-                var old = d != null && d.TryGetValue("status", out var s) && s != null ? Q(Convert.ToString(s, IC)) : "null";
-                lines[i] = lines[i].Replace("\"status\":" + old, "\"status\":" + Q(status));
-                hit = true;
+                var lines = File.ReadAllLines(path, Encoding.UTF8);
+                bool hit = false;
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (!lines[i].Contains(key) && !lines[i].Contains("\"id\": " + Q(id))) continue;
+                    if (!(MiniJson.Parse(lines[i]) is Dictionary<string, object> d) || S(d, "id") != id) continue;
+                    edit(d); lines[i] = MiniJson.Write(d); hit = true;
+                }
+                if (!hit) continue;
+                var tmp = path + ".tmp";
+                File.WriteAllText(tmp, string.Join("\n", lines.Where(l => l.Length > 0)) + "\n", new UTF8Encoding(false));
+                File.Replace(tmp, path, null);
+                return true;
             }
-            if (hit) File.WriteAllText(path, string.Join("\n", lines) + "\n", new UTF8Encoding(false));
-            return hit;
+            return false;
         }
 
         // ───────── 캡처 ─────────
@@ -369,6 +424,24 @@ namespace PitCrewPlan
     public static class MiniJson
     {
         public static object Parse(string s) { int i = 0; var v = Val(s, ref i); return v; }
+
+        /// <summary>한 줄 JSON 으로 쓴다(키 순서 = 읽은 순서, 한글은 그대로 — python json.dumps(ensure_ascii=False, separators=(',',':')) 와 같은 꼴).</summary>
+        public static string Write(object v)
+        {
+            switch (v)
+            {
+                case null: return "null";
+                case string s: return PlanIO.Q(s);
+                case bool b: return b ? "true" : "false";
+                case double d: return d == Math.Floor(d) && Math.Abs(d) < 1e15 ? ((long)d).ToString(CultureInfo.InvariantCulture) : d.ToString("R", CultureInfo.InvariantCulture);
+                case float f: return Write((double)f);
+                case int n: return n.ToString(CultureInfo.InvariantCulture);
+                case long n: return n.ToString(CultureInfo.InvariantCulture);
+                case Dictionary<string, object> o: return "{" + string.Join(",", o.Select(kv => PlanIO.Q(kv.Key) + ":" + Write(kv.Value))) + "}";
+                case System.Collections.IEnumerable l: return "[" + string.Join(",", l.Cast<object>().Select(Write)) + "]";
+                default: return PlanIO.Q(Convert.ToString(v, CultureInfo.InvariantCulture));
+            }
+        }
         static void Ws(string s, ref int i) { while (i < s.Length && char.IsWhiteSpace(s[i])) i++; }
         static object Val(string s, ref int i)
         {

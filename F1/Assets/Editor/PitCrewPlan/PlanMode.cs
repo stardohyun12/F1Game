@@ -19,7 +19,7 @@ namespace PitCrewPlan
     {
         public const string TargetScene = "Map_TownV6";   // 배치 자동 기록을 하는 씬(placements.yaml = first-delivery 계획)
         static readonly int Hash = "PitCrewPlanMode".GetHashCode();
-        static readonly Color Red = new Color(0.92f, 0.16f, 0.16f), PinOpen = new Color(1f, 0.45f, 0.1f), PinDone = new Color(0.55f, 0.55f, 0.55f);
+        static readonly Color Red = new Color(0.92f, 0.16f, 0.16f), PinOpen = Color.white, PinDone = new Color(0.55f, 0.55f, 0.55f), PinSel = new Color(1f, 0.45f, 0.1f);
 
         public static bool On
         {
@@ -34,7 +34,7 @@ namespace PitCrewPlan
         static List<Vector2> cur;
         static Vector2 downPos; static bool dragging;
 
-        static bool inputOpen => PlanInputPopup.Current != null;
+        static bool inputOpen => PlanInputPopup.Current != null && !PlanInputPopup.Current.IsReply;
         static string inputText => PlanInputPopup.Current != null ? PlanInputPopup.Current.Text : "";
         static GameObject inputGo; static Vector3? inputPoint;
         static Rect bubbleRect;
@@ -268,9 +268,10 @@ namespace PitCrewPlan
                 if (Event.current.type == EventType.Repaint)
                 {
                     Handles.color = new Color(0, 0, 0, 0.5f); Handles.DrawSolidDisc(gp + new Vector2(1, 1), Vector3.forward, 11f);
-                    Handles.color = p.Done ? PinDone : PinOpen; Handles.DrawSolidDisc(gp, Vector3.forward, 10f);
-                    if (bubble != null && bubble.id == p.id) { Handles.color = Color.white; Handles.DrawWireDisc(gp, Vector3.forward, 12f); }
+                    Handles.color = p.Done ? PinDone : p.Fixed ? PitCrewPlanWindow.Green : PinOpen; Handles.DrawSolidDisc(gp, Vector3.forward, 10f);
+                    if (bubble != null && bubble.id == p.id) { Handles.color = PinSel; Handles.DrawWireDisc(gp, Vector3.forward, 12f); }
                 }
+                pinStyle.normal.textColor = p.Open ? Color.black : Color.white;   // 흰 핀엔 검은 번호
                 GUI.Label(new Rect(gp.x - 12, gp.y - 10, 24, 20), (i + 1).ToString(), pinStyle);
             }
         }
@@ -281,32 +282,39 @@ namespace PitCrewPlan
             float ppp = EditorGUIUtility.pixelsPerPoint, pw = sv.camera.pixelWidth / ppp, ph = sv.camera.pixelHeight / ppp;
             var gp = HandleUtility.WorldToGUIPoint(bubble.point.Value);
             var tex = Thumb(bubble);
-            var r = new Rect(gp.x + 16, gp.y - 12, 300, (tex != null ? 168 : 0) + 96);
+            bool reply = bubble.thread.Count > 1;
+            var r = new Rect(gp.x + 16, gp.y - 12, 300, (tex != null ? 168 : 0) + 96 + (reply ? 34 : 0));
             r.x = Mathf.Min(r.x, pw - r.width - 6); r.y = Mathf.Clamp(r.y, 4, ph - r.height - 40);
             bubbleRect = r;
+            if (Event.current.type == EventType.Repaint && bubble.Fixed) EditorGUI.DrawRect(new Rect(r.x - 4, r.y, 4, r.height), PitCrewPlanWindow.Green);
             GUILayout.BeginArea(r, EditorStyles.helpBox);
-            GUILayout.Label(bubbleNo + ". " + (bubble.time != null && bubble.time.Length >= 16 ? bubble.time.Substring(5, 11).Replace('T', ' ') : "") + "  " + bubble.building + (bubble.Done ? "  (처리됨)" : ""), EditorStyles.miniBoldLabel);
+            GUILayout.Label(bubbleNo + ". " + PitCrewPlanWindow.Stamp(bubble.time) + "  " + bubble.building + (bubble.Fixed ? "  ✅ 고쳤음" : bubble.Done ? "  (끝)" : "  할 일"), EditorStyles.miniBoldLabel);
             GUILayout.Label(bubble.comment, EditorStyles.wordWrappedLabel, GUILayout.MaxHeight(40));
+            if (reply) GUILayout.Label("↳ " + PitCrewPlanWindow.Who(bubble.Last.who) + ": " + PitCrewPlanWindow.Two(bubble.Last.text), EditorStyles.wordWrappedMiniLabel, GUILayout.MaxHeight(30));
+            var shotRel = bubble.Fixed && bubble.AfterShot != null ? bubble.AfterShot : bubble.BeforeShot;
             if (tex != null && GUILayout.Button(tex, GUIStyle.none, GUILayout.Width(288), GUILayout.Height(162)))
-                EditorUtility.OpenWithDefaultApp(Path.Combine(PlanIO.FeedbackDir, bubble.screenshot));
+                EditorUtility.OpenWithDefaultApp(PlanIO.ShotPath(shotRel));
             GUILayout.FlexibleSpace();
             using (new GUILayout.HorizontalScope())
             {
-                if (!bubble.Done && GUILayout.Button("처리됨")) { PlanIO.SetStatus(SceneName, bubble.id, "done"); RefreshPins(true); }
+                if (bubble.Fixed && GUILayout.Button("넘기기")) PitCrewPlanWindow.Pass(bubble);
+                if (bubble.Fixed && GUILayout.Button("다시")) PitCrewPlanWindow.Again(bubble, GUIUtility.GUIToScreenPoint(Event.current.mousePosition));
                 if (GUILayout.Button("고르기")) Go(bubble);
                 if (GUILayout.Button("닫기")) bubble = null;
             }
             GUILayout.EndArea();
         }
 
-        static Texture2D Thumb(PlanIO.Comment c)
+        static Texture2D Thumb(PlanIO.Comment c) => Thumb(c.Fixed && c.AfterShot != null ? c.AfterShot : c.BeforeShot);
+        /// 스샷 썸네일(경로 규칙 = PlanIO.ShotPath). 없으면 null.
+        public static Texture2D Thumb(string rel)
         {
-            if (string.IsNullOrEmpty(c.screenshot)) return null;
-            if (thumbs.TryGetValue(c.screenshot, out var t) && t != null) return t;
-            var f = Path.Combine(PlanIO.FeedbackDir, c.screenshot);
+            if (string.IsNullOrEmpty(rel)) return null;
+            if (thumbs.TryGetValue(rel, out var t) && t != null) return t;
+            var f = PlanIO.ShotPath(rel);
             if (!File.Exists(f)) return null;
             t = new Texture2D(2, 2) { hideFlags = HideFlags.HideAndDontSave }; t.LoadImage(File.ReadAllBytes(f));
-            thumbs[c.screenshot] = t; return t;
+            thumbs[rel] = t; return t;
         }
 
         // ───────── 팔레트 ─────────
