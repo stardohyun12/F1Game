@@ -128,7 +128,7 @@ function walkBefore(w, back = 4) {   // 걷기 모드에서 어떤 자리를 보
 function goWorld(w) { if (map3d.mode === 'walk') walkBefore(w); else M3.focusWorld(w, Math.min(Math.max(map3d.orbit.getDistance(), 50), 110)); }
 const HELP = {
   orbit: '둘러보기: 왼쪽 드래그 = 돌기 · 가운데/Shift+왼쪽 = 옮기기 · 휠 = 확대 · 오른쪽 버튼 누른 채 = 날기(마우스 보기 · WASD/QE · 휠 = 속도 · Shift 빠르게) · 핀 클릭 = 오른쪽 칸 · 미니맵 클릭 · 1/2 = 둘러보기/걷기 · F = 맞춤 · E = 배치',
-  edit: '배치: 건물·핀·주황 상자 클릭 = 고르기 · W 옮기기(X·Z·높이) · E 돌리기(yaw) · 스냅 0.5 m / 5° (Shift = 0.05 m / 1°) · G = 땅에 내려놓기 · F = 초점 · Ctrl+Z 되돌리기 · Esc 풀기 · 오른쪽 버튼 = 날기 · 저장 버튼 → placements.yaml',
+  edit: '배치: 건물·핀·주황 상자 클릭 = 고르기 · W 옮기기(X·Z·높이) · E 돌리기(yaw) · 스냅 0.5 m / 5° (Shift = 0.05 m / 1°) · G = 땅에 내려놓기 · '땅 따라가기' 켜면 X·Z 로 끄는 동안 바닥이 땅에 붙음(높이 Y 축만 따로) · F = 초점 · Ctrl+Z 되돌리기 · Esc 풀기 · 오른쪽 버튼 = 날기 · 저장 버튼 → placements.yaml',
   fly: '날기: 마우스 = 보기 · W/S 앞뒤 · A/D 좌우 · E/Q 위아래 · 휠 = 속도 · Shift = 3배 · 오른쪽 버튼 떼면 둘러보기로',
   walkIdle: '걷기: 화면을 클릭하면 마우스가 잠기고 걸을 수 있어요 (WASD · Shift 달리기 · Space/C 눈높이 ±· Esc 풀기). 눈높이 1.6 m, 땅을 따라감 · 흐름 줄 클릭 = 그 자리 앞에 서서 보기',
   walkLock: '걷기: WASD 이동 · 마우스 보기 · Shift 달리기 · Space 위 / C 아래 · Esc 마우스 풀기 (벽은 통과됨)',
@@ -175,9 +175,9 @@ function renderSel() {
     <div class="coords" title="Unity 월드 좌표 (x, y, z) · yaw = Y 회전(도). Map_TownV6 에 그대로">Unity  x <b>${f2(u.x)}</b>  y <b>${f2(u.y)}</b>  z <b>${f2(u.z)}</b>  yaw <b>${f2(u.yaw)}°</b> <button class="mini" id="selCopy" title="복사">복사</button></div>
     <div class="dim">땅 높이 ${f2(i.ground)} m${i.kind === 'place' ? ` · 피벗 = 바닥 가운데${i.bodyH > 0.8 ? ` · 땅보다 ${f2(i.bodyH)} m 위 — 회색 반투명 상자 = 집 몸통 임시 표시(placeholder)` : ''}${i.box ? ` · Unity 자리 ${esc(i.box)}` : ''}${i.hiddenOsm ? ` · 겹치는 OSM 회색 건물 ${i.hiddenOsm}개 숨김(맵에서 지울 것)` : ''}` : ''}${i.kind === 'place_box' && i.base ? ` · 씬 원래 자리 (${f2(i.base.x)}, ${f2(i.base.y)}, ${f2(i.base.z)})` : ''}${i.movable === false ? ' · 이 핀은 장소 자리를 따라감(건물을 옮기세요)' : ''}</div>
     ${chg ? `<div class="chg">${esc(chg)}</div>` : ''}
-    <div class="row"><button data-tool="translate" class="${map3d.edit.tool === 'translate' ? 'on' : ''}" title="W">옮기기 W</button><button data-tool="rotate" class="${map3d.edit.tool === 'rotate' ? 'on' : ''}" title="E" ${i.kind === 'pin' ? 'disabled' : ''}>돌리기 E</button><button id="selDrop" title="G">땅에 G</button><button id="selFocus" title="F">초점 F</button><button id="selUndo" title="Ctrl+Z">되돌리기</button><button id="selClose" title="Esc">풀기</button></div>`;
+    <div class="row"><button data-tool="translate" class="${map3d.edit.tool === 'translate' ? 'on' : ''}" title="W">옮기기 W</button><button data-tool="rotate" class="${map3d.edit.tool === 'rotate' ? 'on' : ''}" title="E" ${i.kind === 'pin' ? 'disabled' : ''}>돌리기 E</button><button id="selDrop" title="G">땅에 G</button><label title="X·Z 로 끌 때 바닥이 땅을 따라감"><input type="checkbox" id="selAuto" ${map3d.edit.autoGround ? 'checked' : ''}> 땅 따라가기</label><button id="selFocus" title="F">초점 F</button><button id="selUndo" title="Ctrl+Z">되돌리기</button><button id="selClose" title="Esc">풀기</button></div>`;
   box.querySelectorAll('[data-tool]').forEach((b) => (b.onclick = () => M3.setTool(b.dataset.tool)));
-  $('selDrop').onclick = () => M3.dropToGround(); $('selFocus').onclick = () => M3.focusSel(); $('selUndo').onclick = () => M3.undo(); $('selClose').onclick = () => M3.select(null);
+  $('selDrop').onclick = () => M3.dropToGround(); $('selAuto').onchange = (e) => { map3d.edit.autoGround = e.target.checked; }; $('selFocus').onclick = () => M3.focusSel(); $('selUndo').onclick = () => M3.undo(); $('selClose').onclick = () => M3.select(null);
   $('selCopy').onclick = () => { navigator.clipboard && navigator.clipboard.writeText(copy).then(() => msg('복사됨: ' + copy)); };
 }
 function onEdit(i) {   // 기즈모로 옮긴 뒤(끌기 끝·G·되돌리기) — plan 데이터·overlay 갱신, 핀 다시

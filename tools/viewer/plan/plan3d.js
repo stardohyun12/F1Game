@@ -17,7 +17,7 @@ export const map3d = {
   stats: { fps: 0, calls: 0, tris: 0 },
   M: [2, 0, 800, 0, -2, 800], mapImg: null, routeWorld: [], pins: [],
   hooks: { onPin: () => {}, onHover: () => {}, onMove: () => {}, onEdit: () => {}, onSelect: () => {} },
-  edit: { on: false, sel: null, tool: 'translate', undo: [], fine: false },
+  edit: { on: false, sel: null, tool: 'translate', undo: [], fine: false, autoGround: true },
   fly: { on: false, speed: 25 },
   buildings: {},
 };
@@ -277,6 +277,12 @@ function initEdit() {
     if (start && tc.mode === 'translate') {   // 끌기 시작점 기준 상대 스냅(절대 격자가 아니라 "원래 자리에서 0.5 m 씩")
       const st = map3d.edit.fine ? SNAP.moveFine : SNAP.move;
       for (const k of ['x', 'y', 'z']) o.position[k] = start.p[k] + Math.round((o.position[k] - start.p[k]) / st) * st;
+      // 땅 따라가기: X/Z 로 끄는 동안(세로축 끌기 아닐 때) 바닥 피벗을 그 자리 땅 높이에 붙인다 — 비탈에서 G 를 매번 누르지 않아도 됨
+      if (map3d.edit.autoGround && !/Y/.test(tc.axis || '')) {
+        const w = T2W(o.position);
+        if (o.userData.kind === 'place_box') { const base = o.userData.base; o.position.y = groundY(w[0], w[1]) + base.scale[1] / 2 - base.pos[1]; }
+        else if (o.userData.kind === 'place') o.position.y = groundY(w[0], w[1]);
+      }
     }
     afterChange(o, false);
   });
