@@ -117,7 +117,7 @@ groundTex.repeat.set(60 / 8, 60 / 8);                    // 128px per 8m = 16 px
 const roadTex = noiseCanvas(64, [150, 146, 138], 0.08, 0.10);
 roadTex.repeat.set(60 / 4, 1);
 
-const toon = (opts) => { const m = new THREE.MeshToonMaterial({ gradientMap: ramp, ...opts }); m.onBeforeCompile = shadowPatch; return m; };
+const toon = (opts) => { const m = new THREE.MeshToonMaterial({ gradientMap: ramp, ...opts }); addGrain(m); return m; };   // 땅·길도 건물과 같은 표면 결
 const far = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), toon({ color: 0x95a46f }));
 far.rotation.x = -Math.PI / 2; far.position.y = -0.04; far.receiveShadow = true;
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), toon({ map: groundTex }));
@@ -253,19 +253,31 @@ function toToon(m) {
   return t;
 }
 
-// ---------- 1722: 결 — Unity A7 셰이더 _SN(표면에 붙은 결) + A6dGrainToggles(화면 정적 그레인) 흉내 ----------
-// 표면 결: 월드 1/8m 칸마다 고정 난수로 명도 ±(세기×4%). 카메라가 움직여도 면에 붙어 있다. 화면 그레인: 720 픽셀당 고정 점, 오버레이.
-const GRAIN = { on: { value: 1 }, sn: { value: 0.04 }, dens: { value: 8 } };
+// ---------- 표면 결 — Unity SceneA7Lit.shader 의 _SN 을 그대로 (F1/Assets/Art/SceneA7/SceneA7Lit.shader vert 137~138, frag 187~191) ----------
+// vert: op = objectPos * objectScale * _SNDens - normalize(n) * 0.37   (물체 좌표에 붙은 칸, 면 안쪽으로 0.37칸 밀어 칸 경계 깜빡임 방지)
+// frag: px = max(fwidth(op));  c *= 1 + _SN * (h3(floor(op) + 0.5) * 2 - 1) * saturate((1 - px) * 2)   (칸이 화면 1px 보다 작아지면 사라짐 = 지글거림 방지)
+// h3(p) = frac(p*0.3183099+0.1); p*=17; frac(p.x*p.y*p.z*(p.x+p.y+p.z))
+// 기본값 = A6dGrainToggles.surfaceAmount 0.04, surfaceCellsPerM 8 (F1/Assets/Scripts/Visual/A6dGrainToggles.cs 15~17, 재질 .mat _SN: 0.04 / _SNDens: 8).
+// Unity 는 빛 계산 뒤에 곱하지만 곱셈이라 diffuseColor(램프 전)에 곱해도 같은 결과(램프는 N·L 을 계단화하지 색을 계단화하지 않음).
+// URL ?sn=0.04 (0 = 끔) ?snd=8 (칸/m) ?sg=0.03 (화면 그레인 켬) ?nograin (둘 다 끔)
+const SN_DEFAULT = 0.04, SND_DEFAULT = 8, SG_DEFAULT = 0.03;
+const GRAIN = {
+  on: { value: 1 },
+  sn: { value: params.has('sn') ? +params.get('sn') : SN_DEFAULT },
+  dens: { value: params.has('snd') ? +params.get('snd') : SND_DEFAULT },
+};
+state.grain = GRAIN;
 function addGrain(mat) {
   mat.onBeforeCompile = (sh) => {
     shadowPatch(sh);
     sh.uniforms.uGOn = GRAIN.on; sh.uniforms.uSN = GRAIN.sn; sh.uniforms.uSNDens = GRAIN.dens;
-    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vGWP;')
-      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvGWP = (modelMatrix * vec4(transformed, 1.0)).xyz;');
-    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vGWP; uniform float uGOn, uSN, uSNDens;\nfloat gH3(vec3 p){ p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }')
-      .replace('#include <map_fragment>', '#include <map_fragment>\ndiffuseColor.rgb *= 1.0 + uGOn * uSN * (gH3(floor(vGWP * uSNDens) + 0.5) * 2.0 - 1.0);');
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vSNp; uniform float uSNDens;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n{ vec3 sS = vec3(length(modelMatrix[0].xyz), length(modelMatrix[1].xyz), length(modelMatrix[2].xyz));\n  vSNp = transformed * sS * uSNDens - normalize(normal) * 0.37; }');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vSNp; uniform float uGOn, uSN;\nfloat snH3(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }')
+      .replace('#include <map_fragment>', '#include <map_fragment>\n{ float snPx = max(max(fwidth(vSNp.x), fwidth(vSNp.y)), fwidth(vSNp.z));\n  diffuseColor.rgb *= 1.0 + uGOn * uSN * (snH3(floor(vSNp) + 0.5) * 2.0 - 1.0) * clamp((1.0 - snPx) * 2.0, 0.0, 1.0); }');
   };
 }
+// 화면 그레인(A6dGrainToggles.screenGrain, Unity 기본 꺼짐): 720 픽셀당 고정 점을 오버레이. 표면 결과 별개 토글.
 const grainOv = document.createElement('div');
 {
   const cv = document.createElement('canvas'); cv.width = LOW_W; cv.height = LOW_H; const g = cv.getContext('2d'); const im = g.createImageData(LOW_W, LOW_H);
@@ -279,27 +291,125 @@ function placeGrain() {
   const r = canvas.getBoundingClientRect(), p = canvas.parentElement.getBoundingClientRect();
   Object.assign(grainOv.style, { left: (r.left - p.left) + 'px', top: (r.top - p.top) + 'px', width: r.width + 'px', height: r.height + 'px' });
 }
-function setGrain(on, k) {
-  GRAIN.on.value = on ? 1 : 0; GRAIN.sn.value = 0.04 * k;
-  grainOv.style.display = on ? 'block' : 'none'; grainOv.style.opacity = String(Math.min(1, 0.06 * k));
-  $('grainv').textContent = k.toFixed(1);
+function setSurfaceGrain(on, sn, dens) {
+  GRAIN.on.value = on ? 1 : 0; GRAIN.sn.value = sn; GRAIN.dens.value = dens;
+  $('snv').textContent = sn.toFixed(3);
+  const u = new URL(location.href); u.searchParams.set('sn', on ? sn : 0); if (dens !== SND_DEFAULT) u.searchParams.set('snd', dens); else u.searchParams.delete('snd'); history.replaceState(null, '', u);
+}
+function setScreenGrain(on, amt) {
+  grainOv.style.display = on && amt > 0 ? 'block' : 'none'; grainOv.style.opacity = String(Math.min(1, amt * 1.5));   // overlay 블렌드 50% 회색 노이즈: 0.03 → 투명도 0.045
+  $('sgv').textContent = amt.toFixed(2);
 }
 {
-  const tb = $('shadow').closest('label').parentElement;
-  const l = document.createElement('label'); l.innerHTML = '<input type="checkbox" id="grain" checked> 결';
-  const d = document.createElement('div'); d.innerHTML = '결 세기 <span id="grainv"></span><input type="range" id="grainK" min="0" max="3" step="0.1" value="1">';
-  $('shadow').closest('label').after(l, d);
-  const upd = () => setGrain($('grain').checked && !params.has('nograin'), +$('grainK').value);
-  $('grain').onchange = upd; $('grainK').oninput = upd;
-  if (params.has('nograin')) $('grain').checked = false;
-  upd(); void tb;
+  const nograin = params.has('nograin');
+  const sn0 = nograin ? 0 : GRAIN.sn.value, sg0 = nograin ? 0 : (params.has('sg') ? +params.get('sg') : 0);
+  const l = document.createElement('label'); l.innerHTML = `<input type="checkbox" id="grain" ${sn0 > 0 ? 'checked' : ''}> 표면 결 (Unity _SN)`;
+  const d = document.createElement('div'); d.innerHTML = `세기 <span id="snv"></span><input type="range" id="snK" min="0" max="0.12" step="0.005" value="${sn0 > 0 ? sn0 : SN_DEFAULT}">` +
+    `<span style="font-size:11px">칸/m <input id="snD" type="number" min="1" max="64" step="1" value="${GRAIN.dens.value}" style="width:44px"></span>`;
+  const l2 = document.createElement('label'); l2.innerHTML = `<input type="checkbox" id="sgrain" ${sg0 > 0 ? 'checked' : ''}> 화면 그레인 (정적)`;
+  const d2 = document.createElement('div'); d2.innerHTML = `세기 <span id="sgv"></span><input type="range" id="sgK" min="0" max="0.15" step="0.01" value="${sg0 > 0 ? sg0 : SG_DEFAULT}">`;
+  $('shadow').closest('label').after(l, d, l2, d2);
+  const upd = () => setSurfaceGrain($('grain').checked, +$('snK').value, Math.max(1, +$('snD').value || SND_DEFAULT));
+  const upd2 = () => setScreenGrain($('sgrain').checked, +$('sgK').value);
+  $('grain').onchange = upd; $('snK').oninput = upd; $('snD').oninput = upd;
+  $('sgrain').onchange = upd2; $('sgK').oninput = upd2;
+  upd(); upd2();
+  state.setSurfaceGrain = (on, sn, dens) => { $('grain').checked = on; if (sn !== undefined) $('snK').value = sn; if (dens !== undefined) $('snD').value = dens; upd(); };
+  state.setScreenGrain = (on, amt) => { $('sgrain').checked = on; if (amt !== undefined) $('sgK').value = amt; upd2(); };
   // 그림자 bias / normalBias 숫자 입력(검사용 — 기본값이 좋으면 손대지 않는다)
   const sb = document.createElement('div'); sb.style.fontSize = '11px';
   sb.innerHTML = '그림자 bias <input id="sbias" type="number" step="0.0001" style="width:62px"> nb <input id="snb" type="number" step="0.01" style="width:48px">';
-  d.after(sb);
+  d2.after(sb);
   $('sbias').value = sun.shadow.bias; $('snb').value = sun.shadow.normalBias;
   $('sbias').oninput = (e) => { sun.shadow.bias = +e.target.value || 0; };
   $('snb').oninput = (e) => { sun.shadow.normalBias = +e.target.value || 0; };
+}
+
+// ---------- 연결 부품 쪼개기 (클라이언트, 불러올 때) ----------
+// 1mm 로 묶은 정점을 공유하는 삼각형끼리 한 부품(export_glb.split_loose 와 같은 규칙). 큰 메시(≥300 삼각형) 또는 이름이 껍데기류(_shell·_props·_furniture·_interior·_combo·_body·_building)만.
+// 부품 = <이름>_pNNN (NNN = 월드 중심 x,y,z cm 순), 원점 = 부품 상자 중심, userData.split_from 등 = export_glb 와 같은 키 → feedback jsonl 의 node_extras 호환.
+const SPLIT_TRIS = 300, SPLIT_NAME = /_(shell|props|furniture|interior|combo|body|building)(_\d+)?$/i;
+function needsSplit(o) {
+  if (o.userData && o.userData.split_from) return false;      // 이미 export 에서 쪼갠 부품
+  const g = o.geometry, n = (g.index ? g.index.count : g.attributes.position.count) / 3;
+  return n >= SPLIT_TRIS || SPLIT_NAME.test(o.name);
+}
+function splitLoose(mesh) {
+  const g = mesh.geometry, pos = g.attributes.position, idx = g.index;
+  const triN = (idx ? idx.count : pos.count) / 3;
+  if (triN < 2) return 0;
+  const vi = (t, k) => (idx ? idx.getX(t * 3 + k) : t * 3 + k);
+  // 정점 → 1mm 키 → 대표 번호
+  const key = new Map(), rep = new Int32Array(pos.count);
+  for (let i = 0; i < pos.count; i++) {
+    const k = `${Math.round(pos.getX(i) * 1000)},${Math.round(pos.getY(i) * 1000)},${Math.round(pos.getZ(i) * 1000)}`;
+    let r = key.get(k); if (r === undefined) { r = i; key.set(k, i); } rep[i] = r;
+  }
+  const par = new Int32Array(pos.count); for (let i = 0; i < pos.count; i++) par[i] = i;
+  const find = (a) => { while (par[a] !== a) { par[a] = par[par[a]]; a = par[a]; } return a; };
+  const uni = (a, b) => { a = find(a); b = find(b); if (a !== b) par[a] = b; };
+  for (let t = 0; t < triN; t++) { const a = rep[vi(t, 0)], b = rep[vi(t, 1)], c = rep[vi(t, 2)]; uni(a, b); uni(a, c); }
+  const groups = new Map();
+  for (let t = 0; t < triN; t++) { const r = find(rep[vi(t, 0)]); let l = groups.get(r); if (!l) groups.set(r, l = []); l.push(t); }
+  if (groups.size <= 1 && !SPLIT_NAME.test(mesh.name)) return 0;
+  // 방 크기의 닫힌 상자(벽·바닥·천장이 정점을 공유)는 한 덩어리로 남는다 → 두 변이 1.5m 이상인 덩어리는 같은 평면(법선·거리)끼리 다시 나눈다(벽 한 장씩)
+  const tl0 = [...groups.values()], tlists = [];
+  const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _c = new THREE.Vector3(), _n = new THREE.Vector3();
+  for (const tl of tl0) {
+    const lo = new THREE.Vector3(Infinity, Infinity, Infinity), hi = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
+    for (const t of tl) for (let k = 0; k < 3; k++) { _a.fromBufferAttribute(pos, vi(t, k)); lo.min(_a); hi.max(_a); }
+    const sz = hi.clone().sub(lo), big = [sz.x, sz.y, sz.z].filter((v) => v >= 1.5).length >= 2;
+    if (!big) { tlists.push(tl); continue; }
+    const byPlane = new Map();
+    for (const t of tl) {
+      _a.fromBufferAttribute(pos, vi(t, 0)); _b.fromBufferAttribute(pos, vi(t, 1)); _c.fromBufferAttribute(pos, vi(t, 2));
+      _n.subVectors(_b, _a).cross(_c.clone().sub(_a)).normalize();
+      const k = `${Math.round(_n.x * 20)},${Math.round(_n.y * 20)},${Math.round(_n.z * 20)},${Math.round(_n.dot(_a) * 200)}`;
+      let l = byPlane.get(k); if (!l) byPlane.set(k, l = []); l.push(t);
+    }
+    if (byPlane.size > 16) tlists.push(tl);      // 곡면(정비소 둥근 지붕 등)은 평면이 수십 개 → 통째로 둔다
+    else tlists.push(...byPlane.values());
+  }
+  if (tlists.length <= 1) return 0;
+  // 삼각형 → 재질 번호(groups)
+  const matOf = new Int32Array(triN);
+  if (g.groups && g.groups.length) for (const gr of g.groups) { const s = gr.start / 3, e = Math.min(triN, (gr.start + gr.count) / 3); for (let t = s; t < e; t++) matOf[t] = gr.materialIndex || 0; }
+  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  mesh.updateMatrixWorld(true);
+  const parts = [];
+  for (const tl of tlists) {
+    const lo = new THREE.Vector3(Infinity, Infinity, Infinity), hi = new THREE.Vector3(-Infinity, -Infinity, -Infinity), v = new THREE.Vector3();
+    for (const t of tl) for (let k = 0; k < 3; k++) { v.fromBufferAttribute(pos, vi(t, k)); lo.min(v); hi.max(v); }
+    const c = lo.clone().add(hi).multiplyScalar(0.5), w = c.clone().applyMatrix4(mesh.matrixWorld);
+    parts.push({ tl, c, w, key: [Math.round(w.x * 100), Math.round(w.y * 100), Math.round(w.z * 100), tl.length] });
+  }
+  parts.sort((a, b) => a.key[0] - b.key[0] || a.key[1] - b.key[1] || a.key[2] - b.key[2] || a.key[3] - b.key[3]);
+  const names = Object.keys(g.attributes);
+  const group = new THREE.Group(); group.name = mesh.name; group.position.copy(mesh.position); group.quaternion.copy(mesh.quaternion); group.scale.copy(mesh.scale);
+  group.userData = { ...mesh.userData };
+  const assoc = state.assoc && state.assoc.get(mesh);
+  const bl = (p) => [+p.x.toFixed(3), +(-p.z).toFixed(3), +p.y.toFixed(3)];   // glTF(x,y,z) → Blender(x,-z,y)
+  parts.forEach((p, i) => {
+    p.tl.sort((a, b) => matOf[a] - matOf[b] || a - b);
+    const ng = new THREE.BufferGeometry(), n = p.tl.length * 3;
+    for (const an of names) {
+      const src = g.attributes[an], arr = new src.array.constructor(n * src.itemSize);
+      let o = 0; for (const t of p.tl) for (let k = 0; k < 3; k++) { const s = vi(t, k); for (let j = 0; j < src.itemSize; j++) arr[o++] = src.array[s * src.itemSize + j]; }
+      if (an === 'position') for (let q = 0; q < n; q++) { arr[q * 3] -= p.c.x; arr[q * 3 + 1] -= p.c.y; arr[q * 3 + 2] -= p.c.z; }
+      ng.setAttribute(an, new THREE.BufferAttribute(arr, src.itemSize, src.normalized));
+    }
+    const used = new Set(); let start = 0;
+    for (let q = 0; q < p.tl.length;) { const m = matOf[p.tl[q]]; let e = q; while (e < p.tl.length && matOf[p.tl[e]] === m) e++; ng.addGroup(start, (e - q) * 3, m); used.add(m); start += (e - q) * 3; q = e; }
+    const pm = new THREE.Mesh(ng, mats.length > 1 ? mats : mats[0]);
+    pm.name = `${mesh.name}_p${String(i).padStart(3, '0')}`;
+    pm.position.copy(p.c); pm.castShadow = pm.receiveShadow = true;
+    pm.userData = { split_from: mesh.name, part_index: i, materials: [...used].map((m) => mats[m] && mats[m].name).filter(Boolean).join(', '), center_gltf_m: [+p.w.x.toFixed(3), +p.w.y.toFixed(3), +p.w.z.toFixed(3)], center_blender_m: bl(p.w), split_in: 'viewer' };
+    if (state.assoc) state.assoc.set(pm, { nodes: assoc ? assoc.nodes : -1 });   // nodeOf 가 부품을 노드로 보게
+    group.add(pm);
+  });
+  if (state.assoc) state.assoc.set(group, { nodes: assoc ? assoc.nodes : -1 });
+  mesh.parent.add(group); mesh.parent.remove(mesh);
+  return parts.length;
 }
 
 function disposeRoot(r) {
@@ -330,6 +440,11 @@ async function loadBuilding(name, { bust = false, keepView = false } = {}) {
     o.material = Array.isArray(o.material) ? o.material.map(toToon) : toToon(o.material);
     const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3;
   });
+  // 합쳐 납품된 큰 메시(껍데기·가구·소품 묶음)는 연결 부품으로 쪼개 하나씩 고를 수 있게 (export_glb.split_loose 와 같은 이름 규칙 <이름>_pNNN)
+  if (!params.has('nosplit')) {
+    const big = []; root.traverse((o) => { if (o.isMesh && needsSplit(o)) big.push(o); });
+    state.split = {}; big.forEach((o) => { const n = splitLoose(o); if (n > 1) state.split[o.name] = n; });
+  }
   // LAMP_* 빈 객체 = 갓 아래 따뜻한 등. 아래로만 비추는 스포트(유니티 프리팹과 같은 각도·색)
   root.updateMatrixWorld(true);
   const lamps = []; root.traverse((o) => { if (/^LAMP_/.test(o.name)) lamps.push(o); });
@@ -595,6 +710,9 @@ function showSel() {
     L.push('— 마지막으로 고른 것 —');
   }
   const i = hitInfo(), d = deltaOf(sel.target);
+  const sf = sel.target.userData && sel.target.userData.split_from, parentN = sf && sel.target.parent ? sel.target.parent.children.filter((c) => c.isMesh).length : 0;
+  if (sf) L.push(`부품: ${sel.target.name}  ←  ${sf} 의 ${(sel.target.userData.part_index ?? 0) + 1}/${parentN}번째 부품${sel.target.userData.split_in === 'viewer' ? ' (뷰어에서 쪼갬)' : ''}`);
+  else if (state.split && state.split[sel.target.name]) L.push(`묶음: ${sel.target.name} (부품 ${state.split[sel.target.name]}개 전체)`);
   if (i) {
     L.push(`이름: ${i.node}`);
     if (i.mesh && i.mesh !== i.node) L.push(`메시: ${i.mesh}`);
@@ -605,7 +723,13 @@ function showSel() {
   if (moved(d)) L.push(`옮김: ${d.pos.map((v) => v.toFixed(2)).join(', ')} m · 회전 ${d.angle_deg.toFixed(1)}°`);
   box.textContent = L.join('\n');
   $('selBtns').style.display = '';
+  $('tParent').style.display = sf ? '' : 'none';
   $('tMove').classList.toggle('on', sel.mode === 'translate'); $('tRot').classList.toggle('on', sel.mode === 'rotate');
+}
+function selectParent() {        // 부품 → 그 부품이 속한 묶음(원래 오브젝트) 전체
+  const o = sel.target, p = o && o.userData && o.userData.split_from ? o.parent : null; if (!p) return;
+  const h = sel.hits.get(o.name); sel.hits.delete(o.name); if (h) sel.hits.set(p.name, h);
+  setTargets([...sel.targets.filter((x) => x !== o && x.parent !== p), p]);
 }
 const ORBIT_BTN = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
 const SEL_BTN = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.ROTATE };   // Shift+드래그 = 옮기기(OrbitControls 기본)
@@ -711,28 +835,41 @@ async function sendComment(text) {
 }
 async function loadComments() {
   try {
-    const r = await fetch(`/api/feedback?b=${encodeURIComponent(state.current)}`, { cache: 'no-store' });
+    const r = await fetch(`/api/feedback?b=${encodeURIComponent(state.current)}${sel.showAll ? '&archived=1' : ''}`, { cache: 'no-store' });
     sel.comments = r.ok ? await r.json() : [];
   } catch (e) { sel.comments = []; }
   renderComments();
 }
+async function archiveDone() {   // status=done 코멘트를 feedback/archive/<건물>.jsonl 로 옮긴다(스샷도 archive/shots/)
+  try {
+    const r = await fetch(`/api/feedback/archive?b=${encodeURIComponent(state.current)}`, { method: 'POST' });
+    const j = await r.json(); if (!j.ok) throw new Error(j.error || r.status);
+    msg(`적용된 코멘트 ${j.archived}개 보관 (남은 것 ${j.remaining}개)`, 2500);
+  } catch (err) { msg('보관 실패: ' + (err.message || err)); console.error(err); }
+  await loadComments();
+}
+const isDone = (c) => c.status === 'done';
 const pinLayer = document.createElement('div');
 pinLayer.id = 'pins';
 $('view').appendChild(pinLayer);
 function renderComments() {
   const list = $('cList'); list.innerHTML = ''; pinLayer.innerHTML = '';
-  $('cCount').textContent = sel.comments.length;
-  sel.comments.forEach((c, i) => {
+  const shown = sel.showAll ? sel.comments : sel.comments.filter((c) => !isDone(c));
+  const doneN = sel.comments.filter(isDone).length;
+  $('cCount').textContent = sel.showAll ? `${shown.length}` : `${shown.length} 남음${doneN ? ` · 적용됨 ${doneN}` : ''}`;
+  $('cArchive').style.display = doneN && !sel.comments.every((c) => c.archived) ? '' : 'none';
+  shown.forEach((c, i) => {
     const n = i + 1;
-    const it = document.createElement('div'); it.className = 'citem';
+    const it = document.createElement('div'); it.className = 'citem' + (isDone(c) ? ' done' : '');
     const t = (c.time || '').replace('T', ' ').slice(5, 16);
-    it.innerHTML = `<b>${n}</b> <small>${t} · ${c.nodes && c.nodes.length > 1 ? c.nodes.length + '개: ' + c.nodes[0].node + ' 외' : (c.node || '화면 전체')}</small><div></div>`;
+    it.innerHTML = `<b>${n}</b> <small>${t} · ${c.nodes && c.nodes.length > 1 ? c.nodes.length + '개: ' + c.nodes[0].node + ' 외' : (c.node || '화면 전체')}${c.status ? ' · ' + (isDone(c) ? '적용됨' : c.status) : ''}${c.archived ? ' · 보관' : ''}</small><div></div>`;
     it.lastChild.textContent = c.comment;
+    if (c.fix) { const f = document.createElement('div'); f.className = 'fix'; f.textContent = '→ ' + c.fix; it.appendChild(f); }
     if (c.screenshot) { const a = document.createElement('a'); a.href = './feedback/' + c.screenshot; a.target = '_blank'; a.textContent = '스샷'; it.querySelector('small').append(' · ', a); }
     it.onclick = (e) => { if (e.target.tagName !== 'A') goComment(c); };
     list.appendChild(it);
     if (c.point) {
-      const p = document.createElement('div'); p.className = 'pin'; p.textContent = n; p.title = c.comment;
+      const p = document.createElement('div'); p.className = 'pin' + (isDone(c) ? ' done' : ''); p.textContent = n; p.title = c.comment;
       p.onclick = () => goComment(c); p._pt = c.point; pinLayer.appendChild(p);
     }
   });
@@ -764,6 +901,9 @@ $('tMove').onclick = () => setTool('translate');
 $('tRot').onclick = () => setTool('rotate');
 $('tReset').onclick = () => resetSelected();
 $('tDesel').onclick = () => clearSelection();
+$('tParent').onclick = () => selectParent();
+$('cAll').onchange = (e) => { sel.showAll = e.target.value === 'all'; loadComments(); };
+$('cArchive').onclick = () => { if (confirm('적용된(status=done) 코멘트를 보관함으로 옮길까요? (feedback/archive/)')) archiveDone(); };
 $('resetAll').onclick = () => {
   const mv = JSON.parse(sessionStorage.getItem(moveKey()) || '{}');
   for (const n of Object.keys(mv)) { const o = state.root.getObjectByName(n); if (o) resetNode(o); }
@@ -771,7 +911,7 @@ $('resetAll').onclick = () => {
 };
 $('cSend').onclick = () => sendComment();
 $('cText').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) sendComment(); });
-Object.assign(state, { setView: goComment, focusSel, setTargets, orbit, pivot, setSelect, selectByName, selectHit, pickAt, sendComment, loadComments, deltaOf, resetNode, tc, saveMove, hitInfo, renderer, scene, sun });
+Object.assign(state, { setView: goComment, focusSel, setTargets, orbit, pivot, setSelect, selectByName, selectHit, pickAt, sendComment, loadComments, deltaOf, resetNode, tc, saveMove, hitInfo, renderer, scene, sun, selectParent, archiveDone, splitLoose });
 showSel();
 
 // ---------- loop ----------

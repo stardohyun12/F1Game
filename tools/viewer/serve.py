@@ -6,7 +6,8 @@
 Serves tools/viewer/ statically (no-store cache headers) plus a tiny feedback API:
   POST /api/feedback        JSON body -> appended to feedback/<building>.jsonl,
                             body.screenshot (data:image/png;base64,...) -> feedback/shots/<id>.png
-  GET  /api/feedback?b=<n>  -> JSON list of entries for that building (oldest first)
+  GET  /api/feedback?b=<n>  -> JSON list of entries for that building (oldest first); &archived=1 appends archived ones (archived:true)
+  POST /api/feedback/archive?b=<n>  moves status=="done" lines to feedback/archive/<n>.jsonl (+ shots to archive/shots/)
 Binds 127.0.0.1 only (PC local).
 """
 import argparse
@@ -23,6 +24,8 @@ from urllib.parse import parse_qs, urlparse
 HERE = os.path.dirname(os.path.abspath(__file__))
 FB = os.path.join(HERE, "feedback")
 SHOTS = os.path.join(FB, "shots")
+ARCH = os.path.join(FB, "archive")
+ARCH_SHOTS = os.path.join(ARCH, "shots")
 MAX_BODY = 40 * 1024 * 1024
 SAFE = re.compile(r"[^A-Za-z0-9_.-]")
 LOCK = threading.Lock()
@@ -33,8 +36,19 @@ def safe(s, fallback):
     return s or fallback
 
 
-def read_entries(building):
+def read_entries(building, archived=False):
     p = os.path.join(FB, safe(building, "unknown") + ".jsonl")
+    out = _read_jsonl(p)
+    if archived:
+        for e in _read_jsonl(os.path.join(ARCH, safe(building, "unknown") + ".jsonl")):
+            e["archived"] = True
+            if e.get("screenshot") and not str(e["screenshot"]).startswith("archive/"):
+                e["screenshot"] = "archive/" + e["screenshot"]
+            out.append(e)
+    return out
+
+
+def _read_jsonl(p):
     out = []
     if os.path.isfile(p):
         with open(p, encoding="utf-8") as f:
@@ -46,6 +60,43 @@ def read_entries(building):
                     except ValueError:
                         pass
     return out
+
+
+def archive_done(building):
+    """status == "done" 인 줄을 feedback/archive/<building>.jsonl 로 옮기고(append) 스샷은 archive/shots/ 로. 남은 줄만 원본에 다시 쓴다."""
+    b = safe(building, "unknown")
+    p = os.path.join(FB, b + ".jsonl")
+    if not os.path.isfile(p):
+        return {"ok": True, "building": b, "archived": 0, "remaining": 0}
+    with LOCK:
+        keep, done = [], []
+        with open(p, encoding="utf-8") as f:
+            for line in f:
+                s = line.strip()
+                if not s:
+                    continue
+                try:
+                    e = json.loads(s)
+                except ValueError:
+                    keep.append(s)
+                    continue
+                (done if e.get("status") == "done" else keep).append(e)
+        if done:
+            os.makedirs(ARCH_SHOTS, exist_ok=True)
+            with open(os.path.join(ARCH, b + ".jsonl"), "a", encoding="utf-8") as f:
+                for e in done:
+                    e["archived_at"] = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+                    shot = e.get("screenshot")
+                    if shot:
+                        src = os.path.join(FB, shot)
+                        if os.path.isfile(src):
+                            os.replace(src, os.path.join(ARCH_SHOTS, os.path.basename(shot)))
+                    f.write(json.dumps(e, ensure_ascii=False) + "\n")
+            with open(p, "w", encoding="utf-8") as f:
+                for e in keep:
+                    f.write((e if isinstance(e, str) else json.dumps(e, ensure_ascii=False)) + "\n")
+    sys.stderr.write("[serve] archive %s: %d done -> archive, %d remain\n" % (b, len(done), len(keep)))
+    return {"ok": True, "building": b, "archived": len(done), "remaining": len(keep)}
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -71,12 +122,14 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path)
         if u.path == "/api/feedback":
-            b = parse_qs(u.query).get("b", [""])[0]
-            return self._json(200, read_entries(b))
+            q = parse_qs(u.query)
+            return self._json(200, read_entries(q.get("b", [""])[0], archived=q.get("archived", ["0"])[0] not in ("", "0")))
         return super().do_GET()
 
     def do_POST(self):
         u = urlparse(self.path)
+        if u.path == "/api/feedback/archive":
+            return self._json(200, archive_done(parse_qs(u.query).get("b", [""])[0]))
         if u.path != "/api/feedback":
             return self._json(404, {"ok": False, "error": "not found"})
         n = int(self.headers.get("Content-Length") or 0)

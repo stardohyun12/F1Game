@@ -46,6 +46,9 @@
   .citem b { display: inline-block; min-width: 18px; text-align: center; background: #d9534f; color: #fff; border-radius: 9px; font-size: 11px; }
   .citem small { color: #9aa3ad; }
   .citem a { color: #8fc1ff; }
+  .citem.done { opacity: .55; } .citem.done b { background: #4c7a3c; } .citem .fix { color: #9fd08a; font-size: 11px; margin-top: 2px; }
+  .pin.done { background: #4c7a3c; }
+  #cTools { display: flex; gap: 4px; margin-top: 6px; align-items: center; } #cTools select { background: #1d2126; color: inherit; border: 1px solid #3b434c; border-radius: 4px; font: inherit; padding: 4px; }
   #pins { position: absolute; inset: 0; pointer-events: none; }
   .pin { position: absolute; transform: translate(-50%, -100%); min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box;
     background: #d9534f; color: #fff; border: 2px solid #fff; border-radius: 10px 10px 10px 2px; font: bold 11px/14px sans-serif;
@@ -89,13 +92,17 @@
       <button id="tRot" title="R">돌리기 (R)</button>
       <button id="tReset">되돌리기</button>
       <button id="tDesel" title="Esc">선택 풀기</button>
+      <button id="tParent" style="display:none" title="부품이 속한 묶음(원래 오브젝트) 전체 고르기">ㄴ 부모 선택</button>
     </div>
     <div id="movedInfo"></div>
     <button id="resetAll" style="display:none">옮긴 것 전부 되돌리기</button>
     <h2>코멘트</h2>
     <textarea id="cText" placeholder="여기에 코멘트 (선택한 물건 또는 지금 화면에 대해). Ctrl+Enter = 보내기"></textarea>
     <button id="cSend">보내기</button>
-    <details id="cBox" open><summary>저장된 코멘트 보기 (<span id="cCount">0</span>)</summary><div id="cList"></div></details>
+    <details id="cBox" open><summary>저장된 코멘트 보기 (<span id="cCount">0</span>)</summary>
+      <div id="cTools"><select id="cAll"><option value="open" selected>남은 것만</option><option value="all">전부 (적용됨·보관 포함)</option></select>
+        <button id="cArchive" style="display:none" title="status=done 코멘트와 스샷을 feedback/archive/ 로 옮김">적용된 코멘트 지우기</button></div>
+      <div id="cList"></div></details>
   </div>
 </div>
 <script type="module" src="./viewer.js"></script>
