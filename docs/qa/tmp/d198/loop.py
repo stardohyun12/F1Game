@@ -10,12 +10,12 @@ AVOID = {51}   # 2차: 마을길 51 은 46 과 3 m 나란히 달려 서쪽 끝(-
 car = [r for i, r in enumerate(j["roads"]) if r["kind"] in ("main", "village") and i not in SKIP and i not in AVOID]
 def key(x, z): return (round(x), round(z))
 pos, adj = {}, {}
-def add(a, b, w): adj.setdefault(a, []).append((b, w)); adj.setdefault(b, []).append((a, w))
+def add(a, b, w, tag=-1): adj.setdefault(a, []).append((b, w, tag)); adj.setdefault(b, []).append((a, w, tag))
 for r in car:
     ks = r["knots"]
     for i, (x, z, y) in enumerate(ks):
         k = key(x, z); pos[k] = (x, z, y)
-        if i: p = ks[i - 1]; add(key(p[0], p[1]), k, math.dist((p[0], p[1]), (x, z)))
+        if i: p = ks[i - 1]; add(key(p[0], p[1]), k, math.dist((p[0], p[1]), (x, z)), j["roads"].index(r))
 ends = [key(*r["knots"][0][:2]) for r in car] + [key(*r["knots"][-1][:2]) for r in car]
 for e in ends:
     for k in list(pos):
@@ -33,18 +33,19 @@ for ri, r in enumerate(car):
             dx, dz = b[0] - a[0], b[1] - a[1]; L = dx * dx + dz * dz
             t = 0 if L == 0 else max(0, min(1, ((e[0] - a[0]) * dx + (e[1] - a[1]) * dz) / L))
             px, pz = a[0] + t * dx, a[1] + t * dz; dd = math.hypot(e[0] - px, e[1] - pz)
-            if dd < 4.0 and (best is None or dd < best[0]): best = (dd, px, pz, a[2] + t * (b[2] - a[2]), a, b)
+            if dd < 4.0 and (best is None or dd < best[0]): best = (dd, px, pz, a[2] + t * (b[2] - a[2]), a, b, sj)
         if best:
-            dd, px, pz, py, a, b = best; k = key(px, pz); pos.setdefault(k, (px, pz, py)); ek = key(e[0], e[1])
-            add(ek, k, max(dd, .01)); add(key(a[0], a[1]), k, math.dist(a[:2], (px, pz))); add(key(b[0], b[1]), k, math.dist(b[:2], (px, pz)))
+            dd, px, pz, py, a, b, _ = best; k = key(px, pz); pos.setdefault(k, (px, pz, py)); ek = key(e[0], e[1]); tg = j["roads"].index(car[best[6]])
+            add(ek, k, max(dd, .01), j["roads"].index(r)); add(key(a[0], a[1]), k, math.dist(a[:2], (px, pz)), tg); add(key(b[0], b[1]), k, math.dist(b[:2], (px, pz)), tg)
 def near(x, z): return min(pos, key=lambda k: (k[0] - x) ** 2 + (k[1] - z) ** 2)
-def path(a, b):
+def path(a, b, ban=()):
     d = {a: 0}; pv = {}; q = [(0, a)]
     while q:
         c, u = heapq.heappop(q)
         if u == b: break
         if c > d[u]: continue
-        for v, w in adj.get(u, []):
+        for v, w, tg in adj.get(u, []):
+            if tg in ban: continue
             if c + w < d.get(v, 1e18): d[v] = c + w; pv[v] = u; heapq.heappush(q, (c + w, v))
     out = [b]
     while out[-1] != a: out.append(pv[out[-1]])
@@ -70,16 +71,18 @@ def insert(x, z):
         dx, dz = b[0] - a[0], b[1] - a[1]; L = dx * dx + dz * dz
         t = 0 if L == 0 else max(0, min(1, ((x - a[0]) * dx + (z - a[1]) * dz) / L))
         px, pz = a[0] + t * dx, a[1] + t * dz; dd = math.hypot(x - px, z - pz)
-        if best is None or dd < best[0]: best = (dd, px, pz, a[2] + t * (b[2] - a[2]), a, b)
-    dd, px, pz, py, a, b = best; k = key(px, pz); pos.setdefault(k, (px, pz, py))
-    add(key(a[0], a[1]), k, math.dist(a[:2], (px, pz))); add(key(b[0], b[1]), k, math.dist(b[:2], (px, pz)))
+        if best is None or dd < best[0]: best = (dd, px, pz, a[2] + t * (b[2] - a[2]), a, b, sj)
+    dd, px, pz, py, a, b, _ = best; k = key(px, pz); pos.setdefault(k, (px, pz, py))
+    tg = j["roads"].index(car[best[6]]); add(key(a[0], a[1]), k, math.dist(a[:2], (px, pz)), tg); add(key(b[0], b[1]), k, math.dist(b[:2], (px, pz)), tg)
     return (px, pz)
 GP = insert(g[1], g[2]); DP = insert(*A["pack_on_46"])
 pts = [("Garage", GP), ("Depot", DP), ("Q_Shops", (91.2, -21.3)), ("Q_Teahouse", (181.4, 5.7)),
        ("v_down", (137, -45)), ("Q5_CoastRail", (100, -180)), ("c_west", (55, -203)), ("Garage_end", GP)]
 full = []; legs = []
+# 3차: 다리별로 못 쓰는 길(인덱스). 귀환 다리(c_west→정비소)의 61→16 좌회전은 골목 입구 건물 모서리에 낌 → 16 금지
+LEG_BAN = json.load(open(os.path.join(H, "leg_ban.json"))) if os.path.exists(os.path.join(H, "leg_ban.json")) else {}
 for (an, a), (bn, b) in zip(pts, pts[1:]):
-    p, L = path(near(*a), near(*b)); full += p if not full else p[1:]; legs.append((an, bn, round(L, 1)))
+    p, L = path(near(*a), near(*b), set(LEG_BAN.get(bn, []))); full += p if not full else p[1:]; legs.append((an, bn, round(L, 1)))
 poly = [pos[k][:2] for k in full]
 # 촘촘히(2 m) 다시 찍기
 dense = [poly[0]]
@@ -92,8 +95,10 @@ def turn(a, b, c):
     u = (b[0] - a[0], b[1] - a[1]); v = (c[0] - b[0], c[1] - b[1]); d = math.hypot(*u) * math.hypot(*v)
     return 0 if d == 0 else math.degrees(math.acos(max(-1, min(1, (u[0] * v[0] + u[1] * v[1]) / d))))
 #   2차 재시도: 귀환 다리의 61→16 꺾임(68°)에서 또 낌 → 기준 50°, 앞뒤 3점(±6 m)
+#   3차: 둥글림이 길 가장자리를 깎아 (51,-111) 벽·(90,-187) 난간에 새로 낌 → 끔(ROUND=0). 경로는 길 중심선(knots) 그대로
+ROUND = 0
 i = 3
-while i < len(dense) - 3:
+while ROUND and i < len(dense) - 3:
     if 50 < turn(dense[i - 1], dense[i], dense[i + 1]) < 150:
         A, B, C = dense[i - 3], dense[i], dense[i + 3]
         arc = [((1 - t) ** 2 * A[0] + 2 * (1 - t) * t * B[0] + t * t * C[0], (1 - t) ** 2 * A[1] + 2 * (1 - t) * t * B[1] + t * t * C[1]) for t in (1 / 6, 2 / 6, 3 / 6, 4 / 6, 5 / 6)]
@@ -123,7 +128,7 @@ lab = {"Garage": "출발·귀환 정비소", "Depot": "보관소(달걀)", "Plaz
 for n, (x, z) in pts:
     if n not in lab: continue
     cx, cy = P(x, z); dr.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=(255, 255, 255), outline=(0, 0, 0), width=2)
-    dr.text((cx + 12, cy - 12), lab[n], fill=(255, 255, 255), font=font, stroke_width=2, stroke_fill=(0, 0, 0))
-dr.text((20, 20), f"D-198 튜토리얼 고리 {tot:.0f} m — 정비소→보관소→광장→상점가→찻집→해안→정비소", fill=(255, 255, 255), font=font)
+    dr.text((cx + 12, cy - (40 if n == "Depot" else 12)), lab[n], fill=(255, 255, 255), font=font, stroke_width=2, stroke_fill=(0, 0, 0))
+dr.text((20, 20), f"D-198 튜토리얼 고리 {tot:.0f} m — 정비소→보관소→(북쪽)상점가→찻집→해안→(서쪽)정비소 · 봇 Box 양방향 완주", fill=(255, 255, 255), font=font)
 img.save(os.path.join(R, "docs/map/townv6-tutorial-loop.png"))
 print(json.dumps({"legs": legs, "total_m": round(tot, 1), "n": len(dense), "garage_road": g, "depot_road": d}))

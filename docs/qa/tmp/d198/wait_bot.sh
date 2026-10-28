@@ -1,8 +1,9 @@
-#!/usr/bin/env bash
-# TownPathBot 이 done 이 될 때까지 10초마다 확인 (최대 ~9분)
-for i in $(seq 1 55); do
+#!/bin/bash
+# 봇 끝날 때까지 20초마다 상태 확인, 끝나면 결과 파일 출력
+cd /d/Github/F1Game
+while true; do
   s=$(bash scripts/ucli-http.sh exec 'return TownPathBot.Status;' 2>&1 | tail -1)
-  if [[ "$s" == done* ]]; then break; fi
-  sleep 10
+  echo "$s" | grep -q done && break
+  sleep 20
 done
-echo "$s"
+cat docs/qa/tmp/townv6-bot-loopBox.txt
