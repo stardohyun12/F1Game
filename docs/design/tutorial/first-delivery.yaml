@@ -8,7 +8,8 @@ status: draft
 # 지도: Map_TownV6 평면(1600×1600, 1px = 0.5m). px_x = a*x + b*z + c, px_y = d*x + e*z + f  (x,z = Unity 월드)
 # 변환은 docs/qa/tmp/tv6_plan.py 의 P(x,z) = ((x+400)*2, (400-z)*2) 그대로. 확인점: Garage(-90.7,-77.7) → px(618.6, 955.4), Q_Teahouse 배달점(181.4,5.7) → px(1162.8, 788.6)
 map:
-  image: docs/map/townv6-plan-base.png     # 글자·경로 없는 바탕(tools/viewer/_check/plan_map_base.py). 도현이 준 docs/map/townv6-tutorial-loop.png 는 옛 MART 고리가 구워져 있어 바탕으로만 바꿔 쓸 수 있음
+  glb: tools/viewer/assets/map_townv6.glb      # 3D 회색 박스 지도(가운데 화면). python -X utf8 tools/viewer/map/export_map.py 로 docs/map/town-v6b.json(= Map_TownV6 빌드 원본)에서 다시 뽑음. glTF (x,y,z) = Unity (x,y,−z)
+  image: docs/map/townv6-plan-base.png     # 미니맵(오른쪽 아래 200px) 바탕. 글자·경로 없는 바탕(tools/viewer/_check/plan_map_base.py). 도현이 준 docs/map/townv6-tutorial-loop.png 는 옛 MART 고리가 구워져 있어 바탕으로만 바꿔 쓸 수 있음
   size: [1600, 1600]
   world_to_px: [2, 0, 800, 0, -2, 800]
   calibration:

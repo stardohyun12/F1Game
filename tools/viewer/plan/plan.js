@@ -1,12 +1,16 @@
-// PitCrew 기획 뷰어 — 지도 우선 (vanilla JS, 빌드 없음)
+// PitCrew 기획 뷰어 — 3D 회색 박스 지도 우선 (ES module, 빌드 없음; three.js 는 ../vendor)
 // 데이터: GET /api/plan?f=first-delivery → docs/design/tutorial/first-delivery.yaml (map · quests[] · characters[] · places[])
+//   map.glb = 3D 지도(tools/viewer/map/export_map.py 산출, Unity (x,y,−z)), map.image = 미니맵 PNG, map.world_to_px = 미니맵 변환
 // 코멘트: POST/GET /api/feedback?b=plan-first-delivery  {target:'quests/first_delivery/steps/3/lines/0', text, comment}
 'use strict';
+import * as M3 from './plan3d.js';
+const map3d = M3.map3d;
 const PLAN = new URLSearchParams(location.search).get('f') || 'first-delivery';
 const FB = 'plan-' + PLAN;
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const repoUrl = (p) => p ? '/repo/' + String(p).replace(/^\/?/, '') : '';
+const assetUrl = (p) => p ? (/^tools\/viewer\//.test(p) ? '/' + p.replace(/^tools\/viewer\//, '') : repoUrl(p)) : '';
 const refUrl = (file) => '/repo/docs/design/tutorial/refs/' + file;
 const WHO = { radio: '라디오' };
 
@@ -37,9 +41,22 @@ async function load() {
   if (!qs.find((q) => q.id === qid)) qid = qs[0] ? qs[0].id : '';
   $('quest').value = qid; quest = qs.find((q) => q.id === qid) || { steps: [] };
   await loadComments();
-  await map.setImage(plan.map);
+  await loadMap3d(plan.map);
+  M3.setRoute(routeOf(quest));
   renderAll();
-  if (!map.fitted) { map.fitTo(questBounds()); map.fitted = true; }
+  if (!mapFitted) { M3.fitRoute(); mapFitted = true; }
+}
+let mapFitted = false, mapGlb = '';
+async function loadMap3d(m) {
+  m = m || {};
+  const glb = assetUrl(m.glb || 'tools/viewer/assets/map_townv6.glb');
+  if (glb === mapGlb && map3d.ready) return;
+  msg('3D 지도 읽는 중…', 60000);
+  try {
+    const ex = await M3.loadMap(glb + '?t=' + Date.now(), { image: repoUrl(m.image || 'docs/map/townv6-plan-base.png'), world_to_px: m.world_to_px });
+    mapGlb = glb; const st = (ex && ex.stats) || {};
+    msg(`3D 지도: 삼각형 ${(st.tris_total || 0).toLocaleString()} · 건물 ${st.buildings || '?'} · 길 ${st.roads || '?'} (${ex.source || glb})`, 3500);
+  } catch (e) { msg('3D 지도 읽기 실패: ' + e.message + ' — python tools/viewer/map/export_map.py', 8000); console.error(e); }
 }
 async function loadComments() {
   const r = await fetch('/api/feedback?b=' + FB, { cache: 'no-store' });
@@ -47,114 +64,72 @@ async function loadComments() {
   const n = visible().length; const b = $('cTotal'); b.textContent = n; b.classList.toggle('zero', n === 0);
 }
 
-// ---------- 지도 ----------
-const map = {
-  img: $('mapImg'), ov: $('ov'), wrap: $('mapWrap'), W: 1600, H: 1600, M: [2, 0, 800, 0, -2, 800], s: 0.5, tx: 0, ty: 0, fitted: false,
-  async setImage(m) {
-    m = m || {}; this.M = m.world_to_px || this.M;
-    const src = repoUrl(m.image || 'docs/map/townv6-plan-base.png');
-    if (this.img.getAttribute('src') !== src) {
-      await new Promise((res) => { this.img.onload = res; this.img.onerror = res; this.img.src = src; });
-      this.W = this.img.naturalWidth || (m.size || [1600])[0]; this.H = this.img.naturalHeight || (m.size || [0, 1600])[1];
-    }
-  },
-  px(w) { const [a, b, c, d, e, f] = this.M; return [a * w[0] + b * w[1] + c, d * w[0] + e * w[1] + f]; },
-  scr(p) { return [p[0] * this.s + this.tx, p[1] * this.s + this.ty]; },
-  apply() { this.img.style.transform = `translate(${this.tx}px,${this.ty}px) scale(${this.s})`; drawOverlay(); },
-  fitTo(b) { // b = [minx,miny,maxx,maxy] in map px
-    const vw = this.wrap.clientWidth, vh = this.wrap.clientHeight, pad = 60;
-    const s = Math.min((vw - pad * 2) / Math.max(1, b[2] - b[0]), (vh - pad * 2) / Math.max(1, b[3] - b[1]));
-    this.s = Math.max(0.15, Math.min(4, s));
-    this.tx = vw / 2 - ((b[0] + b[2]) / 2) * this.s; this.ty = vh / 2 - ((b[1] + b[3]) / 2) * this.s; this.apply();
-  },
-  centerOn(p, s) { if (s) this.s = s; this.tx = this.wrap.clientWidth / 2 - p[0] * this.s; this.ty = this.wrap.clientHeight / 2 - p[1] * this.s; this.apply(); },
-  zoomAt(f, cx, cy) { const ns = Math.max(0.15, Math.min(6, this.s * f)); this.tx = cx - (cx - this.tx) * (ns / this.s); this.ty = cy - (cy - this.ty) * (ns / this.s); this.s = ns; this.apply(); },
-};
-function questBounds() {
-  const pts = [];
-  (quest.route_world || []).forEach((w) => pts.push(map.px(w)));
-  (plan.places || []).forEach((p) => p.world && pts.push(map.px(p.world)));
-  if (!pts.length) return [0, 0, map.W, map.H];
-  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
-}
+// ---------- 3D 지도 (plan3d.js) ----------
+// 핀: 단계(번호) · 배달 목표(★n) · 장소(이름). 클릭 = 오른쪽 칸, 올리면 왼쪽 흐름 줄 강조. 경로 = 지형 위 0.3 m 튜브. 미니맵 = 기존 2D PNG(200px) + 카메라 점.
 function stepWorld(s) { if (s.marker_world) return s.marker_world; const p = placeOf(s.place); return p && p.world; }
 function stepsAt(pid) { return (quest.steps || []).map((s, i) => ({ s, i })).filter((x) => x.s.place === pid); }
-const SVG = (tag, attrs) => { const e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
-function drawOverlay() {
-  const ov = map.ov; ov.innerHTML = '';
-  if (!plan) return;
-  // 경로
-  const rw = quest.route_world || quest.route_px || [];
-  if (rw.length > 1) {
-    const d = rw.map((w, i) => { const p = map.scr(quest.route_world ? map.px(w) : w); return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
-    ov.appendChild(SVG('path', { d, fill: 'none', stroke: '#000', 'stroke-width': 7, 'stroke-opacity': .5, 'stroke-linejoin': 'round' }));
-    ov.appendChild(SVG('path', { d, fill: 'none', stroke: '#ff8c2a', 'stroke-width': 4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
-  }
-  // 장소 핀
+function shortName(s) { return String(s || '').replace(/\s*\(.*$/, ''); }
+function drawOverlay() {   // 핀·경로를 지금 상태(curStep·curPlace·코멘트 수)로 다시 놓는다
+  if (!plan || !map3d.ready) return;
+  const pins = [];
   (plan.places || []).forEach((p) => {
     if (!p.world) return;
-    const [x, y] = map.scr(map.px(p.world));
-    const g = SVG('g', { class: 'pin hit' + (curPlace === p.id ? ' on' : ''), 'data-place': p.id });
-    g.appendChild(SVG('circle', { cx: x, cy: y, r: 9, fill: p.library_prefab ? '#3a86ff' : '#6c7a89', stroke: '#fff', 'stroke-width': 2 }));
     const n = underTarget('places/' + p.id).length + stepsAt(p.id).reduce((a, x) => a + underTarget(ST(x.i)).length, 0);
-    if (n) { g.appendChild(SVG('circle', { cx: x + 9, cy: y - 9, r: 7, fill: '#d9534f' })); const t = SVG('text', { x: x + 9, y: y - 5, 'text-anchor': 'middle', style: 'font-size:10px' }); t.textContent = n; g.appendChild(t); }
-    const t = SVG('text', { x: x + 13, y: y + 4 }); t.textContent = p.name_ko.replace(/\s*\(.*$/, ''); g.appendChild(t);
-    ov.appendChild(g);
+    pins.push({ key: 'place:' + p.id, kind: 'place' + (p.library_prefab ? ' has' : '') + (curPlace === p.id ? ' on' : ''), label: '', name: shortName(p.name_ko), world: p.world, badge: n || '', title: p.name_ko, place: p.id });
   });
-  // 배달 목표
-  (quest.targets || []).forEach((t) => {
-    const w = t.world || (placeOf(t.place) || {}).world; if (!w) return;
-    const [x, y] = map.scr(map.px(w));
-    const g = SVG('g', { class: 'hit', 'data-place': t.place });
-    g.appendChild(SVG('circle', { cx: x, cy: y, r: 11, fill: '#ffd166', stroke: '#000', 'stroke-width': 2 }));
-    const tx = SVG('text', { x, y: y + 4, 'text-anchor': 'middle', style: 'fill:#000;stroke:none' }); tx.textContent = '★' + t.n; g.appendChild(tx);
-    ov.appendChild(g);
-  });
-  // 단계 마커 (번호)
-  (quest.steps || []).forEach((s, i) => {
-    const w = stepWorld(s); if (!w) return;
-    const [x, y] = map.scr(map.px(w)); const on = i === curStep;
-    const g = SVG('g', { class: 'hit', 'data-step': i });
-    g.appendChild(SVG('circle', { cx: x, cy: y - 22, r: on ? 12 : 10, fill: on ? '#ffd166' : '#e8572a', stroke: on ? '#000' : '#fff', 'stroke-width': 2 }));
-    g.appendChild(SVG('line', { x1: x, y1: y - 10, x2: x, y2: y - 2, stroke: '#fff', 'stroke-width': 2 }));
-    const t = SVG('text', { x, y: y - 18, 'text-anchor': 'middle', style: on ? 'fill:#000;stroke:none' : '' }); t.textContent = i + 1; g.appendChild(t);
-    const title = SVG('title'); title.textContent = (i + 1) + '. ' + s.title_ko; g.appendChild(title);
-    ov.appendChild(g);
-  });
+  (quest.targets || []).forEach((t) => { const w = t.world || (placeOf(t.place) || {}).world; if (w) pins.push({ key: 'target:' + t.n, kind: 'target', label: '★' + t.n, world: w, title: t.label_ko || '', place: t.place }); });
+  (quest.steps || []).forEach((s, i) => { const w = stepWorld(s); if (w) pins.push({ key: 'step:' + i, kind: 'step', label: i + 1, world: w, on: i === curStep, title: (i + 1) + '. ' + s.title_ko, step: i }); });
+  M3.setPins(pins);
 }
-// 팬·줌
-(() => {
-  const w = map.wrap; let drag = null;
-  w.addEventListener('mousedown', (e) => { if (e.button !== 0) return; drag = { x: e.clientX, y: e.clientY, tx: map.tx, ty: map.ty, moved: false }; w.classList.add('drag'); });
-  window.addEventListener('mousemove', (e) => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true; map.tx = drag.tx + dx; map.ty = drag.ty + dy; map.apply(); });
-  window.addEventListener('mouseup', () => { if (drag) { w.classList.remove('drag'); setTimeout(() => (drag = null), 0); } });
-  w.addEventListener('wheel', (e) => { e.preventDefault(); const r = w.getBoundingClientRect(); map.zoomAt(e.deltaY < 0 ? 1.2 : 1 / 1.2, e.clientX - r.left, e.clientY - r.top); }, { passive: false });
-  w.addEventListener('click', (e) => {
-    if (drag && drag.moved) return;
-    const st = e.target.closest('[data-step]'); if (st) { selectStep(+st.dataset.step, false); return; }
-    const pn = e.target.closest('[data-place]'); if (pn) { openPlace(pn.dataset.place, false); return; }
-  });
-  w.addEventListener('mouseover', (e) => { const st = e.target.closest('[data-step]'); if (st) { const row = document.querySelector(`.srow[data-step="${st.dataset.step}"]`); if (row) row.style.background = '#3a3326'; } });
-  w.addEventListener('mouseout', (e) => { const st = e.target.closest('[data-step]'); if (st) { const row = document.querySelector(`.srow[data-step="${st.dataset.step}"]`); if (row) row.style.background = ''; } });
-  $('fit').onclick = () => map.fitTo(questBounds());
-  $('zin').onclick = () => map.zoomAt(1.25, w.clientWidth / 2, w.clientHeight / 2);
-  $('zout').onclick = () => map.zoomAt(0.8, w.clientWidth / 2, w.clientHeight / 2);
-  window.addEventListener('resize', () => map.apply());
-})();
+function routeOf(q) { return (q.route_world || []).length > 1 ? q.route_world : []; }
+function nearestRouteIdx(w) { const rw = routeOf(quest); let bi = 0, bd = 1e18; rw.forEach((p, i) => { const d = (p[0] - w[0]) ** 2 + (p[1] - w[1]) ** 2; if (d < bd) { bd = d; bi = i; } }); return bi; }
+function walkBefore(w, back = 4) {   // 걷기 모드에서 어떤 자리를 보려면: 경로 위 그 자리 몇 점 앞에 서서 바라본다(시야 확인)
+  const rw = routeOf(quest); if (rw.length < 2) { M3.walkTo([w[0] - 10, w[1] - 10], w); return; }
+  const i = nearestRouteIdx(w), j = Math.max(0, i - back); const from = j === i ? [w[0] - 10, w[1] - 10] : rw[j];
+  M3.walkTo(from, w);
+}
+function goWorld(w) { if (map3d.mode === 'walk') walkBefore(w); else M3.focusWorld(w, Math.min(Math.max(map3d.orbit.getDistance(), 50), 110)); }
+const HELP = {
+  orbit: '둘러보기: 왼쪽 드래그 = 돌기 · 오른쪽 드래그 = 옮기기 · 휠 = 확대 · 핀 클릭 = 오른쪽 칸 · 미니맵 클릭 = 그 자리로 · 1/2 = 둘러보기/걷기 · F = 맞춤 · P = 픽셀',
+  walkIdle: '걷기: 화면을 클릭하면 마우스가 잠기고 걸을 수 있어요 (WASD · Shift 달리기 · Space/C 눈높이 ±· Esc 풀기). 눈높이 1.6 m, 땅을 따라감 · 흐름 줄 클릭 = 그 자리 앞에 서서 보기',
+  walkLock: '걷기: WASD 이동 · 마우스 보기 · Shift 달리기 · Space 위 / C 아래 · Esc 마우스 풀기 (벽은 통과됨)',
+};
+function updateHelp() {
+  $('mOrbit').classList.toggle('on', map3d.mode === 'orbit'); $('mWalk').classList.toggle('on', map3d.mode === 'walk');
+  $('mapHelp').textContent = map3d.mode === 'orbit' ? HELP.orbit : (map3d.walk && map3d.walk.isLocked ? HELP.walkLock : HELP.walkIdle);
+}
+function highlightRow(i, on) { const row = document.querySelector(`.srow[data-step="${i}"]`); if (row) row.style.background = on ? '#3a3326' : ''; }
+M3.init({ view: $('view'), canvas: $('c'), pinsEl: $('pins'), mini: $('mini') }, {
+  onPin: (p) => { if (p.step !== undefined) selectStep(p.step, false); else if (p.place) openPlace(p.place, false); },
+  onHover: (p, on) => { if (p.step !== undefined) highlightRow(p.step, on); },
+  onMove: () => updateHelp(),
+});
+$('mOrbit').onclick = () => M3.setMode('orbit');
+$('mWalk').onclick = () => M3.setMode('walk');
+$('fit').onclick = () => M3.fitRoute();
+$('pixel').onchange = (e) => M3.setPixel(e.target.checked);
+addEventListener('keydown', (e) => {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.code === 'Digit1') M3.setMode('orbit'); else if (e.code === 'Digit2') M3.setMode('walk');
+  else if (e.code === 'KeyF') { if (curStep >= 0 && quest.steps[curStep]) goWorld(stepWorld(quest.steps[curStep])); else M3.fitRoute(); }
+  else if (e.code === 'KeyP') { $('pixel').checked = !$('pixel').checked; M3.setPixel($('pixel').checked); }
+});
+setInterval(() => { const s = map3d.stats; $('hud').textContent = map3d.ready ? `${s.fps} fps · draw ${s.calls} · tri ${s.tris.toLocaleString()} · ${map3d.mode === 'walk' ? '걷기' : '둘러보기'}${map3d.pixel ? ' · 720' : ''}` : '3D 지도 읽는 중…'; }, 500);
+updateHelp();
+
 
 // ---------- 선택 ----------
 function selectStep(i, center = true) {
   curStep = i; const s = quest.steps[i]; curPlace = s ? s.place : null;
   renderLeft(); renderRight();   // 오른쪽 칸이 열리며 지도 폭이 줄므로 먼저 그리고 가운데 맞춤
-  if (center && s) { const w = stepWorld(s); if (w) map.centerOn(map.px(w), Math.max(map.s, 1.2)); }
+  if (center && s) { const w = stepWorld(s); if (w) goWorld(w); }
   drawOverlay();
   const row = document.querySelector(`.srow[data-step="${i}"]`); if (row) row.scrollIntoView({ block: 'nearest' });
 }
 function openPlace(pid, center = true) {
   curPlace = pid; const at = stepsAt(pid); curStep = at.length ? at[0].i : -1;
   renderLeft(); renderRight();
-  const p = placeOf(pid); if (center && p && p.world) map.centerOn(map.px(p.world), Math.max(map.s, 1.2));
+  const p = placeOf(pid); if (center && p && p.world) goWorld(p.world);
   drawOverlay();
 }
 function centerChar(cid) { const c = charOf(cid); if (c && c.place) openPlace(c.place, true); }
@@ -293,7 +268,7 @@ function showLightbox(src, cap) { const lb = $('lightbox'); lb.querySelector('im
 $('lightbox').onclick = () => ($('lightbox').style.display = 'none');
 document.querySelectorAll('#left .tabs button').forEach((b) => (b.onclick = () => { leftTab = b.dataset.tab; renderLeft(); }));
 $('cFilter').onchange = () => { filter = $('cFilter').value; loadComments().then(renderAll); };
-$('quest').onchange = () => { qid = $('quest').value; quest = plan.quests.find((q) => q.id === qid); curStep = -1; curPlace = null; map.fitted = false; renderAll(); map.fitTo(questBounds()); map.fitted = true; };
+$('quest').onchange = () => { qid = $('quest').value; quest = plan.quests.find((q) => q.id === qid); curStep = -1; curPlace = null; M3.setRoute(routeOf(quest)); renderAll(); M3.fitRoute(); };
 $('reload').onclick = () => load().then(() => msg('다시 읽음')).catch((e) => msg('읽기 실패: ' + e.message, 4000));
-window.__plan = { get plan() { return plan; }, get comments() { return comments; }, get ready() { return !!plan; }, selectStep, openPlace, map, setTab(t) { leftTab = t; renderLeft(); } };
+window.__plan = { get plan() { return plan; }, get comments() { return comments; }, get ready() { return !!plan && map3d.ready; }, selectStep, openPlace, map3d, M3, goWorld, walkBefore, stepWorld, setTab(t) { leftTab = t; renderLeft(); } };
 load().catch((e) => { $('leftBody').innerHTML = `<div class="card">읽기 실패: ${esc(e.message)}</div>`; console.error(e); });
