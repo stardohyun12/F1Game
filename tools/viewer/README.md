@@ -36,3 +36,15 @@
 
 검사: 서버를 켠 채 `node tools/viewer/_check/cdp_check.js` (로드·새로고침·모드·픽셀·걷기), `node tools/viewer/_check/select_check.js` (고르기·옮기기·되돌리기·코멘트·핀), `node tools/viewer/_check/select_multi_check.js` (여러 개·선택 중 시점·F/더블클릭·빈 곳 풀기·걷기+선택), `node tools/viewer/_check/sn_shot.js` (표면 결 sn=0/0.04/0.08 세 시점 `sn_*.png` + 부품 선택·부모 선택·코멘트 필터). 검사 코멘트는 feedback/ 에 쌓이니 끝나면 지운다.
 three.js 는 `vendor/` 에 r170 고정(인터넷 불필요).
+
+## 기획 뷰어 (`/plan/`) — 지도 위에서 첫 배달 흐름·인물·장소 보고 코멘트
+
+- 열기: 건물 뷰어 왼쪽 **기획 →** 버튼 또는 **http://127.0.0.1:8770/plan/** (같은 serve.py)
+- 화면: **가운데 = Map_TownV6 평면 지도**(드래그 이동·휠 확대·**맞춤**), 왼쪽 = 흐름/인물/장소/코멘트 목록, 오른쪽 = 핀을 누르면 열리는 그 장소 칸(장소 메모·레퍼런스·그 자리의 단계 카드(대사·조건·카메라·소리·캡처)·거기 있는 사람 카드·3D 건물 뷰어 링크).
+  - 지도 위: 파란 동그라미 = 장소 핀(프리팹 있음) / 회색 = 아직 없음, 주황 선 = 첫 배달 경로(고리), 주황 번호 = 단계 1~7(누르면 왼쪽 흐름 줄 + 오른쪽 칸), ★1 = 배달 목표. 인물 카드의 **지도에서 보기** = 그 사람 자리로 이동. 맨 위 **퀘스트** 선택이 핀·경로·번호를 거른다(지금은 첫 배달 하나).
+- 데이터: `docs/design/tutorial/first-delivery.yaml` 한 파일 — `map`(바탕 그림 `docs/map/townv6-plan-base.png` 1600×1600, `world_to_px: [a,b,c,d,e,f]` → px_x = a·x + b·z + c, px_y = d·x + e·z + f, 현재 1px = 0.5m·원점 (−400, 400), 확인점 3개) · `quests[]`(id·targets·`route_world` [x,z] 목록·`steps[]`: place/actors/lines/condition/camera/sound/capture/`marker_world`) · `characters[]`(`place` 로 지도 자리) · `places[]`(`world` [x,z], `library_prefab`, refs). 전부 `status: draft`. 서버가 `GET /api/plan?f=first-delivery` 로 JSON(pyyaml 있으면 pyyaml, 없으면 serve.py 의 작은 파서 — 들여쓰기 맵/리스트·`[a, b]`·`{k: v}`·따옴표·`#` 주석까지만, `|`/`>` 블록 문자열은 안 됨).
+  - 바탕 그림 다시 만들기: `python tools/viewer/_check/plan_map_base.py` (docs/map/town-v6b.json → 글자·경로 없는 평면). 좌표 변환은 `docs/qa/tmp/tv6_plan.py` 와 같다.
+- 코멘트: 칸마다 **코멘트** 버튼 → 쓰고 보내기(Ctrl+Enter). `tools/viewer/feedback/plan-first-delivery.jsonl` 에 한 줄씩, `target` 이 자리(`quests/first_delivery/steps/3/lines/0` = 4번째 단계 첫 대사, `characters/julia/hair`, `places/teahouse/refs/1`), `comment` 가 말. **남은 것만 / 전부** 는 건물 뷰어와 같은 `status: done` 규칙. 핀의 빨간 숫자 = 그 장소·그 자리 단계에 남은 코멘트 수.
+- 레퍼런스 사진: `docs/design/tutorial/refs/<id>/<n>.jpg` (긴 변 ≤1200), 출처·라이선스 확인 방법은 `docs/design/tutorial/SOURCES.md` — **CC0/퍼블릭 도메인이 Commons 파일 페이지에서 확인된 것만**(Unsplash 출처·AI 이미지 금지). `refs/sources.json` 을 고치면 `python tools/viewer/_check/plan_refs_sync.py` 가 SOURCES.md 와 YAML 의 refs 를 다시 쓴다. 서버는 `/repo/docs/...` 로 `docs/` 아래 파일만 읽기 전용으로 내준다(캡처 `docs/qa/evidence/...` 도 같은 길).
+- AI 팀원: 기획을 고치면 YAML 만 고치고(새로고침 버튼), 코멘트를 반영한 줄엔 `status: "done"` + `fix` 를 넣는다(건물 뷰어와 같음). 퀘스트를 더하려면 `quests[]` 에 항목 하나(steps 는 places/characters 의 id 를 가리킴).
+- 검사: `node tools/viewer/_check/plan_check.js` → `_check/plan_map.png`(지도+핀+경로+번호) · `plan_pin_teahouse.png`(핀 열림) · `plan_marker_step4.png` · `plan_chars.png` · `plan_places.png` · `plan_comment.png` · `plan_allc.png` + 코멘트 왕복 + 콘솔 오류 0. 검사 코멘트(`[검사]`)는 끝나면 jsonl 에서 지운다.

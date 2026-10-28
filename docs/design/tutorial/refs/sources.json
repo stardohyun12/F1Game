@@ -1,0 +1,236 @@
+{
+ "protagonist": [
+  {
+   "n": 1,
+   "file": "protagonist/1.jpg",
+   "label": "얼굴·나이(10대 후반, 담담한 표정)",
+   "title": "File:StateLibQld 2 196467 Teenage boy posing for a portrait, 1900-1910.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:StateLibQld_2_196467_Teenage_boy_posing_for_a_portrait,_1900-1910.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/StateLibQld_2_196467_Teenage_boy_posing_for_a_portrait%2C_1900-1910.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Teenage boy posing for a portrait, 1900-1910\nA young man, wearing a three piece suit, posing for a portrait in the early 1900s.",
+   "size": [
+    703,
+    1000
+   ]
+  },
+  {
+   "n": 2,
+   "file": "protagonist/2.jpg",
+   "label": "얼굴·나이(10대 후반, 담담한 표정)",
+   "title": "File:Boy with coat and tie, Congo, c. 1900-1915 (IMP-CSCNWW33-OS10-66).jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Boy_with_coat_and_tie,_Congo,_c._1900-1915_(IMP-CSCNWW33-OS10-66).jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/20/Boy_with_coat_and_tie%2C_Congo%2C_c._1900-1915_%28IMP-CSCNWW33-OS10-66%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Unknown authorUnknown author",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Boy with coat and tie, Congo, c. 1900-1915\nBlack and white lantern slide showing a Congolese boy in his early teenage years wearing a woolen coat, shirt and tie",
+   "size": [
+    1200,
+    1194
+   ]
+  },
+  {
+   "n": 3,
+   "file": "protagonist/3.jpg",
+   "label": "옷·분위기(카트 운전)",
+   "title": "File:City Circuit Tokyo Bay (42986).jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:City_Circuit_Tokyo_Bay_(42986).jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/City_Circuit_Tokyo_Bay_%2842986%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Syced",
+   "license": "CC0",
+   "verify": "LicenseShortName='CC0' License='cc0' LicenseUrl='http://creativecommons.org/publicdomain/zero/1.0/deed.en'",
+   "desc": "City Circuit Tokyo Bay",
+   "size": [
+    1200,
+    904
+   ]
+  }
+ ],
+ "garage_boss": [
+  {
+   "n": 1,
+   "file": "garage_boss/1.jpg",
+   "label": "얼굴(1970년대 레이서, 길고 마른 얼굴)",
+   "title": "File:Canzonissima 1972 - Arturo Merzario.png",
+   "page": "https://commons.wikimedia.org/wiki/File:Canzonissima_1972_-_Arturo_Merzario.png",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Canzonissima_1972_-_Arturo_Merzario.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Romolo Siena",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Arturo Merzario in Canzonissima edizione 1972",
+   "size": [
+    913,
+    558
+   ]
+  },
+  {
+   "n": 2,
+   "file": "garage_boss/2.jpg",
+   "label": "분위기(패독에서 팀과, 옷·몸짓)",
+   "title": "File:1972 Targa Florio - Scuderia Ferrari - Munari, Caliri, Merzario.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:1972_Targa_Florio_-_Scuderia_Ferrari_-_Munari,_Caliri,_Merzario.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a6/1972_Targa_Florio_-_Scuderia_Ferrari_-_Munari%2C_Caliri%2C_Merzario.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Unknown authorUnknown author",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Sicily (Italy), Madonie Road Circuit – Short Course (\"Piccolo\"), May 1972. On foreground: racing drivers Sandro Munari (left) and Arturo Merzario (right), and e",
+   "size": [
+    1200,
+    850
+   ]
+  },
+  {
+   "n": 3,
+   "file": "garage_boss/3.jpg",
+   "label": "옷(정비 작업복, 피트스탑)",
+   "title": "File:1972 Targa Florio - Ferrari 312 PB - Pit stop.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:1972_Targa_Florio_-_Ferrari_312_PB_-_Pit_stop.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/1972_Targa_Florio_-_Ferrari_312_PB_-_Pit_stop.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Unknown authorUnknown author",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Sicily (Italy), Madonie Road Circuit – Short Course (\"Piccolo\"), May 1972. 56th Targa Florio, round 7 of 1972 World Championship for Makes: a pit stop for the w",
+   "size": [
+    1200,
+    805
+   ]
+  }
+ ],
+ "julia": [
+  {
+   "n": 1,
+   "file": "julia/1.jpg",
+   "label": "옷·동작(앞치마, 손님 맞는 자세)",
+   "title": "File:Waitress Kenya.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Waitress_Kenya.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Waitress_Kenya.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "safaritravelplus",
+   "license": "CC0",
+   "verify": "LicenseShortName='CC0' License='cc0' LicenseUrl='http://creativecommons.org/publicdomain/zero/1.0/deed.en'",
+   "desc": "A waitress at a bar and restaurant in Kenya.",
+   "size": [
+    1200,
+    800
+   ]
+  },
+  {
+   "n": 2,
+   "file": "julia/2.jpg",
+   "label": "얼굴·분위기(배 식당 종업원, 사람들과 수다)",
+   "title": "File:SS Ukkopekka waitress.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:SS_Ukkopekka_waitress.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/SS_Ukkopekka_waitress.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Porovuori",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "s/s Ukkopekka 2005",
+   "size": [
+    1200,
+    898
+   ]
+  }
+ ],
+ "depot_clerk": [
+  {
+   "n": 1,
+   "file": "depot_clerk/1.jpg",
+   "label": "옷·분위기(창구 직원)",
+   "title": "File:Railway Post Office Clerk in Mail Car.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Railway_Post_Office_Clerk_in_Mail_Car.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Railway_Post_Office_Clerk_in_Mail_Car.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "{{{1}}}",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Description: A Railway Post Office clerk is photographed holding a mail pouch and leaning out of a Baltimore &amp; Ohio railroad car next to the car's mail exch",
+   "size": [
+    1200,
+    881
+   ]
+  },
+  {
+   "n": 2,
+   "file": "depot_clerk/2.jpg",
+   "label": "옷·분위기(창구 직원)",
+   "title": "File:US Navy 030425-N-4953E-037 Postal Clerk 3rd Class Stephanie Hill cancels the stamp on mail in preparation for bagging up outgoing letter mail at the Post Office.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:US_Navy_030425-N-4953E-037_Postal_Clerk_3rd_Class_Stephanie_Hill_cancels_the_stamp_on_mail_in_preparation_for_bagging_up_outgoing_letter_mail_at_the_Post_Office.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/d/db/US_Navy_030425-N-4953E-037_Postal_Clerk_3rd_Class_Stephanie_Hill_cancels_the_stamp_on_mail_in_preparation_for_bagging_up_outgoing_letter_mail_at_the_Post_Office.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "U.S. Navy photo by Photographer's Mate 3rd Class Danny Ewing Jr.",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "The Mediterranean Sea (Apr. 25, 2003) -- Postal Clerk 3rd Class Stephanie Hill cancels the stamp on mail in preparation for bagging up outgoing letter mail at t",
+   "size": [
+    787,
+    1200
+   ]
+  },
+  {
+   "n": 3,
+   "file": "depot_clerk/3.jpg",
+   "label": "옷·분위기(창구 직원)",
+   "title": "File:US Navy 060321-N-1212M-097 Postal Clerk 1st Class Timothy Lyon, Leading Petty Officer (LPO) of the Yokosuka Military Post Office, serves a customer at Yokosuka's main post office.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:US_Navy_060321-N-1212M-097_Postal_Clerk_1st_Class_Timothy_Lyon,_Leading_Petty_Officer_(LPO)_of_the_Yokosuka_Military_Post_Office,_serves_a_customer_at_Yokosuka%27s_main_post_office.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/2/27/US_Navy_060321-N-1212M-097_Postal_Clerk_1st_Class_Timothy_Lyon%2C_Leading_Petty_Officer_%28LPO%29_of_the_Yokosuka_Military_Post_Office%2C_serves_a_customer_at_Yokosuka%27s_main_post_office.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "U.S. Navy photo by Tetaun Moffet",
+   "license": "Public domain",
+   "verify": "LicenseShortName='Public domain' License='pd' LicenseUrl=''",
+   "desc": "Yokosuka, Japan (Jan. 17, 2007) - Postal Clerk 1st Class Timothy Lyon, Leading Petty Officer (LPO) of the Yokosuka Military Post Office, serves a customer at Yo",
+   "size": [
+    1200,
+    900
+   ]
+  }
+ ],
+ "teahouse": [
+  {
+   "n": 1,
+   "file": "teahouse/1.jpg",
+   "label": "외관(이탈리아 해안 카페 정면·차양·화분)",
+   "title": "File:Orthopedic shop and café on Corso della Republica, Pozzuoli, 2010.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Orthopedic_shop_and_caf%C3%A9_on_Corso_della_Republica,_Pozzuoli,_2010.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/Orthopedic_shop_and_caf%C3%A9_on_Corso_della_Republica%2C_Pozzuoli%2C_2010.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "DimiTalen",
+   "license": "CC0",
+   "verify": "LicenseShortName='CC0' License='cc0' LicenseUrl='http://creativecommons.org/publicdomain/zero/1.0/deed.en'",
+   "desc": "Orthopedic shop and café on Corso della Republica, Pozzuoli, 2010",
+   "size": [
+    1200,
+    798
+   ]
+  },
+  {
+   "n": 2,
+   "file": "teahouse/2.jpg",
+   "label": "외관(일본 킷사텐 정면)",
+   "title": "File:Chat Noir Egota branch 2015-10-29.JPG",
+   "page": "https://commons.wikimedia.org/wiki/File:Chat_Noir_Egota_branch_2015-10-29.JPG",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Chat_Noir_Egota_branch_2015-10-29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "Asanagi",
+   "license": "CC0",
+   "verify": "LicenseShortName='CC0' License='cc0' LicenseUrl='http://creativecommons.org/publicdomain/zero/1.0/deed.en'",
+   "desc": "Chat Noir Egota branch (a coffee shop in Tokyo, Japan)",
+   "size": [
+    1200,
+    1200
+   ]
+  },
+  {
+   "n": 3,
+   "file": "teahouse/3.jpg",
+   "label": "외관(일본 동네 커피숍, 간판·창·차양)",
+   "title": "File:Coffee shop Morozaki, Kanie-cho, Aichi, Japan, August 26, 2023.jpg",
+   "page": "https://commons.wikimedia.org/wiki/File:Coffee_shop_Morozaki,_Kanie-cho,_Aichi,_Japan,_August_26,_2023.jpg",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Coffee_shop_Morozaki%2C_Kanie-cho%2C_Aichi%2C_Japan%2C_August_26%2C_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+   "author": "要塞騎士",
+   "license": "CC0",
+   "verify": "LicenseShortName='CC0' License='cc0' LicenseUrl='http://creativecommons.org/publicdomain/zero/1.0/deed.en'",
+   "desc": "愛知県海部郡蟹江町にある喫茶店「師崎」",
+   "size": [
+    1200,
+    600
+   ]
+  }
+ ]
+}

@@ -1,0 +1,445 @@
+# 첫 배달(튜토리얼) 기획 — 기획 뷰어용 데이터 (전부 status: draft, 도현 판정 대기)
+# 근거: docs/design/2026-10-25-opening-tutorial.md(v1 0~3 + v0), QUESTS.md §1·§5, WORLD.md, TONE.md, D-159/160/187/192
+# 보는 곳: http://127.0.0.1:8770/plan/  (코멘트는 tools/viewer/feedback/plan-first-delivery.jsonl 에 쌓임)
+title: 첫 배달 — 방에서 찻집까지
+version: draft-2 (맵 우선)
+status: draft
+
+# 지도: Map_TownV6 평면(1600×1600, 1px = 0.5m). px_x = a*x + b*z + c, px_y = d*x + e*z + f  (x,z = Unity 월드)
+# 변환은 docs/qa/tmp/tv6_plan.py 의 P(x,z) = ((x+400)*2, (400-z)*2) 그대로. 확인점: Garage(-90.7,-77.7) → px(618.6, 955.4), Q_Teahouse 배달점(181.4,5.7) → px(1162.8, 788.6)
+map:
+  image: docs/map/townv6-plan-base.png     # 글자·경로 없는 바탕(tools/viewer/_check/plan_map_base.py). 도현이 준 docs/map/townv6-tutorial-loop.png 는 옛 MART 고리가 구워져 있어 바탕으로만 바꿔 쓸 수 있음
+  size: [1600, 1600]
+  world_to_px: [2, 0, 800, 0, -2, 800]
+  calibration:
+    - {name: Q2_Garage, world: [-90.7, -77.7], px: [618.6, 955.4]}
+    - {name: Q_Teahouse_drop, world: [181.4, 5.7], px: [1162.8, 788.6]}
+    - {name: c_west, world: [55, -203], px: [910, 1206]}
+
+quests:
+  - id: first_delivery
+    title_ko: 첫 배달 (튜토리얼)
+    status: draft
+    summary: 방 → 정비소(고카트) → 보관소(달걀 포장) → 상점가 오르막 → 언덕 찻집(줄리아) → 해안도로 귀환 → 정비소 정산
+    targets:                      # 배달 목표(번호 점)
+      - {n: 1, place: teahouse, label_ko: 달걀 한 판 → 줄리아, world: [181.4, 5.7]}
+    route_world:                  # 고리 경로 (docs/qa/tmp/tv6_loop_pts.txt 3점마다 1점, 정비소→보관소→광장→상점가→찻집→해안→정비소)
+      - [-90.7, -77.7]
+      - [-84.4, -77.7]
+      - [-78.1, -77.8]
+      - [-71.7, -77.8]
+      - [-65.3, -78.1]
+      - [-58.9, -78.3]
+      - [-52.5, -78.6]
+      - [-46.1, -78.8]
+      - [-39.4, -79.1]
+      - [-32.7, -79.4]
+      - [-27.3, -79.7]
+      - [-21.2, -80.1]
+      - [-15.0, -80.5]
+      - [-8.8, -80.9]
+      - [-2.5, -81.4]
+      - [4.4, -82.1]
+      - [11.4, -83.0]
+      - [18.3, -84.0]
+      - [24.9, -84.8]
+      - [31.5, -85.6]
+      - [38.0, -86.7]
+      - [44.2, -88.1]
+      - [50.5, -89.5]
+      - [55.4, -88.5]
+      - [57.6, -82.6]
+      - [59.8, -76.7]
+      - [61.9, -70.9]
+      - [64.3, -65.0]
+      - [66.8, -59.1]
+      - [69.3, -53.2]
+      - [72.4, -47.4]
+      - [75.6, -41.5]
+      - [79.6, -36.4]
+      - [83.6, -31.2]
+      - [87.5, -26.2]
+      - [91.2, -21.3]
+      - [94.8, -16.4]
+      - [100.4, -11.5]
+      - [106.3, -7.6]
+      - [112.1, -4.1]
+      - [117.9, -1.4]
+      - [123.6, 1.4]
+      - [129.3, 4.1]
+      - [135.0, 7.0]
+      - [140.6, 10.0]
+      - [146.2, 13.0]
+      - [152.7, 15.9]
+      - [160.0, 18.2]
+      - [165.3, 15.1]
+      - [170.7, 11.9]
+      - [176.1, 8.8]
+      - [181.4, 5.7]
+      - [176.1, 8.8]
+      - [170.7, 11.9]
+      - [165.3, 15.1]
+      - [160.0, 18.2]
+      - [152.7, 15.9]
+      - [146.2, 13.0]
+      - [140.6, 10.0]
+      - [135.0, 7.0]
+      - [131.9, 2.9]
+      - [133.9, -3.3]
+      - [135.9, -9.6]
+      - [137.4, -15.8]
+      - [137.7, -22.1]
+      - [138.1, -28.3]
+      - [138.4, -34.6]
+      - [138.9, -41.0]
+      - [139.4, -47.3]
+      - [140.2, -53.5]
+      - [140.9, -59.8]
+      - [141.4, -66.2]
+      - [141.8, -72.7]
+      - [142.1, -79.1]
+      - [142.0, -85.5]
+      - [142.0, -91.9]
+      - [137.7, -93.3]
+      - [131.2, -92.2]
+      - [124.8, -91.2]
+      - [118.3, -90.5]
+      - [111.8, -90.5]
+      - [105.7, -86.2]
+      - [101.0, -81.7]
+      - [96.3, -77.2]
+      - [91.7, -72.7]
+      - [86.9, -68.4]
+      - [82.1, -64.2]
+      - [77.3, -60.1]
+      - [72.5, -56.0]
+      - [68.4, -55.1]
+      - [66.0, -61.1]
+      - [63.5, -67.0]
+      - [61.2, -72.8]
+      - [59.0, -78.7]
+      - [56.8, -84.5]
+      - [54.7, -90.4]
+      - [53.1, -96.8]
+      - [51.5, -103.0]
+      - [49.7, -108.8]
+      - [50.3, -113.8]
+      - [55.7, -117.6]
+      - [60.2, -121.9]
+      - [62.9, -127.5]
+      - [65.5, -133.1]
+      - [68.2, -138.7]
+      - [70.8, -144.2]
+      - [73.5, -149.8]
+      - [76.2, -155.4]
+      - [78.9, -161.3]
+      - [81.8, -166.7]
+      - [84.6, -172.1]
+      - [87.4, -177.5]
+      - [90.2, -182.9]
+      - [94.7, -188.8]
+      - [88.7, -191.2]
+      - [82.7, -193.6]
+      - [76.7, -195.9]
+      - [70.8, -198.3]
+      - [65.0, -200.6]
+      - [59.4, -202.9]
+      - [53.7, -205.1]
+      - [48.1, -207.4]
+      - [44.3, -200.9]
+      - [41.3, -195.6]
+      - [38.2, -190.3]
+      - [35.1, -185.1]
+      - [32.1, -179.8]
+      - [28.9, -174.5]
+      - [25.4, -169.1]
+      - [21.9, -163.6]
+      - [20.8, -158.4]
+      - [24.8, -153.5]
+      - [28.7, -148.7]
+      - [32.5, -143.7]
+      - [36.3, -138.7]
+      - [40.0, -133.7]
+      - [42.4, -127.9]
+      - [44.6, -122.2]
+      - [47.0, -116.4]
+      - [49.1, -110.7]
+      - [50.9, -104.9]
+      - [52.6, -98.9]
+      - [54.1, -92.5]
+      - [50.5, -89.5]
+      - [44.2, -88.1]
+      - [38.0, -86.7]
+      - [31.5, -85.6]
+      - [24.9, -84.8]
+      - [18.3, -84.0]
+      - [11.4, -83.0]
+      - [4.4, -82.1]
+      - [-2.5, -81.4]
+      - [-8.8, -80.9]
+      - [-15.0, -80.5]
+      - [-21.2, -80.1]
+      - [-27.3, -79.7]
+      - [-32.7, -79.4]
+      - [-39.4, -79.1]
+      - [-46.1, -78.8]
+      - [-52.5, -78.6]
+      - [-58.9, -78.3]
+      - [-65.3, -78.1]
+      - [-71.7, -77.8]
+      - [-78.1, -77.8]
+      - [-84.4, -77.7]
+      - [-90.7, -77.7]
+      - [-90.7, -77.7]
+    steps:
+
+      - id: room
+        title_ko: 아침, 주인공 방
+        place: room
+        actors: [protagonist]
+        lines:
+          - who: radio
+            text: "…선두, 해안 직선으로 들어섭니다!"
+          - who: radio
+            text: "지역 소식입니다. 가을 축제 해안도로 레이스, 참가 신청은 정비소에서."
+          - who: protagonist
+            text: "(달력에 동그라미) …올해는 나간다."
+        condition: 라디오 중계가 끝나면 조끼가 반짝임. 조끼를 집으면 다음(30~60초, 아무 키 건너뛰기)
+        camera: 1인칭 또는 고정 카메라. 창밖 만이 보이는 각도. 포스터·달력·조끼가 한 화면에
+        sound: 낡은 라디오 F1 중계(엔진·관중은 CC0, 해설은 자막) → 끝나면 창밖 갈매기·멀리 오토바이
+        capture: null
+        status: draft
+
+      - id: door
+        marker_world: [-112.0, -44.0]
+        title_ko: 현관 — 첫 엽서 장면
+        place: room
+        actors: [protagonist]
+        lines:
+          - who: protagonist
+            text: "좋아. 오늘부터다."
+        condition: 계단 내려와 문 열기(자동) → 2~3초 동안 아침 마을·바다가 열림 → 걸어서 정비소로(길 안내 없음, 셔터 소리가 들림)
+        camera: 문이 열리며 카메라가 뒤에서 어깨 너머로 → 만·지붕·바다 (TASTE 2 "좁은 곳 → 트인 곳")
+        sound: 라디오가 멀어지고 동네 소리(갈매기·빨래·멀리 스쿠터)가 들어옴
+        capture: null
+        status: draft
+
+      - id: garage
+        title_ko: 정비소 — 사장이 고카트를 내줌
+        place: garage
+        actors: [protagonist, garage_boss]
+        lines:
+          - who: garage_boss
+            text: "왔냐. 오늘부터 배달이다. 대회는 그 다음."
+          - who: garage_boss
+            text: "뒤에 짐상자 달아 놨어. 깨지는 건 네 책임."
+          - who: protagonist
+            text: "…네. 다녀올게요."
+        condition: 셔터가 올라가면 고카트 등장(D-160). 사장 말풍선 2줄 → 차에 타면 다음. 벽의 대회 포스터 + 빈 칸 3개(차·실력·응원)가 보임
+        camera: 셔터 앞 고정 → 카메라가 차 뒤로 내려와 플레이 시점(카메라 B)
+        sound: 셔터 올라가는 소리, 공구, 엔진 첫 시동(크게)
+        capture: docs/qa/evidence/townv6-loop/tut_1_garage_start.png
+        status: draft
+
+      - id: depot
+        marker_world: [13.8, -83.4]
+        title_ko: 택배 보관소 — 달걀 포장
+        place: depot
+        actors: [protagonist, depot_clerk]
+        lines:
+          - who: depot_clerk
+            text: "여기야, 여기! 첫 주문. 달걀 한 판, 언덕 위 찻집."
+          - who: depot_clerk
+            text: "빈 데 없이 꼭꼭 싸 줘. 깨지면 돈 못 받아."
+        condition: 보관소 40m 안에 들어오면 직원이 손짓(말풍선 1). 차를 세우면 포장 미니게임(짧게) → 포장 끝나면 출발. 광장은 어디로든 갈 수 있음(D-138), 바닥 화살표 없음, 찻집 간판·표지판만
+        camera: 포장 화면(피트스탑 느낌) → 끝나면 카메라 B
+        sound: 창구 종, 테이프 찢는 소리, 상자 닫히는 소리
+        capture: docs/qa/evidence/townv6-loop/tut_2_depot_packing.png
+        status: draft
+
+      - id: uphill
+        marker_world: [116.0, -37.5]
+        title_ko: 상점가 오르막 — 첫 흔들림
+        place: uphill_street
+        actors: [protagonist]
+        lines:
+          - who: protagonist
+            text: "살살… 달걀이 흔들려."
+        condition: 첫 큰 흔들림(화물 게이지 한 칸)에서 말풍선 1번만. 속도 vs 흔들림을 몸으로 배움. 오르막은 시야가 좁음(가게·전선·처마)
+        camera: 카메라 B. 오르막에서 앞이 막혀 있다가 꼭대기에서 열리게(TASTE 해체 2)
+        sound: 엔진 낮게, 돌길 덜컹, 가게 종·사람 말소리 조각
+        capture: docs/qa/evidence/townv6-loop/tut_5_uphill_bubble.png
+        status: draft
+
+      - id: teahouse
+        marker_world: [181.4, 5.7]
+        title_ko: 언덕 찻집 도착 — 줄리아
+        place: teahouse
+        actors: [protagonist, julia]
+        lines:
+          - who: julia
+            text: "어머, 왔네! 정비소 새 배달이지? 다 들었어."
+          - who: julia
+            text: "(안 깨짐) 하나도 안 깨졌네. 다음엔 차 한 잔 하고 가."
+          - who: julia
+            text: "(깨짐) 아이고, 몇 개 갔네. 괜찮아, 오믈렛 하면 돼. 다음엔 살살 와."
+        condition: 찻집 앞에 서면 줄리아가 나옴. 화물 상태별 한 줄 + 몸짓. 뒤로 바다·마을이 열림(세계의 큰 소리 — 파도·바람)
+        camera: 도착 컷 3~4초(찻집 앞, 뒤로 만이 보이는 각도) → 카메라 B
+        sound: 찻집 문 종, 찻잔, 바람·멀리 파도(크게 한 번)
+        capture: docs/qa/evidence/townv6-loop/tut_6_arrive_tea.png
+        status: draft
+
+      - id: coast
+        marker_world: [91.7, -184.9]
+        title_ko: 해안 귀환 · 정산
+        place: coast_road
+        actors: [protagonist, garage_boss]
+        lines:
+          - who: garage_boss
+            text: "안 깨뜨렸네. 참가비까지는… 아직 멀었다."
+          - who: garage_boss
+            text: "내일도 와라."
+        condition: 시계 없음. 해안 직선 끝 표지판까지 구간 기록만 조용히 표시(5초). 정비소에 들어오면 정산 화면(배달비·포장비·저금통·참가비까지 남은 금액)
+        camera: 해안 직선은 카메라 B(조금 뒤로·낮게), 정산은 정비소 안 고정 컷(벽 포스터·저금통)
+        sound: 엔진 낮춤, 바람·파도·먼 오토바이, 잔잔한 곡(D-129). 정산은 동전 소리 한 번
+        capture: docs/qa/evidence/townv6-loop/tut_7_coast.png
+        capture2: docs/qa/evidence/townv6-loop/tut_8_garage_settle.png
+        status: draft
+
+characters:
+  - id: protagonist
+    place: room
+    name_ko: 리오 사카이 (가안 — 이름·성별 도현 결정 대기)
+    role: 주인공, 레이서 지망생, 정비소 배달 아르바이트 첫날
+    age_range: 17~19
+    build: 마른 편, 170cm 안팎, 실물 비례(PS1 로우폴리, D-148)
+    hair: 짧고 부스스한 검은 머리, 앞머리가 눈썹에 걸림
+    outfit:
+      colors: ["바랜 주황(배달 조끼)", "회청색(바지)"]
+      items: [배달 조끼(가슴 주머니에 전표), 흰 티셔츠, 낡은 운동화, 손목에 싸구려 시계]
+    held_item: 주문 전표 / 헬멧(차에 탈 때만)
+    personality_line: 말수 적고 행동이 먼저. 레이스 얘기가 나오면 눈이 바뀜. 우울하지 않고 담담하게 들뜬다.
+    lines_first_delivery:
+      - "좋아. 오늘부터다."
+      - "살살… 달걀이 흔들려."
+    refs:
+      - {label: "얼굴·나이(10대 후반, 담담한 표정)", file: "protagonist/1.jpg", source: "https://commons.wikimedia.org/wiki/File:StateLibQld_2_196467_Teenage_boy_posing_for_a_portrait,_1900-1910.jpg", license: "Public domain"}
+      - {label: "얼굴·나이(10대 후반, 담담한 표정)", file: "protagonist/2.jpg", source: "https://commons.wikimedia.org/wiki/File:Boy_with_coat_and_tie,_Congo,_c._1900-1915_(IMP-CSCNWW33-OS10-66).jpg", license: "Public domain"}
+      - {label: "옷·분위기(카트 운전)", file: "protagonist/3.jpg", source: "https://commons.wikimedia.org/wiki/File:City_Circuit_Tokyo_Bay_(42986).jpg", license: "CC0"}
+    status: draft
+
+  - id: garage_boss
+    place: garage
+    name_ko: 마르코 오가타 (가안)
+    role: 정비소 사장, 전직 레이서, 멘토(꿈 줄기 담당)
+    age_range: 50대 중반
+    build: 어깨 넓고 배가 조금 나옴, 손이 큼, 178cm
+    hair: 희끗한 짧은 머리, 짙은 콧수염
+    outfit:
+      colors: ["바랜 남색(작업복)", "기름 묻은 회색(앞치마)"]
+      items: [남색 작업복 상하, 가슴 이름표 없음, 목에 수건, 뒷주머니에 스패너]
+    held_item: 걸레 / 커피 머그
+    personality_line: 퉁명한 말투 속에 챙김. 대회 얘기는 먼저 꺼내지 않는다. 벽의 옛 레이스 사진이 그의 과거를 대신 말한다.
+    lines_first_delivery:
+      - "왔냐. 오늘부터 배달이다. 대회는 그 다음."
+      - "안 깨뜨렸네. 참가비까지는… 아직 멀었다."
+    refs:
+      - {label: "얼굴(1970년대 레이서, 길고 마른 얼굴)", file: "garage_boss/1.jpg", source: "https://commons.wikimedia.org/wiki/File:Canzonissima_1972_-_Arturo_Merzario.png", license: "Public domain"}
+      - {label: "분위기(패독에서 팀과, 옷·몸짓)", file: "garage_boss/2.jpg", source: "https://commons.wikimedia.org/wiki/File:1972_Targa_Florio_-_Scuderia_Ferrari_-_Munari,_Caliri,_Merzario.jpg", license: "Public domain"}
+      - {label: "옷(정비 작업복, 피트스탑)", file: "garage_boss/3.jpg", source: "https://commons.wikimedia.org/wiki/File:1972_Targa_Florio_-_Ferrari_312_PB_-_Pit_stop.jpg", license: "Public domain"}
+    status: draft
+
+  - id: julia
+    place: teahouse
+    name_ko: 줄리아 아사노
+    role: 언덕 찻집 주인, 튜토리얼 첫 손님, 단골 3번(QUESTS §1)
+    age_range: 40대 후반
+    build: 작고 단단함, 160cm, 동작이 빠름
+    hair: 갈색 곱슬머리를 느슨하게 올려 묶음
+    outfit:
+      colors: ["크림색(블라우스)", "진녹색(앞치마)"]
+      items: [긴 앞치마, 소매 걷은 블라우스, 작은 귀걸이, 앞치마 주머니에 메모장]
+    held_item: 쟁반 / 찻주전자
+    personality_line: 수다스럽고 소문을 다 안다. 손님이 오면 말부터 걸고, 깨진 달걀도 웃어넘긴다(오믈렛).
+    lines_first_delivery:
+      - "어머, 왔네! 정비소 새 배달이지? 다 들었어."
+      - "하나도 안 깨졌네. 다음엔 차 한 잔 하고 가."
+    refs:
+      - {label: "옷·동작(앞치마, 손님 맞는 자세)", file: "julia/1.jpg", source: "https://commons.wikimedia.org/wiki/File:Waitress_Kenya.jpg", license: "CC0"}
+      - {label: "얼굴·분위기(배 식당 종업원, 사람들과 수다)", file: "julia/2.jpg", source: "https://commons.wikimedia.org/wiki/File:SS_Ukkopekka_waitress.jpg", license: "Public domain"}
+    status: draft
+
+  - id: depot_clerk
+    place: depot
+    name_ko: 토모 비앙키 (가안, 단역)
+    role: 택배 보관소 창구 직원 — 첫 주문을 건넴
+    age_range: 20대 중반
+    build: 보통 키, 안경
+    hair: 짧은 갈색 머리, 모자(캡)
+    outfit:
+      colors: ["연회색(셔츠)", "짙은 갈색(앞치마)"]
+      items: [팔토시, 캡모자, 허리에 테이프 커터]
+    held_item: 전표 묶음 / 테이프
+    personality_line: 바쁘고 친절. 말은 짧게, 손짓이 큼. 글자 간판 없음(D-192) — 택배 아이콘만.
+    lines_first_delivery:
+      - "여기야, 여기! 첫 주문. 달걀 한 판, 언덕 위 찻집."
+      - "빈 데 없이 꼭꼭 싸 줘. 깨지면 돈 못 받아."
+    refs:
+      - {label: "옷·분위기(창구 직원)", file: "depot_clerk/1.jpg", source: "https://commons.wikimedia.org/wiki/File:Railway_Post_Office_Clerk_in_Mail_Car.jpg", license: "Public domain"}
+      - {label: "옷·분위기(창구 직원)", file: "depot_clerk/2.jpg", source: "https://commons.wikimedia.org/wiki/File:US_Navy_030425-N-4953E-037_Postal_Clerk_3rd_Class_Stephanie_Hill_cancels_the_stamp_on_mail_in_preparation_for_bagging_up_outgoing_letter_mail_at_the_Post_Office.jpg", license: "Public domain"}
+      - {label: "옷·분위기(창구 직원)", file: "depot_clerk/3.jpg", source: "https://commons.wikimedia.org/wiki/File:US_Navy_060321-N-1212M-097_Postal_Clerk_1st_Class_Timothy_Lyon,_Leading_Petty_Officer_(LPO)_of_the_Yokosuka_Military_Post_Office,_serves_a_customer_at_Yokosuka%27s_main_post_office.jpg", license: "Public domain"}
+    status: draft
+
+places:
+  - id: room
+    name_ko: 주인공 방 (비탈 위 집 2층, 창밖 만)
+    world: [-116.7, -31.7]
+    library_prefab: room
+    note: F1 포스터·레이스 사진, 책상에 잡지·공책·저금통, 의자에 배달 조끼, 달력(축제 날 동그라미), 낡은 라디오. 창은 실제 밖이 보이게(D-189)
+    refs: []
+    status: draft
+  - id: garage
+    name_ko: 정비소 (항구 옆 창고, 셔터)
+    world: [-90.7, -84.7]
+    library_prefab: garage
+    note: 셔터·공구벽·옛 레이스 사진·대회 포스터(빈 칸 3)·저금통. 고카트가 서 있는 자리
+    refs: []
+    status: draft
+  - id: depot
+    name_ko: 택배 보관소 (광장 옆)
+    world: [12.8, -90.3]
+    library_prefab: depot
+    note: 글자 없이 택배 아이콘 간판(D-192), 문 열리고 내부(창구·선반·택배 낱개)
+    refs: []
+    status: draft
+  - id: postoffice
+    name_ko: 우체국 (광장 갈림길)
+    world: [74.8, -58.1]
+    library_prefab: postoffice
+    note: 광장 갈림길(68,-54) 옆. 첫 배달에선 지나가기만(랜드마크). 문 열리고 내부(D-192)
+    refs: []
+    status: draft
+  - id: uphill_street
+    name_ko: 상점가 오르막
+    world: [116.0, -37.5]
+    library_prefab: null
+    note: 좁은 오르막, 가게 간판 여러 개·전선·처마·실외기(D-137 일본식 눈높이). 꼭대기 직전까지 시야 차단
+    refs: []
+    status: draft
+  - id: teahouse
+    name_ko: 언덕 찻집 (①, 줄리아)
+    world: [177.9, -0.4]
+    library_prefab: null
+    note: 이탈리아 해안 카페 형태(테라스·차양·화분) + 일본 킷사텐 창가(커튼·간판등·메뉴 샘플). 뒤로 만이 열리는 자리. 프리팹 아직 없음 — 다음 에셋 큐
+    refs:
+      - {label: "외관(이탈리아 해안 카페 정면·차양·화분)", file: "teahouse/1.jpg", source: "https://commons.wikimedia.org/wiki/File:Orthopedic_shop_and_caf%C3%A9_on_Corso_della_Republica,_Pozzuoli,_2010.jpg", license: "CC0"}
+      - {label: "외관(일본 킷사텐 정면)", file: "teahouse/2.jpg", source: "https://commons.wikimedia.org/wiki/File:Chat_Noir_Egota_branch_2015-10-29.JPG", license: "CC0"}
+      - {label: "외관(일본 동네 커피숍, 간판·창·차양)", file: "teahouse/3.jpg", source: "https://commons.wikimedia.org/wiki/File:Coffee_shop_Morozaki,_Kanie-cho,_Aichi,_Japan,_August_26,_2023.jpg", license: "CC0"}
+    status: draft
+  - id: coast_road
+    name_ko: 해안도로 (귀환 직선)
+    world: [85.2, -187.6]
+    library_prefab: null
+    note: 난간·방파제·표지판(직선 끝). 노을 역광이 가장 예쁜 곳(TONE §4)
+    refs: []
+    status: draft

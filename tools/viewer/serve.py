@@ -8,6 +8,8 @@ Serves tools/viewer/ statically (no-store cache headers) plus a tiny feedback AP
                             body.screenshot (data:image/png;base64,...) -> feedback/shots/<id>.png
   GET  /api/feedback?b=<n>  -> JSON list of entries for that building (oldest first); &archived=1 appends archived ones (archived:true)
   POST /api/feedback/archive?b=<n>  moves status=="done" lines to feedback/archive/<n>.jsonl (+ shots to archive/shots/)
+  GET  /api/plan?f=<name>   -> docs/design/tutorial/<name>.yaml parsed to JSON (pyyaml if installed, else a small built-in parser)
+  GET  /repo/docs/<path>    -> read-only files under <repo>/docs (captures, reference photos) for the 기획 뷰어 (/plan/)
 Binds 127.0.0.1 only (PC local).
 """
 import argparse
@@ -19,9 +21,11 @@ import sys
 import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse, unquote
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(HERE))
+PLAN_DIR = os.path.join(REPO, "docs", "design", "tutorial")
 FB = os.path.join(HERE, "feedback")
 SHOTS = os.path.join(FB, "shots")
 ARCH = os.path.join(FB, "archive")
@@ -34,6 +38,138 @@ LOCK = threading.Lock()
 def safe(s, fallback):
     s = SAFE.sub("_", str(s or ""))[:80].strip("._")
     return s or fallback
+
+
+try:
+    import yaml as _yaml  # pyyaml (있으면 씀)
+    YAML_PARSER = "pyyaml"
+
+    def load_yaml(text):
+        return _yaml.safe_load(text)
+except ImportError:  # pragma: no cover
+    YAML_PARSER = "mini"
+
+    def load_yaml(text):
+        return _mini_yaml(text)
+
+
+def _scalar(s):
+    s = s.strip()
+    if s == "" or s == "~" or s == "null":
+        return None
+    if s in ("true", "True"):
+        return True
+    if s in ("false", "False"):
+        return False
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
+        return s[1:-1]
+    if s.startswith("[") and s.endswith("]"):
+        inner = s[1:-1].strip()
+        return [_scalar(x) for x in _split_commas(inner)] if inner else []
+    if s.startswith("{") and s.endswith("}"):
+        out = {}
+        for kv in _split_commas(s[1:-1].strip()):
+            if ":" in kv:
+                k, v = kv.split(":", 1)
+                out[k.strip().strip("\"'")] = _scalar(v)
+        return out
+    try:
+        return int(s)
+    except ValueError:
+        pass
+    try:
+        return float(s)
+    except ValueError:
+        pass
+    return s
+
+
+def _split_commas(s):
+    out, cur, q, depth = [], "", None, 0
+    for ch in s:
+        if q:
+            cur += ch
+            if ch == q:
+                q = None
+        elif ch in "\"'":
+            q = ch; cur += ch
+        elif ch in "[{":
+            depth += 1; cur += ch
+        elif ch in "]}":
+            depth -= 1; cur += ch
+        elif ch == "," and depth == 0:
+            out.append(cur); cur = ""
+        else:
+            cur += ch
+    if cur.strip():
+        out.append(cur)
+    return out
+
+
+def _mini_yaml(text):
+    """pyyaml 이 없을 때의 최소 파서: 들여쓰기 블록 맵/리스트, `- key: v` 리스트 항목, 인라인 [a, b], 따옴표 문자열, # 주석. 블록 스칼라(|, >)·앵커는 지원 안 함."""
+    lines = []
+    for raw in text.splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        # strip trailing comment (outside quotes)
+        q, cut = None, len(raw)
+        for i, ch in enumerate(raw):
+            if q:
+                if ch == q:
+                    q = None
+            elif ch in "\"'":
+                q = ch
+            elif ch == "#" and (i == 0 or raw[i - 1] in " \t"):
+                cut = i; break
+        s = raw[:cut].rstrip()
+        if s.strip():
+            lines.append((len(s) - len(s.lstrip(" ")), s.strip()))
+
+    def parse(i, indent):
+        # returns (value, next_i)
+        if i >= len(lines):
+            return None, i
+        ind, s = lines[i]
+        if s.startswith("- ") or s == "-":
+            out = []
+            while i < len(lines) and lines[i][0] == indent and (lines[i][1].startswith("- ") or lines[i][1] == "-"):
+                item = lines[i][1][1:].strip()
+                if not item:
+                    v, i = parse(i + 1, lines[i + 1][0] if i + 1 < len(lines) else indent + 1)
+                    out.append(v); continue
+                if _is_kv(item):
+                    # inline first key of a mapping inside the list item
+                    sub_indent = indent + 2
+                    lines[i] = (sub_indent, item)
+                    v, i = parse(i, sub_indent)
+                    out.append(v)
+                else:
+                    out.append(_scalar(item)); i += 1
+            return out, i
+        out = {}
+        while i < len(lines) and lines[i][0] == indent and _is_kv(lines[i][1]):
+            k, v = lines[i][1].split(":", 1)
+            k = k.strip().strip("\"'"); v = v.strip()
+            if v == "":
+                if i + 1 < len(lines) and lines[i + 1][0] > indent:
+                    val, i = parse(i + 1, lines[i + 1][0])
+                elif i + 1 < len(lines) and lines[i + 1][0] == indent and lines[i + 1][1].startswith("- "):
+                    val, i = parse(i + 1, indent)
+                else:
+                    val, i = None, i + 1
+            else:
+                val, i = _scalar(v), i + 1
+            out[k] = val
+        return out, i
+
+    def _is_kv(s):
+        if s.startswith(("\"", "'", "{", "[")):
+            return False
+        return re.match(r"^[^\s:#\-][^:]*:(\s|$)", s) is not None
+
+    val, _ = parse(0, lines[0][0] if lines else 0)
+    return val
 
 
 def read_entries(building, archived=False):
@@ -119,11 +255,43 @@ class Handler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def _repo_file(self, rel):
+        """GET /repo/docs/<path> — read-only, docs/ 아래만."""
+        rel = unquote(rel).replace("\\", "/")
+        root = os.path.join(REPO, "docs")
+        full = os.path.normpath(os.path.join(root, rel))
+        if not full.startswith(os.path.normpath(root) + os.sep) or not os.path.isfile(full):
+            return self._json(404, {"ok": False, "error": "not found"})
+        ctype = self.guess_type(full)
+        with open(full, "rb") as f:
+            data = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
     def do_GET(self):
         u = urlparse(self.path)
         if u.path == "/api/feedback":
             q = parse_qs(u.query)
             return self._json(200, read_entries(q.get("b", [""])[0], archived=q.get("archived", ["0"])[0] not in ("", "0")))
+        if u.path == "/api/plan":
+            name = safe(parse_qs(u.query).get("f", ["first-delivery"])[0], "first-delivery")
+            p = os.path.join(PLAN_DIR, name + ".yaml")
+            if not os.path.isfile(p):
+                return self._json(404, {"ok": False, "error": "no plan %s" % name})
+            try:
+                with open(p, encoding="utf-8") as f:
+                    data = load_yaml(f.read())
+            except Exception as e:  # noqa: BLE001
+                return self._json(500, {"ok": False, "error": "yaml: %s" % e})
+            return self._json(200, {"ok": True, "name": name, "mtime": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(os.path.getmtime(p))),
+                                    "parser": YAML_PARSER, "plan": data})
+        if u.path.startswith("/repo/docs/"):
+            return self._repo_file(u.path[len("/repo/docs/"):])
+        if u.path == "/plan":
+            self.send_response(301); self.send_header("Location", "/plan/"); self.end_headers(); return
         return super().do_GET()
 
     def do_POST(self):
