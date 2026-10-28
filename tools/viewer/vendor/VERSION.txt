@@ -1,2 +1,2 @@
 three.js r170 (0.170.0) from https://cdn.jsdelivr.net/npm/three@0.170.0/ — MIT License, (c) 2010-2024 three.js authors.
-Files: build/three.module.js, examples/jsm/{loaders/GLTFLoader,controls/OrbitControls,controls/PointerLockControls,utils/BufferGeometryUtils}.js
+Files: build/three.module.js, examples/jsm/{loaders/GLTFLoader,controls/OrbitControls,controls/PointerLockControls,controls/TransformControls,utils/BufferGeometryUtils}.js

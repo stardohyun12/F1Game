@@ -146,6 +146,96 @@ def fix_material(mat, entry, tex_dir):
     return action, img_name
 
 
+def _components(me):
+    """Polygon groups connected by shared vertex *positions* (1 mm). FBX meshes often have
+    duplicated verts per face, so edge connectivity alone gives one part per face."""
+    par = list(range(len(me.polygons)))
+
+    def find(a):
+        while par[a] != a:
+            par[a] = par[par[a]]
+            a = par[a]
+        return a
+
+    owner = {}
+    for p in me.polygons:
+        for vi in p.vertices:
+            co = me.vertices[vi].co
+            k = (round(co.x, 3), round(co.y, 3), round(co.z, 3))
+            if k in owner:
+                a, b = find(owner[k]), find(p.index)
+                if a != b:
+                    par[a] = b
+            else:
+                owner[k] = p.index
+    groups = {}
+    for i in range(len(par)):
+        groups.setdefault(find(i), []).append(i)
+    return list(groups.values())
+
+
+def split_loose(obj):
+    """Merged 'combo' mesh -> one child object per connected part, under an empty that keeps the
+    original object name/transform. Part names = <name>_p<NNN>, NNN ordered by world-space centre
+    (x, y, z rounded to cm) so they stay stable while the geometry is unchanged. Each part's origin is
+    its bbox centre (so the viewer's move/rotate gizmo sits on the part)."""
+    import bmesh
+    name = obj.name
+    groups = _components(obj.data)
+    if len(groups) <= 1:
+        return 0
+    mw = obj.matrix_world
+    info = []
+    for g in groups:
+        vs = {vi for pi in g for vi in obj.data.polygons[pi].vertices}
+        cos = [obj.data.vertices[v].co for v in vs]
+        lo = mathutils.Vector([min(c[i] for c in cos) for i in range(3)])
+        hi = mathutils.Vector([max(c[i] for c in cos) for i in range(3)])
+        c = (lo + hi) / 2
+        w = mw @ c
+        info.append((round(w.x, 2), round(w.y, 2), round(w.z, 2), g, c, w))
+    info.sort(key=lambda t: (t[0], t[1], t[2], len(t[3])))
+    obj.name = name + "__src"
+    empty = bpy.data.objects.new(name, None)
+    for col in obj.users_collection:
+        col.objects.link(empty)
+    empty.parent = obj.parent
+    empty.matrix_parent_inverse = obj.matrix_parent_inverse.copy()
+    empty.matrix_basis = obj.matrix_basis.copy()
+    for i, (_, _, _, g, c, w) in enumerate(info):
+        part = obj.copy()
+        part.data = obj.data.copy()
+        part.name = "%s_p%03d" % (name, i)
+        part.data.name = part.name
+        for col in obj.users_collection:
+            col.objects.link(part)
+        keep = set(g)
+        bm = bmesh.new()
+        bm.from_mesh(part.data)
+        bm.faces.ensure_lookup_table()
+        bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.index not in keep], context="FACES")
+        bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context="VERTS")
+        bm.to_mesh(part.data)
+        bm.free()
+        part.data.transform(mathutils.Matrix.Translation(-c))
+        part.parent = empty
+        part.matrix_parent_inverse = mathutils.Matrix.Identity(4)
+        part.matrix_basis = mathutils.Matrix.Translation(c)
+        mats = sorted({part.material_slots[p.material_index].material.name for p in part.data.polygons
+                       if p.material_index < len(part.material_slots) and part.material_slots[p.material_index].material})
+        part["split_from"] = name
+        part["part_index"] = i
+        part["materials"] = ", ".join(mats)
+        # centre in Blender world (Z-up) and in glTF/viewer axes (Y-up: x, z, -y)
+        part["center_blender_m"] = [round(w.x, 3), round(w.y, 3), round(w.z, 3)]
+        part["center_gltf_m"] = [round(w.x, 3), round(w.z, 3), round(-w.y, 3)]
+    me = obj.data
+    bpy.data.objects.remove(obj)
+    if me.users == 0:
+        bpy.data.meshes.remove(me)
+    return len(info)
+
+
 def export_one(entry):
     name = entry["name"]
     fbx = os.path.join(REPO, entry["fbx"])
@@ -161,6 +251,15 @@ def export_one(entry):
             continue
         action, img = fix_material(mat, entry, tex_dir)
         log("  mat %-30s %-8s %s" % (mat.name, action, img))
+    # 오브젝트는 합치지 않는다(이름 = FBX 오브젝트 이름 그대로). 한 덩어리로 합쳐 납품된 메시만 buildings.json
+    # "split_loose" 에 적어 연결 부품별 자식(<이름>_pNNN)으로 나눈다 — 뷰어에서 타이어 하나도 고를 수 있게.
+    for oname in entry.get("split_loose", []):
+        o = bpy.data.objects.get(oname)
+        if o is None or o.type != "MESH":
+            log("  WARN split_loose: no mesh named", oname)
+            continue
+        n = split_loose(o)
+        log("  split %s -> %d parts" % (oname, n))
     mn, mx = world_bbox()
     # Blender Z-up -> glTF Y-up: (x, y, z) -> (x, z, -y). Size in Unity/glTF axes [x, height, depth].
     size = [round(mx[0] - mn[0], 2), round(mx[2] - mn[2], 2), round(mx[1] - mn[1], 2)]
@@ -178,12 +277,16 @@ def export_one(entry):
         export_cameras=False,
         export_lights=False,
         export_animations=False,
+        export_extras=True,
     )
     os.replace(tmp, out)  # atomic swap so the viewer never reads a half-written file
     # verify: re-import the glb and count triangles
     reset()
     bpy.ops.import_scene.gltf(filepath=out)
     tris = tri_count()
+    nmesh = len(mesh_objects())
+    nodes = len(bpy.data.objects)
+    log("  nodes=%d mesh_nodes=%d" % (nodes, nmesh))
     nimg = len([i for i in bpy.data.images if i.size[0] > 0])
     log("  -> %s  %.1f KB  reimport tris=%d images=%d size_m=%s" % (out, os.path.getsize(out) / 1024, tris, nimg, size))
     return {
@@ -192,6 +295,8 @@ def export_one(entry):
         "file": name + ".glb",
         "size_m": size,
         "tris": tris,
+        "nodes": nodes,
+        "mesh_nodes": nmesh,
         "bytes": os.path.getsize(out),
         "source": entry["fbx"],
         "exported": time.strftime("%Y-%m-%d %H:%M:%S"),

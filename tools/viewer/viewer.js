@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -114,9 +115,9 @@ orbit.maxDistance = 80;
 const walk = new PointerLockControls(camera, canvas);
 state.walk = walk; state.camera = camera;   // exposed for headless checks
 const keys = {};
-addEventListener('keydown', (e) => { keys[e.code] = true; if (e.code === 'Space' && state.mode === 'walk') e.preventDefault(); });
+addEventListener('keydown', (e) => { if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return; keys[e.code] = true; if (e.code === 'Space' && state.mode === 'walk') e.preventDefault(); });
 addEventListener('keyup', (e) => { keys[e.code] = false; });
-canvas.addEventListener('click', () => { if (state.mode === 'walk' && !walk.isLocked) walk.lock(); });
+canvas.addEventListener('click', () => { if (state.mode === 'walk' && !walk.isLocked && !sel.on) walk.lock(); });
 walk.addEventListener('lock', updateHelp);
 walk.addEventListener('unlock', updateHelp);
 
@@ -147,8 +148,12 @@ $('mOrbit').onclick = () => setMode('orbit');
 $('mWalk').onclick = () => setMode('walk');
 
 function updateHelp() {
+  if (sel.on) {
+    $('help').textContent = '선택: 클릭 = 고르기 · Shift/Ctrl+클릭 = 여러 개 · 빈 곳 클릭/Esc = 풀기 · G 옮기기 · R 돌리기(0.05m/5°) · F/더블클릭 = 가까이 · 드래그 = 돌기 · 가운데/Shift+드래그 = 옮기기 · 휠 = 확대 · Q 끄기';
+    return;
+  }
   $('help').textContent = state.mode === 'orbit'
-    ? '둘러보기: 왼쪽 드래그 = 돌기 · 오른쪽 드래그 = 옮기기 · 휠 = 확대/축소   |   걷기 모드로 바꾸면 건물 안을 걸어 다닐 수 있어요'
+    ? '둘러보기: 왼쪽 드래그 = 돌기 · 오른쪽 드래그 = 옮기기 · 휠 = 확대/축소   |   Q = 선택(물건 고르기·옮기기·코멘트)'
     : (walk.isLocked
       ? '걷기: WASD 이동 · 마우스 보기 · Shift 달리기 · Space 위로 · C 아래로 · Esc 마우스 풀기 (벽은 통과됨)'
       : '걷기: 화면을 클릭하면 마우스가 잠기고 걸을 수 있어요 (WASD · Shift 달리기 · Esc 풀기)');
@@ -280,7 +285,9 @@ async function loadBuilding(name, { bust = false, keepView = false } = {}) {
   let gltf;
   try { gltf = await loader.loadAsync(url); }
   catch (err) { msg(`불러오기 실패: ${entry.file} (${err.message || err})`); console.error(err); return; }
+  clearSelection();
   if (state.root) { scene.remove(state.root); disposeRoot(state.root); }
+  state.assoc = gltf.parser.associations;
   const root = gltf.scene;
   let tris = 0;
   root.traverse((o) => {
@@ -314,7 +321,9 @@ async function loadBuilding(name, { bust = false, keepView = false } = {}) {
   $('info').textContent = `${entry.file}\n${s.x.toFixed(2)} × ${s.y.toFixed(2)} × ${s.z.toFixed(2)} m (폭×높이×깊이)\n삼각형 ${tris.toLocaleString()}\n${entry.exported ? '내보냄 ' + entry.exported : ''}`;
   const u = new URL(location.href); u.searchParams.set('b', entry.name); history.replaceState(null, '', u);
   document.title = `${entry.label_ko} — PitCrew 건물 뷰어`;
+  afterLoad();
   msg(bust ? '새로고침 완료' : '', 1200);
+  await loadComments();
   state.ready = true;
 }
 
@@ -352,12 +361,391 @@ function buildList() {
   }
 }
 
+// ---------- 선택 · 옮기기 · 코멘트 (도현 → AI 팀원 피드백) ----------
+// 좌표는 모두 "건물 좌표" = glTF 장면 좌표(m, Y-up, FBX 원점 기준). 뷰어는 건물을 땅·가운데로 옮겨 그리므로 root.position 을 빼서 저장.
+const sel = { on: false, targets: [], target: null, hits: new Map(), overlays: [], orig: new Map(), mode: 'translate', comments: [], drag: null };
+state.sel = sel;
+const tc = new TransformControls(camera, canvas);
+const SNAP = 0.05;          // 이동 단위: 원래 위치 기준 0.05m (TransformControls 자체 스냅은 절대 좌표라 안 씀)
+tc.setRotationSnap(THREE.MathUtils.degToRad(5));
+tc.setSize(0.8);
+const tcHelper = tc.getHelper();
+scene.add(tcHelper);
+// 여러 개 고르면 기즈모는 묶음 가운데의 임시 피벗에 붙고, 끄는 동안 피벗의 변화를 각 노드에 그대로 곱한다
+const pivot = new THREE.Object3D(); pivot.name = '__selPivot'; scene.add(pivot);
+tc.addEventListener('dragging-changed', (e) => {
+  if (state.mode === 'orbit') orbit.enabled = !e.value;      // 기즈모를 실제로 끄는 동안만 시점 잠금
+  if (e.value && tc.object === pivot) {
+    pivot.updateMatrixWorld(true);
+    sel.drag = { pm: pivot.matrixWorld.clone(), pp: pivot.position.clone(), nodes: sel.targets.map((o) => { o.updateMatrixWorld(true); return { o, m: o.matrixWorld.clone() }; }) };
+  } else if (!e.value) {
+    if (sel.drag) sel.drag.nodes.forEach(({ o }) => saveMove(o));
+    sel.drag = null; showSel();
+  }
+});
+tc.addEventListener('objectChange', () => {
+  if (tc.object === pivot) { applyGroup(); showSel(); return; }
+  const o = sel.target, g = o && sel.orig.get(o.name);
+  if (g && tc.mode === 'translate') for (const k of ['x', 'y', 'z']) o.position[k] = g.p[k] + Math.round((o.position[k] - g.p[k]) / SNAP) * SNAP;
+  saveMove(o); showSel();
+});
+const _m4 = new THREE.Matrix4();
+function applyGroup() {
+  const d = sel.drag; if (!d) return;
+  if (tc.mode === 'translate') for (const k of ['x', 'y', 'z']) pivot.position[k] = d.pp[k] + Math.round((pivot.position[k] - d.pp[k]) / SNAP) * SNAP;
+  pivot.updateMatrixWorld(true);
+  const D = pivot.matrixWorld.clone().multiply(_m4.copy(d.pm).invert());
+  for (const { o, m } of d.nodes) {
+    o.parent.updateMatrixWorld(true);
+    const local = o.parent.matrixWorld.clone().invert().multiply(D.clone().multiply(m));
+    local.decompose(o.position, o.quaternion, o.scale);
+    o.updateMatrixWorld(true);
+  }
+}
+
+const toB = (v) => v.clone().sub(state.root ? state.root.position : new THREE.Vector3());
+const fromB = (a) => new THREE.Vector3(a[0], a[1], a[2]).add(state.root ? state.root.position : new THREE.Vector3());
+const r3 = (v) => [+v.x.toFixed(3), +v.y.toFixed(3), +v.z.toFixed(3)];
+const gl2bl = (a) => [a[0], +(-a[2]).toFixed(3) || 0, a[1]];          // glTF(x, y, z) -> Blender(x, -z, y)
+const moveKey = () => 'viewerMoves:' + state.current;
+
+function nodeOf(o) {        // 맞은 메시 → 그 glTF 노드(여러 재질 메시는 Group 이 노드)
+  for (let x = o; x && x !== state.root; x = x.parent) {
+    const a = state.assoc && state.assoc.get(x);
+    if (a && a.nodes !== undefined) return x;
+  }
+  return o;
+}
+function pickables() { const out = []; state.root && state.root.traverse((o) => { if (o.isMesh && !o.userData.__ov) out.push(o); }); return out; }
+const ray = new THREE.Raycaster();
+function pickAt(cx, cy) {   // 화면(client) 좌표
+  const r = canvas.getBoundingClientRect();
+  const ndc = new THREE.Vector2(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  return ray.intersectObjects(pickables(), false)[0] || null;
+}
+
+function afterLoad() {
+  sel.orig.clear();
+  state.root.updateMatrixWorld(true);
+  state.root.traverse((o) => {
+    const a = state.assoc && state.assoc.get(o);
+    if (a && a.nodes !== undefined && o.name) sel.orig.set(o.name, { p: o.position.clone(), q: o.quaternion.clone(), s: o.scale.clone(), wp: toB(o.getWorldPosition(new THREE.Vector3())), wq: o.getWorldQuaternion(new THREE.Quaternion()) });
+  });
+  // 세션에 남은 이동 다시 적용
+  const mv = JSON.parse(sessionStorage.getItem(moveKey()) || '{}');
+  for (const [name, t] of Object.entries(mv)) {
+    const o = state.root.getObjectByName(name);
+    if (o) { o.position.fromArray(t.p); o.quaternion.fromArray(t.q); o.scale.fromArray(t.s); }
+  }
+  updateMovedInfo();
+}
+function saveMove(o) {
+  if (!o) return;
+  const mv = JSON.parse(sessionStorage.getItem(moveKey()) || '{}');
+  const d = deltaOf(o);
+  if (d && (Math.hypot(...d.pos) > 1e-4 || d.angle_deg > 0.01)) mv[o.name] = { p: o.position.toArray(), q: o.quaternion.toArray(), s: o.scale.toArray() };
+  else delete mv[o.name];
+  sessionStorage.setItem(moveKey(), JSON.stringify(mv));
+  updateMovedInfo();
+}
+function deltaOf(o) {       // 원래 대비 이동(건물 좌표, m / 도). 회전 중심 = 그 노드 원점
+  const g = o && sel.orig.get(o.name); if (!g) return null;
+  o.updateMatrixWorld(true);
+  const wp = toB(o.getWorldPosition(new THREE.Vector3())), wq = o.getWorldQuaternion(new THREE.Quaternion());
+  const dp = wp.clone().sub(g.wp);
+  const dq = wq.clone().multiply(g.wq.clone().invert());
+  const e = new THREE.Euler().setFromQuaternion(dq, 'XYZ');
+  const ang = 2 * Math.acos(Math.min(1, Math.abs(dq.w)));
+  const axis = ang > 1e-6 ? new THREE.Vector3(dq.x, dq.y, dq.z).normalize().multiplyScalar(Math.sign(dq.w) || 1) : new THREE.Vector3(0, 1, 0);
+  const deg = (x) => +THREE.MathUtils.radToDeg(x).toFixed(2);
+  const pos = r3(dp), ax = r3(axis);
+  return {
+    pos, rot_euler_xyz_deg: [deg(e.x), deg(e.y), deg(e.z)], angle_deg: deg(ang), axis: ax,
+    pos_blender: gl2bl(pos), axis_blender: gl2bl(ax),
+    pivot: r3(g.wp), pivot_blender: gl2bl(r3(g.wp)),
+    local_now: { position: o.position.toArray().map((v) => +v.toFixed(4)), quaternion: o.quaternion.toArray().map((v) => +v.toFixed(5)) },
+    local_orig: { position: g.p.toArray().map((v) => +v.toFixed(4)), quaternion: g.q.toArray().map((v) => +v.toFixed(5)) },
+  };
+}
+function movedAll() {
+  const mv = JSON.parse(sessionStorage.getItem(moveKey()) || '{}'), out = {};
+  for (const n of Object.keys(mv)) { const o = state.root && state.root.getObjectByName(n); const d = o && deltaOf(o); if (d) out[n] = d; }
+  return out;
+}
+function updateMovedInfo() {
+  const n = Object.keys(JSON.parse(sessionStorage.getItem(moveKey()) || '{}')).length;
+  $('movedInfo').textContent = n ? `옮긴 물건 ${n}개 (이 탭에서만 유지, 코멘트에 같이 보냄)` : '';
+  $('resetAll').style.display = n ? '' : 'none';
+}
+
+function clearOverlays() { sel.overlays.forEach((x) => { x.parent && x.parent.remove(x); x.geometry.dispose(); x.material.dispose(); }); sel.overlays = []; }
+function clearSelection() { setTargets([]); }
+function highlight(nodes) {
+  clearOverlays();
+  for (const node of nodes) {
+    const ms = []; node.traverse((o) => { if (o.isMesh && !o.userData.__ov) ms.push(o); });
+    for (const m of ms) {
+      const fill = new THREE.Mesh(m.geometry.clone(), new THREE.MeshBasicMaterial({ color: 0xffd23f, transparent: true, opacity: 0.28, depthTest: false, fog: false }));
+      const edge = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 25), new THREE.LineBasicMaterial({ color: 0xffd23f, depthTest: false, fog: false }));
+      for (const x of [fill, edge]) { x.userData.__ov = true; x.renderOrder = 999; x.raycast = () => {}; m.add(x); sel.overlays.push(x); }
+    }
+  }
+}
+function selBox() {
+  const b = new THREE.Box3();
+  sel.targets.forEach((o) => { o.updateMatrixWorld(true); o.traverse((m) => { if (m.isMesh && !m.userData.__ov) { m.geometry.computeBoundingBox(); b.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld)); } }); });
+  return b;
+}
+function attachGizmo() {
+  if (!sel.targets.length) { tc.detach(); return; }
+  if (sel.targets.length === 1) tc.attach(sel.targets[0]);
+  else { pivot.position.copy(selBox().getCenter(new THREE.Vector3())); pivot.quaternion.identity(); pivot.scale.set(1, 1, 1); pivot.updateMatrixWorld(true); tc.attach(pivot); }
+  tc.setMode(sel.mode);
+}
+function setTargets(list) {
+  sel.targets = [...new Set(list)];
+  for (const k of [...sel.hits.keys()]) if (!sel.targets.some((o) => o.name === k)) sel.hits.delete(k);
+  sel.target = sel.targets[sel.targets.length - 1] || null;
+  highlight(sel.targets); attachGizmo(); showSel();
+}
+function selectHit(hit, additive = false) {
+  if (!hit) { if (!additive) clearSelection(); return; }
+  const node = nodeOf(hit.object);
+  if (additive) {
+    if (sel.targets.includes(node)) { setTargets(sel.targets.filter((o) => o !== node)); return; }   // Shift/Ctrl+클릭 = 넣기/빼기
+    sel.hits.set(node.name, hit); setTargets([...sel.targets, node]);
+  } else { sel.hits.clear(); sel.hits.set(node.name, hit); setTargets([node]); }
+}
+function selectByName(name, additive = false) {   // 검사·스크립트용
+  const o = state.root && state.root.getObjectByName(name); if (!o) return false;
+  let m = null; o.traverse((x) => { if (!m && x.isMesh && !x.userData.__ov) m = x; });
+  if (!m) return false;
+  const p = m.getWorldPosition(new THREE.Vector3());
+  if (additive && sel.targets.includes(o)) return true;
+  selectHit({ object: m, point: p, uv: null, face: null }, additive);
+  return true;
+}
+function focusSel() {        // F / 더블클릭: 고른 것 가운데로 시점 중심 이동
+  if (!sel.targets.length) return;
+  const b = selBox(), c = b.getCenter(new THREE.Vector3()), s = b.getSize(new THREE.Vector3());
+  if (state.mode !== 'orbit') setMode('orbit');
+  const dir = camera.position.clone().sub(orbit.target); if (dir.lengthSq() < 1e-6) dir.set(0.5, 0.5, 1); dir.normalize();
+  const dist = THREE.MathUtils.clamp(Math.max(s.x, s.y, s.z) * 1.8 + 1.2, 1.5, 40);
+  stopOrbit(); orbit.target.copy(c); camera.position.copy(c).addScaledVector(dir, dist); orbit.update();
+}
+function stopOrbit() { orbit._sphericalDelta.set(0, 0, 0); orbit._panOffset.set(0, 0, 0); orbit._scale = 1; }   // 남은 관성(damping) 지우기
+function hitInfo(o = sel.target) {
+  const h = o && sel.hits.get(o.name); if (!h) return null;
+  const mat = Array.isArray(h.object.material) ? h.object.material[h.face ? h.face.materialIndex : 0] : h.object.material;
+  const map = mat && mat.map;
+  const img = map && map.image;
+  const uv = h.uv ? [+h.uv.x.toFixed(4), +h.uv.y.toFixed(4)] : null;
+  const point = r3(toB(h.point));
+  return {
+    node: o.name, mesh: h.object.name, material: mat ? mat.name : null, texture: map && map.name ? map.name.replace(/^(.+)-\1$/, '$1') : null,
+    texture_size: img && img.width ? [img.width, img.height] : null,
+    uv, uv_blender: uv ? [uv[0], +(1 - uv[1]).toFixed(4)] : null,
+    texel: uv && img && img.width ? [Math.floor((uv[0] % 1 + 1) % 1 * img.width), Math.floor((uv[1] % 1 + 1) % 1 * img.height)] : null,
+    point, point_blender: gl2bl(point), extras: Object.keys(o.userData || {}).length ? o.userData : null,
+  };
+}
+const moved = (d) => d && (Math.hypot(...d.pos) > 1e-4 || d.angle_deg > 0.01);
+function showSel() {
+  const box = $('selInfo');
+  if (!sel.target) { box.textContent = sel.on ? '물건을 클릭하세요 (Shift/Ctrl+클릭 = 여러 개, 빈 곳 클릭 = 풀기, 선택 없이 보내면 지금 화면 전체에 대한 코멘트)' : '선택 끔 — Q 또는 위 버튼'; $('selBtns').style.display = 'none'; return; }
+  const L = [];
+  if (sel.targets.length > 1) {
+    L.push(`${sel.targets.length}개 선택 (같이 움직임)`);
+    sel.targets.forEach((o, k) => { const d = deltaOf(o); L.push(`${k + 1}. ${o.name}${moved(d) ? `  [${d.pos.map((v) => v.toFixed(2)).join(', ')} m · ${d.angle_deg.toFixed(1)}°]` : ''}`); });
+    L.push('— 마지막으로 고른 것 —');
+  }
+  const i = hitInfo(), d = deltaOf(sel.target);
+  if (i) {
+    L.push(`이름: ${i.node}`);
+    if (i.mesh && i.mesh !== i.node) L.push(`메시: ${i.mesh}`);
+    L.push(`재질: ${i.material || '-'}`, `텍스처: ${i.texture || '-'}${i.texture_size ? ` (${i.texture_size.join('×')})` : ''}`);
+    L.push(`찍은 점: ${i.point.map((v) => v.toFixed(2)).join(', ')} m`);
+    if (i.uv) L.push(`UV: ${i.uv.map((v) => v.toFixed(3)).join(', ')}${i.texel ? `  (픽셀 ${i.texel.join(', ')})` : ''}`);
+  } else L.push(`이름: ${sel.target.name}`);
+  if (moved(d)) L.push(`옮김: ${d.pos.map((v) => v.toFixed(2)).join(', ')} m · 회전 ${d.angle_deg.toFixed(1)}°`);
+  box.textContent = L.join('\n');
+  $('selBtns').style.display = '';
+  $('tMove').classList.toggle('on', sel.mode === 'translate'); $('tRot').classList.toggle('on', sel.mode === 'rotate');
+}
+const ORBIT_BTN = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN };
+const SEL_BTN = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.PAN, RIGHT: THREE.MOUSE.ROTATE };   // Shift+드래그 = 옮기기(OrbitControls 기본)
+function setSelect(on) {
+  sel.on = on;
+  $('mSel').classList.toggle('on', on);
+  if (on && walk.isLocked) walk.unlock();
+  orbit.mouseButtons = on ? SEL_BTN : ORBIT_BTN;
+  if (!on) clearSelection();
+  tc.enabled = on;
+  showSel(); updateHelp();
+}
+function setTool(m) { sel.mode = m; tc.setMode(m); showSel(); }
+function resetNode(o) {
+  const g = o && sel.orig.get(o.name); if (!g) return;
+  o.position.copy(g.p); o.quaternion.copy(g.q); o.scale.copy(g.s);
+  o.updateMatrixWorld(true);
+  saveMove(o); showSel();
+}
+function resetSelected() { sel.targets.forEach(resetNode); attachGizmo(); showSel(); }
+
+// 클릭(4px 미만) = 고르기 · 빈 곳 = 풀기 · Shift/Ctrl+클릭 = 넣기/빼기. 드래그 = 시점(OrbitControls). 기즈모 위는 무시
+let downAt = null;
+canvas.addEventListener('pointerdown', (e) => {   // capture: 기즈모보다 먼저. Shift/Ctrl+클릭은 기즈모 위여도 고르기(기즈모 잠깐 끔)
+  const add = e.shiftKey || e.ctrlKey || e.metaKey;
+  if (sel.on && e.button === 0 && add) tc.enabled = false;
+  downAt = (sel.on && e.button === 0 && !tc.dragging && (add || tc.axis === null)) ? [e.clientX, e.clientY, add] : null;
+}, { capture: true });
+addEventListener('pointerup', () => { if (sel.on && !tc.enabled) setTimeout(() => { tc.enabled = sel.on; }, 0); });
+canvas.addEventListener('pointerup', (e) => {
+  if (!downAt || !sel.on) return;
+  const d = Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]), add = downAt[2]; downAt = null;
+  if (d >= 4 || tc.dragging) return;
+  selectHit(pickAt(e.clientX, e.clientY), add);
+});
+canvas.addEventListener('dblclick', (e) => {
+  if (!sel.on) return;
+  const h = pickAt(e.clientX, e.clientY); if (!h) return;
+  const node = nodeOf(h.object);
+  if (!sel.targets.includes(node)) selectHit(h, false);
+  focusSel();
+});
+addEventListener('keydown', (e) => {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.code === 'KeyQ') setSelect(!sel.on);
+  else if (e.code === 'KeyG' && sel.target) setTool('translate');
+  else if (e.code === 'KeyR' && sel.target) setTool('rotate');
+  else if (e.code === 'KeyF' && sel.target) focusSel();
+  else if (e.code === 'Escape' && sel.target) clearSelection();
+});
+
+// ---------- 코멘트 보내기 / 목록 / 핀 ----------
+function pad(n) { return String(n).padStart(2, '0'); }
+function localIso(d) {
+  const o = -d.getTimezoneOffset(), s = o >= 0 ? '+' : '-';
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}${s}${pad(Math.floor(Math.abs(o) / 60))}:${pad(Math.abs(o) % 60)}`;
+}
+function camTarget() {
+  if (state.mode === 'orbit') return orbit.target.clone();
+  return camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(5).add(camera.position);
+}
+function shot() {           // 선택 강조는 남기고 기즈모만 숨겨서 지금 화면 PNG
+  const v = tcHelper.visible; tcHelper.visible = false;
+  renderer.render(scene, camera);
+  const url = canvas.toDataURL('image/png');
+  tcHelper.visible = v;
+  return url;
+}
+async function sendComment(text) {
+  text = (text ?? $('cText').value).trim();
+  if (!text) { msg('코멘트를 먼저 쓰세요', 1500); return null; }
+  const d = new Date();
+  const id = `${state.current}-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}-${Math.random().toString(36).slice(2, 6)}`;
+  const info = hitInfo();
+  let point = info ? info.point : null, pointSrc = info ? 'click' : 'view-center';
+  if (!point) {             // 선택 없음: 화면 가운데가 맞는 곳(없으면 시점 중심)
+    const r = canvas.getBoundingClientRect(); const h = pickAt(r.left + r.width / 2, r.top + r.height / 2);
+    point = r3(toB(h ? h.point : camTarget()));
+  }
+  const tdel = sel.target ? deltaOf(sel.target) : null;   // 여러 개면 마지막으로 고른 것 — 전부는 nodes[]
+  const body = {
+    id, time: localIso(d), building: state.current, node: info ? info.node : null, mesh: info ? info.mesh : null,
+    material: info ? info.material : null, texture: info ? info.texture : null, texture_size: info ? info.texture_size : null,
+    uv: info ? info.uv : null, uv_blender: info ? info.uv_blender : null, texel: info ? info.texel : null,
+    point, point_blender: gl2bl(point), point_source: pointSrc, node_extras: info ? info.extras : null,
+    camera: { pos: r3(toB(camera.position)), target: r3(toB(camTarget())), mode: state.mode, fov: camera.fov },
+    transform_delta: moved(tdel) ? tdel : null,
+    nodes: sel.targets.map((o) => { const h = hitInfo(o), td = deltaOf(o); return { node: o.name, material: h ? h.material : null, texture: h ? h.texture : null, point: h ? h.point : null, transform_delta: moved(td) ? td : null, extras: Object.keys(o.userData || {}).length ? o.userData : null }; }),
+    moved_nodes: movedAll(), comment: text, view: { pixel: state.pixel, sun_az: state.az, shadow: sun.castShadow },
+    screenshot: shot(),
+  };
+  $('cSend').disabled = true;
+  try {
+    const r = await fetch('/api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || r.status);
+    $('cText').value = '';
+    msg('코멘트 보냄 ✓', 1500);
+    await loadComments();
+    return j;
+  } catch (err) { msg('보내기 실패: ' + (err.message || err)); console.error(err); return null; }
+  finally { $('cSend').disabled = false; }
+}
+async function loadComments() {
+  try {
+    const r = await fetch(`/api/feedback?b=${encodeURIComponent(state.current)}`, { cache: 'no-store' });
+    sel.comments = r.ok ? await r.json() : [];
+  } catch (e) { sel.comments = []; }
+  renderComments();
+}
+const pinLayer = document.createElement('div');
+pinLayer.id = 'pins';
+$('view').appendChild(pinLayer);
+function renderComments() {
+  const list = $('cList'); list.innerHTML = ''; pinLayer.innerHTML = '';
+  $('cCount').textContent = sel.comments.length;
+  sel.comments.forEach((c, i) => {
+    const n = i + 1;
+    const it = document.createElement('div'); it.className = 'citem';
+    const t = (c.time || '').replace('T', ' ').slice(5, 16);
+    it.innerHTML = `<b>${n}</b> <small>${t} · ${c.nodes && c.nodes.length > 1 ? c.nodes.length + '개: ' + c.nodes[0].node + ' 외' : (c.node || '화면 전체')}</small><div></div>`;
+    it.lastChild.textContent = c.comment;
+    if (c.screenshot) { const a = document.createElement('a'); a.href = './feedback/' + c.screenshot; a.target = '_blank'; a.textContent = '스샷'; it.querySelector('small').append(' · ', a); }
+    it.onclick = (e) => { if (e.target.tagName !== 'A') goComment(c); };
+    list.appendChild(it);
+    if (c.point) {
+      const p = document.createElement('div'); p.className = 'pin'; p.textContent = n; p.title = c.comment;
+      p.onclick = () => goComment(c); p._pt = c.point; pinLayer.appendChild(p);
+    }
+  });
+}
+function goComment(c) {
+  if (!c.camera) return;
+  if (state.mode !== 'orbit') setMode('orbit');
+  stopOrbit();
+  camera.position.copy(fromB(c.camera.pos));
+  orbit.target.copy(fromB(c.camera.target || c.point));
+  orbit.update();
+  if (sel.on) { const ns = (c.nodes && c.nodes.length ? c.nodes.map((n) => n.node) : (c.node ? [c.node] : [])); ns.forEach((n, k) => selectByName(n, k > 0)); }
+  if (c.comment) msg(`코멘트: ${c.comment}`, 2500);
+}
+const _pv = new THREE.Vector3();
+function updatePins() {
+  if (!state.root || !pinLayer.children.length) return;
+  const cr = canvas.getBoundingClientRect(), vr = $('view').getBoundingClientRect();
+  for (const p of pinLayer.children) {
+    _pv.fromArray(p._pt).add(state.root.position).project(camera);
+    const vis = _pv.z < 1 && Math.abs(_pv.x) <= 1.05 && Math.abs(_pv.y) <= 1.05;
+    p.style.display = vis ? '' : 'none';
+    if (vis) { p.style.left = (cr.left - vr.left + (_pv.x + 1) / 2 * cr.width) + 'px'; p.style.top = (cr.top - vr.top + (1 - _pv.y) / 2 * cr.height) + 'px'; }
+  }
+}
+
+$('mSel').onclick = () => setSelect(!sel.on);
+$('tMove').onclick = () => setTool('translate');
+$('tRot').onclick = () => setTool('rotate');
+$('tReset').onclick = () => resetSelected();
+$('tDesel').onclick = () => clearSelection();
+$('resetAll').onclick = () => {
+  const mv = JSON.parse(sessionStorage.getItem(moveKey()) || '{}');
+  for (const n of Object.keys(mv)) { const o = state.root.getObjectByName(n); if (o) resetNode(o); }
+  sessionStorage.removeItem(moveKey()); updateMovedInfo(); attachGizmo(); showSel();
+};
+$('cSend').onclick = () => sendComment();
+$('cText').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) sendComment(); });
+Object.assign(state, { setView: goComment, focusSel, setTargets, orbit, pivot, setSelect, selectByName, selectHit, pickAt, sendComment, loadComments, deltaOf, resetNode, tc, saveMove, hitInfo });
+showSel();
+
 // ---------- loop ----------
 const clock = new THREE.Clock();
 const fwd = new THREE.Vector3(), right = new THREE.Vector3();
 function tick() {
   const dt = Math.min(clock.getDelta(), 0.1);
-  if (state.mode === 'walk' && walk.isLocked) {
+  if (state.mode === 'walk' && (walk.isLocked || sel.on)) {   // 선택 중엔 마우스 잠금 없이 WASD 로 걷기(클릭은 고르기)
     const sp = (keys.ShiftLeft || keys.ShiftRight ? 7 : 3) * dt;
     camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
     right.crossVectors(fwd, camera.up).normalize();
@@ -372,6 +760,7 @@ function tick() {
   }
   sky.position.copy(camera.position);
   renderer.render(scene, camera);
+  updatePins();
   requestAnimationFrame(tick);
 }
 

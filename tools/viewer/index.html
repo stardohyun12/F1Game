@@ -26,6 +26,30 @@
   #c.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
   #help { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px; background: rgba(0,0,0,.55);
     font-size: 13px; pointer-events: none; }
+  #side { width: 270px; flex: none; padding: 12px; box-sizing: border-box; background: #23282e; border-left: 1px solid #333a42;
+    display: flex; flex-direction: column; gap: 8px; overflow-y: auto; font-size: 13px; }
+  #side > * { flex-shrink: 0; }
+  #side h2 { font-size: 14px; margin: 0; color: #f3d9a4; }
+  #side button { padding: 6px 8px; border: 1px solid #3b434c; background: #2c3239; color: inherit; border-radius: 4px; cursor: pointer; font: inherit; }
+  #side button.on, #mSel.on { background: #5b4a2c; border-color: #c9a35a; }
+  #side button:disabled { opacity: .5; }
+  #selInfo { white-space: pre-wrap; word-break: break-all; font-size: 12px; color: #cfd5db; background: #1d2126; padding: 6px; border-radius: 4px; min-height: 2.8em; }
+  #selBtns { display: flex; flex-wrap: wrap; gap: 4px; }
+  #movedInfo { font-size: 11px; color: #e7c27a; }
+  #cText { width: 100%; box-sizing: border-box; height: 72px; resize: vertical; background: #1d2126; color: inherit; border: 1px solid #3b434c;
+    border-radius: 4px; font: inherit; padding: 6px; }
+  #cSend { width: 100%; background: #4c5b2c !important; border-color: #9fb85a !important; }
+  #side details summary { cursor: pointer; color: #f3d9a4; }
+  #cList { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .citem { background: #1d2126; padding: 5px 6px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  .citem:hover { background: #2a3038; }
+  .citem b { display: inline-block; min-width: 18px; text-align: center; background: #d9534f; color: #fff; border-radius: 9px; font-size: 11px; }
+  .citem small { color: #9aa3ad; }
+  .citem a { color: #8fc1ff; }
+  #pins { position: absolute; inset: 0; pointer-events: none; }
+  .pin { position: absolute; transform: translate(-50%, -100%); min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box;
+    background: #d9534f; color: #fff; border: 2px solid #fff; border-radius: 10px 10px 10px 2px; font: bold 11px/14px sans-serif;
+    text-align: center; pointer-events: auto; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.6); }
   #msg { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 6px 12px;
     background: rgba(0,0,0,.6); border-radius: 4px; pointer-events: none; display: none; }
 </style>
@@ -45,6 +69,7 @@
       <button id="mOrbit" class="on">둘러보기</button>
       <button id="mWalk">걷기</button>
     </div>
+    <div class="modes"><button id="mSel" title="Q">선택 (Q)</button></div>
     <label><input type="checkbox" id="shadow" checked> 그림자</label>
     <label><input type="checkbox" id="pixel" checked> 픽셀 (720)</label>
     <div>해 방향 <span id="azv"></span>°<input type="range" id="az" min="0" max="360" step="1" value="35"></div>
@@ -55,6 +80,22 @@
     <canvas id="c"></canvas>
     <div id="msg"></div>
     <div id="help"></div>
+  </div>
+  <div id="side">
+    <h2>선택</h2>
+    <div id="selInfo"></div>
+    <div id="selBtns" style="display:none">
+      <button id="tMove" class="on" title="G">옮기기 (G)</button>
+      <button id="tRot" title="R">돌리기 (R)</button>
+      <button id="tReset">되돌리기</button>
+      <button id="tDesel" title="Esc">선택 풀기</button>
+    </div>
+    <div id="movedInfo"></div>
+    <button id="resetAll" style="display:none">옮긴 것 전부 되돌리기</button>
+    <h2>코멘트</h2>
+    <textarea id="cText" placeholder="여기에 코멘트 (선택한 물건 또는 지금 화면에 대해). Ctrl+Enter = 보내기"></textarea>
+    <button id="cSend">보내기</button>
+    <details id="cBox" open><summary>저장된 코멘트 보기 (<span id="cCount">0</span>)</summary><div id="cList"></div></details>
   </div>
 </div>
 <script type="module" src="./viewer.js"></script>
