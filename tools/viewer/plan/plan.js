@@ -128,7 +128,7 @@ function walkBefore(w, back = 4) {   // 걷기 모드에서 어떤 자리를 보
 function goWorld(w) { if (map3d.mode === 'walk') walkBefore(w); else M3.focusWorld(w, Math.min(Math.max(map3d.orbit.getDistance(), 50), 110)); }
 const HELP = {
   orbit: '둘러보기: 왼쪽 드래그 = 돌기 · 가운데/Shift+왼쪽 = 옮기기 · 휠 = 확대 · 오른쪽 버튼 누른 채 = 날기(마우스 보기 · WASD/QE · 휠 = 속도 · Shift 빠르게) · 핀 클릭 = 오른쪽 칸 · 미니맵 클릭 · 1/2 = 둘러보기/걷기 · F = 맞춤 · E = 배치',
-  edit: '배치: 건물·핀·주황 상자 클릭 = 고르기 · W 옮기기(X·Z·높이) · E 돌리기(yaw) · 스냅 0.5 m / 5° (Shift = 0.05 m / 1°) · G = 땅에 내려놓기 · '땅 따라가기' 켜면 X·Z 로 끄는 동안 바닥이 땅에 붙음(높이 Y 축만 따로) · F = 초점 · Ctrl+Z 되돌리기 · Esc 풀기 · 오른쪽 버튼 = 날기 · 저장 버튼 → placements.yaml',
+  edit: '배치: 건물·핀·주황 상자 클릭 = 고르기 · W 옮기기(X·Z·높이) · E 돌리기(yaw) · 스냅 0.5 m / 5° (Shift = 0.05 m / 1°) · G = 땅에 내려놓기 · 「땅 따라가기」 켜면 X·Z 로 끄는 동안 바닥이 땅에 붙음(높이 Y 축만 따로) · F = 초점 · Ctrl+Z 되돌리기 · Esc 풀기 · 오른쪽 버튼 = 날기 · 저장 버튼 → placements.yaml',
   fly: '날기: 마우스 = 보기 · W/S 앞뒤 · A/D 좌우 · E/Q 위아래 · 휠 = 속도 · Shift = 3배 · 오른쪽 버튼 떼면 둘러보기로',
   walkIdle: '걷기: 화면을 클릭하면 마우스가 잠기고 걸을 수 있어요 (WASD · Shift 달리기 · Space/C 눈높이 ±· Esc 풀기). 눈높이 1.6 m, 땅을 따라감 · 흐름 줄 클릭 = 그 자리 앞에 서서 보기',
   walkLock: '걷기: WASD 이동 · 마우스 보기 · Shift 달리기 · Space 위 / C 아래 · Esc 마우스 풀기 (벽은 통과됨)',
