@@ -12,3 +12,4 @@
 11. 보고서는 과제 시작 5턴 안에 뼈대(docs/team/reports/<role>-STAMP.md)를 만들고 단계마다 갱신. 마지막에 몰아 쓰지 않는다. [검사] 파일 생성 시각.
 12. 10점 점수제 판정 금지(JUDGE.md). 판정은 쌍대비교 judge_pair.py 또는 도현. [검사] 보고서에 "N/10" 없음.
 13. 커밋 금지. Unity 는 artlive 만. 공유 .mat·ProjectSettings·Map_TownV6 수정 금지. [검사] git status.
+14. 도현 코멘트는 고친 뒤 done 으로 바꾸지 않는다 — `python scripts/fb.py fixed <id> "<고친 것 한 줄>" --shot <후 캡처>` 로 "고쳤음" 표시만. 넘기기/다시는 도현이 한다. fb.py 가 아직 없으면 jsonl 의 status 를 "fixed" 로, reply 필드에 한 줄. [검사] 보고서에 id·한 줄.
