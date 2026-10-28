@@ -31,6 +31,20 @@ def prep(tmp, items):
 
 
 def ask(tmp, L, R, model):
+    if model.startswith("gpt") or model.startswith("codex"):
+        # 두 번째 판정 가족(Astra = Codex CLI). --model 뒤 값이 gpt*·codex* 면 codex exec 로.
+        cx_model = "gpt-6-astra" if model == "codex" else model
+        cx = shutil.which("codex.cmd") or shutil.which("codex") or "codex"
+        # Codex 는 Read 로 이미지를 못 보니 -i 로 첨부(순서: REF들 → L → R). 프롬프트에 첨부 순서를 알림.
+        imgs = [os.path.join(tmp, "img", n + ".png") for n in [t for t in ("REF1", "REF6", "REF12") if os.path.exists(os.path.join(tmp, "img", t + ".png"))] + [L, R]]
+        names = [os.path.basename(p)[:-4] for p in imgs]
+        note = "\n\n[첨부 이미지 순서: " + ", ".join(f"{i+1}={n}" for i, n in enumerate(names)) + " — Read 대신 첨부 이미지를 본다]"
+        cmd = [cx, "exec", "--skip-git-repo-check", "-m", cx_model, "-s", "read-only", "-C", tmp.replace("\\", "/")]
+        for p in imgs: cmd += ["-i", p]
+        cmd += ["--", PROMPT.replace("{L}", L).replace("{R}", R) + note]
+        r = subprocess.run(cmd, cwd=tmp, capture_output=True, text=True, encoding="utf-8", timeout=500, stdin=subprocess.DEVNULL)
+        m = re.findall(r"PICK:\s*([LR])", r.stdout)
+        return (m[-1] if m else None), r.stdout
     r = subprocess.run(["claude", "-p", PROMPT.replace("{L}", L).replace("{R}", R), "--model", model,
                         "--setting-sources", "local", "--no-session-persistence", "--disable-slash-commands",
                         "--allowedTools", "Read", "--max-turns", "12"],
