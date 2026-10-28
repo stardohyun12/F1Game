@@ -16,11 +16,11 @@ System.Func<string, string, string> TexFor = (nm, slot) => { var s = slot.ToLowe
   if (s.Contains("clock_dial")) return "clock_dial";  // 1857: 보관소 시계 문자판·바늘
   foreach (var k in new[] { "icons", "wall", "trim", "floor", "roof", "decal", "postbox" }) if (s.Contains(k)) return k == "decal" ? "decals" : k == "postbox" ? "postbox_G1" : k; return null; };
 var slotT = GameObject.Find("STUDIO/STUDIO_Slot").transform;
-var ONLY = new[] { "room", "garage", "depot", "postoffice" };  // 1914: 하나씩 돌리면 다른 건물 프리팹 재질이 NULL 이 됐다 → 한 번에  // 1857: 물건별 오브젝트(정비소·보관소)
+var ONLY = new[] { "depot" };  // 1950 (1914: 끝의 프리팹 강제 재임포트로 다른 건물 재질 NULL 해결)  // 1857: 물건별 오브젝트(정비소·보관소)
 foreach (var e in POSE) { if (!ONLY.Contains(e.nm)) continue;
   var dir = L + "/" + e.nm;
   foreach (var g in AssetDatabase.FindAssets("t:Texture2D", new[] { dir })) { var tp = AssetDatabase.GUIDToAssetPath(g); var ti = (TextureImporter)AssetImporter.GetAtPath(tp);
-    ti.textureType = TextureImporterType.Default; ti.sRGBTexture = true; ti.filterMode = FilterMode.Point; ti.mipmapEnabled = tp.EndsWith("/wall.png") || tp.EndsWith("/roof.png");  /* 1846: 큰 면만 밉맵(Point 유지) — 멀리서 지글거림 */ ti.textureCompression = TextureImporterCompression.Uncompressed; ti.npotScale = TextureImporterNPOTScale.None; ti.maxTextureSize = 8192; ti.alphaIsTransparency = tp.Contains("decals") || tp.Contains("icons") || tp.Contains("clock_dial"); ti.SaveAndReimport(); }
+    ti.textureType = TextureImporterType.Default; ti.sRGBTexture = true; ti.filterMode = FilterMode.Point; ti.mipmapEnabled = (tp.EndsWith("/wall.png") || tp.EndsWith("/roof.png")) && !tp.Contains("/depot/");  /* 2041: 보관소는 규칙(APPLY.md 밉 0)대로 끔 — 지글거림은 도현 판정 */  /* 1846: 큰 면만 밉맵(Point 유지) — 멀리서 지글거림 */ ti.textureCompression = TextureImporterCompression.Uncompressed; ti.npotScale = TextureImporterNPOTScale.None; ti.maxTextureSize = 8192; ti.alphaIsTransparency = tp.Contains("decals") || tp.Contains("icons") || tp.Contains("clock_dial"); ti.SaveAndReimport(); }
   var fp = dir + "/" + e.fbx; var mi = (ModelImporter)AssetImporter.GetAtPath(fp);
   mi.materialImportMode = ModelImporterMaterialImportMode.ImportStandard; mi.materialLocation = ModelImporterMaterialLocation.InPrefab; mi.importCameras = false; mi.importLights = false; mi.importAnimation = false; mi.animationType = ModelImporterAnimationType.None; mi.SaveAndReimport();
   var old = slotT.Find(e.nm); if (old) UnityEngine.Object.DestroyImmediate(old.gameObject);
@@ -64,5 +64,7 @@ foreach (var e in POSE) { if (!ONLY.Contains(e.nm)) continue;
   PrefabUtility.SaveAsPrefabAssetAndConnect(root, dir + "/" + e.nm + ".prefab", InteractionMode.AutomatedAction);
   root.SetActive(false);
 }
+// 1914: 재질을 지우고 같은 경로에 다시 만들면, 메모리의 프리팹이 옛 재질을 가리켜 NULL(마젠타)이 된다 → 프리팹 강제 재임포트
+foreach (var e in POSE) AssetDatabase.ImportAsset(L + "/" + e.nm + "/" + e.nm + ".prefab", ImportAssetOptions.ForceUpdate);
 UnityEditor.SceneManagement.EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
 return log.ToString();

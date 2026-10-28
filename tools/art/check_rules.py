@@ -25,8 +25,10 @@ REF_TEX = R / 'F1/Assets/Art/SceneA7/houses/house_shop.png'
 REF_HOUSES = sorted((R / 'F1/Assets/Art/SceneA7/houses').glob('house_*.png'))
 
 # ---------- 대상 정의 ----------
-TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'decals'}
-PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle')
+TEXT_STEMS = {'garage_sign', 'garage_posters', 'garage_festival', 'icons', 'decals', 'clock_dial'}  # 2041: 시계판 = 픽셀 숫자·눈금
+# 2041: 1857 낱개 분리 뒤 이름(PARCEL_·SHELF_… — 원래 Q3_inside_parcels 등 소품 묶음이던 것)도 소품
+PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_goods|Q3_packing_station|postbox|door_handle|'
+                      r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET)_\d+$|^CLOCK')
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
               'garage_posters', 'garage_festival', 'postbox_G1'}
 B = {
@@ -387,6 +389,8 @@ def collect(only=None, dump=None):
             tp = cfg['dir'] / tn
             if bn == 'kit' and not tp.exists(): tp = R / 'art/source/kit-shared-v2/proof.fbm' / tn
             gpl = cfg['gpl'].get(Path(tn).stem, cfg['gpl']['*'])
+            if not tp.is_file():  # 2041: 재질에 이미지가 없으면 tn='' → 폴더를 파일로 열어 PermissionError(우체국). 행만 남기고 측정은 건너뜀
+                print(f"  (텍스처 없음: {bn}/{g} 재질 {G['mat']} → '{tn}')"); continue
             r, m = measure_row(bn, g, None, G['faces'], G, tp, gpl, cfg, REF, SV)
             r['gpl'] = str(Path(gpl).relative_to(R)).replace('\\', '/'); r['gpl_proxy'] = bn == 'garage' and Path(tn).stem not in ('garage_baked32', 'garage_dirt', 'garage_props', 'garage_lamp', 'garage_posters')
             r['btris'] = btris

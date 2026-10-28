@@ -40,12 +40,12 @@
       4.01,
       8.01
     ],
-    "tris": 3064,
-    "nodes": 75,
-    "mesh_nodes": 75,
-    "bytes": 1150380,
+    "tris": 4144,
+    "nodes": 72,
+    "mesh_nodes": 72,
+    "bytes": 1495988,
     "source": "art/export/q3-depot/q3_depot.fbx",
-    "exported": "2026-10-28 19:55:36"
+    "exported": "2026-10-28 20:54:57"
   },
   {
     "name": "postoffice",
