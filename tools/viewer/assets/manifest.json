@@ -1,0 +1,58 @@
+[
+  {
+    "name": "room",
+    "label_ko": "방",
+    "file": "room.glb",
+    "size_m": [
+      3.5,
+      2.4,
+      3.16
+    ],
+    "tris": 1222,
+    "bytes": 135200,
+    "source": "art/export/q1-room/room.fbx",
+    "exported": "2026-10-28 16:40:04"
+  },
+  {
+    "name": "garage",
+    "label_ko": "정비소",
+    "file": "garage.glb",
+    "size_m": [
+      13.47,
+      5.77,
+      16.41
+    ],
+    "tris": 2406,
+    "bytes": 1321676,
+    "source": "art/export/q2-garage/garage_v5_combo.fbx",
+    "exported": "2026-10-28 16:40:05"
+  },
+  {
+    "name": "depot",
+    "label_ko": "택배 보관소",
+    "file": "depot.glb",
+    "size_m": [
+      10.0,
+      4.0,
+      8.0
+    ],
+    "tris": 3098,
+    "bytes": 575832,
+    "source": "art/export/q3-depot/q3_depot.fbx",
+    "exported": "2026-10-28 16:40:05"
+  },
+  {
+    "name": "postoffice",
+    "label_ko": "우체국",
+    "file": "postoffice.glb",
+    "size_m": [
+      10.44,
+      8.16,
+      9.94
+    ],
+    "tris": 5198,
+    "bytes": 729080,
+    "source": "art/export/q4-postoffice/q4_postoffice.fbx",
+    "exported": "2026-10-28 16:40:05"
+  }
+]

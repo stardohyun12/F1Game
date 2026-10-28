@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<title>PitCrew 건물 뷰어</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1f24; color: #e8e6e1;
+    font: 14px/1.4 "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+  #app { display: flex; height: 100%; }
+  #panel { width: 190px; flex: none; padding: 12px; box-sizing: border-box; background: #23282e;
+    border-right: 1px solid #333a42; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+  #panel h1 { font-size: 15px; margin: 0 0 4px; color: #f3d9a4; }
+  #list button, .modes button, #reload { width: 100%; text-align: left; padding: 7px 9px; border: 1px solid #3b434c;
+    background: #2c3239; color: inherit; border-radius: 4px; cursor: pointer; font: inherit; }
+  #list { display: flex; flex-direction: column; gap: 4px; }
+  #list button.on, .modes button.on { background: #5b4a2c; border-color: #c9a35a; }
+  #list button small { color: #9aa3ad; display: block; font-size: 11px; }
+  .modes { display: flex; gap: 4px; }
+  .modes button { text-align: center; }
+  label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  input[type=range] { width: 100%; }
+  #info { font-size: 11px; color: #9aa3ad; white-space: pre-line; }
+  #view { position: relative; flex: 1; min-width: 0; min-height: 0; overflow: hidden; background: #111; }
+  #c { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  #c.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
+  #help { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 10px; background: rgba(0,0,0,.55);
+    font-size: 13px; pointer-events: none; }
+  #msg { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); padding: 6px 12px;
+    background: rgba(0,0,0,.6); border-radius: 4px; pointer-events: none; display: none; }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/addons/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="panel">
+    <h1>건물 뷰어</h1>
+    <div id="list"></div>
+    <div class="modes">
+      <button id="mOrbit" class="on">둘러보기</button>
+      <button id="mWalk">걷기</button>
+    </div>
+    <label><input type="checkbox" id="shadow" checked> 그림자</label>
+    <label><input type="checkbox" id="pixel" checked> 픽셀 (720)</label>
+    <div>해 방향 <span id="azv"></span>°<input type="range" id="az" min="0" max="360" step="1" value="35"></div>
+    <button id="reload">새로고침</button>
+    <div id="info"></div>
+  </div>
+  <div id="view">
+    <canvas id="c"></canvas>
+    <div id="msg"></div>
+    <div id="help"></div>
+  </div>
+</div>
+<script type="module" src="./viewer.js"></script>
+</body>
+</html>

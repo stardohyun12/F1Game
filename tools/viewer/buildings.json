@@ -1,0 +1,61 @@
+[
+  {
+    "name": "room",
+    "label_ko": "방",
+    "fbx": "art/export/q1-room/room.fbx",
+    "tex_dir": "art/export/q1-room",
+    "textures": {},
+    "default_texture": "room.png",
+    "notes": "재질 ROOM_alb 하나, FBX 에 이미지가 없어 room.png 를 붙임. 정면(창) = Unity +Z."
+  },
+  {
+    "name": "garage",
+    "label_ko": "정비소",
+    "fbx": "art/export/q2-garage/garage_v5_combo.fbx",
+    "tex_dir": "art/export/q2-garage",
+    "textures": {
+      "Garage_Albedo": "garage_baked32.png",
+      "Garage_Sign_Photo": "garage_sign.png",
+      "Garage_Details_Photo": "garage_details.png",
+      "race_photo_0_Photo": "garage_memory_1.png",
+      "race_photo_1_Photo": "garage_memory_2.png",
+      "race_photo_2_Photo": "garage_memory_3.png",
+      "festival_registration_Photo": "garage_festival.png"
+    },
+    "default_texture": "garage_baked32.png",
+    "notes": "APPLY.md 표 그대로. 마당 dirt_v5_combo 는 LIBRARY 와 같이 안 넣음."
+  },
+  {
+    "name": "depot",
+    "label_ko": "택배 보관소",
+    "fbx": "art/export/q3-depot/q3_depot.fbx",
+    "tex_dir": "art/export/q3-depot",
+    "textures": {
+      "Shared_wall": "wall.png",
+      "Shared_trim": "trim.png",
+      "Shared_floor": "floor.png",
+      "Shared_roof": "roof.png",
+      "Shared_decals": "decals.png",
+      "Shared_icons": "icons.png"
+    },
+    "default_texture": "wall.png",
+    "notes": "공용 키트 5슬롯. decals 는 컷아웃 0.5."
+  },
+  {
+    "name": "postoffice",
+    "label_ko": "우체국",
+    "fbx": "art/export/q4-postoffice/q4_postoffice.fbx",
+    "tex_dir": "art/export/q4-postoffice",
+    "textures": {
+      "Shared_wall": "wall.png",
+      "Shared_trim": "trim.png",
+      "Shared_floor": "floor.png",
+      "Shared_roof": "roof.png",
+      "Shared_decals": "decals.png",
+      "postbox_G1": "postbox_G1.png",
+      "Shared_icons": "icons.png"
+    },
+    "default_texture": "wall.png",
+    "notes": "공용 키트 5슬롯 + 우체통 postbox_G1."
+  }
+]
