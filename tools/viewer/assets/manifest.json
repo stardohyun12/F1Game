@@ -8,12 +8,12 @@
       2.4,
       3.16
     ],
-    "tris": 1222,
+    "tris": 1166,
     "nodes": 4,
     "mesh_nodes": 4,
-    "bytes": 190012,
+    "bytes": 186092,
     "source": "art/export/q1-room/room.fbx",
-    "exported": "2026-10-28 18:01:40"
+    "exported": "2026-10-28 18:56:31"
   },
   {
     "name": "garage",
@@ -25,27 +25,27 @@
       24.91
     ],
     "tris": 3552,
-    "nodes": 168,
-    "mesh_nodes": 165,
-    "bytes": 2458292,
+    "nodes": 81,
+    "mesh_nodes": 79,
+    "bytes": 2371428,
     "source": "art/export/q2-garage/garage_v5_combo.fbx",
-    "exported": "2026-10-28 18:01:41"
+    "exported": "2026-10-28 19:07:53"
   },
   {
     "name": "depot",
     "label_ko": "택배 보관소",
     "file": "depot.glb",
     "size_m": [
-      10.0,
-      4.0,
-      8.0
+      10.01,
+      4.01,
+      8.01
     ],
-    "tris": 3098,
-    "nodes": 15,
-    "mesh_nodes": 11,
-    "bytes": 1104320,
+    "tris": 3064,
+    "nodes": 68,
+    "mesh_nodes": 68,
+    "bytes": 1143884,
     "source": "art/export/q3-depot/q3_depot.fbx",
-    "exported": "2026-10-28 18:01:42"
+    "exported": "2026-10-28 19:07:54"
   },
   {
     "name": "postoffice",
@@ -53,14 +53,14 @@
     "file": "postoffice.glb",
     "size_m": [
       10.44,
-      8.16,
+      8.17,
       9.94
     ],
-    "tris": 5198,
-    "nodes": 365,
-    "mesh_nodes": 360,
-    "bytes": 1576148,
+    "tris": 5120,
+    "nodes": 370,
+    "mesh_nodes": 369,
+    "bytes": 1577936,
     "source": "art/export/q4-postoffice/q4_postoffice.fbx",
-    "exported": "2026-10-28 18:01:44"
+    "exported": "2026-10-28 18:56:37"
   }
 ]

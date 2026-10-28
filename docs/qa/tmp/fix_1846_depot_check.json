@@ -1,0 +1,36 @@
+{
+ "building": "depot",
+ "passes": [],
+ "before": {
+  "pairs": 2,
+  "same_island_dups": 0,
+  "list": [
+   [
+    "Q3_building",
+    128,
+    "Q3_decals",
+    16,
+    640.0,
+    4,
+    [
+     0.0,
+     -1.0,
+     0.0
+    ]
+   ],
+   [
+    "PARCEL_19",
+    16,
+    "PARCEL_19",
+    32,
+    48.0,
+    6,
+    [
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  ]
+ }
+}

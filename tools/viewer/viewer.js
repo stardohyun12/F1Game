@@ -99,9 +99,9 @@ roadTex.repeat.set(60 / 4, 1);
 
 const toon = (opts) => new THREE.MeshToonMaterial({ gradientMap: ramp, ...opts });
 const far = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), toon({ color: 0x95a46f }));
-far.rotation.x = -Math.PI / 2; far.position.y = -0.02; far.receiveShadow = true;
+far.rotation.x = -Math.PI / 2; far.position.y = -0.04; far.receiveShadow = true;
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), toon({ map: groundTex }));
-ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.02; ground.receiveShadow = true;   // 1846: 건물 바닥(y=0)과 같은 높이면 치지직 → 2cm 아래
 const road = new THREE.Mesh(new THREE.PlaneGeometry(60, 4), toon({ map: roadTex, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
 road.rotation.x = -Math.PI / 2; road.position.y = 0.005; road.receiveShadow = true;
 scene.add(far, ground, road);
@@ -217,6 +217,8 @@ function walkStartZ() { return (state.box ? state.box.max.z : 5) + 9; }   // acr
 function toToon(m) {
   const map = pixelTex(m.map);
   if (/lamp_emit/i.test(m.name)) { const b = new THREE.MeshBasicMaterial({ name: m.name, map, color: m.color }); m.dispose(); return b; }   // 등 발광면: 빛을 안 받는 밝은 면
+  if (/glass/i.test(m.name)) { const g = new THREE.MeshBasicMaterial({ name: m.name, color: 0xb8dbf2, transparent: true, opacity: 0.32, depthWrite: false, side: THREE.DoubleSide }); m.dispose(); return g; }   // 1846: 창 유리(Unity M_*_glass 와 같은 색)
+  if (map && /Shared_(wall|roof)/i.test(m.name)) { map.minFilter = THREE.NearestMipmapNearestFilter; map.generateMipmaps = true; map.needsUpdate = true; }   // 1846: 큰 면만 밉맵(멀리서 지글거림), 가까이는 그대로 Nearest
   const cut = m.transparent || m.alphaTest > 0 || /decal|icon/i.test(m.name);
   const t = new THREE.MeshToonMaterial({
     name: m.name, map, color: m.color, gradientMap: ramp,

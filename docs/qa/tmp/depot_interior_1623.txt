@@ -1,0 +1,43 @@
+# ---------- 1623 INTERIOR: 천장·실내등·접수 카운터·벽 선반 3줄·손수레·롤 테이프·시계·작업복 걸이 ----------
+import random as _r;RS=_r.Random(23)
+for x in [-2.28,2.28]:box('ceiling',(x,3.30,3.52),(4.56,6.12,.04),'wall_cream')
+box('lamp',(0,3.3,3.46),(.9,.18,.08),'glass')
+PX=64  # 작은 물건 = 64px/m(같은 사진 칸을 촘촘하게)
+box('reception_desk',(2.75,2.70,.56),(.60,2.40,.88),'wood_door');box('reception_desk_top',(2.72,2.70,1.03),(.72,2.52,.06),'wood_door')
+box('scale_base',(2.75,1.95,1.10),(.30,.30,.08),'shutter');box('scale_plate',(2.75,1.95,1.16),(.34,.34,.02),'shutter');box('scale_display',(2.93,1.95,1.12),(.02,.14,.06),'glass')
+box('slip_holder',(2.80,2.70,1.16),(.10,.32,.20),'wood_door')
+for k in range(2):face('slip_paper',[(2.856,2.84-k*.16,1.08),(2.856,2.70-k*.16,1.08),(2.856,2.70-k*.16,1.29),(2.856,2.84-k*.16,1.29)],'slip',[(0,0),(1,0),(1,1),(0,1)])
+box('stamp_pad',(2.75,3.40,1.075),(.12,.16,.03),'gutter');box('stamp_body',(2.70,3.20,1.12),(.06,.06,.12),'eaves');box('stamp_grip',(2.70,3.20,1.20),(.08,.08,.05),'roof_F2')
+for xs in [(-4.30,-.40),(.50,4.30)]:
+ xm=(xs[0]+xs[1])/2;ww=xs[1]-xs[0]
+ for xx in [xs[0]+.03,xm,xs[1]-.03]:box('wall_shelf_upright',(xx,6.08,1.30),(.05,.50,2.60),'shutter')
+ for zz in [.40,1.15,1.90]:
+  box('wall_shelf',(xm,6.08,zz),(ww,.52,.05),'wood_door')
+  x=xs[0]+.10
+  while x<xs[1]-.35:
+   w=RS.choice([.30,.38,.46,.58]);h=RS.choice([.20,.28,.36,.44]);d=RS.choice([.32,.40,.46])
+   if x+w>xs[1]-.08:break
+   parcel('stored_parcel',x+w/2,6.10,zz+.03,w,d,h)
+   if RS.random()<.35:face('stored_parcel_fragile',[(x+w/2-.14,6.10-d/2-.008,zz+.03+h*.35),(x+w/2+.14,6.10-d/2-.008,zz+.03+h*.35),(x+w/2+.14,6.10-d/2-.008,zz+.03+h*.35+.14),(x+w/2-.14,6.10-d/2-.008,zz+.03+h*.35+.14)],'fragile',[(0,0),(1,0),(1,1),(0,1)])
+   x+=w+RS.uniform(.04,.12)
+def roll(name,x,y,z,r=.07,dep=.05):
+ bpy.ops.mesh.primitive_cylinder_add(vertices=10,radius=r,depth=dep,location=(x,y,z));o=bpy.context.object;o.name=name;o.data.materials.append(mats['trim'])
+ for loop in o.data.uv_layers.active.data:loop.uv=(.50,.25)
+roll('tape_roll',-.30,.95,.145);roll('tape_roll',-.12,1.05,.145);roll('tape_roll_desk',2.65,2.45,1.085)
+bpy.ops.mesh.primitive_cylinder_add(vertices=16,radius=.22,depth=.04,location=(-2.35,6.335,2.95),rotation=(math.pi/2,0,0));o=bpy.context.object;o.name='clock_disc';o.data.materials.append(mats['trim'])
+for loop in o.data.uv_layers.active.data:loop.uv=(.30,1-8/512)
+face('clock_face',[(-2.57,6.31,2.73),(-2.13,6.31,2.73),(-2.13,6.31,3.17),(-2.57,6.31,3.17)],'clock',[(0,0),(1,0),(1,1),(0,1)])
+box('hanger_rail',(4.42,1.75,1.88),(.05,1.00,.04),'gutter')
+for yy in [1.28,2.22]:box('hanger_bracket',(4.49,yy,1.88),(.14,.04,.04),'gutter')
+for yy,c in [(1.52,'wall_mint'),(1.98,'wall_mint')]:
+ box('jacket_body',(4.42,yy,1.42),(.10,.44,.78),c);box('jacket_collar',(4.42,yy,1.84),(.08,.20,.06),'skirting')
+ for dy in [-.25,.25]:box('jacket_sleeve',(4.42,yy+dy,1.50),(.08,.08,.62),c)
+PX=32
+# 돌출 간판(셔터 쪽 모서리, 길 쪽으로) — 같은 아이콘 양면
+box('sign_blade_arm',(-4.35,-.55,3.36),(.05,.90,.05),'gutter')
+box('sign_blade_board',(-4.35,-.58,2.92),(.05,.84,.84),'wood_door')
+face('sign_blade_icon_a',[(-4.38,-.20,2.54),(-4.38,-.96,2.54),(-4.38,-.96,3.30),(-4.38,-.20,3.30)],'parcel',[(0,0),(1,0),(1,1),(0,1)])
+face('sign_blade_icon_b',[(-4.32,-.96,2.54),(-4.32,-.20,2.54),(-4.32,-.20,3.30),(-4.32,-.96,3.30)],'parcel',[(0,0),(1,0),(1,1),(0,1)])
+from mathutils import Matrix
+_h=Vector((3.32,.21,0));_M=Matrix.Translation(_h)@Matrix.Rotation(math.radians(80),4,'Z')@Matrix.Translation(-_h)
+for o in DOOR:o.matrix_world=_M@o.matrix_world

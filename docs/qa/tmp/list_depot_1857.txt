@@ -1,0 +1,15 @@
+OBJ Q3_Depot EMPTY
+OBJ Q3_building 214 ['Shared_wall', 'Shared_floor', 'Shared_roof', 'Shared_trim'] [-5.0, -0.27, 0.0] [5.0, 7.0, 4.0] 
+OBJ Q3_decals 5 ['Shared_decals'] [-4.76, -0.14, 0.15] [4.64, -0.14, 3.6] 
+OBJ Q3_front_goods 138 ['Shared_wall', 'Shared_floor', 'Shared_trim'] [-4.55, -0.77, 0.05] [-0.55, 1.58, 1.37] 
+OBJ Q3_inside_parcels 772 ['Shared_wall', 'Shared_icons'] [-4.2, 5.86, 0.43] [4.21, 6.33, 2.38] 
+OBJ Q3_interior 255 ['Shared_trim', 'Shared_icons', 'Shared_roof', 'Shared_wall'] [-4.3, -0.07, 0.0] [4.56, 6.36, 3.17] 
+OBJ Q3_lamp 6 ['Shared_trim'] [-0.45, 3.21, 3.42] [0.45, 3.39, 3.5] 
+OBJ Q3_packing_station 72 ['Shared_trim', 'Shared_wall'] [0.77, 0.38, 0.0] [2.47, 1.18, 1.26] 
+OBJ Q3_person_door 12 ['Shared_trim'] [3.3, 0.21, 0.12] [3.54, 1.12, 2.24] 
+OBJ Q3_reception_glass 6 ['Shared_trim'] [1.88, -0.07, 1.4] [2.52, 0.0, 2.5] 
+OBJ Q3_shutter 6 ['Shared_trim'] [-4.0, -0.07, 2.7] [-0.2, -0.01, 2.9] 
+OBJ Q3_sign 21 ['Shared_trim', 'Shared_icons'] [-4.38, -1.0, 2.5] [2.83, -0.09, 3.56] 
+OBJ STUDIO_CamIn EMPTY
+OBJ STUDIO_CamInLook EMPTY
+OBJ STUDIO_Lamp EMPTY

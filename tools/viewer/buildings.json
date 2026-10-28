@@ -23,7 +23,6 @@
       "festival_registration_Photo": "garage_festival.png"
     },
     "default_texture": "garage_baked32.png",
-    "split_loose": ["garage_v5_combo"],
     "notes": "APPLY.md 표 그대로. 마당 dirt_v5_combo 는 LIBRARY 와 같이 안 넣음."
   },
   {
@@ -37,10 +36,11 @@
       "Shared_floor": "floor.png",
       "Shared_roof": "roof.png",
       "Shared_decals": "decals.png",
-      "Shared_icons": "icons.png"
+      "Shared_icons": "icons.png",
+      "Clock_dial": "clock_dial.png"
     },
     "default_texture": "wall.png",
-    "notes": "공용 키트 5슬롯. decals 는 컷아웃 0.5."
+    "notes": "공용 키트 5슬롯. decals 는 컷아웃 0.5. 1857: 물건별 오브젝트(PARCEL_NN·SHELF·CLOCK 바늘 등)."
   },
   {
     "name": "postoffice",
