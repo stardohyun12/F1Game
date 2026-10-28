@@ -22,12 +22,13 @@ if MODE == 'names':
         lo, hi = bbox(o)
         if hi.x - lo.x < 0.12 and (lo.x + hi.x) / 2 > 4.2: wall.append((o, (hi - lo)))
     # 원본 확인(assemble.py:114-116): 이건 게시물·우편함이 아니라 옷걸이에 걸린 작업복 2벌(몸통 + 소매 2) → 벌마다 하나로 합쳐 JACKET_nn
-    wall.sort(key=lambda t: sum(bbox(t[0])[0].y + bbox(t[0])[1].y for _ in [0]) / 2)
-    sets, ren = [], []
+    # 두 벌이 겹쳐 걸려 있다(몸통 y 1.52·1.98, 폭 0.44 / 안쪽 소매 1.77·1.73 이 엇갈림) → y 가까운 것끼리 묶으면 2/3/1 로 틀림(2109).
+    # 몸통(y 폭 >0.3) 을 벌의 기준으로 두고, 소매는 「몸통 가운데 ±0.25」(assemble.py:116 dy) 에 가장 맞는 몸통에 붙인다.
+    cyf = lambda o: (bbox(o)[0].y + bbox(o)[1].y) / 2
+    bodies = sorted([o for o, d in wall if d.y > 0.3], key=cyf); sets, ren = [[cyf(b), [b]] for b in bodies], []
     for o, d in wall:
-        cy = (bbox(o)[0].y + bbox(o)[1].y) / 2
-        if sets and abs(cy - sets[-1][0]) < 0.35: sets[-1][1].append(o)
-        else: sets.append([cy, [o]])
+        if d.y > 0.3 or not sets: continue
+        min(sets, key=lambda s: abs(abs(cyf(o) - s[0]) - 0.25))[1].append(o)
     for i, (cy, objs) in enumerate(sets):
         olds = [o.name for o in objs]; bpy.ops.object.select_all(action='DESELECT')
         for o in objs: o.select_set(True)

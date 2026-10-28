@@ -41,11 +41,11 @@
       8.01
     ],
     "tris": 4144,
-    "nodes": 73,
-    "mesh_nodes": 73,
-    "bytes": 1496196,
+    "nodes": 72,
+    "mesh_nodes": 72,
+    "bytes": 1495412,
     "source": "art/export/q3-depot/q3_depot.fbx",
-    "exported": "2026-10-28 21:07:21"
+    "exported": "2026-10-28 21:12:48"
   },
   {
     "name": "postoffice",
