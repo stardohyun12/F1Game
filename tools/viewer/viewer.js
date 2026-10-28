@@ -44,9 +44,29 @@ scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xffe7c4, 2.6);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.bias = -0.0006;      // 1722: 타이어·상자 곡면의 삼각 톱니(셀프 섀도 acne) — bias·normalBias 올림 + 프러스텀을 건물에 딱 맞춤(updateSun)
-sun.shadow.normalBias = 0.05;
+// 그림자 acne·새어 들어옴 대책(이번 판):
+//  1) 셰이더 게이트 — 해를 등진 면(dot(N,L) ≤ 0)에는 그림자 맵을 아예 안 읽는다(shadowPatch). 톤 램프가 뒷면에도 27% 해빛을 주기 때문에
+//     두께 0 인 한 장짜리 벽 안쪽 면에 바깥 자전거·처마 그림자가 그대로 찍히고(새어 들어옴), 스치는 각도의 뒷면에 줄무늬(acne)가 생겼다.
+//  2) bias 는 작게(음수 = three.js 에서 acne 줄임), normalBias 는 텍셀 1~2cm 기준 3cm — 접지 틈(peter-panning)은 땅에서 ≈ nb/tan30° ≈ 5cm 이내.
+//  URL ?bias=&nb= 로 바꿔 볼 수 있다(검사용).
+sun.shadow.bias = params.has('bias') ? +params.get('bias') : -0.0004;
+sun.shadow.normalBias = params.has('nb') ? +params.get('nb') : 0.03;
 scene.add(sun, sun.target);
+
+// 해를 등진 면(dot(N,L) ≤ 0)엔 그림자 맵을 읽지 않는다 — 뒷면은 램프의 바닥값(27%)만 받고, 바깥 물체 그림자가 벽을 뚫고 안쪽 면에 찍히지 않는다.
+// 양면 재질은 three.js 가 뒷면의 법선을 뒤집어 주므로 벽 안쪽 면 = 뒷면으로 잡힌다.
+const SHADOW_GATE = { value: params.has('gate') ? +params.get('gate') : 0.0 };
+state.shadowGate = SHADOW_GATE;
+function shadowPatch(sh) {
+  sh.uniforms.uShadowGate = SHADOW_GATE;
+  // onBeforeCompile 시점엔 #include 가 아직 안 풀려 있어 청크를 직접 펼쳐 바꾼다
+  const lights = THREE.ShaderChunk.lights_fragment_begin.replace(
+    'directLight.color *= ( directLight.visible && receiveShadow ) ? getShadow( directionalShadowMap[ i ]',
+    'directLight.color *= ( directLight.visible && receiveShadow && dot( geometryNormal, directLight.direction ) > uShadowGate ) ? getShadow( directionalShadowMap[ i ]');
+  sh.fragmentShader = sh.fragmentShader
+    .replace('#include <common>', '#include <common>\nuniform float uShadowGate;')
+    .replace('#include <lights_fragment_begin>', lights);
+}
 
 // 3-step toon ramp (NEAREST)
 const ramp = new THREE.DataTexture(new Uint8Array([70, 70, 70, 255, 160, 160, 160, 255, 255, 255, 255, 255]), 3, 1);
@@ -97,7 +117,7 @@ groundTex.repeat.set(60 / 8, 60 / 8);                    // 128px per 8m = 16 px
 const roadTex = noiseCanvas(64, [150, 146, 138], 0.08, 0.10);
 roadTex.repeat.set(60 / 4, 1);
 
-const toon = (opts) => new THREE.MeshToonMaterial({ gradientMap: ramp, ...opts });
+const toon = (opts) => { const m = new THREE.MeshToonMaterial({ gradientMap: ramp, ...opts }); m.onBeforeCompile = shadowPatch; return m; };
 const far = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), toon({ color: 0x95a46f }));
 far.rotation.x = -Math.PI / 2; far.position.y = -0.04; far.receiveShadow = true;
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), toon({ map: groundTex }));
@@ -223,7 +243,11 @@ function toToon(m) {
   const t = new THREE.MeshToonMaterial({
     name: m.name, map, color: m.color, gradientMap: ramp,
     alphaTest: cut ? 0.5 : 0, transparent: false, side: m.side,
+    shadowSide: THREE.DoubleSide,   // 한 장짜리 벽도 해를 보는 면·등진 면 둘 다 그림자 맵에 쓴다(기본은 side 를 따르지만 명시)
   });
+  // 상자형 소품(책상·의자)이 부드러운 정점 법선으로 내보내져 계단 램프가 면 위에 둥근 호를 그린다 → 면 법선(flat). MeshToonMaterial 엔 생성자 속성이 없어
+  // 뒤에 붙인다(WebGLPrograms 는 material.flatShading 만 본다). ?smooth 로 원래대로.
+  t.flatShading = !params.has('smooth');
   addGrain(t);
   m.dispose();
   return t;
@@ -234,6 +258,7 @@ function toToon(m) {
 const GRAIN = { on: { value: 1 }, sn: { value: 0.04 }, dens: { value: 8 } };
 function addGrain(mat) {
   mat.onBeforeCompile = (sh) => {
+    shadowPatch(sh);
     sh.uniforms.uGOn = GRAIN.on; sh.uniforms.uSN = GRAIN.sn; sh.uniforms.uSNDens = GRAIN.dens;
     sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vGWP;')
       .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvGWP = (modelMatrix * vec4(transformed, 1.0)).xyz;');
@@ -268,6 +293,13 @@ function setGrain(on, k) {
   $('grain').onchange = upd; $('grainK').oninput = upd;
   if (params.has('nograin')) $('grain').checked = false;
   upd(); void tb;
+  // 그림자 bias / normalBias 숫자 입력(검사용 — 기본값이 좋으면 손대지 않는다)
+  const sb = document.createElement('div'); sb.style.fontSize = '11px';
+  sb.innerHTML = '그림자 bias <input id="sbias" type="number" step="0.0001" style="width:62px"> nb <input id="snb" type="number" step="0.01" style="width:48px">';
+  d.after(sb);
+  $('sbias').value = sun.shadow.bias; $('snb').value = sun.shadow.normalBias;
+  $('sbias').oninput = (e) => { sun.shadow.bias = +e.target.value || 0; };
+  $('snb').oninput = (e) => { sun.shadow.normalBias = +e.target.value || 0; };
 }
 
 function disposeRoot(r) {
@@ -739,7 +771,7 @@ $('resetAll').onclick = () => {
 };
 $('cSend').onclick = () => sendComment();
 $('cText').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) sendComment(); });
-Object.assign(state, { setView: goComment, focusSel, setTargets, orbit, pivot, setSelect, selectByName, selectHit, pickAt, sendComment, loadComments, deltaOf, resetNode, tc, saveMove, hitInfo });
+Object.assign(state, { setView: goComment, focusSel, setTargets, orbit, pivot, setSelect, selectByName, selectHit, pickAt, sendComment, loadComments, deltaOf, resetNode, tc, saveMove, hitInfo, renderer, scene, sun });
 showSel();
 
 // ---------- loop ----------
