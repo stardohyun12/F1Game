@@ -22,13 +22,16 @@ foreach (var j in jobs) {
   if (j.asset == "garage") { Transform l0 = null; foreach (var t in g.GetComponentsInChildren<Transform>(true)) if (t.name == "LAMP_0") l0 = t; off = l0.position - new Vector3(-0.09f, 3.43f, -5.0f); }
   else { var rs = g.GetComponentsInChildren<Renderer>(); var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds); off = b.center - new Vector3(0f, 1.2f, 0.08f); }
   System.Func<Vector3, Vector3> U = v => new Vector3(-v.x, v.z, -v.y) + off;
-  cam.transform.position = U(j.c); cam.transform.LookAt(U(j.l));
+  // 1736: 원래 지점("") + 보는 점에서 1m·5m 거리(같은 방향)
+  foreach (float dist in new float[] { 0f, 1f, 5f }) {
+  var cp = U(j.c); if (dist > 0) cp = U(j.l) + (U(j.c) - U(j.l)).normalized * dist;
+  cam.transform.position = cp; cam.transform.LookAt(U(j.l));
   var lr = cam.GetComponent<LowResRenderTest>(); int h0 = lr.targetHeight; bool s0 = lr.smooth; lr.targetHeight = 720; lr.smooth = false; lr.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver);
   cam.Render(); lr.Present(dst);
   var prev = RenderTexture.active; RenderTexture.active = dst; var tx = new Texture2D(1280, 720, TextureFormat.RGB24, false); tx.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0); tx.Apply(); RenderTexture.active = prev;
   string outDir = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../../docs/qa/evidence/studio-" + j.asset + "/"));
-  System.IO.File.WriteAllBytes(outDir + "c_" + tag + "_" + j.k + ".png", tx.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tx); log.Append(j.asset + ":" + j.k + " off " + off.ToString("F2") + "; ");
-  lr.targetHeight = h0; lr.smooth = s0; }
+  System.IO.File.WriteAllBytes(outDir + "c_" + tag + "_" + j.k + (dist > 0 ? "_" + dist + "m" : "") + ".png", tx.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tx); log.Append(j.asset + ":" + j.k + "@" + dist + " off " + off.ToString("F2") + "; ");
+  lr.targetHeight = h0; lr.smooth = s0; } }
 cam.transform.position = p0; cam.transform.rotation = r0; cam.fieldOfView = f0;
 foreach (var kv in was) if (kv.Key) kv.Key.gameObject.SetActive(kv.Value); dst.Release();
 foreach (var kv in on) if (kv.Key) kv.Key.SetActive(kv.Value);

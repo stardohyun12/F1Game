@@ -1,0 +1,134 @@
+{
+ "ref": {
+  "p25": 0.029045986034789056,
+  "median": 0.09891506370963382
+ },
+ "rows": [
+  {
+   "tex": "q1-room/room.png",
+   "flat_line": 0.09891506370963382,
+   "flat_blocks": 374,
+   "opaque": 741,
+   "rs_before": 0.06267998739417882,
+   "rs_after": 0.07466783207806688,
+   "amp": 0.04
+  },
+  {
+   "tex": "q2-garage/garage_baked32.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 2753,
+   "opaque": 6539,
+   "rs_before": 0.010647540778535114,
+   "rs_after": 0.030667968644036307,
+   "amp": 0.08
+  },
+  {
+   "tex": "q2-garage/garage_details.png",
+   "flat_line": 0.09891506370963382,
+   "flat_blocks": 384,
+   "opaque": 384,
+   "rs_before": 0.01436793411917393,
+   "rs_after": 0.03019808427179574,
+   "amp": 0.06
+  },
+  {
+   "tex": "q2-garage/garage_props.png",
+   "flat_line": 0.09891506370963382,
+   "flat_blocks": 206,
+   "opaque": 283,
+   "rs_before": 0.0358071878509105,
+   "rs_after": 0.044835366598851144,
+   "amp": 0.04
+  },
+  {
+   "tex": "q2-garage/garage_sign.png",
+   "flat_line": 0.09891506370963382,
+   "flat_blocks": 104,
+   "opaque": 128,
+   "rs_before": 0.013165305408759154,
+   "rs_after": 0.03181970942423273,
+   "amp": 0.04
+  },
+  {
+   "tex": "q2-garage/dirt_baked32.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 8192,
+   "opaque": 8192,
+   "rs_before": 0.005595909614408215,
+   "rs_after": 0.030505014796615264,
+   "amp": 0.1
+  },
+  {
+   "tex": "q3-depot/floor.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 996,
+   "opaque": 1024,
+   "rs_before": 0.011957709615041945,
+   "rs_after": 0.03117380116452513,
+   "amp": 0.08
+  },
+  {
+   "tex": "q3-depot/roof.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 1024,
+   "opaque": 1024,
+   "rs_before": 0.00916079558462244,
+   "rs_after": 0.029629999219216108,
+   "amp": 0.08
+  },
+  {
+   "tex": "q3-depot/trim.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 807,
+   "opaque": 1024,
+   "rs_before": 0.013529585284299038,
+   "rs_after": 0.029300016384993126,
+   "amp": 0.06
+  },
+  {
+   "tex": "q3-depot/wall.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 1024,
+   "opaque": 1024,
+   "rs_before": 0.013899090338834349,
+   "rs_after": 0.029805056740223795,
+   "amp": 0.06
+  },
+  {
+   "tex": "q4-postoffice/floor.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 996,
+   "opaque": 1024,
+   "rs_before": 0.011957709615041945,
+   "rs_after": 0.03117380116452513,
+   "amp": 0.08
+  },
+  {
+   "tex": "q4-postoffice/roof.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 1024,
+   "opaque": 1024,
+   "rs_before": 0.00916079558462244,
+   "rs_after": 0.029629999219216108,
+   "amp": 0.08
+  },
+  {
+   "tex": "q4-postoffice/trim.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 807,
+   "opaque": 1024,
+   "rs_before": 0.013529585284299038,
+   "rs_after": 0.029300016384993126,
+   "amp": 0.06
+  },
+  {
+   "tex": "q4-postoffice/wall.png",
+   "flat_line": 0.029045986034789056,
+   "flat_blocks": 1024,
+   "opaque": 1024,
+   "rs_before": 0.013899090338834349,
+   "rs_after": 0.029805056740223795,
+   "amp": 0.06
+  }
+ ]
+}

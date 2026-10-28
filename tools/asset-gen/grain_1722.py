@@ -95,4 +95,4 @@ def run(mode):
         if 'garage_props' in src: out.save(LIB / 'garage/garage_lamp.png')
         rs2, op2, _ = blocks(out); print(f'  AFTER flat {int(((rs2 < FLAT) & op2).sum())} median_rs {np.median(rs2[op2]):.4f}')
     (R / 'docs/qa/tmp/grain_1722_audit.json').write_text(json.dumps({'ref': {'p25': p25, 'median': med}, 'rows': rows}, ensure_ascii=False, indent=1), encoding='utf-8')
-run(sys.argv[1] if len(sys.argv) > 1 else 'audit')
+if __name__ == '__main__': run(sys.argv[1] if len(sys.argv) > 1 else 'audit')

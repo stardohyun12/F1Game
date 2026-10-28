@@ -2,14 +2,15 @@ import sys
 from pathlib import Path
 import bpy,math,json
 from mathutils import Vector,Matrix
-R=Path(__file__).resolve().parents[2];O=R/'art/models/garage_scene_a2_kit';E=R/'art/export/scene-a2-kit';V=R/'art/_review/2026-10-27-scene-a2-kit';meta=json.loads((O/'manifest.json').read_text(encoding='utf-8'));checks=json.loads((V/'technical-check.json').read_text()) if '--sheds' in sys.argv else []
+R=Path(__file__).resolve().parents[2];O=R/'art/models/garage_scene_a2_kit';E=R/'art/export/scene-a2-kit';V=R/'art/_review/2026-10-27-scene-a2-kit';meta=json.loads((O/'manifest.json').read_text(encoding='utf-8'));checks=json.loads((V/'technical-check.json').read_text()) if '--sheds' in sys.argv or '--task-0453' in sys.argv else []
 for m in meta:
  name=m['name']
+ if '--task-0453' in sys.argv and name not in ['tires_01','pole_01','background_building_05']:continue
  if '--sheds' in sys.argv and name not in ['background_building_04','background_building_05']:continue
  checks=[c for c in checks if c['name']!=name]
  bpy.ops.wm.open_mainfile(filepath=str(O/(name+'.blend')));sc=bpy.context.scene;ob=bpy.data.objects[name]
  mat=bpy.data.materials.new(name+'_unlit');mat.use_nodes=True;n=mat.node_tree.nodes;n.clear();L=mat.node_tree.links;tx=n.new('ShaderNodeTexImage');tx.image=bpy.data.images.load(str(E/(name+'.png')));tx.interpolation='Closest';em=n.new('ShaderNodeEmission');L.new(tx.outputs['Color'],em.inputs[0]);tr=n.new('ShaderNodeBsdfTransparent');mix=n.new('ShaderNodeMixShader');L.new(tx.outputs['Alpha'],mix.inputs[0]);
- if name in ['background_building_04','background_building_05'] and m['pack']=='chillydurango-shacks-sheds':
+ if name in ['background_building_04','background_building_05'] and m['pack']=='chillydurango-shacks-sheds' and not ('--task-0453' in sys.argv and name=='background_building_05'):
   geo=n.new('ShaderNodeNewGeometry');sub=n.new('ShaderNodeMath');sub.operation='SUBTRACT';sub.inputs[0].default_value=1;L.new(geo.outputs['Backfacing'],sub.inputs[1]);mul=n.new('ShaderNodeMath');mul.operation='MULTIPLY';L.new(sub.outputs[0],mul.inputs[0]);L.new(tx.outputs['Alpha'],mul.inputs[1]);L.new(mul.outputs[0],mix.inputs[0])
  L.new(tr.outputs[0],mix.inputs[1]);L.new(em.outputs[0],mix.inputs[2]);out=n.new('ShaderNodeOutputMaterial');L.new(mix.outputs[0],out.inputs[0]);ob.data.materials.clear();ob.data.materials.append(mat)
  for f in ob.data.polygons:f.material_index=0

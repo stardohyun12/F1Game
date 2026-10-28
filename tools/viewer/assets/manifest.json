@@ -9,9 +9,9 @@
       3.16
     ],
     "tris": 1222,
-    "bytes": 134828,
+    "bytes": 190012,
     "source": "art/export/q1-room/room.fbx",
-    "exported": "2026-10-28 17:35:42"
+    "exported": "2026-10-28 17:41:40"
   },
   {
     "name": "garage",
@@ -23,9 +23,9 @@
       24.91
     ],
     "tris": 3552,
-    "bytes": 2259560,
+    "bytes": 2324368,
     "source": "art/export/q2-garage/garage_v5_combo.fbx",
-    "exported": "2026-10-28 17:35:42"
+    "exported": "2026-10-28 17:41:42"
   },
   {
     "name": "depot",
@@ -37,9 +37,9 @@
       8.0
     ],
     "tris": 3098,
-    "bytes": 948004,
+    "bytes": 1104320,
     "source": "art/export/q3-depot/q3_depot.fbx",
-    "exported": "2026-10-28 17:35:43"
+    "exported": "2026-10-28 17:41:44"
   },
   {
     "name": "postoffice",
@@ -51,8 +51,8 @@
       9.94
     ],
     "tris": 5198,
-    "bytes": 1101256,
+    "bytes": 1257528,
     "source": "art/export/q4-postoffice/q4_postoffice.fbx",
-    "exported": "2026-10-28 17:35:43"
+    "exported": "2026-10-28 17:41:45"
   }
 ]

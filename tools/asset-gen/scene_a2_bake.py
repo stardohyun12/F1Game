@@ -8,6 +8,11 @@ if '--repair' in sys.argv:items=[i for i in items if i['source'].endswith('.blen
 COL={'red':(.45,.13,.08,1),'teal':(.23,.40,.34,1),'cream':(.72,.61,.42,1),'ochre':(.60,.40,.19,1)}
 if '--fix-final' in sys.argv:items=[i for i in items if i['source'].endswith('.blend') or i['name'].startswith('autumn_tree')]
 if '--sheds' in sys.argv:items=[i for i in items if i['name'] in ['background_building_04','background_building_05']]
+if '--task-0453' in sys.argv:
+ items=json.loads((O/'task-0453-selection.json').read_text(encoding='utf-8'))
+ results=json.loads((O/'manifest.json').read_text(encoding='utf-8'))
+ if '--tires-0453' in sys.argv:items=[i for i in items if i['name']=='tires_01']
+ if '--shack-0453' in sys.argv:items=[i for i in items if i['name']=='background_building_05']
 for item in items:
  name=item['name'];print('START',name,flush=True);bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;src=R/item['source'];obs=imp(str(src));bpy.context.view_layer.update();meshes=[o for o in obs if o.type=='MESH'];fix_textures(obs,str(src))
  assert meshes,name
@@ -41,11 +46,26 @@ for item in items:
  bpy.ops.object.select_all(action='DESELECT')
  for o in meshes:o.select_set(True)
  bpy.context.view_layer.objects.active=meshes[0];bpy.ops.object.join();ob=bpy.context.object;ob.name=name
+ if '--task-0453' in sys.argv and name=='background_building_05':
+  # Author mesh contains inward/mixed normals: repair winding only, keep every vertex.
+  import bmesh
+  bm=bmesh.new();bm.from_mesh(ob.data);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(ob.data);bm.free();ob.data.update()
+ if '--task-0453' in sys.argv and name in ['tires_01','pole_01']:
+  # Textureless authored meshes receive physical V1b CC0 photo mapping; no geometry edit.
+  uv=ob.data.uv_layers['SourceUV']
+  for f in ob.data.polygons:
+   ax=max(range(3),key=lambda k:abs(f.normal[k]))
+   for li in f.loop_indices:
+    co=ob.data.vertices[ob.data.loops[li].vertex_index].co
+    uv.data[li].uv=((co.y,co.z) if ax==0 else ((co.x,co.z) if ax==1 else (co.x,co.y)))
+    # V1b tire is 128x32 over 4x1m; wood/metal 128x128 over 4x4m.
+    uv.data[li].uv.x/=4
+    uv.data[li].uv.y/=1 if name=='tires_01' else 4
  # Roof and wall tints use original texture detail, no replacement of geometry.
  if name.startswith('background_building'):
   cache={}
   for f in ob.data.polygons:
-   old=f.material_index;role='roof' if f.normal.z>.30 and f.center.z>dims[2]*.35 else 'wall';key=(old,role)
+   old=f.material_index;nz=abs(f.normal.z) if '--task-0453' in sys.argv and name=='background_building_05' else f.normal.z;role='roof' if nz>.30 and f.center.z>dims[2]*.35 else 'wall';key=(old,role)
    if key not in cache:
     ma=ob.data.materials[old].copy();ma['tintrole']=role;ob.data.materials.append(ma);cache[key]=len(ob.data.materials)-1
    f.material_index=cache[key]
@@ -54,11 +74,16 @@ for item in items:
   for f in ob.data.polygons:
    ax=max(range(3),key=lambda k:abs(f.normal[k]))
    for li in f.loop_indices:
-    co=ob.data.vertices[ob.data.loops[li].vertex_index].co;uv.data[li].uv=((co.y,co.z) if ax==0 else ((co.x,co.z) if ax==1 else (co.x,co.y)));uv.data[li].uv/=8
+    co=ob.data.vertices[ob.data.loops[li].vertex_index].co;uv.data[li].uv=((co.y,co.z) if ax==0 else ((co.x,co.z) if ax==1 else (co.x,co.y)))
+    uv.data[li].uv.x/=8
+    uv.data[li].uv.y/=6 if '--task-0453' in sys.argv and ob.data.materials[f.material_index].get('tintrole')=='wall' else 8
  mats=set(ob.data.materials);alphas={};colors={};images_used=[]
  for m in mats:
   m.use_nodes=True;n=m.node_tree.nodes;L=m.node_tree.links
   old=next((x.image for x in n if x.type=='TEX_IMAGE' and x.image),None);pr=next((x for x in n if x.type=='BSDF_PRINCIPLED'),None);basecolor=tuple(pr.inputs['Base Color'].default_value) if pr else tuple(m.diffuse_color)
+  if '--task-0453' in sys.argv and name in ['tires_01','pole_01']:
+   texname='tire.png' if name=='tires_01' else ('wood.png' if max(basecolor[:3])-min(basecolor[:3])>.04 else 'metal.png')
+   old=bpy.data.images.load(str(R/'art/export/scene-a-v1b-photobash/garage_v1b.fbm'/texname),check_existing=True)
   if name in ['background_building_04','background_building_05'] and item['pack']=='chillydurango-shacks-sheds':
    texname='tin_roof.png' if m.get('tintrole')=='roof' else 'tin_wall.png';old=bpy.data.images.load(str(R/'art/export/scene-a-v1b-photobash/garage_v1b.fbm'/texname),check_existing=True)
   if name.startswith('autumn_tree'):
@@ -74,7 +99,8 @@ for item in items:
   L.new(color,bs.inputs[0])
   if name.startswith('autumn_tree') and alpha:
    tr=n.new('ShaderNodeBsdfTransparent');mx=n.new('ShaderNodeMixShader');L.new(alpha,mx.inputs[0]);L.new(tr.outputs[0],mx.inputs[1]);L.new(bs.outputs[0],mx.inputs[2]);L.new(mx.outputs[0],out.inputs[0])
-  alphas[m]=alpha;colors[m]=(bs,out)
+  # The repaired closed shack is opaque. Texture alpha must not cut wall holes.
+  alphas[m]=None if '--task-0453' in sys.argv and name=='background_building_05' else alpha;colors[m]=(bs,out)
  # Physical 32 texels/m planar islands with 3px gutters.
  rects=[]
  for f in ob.data.polygons:

@@ -4,9 +4,10 @@ from PIL import Image,ImageDraw
 import numpy as np,json,shutil
 R=Path(__file__).resolve().parents[2];O=R/'art/models/garage_scene_a2_kit';E=R/'art/export/scene-a2-kit'
 rows=[line.split() for line in (R/'art/export/scene-a-v5-combo/palette32.gpl').read_text().splitlines() if line and line[0].isdigit()];colors=[int(v) for row in rows for v in row[:3]];pal=Image.new('P',(1,1));pal.putpalette(colors+[colors[i%96] for i in range(768-96)])
-shutil.copy2(R/'art/export/scene-a-v5-combo/palette32.gpl',E/'palette32.gpl');checks=json.loads((E/'texture-check.json').read_text()) if '--sheds' in sys.argv else []
+shutil.copy2(R/'art/export/scene-a-v5-combo/palette32.gpl',E/'palette32.gpl');checks=json.loads((E/'texture-check.json').read_text()) if '--sheds' in sys.argv or '--task-0453' in sys.argv else []
 for m in json.loads((O/'manifest.json').read_text(encoding='utf-8')):
  name=m['name']
+ if '--task-0453' in sys.argv and name not in ['tires_01','pole_01','background_building_05']:continue
  if '--sheds' in sys.argv and name not in ['background_building_04','background_building_05']:continue
  checks=[c for c in checks if c['name']!=name]
  raw=np.asarray(Image.open(O/(name+'_raw.png')).convert('RGB'),dtype=np.float32);ao=np.asarray(Image.open(O/(name+'_ao.png')).convert('L'),dtype=np.float32)/255
