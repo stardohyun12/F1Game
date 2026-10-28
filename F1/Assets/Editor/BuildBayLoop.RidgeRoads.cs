@@ -29,7 +29,8 @@ public static partial class BuildBayLoop
                 int n = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude));
                 for (int s = 0; s < n; s++) g.pts.Add(Vector3.Lerp(ks[i], ks[i + 1], s / (float)n));
             }
-            g.pts.Add(ks[ks.Count - 1]); rs.Add(g);
+            g.pts.Add(ks[ks.Count - 1]);
+            LimitGrade(g.pts, RidgeMaxGrade); rs.Add(g);
         }
         if (rs.Count == 0) return "ridge_up_* 길 없음";
 
@@ -72,7 +73,8 @@ public static partial class BuildBayLoop
                 if (Fl(p - Vector3.Lerp(s.a, s.b, t)).magnitude - s.hw < sh && bestE > 0f) { underOld = true; break; }
             }
             if (underOld) continue;
-            float y = bestE <= sh ? yr - .03f : Mathf.Clamp(p.y, yr - (bestE - sh) / fillR, yr + (bestE - sh) / cutR);
+            // 0404: 길 밑 정점은 −15 cm(지형 삼각형이 길보다 성겨서 −3 cm 면 중간이 1~3 cm 튀어나왔다), 어깨는 −3 cm 그대로
+            float y = bestE <= 0f ? yr - .15f : bestE <= sh ? yr - .03f : Mathf.Clamp(p.y, yr - (bestE - sh) / fillR, yr + (bestE - sh) / cutR);
             if (Mathf.Abs(y - p.y) > .001f) { maxD = Mathf.Max(maxD, Mathf.Abs(y - p.y)); v[k].y = y; moved++; }
         }
         mesh.vertices = v; mesh.RecalculateNormals(); mesh.RecalculateBounds(); EditorUtility.SetDirty(mesh);
@@ -91,5 +93,18 @@ public static partial class BuildBayLoop
         }
         EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
         return string.Join(" | ", lg);
+    }
+
+    // 과제 0404: 카트가 올라가게 중심선 높이를 경사 상한 안으로 편다. 양 끝(기존 길과 만나는 점) 높이는 고정.
+    // 앞→뒤, 뒤→앞으로 한 번씩 "앞 점 ± 상한×거리" 로 끼운다 — 평균 경사가 상한 밑이면 양 끝이 다 맞는다.
+    const float RidgeMaxGrade = .11f;   // 12% 판정에 레이캐스트 2 m 표본 흔들림 몫을 남김
+    static void LimitGrade(List<Vector3> p, float gMax)
+    {
+        int n = p.Count; if (n < 3) return;
+        for (int pass = 0; pass < 2; pass++)
+        {
+            for (int i = 1; i < n - 1; i++) { float d = Fl(p[i] - p[i - 1]).magnitude * gMax; var q = p[i]; q.y = Mathf.Clamp(q.y, p[i - 1].y - d, p[i - 1].y + d); p[i] = q; }
+            for (int i = n - 2; i > 0; i--) { float d = Fl(p[i] - p[i + 1]).magnitude * gMax; var q = p[i]; q.y = Mathf.Clamp(q.y, p[i + 1].y - d, p[i + 1].y + d); p[i] = q; }
+        }
     }
 }
