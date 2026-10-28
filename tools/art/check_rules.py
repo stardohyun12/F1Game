@@ -19,6 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 R = Path(__file__).resolve().parents[2]
 LIB = R / 'F1/Assets/Art/Library/Buildings'
+HOME_REVIEW = R / 'F1Studio/Assets/Art/Review/house_home'  # 승인 전 F1과 분리된 실제 검토 산출물을 검사
 BLENDER = os.environ.get('BLENDER', 'D:/Tools/Blender/blender.exe')
 A7_SHADER = 'a5825144e1f7988418dfc28ff0b9bcb7'  # F1/Assets/Art/SceneA7/SceneA7Lit.shader
 # artlive 2117: 정비소 전용 A7LitPoint_garage.shader = SceneA7Lit 사본 + 전등 점광원(1653). 같은 A7 빛 계단이라 A7 으로 친다
@@ -41,7 +42,7 @@ PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1'
 B = {
     'room': dict(fbx=LIB / 'room/room.fbx', dir=LIB / 'room', gpl={'*': R / 'art/export/q1-room/palette_q1v2.gpl'},
                  tex=lambda mat, img: '' if 'glass' in mat.lower() else 'room.png'),  # 2303: 창 유리(텍스처 없음)는 측정 제외
-    'house_home': dict(fbx=LIB / 'house_home/house_home.fbx', dir=LIB / 'house_home', gpl={'*': R / 'art/export/house-home/palette.gpl'},  # 0031 주인공 2층집(방은 room 으로 따로)
+    'house_home': dict(fbx=HOME_REVIEW / 'house_home.fbx', dir=HOME_REVIEW, gpl={'*': R / 'art/export/house-home/palette.gpl'},  # 0419 본 F1 수정 금지: Studio 검토본
                        tex=lambda mat, img: '' if 'glass' in mat.lower() else 'house_home.png'),  # 0351: 창 유리(전용 반투명 재질) 측정 제외
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
                    # artlive 2117: build_asset.py garage 가 결 뒤 전 텍스처를 칸별 median-cut → 합친 색을 이 palette.gpl 로(보관소와 같은 방식)

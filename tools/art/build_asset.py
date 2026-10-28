@@ -39,7 +39,7 @@ CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot
        # 2303 주인공 방: 원본 = tools/asset-gen/q1_room.py(사진 결·palette_q1v2 양자화까지 생성기 안). 옛 grain_1736 export 덧칠은 생성기로
        'room': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q1-room', lib=R / 'F1/Assets/Art/Library/Buildings/room', fbx='room.fbx', pngs=['room'], lib_name={}),
        # 0031 주인공 2층집: 원본 = tools/asset-gen/house_home.py + 아래 h_grain(사진 칠). 2층 = room 프리팹(자식)
-       'house_home': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/house-home', lib=R / 'F1/Assets/Art/Library/Buildings/house_home', fbx='house_home.fbx',
+       'house_home': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/house-home', lib=R / 'F1Studio/Assets/Art/Review/house_home', fbx='house_home.fbx',
                           pngs=['house_home'], lib_name={})}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
@@ -222,6 +222,7 @@ def g_check(c):
     md5 = lambda f: hashlib.md5(f.read_bytes()).hexdigest(); mine = {md5(c['lib'] / (c['lib_name'].get(s, s) + '.png')): s for s in c['pngs']}
     same = sorted({f'{mine[md5(f)]}={f.relative_to(R / "F1/Assets/Art")}' for f in (R / 'F1/Assets/Art').rglob('*.png') if f.parent != c['lib'] and f.stat().st_size < 8e6 and md5(f) in mine})
     print('   다른 건물과 md5 같은 텍스처(D-196):', same or '없음')
+    return p
 # ---------- 우체국(postoffice) 단계 — 2230 ----------
 def p_source(c):
     run([sys.executable, '-X', 'utf8', 'tools/asset-gen/icons_shared.py'])
@@ -322,13 +323,21 @@ def h_paint(cell, col):
     base = {'wall': 'wall', 'trim': 'trim', 'fascia': 'trim', 'door': 'door', 'shutter': 'shutter', 'pavers': 'terra', 'terracotta': 'terra', 'ridge': 'ridge',
             'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass',
             'pane': 'pane', 'curtain': 'curtain', 'chair': 'soffit',  # 0052: 창 유리 안쪽(어두운 방) · 부엌 커튼 · 나무 의자
-            'plaster': 'plaster', 'ceil': 'plaster', 'wainlow': 'wain', 'rwall': 'rwall', 'boards': 'boards', 'glass': 'glass', 'steel': 'steel', 'sinktop': 'steel',
+            'plaster': 'plaster', 'ceil': 'ceil', 'wainlow': 'wain', 'rwall': 'rwall', 'boards': 'boards', 'glass': 'glass', 'steel': 'steel', 'sinktop': 'steel',
             'stovetop': 'stove', 'cabinet': 'cabinet', 'counter': 'trim', 'sofa': 'sofa', 'cushion': 'cushion', 'apron': 'apron', 'basket': 'basket', 'mat': 'mat'}[pt]  # 0351 집 안
     A = np.ones((h, w, 3)) * col[base]
     fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD', 'boards': 'WOOD', 'basket': 'WOOD', 'cabinet': 'C2'}.get(pt, 'A2')
     f = np.roll(np.tile(h_field(fk), (h // 128 + 2, w // 128 + 2)), (rs.integers(128), rs.integers(128)), (0, 1))[:h, :w]
     if pt in ('door', 'soffit', 'chair', 'boards'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
     vv, uu = np.mgrid[0:h, 0:w]
+    if pt == 'rwall':  # q1_room.wall_paint의 크림 3단 복원(판벽 위에 회색 고주파 결 금지).
+        A[f > 1.75] *= 1.05; A[f < -2.1] *= .93
+        return A
+    if pt in ('plaster', 'ceil'):
+        # q1_room의 밝은 바탕+드문 사진 결 방식을 회벽에도 적용. 진폭은 ±8%, 면 전체를 점으로 덮지 않는다.
+        cut = 2.2 if pt == 'ceil' else 1.8
+        A[f > cut] *= 1.08; A[f < -cut - .3] *= .92
+        return A
     if pt == 'pane' and w > 8 and h > 8: A[(np.abs(uu - w // 2) <= 1) | (np.abs(vv - h // 2) <= 1)] = col['trim']  # 창살 십자(흰 틀 색)
     if pt == 'curtain': A[(uu % 6 == 5)] *= .9  # 커튼 주름 9cm
     if pt == 'shutter' and w > 8 and h > 8:  # 루버 6cm(64px/m 에서 4px) — 틀 3px 안쪽만. 판 사이 홈 = 칠한 색 어둠 한 단
@@ -338,7 +347,9 @@ def h_paint(cell, col):
     m = lambda x: max(1, round(x * d))  # 0351 집 안 무늬(미터 → px)
     if pt == 'boards': A[(vv % m(.2) == m(.2) - 1)] *= .88                                   # 마루 판 20cm
     if pt == 'wainlow':  # 주인공 방 판벽(q1_room 과 같은 색): 판 15cm · 위 띠 6cm(나무) · 걸레받이 8cm
-        A[(uu % m(.15) == m(.15) - 1)] *= .86; A[vv >= h - m(.06)] = col['door']; A[vv < m(.08)] = col['door'] * .8
+        A[(uu % m(.15) == m(.15) - 1)] = [135., 157., 150.]
+        A[vv >= h - m(.06)] = [161., 109., 66.]; A[vv < m(.08)] = [128., 80., 50.]
+        return A  # q1_room 기존 하늘색 판벽·갈색 몰딩 보존
     if pt == 'cabinet' and w > 4: A[(uu % m(.5) == 0)] *= .78; A[(vv == h - m(.16))] *= .82    # 장 문 50cm · 서랍 줄
     if pt == 'counter': A[(uu % m(.15) == m(.15) - 1) | (vv % m(.15) == m(.15) - 1)] *= .9     # 타일 15cm
     if pt == 'sinktop' and w > 6 and h > 6: A[3:-3, 3:-3] *= .62                             # 개수대 안(움푹 = 칠한 어둠 아님, 스테인리스 안쪽 색)
@@ -346,11 +357,14 @@ def h_paint(cell, col):
         for cu in (w // 2,):
             for cv in (h // 4, 3 * h // 4): r = np.hypot(uu - cu, vv - cv); A[(r >= m(.06)) & (r < m(.06) + 1.5)] = col['steel']  # 화구 2
     if pt == 'mat': A[(uu < 2) | (uu >= w - 2) | (vv < 2) | (vv >= h - 2)] *= .8
-    if pt == 'apron': A[(uu % 6 < 1) | (vv % 6 < 1)] = col['trim']                            # 체크 앞치마
+    if pt == 'apron': A[(uu % 6 < 1) | (vv % 6 < 1)] = col['apron'] * .6 + col['trim'] * .4  # 바랜 체크
     if pt == 'pavers' and w > 6 and h > 6: A[(uu % 10 == 9) | (vv % 10 == 9)] *= .82  # 30cm 타일 줄눈
     lum = A @ [.299, .587, .114]
     for kind in ('paint', 'rubber'):
-        sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]; ff = f * (st[2] + st[3]) / 2
+        sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]
+        if pt in ('plaster', 'ceil', 'apron', 'basket', 'curtain', 'brass'):
+            st = np.array([-.08, -.025, .025, .08])  # D-197 하한 ±8%, 사진 결 유지
+        ff = f * (st[2] + st[3]) / 2
         q = st[np.abs(ff[..., None] - st).argmin(-1)]; A[sel] *= (1 + q[sel])[:, None]
     return A
 def h_source(c):
@@ -366,26 +380,48 @@ def h_grain(c):
     col.update(terra=col['roof'] * [1.08, .98, .92], ridge=col['roof'] * .84, soffit=col['door'] * 1.6, iron=np.array([58., 66., 60.]), soil=np.array([112., 84., 60.]),
                leaf=np.array([88., 124., 72.]), flower=np.array([196., 78., 82.]), brass=np.array([176., 146., 82.]),
                pane=np.array([74., 86., 92.]), curtain=col['trim'] * [1.04, 1.02, .94])  # 0052: 유리 너머 어둠(빛 굽기 아님 = 단색 + 결) · 크림 커튼
-    col.update(plaster=col['wall'] * .3 + col['trim'] * .7, wain=np.array([178., 209., 183.]), rwall=np.array([236., 228., 196.]),  # 0351 집 안: 석회 벽(A2 살구 30%) · 방 판벽·위 벽(q1_room 색)
+    col.update(plaster=np.array([230., 218., 193.]), ceil=np.array([236., 229., 210.]), wain=np.array([178., 209., 183.]), rwall=np.array([244., 235., 200.]),  # A2 계열 따뜻한 회벽, q1_room 원색 복원
                boards=col['door'] * 1.35, glass=np.array([186., 214., 226.]), steel=np.array([150., 156., 158.]), stove=np.array([54., 56., 58.]),
                cabinet=col['shutter'] * 1.45, sofa=np.array([98., 116., 132.]), cushion=np.array([112., 132., 148.]), apron=np.array([184., 92., 86.]),
                basket=np.array([178., 140., 92.]), mat=np.array([124., 90., 66.]))
     A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
-    for (x, y, w, h), t in P:  # 칸 사이 1px 틈 = 가장자리 색 번짐(검은 틈이 작은 물건 잔결·알파를 망쳤다, check 1차)
-        e = np.pad(t, ((1, 1), (1, 1), (0, 0)), mode='edge'); y0, x0 = max(y - 1, 0), max(x - 1, 0)
-        A[y0:y + h + 1, x0:x + w + 1, :3] = e[y0 - y + 1:, x0 - x + 1:][:min(y + h + 1, AH) - y0, :min(x + w + 1, AW) - x0]; A[y0:y + h + 1, x0:x + w + 1, 3] = 255
+    for (x, y, w, h), t in P:  # 0419: 3px edge dilation으로 얇은 면 주변 검은 빈칸 제거.
+        e = np.pad(t, ((3, 3), (3, 3), (0, 0)), mode='edge')
+        A[y-3:y+h+3, x-3:x+w+3, :3] = e; A[y-3:y+h+3, x-3:x+w+3, 3] = 255
     for (x, y, w, h), t in P: A[y:y + h, x:x + w, :3] = t
+    # 불투명 집 아틀라스의 비사용 공간도 가장자리 색으로 확장한다.
+    # 0.25m 검사칸/텍스처 필터가 UV 바깥 검은 배경을 잔결로 읽지 않게 한다.
+    filled = np.flatnonzero((A[..., 3] > 0).any(axis=1))
+    xx = np.arange(AW)
+    for iy in filled:
+        valid = np.flatnonzero(A[iy, :, 3] > 0); j = np.searchsorted(valid, xx)
+        lo, hi = valid[np.maximum(j - 1, 0)], valid[np.minimum(j, len(valid) - 1)]
+        nearest = np.where(xx - lo <= hi - xx, lo, hi)
+        A[iy] = A[iy, nearest]
+    for iy in np.flatnonzero(~(A[..., 3] > 0).any(axis=1)):
+        A[iy] = A[filled[np.abs(filled - iy).argmin()]]
     Image.fromarray(np.clip(A[::-1], 0, 255).round().astype(np.uint8)).save(c['exp'] / 'house_home.png')
     (c['tmp'] / 'grain.json').write_text(json.dumps({k: [round(float(v)) for v in val] for k, val in col.items()}, indent=1), encoding='utf-8'); print('   colors', {k: [round(float(v)) for v in val] for k, val in col.items()})
 def h_quant(c):  # 128px 칸마다 median-cut 32 → 합친 색 = art/export/house-home/palette.gpl (정비소와 같은 방식)
     g_quant(c); p = c['exp'] / 'palette.gpl'; p.write_text(p.read_text(encoding='utf-8').replace('q2-garage (build_asset.py 2117', 'house-home (build_asset.py 0031'), encoding='utf-8')
 def h_unity(c):
+    if Path(UCLI_PROJ).resolve() != (R / 'F1Studio').resolve(): raise SystemExit('house_home 검토는 F1Studio 에디터만 허용')
     E, Lb = c['exp'], c['lib']; Lb.mkdir(parents=True, exist_ok=True)
+    if not Lb.resolve().is_relative_to((R / 'F1Studio').resolve()): raise SystemExit('house_home 검토 산출물이 F1Studio 밖을 가리킴')
     for p in (E / c['fbx'], E / 'house_home.png'): copy_retry(p, Lb / p.name)
-    out = unity_exec((R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "house_home" };')); print('  ', out[:400])
+    code = (R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "house_home" };')
+    code = code.replace('var dir = L + "/" + e.nm;', 'var dir = "Assets/Art/Review/house_home";')
+    code = code.replace('foreach (var e in POSE) AssetDatabase.ImportAsset(L + "/" + e.nm + "/" + e.nm + ".prefab", ImportAssetOptions.ForceUpdate);', 'AssetDatabase.ImportAsset("Assets/Art/Review/house_home/house_home.prefab", ImportAssetOptions.ForceUpdate);')
+    out = unity_exec(code); print('  ', out[:800])
+    if 'error' in out.lower() or 'MISS' in out: raise SystemExit('house_home Unity 임포트 확인 필요: ' + out)
+
+def h_check(c):
+    p = g_check(c)
+    if p.returncode != 0 or 'GATE PASS' not in p.stdout:
+        raise SystemExit('house_home 규칙 게이트 실패: ' + p.stdout[-1600:] + p.stderr[-500:])
 HOUSE_HOME = {'source': h_source, 'overlap': h_overlap, 'split': lambda c: print('   낱개(DOOR_·SHUTTER_·RAIL_·PLANTER_·PLANT_)는 생성기가 이름·피벗까지'),
               'snap': lambda c: print('   접지: 생성기 좌표(덧창 바닥 = 창턱, 화분 = 발코니 바닥, 잎 = 흙)'), 'uv': lambda c: print('   텍셀 32/64 = 생성기 dens_for'),
-              'grain': h_grain, 'quant': h_quant, 'unity': h_unity, 'check': g_check}
+              'grain': h_grain, 'quant': h_quant, 'unity': h_unity, 'check': h_check}
 ROOM = {'source': r_source, 'overlap': r_overlap, 'split': r_split, 'snap': r_snap, 'uv': r_uv, 'grain': r_grain, 'quant': r_quant, 'unity': r_unity, 'check': g_check}
 POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
 GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}

@@ -314,21 +314,22 @@ AW = 2048; items = []  # 0351: 집 안이 들어와 1024 폭이면 8192 높이
 for i, (obj, pts, pt, d) in enumerate(FACES):
     l2 = local2d(pts); u0, v0 = min(a for a, _ in l2), min(b for _, b in l2)
     um, vm = max(a for a, _ in l2) - u0, max(b for _, b in l2) - v0
-    items.append(dict(i=i, obj=obj, pt=pt, dens=d, l2=[(a - u0, b - v0) for a, b in l2], m=(um, vm), w=max(2, round(um * d)), h=max(2, round(vm * d))))
+    items.append(dict(i=i, obj=obj, pt=pt, dens=d, l2=[(a - u0, b - v0) for a, b in l2], m=(um, vm), w=max(2, math.ceil(um * d)), h=max(2, math.ceil(vm * d))))
 # 껍데기는 키 순, 낱개는 물건·칠 종류끼리 모아 새 줄부터(작은 면이 남의 칸 사이에 흩어지면 0.25m 검사 칸에 색 경계가 섞인다, check 2차)
-order = sorted(items, key=lambda t: (t['obj'] != SHELL, t['obj'] if t['obj'] != SHELL else '', t['pt'] if t['obj'] != SHELL else '', -t['h'], -t['w'])); x = y = rowh = 0; grp = None
+order = sorted(items, key=lambda t: (t['obj'] != SHELL, t['obj'] if t['obj'] != SHELL else '', t['pt'] if t['obj'] != SHELL else '', -t['h'], -t['w'])); x = y = 4; rowh = 0; grp = None
 for t in order:
     g = (t['obj'], t['pt']) if t['obj'] != SHELL else None
-    if x + t['w'] > AW or (g != grp and g is not None and x > 0 and t['obj'] != (grp or ('',))[0]):
-        x, y, rowh = 0, y + rowh + 1, 0
+    if x + t['w'] + 4 > AW or (g != grp and g is not None and x > 4 and t['obj'] != (grp or ('',))[0]):
+        x, y, rowh = 4, y + rowh + 8, 0
         if g is not None: y = -(-y // 16) * 16  # 낱개 줄 시작 = 16px(0.25m@64) 검사 격자에 맞춤(어긋나면 검사 칸이 이웃 줄을 먹는다, check 3차)
     grp = g
-    t['x'], t['y'] = x, y; x += t['w'] + 1; rowh = max(rowh, t['h'])
-AH = 1 << math.ceil(math.log2(y + rowh + 1))
+    t['x'], t['y'] = x, y; x += t['w'] + 8; rowh = max(rowh, t['h'])
+AH = math.ceil((y + rowh + 4) / 128) * 128  # Point·mip off·NPOT None: 빈 하반부 때문에 8192로 두 배 늘리지 않음.
 objs = {}
 for t in items:
     obj, pts = FACES[t['i']][0], FACES[t['i']][1]
-    objs.setdefault(obj, []).append((pts, [((t['x'] + a * t['w'] / max(t['m'][0], 1e-6)) / AW, (t['y'] + b * t['h'] / max(t['m'][1], 1e-6)) / AH) for a, b in t['l2']]))
+    # 0419: UV는 실제 길이×밀도. 2cm 난간을 최소 2px로 늘리던 80px/m 오류 제거.
+    objs.setdefault(obj, []).append((pts, [((t['x'] + .5 + a * t['dens']) / AW, (t['y'] + .5 + b * t['dens']) / AH) for a, b in t['l2']]))
 mat = bpy.data.materials.new('HOUSE_alb'); gmat = bpy.data.materials.new('HOUSE_glass')  # 0351: 유리 = 따로 재질(Unity 에서 반투명)
 obs = []; tris = 0
 for name, fl in objs.items():
