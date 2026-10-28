@@ -95,8 +95,10 @@ def build_terrain(cp, roads, step, half=392.0):
 # ---------------------------------------------------------------- roads
 def load_roads(plan):
     out = []
+    gone = set(plan.get("removed", {}).get("roads", []))  # D-198: 씬에서 끈 길(건물 밑)
     for r in plan["roads"]:
-        ks = [(F(k[0]), F(k[1]), F(k[2])) for k in r["knots"]]
+        if r.get("id") in gone: continue
+        ks =[(F(k[0]), F(k[1]), F(k[2])) for k in r["knots"]]
         pts = []
         for i in range(len(ks) - 1):  # 1 m 표본(어깨 깎기용)
             a, b = ks[i], ks[i + 1]; L = math.hypot(b[0] - a[0], b[1] - a[1]); nseg = max(1, int(math.ceil(L)))
@@ -337,7 +339,9 @@ def main():
     stats["roads"] = len(roads); stats["joins"] = nj; stats["car_km"] = round(carM / 1000, 2)
     # 건물
     nb = 0; stats["building_tris"] = 0
+    gone_b = set(plan.get("removed", {}).get("osm_ways", []))  # D-198: 새 건물 자리와 겹쳐 지운 OSM 건물
     for b in plan["buildings"]:
+        if b.get("osm_way") in gone_b: continue
         poly = [(F(q[0]), F(q[1])) for q in b["poly"]]
         if len(poly) > 1 and poly[0] == poly[-1]: poly.pop()
         if len(poly) < 3: continue

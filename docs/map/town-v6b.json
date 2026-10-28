@@ -130040,5 +130040,6 @@
     "why": "차길 sc_garage_top_house_0 위"
    }
   ]
- }
+ },
+"removed": {"roads": ["tomo_726989353_47"], "osm_ways": [726866026, 1355595325], "why": "D-198 도현 배치(placements.yaml) — 정비소가 마을길 위, 보관소·우체국이 OSM 건물 위. 씬(Map_TownV6)에서 끈 것과 같은 목록. 빌더(BuildBayLoop.Gray)는 아직 이 키를 안 읽음"}
 }
