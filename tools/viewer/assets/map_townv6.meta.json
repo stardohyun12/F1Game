@@ -13,10 +13,10 @@
   "buildings": 1147,
   "pier_tris": 828,
   "piers": 69,
-  "places": 22,
+  "places": 18,
   "tris_total": 233963,
-  "bytes": 7704924,
+  "bytes": 7699276,
   "seconds": 0.5
  },
- "generated": "2026-10-29T00:05:30"
+ "generated": "2026-10-29T03:40:14"
 }
