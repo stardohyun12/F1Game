@@ -175,9 +175,11 @@ Shader "PitCrew/Library/A7LitPoint"
                     uint pixelLightCount = GetAdditionalLightsCount();
                     LIGHT_LOOP_BEGIN(pixelLightCount)
                         Light al = GetAdditionalLight(lightIndex, i.wp);
-                        float a = al.distanceAttenuation * saturate(dot(n, al.direction));
+                        // 1709: 세기(빛 색의 최댓값)를 곱한 뒤 계단을 나눈다 — 전엔 곱하기 전에 나눠서 3.4m 아래 바닥(≈0.07)이 0 으로 깎였다
+                        float k = max(max(al.color.r, al.color.g), max(al.color.b, 1e-4));
+                        float a = al.distanceAttenuation * saturate(dot(n, al.direction)) * k;
                         a = floor(a * 4 + 0.35) / 4;
-                        c += t.rgb * al.color * a;
+                        c += t.rgb * (al.color / k) * a;
                     LIGHT_LOOP_END
                 }
                 c = lerp(c, t.rgb * 1.15, _Emit);
