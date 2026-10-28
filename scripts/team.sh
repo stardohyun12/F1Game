@@ -17,6 +17,8 @@ cfg() { python -c "import json,sys
 try: print(json.load(open('.claude/team/config.json',encoding='utf-8')).get('$ROLE',{}).get('$1','') or '')
 except Exception: print('')" | tr -d '\r'; }
 C_MODEL=$(cfg model); C_EFFORT=$(cfg effort); C_BUDGET=$(cfg budget); C_TURNS=$(cfg turns)
+# 과제에 [OPUS] 가 있으면 그 과제만 opus (기본은 config 의 sonnet — Claude 구독 한도 절약, 10/29)
+printf '%s' "$TASK" | grep -q '\[OPUS\]' && C_MODEL=opus
 SIDFILE=".claude/team/sessions/$ROLE.id"
 LIVE=".ai_logs/team/$ROLE.live.log"
 RESULT=".ai_logs/team/$ROLE-last.json"
