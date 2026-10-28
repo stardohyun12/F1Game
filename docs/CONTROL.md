@@ -9,6 +9,12 @@
 
 ## 📌 한눈 요약
 
+> **2026-10-29 02:20 갱신(PD).** 맵 = `Map_TownV6.unity`. 건물 라이브러리 5채(방·정비소·보관소·우체국·2층집) 전부 `python tools/art/build_asset.py <건물>` 한 명령으로 재생성 + 규칙 검사 0 위반. 도현이 Unity 기획 도구(씬 뷰 C → 클릭 코멘트·드래그 그리기)로 직접 보고 배치. 스튜디오는 별도 프로젝트 `F1Studio/`. 결정 D-197~D-202.
+>
+> **내일 첫 일(도현 결정 대기)** — ① 주인공 집 자리: 해안 후보 3곳(`docs/qa/evidence/hill/cand_sheet.png`, cand_3 = 아침 해 쪽) 중 택1 → 집 놓고 발코니 캡처 ② 집 1층 내부 만들지 ③ 기획 도구 손 확인(한글 입력·클릭 위치). 퀘스트·튜토리얼은 보류(D-199·D-201), 맵 아트 배치부터.
+>
+> **오늘(10/28~29) 한 것** — 워크플로우 평가 2종(`docs/research/2026-10-28-workflow-review-{claude,codex}.md`) → 파이프라인 `tools/art/build_asset.py`(10단계) · 팀원 스크립트 `tools/art/bin/` 허용 · 교훈 13줄(검사 명령 필수) · 10점제 폐기. 기획 웹 뷰어(2D→3D 맵, 배치 편집) → Unity 기획 도구 `F1/Assets/Editor/PitCrewPlan/`(사용법 `docs/design/tutorial/UNITY-PLAN-WINDOW.md`)로 이동. 도현 배치(D-198) 반영·OSM 터 삭제·옛 PitCrew 상자 삭제·TUT 물건 `_TUT_HOLD`. 고리 1879m 봇 완주는 됐지만 보류. 언덕 시뮬 2회 = 방 자리에선 바다 안 보임. 비용: Claude Opus 2,800호출(한도 경고) → D-202 기본 sonnet·Codex 분담.
+
 > **2026-10-26 갱신(PD).** 맵 = `Map_BayLoop.unity`(메뉴 `PitCrew/Map/Build BayLoop`). 오프닝 시네마틱+첫 배달 튜토리얼 v0 동작. 결정 D-134~D-144. 밤샘 정리 `docs/team/OVERNIGHT-2026-10-26.md`.
 
 - **목표** — 11월 5일까지 프로토타입: 오프닝 + 첫 배달 + 한 판(5분)
