@@ -1,0 +1,56 @@
+[00 source]
+   $ 0/AppData/Local/Programs/Python/Python313/python.exe -X utf8 D:\Github\F1Game\art\source\q2-garage\textures.py (15s, exit 0)
+     Q2 GARAGE TEXTURES OK
+   $ ta/Local/Programs/Python/Python313/python.exe -X utf8 D:\Github\F1Game\art\source\q2-garage\fix_textures_v2.py (2s, exit 0)
+     {'A7_reference': 'F1\\Assets\\Art\\SceneA7\\Tex\\garage_tin_F2_atlas_clean.png', 'A7_sha256': 'ea08f54f31b66617de5dacf6791b9482fc600a63f738a4ceae8c47c424f27b77'
+   $ AppData/Local/Programs/Python/Python313/python.exe -X utf8 D:\Github\F1Game\art\source\q2-garage\props_1709.py (1s, exit 0)
+     posters (256, 256)
+     D:\Github\F1Game\art\source\q2-garage\props_1709.py:16: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use
+       g = ImageOps.grayscale(im); px = list(g.getdata()); m = sum(px) / len(px)
+  → docs\qa\tmp\build\garage\00_source
+[01 overlap]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\art\source\q2-garage\fix_2130_cyl.py -- (1s, exit 0)
+     00:00.407  blend            | Read blend: "D:\Github\F1Game\art\source\q2-garage\garage.blend"
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\art\source\q2-garage\fix_2148_uv.py -- (1s, exit 0)
+     00:00.406  blend            | Read blend: "D:\Github\F1Game\art\source\q2-garage\garage.blend"
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+  → docs\qa\tmp\build\garage\01_overlap
+[02 split]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\art\source\q2-garage\split_1857.py -- (2s, exit 0)
+     export finished in 0.1715 sec.
+     EXPORT ok 79
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+  → docs\qa\tmp\build\garage\02_split
+[03 snap]
+   정비소: 접지 단계 없음(물건 피벗은 split 이 바닥 가운데로)
+  → docs\qa\tmp\build\garage\03_snap
+[04 uv]
+   $ -- D:\Github\F1Game\art\export\q2-garage\garage_v5_combo.fbx D:\Github\F1Game\docs\qa\tmp\build\garage\uv.json (1s, exit 0)
+     GARAGE UV {'LAMP_01': {'faces': 1, 'span_m': 0.443}, 'LAMP_02': {'faces': 1, 'span_m': 0.443}}
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+     Blender quit
+  → docs\qa\tmp\build\garage\04_uv
+[05 grain]
+  → docs\qa\tmp\build\garage\05_grain
+[06 quant]
+   colors {'garage_baked32': 1388, 'garage_details': 170, 'dirt_baked32': 32, 'garage_props': 145, 'garage_lamp': 4, 'garage_sign': 47, 'garage_festival': 30, 'garage_posters': 85, 'garage_memory_1': 31, 'garage_memory_2': 31, 'garage_memory_3': 32, 'palette': 1975}
+  → docs\qa\tmp\build\garage\06_quant
+[07 unity]
+   _GroundY=0 _FootDark=0 _Blotch=0 _Lift=0 _Sat=1 _A7Lit=1 _Cutoff=0.5 _FogStart=40 _FogEnd=220 _FogMax=0.4 
+garage raw box (-8.20, -0.06, -12.91)..(7.80, 5.70, 12.00) -> (-8.00, -0.06, -24.91)..(8.00, 5.70, 0.00) size (16.00, 5.77, 24.91) mats 11
+ items 78 light LAMP_0 (0.11, 3.43, -17.00) light LAMP
+  → docs\qa\tmp\build\garage\07_unity
+[08 viewer]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\viewer\export_glb.py -- garage (2s, exit 0)
+     [export_glb] manifest: D:\Github\F1Game\tools\viewer\assets\manifest.json ['room', 'garage', 'depot', 'postoffice']
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+     Blender quit
+  → docs\qa\tmp\build\garage\08_viewer
+[09 check]
+    1.6 garage/DRUM_01 [garage_props.png] 반점 4.12%; S0.73 V122~168
+    1.6 garage/CRATE_01 [garage_baked32.png] 반점 14.90%; S0.49 V121~148
+GATE PASS (0 위반)
+   다른 건물과 md5 같은 텍스처(D-196): 없음
+  → docs\qa\tmp\build\garage\09_check
+BUILD DONE garage

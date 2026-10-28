@@ -3,7 +3,7 @@
 #    drum_lying 43→56px/m(다른 드럼과 같게) · wall_±1_planks_dark 64→32(벽 아래 판자 띠 12m, 건물 = 세상 32) · trest±0.7 33→64(탁자 받침 0.8m = 작은 물건)
 #  - sign_main 옆 두께면(UV 가 점 하나, 붕괴 15%): 면의 긴 변 → u, 두께 → v 로 64px/m, 간판 칸 위 가장자리 띠에.
 # D:/Tools/Blender/blender.exe -b --factory-startup -P art/source/q2-garage/fix_2148_uv.py
-import bpy, os
+import bpy, os, sys
 from mathutils import Vector
 R = 'D:/Github/F1Game'
 bpy.ops.wm.open_mainfile(filepath=R + '/art/source/q2-garage/garage.blend')
@@ -46,5 +46,5 @@ if not o.get('q2_sign_2148c'):  # b: 첫 판은 "UV 1px 미만" 으로 골라 �
             for i in li: uv[i].uv.x = 2 * u0 + ext[a_] * PPM / W - uv[i].uv.x
         n += 1
     o['q2_sign_2148c'] = 1; log['sign_main_edges'] = n
-print('UV2148', log)
+print('UV2148', log); sys.stdout.flush()  # 2201: os._exit 는 버퍼를 안 비워서, 파이프로 받으면 이 줄이 build 로그에 안 남았다
 bpy.ops.wm.save_as_mainfile(filepath=R + '/art/source/q2-garage/garage.blend'); os._exit(0)
