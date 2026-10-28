@@ -36,7 +36,9 @@ x, y = 128, 64; d.rectangle((x, y + 4, x + 47, y + 63), fill=WHITE, outline=GRAY
 for i in (12, 34): d.rectangle((x + i, y, x + i + 2, y + 8), fill=DARK)
 for r in range(5):
     for c in range(6): d.rectangle((x + 4 + c * 7, y + 22 + r * 8, x + 7 + c * 7, y + 25 + r * 8), fill=RED if (r, c) == (2, 4) else DARK if c < 5 else RED)
+# 보관소는 번호표를 안 쓴다 → 번호표 없이 저장(번호표 칸이 전표 아래 절반 행 64~79 를 덮어 바코드가 가려짐, 2058). 우체국은 그대로(같은 바이트).
+im.save(R / 'art/export/q3-depot/icons.png'); print('icons', 'art/export/q3-depot (번호표 없음)')
 # 번호표 표시기(검은 판 + 빨간 숫자 블록 0 7)
 x, y = 176, 64; d.rectangle((x, y, x + 47, y + 23), fill=DARK)
 for rect in ((6, 4, 18, 6), (6, 17, 18, 19), (6, 4, 8, 19), (16, 4, 18, 19), (26, 4, 40, 6), (37, 4, 40, 19)): d.rectangle((x + rect[0], y + rect[1], x + rect[2], y + rect[3]), fill=RED)
-for out in ('art/export/q3-depot', 'art/export/q4-postoffice'): im.save(R / out / 'icons.png'); print('icons', out)
+for out in ('art/export/q4-postoffice',): im.save(R / out / 'icons.png'); print('icons', out)

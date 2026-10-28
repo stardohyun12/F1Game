@@ -85,11 +85,10 @@ def s_grain(c):
             st = STEPS[kind]; f = field(kind, W, H) * (st[2] + st[3]) / 2
             q = st[np.abs(f[..., None] - st).argmin(-1)]; rgb[sel] *= (1 + q[sel])[:, None]
         a[..., :3] = np.clip(rgb, 0, 255); Image.fromarray(a.round().astype(np.uint8)).save(E / (s + '.png'))
-    # 글씨 텍스처: 세상 64px/m 격자로(Nearest). 아이콘 256→80(택배 라벨 ≈70px/m · 간판 ≈52), 데칼 512→160(≈66)
-    for s, n in (('icons', 80), ('decals', 160)):
+    # 글씨 텍스처: 세상 64px/m 격자로(Nearest). 아이콘 256→88(택배 라벨·전표 ≈77px/m · 간판 0.76~0.84m 판 ≈52~57 — 80 이면 큰 판이 47 로 범위 48~80 밖), 데칼 512→160(≈66)
+    for s, n in (('icons', 88), ('decals', 160)):
         Image.open(E / (s + '.png')).convert('RGBA').resize((n, n), Image.NEAREST).save(E / (s + '.png')); log[s] = n
-    d = np.asarray(Image.open(E / 'clock_dial.png').convert('RGBA')).copy()  # 시계 바늘 칸: 원 밖 왼쪽 아래 8x3 잉크
-    ink = d[29:32, 0:3].reshape(-1, 4)[0]; d[29:32, 0:8] = ink; Image.fromarray(d).save(E / 'clock_dial.png')
+    # 시계 바늘은 uv 단계가 trim 으로 옮긴다(2058) → clock_dial.png 는 문자판 그대로
     (c['tmp'] / 'grain.json').write_text(json.dumps(log, ensure_ascii=False, indent=1), encoding='utf-8')
 
 def s_quant(c):
