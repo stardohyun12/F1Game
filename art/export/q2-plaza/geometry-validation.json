@@ -1,0 +1,62 @@
+[
+  {
+    "name": "plaza_bench",
+    "reimport_dimensions": [
+      1.7999999523162842,
+      0.6279379725456238,
+      1.0375000611557503
+    ],
+    "tris": 588,
+    "bottom_center_verified": true
+  },
+  {
+    "name": "plaza_lamp",
+    "reimport_dimensions": [
+      0.6600000262260437,
+      0.6600000262260437,
+      3.649999889532989
+    ],
+    "tris": 434,
+    "bottom_center_verified": true
+  },
+  {
+    "name": "plaza_signpost",
+    "reimport_dimensions": [
+      2.0,
+      0.30000029504299164,
+      3.4600000528098347
+    ],
+    "tris": 62,
+    "bottom_center_verified": true
+  },
+  {
+    "name": "plaza_pots",
+    "reimport_dimensions": [
+      1.1834566593170166,
+      0.8288000524044037,
+      1.0763726792276493
+    ],
+    "tris": 924,
+    "bottom_center_verified": true
+  },
+  {
+    "name": "plaza_curb",
+    "reimport_dimensions": [
+      1.0,
+      0.24000002443790436,
+      0.1800000416041989
+    ],
+    "tris": 12,
+    "bottom_center_verified": true
+  },
+  {
+    "name": "plaza_paving",
+    "reimport_dimensions": [
+      4.0,
+      4.0,
+      6.516826829283673e-07
+    ],
+    "tris": 2,
+    "bottom_center_verified": true
+  }
+]

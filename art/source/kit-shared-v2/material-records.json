@@ -1,0 +1,1718 @@
+[
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "input_sha256": "35a4d62c83c40c4db91a1bb2a77a36b4ee031a586d4d64eaf37b542efd8759ab",
+    "job": {
+      "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+      "quad_px": [
+        [
+          380,
+          560
+        ],
+        [
+          624,
+          558
+        ],
+        [
+          628,
+          740
+        ],
+        [
+          382,
+          744
+        ]
+      ],
+      "physical_m": [
+        2,
+        2
+      ],
+      "px_per_m": 32,
+      "material": "plaster",
+      "base_srgb": [
+        191,
+        159,
+        130
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/wall_apricot.png"
+    },
+    "output_size": [
+      64,
+      64
+    ],
+    "rectification_matrix": [
+      [
+        1.043467008527645,
+        -0.011342032701387542,
+        -390.16592492772804
+      ],
+      [
+        0.011560620147181658,
+        1.4103956579561396,
+        -794.2146041113673
+      ],
+      [
+        -4.3843806327027886e-05,
+        4.641971051307084e-05,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.38443500067764225,
+    "base_srgb": [
+      191.0,
+      159.0,
+      130.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.63134765625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "input_sha256": "35a4d62c83c40c4db91a1bb2a77a36b4ee031a586d4d64eaf37b542efd8759ab",
+    "job": {
+      "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+      "quad_px": [
+        [
+          380,
+          560
+        ],
+        [
+          624,
+          558
+        ],
+        [
+          628,
+          740
+        ],
+        [
+          382,
+          744
+        ]
+      ],
+      "physical_m": [
+        2,
+        2
+      ],
+      "px_per_m": 32,
+      "material": "plaster",
+      "base_srgb": [
+        191,
+        187,
+        157
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/wall_cream.png"
+    },
+    "output_size": [
+      64,
+      64
+    ],
+    "rectification_matrix": [
+      [
+        1.043467008527645,
+        -0.011342032701387542,
+        -390.16592492772804
+      ],
+      [
+        0.011560620147181658,
+        1.4103956579561396,
+        -794.2146041113673
+      ],
+      [
+        -4.3843806327027886e-05,
+        4.641971051307084e-05,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.5029910621172867,
+    "base_srgb": [
+      191.0,
+      187.0,
+      157.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.63134765625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "input_sha256": "35a4d62c83c40c4db91a1bb2a77a36b4ee031a586d4d64eaf37b542efd8759ab",
+    "job": {
+      "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+      "quad_px": [
+        [
+          380,
+          560
+        ],
+        [
+          624,
+          558
+        ],
+        [
+          628,
+          740
+        ],
+        [
+          382,
+          744
+        ]
+      ],
+      "physical_m": [
+        2,
+        2
+      ],
+      "px_per_m": 32,
+      "material": "plaster",
+      "base_srgb": [
+        153,
+        177,
+        153
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/wall_mint.png"
+    },
+    "output_size": [
+      64,
+      64
+    ],
+    "rectification_matrix": [
+      [
+        1.043467008527645,
+        -0.011342032701387542,
+        -390.16592492772804
+      ],
+      [
+        0.011560620147181658,
+        1.4103956579561396,
+        -794.2146041113673
+      ],
+      [
+        -4.3843806327027886e-05,
+        4.641971051307084e-05,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.4155820803361676,
+    "base_srgb": [
+      153.0,
+      177.0,
+      153.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.63134765625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "input_sha256": "35a4d62c83c40c4db91a1bb2a77a36b4ee031a586d4d64eaf37b542efd8759ab",
+    "job": {
+      "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+      "quad_px": [
+        [
+          390,
+          565
+        ],
+        [
+          634,
+          563
+        ],
+        [
+          638,
+          745
+        ],
+        [
+          392,
+          749
+        ]
+      ],
+      "physical_m": [
+        2,
+        2
+      ],
+      "px_per_m": 32,
+      "material": "plaster",
+      "base_srgb": [
+        191,
+        159,
+        130
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/wall_apricot_B.png"
+    },
+    "output_size": [
+      64,
+      64
+    ],
+    "rectification_matrix": [
+      [
+        1.0432517444731482,
+        -0.011339692874708247,
+        -400.4612538703176
+      ],
+      [
+        0.01155823522658061,
+        1.4101046976427851,
+        -801.2168659065401
+      ],
+      [
+        -4.38347614837924e-05,
+        4.6410134268674715e-05,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.3818274032635988,
+    "base_srgb": [
+      191.0,
+      159.0,
+      130.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6279296875,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/H/H3_old_stone_wall.jpg",
+    "input_sha256": "e713a255aa9b540213ae5ec613b9c7b1e5f0a855376ae4c105aab6e71989d5b7",
+    "job": {
+      "input": "art/source/photo-picks/H/H3_old_stone_wall.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1599,
+          0
+        ],
+        [
+          1599,
+          1599
+        ],
+        [
+          0,
+          1599
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        157,
+        152,
+        132
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/floor_stone.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        0.6397748592870544,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.6397748592870544,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.30919635309491333,
+    "base_srgb": [
+      157.0,
+      152.0,
+      132.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.700714111328125,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+    "input_sha256": "f1c21920bec1104bfd93aa30858d5a3cea8e67147741403790f1ef69a88bde66",
+    "job": {
+      "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        134,
+        109,
+        77
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/floor_wood.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.16412385355007264,
+    "base_srgb": [
+      134.0,
+      109.0,
+      77.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.62750244140625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+    "input_sha256": "22986233ff2b78703bc6808a351cafea0da80bfb76a932675034722a356f691c",
+    "job": {
+      "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "concrete",
+      "base_srgb": [
+        177,
+        175,
+        161
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/floor_concrete.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.42614258665412974,
+    "base_srgb": [
+      177.0,
+      175.0,
+      161.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6327056884765625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/Ground081/Ground081_1K-JPG_Color.jpg",
+    "input_sha256": "906661af2859c4fe5c47e283cf100f3c25fdf9eca35e94ae20d320118c593352",
+    "job": {
+      "input": "art/source/photos/scene-a/Ground081/Ground081_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          511
+        ],
+        [
+          0,
+          511
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "asphalt",
+      "base_srgb": [
+        61,
+        60,
+        58
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/floor_asphalt.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        2.0019569471624266,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.045016885634867825,
+    "base_srgb": [
+      61.0,
+      60.0,
+      58.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6350860595703125,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "input_sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "job": {
+      "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        0.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        134,
+        109,
+        77
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_eaves.png"
+    },
+    "output_size": [
+      512,
+      16
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.24926686217008798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.16540640892721759,
+    "base_srgb": [
+      134.0,
+      109.0,
+      77.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6234130859375,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "input_sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "job": {
+      "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        0.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        137,
+        163,
+        146
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_window_frame.png"
+    },
+    "output_size": [
+      512,
+      16
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.24926686217008798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.3357832296723259,
+    "base_srgb": [
+      137.0,
+      163.0,
+      146.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6234130859375,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "input_sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "job": {
+      "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        0.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        84,
+        119,
+        107
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_door_frame.png"
+    },
+    "output_size": [
+      512,
+      16
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.24926686217008798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.16148635723754937,
+    "base_srgb": [
+      84.0,
+      119.0,
+      107.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6234130859375,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+    "input_sha256": "22986233ff2b78703bc6808a351cafea0da80bfb76a932675034722a356f691c",
+    "job": {
+      "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        0.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        128,
+        128,
+        116
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_skirting.png"
+    },
+    "output_size": [
+      512,
+      16
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.24926686217008798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.2126919931198294,
+    "base_srgb": [
+      128.0,
+      128.0,
+      116.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6373291015625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+    "input_sha256": "7fccdbb7cf962691f763c39130c5be8dbd7b96b1d4688ab81d9fa93e683bb807",
+    "job": {
+      "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        0.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        78,
+        81,
+        80
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_gutter.png"
+    },
+    "output_size": [
+      512,
+      16
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.24926686217008798,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.08072792428562908,
+    "base_srgb": [
+      78.0,
+      81.0,
+      80.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.635498046875,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photo-picks/B/B1_shutters_greengrocer.jpg",
+    "input_sha256": "7594ae0d615c63eca11e2e793bc4c705d7eca941c0859aada932188cf30ae32c",
+    "job": {
+      "input": "art/source/photo-picks/B/B1_shutters_greengrocer.jpg",
+      "quad_px": [
+        [
+          1150,
+          360
+        ],
+        [
+          1450,
+          360
+        ],
+        [
+          1450,
+          980
+        ],
+        [
+          1150,
+          980
+        ]
+      ],
+      "physical_m": [
+        16,
+        1.5
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        136,
+        157,
+        146
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_shutter.png"
+    },
+    "output_size": [
+      512,
+      48
+    ],
+    "rectification_matrix": [
+      [
+        6.82333333333332,
+        3.0745315125817656e-16,
+        -7846.833333333318
+      ],
+      [
+        0.0,
+        0.4112903225806444,
+        -148.064516129032
+      ],
+      [
+        -9.752547353569985e-19,
+        -7.166228326054858e-19,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.3159477624400588,
+    "base_srgb": [
+      136.0,
+      157.0,
+      146.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.645751953125,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+    "input_sha256": "7fccdbb7cf962691f763c39130c5be8dbd7b96b1d4688ab81d9fa93e683bb807",
+    "job": {
+      "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        4.0
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        57,
+        72,
+        72
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_glass.png"
+    },
+    "output_size": [
+      512,
+      128
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.4995112414467253,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.05990478806610658,
+    "base_srgb": [
+      57.0,
+      72.0,
+      72.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.61962890625,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.1.0",
+    "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+    "input_sha256": "f1c21920bec1104bfd93aa30858d5a3cea8e67147741403790f1ef69a88bde66",
+    "job": {
+      "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        16,
+        8.0
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        134,
+        109,
+        77
+      ],
+      "amplitude": 0.04,
+      "shadow_radius_m": 1.0,
+      "texture_strength": 3.0,
+      "grain_sigma_px": 0.25,
+      "tile_axes": [
+        1
+      ],
+      "palette": "art/export/kit-shared-v2/palette.gpl",
+      "output": "art/source/kit-shared-v2/parts/trim_wood_door.png"
+    },
+    "output_size": [
+      512,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        2.0009775171065494,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.16411300243732285,
+    "base_srgb": [
+      134.0,
+      109.0,
+      77.0
+    ],
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "detail_clip_fraction": 0.6284255981445312,
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photo-picks/E/E2_clay_roof_tiles_02.jpg",
+    "input_sha256": "2f18e929da0baad7147df0081bd67ce577989007566b5688742b7d7eb89dc4c8",
+    "job": {
+      "input": "art/source/photo-picks/E/E2_clay_roof_tiles_02.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1599,
+          0
+        ],
+        [
+          1599,
+          1599
+        ],
+        [
+          0,
+          1599
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        157,
+        96,
+        65
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/roof_E2.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        0.6397748592870544,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.6397748592870544,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.1589354595563578,
+    "base_srgb": [
+      157.0,
+      96.0,
+      65.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photo-picks/E/E3_clay_roof_tiles_03.jpg",
+    "input_sha256": "dd6f6026320923b40a26a796f078e7d67fbc90d077fd8e2caadb2de4b424c50e",
+    "job": {
+      "input": "art/source/photo-picks/E/E3_clay_roof_tiles_03.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1599,
+          0
+        ],
+        [
+          1599,
+          1599
+        ],
+        [
+          0,
+          1599
+        ]
+      ],
+      "physical_m": [
+        4,
+        4
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        160,
+        116,
+        83
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/roof_E3.png"
+    },
+    "output_size": [
+      128,
+      128
+    ],
+    "rectification_matrix": [
+      [
+        0.31957473420888055,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.31957473420888055,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.20619606789161452,
+    "base_srgb": [
+      160.0,
+      116.0,
+      83.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photo-picks/F/F2_box_profile_red.jpg",
+    "input_sha256": "4bc9bf6b0272fd2a98cddad9080f764f6e4ce6a0b8aa7392957ce99d5157c6e1",
+    "job": {
+      "input": "art/source/photo-picks/F/F2_box_profile_red.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1599,
+          0
+        ],
+        [
+          1599,
+          1599
+        ],
+        [
+          0,
+          1599
+        ]
+      ],
+      "physical_m": [
+        8,
+        8
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        156,
+        76,
+        59
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/roof_F2.png"
+    },
+    "output_size": [
+      256,
+      256
+    ],
+    "rectification_matrix": [
+      [
+        0.6397748592870544,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.6397748592870544,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.12598065589191465,
+    "base_srgb": [
+      156.0,
+      76.0,
+      59.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photo-picks/F/F3_corrugated_shed.jpg",
+    "input_sha256": "3c22ea5dd47f2894d71dc1a87239057e2b540aba64fbdde7c0b6017917fe7751",
+    "job": {
+      "input": "art/source/photo-picks/F/F3_corrugated_shed.jpg",
+      "quad_px": [
+        [
+          702,
+          365
+        ],
+        [
+          792,
+          395
+        ],
+        [
+          798,
+          790
+        ],
+        [
+          703,
+          820
+        ]
+      ],
+      "physical_m": [
+        2,
+        4
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        113,
+        149,
+        171
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/roof_F3.png"
+    },
+    "output_size": [
+      64,
+      128
+    ],
+    "rectification_matrix": [
+      [
+        1.247416101819657,
+        -0.002741573850152995,
+        -874.6854290220934
+      ],
+      [
+        -0.20155945713368956,
+        0.6046783714010687,
+        -79.21286665354002
+      ],
+      [
+        -0.0007444812303140404,
+        7.48635514766746e-05,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.28032358339073876,
+    "base_srgb": [
+      113.0,
+      149.0,
+      171.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "input_sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "job": {
+      "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        4,
+        4
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        190,
+        182,
+        153
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/decal_paper.png"
+    },
+    "output_size": [
+      128,
+      128
+    ],
+    "rectification_matrix": [
+      [
+        0.4995112414467253,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.4995112414467253,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.46717515635478457,
+    "base_srgb": [
+      190.0,
+      182.0,
+      153.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  },
+  {
+    "tool_version": "1.0.0",
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "input_sha256": "324c9ad00c3be2d51ad19e5a10b719d418b6cf1c708fe0925db146fb16cb6def",
+    "job": {
+      "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+      "quad_px": [
+        [
+          0,
+          0
+        ],
+        [
+          1023,
+          0
+        ],
+        [
+          1023,
+          1023
+        ],
+        [
+          0,
+          1023
+        ]
+      ],
+      "physical_m": [
+        4,
+        4
+      ],
+      "px_per_m": 32,
+      "material": "paint",
+      "base_srgb": [
+        134,
+        109,
+        77
+      ],
+      "amplitude": 0.04,
+      "tile_axes": [
+        0,
+        1
+      ],
+      "palette": "art/export/kit-shared-v1/palette.gpl",
+      "output": "art/source/kit-shared-v1/parts/decal_wood.png"
+    },
+    "output_size": [
+      128,
+      128
+    ],
+    "rectification_matrix": [
+      [
+        0.4995112414467253,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.4995112414467253,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "mean_linear_luminance": 0.16546424688594497,
+    "base_srgb": [
+      134.0,
+      109.0,
+      77.0
+    ],
+    "light_bake": false,
+    "randomness": false,
+    "photo_mean_restored_before_style": true
+  }
+]

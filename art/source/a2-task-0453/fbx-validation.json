@@ -1,0 +1,383 @@
+[
+  {
+    "name": "tires_02",
+    "triangles": 1824,
+    "size_m": [
+      1.1293312311172485,
+      0.9821484088897705,
+      1.0500000715255737
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "streetlight_01",
+    "triangles": 346,
+    "size_m": [
+      1.7151386737823486,
+      0.5878535509109497,
+      5.5
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "bicycle_01",
+    "triangles": 1714,
+    "size_m": [
+      1.7971582412719727,
+      0.6182634830474854,
+      1.0499999523162842
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "fence_01",
+    "triangles": 36,
+    "size_m": [
+      13.431172370910645,
+      0.8614977598190308,
+      1.2000001668930054
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "cone_01",
+    "triangles": 68,
+    "size_m": [
+      0.5386346578598022,
+      0.6219618320465088,
+      0.6500000953674316
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "cone_02",
+    "triangles": 68,
+    "size_m": [
+      0.6629349589347839,
+      0.7654914855957031,
+      0.8000001311302185
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "pot_01",
+    "triangles": 80,
+    "size_m": [
+      0.660372257232666,
+      0.7625323534011841,
+      0.5500001311302185
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "pot_02",
+    "triangles": 76,
+    "size_m": [
+      0.9320945143699646,
+      0.9320946335792542,
+      0.7000001072883606
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "old_car_01",
+    "triangles": 438,
+    "size_m": [
+      1.7138311862945557,
+      4.120732307434082,
+      1.4568500518798828
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "background_building_01",
+    "triangles": 1164,
+    "size_m": [
+      10.000004768371582,
+      10.000005722045898,
+      10.000001907348633
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "background_building_02",
+    "triangles": 1708,
+    "size_m": [
+      14.823534965515137,
+      19.05883026123047,
+      12.000003814697266
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "background_building_03",
+    "triangles": 338,
+    "size_m": [
+      11.569297790527344,
+      8.0,
+      5.3000006675720215
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "pallet_02",
+    "triangles": 84,
+    "size_m": [
+      1.2000000476837158,
+      1.2000000476837158,
+      0.1800002157688141
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "bench_01",
+    "triangles": 84,
+    "size_m": [
+      1.2547661066055298,
+      0.669302225112915,
+      0.8500000834465027
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "drum_01",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.6928207874298096,
+      0.9000000953674316
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "drum_02",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.6928207874298096,
+      0.9000000953674316
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "drum_03",
+    "triangles": 20,
+    "size_m": [
+      0.7999998927116394,
+      0.6928207874298096,
+      0.9000000953674316
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "transformer_01",
+    "triangles": 20,
+    "size_m": [
+      0.6499999761581421,
+      0.9000004529953003,
+      1.700000286102295
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "fence_02",
+    "triangles": 16,
+    "size_m": [
+      1.771794080734253,
+      0.08640071749687195,
+      1.8000000715255737
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "pallet_01",
+    "triangles": 32,
+    "size_m": [
+      1.3499959707260132,
+      1.7999945878982544,
+      0.15000030398368835
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "autumn_tree_01",
+    "triangles": 360,
+    "size_m": [
+      11.234930038452148,
+      11.234931945800781,
+      13.5
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "autumn_tree_02",
+    "triangles": 350,
+    "size_m": [
+      8.66804313659668,
+      8.66804313659668,
+      14.000001907348633
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "autumn_tree_03",
+    "triangles": 366,
+    "size_m": [
+      10.669880867004395,
+      10.669889450073242,
+      12.50000286102295
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "autumn_tree_04",
+    "triangles": 368,
+    "size_m": [
+      10.274347305297852,
+      10.27435302734375,
+      15.000001907348633
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "autumn_tree_05",
+    "triangles": 374,
+    "size_m": [
+      10.41323184967041,
+      10.413233757019043,
+      13.00000286102295
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "background_building_04",
+    "triangles": 1138,
+    "size_m": [
+      8.000003814697266,
+      8.000004768371582,
+      8.000001907348633
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "passed": true
+  },
+  {
+    "name": "tires_01",
+    "triangles": 1776,
+    "size_m": [
+      1.37214994430542,
+      0.8944782018661499,
+      0.8499998450279236
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "geometry_unchanged": true,
+    "passed": true
+  },
+  {
+    "name": "pole_01",
+    "triangles": 3948,
+    "size_m": [
+      3.210529327392578,
+      35.24009704589844,
+      7.9748215675354
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "geometry_unchanged": true,
+    "passed": true
+  },
+  {
+    "name": "background_building_05",
+    "triangles": 36,
+    "size_m": [
+      5.246895790100098,
+      9.183780670166016,
+      4.500001907348633
+    ],
+    "size_pass": true,
+    "uv_present": true,
+    "source_hash_pass": true,
+    "bake_vs_export_geometry": true,
+    "authored_vertices_retained": true,
+    "passed": true
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "test": "add red sun energy100000",
+  "asset": "background_building_05",
+  "max_pixel_difference": 0.0,
+  "passed": true
+}

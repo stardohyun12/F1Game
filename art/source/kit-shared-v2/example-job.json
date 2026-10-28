@@ -1,0 +1,42 @@
+{
+  "input": "art/source/photo-picks/F/F3_corrugated_shed.jpg",
+  "quad_px": [
+    [
+      702,
+      365
+    ],
+    [
+      792,
+      395
+    ],
+    [
+      798,
+      790
+    ],
+    [
+      703,
+      820
+    ]
+  ],
+  "physical_m": [
+    2,
+    4
+  ],
+  "px_per_m": 32,
+  "material": "paint",
+  "base_srgb": [
+    113,
+    149,
+    171
+  ],
+  "amplitude": 0.04,
+  "shadow_radius_m": 1.0,
+  "texture_strength": 3.0,
+  "grain_sigma_px": 0.25,
+  "tile_axes": [
+    0,
+    1
+  ],
+  "palette": "art/export/kit-shared-v2/palette.gpl",
+  "output": "art/source/kit-shared-v2/parts/roof_F3.png"
+}

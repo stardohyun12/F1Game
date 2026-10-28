@@ -1,0 +1,292 @@
+{
+  "assets": 29,
+  "visible_palette_union": 32,
+  "reused_assets": 26,
+  "repainted": [
+    "tires_01",
+    "pole_01"
+  ],
+  "new_asset": "background_building_05",
+  "untouched_files_verified": 52,
+  "tree_heights_m": [
+    13.499998092651367,
+    14.0,
+    12.500000953674316,
+    15.0,
+    13.000000953674316
+  ],
+  "wall_reference_m": 4.5,
+  "tree_wall_ratios": [
+    2.999999576144748,
+    3.111111111111111,
+    2.777777989705404,
+    3.3333333333333335,
+    2.888889100816515
+  ],
+  "buildings": 5,
+  "models_reimport_passed": 29,
+  "credit_entries_preserved": 5,
+  "textures": [
+    {
+      "name": "tires_01",
+      "size": [
+        1024,
+        512
+      ],
+      "visible_colors": 8,
+      "fbm_matches": true
+    },
+    {
+      "name": "tires_02",
+      "size": [
+        1024,
+        512
+      ],
+      "visible_colors": 15,
+      "fbm_matches": true
+    },
+    {
+      "name": "drum_01",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 26,
+      "fbm_matches": true
+    },
+    {
+      "name": "drum_02",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 26,
+      "fbm_matches": true
+    },
+    {
+      "name": "drum_03",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 26,
+      "fbm_matches": true
+    },
+    {
+      "name": "pole_01",
+      "size": [
+        2048,
+        4096
+      ],
+      "visible_colors": 20,
+      "fbm_matches": true
+    },
+    {
+      "name": "streetlight_01",
+      "size": [
+        1024,
+        256
+      ],
+      "visible_colors": 26,
+      "fbm_matches": true
+    },
+    {
+      "name": "transformer_01",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 17,
+      "fbm_matches": true
+    },
+    {
+      "name": "bicycle_01",
+      "size": [
+        1024,
+        256
+      ],
+      "visible_colors": 18,
+      "fbm_matches": true
+    },
+    {
+      "name": "fence_01",
+      "size": [
+        1024,
+        128
+      ],
+      "visible_colors": 23,
+      "fbm_matches": true
+    },
+    {
+      "name": "fence_02",
+      "size": [
+        1024,
+        128
+      ],
+      "visible_colors": 20,
+      "fbm_matches": true
+    },
+    {
+      "name": "pallet_01",
+      "size": [
+        1024,
+        128
+      ],
+      "visible_colors": 23,
+      "fbm_matches": true
+    },
+    {
+      "name": "pallet_02",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 16,
+      "fbm_matches": true
+    },
+    {
+      "name": "cone_01",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 19,
+      "fbm_matches": true
+    },
+    {
+      "name": "cone_02",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 18,
+      "fbm_matches": true
+    },
+    {
+      "name": "pot_01",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 23,
+      "fbm_matches": true
+    },
+    {
+      "name": "pot_02",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 23,
+      "fbm_matches": true
+    },
+    {
+      "name": "bench_01",
+      "size": [
+        1024,
+        64
+      ],
+      "visible_colors": 24,
+      "fbm_matches": true
+    },
+    {
+      "name": "autumn_tree_01",
+      "size": [
+        1024,
+        8192
+      ],
+      "visible_colors": 31,
+      "fbm_matches": true
+    },
+    {
+      "name": "autumn_tree_02",
+      "size": [
+        1024,
+        8192
+      ],
+      "visible_colors": 32,
+      "fbm_matches": true
+    },
+    {
+      "name": "autumn_tree_03",
+      "size": [
+        1024,
+        8192
+      ],
+      "visible_colors": 31,
+      "fbm_matches": true
+    },
+    {
+      "name": "autumn_tree_04",
+      "size": [
+        1024,
+        8192
+      ],
+      "visible_colors": 27,
+      "fbm_matches": true
+    },
+    {
+      "name": "autumn_tree_05",
+      "size": [
+        1024,
+        4096
+      ],
+      "visible_colors": 31,
+      "fbm_matches": true
+    },
+    {
+      "name": "old_car_01",
+      "size": [
+        1024,
+        256
+      ],
+      "visible_colors": 27,
+      "fbm_matches": true
+    },
+    {
+      "name": "background_building_01",
+      "size": [
+        1024,
+        2048
+      ],
+      "visible_colors": 25,
+      "fbm_matches": true
+    },
+    {
+      "name": "background_building_02",
+      "size": [
+        1024,
+        4096
+      ],
+      "visible_colors": 28,
+      "fbm_matches": true
+    },
+    {
+      "name": "background_building_03",
+      "size": [
+        1024,
+        1024
+      ],
+      "visible_colors": 26,
+      "fbm_matches": true
+    },
+    {
+      "name": "background_building_04",
+      "size": [
+        1024,
+        2048
+      ],
+      "visible_colors": 25,
+      "fbm_matches": true
+    },
+    {
+      "name": "background_building_05",
+      "size": [
+        1024,
+        1024
+      ],
+      "visible_colors": 15,
+      "fbm_matches": true
+    }
+  ]
+}

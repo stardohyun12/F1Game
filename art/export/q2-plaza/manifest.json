@@ -1,0 +1,105 @@
+[
+  {
+    "name": "plaza_bench",
+    "tris": 588,
+    "budget": 2000,
+    "dimensions_xyz": [
+      1.7999999523162842,
+      0.6279378533363342,
+      1.037500023841858
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Props_Albedo"
+    ]
+  },
+  {
+    "name": "plaza_lamp",
+    "tris": 434,
+    "budget": 2000,
+    "dimensions_xyz": [
+      0.6600000262260437,
+      0.6600000262260437,
+      3.6499998569488525
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Props_Albedo"
+    ]
+  },
+  {
+    "name": "plaza_signpost",
+    "tris": 62,
+    "budget": 2000,
+    "dimensions_xyz": [
+      2.0,
+      0.30000001192092896,
+      3.4600000381469727
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Props_Albedo",
+      "Q2_Sign_Albedo"
+    ]
+  },
+  {
+    "name": "plaza_pots",
+    "tris": 924,
+    "budget": 2000,
+    "dimensions_xyz": [
+      1.1834566593170166,
+      0.8288000226020813,
+      1.0763726234436035
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Props_Albedo"
+    ]
+  },
+  {
+    "name": "plaza_curb",
+    "tris": 12,
+    "budget": 2000,
+    "dimensions_xyz": [
+      1.0,
+      0.23999999463558197,
+      0.18000000715255737
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Curb_Albedo"
+    ]
+  },
+  {
+    "name": "plaza_paving",
+    "tris": 2,
+    "budget": 2000,
+    "dimensions_xyz": [
+      4.0,
+      4.0,
+      0.0
+    ],
+    "pivot": "bottom centre",
+    "min_z": 0,
+    "unit": "m",
+    "uv_layers": 1,
+    "materials": [
+      "Q2_Paving_Albedo"
+    ]
+  }
+]

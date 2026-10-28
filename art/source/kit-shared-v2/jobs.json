@@ -1,0 +1,918 @@
+{
+  "wall_apricot": {
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "quad_px": [
+      [
+        380,
+        560
+      ],
+      [
+        624,
+        558
+      ],
+      [
+        628,
+        740
+      ],
+      [
+        382,
+        744
+      ]
+    ],
+    "physical_m": [
+      2,
+      2
+    ],
+    "px_per_m": 32,
+    "material": "plaster",
+    "base_srgb": [
+      191,
+      159,
+      130
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/wall_apricot.png"
+  },
+  "wall_cream": {
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "quad_px": [
+      [
+        380,
+        560
+      ],
+      [
+        624,
+        558
+      ],
+      [
+        628,
+        740
+      ],
+      [
+        382,
+        744
+      ]
+    ],
+    "physical_m": [
+      2,
+      2
+    ],
+    "px_per_m": 32,
+    "material": "plaster",
+    "base_srgb": [
+      191,
+      187,
+      157
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/wall_cream.png"
+  },
+  "wall_mint": {
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "quad_px": [
+      [
+        380,
+        560
+      ],
+      [
+        624,
+        558
+      ],
+      [
+        628,
+        740
+      ],
+      [
+        382,
+        744
+      ]
+    ],
+    "physical_m": [
+      2,
+      2
+    ],
+    "px_per_m": 32,
+    "material": "plaster",
+    "base_srgb": [
+      153,
+      177,
+      153
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/wall_mint.png"
+  },
+  "wall_apricot_B": {
+    "input": "art/source/photo-picks/A/A2_apricot_facade_burano.jpg",
+    "quad_px": [
+      [
+        390,
+        565
+      ],
+      [
+        634,
+        563
+      ],
+      [
+        638,
+        745
+      ],
+      [
+        392,
+        749
+      ]
+    ],
+    "physical_m": [
+      2,
+      2
+    ],
+    "px_per_m": 32,
+    "material": "plaster",
+    "base_srgb": [
+      191,
+      159,
+      130
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/wall_apricot_B.png"
+  },
+  "floor_stone": {
+    "input": "art/source/photo-picks/H/H3_old_stone_wall.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1599,
+        0
+      ],
+      [
+        1599,
+        1599
+      ],
+      [
+        0,
+        1599
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      157,
+      152,
+      132
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/floor_stone.png"
+  },
+  "floor_wood": {
+    "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      134,
+      109,
+      77
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/floor_wood.png"
+  },
+  "floor_concrete": {
+    "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "concrete",
+    "base_srgb": [
+      177,
+      175,
+      161
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/floor_concrete.png"
+  },
+  "floor_asphalt": {
+    "input": "art/source/photos/scene-a/Ground081/Ground081_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        511
+      ],
+      [
+        0,
+        511
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "asphalt",
+    "base_srgb": [
+      61,
+      60,
+      58
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/floor_asphalt.png"
+  },
+  "roof_E2": {
+    "input": "art/source/photo-picks/E/E2_clay_roof_tiles_02.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1599,
+        0
+      ],
+      [
+        1599,
+        1599
+      ],
+      [
+        0,
+        1599
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      157,
+      96,
+      65
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/roof_E2.png"
+  },
+  "roof_E3": {
+    "input": "art/source/photo-picks/E/E3_clay_roof_tiles_03.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1599,
+        0
+      ],
+      [
+        1599,
+        1599
+      ],
+      [
+        0,
+        1599
+      ]
+    ],
+    "physical_m": [
+      4,
+      4
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      160,
+      116,
+      83
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/roof_E3.png"
+  },
+  "roof_F2": {
+    "input": "art/source/photo-picks/F/F2_box_profile_red.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1599,
+        0
+      ],
+      [
+        1599,
+        1599
+      ],
+      [
+        0,
+        1599
+      ]
+    ],
+    "physical_m": [
+      8,
+      8
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      156,
+      76,
+      59
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/roof_F2.png"
+  },
+  "roof_F3": {
+    "input": "art/source/photo-picks/F/F3_corrugated_shed.jpg",
+    "quad_px": [
+      [
+        702,
+        365
+      ],
+      [
+        792,
+        395
+      ],
+      [
+        798,
+        790
+      ],
+      [
+        703,
+        820
+      ]
+    ],
+    "physical_m": [
+      2,
+      4
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      113,
+      149,
+      171
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/roof_F3.png"
+  },
+  "trim_eaves": {
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      0.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      134,
+      109,
+      77
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_eaves.png"
+  },
+  "trim_window_frame": {
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      0.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      137,
+      163,
+      146
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_window_frame.png"
+  },
+  "trim_door_frame": {
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      0.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      84,
+      119,
+      107
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_door_frame.png"
+  },
+  "trim_skirting": {
+    "input": "art/source/photos/scene-a/Concrete042A/Concrete042A_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      0.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      128,
+      128,
+      116
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_skirting.png"
+  },
+  "trim_gutter": {
+    "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      0.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      78,
+      81,
+      80
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_gutter.png"
+  },
+  "trim_shutter": {
+    "input": "art/source/photo-picks/B/B1_shutters_greengrocer.jpg",
+    "quad_px": [
+      [
+        1150,
+        360
+      ],
+      [
+        1450,
+        360
+      ],
+      [
+        1450,
+        980
+      ],
+      [
+        1150,
+        980
+      ]
+    ],
+    "physical_m": [
+      16,
+      1.5
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      136,
+      157,
+      146
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_shutter.png"
+  },
+  "trim_glass": {
+    "input": "art/source/photos/scene-a/Metal021/Metal021_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      4.0
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      57,
+      72,
+      72
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_glass.png"
+  },
+  "trim_wood_door": {
+    "input": "art/source/photos/scene-a/WoodSiding008/WoodSiding008_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      16,
+      8.0
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      134,
+      109,
+      77
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/trim_wood_door.png"
+  },
+  "decal_paper": {
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      4,
+      4
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      190,
+      182,
+      153
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/decal_paper.png"
+  },
+  "decal_wood": {
+    "input": "art/source/photos/scene-a/PaintedWood008C/PaintedWood008C_1K-JPG_Color.jpg",
+    "quad_px": [
+      [
+        0,
+        0
+      ],
+      [
+        1023,
+        0
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        0,
+        1023
+      ]
+    ],
+    "physical_m": [
+      4,
+      4
+    ],
+    "px_per_m": 32,
+    "material": "paint",
+    "base_srgb": [
+      134,
+      109,
+      77
+    ],
+    "amplitude": 0.04,
+    "shadow_radius_m": 1.0,
+    "texture_strength": 3.0,
+    "grain_sigma_px": 0.25,
+    "tile_axes": [
+      0,
+      1
+    ],
+    "palette": "art/export/kit-shared-v2/palette.gpl",
+    "output": "art/source/kit-shared-v2/parts/decal_wood.png"
+  }
+}

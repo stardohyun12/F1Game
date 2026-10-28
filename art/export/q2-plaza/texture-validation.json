@@ -1,0 +1,44 @@
+[
+  {
+    "file": "plaza_curb.png",
+    "size": [
+      64,
+      32
+    ],
+    "colors": 3,
+    "sha256": "129a6e04862a5cec839793b6bee25e5ccbbf1ea6a74fd34e8169fe5f7c866d1c",
+    "baked_light": false,
+    "opposite_edges_identical": true
+  },
+  {
+    "file": "plaza_paving.png",
+    "size": [
+      128,
+      128
+    ],
+    "colors": 36,
+    "sha256": "ee5ccf1746ceb4f0e8d9aaed86033d2bf5ef13c3624c083d8606b381dd823713",
+    "baked_light": false,
+    "opposite_edges_identical": true
+  },
+  {
+    "file": "plaza_props.png",
+    "size": [
+      256,
+      256
+    ],
+    "colors": 50,
+    "sha256": "428484e52dac26d88014a43d921783a1a094d878cd603a4b532af170e13f2d50",
+    "baked_light": false
+  },
+  {
+    "file": "plaza_sign.png",
+    "size": [
+      128,
+      128
+    ],
+    "colors": 4,
+    "sha256": "3bdd3d504fe9317aa962634cda6cf912f4957b48259a3e0b31f13497e4157dfc",
+    "baked_light": false
+  }
+]

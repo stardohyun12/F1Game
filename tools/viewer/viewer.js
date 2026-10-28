@@ -42,9 +42,9 @@ const hemi = new THREE.HemisphereLight(0xa9c4d6, 0x7d7a52, 1.15);   // pale sky 
 scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xffe7c4, 2.6);
 sun.castShadow = true;
-sun.shadow.mapSize.set(1024, 1024);
-sun.shadow.bias = -0.0004;
-sun.shadow.normalBias = 0.03;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -0.0006;      // 1722: 타이어·상자 곡면의 삼각 톱니(셀프 섀도 acne) — bias·normalBias 올림 + 프러스텀을 건물에 딱 맞춤(updateSun)
+sun.shadow.normalBias = 0.05;
 scene.add(sun, sun.target);
 
 // 3-step toon ramp (NEAREST)
@@ -164,8 +164,17 @@ function updateSun() {
   const dir = new THREE.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el));
   sun.position.copy(c).addScaledVector(dir, r * 3);
   sun.target.position.copy(c);
+  // 그림자 프러스텀 = 건물 상자 8모서리 + 그 모서리가 땅에 떨군 그림자 끝점을 해 시점으로 본 범위(+0.5m). 텍셀이 건물에만 쓰인다
+  const view = new THREE.Matrix4().lookAt(sun.position, c, new THREE.Vector3(0, 1, 0)).setPosition(sun.position).invert();
+  const lo = new THREE.Vector3(Infinity, Infinity, Infinity), hi = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
+  for (let i = 0; i < 8; i++) {
+    const p = new THREE.Vector3(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z);
+    const g = p.clone().addScaledVector(dir, -(p.y - b.min.y) / dir.y);
+    for (const q of [p, g]) { q.applyMatrix4(view); lo.min(q); hi.max(q); }
+  }
   const sc = sun.shadow.camera;
-  sc.left = -r; sc.right = r; sc.top = r; sc.bottom = -r; sc.near = 0.5; sc.far = r * 6;
+  sc.left = lo.x - 0.5; sc.right = hi.x + 0.5; sc.bottom = lo.y - 0.5; sc.top = hi.y + 0.5;
+  sc.near = Math.max(0.1, -hi.z - 1); sc.far = -lo.z + 1;
   sc.updateProjectionMatrix();
   $('azv').textContent = state.az;
 }
@@ -185,6 +194,7 @@ function resize() {
   else { renderer.setPixelRatio(devicePixelRatio || 1); renderer.setSize(cw, ch, false); }
   canvas.classList.toggle('pixel', state.pixel);
   camera.aspect = 16 / 9; camera.updateProjectionMatrix();
+  if (typeof placeGrain === 'function') placeGrain();
 }
 addEventListener('resize', resize);
 new ResizeObserver(resize).observe($('view'));
@@ -207,8 +217,50 @@ function toToon(m) {
     name: m.name, map, color: m.color, gradientMap: ramp,
     alphaTest: cut ? 0.5 : 0, transparent: false, side: m.side,
   });
+  addGrain(t);
   m.dispose();
   return t;
+}
+
+// ---------- 1722: 결 — Unity A7 셰이더 _SN(표면에 붙은 결) + A6dGrainToggles(화면 정적 그레인) 흉내 ----------
+// 표면 결: 월드 1/8m 칸마다 고정 난수로 명도 ±(세기×4%). 카메라가 움직여도 면에 붙어 있다. 화면 그레인: 720 픽셀당 고정 점, 오버레이.
+const GRAIN = { on: { value: 1 }, sn: { value: 0.04 }, dens: { value: 8 } };
+function addGrain(mat) {
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uGOn = GRAIN.on; sh.uniforms.uSN = GRAIN.sn; sh.uniforms.uSNDens = GRAIN.dens;
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vGWP;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvGWP = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vGWP; uniform float uGOn, uSN, uSNDens;\nfloat gH3(vec3 p){ p = fract(p * 0.1031); p += dot(p, p.zyx + 31.32); return fract((p.x + p.y) * p.z); }')
+      .replace('#include <map_fragment>', '#include <map_fragment>\ndiffuseColor.rgb *= 1.0 + uGOn * uSN * (gH3(floor(vGWP * uSNDens) + 0.5) * 2.0 - 1.0);');
+  };
+}
+const grainOv = document.createElement('div');
+{
+  const cv = document.createElement('canvas'); cv.width = LOW_W; cv.height = LOW_H; const g = cv.getContext('2d'); const im = g.createImageData(LOW_W, LOW_H);
+  let s = 987654321; const rnd = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+  for (let i = 0; i < im.data.length; i += 4) { const v = rnd() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; }
+  g.putImageData(im, 0, 0);
+  Object.assign(grainOv.style, { position: 'absolute', pointerEvents: 'none', backgroundImage: `url(${cv.toDataURL()})`, backgroundSize: '100% 100%', imageRendering: 'pixelated', mixBlendMode: 'overlay' });
+  canvas.parentElement.appendChild(grainOv);
+}
+function placeGrain() {
+  const r = canvas.getBoundingClientRect(), p = canvas.parentElement.getBoundingClientRect();
+  Object.assign(grainOv.style, { left: (r.left - p.left) + 'px', top: (r.top - p.top) + 'px', width: r.width + 'px', height: r.height + 'px' });
+}
+function setGrain(on, k) {
+  GRAIN.on.value = on ? 1 : 0; GRAIN.sn.value = 0.04 * k;
+  grainOv.style.display = on ? 'block' : 'none'; grainOv.style.opacity = String(Math.min(1, 0.06 * k));
+  $('grainv').textContent = k.toFixed(1);
+}
+{
+  const tb = $('shadow').closest('label').parentElement;
+  const l = document.createElement('label'); l.innerHTML = '<input type="checkbox" id="grain" checked> 결';
+  const d = document.createElement('div'); d.innerHTML = '결 세기 <span id="grainv"></span><input type="range" id="grainK" min="0" max="3" step="0.1" value="1">';
+  $('shadow').closest('label').after(l, d);
+  const upd = () => setGrain($('grain').checked && !params.has('nograin'), +$('grainK').value);
+  $('grain').onchange = upd; $('grainK').oninput = upd;
+  if (params.has('nograin')) $('grain').checked = false;
+  upd(); void tb;
 }
 
 function disposeRoot(r) {
