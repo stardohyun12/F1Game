@@ -30,5 +30,17 @@
   "effort": "high",
   "budget": 5.0,
   "turns": 60
+ },
+ "mapgen": {
+  "model": "opus",
+  "effort": "",
+  "budget": 5.0,
+  "turns": 80
+ },
+ "artlive": {
+  "model": "opus",
+  "effort": "high",
+  "budget": 5.0,
+  "turns": 40
  }
 }

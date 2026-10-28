@@ -67,14 +67,18 @@ $PROMPT"
 else
   # ---- Claude Code ----
   EXTRA_TOOLS=""; [ "$ROLE" = "research" ] && EXTRA_TOOLS="WebSearch WebFetch"
+  [ "$ROLE" = "artlive" ] && EXTRA_TOOLS="Bash(D:/Tools/Blender/blender.exe:*) Bash(/d/Tools/Blender/blender.exe:*)"   # 라이브 아트 = Blender + 에디터
   [ "$ROLE" = "art2" ] && EXTRA_TOOLS="Bash(D:/Tools/Blender/blender.exe:*) Bash(/d/Tools/Blender/blender.exe:*) Bash(\"D:/Tools/Blender/blender.exe\":*)"   # 아트 2 = Blender 필요
   COSTFILE=".claude/team/sessions/$ROLE.cost"
+  # 역할 프롬프트 + 교훈 파일(.claude/team/lessons/<role>.md; art2·artlive 는 art.md)을 합쳐 붙임
+  LESSON=".claude/team/lessons/$ROLE.md"; case "$ROLE" in art2|artlive) LESSON=".claude/team/lessons/art.md";; esac
+  SYSFILE=".claude/team/sessions/$ROLE.sys.md"; cat "$ROLEFILE" > "$SYSFILE"; if [ -f "$LESSON" ]; then echo >> "$SYSFILE"; cat "$LESSON" >> "$SYSFILE"; fi
   if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")"); export TEAM_PREV_COST=$(cat "$COSTFILE" 2>/dev/null || echo 0)
   else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); export TEAM_PREV_COST=0; fi
   # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
   claude -p "$PROMPT" "${SESS[@]}" \
     --model "${TEAM_MODEL:-${C_MODEL:-sonnet}}" ${C_EFFORT:+--effort "$C_EFFORT"} \
-    --append-system-prompt-file "$ROLEFILE" \
+    --append-system-prompt-file "$SYSFILE" \
     --setting-sources user \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
