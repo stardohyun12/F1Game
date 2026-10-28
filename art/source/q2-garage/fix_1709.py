@@ -57,6 +57,19 @@ for nm, (x0, y0, x1, y1) in cells.items():
         l.uv = (x0 / PW + (P[li].dot(rt) - a0) / (a1 - a0) * (x1 - x0) / PW, 1 - y1 / PW + (P[li].z - z0) / (z1 - z0) * (y1 - y0) / PW)
     me.materials.clear(); me.materials.append(POST); print('POSTER', nm, len(me.polygons))
 
+# 1717: 레이스 사진 3장·간판 뒷면이 좌우 반전(앞에서 볼 때 U 가 왼쪽으로 커짐) → 그 면만 U 를 면 가운데 기준으로 뒤집음(다시 돌려도 안전)
+for o in [bpy.data.objects[n] for n in ('race_photo_0', 'race_photo_1', 'race_photo_2', 'sign_main')]:
+    me = o.data; uv = me.uv_layers.active.data
+    for p in me.polygons:
+        n = (o.matrix_world.to_3x3() @ p.normal).normalized()
+        if abs(n.z) > 0.9: continue
+        rt = Vector((0, 0, 1)).cross(n).normalized(); L = list(p.loop_indices)
+        P = [o.matrix_world @ me.vertices[me.loops[i].vertex_index].co for i in L]
+        if sum((uv[L[k]].uv.x - uv[L[0]].uv.x) * (P[k] - P[0]).dot(rt) for k in range(len(L))) < -1e-6:
+            us = [uv[i].uv.x for i in L]; c = min(us) + max(us)
+            for i in L: uv[i].uv.x = c - uv[i].uv.x
+            print('UNFLIP', o.name, p.index)
+
 bpy.ops.wm.save_as_mainfile(filepath=R + '/art/source/q2-garage/garage.blend')
 obs = [o for o in bpy.context.scene.objects if o.type == 'MESH' and not o.get('q2_before_only') and not o.hide_render]
 print('AFTER export-set polys', sum(len(o.data.polygons) for o in obs), 'objs', len(obs))
