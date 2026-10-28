@@ -10,3 +10,6 @@
 - 보고는 5줄 이내: 바꾼 것 / 캡처 경로 / 다음에 바꿀 만한 것 1~2(제안만).
 - 공유 .mat·ProjectSettings·Map_TownV6 수정 금지. 작업 씬은 `F1Studio/Assets/Scenes/Studio_Building.unity`(STUDIO/STUDIO_Slot/<에셋>). 끝에 Play 꺼짐·씬 저장·폰트 SDF `git checkout --`(스튜디오 프로젝트 기준: `UCLI_PROJ=... bash scripts/ucli-http.sh editor stop`).
 - 커밋 금지. AI 이미지 금지. CC0 사진만(provenance 기록).
+
+## 도현 코멘트 읽기 (10/29)
+- 과제 시작 때 `tools/viewer/feedback/unity-Studio_Building.jsonl`(F1Studio 씬 뷰 코멘트)과 `tools/viewer/feedback/<건물>.jsonl`(웹 뷰어) 중 status 가 done 아닌 줄을 먼저 읽는다. 스샷은 `tools/viewer/feedback/shots/<id>.png`. 반영한 줄은 status done 으로.

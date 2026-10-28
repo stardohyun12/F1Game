@@ -15,7 +15,7 @@ ROOT_W=$(pwd -W 2>/dev/null || pwd)
 S="F1Studio"; M="F1"
 CHECK=0; [ "${1:-}" = "--check" ] && CHECK=1
 
-JUNCTIONS=( "Assets/Art/Library" "Assets/Art/SceneA7" )
+JUNCTIONS=( "Assets/Art/Library" "Assets/Art/SceneA7" "Assets/Editor/PitCrewPlan" )   # PitCrewPlan = 기획 도구(코멘트) 공유, 10/29
 # 씬 Studio_Building_Mats 재질이 참조하는 메인 쪽 파일(정션 폴더 밖) — 경로 그대로 복사(.meta 포함)
 COPY_FILES=(
   "Assets/Art/SceneA2/Gen/sky_a2d.png" "Assets/Art/SceneA2/Gen/yard_ground_soft.png"
