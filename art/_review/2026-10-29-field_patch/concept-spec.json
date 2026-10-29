@@ -1,0 +1,29 @@
+{
+  "status": "concept_pending_director_approval",
+  "size_m": [
+    12,
+    8.8
+  ],
+  "ground_skirt_m": 0.3,
+  "pivot": "ground_surface_center",
+  "rows": 5,
+  "row_length_m": 7.4,
+  "row_width_m": 0.85,
+  "furrow_m": 0.55,
+  "crops": {
+    "low_leaf_rows": 3,
+    "staked_pepper_rows": 1,
+    "empty_rows": 1
+  },
+  "max_height_m": 1.35,
+  "stepping_stones": 4,
+  "props": [
+    "watering_can",
+    "hand_hoe"
+  ],
+  "target_tri_budget": 6000,
+  "actual_triangles": null,
+  "production_run": false,
+  "unity_run": false,
+  "map_placement": false
+}
