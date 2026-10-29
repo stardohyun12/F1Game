@@ -53,6 +53,9 @@ PROMPT="[PD 과제 $STAMP]
 $TASK
 
 보고 파일: docs/team/reports/$ROLE-$STAMP.md"
+REPORT="docs/team/reports/$ROLE-$STAMP.md"   # 하네스(10/30): 뼈대를 먼저 만들고 끝에 사후 검사 — 턴 한도로 끊겨도 기록이 남게
+[ -f "$REPORT" ] || printf '# %s %s\n> 하네스가 만든 뼈대. 팀원이 10턴 안에 채우고 단계마다 갱신.\n## 1. 한 것\n## 2. 확인 방법\n## 3. 검증 증거\n## 4. 남은 이슈\n' "$ROLE" "$STAMP" > "$REPORT"
+REPORT_MD5=$(md5sum "$REPORT" | cut -c1-32)
 echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" > "$STATE"
 printf '%s' "$TASK" > ".claude/team/sessions/$ROLE.task"   # 워치독 자동 재시작이 원문을 쓴다
 # PD 칸(대시보드)에 자동 기록 — PD 가 pd-log.sh 를 잊어도 배분·완료가 보이게 (10/29)
@@ -114,3 +117,9 @@ except Exception as e: print("결과 파싱 실패:", e); sys.exit()
 c=d.get("cost_usd"); print(f"[{d['role']}] ok={d.get('ok')}" + (f" cost=${c:.2f}" if c else ""))
 print((d.get("final") or "")[-1500:])
 EOF
+# 하네스 사후 검사(10/30): 보고서가 뼈대 그대로면 FAILED-NOREPORT + 마지막 기록·변경 파일을 붙여 둔다(정보 유실 방지)
+if [ "$(md5sum "$REPORT" | cut -c1-32)" = "$REPORT_MD5" ]; then
+  echo "FAILED-NOREPORT: $REPORT 뼈대 그대로 (턴 한도 추정)"
+  { echo; echo "## 하네스 자동 기록 (팀원이 보고서를 못 씀)"; echo '```'; awk '/===== 새 과제/{buf=""} {buf=buf $0 "
+"} END{printf "%s", buf}' "$LIVE" | grep -a -e "💬" -e "끝:" -e "🔧" | tail -8 | cut -c1-300; echo '```'; echo "변경 파일:"; git status --short | grep -v '^??' | head -20; } >> "$REPORT"
+fi
