@@ -1,0 +1,3 @@
+var sb=new System.Text.StringBuilder();
+foreach(var n in new[]{"TV6_Main","TV6_Village","TV6_Stone","TV6_Stairs"}){ var g=AssetDatabase.FindAssets(n+" t:Material"); foreach(var gu in g){ var p=AssetDatabase.GUIDToAssetPath(gu); var m=AssetDatabase.LoadAssetAtPath<Material>(p); if(m.name!=n) continue; string c=""; foreach(var pr in new[]{"_BaseColor","_Color","_Albedo"}) if(m.HasProperty(pr)) c+=pr+"="+ColorUtility.ToHtmlStringRGB(m.GetColor(pr))+" "; sb.AppendLine(p+" | "+m.shader.name+" | "+c+(m.HasProperty("_BaseMap")&&m.GetTexture("_BaseMap")?"tex="+m.GetTexture("_BaseMap").name:"")); } }
+return sb.ToString();

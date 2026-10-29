@@ -152,6 +152,17 @@ public static partial class BuildBayLoop
                     int d0 = Deg(e.n0), d1 = Deg(e.n1);
                     if (V2Len(e.p) < V2Spur && e.p.Any(V2In) && ((d0 == 1 && d1 >= 3) || (d1 == 1 && d0 >= 3))) { e.dead = true; ch = true; nSpur++; lg.Add($"군더더기 {e.id} {V2Len(e.p):F1}m"); }
                 }
+                // 1e: ridge_up_b_s0_2(9 m, 막다른 끝)가 점 10/24 를 큰길 띠 위에 깔아 진회색 길 위 밝은 회색 판으로 보임 → 15 m 미만 막다른 꼬리가 35% 넘게 다른 띠에 묻혔으면 지운다
+                foreach (var e in edges.Where(x => !x.dead).ToList())
+                {
+                    // 끝마다: 구역 안 막다른 끝(차수 1) 이거나 지워도 남는 길이 2개 이상(차수 ≥3). 구역 밖 끝(차수 1)은 바깥 길과 이어지니 건드리지 않는다
+                    //  (1차: 차수 1 만 봐서 구역 경계에 걸친 tomo_723378509_33 8.3 m 를 지움 / ridge_up_b_s0_2 는 양 끝이 갈림목이라 안 걸림)
+                    int d0 = Deg(e.n0), d1 = Deg(e.n1); if (V2Len(e.p) >= 15f) continue;
+                    bool Ok(int d, Vector3 q) => d >= 3 || (d == 1 && V2In(q));
+                    if (!Ok(d0, e.p[0]) || !Ok(d1, e.p[e.p.Count - 1])) continue;
+                    int inn = e.p.Count(q => edges.Any(f => f != e && !f.dead && V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 2.5f));
+                    if (inn > e.p.Count * .35f) { e.dead = true; ch = true; nSpur++; lg.Add($"띠에 묻힌 꼬리 {e.id} {V2Len(e.p):F1}m ({inn}/{e.p.Count})"); }
+                }
                 var live = edges.Where(x => !x.dead).ToList();
                 foreach (var e in live) foreach (var f in live)
                 {
