@@ -1,0 +1,5 @@
+{
+  "success": true,
+  "message": "OK",
+  "data": "A_aligned_8x6: soil=(8.000, 0.000, 6.000); ridges=4; cropMasses=25; mockTrisIncludingGroundAndPoles=8792; missingMesh=0; minOutwardDot=0.774405\r\nB_curved_10x7: soil=(10.000, 0.490, 7.000); ridges=4; cropMasses=25; mockTrisIncludingGroundAndPoles=10472; missingMesh=0; minOutwardDot=0.774405\r\npainterly=True; radius=2; shaderError=False; sceneRP=Assets/Art/Review/field_patch/FieldReviewRP.asset\r\ncompiling=False; playing=False; dirty=False\r\n"
+}
