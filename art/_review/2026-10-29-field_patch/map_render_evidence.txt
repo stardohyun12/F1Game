@@ -1,0 +1,9 @@
+materialTemplate=TV6_Terrain shader=PitCrew/LofiPilot/Surface originalMaterialUnchanged=True
+A_aligned_10x8 rows=4 tris=14784 groundHeightSpan=0.9674816 soilInteriorTests=23040 soilClearance=0.004692078..0.04016113 ridgeFeet=0.03499985..0.03499985
+B_curved_12x9 rows=5 tris=18024 groundHeightSpan=1.419661 soilInteriorTests=23040 soilClearance=0.002250671..0.05309105 ridgeFeet=0.03499985..0.03499985
+A_high pos=(196.88, 53.71, -81.66) target=(197.27, -95.47, 39.03) fov=60 resolution=1280x611
+A_eye pos=(190.00, 27.69, -51.00) target=(198.00, 25.50, -57.00) fov=78 resolution=1280x720
+B_high pos=(196.88, 53.71, -81.66) target=(197.27, -95.47, 39.03) fov=60 resolution=1280x611
+B_eye pos=(190.00, 27.69, -51.00) target=(198.00, 25.50, -57.00) fov=78 resolution=1280x720
+raycasts=57712 terrainColliders=1 compiling=False shaderErrors=False
+cleanup remaining=0 dirtyBeforeDiscard=False dirty=False playing=False compiling=False
