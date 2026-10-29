@@ -205,23 +205,8 @@ public static partial class BuildBayLoop
                 juncs.Add((n, inc));
             }
             // 1차 실행: 높이를 먼저 펴고 갈림목 d 구간을 나중에 마디 높이로 덮었더니 d(최대 14 m)×11% 만큼의 차가 6 m 에 몰려 구배 262% → 이제 d 구간을 고정점으로 넣고 편다
-            foreach (var c in chains) { V2Profile(c, nodeY[c.n0], nodeY[c.n1], G); V2Trim(c); V2FinalGrade(c); }
-            // 1b-2: 좁은 길 끝이 큰길 띠 안을 달림(ridge_up_b_s0_2 10점 0.79 m · ridge_up_c_1 7점 0.45 m 높이차) → 지형을 누구 높이로 깎든 한쪽이 뜨거나 묻힘.
-            //  띠 안(+0.5 m) 점은 큰길 높이, 그 밖 4 m 는 smoothstep 으로 원래 높이
-            foreach (var e in chains)
-            {
-                var ny = e.p.Select(q => q.y).ToArray(); bool ch = false;
-                foreach (var f in chains)
-                {
-                    if (f == e || f.w <= e.w) continue;
-                    for (int i = 0; i < e.p.Count; i++)
-                    {
-                        if (!V2In(e.p[i])) continue; float d = V2Dist(f.p, e.p[i], out var nq) - f.w * .5f; if (d > 4.5f || Mathf.Abs(nq.y - e.p[i].y) > 3f) continue;   // 1.5 m 로는 능선 오르막 끝(구배 후 높이차 >1.5)이 안 걸림
-                        float t = Mathf.Clamp01((d - .5f) / 4f); t = t * t * (3 - 2 * t); ny[i] = Mathf.Lerp(nq.y, ny[i], t); ch = true;
-                    }
-                }
-                if (ch) { for (int i = 0; i < e.p.Count; i++) e.p[i] = new Vector3(e.p[i].x, ny[i], e.p[i].z); lg.Add($"큰길 높이 맞춤: {V2Short(e.id)}"); }
-            }
+            int DegE(int n) => chains.Count(x => x.n0 == n) + chains.Count(x => x.n1 == n);
+            foreach (var c in chains) { V2Profile(c, nodeY[c.n0], nodeY[c.n1], G); V2Trim(c); V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1); }
 
             // ── 띠 메시 ────────────────────────────────────────
             var v2T = new GameObject("RoadsV2").transform; v2T.SetParent(top, false);
@@ -260,8 +245,8 @@ public static partial class BuildBayLoop
             var segs = new List<(Vector3 a, Vector3 b, float hw, bool endA, bool endB)>();
             foreach (var c in chains) for (int i = 1; i < c.p.Count; i++) segs.Add((c.p[i - 1] + Vector3.up * RoadColLift, c.p[i] + Vector3.up * RoadColLift, c.w * .5f, i == 1 && c.d0 == 0f, i == c.p.Count - 1 && c.d1 == 0f));
             // 1b-1: 막힌 끝(갈림목 없는 사슬 끝) — 2 m 격자 정점 사이 삼각형이 어깨 밖(e 2~2.8 m) 정점으로 끌려 캡 변을 6~9 cm 덮음 → 캡 둘레는 어깨 +1 m, 깎기 −10 cm 더
-            var deadEnds = new List<(Vector3 p, float hw)>();
-            foreach (var c in chains) { if (c.d0 == 0f && V2In(c.p[0])) deadEnds.Add((c.p[0], c.w * .5f)); if (c.d1 == 0f && V2In(c.p[c.p.Count - 1])) deadEnds.Add((c.p[c.p.Count - 1], c.w * .5f)); }
+            var deadEnds = new List<(Vector3 p, float hw, Vector3 o)>();
+            foreach (var c in chains) { int m = c.p.Count; if (c.d0 == 0f && V2In(c.p[0])) deadEnds.Add((c.p[0], c.w * .5f, Fl(c.p[0] - c.p[1]).normalized)); if (c.d1 == 0f && V2In(c.p[m - 1])) deadEnds.Add((c.p[m - 1], c.w * .5f, Fl(c.p[m - 1] - c.p[m - 2]).normalized)); }
             var pads = V2Pads(top);
             var tr = terrGo.transform; var sv = srcMesh.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
             int moved = 0, padN = 0; float maxD = 0;
@@ -271,7 +256,7 @@ public static partial class BuildBayLoop
                 float orig = p.y, y = orig; float pe = 1e9f, pH = 0;
                 foreach (var pd in pads) { var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
                 if (pe <= 2f) { y = pH; padN++; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
-                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f, inY = 1e9f;
+                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f;
                 foreach (var s in segs)
                 {
                     if (p.x < Mathf.Min(s.a.x, s.b.x) - 40 || p.x > Mathf.Max(s.a.x, s.b.x) + 40 || p.z < Mathf.Min(s.a.z, s.b.z) - 40 || p.z > Mathf.Max(s.a.z, s.b.z) + 40) continue;
@@ -279,14 +264,12 @@ public static partial class BuildBayLoop
                     var q = Vector3.Lerp(s.a, s.b, t); var dd = Fl(p - q); float e = dd.magnitude - s.hw;
                     if ((s.endA && t0 < 0) || (s.endB && t0 > 1)) { float over = (t0 < 0 ? -t0 : t0 - 1) * ab.magnitude; e = Mathf.Max(Mathf.Sqrt(Mathf.Max(0, dd.sqrMagnitude - over * over)) - s.hw, over); }
                     V2Acc(e, q.y, ref eO, ref yO, ref lo, ref hi);
-                    if (e <= 0f) inY = Mathf.Min(inY, q.y);   // +0.3 m 여유로는 갈림목 다각형(낮음)이 오르막 사슬 첫 줄 정점을 가져가 뜸 +0.45
                 }
                 // 3차 실행: 안쪽을 마디 높이 하나로 깎았더니 갈림목 메시(가운데→띠 끝 부채꼴)와 6~20 cm 어긋나 띠 끝이 묻히거나 뜸 → 부채꼴 삼각형 높이를 그대로 따름
-                for (int jp = 0; jp < jPolys.Count; jp++) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); float fy = e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); if (e <= 0f) inY = Mathf.Min(inY, fy); }
-                // 1b-2: 띠 둘 이상 밑(또는 30 cm 안)인 정점 = 가장 낮은 띠가 주인. 가까운 띠를 따르면 높은 띠 가장자리를 덮거나 낮은 띠가 뜸
-                if (inY < 1e8f) yO = Mathf.Min(yO, inY);
+                for (int jp = 0; jp < jPolys.Count; jp++) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); float fy = e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); }
                 float sh = V2SH, under = V2Under;
-                foreach (var de in deadEnds) if (Fl(p - de.p).magnitude < de.hw + V2SH + 2f) { sh = V2SH + 1f; under = V2Under + .10f; break; }
+                foreach (var de in deadEnds) if (Fl(p - de.p).magnitude < de.hw + V2SH + 2f && Vector3.Dot(Fl(p - de.p), de.o) > 0f) {   // 1c: 캡 선 너머만(옆변까지 −10 cm 면 착지 띠가 뜸)
+                    sh = V2SH + 1f; under = V2Under + .10f; break; }
                 if (eO < sh + 30f && !(pe <= 2f && eO > 0f) && !(orig - yO > 3f && eO <= sh))
                 {
                     float S = yO - under;
@@ -511,9 +494,28 @@ public static partial class BuildBayLoop
         for (int i = 0; i < n; i++) c.p[i] = new Vector3(c.p[i].x, y[i], c.p[i].z);
     }
     // 2차 실행: 고정점(마디·평탄·구역 밖)끼리 맞붙은 곳에서 228~339% 가 남음 → 자른 뒤 끝점·구역 밖만 고정하고 구배를 한 번 더 끼운다(평탄 구간도 따라 움직임)
-    static void V2FinalGrade(V2L c)
+    static void V2FinalGrade(V2L c, bool dead0 = false, bool dead1 = false)
     {
-        int n = c.p.Count; bool Fx(int i) => i == 0 || i == n - 1 || !V2In(c.p[i]);
+        // 1c: 막힌 끝 직전까지 17~24% 로 오르다 끝에서 멈추면, 끝을 사이에 둔 2 m 격자 정점 두 줄(끝 1 m 앞 = −0.24, 끝 너머 = 평평)의
+        //  선형 보간이 길보다 ~0.2 m 낮아 띠 끝이 뜸(ridge_up_b_s0_2 +0.20·ridge_up_c_1 +0.24) → 막힌 끝 2.5 m 는 끝 높이로 평탄(착지)·고정
+        float L = V2Len(c.p), F = Mathf.Min(V2Land, L * .3f);
+        void Land(bool st)
+        {
+            if (F < .5f || !V2In(st ? c.p[0] : c.p[c.p.Count - 1])) return;
+            if (!st) c.p.Reverse();
+            float acc = 0, y0 = c.p[0].y;
+            for (int i = 1; i < c.p.Count; i++)
+            {
+                float l = Fl(c.p[i] - c.p[i - 1]).magnitude;
+                if (acc + l > F) { if (acc + l - F > .3f && F - acc > .3f) c.p.Insert(i, Vector3.Lerp(c.p[i - 1], c.p[i], (F - acc) / l)); break; }
+                acc += l;
+            }
+            acc = 0; for (int i = 1; i < c.p.Count; i++) { acc += Fl(c.p[i] - c.p[i - 1]).magnitude; if (acc > F + .01f) break; c.p[i] = new Vector3(c.p[i].x, y0, c.p[i].z); }
+            if (!st) c.p.Reverse();
+        }
+        if (dead0) Land(true); if (dead1) Land(false); c.fix = c.p.Select(q => !V2In(q)).ToList();
+        int n = c.p.Count; var land = new bool[n]; { float a = 0; for (int i = 0; i < n; i++) { if (i > 0) a += Fl(c.p[i] - c.p[i - 1]).magnitude; land[i] = (dead0 && a <= F + .01f) || (dead1 && L - a <= F + .01f); } }
+        bool Fx(int i) => i == 0 || i == n - 1 || land[i] || !V2In(c.p[i]);
         // 3차 실행: 양 끝 고정 높이차가 길이×11% 를 넘으면(능선 오르막 64 m 에 15 m) 해가 없어 마지막 패스 쪽 끝에 계단 339% → 고정점 사이 구간은 필요한 구배로 고르게
         var gl = Enumerable.Repeat(V2Grade, n).ToArray(); int a0 = 0; float run = 0;
         for (int i = 1; i < n; i++)
@@ -533,6 +535,7 @@ public static partial class BuildBayLoop
         for (int it = 0; it < 40; it++) { var o = c.p.Select(q => q.y).ToArray(); for (int i = 1; i < n - 1; i++) if (!Fx(i)) c.p[i] = new Vector3(c.p[i].x, (o[i - 1] + 2 * o[i] + o[i + 1]) * .25f, c.p[i].z); }
         for (int pass = 0; pass < 4; pass++) Pass();
     }
+    const float V2Land = 2.5f;   // 막힌 끝 착지(평탄) 길이 m
     static void V2FlatEnd(V2L c, bool start, float ny)
     {
         float d = start ? c.d0 : c.d1; if (d <= 0) return; float acc = 0; int n = c.p.Count;

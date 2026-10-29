@@ -1,0 +1,20 @@
+var sb = new System.Text.StringBuilder();
+var pts = new[] { new Vector3(236.0f, 0, -53.0f), new Vector3(291.0f, 0, -37.0f) };
+foreach (var rs in GameObject.FindObjectsByType<RoadSurface>(FindObjectsSortMode.None))
+{
+    var cl = rs.centerline; if (cl == null || cl.Length < 2) continue;
+    foreach (var pt in pts)
+        for (int i = 0; i < cl.Length; i++)
+        {
+            var d = new Vector2(cl[i].x - pt.x, cl[i].z - pt.z).magnitude;
+            if (d < 8f) { sb.Append(rs.name + " i=" + i + "/" + cl.Length + " (" + cl[i].x.ToString("F1") + "," + cl[i].y.ToString("F2") + "," + cl[i].z.ToString("F1") + ") d=" + d.ToString("F1") + " w=" + rs.width + "\n"); }
+        }
+}
+foreach (var pt in pts)
+    for (int dx = -6; dx <= 6; dx += 2)
+    {
+        var p = pt + new Vector3(dx, 0, 0); var line = "  x" + p.x + " z" + p.z + ":";
+        foreach (var h in Physics.RaycastAll(p + Vector3.up * 500, Vector3.down, 1000)) line += " " + h.collider.name.Replace("ROAD_V2", "") + "=" + h.point.y.ToString("F2");
+        sb.Append(line + "\n");
+    }
+return sb.ToString();
