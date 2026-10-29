@@ -281,6 +281,9 @@ public static partial class BuildBayLoop
                     }
                 }
                 if (out0 > 0) y = Mathf.Lerp(y, orig, out0 / margin);
+                // 1d: 구역 밖 여유띠의 원래 높이 되돌림이 874_s1 끝(구역 밖 1.4 m) 캡 너머 0.6 m 정점을 24.54 로 남겨, 2 m 삼각형이 띠 끝을 2 cm 덮음
+                //  → 띠 가장자리 1 m 안은 되돌림보다 띠−깎기가 우선
+                if (out0 > 0 && eO <= 1f) y = Mathf.Min(y, yO - V2Under);   // 구역 안까지 걸면 D198_postoffice 판 모서리를 0.31 깎음
                 if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; maxD = Mathf.Max(maxD, Mathf.Abs(y - orig)); }
             }
             var m2 = Object.Instantiate(srcMesh); m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
@@ -311,7 +314,15 @@ public static partial class BuildBayLoop
                     if (j - i >= 3)
                     {
                         var v = V2BandVerts(pts.GetRange(i, j - i), hw, V2PathLift);
-                        for (int q = 0; q < v.Count; q++) { float g = G(v[q].x, v[q].z); if (!float.IsNaN(g)) v[q] = new Vector3(v[q].x, g + V2PathLift, v[q].z); }
+                        // 1d: 정점 높이만 재면 2 m 격자 삼각형이 볼록한 곳에서 1 m 간격 정점 사이를 3 cm 덮음(295.7,−99.5) → 이웃(±1 m 4방향)과의 가운데가 직선보다 솟은 만큼만 올림
+                        //  (둘레 최고점을 쓰면 비탈 35% 에서 +0.18 뜸 — 평면이면 솟음 0 이라 비탈 무관)
+                        for (int q = 0; q < v.Count; q++)
+                        {
+                            float g = G(v[q].x, v[q].z); if (float.IsNaN(g)) continue; float bump = 0;
+                            foreach (var o in new[] { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) })
+                            { float gm = G(v[q].x + o.x * .5f, v[q].z + o.y * .5f), gf = G(v[q].x + o.x, v[q].z + o.y); if (!float.IsNaN(gm) && !float.IsNaN(gf)) bump = Mathf.Max(bump, gm - (g + gf) * .5f); }
+                            v[q] = new Vector3(v[q].x, g + V2PathLift + Mathf.Min(bump, .1f), v[q].z);
+                        }
                         var go = V2MakeRoad(v2T, "ROAD_V2p_" + (string)r["id"] + "_" + piece++, v, null, mat, meshes, false); pathN++;
                     }
                     i = j;

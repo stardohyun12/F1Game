@@ -1,0 +1,73 @@
+{
+ "id": "unity-Map_TownV6-20261029-032740-45c3",
+ "point": [
+  198.914,
+  19.216,
+  -77.447
+ ],
+ "radius": 40.0,
+ "dry_offset": null,
+ "pass": true,
+ "items": [
+  {
+   "name": "D198_garage",
+   "problem": null,
+   "value": "바닥-지형 -0.00~+0.00",
+   "fix": null
+  },
+  {
+   "name": "house_home",
+   "problem": null,
+   "value": "바닥-지형 +0.00~+0.00",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_26348058_83_0",
+   "problem": null,
+   "value": "가장자리 2점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.05m @(181.7,-104.6)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_798027349_257_0",
+   "problem": null,
+   "value": "가장자리 1점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.10m @(231.0,-99.0)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_798027350_258_0",
+   "problem": null,
+   "value": "가장자리 1점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.10m @(231.0,-99.0)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_798027351_259_0",
+   "problem": null,
+   "value": "가장자리 1점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.10m @(213.1,-106.3)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_26348059_84_0",
+   "problem": null,
+   "value": "가장자리 1점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.06m @(181.1,-105.3)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_26348044_82_0",
+   "problem": null,
+   "value": "가장자리 3점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.07m @(208.8,-88.2)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_300240484_158_0",
+   "problem": null,
+   "value": "가장자리 1점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.05m @(211.2,-103.6)",
+   "fix": null
+  },
+  {
+   "name": "ROAD_V2p_camo_798027348_256_0",
+   "problem": null,
+   "value": "가장자리 2점, |차|>0.15 0점(0%), 지형에 덮임 0점, 최악 +0.08m @(214.1,-106.6)",
+   "fix": null
+  }
+ ]
+}

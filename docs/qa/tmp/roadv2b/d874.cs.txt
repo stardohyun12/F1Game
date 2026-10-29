@@ -1,0 +1,5 @@
+var sb = new System.Text.StringBuilder();
+var go = GameObject.Find("ROAD_V2e_camo_874876277_276_s1");
+if (go != null) { var mf = go.GetComponent<MeshFilter>(); var vs = mf.sharedMesh.vertices; for (int i = 0; i < vs.Length; i++) { var w = go.transform.TransformPoint(vs[i]); if (new Vector2(w.x - 331.4f, w.z + 88.4f).magnitude < 4f) sb.Append("v" + i + " (" + w.x.ToString("F2") + "," + w.y.ToString("F3") + "," + w.z.ToString("F2") + ")\n"); } sb.Append("nv=" + vs.Length + "\n"); }
+for (float dx = -1.5f; dx <= 1.6f; dx += .5f) for (float dz = -1.5f; dz <= 1.6f; dz += .5f) { var p = new Vector3(331.4f + dx, 0, -88.4f + dz); var line = "x" + p.x.ToString("F1") + " z" + p.z.ToString("F1") + ":"; foreach (var h in Physics.RaycastAll(p + Vector3.up * 500, Vector3.down, 1000)) line += " " + h.collider.name.Replace("ROAD_V2", "").Replace("camo_","") + "=" + h.point.y.ToString("F3"); sb.Append(line + "\n"); }
+return sb.ToString();
