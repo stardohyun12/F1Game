@@ -66,6 +66,31 @@ public static partial class BuildBayLoop
                 var L = new V2L { id = rs.roadId, kind = rs.kind, w = rs.width, rough = rs.roughness, mat = rs.GetComponent<MeshRenderer>().sharedMaterial, p = rs.centerline.Select(q => q - Vector3.up * RoadColLift).ToList() };
                 L.fix = L.p.Select(q => !V2In(q)).ToList(); cars.Add(L); disabled.Add(rs.name);
             }
+            // 3차 실행: camo_874876277_276 이 큰길 165_4 띠 안을 가운데 구간(19점, 높이차 ≤0.94)만 나란히 달려 70% 중복 기준에 안 걸림 → 겹침 188쌍.
+            // 좁은 길이 넓은 길 띠 안을 4 m 넘게 달리면 그 구간을 잘라 내고, 남은 두 토막의 끝은 아래 T 붙이기가 큰길에 붙인다.
+            for (int k = 0; k < cars.Count; k++)
+            {
+                var e = cars[k]; bool cut = false;
+                foreach (var f in cars)
+                {
+                    if (f == e || f.w <= e.w) continue;
+                    var ins = e.p.Select(q => V2In(q) && V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 1.5f).ToArray();
+                    var keep = new List<List<int>>(); var cur = new List<int>(); int i = 0;
+                    while (i < e.p.Count)
+                    {
+                        if (!ins[i]) { cur.Add(i); i++; continue; }
+                        int j = i; while (j + 1 < e.p.Count && ins[j + 1]) j++;
+                        if (V2Len(e.p.GetRange(i, j - i + 1)) >= 4f) { cur.Add(i); keep.Add(cur); cur = new List<int> { j }; cut = true; } else for (int t = i; t <= j; t++) cur.Add(t);
+                        i = j + 1;
+                    }
+                    keep.Add(cur);
+                    if (!cut) continue;
+                    cars.RemoveAt(k); int add = 0;
+                    foreach (var g in keep) { var p = g.Select(t => e.p[t]).ToList(); if (p.Count < 2 || V2Len(p) < V2Spur) continue; cars.Insert(k + add, new V2L { id = e.id + "_s" + add, kind = e.kind, w = e.w, rough = e.rough, mat = e.mat, p = p, fix = p.Select(q => !V2In(q)).ToList() }); add++; }
+                    lg.Add($"띠 안 구간 잘라냄: {e.id} ⊂ {f.id} → 토막 {add}");
+                    k += add - 1; break;
+                }
+            }
             var nP = new List<Vector3>(); var par = new List<int>();
             int NewN(Vector3 q) { nP.Add(q); par.Add(par.Count); return par.Count - 1; }
             int Fd(int a) { while (par[a] != a) a = par[a] = par[par[a]]; return a; }
@@ -145,6 +170,12 @@ public static partial class BuildBayLoop
                 }
             }
             var chains = edges.Where(x => !x.dead).ToList();
+            foreach (var e in chains) foreach (var f in chains)   // 진단: 좁은 길이 넓은 길 띠 안을 달리는 구간
+            {
+                if (e == f || e.w > f.w) continue; int k = 0, i0 = -1, i1 = -1; float dyMax = 0;
+                for (int i = 0; i < e.p.Count; i++) if (V2In(e.p[i]) && V2Dist(f.p, e.p[i], out var nq) < f.w * .5f) { k++; if (i0 < 0) i0 = i; i1 = i; dyMax = Mathf.Max(dyMax, Mathf.Abs(nq.y - e.p[i].y)); }
+                if (k >= 4) lg.Add($"띠 안 진단: {V2Short(e.id)} 점 {k}/{e.p.Count} [{i0}..{i1}] 이 {V2Short(f.id)} 띠 안, 높이차 최대 {dyMax:F2}");
+            }
             lg.Add($"그래프: 길 {cars.Count} → 사슬 {chains.Count}, 마디 {nP.Count(_ => true)}(T {nT}·X {nX}), 군더더기 {nSpur}, 겹침합침 {nDup}");
 
             // ── 2 평면 곡선 ─────────────────────────────────────
@@ -190,7 +221,7 @@ public static partial class BuildBayLoop
                 objN++;
                 report.Add(V2Stats(c));
             }
-            var jPolys = new List<(List<Vector3> poly, float y)>(); int gapN = 0;
+            var jPolys = new List<(List<Vector3> poly, float y)>(); var jCen = new List<Vector3>(); int gapN = 0;
             foreach (var (n, inc) in juncs)
             {
                 var poly = new List<Vector3>(); var cut = new List<bool>(); float ny = nodeY[n] + RoadColLift;
@@ -206,7 +237,7 @@ public static partial class BuildBayLoop
                 }
                 var center = new Vector3(nP[n].x, ny, nP[n].z);
                 V2MakeJunction(v2T, "ROAD_V2j_" + n, center, poly, cut, inc.OrderByDescending(x => x.c.w).First().c, meshes, topTris, objN++);
-                jPolys.Add((poly, ny));
+                jPolys.Add((poly, ny)); jCen.Add(center);
                 for (int i = 0; i < inc.Count; i++) foreach (var q in new[] { AB[i].A, AB[i].B }) if (poly.Min(pp => (pp - q).magnitude) > .01f) gapN++;
             }
             // ── 5 지형 ──────────────────────────────────────────
@@ -230,7 +261,8 @@ public static partial class BuildBayLoop
                     if ((s.endA && t0 < 0) || (s.endB && t0 > 1)) { float over = (t0 < 0 ? -t0 : t0 - 1) * ab.magnitude; e = Mathf.Max(Mathf.Sqrt(Mathf.Max(0, dd.sqrMagnitude - over * over)) - s.hw, over); }
                     V2Acc(e, q.y, ref eO, ref yO, ref lo, ref hi);
                 }
-                foreach (var (poly, jy) in jPolys) { float e = V2PolyE(poly, p, out float yb); V2Acc(e, e <= 0 ? jy : yb, ref eO, ref yO, ref lo, ref hi); }
+                // 3차 실행: 안쪽을 마디 높이 하나로 깎았더니 갈림목 메시(가운데→띠 끝 부채꼴)와 6~20 cm 어긋나 띠 끝이 묻히거나 뜸 → 부채꼴 삼각형 높이를 그대로 따름
+                for (int jp = 0; jp < jPolys.Count; jp++) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); V2Acc(e, e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb, ref eO, ref yO, ref lo, ref hi); }
                 if (eO < V2SH + 30f && !(pe <= 2f && eO > 0f) && !(orig - yO > 3f && eO <= V2SH))
                 {
                     float S = yO - V2Under;
@@ -458,11 +490,24 @@ public static partial class BuildBayLoop
     static void V2FinalGrade(V2L c)
     {
         int n = c.p.Count; bool Fx(int i) => i == 0 || i == n - 1 || !V2In(c.p[i]);
-        for (int pass = 0; pass < 4; pass++)
+        // 3차 실행: 양 끝 고정 높이차가 길이×11% 를 넘으면(능선 오르막 64 m 에 15 m) 해가 없어 마지막 패스 쪽 끝에 계단 339% → 고정점 사이 구간은 필요한 구배로 고르게
+        var gl = Enumerable.Repeat(V2Grade, n).ToArray(); int a0 = 0; float run = 0;
+        for (int i = 1; i < n; i++)
         {
-            for (int i = 1; i < n; i++) if (!Fx(i)) { float d = Fl(c.p[i] - c.p[i - 1]).magnitude * V2Grade; var q = c.p[i]; q.y = Mathf.Clamp(q.y, c.p[i - 1].y - d, c.p[i - 1].y + d); c.p[i] = q; }
-            for (int i = n - 2; i >= 0; i--) if (!Fx(i)) { float d = Fl(c.p[i] - c.p[i + 1]).magnitude * V2Grade; var q = c.p[i]; q.y = Mathf.Clamp(q.y, c.p[i + 1].y - d, c.p[i + 1].y + d); c.p[i] = q; }
+            run += Fl(c.p[i] - c.p[i - 1]).magnitude;
+            if (!Fx(i)) continue;
+            float req = Mathf.Abs(c.p[i].y - c.p[a0].y) / Mathf.Max(.3f, run) * 1.02f;
+            for (int k = a0 + 1; k <= i; k++) gl[k] = Mathf.Max(V2Grade, req);
+            a0 = i; run = 0;
         }
+        void Pass()
+        {
+            for (int i = 1; i < n; i++) if (!Fx(i)) { float d = Fl(c.p[i] - c.p[i - 1]).magnitude * gl[i]; var q = c.p[i]; q.y = Mathf.Clamp(q.y, c.p[i - 1].y - d, c.p[i - 1].y + d); c.p[i] = q; }
+            for (int i = n - 2; i >= 0; i--) if (!Fx(i)) { float d = Fl(c.p[i] - c.p[i + 1]).magnitude * gl[i + 1]; var q = c.p[i]; q.y = Mathf.Clamp(q.y, c.p[i + 1].y - d, c.p[i + 1].y + d); c.p[i] = q; }
+        }
+        for (int pass = 0; pass < 4; pass++) Pass();
+        for (int it = 0; it < 40; it++) { var o = c.p.Select(q => q.y).ToArray(); for (int i = 1; i < n - 1; i++) if (!Fx(i)) c.p[i] = new Vector3(c.p[i].x, (o[i - 1] + 2 * o[i] + o[i + 1]) * .25f, c.p[i].z); }
+        for (int pass = 0; pass < 4; pass++) Pass();
     }
     static void V2FlatEnd(V2L c, bool start, float ny)
     {
@@ -528,6 +573,17 @@ public static partial class BuildBayLoop
         }
         var go = V2Go(parent, name, vis, tv, v, t, main.mat, meshes);
         var rsf = go.AddComponent<RoadSurface>(); rsf.roadId = "v2_" + name; rsf.kind = main.kind; rsf.roughness = main.rough; rsf.width = main.w; rsf.centerline = new[] { center, center + Vector3.forward * .1f }; rsf.closed = false;
+    }
+    static float V2FanY(Vector3 c, List<Vector3> poly, Vector3 p, float dflt)   // 가운데 c 와 경계 변 (a,b) 로 된 부채꼴 삼각형 중 p 를 담은 것의 높이
+    {
+        for (int k = 0; k < poly.Count; k++)
+        {
+            var a = poly[k]; var b = poly[(k + 1) % poly.Count];
+            float d = (a.x - c.x) * (b.z - c.z) - (b.x - c.x) * (a.z - c.z); if (Mathf.Abs(d) < 1e-6f) continue;
+            float u = ((p.x - c.x) * (b.z - c.z) - (b.x - c.x) * (p.z - c.z)) / d, v = ((a.x - c.x) * (p.z - c.z) - (p.x - c.x) * (a.z - c.z)) / d;
+            if (u >= -1e-4f && v >= -1e-4f && u + v <= 1.0001f) return c.y + u * (a.y - c.y) + v * (b.y - c.y);
+        }
+        return dflt;
     }
     static float V2PolyE(List<Vector3> poly, Vector3 p, out float yb)   // 안 = −(경계까지 거리), 밖 = +거리. yb = 가장 가까운 경계점 높이
     {
