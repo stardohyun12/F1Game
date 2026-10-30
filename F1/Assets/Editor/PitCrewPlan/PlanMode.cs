@@ -26,7 +26,7 @@ namespace PitCrewPlan
             get => SessionState.GetBool("PCPlan.On", false);
             set { SessionState.SetBool("PCPlan.On", value); if (!value) { Strokes.Clear(); CloseInput(); bubble = null; } SceneView.RepaintAll(); }
         }
-        public static bool HideDone { get => SessionState.GetBool("PCPlan.HideDone", false); set { SessionState.SetBool("PCPlan.HideDone", value); SceneView.RepaintAll(); } }
+        public static bool HideDone { get => SessionState.GetBool("PCPlan.HideDone", true); set { SessionState.SetBool("PCPlan.HideDone", value); SceneView.RepaintAll(); } }
         public static string ArmedPrefab;
 
         /// 그린 선(씬 뷰 GUI 좌표, 포인트 단위). 저장 때 0~1 로 바꿔 스샷에 합성한다.

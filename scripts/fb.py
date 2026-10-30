@@ -185,6 +185,18 @@ def cmd_fixed(a):
     ok, summary, after = judge_gate(a)
     rel = os.path.relpath(os.path.abspath(after), ROOT).replace("\\", "/")
     if not ok:
+        # 판정 갈림(한쪽 NO·한쪽 YES)이면 도현이 직접 고르게 fixed 로 올린다 — 기획 창에 [넘기기]/[다시]가 떠야 한다(10/30 도현)
+        try:
+            j = json.load(open(os.path.join(FB, "judge", d["id"] + ".json"), encoding="utf-8"))
+            vs = [r.get("verdict") for r in j.get("judges", {}).values()]
+        except Exception:
+            vs = []
+        if "NO" in vs and "YES" in vs:
+            def edit_split(d):
+                push(d, a.who, a.text + "  [판정 갈림 — 직접 보고 넘기기/다시: " + summary + "]", rel)
+                d["status"] = "fixed"
+            print("판정 갈림 → fixed(도현 확인) →", mutate(a.id, edit_split))
+            return
         mutate(a.id, lambda d: push(d, a.who, "판정: 아직 보임 — " + summary, rel))
         print("거부: 판정 통과 못 함 — status 그대로(open). 이유:\n  " + summary)
         sys.exit(1)
