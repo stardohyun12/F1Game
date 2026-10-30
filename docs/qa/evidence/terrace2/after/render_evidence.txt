@@ -1,0 +1,11 @@
+tag=after PCLookScene=False A7Shade=RGBA(0.419, 0.505, 0.536, 1.000) terrainMesh=Mesh_TownV6_Terrain_terrace1
+f1_high.png pos=(196.88, 53.71, -81.66) target=(197.27, -95.47, 39.03) fov=60
+f2_eye.png pos=(190.00, 27.69, -51.00) target=(198.00, 25.50, -57.00) fov=78
+f3_top.png pos=(198.00, 40.30, -57.00) down fov=40
+f4_cart.png pos=(195.00, 26.30, -66.00) target=(198.00, 25.65, -57.00) fov=70
+f5_edge.png pos=(193.50, 25.64, -61.50) target=(198.00, 25.40, -57.00) fov=70
+c1_cart.png pos=(170.00, 18.56, -78.25) target=(187.25, 23.20, -68.76) fov=70
+c2_cart.png pos=(188.00, 19.20, -82.50) target=(195.35, 23.49, -70.68) fov=70
+c3_cart.png pos=(206.00, 21.17, -81.88) target=(203.45, 24.38, -70.39) fov=70
+t1_top.png pos=(185.00, 134.40, -61.00) down fov=60
+dirty=False playing=False

@@ -17,8 +17,12 @@ public static class TerraceBlock
     const string SrcMesh=Folder+"Mesh_TownV6_Terrain_v2.asset",NatMesh=Folder+"Mesh_TownV6_Terrain_0433.asset";
     const string DstMesh=Folder+"Mesh_TownV6_Terrain_terrace1.asset",WallAsset=Folder+"Mesh_TerraceBlock_walls.asset",PathAsset=Folder+"Mesh_TerraceBlock_path.asset";
     const string StoneMat=Folder+"TV6_Stone.mat",RetainMat=Folder+"TV6_Retain.mat",CapMat=Folder+"TV6_RetainCap.mat",TerrainMat=Folder+"TV6_Terrain.mat",PathMat=Folder+"TV6_TerracePath.mat";
+    // 2차: 돌 텍스처(H1 사진, house_home 기단과 같은 축척 2.5 m) · 흙길 가장자리 번짐 — docs/qa/tmp/terrace2/make_tex.py 가 만든다
+    const string StoneTex=Folder+"TV6_RetainStone.png",PathEdgeTex=Folder+"TV6_TerracePathEdge.png";
     const string RootName="TerraceBlock";
     const float Cell=.25f,Blend=8f,CarMargin=1f,PathMargin=.8f,WallMin=.3f,Thick=.4f,Batter=.08f,CapW=.56f,CapH=.12f,Section=2.4f,MaxEdge=.38f;
+    // 2차: 2.5 m 넘는 단차는 두 단(사이 1.6 m 화단 턱) · 마디 끝 겹침 0.15 m · 돌 한 장 2.5×1.88 m · 흙길 반폭 1.1 m(가운데 흙, 바깥으로 풀 번짐)
+    const float TwoTier=2.5f,LedgeW=1.6f,LedgeRoadGap=.6f,SecOverlap=.15f,StoneU=2.5f,StoneV=1.88f,PathHalf=1.1f,SmoothRoadGap=2f;
     public static readonly Vector3 HouseCenter=new Vector3(185,0,-61);
 
     [MenuItem("PitCrew/Map/TownV6 — 계단 땅 시제품 (집 블록, D-209)")] static void BuildMenu()=>Debug.Log(Build(HouseCenter,60));
@@ -205,29 +209,86 @@ public static class TerraceBlock
         }
 
         // --- 높이 F ---
+        // 2차: 1:2 원뿔을 "터마다 가장 가까운 칸 하나" 가 아니라 모든 경계 칸의 포락으로. 가까운 칸이 바뀌는 선마다 높이가 툭 끊겨
+        //      축대 → 길 방향 세로 줄무늬가 생겼다(1차 f1_high·c2). 길(ROAD)은 따로 포락해 마지막에 건다(1차와 같은 우선순위).
         var Fcore=new float[N];var F=new float[N];
-        for(int j=0;j<n;j++)for(int i=0;i<n;i++)
+        void ComputeF()
         {
-            int idx=j*n+i;int l=lab[idx];float y;
-            if(l==ROAD)y=Hc[idx];
-            else if(l>=0)y=owners[l].H(g.P(idx));
-            else
+            var loO=new float[N];var upO=new float[N];var loR=new float[N];var upR=new float[N];
+            for(int k=0;k<N;k++){loO[k]=loR[k]=float.NegativeInfinity;upO[k]=upR[k]=float.PositiveInfinity;}
+            for(int j=0;j<n;j++)for(int i=0;i<n;i++)
             {
-                y=Hn[idx];
-                for(int o=0;o<owners.Count;o++)
+                int idx=j*n+i;int o=lab[idx];if(o<0)continue;
+                bool edge=(i>0&&lab[idx-1]!=o)||(i<n-1&&lab[idx+1]!=o)||(j>0&&lab[idx-n]!=o)||(j<n-1&&lab[idx+n]!=o);if(!edge)continue;
+                float e=o==ROAD?Hc[idx]:owners[o].H(g.P(idx));float delta=Hn[idx]-e,a=Mathf.Abs(delta);
+                float W=Mathf.Clamp01((a-.45f)/.15f)*a;float cc=e+Mathf.Sign(delta)*W;
+                if(o==ROAD){loR[idx]=cc+Cell*.25f;upR[idx]=cc-Cell*.25f;}else{loO[idx]=cc+Cell*.25f;upO[idx]=cc-Cell*.25f;}
+            }
+            Envelope(n,loO,upO);Envelope(n,loR,upR);
+            for(int j=0;j<n;j++)for(int i=0;i<n;i++)
+            {
+                int idx=j*n+i;int l=lab[idx];float y;
+                if(l==ROAD)y=Hc[idx];
+                else if(l>=0)y=owners[l].H(g.P(idx));
+                else{y=Mathf.Clamp(Hn[idx],loO[idx],upO[idx]);y=Mathf.Clamp(y,loR[idx],upR[idx]);}
+                Fcore[idx]=y;
+            }
+            // 원뿔이 갈아타는 꺾임선(희미한 사선 띠) 누그러뜨리기: 터 밖 칸끼리만 3×3 평균 2번(터·길 칸은 섞지 않음 → 축대 밑 높이 그대로).
+            // 길에서 2 m 안 칸은 빼둔다 — 섞으면 길 메시 밑 땅이 최대 2.7 cm 움직였다(검증 1차 0.7 cm).
+            for(int pass=0;pass<2;pass++)
+            {
+                var tmp=(float[])Fcore.Clone();
+                for(int j=1;j<n-1;j++)for(int i=1;i<n-1;i++)
                 {
-                    int q=feat[o][idx];if(q<0)continue;float d=Mathf.Max(0,Mathf.Sqrt(D2(q,i,j))*Cell-Cell*.5f);if(d>40)continue;
-                    float e=o==ROAD?Hc[q]:owners[o].H(g.P(q));float delta=Hn[q]-e,a=Mathf.Abs(delta);
-                    float W=Mathf.Clamp01((a-.45f)/.15f)*a;float cc=e+Mathf.Sign(delta)*W;
-                    y=Mathf.Clamp(y,cc-d*.5f,cc+d*.5f);
+                    int idx=j*n+i;if(lab[idx]!=-1)continue;int qr=feat[ROAD][idx];if(qr>=0&&D2(qr,i,j)*Cell*Cell<SmoothRoadGap*SmoothRoadGap)continue;float sum=0;int c=0;
+                    for(int dj=-1;dj<=1;dj++)for(int di=-1;di<=1;di++){int nb=idx+dj*n+di;if(lab[nb]!=-1)continue;sum+=tmp[nb];c++;}
+                    Fcore[idx]=sum/c;
                 }
             }
-            Fcore[idx]=y;float bt=Mathf.SmoothStep(0,1,Mathf.InverseLerp(radius,radius+Blend,Rad(g.P(idx))));F[idx]=Mathf.Lerp(y,Hc[idx],bt);
+            for(int k=0;k<N;k++){float bt=Mathf.SmoothStep(0,1,Mathf.InverseLerp(radius,radius+Blend,Rad(g.P(k))));F[k]=Mathf.Lerp(Fcore[k],Hc[k],bt);}
+        }
+        ComputeF();
+
+        // --- 2단 축대: 터와 바깥 땅 차이가 2.5 m 넘는 곳은 바깥쪽 1.6 m 띠를 "화단 턱" 터로 만들어 중간 높이에 둔다 ---
+        //     위 단 = 터 쪽, 아래 단 = 턱 바깥. 높이 U = 그 터 최대 단차의 절반(0.1 m 올림) → 두 단 다 2.5 m 이하. 총 높이는 그대로.
+        //     턱은 길(차길+여유 1 m) 에서 0.6 m 더 떨어진 칸만 — 길가 축대가 차길 쪽으로 나오지 않게.
+        int firstLedge=owners.Count;var ledgeInfo=new List<string>();
+        for(int o=0;o<ROAD;o++)
+        {
+            foreach(int s in new[]{-1,1})  // -1: 바깥이 낮다(터가 위) · +1: 바깥이 높다(터를 깎아 들어감)
+            {
+                var cand=new List<int>();float jmax=0;
+                for(int j=0;j<n;j++)for(int i=0;i<n;i++)
+                {
+                    int idx=j*n+i;if(lab[idx]!=-1)continue;int q=feat[o][idx];if(q<0||Mathf.Sqrt(D2(q,i,j))*Cell>LedgeW)continue;
+                    if(Rad(g.P(idx))>radius-2)continue;int qr=feat[ROAD][idx];if(qr>=0&&Mathf.Sqrt(D2(qr,i,j))*Cell<LedgeRoadGap)continue;
+                    float J=(Fcore[idx]-owners[o].H(g.P(q)))*s;if(J<=TwoTier)continue;cand.Add(idx);jmax=Mathf.Max(jmax,J);
+                }
+                if(cand.Count*Cell*Cell<3f)continue;
+                float U=Mathf.Ceil(jmax*.5f/.1f)*.1f;var oo=owners[o];
+                var led=new Owner{name="ledge_"+oo.name+(s<0?"_low":"_high"),hf=p=>oo.H(p)+s*U};int li=owners.Count;owners.Add(led);
+                foreach(var idx in cand)lab[idx]=li;led.cells=cand.Count;
+                ledgeInfo.Add($"{{\"name\":\"{led.name}\",\"cells\":{cand.Count},\"areaM2\":{cand.Count*Cell*Cell:F1},\"jMax\":{jmax:F2},\"upper\":"+U.ToString("F2")+"}");
+            }
+        }
+        if(owners.Count>firstLedge)
+        {
+            // 턱 터의 최근접 칸 표(축대 방향 판정에 씀) + F 다시
+            var featL=new int[owners.Count][];Array.Copy(feat,featL,feat.Length);feat=featL;
+            for(int o=firstLedge;o<owners.Count;o++)
+            {
+                var f=new int[N];for(int k=0;k<N;k++)f[k]=lab[k]==o?k:-1;
+                void Try(int idx,int nb,int i,int j){int s=f[nb];if(s<0)return;if(f[idx]<0||D2(s,i,j)<D2(f[idx],i,j))f[idx]=s;}
+                for(int j=0;j<n;j++)for(int i=0;i<n;i++){int idx=j*n+i;if(i>0)Try(idx,idx-1,i,j);if(j>0){Try(idx,idx-n,i,j);if(i>0)Try(idx,idx-n-1,i,j);if(i<n-1)Try(idx,idx-n+1,i,j);}}
+                for(int j=n-1;j>=0;j--)for(int i=n-1;i>=0;i--){int idx=j*n+i;if(i<n-1)Try(idx,idx+1,i,j);if(j<n-1){Try(idx,idx+n,i,j);if(i<n-1)Try(idx,idx+n+1,i,j);if(i>0)Try(idx,idx+n-1,i,j);}}
+                feat[o]=f;
+            }
+            ComputeF();
         }
 
         // --- 축대: 터 경계(마칭 스퀘어) 를 따라 양쪽 높이차를 재서 WallMin(0.3 m) 이상·0.8 m 이상 이어지는 곳 ---
-        var wv=new List<Vector3>();var wt=new List<int>();var ct=new List<int>();
-        float wallLen=0,wallMax=0,wallSum=0;int sections=0,stones=0;var perOwner=new Dictionary<string,float>();
+        var wv=new List<Vector3>();var wt=new List<int>();var ct=new List<int>();var wuv=new List<Vector2>();
+        float wallLen=0,wallMax=0,wallSum=0,tallLen=0;int sections=0,stones=0;var perOwner=new Dictionary<string,float>();
         for(int o=0;o<owners.Count;o++)
         {
             foreach(var raw in Contours(g,lab,o))
@@ -251,9 +312,10 @@ public static class TerraceBlock
                     if(!ok[k]){k++;continue;}int e=k;float rl=0;while(e+1<m&&ok[e+1]&&Mathf.Sign(J[e+1])==Mathf.Sign(J[k])){rl+=(chain[e+1]-chain[e]).magnitude;e++;}
                     if(rl<.8f)for(int q=k;q<=e;q++)ok[q]=false;k=e+1;
                 }
+                var S=new float[m];for(int k=1;k<m;k++)S[k]=S[k-1]+(chain[k]-chain[k-1]).magnitude;
                 void Emit(int a,int b)
                 {
-                    if(b<=a)return;float l2=WallSection(wv,wt,ct,chain,Lo,Fh,Fl,a,b,ref stones,out float hgt);wallLen+=l2;wallMax=Mathf.Max(wallMax,hgt);wallSum+=hgt*l2;sections++;
+                    if(b<=a)return;float l2=WallSection(wv,wt,ct,wuv,chain,S,Lo,Fh,Fl,a,b,ref stones,out float hgt);wallLen+=l2;wallMax=Mathf.Max(wallMax,hgt);if(hgt>TwoTier+.15f)tallLen+=l2;wallSum+=hgt*l2;sections++;
                     perOwner.TryGetValue(owners[o].name,out float pl);perOwner[owners[o].name]=pl+l2;
                 }
                 int s0=-1;float len=0,mn=0,mx=0;
@@ -317,6 +379,7 @@ public static class TerraceBlock
             if(Mathf.Abs(y-p.y)>.001f){changedV++;maxCut=Mathf.Max(maxCut,p.y-y);maxFill=Mathf.Max(maxFill,y-p.y);}
             V[k]=new Vector3(p.x,y,p.z);
         }
+        int tFixed=StitchTJunctions(V,tris,p=>Rad(p)<=radius+Blend,radius+Blend+2,Rad);
         var mesh=new Mesh{name="Mesh_TownV6_Terrain_terrace1",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32};
         mesh.SetVertices(V);mesh.SetTriangles(tris,0);if(hUV)mesh.SetUVs(0,uv);if(hUV2)mesh.SetUVs(1,uv2);if(hCol)mesh.SetColors(col);
         mesh.RecalculateNormals();
@@ -326,22 +389,40 @@ public static class TerraceBlock
 
         // --- 재질 사본 ---
         Material CopyMat(string from,string to,Color? tint){var m=AssetDatabase.LoadAssetAtPath<Material>(to);if(!m){AssetDatabase.CopyAsset(from,to);m=AssetDatabase.LoadAssetAtPath<Material>(to);}if(tint.HasValue&&m.HasProperty("_Tint")){m.SetColor("_Tint",tint.Value);EditorUtility.SetDirty(m);}return m;}
+        // 2차: 축대 = H1 돌 사진 텍스처(빛 안 구움, 틴트 거의 흰색) · 갓돌 = 밝은 회백 단색 · 흙길 = 풀 틴트 × 가장자리 번짐 텍스처(바깥 끝 = 풀색 그대로)
+        Texture2D Tex(string path,bool clampU)
+        {
+            AssetDatabase.ImportAsset(path,ImportAssetOptions.ForceSynchronousImport);var ti=(TextureImporter)AssetImporter.GetAtPath(path);
+            if(ti==null)throw new Exception("텍스처 없음 "+path+" — make_tex.py 먼저");
+            ti.wrapModeU=clampU?TextureWrapMode.Clamp:TextureWrapMode.Repeat;ti.wrapModeV=TextureWrapMode.Repeat;ti.filterMode=FilterMode.Bilinear;ti.mipmapEnabled=true;ti.sRGBTexture=true;ti.textureCompression=TextureImporterCompression.Uncompressed;
+            ti.SaveAndReimport();return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        }
+        var stoneTex=Tex(StoneTex,false);var edgeTex=Tex(PathEdgeTex,true);
         var stone=AssetDatabase.LoadAssetAtPath<Material>(StoneMat);var st0=stone.HasProperty("_Tint")?stone.GetColor("_Tint"):Color.white;
-        // 맵 돌 색(황토)을 회색 쪽으로 반쯤 — 원색 그대로면 나무판처럼 읽힘(1차 캡처)
-        var wallTint=Color.Lerp(st0,new Color(.60f,.58f,.54f,st0.a),.6f);
-        var retain=CopyMat(StoneMat,RetainMat,wallTint);var cap=CopyMat(StoneMat,CapMat,new Color(Mathf.Min(1,wallTint.r*1.18f),Mathf.Min(1,wallTint.g*1.18f),Mathf.Min(1,wallTint.b*1.18f),st0.a));
-        var pathMat=CopyMat(TerrainMat,PathMat,new Color(.58f,.47f,.33f,1));
+        var retain=CopyMat(StoneMat,RetainMat,new Color(1.05f,1.02f,.96f,st0.a));retain.SetTexture("_MainTex",stoneTex);retain.SetTextureScale("_MainTex",new Vector2(1/StoneU,1/StoneV));EditorUtility.SetDirty(retain);
+        var cap=CopyMat(StoneMat,CapMat,new Color(.86f,.83f,.76f,st0.a));
+        var terrMat=AssetDatabase.LoadAssetAtPath<Material>(TerrainMat);var pathMat=CopyMat(TerrainMat,PathMat,terrMat.GetColor("_Tint"));pathMat.SetTexture("_MainTex",edgeTex);pathMat.SetTextureScale("_MainTex",Vector2.one);EditorUtility.SetDirty(pathMat);
 
         // --- 흙길 띠(최종 F 위 +4 cm) ---
-        var pv=new List<Vector3>();var pt=new List<int>();float pathLen=0;
+        // 2차: 반폭 1.1 m(11칸), 정점 높이 = 새 지형 메시 레이 +3 cm(지형 삼각형과 어긋나 뜨지 않게), UV u = 가로 0..1, v = 길이/4 m
+        var pv=new List<Vector3>();var pt=new List<int>();var puv=new List<Vector2>();float pathLen=0;const int PC=11;
         {
-            var pts=new List<Vector2>();for(int k=0;k<pathLine.Count-1;k++){var a=pathLine[k];var b=pathLine[k+1];int s=Mathf.Max(1,Mathf.CeilToInt((b-a).magnitude/.25f));for(int q=0;q<s;q++)pts.Add(Vector2.Lerp(a,b,q/(float)s));pathLen+=(b-a).magnitude;}pts.Add(pathLine[pathLine.Count-1]);
-            for(int k=0;k<pts.Count;k++){var d=(pts[Mathf.Min(k+1,pts.Count-1)]-pts[Mathf.Max(k-1,0)]).normalized;var nn=new Vector2(-d.y,d.x);for(int q=-2;q<=2;q++){var p=pts[k]+nn*(q*.275f);pv.Add(new Vector3(p.x,g.Sample(F,p.x,p.y)+.04f,p.y));}}
-            for(int k=0;k<pts.Count-1;k++)for(int q=0;q<4;q++){int a=k*5+q,b=a+1,c=a+5,d=a+6;var tri=new[]{a,c,b,b,c,d};var nrm=Vector3.Cross(pv[c]-pv[a],pv[b]-pv[a]);if(nrm.y<0)tri=new[]{a,b,c,b,d,c};pt.AddRange(tri);}
+            var tgo=new GameObject("_tb_path_col"){hideFlags=HideFlags.HideAndDontSave};
+            try{
+                var tcol=tgo.AddComponent<MeshCollider>();tcol.sharedMesh=mesh;
+                var pts=new List<Vector2>();for(int k=0;k<pathLine.Count-1;k++){var a=pathLine[k];var b=pathLine[k+1];int s=Mathf.Max(1,Mathf.CeilToInt((b-a).magnitude/.25f));for(int q=0;q<s;q++)pts.Add(Vector2.Lerp(a,b,q/(float)s));pathLen+=(b-a).magnitude;}pts.Add(pathLine[pathLine.Count-1]);
+                float along=0;
+                for(int k=0;k<pts.Count;k++)
+                {
+                    if(k>0)along+=(pts[k]-pts[k-1]).magnitude;var d=(pts[Mathf.Min(k+1,pts.Count-1)]-pts[Mathf.Max(k-1,0)]).normalized;var nn=new Vector2(-d.y,d.x);
+                    for(int q=0;q<PC;q++){float u=q/(float)(PC-1);var p=pts[k]+nn*((u*2-1)*PathHalf);float y=tcol.Raycast(new Ray(new Vector3(p.x,500,p.y),Vector3.down),out var hit,1000)?hit.point.y:g.Sample(F,p.x,p.y);pv.Add(new Vector3(p.x,y+.03f,p.y));puv.Add(new Vector2(u,along/4f));}
+                }
+                for(int k=0;k<pts.Count-1;k++)for(int q=0;q<PC-1;q++){int a=k*PC+q,b=a+1,c=a+PC,d=a+PC+1;var tri=new[]{a,c,b,b,c,d};var nrm=Vector3.Cross(pv[c]-pv[a],pv[b]-pv[a]);if(nrm.y<0)tri=new[]{a,b,c,b,d,c};pt.AddRange(tri);}
+            }finally{UnityEngine.Object.DestroyImmediate(tgo);}
         }
-        var pmesh=new Mesh{name="Mesh_TerraceBlock_path"};pmesh.SetVertices(pv);pmesh.SetTriangles(pt,0);pmesh.RecalculateNormals();pmesh.RecalculateBounds();
+        var pmesh=new Mesh{name="Mesh_TerraceBlock_path"};pmesh.SetVertices(pv);pmesh.SetUVs(0,puv);pmesh.SetTriangles(pt,0);pmesh.RecalculateNormals();pmesh.RecalculateBounds();
         if(AssetDatabase.LoadAssetAtPath<Mesh>(PathAsset))AssetDatabase.DeleteAsset(PathAsset);AssetDatabase.CreateAsset(pmesh,PathAsset);
-        var wmesh=new Mesh{name="Mesh_TerraceBlock_walls",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=2};wmesh.SetVertices(wv);wmesh.SetTriangles(wt,0);wmesh.SetTriangles(ct,1);wmesh.RecalculateNormals();wmesh.RecalculateBounds();
+        var wmesh=new Mesh{name="Mesh_TerraceBlock_walls",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=2};wmesh.SetVertices(wv);wmesh.SetUVs(0,wuv);wmesh.SetTriangles(wt,0);wmesh.SetTriangles(ct,1);wmesh.RecalculateNormals();wmesh.RecalculateBounds();
         if(AssetDatabase.LoadAssetAtPath<Mesh>(WallAsset))AssetDatabase.DeleteAsset(WallAsset);AssetDatabase.CreateAsset(wmesh,WallAsset);
         AssetDatabase.SaveAssets();
 
@@ -357,51 +438,126 @@ public static class TerraceBlock
         js.Append("\"owners\":["+string.Join(",",owners.Select(o=>"{\"name\":\""+o.name+"\",\"h\":"+(o.road?"null":o.H(o.poly!=null?o.poly[0]:Vector2.zero).ToString("F2"))+",\"cells\":"+o.cells+"}"))+"],");
         js.Append("\"skipped\":["+string.Join(",",skipped.Select(s=>"\""+s+"\""))+"],\"roadMeshes\":"+roadMeshes+",");
         string f2(float x)=>x.ToString("F2");
-        js.Append("\"terrain\":{\"vertsBefore\":"+origCount+",\"vertsAfter\":"+V.Count+",\"refinePasses\":"+passes+",\"changed\":"+changedV+",\"keptRoadZone\":"+keptRoad+",\"maxCut\":"+f2(maxCut)+",\"maxFill\":"+f2(maxFill)+"},");
-        js.Append("\"walls\":{\"sections\":"+sections+",\"lengthM\":"+wallLen.ToString("F1")+",\"maxH\":"+f2(wallMax)+",\"meanH\":"+f2(wallLen>0?wallSum/wallLen:0)+",\"copingStones\":"+stones+",\"verts\":"+wv.Count+",\"byOwner\":{"+string.Join(",",perOwner.Select(kv=>"\""+kv.Key+"\":"+kv.Value.ToString("F1")))+"}},");
+        js.Append("\"terrain\":{\"vertsBefore\":"+origCount+",\"vertsAfter\":"+V.Count+",\"refinePasses\":"+passes+",\"changed\":"+changedV+",\"keptRoadZone\":"+keptRoad+",\"tJunctionsStitched\":"+tFixed+",\"maxCut\":"+f2(maxCut)+",\"maxFill\":"+f2(maxFill)+"},");
+        js.Append("\"walls\":{\"sections\":"+sections+",\"lengthM\":"+wallLen.ToString("F1")+",\"maxH\":"+f2(wallMax)+",\"over2_65mLen\":"+tallLen.ToString("F1")+",\"meanH\":"+f2(wallLen>0?wallSum/wallLen:0)+",\"copingStones\":"+stones+",\"verts\":"+wv.Count+",\"byOwner\":{"+string.Join(",",perOwner.Select(kv=>"\""+kv.Key+"\":"+kv.Value.ToString("F1")))+"}},");
+        js.Append("\"ledges\":["+string.Join(",",ledgeInfo)+"],");
         js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"hStart\":"+f2(hHouse)+",\"hEnd\":"+f2(hField)+"}}}");
         return js.ToString();
     }
 
     // 한 마디(s0..e) 축대: 앞면은 낮은 쪽으로 약간 눕힘, 윗면 평평(0.1 m 올림), 갓돌 한 줄. 반환 = 길이.
-    static float WallSection(List<Vector3> v,List<int> wt,List<int> ct,List<Vector2> P,Vector2[] L,float[] Fh,float[] Fl,int s0,int e,ref int stones,out float height)
+    // 2차: UV = (마디 줄 따라 잰 거리 m, 높이 m) → 재질 타일 2.5×1.88 m 로 돌 0.3~0.5 m. 마디 양 끝을 줄 방향으로 0.15 m 늘려 이웃 마디와 겹침(꺾인 모서리 검은 틈).
+    static float WallSection(List<Vector3> v,List<int> wt,List<int> ct,List<Vector2> uv,List<Vector2> Pc,float[] S,Vector2[] L,float[] Fh,float[] Fl,int s0,int e,ref int stones,out float height)
     {
         float maxH=float.MinValue,minH=float.MaxValue,minL=float.MaxValue;for(int k=s0;k<=e;k++){maxH=Mathf.Max(maxH,Fh[k]);minH=Mathf.Min(minH,Fh[k]);minL=Mathf.Min(minL,Fl[k]);}
         float yTop=Mathf.Ceil(maxH/.1f)*.1f,yBot=minL-.3f,yBack=minH-.3f;height=yTop-minL;float bat=Thick*.5f+Batter*(yTop-yBot);
         Vector3 V3(Vector2 p,float y)=>new Vector3(p.x,y,p.y);
+        // 끝 겹침: 이 마디 안에서만 쓰는 점 사본
+        var P=new Dictionary<int,Vector2>();for(int k=s0;k<=e;k++)P[k]=Pc[k];
+        P[s0]=Pc[s0]+(Pc[s0]-Pc[s0+1]).normalized*SecOverlap;P[e]=Pc[e]+(Pc[e]-Pc[e-1]).normalized*SecOverlap;
+        float U(int k)=>k==s0?S[k]-SecOverlap:k==e?S[k]+SecOverlap:S[k];
+        Vector2 uvW(int k,float y)=>new Vector2(U(k),y);
         float len=0;
         for(int k=s0;k<e;k++)
         {
-            var p0=P[k];var p1=P[k+1];var l0=L[k];var l1=L[k+1];len+=(p1-p0).magnitude;var hint=V3((l0+l1)*.5f,0);
-            Quad(v,wt,V3(p0+l0*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p1+l1*bat,yBot),V3(p0+l0*bat,yBot),hint+Vector3.up*.1f);
-            Quad(v,wt,V3(p0-l0*Thick*.5f,yTop),V3(p1-l1*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p0+l0*Thick*.5f,yTop),Vector3.up);
-            Quad(v,wt,V3(p0-l0*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yTop),V3(p0-l0*Thick*.5f,yTop),-hint);
+            var p0=P[k];var p1=P[k+1];var l0=L[k];var l1=L[k+1];len+=(Pc[k+1]-Pc[k]).magnitude;var hint=V3((l0+l1)*.5f,0);
+            Quad(v,wt,uv,V3(p0+l0*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p1+l1*bat,yBot),V3(p0+l0*bat,yBot),hint+Vector3.up*.1f,uvW(k,yTop),uvW(k+1,yTop),uvW(k+1,yBot),uvW(k,yBot));
+            Quad(v,wt,uv,V3(p0-l0*Thick*.5f,yTop),V3(p1-l1*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p0+l0*Thick*.5f,yTop),Vector3.up,uvW(k,0),uvW(k+1,0),uvW(k+1,Thick),uvW(k,Thick));
+            Quad(v,wt,uv,V3(p0-l0*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yTop),V3(p0-l0*Thick*.5f,yTop),-hint,uvW(k,yBack),uvW(k+1,yBack),uvW(k+1,yTop),uvW(k,yTop));
         }
-        foreach(var (k,dir) in new[]{(s0,P[s0]-P[Mathf.Min(s0+1,e)]),(e,P[e]-P[Mathf.Max(e-1,s0)])})
-            Quad(v,wt,V3(P[k]-L[k]*Thick*.5f,yBack),V3(P[k]-L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*bat,yBot),V3(dir.normalized,0));
+        foreach(var (k,dir) in new[]{(s0,Pc[s0]-Pc[s0+1]),(e,Pc[e]-Pc[e-1])})
+            Quad(v,wt,uv,V3(P[k]-L[k]*Thick*.5f,yBack),V3(P[k]-L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*bat,yBot),V3(dir.normalized,0),
+                new Vector2(0,yBack),new Vector2(0,yTop),new Vector2(Thick,yTop),new Vector2(bat+Thick*.5f,yBot));
         // 갓돌: 0.55 m 돌, 4 cm 틈, 높이 ±1.5 cm 흔들림
-        Vector2 At(float d){for(int k=s0;k<e;k++){float sl=(P[k+1]-P[k]).magnitude;if(d<=sl||k==e-1)return Vector2.Lerp(P[k],P[k+1],sl>1e-6f?Mathf.Clamp01(d/sl):0);d-=sl;}return P[e];}
+        Vector2 At(float d){for(int k=s0;k<e;k++){float sl=(Pc[k+1]-Pc[k]).magnitude;if(d<=sl||k==e-1)return Vector2.Lerp(Pc[k],Pc[k+1],sl>1e-6f?Mathf.Clamp01(d/sl):0);d-=sl;}return Pc[e];}
         int seed=s0*7919+e*104729;int cnt=Mathf.Max(1,Mathf.RoundToInt(len/.59f));float step=len/cnt;
         for(int k=0;k<cnt;k++)
         {
             float jit=((seed=(seed*1103515245+12345)&0x7fffffff)%1000)/1000f*.03f-.015f;
             var q0=At(k*step+.02f);var q1=At((k+1)*step-.02f);if((q1-q0).sqrMagnitude<1e-4f)continue;
-            Box(v,ct,q0,q1,CapW,yTop-.02f,yTop+CapH+jit);stones++;
+            Box(v,ct,uv,q0,q1,CapW,yTop-.02f,yTop+CapH+jit);stones++;
         }
         return len;
     }
-    static void Quad(List<Vector3> v,List<int> t,Vector3 a,Vector3 b,Vector3 c,Vector3 d,Vector3 hint)
+    static void Quad(List<Vector3> v,List<int> t,List<Vector2> uv,Vector3 a,Vector3 b,Vector3 c,Vector3 d,Vector3 hint,Vector2 ua=default,Vector2 ub=default,Vector2 uc=default,Vector2 ud=default)
     {
-        if(Vector3.Dot(Vector3.Cross(b-a,c-a),hint)<0){var tmp=b;b=d;d=tmp;}
-        int i=v.Count;v.Add(a);v.Add(b);v.Add(c);v.Add(d);t.Add(i);t.Add(i+1);t.Add(i+2);t.Add(i);t.Add(i+2);t.Add(i+3);
+        if(Vector3.Dot(Vector3.Cross(b-a,c-a),hint)<0){var tmp=b;b=d;d=tmp;var tu=ub;ub=ud;ud=tu;}
+        int i=v.Count;v.Add(a);v.Add(b);v.Add(c);v.Add(d);uv.Add(ua);uv.Add(ub);uv.Add(uc);uv.Add(ud);t.Add(i);t.Add(i+1);t.Add(i+2);t.Add(i);t.Add(i+2);t.Add(i+3);
     }
-    static void Box(List<Vector3> v,List<int> t,Vector2 p0,Vector2 p1,float w,float y0,float y1)
+    static void Box(List<Vector3> v,List<int> t,List<Vector2> uv,Vector2 p0,Vector2 p1,float w,float y0,float y1)
     {
         var dir=(p1-p0).normalized;var nn=new Vector2(-dir.y,dir.x)*(w*.5f);Vector3 P(Vector2 q,float y)=>new Vector3(q.x,y,q.y);
         var a0=p0-nn;var a1=p0+nn;var b0=p1-nn;var b1=p1+nn;var ctr=P((p0+p1)*.5f,(y0+y1)*.5f);
-        void F(Vector3 a,Vector3 b,Vector3 c,Vector3 d)=>Quad(v,t,a,b,c,d,(a+b+c+d)*.25f-ctr);
+        void F(Vector3 a,Vector3 b,Vector3 c,Vector3 d)=>Quad(v,t,uv,a,b,c,d,(a+b+c+d)*.25f-ctr);
         F(P(a0,y1),P(a1,y1),P(b1,y1),P(b0,y1));F(P(a0,y0),P(a0,y1),P(b0,y1),P(b0,y0));F(P(a1,y0),P(a1,y1),P(b1,y1),P(b1,y0));
         F(P(a0,y0),P(a1,y0),P(a1,y1),P(a0,y1));F(P(b0,y0),P(b1,y0),P(b1,y1),P(b0,y1));
+    }
+
+    // 원본 v2 지형엔 타일 이음(T자: 한쪽은 잘게, 한쪽은 굵게 쪼갠 모서리)이 반경 68 m 안에만 1,669개 있다. 평평할 땐 안 벌어지지만
+    // 높이를 바꾸면 잘게 쪼갠 쪽 정점이 굵은 모서리 직선에서 떠서 1px 틈(뒤 건물·하늘이 비침)이 된다. 그 정점을 상대 모서리 직선 위로 내린다.
+    static int StitchTJunctions(List<Vector3> V,List<int> tris,System.Func<Vector2,bool> editable,float reach,System.Func<Vector2,float> rad)
+    {
+        (int,int) XZ(Vector3 p)=>(Mathf.RoundToInt(p.x*1000),Mathf.RoundToInt(p.z*1000));
+        var cnt=new Dictionary<((int,int),(int,int)),(int a,int b,int n)>();
+        for(int t=0;t<tris.Count;t+=3)
+        {
+            var cen=(V[tris[t]]+V[tris[t+1]]+V[tris[t+2]])/3f;if(rad(new Vector2(cen.x,cen.z))>reach)continue;
+            for(int e=0;e<3;e++)
+            {
+                int a=tris[t+e],b=tris[t+(e+1)%3];var ka=XZ(V[a]);var kb=XZ(V[b]);
+                var key=ka.CompareTo(kb)<0?(ka,kb):(kb,ka);cnt[key]=cnt.TryGetValue(key,out var c)?(c.a,c.b,c.n+1):(a,b,1);
+            }
+        }
+        var open=new List<(int a,int b)>();var verts=new Dictionary<(int,int),List<int>>();
+        foreach(var kv in cnt){if(kv.Value.n!=1)continue;open.Add((kv.Value.a,kv.Value.b));verts[kv.Key.Item1]=null;verts[kv.Key.Item2]=null;}
+        if(open.Count==0)return 0;
+        for(int k=0;k<V.Count;k++){var kk=XZ(V[k]);if(verts.TryGetValue(kk,out var l)){if(l==null)verts[kk]=l=new List<int>();l.Add(k);}}
+        var grid=new Dictionary<(int,int),List<int>>();
+        for(int e=0;e<open.Count;e++)
+        {
+            Vector3 A=V[open[e].a],B=V[open[e].b];
+            for(int j=Mathf.FloorToInt(Mathf.Min(A.z,B.z));j<=Mathf.FloorToInt(Mathf.Max(A.z,B.z));j++)
+            for(int i=Mathf.FloorToInt(Mathf.Min(A.x,B.x));i<=Mathf.FloorToInt(Mathf.Max(A.x,B.x));i++)
+            {if(!grid.TryGetValue((i,j),out var l))grid[(i,j)]=l=new List<int>();l.Add(e);}
+        }
+        int fixedN=0;
+        for(int it=0;it<3;it++)   // 이음 끝점이 또 다른 이음 위에 있는 사슬 → 3바퀴
+        foreach(var kv in verts)
+        {
+            var P=V[kv.Value[0]];var p2=new Vector2(P.x,P.z);if(!editable(p2))continue;
+            if(!grid.TryGetValue((Mathf.FloorToInt(P.x),Mathf.FloorToInt(P.z)),out var es))continue;
+            foreach(int e in es)
+            {
+                Vector3 A=V[open[e].a],B=V[open[e].b];var ab=new Vector2(B.x-A.x,B.z-A.z);float L2=ab.sqrMagnitude;if(L2<1e-6f)continue;
+                float s=Vector2.Dot(p2-new Vector2(A.x,A.z),ab)/L2;if(s<=.001f||s>=.999f)continue;
+                if((new Vector2(A.x,A.z)+ab*s-p2).sqrMagnitude>4e-6f)continue;   // 2 mm 안 = 그 모서리 위
+                float y=Mathf.Lerp(A.y,B.y,s);if(Mathf.Abs(y-P.y)<1e-4f)break;
+                foreach(int k in kv.Value)V[k]=new Vector3(V[k].x,y,V[k].z);if(it==0)fixedN++;break;
+            }
+        }
+        return fixedN;
+    }
+
+    // 1:2 원뿔 포락: lo(x) = max(lo(이웃) − 거리/2), up(x) = min(up(이웃) + 거리/2). 5×5 체임퍼(1, √2, √5 칸) 앞뒤 2바퀴 → 원 거리와 오차 ~2%, 끊김 없음.
+    static readonly (int di,int dj)[] ChamF={(-1,0),(-2,-1),(-1,-1),(0,-1),(1,-1),(2,-1),(-1,-2),(1,-2)};
+    static void Envelope(int n,float[] lo,float[] up)
+    {
+        var w=ChamF.Select(d=>Mathf.Sqrt(d.di*d.di+d.dj*d.dj)*Cell*.5f).ToArray();
+        for(int round=0;round<2;round++)
+        {
+            for(int j=0;j<n;j++)for(int i=0;i<n;i++)
+            {
+                int idx=j*n+i;float l=lo[idx],u=up[idx];
+                for(int t=0;t<ChamF.Length;t++){int ii=i+ChamF[t].di,jj=j+ChamF[t].dj;if(ii<0||ii>=n||jj<0)continue;int nb=jj*n+ii;l=Mathf.Max(l,lo[nb]-w[t]);u=Mathf.Min(u,up[nb]+w[t]);}
+                lo[idx]=l;up[idx]=u;
+            }
+            for(int j=n-1;j>=0;j--)for(int i=n-1;i>=0;i--)
+            {
+                int idx=j*n+i;float l=lo[idx],u=up[idx];
+                for(int t=0;t<ChamF.Length;t++){int ii=i-ChamF[t].di,jj=j-ChamF[t].dj;if(ii<0||ii>=n||jj>=n)continue;int nb=jj*n+ii;l=Mathf.Max(l,lo[nb]-w[t]);u=Mathf.Min(u,up[nb]+w[t]);}
+                lo[idx]=l;up[idx]=u;
+            }
+        }
     }
 
     static List<Vector2> Simplify(List<Vector2> p,float tol)

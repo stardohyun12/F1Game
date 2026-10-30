@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 70f6c846b5ef3ef439ee916b4d4c9a14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -35,6 +35,6 @@ Material:
     m_Colors:
     - _Ambient: {r: 0.7029999, g: 0.7885, b: 0.85499996, a: 1}
     - _FogColor: {r: 0.74, g: 0.83, b: 0.9, a: 1}
-    - _Tint: {r: 0.58, g: 0.47, b: 0.33, a: 1}
+    - _Tint: {r: 0.62, g: 0.65999997, b: 0.47999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
