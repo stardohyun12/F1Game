@@ -382,7 +382,7 @@ public static class RoadPaintMode
     {
         if (root == null) return "길 그리기 꺼짐";
         SaveJson();
-        var sw = System.Diagnostics.Stopwatch.StartNew(); string a, b, rs;
+        var sw = System.Diagnostics.Stopwatch.StartNew(); string a, b, rs, pc = "필지 건너뜀(메뉴 PitCrew/필지: 길 그리기 Enter 때 같이 꺼짐)";
         try
         {
             EditorUtility.DisplayProgressBar("길 적용", "길·지형 다시 깔기 (약 2분)…", .3f);
@@ -390,11 +390,12 @@ public static class RoadPaintMode
             EditorUtility.DisplayProgressBar("길 적용", "집 블록 계단 땅·벽…", .85f);
             b = TerraceBlock.Build(TerraceBlock.HouseCenter, 60); var t2 = sw.Elapsed.TotalSeconds;
             EditorUtility.DisplayProgressBar("길 적용", "길가 소품(바뀐 길만)…", .95f);
-            rs = RoadsideBuild.Run(true);
-            lastMsg = $"적용 끝 {sw.Elapsed.TotalSeconds:F0}s (길 {t1:F0}s · 집 블록 {t2 - t1:F0}s · 소품 {sw.Elapsed.TotalSeconds - t2:F0}s)";
+            rs = RoadsideBuild.Run(true); var t3 = sw.Elapsed.TotalSeconds;
+            if (ParcelBuild.OnEnter) { EditorUtility.DisplayProgressBar("길 적용", "필지 나누기·회색 덩어리…", .98f); pc = ParcelBuild.Run(); }
+            lastMsg = $"적용 끝 {sw.Elapsed.TotalSeconds:F0}s (길 {t1:F0}s · 집 블록 {t2 - t1:F0}s · 소품 {t3 - t2:F0}s · 필지 {sw.Elapsed.TotalSeconds - t3:F0}s)";
         }
         finally { EditorUtility.ClearProgressBar(); }
-        var log = lastMsg + "\n" + a + "\n" + b + "\n" + rs;
+        var log = lastMsg + "\n" + a + "\n" + b + "\n" + rs + "\n" + pc;
         System.IO.File.WriteAllText(System.IO.Path.GetFullPath(Application.dataPath + "/../../docs/qa/tmp/roadpaint_last.txt"), log);
         Debug.Log("[RoadPaint] " + log); cache.Clear(); SceneView.RepaintAll();
         return log;
