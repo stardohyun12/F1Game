@@ -16,15 +16,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / ".claude/team/config.json"
 ROLES = [("pd", "PD (Hermes)", "#e8a33d"), ("programmer", "프로그래밍팀", "#e0607e"),
-         ("qa", "기획·QA팀", "#5aa0e0"), ("art", "아트팀 (Codex)", "#6cc070"), ("artui", "아트팀 UI (Codex)", "#4fb3a0"), ("research", "리서치팀", "#b08be0"), ("mapgen", "맵 생성팀", "#e0a050"), ("art2", "아트팀 2 (Opus)", "#9cc05a"), ("artlive", "라이브 아트 (Opus)", "#e0c050")]
-WORKERS = ["programmer", "qa", "art", "artui", "research", "mapgen", "art2", "artlive"]
+         ("qa", "기획·QA팀", "#5aa0e0"), ("art", "아트팀 (Codex)", "#6cc070"), ("artui", "아트팀 UI (Codex)", "#4fb3a0"), ("research", "리서치팀", "#b08be0"), ("mapgen", "맵 생성팀", "#e0a050"), ("art2", "아트팀 2 (Opus)", "#9cc05a"), ("artlive", "라이브 아트 (Opus)", "#e0c050"), ("mapshot", "맵 목업팀 (사본 에디터)", "#c0c060")]
+WORKERS = ["programmer", "qa", "art", "artui", "research", "mapgen", "art2", "artlive", "mapshot"]
 # 엔진별 선택지 (빈 값 = 기본값)
 ENGINES = {
     "claude": {"models": ["sonnet", "opus", "haiku"], "efforts": ["", "low", "medium", "high", "xhigh", "max"],
                "limits": True},
     "codex": {"models": ["gpt-6-astra"], "efforts": ["", "low", "medium", "high", "xhigh"], "limits": False},
 }
-ENGINE_OF = {"programmer": "claude", "qa": "claude", "art": "codex", "artui": "codex", "research": "claude", "mapgen": "claude", "art2": "claude", "artlive": "claude"}
+ENGINE_OF = {"programmer": "claude", "qa": "claude", "art": "codex", "artui": "codex", "research": "claude", "mapgen": "claude", "art2": "claude", "artlive": "claude", "mapshot": "claude"}
 LINE_RE = re.compile(r"^\[(\d\d:\d\d:\d\d)\]\s+\S+\s+\|\s?(.*)$")
 
 

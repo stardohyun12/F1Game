@@ -42,5 +42,11 @@
   "effort": "high",
   "budget": 10.0,
   "turns": 0
+ },
+ "mapshot": {
+  "model": "sonnet",
+  "effort": "high",
+  "budget": 8.0,
+  "turns": 0
  }
 }
