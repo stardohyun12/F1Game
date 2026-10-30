@@ -1,0 +1,5 @@
+c1_mainroad.png car=(243.1,24.69,-68.8) cam=(241.22, 26.89, -73.95) tgt=(245.15, 25.49, -63.14)
+c2_arc.png car=(246.4,25.20,-56.3) cam=(247.05, 27.40, -61.72) tgt=(245.75, 26.00, -50.30)
+c3_yard.png car=(240.2,26.17,-47.6) cam=(245.20, 28.37, -49.94) tgt=(234.82, 26.97, -44.99)
+top_raw.png ortho center(242,-58) 25px/m topleft=(218,-40)
+dirty=False playing=False

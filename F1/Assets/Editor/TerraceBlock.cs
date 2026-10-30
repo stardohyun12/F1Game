@@ -38,6 +38,11 @@ public static class TerraceBlock
     // 6차(D-213 「차고지로도 자연스럽게 걸어갈 수 있도록」): 큰길 북쪽 보도 → 곧은 돌계단(x≈214.5) → 차고 남쪽 벽 따라 포장 골목(차고 바닥 높이) → 차고 앞 마당 남쪽 가장자리.
     //   골목 = 차고 뿌리 +x(남쪽) 벽에서 AlleyOut m 까지 평평 · 포장 띠 = 벽에서 AlleyPave0..1 m · 서쪽 끝 = 계단 머리 서쪽 1.2 m · 동쪽 끝 = 차고 사각형 끝(앞 마당)
     const bool GarageWalk=true;const float GarageStairX=214.5f,AlleyOut=2.6f,AlleyPave0=.2f,AlleyPave1=1.6f;
+    // 7차(PD 20261030-2120, D-206 방식 「건물은 그대로, 길이 올라간다」): 차 진입로. 큰길(j_245 판 북쪽 가장자리, x≈245.8 z≈-61.3)에서 북북동(방위 20°)으로 갈라져
+    //   R 11 m 원호로 110° 왼쪽으로 돌아 서쪽을 보며 차고 앞 마당(자갈 땅) 북동 모서리 안 x≈232.3 z -46.5 까지 들어간다(x 234.3 에서 끊으면 풀 띠 2 m 가 남았다). 곧게 오르면 어디서 출발해도 17 m 안에 2 m(>11%).
+    //   높이 = 판 +2 cm → 마당(26.64) +2 cm, 경사 사다리꼴(양끝 3 m 완화 · 마지막 1 m 평평) → 최대 8.7%(길이 26.3 m). 폭 4.5 m.
+    const bool GarageDrive=true;const float DriveW=4.5f,DriveR=11f,DriveB0=20f,DriveLead=2f,DriveTail=3.2f,DriveEase=3f,DriveFlat=1f,DriveY1=26.66f,DriveBot=24.3f;
+    static readonly Vector2 DriveC=new Vector2(235.5f,-57.5f);const string DriveAsset=Folder+"Mesh_TerraceBlock_drive.asset";
     static readonly List<(Vector3 p,Vector2 n,float s)> Foot=new List<(Vector3,Vector2,float)>();
     public static readonly Vector3 HouseCenter=new Vector3(185,0,-61);
 
@@ -342,6 +347,35 @@ public static class TerraceBlock
                 }
             }
         }
+        // 7차: 차 진입로 중심선(0.5 m 안팎 간격) + 높이 + 땅 터(반폭 +0.5 m, 진입로 윗면 -3 cm). 판(core) 위 칸은 안 덮으니 판 위에선 진입로가 판 위에 얹힌 둑이 된다(옆 = 치마 축대).
+        List<Vector2> driveC=null,driveD=null;List<float> driveY=null;float driveHalf=DriveW*.5f;string driveNote="null";
+        if(GarageDrive)
+        {
+            driveC=new List<Vector2>();driveD=new List<Vector2>();driveY=new List<float>();
+            float La=DriveR*Mathf.Deg2Rad*(DriveB0+90),s0=-DriveLead,s1=La+DriveTail;int ns=Mathf.CeilToInt((s1-s0)/.5f);
+            for(int k=0;k<=ns;k++)
+            {
+                float s=s0+(s1-s0)*k/ns;Vector2 p,d;
+                if(s<0){float b0=DriveB0*Mathf.Deg2Rad;d=new Vector2(Mathf.Sin(b0),Mathf.Cos(b0));p=DriveC+new Vector2(Mathf.Cos(b0),-Mathf.Sin(b0))*DriveR+d*s;}
+                else if(s>La){d=Vector2.left;p=DriveC+new Vector2(-(s-La),DriveR);}
+                else{float b=(DriveB0-s/DriveR*Mathf.Rad2Deg)*Mathf.Deg2Rad;d=new Vector2(Mathf.Sin(b),Mathf.Cos(b));p=DriveC+new Vector2(Mathf.Cos(b),-Mathf.Sin(b))*DriveR;}
+                driveC.Add(p);driveD.Add(d);
+            }
+            float y0=RoadY(driveC[0],out bool hit0)+.02f;if(!hit0)y0=g.Sample(Hc,driveC[0].x,driveC[0].y)+.02f;
+            // 사다리꼴 경사: 오르는 길이 Lc 안에서 경사 비중 w(u) = min(1, u/e, (Lc-u)/e), 누적 비중으로 높이를 나눔
+            float Lt=s1-s0,Lc=Lt-DriveFlat;var cum=new float[ns+1];
+            for(int k=1;k<=ns;k++){float u=Lt*(k-.5f)/ns;float w=Mathf.Clamp01(Mathf.Min(u/DriveEase,(Lc-u)/DriveEase));cum[k]=cum[k-1]+w;}
+            for(int k=0;k<=ns;k++)driveY.Add(y0+(DriveY1-y0)*cum[k]/cum[ns]);
+            float gmax=0;for(int k=1;k<=ns;k++)gmax=Mathf.Max(gmax,(driveY[k]-driveY[k-1])/(driveC[k]-driveC[k-1]).magnitude);
+            var dl=driveC;var dy=driveY;float ds=(s1-s0)/ns;
+            // 터 = 반폭 +0.5 m: 옆 담 갓돌(폭 0.56)이 진입로 가장자리를 안 덮게(+0.25 일 땐 s=16 에서 0.24 m 걸침)
+            var poly=new List<Vector2>();for(int k=0;k<=ns;k++){var nn=new Vector2(-driveD[k].y,driveD[k].x);poly.Add(driveC[k]+nn*(driveHalf+.5f));}
+            for(int k=ns;k>=0;k--){var nn=new Vector2(-driveD[k].y,driveD[k].x);poly.Add(driveC[k]-nn*(driveHalf+.5f));}
+            owners.Add(new Owner{name="drive_garage",late=true,poly=poly,hf=p=>{PolyNear(dl,p,out float s,out _);float t=s/ds;int a=Mathf.Clamp(Mathf.FloorToInt(t),0,dy.Count-1),b=Mathf.Min(a+1,dy.Count-1);return Mathf.Lerp(dy[a],dy[b],t-a)-.03f;}});
+            driveNote=$"{{\"widthM\":{DriveW:F1},\"R\":{DriveR:F1},\"lengthM\":{Lt:F1},\"y0\":{y0:F2},\"y1\":{DriveY1:F2},\"maxGrade\":{gmax:F3},\"start\":[{driveC[0].x:F1},{driveC[0].y:F1}],\"end\":[{driveC[ns].x:F1},{driveC[ns].y:F1}]}}";
+        }
+        // 진입로 띠 안(중심선에서 r 안)인가
+        bool InDrive(Vector2 p,float r){if(driveC==null)return false;return PolyNear(driveC,p,out _,out bool cp)<r&&!cp;}
         // 라벨 덮기(보도 먼저, 계단이 위). 길 core·건물 바닥은 안 덮는다.
         for(int o=firstLate;o<owners.Count;o++)
         {
@@ -466,6 +500,8 @@ public static class TerraceBlock
                 for(int k=0;k<m;k++)
                 {
                     var p=chain[k];if(Rad(p)>radius+Blend)continue;
+                    // 7차: 진입로 위를 가로지르는 담은 안 세운다(판 북쪽 담·진입로 끝 가로 경계). 진입로 옆 경계(반폭+0.5)는 남김.
+                    if(InDrive(p,owners[o].name=="drive_garage"?driveHalf-.1f:driveHalf+.1f))continue;
                     var tg=(chain[Mathf.Min(k+1,m-1)]-chain[Mathf.Max(k-1,0)]).normalized;var nrm=new Vector2(tg.y,-tg.x);
                     if(lab[g.Near(p.x+nrm.x*.3f,p.y+nrm.y*.3f)]==o)nrm=-nrm;
                     int other=lab[g.Near(p.x+nrm.x*.4f,p.y+nrm.y*.4f)];if(other>=0&&other<o)continue;
@@ -680,6 +716,23 @@ public static class TerraceBlock
         var tuftMats=new[]{CopyMat(StoneMat,Folder+"TV6_TuftA.mat",new Color(.50f,.55f,.34f,st0.a)),CopyMat(StoneMat,Folder+"TV6_TuftB.mat",new Color(.43f,.48f,.30f,st0.a))};
         var wmesh=new Mesh{name="Mesh_TerraceBlock_walls",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=2};wmesh.SetVertices(wv);wmesh.SetUVs(0,wuv);wmesh.SetTriangles(wt,0);wmesh.SetTriangles(ct,1);wmesh.RecalculateNormals();wmesh.RecalculateBounds();
         if(AssetDatabase.LoadAssetAtPath<Mesh>(WallAsset))AssetDatabase.DeleteAsset(WallAsset);AssetDatabase.CreateAsset(wmesh,WallAsset);
+        // 7차: 진입로 메시. 서브메시 0 = 윗면(마을길 재질, UV = 월드 xz), 1 = 양옆 치마(축대 돌, UV = 길이·높이 m) — 판 위에선 둑의 옆면, 판 밖에선 땅에 묻힘.
+        Mesh dmesh=null;
+        if(driveC!=null)
+        {
+            var dv=new List<Vector3>();var dt=new List<int>();var dk=new List<int>();var duv=new List<Vector2>();float along=0;
+            for(int k=0;k<driveC.Count-1;k++)
+            {
+                var n0=new Vector2(-driveD[k].y,driveD[k].x)*driveHalf;var n1=new Vector2(-driveD[k+1].y,driveD[k+1].x)*driveHalf;float y0=driveY[k],y1=driveY[k+1];
+                var l0=driveC[k]+n0;var r0=driveC[k]-n0;var l1=driveC[k+1]+n1;var r1=driveC[k+1]-n1;float sl=(driveC[k+1]-driveC[k]).magnitude;
+                Quad(dv,dt,duv,W3(l0,y0),W3(l1,y1),W3(r1,y1),W3(r0,y0),Vector3.up,new Vector2(l0.x,l0.y),new Vector2(l1.x,l1.y),new Vector2(r1.x,r1.y),new Vector2(r0.x,r0.y));
+                foreach(var (a,b,o) in new[]{(l0,l1,n0+n1),(r0,r1,-(n0+n1))})
+                    Quad(dv,dk,duv,W3(a,y0),W3(b,y1),W3(b,DriveBot),W3(a,DriveBot),W3(o,0),new Vector2(along,y0-DriveBot),new Vector2(along+sl,y1-DriveBot),new Vector2(along+sl,0),new Vector2(along,0));
+                along+=sl;
+            }
+            dmesh=new Mesh{name="Mesh_TerraceBlock_drive",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=2};dmesh.SetVertices(dv);dmesh.SetUVs(0,duv);dmesh.SetTriangles(dt,0);dmesh.SetTriangles(dk,1);dmesh.RecalculateNormals();dmesh.RecalculateBounds();
+            if(AssetDatabase.LoadAssetAtPath<Mesh>(DriveAsset))AssetDatabase.DeleteAsset(DriveAsset);AssetDatabase.CreateAsset(dmesh,DriveAsset);
+        }
         AssetDatabase.SaveAssets();
 
         // --- 씬에 꽂기 ---
@@ -695,6 +748,15 @@ public static class TerraceBlock
         // 5차(도현 8b98 "밭 모델링·질감 안 맞음" → 아트 field_patch 정식 에셋으로 따로, artlive-20261030-2003): 임시 텃밭 메시는 씬에 안 꽂는다. 마당 안 평평한 칸만 남김.
         if(PlaceGarden){var gg=new GameObject("Garden");gg.transform.SetParent(root.transform,false);gg.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(GardenAsset);gg.AddComponent<MeshRenderer>().sharedMaterials=gmats;}
         var ag=new GameObject("Walkways");ag.transform.SetParent(root.transform,false);ag.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WalkAsset);ag.AddComponent<MeshRenderer>().sharedMaterials=new[]{pave,cap,riser};ag.AddComponent<MeshCollider>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WalkAsset);
+        if(dmesh!=null)
+        {
+            // 7차: 진입로 = 차가 타는 면(MeshCollider) + RoadSurface(마을길, 1 m 중심선) → TownPathBot 이 길로 잡는다
+            var dg=new GameObject("Driveway");dg.transform.SetParent(root.transform,false);dg.AddComponent<MeshFilter>().sharedMesh=dmesh;
+            dg.AddComponent<MeshRenderer>().sharedMaterials=new[]{AssetDatabase.LoadAssetAtPath<Material>(Folder+"TV6_Village.mat"),retain};dg.AddComponent<MeshCollider>().sharedMesh=dmesh;
+            var rs=dg.AddComponent<RoadSurface>();rs.roadId="drive_garage";rs.kind="village";rs.width=DriveW;
+            float Lt=0;for(int k=1;k<driveC.Count;k++)Lt+=(driveC[k]-driveC[k-1]).magnitude;int nc=Mathf.Max(2,Mathf.RoundToInt(Lt)+1);
+            rs.centerline=new Vector3[nc];for(int k=0;k<nc;k++){float s=Lt*k/(nc-1);var p=PolyAt(driveC,s);float t=s/Lt*(driveC.Count-1);int a=Mathf.Min(Mathf.FloorToInt(t),driveC.Count-2);rs.centerline[k]=W3(p,Mathf.Lerp(driveY[a],driveY[a+1],t-a));}
+        }
         var tuftGo=new GameObject("GrassTufts");tuftGo.transform.SetParent(root.transform,false);tuftGo.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(TuftAsset);tuftGo.AddComponent<MeshRenderer>().sharedMaterials=tuftMats;
         var scene=terr.gameObject.scene;EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
 
@@ -705,7 +767,7 @@ public static class TerraceBlock
         string f2(float x)=>x.ToString("F2");
         js.Append("\"terrain\":{\"vertsBefore\":"+origCount+",\"vertsAfter\":"+V.Count+",\"refinePasses\":"+passes+",\"changed\":"+changedV+",\"keptRoadZone\":"+keptRoad+",\"tJunctionsStitched\":"+tFixed+",\"maxCut\":"+f2(maxCut)+",\"maxFill\":"+f2(maxFill)+"},");
         js.Append("\"walls\":{\"sections\":"+sections+",\"lengthM\":"+wallLen.ToString("F1")+",\"maxH\":"+f2(wallMax)+",\"over2_65mLen\":"+tallLen.ToString("F1")+",\"meanH\":"+f2(wallLen>0?wallSum/wallLen:0)+",\"copingStones\":"+stones+",\"verts\":"+wv.Count+",\"byOwner\":{"+string.Join(",",perOwner.Select(kv=>"\""+kv.Key+"\":"+kv.Value.ToString("F1")))+"}},");
-        js.Append("\"alleyGarage\":"+alleyNote+",");
+        js.Append("\"alleyGarage\":"+alleyNote+",\"driveGarage\":"+driveNote+",");
         js.Append("\"ledges\":["+string.Join(",",ledgeInfo)+"],\"tufts\":"+tufts+",\"footPts\":"+Foot.Count+",\"smoothedNormals\":"+smoothedN+",\"risersTri\":"+ar.Count/3+",");
         js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"halfW\":"+YardPathHalf+",\"h\":"+f2(hHouse)+"},");
         js.Append("\"garden\":{"+gardenNote+",\"h\":"+f2(hHouse)+"},\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
