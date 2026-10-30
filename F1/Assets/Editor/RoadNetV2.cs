@@ -95,6 +95,19 @@ public static partial class BuildBayLoop
                     // 2단계: 같은 폭끼리도 나란히 겹침(tomo_118267009_9_s1 ⊂ tomo_461561406_27 11 m, 겹침 쌍 100+) → 짧은 쪽을 자른다. 직각 교차(띠 안 ≈ 폭)는 안 자르게 1.6×폭 이상만
                     float need = f.w > e.w ? 4f : Mathf.Max(6f, f.w * 1.6f);
                     var ins = e.p.Select(q => V2In(q) && V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 1.5f).ToArray();
+                    // 1601: 넓은 길 위에서 시작(끝)해 그 띠에 제 폭 절반 이상 묻혀 나란히 달리는 끝 구간도 띠 안으로 본다.
+                    //  ridge_up_b 앞 17 m 가 큰길 중심 4.4~5 m 로 달려 안 잘리고 남아, 겹친 ridge_up_c 입구를 밀어내고(더 긴 쪽 남기기)
+                    //  큰길 가장자리에 붙은 연결 토막이 됨 → 마디가 뭉쳐 25 m 평판 갈림목, 밝은 길이 그 끝에서 2 m 토막·계단(4143·4100).
+                    //  중간 구간(ridge_up_c 가 큰길 옆 5 m 로 달리는 곳)은 그대로 — 그건 V2ClearOfMain 이 민다.
+                    if (f.w > e.w)
+                    {
+                        float inR = f.w * .5f + e.w * .25f;   // 수직으로 붙는 곁길 시작부(≈inR 길이)는 빼고 나란히(2×inR 이상)만
+                        var insW = e.p.Select(q => V2In(q) && V2Dist(f.p, q, out var nq) < inR && Mathf.Abs(nq.y - q.y) < 1.5f).ToArray();
+                        int a0 = 0; while (a0 < insW.Length && insW[a0]) a0++;
+                        int a1 = insW.Length - 1; while (a1 >= 0 && insW[a1]) a1--;
+                        if (a0 > 1 && V2Len(e.p.GetRange(0, a0)) >= 2f * inR) for (int a = 0; a < a0; a++) ins[a] = true;
+                        if (a1 < insW.Length - 2 && V2Len(e.p.GetRange(a1 + 1, insW.Length - a1 - 1)) >= 2f * inR) for (int a = a1 + 1; a < insW.Length; a++) ins[a] = true;
+                    }
                     var keep = new List<List<int>>(); var cur = new List<int>(); int i = 0;
                     while (i < e.p.Count)
                     {
@@ -138,7 +151,9 @@ public static partial class BuildBayLoop
                 // Testing only degree-1 ends missed the T entirely; later smoothing made overlapping ribbons.
                 int nd = splits[k][e]; var q = cars[k].p[e]; if (!V2In(q) || attachedNodes.Contains(Fd(nd))) continue;
                 int bk = -1, bj = -1; float bd = 1e9f;
-                for (int o = 0; o < cars.Count; o++) { if (o == k || splits[o].Values.Any(n => Fd(n) == Fd(nd)) || !V2BBIn(V2BB(cars[o].p, cars[o].w * .5f + 4f), q)) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude; if (d < cars[o].w * .5f + 4f && d < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = d; bk = o; bj = j; } } }
+                for (int o = 0; o < cars.Count; o++) { if (o == k || splits[o].Values.Any(n => Fd(n) == Fd(nd)) || !V2BBIn(V2BB(cars[o].p, cars[o].w * .5f + 4f), q)) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude, de = d - cars[o].w * .5f; if (d < cars[o].w * .5f + 4f && de < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = de; bk = o; bj = j; } } }
+                // 1601: 가까운 순 = 띠 가장자리까지 거리(넓은 길 우선). 중심 거리로 고르니 ridge_up_c 시작(248,−61)이 큰길(중심 3 m, 띠 안)보다
+                //  1.8 m 가까운 ridge_up_b 에 붙어, 큰길로 가는 길이 큰길 띠 안의 ridge_up_b 토막뿐 → 그 토막이 지워지면 끊기고(4143) 남기면 큰 평판 갈림목
                 if (bk < 0) continue;
                 int tn = -1; foreach (var kv in splits[bk]) if (Mathf.Abs(kv.Key - bj) <= 3) { tn = kv.Value; break; }
                 if (tn < 0) { tn = NewN(cars[bk].p[bj]); splits[bk][bj] = tn; }
@@ -177,6 +192,16 @@ public static partial class BuildBayLoop
                 }
             }
             int Deg(int n) => edges.Count(e => !e.dead && e.n0 == n) + edges.Count(e => !e.dead && e.n1 == n);
+            // 1601: 지우면 길망이 둘로 갈라지는 토막(양 끝에 다른 길이 남는 다리)은 지우지 않는다 — ridge_up_c_0(큰길→갈림 9.5 m)이
+            //  큰길 띠에 묻힌 꼬리로 지워져 ridge_up_b·c 두 마을길이 큰길과 끊긴 채 남았음(4143·4100)
+            bool Bridge(V2L e)
+            {
+                if (Deg(e.n0) < 2 || Deg(e.n1) < 2 || e.n0 == e.n1) return false;
+                var seen = new HashSet<int> { e.n0 }; var q = new Queue<int>(); q.Enqueue(e.n0);
+                while (q.Count > 0) { int n = q.Dequeue(); foreach (var f in edges) { if (f.dead || f == e) continue; int o = f.n0 == n ? f.n1 : f.n1 == n ? f.n0 : -1; if (o < 0 || !seen.Add(o)) continue; if (o == e.n1) return false; q.Enqueue(o); } }
+                return true;
+            }
+            int nKeepBridge = 0;
             int nSpur = 0, nDup = 0;
             for (bool ch = true; ch;)
             {
@@ -196,6 +221,7 @@ public static partial class BuildBayLoop
                     if (!Ok(d0, e.p[0]) || !Ok(d1, e.p[e.p.Count - 1])) continue;
                     var eb = V2BB(e.p, 0); var near = edges.Where(f => f != e && !f.dead && f.w >= e.w - .01f && V2BBX(eb, V2BB(f.p, f.w))).ToList();   // 1501: 큰길 165_2(12.6 m)가 좁은 마을길 띠에 묻혔다고 지워져 큰길에 풀밭 구멍 → 같거나 넓은 띠에 묻힌 것만
                     int inn = e.p.Count(q => near.Any(f => V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 2.5f));
+                    if (inn > e.p.Count * .35f && Bridge(e)) { nKeepBridge++; lg.Add($"띠에 묻혔지만 다리라 남김 {e.id} {V2Len(e.p):F1}m"); continue; }
                     if (inn > e.p.Count * .35f) { e.dead = true; ch = true; nSpur++; lg.Add($"띠에 묻힌 꼬리 {e.id} {V2Len(e.p):F1}m ({inn}/{e.p.Count})"); }
                 }
                 var live = edges.Where(x => !x.dead).ToList(); var lbb = live.ToDictionary(x => x, x => V2BB(x.p, x.w));
@@ -203,6 +229,7 @@ public static partial class BuildBayLoop
                 {
                     if (e == f || e.dead || f.dead || !V2BBX(lbb[e], lbb[f]) || V2Len(e.p) > V2Len(f.p) || f.w < e.w - .01f) continue;   // e = 짧은 쪽(1501: 넓은 길을 좁은 길로 합치지 않음)
                     int inn = e.p.Count(q => V2Dist(f.p, q, out var nq) < Mathf.Max(e.w, f.w) * .5f && Mathf.Abs(nq.y - q.y) < 2.5f);   // 1 m → 2.5 m: camo_874876277 이 큰길 띠 안을 1~2.5 m 높이차로 25 m 나란히 달려 겹침 188쌍
+                    if (inn > e.p.Count * .7f && e.p.Any(V2In) && Bridge(e)) { nKeepBridge++; lg.Add($"겹쳤지만 다리라 남김 {e.id} → {f.id}"); continue; }
                     if (inn > e.p.Count * .7f && e.p.Any(V2In)) { e.dead = true; ch = true; nDup++; lg.Add($"겹친 길 하나로: {e.id} → {f.id} ({inn}/{e.p.Count})"); }
                 }
                 // 차수 2 마디 = 이어 붙임
@@ -223,7 +250,7 @@ public static partial class BuildBayLoop
                 for (int i = 0; i < e.p.Count; i++) if (V2In(e.p[i]) && V2Dist(f.p, e.p[i], out var nq) < f.w * .5f) { k++; if (i0 < 0) i0 = i; i1 = i; dyMax = Mathf.Max(dyMax, Mathf.Abs(nq.y - e.p[i].y)); }
                 if (k >= 4) lg.Add($"띠 안 진단: {V2Short(e.id)} 점 {k}/{e.p.Count} [{i0}..{i1}] 이 {V2Short(f.id)} 띠 안, 높이차 최대 {dyMax:F2}");
             }
-            Tk("그래프"); lg.Add($"그래프: 길 {cars.Count} → 사슬 {chains.Count}, 마디 {nP.Count(_ => true)}(T {nT}·X {nX}), 군더더기 {nSpur}, 겹침합침 {nDup}");
+            Tk("그래프"); lg.Add($"그래프: 길 {cars.Count} → 사슬 {chains.Count}, 마디 {nP.Count(_ => true)}(T {nT}·X {nX}), 군더더기 {nSpur}, 겹침합침 {nDup}, 다리라 남김 {nKeepBridge}");
 
             // ── 2 평면 곡선 ─────────────────────────────────────
             foreach (var c in chains) { V2Fillet(c); V2SmoothXZ(c); }
@@ -347,8 +374,7 @@ public static partial class BuildBayLoop
                 var cell = (Mathf.FloorToInt(p.x / GC), Mathf.FloorToInt(p.z / GC));
                 foreach (int pi in pGrid.TryGetValue(cell, out var pl) ? pl : none) { var pd = pads[pi]; var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
                 if (pe <= 2f) { y = pH; padN++; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
-                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f, weight = 0, weightedY = 0;
-                foreach (int si in sGrid.TryGetValue(cell, out var sl) ? sl : none)
+                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f, weight = 0, weightedY = 0;                foreach (int si in sGrid.TryGetValue(cell, out var sl) ? sl : none)
                 {
                     var s = segs[si];
                     if (p.x < Mathf.Min(s.a.x, s.b.x) - 40 || p.x > Mathf.Max(s.a.x, s.b.x) + 40 || p.z < Mathf.Min(s.a.z, s.b.z) - 40 || p.z > Mathf.Max(s.a.z, s.b.z) + 40) continue;
@@ -611,7 +637,9 @@ public static partial class BuildBayLoop
                     for (int k = 1; k + 1 < c.p.Count; k++)
                     {
                         var q = c.p[k]; float d = V2Dist(m.p, q, out var near); float dy = Mathf.Abs(q.y - near.y);
-                        float need = (m.w + c.w) * .5f + .25f + (dy > .5f ? Mathf.Min(dy * 1.5f, 3f) : 0f);
+                        // 1601: 여유 0.25 m 면 나란한 마을길(ridge_up_c_1) 띠가 큰길 띠에 닿아 갈림목 팔 자르기가 15 m 이어지고, 오르막 큰길이
+                        //  평판(24.7)으로 눌려 옆 마을길과 1.7 m 절벽(j_245 @264,−50 지형 덮임 −0.63) → 1.0 m
+                        float need = (m.w + c.w) * .5f + 1f + (dy > .5f ? Mathf.Min(dy * 1.5f, 3f) : 0f);
                         if (d >= need || dy > 3f) continue;
                         float dn = Mathf.Min(at0 ? cum[k] : 1e9f, at1 ? cum[c.p.Count - 1] - cum[k] : 1e9f);
                         float wt = Mathf.Clamp01((dn - 12f) / 12f); if (wt <= 0f) continue;
@@ -629,7 +657,29 @@ public static partial class BuildBayLoop
     static float V2MinR(V2L c) => c.kind == "main" ? V2R : Mathf.Min(V2R, c.w * .5f + .25f);
     static void V2SmoothXZ(V2L c)
     {
-        float rMin = V2MinR(c), foldTurn = 1f / (c.w * .5f + .05f); bool capped = c.kind != "main"; var route = c.p.ToList(); var rb = V2BB(route, V2FoldCap + 1f);   // foldTurn: 안쪽 가장자리가 접힐 꺾임 점은 한도 없이 편다
+        // 1601: 한도(1.5 m)로는 못 펴는 V 꺾임(tomo_118266946_3 @151,18 — 꺾임 130°)이 남아 띠가 찢어지고 접힘 2 → 한도 안에서 다 안 펴지면
+        //  한도 없이 다시 펴되 노선에서 6 m 넘게 벗어나면(268e 갈지자가 10 m+ 밀려 사라지던 경우) 한도 판을 그대로 쓴다.
+        //  6 m: 폭 6 m 길이 130° 꺾임을 반경 3.25 m 로 돌면 꼭짓점에서 4.4 m 들어옴
+        //  꺾임 꼭짓점이 구역 밖 고정점이면(tomo_3+seam1) 그 옆 구역 안 점을 Codex 식 R 10 m 로 크게 돌려야 안 접힘 → R 10 m 먼저, 안 되면 반폭 반경
+        var p0 = c.p.ToList(); var f0 = c.fix.ToList();
+        V2SmoothXZ(c, c.kind != "main", V2MinR(c));
+        if (c.kind == "main") return;
+        float foldTurn = 1f / (c.w * .5f + .05f);
+        float FreeTurn() { var t = V2Turn(c.p); float m = 0; for (int i = 1; i < c.p.Count - 1; i++) if (!c.fix[i]) m = Mathf.Max(m, t[i]); return m; }
+        float best = FreeTurn(); if (best <= foldTurn) return;
+        var bp = c.p; var bf = c.fix; float len0 = V2Len(bp);
+        foreach (float r in new[] { V2R, V2MinR(c) })
+        {
+            c.p = p0.ToList(); c.fix = f0.ToList(); V2SmoothXZ(c, false, r);
+            float t = FreeTurn();
+            //  길이 90% 미만 = 갈지자 고리가 지름길로 접힌 것(ridge_up_c 고리 @275,−42 가 54→44 m) → 안 받음
+            if (c.p.Max(q => V2Dist(p0, q, out _)) <= 6f && V2Len(c.p) >= len0 * .9f && t < best) { best = t; bp = c.p; bf = c.fix; if (t <= foldTurn) break; }
+        }
+        c.p = bp; c.fix = bf;
+    }
+    static void V2SmoothXZ(V2L c, bool capped, float rMin)
+    {
+        var route = c.p.ToList(); var rb = V2BB(route, V2FoldCap + 1f);
         for (int it = 0; it < 600; it++)
         {
             var tr = V2Turn(c.p); var mark = new bool[c.p.Count]; bool any = false;
@@ -690,6 +740,11 @@ public static partial class BuildBayLoop
         // 1c: 막힌 끝 직전까지 17~24% 로 오르다 끝에서 멈추면, 끝을 사이에 둔 2 m 격자 정점 두 줄(끝 1 m 앞 = −0.24, 끝 너머 = 평평)의
         //  선형 보간이 길보다 ~0.2 m 낮아 띠 끝이 뜸(ridge_up_b_s0_2 +0.20·ridge_up_c_1 +0.24) → 막힌 끝 2.5 m 는 끝 높이로 평탄(착지)·고정
         float L = V2Len(c.p), F = Mathf.Min(V2Land, L * .3f);
+        // 1601: 갈림목 평판에 거의 다 먹힌 막다른 꼬리(ridge_up_b_s0 4 m, 4143)는 평판 높이 → 원래 지면 높이를 4 m 에 내려 66% 계단
+        //  → 막다른 끝(구역 안)은 반대쪽 끝에서 길이×16.5% 안으로 당긴다(지형이 길을 따라옴)
+        { int e = c.p.Count - 1;
+          if (dead1 && !dead0 && V2In(c.p[e])) { float d = L * V2Grade * 1.5f; c.p[e] = new Vector3(c.p[e].x, Mathf.Clamp(c.p[e].y, c.p[0].y - d, c.p[0].y + d), c.p[e].z); }
+          if (dead0 && !dead1 && V2In(c.p[0])) { float d = L * V2Grade * 1.5f; c.p[0] = new Vector3(c.p[0].x, Mathf.Clamp(c.p[0].y, c.p[e].y - d, c.p[e].y + d), c.p[0].z); } }
         void Land(bool st)
         {
             if (F < .5f || !V2In(st ? c.p[0] : c.p[c.p.Count - 1])) return;

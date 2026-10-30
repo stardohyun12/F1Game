@@ -1,0 +1,13 @@
+{
+ "tag": "old_all",
+ "box": [
+  -645.0,
+  -382.24,
+  795.0,
+  505.0
+ ],
+ "roads_checked_len_m": 24681,
+ "lost_roads": 0,
+ "lost_m": 0.0,
+ "rows": []
+}

@@ -1,0 +1,10 @@
+var top = UnityEngine.GameObject.Find("TownV6_Gray").transform.Find("RoadsV2");
+float x0 = 138, x1 = 166, z0 = 12, z1 = 34;
+var rows = new System.Collections.Generic.List<object>();
+foreach (UnityEngine.Transform t in top) {
+  var mr = t.GetComponent<UnityEngine.MeshRenderer>(); var mf = t.GetComponent<UnityEngine.MeshFilter>(); if (mr == null || mf == null || mf.sharedMesh == null) continue;
+  var b = mr.bounds; if (b.max.x < x0 || b.min.x > x1 || b.max.z < z0 || b.min.z > z1) continue;
+  var m = mf.sharedMesh; var v = m.vertices.Select(q => t.TransformPoint(q)).ToArray(); var tr = m.triangles;
+  rows.Add(new { name = t.name, mat = mr.sharedMaterial != null ? mr.sharedMaterial.name : "", v = v.Select(q => new[] { (float)System.Math.Round(q.x, 2), (float)System.Math.Round(q.y, 2), (float)System.Math.Round(q.z, 2) }).ToArray(), t = tr });
+}
+return Newtonsoft.Json.JsonConvert.SerializeObject(rows);

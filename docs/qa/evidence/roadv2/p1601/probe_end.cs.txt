@@ -1,0 +1,9 @@
+var top = UnityEngine.GameObject.Find("TownV6_Gray").transform.Find("RoadsV2");
+var t = top.Find("ROAD_V2e_ridge_up_b_s0"); var m = t.GetComponent<UnityEngine.MeshCollider>().sharedMesh; var v = m.vertices.Select(q => t.TransformPoint(q)).ToArray();
+var terr = UnityEngine.Object.FindObjectsByType<UnityEngine.MeshCollider>(UnityEngine.FindObjectsSortMode.None).First(c => c.sharedMesh != null && c.sharedMesh.name.Contains("Terrain_v2"));
+var sb = new System.Text.StringBuilder();
+float H(float x, float z) { var r = new UnityEngine.Ray(new UnityEngine.Vector3(x, 200, z), UnityEngine.Vector3.down); return terr.Raycast(r, out var h, 400) ? h.point.y : float.NaN; }
+for (int i = 0; i < v.Length; i++) sb.AppendLine($"v{i} ({v[i].x:F2},{v[i].y:F2},{v[i].z:F2}) terr {H(v[i].x, v[i].z):F2}");
+int n = v.Length; var a = v[n - 2]; var b = v[n - 1]; var c = v[n - 4]; var dir = ((a + b) * .5f - (c + v[n - 3]) * .5f); dir.y = 0; dir.Normalize();
+for (float s = 0; s <= 3f; s += .25f) { var p = (a + b) * .5f + dir * s; sb.AppendLine($"beyond {s:F2} terr {H(p.x, p.z):F2}"); }
+return sb.ToString();

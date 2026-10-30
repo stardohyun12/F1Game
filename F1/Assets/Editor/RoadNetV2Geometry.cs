@@ -139,13 +139,24 @@ public static partial class BuildBayLoop
             }
         }
         var union=Clipper2Lib.Clipper.Union(pieces,null,Clipper2Lib.FillRule.NonZero,4);
+        // 1601: 팔 조각끼리 맞닿기만 하고 안 겹친 쐐기(폭 수 cm~0.5 m)가 구멍으로 남아 큰길 위 검은 가시로 보임(j_245 @250,−58, 4143·4100)
+        //  → 닫기(+0.4 → −0.4)로 메운다. 입구 모서리는 아래 cuts(팔 띠) 빼기로 다시 정해지므로 안 움직인다
+        if(union.Count>0)union=Clipper2Lib.Clipper.InflatePaths(Clipper2Lib.Clipper.InflatePaths(union,.4,Clipper2Lib.JoinType.Miter,Clipper2Lib.EndType.Polygon,2,4),-.4,Clipper2Lib.JoinType.Miter,Clipper2Lib.EndType.Polygon,2,4);
+        //  0.8 m 넘는 작은 섬 구멍(6 m² 미만, j_245 @251,−57)은 통째로 메운다 — 둘러싼 길 안쪽이라 잔디가 보일 자리가 아님
+        union.RemoveAll(p=>Clipper2Lib.Clipper.Area(p)<0&&Clipper2Lib.Clipper.Area(p)>-6);
         // 1501: 큰길에 바짝 붙어 나란히 달리는 남의 길(ridge_up_c @257,−50)을 갈림목 모서리가 덮어 겹침 14쌍 → 같은 높이(±2.5 m)로 지나는 남의 띠도 뺀다
         if(subtractRoads&&!float.IsNaN(y)&&union.Count>0) {
             var r=Clipper2Lib.Clipper.GetBounds(union);
+            // 1601: 남의 띠를 딱 맞게 빼면 두 길 높이차(0.6 m)를 지형이 0.5 m 칸 하나로 못 넘어 갈림목 가장자리를 덮음(j_245 @264,−50, ridge_up_c_1)
+            //  → 높이가 0.3 m 넘게 다른 남의 띠는 0.4 m 여유를 두고 뺀다(팔 입구는 그대로)
+            var other=new Clipper2Lib.PathsD();
             foreach(var kv in bands) {
                 if(junction.internalLinks.Contains(kv.Key)||junction.inc.Any(a=>a.c==kv.Key))continue;
-                if(kv.Value.Any(q=>q.x>=r.left&&q.x<=r.right&&q.z>=r.top&&q.z<=r.bottom&&Mathf.Abs(q.y-y)<2.5f))cuts.Add(V2Path(V2Outline(kv.Value)));
+                var near=kv.Value.Where(q=>q.x>=r.left&&q.x<=r.right&&q.z>=r.top&&q.z<=r.bottom&&Mathf.Abs(q.y-y)<2.5f).ToList();
+                if(near.Count==0)continue;
+                if(near.Any(q=>Mathf.Abs(q.y-y)>.3f))other.Add(V2Path(V2Outline(kv.Value)));else cuts.Add(V2Path(V2Outline(kv.Value)));
             }
+            if(other.Count>0)cuts.AddRange(Clipper2Lib.Clipper.InflatePaths(Clipper2Lib.Clipper.Union(other,null,Clipper2Lib.FillRule.NonZero,4),.4,Clipper2Lib.JoinType.Miter,Clipper2Lib.EndType.Polygon,2,4));
         }
         return subtractRoads?Clipper2Lib.Clipper.Difference(union,cuts,Clipper2Lib.FillRule.NonZero,4):union;
     }
