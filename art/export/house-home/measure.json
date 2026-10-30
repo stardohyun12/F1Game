@@ -13,8 +13,8 @@
   "w": 7.8,
   "d": 1.8
  },
- "glass": 16,
- "tris": 11100,
+ "glass": 18,
+ "tris": 10976,
  "objects": [
   "HOUSE_shell",
   "GLASS_01",
@@ -37,7 +37,9 @@
   "SHUTTER_06",
   "DOOR_01",
   "DOOR_BALCONY",
+  "GLASS_17",
   "DOOR_PARENTS",
+  "GLASS_18",
   "SHUTTER_01",
   "SHUTTER_02",
   "SHUTTER_03",
@@ -139,11 +141,8 @@
   "FRAME_03",
   "HANGER_02",
   "CLOTHES_02",
-  "RUNNER_01",
   "SHOE_06",
   "SHOE_07",
-  "BOOKS_03",
-  "TOWEL_02",
   "LAUNDRY_01",
   "DRYER_01",
   "CLOTHES_03",
@@ -218,9 +217,9 @@
  ],
  "atlas": [
   2048,
-  9216
+  9088
  ],
- "faces": 5041,
+ "faces": 4979,
  "balusters": 88,
  "size_m": {
   "w": 8.6,

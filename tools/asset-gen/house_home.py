@@ -2,7 +2,7 @@
     D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/house_home.py
 형태(0052, D-200 넓직·엄마와 둘): 바깥 8.6×6.0m, 1층 3.2m + 2층 = 주인공 방(art/export/q1-room, 프리팹 자식, 바닥 z 3.2, 방 가운데 y = FY+1.65) + 박공(용마루 X축, 24°).
   비탈 기단(돌 0.9m) = 앞 테라스 1.2m + 현관 계단. 1층: 현관 DOOR_01 · 거실 창(열린 덧창) · 부엌 창(커튼 CURTAIN_01·02 + 창턱 화분 PLANTER_03/PLANT_03) · 엄마 의자 CHAIR_01.
-  2층: 방 발코니 문(구멍 x ±.45, 방 q1_room.py 창 벽을 문으로) + 문짝 DOOR_BALCONY(방 안으로 80° 열림, 피벗 경첩) + 엄마 방 창 2(열린 덧창).
+  2층: 방 발코니 문(구멍 x ±.45, 방 q1_room.py 창 벽을 문으로) + 문짝 DOOR_BALCONY(1608: 벽 안 닫힌 유리문, 피벗 경첩) + 엄마 방 창 2(열린 덧창).
   발코니 = 방 폭 3.5m(돌판·까치발, 현관 차양 겸) + 난간 RAIL_01 + 화분 PLANTER_01·02.
 축: 정면(발코니·현관) = Blender -Y → FBX/Unity +Z. 피벗 = 집 바닥(기단 윗면 z 0) 가운데 = 방 바닥 가운데의 수직 아래.
 텍셀: 껍데기 32px/m, 낱개 물건은 면의 긴 변 ≤1.5m 면 64(check_rules 와 같은 규칙). 겹친 면 0: 붙는 면은 skip, 덧댄 판은 2~4cm 띄움.
@@ -170,15 +170,18 @@ for cx in (-3.4, -1.15, 1.15, 3.4): box(SHELL, cx - .08, cx + .08, FY - 1.2, FY,
 # 현관문: 문짝(문틀 안 1cm 틈) + 손잡이. 바닥 5mm 띄움(기단 윗면과 같은 면 0)
 box('DOOR_01', DX0 + .01, DX1 - .01, DY - .04, DY, .005, DZ - .01, 'door', ('bottom', 'back'))
 box('DOOR_01', DX1 - .16, DX1 - .11, DY - .08, DY - .04, 1.0, 1.06, 'brass', ('back',))
-# 발코니 문(D-200): 방 안쪽으로 80° 열림. 경첩 = 문 구멍 오른쪽(x .43), 방 안 문틀(방 y -1.47) 바로 안. 피벗 = 경첩 아래. 1421: 부모님 방에도 하나(DOOR_PARENTS)
+# 발코니 문(D-200): 1421: 부모님 방에도 하나(DOOR_PARENTS). 피벗 = 경첩(문 구멍 동쪽 끝) 아래.
+# 1608 fa9f [다시] 판정 "가운데 열린 문짝 = 방마다 문": 80° 열어 방 안에 세워 둔 문짝이 방 문으로 읽힘 → 벽 두께 안에 닫힌 유리문(아래 판 + 문틀 + 유리 1장). 발코니는 유리로 보인다
 def balcony_door(nm, dox):
-    HX, HY, OA, LW = dox + .43, FY + .19, math.radians(80), .86
-    dd = Vector((-math.cos(OA), math.sin(OA), 0)); nn = Vector((dd.y, -dd.x, 0))          # 닫힌 방향 -X 를 방 안(+Y)으로 80°, 두께는 경첩 바깥쪽
-    box_o = Vector((HX, HY, 0)) - nn * .04
-    obox(nm, box_o, dd, LW, nn, .04, H2 + .005, H2 + 2.03, 'door')
-    kb = box_o + dd * (LW - .1) - nn * .04                                                 # 손잡이: 문 안쪽 면(n0)에 붙음 → 붙는 면(n1) skip
-    obox(nm, kb, dd, .05, nn, .04, H2 + 1.0, H2 + 1.05, 'brass', ('n1',))
-    PIVOT[nm] = Vector((HX, HY, H2 + .005))
+    x0, x1, ya, yb, z0, z1 = dox - .44, dox + .44, FY + .09, FY + .13, H2 + .005, H2 + 2.04   # 구멍(±.45 · 2.05) 안 1cm 틈 · 방 쪽 벽면(YI)에서 2cm 들어감
+    zp, zt, sw = H2 + .3, H2 + 1.93, .1                                                          # 아래 굽 윗선(1608b: 통유리 — 방문으로 읽히지 않게 바깥이 보임) · 위 가로대 아랫선 · 세로 틀 폭
+    box(nm, x0, x1, ya, yb, z0, zp, 'door', ('bottom',))                                          # 아래 굽(걷어차기 판)
+    for a, b in ((x0, x0 + sw), (x1 - sw, x1)): box(nm, a, b, ya, yb, zp, zt, 'door', ('bottom', 'top'))   # 세로 틀 2(위·아래 = 판·가로대에 묻힘)
+    box(nm, x0, x1, ya, yb, zt, z1, 'door')                                                       # 위 가로대
+    nmg = 'GLASS_%02d' % (len(GLASS) + 1); GLASS.append(nmg); yg = (ya + yb) / 2
+    face(nmg, [(x0 + sw, yg, zp), (x1 - sw, yg, zp), (x1 - sw, yg, zt), (x0 + sw, yg, zt)], 'glass')
+    box(nm, x0 + .06, x0 + .11, yb, yb + .04, H2 + 1.0, H2 + 1.05, 'brass', ('front',))          # 손잡이(방 쪽, 경첩 반대편 = 서쪽)
+    PIVOT[nm] = Vector((x1, (ya + yb) / 2, z0))
 balcony_door('DOOR_BALCONY', DOX); balcony_door('DOOR_PARENTS', DOX2)
 # 덧창(C2 초록): 거실 창·2층 창 2 = 활짝 열려 벽에 붙음(4cm 띄움). 부엌 창은 덧창 대신 커튼
 k = 0
@@ -303,12 +306,13 @@ hface(SHELL, -XI, XI, YI, YB, H2C, 'ceil', up=False)                            
 #   주인공 방 = q1_room 3.5×3.0 앞쪽 + 계단 도착 구석(y .15..1.85, 난간까지) — 계단은 이 방으로 올라온다(계단참 = 방 안 도착 구석).
 #   부모님 방 = 칸막이(x .55..0.65) 서쪽 전부. 둘 사이 출입구 1(칸막이, 계단참 쪽 y DY0..DY1, 문짝 없음). 칸막이 북쪽 끝 = 계단 구멍 난간 앞 1cm.
 SYE = SY0 - .06                                                                                    # 칸막이 북쪽 끝 y(난간 가로대 y SY0-.05 앞)
-DY0, DY1, DZ2 = .55, 1.4, H2 + 2.0
+#   1608 fa9f [다시] "방 2개 — 하나는 올라오자마자 바로, 하나는 옆에": 출입구를 문틀 없는 넓은 트임(1.2m, 높이 2.15)으로. 옆·머리 면 = 벽과 같은 회벽(흰 문틀 칠 없음)
+DY0, DY1, DZ2 = .35, 1.55, H2 + 2.15
 hwall(SHELL, (PW, YI), (PW, SYE), H2, H2C, [(DY0, DY1, H2, DZ2)], lambda c, z: rw(0, z), (), (RW,))   # 주인공 방 쪽 면(+x 를 봄)
 hwall(SHELL, (DIVX, SYE), (DIVX, YI), H2, H2C, [(DY0, DY1, H2, DZ2)])                              # 부모님 방 쪽 면(−x 를 봄)
 hwall(SHELL, (PW, SYE), (DIVX, SYE), H2, H2C)                                                      # 북쪽 끝면(+y 를 봄)
-face(SHELL, [(DIVX, DY0, H2), (PW, DY0, H2), (PW, DY0, DZ2), (DIVX, DY0, DZ2)][::-1], 'trim'); face(SHELL, [(DIVX, DY1, H2), (PW, DY1, H2), (PW, DY1, DZ2), (DIVX, DY1, DZ2)], 'trim')  # 출입구 옆 면 2
-hface(SHELL, DIVX, PW, DY0, DY1, DZ2, 'trim', up=False)                                             # 출입구 머리 밑면
+face(SHELL, [(DIVX, DY0, H2), (PW, DY0, H2), (PW, DY0, DZ2), (DIVX, DY0, DZ2)][::-1], 'plaster'); face(SHELL, [(DIVX, DY1, H2), (PW, DY1, H2), (PW, DY1, DZ2), (DIVX, DY1, DZ2)], 'plaster')  # 트임 옆 면 2
+hface(SHELL, DIVX, PW, DY0, DY1, DZ2, 'plaster', up=False)                                          # 트임 머리 밑면
 # --- 계단(STAIRS, 1층 → 2층, 38.7°): 디딤·챌판·옆판(단마다 한 장 = 톱니 다각형 없음) ---
 for i in range(SN_):
     xa, xb, zt = SX0 + i * ST, SX0 + (i + 1) * ST, (i + 1) * SR
@@ -405,7 +409,7 @@ box('WARDROBE_01', -4.1, -3.5, 1.0, 2.4, Z, Z + 2.0, {'*': 'wardrobe', 'right': 
 box('DRESSER_01', .15, .55, -2.1, -.9, Z, Z + .85, {'*': 'chair', 'left': 'dresserf'}, ('bottom', 'right'))
 box('MIRROR_01', .52, .55, -1.85, -1.15, Z + 1.05, Z + 1.75, {'*': 'chair', 'left': 'mirror'}, ('right',))   # 벽 거울(벽에 닿는 면 skip)
 hface('RUG_03', -2.0, -.5, -1.6, 0, Z + .011, 'rug')
-pendant('PENDANT_03', -1.9, -.6, H2C, .55)
+pendant('PENDANT_03', -1.9, -.6, H2C, .12)   # 1608b: 줄 짧게(반매입) — 길면 트임 윗선에 줄이 가려 갓만 떠 보임
 # 2층 방(ROOM_2F)의 전등은 Unity 에서 0.25m 올림(천장 2.4 → 2.65, library_import.cs)
 
 # ========== 1421 867e "생활감이 아직 부족함 — 소품 개수·세세한 디테일(손잡이·뚜껑·두께·라벨 자리)" — 엄마와 사는 집 ==========
@@ -523,19 +527,11 @@ for hy, pt_ in ((1.4, 'clothD'), (1.62, 'clothA')):
     box('CLOTHES_02', XI - .1, XI - .06, hy - .09, hy - .06, Z + 1.0, Z + 1.52, pt_, ('top', 'back')); box('CLOTHES_02', XI - .1, XI - .06, hy + .06, hy + .09, Z + 1.0, Z + 1.52, pt_, ('top', 'front'))
 
 # ===== 1421b 867e 재시도 — 판정 "작고 드문드문" : 계단 위 · 바닥 가운데 · 식탁 · 부엌 벽 · 거실 · 계단 밑 =====
-# 계단 디딤(i단 윗면 z = (i+1)*SR) 위: 러너(한 단마다 한 장, 1.4cm) + 벗어 둔 신발 + 책 더미 + 접은 수건 + 빨래 바구니
-for i in range(1, 14):
-    box('RUNNER_01', SX0 + i * ST + .01, SX0 + (i + 1) * ST - .005, 2.05, 2.65, (i + 1) * SR, (i + 1) * SR + .014, 'rug', ('bottom',))
-sz = 3 * SR + .014; sx_ = SX0 + 2 * ST          # 신발: 3단째
+# 1608 PD "계단 디딤마다 물건(러너·신발·책·수건·바구니)" → 계단은 비움. 첫 단 옆 바닥에 둘만: 벗어 둔 신발 한 켤레(첫 단 앞 뒷벽 쪽) · 빨래 바구니(계단 옆판 앞, 상자 옆)
+sx_ = SX0 - .44
 for nm_, dx in (('SHOE_06', .02), ('SHOE_07', .14)):
-    box(nm_, sx_ + dx, sx_ + dx + .1, 2.15, 2.42, sz, sz + .03, 'sole', ('bottom',)); box(nm_, sx_ + dx + .01, sx_ + dx + .09, 2.22, 2.41, sz + .03, sz + .1, 'leather', ('bottom',))
-bz = 6 * SR + .014; bx_ = SX0 + 5 * ST + .04      # 책 더미: 6단째
-for k, (dx, dy, wd, th, pt_) in enumerate(((0, 0, .18, .03, 'bk1'), (.01, .01, .16, .025, 'bk4'), (.005, 0, .17, .035, 'bk2'))):
-    z0_ = bz + sum((.03, .025, .035)[:k]); box('BOOKS_03', bx_ + dx, bx_ + dx + wd, 2.2 + dy, 2.42 - dy, z0_, z0_ + th, pt_, ('bottom',))
-tz = 9 * SR + .014; tx_ = SX0 + 8 * ST + .04       # 접은 수건: 9단째
-box('TOWEL_02', tx_, tx_ + .18, 2.3, 2.55, tz, tz + .026, 'apron', ('bottom',)); box('TOWEL_02', tx_ + .01, tx_ + .17, 2.32, 2.53, tz + .026, tz + .048, 'apron', ('bottom',))
-lz = 12 * SR + .014                                 # 빨래 바구니: 12단째
-cyl('LAUNDRY_01', SX0 + 11 * ST + .125, 2.35, .1, lz, lz + .19, 'basket', 'sole', bottom=False); cyl('LAUNDRY_01', SX0 + 11 * ST + .125, 2.35, .085, lz + .19, lz + .25, 'clothB', 'clothB', bottom=False)
+    box(nm_, sx_ + dx, sx_ + dx + .1, 2.5, 2.77, 0, .03, 'sole', ('bottom',)); box(nm_, sx_ + dx + .01, sx_ + dx + .09, 2.57, 2.76, .03, .1, 'leather', ('bottom',))
+cyl('LAUNDRY_01', -.05, 1.68, .1, 0, .19, 'basket', 'sole', bottom=False); cyl('LAUNDRY_01', -.05, 1.68, .085, .19, .25, 'clothB', 'clothB', bottom=False)
 # 바닥 가운데: 빨래 건조대(막대 4 + 널린 천 3) · 슬리퍼 · 장난감 레이싱카
 DX0_, DX1_, DY0_, DY1_ = .9, 1.55, .7, 1.15
 for px in (DX0_, DX1_ - .03):
