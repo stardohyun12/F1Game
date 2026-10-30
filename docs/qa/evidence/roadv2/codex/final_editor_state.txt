@@ -1,0 +1,6 @@
+project=D:/Github/F1Game/F1/Assets
+scene=Assets/Scenes/Map_TownV6.unity
+play=False
+dirty=False
+compiling=False
+compileFailed=False

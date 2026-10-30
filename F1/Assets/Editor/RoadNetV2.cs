@@ -111,29 +111,39 @@ public static partial class BuildBayLoop
                     k += add - 1; break;
                 }
             }
-            var nP = new List<Vector3>(); var par = new List<int>();
-            int NewN(Vector3 q) { nP.Add(q); par.Add(par.Count); return par.Count - 1; }
+            var nP = new List<Vector3>(); var par = new List<int>(); var nWidth = new List<float>();
+            int NewN(Vector3 q, float width = 0) { nP.Add(q); nWidth.Add(width); par.Add(par.Count); return par.Count - 1; }
             int Fd(int a) { while (par[a] != a) a = par[a] = par[par[a]]; return a; }
             var splits = cars.Select(_ => new SortedDictionary<int, int>()).ToList();
             for (int k = 0; k < cars.Count; k++) foreach (int e in new[] { 0, cars[k].p.Count - 1 })
             {
                 var q = cars[k].p[e]; int hit = -1;
-                for (int n = 0; n < nP.Count; n++) if (Fl(nP[n] - q).magnitude < V2Merge && Mathf.Abs(nP[n].y - q.y) < 1.5f) { hit = n; break; }
-                if (hit < 0) hit = NewN(q); else if (V2In(q)) cars[k].p[e] = new Vector3(nP[hit].x, q.y, nP[hit].z);
+                for (int n = 0; n < nP.Count; n++) {
+                    float distance = Fl(nP[n] - q).magnitude, dy = Mathf.Abs(nP[n].y - q.y);
+                    bool cutBoundary = Mathf.Abs(q.x - nP[n].x) < .01f && (Mathf.Abs(q.x - (vx1 - 10f)) < .1f || Mathf.Abs(q.x - (vx0 + 10f)) < .1f);
+                    bool boundaryMouths = cutBoundary && distance < (cars[k].w + nWidth[n]) * .5f + .5f && dy < 4f;
+                    if ((distance < V2Merge && dy < 1.5f) || boundaryMouths) {
+                        hit = n; if (boundaryMouths && distance >= V2Merge) lg.Add($"외곽 잘린 입구 연결: ({q.x:F1},{q.z:F1})→({nP[n].x:F1},{nP[n].z:F1}), 높이차 {dy:F2}m"); break;
+                    }
+                }
+                if (hit < 0) hit = NewN(q, cars[k].w); else { nWidth[hit] = Mathf.Max(nWidth[hit], cars[k].w); if (V2In(q)) cars[k].p[e] = new Vector3(nP[hit].x, q.y, nP[hit].z); }
                 splits[k][e] = hit;
             }
             var endCnt = new Dictionary<int, int>(); foreach (var s in splits) foreach (var kv in s) endCnt[kv.Value] = endCnt.GetValueOrDefault(kv.Value) + 1;
             int nT = 0, nX = 0;
+            var attachedNodes = new HashSet<int>();
             for (int k = 0; k < cars.Count; k++) foreach (int e in new[] { 0, cars[k].p.Count - 1 })
             {
-                int nd = splits[k][e]; var q = cars[k].p[e]; if (endCnt[nd] != 1 || !V2In(q)) continue;
+                // A shared degree-2 source endpoint may still lie on a third road (e.g. tomo 009/021 on 64).
+                // Testing only degree-1 ends missed the T entirely; later smoothing made overlapping ribbons.
+                int nd = splits[k][e]; var q = cars[k].p[e]; if (!V2In(q) || attachedNodes.Contains(Fd(nd))) continue;
                 int bk = -1, bj = -1; float bd = 1e9f;
-                for (int o = 0; o < cars.Count; o++) { if (o == k || !V2BBIn(V2BB(cars[o].p, cars[o].w * .5f + 2.5f), q)) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude; if (d < cars[o].w * .5f + 2.5f && d < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = d; bk = o; bj = j; } } }
+                for (int o = 0; o < cars.Count; o++) { if (o == k || splits[o].Values.Any(n => Fd(n) == Fd(nd)) || !V2BBIn(V2BB(cars[o].p, cars[o].w * .5f + 4f), q)) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude; if (d < cars[o].w * .5f + 4f && d < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = d; bk = o; bj = j; } } }
                 if (bk < 0) continue;
                 int tn = -1; foreach (var kv in splits[bk]) if (Mathf.Abs(kv.Key - bj) <= 3) { tn = kv.Value; break; }
                 if (tn < 0) { tn = NewN(cars[bk].p[bj]); splits[bk][bj] = tn; }
                 if (Fd(tn) == Fd(nd)) continue;
-                par[Fd(nd)] = Fd(tn); var np = nP[Fd(tn)]; cars[k].p[e] = new Vector3(np.x, q.y, np.z); nT++;
+                par[Fd(nd)] = Fd(tn); attachedNodes.Add(Fd(tn)); var np = nP[Fd(tn)]; cars[k].p[e] = new Vector3(np.x, q.y, np.z); nT++;
             }
             for (int a = 0; a < cars.Count; a++) for (int b = a + 1; b < cars.Count; b++)
             {
@@ -150,6 +160,10 @@ public static partial class BuildBayLoop
                         int n = NewN(X); pa[ia] = new Vector3(X.x, pa[ia].y, X.z); pb[jb] = new Vector3(X.x, pb[jb].y, X.z); splits[a][ia] = n; splits[b][jb] = n; nX++;
                     }
                 }
+            }
+            // All source ends sharing a node must follow its final snapped position, not just the visited end.
+            for (int k = 0; k < cars.Count; k++) foreach (var kv in splits[k]) {
+                var q = cars[k].p[kv.Key]; var np = nP[Fd(kv.Value)]; cars[k].p[kv.Key] = new Vector3(np.x, q.y, np.z);
             }
             var edges = new List<V2L>();
             for (int k = 0; k < cars.Count; k++)
@@ -196,6 +210,7 @@ public static partial class BuildBayLoop
                 {
                     var inc = edges.Where(x => !x.dead && (x.n0 == n || x.n1 == n)).ToList();
                     if (inc.Count != 2 || inc[0] == inc[1] || (inc[0].n0 == n && inc[0].n1 == n)) continue;
+                    if (inc[0].kind != inc[1].kind || Mathf.Abs(inc[0].w - inc[1].w) > .1f) continue;
                     var a = inc[0]; var b = inc[1]; if (a.n0 == n) V2Rev(a); if (b.n1 == n) V2Rev(b);
                     a.p.AddRange(b.p.Skip(1)); a.fix.AddRange(b.fix.Skip(1)); a.n1 = b.n1; if (b.w > a.w) { a.w = b.w; a.kind = b.kind; a.mat = b.mat; a.rough = b.rough; }
                     a.id += "+" + b.id; b.dead = true; ch = true;
@@ -212,33 +227,24 @@ public static partial class BuildBayLoop
 
             // ── 2 평면 곡선 ─────────────────────────────────────
             foreach (var c in chains) { V2Fillet(c); V2SmoothXZ(c); }
+            V2FitParallelWidths(chains, nP, lg);
             // ── 3 높이 ──────────────────────────────────────────
             var nodes = chains.SelectMany(x => new[] { x.n0, x.n1 }).Distinct().ToList();
             var nodeY = new Dictionary<int, float>();
             foreach (int n in nodes) { var q = nP[n]; float g = G(q.x, q.z); nodeY[n] = V2In(q) && !float.IsNaN(g) ? g : chains.Where(x => x.n0 == n).Select(x => x.p[0].y).Concat(chains.Where(x => x.n1 == n).Select(x => x.p[x.p.Count - 1].y)).Average(); }
             // ── 4 갈림목: 자를 거리(평면만 보고 정한다 → 높이 단계에서 그 구간을 마디 높이로 고정) ──
-            var juncs = new List<(int n, List<(V2L c, bool st, Vector3 u)> inc)>();
-            foreach (int n in nodes)
-            {
-                var inc = new List<(V2L c, bool st, Vector3 u)>();
-                foreach (var c in chains) { if (c.n0 == n) inc.Add((c, true, V2Dir(c.p, true))); if (c.n1 == n) inc.Add((c, false, V2Dir(c.p, false))); }
-                if (inc.Count < 3 || !V2In(nP[n])) continue;
-                inc = inc.OrderBy(x => Mathf.Atan2(x.u.z, x.u.x)).ToList();
-                var d = inc.Select(x => Mathf.Max(x.c.w * .5f, 2f)).ToArray();
-                for (int i = 0; i < inc.Count; i++)
-                {
-                    int j = (i + 1) % inc.Count; var ui = inc[i].u; var uj = inc[j].u;
-                    float th = Mathf.Atan2(ui.x * uj.z - ui.z * uj.x, Vector3.Dot(ui, uj)); if (th < 0) th += Mathf.PI * 2f;
-                    if (th >= Mathf.PI * .97f) continue;
-                    float hi = inc[i].c.w * .5f, hj = inc[j].c.w * .5f, sn = Mathf.Sin(th), cs = Mathf.Cos(th), tc = V2Rc / Mathf.Tan(th * .5f);
-                    d[i] = Mathf.Max(d[i], (hj + hi * cs) / sn + tc); d[j] = Mathf.Max(d[j], (hi + hj * cs) / sn + tc);
-                }
-                for (int i = 0; i < inc.Count; i++) { var c = inc[i].c; float L = V2Len(c.p); bool both = c.n0 != n ? false : c.n1 != n ? false : true; float cap = Mathf.Min(14f, L * (both ? .4f : .45f)); if (inc[i].st) c.d0 = Mathf.Min(d[i], cap); else c.d1 = Mathf.Min(d[i], cap); }
-                juncs.Add((n, inc));
-            }
+            var originalPaths = chains.ToDictionary(c => c, c => c.p.ToList());
+            var juncs = V2PrepareJunctions(chains, nP, nodeY, lg);
+            V2ClearJunctionSurfaces(chains, juncs, originalPaths, nP, nodeY, lg);
             // 1차 실행: 높이를 먼저 펴고 갈림목 d 구간을 나중에 마디 높이로 덮었더니 d(최대 14 m)×11% 만큼의 차가 6 m 에 몰려 구배 262% → 이제 d 구간을 고정점으로 넣고 편다
             int DegE(int n) => chains.Count(x => x.n0 == n) + chains.Count(x => x.n1 == n);
-            foreach (var c in chains) { V2Profile(c, nodeY[c.n0], nodeY[c.n1], G); V2Trim(c); V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1); }
+            foreach (var c in chains) {
+                V2Profile(c, nodeY[c.n0], nodeY[c.n1], G); V2Trim(c);
+                // One plane per junction, including the actual cut row (not an approximate pre-trim sample).
+                if (c.d0 > 0) c.p[0] = new Vector3(c.p[0].x, nodeY[c.n0], c.p[0].z);
+                if (c.d1 > 0) { int end = c.p.Count - 1; c.p[end] = new Vector3(c.p[end].x, nodeY[c.n1], c.p[end].z); }
+                V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1);
+            }
             // 1f: 갈림목 없는 끝(d=0)이 넓은 길 띠 안에 놓이면 두 띠가 1~4 cm 차로 겹쳐 깊이 싸움(진회색 위 밝은 가시) — 874_s1 끝은 구역 밖(x 331)이라 T 붙이기를 못 받음
             //  → 그 끝을 넓은 띠 가장자리에서 자르고 높이를 넓은 길에 맞춘다
             int nEndTrim = 0;
@@ -279,23 +285,25 @@ public static partial class BuildBayLoop
                 report.Add(V2Stats(c));
             }
             var jPolys = new List<(List<Vector3> poly, float y)>(); var jCen = new List<Vector3>(); int gapN = 0;
-            foreach (var (n, inc) in juncs)
+            foreach (var junction in juncs)
             {
-                var poly = new List<Vector3>(); var cut = new List<bool>(); float ny = nodeY[n] + RoadColLift;
-                var AB = inc.Select(x => { var v = bands[x.c]; int m = v.Count; return x.st ? (A: v[0], B: v[1]) : (A: v[m - 1], B: v[m - 2]); }).ToList();
-                var U = inc.Select(x => x.st ? Fl(x.c.p[1] - x.c.p[0]).normalized : Fl(x.c.p[x.c.p.Count - 2] - x.c.p[x.c.p.Count - 1]).normalized).ToList();
-                for (int i = 0; i < inc.Count; i++)
-                {
-                    int j = (i + 1) % inc.Count; var A = AB[i].A; var B = AB[j].B;
-                    poly.Add(AB[i].B); cut.Add(true); poly.Add(A); cut.Add(false);
-                    Vector3 X = (A + B) * .5f;
-                    if (V2LineX(A, U[i], B, U[j], out float t, out float s) && t <= .01f && s <= .01f && t > -20f && s > -20f) X = A + U[i] * t;
-                    for (int k = 1; k < 8; k++) { float q = k / 8f; var P = (1 - q) * (1 - q) * A + 2 * (1 - q) * q * X + q * q * B; P.y = Mathf.Lerp(A.y, B.y, q); poly.Add(P); cut.Add(false); }
+                int n = junction.n; var inc = junction.inc;
+                if (inc.Count == 0) throw new System.InvalidOperationException("Junction has no external road: " + n);
+                float ny = nodeY[n] + RoadColLift;
+                var surface = V2JunctionSurface(junction, originalPaths, bands, nP);
+                V2MakeUnionJunction(v2T, "ROAD_V2j_" + n, surface, ny, inc.OrderByDescending(x => x.c.w).First().c, meshes, topTris, objN++);
+                foreach (var contour in surface) {
+                    var poly = contour.Select(q => new Vector3((float)q.x, ny, (float)q.y)).ToList();
+                    if (Clipper2Lib.Clipper.Area(contour) > 0) { jPolys.Add((poly, ny)); jCen.Add(new Vector3(nP[n].x, ny, nP[n].z)); }
                 }
-                var center = new Vector3(nP[n].x, ny, nP[n].z);
-                V2MakeJunction(v2T, "ROAD_V2j_" + n, center, poly, cut, inc.OrderByDescending(x => x.c.w).First().c, meshes, topTris, objN++);
-                jPolys.Add((poly, ny)); jCen.Add(center);
-                for (int i = 0; i < inc.Count; i++) foreach (var q in new[] { AB[i].A, AB[i].B }) if (poly.Min(pp => (pp - q).magnitude) > .01f) gapN++;
+                foreach (var arm in inc) {
+                    var band = bands[arm.c]; int m = band.Count;
+                    var A = arm.st ? band[0] : band[m - 1]; var B = arm.st ? band[1] : band[m - 2];
+                    foreach (var q in new[] { A, B, (A + B) * .5f }) {
+                        float distance = surface.Min(contour => Mathf.Abs(V2PolyE(contour.Select(p => new Vector3((float)p.x, ny, (float)p.y)).ToList(), q, out _)));
+                        if (distance > .01f) { gapN++; lg.Add($"입구 틈: {n} {arm.c.id} {distance:F3}m"); }
+                    }
+                }
             }
             Tk("띠·갈림목 메시");
             // ── 5 지형 ──────────────────────────────────────────
@@ -306,14 +314,22 @@ public static partial class BuildBayLoop
             foreach (var c in chains) { int m = c.p.Count; if (c.d0 == 0f && V2In(c.p[0])) deadEnds.Add((c.p[0], c.w * .5f, Fl(c.p[0] - c.p[1]).normalized)); if (c.d1 == 0f && V2In(c.p[m - 1])) deadEnds.Add((c.p[m - 1], c.w * .5f, Fl(c.p[m - 1] - c.p[m - 2]).normalized)); }
             var pads = V2Pads(top);
             // 2단계: 맵 전체(정점 15만 × 선분 1만+)는 그대로 돌면 수십 초 → 40 m 칸에 선분·갈림목·건물을 미리 나눠 담는다(원래도 40 m 밖 선분은 건너뜀)
-            var sGrid = new Dictionary<(int, int), List<int>>(); const float GC = 40f;
+            var sGrid = new Dictionary<(int, int), List<int>>(); const float GC = 8f;
             void GAdd(Dictionary<(int, int), List<int>> g, int idx, float ax0, float az0, float ax1, float az1) { for (int gx = Mathf.FloorToInt(ax0 / GC); gx <= Mathf.FloorToInt(ax1 / GC); gx++) for (int gz = Mathf.FloorToInt(az0 / GC); gz <= Mathf.FloorToInt(az1 / GC); gz++) { if (!g.TryGetValue((gx, gz), out var l)) g[(gx, gz)] = l = new List<int>(); l.Add(idx); } }
-            for (int i = 0; i < segs.Count; i++) { var s = segs[i]; GAdd(sGrid, i, Mathf.Min(s.a.x, s.b.x) - 40, Mathf.Min(s.a.z, s.b.z) - 40, Mathf.Max(s.a.x, s.b.x) + 40, Mathf.Max(s.a.z, s.b.z) + 40); }
-            var jGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < jPolys.Count; i++) { var bb = V2BB(jPolys[i].poly, 40f); GAdd(jGrid, i, bb.x, bb.y, bb.z, bb.w); }
+            for (int i = 0; i < segs.Count; i++) { var s = segs[i]; float pad = s.hw + 12f; GAdd(sGrid, i, Mathf.Min(s.a.x, s.b.x) - pad, Mathf.Min(s.a.z, s.b.z) - pad, Mathf.Max(s.a.x, s.b.x) + pad, Mathf.Max(s.a.z, s.b.z) + pad); }
+            var jGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < jPolys.Count; i++) { var bb = V2BB(jPolys[i].poly, 12f); GAdd(jGrid, i, bb.x, bb.y, bb.z, bb.w); }
             var pGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < pads.Count; i++) { var pd = pads[i]; GAdd(pGrid, i, pd.c.x - pd.r - 16f, pd.c.z - pd.r - 16f, pd.c.x + pd.r + 16f, pd.c.z + pd.r + 16f); }
             var none = new List<int>();
-            var tr = terrGo.transform; var sv = srcMesh.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
-            int moved = 0, padN = 0; float maxD = 0; Vector3 maxAt = Vector3.zero; int big = 0;
+            var tr = terrGo.transform;
+            bool NearRoad(Vector3 p) {
+                var cell = (Mathf.FloorToInt(p.x / GC), Mathf.FloorToInt(p.z / GC));
+                if (sGrid.TryGetValue(cell, out var sl)) foreach (int i in sl) { var s = segs[i]; if (V2SegE(s.a, s.b, p) - s.hw < 10f) return true; }
+                if (jGrid.TryGetValue(cell, out var jl)) foreach (int i in jl) if (V2PolyE(jPolys[i].poly, p, out _) < 10f) return true;
+                return false;
+            }
+            var refinedTerrain = V2RefineTerrain(srcMesh, tr, NearRoad);
+            var sv = refinedTerrain.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
+            int moved = 0, padN = 0; float maxD = 0, farMaxD = 0; Vector3 maxAt = Vector3.zero; int big = 0, farBig = 0;
             for (int k = 0; k < w.Length; k++)
             {
                 var p = w[k]; float out0 = V2Out(p); if (out0 >= margin) continue;
@@ -321,7 +337,7 @@ public static partial class BuildBayLoop
                 var cell = (Mathf.FloorToInt(p.x / GC), Mathf.FloorToInt(p.z / GC));
                 foreach (int pi in pGrid.TryGetValue(cell, out var pl) ? pl : none) { var pd = pads[pi]; var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
                 if (pe <= 2f) { y = pH; padN++; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
-                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f;
+                float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f, weight = 0, weightedY = 0;
                 foreach (int si in sGrid.TryGetValue(cell, out var sl) ? sl : none)
                 {
                     var s = segs[si];
@@ -330,38 +346,53 @@ public static partial class BuildBayLoop
                     var q = Vector3.Lerp(s.a, s.b, t); var dd = Fl(p - q); float e = dd.magnitude - s.hw;
                     if ((s.endA && t0 < 0) || (s.endB && t0 > 1)) { float over = (t0 < 0 ? -t0 : t0 - 1) * ab.magnitude; e = Mathf.Max(Mathf.Sqrt(Mathf.Max(0, dd.sqrMagnitude - over * over)) - s.hw, over); }
                     V2Acc(e, q.y, ref eO, ref yO, ref lo, ref hi);
+                    V2BlendAcc(e, q.y, ref weight, ref weightedY);
                 }
                 // 3차 실행: 안쪽을 마디 높이 하나로 깎았더니 갈림목 메시(가운데→띠 끝 부채꼴)와 6~20 cm 어긋나 띠 끝이 묻히거나 뜸 → 부채꼴 삼각형 높이를 그대로 따름
-                foreach (int jp in jGrid.TryGetValue(cell, out var jl) ? jl : none) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); float fy = e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); }
+                float junctionEdge = 1e9f;
+                foreach (int jp in jGrid.TryGetValue(cell, out var jl) ? jl : none) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); junctionEdge = Mathf.Min(junctionEdge, e); float fy = e <= 0 ? jy : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); V2BlendAcc(e, fy, ref weight, ref weightedY); }
+                // Shared verge between nearby roads: blend their edge heights continuously instead of
+                // switching abruptly at the nearest-road bisector (which made a sawtooth wall on a finer grid).
+                if (eO > 0 && weight > 0) yO = weightedY / weight;
                 float sh = V2SH, under = V2Under;
                 foreach (var de in deadEnds) if (Fl(p - de.p).magnitude < de.hw + V2SH + 2f && Vector3.Dot(Fl(p - de.p), de.o) > 0f) {   // 1c: 캡 선 너머만(옆변까지 −10 cm 면 착지 띠가 뜸)
                     sh = V2SH + 1f; under = V2Under + .10f; break; }
-                if (eO < sh + 30f && !(pe <= 2f && eO > 0f) && !(orig - yO > 3f && eO <= sh))
+                // A junction plane can meet a steeper adjacent verge within one 0.5 m terrain triangle.
+                // Bench that cell with 6 cm interpolation clearance, fading out over its shoulder.
+                // Measured counterexample before this bench: (240.2065,-51.3755), terrain 6.62 cm above the mouth edge.
+                float bench = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.5f, V2SH, junctionEdge));
+                under = Mathf.Max(under, V2Under + .06f * bench);
+                if (eO < V2Blend && !(pe <= 2f && eO > 0f))
                 {
                     float S = yO - under;
                     if (eO <= sh) y = S;
                     else
                     {
-                        float x = Mathf.Clamp01((eO - sh) / V2Blend); x = x * x * (3 - 2 * x); y = Mathf.Lerp(S, y, x);
-                        if (lo <= hi) y = Mathf.Clamp(y, lo, hi); else y = Mathf.Clamp(y, S - (eO - sh) * .5f, S + (eO - sh) * .5f);
+                        // Constrain the shoulder first, then fade its effect to zero at the requested 6 m edge distance.
+                        // The old post-blend clamp reintroduced road heights up to 32 m away.
+                        float slopeY = Mathf.Clamp(y, S - (eO - sh) * .5f, S + (eO - sh) * .5f);
+                        float x = Mathf.Clamp01((eO - sh) / (V2Blend - sh)); x = x * x * (3 - 2 * x); y = Mathf.Lerp(slopeY, y, x);
                     }
                 }
                 if (out0 > 0) y = Mathf.Lerp(y, orig, out0 / margin);
                 // 1d: 구역 밖 여유띠의 원래 높이 되돌림이 874_s1 끝(구역 밖 1.4 m) 캡 너머 0.6 m 정점을 24.54 로 남겨, 2 m 삼각형이 띠 끝을 2 cm 덮음
                 //  → 띠 가장자리 1 m 안은 되돌림보다 띠−깎기가 우선
                 if (out0 > 0 && eO <= 1f) y = Mathf.Min(y, yO - V2Under);   // 구역 안까지 걸면 D198_postoffice 판 모서리를 0.31 깎음
+                if (eO > 6f) { farMaxD = Mathf.Max(farMaxD, Mathf.Abs(y - orig)); if (Mathf.Abs(y - orig) > 4f) farBig++; }
                 if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; if (Mathf.Abs(y - orig) > maxD) { maxD = Mathf.Abs(y - orig); maxAt = p; } if (Mathf.Abs(y - orig) > 3f) big++; }
             }
-            var m2 = Object.Instantiate(srcMesh); m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
+            var m2 = refinedTerrain; m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
             m2.vertices = v2v; m2.RecalculateNormals(); m2.RecalculateBounds();
             if (AssetDatabase.LoadAssetAtPath<Mesh>(V2Dst) != null) AssetDatabase.DeleteAsset(V2Dst);
             AssetDatabase.CreateAsset(m2, V2Dst); terrGo.GetComponent<MeshFilter>().sharedMesh = m2; var mc = terrGo.GetComponent<MeshCollider>(); mc.sharedMesh = null; mc.sharedMesh = m2;
             Tk("지형"); lg.Add($"지형 정점 {moved}개(최대 {maxD:F2} m @({maxAt.x:F0},{maxAt.z:F0}) 원래 {maxAt.y:F1}, 3 m 넘게 바뀐 정점 {big}), 건물 판 정점 {padN}, 건물 {pads.Count}");
+            lg.Add($"길 밖 6 m 초과 지형 변화: 최대 {farMaxD:F3} m, 4 m 초과 {farBig}개");
 
             // ── 걷는 길: 차길 띠와 겹친 부분 지우고 새 지형에 깐다 ──────────
             tmc.sharedMesh = m2;
             var plan = (Dictionary<string, object>)Json.Parse(System.IO.File.ReadAllText(TownV6Json, Encoding.UTF8));
             int pathN = 0, pathCut = 0;
+            var draper = new V2Draper(w, m2.triangles);
             foreach (Dictionary<string, object> r in (List<object>)plan["roads"])
             {
                 string kind = (string)r["kind"]; if (kind == "main" || kind == "village") continue;
@@ -371,7 +402,12 @@ public static partial class BuildBayLoop
                 var mat = old.GetComponent<MeshRenderer>().sharedMaterial; disabled.Add(old.name);
                 var pts = new List<Vector3>(); for (int i = 0; i + 1 < ks.Count; i++) { int nn = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude)); for (int s = 0; s < nn; s++) pts.Add(Vector3.Lerp(ks[i], ks[i + 1], s / (float)nn)); }
                 pts.Add(ks[ks.Count - 1]); float hw = F(r["width"]) * .5f;
-                var keep = pts.Select(q => segs.All(s => V2SegE(s.a, s.b, q) - s.hw > hw + .3f) && jPolys.All(j => V2PolyE(j.poly, q, out _) > hw + .3f)).ToList();
+                var keep = pts.Select(q => {
+                    var cell = (Mathf.FloorToInt(q.x / GC), Mathf.FloorToInt(q.z / GC));
+                    if (sGrid.TryGetValue(cell, out var sl)) foreach (int si in sl) { var s = segs[si]; if (V2SegE(s.a, s.b, q) - s.hw <= hw + .3f) return false; }
+                    if (jGrid.TryGetValue(cell, out var jl)) foreach (int ji in jl) if (V2PolyE(jPolys[ji].poly, q, out _) <= hw + .3f) return false;
+                    return true;
+                }).ToList();
                 int piece = 0;
                 for (int i = 0; i < pts.Count;)
                 {
@@ -380,16 +416,7 @@ public static partial class BuildBayLoop
                     if (j - i >= 3)
                     {
                         var v = V2BandVerts(pts.GetRange(i, j - i), hw, V2PathLift);
-                        // 1d: 정점 높이만 재면 2 m 격자 삼각형이 볼록한 곳에서 1 m 간격 정점 사이를 3 cm 덮음(295.7,−99.5) → 이웃(±1 m 4방향)과의 가운데가 직선보다 솟은 만큼만 올림
-                        //  (둘레 최고점을 쓰면 비탈 35% 에서 +0.18 뜸 — 평면이면 솟음 0 이라 비탈 무관)
-                        for (int q = 0; q < v.Count; q++)
-                        {
-                            float g = G(v[q].x, v[q].z); if (float.IsNaN(g)) continue; float bump = 0;
-                            foreach (var o in new[] { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) })
-                            { float gm = G(v[q].x + o.x * .5f, v[q].z + o.y * .5f), gf = G(v[q].x + o.x, v[q].z + o.y); if (!float.IsNaN(gm) && !float.IsNaN(gf)) bump = Mathf.Max(bump, gm - (g + gf) * .5f); }
-                            v[q] = new Vector3(v[q].x, g + V2PathLift + Mathf.Min(bump, .1f), v[q].z);
-                        }
-                        var go = V2MakeRoad(v2T, "ROAD_V2p_" + (string)r["id"] + "_" + piece++, v, null, mat, meshes, false); pathN++;
+                        draper.Make(v2T, "ROAD_V2p_" + (string)r["id"] + "_" + piece++, v, mat, meshes); pathN++;
                     }
                     i = j;
                 }
@@ -429,7 +456,7 @@ public static partial class BuildBayLoop
             int overN = V2Overlaps(topTris, out int overTris);
             int unconnected = 0;
             foreach (var c in chains) foreach (var (q, n) in new[] { (c.p[0], c.n0), (c.p[c.p.Count - 1], c.n1) })
-                if (Deg2(chains, n) == 1 && V2In(q) && chains.Any(o => o != c && V2Dist(o.p, q, out _) - o.w * .5f < 4f)) unconnected++;
+                if (Deg2(chains, n) == 1 && V2In(q) && chains.Any(o => o != c && V2Dist(o.p, q, out _) - o.w * .5f < 4f)) { unconnected++; lg.Add($"끊긴 끝: {c.id} ({q.x:F2},{q.y:F2},{q.z:F2})"); }
             lg.Add($"검사: 접힌 삼각형 {fold}, 겹친 삼각형 쌍 {overN}(삼각형 {overTris}), 갈림목 이음 틈 {gapN}, 다른 길 4 m 안 끊긴 끝 {unconnected}, 갈림목 {juncs.Count}");
             lg.Add("겹침 위치(5 m 칸): " + string.Join(", ", v2OverAt.OrderByDescending(x => x.Value).Take(10).Select(x => x.Key + "=" + x.Value)));
             lg.Add("물체 번호: " + string.Join(", ", v2T.Cast<Transform>().Where(x => x.name.StartsWith("ROAD_V2e") || x.name.StartsWith("ROAD_V2j")).Select((x, i) => i + ":" + x.name.Substring(9, Mathf.Min(18, x.name.Length - 9)))));
@@ -450,6 +477,12 @@ public static partial class BuildBayLoop
     {
         if (e < eO) { eO = e; yO = yS; }
         if (e > V2SH && e < V2SH + 30f) { lo = Mathf.Max(lo, yS - V2Under - (e - V2SH) * .5f); hi = Mathf.Min(hi, yS - V2Under + (e - V2SH) * .5f); }
+    }
+    static void V2BlendAcc(float e, float y, ref float weight, ref float weightedY)
+    {
+        if (e < 0 || e >= V2Blend) return;
+        float fade = 1f - e / V2Blend, w = fade * fade * fade / Mathf.Max(.0001f, e * e);
+        weight += w; weightedY += w * y;
     }
 
     // ── 기하 도우미 ──────────────────────────────────────────

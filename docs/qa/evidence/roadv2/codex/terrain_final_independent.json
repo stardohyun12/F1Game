@@ -1,0 +1,9 @@
+{
+  "vertices": 784752,
+  "outside_6m_vertices": 309754,
+  "outside_6m_max_delta": 2.806782300000002,
+  "outside_6m_over_4m": 0,
+  "worst_xz": [292.0, -18.0],
+  "worst_distance_to_rendered_road": 16.779943504076527,
+  "pass": true
+}

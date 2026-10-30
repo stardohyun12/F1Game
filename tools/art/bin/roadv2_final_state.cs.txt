@@ -1,0 +1,2 @@
+var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+return $"project={UnityEngine.Application.dataPath}\nscene={scene.path}\nplay={UnityEditor.EditorApplication.isPlaying}\ndirty={scene.isDirty}\ncompiling={UnityEditor.EditorApplication.isCompiling}\ncompileFailed={UnityEditor.EditorUtility.scriptCompilationFailed}";
