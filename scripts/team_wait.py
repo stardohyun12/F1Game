@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """대기 줄 — "앞 작업이 끝나야 시작할 수 있는 일"을 적어 두고, 앞 작업이 실제로 돌고 있는지 보여 준다.
 
-  python scripts/team_wait.py add "<기다리는 일>" <앞 작업 역할> [다음 담당] [사유]
+  python scripts/team_wait.py add "<기다리는 일>" <앞 작업 역할> [다음 담당] [사유] [시작 표식 — 다음 담당 state 에 보이면 자동 닫힘]
   python scripts/team_wait.py done <id>        # 기다리던 일을 시작했거나 취소함
   python scripts/team_wait.py list             # 사람이 읽는 요약
 
@@ -57,9 +57,18 @@ def status(item):
 def active():
     """대시보드용: 끝나지 않은 대기 + 계산된 상태."""
     out = []
-    for it in load():
+    items = load(); changed = False
+    for it in items:
         if it.get("done"):
             continue
+        if it.get("starts"):  # 시작 표식: 그 역할 state 에 이 글이 보이면 시작한 것 → 자동으로 닫음(10/30)
+            try:
+                st = (ROOT / f".claude/team/sessions/{it['next'] or it['on']}.state").read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                st = ""
+            if st.startswith("working") and it["starts"] in st:
+                it["done"] = True; changed = True
+                continue
         s = status(it)
         label = "▶ PD가 지금 할 일" if it["on"] == "pd" else LABEL[s]
         if it["on"] == "도현":
@@ -68,6 +77,11 @@ def active():
             label = f"⚠ {it['on']} 로그 {it['quiet_min']}분째 조용 — 15분 넘으면 워치독이 끊고 재시작"
         out.append({**it, "status": s, "label": label,
                     "since": datetime.fromtimestamp(it["created"]).strftime("%H:%M")})
+    if changed:
+        try:
+            save(items)
+        except OSError:
+            pass
     return out
 
 
@@ -77,7 +91,7 @@ def main(argv):
     if cmd == "add" and len(argv) >= 4:
         nid = max((i["id"] for i in items), default=0) + 1
         items.append({"id": nid, "what": argv[2], "on": argv[3], "next": argv[4] if len(argv) > 4 else "",
-                      "why": argv[5] if len(argv) > 5 else "", "created": time.time(), "done": False})
+                      "why": argv[5] if len(argv) > 5 else "", "starts": argv[6] if len(argv) > 6 else "", "created": time.time(), "done": False})
         save(items)
         print(f"대기 #{nid} 등록")
     elif cmd == "done" and len(argv) >= 3:
