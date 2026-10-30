@@ -13,6 +13,7 @@
         "TownGen.Core",
         "RoadGen.Editor",
         "Unity.Splines",
+        "Unity.Splines.Editor",
         "Unity.Mathematics"
     ],
     "includePlatforms": [

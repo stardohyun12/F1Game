@@ -1,0 +1,23 @@
+{
+ "meshes_before": 654,
+ "meshes_after": 654,
+ "changed_or_new": 0,
+ "gone": 0,
+ "terrain_vertcount": [
+  858991,
+  859036
+ ],
+ "terrain_cells_2m_moved_gt5cm": 5,
+ "terrain_cells_dist_from_edit_m": {
+  "min": 10.0,
+  "p50": 20.0,
+  "p95": 21.3,
+  "max": 21.3
+ },
+ "terrain_cells_far_gt60m": 0,
+ "content_new_by_hash": 0,
+ "content_new_dist_from_edit_m": [],
+ "content_new_far_gt60m": [],
+ "changed_dist_from_edit_m": [],
+ "changed_far_gt60m": []
+}

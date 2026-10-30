@@ -79,6 +79,8 @@ public static partial class BuildBayLoop
                 var L = new V2L { id = rs.roadId, kind = rs.kind, w = rs.width, rough = rs.roughness, mat = rs.GetComponent<MeshRenderer>().sharedMaterial, p = rs.centerline.Select(q => q - Vector3.up * RoadColLift).ToList() };
                 L.fix = L.p.Select(q => !V2In(q)).ToList(); cars.Add(L); disabled.Add(rs.name);
             }
+            // D-215 길 그리기: docs/map/roads-hand.json 이 있으면 원본 위에 덮는다(바꾼 길·지운 길·새 길)
+            var hand = RoadPaintData.Load(); lg.Add(V2HandCars(hand, cars));
             // 2단계: 같은 종류(kind)는 재질 하나 — 길이로 가장 많이 쓰인 옛 재질. 종류가 바뀌는 곳은 갈림목(넓은 길 재질)에서만 바뀐다
             var kindMat = cars.GroupBy(c => c.kind).ToDictionary(g => g.Key, g => g.GroupBy(c => c.mat).OrderByDescending(m => m.Sum(c => V2Len(c.p))).First().Key);
             foreach (var c in cars) c.mat = kindMat[c.kind];
@@ -429,15 +431,26 @@ public static partial class BuildBayLoop
             var plan = (Dictionary<string, object>)Json.Parse(System.IO.File.ReadAllText(TownV6Json, Encoding.UTF8));
             int pathN = 0, pathCut = 0;
             var draper = new V2Draper(w, m2.triangles);
+            // D-215 길 그리기: 걷는 길도 손 길로 덮는다 — 지운 길·차길로 바뀐 길은 옛 것만 끄고, 바뀐 길은 점·폭 교체, 새 걷는 길은 뒤에 더한다
+            var hDel = new HashSet<string>(hand?.deleted ?? new List<string>()); var hBy = new Dictionary<string, RoadPaintHand>(); if (hand != null) foreach (var hr in hand.roads) hBy[hr.id] = hr;
+            var walks = new List<(string id, List<Vector3> ks, float hw, Material mat)>(); var planWalk = new HashSet<string>(); Material walkMat = null;
             foreach (Dictionary<string, object> r in (List<object>)plan["roads"])
             {
                 string kind = (string)r["kind"]; if (kind == "main" || kind == "village") continue;
-                var ks = ((List<object>)r["knots"]).Cast<List<object>>().Select(k => new Vector3(F(k[0]), F(k[2]), F(k[1]))).ToList();
+                string rid = (string)r["id"]; planWalk.Add(rid); hBy.TryGetValue(rid, out var hw0);
+                var ks = ((List<object>)r["knots"]).Cast<List<object>>().Select(k => new Vector3(F(k[0]), F(k[2]), F(k[1]))).ToList(); float hwr = F(r["width"]) * .5f;
+                if (hDel.Contains(rid) || (hw0 != null && !hw0.walk)) { var o = roadsT.Find("ROAD_" + rid); if (o != null && o.gameObject.activeSelf) disabled.Add(o.name); continue; }
+                if (hw0 != null) { ks = RoadPaintData.Pts(hw0); hwr = hw0.w * .5f; }
                 if (!ks.Any(q => V2Out(q) < margin)) continue;
-                var old = roadsT.Find("ROAD_" + (string)r["id"]); if (old == null || !old.gameObject.activeSelf) continue;
-                var mat = old.GetComponent<MeshRenderer>().sharedMaterial; disabled.Add(old.name);
+                var old = roadsT.Find("ROAD_" + rid); if (old == null || !old.gameObject.activeSelf) continue;
+                var mat0 = old.GetComponent<MeshRenderer>().sharedMaterial; disabled.Add(old.name); if (walkMat == null && kind == "alley") walkMat = mat0;
+                walks.Add((rid, ks, hwr, mat0));
+            }
+            if (hand != null) foreach (var hr in hand.roads) if (hr.walk && !planWalk.Contains(hr.id)) { var ks = RoadPaintData.Pts(hr); if (ks.Count >= 2) walks.Add((hr.id, ks, hr.w * .5f, walkMat)); }
+            foreach (var (wid, ks, hw, mat) in walks)
+            {
                 var pts = new List<Vector3>(); for (int i = 0; i + 1 < ks.Count; i++) { int nn = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude)); for (int s = 0; s < nn; s++) pts.Add(Vector3.Lerp(ks[i], ks[i + 1], s / (float)nn)); }
-                pts.Add(ks[ks.Count - 1]); float hw = F(r["width"]) * .5f;
+                pts.Add(ks[ks.Count - 1]);
                 var keep = pts.Select(q => {
                     var cell = (Mathf.FloorToInt(q.x / GC), Mathf.FloorToInt(q.z / GC));
                     if (sGrid.TryGetValue(cell, out var sl)) foreach (int si in sl) { var s = segs[si]; if (V2SegE(s.a, s.b, q) - s.hw <= hw + .3f) return false; }
@@ -452,7 +465,7 @@ public static partial class BuildBayLoop
                     if (j - i >= 3)
                     {
                         var v = V2BandVerts(pts.GetRange(i, j - i), hw, V2PathLift);
-                        draper.Make(v2T, "ROAD_V2p_" + (string)r["id"] + "_" + piece++, v, mat, meshes); pathN++;
+                        draper.Make(v2T, "ROAD_V2p_" + wid + "_" + piece++, v, mat, meshes); pathN++;
                     }
                     i = j;
                 }
