@@ -15,7 +15,8 @@ public class OnFootRouteBot : MonoBehaviour
 {
     public static string Status = "idle";
 
-    struct Step { public string kind, label; public Vector2 p; public Step(string k, string l, float x, float z) { kind = k; label = l; p = new Vector2(x, z); } }
+    // shot 의 p 가 (0,0) 이 아니면 그 점(발 높이 + aimY)을 바라보고 찍는다(1인칭, 과제 20261031-0044).
+    struct Step { public string kind, label; public Vector2 p; public float aimY; public Step(string k, string l, float x, float z, float ay = 1.4f) { kind = k; label = l; p = new Vector2(x, z); aimY = ay; } }
 
     // walk = 걸어서 그 점까지 · door = 근처 문 열기(E) · shot = 캡처 · board = 카트 타기 · drive = 차로 그 점까지 · exit = 서서 내리기
     static readonly Step[] Route =
@@ -32,15 +33,16 @@ public class OnFootRouteBot : MonoBehaviour
         new Step("walk", "계단참 입구", 188.82f, -60.05f),
         new Step("walk", "계단참", 189.14f, -59.39f),
         new Step("walk", "계단 위", 188.66f, -59.26f),
-        new Step("shot", "02_landing", 0, 0),
+        new Step("shot", "02_stairs", 184.62f, -58.55f, -1.2f),
         new Step("walk", "계단 아래", 184.62f, -58.55f),
         new Step("walk", "1층 계단 앞", 184.42f, -59.68f),
         new Step("walk", "현관 앞", 184.62f, -63.17f),
         new Step("door", "현관문", 0, 0),
+        new Step("shot", "03_porch", 184.6f, -66.0f, 1.3f),
         new Step("walk", "현관 밖", 184.6f, -65.0f),
         new Step("close", "현관문 닫기", 0, 0),
         new Step("walk", "마당", 184.8f, -66.2f),
-        new Step("shot", "03_outside_door", 0, 0),
+        new Step("shot", "03b_outside_door", 0, 0),
         new Step("walk", "마당 동쪽", 194.6f, -68.3f),
         new Step("walk", "돌계단 위", 196.3f, -68.6f),
         new Step("walk", "돌계단 아래", 197.0f, -76.9f),
@@ -56,6 +58,9 @@ public class OnFootRouteBot : MonoBehaviour
         new Step("walk", "골목 222", 222.0f, -64.0f),
         new Step("walk", "골목 230", 230.0f, -63.3f),
         new Step("walk", "차고 마당", 229.4f, -57.6f),
+        // 1인칭 시선 2 m: 카트 몸통 상자는 낮다(윗면 = 눈 아래 1.2 m) → 몸통 가장자리 0.6 m 까지 붙어서 본다.
+        new Step("walk", "카트 옆", 229.45f, -57.2f),
+        new Step("aimcar", "카트 보기", 0, 0),
         new Step("shot", "05_beside_cart", 0, 0),
         new Step("board", "카트 타기", 0, 0),
         new Step("drive", "진입로 시작", 233.5f, -48.0f),
@@ -88,6 +93,7 @@ public class OnFootRouteBot : MonoBehaviour
 
     IEnumerator Start()
     {
+        if (doorCheck) { yield return DoorCheck(); yield break; }
         Directory.CreateDirectory(evDir); Directory.CreateDirectory(logDir);
         float wait = 0f;
         while (dir.State == OnFootDirector.Mode.Starting && wait < 10f) { wait += Time.unscaledDeltaTime; yield return null; }
@@ -101,12 +107,18 @@ public class OnFootRouteBot : MonoBehaviour
             Status = s.label;
             switch (s.kind)
             {
-                case "shot": yield return Shot(s.label); break;
+                case "shot":
+                    if (s.p != Vector2.zero) { cam.LookAt(new Vector3(s.p.x, pl.transform.position.y + s.aimY, s.p.y)); yield return null; yield return null; }
+                    yield return Shot(s.label); break;
                 case "walk": yield return Walk(s); break;
+                case "aimcar": cam.LookAt(CarAim()); yield return null; yield return null; break;
                 case "door":
                 case "close":
                 {
                     string want = s.kind == "door" ? "열기" : "닫기";
+                    // 1인칭: 문을 바라봐야 안내가 뜬다 — 가장 가까운 문짝을 본다.
+                    var nd = NearestDoor(pl.transform.position);
+                    if (nd != null) cam.LookAt(DoorAim(nd));
                     float w = 0f;
                     while (!dir.Prompt.Contains(want) && w < 2f) { w += Time.deltaTime; yield return null; }
                     if (!dir.Prompt.Contains(want)) { Stuck(s.label, $"안내 '{dir.Prompt}' ({want} 아님)"); break; }
@@ -122,7 +134,7 @@ public class OnFootRouteBot : MonoBehaviour
                     if (dir.Prompt != "E 타기") { Stuck(s.label, $"안내 '{dir.Prompt}'"); Status = "FAIL board"; Finish(tStart); yield break; }
                     Seg("걷기 끝(카트 앞)", ref tSeg);
                     dir.SimInteract();
-                    yield return null; yield return null;
+                    yield return CamTrace("타기");
                     if (dir.State != OnFootDirector.Mode.InCart) { Stuck(s.label, "타기 안 됨"); Status = "FAIL board"; Finish(tStart); yield break; }
                     yield return new WaitForSeconds(0.6f);
                     break;
@@ -138,13 +150,14 @@ public class OnFootRouteBot : MonoBehaviour
                     w = 0f;
                     while (dir.Prompt != "E 내리기" && w < 3f) { w += Time.deltaTime; yield return null; }
                     dir.SimInteract();
-                    yield return null; yield return null;
+                    yield return CamTrace("내리기");
                     Line(dir.State == OnFootDirector.Mode.OnFoot ? $"내림 OK 사람={P(pl.transform.position)}" : $"내리기 실패 안내='{dir.Prompt}' 속도={dir.Car.CurrentSpeedMps:F2}");
                     if (dir.State != OnFootDirector.Mode.OnFoot) stuck.Add("내리기");
                     break;
                 }
             }
-            if (s.kind == "walk" || s.kind == "drive") Line($"{s.label} 도착 t={Time.time - tStart:F1}s {P(s.kind == "walk" ? pl.transform.position : dir.Car.transform.position)}");
+            if (s.kind == "walk" || s.kind == "drive") Line($"{s.label} 도착 t={Time.time - tStart:F1}s {P(s.kind == "walk" ? pl.transform.position : dir.Car.transform.position)}{stepNote}");
+            stepNote = "";
         }
         pl.simMove = Vector2.zero;
         Finish(tStart);
@@ -153,10 +166,17 @@ public class OnFootRouteBot : MonoBehaviour
     IEnumerator Walk(Step s)
     {
         var pl = dir.Player; var cam = pl.Cam;
+        cam.Pitch = 0f;
         float best = float.MaxValue, lastImprove = Time.time, t0 = Time.time;
+        // 계단 덜컹임: 프레임마다 발 높이 변화와 눈(카메라) 높이 변화 중 가장 큰 것.
+        var camT = Camera.main.transform;
+        float footY = pl.transform.position.y, eyeY = camT.position.y, maxFoot = 0f, maxEye = 0f;
         while (true)
         {
             Vector3 p = pl.transform.position;
+            maxFoot = Mathf.Max(maxFoot, Mathf.Abs(p.y - footY)); footY = p.y;
+            maxEye = Mathf.Max(maxEye, Mathf.Abs(camT.position.y - eyeY)); eyeY = camT.position.y;
+            if (maxFoot > 0.05f) stepNote = $" 한 프레임 최대 높이변화 발 {maxFoot:F3}m / 눈 {maxEye:F3}m";
             Vector2 d = s.p - new Vector2(p.x, p.z);
             float dist = d.magnitude;
             if (dist < 0.3f) break;
@@ -220,6 +240,120 @@ public class OnFootRouteBot : MonoBehaviour
         File.WriteAllBytes(Path.Combine(evDir, name + ".png"), tx.EncodeToPNG());
         rt.Release(); Destroy(rt); Destroy(tx);
         Line($"캡처 {name} 안내='{dir.Prompt}'");
+    }
+
+    // ── 1인칭 시선(과제 20261031-0044) ──
+    static DoorHinge NearestDoor(Vector3 p)
+    {
+        DoorHinge pick = null; float best = float.MaxValue;
+        foreach (var d in FindObjectsByType<DoorHinge>(FindObjectsSortMode.None))
+        {
+            if (!d.configured) continue;
+            float dist = Vector3.Distance(d.CenterWorld, p + Vector3.up * 1f);
+            if (dist < best) { best = dist; pick = d; }
+        }
+        return pick;
+    }
+
+    /// <summary>문짝에서 바라볼 점 — 가운데보다 문 끝 쪽(경첩에서 폭의 3/4). 열린 문은 가운데가 문틀 뒤에 숨기 쉽다.</summary>
+    static Vector3 DoorAim(DoorHinge d)
+    {
+        Vector3 c = d.CenterWorld;
+        Vector3 h = d.transform.parent != null ? d.transform.parent.TransformPoint(d.hingeLocal) : d.hingeLocal;
+        Vector3 a = h + (c - h) * 1.5f; a.y = c.y;
+        return a;
+    }
+
+    Vector3 CarAim()
+    {
+        var b = new Bounds(dir.Car.transform.position, Vector3.zero);
+        foreach (var c in dir.Car.GetComponentsInChildren<Collider>()) if (!c.isTrigger) b.Encapsulate(c.bounds);
+        // 사람한테 가까운 몸통 윗면 모서리에서 0.3 m 안쪽(가운데는 2 m 레이 밖일 수 있다).
+        Vector3 p = dir.Player.transform.position;
+        Vector3 a = b.ClosestPoint(new Vector3(p.x, b.center.y, p.z));
+        Vector3 inward = b.center - a; inward.y = 0f;
+        a += inward.normalized * Mathf.Min(0.3f, inward.magnitude);
+        a.y = b.max.y - 0.05f;
+        return a;
+    }
+
+    /// <summary>타기·내리기 앞뒤 6 프레임의 카메라 자리 — 중간에 날아가는 프레임이 있는지.</summary>
+    IEnumerator CamTrace(string label)
+    {
+        var c = Camera.main.transform;
+        Vector3 prev = c.position; var sb = new StringBuilder($"카메라 {label}: 전 {P(prev)} fov={Camera.main.fieldOfView:F1}");
+        for (int i = 1; i <= 6; i++)
+        {
+            yield return null;
+            sb.Append($" | f{i} Δ{Vector3.Distance(prev, c.position):F2}m");
+            prev = c.position;
+        }
+        sb.Append($" 후 {P(prev)} fov={Camera.main.fieldOfView:F1}");
+        Line(sb.ToString());
+    }
+
+    /// <summary>
+    /// 문 5개 시선 점검: 문마다 문 앞 1 m 에 서서 문짝을 바라봄 → 'E 열기' → E → 열림 → 열린 문짝을 바라봄 → 'E 닫기' → E → 닫힘.
+    /// 문 양쪽 중 바닥이 있고 몸이 들어가는 쪽에 선다. 결과 = 로그폴더/doors.txt, 진행 = Status.
+    /// </summary>
+    public static string BeginDoorCheck(string logDirectory)
+    {
+        var d = FindFirstObjectByType<OnFootDirector>();
+        if (d == null) return "FAIL: OnFootDirector 없음";
+        var old = FindFirstObjectByType<OnFootRouteBot>();
+        if (old != null) Destroy(old.gameObject);
+        var bot = new GameObject("_OnFootRouteBot").AddComponent<OnFootRouteBot>();
+        bot.logDir = logDirectory; bot.dir = d; bot.doorCheck = true;
+        Status = "starting";
+        return "OK";
+    }
+
+    bool doorCheck;
+    string stepNote = "";
+
+    IEnumerator DoorCheck()
+    {
+        Directory.CreateDirectory(logDir);
+        while (dir.State != OnFootDirector.Mode.OnFoot) yield return null;
+        var pl = dir.Player; var cam = pl.Cam; var cc = pl.Controller;
+        pl.simActive = true; cam.simActive = true; pl.simMove = Vector2.zero;
+        int ok = 0, total = 0;
+        foreach (var d in FindObjectsByType<DoorHinge>(FindObjectsSortMode.InstanceID))
+        {
+            if (!d.configured) continue;
+            total++; Status = "doors " + d.name;
+            if (d.IsOpen) { cam.LookAt(DoorAim(d)); yield return null; }
+            Vector3 up = Vector3.up;
+            Vector3 leaf = d.transform.parent != null ? d.transform.parent.TransformDirection(d.leafDirLocal) : d.leafDirLocal;
+            Vector3 n = Vector3.Cross(up, leaf); n.y = 0f; n.Normalize();
+            Vector3 c = d.CenterWorld;
+            string res = null;
+            foreach (float side in new[] { 1f, -1f })
+            {
+                Vector3 p = c + n * side * 1.0f;
+                if (!Physics.Raycast(new Vector3(p.x, c.y + 0.3f, p.z), Vector3.down, out var hit, 3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
+                p = hit.point + Vector3.up * 0.05f;
+                if (Physics.CheckCapsule(p + up * (cc.radius + 0.05f), p + up * (cc.height - cc.radius), cc.radius, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
+                pl.Teleport(p, Quaternion.LookRotation(-n * side).eulerAngles.y);
+                yield return null;
+                cam.LookAt(DoorAim(d)); yield return null; yield return null;
+                string p1 = dir.Prompt, g1 = dir.GazeTarget;
+                if (p1 != "E 열기") { res = $"FAIL 닫힌 문 안내='{p1}' 시선={g1 ?? "-"} side={side}"; continue; }
+                dir.SimInteract(); yield return new WaitForSeconds(0.6f);
+                bool opened = d.IsOpen;
+                cam.LookAt(DoorAim(d)); yield return null; yield return null;
+                string p2 = dir.Prompt, g2 = dir.GazeTarget;
+                if (p2 == "E 닫기") { dir.SimInteract(); yield return new WaitForSeconds(0.6f); }
+                bool closed = !d.IsOpen;
+                bool pass = opened && p2 == "E 닫기" && closed;
+                res = $"{(pass ? "OK" : "FAIL")} 섬={P(p)} 열기 안내='{p1}' 시선={g1} → 열림={opened} · 닫기 안내='{p2}' 시선={g2 ?? "-"} → 닫힘={closed}";
+                if (pass) { ok++; break; }
+            }
+            Line($"{d.name}: {res ?? "FAIL 설 자리 없음(문 양쪽 바닥/몸)"}");
+        }
+        Line($"문 {ok}/{total} 통과");
+        File.WriteAllText(Path.Combine(logDir, "doors.txt"), log.ToString(), new UTF8Encoding(false));
+        Status = $"doors done {ok}/{total}";
     }
 
     void Seg(string label, ref float tSeg) { Line($"구간 {label}: {Time.time - tSeg:F1}s"); tSeg = Time.time; }

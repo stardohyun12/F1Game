@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 기능 1(과제 20261030-2243): 집-차고 구간 감독. 주인공 방에서 걸어서 시작 → 문(E) → 차고 마당 카트(E 타기) → 운전 → 정차 중 E 내리기.
 /// 시작 순서는 OpeningTutorial 과 같다(주문판 닫기·시계 없음·timeScale 1). OpeningTutorial·BayLoopDriveOnly 는 이 감독이 있으면 끈다(D-199 로 보류 중).
-/// 화면엔 한 줄 안내만(E 열기 / E 닫기 / E 타기 / E 내리기).
+/// 화면엔 한 줄 안내만(E 열기 / E 닫기 / E 타기 / E 내리기). 걷기 = 1인칭(D-219): 가운데 조준점 + 시선 레이 2 m 에 문·카트가 맞을 때만 안내.
 /// 설치: 에디터 메뉴 PitCrew/기능/집-차고 구간 설치(OnFootSetup).
 /// </summary>
 public class OnFootDirector : MonoBehaviour
@@ -18,9 +18,8 @@ public class OnFootDirector : MonoBehaviour
     [SerializeField] OnFootPlayer player;
     [SerializeField] Transform spawn;
     [SerializeField] Transform cartSpot;
-    [SerializeField] float doorReach = 1.8f;
-    [Tooltip("차 몸통 가장자리까지 이 거리(m) 안이면 E 타기.")]
-    [SerializeField] float cartReach = 2.0f;
+    [Tooltip("1인칭 시선 레이 길이(m). 눈에서 이 거리 안에 문·카트가 맞으면 E.")]
+    [SerializeField] float gazeReach = 2.0f;
     [Tooltip("이 속도(m/s) 밑이면 내릴 수 있다.")]
     [SerializeField] float exitMaxSpeed = 1.0f;
     [Tooltip("카트에서 내릴 때 차 옆 거리(m).")]
@@ -31,11 +30,12 @@ public class OnFootDirector : MonoBehaviour
     public string Prompt { get; private set; } = "";
     public OnFootPlayer Player => player;
     public ArcadeCarController Car => car;
+    /// <summary>지금 시선 레이가 맞은 것(없으면 null) — 봇·QA 용.</summary>
+    public string GazeTarget { get; private set; }
     public readonly List<string> Log = new List<string>();
 
     ArcadeCarController car;
     Rigidbody carRb;
-    Collider carBody;
     UnityEngine.InputSystem.PlayerInput carInput;
     RunController rc;
     Camera cam;
@@ -45,6 +45,8 @@ public class OnFootDirector : MonoBehaviour
     readonly List<Canvas> hud = new List<Canvas>();
     TextMeshProUGUI promptText;
     GameObject promptRoot;
+    GameObject dotRoot;
+    readonly RaycastHit[] gazeHits = new RaycastHit[16];
     bool simInteract;
     bool freeDriveEntered;
     float t0;
@@ -70,13 +72,13 @@ public class OnFootDirector : MonoBehaviour
             enabled = false; yield break;
         }
         carRb = car.GetComponent<Rigidbody>();
-        foreach (var c in car.GetComponentsInChildren<Collider>()) if (!c.isTrigger) { carBody = c; break; }
         carInput = car.GetComponent<UnityEngine.InputSystem.PlayerInput>();
         follow = cam.GetComponent<FollowCamera>();
         footCam = cam.GetComponent<OnFootCamera>();
         if (footCam == null) footCam = cam.gameObject.AddComponent<OnFootCamera>();
         footCam.enabled = false;
         footCam.target = player.transform;
+        footCam.Fov = follow != null ? follow.BaseFov : cam.fieldOfView;   // 걷기도 게임 기본 시야각 그대로
         player.Cam = footCam;
 
         if (rc != null) rc.BeginNoClock();
@@ -119,9 +121,10 @@ public class OnFootDirector : MonoBehaviour
         bool press = InteractPressed();
         if (State == Mode.OnFoot)
         {
-            DoorHinge door = NearestDoor(out float dd);
-            bool cartNear = CartDistance() <= cartReach;
-            if (cartNear && (door == null || CartDistance() < dd))
+            // 1인칭(D-219): 화면 가운데 점이 가리키는 것만 — 시선 레이 2 m 에 처음 맞은 것이 문·카트일 때.
+            Object hit = Gaze(out DoorHinge door);
+            GazeTarget = hit != null ? hit.name : null;
+            if (hit == car)
             {
                 SetPrompt("E 타기");
                 if (press) EnterCart();
@@ -141,29 +144,38 @@ public class OnFootDirector : MonoBehaviour
         }
     }
 
-    DoorHinge NearestDoor(out float best)
+    /// <summary>
+    /// 눈(카메라)에서 앞으로 gazeReach 만큼 레이. 내 몸을 뺀 첫 번째 맞은 것이 문짝(또는 문과 같이 도는 손잡이)이면 그 문, 차 몸통이면 차.
+    /// 벽·문틀이 먼저 맞으면 아무것도 아니다 — 벽 너머 문은 안 잡힌다.
+    /// </summary>
+    Object Gaze(out DoorHinge door)
     {
-        best = float.MaxValue; DoorHinge pick = null;
-        Vector3 p = player.transform.position + Vector3.up * 1.0f;
-        foreach (var d in doors)
+        door = null;
+        Transform eye = cam.transform;
+        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, gazeHits, gazeReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        Collider first = null; float best = float.MaxValue;
+        for (int i = 0; i < n; i++)
         {
-            if (d == null) continue;
-            Vector3 c = d.CenterWorld;
-            if (Mathf.Abs(c.y - p.y) > 1.6f) continue;   // 다른 층 문
-            Vector3 h = c - p; h.y = 0f;
-            float dist = h.magnitude;
-            if (dist < best && dist <= doorReach) { best = dist; pick = d; }
+            var c = gazeHits[i].collider;
+            if (c == null || c.transform.IsChildOf(player.transform)) continue;
+            if (gazeHits[i].distance < best) { best = gazeHits[i].distance; first = c; }
         }
-        return pick;
-    }
-
-    /// <summary>사람 → 차 몸통(콜라이더 상자) 가장 가까운 점까지 수평 거리. 차 크기가 바뀌어도(카트→F1, D-160) 같은 느낌.</summary>
-    float CartDistance()
-    {
-        Vector3 a = player.transform.position;
-        Vector3 b = carBody != null ? carBody.bounds.ClosestPoint(new Vector3(a.x, carBody.bounds.center.y, a.z)) : car.transform.position;
-        a.y = b.y = 0f;
-        return Vector3.Distance(a, b);
+        // 카트는 낮아서(충돌 0.44m) 서서 내려다보면 레이가 빗나간다 — 카트 중심이 3m 안(가장자리 약 2m)이고 대략 앞쪽이면 타기 허용(PD 10/31, 기능팀 보고 1c)
+        if (car != null)
+        {
+            Vector3 to = car.transform.position - player.transform.position; to.y = 0f;
+            Vector3 fw = eye.forward; fw.y = 0f;
+            if (to.magnitude < 3.0f && fw.sqrMagnitude > 1e-4f && Vector3.Dot(fw.normalized, to.normalized) > 0.5f
+                && (first == null || first.GetComponentInParent<DoorHinge>() == null)) return car;
+        }
+        if (first == null) return null;
+        var hitCar = first.GetComponentInParent<ArcadeCarController>();
+        if (hitCar != null && hitCar == car) return car;
+        var dh = first.GetComponentInParent<DoorHinge>();
+        if (dh != null && doors.Contains(dh)) { door = dh; return dh; }
+        foreach (var d in doors)
+            if (d != null) foreach (var r in d.riders) if (r != null && first.transform.IsChildOf(r)) { door = d; return d; }
+        return null;
     }
 
     void SetPrompt(string s)
@@ -181,6 +193,8 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(true);
         footCam.Yaw = player.transform.eulerAngles.y;
         footCam.enabled = true;
+        if (dotRoot != null) dotRoot.SetActive(true);
+        PlacePrompt(true);
         SetHud(false);
     }
 
@@ -193,7 +207,11 @@ public class OnFootDirector : MonoBehaviour
         SetCarControl(true);
         if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
         else Services.Overview?.GoToFollow();
-        if (follow != null) follow.enabled = true;
+        // 같은 프레임에 B 자리로 — 눈높이에서 차 뒤로 날아가는 프레임이 없다.
+        if (follow != null) { follow.enabled = true; follow.SnapToTarget(); }
+        if (dotRoot != null) dotRoot.SetActive(false);
+        GazeTarget = null;
+        PlacePrompt(false);
         SetHud(true);
         SetPrompt("");
     }
@@ -278,5 +296,22 @@ public class OnFootDirector : MonoBehaviour
         promptText.color = Color.white; promptText.raycastTarget = false;
         promptRoot = bg;
         bg.SetActive(false);
+        // 조준점: 화면 가운데 작은 점(걷는 동안만). 아트는 나중에 이 Image 의 스프라이트 슬롯에.
+        dotRoot = new GameObject("Dot", typeof(RectTransform), typeof(Image));
+        dotRoot.transform.SetParent(go.transform, false);
+        var drt = (RectTransform)dotRoot.transform;
+        drt.anchorMin = drt.anchorMax = drt.pivot = new Vector2(0.5f, 0.5f);
+        drt.anchoredPosition = Vector2.zero; drt.sizeDelta = new Vector2(8f, 8f);
+        var dimg = dotRoot.GetComponent<Image>(); dimg.color = new Color(1f, 1f, 1f, 0.85f); dimg.raycastTarget = false;
+        dotRoot.SetActive(false);
+    }
+
+    /// <summary>걷기 = 안내를 조준점 바로 아래에(보는 곳 옆에서 읽게) · 카트 = 화면 아래 띠.</summary>
+    void PlacePrompt(bool nearDot)
+    {
+        if (promptRoot == null) return;
+        var rt = (RectTransform)promptRoot.transform;
+        if (nearDot) { rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f); rt.pivot = new Vector2(0.5f, 1f); rt.anchoredPosition = new Vector2(0f, -40f); rt.sizeDelta = new Vector2(220f, 52f); promptText.fontSize = 30; }
+        else { rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f); rt.pivot = new Vector2(0.5f, 0f); rt.anchoredPosition = new Vector2(0f, 150f); rt.sizeDelta = new Vector2(320f, 64f); promptText.fontSize = 38; }
     }
 }

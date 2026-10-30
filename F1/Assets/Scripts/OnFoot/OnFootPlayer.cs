@@ -59,7 +59,9 @@ public class OnFootPlayer : MonoBehaviour
         Vector3 dir = q * new Vector3(m.x, 0f, m.y);
         float sp = ReadRun() ? runSpeed : walkSpeed;
         Vector3 h = dir * sp;
-        if (dir.sqrMagnitude > 0.01f)
+        // 1인칭(D-219): 몸은 늘 보는 쪽을 향한다(옆걸음·뒷걸음이 되게). 카메라가 없으면 예전처럼 가는 쪽으로 돈다.
+        if (Cam != null && Cam.isActiveAndEnabled) transform.rotation = q;
+        else if (dir.sqrMagnitude > 0.01f)
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), turnSpeedDeg * dt);
 
         if (cc.isGrounded && vy < 0f) vy = -2f;
