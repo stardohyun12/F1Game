@@ -92,6 +92,9 @@ else
   if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")"); export TEAM_PREV_COST=$(cat "$COSTFILE" 2>/dev/null || echo 0)
   else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); export TEAM_PREV_COST=0; fi
   # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
+  # 턴 한도(10/30 도현: "필요한 에이전트에 한해 턴 제한 없애기"): config turns=0 또는 과제에 [NOLIMIT] 이면 --max-turns 없음(예산 상한은 유지)
+  TURNS="${TEAM_MAX_TURNS:-${C_TURNS:-80}}"; TURNARG=()
+  if [ "$TURNS" != "0" ] && ! printf '%s' "$TASK" | grep -q '\[NOLIMIT\]'; then TURNARG=(--max-turns "$TURNS"); fi
   claude -p "$PROMPT" "${SESS[@]}" \
     --model "${TEAM_MODEL:-${C_MODEL:-sonnet}}" ${C_EFFORT:+--effort "$C_EFFORT"} \
     --append-system-prompt-file "$SYSFILE" \
@@ -103,7 +106,7 @@ else
        "Bash(ls:*)" "Bash(cat:*)" "Bash(grep:*)" "Bash(sleep:*)" "Bash(python:*)" "Bash(date:*)" "Bash(wc:*)" \
     --disallowedTools "Bash(git commit:*)" "Bash(git push:*)" "Bash(rm -rf:*)" \
     ${EXTRA_TOOLS:+--allowedTools $EXTRA_TOOLS} \
-    --max-turns "${TEAM_MAX_TURNS:-${C_TURNS:-80}}" --max-budget-usd "${TEAM_BUDGET_USD:-${C_BUDGET:-5}}" \
+    ${TURNARG[@]+"${TURNARG[@]}"} --max-budget-usd "${TEAM_BUDGET_USD:-${C_BUDGET:-5}}" \
     --output-format stream-json --verbose 2>>".ai_logs/team/$ROLE.err" \
     | python scripts/team_log.py "$ROLE" "$LIVE" "$RESULT"
 fi

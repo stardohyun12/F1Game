@@ -45,7 +45,7 @@ $EXTRA
 씬 저장·콘솔 에러 0. 끝 보고 3줄: 원인 / 결과(fb_geom·판정 YES/NO) / 같은 원인 남은 곳."
 mv -f ".claude/team/sessions/$ROLE.id" ".claude/team/sessions/archive/$ROLE-fix-$(date +%H%M).id" 2>/dev/null
 T0=$(date +%s)
-TEAM_MAX_TURNS="${TEAM_MAX_TURNS:-25}" bash scripts/team.sh "$ROLE" "$TASK"
+bash scripts/team.sh "$ROLE" "$TASK"
 # 하네스 3번: 끝은 하네스가 판정 — 새 보고서·geom 결과 없으면 failed
 NEWREP=$(find docs/team/reports -name "$ROLE-*.md" -newermt "@$T0" | head -1)
 [ -z "$NEWREP" ] && echo "FAILED-NOREPORT: $ID 보고서 없음(턴 한도 추정)"

@@ -1,9 +1,9 @@
 {
  "programmer": {
-  "model": "sonnet",
+  "model": "opus",
   "effort": "",
-  "budget": 5.0,
-  "turns": 80
+  "budget": 15.0,
+  "turns": 0
  },
  "qa": {
   "model": "opus",
@@ -40,7 +40,7 @@
  "artlive": {
   "model": "sonnet",
   "effort": "high",
-  "budget": 5.0,
-  "turns": 40
+  "budget": 10.0,
+  "turns": 0
  }
 }
