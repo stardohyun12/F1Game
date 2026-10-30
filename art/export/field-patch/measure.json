@@ -31,13 +31,13 @@
   ]
  },
  "stones": 12,
- "tris": 16768,
+ "tris": 18592,
  "objects": 90,
  "faces_by_pt": {
   "soil": 240,
   "soil_ridge": 480,
   "cabbage_head": 2223,
-  "cabbage_leaf": 912,
+  "cabbage_leaf": 1824,
   "onion_stem": 714,
   "onion_leaf": 690,
   "stake": 42,
@@ -54,7 +54,7 @@
  },
  "atlas": [
   2048,
-  1664
+  1792
  ],
  "props": {
   "CAN_01": [

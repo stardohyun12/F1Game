@@ -60,20 +60,29 @@ def lathe(obj, cx, cy, prof, pt, n=16, jit=0.0, seed=0, lean=(0, 0), top=True): 
     if top and prof[-1][0] > 1e-4: quad_out(obj, rings[-1], pt, Vector((cx, cy, prof[-1][1] - 1)))
     return rings
 
-def leaf(obj, base, yaw, spine, widths, thick, pt, roll=0.0, sides=False):  # 잎 = 얇은 판(위·아래, 2056: 1cm 옆면은 720 에서 안 보여 뺌). spine = [(앞으로 r, 높이 z)], widths = 마디 폭
+def leaf(obj, base, yaw, spine, widths, thick, pt, roll=0.0, sides=False, nw=1, twist=0.0):  # 잎 = 얇은 판(위·아래, 2056: 1cm 옆면은 720 에서 안 보여 뺌). spine = [(앞으로 r, 높이 z)], widths = 마디 폭
+    # 2128: 아랫면 = 윗면을 잎 법선(마디 접선 × 옆) 쪽으로 thick 만큼 — 옛 「z 로 −thick」는 선 잎(대파)에서 두 장 간격이 ~0.6mm 라 겹친 면(ONION_10 41.8cm²).
+    # nw = 폭 방향 분할(배추 겉잎 3 = 잎맥 따라 굽은 4점 단면). 굽힘 = 법선 쪽으로 roll·w·t²(오목) + twist·w·t·(잎 끝으로 갈수록) — 납작한 카드 대신 휜 잎
     c, s = math.cos(yaw), math.sin(yaw); fwd = Vector((c, s, 0)); side = Vector((-s, c, 0))
+    P0 = [Vector(base) + fwd * r + Vector((0, 0, z)) for r, z in spine]; nS = len(P0)
+    NR = [(P0[min(i + 1, nS - 1)] - P0[max(i - 1, 0)]).cross(side).normalized() for i in range(nS)]   # 잎 앞면 법선(눕힌 잎 = 위, 선 잎 = 안쪽)
+    TT = [-1 + 2 * j / nw for j in range(nw + 1)]
     top, bot = [], []
-    for (r, z), w in zip(spine, widths):
-        p = Vector(base) + fwd * r + Vector((0, 0, z)); sw = side * (w / 2)
-        cup = Vector((0, 0, roll * w))     # 가장자리를 들어 올려 잎이 오목하게
-        top.append((p - sw + cup, p + sw + cup)); bot.append((p - sw + cup - Vector((0, 0, thick)), p + sw + cup - Vector((0, 0, thick))))
-    ctr = Vector(base) + fwd * spine[len(spine) // 2][0] + Vector((0, 0, spine[len(spine) // 2][1] - thick / 2))
-    for i in range(len(top) - 1):
-        quad_out(obj, [top[i][0], top[i][1], top[i + 1][1], top[i + 1][0]], pt, ctr - Vector((0, 0, 1)))   # 윗면(위로)
-        quad_out(obj, [bot[i][0], bot[i][1], bot[i + 1][1], bot[i + 1][0]], pt, ctr + Vector((0, 0, 1)))   # 아랫면
+    for i, ((p, nr), w) in enumerate(zip(zip(P0, NR), widths)):
+        fr = i / max(nS - 1, 1)
+        row = [p + side * (w / 2 * t) + nr * (roll * w * (t * t if nw > 1 else 1) + twist * w * t * fr) for t in TT]   # nw 1 = 옛 꼴(두 가장자리 같이 들림)
+        top.append(row); bot.append([q - nr * thick for q in row])
+    for i in range(nS - 1):
+        nm_ = (NR[i] + NR[i + 1]).normalized()
+        for j in range(nw):
+            ct = (top[i][j] + top[i][j + 1] + top[i + 1][j + 1] + top[i + 1][j]) / 4
+            quad_out(obj, [top[i][j], top[i][j + 1], top[i + 1][j + 1], top[i + 1][j]], pt, ct - nm_)   # 윗면(앞면 법선 쪽)
+            cb = (bot[i][j] + bot[i][j + 1] + bot[i + 1][j + 1] + bot[i + 1][j]) / 4
+            quad_out(obj, [bot[i][j], bot[i][j + 1], bot[i + 1][j + 1], bot[i + 1][j]], pt, cb + nm_)   # 아랫면
         if sides:
-            for j in (0, 1): quad_out(obj, [top[i][j], top[i + 1][j], bot[i + 1][j], bot[i][j]], pt, ctr)        # 옆
-    if sides: quad_out(obj, [top[-1][0], top[-1][1], bot[-1][1], bot[-1][0]], pt, ctr)
+            ctr = (top[i][nw // 2] + bot[i + 1][nw // 2]) / 2
+            for j in (0, nw): quad_out(obj, [top[i][j], top[i + 1][j], bot[i + 1][j], bot[i][j]], pt, ctr)        # 옆
+    if sides: quad_out(obj, [top[-1][0], top[-1][nw], bot[-1][nw], bot[-1][0]], pt, (top[-2][nw // 2] + bot[-2][nw // 2]) / 2)
 
 def rock(obj, cx, cy, sx, sy, h, pt, seed):  # 낮은 돌: 8점 상자를 흔든 덩어리(윗면 둥근 모서리 4점 추가), 땅에 4cm 박힘
     rr = random.Random(seed); yaw = rr.uniform(-.4, .4); c, s = math.cos(yaw), math.sin(yaw)
@@ -159,7 +168,7 @@ def cabbage(nm, cx, cy, z0, s, seed):
             spine = [(.06, .02), (.16, .13), (.27, .17), (.35, .1), (.39, .03)]; wd = [.07, .19, .2, .17, .05]
         else:
             spine = [(.07, .03), (.115, .17), (.16, .28), (.21, .32), (.24, .3)]; wd = [.07, .16, .15, .17, .08]
-        leaf(nm, (cx, cy, z0), yaw, [(r * k, z * k) for r, z in spine], [w * k for w in wd], .01, 'cabbage_leaf', roll=.3)
+        leaf(nm, (cx, cy, z0), yaw, [(r * k, z * k) for r, z in spine], [w * k for w in wd], .01, 'cabbage_leaf', roll=.16, nw=2, twist=rr.uniform(-.12, .12))   # 2128: 폭 2분할(3분할은 삼각형 2만 넘음)로 잎맥 따라 오목 + 끝 쪽 살짝 비틂(납작 카드 → 휜 잎)
     cabbages.append(nm)
 n = 0
 for k in (0, 1):
@@ -187,10 +196,11 @@ for row in (-.14, .14):
 
 # ---------- 고추(이랑 4): 지주대(각재 3cm, 1.1m, ±4° 기울기) 두 줄 + 끈 2단 + 늦가을 포기(잎 처짐·빨간 고추 몇 개) ----------
 stakes = []; n = 0; peppers = []; sl = []
+SH = .85   # 2128: 지주대 길이 1.2 → .85(땅 속 .12 + 이랑 위 .73 = 고추 포기 꼭대기 .48 보다 .25 위까지만). 기울기도 ±7 → ±5cm
 for i in range(7):
     y = RL0 + .25 + i * (RL1 - RL0 - .5) / 6 + J(.04); z, xc = ridge_top(3, y)
-    n += 1; nm = 'STAKE_%02d' % n; tl = Vector((J(.07), J(.07), 0))
-    b = Vector((xc + J(.02), y, z - .12)); t = b + Vector((0, 0, 1.2)) + tl
+    n += 1; nm = 'STAKE_%02d' % n; tl = Vector((J(.05), J(.05), 0))
+    b = Vector((xc + J(.02), y, z - .12)); t = b + Vector((0, 0, SH)) + tl
     beam(nm, b, t, .035, .035, 'stake'); stakes.append(nm); sl.append((b, t))
     rr = random.Random(500 + i); pnm = 'PEPPER_%02d' % (i + 1); peppers.append(pnm)
     px, py = xc + .1 * (1 if i % 2 else -1), y + .12
@@ -201,10 +211,10 @@ for i in range(7):
     for pp in range(rr.choice((3, 4, 5))):  # 매달린 고추: 꼭지에서 아래로 길쭉, 끝으로 가늘어짐(16각)
         a = rr.uniform(0, 6.28); r0 = rr.uniform(.05, .1); hx, hy, hz = px + r0 * math.cos(a), py + r0 * math.sin(a), z + rr.uniform(.22, .42)
         tube(pnm, [(hx, hy, hz), (hx + .01, hy, hz - .06), (hx + .02, hy + .01, hz - .13)], [.016, .014, .002], 'pepper_fruit')
-for row in (.45, .82):  # 끈: 지주대 앞면에 감김 — 지주대 사이 각 칸이 낱개 끈(끝은 지주대 안으로 1cm)
+for row in (.25, .5):  # 끈: 지주대 앞면에 감김 — 지주대 사이 각 칸이 낱개 끈(끝은 지주대 안으로 1cm). 2128: 낮아진 지주대에 맞춰 .45/.82 → .25/.5(포기 허리·어깨)
     for i in range(len(sl) - 1):
         (b0, t0), (b1, t1) = sl[i], sl[i + 1]
-        z0_, z1_ = b0 + (t0 - b0) * ((row + .12) / 1.2), b1 + (t1 - b1) * ((row + .12) / 1.2)
+        z0_, z1_ = b0 + (t0 - b0) * ((row + .12) / SH), b1 + (t1 - b1) * ((row + .12) / SH)
         beam('STRING_%02d' % (len(stakes) + i + (0 if row < .5 else 10)), z0_ + Vector((.012, 0, 0)), z1_ + Vector((.012, 0, 0)), .006, .006, 'string')
 
 # ---------- 울(2056): 뒤·옆 = 낮은 판자 울. 기둥 .06 각재(높이 .72, 간격 ~1.4m) + 가로대 2단(.05 × .018) + 세로 판자(폭 .085 · 두께 .016 · 높이 .62~.74, 틈 .045~.07) ----------
@@ -220,7 +230,7 @@ def fence_line(nm, pts):  # pts = 꺾이는 점들(땅 위 xy). 한 줄 = 낱개
         for t in tt:                                                  # 기둥(꼭짓점 기둥은 두 줄이 같은 자리에 두 번 서지 않게 첫 줄만)
             p = a + (b - a) * t
             if any((p.xy - q).length < .05 for q in posts): continue
-            h = .72 + J(.03); lean = Vector((J(.02), J(.02), 0))
+            h = .72 + J(.03); lj = (J(.02), J(.02)); lean = d * lj[0] if 0 < t < 1 else Vector()   # 2128: 기울기 = 줄 방향만(바깥으로 기울면 판자 안쪽 면과 같은 평면 — FENCE_01 5.9cm²), 꺾임·끝 기둥은 곧게. J 두 번 = 옛 난수 순서 유지
             beam(nm, p + Vector((0, 0, -.15)), p + Vector((0, 0, h)) + lean, .06, .06, 'post'); posts.append(p.xy.copy())
         zk = (SEGN[0] % 2) * .014; SEGN[0] += 1       # 꺾이는 모서리에서 이웃 줄 가로대가 같은 높이(같은 평면)로 겹치지 않게 한 칸 걸러 1.4cm 위
         for zf in (.18 + zk, .5 + zk):                                # 가로대 2단(단면: 세로 .05 · 바깥으로 .018)
@@ -255,8 +265,8 @@ cx, cy = gate[1] + .9, Y0 + .55
 lathe('CAN_01', cx, cy, [(r, z + ZP) for r, z in [(.0, .0), (.13, .0), (.135, .02), (.135, .26), (.12, .3), (.06, .32)]], 'can', top=True)
 tube('CAN_01', [(cx + .11, cy, .05 + ZP), (cx + .25, cy, .2 + ZP), (cx + .38, cy, .36 + ZP)], [.024, .019, .015], 'can', cap0=False, cap1=False)
 tube('CAN_01', [(cx + .38, cy, .36 + ZP), (cx + .41, cy, .39 + ZP), (cx + .43, cy, .41 + ZP)], [.015, .04, .045], 'can', cap0=False)
-for a, b in (((cx - .13, cy, .2), (cx - .19, cy, .27)), ((cx - .19, cy, .27), (cx - .14, cy, .4)), ((cx - .14, cy, .4), (cx + .02, cy, .42)), ((cx + .02, cy, .42), (cx + .05, cy, .31))):
-    k = (a[0] + a[2]) * 100 % 2 < 1   # 손잡이 마디 이음에서 옆면(±y)이 같은 평면으로 겹치지 않게 마디마다 두께 2.5/2.8cm 번갈아
+for hi_, (a, b) in enumerate((((cx - .13, cy, .2), (cx - .19, cy, .27)), ((cx - .19, cy, .27), (cx - .14, cy, .4)), ((cx - .14, cy, .4), (cx + .02, cy, .42)), ((cx + .02, cy, .42), (cx + .05, cy, .31)))):
+    k = hi_ % 2 == 0   # 손잡이 마디 이음에서 옆면(±y)이 같은 평면으로 겹치지 않게 마디마다 두께 2.5/2.9cm 번갈아(2128: 옛 좌표 공식은 3·4번째가 같은 두께 → CAN_01 2.5cm²)
     beam('CAN_01', (a[0], a[1], a[2] + ZP), (b[0], b[1], b[2] + ZP), .025 if k else .029, .025 if k else .029, 'can')
 bx, by = gate[0] + .5, Y0 + .6
 lathe('BASKET_01', bx, by, [(r, z + ZP) for r, z in [(.0, .0), (.2, .0), (.23, .05), (.27, .24), (.29, .26)]], 'basket', top=False)
