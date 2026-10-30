@@ -1,0 +1,19 @@
+{
+ "id": "unity-Map_TownV6-20261029-231130-94a3",
+ "time": "2026-10-30T18:35:23+09:00",
+ "before": "shots/unity-Map_TownV6-20261029-231130-94a3.png",
+ "after": "shots/unity-Map_TownV6-20261029-231130-94a3_after.png",
+ "comment": "여기를 집 범위로 해서 어울리는 정원 이라기보단 작은 밭 같은게 있게 해서 꾸며놓으면 좋을듯",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에서는 집 옆에 돌담으로 둘러싼 구역과 작은 밭(이랑이 있는 텃밭)이 생겼고, 집 주변이 어울리게 꾸며져 있어서 감독이 말한 문제는 해결되었다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽은 집 주변이 낮은 돌담으로 구획되고 집 옆에 작물이 줄지어 심긴 작은 밭이 생겨, 요청한 집 영역 꾸미기가 확인된다."
+  }
+ },
+ "pass": true
+}

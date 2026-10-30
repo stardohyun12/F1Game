@@ -22,11 +22,13 @@ public static class TerraceBlock
     const string RootName="TerraceBlock";
     const float Cell=.25f,Blend=8f,CarMargin=1f,PathMargin=.8f,WallMin=.3f,Thick=.4f,Batter=.08f,CapW=.56f,CapH=.12f,Section=2.4f,MaxEdge=.38f;
     // 2차: 2.5 m 넘는 단차는 두 단(사이 1.6 m 화단 턱) · 마디 끝 겹침 0.15 m · 돌 한 장 2.5×1.88 m · 흙길 반폭 1.1 m(가운데 흙, 바깥으로 풀 번짐)
+    // 4차: 텃밭(집 뿌리 좌표, 집 동쪽 옆) 6×5.5 m · 말뚝 틈(흙길 들어오는 곳) z · 흙길 반폭 0.55 m(한 사람 길)
+    const float GX0=-12.6f,GX1=-6.6f,GZ0=-2.5f,GZ1=3.0f,GateZ=1.6f,YardPathHalf=.55f;
     const float TwoTier=2.5f,LedgeW=1.6f,LedgeRoadGap=.6f,SecOverlap=.15f,StoneU=2.5f,StoneV=1.88f,PathHalf=1.1f,SmoothRoadGap=2f;
     // 3차: 사람 길. 연석 높이 0.13·폭 0.15 / 보도 큰길 1.8·마을길 1.5·좁으면 0.8 / 길 띠 0.4 m 안 땅은 그대로(길 밑 지형 안 움직이게)
     //      계단 단 높이 목표 0.165 / 밭 단 = 밭 안 지형 중앙값 +0.5(앞에 낮은 돌담) / 포장 텍스처 한 장 = 1.6 m
     const float Curb=.13f,CurbW=.15f,RoadCore=.4f,WalkMain=1.8f,WalkVillage=1.5f,WalkNarrow=.8f,Rise=.165f,FieldRaise=.5f,PaveTile=1.6f;
-    const string PaveTex=Folder+"TV6_Paving.png",PaveMat=Folder+"TV6_Paving.mat",WalkAsset=Folder+"Mesh_TerraceBlock_walk.asset";
+    const string PaveTex=Folder+"TV6_Paving.png",PaveMat=Folder+"TV6_Paving.mat",WalkAsset=Folder+"Mesh_TerraceBlock_walk.asset",GardenAsset=Folder+"Mesh_TerraceBlock_garden.asset";
     public static readonly Vector3 HouseCenter=new Vector3(185,0,-61);
 
     [MenuItem("PitCrew/Map/TownV6 — 계단 땅 시제품 (집 블록, D-209)")] static void BuildMenu()=>Debug.Log(Build(HouseCenter,60));
@@ -134,21 +136,15 @@ public static class TerraceBlock
         var house=GameObject.Find("D198_Buildings/house_home");
         if(!house||!Footprint(house.transform,1.2f,out var hpoly,out float hMin,out float hx0,out float hx1,out float hz0,out float hz1))throw new Exception("house_home 못 찾음");
         float hHouse=hMin;var hyaw=house.transform.eulerAngles.y;var hpos=house.transform.position;
-        var yardPoly=Rect(hpos,hyaw,hx0-1.2f,hx1+1.2f,hz0-1.2f,hz1+5.5f);
-        // 밭(밭 목업 B 와 같은 외곽: 12×9 m 초타원 p=4, 중심 198,-57, 10°)
-        var fq=Quaternion.Euler(0,10,0);var fc=new Vector3(198,0,-57);var fieldPoly=new List<Vector2>();
-        for(int k=0;k<48;k++){float t=k*Mathf.PI*2/48,cs=Mathf.Cos(t),sn=Mathf.Sin(t);var l=new Vector3(6f*Mathf.Sign(cs)*Mathf.Pow(Mathf.Abs(cs),.5f),0,4.5f*Mathf.Sign(sn)*Mathf.Pow(Mathf.Abs(sn),.5f));var w=fc+fq*l;fieldPoly.Add(new Vector2(w.x,w.z));}
-        float Median(List<Vector2> poly,float[] a){var v=new List<float>();for(int k=0;k<N;k++)if(InPoly(g.P(k),poly))v.Add(a[k]);v.Sort();return v.Count>0?v[v.Count/2]:float.NaN;}
-        // 3차: 밭 단 = 중앙값 +0.5 m(도현 (가) 0.4~0.6). 흙길은 밭 앞(돌담 밖)에서 끝나고 돌계단 3단으로 올라간다.
-        float hFieldNat=Median(fieldPoly,Hc),hField=hFieldNat+FieldRaise;
-        // 흙길(마당 동쪽 → 밭 남서 돌담 앞): 경사로, 집 높이 → 밭 앞 땅 높이
-        var qh=Quaternion.Euler(0,hyaw,0);var ps3=hpos+qh*new Vector3(hx0-.6f,0,hz1+3f);var pe3=fc+fq*new Vector3(-3f,0,-5.7f);
-        Vector2 ps=new Vector2(ps3.x,ps3.z),pe=new Vector2(pe3.x,pe3.z);var pmid=(ps+pe)*.5f+new Vector2(.8f,-.8f);
+        // 4차(D-210 도현 「밭은 집에 딸린 텃밭」): 따로 올린 밭 단·돌담·계단을 없앤다. 마당을 집 동쪽(뿌리 -x)으로 넓혀(L자) 그 안 같은 높이에 텃밭.
+        //   마당 = 집 둘레 1.2 m + 문 앞 5.5 m + 동쪽 날개(뿌리 x GX0-0.8..집 옆, z GZ0-0.8..GZ1+3.2). 둘레 축대는 마당 것 하나.
+        var qh=Quaternion.Euler(0,hyaw,0);
+        Vector2 HL(float lx,float lz){var w=hpos+qh*new Vector3(lx,0,lz);return new Vector2(w.x,w.z);}
+        float yx0=hx0-1.2f,yx1=hx1+1.2f,yz0=hz0-1.2f,yz1=hz1+5.5f;
+        var yardPoly=new List<Vector2>{HL(GX0-.8f,GZ0-.8f),HL(yx0,GZ0-.8f),HL(yx0,yz0),HL(yx1,yz0),HL(yx1,yz1),HL(yx0,yz1),HL(yx0,GZ1+3.2f),HL(GX0-.8f,GZ1+3.2f)};
+        // 흙길 한 줄: 앞문(문 앞 바닥 끝) → 집 동쪽 모퉁이를 돌아 → 텃밭 서쪽 말뚝 틈. 집 프리팹엔 옆문·뒷문이 없어(DOOR_01 하나) 앞문에서 나간다.
+        Vector2 ps=HL(-.7f,hz1+.6f),pmid=HL(GX1+.6f,hz1+.9f),pe=HL(GX1+.25f,GateZ);
         var pathLine=new List<Vector2>();for(int k=0;k<=16;k++){float t=k/16f;pathLine.Add((1-t)*(1-t)*ps+2*(1-t)*t*pmid+t*t*pe);}
-        float PathT(Vector2 p){float best=1e9f,bt=0;for(int k=0;k<pathLine.Count-1;k++){var a=pathLine[k];var b=pathLine[k+1];var ab=b-a;float t=Mathf.Clamp01(Vector2.Dot(p-a,ab)/ab.sqrMagnitude);float d=(a+ab*t-p).sqrMagnitude;if(d<best){best=d;bt=(k+t)/(pathLine.Count-1);}}return bt;}
-        var pathPoly=new List<Vector2>();{var L=new List<Vector2>();var Rr=new List<Vector2>();for(int k=0;k<pathLine.Count;k++){var d=(pathLine[Mathf.Min(k+1,pathLine.Count-1)]-pathLine[Mathf.Max(k-1,0)]).normalized;var nn=new Vector2(-d.y,d.x)*.8f;L.Add(pathLine[k]+nn);Rr.Add(pathLine[k]-nn);}pathPoly.AddRange(L);Rr.Reverse();pathPoly.AddRange(Rr);}
-        owners.Add(new Owner{name="path_house_field",poly=pathPoly,hf=p=>Mathf.Lerp(hHouse,hFieldNat,Mathf.SmoothStep(0,1,PathT(p)))});
-        owners.Add(new Owner{name="field",poly=fieldPoly,h=hField,hard=true});
         // OSM 건물(합친 벽 메시를 1 m 칸으로 묶어 덩어리별 최소 넓이 사각형)
         var wallsT=top.Find("Buildings/Walls_0");int osmIn=0;
         if(wallsT)
@@ -225,7 +221,7 @@ public static class TerraceBlock
             foreach(var c in roadCols){var bb=c.bounds;if(p.x<bb.min.x||p.x>bb.max.x||p.y<bb.min.z||p.y>bb.max.z)continue;if(c.Raycast(new Ray(new Vector3(p.x,500,p.y),Vector3.down),out var h,1000)&&h.point.y>best)best=h.point.y;}
             hit=!float.IsNegativeInfinity(best);return best;
         }
-        var blockers=owners.Where(o=>o.name!="path_house_field"&&o.name!="house_home+yard"&&!o.road).Select(o=>o.poly).ToList();blockers.Add(hpoly);
+        var blockers=owners.Where(o=>o.name!="house_home+yard"&&!o.road).Select(o=>o.poly).ToList();blockers.Add(hpoly);
         // 갈림목을 사이에 두고 끊긴 같은 폭 차길(예: 큰길 165_0 → 165_1)은 이어서 보도를 한 줄로(갈림목 북쪽 담 쪽 보도가 끊기지 않게)
         for(bool merged=true;merged;)
         {
@@ -306,12 +302,9 @@ public static class TerraceBlock
             //  서쪽 2.5 m(187,-71)로 빼면 마당 앞 축대 면을 따라 내려가 남쪽 벽이 4.36 m 로 한 단이 됐다)
             var top0=new Vector2(188.4f,-70.4f);for(int it=0;it<20&&!InPoly(top0,yardPoly);it++)top0=Vector2.MoveTowards(top0,new Vector2(hpos.x,hpos.z),.3f);
             if(WalkBack(new Vector2(202f,-76.3f),out var b1,out float y1))AddStair("stair_house_walk",new List<Vector2>{b1,Vector2.Lerp(b1,top0,.5f),top0},y1,hHouse,1.6f);
-            // ② 큰길 북쪽 보도 → 밭 남쪽 돌담(밭 단 높이로 올라섬)
-            var fTop3=fc+fq*new Vector3(.5f,0,-4.0f);var fTop=new Vector2(fTop3.x,fTop3.z);
-            if(WalkBack(new Vector2(210f,-74.8f),out var b2,out float y2))AddStair("stair_walk_field",new List<Vector2>{b2,Vector2.Lerp(b2,fTop,.5f)+new Vector2(.5f,-.3f),fTop},y2,hField,1.6f);
-            // ③ 흙길 끝(돌담 앞) → 밭: 3단
-            var s0=fc+fq*new Vector3(-3f,0,-5.75f);var s1=fc+fq*new Vector3(-2.75f,0,-4.0f);
-            AddStair("stair_path_field",new List<Vector2>{new Vector2(s0.x,s0.z),new Vector2(s1.x,s1.z)},hFieldNat,hField,1.4f);
+            // ② 큰길 북쪽 보도(3차와 같은 앵커) → 마당 동쪽 날개 남동 모서리(4차: 밭 단 대신 마당 높이). 걸어서 도는 고리가 유지되게.
+            var yTop=HL(GX0+.2f,GZ1+2.5f);
+            if(WalkBack(new Vector2(210f,-74.8f),out var b2,out float y2))AddStair("stair_walk_yard",new List<Vector2>{b2,Vector2.Lerp(b2,yTop,.5f)+new Vector2(.5f,-.3f),yTop},y2,hHouse,1.6f);
         }
         // 라벨 덮기(보도 먼저, 계단이 위). 길 core·건물 바닥은 안 덮는다.
         for(int o=firstLate;o<owners.Count;o++)
@@ -324,7 +317,7 @@ public static class TerraceBlock
             {
                 int idx=g.Idx(i,j);if(core[idx]||pcore[idx])continue;var p=g.P(i,j);bool inside;
                 if(st!=null){float dd=PolyNear(st.line,p,out float _s,out bool endCap);inside=!endCap&&dd<=st.width*.5f;}else inside=InPoly(p,ow.poly);
-                if(!inside)continue;if(blockers.Any(bp=>bp!=fieldPoly&&InPoly(p,bp)))continue;lab[idx]=o;
+                if(!inside)continue;if(blockers.Any(bp=>InPoly(p,bp)))continue;lab[idx]=o;
             }
         }
         // (late owner 는 ROAD 뒤 인덱스 → 아래 화단 턱 loop(o<ROAD) 에서 빠진다: 보도·계단 옆엔 턱을 만들지 않음)
@@ -448,9 +441,12 @@ public static class TerraceBlock
                     if(rl<.8f)for(int q=k;q<=e;q++)ok[q]=false;k=e+1;
                 }
                 var S=new float[m];for(int k=1;k<m;k++)S[k]=S[k-1]+(chain[k]-chain[k-1]).magnitude;
-                void Emit(int a,int b)
+                // 4차: 이어지는 마디끼리의 이음엔 끝 마개면을 안 붙인다(옆을 보는 좁은 면이 햇빛을 받아 가는 밝은 세로 선이 됐다). 사슬 끝·끊긴 곳만 막음.
+                bool joined=false;
+                void Emit(int a,int b,bool cont=false)
                 {
-                    if(b<=a)return;float l2=WallSection(wv,wt,ct,wuv,chain,S,Lo,Fh,Fl,a,b,ref stones,out float hgt);wallLen+=l2;wallMax=Mathf.Max(wallMax,hgt);if(hgt>TwoTier+.15f)tallLen+=l2;wallSum+=hgt*l2;sections++;
+                    bool capS=!joined;joined=cont;
+                    if(b<=a)return;float l2=WallSection(wv,wt,ct,wuv,chain,S,Lo,Fh,Fl,a,b,capS,!cont,ref stones,out float hgt);wallLen+=l2;wallMax=Mathf.Max(wallMax,hgt);if(hgt>TwoTier+.15f)tallLen+=l2;wallSum+=hgt*l2;sections++;
                     perOwner.TryGetValue(owners[o].name,out float pl);perOwner[owners[o].name]=pl+l2;
                 }
                 int s0=-1;float len=0,mn=0,mx=0;
@@ -459,7 +455,7 @@ public static class TerraceBlock
                     if(!ok[k]){if(s0>=0)Emit(s0,k-1);s0=-1;continue;}
                     if(s0<0||Mathf.Sign(J[k])!=Mathf.Sign(J[s0])){if(s0>=0)Emit(s0,k-1);s0=k;len=0;mn=mx=Fh[k];continue;}
                     len+=(chain[k]-chain[k-1]).magnitude;mn=Mathf.Min(mn,Fh[k]);mx=Mathf.Max(mx,Fh[k]);
-                    if(len>=Section||mx-mn>.3f){Emit(s0,k);s0=k;len=0;mn=mx=Fh[k];}
+                    if(len>=Section||mx-mn>.3f){Emit(s0,k,true);s0=k;len=0;mn=mx=Fh[k];}
                 }
                 if(s0>=0)Emit(s0,m-1);
             }
@@ -553,7 +549,7 @@ public static class TerraceBlock
                 for(int k=0;k<pts.Count;k++)
                 {
                     if(k>0)along+=(pts[k]-pts[k-1]).magnitude;var d=(pts[Mathf.Min(k+1,pts.Count-1)]-pts[Mathf.Max(k-1,0)]).normalized;var nn=new Vector2(-d.y,d.x);
-                    for(int q=0;q<PC;q++){float u=q/(float)(PC-1);var p=pts[k]+nn*((u*2-1)*PathHalf);float y=tcol.Raycast(new Ray(new Vector3(p.x,500,p.y),Vector3.down),out var hit,1000)?hit.point.y:g.Sample(F,p.x,p.y);pv.Add(new Vector3(p.x,y+.03f,p.y));puv.Add(new Vector2(u,along/4f));}
+                    for(int q=0;q<PC;q++){float u=q/(float)(PC-1);var p=pts[k]+nn*((u*2-1)*YardPathHalf);float y=tcol.Raycast(new Ray(new Vector3(p.x,500,p.y),Vector3.down),out var hit,1000)?hit.point.y:g.Sample(F,p.x,p.y);pv.Add(new Vector3(p.x,y+.03f,p.y));puv.Add(new Vector2(u,along/4f));}
                 }
                 for(int k=0;k<pts.Count-1;k++)for(int q=0;q<PC-1;q++){int a=k*PC+q,b=a+1,c=a+PC,d=a+PC+1;var tri=new[]{a,c,b,b,c,d};var nrm=Vector3.Cross(pv[c]-pv[a],pv[b]-pv[a]);if(nrm.y<0)tri=new[]{a,b,c,b,d,c};pt.AddRange(tri);}
             }finally{UnityEngine.Object.DestroyImmediate(tgo);}
@@ -608,7 +604,13 @@ public static class TerraceBlock
         var dst=AssetDatabase.LoadAssetAtPath<Mesh>(DstMesh);terr.GetComponent<MeshFilter>().sharedMesh=dst;var tmc=terr.GetComponent<MeshCollider>();if(tmc)tmc.sharedMesh=dst;
         var root=new GameObject(RootName);root.transform.SetParent(top,false);
         var wg=new GameObject("RetainingWalls");wg.transform.SetParent(root.transform,false);wg.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WallAsset);wg.AddComponent<MeshRenderer>().sharedMaterials=new[]{retain,cap};wg.AddComponent<MeshCollider>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WallAsset);
-        var pg=new GameObject("DirtPath_house_field");pg.transform.SetParent(root.transform,false);pg.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(PathAsset);pg.AddComponent<MeshRenderer>().sharedMaterial=pathMat;
+        var pg=new GameObject("DirtPath_door_garden");pg.transform.SetParent(root.transform,false);pg.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(PathAsset);pg.AddComponent<MeshRenderer>().sharedMaterial=pathMat;
+        // 4차 텃밭: 흙판·이랑 4줄·작물(낮은 잎 2줄/높은 잎 2줄)·낮은 나무 말뚝 둘레. 단색 씬 전용 재질(밭 목업 field_build 색).
+        var gmesh=BuildGarden(hpos,hyaw,hHouse,out string gardenNote);
+        if(AssetDatabase.LoadAssetAtPath<Mesh>(GardenAsset))AssetDatabase.DeleteAsset(GardenAsset);AssetDatabase.CreateAsset(gmesh,GardenAsset);AssetDatabase.SaveAssets();
+        var gmats=new[]{("Soil",new Color(.60f,.50f,.37f)),("Ridge",new Color(.64f,.54f,.40f)),("CropLow",new Color(.42f,.50f,.31f)),("CropTall",new Color(.47f,.55f,.34f)),("Wood",new Color(.46f,.41f,.34f))}
+            .Select(c=>CopyMat(StoneMat,Folder+"TV6_Garden"+c.Item1+".mat",new Color(c.Item2.r,c.Item2.g,c.Item2.b,st0.a))).ToArray();
+        var gg=new GameObject("Garden");gg.transform.SetParent(root.transform,false);gg.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(GardenAsset);gg.AddComponent<MeshRenderer>().sharedMaterials=gmats;
         var ag=new GameObject("Walkways");ag.transform.SetParent(root.transform,false);ag.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WalkAsset);ag.AddComponent<MeshRenderer>().sharedMaterials=new[]{pave,cap};ag.AddComponent<MeshCollider>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(WalkAsset);
         var scene=terr.gameObject.scene;EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
 
@@ -620,35 +622,105 @@ public static class TerraceBlock
         js.Append("\"terrain\":{\"vertsBefore\":"+origCount+",\"vertsAfter\":"+V.Count+",\"refinePasses\":"+passes+",\"changed\":"+changedV+",\"keptRoadZone\":"+keptRoad+",\"tJunctionsStitched\":"+tFixed+",\"maxCut\":"+f2(maxCut)+",\"maxFill\":"+f2(maxFill)+"},");
         js.Append("\"walls\":{\"sections\":"+sections+",\"lengthM\":"+wallLen.ToString("F1")+",\"maxH\":"+f2(wallMax)+",\"over2_65mLen\":"+tallLen.ToString("F1")+",\"meanH\":"+f2(wallLen>0?wallSum/wallLen:0)+",\"copingStones\":"+stones+",\"verts\":"+wv.Count+",\"byOwner\":{"+string.Join(",",perOwner.Select(kv=>"\""+kv.Key+"\":"+kv.Value.ToString("F1")))+"}},");
         js.Append("\"ledges\":["+string.Join(",",ledgeInfo)+"],");
-        js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"hStart\":"+f2(hHouse)+",\"hEnd\":"+f2(hFieldNat)+"},");
-        js.Append("\"field\":{\"hNat\":"+f2(hFieldNat)+",\"h\":"+f2(hField)+"},\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
+        js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"halfW\":"+YardPathHalf+",\"h\":"+f2(hHouse)+"},");
+        js.Append("\"garden\":{"+gardenNote+",\"h\":"+f2(hHouse)+"},\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
         js.Append("\"walk\":{\"curb\":"+Curb+",\"lengthM\":"+walkLen.ToString("F1")+",\"areaM2\":"+walkArea.ToString("F1")+",\"runs\":["+string.Join(",",walkNote)+"]},\"stairs\":["+string.Join(",",stairNote)+"]}}");
         return js.ToString();
     }
 
+    // 4차 텃밭 메시(집 뿌리 좌표 → 월드). 서브메시 0 흙판 · 1 이랑 · 2 낮은 잎 · 3 높은 잎 · 4 나무 말뚝. 밭 목업(tools/art/bin/field_build.cs) 치수 그대로:
+    //   이랑 폭 0.56·높이 0.19 반원통(가로 8·길이 16 조각, 끝 0.3 m 에서 낮아짐) / 작물 0.38×(0.19|0.40)×0.39 울퉁 타원체(링 6·옆 12) / 말뚝 반지름 0.048, 여기선 낮게 0.38 m.
+    static Mesh BuildGarden(Vector3 hpos,float hyaw,float y0,out string note)
+    {
+        var q=Quaternion.Euler(0,hyaw,0);Vector3 W(float lx,float y,float lz)=>hpos+q*new Vector3(lx,0,lz)+Vector3.up*(y-hpos.y);
+        var v=new List<Vector3>();var subs=new[]{new List<int>(),new List<int>(),new List<int>(),new List<int>(),new List<int>()};
+        int seed=12345;float R(){seed=(seed*1103515245+12345)&0x7fffffff;return (seed%10000)/10000f;}
+        float cx=(GX0+GX1)*.5f,cz=(GZ0+GZ1)*.5f,ax=(GX1-GX0)*.5f,az=(GZ1-GZ0)*.5f;
+        // 흙판: 초타원(p=4) 둘레 48점, 가장자리 ±6 cm 울퉁, 마당 위 +2.5 cm
+        {
+            int c0=v.Count;v.Add(W(cx,y0+.025f,cz));
+            for(int k=0;k<48;k++){float t=k*Mathf.PI*2/48,cs=Mathf.Cos(t),sn=Mathf.Sin(t),j=1+(R()-.5f)*.04f;v.Add(W(cx+ax*j*Mathf.Sign(cs)*Mathf.Pow(Mathf.Abs(cs),.5f),y0+.025f,cz+az*j*Mathf.Sign(sn)*Mathf.Pow(Mathf.Abs(sn),.5f)));}
+            for(int k=0;k<48;k++){int a=c0+1+k,b=c0+1+(k+1)%48;var nn=Vector3.Cross(v[a]-v[c0],v[b]-v[c0]);if(nn.y>0)subs[0].AddRange(new[]{c0,a,b});else subs[0].AddRange(new[]{c0,b,a});}
+        }
+        // 이랑 4줄: 길이 방향 = 뿌리 x, 줄 간격 = 판 폭/4
+        int ridges=4,crops=0,stakes=0;float rl0=GX0+.55f,rl1=GX1-.55f,rw=.56f,rh=.19f;
+        var tops=new List<(float z,int row)>();
+        for(int r=0;r<ridges;r++)
+        {
+            float z=GZ0+(r+.5f)*(GZ1-GZ0)/ridges;tops.Add((z,r));int c0=v.Count;const int A=16,B=8;
+            for(int i=0;i<=A;i++){float s=i/(float)A,x=Mathf.Lerp(rl0,rl1,s),d=Mathf.Min(x-rl0,rl1-x),taper=Mathf.SmoothStep(0,1,Mathf.Clamp01(d/.3f)),wob=Mathf.Sin(s*7+r)*.03f;
+                for(int jj=0;jj<=B;jj++){float a=jj/(float)B*Mathf.PI;v.Add(W(x,y0+.03f+Mathf.Sin(a)*rh*(.25f+.75f*taper),z+wob+Mathf.Cos(a)*rw*.5f*(.6f+.4f*taper)));}}
+            for(int i=0;i<A;i++)for(int jj=0;jj<B;jj++){int a=c0+i*(B+1)+jj,b=a+1,c=a+B+1,d=c+1;var nn=Vector3.Cross(v[c]-v[a],v[b]-v[a]);if(nn.y>=0)subs[1].AddRange(new[]{a,c,b,b,c,d});else subs[1].AddRange(new[]{a,b,c,b,d,c});}
+        }
+        // 작물: 이랑마다 0.45 m 간격, 앞 두 줄 낮은 잎(0.19) · 뒤 두 줄 높은 잎(0.40)
+        foreach(var (z,row) in tops)
+        {
+            bool tall=row>=2;float sy=tall?.40f:.19f;
+            for(float x=rl0+.3f;x<=rl1-.25f;x+=.45f)
+            {
+                var ctr=W(x+(R()-.5f)*.06f,y0+.03f+rh+sy*.38f,z+(R()-.5f)*.05f);int c0=v.Count;const int RG=6,SD=12;float rot=R()*6.28f;
+                for(int i=0;i<=RG;i++){float ph=i/(float)RG*Mathf.PI;for(int jj=0;jj<SD;jj++){float th=jj/(float)SD*Mathf.PI*2+rot,n=1+(R()-.5f)*.22f;
+                    v.Add(ctr+q*new Vector3(Mathf.Sin(ph)*Mathf.Cos(th)*.19f*n,-Mathf.Cos(ph)*sy*.5f*n,Mathf.Sin(ph)*Mathf.Sin(th)*.195f*n));}}
+                for(int i=0;i<RG;i++)for(int jj=0;jj<SD;jj++){int a=c0+i*SD+jj,b=c0+i*SD+(jj+1)%SD,c=a+SD,d=b+SD;var nn=Vector3.Cross(v[c]-v[a],v[b]-v[a]);var o=(v[a]+v[d])*.5f-ctr;
+                    if(Vector3.Dot(nn,o)>=0)subs[tall?3:2].AddRange(new[]{a,c,b,b,c,d});else subs[tall?3:2].AddRange(new[]{a,b,c,b,d,c});}
+                crops++;
+            }
+        }
+        // 말뚝 둘레: 판 밖 0.25 m 사각 둘레에 0.6 m 간격, 흙길 들어오는 서쪽(GX1 쪽) GateZ ±0.6 m 는 비움
+        {
+            float x0=GX0-.25f,x1=GX1+.25f,z0=GZ0-.25f,z1=GZ1+.25f;var ring=new List<Vector2>{new Vector2(x0,z0),new Vector2(x1,z0),new Vector2(x1,z1),new Vector2(x0,z1)};
+            for(int e=0;e<4;e++)
+            {
+                var a=ring[e];var b=ring[(e+1)%4];int cnt=Mathf.Max(1,Mathf.RoundToInt((b-a).magnitude/.6f));
+                for(int k=0;k<cnt;k++)
+                {
+                    var p=Vector2.Lerp(a,b,k/(float)cnt);if(Mathf.Abs(p.x-x1)<.01f&&Mathf.Abs(p.y-GateZ)<.6f)continue;
+                    float h=.38f+(R()-.5f)*.08f,rad=.048f;int c0=v.Count;const int S=8;
+                    for(int jj=0;jj<S;jj++){float th=jj*Mathf.PI*2/S;var o=new Vector3(Mathf.Cos(th)*rad,0,Mathf.Sin(th)*rad);v.Add(W(p.x,y0-.05f,p.y)+o);v.Add(W(p.x,y0+h,p.y)+o);}
+                    v.Add(W(p.x,y0+h+.02f,p.y));int top=v.Count-1;var axis=W(p.x,y0,p.y);
+                    for(int jj=0;jj<S;jj++){int a0=c0+jj*2,a1=a0+1,b0=c0+((jj+1)%S)*2,b1=b0+1;var nn=Vector3.Cross(v[a1]-v[a0],v[b0]-v[a0]);var o=v[a0]-axis;o.y=0;
+                        if(Vector3.Dot(nn,o)>=0)subs[4].AddRange(new[]{a0,a1,b0,b0,a1,b1});else subs[4].AddRange(new[]{a0,b0,a1,b0,b1,a1});
+                        var tn=Vector3.Cross(v[b1]-v[a1],v[top]-v[a1]);if(tn.y>=0)subs[4].AddRange(new[]{a1,b1,top});else subs[4].AddRange(new[]{a1,top,b1});}
+                    stakes++;
+                }
+            }
+        }
+        var m=new Mesh{name="Mesh_TerraceBlock_garden",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=5};m.SetVertices(v);for(int s=0;s<5;s++)m.SetTriangles(subs[s],s);m.RecalculateNormals();m.RecalculateBounds();
+        note=$"\"local\":[{GX0},{GX1},{GZ0},{GZ1}],\"sizeM\":[{GX1-GX0:F1},{GZ1-GZ0:F1}],\"ridges\":{ridges},\"crops\":{crops},\"stakes\":{stakes},\"verts\":{v.Count}";
+        return m;
+    }
+
     // 한 마디(s0..e) 축대: 앞면은 낮은 쪽으로 약간 눕힘, 윗면 평평(0.1 m 올림), 갓돌 한 줄. 반환 = 길이.
     // 2차: UV = (마디 줄 따라 잰 거리 m, 높이 m) → 재질 타일 2.5×1.88 m 로 돌 0.3~0.5 m. 마디 양 끝을 줄 방향으로 0.15 m 늘려 이웃 마디와 겹침(꺾인 모서리 검은 틈).
-    static float WallSection(List<Vector3> v,List<int> wt,List<int> ct,List<Vector2> uv,List<Vector2> Pc,float[] S,Vector2[] L,float[] Fh,float[] Fl,int s0,int e,ref int stones,out float height)
+    static float WallSection(List<Vector3> v,List<int> wt,List<int> ct,List<Vector2> uv,List<Vector2> Pc,float[] S,Vector2[] L,float[] Fh,float[] Fl,int s0,int e,bool capS,bool capE,ref int stones,out float height)
     {
         float maxH=float.MinValue,minH=float.MaxValue,minL=float.MaxValue;for(int k=s0;k<=e;k++){maxH=Mathf.Max(maxH,Fh[k]);minH=Mathf.Min(minH,Fh[k]);minL=Mathf.Min(minL,Fl[k]);}
-        float yTop=Mathf.Ceil(maxH/.1f)*.1f,yBot=minL-.3f,yBack=minH-.3f;height=yTop-minL;float bat=Thick*.5f+Batter*(yTop-yBot);
+        float yTop=Mathf.Ceil(maxH/.1f)*.1f,yBack=minH-.3f;height=yTop-minL;
+        // 4차: 앞면 아래 끝(높이·눕힘)을 마디가 아니라 점마다 정한다 → 이어지는 두 마디가 이음점에서 같은 아래 정점을 쓴다.
+        //  (3차까지는 마디마다 눕힘이 달라 0.15 m 겹친 두 앞면이 비스듬히 교차 → 가는 밝은 세로 선)
+        float YB(int k)=>Fl[k]-.3f;float BT(int k)=>Thick*.5f+Batter*(Fh[k]+.1f-YB(k));
         Vector3 V3(Vector2 p,float y)=>new Vector3(p.x,y,p.y);
-        // 끝 겹침: 이 마디 안에서만 쓰는 점 사본
+        // 끝 겹침: 사슬 끝·끊긴 곳(cap)만. 이어지는 이음은 겹치지 않고 점을 공유.
         var P=new Dictionary<int,Vector2>();for(int k=s0;k<=e;k++)P[k]=Pc[k];
-        P[s0]=Pc[s0]+(Pc[s0]-Pc[s0+1]).normalized*SecOverlap;P[e]=Pc[e]+(Pc[e]-Pc[e-1]).normalized*SecOverlap;
-        float U(int k)=>k==s0?S[k]-SecOverlap:k==e?S[k]+SecOverlap:S[k];
+        float oS=capS?SecOverlap:0,oE=capE?SecOverlap:0;
+        P[s0]=Pc[s0]+(Pc[s0]-Pc[s0+1]).normalized*oS;P[e]=Pc[e]+(Pc[e]-Pc[e-1]).normalized*oE;
+        float U(int k)=>k==s0?S[k]-oS:k==e?S[k]+oE:S[k];
         Vector2 uvW(int k,float y)=>new Vector2(U(k),y);
         float len=0;
         for(int k=s0;k<e;k++)
         {
             var p0=P[k];var p1=P[k+1];var l0=L[k];var l1=L[k+1];len+=(Pc[k+1]-Pc[k]).magnitude;var hint=V3((l0+l1)*.5f,0);
-            Quad(v,wt,uv,V3(p0+l0*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p1+l1*bat,yBot),V3(p0+l0*bat,yBot),hint+Vector3.up*.1f,uvW(k,yTop),uvW(k+1,yTop),uvW(k+1,yBot),uvW(k,yBot));
+            Quad(v,wt,uv,V3(p0+l0*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p1+l1*BT(k+1),YB(k+1)),V3(p0+l0*BT(k),YB(k)),hint+Vector3.up*.1f,uvW(k,yTop),uvW(k+1,yTop),uvW(k+1,YB(k+1)),uvW(k,YB(k)));
             Quad(v,wt,uv,V3(p0-l0*Thick*.5f,yTop),V3(p1-l1*Thick*.5f,yTop),V3(p1+l1*Thick*.5f,yTop),V3(p0+l0*Thick*.5f,yTop),Vector3.up,uvW(k,0),uvW(k+1,0),uvW(k+1,Thick),uvW(k,Thick));
             Quad(v,wt,uv,V3(p0-l0*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yBack),V3(p1-l1*Thick*.5f,yTop),V3(p0-l0*Thick*.5f,yTop),-hint,uvW(k,yBack),uvW(k+1,yBack),uvW(k+1,yTop),uvW(k,yTop));
         }
-        foreach(var (k,dir) in new[]{(s0,Pc[s0]-Pc[s0+1]),(e,Pc[e]-Pc[e-1])})
-            Quad(v,wt,uv,V3(P[k]-L[k]*Thick*.5f,yBack),V3(P[k]-L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*bat,yBot),V3(dir.normalized,0),
-                new Vector2(0,yBack),new Vector2(0,yTop),new Vector2(Thick,yTop),new Vector2(bat+Thick*.5f,yBot));
+        // 끝 마개: 사슬 끝은 통째로, 이어지는 이음은 윗단 0.45 m 만(이웃 마디 윗면이 최대 ~0.4 m 낮을 때 드러나는 옆구리만 막음)
+        foreach(var (k,dir,cap) in new[]{(s0,Pc[s0]-Pc[s0+1],capS),(e,Pc[e]-Pc[e-1],capE)})
+        {
+            float yb=cap?YB(k):Mathf.Max(YB(k),yTop-.45f),yk=cap?yBack:yb,bt=Thick*.5f+Batter*(yTop-yb);
+            Quad(v,wt,uv,V3(P[k]-L[k]*Thick*.5f,yk),V3(P[k]-L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*Thick*.5f,yTop),V3(P[k]+L[k]*(cap?BT(k):bt),yb),V3(dir.normalized,0),
+                new Vector2(0,yk),new Vector2(0,yTop),new Vector2(Thick,yTop),new Vector2((cap?BT(k):bt)+Thick*.5f,yb));
+        }
         // 갓돌: 0.55 m 돌, 4 cm 틈, 높이 ±1.5 cm 흔들림
         Vector2 At(float d){for(int k=s0;k<e;k++){float sl=(Pc[k+1]-Pc[k]).magnitude;if(d<=sl||k==e-1)return Vector2.Lerp(Pc[k],Pc[k+1],sl>1e-6f?Mathf.Clamp01(d/sl):0);d-=sl;}return Pc[e];}
         int seed=s0*7919+e*104729;int cnt=Mathf.Max(1,Mathf.RoundToInt(len/.59f));float step=len/cnt;
