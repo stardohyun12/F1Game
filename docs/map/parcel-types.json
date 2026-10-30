@@ -1,0 +1,20 @@
+{
+  "note": "D-220 필지 3판 — ParcelBuild 가 읽는 구역별 유형 섞는 비율(가중치) · 붙은 집 비율 · 옆 틈(한쪽, m) · 앞 물러남(m). 수치만 고치면 다음 Run 에 반영. 구역 = road-sections.json zones 와 같은 이름(길 이름의 tomo/camo/posi, 도현 건물 둘레 ridge, 나머지 outer). 가설 — 도현 판정 전.",
+  "types": {
+    "detached": "단독 2층 박공",
+    "row": "붙은 연립 2~3채(층·지붕 서로 다름) — rowShare 로 정함, 가중치 아님",
+    "bungalow": "단층 + 넓은 마당(덩어리 폭 6~8 m, 한쪽으로 붙여 마당)",
+    "narrow3": "좁고 높은 3층(폭 4~5 m)",
+    "shop": "가게주택(1층 넓은 셔터 판) — 큰길(main) 또는 tomo 마을길에서만",
+    "flat": "평지붕 + 옥상 난간 + 작은 옥탑",
+    "stepped2": "계단식 2단 집(경사면 아래 단에 문) — 평지에선 앞 단이 한 층 낮음",
+    "barn": "헛간·창고(층고 4 m, 낮은 박공, 큰 문) — outer·ridge 에서만"
+  },
+  "zones": {
+    "tomo":  { "rowShare": 0.55, "sideGap": [0.25, 0.6], "setback": [0.5, 1.0], "w": { "detached": 15, "bungalow": 3,  "narrow3": 20, "shop": 14, "flat": 18, "stepped2": 8,  "barn": 0 } },
+    "camo":  { "rowShare": 0.45, "sideGap": [0.25, 0.8], "setback": [0.5, 1.5], "w": { "detached": 24, "bungalow": 8,  "narrow3": 14, "shop": 6,  "flat": 18, "stepped2": 14, "barn": 3 } },
+    "posi":  { "rowShare": 0.35, "sideGap": [0.3, 0.9],  "setback": [0.5, 1.5], "w": { "detached": 18, "bungalow": 6,  "narrow3": 14, "shop": 3,  "flat": 24, "stepped2": 26, "barn": 0 } },
+    "ridge": { "rowShare": 0.2,  "sideGap": [0.4, 1.0],  "setback": [0.8, 2.0], "w": { "detached": 28, "bungalow": 18, "narrow3": 6,  "shop": 0,  "flat": 14, "stepped2": 18, "barn": 8 } },
+    "outer": { "rowShare": 0.2,  "sideGap": [0.4, 1.0],  "setback": [0.8, 2.0], "w": { "detached": 26, "bungalow": 18, "narrow3": 6,  "shop": 4,  "flat": 12, "stepped2": 14, "barn": 16 } }
+  }
+}

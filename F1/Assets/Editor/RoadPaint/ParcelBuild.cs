@@ -20,7 +20,13 @@ public static class ParcelBuild
     const float FootPad = 3f, JuncPad = 4f, MouthPad = 3f, YardR = 30f, YardFallback = 14f;
     const float Bury = .3f, MinStep = .4f;
     // 2판(D-218) 비탈 앉히기: 경사 35% 넘으면 비움 · Δ ≤ 0.68 낮은 기단(A) · Δ ≤ 2.1 바닥 = 최저 + 0.5, 오르막 쪽 묻힘(B 패드+축대) · 그 위는 둘로 나눈 단차 집(C)
-    const float MaxSlope = .35f, LowD = .68f, PadLift = .5f, BuryMax = 1.6f, DeepBury = .6f;
+    // 3판(D-220): 경사 60% 까지 — 오르막 쪽 묻힘 1.6 넘고 3.1 까지면 반지하 한 채(C1, 아래층이 내리막 쪽에 드러남) · 그보다 크면 경사 쪽 둘로(C2)
+    const float MaxSlope = .60f, LowD = .68f, PadLift = .5f, BuryMax = 1.6f, HillBury = 3.1f, BackMin = 30f;
+    const string MixPath = "/../../docs/map/parcel-types.json";
+    static readonly string[] TypeIds = { "detached", "row", "bungalow", "narrow3", "shop", "flat", "stepped2", "barn" };
+    static readonly string[] ZoneIds = { "tomo", "camo", "posi", "ridge", "outer" };
+    class Zm { public float row, g0, g1, s0, s1; public Dictionary<string, float> w = new Dictionary<string, float>(); }
+    static Dictionary<string, Zm> mix; static byte[] zc; static List<Rect> ridgeR; static float[] dOff;
     // 마당 패드: 앞 1.5 m · 옆 0.8 m, 깎기·돋우기 각 0.65 m 까지, 둘레 2 m 에서 원지형으로, 길·앞띠·축대·비움에서 1 m 안은 안 건드림
     const float Apron = 1.5f, ApronSide = .8f, FillMax = .5f, CutMax = .65f, Ring = 2f, Guard = 1f, WallMinH = .3f;
     const float MergeA = 55f, MergeMax = 260f, RowShare = .5f;
@@ -41,13 +47,13 @@ public static class ParcelBuild
     static Vector2[] centers; static float radius;
     static readonly RaycastHit[] buf = new RaycastHit[64];
 
-    class Parcel { public int id; public List<int> cells; public Vector2 toRoad, t, ctr; public float frontW, depth, area, fitW; public string road, empty; public Mass mass, mass2; public List<string> types = new List<string>(); public int group = -1; public HashSet<int> nb = new HashSet<int>(); }
+    class Parcel { public int id; public List<int> cells; public Vector2 toRoad, t, ctr; public float frontW, depth, area, fitW, slope = -1; public string road, empty, zone = "outer", type; public bool back; public Mass mass, mass2; public List<string> types = new List<string>(); public int group = -1; public HashSet<int> nb = new HashSet<int>(); }
     class Mass
     {
-        public int parcel, group, member, floors, tier = -1, idx; public Vector2 c, f; public float w, d, b, y0, gMin, gMax, H, floorH, pitch, rise, bot, bury, slope, expo, gx, gz; public string roof, seat; public bool ridgeX, plinth, attL, attR, door, doorBack, splitT; public Mass pair; public Transform go;
+        public int parcel, group, member, floors, tier = -1, idx, doorSide = -1, tone; public Vector2 c, f; public float w, d, b, y0, gMin, gMax, H, floorH, pitch, rise, bot, bury, slope, expo, gx, gz; public string roof, seat, type; public bool ridgeX, plinth, attL, attR, door, doorBack, splitT, shutter, barnDoor, roofRoom; public Mass pair; public Transform go;
         public Mass Clone() => (Mass)MemberwiseClone();
     }
-    class Left { public string kind; public float area; public Vector2 ctr; }
+    class Left { public string kind; public float area; public Vector2 ctr; public List<int> cells; }
 
     public static string Remove()
     {
@@ -85,6 +91,7 @@ public static class ParcelBuild
 
         // 1. 격자 분류
         string gnote = Classify(top, tbl);
+        mix = LoadMix(); dOff = new float[type.Length];
         // 2. 블록 → 분할
         var land = new List<int>(); for (int i = 0; i < type.Length; i++) if (type[i] == T.Land) land.Add(i);
         var blocks = Comps(land);
@@ -106,9 +113,12 @@ public static class ParcelBuild
         double tPad = sw.Elapsed.TotalSeconds;
         // 5. 씬에 놓기 + 빈 필지 나무
         var mroot = new GameObject("Masses").transform; mroot.SetParent(root.transform, false);
+        nRepair = Repair(parcels, masses);
         for (int i = 0; i < masses.Count; i++) { masses[i].idx = i; masses[i].go = Spawn(masses[i], mroot, mats); }
-        var gnote2 = Greens(parcels, root.transform);
+        var snote = Stairs(parcels, masses, root.transform, mats);
+        var gnote2 = Greens(parcels, root.transform) + " · " + snote;
         // 6. 검사 + 기록
+        nPits = Pits(parcels, lefts);
         var chk = Check(parcels, masses, props);
         chk.terrain = tnote; chk.walls = walls; chk.time = $"나누기 {tSplit:F1}s · 덩어리 {tMass - tSplit:F1}s · 지형 {tPad - tMass:F1}s · 놓기·검사 {sw.Elapsed.TotalSeconds - tPad:F1}s";
         var json = Json(parcels, lefts, masses, chk, gnote + $" · 합치기 {nSplit}→{parcels.Count}", osm + " · " + gnote2);
@@ -165,23 +175,33 @@ public static class ParcelBuild
             var s = tbl.sections.FirstOrDefault(x => x.walk == walk && x.kinds.Contains(kind) && w >= x.minW && w < x.maxW); if (s == null) return .5f;
             return s.slots.Where(q => q.name == "연석" || q.name == "보도" || q.name == "소품 줄").Sum(q => Mathf.Max(0, q.w));
         }
+        // 3판: 길 칸마다 구역(D-205 — RoadsideBuild.Zone 과 같은 규칙: 이름의 tomo/camo/posi/ridge, 걷는 길·손 길 camo, 나머지 outer)
+        zc = Enumerable.Repeat((byte)255, N).ToArray();
+        byte ZoneByName(string n) { int z = n.Contains("ridge") ? 3 : n.Contains("tomo") ? 0 : n.Contains("camo") ? 1 : n.Contains("posi") ? 2 : 4; if (z == 4 && (n.Contains("hand_") || n.StartsWith("ROAD_V2p"))) z = 1; return (byte)z; }
         foreach (Transform ch in top.Find("RoadsV2"))
         {
             if (!ch.gameObject.activeInHierarchy) continue;
             float o = .5f; bool j = ch.name.StartsWith("ROAD_V2j");
             var rs = ch.GetComponent<RoadSurface>(); if (rs != null) o = SecOff(rs.kind, rs.width, false); else if (j) o = SecOff("village", 5, false);
-            RasterMesh(ch, road, 0, off, o); if (j) RasterMesh(ch, junc, 0, null, 0);
+            RasterMesh(ch, road, 0, off, o, j ? null : zc, ZoneByName(ch.name)); if (j) RasterMesh(ch, junc, 0, null, 0);
         }
         var tb = top.Find("TerraceBlock");
         if (tb != null)
         {
-            var dr = tb.Find("Driveway"); if (dr != null) RasterMesh(dr, road, 0, off, .5f);
-            var wk = tb.Find("Walkways"); if (wk != null) RasterMesh(wk, walkw, 0, off, .3f);
+            var dr = tb.Find("Driveway"); if (dr != null) RasterMesh(dr, road, 0, off, .5f, zc, 3);
+            var wk = tb.Find("Walkways"); if (wk != null) RasterMesh(wk, walkw, 0, off, .3f, zc, 1);
             var rw = tb.Find("RetainingWalls"); if (rw != null) RasterMesh(rw, wall, .2f, null, 0);
             var fp = tb.Find("FieldPatch"); if (fp != null) foreach (var mf in fp.GetComponentsInChildren<MeshFilter>()) RasterMesh(mf.transform, foot, 0, null, 0);
             var dp = tb.Find("DirtPath_door_garden"); if (dp != null) RasterMesh(dp, foot, 0, null, 0);
         }
         var d198 = top.Find("D198_Buildings"); if (d198 != null) foreach (var mf in d198.GetComponentsInChildren<MeshFilter>()) RasterMesh(mf.transform, foot, 0, null, 0);
+        ridgeR = new List<Rect>();
+        if (d198 != null && tbl.ridgeCore != null) foreach (var id in tbl.ridgeCore)
+        {
+            var bd = d198.Find(id); if (bd == null) continue; var rs = bd.GetComponentsInChildren<Renderer>(); if (rs.Length == 0) continue;
+            var bb = rs[0].bounds; foreach (var x in rs) bb.Encapsulate(x.bounds);
+            ridgeR.Add(Rect.MinMaxRect(bb.min.x - tbl.ridgeRadius, bb.min.z - tbl.ridgeRadius, bb.max.x + tbl.ridgeRadius, bb.max.z + tbl.ridgeRadius));
+        }
         // 길·보도에서 거리(벡터 전파) — 가장 가까운 길 칸과 그 길의 앞띠 폭
         var seed = new bool[N]; for (int k = 0; k < N; k++) seed[k] = road[k] || walkw[k];
         DT(seed, out dist, out src); soff = off;
@@ -238,13 +258,15 @@ public static class ParcelBuild
     // ── 블록 나누기(Vanegas 2012 OBB 분할, 격자판) ──────────────────
     static void Split(List<int> block, int bi, List<Parcel> outP, List<Left> lefts)
     {
-        var st = new Stack<(List<int> c, int lv)>(); st.Push((block, 0));
+        var st = new Stack<(List<int> c, int lv, bool back)>(); st.Push((block, 0, false));
+        // 3판: 길에 안 닿는 땅(축대로 둘러싸인 깎은 단 = 「빈 구덩이」 포함)·22 m 뒤 빈터는 한 번만 「골목 안쪽 필지」로 — 길에 가장 가까운 1.5 m 띠를 앞선으로 삼는다
+        void Promote(List<int> cs) { float mn = cs.Min(c => Dep(c)); foreach (var c in cs) { dOff[c] += mn; front[c] = Dep(c) <= FrontReach + C; } st.Push((cs, 0, true)); }
         while (st.Count > 0)
         {
-            var (cells, lv) = st.Pop(); float area = cells.Count * C * C;
+            var (cells, lv, back) = st.Pop(); float area = cells.Count * C * C;
             if (area < MinArea) { lefts.Add(Lf("빈터", cells)); continue; }
             var F = cells.Where(c => front[c]).ToList();
-            if (F.Count == 0) { lefts.Add(Lf(area >= 60 ? "밭·빈터" : "빈터", cells)); continue; }
+            if (F.Count == 0) { if (!back && area >= BackMin || back && area >= 60 && area <= 400 && lv < 40) { Promote(cells); continue; } lefts.Add(Lf(area >= 60 ? "밭·빈터" : "빈터", cells)); continue; }
             Vector2 ns = Vector2.zero; foreach (var c in F) { var d = P(src[c]) - P(c); if (d.sqrMagnitude > 1e-6f) ns += d.normalized; }
             float R = ns.magnitude / F.Count; var toRoad = ns.sqrMagnitude > 1e-8f ? ns.normalized : Vector2.up; var t = new Vector2(toRoad.y, -toRoad.x);
             var rng = new Rng(Fnv($"{Seed}|{cells[0]}|{cells.Count}|{lv}"));
@@ -257,7 +279,7 @@ public static class ParcelBuild
                 foreach (var c in F) { var d = (P(src[c]) - P(c)).normalized - mn; xx += d.x * d.x; xz += d.x * d.y; zz += d.y * d.y; }
                 float th = .5f * Mathf.Atan2((float)(2 * xz), (float)(xx - zz)); var un = new Vector2(Mathf.Cos(th), Mathf.Sin(th));
                 kids = Cut(cells, c => src[c] >= 0 && Vector2.Dot((P(src[c]) - P(c)).normalized - mn, un) >= 0);
-                if (kids.Count >= 2 && kids.All(k => k.Count < cells.Count)) { for (int i = kids.Count - 1; i >= 0; i--) st.Push((kids[i], lv + 1)); continue; }
+                if (kids.Count >= 2 && kids.All(k => k.Count < cells.Count)) { for (int i = kids.Count - 1; i >= 0; i--) st.Push((kids[i], lv + 1, back)); continue; }
                 kids = null;
             }
             if (kids == null && lv < 40 && R < .65f && area > 500)
@@ -280,18 +302,43 @@ public static class ParcelBuild
                 else
                 {
                     // 마지막 필지: 22 m 보다 깊은 뒤는 마당·밭·빈터로 남김
-                    var keep = cells.Where(c => dist[c] - soff[src[c]] <= MaxDepth).ToList(); var back = cells.Where(c => dist[c] - soff[src[c]] > MaxDepth).ToList();
+                    // 3판: 비탈(앞선 → 12 m 안쪽 높이 차 15% 이상)이면 깊이 13 m 까지만 — 그 뒤는 골목 안쪽 필지로 올라가 층층이 됨
+                    float maxD = MaxDepth;
+                    {
+                        var fm = Mean(F); var inner = cells.Where(c => Dep(c) > 10 && Dep(c) < 13).ToList();
+                        if (inner.Count > 4) { var im = Mean(inner); float y0 = TopY(fm), y1 = TopY(im); if (!float.IsNaN(y0) && !float.IsNaN(y1) && Mathf.Abs(y1 - y0) / Mathf.Max(1f, (im - fm).magnitude) >= .15f) maxD = 13f; }
+                    }
+                    var keep = cells.Where(c => Dep(c) <= maxD).ToList(); var bk = cells.Where(c => Dep(c) > maxD).ToList();
                     var kc = Comps(keep); var main = kc.OrderByDescending(k => k.Count(c => front[c])).ThenBy(k => k[0]).FirstOrDefault();
-                    foreach (var k in kc) if (k != main) back.AddRange(k);
-                    if (back.Count > 0) foreach (var k in Comps(back.OrderBy(x => x).ToList())) lefts.Add(Lf(k.Count * C * C >= 60 ? "뒤 마당·밭" : "뒤 빈터", k));
+                    foreach (var k in kc) if (k != main) bk.AddRange(k);
+                    // 골목 안쪽의 또 안쪽: 구덩이 크기(60~400㎡)만 한 번 더
+                    if (bk.Count > 0) foreach (var k in Comps(bk.OrderBy(x => x).ToList())) { float ka = k.Count * C * C; if (!back && ka >= BackMin || back && ka >= 60 && ka <= 400) Promote(k); else lefts.Add(Lf(k.Count * C * C >= 60 ? "뒤 마당·밭" : "뒤 빈터", k)); }
+                    // 3판: 길에 좁은 목으로만 닿은 넓은 땅(깎은 단 안쪽 등) → 폭이 MinFront+1 m 되는 깊이부터를 골목 안쪽 필지로, 목은 남김
+                    if (main != null && Lfr < MinFront && main.Count * C * C >= 60 && !(back && main.Count * C * C > 400))
+                    {
+                        float best = -1;
+                        for (float d = 1; d <= 12; d += .5f)
+                        {
+                            float a0 = 1e9f, a1 = -1e9f; foreach (var c in main) { float dp = Dep(c); if (dp < d || dp >= d + 1.5f) continue; float x = Vector2.Dot(P(c), t); a0 = Mathf.Min(a0, x); a1 = Mathf.Max(a1, x); }
+                            if (a1 > a0 && a1 - a0 + C >= MinFront + 1) { best = d; break; }
+                        }
+                        if (best > 0)
+                        {
+                            var neck = main.Where(c => Dep(c) < best).ToList(); var rest = main.Where(c => Dep(c) >= best).ToList();
+                            foreach (var c in neck) front[c] = false; if (neck.Count > 0) lefts.Add(Lf("골목 목", neck));
+                            foreach (var c in rest) { dOff[c] += best; front[c] = Dep(c) <= FrontReach + C; }
+                            foreach (var k in Comps(rest.OrderBy(x => x).ToList())) st.Push((k, 0, true));
+                            continue;
+                        }
+                    }
                     if (main == null || Lfr < MinFront || main.Count * C * C < MinArea) { if (main != null) lefts.Add(Lf("좁은 틈", main)); continue; }
-                    var p = new Parcel { id = outP.Count, cells = main, toRoad = toRoad, t = t, frontW = Lfr, area = main.Count * C * C };
-                    p.depth = main.Max(c => dist[c] - soff[src[c]]); p.ctr = Mean(main); p.road = RoadName(F[F.Count / 2]);
+                    var p = new Parcel { id = outP.Count, cells = main, toRoad = toRoad, t = t, frontW = Lfr, area = main.Count * C * C, back = back };
+                    p.depth = main.Max(c => Dep(c)); p.ctr = Mean(main); p.road = back ? "골목 안쪽" : RoadName(F[F.Count / 2]);
                     outP.Add(p); continue;
                 }
             }
             if (kids == null || kids.Count == 0 || kids.Any(k => k.Count == cells.Count)) { lefts.Add(Lf("분할 실패", cells)); continue; }
-            for (int i = kids.Count - 1; i >= 0; i--) st.Push((kids[i], lv + 1));
+            for (int i = kids.Count - 1; i >= 0; i--) st.Push((kids[i], lv + 1, back));
         }
     }
     // 2판(D-218 2): 55 ㎡ 안 되는 필지는 길 방향이 같은(30° 안) 이웃 중 맞닿은 변이 가장 긴 필지에 합친다(합쳐 260 ㎡ 까지). 작은 것부터, id 순 — 결정적.
@@ -309,7 +356,7 @@ public static class ParcelBuild
             var q2 = ps[best]; q2.cells.AddRange(p.cells); q2.cells.Sort(); foreach (var c in p.cells) owner[c] = q2.id; q2.area += p.area;
             var F = q2.cells.Where(c => front[c]).ToList();
             if (F.Count > 0) { float a = F.Min(c => Vector2.Dot(P(c), q2.t)), b = F.Max(c => Vector2.Dot(P(c), q2.t)); q2.frontW = b - a + C; }
-            q2.depth = q2.cells.Max(c => src[c] >= 0 ? dist[c] - soff[src[c]] : 0); q2.ctr = Mean(q2.cells);
+            q2.depth = q2.cells.Max(c => Dep(c)); q2.ctr = Mean(q2.cells);
             p.cells = null;
         }
         ps.RemoveAll(p => p.cells == null);
@@ -323,57 +370,74 @@ public static class ParcelBuild
         var a = cells.Where(left).ToList(); var b = cells.Where(c => !left(c)).ToList(); var res = new List<List<int>>();
         if (a.Count > 0) res.AddRange(Comps(a)); if (b.Count > 0) res.AddRange(Comps(b)); return res;
     }
-    static Left Lf(string k, List<int> c) => new Left { kind = k, area = c.Count * C * C, ctr = Mean(c) };
+    static Left Lf(string k, List<int> c) => new Left { kind = k, area = c.Count * C * C, ctr = Mean(c), cells = c };
+    // 앞선에서 깊이: 길 앞띠 끝에서 잰 거리 − 골목 안쪽 필지면 그 필지 앞선까지 거리
+    static float Dep(int c) => src[c] >= 0 ? dist[c] - soff[src[c]] - dOff[c] : 0;
     static string RoadName(int c) { return src[c] >= 0 ? (soff[src[c]] > 2.6f ? "main" : soff[src[c]] > 2f ? "village" : soff[src[c]] > .4f ? "lane·walk" : "보도") : "?"; }
 
     // ── 덩어리 ──────────────────────────────────────────────────
     class Vis { public List<(Vector2 p, float eye, float a0, float a1)> ov = new List<(Vector2, float, float, float)>(); public List<(Vector2 a, Vector2 b, float eye)> los = new List<(Vector2, Vector2, float)>(); }
     static void Masses(List<Parcel> parcels, List<Mass> masses, Vis vis, List<(Vector2 c, Vector2 h)> props)
     {
-        // 붙은 집 묶음: 앞 방향이 비슷한(25° 안) 이웃 필지를 +t 쪽으로 2~3채, 35%
+        foreach (var p in parcels) p.zone = ZoneOf(p);
+        // 붙은 집 묶음: 앞 방향이 비슷한(25° 안) 이웃 필지를 +t 쪽으로 2~3채, 구역 비율(rowShare). 옆에 묶음이 이미 둘 연속이면 안 묶는다(같은 유형 3연속 금지)
         int gid = 0;
         foreach (var p in parcels)
         {
             if (p.group >= 0) continue; var rng = new Rng(Fnv($"{Seed}|grp|{p.id}"));
-            if (rng.F() >= RowShare) continue; int want = rng.F() < .6f ? 2 : 3; var mem = new List<Parcel> { p }; var cur = p;
+            if (rng.F() >= mix[p.zone].row) continue; int want = rng.F() < .6f ? 2 : 3; var mem = new List<Parcel> { p }; var cur = p;
+            if (RowRun(p, parcels)) continue;
             while (mem.Count < want)
             {
                 var nx = cur.nb.Select(i => parcels[i]).Where(q => q.group < 0 && !mem.Contains(q) && Vector2.Angle(q.toRoad, p.toRoad) < 25 && Vector2.Dot(q.ctr - cur.ctr, p.t) > 2f).OrderBy(q => Vector2.Dot(q.ctr - cur.ctr, p.t)).FirstOrDefault();
                 if (nx == null) break; mem.Add(nx); cur = nx;
             }
-            if (mem.Count < 2) continue; foreach (var q in mem) q.group = gid; gid++;
+            if (mem.Count < 2 || GroupRun(mem, parcels)) continue; foreach (var q in mem) q.group = gid; gid++;
+            foreach (var q in mem) q.type = "row";
         }
-        var groups = parcels.GroupBy(p => p.group < 0 ? -1 - p.id : p.group).OrderBy(g => g.Min(p => p.id)).Select(g => g.OrderBy(p => Vector2.Dot(p.ctr, g.First().t)).ToList()).ToList();
-        // 붙은 집 묶음이 안 들어가면 묶음을 풀어 한 채씩 다시 넣는다(대기열 뒤에)
+        // 남은 3연속(묶음-묶음-묶음): 가운데 묶음을 풀어 한 채씩(유형은 아래에서 따로 뽑음)
+        foreach (var g in parcels.Where(p => p.group >= 0).GroupBy(p => p.group).OrderBy(g => g.Key).ToList())
+        {
+            var mem = g.ToList(); if (mem[0].group < 0) continue;
+            int n = mem.SelectMany(p => SideNb(p, parcels)).Where(q => q.group >= 0 && q.group != g.Key && q.type == "row").Select(q => q.group).Distinct().Count();
+            if (n >= 2) foreach (var p in mem) { p.group = -1; p.type = null; }
+        }
+        var groups = parcels.GroupBy(p => p.group < 0 ? -1 - p.id : p.group).OrderBy(g => g.Min(p => p.id)).Select(g => (mem: g.OrderBy(p => Vector2.Dot(p.ctr, g.First().t)).ToList(), type: (string)null)).ToList();
+        // 안 들어가면: 묶음은 풀어 한 채씩, 한 채 유형은 단독 박공으로 한 번 더(대기열 뒤에)
         for (int gi = 0; gi < groups.Count; gi++)
         {
-            var mem = groups[gi]; bool att = mem.Count > 1;
+            var mem = groups[gi].mem; bool att = mem.Count > 1; var p0 = mem[0]; var zm = mix[p0.zone];
             var f0 = Vector2.zero; foreach (var p in mem) f0 += p.toRoad * p.frontW; f0.Normalize();
             var set = new HashSet<int>(mem.Select(p => p.id));
-            var rng = new Rng(Fnv($"{Seed}|mass|{mem[0].id}"));
+            var rng = new Rng(Fnv($"{Seed}|mass|{p0.id}|{groups[gi].type}"));
+            string ty = att ? "row" : groups[gi].type ?? PickType(p0, parcels, zm, rng);
+            if (!att) p0.type = ty;
             var Fc = mem.SelectMany(p => p.cells).Where(c => front[c]).OrderBy(c => Vector2.Dot(P(c), new Vector2(f0.y, -f0.x))).ToList();
-            float b = att ? 1.2f + rng.F() * .8f : 1f + rng.F() * 2f;
-            int fl0 = Floors(rng); float D = Depth(fl0, rng);
+            if (Fc.Count == 0) { foreach (var p in mem) p.empty = "앞선 없음"; continue; }
+            // 유형별 치수(가설): 앞 물러남·옆 틈은 구역 표, 가게는 0.3~0.6, 단층 마당집은 +1 m
+            float b = att ? zm.s0 + rng.F() * (Mathf.Min(zm.s1, 1.2f) - zm.s0) : ty == "shop" ? .3f + rng.F() * .3f : zm.s0 + rng.F() * (zm.s1 - zm.s0) + (ty == "bungalow" ? 1f : 0);
+            int fl0 = ty == "bungalow" || ty == "barn" ? 1 : ty == "narrow3" ? 3 : ty == "detached" || ty == "stepped2" ? 2 : rng.F() < .6f ? 2 : 3;
+            float D = ty switch { "bungalow" => 5.5f + rng.F() * 1.5f, "shop" => 8 + rng.F() * 2, "stepped2" => 9 + rng.F() * 2, "barn" => 6 + rng.F() * 2.5f, "row" => 6.5f + rng.F() * 2.5f, _ => 7 + rng.F() * 2 };
+            float needOne = ty == "narrow3" ? 3.8f : ty == "bungalow" ? 5f : ty == "barn" ? 6f : ty == "shop" ? 4.5f : 3.6f;
             bool ok = false; float x0 = 0, x1 = 0;
-            // 안 들어가면: 깊이 줄임 → 물러남 0.8 m → 앞선을 뒤로(밀어 넣기). 그래도 안 되면 빈 필지.
+            // 안 들어가면: 깊이 줄임 → 물러남 0.8 m → 앞선을 뒤로(밀어 넣기). 그래도 안 되면 다른 유형/빈 필지.
             var tries = new[] { (0f, 0f, 0f), (-1.5f, 0f, 0f), (-1.5f, -9f, 0f), (-3f, -9f, 0f), (-3f, -9f, -1.5f), (-4f, -9f, -3f), (-9f, -9f, -1f) };
-            float gL = .4f + rng.F() * .6f, gR = .4f + rng.F() * .6f;
+            float gL = zm.g0 + rng.F() * (zm.g1 - zm.g0), gR = zm.g0 + rng.F() * (zm.g1 - zm.g0);
             float bb = b, DD = D, zz = 0, bestW = 0; Vector2 f = f0, t = new Vector2(f0.y, -f0.x);
-            // 방향 후보: 필지 평균 → 앞선 가운데 칸에서 본 길 쪽 → ±12° · ±25°(굽은 길·모퉁이 쐐기 필지)
             var mc = Fc[Fc.Count / 2]; var fm = (P(src[mc]) - P(mc)).sqrMagnitude > 1e-6f ? (P(src[mc]) - P(mc)).normalized : f0;
             var dirs = new List<Vector2> { f0, fm }; foreach (var a in new[] { 12f, -12f, 25f, -25f }) dirs.Add(Rot(f0, a));
-            // 둘째 판(한 채만): 옆 틈 0.3 m · 폭 3.2 m 까지 — 얕고 좁은 필지의 작은 집
-            for (int pass = 0; pass < (att ? 1 : 2) && !ok; pass++)
+            // 둘째 판(한 채·단독만): 옆 틈 0.25 m · 폭 3.2 m 까지 — 얕고 좁은 필지의 작은 집
+            for (int pass = 0; pass < (att || ty != "detached" ? 1 : 2) && !ok; pass++)
             {
-                if (pass == 1) { gL = gR = .3f; }
-                float need = pass == 0 ? 3.6f * mem.Count : 3.2f;
+                if (pass == 1) { gL = gR = .25f; }
+                float need = pass == 0 ? (att ? 3.6f * mem.Count : needOne) : 3.2f;
                 foreach (var fd in dirs)
                 {
                     f = fd; t = new Vector2(f.y, -f.x);
                     var F = Fc.Select(c => Vector2.Dot(P(c), f)).OrderBy(z => z).ToList(); float zF = F[F.Count / 2];
                     foreach (var (dD, db, dz) in tries)
                     {
-                        DD = Mathf.Max(dD < -5 ? (pass == 1 ? 3.6f : 4f) : 4.5f, D + dD); bb = db < -5 ? (pass == 1 ? .5f : .8f) : b; zz = zF + dz;
+                        DD = Mathf.Max(dD < -5 ? (pass == 1 ? 3.6f : 4f) : 4.5f, D + dD); bb = db < -5 ? (pass == 1 ? .5f : Mathf.Min(b, .8f)) : b; zz = zF + dz;
                         if (Fit(set, f, t, zz - bb - DD, zz - bb, out x0, out x1)) { bestW = Mathf.Max(bestW, x1 - x0); if (x1 - x0 - gL - gR >= need) { ok = true; break; } }
                     }
                     if (ok) break;
@@ -381,36 +445,56 @@ public static class ParcelBuild
             }
             if (!ok)
             {
-                if (att) { foreach (var p in mem) { p.group = -1; groups.Add(new List<Parcel> { p }); } continue; }
-                foreach (var p in mem) { p.empty = "덩어리 안 들어감(폭·모양)"; p.fitW = bestW; }
+                if (att) { foreach (var p in mem) { p.group = -1; p.type = null; groups.Add((new List<Parcel> { p }, null)); } continue; }
+                if (ty != "detached") { groups.Add((mem, "detached")); continue; }
+                foreach (var p in mem) { p.empty = "덩어리 안 들어감(폭·모양)"; p.fitW = bestW; p.type = null; }
                 continue;
             }
             x0 += gL; x1 -= gR; float total = x1 - x0;
-            // 너무 넓으면(한 채 10 m 넘음) 가운데로 줄인다
-            float cap = 10f * mem.Count; if (total > cap) { float mid = (x0 + x1) * .5f; x0 = mid - cap * .5f; x1 = mid + cap * .5f; total = cap; }
-            float sumW = mem.Sum(p => p.frontW); float xa = x0;
+            // 유형 폭 상한: 좁은 3층 4~5 · 단층 마당집 6~8(한쪽으로 붙여 마당) · 그 밖 한 채 10 m
+            float cap = att ? 10f * mem.Count : ty == "narrow3" ? 4 + rng.F() : ty == "bungalow" ? 6 + 2 * rng.F() : 10f;
+            if (total > cap) { bool side = ty == "narrow3" || ty == "bungalow" || ty == "barn"; float mid = side ? (rng.F() < .5f ? x0 + cap * .5f : x1 - cap * .5f) : (x0 + x1) * .5f; x0 = mid - cap * .5f; x1 = mid + cap * .5f; total = cap; }
+            float sumW = mem.Sum(p => p.frontW); float xa = x0; string prevRoof = null; int prevFl = 0;
+            bool avoidC2 = Avoid(p0, parcels).Contains("stepped2");
             for (int k = 0; k < mem.Count; k++)
             {
                 var p = mem[k]; float w = k == mem.Count - 1 ? x1 - xa : total * p.frontW / sumW; float xb = xa + w;
                 var r2 = new Rng(Fnv($"{Seed}|m|{p.id}"));
-                var m = new Mass { parcel = p.id, group = att ? p.group : -1, member = k, f = f, b = bb, d = DD, w = w, attL = att && k > 0, attR = att && k < mem.Count - 1 };
-                m.floors = k == 0 ? fl0 : Floors(r2); if (m.floors == 1 && DD > 8) m.floors = 2;
-                m.floorH = 2.75f + r2.F() * .35f;
-                float u = r2.F(); m.roof = u < .55f ? "gable" : u < .85f ? "hip" : "flat";
-                m.ridgeX = att || r2.F() < .7f; m.pitch = 24 + r2.F() * 8;
+                var m = new Mass { parcel = p.id, group = att ? p.group : -1, member = k, f = f, b = bb, d = DD, w = w, attL = att && k > 0, attR = att && k < mem.Count - 1, type = ty };
+                m.floorH = 2.75f + r2.F() * .35f; m.pitch = 24 + r2.F() * 8;
+                switch (ty)
+                {
+                    case "row":
+                        // 붙은 집: 옆 집과 층·지붕을 다르게
+                        m.floors = k == 0 ? fl0 : (r2.F() < .65f ? (prevFl == 2 ? 3 : 2) : prevFl);
+                        var rf = new[] { "gable", "hip", "flat" }.Where(x => x != prevRoof).ToArray(); m.roof = rf[(int)(r2.F() * rf.Length) % rf.Length]; m.ridgeX = true; break;
+                    case "detached": m.floors = 2; m.roof = "gable"; m.ridgeX = r2.F() < .6f; m.pitch = 26 + r2.F() * 6; break;
+                    case "bungalow": m.floors = 1; m.roof = r2.F() < .5f ? "hip" : "gable"; m.ridgeX = r2.F() < .7f; break;
+                    case "narrow3": m.floors = 3; if (r2.F() < .6f) { m.roof = "gable"; m.ridgeX = false; } else m.roof = "flat"; break;
+                    case "shop": m.floors = fl0; m.roof = r2.F() < .5f ? "flat" : "gable"; m.ridgeX = true; m.shutter = true; break;
+                    case "flat": m.floors = fl0; m.roof = "flat"; m.roofRoom = true; break;
+                    case "stepped2": m.floors = 2; m.roof = r2.F() < .5f ? "gable" : "flat"; m.ridgeX = true; break;
+                    case "barn": m.floors = 1; m.floorH = 3.8f + r2.F() * .6f; m.roof = "gable"; m.ridgeX = true; m.pitch = 14 + r2.F() * 4; m.barnDoor = true; break;
+                }
+                prevRoof = m.roof; prevFl = m.floors; m.tone = Tone(m.type);
                 // 앞면 가운데(피벗) = x 가운데, z = 앞선 - 물러남
-                float xc = (xa + xb) * .5f, zc = zz - bb; m.c = t * xc + f * zc;
+                float xc = (xa + xb) * .5f, zc0 = zz - bb; m.c = t * xc + f * zc0;
                 xa = xb;
-                // 2판: 비탈 앉히기 — A 낮은 기단 · B 바닥 = 최저 + 0.5(오르막 쪽 묻힘, 패드+축대) · C 둘로 나눈 단차 집 · 35% 넘으면 비움
-                string why = SeatAll(m, att, out var m2); if (why != null) { p.empty = why; continue; }
+                // 비탈 앉히기 — A 낮은 기단 · B 바닥 = 최저 + 0.5(패드+축대) · C1 반지하 한 채 · C2 경사 쪽 둘로 · 60% 넘으면 비움
+                string why = SeatAll(m, att, avoidC2, out var m2); p.slope = m.slope; if (why != null) { p.empty = why; continue; }
                 Heights(m, p, parcels); if (m2 != null) Heights(m2, p, parcels);
-                why = Blocked(m, vis, props) ?? (m2 != null ? Blocked(m2, vis, props) : null); if (why != null) { p.empty = why; continue; }
-                // 옆 필지 덩어리와 처마·기단이 겹치면: 박공 방향을 길 따라로(옆 처마 없음) → 그래도면 뺀다
+                why = Blocked(m, vis, props) ?? (m2 != null ? Blocked(m2, vis, props) : null);
+                // 전망에 걸리면 단층 평지붕으로 한 번 더(같은 시선 검사를 통과할 때만) — 깎아 놓은 단이 비지 않게
+                if (why != null && why.StartsWith("전망") && m2 == null && !att && m.seat != "C1") { m.floors = 1; m.roof = "flat"; m.roofRoom = m.shutter = m.barnDoor = false; m.type = "bungalow"; m.tone = Tone(m.type); Heights(m, p, parcels); why = Blocked(m, vis, props); }
+                if (why != null) { p.empty = why; continue; }
+                // 옆 필지 덩어리와 처마·기단이 겹치면: 박공 방향을 길 따라로(옆 처마 없음) → 그래도면 모임지붕 → 뺀다
                 bool Hit(Mass x) => x != null && masses.Any(o => (o.c - x.c).sqrMagnitude < 900 && !(o.group >= 0 && o.group == x.group) && PolyPoly(Corners(o, 0), Corners(x, 0)));
                 if ((Hit(m) || Hit(m2)) && m.roof == "gable" && !m.ridgeX && m2 == null) { m.ridgeX = true; Heights(m, p, parcels); }
+                if ((Hit(m) || Hit(m2)) && m.roof == "gable" && m2 == null && m.type != "detached" && m.type != "barn") { m.roof = "hip"; Heights(m, p, parcels); }
                 if (Hit(m) || Hit(m2)) { p.empty = "옆집과 겹침"; continue; }
-                p.mass = m; masses.Add(m); if (m2 != null) { p.mass2 = m2; masses.Add(m2); }
+                p.type = m.type; p.mass = m; masses.Add(m); if (m2 != null) { p.mass2 = m2; masses.Add(m2); }
             }
+            foreach (var p in mem) if (p.mass == null) p.type = null;
         }
         // 묶음에서 빠진 이웃이 생기면 붙은 쪽 표시를 끈다(뒤에 틈이 생긴 쪽은 사실상 따로 집)
         foreach (var m in masses) if (m.group >= 0)
@@ -418,7 +502,70 @@ public static class ParcelBuild
             m.attL = m.attL && masses.Any(o => o.group == m.group && o.member == m.member - 1);
             m.attR = m.attR && masses.Any(o => o.group == m.group && o.member == m.member + 1);
         }
-        foreach (var p in parcels) Types(p);
+        // 묶음이 한 채만 남으면 그 집은 단독으로 센다
+        foreach (var g in masses.Where(m => m.group >= 0).GroupBy(m => m.group).ToList()) if (g.Select(m => m.parcel).Distinct().Count() < 2) foreach (var m in g) { m.type = m.roof == "flat" ? "flat" : "detached"; m.tone = Tone(m.type); parcels[m.parcel].type = m.type; }
+        foreach (var p in parcels) { if (p.mass == null) p.type = null; Types(p); }
+    }
+    static int Tone(string ty) => ty == "detached" || ty == "row" ? 0 : ty == "bungalow" || ty == "flat" ? 1 : ty == "narrow3" || ty == "stepped2" ? 2 : 3;
+    // 구역: 앞선 칸들의 가장 가까운 길 칸 구역 중 가장 많은 것(갈림목·골목 안쪽은 이웃 길로), 도현 건물 둘레 28 m 는 ridge
+    static string ZoneOf(Parcel p)
+    {
+        if (ridgeR.Any(r => r.Contains(p.ctr))) return "ridge";
+        var cnt = new int[5]; foreach (var c in p.cells) { if (!front[c] || src[c] < 0) continue; var z = zc[src[c]]; if (z < 5) cnt[z]++; }
+        int best = 4, bn = 0; for (int i = 0; i < 5; i++) if (cnt[i] > bn) { bn = cnt[i]; best = i; }
+        if (bn == 0) foreach (var c in p.cells) { if (src[c] >= 0 && zc[src[c]] < 5) { best = zc[src[c]]; break; } }
+        return ZoneIds[best];
+    }
+    // 옆 필지: 이웃 중 앞 방향이 같고(30° 안) 앞선이 거의 같은 줄(앞뒤 6 m 안), 옆으로 2 m 넘게 떨어진 것
+    static IEnumerable<Parcel> SideNb(Parcel p, List<Parcel> ps) => p.nb.Select(i => ps[i]).Where(q => Vector2.Angle(q.toRoad, p.toRoad) < 30 && Mathf.Abs(Vector2.Dot(q.ctr - p.ctr, p.toRoad)) < 6 && Mathf.Abs(Vector2.Dot(q.ctr - p.ctr, p.t)) > 2);
+    // 이 필지에 X 를 놓으면 X 가 3연속이 되는 유형들: 옆 필지 둘이 X, 또는 옆 필지가 X 이고 그 너머 옆도 X(붙은 묶음은 한 단위)
+    static HashSet<string> Avoid(Parcel p, List<Parcel> ps)
+    {
+        var res = new HashSet<string>(); var sn = SideNb(p, ps).Where(q => q.type != null && !(p.group >= 0 && q.group == p.group)).ToList();
+        foreach (var g in sn.GroupBy(q => q.group >= 0 ? -1 - q.group : q.id).Select(g => g.First()).GroupBy(q => q.type)) if (g.Count() >= 2) res.Add(g.Key);
+        foreach (var q in sn) if (SideNb(q, ps).Any(r => r != p && r.type == q.type && !(q.group >= 0 && r.group == q.group) && !(p.group >= 0 && r.group == p.group))) res.Add(q.type);
+        return res;
+    }
+    static bool RowRun(Parcel p, List<Parcel> ps) => Avoid(p, ps).Contains("row");
+    // 새 묶음(mem 전체)을 한 단위로 볼 때 옆의 묶음 단위가 둘이거나, 옆 묶음 너머에 또 묶음이 있으면 3연속
+    static bool GroupRun(List<Parcel> mem, List<Parcel> ps)
+    {
+        int Key(Parcel q) => q.group >= 0 ? -1 - q.group : q.id;
+        var nb = mem.SelectMany(p => SideNb(p, ps)).Where(q => !mem.Contains(q) && q.type == "row" && q.group >= 0).GroupBy(Key).Select(g => g.ToList()).ToList();
+        if (nb.Count >= 2) return true;
+        foreach (var u0 in nb) { var u = ps.Where(q => q.group == u0[0].group).ToList(); if (u.SelectMany(p => SideNb(p, ps)).Any(r => !mem.Contains(r) && r.type == "row" && r.group >= 0 && r.group != u[0].group)) return true; }
+        return false;
+    }
+    static string PickType(Parcel p, List<Parcel> ps, Zm zm, Rng rng)
+    {
+        var av = Avoid(p, ps); var opts = new List<(string t, float w)>();
+        foreach (var kv in zm.w)
+        {
+            var ty = kv.Key; float w = kv.Value; if (w <= 0 || av.Contains(ty)) continue;
+            if (ty == "shop" && !(p.road == "main" || p.zone == "tomo" && p.road == "village")) continue;   // 가게주택 = 큰길·마을 중심 길만
+            if (ty == "barn" && !(p.zone == "outer" || p.zone == "ridge")) continue;
+            if (ty == "bungalow" && p.area < 80) continue;
+            if (ty == "stepped2" && p.depth < 9) continue;
+            opts.Add((ty, w));
+        }
+        if (opts.Count == 0) return av.Contains("detached") ? "flat" : "detached";
+        float s = opts.Sum(o => o.w), u = rng.F() * s; foreach (var o in opts) { if (u < o.w) return o.t; u -= o.w; }
+        return opts[opts.Count - 1].t;
+    }
+    static Dictionary<string, Zm> LoadMix()
+    {
+        var res = new Dictionary<string, Zm>(); var path = System.IO.Path.GetFullPath(Application.dataPath + MixPath);
+        float F(object o) => System.Convert.ToSingle(o, System.Globalization.CultureInfo.InvariantCulture);
+        var js = (Dictionary<string, object>)PitCrewPlan.MiniJson.Parse(System.IO.File.ReadAllText(path, Encoding.UTF8));
+        foreach (var kv in (Dictionary<string, object>)js["zones"])
+        {
+            var z = (Dictionary<string, object>)kv.Value; var g = (List<object>)z["sideGap"]; var s = (List<object>)z["setback"];
+            var zm = new Zm { row = F(z["rowShare"]), g0 = F(g[0]), g1 = F(g[1]), s0 = F(s[0]), s1 = F(s[1]) };
+            foreach (var w in (Dictionary<string, object>)z["w"]) zm.w[w.Key] = F(w.Value);
+            res[kv.Key] = zm;
+        }
+        foreach (var id in ZoneIds) if (!res.ContainsKey(id)) res[id] = res["camo"];
+        return res;
     }
     static Vector2 Rot(Vector2 v, float deg) { float r = deg * Mathf.Deg2Rad, c = Mathf.Cos(r), s = Mathf.Sin(r); return new Vector2(c * v.x - s * v.y, s * v.x + c * v.y); }
     static int Floors(Rng r) { float u = r.F(); return u < .2f ? 1 : u < .8f ? 2 : 3; }   // 20/60/20 — house_home 2층 기준
@@ -458,36 +605,57 @@ public static class ParcelBuild
         double mx_ = sx / n, mz = sz / n, my = sy / n, cxx = sxx / n - mx_ * mx_, czz = szz / n - mz * mz, cxz = sxz / n - mx_ * mz, cxy = sxy / n - mx_ * my, czy = szy / n - mz * my, det = cxx * czz - cxz * cxz;
         m.gx = det > 1e-6 ? (float)((cxy * czz - czy * cxz) / det) : 0; m.gz = det > 1e-6 ? (float)((czy * cxx - cxy * cxz) / det) : 0;
         m.slope = Mathf.Sqrt(m.gx * m.gx + m.gz * m.gz); m.gMin = mn; m.gMax = mx;
-        if (m.slope > MaxSlope) return "경사 35% 넘음(나무 자리)";
+        if (m.slope > MaxSlope) return "경사 60% 넘음(나무 자리)";
         float D = mx - mn;
         if (D <= LowD) { m.seat = "A"; m.y0 = mx + .12f; }
-        else { m.y0 = Mathf.Min(mn + PadLift, mx + .12f); m.seat = mx - m.y0 <= BuryMax ? "B" : "C"; }
+        else { m.y0 = Mathf.Min(mn + PadLift, mx + .12f); float bu = mx - m.y0; m.seat = bu <= BuryMax ? "B" : bu <= HillBury ? "C1" : "C2"; }
         m.bury = Mathf.Max(0, mx - m.y0); m.expo = m.y0 - mn; m.plinth = m.expo > .3f; m.bot = mn - Bury;
         return null;
     }
     // 앉히기 전체: 등고선 방향 맞춤(앞뒤 경사면 얕게) → C 면 경사 쪽으로 둘로 나눠 계단식 2단(각 단 B 규칙, 아래 단 내리막 쪽 면에 차고·창고 문)
-    static string SeatAll(Mass m, bool att, out Mass m2)
+    static string SeatAll(Mass m, bool att, bool avoidC2, out Mass m2)
     {
         m2 = null; var why = Seat(m); if (why != null) return why;
-        // 긴 변 = 등고선: 경사가 주로 앞뒤인데 깊이가 폭보다 길면 깊이를 폭까지 줄인다(앞면은 그대로 길 쪽)
-        if (!att && m.seat != "A" && Mathf.Abs(m.gz) > Mathf.Abs(m.gx) * 1.2f && m.d > m.w + .5f) { m.d = Mathf.Max(4.5f, m.w); m.splitT = true; why = Seat(m); if (why != null) return why; }
-        if (m.seat != "C") return null;
-        // 묶음 집·좁은 집: 깊이를 줄여(4 m 까지) 한 번 더 — 그래도 C 면 비움
-        bool alongF = Mathf.Abs(m.gz) >= Mathf.Abs(m.gx); float L = alongF ? m.d : m.w;
-        if (att || L < 7f)
+        // 긴 변 = 등고선: 경사가 주로 앞뒤인데 깊이가 폭보다 길면 깊이를 폭까지 줄인다(앞면은 그대로 길 쪽). 2단 집은 깊이가 있어야 하므로 제외
+        if (!att && m.type != "stepped2" && m.seat != "A" && Mathf.Abs(m.gz) > Mathf.Abs(m.gx) * 1.2f && m.d > m.w + .5f) { m.d = Mathf.Max(4.5f, m.w); m.splitT = true; why = Seat(m); if (why != null) return why; }
+        // 옆이 이미 2단 집 둘이면: 깊이를 줄여 반지하 한 채(C1)로 먼저 해 본다
+        if (m.seat == "C2" && avoidC2 && !att) while (m.seat == "C2" && m.d > 4.6f) { m.d = Mathf.Max(4.5f, m.d - 1f); why = Seat(m); if (why != null) return why; }
+        // 반지하(C1): 오르막 쪽 1층이 땅속 → 단층·헛간은 2층 단독으로(아래층이 내리막 쪽에 드러남)
+        if (m.seat == "C1")
         {
-            if (m.d > 4.2f) { m.d = Mathf.Max(4f, m.d * .6f); if (m.floors == 3) m.floors = 2; why = Seat(m); if (why != null) return why; if (m.seat != "C") return null; }
+            if (m.floors < 2) { m.floors = 2; m.floorH = Mathf.Min(m.floorH, 3.1f); if (m.type == "bungalow" || m.type == "barn") { m.type = "detached"; m.roof = "gable"; m.barnDoor = false; m.pitch = 26; m.tone = Tone(m.type); } }
+            // 아래층이 2 m 넘게 드러나면 그게 한 층 몫 — 3층은 2층으로(내리막 쪽에서 4층 탑처럼 안 보이게)
+            if (m.floors >= 3 && m.bury > 2f) m.floors = 2;
+            Downhill(m); return null;
+        }
+        bool want2 = m.type == "stepped2" && m.d >= 8f && !att;
+        if (m.seat != "C2" && !want2) return null;
+        // 묶음 집·좁은 집: 깊이를 줄여(4 m 까지) 한 번 더 — 그래도 C2 면 비움
+        bool alongF = want2 && m.seat != "C2" || Mathf.Abs(m.gz) >= Mathf.Abs(m.gx); float L = alongF ? m.d : m.w;
+        if (m.seat == "C2" && (att || L < 7f))
+        {
+            if (m.d > 4.2f) { m.d = Mathf.Max(4f, m.d * .6f); if (m.floors == 3) m.floors = 2; why = Seat(m); if (why != null) return why; if (m.seat == "C1") { if (m.floors < 2) m.floors = 2; Downhill(m); } if (m.seat != "C2") return null; }
             return "가파름(단차 못 넣음)";
         }
         var t = new Vector2(m.f.y, -m.f.x); var a = m.Clone(); var b = m.Clone();
         if (alongF) { a.d = b.d = m.d * .5f; b.c = m.c - m.f * (m.d * .5f); }
         else { a.w = b.w = m.w * .5f; a.c = m.c - t * (m.w * .25f); b.c = m.c + t * (m.w * .25f); a.attR = true; b.attL = true; }
-        if (Seat(a) != null || Seat(b) != null || a.seat == "C" || b.seat == "C") return "가파름(단차 못 넣음)";
-        var lo = a.y0 <= b.y0 ? a : b; lo.door = true; lo.doorBack = alongF && lo == b; lo.tier = 0; (lo == a ? b : a).tier = 1;
-        a.seat = b.seat = "C"; a.pair = b; b.pair = a; a.ridgeX = b.ridgeX = alongF || m.ridgeX;
+        if (Seat(a) != null || Seat(b) != null || a.seat == "C2" || b.seat == "C2") { if (m.seat == "C2") return "가파름(단차 못 넣음)"; m.type = "detached"; m.tone = Tone(m.type); return null; }
+        var lo = a.y0 <= b.y0 ? a : b; var hi = lo == a ? b : a; lo.door = true; lo.doorSide = alongF ? (lo == b ? 1 : 0) : (lo == a ? 2 : 3); lo.doorBack = lo.doorSide == 1; lo.tier = 0; hi.tier = 1;
+        // 평지 2단: 앞 단이 한 층 낮다(계단식) · 비탈 2단: 위 단 앞마당 ≈ 아래 단 지붕 높이
+        if (Mathf.Abs(a.y0 - b.y0) < .5f && alongF) { a.floors = Mathf.Max(1, m.floors - 1); b.floors = m.floors; }
+        a.type = b.type = "stepped2"; a.tone = b.tone = Tone("stepped2");
+        if (m.seat == "C2") a.seat = b.seat = "C2"; a.pair = b; b.pair = a; a.ridgeX = b.ridgeX = alongF || m.ridgeX;
         // a 를 m 자리에 복사(부르는 쪽이 m 을 그대로 쓴다)
         foreach (var fi in typeof(Mass).GetFields()) fi.SetValue(m, fi.GetValue(a));
         b.pair = m; m2 = b; return null;
+    }
+    // 반지하 집 문: 내리막 쪽 면(붙은 쪽이면 앞면)에 아래층 문
+    static void Downhill(Mass m)
+    {
+        int s = Mathf.Abs(m.gz) >= Mathf.Abs(m.gx) ? (m.gz > 0 ? 1 : 0) : (m.gx > 0 ? 2 : 3);
+        if (s == 2 && m.attL || s == 3 && m.attR) s = 0;
+        m.door = true; m.doorSide = s; m.doorBack = s == 1;
     }
     // ── 지형 패드(2판) ─────────────────────────────────────────
     // B·C 덩어리: 바닥 밑은 깎기만(최대 0.65), 앞 1.5 m · 옆 0.8 m(아래 단 뒷문이면 뒤 1.5 m) 마당은 바닥 - 0.15 로 깎기·돋우기(각 0.65 까지).
@@ -670,8 +838,9 @@ public static class ParcelBuild
         for (int it = 0; it < 4; it++)
         {
             var clash = nbs.FirstOrDefault(x => Mathf.Abs(Top(x) - (m.y0 + m.H)) < MinStep); if (clash == null) break;
-            if (it % 2 == 0) m.floorH = Mathf.Clamp(m.floorH + (m.y0 + m.H >= Top(clash) ? .45f : -.45f), 2.6f, 3.4f);
-            else m.floors = Mathf.Clamp(m.floors + (m.floors <= 2 ? 1 : -1), 1, 3);
+            if (it % 2 == 0) m.floorH = Mathf.Clamp(m.floorH + (m.y0 + m.H >= Top(clash) ? .45f : -.45f), 2.6f, m.type == "barn" ? 4.6f : 3.4f);
+            else if (m.type == "row" || m.type == "flat" || m.type == "shop") m.floors = Mathf.Clamp(m.floors + (m.floors <= 2 ? 1 : -1), 2, 3);   // 3판: 유형의 층수는 지킨다
+            else m.floorH = Mathf.Clamp(m.floorH + .25f, 2.6f, m.type == "barn" ? 4.6f : 3.4f);
             m.H = m.floors * m.floorH + (m.roof == "flat" ? .35f : 0);
         }
         float span = m.roof == "gable" ? (m.ridgeX ? m.d : m.w) : Mathf.Min(m.w, m.d);
@@ -698,6 +867,22 @@ public static class ParcelBuild
         }
         return v;
     }
+    // 3판: 전망대 눈에서 집 꼭대기까지 땅·축대가 먼저 가리면(깎은 단 안쪽 등) 그 집은 시야를 안 막는다
+    static bool Hidden(Vector3 eye, Vector3 top)
+    {
+        var d = top - eye; float L = d.magnitude; if (L < 1f) return false;
+        int n = Physics.RaycastNonAlloc(new Ray(eye, d / L), buf, L - .5f, ~0, QueryTriggerInteraction.Ignore);
+        for (int i = 0; i < n; i++) { if (buf[i].distance < 3f) continue; var rn = buf[i].collider.transform.root.name; if (rn == RootName || rn == "Roadside" || rn == "OnFoot_HomeGarage") continue; return true; }
+        return false;
+    }
+    // 3판: 덩어리 둘레 2.5 m 밖 땅(구덩이 테두리) 최고 높이 — 집 꼭대기가 이보다 0.3 m 안 넘으면 땅이 이미 막는 높이라 전망을 새로 안 막는다
+    static float Rim(Mass m)
+    {
+        var t = new Vector2(m.f.y, -m.f.x); float hw = m.w * .5f + 2.5f, best = float.NegativeInfinity;
+        foreach (var (u, v) in new[] { (-1f, .3f), (0f, .3f), (1f, .3f), (-1f, -.5f), (1f, -.5f), (-1f, -1.3f), (0f, -1.3f), (1f, -1.3f) })
+        { float y = TopY(m.c + t * (u * hw) + m.f * (v >= 0 ? 2.5f : v < -1 ? -m.d - 2.5f : -m.d * .5f)); if (!float.IsNaN(y)) best = Mathf.Max(best, y); }
+        return best;
+    }
     static List<(Vector2 c, Vector2 h)> Props()
     {
         var res = new List<(Vector2, Vector2)>(); var r = GameObject.Find("Roadside"); if (r == null) return res;
@@ -714,7 +899,7 @@ public static class ParcelBuild
                 var d = q - o.p; float dd = d.magnitude; if (dd > 60 || dd < .5f) continue;
                 float brg = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg; if (brg < 0) brg += 360;
                 bool inArc = o.a0 <= o.a1 ? brg >= o.a0 && brg <= o.a1 : brg >= o.a0 || brg <= o.a1;
-                if (inArc && top > o.eye - dd * Mathf.Tan(5 * Mathf.Deg2Rad)) return "전망대 앞(vistas overlook)";
+                if (inArc && top > o.eye - dd * Mathf.Tan(5 * Mathf.Deg2Rad) && !Hidden(new Vector3(o.p.x, o.eye, o.p.y), new Vector3(q.x, top, q.y)) && top > Rim(m) + .3f) return "전망대 앞(vistas overlook)";
             }
         var big = Corners(m, .5f);
         foreach (var l in v.los) if (top > l.eye && SegPoly(l.a, l.b, big)) return "전망 회랑(vistas corridor)";
@@ -724,13 +909,10 @@ public static class ParcelBuild
     }
     static void Types(Parcel p)
     {
-        var m = p.mass; if (m == null) { p.types.Add(p.depth > 12 ? "마당·밭" : "빈터"); return; }
-        if (m.plinth && m.gMax - m.gMin > 1.2f) p.types.Add("terrace_house");
-        if (m.group >= 0) p.types.Add("town_house");
-        if (p.road == "main" && m.floors >= 2) p.types.Add("shop_house");
-        if (m.group < 0 && p.frontW >= 8 && p.depth >= 12 && m.floors <= 2) p.types.Add("detached_house");
-        if (m.floors == 1 && p.depth >= 14) p.types.Add("farmhouse");
-        if (p.types.Count == 0) p.types.Add("town_house");
+        p.types.Clear(); var m = p.mass; if (m == null) { p.types.Add(p.depth > 12 ? "마당·밭" : "빈터"); return; }
+        // 3판: 덩어리 유형(D-220 8종) + building-types.md 쪽 이름(아트 연결용 가설)
+        p.types.Add(m.type);
+        p.types.Add(m.type switch { "shop" => "shop_house", "row" => "town_house", "stepped2" => "terrace_house", "barn" => "farmhouse", "bungalow" => "detached_house", "detached" => "detached_house", _ => m.seat == "C1" ? "terrace_house" : "town_house" });
     }
 
     // ── 씬에 덩어리 ────────────────────────────────────────────
@@ -746,29 +928,49 @@ public static class ParcelBuild
             if (m.HasProperty("_Tint")) m.SetColor("_Tint", c); else m.color = c;
             EditorUtility.SetDirty(m); return m;
         }
-        var res = new[] { Get("Parcels_Body", new Color(.74f, .74f, .72f)), Get("Parcels_Roof", new Color(.46f, .46f, .48f)), Get("Parcels_Plinth", new Color(.55f, .51f, .45f)), Get("Parcels_Door", new Color(.24f, .23f, .22f)) };
+        // 3판: 유형 구분용 회색 톤 4개(외관 아님) — 0 단독·연립 · 1 단층·평지붕(밝게) · 2 좁은 3층·2단(차갑고 어둡게) · 3 가게·헛간(따뜻하게)
+        var res = new[] { Get("Parcels_Body", new Color(.74f, .74f, .72f)), Get("Parcels_Body1", new Color(.82f, .81f, .78f)), Get("Parcels_Body2", new Color(.64f, .66f, .68f)), Get("Parcels_Body3", new Color(.72f, .68f, .62f)),
+            Get("Parcels_Roof", new Color(.46f, .46f, .48f)), Get("Parcels_Plinth", new Color(.55f, .51f, .45f)), Get("Parcels_Door", new Color(.24f, .23f, .22f)) };
         AssetDatabase.SaveAssets(); return res;
     }
     static Transform Spawn(Mass m, Transform root, Material[] mats)
     {
-        var go = new GameObject($"P{m.parcel:000}_{m.floors}F_{m.roof}_{m.seat}" + (m.tier >= 0 ? $"_tier{m.tier}" : "") + (m.group >= 0 ? $"_row{m.group}" : ""));
+        var go = new GameObject($"P{m.parcel:000}_{m.type}_{m.floors}F_{m.roof}_{m.seat}" + (m.tier >= 0 ? $"_tier{m.tier}" : "") + (m.group >= 0 ? $"_row{m.group}" : ""));
         go.transform.SetParent(root, false);
         go.transform.SetPositionAndRotation(new Vector3(m.c.x, m.y0, m.c.y), Quaternion.LookRotation(new Vector3(m.f.x, 0, m.f.y)));
         var v = new List<Vector3>(); var tb = new List<int>(); var tr = new List<int>(); var tp = new List<int>(); var td = new List<int>();
         float hw = m.w * .5f, D = m.d, H = m.H, yb = m.bot - m.y0;
-        // 단차 집 아래 단: 내리막 쪽 면에 차고·창고 문(어두운 판, 땅까지)
-        if (m.door)
+        var dc = new Vector3(0, H * .5f, -D * .5f); var t2 = new Vector2(m.f.y, -m.f.x);
+        // 문 판(어두운 판): side 0 앞 · 1 뒤 · 2 왼(-t) · 3 오른(+t). 아래 끝 = 그 면 바깥 땅(묻힌 쪽은 바닥)
+        void Door(int side, float dw, float top)
         {
-            float dw = Mathf.Min(2.6f, m.w * .6f), zd = m.doorBack ? -D - .17f : .17f; var t2 = new Vector2(m.f.y, -m.f.x);
-            float gy = TopY(m.c - m.f * (m.doorBack ? D + .6f : -.6f)); float db = float.IsNaN(gy) ? 0 : Mathf.Max(yb, gy - m.y0);
-            var dc = new Vector3(0, H * .5f, -D * .5f);
-            Quad(v, td, new Vector3(-dw * .5f, db, zd), new Vector3(dw * .5f, db, zd), new Vector3(dw * .5f, 2.3f, zd), new Vector3(-dw * .5f, 2.3f, zd), dc);
+            Vector2 n2 = side == 0 ? m.f : side == 1 ? -m.f : side == 2 ? -t2 : t2; float off = side < 2 ? D * .5f + .6f : hw + .6f;
+            float gy = TopY(m.c - m.f * (D * .5f) + n2 * off); float db = float.IsNaN(gy) ? 0 : Mathf.Clamp(gy - m.y0, yb, top - 1.2f);
+            float e = .17f;
+            if (side == 0) Quad(v, td, new Vector3(-dw * .5f, db, e), new Vector3(dw * .5f, db, e), new Vector3(dw * .5f, top, e), new Vector3(-dw * .5f, top, e), dc);
+            else if (side == 1) Quad(v, td, new Vector3(-dw * .5f, db, -D - e), new Vector3(dw * .5f, db, -D - e), new Vector3(dw * .5f, top, -D - e), new Vector3(-dw * .5f, top, -D - e), dc);
+            else { float x = side == 2 ? -hw - e : hw + e, zc = -D * .5f; Quad(v, td, new Vector3(x, db, zc - dw * .5f), new Vector3(x, db, zc + dw * .5f), new Vector3(x, top, zc + dw * .5f), new Vector3(x, top, zc - dw * .5f), dc); }
         }
+        // 단차·반지하 집: 내리막 쪽 아래층 문 · 가게: 1층 넓은 셔터 · 헛간: 큰 문
+        if (m.door) Door(m.doorSide < 0 ? (m.doorBack ? 1 : 0) : m.doorSide, Mathf.Min(2.6f, (m.doorSide >= 2 ? D : m.w) * .6f), 2.3f);
+        if (m.shutter) Door(0, Mathf.Max(1.6f, m.w - 1f), Mathf.Min(2.6f, m.floorH - .3f));
+        if (m.barnDoor) Door(0, Mathf.Min(3.4f, m.w * .45f), Mathf.Min(3.2f, H - .4f));
         var ctr = new Vector3(0, H * .5f, -D * .5f);
         if (m.plinth) { Box(v, tp, m.attL ? -hw : -hw - .15f, m.attR ? hw : hw + .15f, -D - .15f, .15f, yb, 0, ctr); Box(v, tb, -hw, hw, -D, 0, 0, H, ctr); }
         else Box(v, tb, -hw, hw, -D, 0, yb, H, ctr);
         float R = m.rise, o = .25f;
-        if (m.roof == "flat") Box(v, tr, -hw, hw, -D, 0, H, H + .3f, ctr);
+        if (m.roof == "flat")
+        {
+            Box(v, tr, -hw, hw, -D, 0, H, H + .3f, ctr);
+            // 평지붕 집: 옥상 난간(0.9 m) + 뒤 모서리 작은 옥탑(2.4 × 2.4 × 2.3)
+            if (m.roofRoom)
+            {
+                float k = .15f, y1 = H + 1.2f;
+                Box(v, tb, -hw, hw, -k, 0, H + .3f, y1, ctr); Box(v, tb, -hw, hw, -D, -D + k, H + .3f, y1, ctr);
+                Box(v, tb, -hw, -hw + k, -D + k, -k, H + .3f, y1, ctr); Box(v, tb, hw - k, hw, -D + k, -k, H + .3f, y1, ctr);
+                if (m.w >= 4.5f && D >= 5f) { float rx = m.ridgeX ? -hw + .3f : hw - 2.7f; Box(v, tb, rx, rx + 2.4f, -D + .3f, -D + 2.7f, H + .3f, H + 2.6f, ctr); Box(v, tr, rx - .1f, rx + 2.5f, -D + .2f, -D + 2.8f, H + 2.6f, H + 2.8f, ctr); }
+            }
+        }
         else if (m.roof == "gable" && m.ridgeX)
         {
             var a = new Vector3(-hw, H, o); var b = new Vector3(hw, H, o); var rl = new Vector3(-hw, H + R, -D * .5f); var rr = new Vector3(hw, H + R, -D * .5f); var c = new Vector3(-hw, H, -D - o); var d = new Vector3(hw, H, -D - o);
@@ -791,8 +993,134 @@ public static class ParcelBuild
             else { float e = D * .5f - hw; var r0 = new Vector3(0, H + R, -hw); var r1 = new Vector3(0, H + R, -D + hw); Quad(v, tr, p00, p01, r1, r0, ctr); Quad(v, tr, p11, p10, r0, r1, ctr); Tri(v, tr, p10, p00, r0, ctr); Tri(v, tr, p01, p11, r1, ctr); }
         }
         var mesh = new Mesh { name = go.name }; mesh.SetVertices(v); mesh.SetUVs(0, v.Select(q => new Vector2((q.x + q.z) * .25f, q.y * .25f)).ToList()); mesh.subMeshCount = 4; mesh.SetTriangles(tb, 0); mesh.SetTriangles(tr, 1); mesh.SetTriangles(tp, 2); mesh.SetTriangles(td, 3); mesh.RecalculateNormals(); mesh.RecalculateBounds();
-        go.AddComponent<MeshFilter>().sharedMesh = mesh; go.AddComponent<MeshRenderer>().sharedMaterials = mats;
+        go.AddComponent<MeshFilter>().sharedMesh = mesh; go.AddComponent<MeshRenderer>().sharedMaterials = new[] { mats[Mathf.Clamp(m.tone, 0, 3)], mats[4], mats[5], mats[6] };
         return go.transform;
+    }
+
+    // ── 3판: 같은 유형 3연속 ──────────────────────────────────
+    // 한 단위 = 단독 필지 하나 또는 붙은 묶음 하나. 단위 U 의 옆 필지들 중 U 와 같은 유형인 다른 단위가 2개 이상이면 U 가 3연속의 가운데
+    static List<List<Parcel>> RunCenters(List<Parcel> ps)
+    {
+        var res = new List<List<Parcel>>();
+        foreach (var u in ps.Where(p => p.mass != null && p.type != null).GroupBy(p => p.group >= 0 ? -1 - p.group : p.id))
+        {
+            var mem = u.ToList(); var ty = mem[0].type; var ids = new HashSet<int>(mem.Select(p => p.id));
+            int n = mem.SelectMany(p => SideNb(p, ps)).Where(q => !ids.Contains(q.id) && q.mass != null && q.type == ty).Select(q => q.group >= 0 ? -1 - q.group : q.id).Distinct().Count();
+            if (n >= 2) res.Add(mem);
+        }
+        return res;
+    }
+    static int nRepair, nRunLeft;
+    // 가운데 단독 집의 유형을 지붕·층만 바꿔 다른 유형으로(자리·바닥은 그대로). 바꾼 뒤 옆집과 겹치면 다음 후보, 다 안 되면 둔다
+    static int Repair(List<Parcel> ps, List<Mass> masses)
+    {
+        int fixedN = 0;
+        for (int pass = 0; pass < 3; pass++)
+        {
+            var cs = RunCenters(ps); if (cs.Count == 0) break;
+            foreach (var mem in cs)
+            {
+                if (mem.Count != 1) continue; var p = mem[0]; var m = p.mass; if (m == null || p.mass2 != null || m.group >= 0) continue;
+                var av = Avoid(p, ps); var bak = m.Clone();
+                string[] opts = m.type switch { "detached" => new[] { "flat", "narrow3" }, "flat" => new[] { "detached", "narrow3" }, "narrow3" => new[] { "flat", "detached" }, "bungalow" => new[] { "flat", "detached" }, "shop" => new[] { "flat", "detached" }, "barn" => new[] { "bungalow", "detached" }, _ => new[] { "flat", "detached" } };
+                bool ok = false;
+                foreach (var ty in opts)
+                {
+                    if (av.Contains(ty) || ty == m.type) continue;
+                    m.type = ty; m.shutter = m.barnDoor = m.roofRoom = false; m.floorH = Mathf.Clamp(m.floorH, 2.6f, 3.4f); m.pitch = Mathf.Max(m.pitch, 24);
+                    switch (ty)
+                    {
+                        case "flat": m.roof = "flat"; m.roofRoom = true; if (m.floors < 2 && m.seat != "C1") m.floors = 2; break;
+                        case "detached": m.roof = "gable"; m.ridgeX = true; m.floors = Mathf.Max(2, m.floors); if (m.floors > 2 && m.seat != "C1") m.floors = 2; break;
+                        case "narrow3": if (m.w > 5.2f) { m.type = bak.type; continue; } m.floors = 3; m.roof = "flat"; break;
+                        case "bungalow": if (m.seat == "C1") { m.type = bak.type; continue; } m.floors = 1; m.roof = "hip"; break;
+                    }
+                    m.tone = Tone(m.type); p.type = m.type; Heights(m, p, ps);
+                    bool hit = masses.Any(o => o != m && (o.c - m.c).sqrMagnitude < 900 && PolyPoly(Corners(o, 0), Corners(m, 0)));
+                    if (!hit && SideNb(p, ps).Count(q => q.mass != null && q.type == ty) < 2) { ok = true; break; }
+                    CopyInto(bak, m); p.type = m.type;
+                }
+                if (ok) { fixedN++; Types(p); }
+            }
+        }
+        nRunLeft = RunCenters(ps).Count;
+        return fixedN;
+    }
+    static void CopyInto(Mass src, Mass dst) { foreach (var fi in typeof(Mass).GetFields()) fi.SetValue(dst, fi.GetValue(src)); }
+
+    // ── 3판: 집 사이 좁은 돌계단 골목(덩어리만, 충돌체 없음) ──────────
+    // 반지하·2단 집(C1·C2) 중 비탈이 앞뒤로 내려가는 집의 빈 옆(붙지 않은 쪽, 벽에서 0.15 m)에 폭 0.9 m · 디딤 0.6 m · 단 높이 0.18 m 로 맞춘 계단
+    static string Stairs(List<Parcel> ps, List<Mass> masses, Transform root, Material[] mats)
+    {
+        var holder = new GameObject("StoneStairs").transform; holder.SetParent(root, false);
+        int n = 0; float len = 0; var used = new List<List<Vector2>>();
+        foreach (var m in masses)
+        {
+            if (m.seat == null || !m.seat.StartsWith("C") || m.tier == 1) continue;
+            var t = new Vector2(m.f.y, -m.f.x);
+            float D = m.pair != null ? m.d + m.pair.d + Mathf.Abs(Vector2.Dot(m.pair.c - m.c, m.f)) - m.pair.d : m.d;   // 2단이면 두 단을 다 따라
+            D = Mathf.Max(m.d, Mathf.Min(D, 18f));
+            if (Mathf.Abs(m.gz) < Mathf.Abs(m.gx) * 1.2f) continue;   // 비탈이 옆으로 흐르면 계단 골목 의미 없음
+            foreach (int side in new[] { 1, -1 })
+            {
+                if (side < 0 ? m.attL : m.attR) continue;
+                const float W = .9f; float x0 = side * (m.w * .5f + .15f), x1 = x0 + side * W, xm = (x0 + x1) * .5f;
+                var quad = new List<Vector2> { m.c + t * x0 + m.f * .6f, m.c + t * x1 + m.f * .6f, m.c + t * x1 - m.f * (D + .4f), m.c + t * x0 - m.f * (D + .4f) };
+                if (masses.Any(o => o != m && o != m.pair && (o.c - m.c).sqrMagnitude < 900 && PolyPoly(Corners(o, 0), quad))) continue;
+                if (used.Any(u => PolyPoly(u, quad))) continue;
+                var v = new List<Vector3>(); var tp = new List<int>(); bool bad = false; float prev = float.NaN; int k = 0;
+                var ctr = new Vector3(0, -50, 0);
+                for (float z = .6f; z > -D - .4f; z -= .6f, k++)
+                {
+                    var q = m.c + t * xm + m.f * (z - .3f); int c = Idx(q);
+                    if (c < 0 || type[c] == T.Road || type[c] == T.Wall || type[c] == T.Excl || foot[c]) { bad = true; break; }
+                    float g = TopY(q); if (float.IsNaN(g)) { bad = true; break; }
+                    float top = Mathf.Ceil(g / .18f) * .18f + .05f;
+                    if (!float.IsNaN(prev) && Mathf.Abs(top - prev) > 1.0f) { bad = true; break; }   // 축대·절벽이면 끊음
+                    prev = top;
+                    var p0 = m.c + t * x0 + m.f * z; var w3 = new Vector3(p0.x, 0, p0.y);
+                    // 월드 좌표로 바로: 디딤판 한 칸 = 옆 W × 앞뒤 0.6 × (땅 - 0.4 ~ top)
+                    var a = new Vector3(p0.x, 0, p0.y); var ax = new Vector3(t.x, 0, t.y) * side * W; var az = -new Vector3(m.f.x, 0, m.f.y) * .6f;
+                    var lo = Vector3.up * (g - .4f); var hi = Vector3.up * top;
+                    void Face(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4, Vector3 cc) => Quad(v, tp, p1, p2, p3, p4, cc);
+                    var cc0 = a + ax * .5f + az * .5f + Vector3.up * ((g - .4f + top) * .5f);
+                    Face(a + lo, a + ax + lo, a + ax + hi, a + hi, cc0); Face(a + az + lo, a + az + ax + lo, a + az + ax + hi, a + az + hi, cc0);
+                    Face(a + lo, a + az + lo, a + az + hi, a + hi, cc0); Face(a + ax + lo, a + ax + az + lo, a + ax + az + hi, a + ax + hi, cc0);
+                    Face(a + hi, a + ax + hi, a + ax + az + hi, a + az + hi, cc0);
+                }
+                if (bad || k < 4) continue;
+                var go = new GameObject($"Stair_P{m.parcel:000}_{(side < 0 ? "L" : "R")}"); go.transform.SetParent(holder, false);
+                var mesh = new Mesh { name = go.name }; mesh.SetVertices(v); mesh.SetTriangles(tp, 0); mesh.RecalculateNormals(); mesh.RecalculateBounds();
+                go.AddComponent<MeshFilter>().sharedMesh = mesh; go.AddComponent<MeshRenderer>().sharedMaterial = mats[5];
+                used.Add(quad); n++; len += k * .6f; break;
+            }
+        }
+        nStairs = n;
+        return $"돌계단 골목 {n}줄 · {len:F0} m";
+    }
+    static int nStairs, nPits;
+    // 빈 구덩이: 덩어리 없는 땅 덩이(빈 필지·남은 땅, 40㎡ 이상) 중 둘레의 40% 이상이 축대 칸인 것 = 깎아 놓고 집 없음
+    static List<Left> lastLefts;
+    // 진단: 마지막 Run 의 3연속 가운데·빈 구덩이 자리
+    public static string Diag()
+    {
+        if (cellsOf == null) return "없음"; var sb = new StringBuilder();
+        foreach (var u in RunCenters(cellsOf)) sb.Append($"run {u[0].type} g{u[0].group} n{u.Count} @{u[0].ctr.x:F0},{u[0].ctr.y:F0} zone {u[0].zone} nb " + string.Join(",", u.SelectMany(p => SideNb(p, cellsOf)).Where(q => q.type == u[0].type).Select(q => q.id + "g" + q.group)) + "\n");
+        pitWhere.ForEach(s => sb.Append(s).Append('\n'));
+        return sb.ToString();
+    }
+    static List<string> pitWhere = new List<string>();
+    static int Pits(List<Parcel> ps, List<Left> lefts)
+    {
+        int pits = 0; lastLefts = lefts; pitWhere.Clear();
+        var regions = ps.Where(p => p.mass == null && p.area >= 40).Select(p => p.cells).Concat(lefts.Where(l => l.area >= 40 && l.cells != null).Select(l => l.cells));
+        foreach (var cells in regions)
+        {
+            var me = new HashSet<int>(cells); int wall = 0, all = 0;
+            foreach (var c in cells) foreach (var q in new[] { c - 1, c + 1, c - gw, c + gw }) { if (q < 0 || q >= type.Length || me.Contains(q)) continue; all++; if (type[q] == T.Wall) wall++; }
+            if (all > 0 && wall >= .4f * all) { pits++; var pp = ps.FirstOrDefault(p => p.cells == cells); var mc = Mean(cells); pitWhere.Add($"pit @{mc.x:F0},{mc.y:F0} area {cells.Count * C * C:F0} wall {wall}/{all} " + (pp != null ? $"P{pp.id} empty={pp.empty} back={pp.back} slope={pp.slope:F2}" : "남은 땅")); }
+        }
+        return pits;
     }
     static void Box(List<Vector3> v, List<int> t, float x0, float x1, float z0, float z1, float y0, float y1, Vector3 ctr)
     {
@@ -840,16 +1168,16 @@ public static class ParcelBuild
         foreach (var p in parcels) hb.Append(p.id).Append('#').Append(p.cells.Count).Append(',').Append(p.cells[0]).Append(';');
         k.hash = Fnv(hb.ToString()).ToString("x8");
         var seat = SeatCounts(parcels);
-        k.summary = $"앉히기 {seat} · 노출 기단 최대 {k.expoMax:F2} m · 패드 축대 최고 {padMaxWall:F2} m · 지형 구멍·뒤집힘 {terrHoles} · 해시 {k.hash} · 덩어리끼리 겹침 {k.overlap} · 길 {k.roadHit} · 앞띠 {k.stripHit} · 축대 {k.wallHit} · 도현 건물 {k.footHit} · 소품 {k.propHit} · 뜸 {k.floatN}(최대 {k.worstFloat * 100:F1} cm, 음수 = 묻힘)";
+        k.summary = $"앉히기 {seat} · 유형 " + string.Join("/", TypeIds.Select(ty => ty + " " + masses.Count(m => m.type == ty && m.tier != 1))) + $" · 빈 구덩이 {nPits} · 같은 유형 3연속 {nRunLeft}(고침 {nRepair}) ·노출 기단 최대 {k.expoMax:F2} m · 패드 축대 최고 {padMaxWall:F2} m · 지형 구멍·뒤집힘 {terrHoles} · 해시 {k.hash} · 덩어리끼리 겹침 {k.overlap} · 길 {k.roadHit} · 앞띠 {k.stripHit} · 축대 {k.wallHit} · 도현 건물 {k.footHit} · 소품 {k.propHit} · 뜸 {k.floatN}(최대 {k.worstFloat * 100:F1} cm, 음수 = 묻힘)";
         return k;
     }
 
     // 필지별 처리: A 낮은 기단 · B 패드+축대 · C 단차 · 비움(경사 35%) · 비움(그 밖)
     static string SeatCounts(List<Parcel> ps)
     {
-        int a = ps.Count(p => p.mass != null && p.mass.seat == "A"), b = ps.Count(p => p.mass != null && p.mass.seat == "B"), c = ps.Count(p => p.mass != null && p.mass.seat == "C");
+        int a = ps.Count(p => p.mass != null && p.mass.seat == "A"), b = ps.Count(p => p.mass != null && p.mass.seat == "B"), c1 = ps.Count(p => p.mass != null && p.mass.seat == "C1"), c2 = ps.Count(p => p.mass != null && p.mass.seat == "C2");
         int st = ps.Count(p => p.mass == null && p.empty != null && (p.empty.StartsWith("경사") || p.empty.StartsWith("가파름"))), o = ps.Count(p => p.mass == null) - st;
-        return $"A 낮은 기단 {a} · B 패드+축대 {b} · C 단차 {c} · 비움(가파름) {st} · 비움(그 밖) {o} · 등고선 맞춤 {ps.Count(p => p.mass != null && p.mass.splitT)}";
+        return $"A 낮은 기단 {a} · B 패드+축대 {b} · C1 반지하 {c1} · C2 2단 {c2} · 비움(경사 60%+) {st} · 비움(그 밖) {o} · 등고선 맞춤 {ps.Count(p => p.mass != null && p.mass.splitT)}";
     }
     // ── 기록 ───────────────────────────────────────────────────
     static string Json(List<Parcel> parcels, List<Left> lefts, List<Mass> masses, Chk k, string gnote, string osm)
@@ -864,6 +1192,16 @@ public static class ParcelBuild
         sb.Append($"  \"d218\": {{\"area\": \"맵 전체 x {f2(area.xMin)}~{f2(area.xMax)} z {f2(area.yMin)}~{f2(area.yMax)}\", \"fillRate\": {f2((float)built0 / Mathf.Max(1, parcels.Count))}, \"seat\": \"{SeatCounts(parcels)}\", \"expoMaxM\": {f2(k.expoMax)}, \"padWallMaxM\": {f2(padMaxWall)}, \"terrainHolesFlips\": {terrHoles}, \"terrain\": \"{k.terrain}\", \"walls\": \"{k.walls}\", \"time\": \"{k.time}\",");
         sb.Append($" \"rules\": \"경사 > {MaxSlope * 100:F0}% 비움 · A Δ ≤ {LowD} 바닥 = 최고 + 0.12 · B 바닥 = 최저 + {PadLift}(묻힘 ≤ {BuryMax}) · C 경사 쪽 둘로 · 패드 앞 {Apron} 옆 {ApronSide} 깎기·돋움 ≤ {CutMax}/{FillMax} 둘레 {Ring} 가드 {Guard} · 합치기 < {MergeA}㎡ · 묶음 {RowShare}\"}},\n");
         sb.Append($"  \"rules\": {{\"frontW\": \"70% 6~8 · 15% 5~6 · 15% 8~10\", \"maxDepthM\": {MaxDepth}, \"setbackM\": \"1~3 (붙은 집 1.2~2)\", \"floors\": \"1:2:3 = 20:60:20\", \"roof\": \"gable 55 · hip 30 · flat 15\", \"rowShare\": 0.35, \"minStepM\": {MinStep}, \"pads\": {{\"dohyunBuildings\": {FootPad}, \"junction\": {JuncPad}, \"walkMouth\": {MouthPad}}}}},\n");
+        // 3판(D-220) 표: 채움 · 유형별 수 · 경사 구간별 처리 · 노출 기단 최대 · 빈 구덩이 · 같은 유형 3연속 · 겹침/뜸/구멍
+        {
+            int sea = parcels.Count(p => p.mass == null && p.empty == "땅 못 읽음·바다"), landN = parcels.Count - sea;
+            string Bin(float lo, float hi) { var g = parcels.Where(p => p.slope >= lo && p.slope < hi).ToList(); return $"{{\"n\": {g.Count}, \"A\": {g.Count(p => p.mass?.seat == "A")}, \"B\": {g.Count(p => p.mass?.seat == "B")}, \"C1\": {g.Count(p => p.mass?.seat == "C1")}, \"C2\": {g.Count(p => p.mass?.seat == "C2")}, \"empty\": {g.Count(p => p.mass == null)}}}"; }
+            sb.Append($"  \"d220\": {{\"fillAll\": {f2((float)built0 / Mathf.Max(1, parcels.Count))}, \"fillLand\": {f2((float)built0 / Mathf.Max(1, landN))}, \"built\": {built0}, \"landParcels\": {landN}, \"back\": {parcels.Count(p => p.back)}, \"backBuilt\": {parcels.Count(p => p.back && p.mass != null)},");
+            sb.Append(" \"types\": {" + string.Join(", ", TypeIds.Select(ty => $"\"{ty}\": {parcels.Count(p => p.mass != null && p.mass.type == ty)}")) + "},");
+            sb.Append(" \"zones\": {" + string.Join(", ", ZoneIds.Select(z => { var g = parcels.Where(p => p.zone == z && p.empty != "땅 못 읽음·바다").ToList(); return $"\"{z}\": [{g.Count(p => p.mass != null)}, {g.Count}]"; })) + "},");
+            sb.Append($" \"slopeBins\": {{\"lt15\": {Bin(0, .15f)}, \"15_35\": {Bin(.15f, .35f)}, \"35_60\": {Bin(.35f, .60f)}, \"gt60\": {Bin(.60f, 99f)}, \"unread\": {parcels.Count(p => p.slope < 0)}}},");
+            sb.Append($" \"expoMaxM\": {f2(k.expoMax)}, \"pits\": {nPits}, \"sameType3Runs\": {nRunLeft}, \"repaired\": {nRepair}, \"stairs\": {nStairs}, \"overlapPairs\": {k.overlap}, \"floatSamples\": {k.floatN}, \"terrainHolesFlips\": {terrHoles}}},\n");
+        }
         var built = parcels.Where(p => p.mass != null).ToList();
         float[] wEdges = { 5, 6, 7, 8, 9, 10 };
         sb.Append($"  \"stats\": {{\"parcels\": {parcels.Count}, \"withMass\": {masses.Count}, \"empty\": {parcels.Count - built.Count}, \"rows\": {masses.Where(m => m.group >= 0).Select(m => m.group).Distinct().Count()}, \"rowMasses\": {masses.Count(m => m.group >= 0)},");
@@ -971,7 +1309,7 @@ public static class ParcelBuild
             for (int j = gh - 1; j >= 0; j--) for (int i = gw - 1; i >= 0; i--) { int k = j * gw + i; if (i < gw - 1) { Rel(k, k + 1); if (j < gh - 1) Rel(k, k + gw + 1); } if (j < gh - 1) Rel(k, k + gw); if (i > 0 && j < gh - 1) Rel(k, k + gw - 1); }
         }
     }
-    static void RasterMesh(Transform tr, bool[] G, float grow, float[] off, float o)
+    static void RasterMesh(Transform tr, bool[] G, float grow, float[] off, float o, byte[] zarr = null, byte zv = 0)
     {
         var mf = tr.GetComponent<MeshFilter>(); if (mf == null || mf.sharedMesh == null) return;
         var m = mf.sharedMesh; var v = m.vertices; var w = new Vector2[v.Length]; for (int k = 0; k < v.Length; k++) { var p = tr.TransformPoint(v[k]); w[k] = new Vector2(p.x, p.z); }
@@ -984,7 +1322,7 @@ public static class ParcelBuild
             for (int j = j0; j <= j1; j++) for (int i = i0; i <= i1; i++)
             {
                 int kk = j * gw + i; var p = P(kk);
-                if (InTri(p, a, b, c) || DistSeg(p, a, b) <= mg - C * .21f || DistSeg(p, b, c) <= mg - C * .21f || DistSeg(p, c, a) <= mg - C * .21f) { G[kk] = true; if (off != null) off[kk] = Mathf.Max(off[kk], o); }
+                if (InTri(p, a, b, c) || DistSeg(p, a, b) <= mg - C * .21f || DistSeg(p, b, c) <= mg - C * .21f || DistSeg(p, c, a) <= mg - C * .21f) { G[kk] = true; if (off != null) off[kk] = Mathf.Max(off[kk], o); if (zarr != null && zarr[kk] == 255) zarr[kk] = zv; }
             }
         }
     }
