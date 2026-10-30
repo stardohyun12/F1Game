@@ -1,0 +1,71 @@
+{
+ "size_m": {
+  "w": 6.0,
+  "d": 5.5
+ },
+ "ridges": {
+  "n": 4,
+  "base_w": 0.92,
+  "furrow": 0.36,
+  "h": [
+   0.22,
+   0.22,
+   0.3,
+   0.2
+  ],
+  "len": 4.23
+ },
+ "cabbage": 19,
+ "onion": 21,
+ "pepper": 7,
+ "stakes": 7,
+ "posts": 17,
+ "rails": 10,
+ "planks": 123,
+ "fence": {
+  "h": ".62~.74 판자 · 기둥 .72",
+  "objs": [
+   "FENCE_01",
+   "FENCE_02",
+   "FENCE_03"
+  ]
+ },
+ "stones": 12,
+ "tris": 16768,
+ "objects": 90,
+ "faces_by_pt": {
+  "soil": 240,
+  "soil_ridge": 480,
+  "cabbage_head": 2223,
+  "cabbage_leaf": 912,
+  "onion_stem": 714,
+  "onion_leaf": 690,
+  "stake": 42,
+  "pepper_stem": 42,
+  "pepper_leaf": 196,
+  "pepper_fruit": 952,
+  "string": 72,
+  "post": 102,
+  "rail": 60,
+  "plank": 615,
+  "stone": 108,
+  "can": 154,
+  "basket": 92
+ },
+ "atlas": [
+  2048,
+  1664
+ ],
+ "props": {
+  "CAN_01": [
+   1.0,
+   -2.2
+  ],
+  "BASKET_01": [
+   -0.4,
+   -2.15
+  ]
+ },
+ "pivot": "밭 바닥(땅 z 0) 가운데",
+ "forward": "입구(돌 줄) = Blender -Y → FBX/Unity +Z"
+}

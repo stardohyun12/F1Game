@@ -18,6 +18,15 @@
     "notes": "재질 HOUSE_alb 하나 → house_home.png. 2층 방(room)은 fbx 에 없음(Unity 프리팹 자식 +3.2m). 정면(발코니·현관) = Unity +Z."
   },
   {
+    "name": "field_patch",
+    "label_ko": "밭",
+    "fbx": "art/export/field-patch/field_patch.fbx",
+    "tex_dir": "art/export/field-patch",
+    "textures": {},
+    "default_texture": "field_patch.png",
+    "notes": "재질 FIELD_alb 하나 → field_patch.png(I1 흙·I5 배추·I8 대파·I10 판자 + 집 팔레트). 입구 = Unity +Z."
+  },
+  {
     "name": "garage",
     "label_ko": "정비소",
     "fbx": "art/export/q2-garage/garage_v5_combo.fbx",

@@ -32,6 +32,22 @@
     "exported": "2026-10-30 17:57:19"
   },
   {
+    "name": "field_patch",
+    "label_ko": "밭",
+    "file": "field_patch.glb",
+    "size_m": [
+      6.03,
+      1.45,
+      5.57
+    ],
+    "tris": 16768,
+    "nodes": 90,
+    "mesh_nodes": 90,
+    "bytes": 1444688,
+    "source": "art/export/field-patch/field_patch.fbx",
+    "exported": "2026-10-30 21:22:49"
+  },
+  {
     "name": "garage",
     "label_ko": "정비소",
     "file": "garage.glb",

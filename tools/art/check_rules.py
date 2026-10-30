@@ -34,7 +34,7 @@ PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_g
                       r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER|CURTAIN)_\d+$|^CLOCK|'
                       r'^(RUG|BED|PILLOW|FUTON|DESK|VEST|BOOK|BOOKS|CALENDAR|PHOTO|WALLCLOCK|CERT|RADIO|MAGAZINE|NOTEBOOK|PENCIL|PIGGY|MUG|SHIRT|BOX|'
                       r'SLIPPER|SHOE|BAG|CORD|PLANT|KART|KNOB|HOOK|TOWEL|LAMP|SWITCH|SOCKET|DOOR|SHUTTER|RAIL)_\d+$|'
-                      r'^(APRON|BASKET|MAT|VASE|CUP|PEPPER|SALT|PLATE|PAN|PENDANT|BEDLIGHT|NIGHTSTAND|DRESSER|MIRROR|WASTE|KETTLE|CUTBOARD|KNIFE|SPICE|RICE|COOKER|MEMO|REMOTE|CUSHION|BLANKET|FRAME|PHONE|KEYRACK|UMBRELLA|CLOTHES|HANGER|CEREAL|JAR|CRATE|BROOM|BUCKET|TOY|RUNNER|PITCHER|BREAD|CUTLERY|UTENSIL|FRUIT|COAT|LAUNDRY|DRYER|CAT)_\d+$|^(SINK|SOFA|STOVE|CUPBOARD|SHOERACK|STAIRS)$|^(TABLE|RAIL|DOOR)_[A-Z]+$')  # 0351 집 안 낱개  # 2230 우체국 낱개 · 2303 방 낱개
+                      r'^(APRON|BASKET|MAT|VASE|CUP|PEPPER|SALT|PLATE|PAN|PENDANT|BEDLIGHT|NIGHTSTAND|DRESSER|MIRROR|WASTE|KETTLE|CUTBOARD|KNIFE|SPICE|RICE|COOKER|MEMO|REMOTE|CUSHION|BLANKET|FRAME|PHONE|KEYRACK|UMBRELLA|CLOTHES|HANGER|CEREAL|JAR|CRATE|BROOM|BUCKET|TOY|RUNNER|PITCHER|BREAD|CUTLERY|UTENSIL|FRUIT|COAT|LAUNDRY|DRYER|CAT|CABBAGE|ONION|STAKE|STRING|CAN|STONE)_\d+$|^(SINK|SOFA|STOVE|CUPBOARD|SHOERACK|STAIRS)$|^(TABLE|RAIL|DOOR)_[A-Z]+$')  # 0351 집 안 낱개  # 2230 우체국 낱개 · 2303 방 낱개
 PRINT_OBJ = re.compile(r'^(PHOTO|CERT|CALENDAR|WALLCLOCK|POSTER)_\d+$')  # 2303: 인쇄물(사진·상장·달력·시계판·포스터) = 글씨 판정 — 옛 obj 'poster' · 정비소 memory 사진과 같은 취급(그림 자체가 잔결이라 결 상한 대신 AA)
 BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',
@@ -44,6 +44,8 @@ B = {
                  tex=lambda mat, img: '' if 'glass' in mat.lower() else 'room.png'),  # 2303: 창 유리(텍스처 없음)는 측정 제외
     'house_home': dict(fbx=HOME_REVIEW / 'house_home.fbx', dir=HOME_REVIEW, gpl={'*': R / 'art/export/house-home/palette.gpl'},  # 0419 본 F1 수정 금지: Studio 검토본
                        tex=lambda mat, img: '' if 'glass' in mat.lower() else 'house_home.png'),  # 0351: 창 유리(전용 반투명 재질) 측정 제외
+    'field_patch': dict(fbx=LIB / 'field_patch/field_patch.fbx', dir=LIB / 'field_patch', gpl={'*': R / 'art/export/field-patch/palette.gpl'},  # artlive 2056 밭(작물·소품 64, 흙·울 32)
+                        tex=lambda mat, img: 'field_patch.png'),
     'garage': dict(fbx=LIB / 'garage/garage_v5_combo.fbx', dir=LIB / 'garage',
                    # artlive 2117: build_asset.py garage 가 결 뒤 전 텍스처를 칸별 median-cut → 합친 색을 이 palette.gpl 로(보관소와 같은 방식)
                    gpl={'*': R / 'art/export/q2-garage/palette.gpl'},
@@ -534,13 +536,13 @@ def main():
     if a.env_dir:
         envdir = Path(a.env_dir).resolve()
         manifest = json.loads((envdir / 'manifest.json').read_text(encoding='utf-8'))
-        kitdir = R / 'art/export/kit-shared-v2'
+        kitdir = envdir / manifest['texture_root'] if manifest.get('texture_root') else R / 'art/export/kit-shared-v2'
         for item in manifest['buildings']:
             name = item['name']
             if Path(name).name != name or not (envdir / (name + '.fbx')).is_file():
                 ap.error('Missing or invalid env asset: ' + name)
             B[name] = dict(fbx=envdir / (name + '.fbx'), dir=kitdir,
-                           gpl={'*': kitdir / 'palette.gpl'}, tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img), nomat=True)
+                           gpl={'*': kitdir / 'palette.gpl', **{k:kitdir/v for k,v in manifest.get('palette_overrides',{}).items()}}, tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img), nomat=True)
     global measure_row
     _mr = measure_row
     def mr(*x, **k):

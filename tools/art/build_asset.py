@@ -40,7 +40,10 @@ CFG = {'depot': dict(src=R / 'art/source/q3-depot', exp=R / 'art/export/q3-depot
        'room': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/q1-room', lib=R / 'F1/Assets/Art/Library/Buildings/room', fbx='room.fbx', pngs=['room'], lib_name={}),
        # 0031 주인공 2층집: 원본 = tools/asset-gen/house_home.py + 아래 h_grain(사진 칠). 2층 = room 프리팹(자식)
        'house_home': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/house-home', lib=R / 'F1Studio/Assets/Art/Review/house_home', fbx='house_home.fbx',
-                          pngs=['house_home'], lib_name={})}
+                          pngs=['house_home'], lib_name={}),
+       # artlive 2056 밭: 원본 = tools/asset-gen/field_patch.py + 아래 f_grain(사진 칠). 납품 = Library/Buildings/field_patch(F1Studio 와 정션)
+       'field_patch': dict(src=R / 'tools/asset-gen', exp=R / 'art/export/field-patch', lib=R / 'F1/Assets/Art/Library/Buildings/field_patch', fbx='field_patch.fbx',
+                           pngs=['field_patch'], lib_name={})}
 PLAIN = R / 'art/textures/2026-10-24-kp/sources/candidate_white_plaster_02/white_plaster_02_diff_1k.png'
 RUBBER = R / 'art/source/car-v01/photos/rubberized_track_diff_1k.jpg'
 STEPS = {'paint': np.array([-0.10, -0.04, 0.04, 0.10]), 'rubber': np.array([-0.14, -0.05, 0.05, 0.14])}
@@ -503,9 +506,97 @@ ROOM = {'source': r_source, 'overlap': r_overlap, 'split': r_split, 'snap': r_sn
 POSTOFFICE = {'source': p_source, 'overlap': p_overlap, 'split': p_split, 'snap': p_snap, 'uv': p_uv, 'grain': p_grain, 'quant': s_quant, 'unity': p_unity, 'check': g_check}
 GARAGE = {'source': g_source, 'overlap': g_overlap, 'split': g_split, 'snap': g_snap, 'uv': g_uv, 'grain': g_grain, 'quant': g_quant, 'unity': g_unity, 'check': g_check}
 
+# ---------- 밭(field_patch) 단계 — artlive 20261030-2056 ----------
+# 원본 = tools/asset-gen/field_patch.py(형태·낱개·UV 칸 표 layout.json: dens·vz(칸 v 가 위로 가면 +1)·z01(물건 안 높이 0~1)). 텍스처는 여기서 칸마다 사진 칠(빛 없음, D-185).
+# 사진(도현 "밭 재료는 추천대로" PICKS.md, CC0 — SOURCES.md I 줄·provenance.csv): I1 흙 · I5 배추(초록 잎 끝/흰 속) · I8 대파(초록 잎/흰 줄기) · I10 회색 바랜 판자(울).
+# 고추·지주대·끈·물뿌리개·바구니·돌 = 집 팔레트(house_home h_grain 과 같은 값: 문 나무·흰 틀·덧창 초록·바구니·꽃 빨강·H1 돌).
+HPH.update({'I1': (PP / 'I/I1_soil.jpg', None), 'I5': (PP / 'I/I5_cabbage.jpg', (200, 800, 600, 1000)), 'I5W': (PP / 'I/I5_cabbage.jpg', (800, 400, 1200, 600)),
+            'I8': (PP / 'I/I8_onion.jpg', (0, 200, 600, 400)), 'I8W': (PP / 'I/I8_onion.jpg', (200, 600, 600, 1000)), 'I10': (PP / 'I/I10_fence.jpg', None)})
+_FF = {}
+FP_SOIL = np.array([157., 125., 89.])  # 2단계 목업에서 잰 둘레 땅 갈색 — 흙 사진은 결만, 색은 이 값
+def f_paint(cell, col):
+    x, y, w, h = cell['rect']; d = cell['dens']; pt = cell['pt']; rs = np.random.default_rng(cell['seed'])
+    fk = {'soil': 'I1', 'soil_ridge': 'I1', 'cabbage_head': 'I5W', 'cabbage_leaf': 'I5', 'onion_stem': 'I8W', 'onion_leaf': 'I8', 'plank': 'I10', 'rail': 'I10', 'post': 'I10',
+          'stake': 'WOOD', 'basket': 'WOOD', 'can': 'C2', 'stone': 'H1'}.get(pt, 'I5')
+    t = h_field(fk)
+    if d >= 64 or pt in ('plank', 'rail', 'post'): t = t[::3 if d >= 64 else 2, ::3 if d >= 64 else 2]; t = (t - t.mean()) / (t.std() + 1e-6)  # 작은 물건 칸(8~20px)엔 128px 결의 큰 얼룩만 걸려 잔결이 0.02 → 결을 3배 촘촘히(잎맥·흙알 크기)
+    if min(w, h) <= 3:  # 폭 2~3px 칸(파 줄기·잎, 끈): 128px 결은 몇 px 짜리 덩어리라 위아래 이웃이 같은 색 → 사진 원본 해상도의 잔결(흐림 1.5 대비)을 그대로
+        if fk not in _FF:
+            g = h_photo(fk).convert('L'); a = np.asarray(g, np.float64); b = np.asarray(g.filter(ImageFilter.GaussianBlur(1.5)), np.float64); hp = a / np.maximum(b, 1) - 1; _FF[fk] = (hp - hp.mean()) / (hp.std() + 1e-6)
+        t = _FF[fk]
+    if pt in ('plank', 'rail', 'post', 'stake') and w > h: t = np.rot90(t)  # 나무 결 = 긴 쪽(사진 I10 은 결이 세로)
+    n0, n1 = t.shape; f = np.roll(np.tile(t, (h // n0 + 2, w // n1 + 2)), (rs.integers(n0), rs.integers(n1)), (0, 1))[:h, :w]
+    vv = np.mgrid[0:h, 0:w][0] / max(h - 1, 1); z0, z1 = cell.get('z01', [0, 1]); vz = cell.get('vz', 0)
+    zr = z0 + (z1 - z0) * (vv if vz > 0 else 1 - vv if vz < 0 else np.full((h, w), .5))  # 픽셀 높이(물건 안 0~1)
+    if pt in ('cabbage_head', 'cabbage_leaf'):  # 배추 = 밑 흰 속 → 위 초록 잎 끝(I5 사진 그대로의 두 색). 그늘 아님 — 재료 색
+        k = np.round(np.clip((zr - (.45 if pt == 'cabbage_head' else .3)) / .35, 0, 1) * 3)[..., None] / 3; A = col['cab_w'] * (1 - k) + col['cab_g'] * k
+    elif pt == 'onion_stem':  # 대파 = 흰 줄기(포기 높이 아래 20~35%) → 초록
+        k = np.round(np.clip((zr - .2) / .15, 0, 1) * 3)[..., None] / 3;  # zr = 포기 전체(잎 끝 1.0) 기준 — 줄기 위끝이 ~.4
+         # 색 띠 4단 — 부드러운 섞임은 칸별 32색 양자화에서 결을 먹는다
+        A = col['oni_w'] * (1 - k) + col['oni_g'] * k
+    else: A = np.ones((h, w, 3)) * col[{'soil': 'soil', 'soil_ridge': 'ridge', 'onion_leaf': 'oni_g', 'plank': 'wood', 'rail': 'wood', 'post': 'post', 'stake': 'stake',
+                                       'string': 'string', 'can': 'can', 'basket': 'basket', 'pepper_leaf': 'leaf', 'pepper_stem': 'pstem', 'pepper_fruit': 'fruit', 'stone': 'stone'}[pt]]
+    if pt == 'basket' and w > 4 and h > 4: A[(np.mgrid[0:h, 0:w][1] % 3 == 2)] *= .9  # 엮은 살 5cm(64px/m)
+    lum = A @ [.299, .587, .114]
+    for kind in ('paint', 'rubber'):
+        sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]
+        if w * h <= 60: st = np.array([-.15, -.07, .07, .15]) if kind == 'rubber' else np.array([-.12, -.06, .06, .12])  # 가는 면(끈·줄기) = ±12%(D-197)
+        if min(w, h) <= 3: st = np.array([-.12, -.10, .10, .12])  # 폭 2~3px 칸(파 줄기·잎, 끈): 양옆이 번진 같은 색이라 잔결이 세로 결로만 → 위아래 이웃끼리 ±10~12% 로 갈림
+        q = st[np.abs((f * (st[2] + st[3]) / 2)[..., None] - st).argmin(-1)]; A[sel] *= (1 + q[sel])[:, None]
+    return A
+def f_source(c):
+    if 'MEAS' not in blender(R / 'tools/asset-gen/field_patch.py'): raise SystemExit('field_patch.py 가 끝까지 안 돌았다(MEAS 없음)')
+def f_overlap(c):
+    for m in (('check',), ('check', 'both')):
+        blender(R / 'tools/asset-gen/fix_1846.py', 'field_patch', *m); f = R / ('docs/qa/tmp/fix_1846_field_patch_' + '_'.join(m) + '.json')
+        if f.exists(): shutil.copy2(f, c['tmp'] / f.name); d = json.loads(f.read_text(encoding='utf-8')); d = d.get('after') or d['before']; print(f'   {f.name}: 겹친 쌍 {d["pairs"]} · 같은 덩어리 중복 {d["same_island_dups"]}')
+def f_grain(c):
+    L = lay(c); AW, AH = L['atlas']; door = h_med(*HCROP['door'])
+    col = {'soil': FP_SOIL, 'ridge': FP_SOIL * [.93, .92, .9],  # 이랑 = 갓 일군 흙(조금 진함) — 빛 아님, 재료
+           'cab_w': np.minimum(h_med('I5W'), 222), 'cab_g': h_med('I5'),
+           'oni_w': np.minimum(h_med('I8W'), 222), 'oni_g': h_med('I8'),
+           'wood': h_med('I10') * 1.7, 'post': h_med('I10') * 1.56,  # I10 albedo(70) 는 게임 화면에서 검게 읽힘 → 바랜 회색 명도 ~118, 색조는 사진 그대로
+            'stake': door * 1.25, 'string': np.minimum(h_med(*HCROP['trim']), 212) * [1, .97, .9],
+           'can': h_med('C2'), 'basket': np.array([178., 140., 92.]), 'leaf': np.array([88., 124., 72.]), 'pstem': np.array([88., 124., 72.]) * .82,
+           'fruit': np.array([196., 78., 82.]) * [.95, .7, .6], 'stone': h_med('H1')}
+    A = np.zeros((AH + 6, AW + 6, 4)); P = [(cell['rect'], f_paint(cell, col)) for cell in L['cells']]  # 둘레 3px 여유(가장자리 칸 번짐용) → 끝에 잘라냄
+    for (x, y, w, h), t in P: A[y:y + h + 6, x:x + w + 6, :3] = np.pad(t, ((3, 3), (3, 3), (0, 0)), mode='edge'); A[y:y + h + 6, x:x + w + 6, 3] = 255
+    for (x, y, w, h), t in P: A[y + 3:y + h + 3, x + 3:x + w + 3, :3] = t
+    A = A[3:-3, 3:-3]
+    filled = np.flatnonzero((A[..., 3] > 0).any(axis=1)); xx = np.arange(AW)  # 빈 곳 = 가장자리 색(h_grain 과 같음)
+    for iy in filled:
+        valid = np.flatnonzero(A[iy, :, 3] > 0); j = np.searchsorted(valid, xx)
+        lo, hi = valid[np.maximum(j - 1, 0)], valid[np.minimum(j, len(valid) - 1)]; A[iy] = A[iy, np.where(xx - lo <= hi - xx, lo, hi)]
+    for iy in np.flatnonzero(~(A[..., 3] > 0).any(axis=1)): A[iy] = A[filled[np.abs(filled - iy).argmin()]]
+    A[..., 3] = 255
+    Image.fromarray(np.clip(A[::-1], 0, 255).round().astype(np.uint8)).save(c['exp'] / 'field_patch.png')
+    cl = {k: [round(float(v)) for v in val] for k, val in col.items()}; (c['tmp'] / 'grain.json').write_text(json.dumps(cl, indent=1), encoding='utf-8'); print('   colors', cl)
+def f_quant(c):  # 128px 칸마다 median-cut 32 → 이 에셋 전용 art/export/field-patch/palette.gpl
+    g_quant(c); p = c['exp'] / 'palette.gpl'; p.write_text(p.read_text(encoding='utf-8').replace('q2-garage (build_asset.py 2117', 'field-patch (build_asset.py artlive 2056'), encoding='utf-8')
+def f_unity(c):
+    if Path(UCLI_PROJ).resolve() != (R / 'F1Studio').resolve(): raise SystemExit('field_patch 는 F1Studio 에디터만')
+    E, Lb = c['exp'], c['lib']; Lb.mkdir(parents=True, exist_ok=True)
+    for p in (E / c['fbx'], E / 'field_patch.png'): copy_retry(p, Lb / p.name)
+    code = (R / 'docs/qa/tmp/library_import.cs').read_text(encoding='utf-8').replace('var ONLY = new[] { "depot" };', 'var ONLY = new[] { "field_patch" };')
+    code = code.replace('("house_home", "house_home.fbx", 0f, "keep") };', '("house_home", "house_home.fbx", 0f, "keep"), ("field_patch", "field_patch.fbx", 0f, "keep") };')
+    code = code.replace('if (nm == "room")', 'if (nm == "field_patch") return "field_patch";\n  if (nm == "room")', 1)
+    code = code.replace('m.SetFloat("_Sat", 1);', 'm.SetFloat("_Sat", 1); if (e.nm == "field_patch") { if (m.HasProperty("_SN")) m.SetFloat("_SN", 0); if (m.HasProperty("_Blotch")) m.SetFloat("_Blotch", 0); }')
+    code = code.replace('else { var bc = root.AddComponent<BoxCollider>();', 'else if (e.nm == "field_patch") { }  /* 밭: 통 콜라이더 없음 — 울·배추 낱개 BoxCollider 만 */\n  else { var bc = root.AddComponent<BoxCollider>();')
+    code = code.replace('foreach (var e in POSE) AssetDatabase.ImportAsset(', 'foreach (var e in POSE) if (ONLY.Contains(e.nm)) AssetDatabase.ImportAsset(')
+    code = code.replace('UnityEditor.SceneManagement.EditorSceneManager.SaveScene(',  # 스튜디오 자리 = house_home 서쪽 마당(1단계 field_patch_import.cs 와 같은 곳)
+                        '{ var fp = slotT.Find("field_patch"); fp.localPosition = new Vector3(-8.4f, 0f, -1.9f); foreach (Transform ch in slotT) ch.gameObject.SetActive(ch.name == "house_home" || ch.name == "field_patch"); log.Append(" slot " + fp.position.ToString("F2")); }\nUnityEditor.SceneManagement.EditorSceneManager.SaveScene(')
+    out = unity_exec(code); print('  ', out[:800])
+    if 'error' in out.lower() or 'MISS' in out: raise SystemExit('field_patch Unity 임포트 확인 필요: ' + out)
+def f_check(c):
+    p = g_check(c)
+    if p.returncode != 0 or 'GATE PASS' not in p.stdout: raise SystemExit('field_patch 규칙 게이트 실패: ' + p.stdout[-1600:] + p.stderr[-500:])
+FIELD_PATCH = {'source': f_source, 'overlap': f_overlap, 'split': lambda c: print('   낱개(CABBAGE_·ONION_·PEPPER_·FENCE_·CAN_·BASKET_)는 생성기가 이름·피벗까지'),
+               'snap': lambda c: print('   접지: 생성기 좌표(작물 = 이랑 윗면, 소품 = 앞 통로 흙 +1.4cm)'), 'uv': lambda c: print('   텍셀 32/64 = 생성기 dens_for'),
+               'grain': f_grain, 'quant': f_quant, 'unity': f_unity, 'check': f_check}
+
 STAGES = [('source', s_source), ('overlap', s_overlap), ('split', s_split), ('snap', s_snap), ('uv', s_uv), ('grain', s_grain), ('quant', s_quant),
           ('unity', s_unity), ('viewer', s_viewer), ('check', s_check)]
-PER = {'garage': GARAGE, 'postoffice': POSTOFFICE, 'room': ROOM, 'house_home': HOUSE_HOME}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
+PER = {'garage': GARAGE, 'postoffice': POSTOFFICE, 'room': ROOM, 'house_home': HOUSE_HOME, 'field_patch': FIELD_PATCH}  # 건물별로 다른 단계 함수(없으면 위 보관소 것)
 if __name__ == '__main__':
     name = sys.argv[1]; c = dict(CFG[name], name=name); c['tmp'] = R / f'docs/qa/tmp/build/{name}'; c['tmp'].mkdir(parents=True, exist_ok=True)
     start = sys.argv[sys.argv.index('--from') + 1] if '--from' in sys.argv else 'source'
