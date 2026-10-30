@@ -89,7 +89,7 @@ def save_config(role, values):
     cur["effort"] = values.get("effort", "") if values.get("effort", "") in eng["efforts"] else ""
     if eng["limits"]:
         cur["budget"] = max(0.1, min(50.0, float(values.get("budget") or 5)))
-        cur["turns"] = max(1, min(300, int(float(values.get("turns") or 80))))
+        t = values.get("turns"); cur["turns"] = 80 if t in (None, "") else max(0, min(300, int(float(t))))  # 0 = 턴 제한 없음(10/30)
     cfg[role] = cur
     CONFIG.write_text(json.dumps(cfg, ensure_ascii=False, indent=1), encoding="utf-8")
     return cur
@@ -175,7 +175,7 @@ function build(){
       :`<input list=ml-${r} id=model-${r} placeholder="기본 (codex 설정)"><datalist id=ml-${r}>${eng.models.map(m=>`<option value="${m}">`).join('')}</datalist>`}</label>
     <label>추론<select id=effort-${r}>${eng.efforts.map(e=>`<option value="${e}">${effLabel[e]}</option>`).join('')}</select></label>
     ${eng.limits?`<label>예산 $<input type=number step=0.5 min=0.1 max=50 id=budget-${r}></label>
-    <label>최대 턴<input type=number step=10 min=1 max=300 id=turns-${r}></label>`:''}
+    <label>최대 턴<input type=number step=10 min=0 max=300 id=turns-${r} title="0 = 제한 없음"></label>`:''}
     <div class=hint>${eng.limits?'과제 하나당 상한. 넘으면 그 자리에서 멈춰요.':'Codex 사용량에서 나가요.'} 다음 과제부터 적용.</div>
     <div class=row><button class=danger onclick="resetMem('${r}')">기억 초기화</button><button class=pri onclick="saveSet('${r}')">저장</button></div>
    </div>`:'';
@@ -194,7 +194,7 @@ function fillSettings(cfg){
 }
 function metaText(r,cfg){const c=cfg[r]||{};
  const m=c.model||(ENGINE_OF[r]==='codex'?'codex 기본':'sonnet');
- return m+' · 추론 '+effLabel[c.effort||'']+(ENGINE_OF[r]==='claude'?' · $'+(c.budget??5)+' · '+(c.turns??80)+'턴':'')}
+ return m+' · 추론 '+effLabel[c.effort||'']+(ENGINE_OF[r]==='claude'?' · $'+(c.budget??5)+' · '+((c.turns??80)==0?'턴 무제한':(c.turns??80)+'턴'):'')}
 async function tick(){
  const d=await (await fetch('/api')).json();
  $('lock').textContent='에디터: '+(d.lock||'비어 있음');

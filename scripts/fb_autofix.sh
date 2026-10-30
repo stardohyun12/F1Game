@@ -6,7 +6,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 TASK="${1:-}"; SUMMARY="${2:-팀원 과제 결과}"
-IDS=$(printf '%s' "$TASK" | grep -oE '[0-9]{6}-[0-9a-f]{4}' | sort -u)
+IDS=$(printf '%s' "$TASK" | grep -oP '[0-9]{6}-[0-9a-f]{4}(?![0-9a-zA-Z])' | sort -u)
 [ -z "$IDS" ] && exit 0
 for short in $IDS; do
   full=$(python -X utf8 - "$short" <<'EOF'

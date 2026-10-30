@@ -1,0 +1,58 @@
+diff --git a/F1/Assets/Editor/RoadNetV2.cs b/F1/Assets/Editor/RoadNetV2.cs
+index 77ceba80..4d31bbed 100644
+--- a/F1/Assets/Editor/RoadNetV2.cs
++++ b/F1/Assets/Editor/RoadNetV2.cs
+@@ -312,6 +312,15 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+             // 1b-1: 막힌 끝(갈림목 없는 사슬 끝) — 2 m 격자 정점 사이 삼각형이 어깨 밖(e 2~2.8 m) 정점으로 끌려 캡 변을 6~9 cm 덮음 → 캡 둘레는 어깨 +1 m, 깎기 −10 cm 더
+             var deadEnds = new List<(Vector3 p, float hw, Vector3 o)>();
+             foreach (var c in chains) { int m = c.p.Count; if (c.d0 == 0f && V2In(c.p[0])) deadEnds.Add((c.p[0], c.w * .5f, Fl(c.p[0] - c.p[1]).normalized)); if (c.d1 == 0f && V2In(c.p[m - 1])) deadEnds.Add((c.p[m - 1], c.w * .5f, Fl(c.p[m - 1] - c.p[m - 2]).normalized)); }
++            aprons.Clear(); V2SnapFronts(top, chains, lg);   // 건물 판(pads)이 옮긴 높이를 읽도록 그 전에
++            foreach (var ap in aprons)
++            {
++                var v = V2BandVerts(new List<Vector3> { ap.a, ap.b }, ap.hw, RoadColLift + .02f);   // 길 띠 위 2 cm(물린 0.3 m 깊이 싸움 방지)
++                var go = V2MakeRoad(v2T, "ROAD_V2a_" + ap.name, v, null, ap.road.mat, meshes);
++                var rsf = go.AddComponent<RoadSurface>(); rsf.roadId = "v2a_" + ap.name; rsf.kind = ap.road.kind; rsf.roughness = ap.road.rough; rsf.width = ap.hw * 2f;
++                rsf.centerline = new[] { ap.a + Vector3.up * RoadColLift, ap.b + Vector3.up * RoadColLift }; rsf.closed = false;
++                segs.Add((ap.a + Vector3.up * RoadColLift, ap.b + Vector3.up * RoadColLift, ap.hw, false, true));
++            }
+             var pads = V2Pads(top);
+             // 2단계: 맵 전체(정점 15만 × 선분 1만+)는 그대로 돌면 수십 초 → 40 m 칸에 선분·갈림목·건물을 미리 나눠 담는다(원래도 40 m 밖 선분은 건너뜀)
+             var sGrid = new Dictionary<(int, int), List<int>>(); const float GC = 8f;
+@@ -760,6 +769,37 @@ static float V2PolyE(List<Vector3> poly, Vector3 p, out float yb)   // 안 = −
+         }
+         return inside ? -bd : bd;
+     }
++    // 7b1a(도현 10-30): 길은 지형만 따라 높이를 정하고 건물 바닥은 손으로 놓은 높이라, 택배보관소 문 앞 길이 바닥보다 3.4 m 낮게 지나감.
++    //  길을 건물까지 올리면 갈림목(24.8)에서 13 m 만에 6 m 를 올라야 해 구배 45% → 배달 목적지는 바닥을 문 앞 길 높이로 내린다(길은 이미 최대 구배로 오르는 중)
++    static readonly string[] V2FrontSnap = { "D198_Buildings/D198_depot", "D198_Buildings/D198_postoffice" };
++    const float V2FrontReach = 15f;   // 문 앞 이 거리 안에 길이 있을 때만
++    static void V2SnapFronts(Transform top, List<V2L> chains, List<string> lg)
++    {
++        foreach (var path in V2FrontSnap)
++        {
++            var t = top.Find(path); if (t == null) { lg.Add("문 앞 맞춤: 없음 " + path); continue; }
++            var l2w = Matrix4x4.TRS(t.position, t.rotation, Vector3.one); var w2l = l2w.inverse; var mn = Vector3.one * 1e9f; var mx = -mn;
++            foreach (var mf in t.GetComponentsInChildren<MeshFilter>(false))
++            {
++                var rr = mf.GetComponent<Renderer>(); if (mf.sharedMesh == null || rr == null || !rr.enabled) continue; var b = mf.sharedMesh.bounds;
++                for (int i = 0; i < 8; i++) { var l = w2l.MultiplyPoint3x4(mf.transform.TransformPoint(new Vector3((i & 1) == 0 ? b.min.x : b.max.x, (i & 2) == 0 ? b.min.y : b.max.y, (i & 4) == 0 ? b.min.z : b.max.z))); mn = Vector3.Min(mn, l); mx = Vector3.Max(mx, l); }
++            }
++            var front = l2w.MultiplyPoint3x4(new Vector3((mn.x + mx.x) * .5f, mn.y, mx.z));   // 바닥 높이의 정면 가운데(+z = 정면)
++            float bd = 1e9f; Vector3 bq = Vector3.zero;
++            foreach (var c in chains) { if (!V2BBIn(V2BB(c.p, V2FrontReach), front)) continue; float d = V2Dist(c.p, front, out var nq) - c.w * .5f; if (d < bd) { bd = d; bq = nq; } }
++            if (bd > V2FrontReach) { lg.Add($"문 앞 맞춤: {t.name} 길이 {bd:F1} m 밖"); continue; }
++            float dy = bq.y + RoadColLift - front.y;
++            Undo.RecordObject(t, "문 앞 맞춤"); t.position += Vector3.up * dy;
++            lg.Add($"문 앞 맞춤: {t.name} 바닥 {front.y:F2} → {front.y + dy:F2} (길 가장자리까지 {bd:F1} m, 길 점 {bq.x:F1},{bq.z:F1})");
++            // 1차 판정 거부(바닥은 맞았는데 길 가장자리~문 사이 풀 둔덕이 그대로) → 길 가장자리에서 문까지 평평한 진입로. 지형은 아래 segs 로 깎인다
++            var road = chains.Where(c => V2BBIn(V2BB(c.p, V2FrontReach), front)).OrderBy(c => V2Dist(c.p, front, out _) - c.w * .5f).First();
++            // 진입로는 정면에 수직(문→길 비스듬히 그으면 띠 모서리가 벽 안으로 들어가 fb_geom 길-건물 겹침)
++            var fwd = Fl(t.forward).normalized; var pb = new Vector3(front.x, bq.y, front.z) + fwd * .05f;   // 벽 5 cm 앞
++            var pa = pb + fwd * (Vector3.Dot(Fl(bq - pb), fwd) - (road.w * .5f - .3f));   // 길 띠 안 0.3 m 물림
++            if (Fl(pb - pa).magnitude > .5f) aprons.Add((t.name, pa, pb, Mathf.Min(mx.x - mn.x, 6f) * .5f, road));
++        }
++    }
++    static readonly List<(string name, Vector3 a, Vector3 b, float hw, V2L road)> aprons = new List<(string, Vector3, Vector3, float, V2L)>();
+     static List<(Matrix4x4 w2l, Vector3 mn, Vector3 mx, float H, Vector3 c, float r)> V2Pads(Transform top)
+     {
+         var o = new List<(Matrix4x4, Vector3, Vector3, float, Vector3, float)>(); var scn = top.gameObject.scene;
