@@ -1,0 +1,19 @@
+{
+ "id": "unity-Map_TownV6-20261029-230810-268e",
+ "time": "2026-10-30T14:41:02+09:00",
+ "before": "shots/unity-Map_TownV6-20261029-230810-268e.png",
+ "after": "shots/unity-Map_TownV6-20261029-230810-268e_after.png",
+ "comment": "이런식으로 굽어지거나 이상하게 된거 있으면 운전하기 힘들지 않을까",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에는 왼쪽처럼 꺾이고 접힌 도로 곡선 구간이 없다. 부드러운 곡선 도로 가장자리와 초록 지형만 보이므로, 감독이 지적한 이상하게 굽은 도로는 더 이상 보이지 않는다."
+  },
+  "astra": {
+   "verdict": "YES",
+   "reason": "왼쪽에서 지적한 급하게 꺾이고 찌그러진 도로 구간이 오른쪽에서는 사라져, 굽은 형태가 제대로 수정됐는지 확인할 수 없다."
+  }
+ },
+ "pass": false
+}

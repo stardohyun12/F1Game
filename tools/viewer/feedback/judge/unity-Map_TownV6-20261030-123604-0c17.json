@@ -1,0 +1,19 @@
+{
+ "id": "unity-Map_TownV6-20261030-123604-0c17",
+ "time": "2026-10-30T14:42:47+09:00",
+ "before": "shots/unity-Map_TownV6-20261030-123604-0c17.png",
+ "after": "shots/unity-Map_TownV6-20261030-123604-0c17_after.png",
+ "comment": "아직 수정 제대로 안된듯",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에서는 왼쪽에서 빨간 원으로 표시된 도로 위의 깨진 회색 조각과 노란 얼룩이 보이지 않고, 도로면이 매끈하게 이어진다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "빨간 표시 지점에서 도로를 뚫고 나오던 지형 조각들이 오른쪽에서는 보이지 않고, 도로 표면이 이어져 있습니다."
+  }
+ },
+ "pass": true
+}
