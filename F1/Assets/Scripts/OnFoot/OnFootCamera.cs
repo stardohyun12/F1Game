@@ -2,55 +2,69 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// 기능 1: 걷는 동안 Main Camera 를 움직이는 3인칭 카메라 — 낮게 뒤에서(어깨 높이를 2.8 m 뒤에서).
-/// 마우스로 돌린다. 벽·천장에 걸리면 SphereCast 로 앞으로 당겨 온다(집 안 필수).
-/// 같은 카메라라 LowResRenderTest(720 Nearest)는 그대로 먹는다. 카트를 타면 감독이 이걸 끄고 FollowCamera 를 켠다.
+/// 기능 1b(D-219): 걷는 동안 Main Camera 를 움직이는 1인칭 카메라 — 발 위 1.6 m 눈높이, 마우스로 돌림(상하 ±80°).
+/// 몸(캡슐)은 그리지 않고 그림자만 남긴다. 계단 단(0.165 m)마다 CharacterController 가 툭 올라가는 걸 높이만 짧게 늦춰 따라간다.
+/// 시야각은 게임 기본 FOV(FollowCamera 정지 시 FOV) 그대로, near clip 0.05 — 문·벽에 붙어도 안 뚫린다.
+/// 같은 카메라라 LowResRenderTest(720 Nearest)는 그대로 먹는다. 카트를 타면 감독이 이걸 끄고 FollowCamera(B)를 켠다.
 /// </summary>
 public class OnFootCamera : MonoBehaviour
 {
     public Transform target;
-    [SerializeField] float pivotHeight = 1.45f;
-    [SerializeField] float distance = 2.8f;
-    [SerializeField] float minDistance = 0.35f;
-    [SerializeField] float collisionRadius = 0.2f;
-    [SerializeField] float defaultPitch = 10f;
-    [SerializeField] float minPitch = -35f, maxPitch = 60f;
+    [SerializeField] float eyeHeight = 1.6f;
+    [SerializeField] float minPitch = -80f, maxPitch = 80f;
     [Tooltip("마우스 1 픽셀당 도.")]
     [SerializeField] float mouseSensitivity = 0.12f;
-    [SerializeField] float fov = 60f;
-    [SerializeField] float nearClip = 0.08f;
-    [Tooltip("당겨 온 거리를 다시 늘릴 때 시간(초). 줄일 때는 즉시.")]
-    [SerializeField] float distanceRecoverTime = 0.25f;
+    [SerializeField] float nearClip = 0.05f;
+    [Tooltip("눈높이가 발 높이 변화를 따라가는 시간(초). 계단 덜컹임을 줄인다. 0 = 바로.")]
+    [SerializeField] float heightSmoothTime = 0.08f;
+    [Tooltip("늦춰 따라가는 높이가 실제 눈높이에서 벌어질 수 있는 최대(m). 이보다 크면 붙인다(순간이동·낙하).")]
+    [SerializeField] float maxHeightLag = 0.25f;
 
     [Header("검증 봇 입력(마우스 대신)")]
     public bool simActive;
 
     public float Yaw { get; set; }
     public float Pitch { get; set; }
+    /// <summary>게임 기본 FOV. 감독이 FollowCamera 정지 FOV 를 넣는다. 0 이면 켤 때 카메라 FOV 를 그대로 쓴다.</summary>
+    public float Fov { get; set; }
 
     Camera cam;
-    float curDist, distVel, savedFov, savedNear;
+    float eyeY, eyeVel, savedNear;
+    bool hasEye;
 
     void Awake() { cam = GetComponent<Camera>(); }
 
     void OnEnable()
     {
         if (cam == null) cam = GetComponent<Camera>();
-        if (cam != null) { savedFov = cam.fieldOfView; savedNear = cam.nearClipPlane; cam.fieldOfView = fov; cam.nearClipPlane = nearClip; }
-        Pitch = defaultPitch;
+        if (cam != null) { savedNear = cam.nearClipPlane; cam.nearClipPlane = nearClip; if (Fov > 1f) cam.fieldOfView = Fov; }
+        Pitch = 0f;
         if (target != null) Yaw = target.eulerAngles.y;
-        curDist = distance;
+        hasEye = false;
+        SetBodyVisible(false);
         if (!simActive) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
     }
 
     void OnDisable()
     {
-        if (cam != null) { cam.fieldOfView = savedFov; cam.nearClipPlane = savedNear; }
+        if (cam != null) cam.nearClipPlane = savedNear;
+        SetBodyVisible(true);
         Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
     }
 
     /// <summary>봇·연출용: 마우스를 이만큼 돌린 것과 같다.</summary>
     public void AddLook(float yawDeg, float pitchDeg) { Yaw += yawDeg; Pitch = Mathf.Clamp(Pitch + pitchDeg, minPitch, maxPitch); }
+
+    /// <summary>봇·연출용: 이 점을 바라보게(상하 ±80° 안에서).</summary>
+    public void LookAt(Vector3 world)
+    {
+        Vector3 d = world - EyeTarget();
+        if (d.sqrMagnitude < 1e-6f) return;
+        Yaw = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
+        Pitch = Mathf.Clamp(-Mathf.Atan2(d.y, new Vector2(d.x, d.z).magnitude) * Mathf.Rad2Deg, minPitch, maxPitch);
+    }
+
+    Vector3 EyeTarget() => target.position + Vector3.up * eyeHeight;
 
     void LateUpdate()
     {
@@ -61,23 +75,24 @@ public class OnFootCamera : MonoBehaviour
             AddLook(d.x, -d.y);
         }
         if (!simActive && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
+        Pitch = Mathf.Clamp(Pitch, minPitch, maxPitch);
 
-        Quaternion rot = Quaternion.Euler(Pitch, Yaw, 0f);
-        Vector3 pivot = target.position + Vector3.up * pivotHeight;
-        Vector3 back = rot * Vector3.back;
-        float want = distance;
-        if (Physics.SphereCast(pivot, collisionRadius, back, out var hit, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-            want = Mathf.Max(minDistance, hit.distance);
-        if (want < curDist) { curDist = want; distVel = 0f; }
-        else curDist = Mathf.SmoothDamp(curDist, want, ref distVel, distanceRecoverTime);
-        transform.SetPositionAndRotation(pivot + back * curDist, rot);
-        // 좁은 방·복도에서 카메라가 등 뒤로 바짝 붙으면 몸이 화면을 가린다 → 그동안만 몸을 안 그린다(그림자는 남김).
-        bool hide = curDist < hideBodyDistance;
-        if (bodyRenderers == null || bodyOwner != target) { bodyOwner = target; bodyRenderers = target.GetComponentsInChildren<Renderer>(true); }
-        foreach (var r in bodyRenderers) if (r != null) r.shadowCastingMode = hide ? UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly : UnityEngine.Rendering.ShadowCastingMode.On;
+        // 수평은 발에 딱 붙이고 높이만 늦춘다 — 계단 단마다 0.165 m 씩 툭툭 올라가는 걸 부드럽게.
+        Vector3 eye = EyeTarget();
+        if (!hasEye || heightSmoothTime <= 0f || Mathf.Abs(eye.y - eyeY) > 1f) { eyeY = eye.y; eyeVel = 0f; hasEye = true; }
+        else
+        {
+            eyeY = Mathf.SmoothDamp(eyeY, eye.y, ref eyeVel, heightSmoothTime);
+            eyeY = Mathf.Clamp(eyeY, eye.y - maxHeightLag, eye.y + maxHeightLag);
+        }
+        transform.SetPositionAndRotation(new Vector3(eye.x, eyeY, eye.z), Quaternion.Euler(Pitch, Yaw, 0f));
     }
 
-    [Tooltip("카메라가 이 거리(m)보다 가까우면 몸을 숨긴다.")]
-    [SerializeField] float hideBodyDistance = 0.9f;
-    Renderer[] bodyRenderers; Transform bodyOwner;
+    // 1인칭 = 몸이 화면을 가린다 → 걷는 동안 몸은 그림자만 그린다.
+    void SetBodyVisible(bool on)
+    {
+        if (target == null) return;
+        foreach (var r in target.GetComponentsInChildren<Renderer>(true))
+            if (r != null) r.shadowCastingMode = on ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+    }
 }

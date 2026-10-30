@@ -99,6 +99,32 @@ public class FollowCamera : MonoBehaviour
     // OverviewCamera 가 enabled 를 껐다 켠다 — 다시 켜질 때 지금 자리에서부터 따라가기 시작(예전 동작).
     void OnEnable() { hasBasePos = false; hasPrevYaw = false; yawRateRad = 0f; }
 
+    /// <summary>정지 시 FOV(게임 기본 시야각). 걷기 1인칭(OnFootCamera)이 같은 값을 쓴다.</summary>
+    public float BaseFov => preset != null ? preset.baseFov : baseFov;
+
+    /// <summary>
+    /// 기능 1b(D-219): 걷기 1인칭 → 카트 탈 때 첫 프레임부터 B 자리에 놓는다(눈높이에서 날아오는 프레임 없이).
+    /// 켠 직후(OnEnable 다음) 부른다. 자리·방향은 LateUpdate 의 정지 상태 식과 같고, 그다음부터는 평소 따라가기 그대로.
+    /// </summary>
+    public void SnapToTarget()
+    {
+        if (target == null) return;
+        if (targetRb == null) targetRb = target.GetComponent<Rigidbody>();
+        smoothYaw = target.eulerAngles.y; smoothY = target.position.y; yawVel = yVel = 0f; rough = 0f;
+        posVelocity = Vector3.zero; currentRoll = 0f;
+        prevVy = targetRb != null ? targetRb.linearVelocity.y : 0f;
+        Quaternion yawRot = Quaternion.Euler(0f, smoothYaw, 0f);
+        Vector3 off = preset != null ? new Vector3(0f, preset.height, -preset.distance) : offset;
+        float lookH = preset != null ? preset.lookHeight : lookHeight;
+        basePos = target.position + yawRot * off;
+        Vector3 lookPoint = target.position + Vector3.up * (lookH - CameraFramingZone.Drop) + (preset != null ? yawRot * Vector3.forward * preset.lookAhead : Vector3.zero);
+        Vector3 e = Quaternion.LookRotation(lookPoint - basePos, Vector3.up).eulerAngles;
+        baseRot = Quaternion.Euler(e.x, e.y, 0f);
+        transform.SetPositionAndRotation(basePos, baseRot);
+        if (cam != null) cam.fieldOfView = BaseFov;
+        hasBasePos = true;
+    }
+
     float PresetMaxFov()
     {
         switch (fovCapTest)
