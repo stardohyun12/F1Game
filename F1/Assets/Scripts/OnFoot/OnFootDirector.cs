@@ -1,0 +1,282 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+/// <summary>
+/// 기능 1(과제 20261030-2243): 집-차고 구간 감독. 주인공 방에서 걸어서 시작 → 문(E) → 차고 마당 카트(E 타기) → 운전 → 정차 중 E 내리기.
+/// 시작 순서는 OpeningTutorial 과 같다(주문판 닫기·시계 없음·timeScale 1). OpeningTutorial·BayLoopDriveOnly 는 이 감독이 있으면 끈다(D-199 로 보류 중).
+/// 화면엔 한 줄 안내만(E 열기 / E 닫기 / E 타기 / E 내리기).
+/// 설치: 에디터 메뉴 PitCrew/기능/집-차고 구간 설치(OnFootSetup).
+/// </summary>
+public class OnFootDirector : MonoBehaviour
+{
+    public enum Mode { Starting, OnFoot, InCart }
+
+    [SerializeField] OnFootPlayer player;
+    [SerializeField] Transform spawn;
+    [SerializeField] Transform cartSpot;
+    [SerializeField] float doorReach = 1.8f;
+    [Tooltip("차 몸통 가장자리까지 이 거리(m) 안이면 E 타기.")]
+    [SerializeField] float cartReach = 2.0f;
+    [Tooltip("이 속도(m/s) 밑이면 내릴 수 있다.")]
+    [SerializeField] float exitMaxSpeed = 1.0f;
+    [Tooltip("카트에서 내릴 때 차 옆 거리(m).")]
+    [SerializeField] float exitSide = 1.7f;
+
+    // ── QA·봇이 읽는 상태 ──
+    public Mode State { get; private set; } = Mode.Starting;
+    public string Prompt { get; private set; } = "";
+    public OnFootPlayer Player => player;
+    public ArcadeCarController Car => car;
+    public readonly List<string> Log = new List<string>();
+
+    ArcadeCarController car;
+    Rigidbody carRb;
+    Collider carBody;
+    UnityEngine.InputSystem.PlayerInput carInput;
+    RunController rc;
+    Camera cam;
+    FollowCamera follow;
+    OnFootCamera footCam;
+    readonly List<DoorHinge> doors = new List<DoorHinge>();
+    readonly List<Canvas> hud = new List<Canvas>();
+    TextMeshProUGUI promptText;
+    GameObject promptRoot;
+    bool simInteract;
+    bool freeDriveEntered;
+    float t0;
+
+    void Awake()
+    {
+        var ot = FindFirstObjectByType<OpeningTutorial>();
+        if (ot != null) ot.enabled = false;
+        var drv = FindFirstObjectByType<BayLoopDriveOnly>();
+        if (drv != null) drv.enabled = false;
+    }
+
+    IEnumerator Start()
+    {
+        yield return null;                       // RunController.Start(주문판 열기) 다음
+        t0 = Time.unscaledTime;
+        rc = Services.Run as RunController ?? FindFirstObjectByType<RunController>();
+        car = Services.Car as ArcadeCarController ?? FindFirstObjectByType<ArcadeCarController>();
+        cam = Camera.main;
+        if (player == null || car == null || cam == null)
+        {
+            Debug.LogWarning($"[OnFoot] 배선 부족 player={player != null} car={car != null} cam={cam != null} — 끈다");
+            enabled = false; yield break;
+        }
+        carRb = car.GetComponent<Rigidbody>();
+        foreach (var c in car.GetComponentsInChildren<Collider>()) if (!c.isTrigger) { carBody = c; break; }
+        carInput = car.GetComponent<UnityEngine.InputSystem.PlayerInput>();
+        follow = cam.GetComponent<FollowCamera>();
+        footCam = cam.GetComponent<OnFootCamera>();
+        if (footCam == null) footCam = cam.gameObject.AddComponent<OnFootCamera>();
+        footCam.enabled = false;
+        footCam.target = player.transform;
+        player.Cam = footCam;
+
+        if (rc != null) rc.BeginNoClock();
+        Services.Board?.Close();
+        UrgentCallPanel.Ensure().Hide();
+        Time.timeScale = 1f;
+        Services.Overview?.GoToFollow();
+        if (follow != null) follow.enabled = false;
+
+        foreach (var d in FindObjectsByType<DoorHinge>(FindObjectsSortMode.None)) if (d.configured) doors.Add(d);
+        CollectHud();
+        BuildUI();
+
+        if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+        SetCarControl(false);
+        if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
+        EnterFoot();
+        Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")}");
+    }
+
+    void Mark(string s)
+    {
+        string line = $"[{Time.unscaledTime - t0:F1}s] {s}";
+        Log.Add(line); Debug.Log("[OnFoot] " + line);
+    }
+
+    /// <summary>봇: 이번 프레임에 E 를 누른 것과 같다.</summary>
+    public void SimInteract() { simInteract = true; }
+
+    bool InteractPressed()
+    {
+        bool p = simInteract || (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame);
+        simInteract = false;
+        return p;
+    }
+
+    void Update()
+    {
+        if (State == Mode.Starting) return;
+        bool press = InteractPressed();
+        if (State == Mode.OnFoot)
+        {
+            DoorHinge door = NearestDoor(out float dd);
+            bool cartNear = CartDistance() <= cartReach;
+            if (cartNear && (door == null || CartDistance() < dd))
+            {
+                SetPrompt("E 타기");
+                if (press) EnterCart();
+            }
+            else if (door != null)
+            {
+                SetPrompt(door.IsOpen ? "E 닫기" : "E 열기");
+                if (press && !door.Moving) { door.Toggle(player.transform.position); Mark((door.IsOpen ? "열기 " : "닫기 ") + door.name); }
+            }
+            else SetPrompt("");
+        }
+        else if (State == Mode.InCart)
+        {
+            bool slow = Mathf.Abs(car.CurrentSpeedMps) < exitMaxSpeed;
+            SetPrompt(slow ? "E 내리기" : "");
+            if (press && slow) ExitCart();
+        }
+    }
+
+    DoorHinge NearestDoor(out float best)
+    {
+        best = float.MaxValue; DoorHinge pick = null;
+        Vector3 p = player.transform.position + Vector3.up * 1.0f;
+        foreach (var d in doors)
+        {
+            if (d == null) continue;
+            Vector3 c = d.CenterWorld;
+            if (Mathf.Abs(c.y - p.y) > 1.6f) continue;   // 다른 층 문
+            Vector3 h = c - p; h.y = 0f;
+            float dist = h.magnitude;
+            if (dist < best && dist <= doorReach) { best = dist; pick = d; }
+        }
+        return pick;
+    }
+
+    /// <summary>사람 → 차 몸통(콜라이더 상자) 가장 가까운 점까지 수평 거리. 차 크기가 바뀌어도(카트→F1, D-160) 같은 느낌.</summary>
+    float CartDistance()
+    {
+        Vector3 a = player.transform.position;
+        Vector3 b = carBody != null ? carBody.bounds.ClosestPoint(new Vector3(a.x, carBody.bounds.center.y, a.z)) : car.transform.position;
+        a.y = b.y = 0f;
+        return Vector3.Distance(a, b);
+    }
+
+    void SetPrompt(string s)
+    {
+        if (Prompt == s) return;
+        Prompt = s;
+        if (promptText != null) { promptText.text = s; promptRoot.SetActive(s.Length > 0); }
+    }
+
+    // ── 걷기 ↔ 카트 ──
+    void EnterFoot()
+    {
+        State = Mode.OnFoot;
+        if (follow != null) follow.enabled = false;
+        player.gameObject.SetActive(true);
+        footCam.Yaw = player.transform.eulerAngles.y;
+        footCam.enabled = true;
+        SetHud(false);
+    }
+
+    void EnterCart()
+    {
+        Mark("카트 타기");
+        State = Mode.InCart;
+        player.gameObject.SetActive(false);
+        footCam.enabled = false;
+        SetCarControl(true);
+        if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
+        else Services.Overview?.GoToFollow();
+        if (follow != null) follow.enabled = true;
+        SetHud(true);
+        SetPrompt("");
+    }
+
+    void ExitCart()
+    {
+        Mark($"카트 내리기 차=({car.transform.position.x:F1},{car.transform.position.y:F1},{car.transform.position.z:F1})");
+        SetCarControl(false);
+        if (carRb != null) { carRb.linearVelocity = Vector3.zero; carRb.angularVelocity = Vector3.zero; }
+        player.gameObject.SetActive(true);
+        player.Teleport(ExitPoint(), car.transform.eulerAngles.y);
+        EnterFoot();
+    }
+
+    Vector3 ExitPoint()
+    {
+        Transform c = car.transform;
+        foreach (var off in new[] { -c.right * exitSide, c.right * exitSide, -c.forward * (exitSide + 1.2f), c.forward * (exitSide + 1.2f) })
+        {
+            Vector3 p = c.position + off;
+            if (!Physics.Raycast(p + Vector3.up * 2.5f, Vector3.down, out var hit, 5f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
+            p = hit.point + Vector3.up * 0.05f;
+            var cc = player.Controller;
+            if (Physics.CheckCapsule(p + Vector3.up * (cc.radius + 0.05f), p + Vector3.up * (cc.height - cc.radius), cc.radius,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
+            return p;
+        }
+        return c.position + Vector3.up * 1.5f;   // 다 막혔으면 차 위(떨어져 내려옴)
+    }
+
+    void SetCarControl(bool on)
+    {
+        car.SetMoveInput(Vector2.zero);
+        if (carInput != null) carInput.enabled = on;
+    }
+
+    void ParkCar(Vector3 pos, float yaw)
+    {
+        if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out var hit, 8f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            pos.y = hit.point.y + 0.05f;
+        var rot = Quaternion.Euler(0f, yaw, 0f);
+        car.transform.SetPositionAndRotation(pos, rot);
+        if (carRb != null) { carRb.position = pos; carRb.rotation = rot; carRb.linearVelocity = Vector3.zero; carRb.angularVelocity = Vector3.zero; }
+        Physics.SyncTransforms();
+    }
+
+    // ── 화면 ──
+    void CollectHud()
+    {
+        foreach (var m in FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (m == null) continue;
+            string n = m.GetType().Name;
+            if (!(n.EndsWith("HUD") || n == "CargoWarningHUD")) continue;
+            var c = m.GetComponentInParent<Canvas>(true);
+            if (c != null) { c = c.rootCanvas; if (!hud.Contains(c)) hud.Add(c); }
+        }
+    }
+
+    void SetHud(bool on) { foreach (var c in hud) if (c != null) c.enabled = on; }
+
+    void BuildUI()
+    {
+        var anyTmp = FindFirstObjectByType<TextMeshProUGUI>(FindObjectsInactive.Include);
+        var font = anyTmp != null && anyTmp.font != null ? anyTmp.font : TMP_Settings.defaultFontAsset;
+        var go = new GameObject("OnFootUI", typeof(Canvas), typeof(CanvasScaler));
+        go.transform.SetParent(transform, false);
+        var ui = go.GetComponent<Canvas>(); ui.renderMode = RenderMode.ScreenSpaceOverlay; ui.sortingOrder = 90;
+        var sc = go.GetComponent<CanvasScaler>(); sc.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize; sc.referenceResolution = new Vector2(1920, 1080); sc.matchWidthOrHeight = 0.5f;
+        // 한 줄 안내: 반투명 띠 + 글(외곽선은 폰트 재질을 건드리므로 안 씀). 아트는 나중에 띠 스프라이트 슬롯에.
+        var bg = new GameObject("Prompt", typeof(RectTransform), typeof(Image));
+        bg.transform.SetParent(go.transform, false);
+        var rt = (RectTransform)bg.transform;
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f); rt.pivot = new Vector2(0.5f, 0f);
+        rt.anchoredPosition = new Vector2(0f, 150f); rt.sizeDelta = new Vector2(320f, 64f);
+        var img = bg.GetComponent<Image>(); img.color = new Color(0f, 0f, 0f, 0.45f); img.raycastTarget = false;
+        var tgo = new GameObject("Text", typeof(RectTransform));
+        tgo.transform.SetParent(bg.transform, false);
+        var trt = (RectTransform)tgo.transform; trt.anchorMin = Vector2.zero; trt.anchorMax = Vector2.one; trt.offsetMin = trt.offsetMax = Vector2.zero;
+        promptText = tgo.AddComponent<TextMeshProUGUI>();
+        promptText.font = font; promptText.fontSize = 38; promptText.alignment = TextAlignmentOptions.Center;
+        promptText.color = Color.white; promptText.raycastTarget = false;
+        promptRoot = bg;
+        bg.SetActive(false);
+    }
+}
