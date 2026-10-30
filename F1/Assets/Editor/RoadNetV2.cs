@@ -28,6 +28,18 @@ public static partial class BuildBayLoop
 
     [MenuItem("PitCrew/Map/TownV6 — 길 생성 v2 (능선 구역 1단계)")]
     public static void MenuRoadNetV2() { Debug.Log("[RoadNetV2] " + RoadNetV2Build(150, -130, 330, -20, 15)); }
+    // 2단계(과제 1250, 0c17·4100): 구역 경계에서 v2 띠와 옛 길이 같은 높이로 겹쳐 깊이 싸움·땅 끼임 → 구역을 차길 전부를 담는 사각형으로 넓혀 경계를 없앤다
+    [MenuItem("PitCrew/Map/TownV6 — 길 생성 v2 (맵 전체 2단계)")]
+    public static void MenuRoadNetV2All() { Debug.Log("[RoadNetV2] " + RoadNetV2BuildAll()); }
+    public static string RoadNetV2BuildAll()
+    {
+        var top = GameObject.Find("TownV6_Gray")?.transform; if (top == null) return "TownV6_Gray 없음";
+        var ps = top.Find("Roads").GetComponentsInChildren<RoadSurface>(true).Where(r => r.centerline != null).SelectMany(r => r.centerline).ToList();
+        return RoadNetV2Build(ps.Min(q => q.x) - 10f, ps.Min(q => q.z) - 10f, ps.Max(q => q.x) + 10f, ps.Max(q => q.z) + 10f, 15);
+    }
+    static Vector4 V2BB(List<Vector3> p, float pad) { float a = 1e9f, b = 1e9f, c = -1e9f, d = -1e9f; foreach (var q in p) { a = Mathf.Min(a, q.x); b = Mathf.Min(b, q.z); c = Mathf.Max(c, q.x); d = Mathf.Max(d, q.z); } return new Vector4(a - pad, b - pad, c + pad, d + pad); }
+    static bool V2BBX(Vector4 A, Vector4 B) => A.x <= B.z && B.x <= A.z && A.y <= B.w && B.y <= A.w;
+    static bool V2BBIn(Vector4 A, Vector3 q) => q.x >= A.x && q.x <= A.z && q.z >= A.y && q.z <= A.w;
     [MenuItem("PitCrew/Map/TownV6 — 길 생성 v2 되돌리기")]
     public static void MenuRoadNetV2Revert() { Debug.Log("[RoadNetV2] " + RoadNetV2Revert(true)); }
 
@@ -56,6 +68,7 @@ public static partial class BuildBayLoop
         var tmc = tmpGo.AddComponent<MeshCollider>(); tmc.sharedMesh = srcMesh;
         System.Func<float, float, float> G = (x, z) => tmc.Raycast(new Ray(new Vector3(x, 300, z), Vector3.down), out var h, 600) ? h.point.y : float.NaN;
         var disabled = new List<string>(); var meshes = new List<Mesh>();
+        var sw = System.Diagnostics.Stopwatch.StartNew(); void Tk(string st) { Debug.Log($"[RoadNetV2] {sw.Elapsed.TotalSeconds:F1}s {st}"); lg.Add($"⏱ {sw.Elapsed.TotalSeconds:F1}s {st}"); }
         try
         {
             // ── 1 그래프 ─────────────────────────────────────────
@@ -66,21 +79,28 @@ public static partial class BuildBayLoop
                 var L = new V2L { id = rs.roadId, kind = rs.kind, w = rs.width, rough = rs.roughness, mat = rs.GetComponent<MeshRenderer>().sharedMaterial, p = rs.centerline.Select(q => q - Vector3.up * RoadColLift).ToList() };
                 L.fix = L.p.Select(q => !V2In(q)).ToList(); cars.Add(L); disabled.Add(rs.name);
             }
+            // 2단계: 같은 종류(kind)는 재질 하나 — 길이로 가장 많이 쓰인 옛 재질. 종류가 바뀌는 곳은 갈림목(넓은 길 재질)에서만 바뀐다
+            var kindMat = cars.GroupBy(c => c.kind).ToDictionary(g => g.Key, g => g.GroupBy(c => c.mat).OrderByDescending(m => m.Sum(c => V2Len(c.p))).First().Key);
+            foreach (var c in cars) c.mat = kindMat[c.kind];
+            lg.Add("종류별 재질: " + string.Join(", ", kindMat.Select(kv => kv.Key + "=" + (kv.Value != null ? kv.Value.name : "null"))));
+            Tk($"원본 길 {cars.Count}");
             // 3차 실행: camo_874876277_276 이 큰길 165_4 띠 안을 가운데 구간(19점, 높이차 ≤0.94)만 나란히 달려 70% 중복 기준에 안 걸림 → 겹침 188쌍.
             // 좁은 길이 넓은 길 띠 안을 4 m 넘게 달리면 그 구간을 잘라 내고, 남은 두 토막의 끝은 아래 T 붙이기가 큰길에 붙인다.
             for (int k = 0; k < cars.Count; k++)
             {
-                var e = cars[k]; bool cut = false;
+                var e = cars[k]; bool cut = false; var eb = V2BB(e.p, 0);
                 foreach (var f in cars)
                 {
-                    if (f == e || f.w <= e.w) continue;
+                    if (f == e || f.w < e.w || (f.w == e.w && V2Len(f.p) <= V2Len(e.p)) || !V2BBX(eb, V2BB(f.p, f.w))) continue;
+                    // 2단계: 같은 폭끼리도 나란히 겹침(tomo_118267009_9_s1 ⊂ tomo_461561406_27 11 m, 겹침 쌍 100+) → 짧은 쪽을 자른다. 직각 교차(띠 안 ≈ 폭)는 안 자르게 1.6×폭 이상만
+                    float need = f.w > e.w ? 4f : Mathf.Max(6f, f.w * 1.6f);
                     var ins = e.p.Select(q => V2In(q) && V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 1.5f).ToArray();
                     var keep = new List<List<int>>(); var cur = new List<int>(); int i = 0;
                     while (i < e.p.Count)
                     {
                         if (!ins[i]) { cur.Add(i); i++; continue; }
                         int j = i; while (j + 1 < e.p.Count && ins[j + 1]) j++;
-                        if (V2Len(e.p.GetRange(i, j - i + 1)) >= 4f) { cur.Add(i); keep.Add(cur); cur = new List<int> { j }; cut = true; } else for (int t = i; t <= j; t++) cur.Add(t);
+                        if (V2Len(e.p.GetRange(i, j - i + 1)) >= need) { cur.Add(i); keep.Add(cur); cur = new List<int> { j }; cut = true; } else for (int t = i; t <= j; t++) cur.Add(t);
                         i = j + 1;
                     }
                     keep.Add(cur);
@@ -108,7 +128,7 @@ public static partial class BuildBayLoop
             {
                 int nd = splits[k][e]; var q = cars[k].p[e]; if (endCnt[nd] != 1 || !V2In(q)) continue;
                 int bk = -1, bj = -1; float bd = 1e9f;
-                for (int o = 0; o < cars.Count; o++) { if (o == k) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude; if (d < cars[o].w * .5f + 2.5f && d < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = d; bk = o; bj = j; } } }
+                for (int o = 0; o < cars.Count; o++) { if (o == k || !V2BBIn(V2BB(cars[o].p, cars[o].w * .5f + 2.5f), q)) continue; var c = cars[o].p; for (int j = 0; j < c.Count; j++) { float d = Fl(c[j] - q).magnitude; if (d < cars[o].w * .5f + 2.5f && d < bd && Mathf.Abs(c[j].y - q.y) < 1.5f) { bd = d; bk = o; bj = j; } } }
                 if (bk < 0) continue;
                 int tn = -1; foreach (var kv in splits[bk]) if (Mathf.Abs(kv.Key - bj) <= 3) { tn = kv.Value; break; }
                 if (tn < 0) { tn = NewN(cars[bk].p[bj]); splits[bk][bj] = tn; }
@@ -117,7 +137,7 @@ public static partial class BuildBayLoop
             }
             for (int a = 0; a < cars.Count; a++) for (int b = a + 1; b < cars.Count; b++)
             {
-                var pa = cars[a].p; var pb = cars[b].p;
+                var pa = cars[a].p; var pb = cars[b].p; if (!V2BBX(V2BB(pa, .5f), V2BB(pb, .5f))) continue;
                 for (int i = 0; i + 1 < pa.Count; i++)
                 {
                     if (!V2In(pa[i])) continue;
@@ -160,13 +180,14 @@ public static partial class BuildBayLoop
                     int d0 = Deg(e.n0), d1 = Deg(e.n1); if (V2Len(e.p) >= 15f) continue;
                     bool Ok(int d, Vector3 q) => d >= 3 || (d == 1 && V2In(q));
                     if (!Ok(d0, e.p[0]) || !Ok(d1, e.p[e.p.Count - 1])) continue;
-                    int inn = e.p.Count(q => edges.Any(f => f != e && !f.dead && V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 2.5f));
+                    var eb = V2BB(e.p, 0); var near = edges.Where(f => f != e && !f.dead && V2BBX(eb, V2BB(f.p, f.w))).ToList();
+                    int inn = e.p.Count(q => near.Any(f => V2Dist(f.p, q, out var nq) < f.w * .5f && Mathf.Abs(nq.y - q.y) < 2.5f));
                     if (inn > e.p.Count * .35f) { e.dead = true; ch = true; nSpur++; lg.Add($"띠에 묻힌 꼬리 {e.id} {V2Len(e.p):F1}m ({inn}/{e.p.Count})"); }
                 }
-                var live = edges.Where(x => !x.dead).ToList();
+                var live = edges.Where(x => !x.dead).ToList(); var lbb = live.ToDictionary(x => x, x => V2BB(x.p, x.w));
                 foreach (var e in live) foreach (var f in live)
                 {
-                    if (e == f || e.dead || f.dead || V2Len(e.p) > V2Len(f.p)) continue;   // e = 짧은 쪽
+                    if (e == f || e.dead || f.dead || !V2BBX(lbb[e], lbb[f]) || V2Len(e.p) > V2Len(f.p)) continue;   // e = 짧은 쪽
                     int inn = e.p.Count(q => V2Dist(f.p, q, out var nq) < Mathf.Max(e.w, f.w) * .5f && Mathf.Abs(nq.y - q.y) < 2.5f);   // 1 m → 2.5 m: camo_874876277 이 큰길 띠 안을 1~2.5 m 높이차로 25 m 나란히 달려 겹침 188쌍
                     if (inn > e.p.Count * .7f && e.p.Any(V2In)) { e.dead = true; ch = true; nDup++; lg.Add($"겹친 길 하나로: {e.id} → {f.id} ({inn}/{e.p.Count})"); }
                 }
@@ -183,11 +204,11 @@ public static partial class BuildBayLoop
             var chains = edges.Where(x => !x.dead).ToList();
             foreach (var e in chains) foreach (var f in chains)   // 진단: 좁은 길이 넓은 길 띠 안을 달리는 구간
             {
-                if (e == f || e.w > f.w) continue; int k = 0, i0 = -1, i1 = -1; float dyMax = 0;
+                if (e == f || e.w > f.w || !V2BBX(V2BB(e.p, 0), V2BB(f.p, f.w))) continue; int k = 0, i0 = -1, i1 = -1; float dyMax = 0;
                 for (int i = 0; i < e.p.Count; i++) if (V2In(e.p[i]) && V2Dist(f.p, e.p[i], out var nq) < f.w * .5f) { k++; if (i0 < 0) i0 = i; i1 = i; dyMax = Mathf.Max(dyMax, Mathf.Abs(nq.y - e.p[i].y)); }
                 if (k >= 4) lg.Add($"띠 안 진단: {V2Short(e.id)} 점 {k}/{e.p.Count} [{i0}..{i1}] 이 {V2Short(f.id)} 띠 안, 높이차 최대 {dyMax:F2}");
             }
-            lg.Add($"그래프: 길 {cars.Count} → 사슬 {chains.Count}, 마디 {nP.Count(_ => true)}(T {nT}·X {nX}), 군더더기 {nSpur}, 겹침합침 {nDup}");
+            Tk("그래프"); lg.Add($"그래프: 길 {cars.Count} → 사슬 {chains.Count}, 마디 {nP.Count(_ => true)}(T {nT}·X {nX}), 군더더기 {nSpur}, 겹침합침 {nDup}");
 
             // ── 2 평면 곡선 ─────────────────────────────────────
             foreach (var c in chains) { V2Fillet(c); V2SmoothXZ(c); }
@@ -242,6 +263,7 @@ public static partial class BuildBayLoop
                 if (side == 1) { c.p.Reverse(); c.fix.Reverse(); }
             }
 
+            Tk("평면·높이·끝 자름");
             // ── 띠 메시 ────────────────────────────────────────
             var v2T = new GameObject("RoadsV2").transform; v2T.SetParent(top, false);
             var bands = new Dictionary<V2L, List<Vector3>>(); var topTris = new List<(int obj, Vector3 a, Vector3 b, Vector3 c)>(); int objN = 0;
@@ -275,6 +297,7 @@ public static partial class BuildBayLoop
                 jPolys.Add((poly, ny)); jCen.Add(center);
                 for (int i = 0; i < inc.Count; i++) foreach (var q in new[] { AB[i].A, AB[i].B }) if (poly.Min(pp => (pp - q).magnitude) > .01f) gapN++;
             }
+            Tk("띠·갈림목 메시");
             // ── 5 지형 ──────────────────────────────────────────
             var segs = new List<(Vector3 a, Vector3 b, float hw, bool endA, bool endB)>();
             foreach (var c in chains) for (int i = 1; i < c.p.Count; i++) segs.Add((c.p[i - 1] + Vector3.up * RoadColLift, c.p[i] + Vector3.up * RoadColLift, c.w * .5f, i == 1 && c.d0 == 0f, i == c.p.Count - 1 && c.d1 == 0f));
@@ -282,17 +305,26 @@ public static partial class BuildBayLoop
             var deadEnds = new List<(Vector3 p, float hw, Vector3 o)>();
             foreach (var c in chains) { int m = c.p.Count; if (c.d0 == 0f && V2In(c.p[0])) deadEnds.Add((c.p[0], c.w * .5f, Fl(c.p[0] - c.p[1]).normalized)); if (c.d1 == 0f && V2In(c.p[m - 1])) deadEnds.Add((c.p[m - 1], c.w * .5f, Fl(c.p[m - 1] - c.p[m - 2]).normalized)); }
             var pads = V2Pads(top);
+            // 2단계: 맵 전체(정점 15만 × 선분 1만+)는 그대로 돌면 수십 초 → 40 m 칸에 선분·갈림목·건물을 미리 나눠 담는다(원래도 40 m 밖 선분은 건너뜀)
+            var sGrid = new Dictionary<(int, int), List<int>>(); const float GC = 40f;
+            void GAdd(Dictionary<(int, int), List<int>> g, int idx, float ax0, float az0, float ax1, float az1) { for (int gx = Mathf.FloorToInt(ax0 / GC); gx <= Mathf.FloorToInt(ax1 / GC); gx++) for (int gz = Mathf.FloorToInt(az0 / GC); gz <= Mathf.FloorToInt(az1 / GC); gz++) { if (!g.TryGetValue((gx, gz), out var l)) g[(gx, gz)] = l = new List<int>(); l.Add(idx); } }
+            for (int i = 0; i < segs.Count; i++) { var s = segs[i]; GAdd(sGrid, i, Mathf.Min(s.a.x, s.b.x) - 40, Mathf.Min(s.a.z, s.b.z) - 40, Mathf.Max(s.a.x, s.b.x) + 40, Mathf.Max(s.a.z, s.b.z) + 40); }
+            var jGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < jPolys.Count; i++) { var bb = V2BB(jPolys[i].poly, 40f); GAdd(jGrid, i, bb.x, bb.y, bb.z, bb.w); }
+            var pGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < pads.Count; i++) { var pd = pads[i]; GAdd(pGrid, i, pd.c.x - pd.r - 16f, pd.c.z - pd.r - 16f, pd.c.x + pd.r + 16f, pd.c.z + pd.r + 16f); }
+            var none = new List<int>();
             var tr = terrGo.transform; var sv = srcMesh.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
-            int moved = 0, padN = 0; float maxD = 0;
+            int moved = 0, padN = 0; float maxD = 0; Vector3 maxAt = Vector3.zero; int big = 0;
             for (int k = 0; k < w.Length; k++)
             {
                 var p = w[k]; float out0 = V2Out(p); if (out0 >= margin) continue;
                 float orig = p.y, y = orig; float pe = 1e9f, pH = 0;
-                foreach (var pd in pads) { var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
+                var cell = (Mathf.FloorToInt(p.x / GC), Mathf.FloorToInt(p.z / GC));
+                foreach (int pi in pGrid.TryGetValue(cell, out var pl) ? pl : none) { var pd = pads[pi]; var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
                 if (pe <= 2f) { y = pH; padN++; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
                 float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f;
-                foreach (var s in segs)
+                foreach (int si in sGrid.TryGetValue(cell, out var sl) ? sl : none)
                 {
+                    var s = segs[si];
                     if (p.x < Mathf.Min(s.a.x, s.b.x) - 40 || p.x > Mathf.Max(s.a.x, s.b.x) + 40 || p.z < Mathf.Min(s.a.z, s.b.z) - 40 || p.z > Mathf.Max(s.a.z, s.b.z) + 40) continue;
                     var ab = Fl(s.b - s.a); float t0 = Vector3.Dot(Fl(p - s.a), ab) / Mathf.Max(1e-6f, ab.sqrMagnitude), t = Mathf.Clamp01(t0);
                     var q = Vector3.Lerp(s.a, s.b, t); var dd = Fl(p - q); float e = dd.magnitude - s.hw;
@@ -300,7 +332,7 @@ public static partial class BuildBayLoop
                     V2Acc(e, q.y, ref eO, ref yO, ref lo, ref hi);
                 }
                 // 3차 실행: 안쪽을 마디 높이 하나로 깎았더니 갈림목 메시(가운데→띠 끝 부채꼴)와 6~20 cm 어긋나 띠 끝이 묻히거나 뜸 → 부채꼴 삼각형 높이를 그대로 따름
-                for (int jp = 0; jp < jPolys.Count; jp++) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); float fy = e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); }
+                foreach (int jp in jGrid.TryGetValue(cell, out var jl) ? jl : none) { var (poly, jy) = jPolys[jp]; float e = V2PolyE(poly, p, out float yb); float fy = e <= 0 ? V2FanY(jCen[jp], poly, p, jy) : yb; V2Acc(e, fy, ref eO, ref yO, ref lo, ref hi); }
                 float sh = V2SH, under = V2Under;
                 foreach (var de in deadEnds) if (Fl(p - de.p).magnitude < de.hw + V2SH + 2f && Vector3.Dot(Fl(p - de.p), de.o) > 0f) {   // 1c: 캡 선 너머만(옆변까지 −10 cm 면 착지 띠가 뜸)
                     sh = V2SH + 1f; under = V2Under + .10f; break; }
@@ -318,13 +350,13 @@ public static partial class BuildBayLoop
                 // 1d: 구역 밖 여유띠의 원래 높이 되돌림이 874_s1 끝(구역 밖 1.4 m) 캡 너머 0.6 m 정점을 24.54 로 남겨, 2 m 삼각형이 띠 끝을 2 cm 덮음
                 //  → 띠 가장자리 1 m 안은 되돌림보다 띠−깎기가 우선
                 if (out0 > 0 && eO <= 1f) y = Mathf.Min(y, yO - V2Under);   // 구역 안까지 걸면 D198_postoffice 판 모서리를 0.31 깎음
-                if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; maxD = Mathf.Max(maxD, Mathf.Abs(y - orig)); }
+                if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; if (Mathf.Abs(y - orig) > maxD) { maxD = Mathf.Abs(y - orig); maxAt = p; } if (Mathf.Abs(y - orig) > 3f) big++; }
             }
             var m2 = Object.Instantiate(srcMesh); m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
             m2.vertices = v2v; m2.RecalculateNormals(); m2.RecalculateBounds();
             if (AssetDatabase.LoadAssetAtPath<Mesh>(V2Dst) != null) AssetDatabase.DeleteAsset(V2Dst);
             AssetDatabase.CreateAsset(m2, V2Dst); terrGo.GetComponent<MeshFilter>().sharedMesh = m2; var mc = terrGo.GetComponent<MeshCollider>(); mc.sharedMesh = null; mc.sharedMesh = m2;
-            lg.Add($"지형 정점 {moved}개(최대 {maxD:F2} m), 건물 판 정점 {padN}, 건물 {pads.Count}");
+            Tk("지형"); lg.Add($"지형 정점 {moved}개(최대 {maxD:F2} m @({maxAt.x:F0},{maxAt.z:F0}) 원래 {maxAt.y:F1}, 3 m 넘게 바뀐 정점 {big}), 건물 판 정점 {padN}, 건물 {pads.Count}");
 
             // ── 걷는 길: 차길 띠와 겹친 부분 지우고 새 지형에 깐다 ──────────
             tmc.sharedMesh = m2;
@@ -362,7 +394,7 @@ public static partial class BuildBayLoop
                     i = j;
                 }
             }
-            lg.Add($"걷는 길 조각 {pathN}, 차길 띠와 겹쳐 지운 점 {pathCut}");
+            Tk("걷는 길"); lg.Add($"걷는 길 조각 {pathN}, 차길 띠와 겹쳐 지운 점 {pathCut}");
             // 1f: v2 는 구역에 닿은 길 전체(165_6 은 x 608 까지)를 새로 까는데, 구역에 안 닿은 옛 곁길(camo_794408003_237 @371,−95)은 그대로라
             //  그 끝이 새 띠와 0 cm 차로 겹쳐 깊이 싸움 → 띠 안 삼각형을 뺀 사본을 RoadsV2 에 두고 옛 것은 끈다(되돌리기 = 다시 켬)
             //  띠 경계에 걸친 삼각형은 띠 안 정점만 0.10 m 내려 띠 밑으로 숨긴다
@@ -391,6 +423,7 @@ public static partial class BuildBayLoop
             foreach (var nm in disabled.Distinct()) roadsT.Find(nm)?.gameObject.SetActive(false);
             System.IO.File.WriteAllLines(V2DisabledFile, disabled.Distinct());
 
+            Tk("옛 길 정리");
             // ── 검사 ─────────────────────────────────────────────
             int fold = topTris.Count(t => Vector3.Cross(t.b - t.a, t.c - t.a).y <= 0f);
             int overN = V2Overlaps(topTris, out int overTris);
@@ -403,7 +436,7 @@ public static partial class BuildBayLoop
             lg.AddRange(report);
 
             if (AssetDatabase.LoadAssetAtPath<Object>(V2MeshAsset) != null) AssetDatabase.DeleteAsset(V2MeshAsset);
-            AssetDatabase.CreateAsset(meshes[0], V2MeshAsset); for (int i = 1; i < meshes.Count; i++) AssetDatabase.AddObjectToAsset(meshes[i], V2MeshAsset);
+            Tk("검사"); AssetDatabase.CreateAsset(meshes[0], V2MeshAsset); for (int i = 1; i < meshes.Count; i++) AssetDatabase.AddObjectToAsset(meshes[i], V2MeshAsset);
             EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
             return string.Join("\n", lg);
         }
@@ -694,9 +727,9 @@ public static partial class BuildBayLoop
         }
         return inside ? -bd : bd;
     }
-    static List<(Matrix4x4 w2l, Vector3 mn, Vector3 mx, float H)> V2Pads(Transform top)
+    static List<(Matrix4x4 w2l, Vector3 mn, Vector3 mx, float H, Vector3 c, float r)> V2Pads(Transform top)
     {
-        var o = new List<(Matrix4x4, Vector3, Vector3, float)>(); var scn = top.gameObject.scene;
+        var o = new List<(Matrix4x4, Vector3, Vector3, float, Vector3, float)>(); var scn = top.gameObject.scene;
         foreach (var r in scn.GetRootGameObjects()) foreach (var t in r.GetComponentsInChildren<Transform>(false))
         {
             if (t.name.StartsWith("ROAD")) continue;
@@ -711,7 +744,7 @@ public static partial class BuildBayLoop
             }
             if (!any || wmx.x - wmn.x > 60f || wmx.z - wmn.z > 60f) continue;
             var cw = (wmn + wmx) * .5f; if (V2Out(cw) > 20f) continue;
-            o.Add((w2l, mn, mx, l2w.MultiplyPoint3x4(new Vector3(0, mn.y, 0)).y));
+            o.Add((w2l, mn, mx, l2w.MultiplyPoint3x4(new Vector3(0, mn.y, 0)).y, cw, Fl(wmx - wmn).magnitude * .5f));
         }
         return o;
     }
