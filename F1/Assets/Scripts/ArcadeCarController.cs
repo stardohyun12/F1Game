@@ -311,6 +311,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         if (IsDrifting) driftGripBlend = 0f;
         else driftGripBlend = Mathf.MoveTowards(driftGripBlend, 1f, Time.fixedDeltaTime / Mathf.Max(0.01f, driftGripRecoverTime));
 
+        TryStepAssist(forwardSpeed);
         ApplyThrottle(forwardSpeed);
         ApplySteering(forwardSpeed);
         ApplySideGrip(sideSpeed, forwardSpeed);
@@ -362,6 +363,44 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         (Services.Cargo as CargoBox)?.ApplyExternalDamage(fallRespawnCargoDamage, 20f);
         Debug.Log($"[ArcadeCarController] 추락 복구 → {sp.pos}");
     }
+
+    // ── 턱 넘기 (0338) ──
+    // Box 차체는 바닥이 평평한 상자라, 길 위로 몇 cm 뜬 얇은 판 모서리(평평한 갈림목 판이 기운 길 위에 걸친 곳)에
+    // 정면으로 닿으면 809 N 으로 밀어도 0 m/s 로 선다. 4 cm 들어 주면 바로 빠져나간다(0338 실측).
+    [Header("턱 넘기 (0338)")]
+    [Tooltip("가속 중인데 이 시간(초) 넘게 서 있으면 턱인지 본다.")]
+    [SerializeField] private float stepAssistStall = 0.2f;
+    [Tooltip("이 높이(월드 m)까지만 들어 올린다. 그 위로도 막히면 벽으로 보고 안 든다.")]
+    [SerializeField] private float stepAssistMax = 0.08f;
+    private float stepStallTime;
+    private readonly Collider[] stepBuf = new Collider[16];
+
+    void TryStepAssist(float forwardSpeed)
+    {
+        if (stepAssistMax <= 0f || bodyBox == null || !isGrounded || smoothedMove.y < 0.5f || forwardSpeed > 0.3f) { stepStallTime = 0f; return; }
+        stepStallTime += Time.fixedDeltaTime;
+        if (stepStallTime < stepAssistStall) return;
+        // 들어 올리고 조금 앞으로 간 자리에 상자가 들어가면 턱 — 끝까지 안 들어가면 벽이라 그대로 둔다.
+        Vector3 c = transform.TransformPoint(bodyBox.center), half = Vector3.Scale(bodyBox.size * 0.5f, transform.lossyScale);
+        for (float h = 0.02f; h <= stepAssistMax + 1e-4f; h += 0.02f)
+        {
+            if (!StepBoxClear(c + transform.up * h + transform.forward * 0.15f, half)) continue;
+            rb.position += transform.up * h;
+            stepStallTime = 0f;
+            StepAssists++;
+            return;
+        }
+    }
+
+    bool StepBoxClear(Vector3 center, Vector3 half)
+    {
+        int n = Physics.OverlapBoxNonAlloc(center, half, stepBuf, transform.rotation, groundLayer, QueryTriggerInteraction.Ignore);
+        for (int i = 0; i < n; i++) if (stepBuf[i].attachedRigidbody == null) return false;   // 움직이는 것(차 자신·화물)은 빼고 고정 지형만
+        return true;
+    }
+
+    /// <summary>턱 넘기가 차를 들어 올린 횟수 — QA 측정용.</summary>
+    public int StepAssists { get; private set; }
 
     /// <summary>D-122 — 속도² 비례로 차를 바닥에 누른다(고속 안정, F1 다운포스 느낌).</summary>
     void ApplyDownforce(float forwardSpeed)

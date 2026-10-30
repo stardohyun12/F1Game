@@ -61,12 +61,15 @@ public class TownPathBot : MonoBehaviour
 
     /// 비면 전부, 아니면 roadId 가 이 중 하나를 포함하는 길만(쉼표). 실패 재현용.
     public static string Only = "";
+    /// 0338: 끼임 판정 순간 그 자세로 CCD 실험(대조 1초 → Discrete 1초).
+    public static bool StuckProbe = false;
 
     public class RunResult { public string result = "ok"; public float time, maxDev, dmg, peakLong, peakLat; public Vector3 at; public int stalls; public string why = "";
         public float azSum, azPeak; public int azN, air; }   // 과제 0320-1e: 차체 수직 가속도·접지 끊김
     public static readonly StringBuilder FeelLog = new StringBuilder();   // x z 종류 값 — 히트맵용(road_feel.py)
     System.Reflection.FieldInfo groundF;
-    string curRoad = "";
+    string curRoad = "", slowNote = "";
+    float vPrev;
 
     /// 멈춘 순간 진단: 차 앞뒤 기울기·바퀴 아래 지면·차 몸에 닿은 콜라이더
     string Why(float thr)
@@ -78,7 +81,11 @@ public class TownPathBot : MonoBehaviour
                 if (o.GetComponentInParent<ArcadeCarController>() == null && Physics.ComputePenetration(c, c.transform.position, c.transform.rotation, o, o.transform.position, o.transform.rotation, out var dir, out var dist))
                     hit.Add($"{o.name}({dir.x:F1},{dir.y:F1},{dir.z:F1})");
         }
-        return $"pitch{-t.eulerAngles.x:F0} upY{t.up.y:F2} thr{thr:F2} hit[{string.Join(" ", hit.Distinct().Take(4))}]";
+        // 0338: 끼임 원인 가르기 — 런 단계(Driving 아니면 차가 매 스텝 0 으로 묶인다)·접지·차가 받은 입력·물리 상태
+        var rc = Services.Run as RunController; bool g = groundF == null || (bool)groundF.GetValue(car);
+        string st = $" stage{(rc != null ? rc.CurrentStage.ToString() : "-")} gnd{(g ? 1 : 0)} in{car.RawThrottleInput:F2}/{car.ThrottleInput:F2} v{rb.linearVelocity.magnitude:F2} kin{(rb.isKinematic ? 1 : 0)} ts{Time.timeScale:F1} step{car.StepAssists}";
+        var fd = FindFirstObjectByType<OnFootDirector>(); if (fd != null) st += " foot" + fd.State;
+        return $"pitch{-t.eulerAngles.x:F0} upY{t.up.y:F2} thr{thr:F2}{st} {slowNote} hit[{string.Join(" ", hit.Distinct().Take(4))}]";
     }
 
     /// 순수 추종: 앞 4+0.5v m 점을 보고 조향, 굽이 R 로 목표속도 √(5.8R) (기획 리듬 모델 그대로), 상한 22 m/s.
@@ -108,11 +115,24 @@ public class TownPathBot : MonoBehaviour
             if (p.y < -2f) { res.result = "추락"; break; }
             if (t > timeout) { res.result = "시간초과"; break; }
             float v = rb.linearVelocity.magnitude;
-            if (v < .6f && t > 2f) slow += Time.fixedDeltaTime; else slow = 0f;
+            if (v < .6f && t > 2f) { if (slow == 0f) slowNote = $"slowFrom v{vPrev:F1}@{t:F1}s"; slow += Time.fixedDeltaTime; } else slow = 0f;
+            vPrev = v;
             if (slow > 4f)
             {
                 var ahead = pts.Skip(idx).Take(12).ToList();
-                res.result = Grade(ahead) > .10f ? "못오름" : "끼임"; res.why = Why(lastThr); break;
+                res.result = Grade(ahead) > .10f ? "못오름" : "끼임"; res.why = Why(lastThr);
+                if (StuckProbe)
+                {
+                    // 0338: 끼인 자세 그대로 원인 가르기 — 대조(그대로 1초) → CCD 를 Discrete 로 1초. 움직인 거리만 기록.
+                    var mode0 = rb.collisionDetectionMode; var p0 = rb.position;
+                    for (int k = 0; k < 50; k++) { Set(new Vector2(0f, 1f)); yield return new WaitForFixedUpdate(); }
+                    float dCtl = Vector3.Distance(p0, rb.position); p0 = rb.position;
+                    rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                    for (int k = 0; k < 50; k++) { Set(new Vector2(0f, 1f)); yield return new WaitForFixedUpdate(); }
+                    rb.collisionDetectionMode = mode0;
+                    res.why += $" probe ctl{dCtl:F2}m discrete{Vector3.Distance(p0, rb.position):F2}m";
+                }
+                break;
             }
             if (dev > half[idx] + 3f) off += Time.fixedDeltaTime; else off = 0f;
             if (off > 1f) { res.result = "이탈"; res.why = Why(lastThr); break; }
@@ -151,7 +171,7 @@ public class TownPathBot : MonoBehaviour
             // 막다른 길 끝(되돌이, 꺾임 > 150°)에서 다리를 나눈다 — 거기선 차를 돌려 놓고 이어 감(배달 뒤 플레이어가 돌리는 자리)
             var legs = new List<List<Vector3>> { new List<Vector3> { P[0] } };
             for (int i = 1; i < P.Count; i++) { legs[legs.Count - 1].Add(P[i]); if (i + 1 < P.Count && Vector3.Angle(Flat(P[i] - P[i - 1]), Flat(P[i + 1] - P[i])) > 150f) legs.Add(new List<Vector3> { P[i] }); }
-            var res = new RunResult(); float tSum = 0f;
+            var res = new RunResult(); float tSum = 0f; int step0 = car.StepAssists;
             foreach (var L in legs.Where(l => l.Count > 4))
             {
                 Place(L[0], L[3] - L[0]); yield return new WaitForFixedUpdate();
@@ -159,7 +179,7 @@ public class TownPathBot : MonoBehaviour
                 tSum += r1.time; res.maxDev = Mathf.Max(res.maxDev, r1.maxDev); res.air += r1.air; res.at = r1.at;
                 if (r1.result != "ok") { res.result = r1.result; res.why = r1.why; break; }
             }
-            res.time = tSum; res.why += $" legs{legs.Count}";
+            res.time = tSum; res.why += $" legs{legs.Count} step{car.StepAssists - step0}";
             if (res.result == "ok") ok++; else fail++;
             sb.AppendLine($"{n}\t{dir}\t{res.result}\t{res.time:F1}\t{res.maxDev:F1}\t{res.at.x:F0},{res.at.y:F0},{res.at.z:F0}\t{res.why}\t{res.air}");
             Status = $"loop {n}/{LoopN} ok{ok} fail{fail}";
