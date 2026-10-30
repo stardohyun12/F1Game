@@ -1,0 +1,54 @@
+{
+  "F1/Assets/Art/Library/Buildings/depot/q3_depot.fbx": [
+    {
+      "object": "Q3_building",
+      "reverse_coincident_pairs": 4
+    }
+  ],
+  "F1/Assets/Art/Library/Buildings/garage/garage_v5_combo.fbx": [],
+  "F1/Assets/Art/Library/Buildings/house_home/house_home.fbx": [],
+  "F1/Assets/Art/Library/Buildings/postoffice/q4_postoffice.fbx": [
+    {
+      "object": "PLANTER_01",
+      "reverse_coincident_pairs": 15
+    },
+    {
+      "object": "POT_01",
+      "reverse_coincident_pairs": 6
+    },
+    {
+      "object": "POT_02",
+      "reverse_coincident_pairs": 5
+    },
+    {
+      "object": "POT_03",
+      "reverse_coincident_pairs": 6
+    },
+    {
+      "object": "POT_04",
+      "reverse_coincident_pairs": 5
+    },
+    {
+      "object": "POT_05",
+      "reverse_coincident_pairs": 6
+    },
+    {
+      "object": "POT_06",
+      "reverse_coincident_pairs": 5
+    },
+    {
+      "object": "POT_07",
+      "reverse_coincident_pairs": 6
+    },
+    {
+      "object": "Q4_PostOffice_body",
+      "reverse_coincident_pairs": 9
+    }
+  ],
+  "F1/Assets/Art/Library/Buildings/room/room.fbx": [
+    {
+      "object": "VEST_01",
+      "reverse_coincident_pairs": 6
+    }
+  ]
+}

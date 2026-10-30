@@ -404,7 +404,10 @@ for yt, yb, out in ((-.69, -.74, -1), (-.635, -.585, 1)):  # 3차: 자리 쪽 ·
     Y = lambda z: yt + (yb - yt) * (.95 - z) / .45
     for poly, pt in ((VB, 'vestbody'), (VL, 'vestsh'), (VR, 'vestsh')):
         P3 = [(.75 + (y + .85), Y(z), z) for y, z in poly]; o = P3[::-1] if out > 0 else P3
-        Q4('ROOM_vest', o, pt, 64); Q4('ROOM_vest', o[::-1], 'vestin', 64)
+        # 9529: Cull Off 재질에서 공면인 겉감/안감이 함께 그려졌다.
+        # 겉감·UV 칸 순서는 보존하고 안감을 옷 안쪽으로 1cm 분리한다.
+        inner = [(x, y - out * .01, z) for x, y, z in o[::-1]]
+        Q4('ROOM_vest', o, pt, 64); Q4('ROOM_vest', inner, 'vestin', 64)
 for ya, yb in ((-1.03, -.9), (-.8, -.67)): xa, xb = .75 + ya + .85, .75 + yb + .85; Q4('ROOM_vest', [(xa, -.69, .95), (xb, -.69, .95), (xb, -.635, .95), (xa, -.635, .95)], 'vestsh', 64)
 # 책상 위: 라디오(창 쪽 구석)·잡지·공책·연필·저금통·머그
 nm('RADIO_01'); box(Pr, 1.42, 1.7, -1.42, -1.1, .72, .92, dict({'*': 'radio'}, left='radiof', top='radiotop'), 64, skip=('bottom', 'right')); box(Pr, 1.62, 1.635, -1.15, -1.135, .92, 1.3, 'antenna', 64, skip=('bottom',))

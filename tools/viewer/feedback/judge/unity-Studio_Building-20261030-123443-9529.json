@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-123443-9529",
+ "time": "2026-10-30T13:03:41+09:00",
+ "before": "shots/unity-Studio_Building-20261030-123443-9529.png",
+ "after": "shots/unity-Studio_Building-20261030-123443-9529_after.png",
+ "comment": "이거 계속 치지직 거림",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 조조끼는 왼쪽처럼 탁하게 뒤섞인 면이 없고 주황색과 반사 띠가 깔끔하게 보여서, 치지직거리던 흔적(깜빡임)은 정지 화면 기준으로 사라진 것으로 보인다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "왼쪽 표시 부위의 겹쳐 깨지는 표면이 오른쪽에서는 매끈하고 일관된 면으로 정리되어 보인다."
+  }
+ },
+ "pass": true
+}

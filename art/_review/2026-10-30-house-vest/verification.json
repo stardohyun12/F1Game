@@ -1,0 +1,15 @@
+{
+  "pass_static": true,
+  "changed_objects": [
+    "VEST_01"
+  ],
+  "unchanged_objects": 61,
+  "texture_identical": true,
+  "uv_matches_saved_library": true,
+  "before_pairs": 6,
+  "after_pairs": 0,
+  "min_gap_m": 0.009938826784491539,
+  "tris_before": 28,
+  "tris_after": 28,
+  "unity_verified": false
+}

@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-123455-8a68",
+ "time": "2026-10-30T13:03:20+09:00",
+ "before": "shots/unity-Studio_Building-20261030-123455-8a68.png",
+ "after": "shots/unity-Studio_Building-20261030-123455-8a68_after.png",
+ "comment": "바닥 치지직 거림",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽은 바닥이 규칙적인 타일 무늬로 깔끔하게 나오고, 왼쪽에서 보이던 얼룩덜룩한 겹침(z-fighting) 무늬가 없어서 치지직거림은 보이지 않는다."
+  },
+  "astra": {
+   "verdict": "YES",
+   "reason": "오른쪽도 현관 매트 주변 바닥에 여러 면이 겹친 듯한 얼룩과 깨진 무늬가 남아 있어 치지직거림이 보입니다."
+  }
+ },
+ "pass": false
+}

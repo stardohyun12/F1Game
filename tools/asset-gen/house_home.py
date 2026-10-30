@@ -102,7 +102,9 @@ surround(DX0, DX1, 0, DZ, sill=False); surround(*BD, sill=False)
 for w_ in (WL, WK, W2L, W2R): surround(*w_)
 # ---------- 기단(비탈, 돌) = 앞 테라스 1.2m(의자 자리) · 현관 계단 한 단 ----------
 TY = FY - 1.2
-box(SHELL, -WX - .08, WX + .08, TY, BY + .08, -.9, 0, 'stone', ('bottom', 'top'))
+SITE = json.load(open(R + 'tools/art/house_home_site.json', encoding='utf-8'))['foundation']
+assert (SITE['x_min'], SITE['x_max'], SITE['blender_y_min'], SITE['blender_y_max']) == (-WX - .08, WX + .08, TY, BY + .08)
+box(SHELL, SITE['x_min'], SITE['x_max'], SITE['blender_y_min'], SITE['blender_y_max'], SITE['bottom'], SITE['top'], 'stone', ('bottom', 'top'))
 # 0351 윗면을 나눔: 바깥 테두리 = 돌 · 집 안 1층 바닥 = 테라코타 타일, 현관 앞 1.1m = 돌(신발 벗는 자리)
 for a, b, c, d in ((-WX - .08, WX + .08, TY, FY), (-WX - .08, WX + .08, BY, BY + .08), (-WX - .08, -WX, FY, BY), (WX, WX + .08, FY, BY)):
     face(SHELL, [(a, c, 0), (b, c, 0), (b, d, 0), (a, d, 0)], 'stone')

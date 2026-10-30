@@ -1,0 +1,129 @@
+GIMP Palette
+Name: q1-room v2 (palette53 + 결 단계)
+Columns: 8
+#
+207 209 182	garage00
+191 185 123	garage01
+174 166 106	garage02
+154 164  89	garage03
+169 158 108	garage04
+155 157  95	garage05
+150 158  87	garage06
+177 148 106	garage07
+152 150  95	garage08
+146 148  91	garage09
+138 142  86	garage10
+112 135 110	garage11
+ 62 148 171	garage12
+158 127  78	garage13
+103 126 114	garage14
+ 95 128 126	garage15
+ 99 122 113	garage16
+161 109  66	garage17
+ 99 112  99	garage18
+128  80  50	garage19
+102  72  43	garage20
+ 90 120 117	garage21
+ 81  98  88	garage22
+ 74  77  62	garage23
+ 52  70  68	garage24
+ 50  49  43	garage25
+ 28  41  43	garage26
+ 28  37  39	garage27
+ 23  37  40	garage28
+ 23  37  39	garage29
+ 22  37  41	garage30
+ 30  36  38	garage31
+236 202 140	paint narrow_a 해
+131 134 110	paint narrow_a 그늘/shop 그늘/cafe 그늘
+244 235 200	paint narrow_b 해/warehouse 해
+135 157 150	paint narrow_b 그늘/warehouse 그늘
+231 185 140	paint shop 해
+178 209 183	paint slope 해
+ 98 142 141	paint slope 그늘
+166 148 117	paint cafe 해
+112 120 166	shutter_blue_light
+ 92 100 142	shutter_blue_mid
+ 72  80 116	shutter_blue_shade
+100 140  98	shutter_green_light
+ 80 118  80	shutter_green_mid
+ 62  94  66	shutter_green_shade
+186  78  60	mart 차양 빨강
+146  50  42	mart 간판 글자
+214 118  52	mart 자판기 주황
+226 192  78	mart 과일 노랑
+196 218 222	room 아침 하늘 옅음
+150 192 210	room 아침 하늘
+218 146 132	room 저금통 분홍
+210 195 151	q1v2 결 어둠2 wall
+227 211 164	q1v2 결 어둠1 wall
+255 247 210	q1v2 결 밝음1 wall
+153 173 138	q1v2 결 어둠2 wain
+166 188 150	q1v2 결 어둠1 wain
+187 219 192	q1v2 결 밝음1 wain
+116 130 114	q1v2 결 어둠2 wainline
+126 141 123	q1v2 결 어둠1 wainline
+142 165 158	q1v2 결 밝음1 wainline
+138  90  50	q1v2 결 어둠2 rail
+150  98  54	q1v2 결 어둠1 rail
+169 114  69	q1v2 결 밝음1 rail
+110  66  38	q1v2 결 어둠2 skirt
+119  72  41	q1v2 결 어둠1 skirt
+134  84  52	q1v2 결 밝음1 skirt
+152 123  80	q1v2 결 어둠2 wood
+165 133  87	q1v2 결 어둠1 wood
+186 155 111	q1v2 결 밝음1 wood
+136 105  59	q1v2 결 어둠2 wood2
+147 114  64	q1v2 결 어둠1 wood2
+166 133  82	q1v2 결 밝음1 wood2
+143 123  89	q1v2 결 어둠2 wood3
+154 133  96	q1v2 결 어둠1 wood3
+174 155 123	q1v2 결 밝음1 wood3
+ 88  60  33	q1v2 결 어둠2 dkwood2
+ 95  65  35	q1v2 결 어둠1 dkwood2
+107  76  45	q1v2 결 밝음1 dkwood2
+164 154  93	q1v2 결 어둠2 straw
+178 166 101	q1v2 결 어둠1 straw
+201 194 129	q1v2 결 밝음1 straw
+150 138  80	q1v2 결 어둠2 straw2
+162 149  87	q1v2 결 어둠1 straw2
+183 174 111	q1v2 결 밝음1 straw2
+ 53  78  50	q1v2 결 어둠2 green3
+ 58  84  54	q1v2 결 어둠1 green3
+ 65  99  69	q1v2 결 밝음1 green3
+178 173 138	q1v2 결 어둠2 frame
+193 188 149	q1v2 결 어둠1 frame
+217 219 191	q1v2 결 밝음1 frame
+203 168 106	q1v2 결 어둠2 egg
+219 181 115	q1v2 결 어둠1 egg
+248 212 147	q1v2 결 밝음1 egg
+184  98  39	q1v2 결 어둠2 orange
+199 106  43	q1v2 결 어둠1 orange
+225 124  55	q1v2 결 밝음1 orange
+160  65  45	q1v2 결 어둠2 red
+173  70  49	q1v2 결 어둠1 red
+195  82  63	q1v2 결 밝음1 red
+ 96 100 126	q1v2 결 어둠2 blue
+104 108 136	q1v2 결 어둠1 blue
+118 126 174	q1v2 결 밝음1 blue
+ 79  83 107	q1v2 결 어둠2 blue2
+ 86  90 116	q1v2 결 어둠1 blue2
+ 97 105 149	q1v2 결 밝음1 blue2
+ 86 116  74	q1v2 결 어둠2 green
+ 93 126  80	q1v2 결 어둠1 green
+105 147 103	q1v2 결 밝음1 green
+ 69  98  61	q1v2 결 어둠2 green2
+ 74 106  65	q1v2 결 어둠1 green2
+ 84 124  84	q1v2 결 밝음1 green2
+ 53 123 129	q1v2 결 어둠2 teal
+ 58 133 140	q1v2 결 어둠1 teal
+ 65 155 180	q1v2 결 밝음1 teal
+ 64  64  47	q1v2 결 어둠2 char
+ 69  69  51	q1v2 결 어둠1 char
+ 78  81  65	q1v2 결 밝음1 char
+187 121 100	q1v2 결 어둠2 pink
+203 131 108	q1v2 결 어둠1 pink
+229 153 139	q1v2 결 밝음1 pink
+199 154 106	q1v2 결 어둠2 apricot
+215 166 115	q1v2 결 어둠1 apricot
+243 194 147	q1v2 결 밝음1 apricot
