@@ -337,12 +337,15 @@ face('STAIRS', [(SX1, SY0, 0), (SX1, YB, 0), (SX1, YB, C1), (SX1, SY0, C1)], 'pl
 PIVOT['STAIRS'] = Vector(((SX0 + SX1) / 2, (SY0 + YB) / 2, 0))
 zr = lambda x: SR + SR * (x - SX0) / ST + .9                                                                # 손잡이 = 단 코 + 90cm
 ry0, ry1 = SY0 + .01, SY0 + .05
-for x in (SX0 + .04, SX1 - .2):                                                                             # 기둥 2(첫 단·끝 단 위)
+# 2316 기능팀 "계단참 난간 끝 ~ 책장 0.41m, 사람 0.6m 못 지나감": 두 난간 동쪽 끝을 RE(13단 끝 x 3.05)로 당김 → 책장 모서리까지 0.86m.
+#   RE 동쪽 = 14·15단(바닥보다 0.4·0.2m 낮은 디딤)이라 열어도 됨. 그보다 깊은 낙차(≥ 0.6m) 위는 그대로 막힘. 계단·벽·책장·문 자리 그대로.
+RE = SX0 + 13 * ST
+for x in (SX0 + .04, RE - .06):                                                                             # 기둥 2(첫 단·13단 위)
     i = int((x - SX0) // ST); box('RAIL_STAIRS', x, x + .06, ry0, ry1, (i + 1) * SR, zr(x + .03) + .08, 'iron', ('bottom',))
-xa, xb = SX0 + .1, SX1 - .2
+xa, xb = SX0 + .1, RE - .06
 hexa('RAIL_STAIRS', [(xa, ry0 + .005, zr(xa)), (xb, ry0 + .005, zr(xb)), (xb, ry1 - .005, zr(xb)), (xa, ry1 - .005, zr(xa)),
                      (xa, ry0 + .005, zr(xa) + .05), (xb, ry0 + .005, zr(xb) + .05), (xb, ry1 - .005, zr(xb) + .05), (xa, ry1 - .005, zr(xa) + .05)], 'iron', ('left', 'right'))
-for i in range(1, SN_ - 1):                                                                                 # 살: 단마다 하나(디딤 가운데)
+for i in range(1, 13):                                                                                      # 살: 단마다 하나(디딤 가운데, 13단 기둥 앞까지)
     x = SX0 + (i + .5) * ST; box('RAIL_STAIRS', x - .01, x + .01, ry0 + .01, ry1 - .01, (i + 1) * SR, zr(x) + .02, 'iron', ('bottom', 'top'))  # 위끝 = 손잡이 속 2cm
 def rail_run(obj, x0, x1, y0, y1, z0, h=.95, skip_end=()):  # 2층 계단 구멍 난간(가로 = x 또는 y 긴 쪽): 위 손잡이 + 살 12cm
     alongx = (x1 - x0) > (y1 - y0); L = (x1 - x0) if alongx else (y1 - y0)
@@ -352,7 +355,7 @@ def rail_run(obj, x0, x1, y0, y1, z0, h=.95, skip_end=()):  # 2층 계단 구멍
         t = min(max(.03, k * .12), L - .03)
         if alongx: box(obj, x0 + t - .01, x0 + t + .01, y0 + .01, y1 - .01, z0, z0 + h, 'iron', ('bottom', 'top'))
         else: box(obj, x0 + .01, x1 - .01, y0 + t - .01, y0 + t + .01, z0, z0 + h, 'iron', ('bottom', 'top'))
-rail_run('RAIL_02', PW, SX1, SY0 - .05, SY0, H2, skip_end=('left',))         # 1729: 계단참 쪽만(서쪽 끝 = 칸막이 면 → skip). 부모님 쪽·서쪽 끝 난간은 벽 A·B 로 바뀜. 도착 x SX1..XI 는 비움
+rail_run('RAIL_02', PW, RE, SY0 - .05, SY0, H2, skip_end=('left',))          # 1729: 계단참 쪽만(서쪽 끝 = 칸막이 면 → skip). 부모님 쪽·서쪽 끝 난간은 벽 A·B 로 바뀜. 2316: 동쪽 끝 SX1 → RE(도착 x RE..XI 비움)
 # --- 1층 가구(낱개, 피벗 바닥 가운데) ---
 def chair(nm_, x0, x1, y0, y1, back_low):
     yb0 = y0 if back_low else y1 - .04

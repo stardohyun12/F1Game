@@ -14,7 +14,7 @@
   "d": 1.8
  },
  "glass": 18,
- "tris": 11210,
+ "tris": 11170,
  "objects": [
   "HOUSE_shell",
   "GLASS_01",
@@ -225,7 +225,7 @@
   2048,
   9344
  ],
- "faces": 5096,
+ "faces": 5076,
  "balusters": 88,
  "size_m": {
   "w": 8.6,
