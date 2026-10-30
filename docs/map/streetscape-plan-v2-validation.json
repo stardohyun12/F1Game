@@ -1,0 +1,70 @@
+{
+  "status": "PASS_SAVED_GEOMETRY_AND_WIRE_CONNECTIVITY",
+  "plan_sha256": "5213ce93906c618af88550aef4c1ef267edf0cf9869c144e043d0d07f43bf852",
+  "checker_sha256": "a5c4d2d3b4eaad8633ab817265a072bbfdc3242b2474d15eb7fc8a6795a175d3",
+  "mesh_sha256": "3c5b3d13acaa89d8240ea6ca1e14cdf6aad1f8b1ea7ce136e10726dd424f951f",
+  "scene_sha256": "fbf970ae797409686bd2a2fbdf9f3451a3529512f3cfee678508e59a37c1dd90",
+  "visible_top_surfaces_equal_colliders": true,
+  "elements": 1425,
+  "wire_spans": 402,
+  "sidewalk_wall_bands": 82,
+  "road_intrusions": 0,
+  "footprint_mismatches": 0,
+  "overlap_pairs": 0,
+  "band_intrusions": 0,
+  "wire_endpoint_or_length_errors": 0,
+  "isolated_poles": 0,
+  "road_chain_discontinuities": 0,
+  "junction_shared_support_failures": 0,
+  "wire_graph_components": 12,
+  "wire_graph_note": "Road islands can be disconnected; each planned road and shared junction is checked separately.",
+  "representative_sections": {
+    "tomo": {
+      "road_ids": [
+        "v2_tomo_1296983883_62_0",
+        "v2_tomo_1296983883_62_1",
+        "v2_tomo_1296983883_62_2",
+        "v2_tomo_1296983883_62_3",
+        "v2_tomo_1296983883_62_4"
+      ],
+      "wire_spans": 22,
+      "legacy_reference_station_m": 278,
+      "nearest_v2_distance_m": 0.034455070527637674,
+      "match_method": "source id when retained; nearest saved V2 strip when merged id is truncated"
+    },
+    "posi": {
+      "road_ids": [
+        "v2_posi_419759968_325_s0_4+posi_1567571332_~9e8c"
+      ],
+      "wire_spans": 34,
+      "legacy_reference_station_m": 122,
+      "nearest_v2_distance_m": 0.08540586425257027,
+      "match_method": "source id when retained; nearest saved V2 strip when merged id is truncated"
+    },
+    "ridge": {
+      "road_ids": [
+        "v2_camo_309378634_165_0",
+        "v2_camo_309378634_165_1",
+        "v2_camo_309378634_165_3+camo_309378634_165_4",
+        "v2_camo_309378634_165_5",
+        "v2_camo_309378634_165_6",
+        "v2_camo_309378634_165_7"
+      ],
+      "wire_spans": 19,
+      "legacy_reference_station_m": 90,
+      "nearest_v2_distance_m": 0.0898902424375389,
+      "match_method": "source id when retained; nearest saved V2 strip when merged id is truncated"
+    }
+  },
+  "mutation_fixtures": {
+    "pose_moved_into_road_detected": true,
+    "wire_detached_by_1m_detected": true
+  },
+  "density_status": "PARTIAL: per-camera deficits/excess remain; not a Unity visual gate",
+  "runtime": "NOT_TESTED_Unity_grounding_occlusion_roof_clearance",
+  "snapshot": "docs\\map\\streetscape-v2-inputs.zip",
+  "live_inputs_match": {
+    "mesh_sha256": false,
+    "scene_sha256": false
+  }
+}
