@@ -14,7 +14,7 @@
 | house_home | DOOR_BATH | house_home.png | 32 | P 32(33) | 100% | P 0.068 | P 0% | P 100% | 19 | P 0.21% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
 | house_home | DOOR_MOM | house_home.png | 32 | P 32(33) | 100% | P 0.068 | P 0% | P 100% | 19 | P 0.18% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
 | house_home | DOOR_ROOM | house_home.png | 22 | P 32(33) | 100% | P 0.069 | P 0% | P 100% | 19 | P 0.25% | P 0% | P 0 | **F** 0.61/54/73 | – | – | – | P 0% | P | 1 |
-| house_home | HOUSE_shell | house_home.png | 830 | P 32(32) | 100% | P 0.039 | P 1% | P 100% | 639 | **F** 15.39% | P 0% | **F** 1 | **F** 0.44/91/249 | – | – | – | P 0% | P | 4 |
+| house_home | HOUSE_shell | house_home.png | 830 | P 32(32) | 100% | P 0.039 | P 1% | P 100% | 638 | **F** 15.32% | P 0% | **F** 1 | **F** 0.44/91/249 | – | – | – | P 0% | P | 4 |
 | house_home | MAT_01 | house_home.png | 2 | P 64(64) | 100% | P 0.052 | P 0% | P 100% | 8 | **F** 8.38% | P 0% | P 0 | P 0.47/95/136 | – | – | – | P 0% | P | 1 |
 | house_home | PLANT_01 | house_home.png | 60 | P 64(64) | 100% | P 0.038 | P 2% | P 100% | 8 | **F** 4.39% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |
 | house_home | PLANT_02 | house_home.png | 60 | P 64(64) | 100% | P 0.037 | P 0% | P 100% | 8 | **F** 5.40% | P 0% | P 0 | P 0.42/112/188 | – | – | – | P 0% | P | 1 |

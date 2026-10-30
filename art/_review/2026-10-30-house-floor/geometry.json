@@ -1,0 +1,32 @@
+{
+  "foundation_unity_xz": [
+    -4.38,
+    4.38,
+    -3.08,
+    4.2
+  ],
+  "meshes": {
+    "ground": {
+      "before_tris": 8,
+      "after_tris": 26,
+      "y": 0.0,
+      "before_area": 900.0,
+      "after_area": 836.2272,
+      "removed_area": 63.77279999999999,
+      "residual_overlap_area": 0.0,
+      "uv_affine_check": true
+    },
+    "road": {
+      "before_tris": 4,
+      "after_tris": 11,
+      "y": 0.009999999776482582,
+      "before_area": 120.0,
+      "after_area": 96.34799999999998,
+      "removed_area": 23.652,
+      "residual_overlap_area": 0.0,
+      "uv_affine_check": true
+    }
+  },
+  "scope": "house_home studio only; source meshes untouched",
+  "pass": true
+}

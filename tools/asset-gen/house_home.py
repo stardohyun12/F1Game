@@ -109,7 +109,7 @@ box(SHELL, SITE['x_min'], SITE['x_max'], SITE['blender_y_min'], SITE['blender_y_
 for a, b, c, d in ((-WX - .08, WX + .08, TY, FY), (-WX - .08, WX + .08, BY, BY + .08), (-WX - .08, -WX, FY, BY), (WX, WX + .08, FY, BY)):
     face(SHELL, [(a, c, 0), (b, c, 0), (b, d, 0), (a, d, 0)], 'stone')
 EX = .9; EYB = FY + 1.1
-for a, b, c, d, p in ((-WX, -EX, FY, BY, 'pavers'), (EX, WX, FY, BY, 'pavers'), (-EX, EX, EYB, BY, 'pavers'), (-EX, EX, FY, EYB, 'stone')):
+for a, b, c, d, p in ((-WX, -EX, FY, BY, 'pavers'), (EX, WX, FY, BY, 'pavers'), (-EX, EX, EYB, BY, 'pavers'), (-EX, EX, FY, EYB, 'entry_stone')):
     face(SHELL, [(a, c, 0), (b, c, 0), (b, d, 0), (a, d, 0)], p)
 box(SHELL, DX0 - .25, DX1 + .25, TY - .32, TY, -.9, -.22, 'stone', ('back', 'bottom'))
 # ---------- 지붕(박공, 기와 E2) ----------

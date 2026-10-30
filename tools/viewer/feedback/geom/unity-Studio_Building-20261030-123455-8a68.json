@@ -1,0 +1,24 @@
+{
+ "id": "unity-Studio_Building-20261030-123455-8a68",
+ "point": [
+  0.422,
+  0,
+  -0.232
+ ],
+ "radius": 25.0,
+ "dry_offset": null,
+ "pass": true,
+ "items": [
+  {
+   "name": "Studio floor surfaces",
+   "problem": null,
+   "value": {
+    "triangles": 55,
+    "coplanar_pairs": [],
+    "interior_area": 51.6,
+    "expected_area": 51.6
+   },
+   "fix": null
+  }
+ ]
+}

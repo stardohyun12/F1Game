@@ -314,6 +314,12 @@ def h_field(k):  # 사진 명도 결(field() 와 같은 꼴) 128px, 표준편차
 def h_med(k, box=None): return np.median(np.asarray(h_photo(k, box), np.float64).reshape(-1, 3), 0)
 def h_paint(cell, col):
     x, y, w, h = cell['rect']; d = cell['dens']; pt = cell['pt']; rs = np.random.default_rng(cell['seed'])
+    if pt == 'entry_stone':
+        # 8a68: a dressed entry slab is not a rubble wall. Keep broad, low-contrast
+        # mineral variation; no photographic joints, baked shadows or pixel speckles.
+        vv, uu = np.mgrid[0:h, 0:w] / float(d)
+        mineral = .025 * np.sin(uu * 3.1 + vv * 1.7) + .018 * np.cos(vv * 4.3 - uu * 1.1)
+        return np.array([164., 163., 151.]) * (1 + mineral[..., None])
     if pt in ('roof', 'stone'):  # 사진 albedo 그대로(E2 = 2.0m, H1 = 2.5m 한 장) — 칸마다 다른 자리
         k, span = ('E2', 2.0) if pt == 'roof' else ('H1', 2.5); n = max(8, round(span * d))
         t = np.asarray(h_photo(k).resize((n, n), Image.BOX), np.float64)[::-1]
@@ -408,6 +414,8 @@ def h_quant(c):  # 128px 칸마다 median-cut 32 → 합친 색 = art/export/hou
     g_quant(c); p = c['exp'] / 'palette.gpl'; p.write_text(p.read_text(encoding='utf-8').replace('q2-garage (build_asset.py 2117', 'house-home (build_asset.py 0031'), encoding='utf-8')
 def h_unity(c):
     if Path(UCLI_PROJ).resolve() != (R / 'F1Studio').resolve(): raise SystemExit('house_home 검토는 F1Studio 에디터만 허용')
+    from house_studio_ground import prepare
+    ground_cut, _ = prepare()
     E, Lb = c['exp'], c['lib']; Lb.mkdir(parents=True, exist_ok=True)
     if not Lb.resolve().is_relative_to((R / 'F1Studio').resolve()): raise SystemExit('house_home 검토 산출물이 F1Studio 밖을 가리킴')
     for p in (E / c['fbx'], E / 'house_home.png'): copy_retry(p, Lb / p.name)
@@ -419,7 +427,7 @@ def h_unity(c):
     # D-204: 편집 모드에 예전 독립 room이 함께 켜져 집 안에 방 상자가 겹쳤다.
     # 검토 스튜디오의 대상만 활성화하여 저장; 원본 room 자산은 바꾸지 않는다.
     code = code.replace('UnityEditor.SceneManagement.EditorSceneManager.SaveScene(',
-                        'foreach (Transform child in slotT) child.gameObject.SetActive(child.name == "house_home");\nUnityEditor.SceneManagement.EditorSceneManager.SaveScene(')
+                        'foreach (Transform child in slotT) child.gameObject.SetActive(child.name == "house_home");\n' + ground_cut + '\nUnityEditor.SceneManagement.EditorSceneManager.SaveScene(')
     out = unity_exec(code); print('  ', out[:800])
     if 'error' in out.lower() or 'MISS' in out: raise SystemExit('house_home Unity 임포트 확인 필요: ' + out)
 
