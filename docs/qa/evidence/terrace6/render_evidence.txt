@@ -1,0 +1,8 @@
+w1_gate.png pos=(184.80, 25.97, -66.16) target=(196.60, 24.01, -70.50) fov=70
+w2_stair_foot.png pos=(197.60, 20.97, -77.60) target=(211.00, 22.19, -75.40) fov=70
+w3_walk_mid.png pos=(206.00, 22.01, -76.40) target=(215.60, 24.28, -72.00) fov=70
+w4_garage_stair.png pos=(215.60, 23.10, -75.20) target=(215.50, 27.97, -65.50) fov=70
+w5_alley.png pos=(215.60, 28.27, -64.30) target=(232.00, 27.87, -63.30) fov=70
+w6_garage_door.png pos=(231.50, 28.24, -62.00) target=(223.50, 28.12, -53.50) fov=70
+top_raw.png ortho center(215,-64) 80x45m 20px/m right=+x up=+z
+dirty=False playing=False

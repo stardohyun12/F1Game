@@ -35,6 +35,9 @@ public static class TerraceBlock
     const float SlopeMax=.6f,WallMinB=.45f,StoneBU=20f,StoneBV=4f;const bool PlaceGarden=false;static bool TwoStairs=false;
     const string StoneTexB=Folder+"TV6_RetainStoneB.png",CapBMat=Folder+"TV6_RetainCapB.mat",RiserMat=Folder+"TV6_StairRiser.mat",TuftAsset=Folder+"Mesh_TerraceBlock_tufts.asset";
     static readonly Color CapB=new Color(.6392f,.5765f,.4706f);
+    // 6차(D-213 「차고지로도 자연스럽게 걸어갈 수 있도록」): 큰길 북쪽 보도 → 곧은 돌계단(x≈214.5) → 차고 남쪽 벽 따라 포장 골목(차고 바닥 높이) → 차고 앞 마당 남쪽 가장자리.
+    //   골목 = 차고 뿌리 +x(남쪽) 벽에서 AlleyOut m 까지 평평 · 포장 띠 = 벽에서 AlleyPave0..1 m · 서쪽 끝 = 계단 머리 서쪽 1.2 m · 동쪽 끝 = 차고 사각형 끝(앞 마당)
+    const bool GarageWalk=true;const float GarageStairX=214.5f,AlleyOut=2.6f,AlleyPave0=.2f,AlleyPave1=1.6f;
     static readonly List<(Vector3 p,Vector2 n,float s)> Foot=new List<(Vector3,Vector2,float)>();
     public static readonly Vector3 HouseCenter=new Vector3(185,0,-61);
 
@@ -315,6 +318,29 @@ public static class TerraceBlock
             var yTop=HL(GX0+.2f,GZ1+2.5f);
             if(TwoStairs){if(WalkBack(new Vector2(210f,-74.8f),out var b2,out float y2))AddStair("stair_walk_yard",new List<Vector2>{b2,Vector2.Lerp(b2,yTop,.5f)+new Vector2(.5f,-.3f),yTop},y2,hHouse,1.6f);}
             else if(WalkBack(new Vector2(yTop.x+.8f,-76f),out var b2,out float y2))AddStair("stair_walk_yard",new List<Vector2>{b2,Vector2.Lerp(b2,yTop,.5f),yTop},y2,hHouse,1.6f);
+        }
+        // 6차: 보도는 Q_MART 자리(225,-71.5, 길 가장자리까지 차지)에서 x≈220 에 끊긴다 → 그 서쪽에서 차고 쪽으로 올라간다. 집·차고 둘 다 큰길 북쪽이라 길 건널 곳은 없음.
+        List<Vector2> alleyPave=null;float alleyH=0;string alleyNote="null";
+        if(GarageWalk)
+        {
+            var gar=GameObject.Find("D198_Buildings/D198_garage");
+            if(gar&&Footprint(gar.transform,0f,out _,out float gMin,out _,out float gx1,out _,out float gz1))
+            {
+                float gyaw=gar.transform.eulerAngles.y;var gq=Quaternion.Euler(0,gyaw,0);var gpos=gar.transform.position;
+                if(Vector3.Dot(gq*Vector3.right,Vector3.back)>.9f)   // 뿌리 +x 가 남쪽일 때만(yaw≈85)
+                {
+                    alleyH=gMin;
+                    Vector2 GL(float lx,float lz){var w=gpos+gq*new Vector3(lx,0,lz);return new Vector2(w.x,w.z);}
+                    float lzStair=(Quaternion.Inverse(gq)*(new Vector3(GarageStairX,0,gpos.z)-gpos)).z;
+                    var alley=Rect(gpos,gyaw,gx1-.2f,gx1+AlleyOut,lzStair-2f,gz1);
+                    owners.Add(new Owner{name="alley_garage",late=true,poly=alley,h=alleyH});
+                    alleyPave=Rect(gpos,gyaw,gx1+AlleyPave0,gx1+AlleyPave1,lzStair-1.2f,gz1);
+                    // 계단 머리 = 포장 판 바깥(남쪽) 모서리. 판 가운데로 들이면 마지막 두 디딤이 판(+3 cm, 0.3 m 두께) 밑으로 들어가 0.36 m 턱이 됐다.
+                    var sTop=GL(gx1+AlleyPave1,lzStair);
+                    if(WalkBack(new Vector2(sTop.x,-74f),out var b3,out float y3))AddStair("stair_walk_garage",new List<Vector2>{b3,Vector2.Lerp(b3,sTop,.5f),sTop},y3,alleyH,1.6f);
+                    alleyNote=$"{{\"h\":{alleyH:F2},\"lenM\":{(GL(0,lzStair-1.2f)-GL(0,gz1)).magnitude:F1},\"paveW\":{AlleyPave1-AlleyPave0:F1},\"west\":[{alleyPave[0].x:F1},{alleyPave[0].y:F1}],\"east\":[{alleyPave[2].x:F1},{alleyPave[2].y:F1}]}}";
+                }
+            }
         }
         // 라벨 덮기(보도 먼저, 계단이 위). 길 core·건물 바닥은 안 덮는다.
         for(int o=firstLate;o<owners.Count;o++)
@@ -623,6 +649,8 @@ public static class TerraceBlock
             for(float s=.3f;s<st.L-.3f;s+=.35f){var c=PolyAt(st.line,s);var dd=(PolyAt(st.line,Mathf.Min(st.L,s+.2f))-PolyAt(st.line,Mathf.Max(0,s-.2f))).normalized;var nn=new Vector2(-dd.y,dd.x);
                 foreach(int sd in new[]{1,-1}){var q=c+nn*sd*(st.width*.5f+.1f);Foot.Add((new Vector3(q.x,g.Sample(F,q.x,q.y),q.y),nn*sd,.8f));}}
         }
+        // 6차: 차고 골목 포장 판(윗면 = 차고 바닥 +3 cm, 0.3 m 두께) — 차고 앞 마당 남쪽 가장자리까지 이어져 「사람 다니는 띠」가 된다
+        if(alleyPave!=null)Box(av,at,auv,(alleyPave[0]+alleyPave[1])*.5f,(alleyPave[2]+alleyPave[3])*.5f,AlleyPave1-AlleyPave0,alleyH-.3f,alleyH+.03f);
         // 포장 UV: 윗면 = 월드 xz / 1.6 m, 옆면 = (가로, 높이) / 1.6 m
         var amesh=new Mesh{name="Mesh_TerraceBlock_walk",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32,subMeshCount=3};amesh.SetVertices(av);amesh.SetTriangles(at,0);amesh.SetTriangles(ac,1);amesh.SetTriangles(ar,2);amesh.RecalculateNormals();
         {var an=amesh.normals;for(int k=0;k<av.Count;k++){var p=av[k];var q=an[k];auv[k]=Mathf.Abs(q.y)>.5f?new Vector2(p.x,p.z)/PaveTile:(Mathf.Abs(q.x)>Mathf.Abs(q.z)?new Vector2(p.z,p.y):new Vector2(p.x,p.y))/PaveTile;}}
@@ -677,6 +705,7 @@ public static class TerraceBlock
         string f2(float x)=>x.ToString("F2");
         js.Append("\"terrain\":{\"vertsBefore\":"+origCount+",\"vertsAfter\":"+V.Count+",\"refinePasses\":"+passes+",\"changed\":"+changedV+",\"keptRoadZone\":"+keptRoad+",\"tJunctionsStitched\":"+tFixed+",\"maxCut\":"+f2(maxCut)+",\"maxFill\":"+f2(maxFill)+"},");
         js.Append("\"walls\":{\"sections\":"+sections+",\"lengthM\":"+wallLen.ToString("F1")+",\"maxH\":"+f2(wallMax)+",\"over2_65mLen\":"+tallLen.ToString("F1")+",\"meanH\":"+f2(wallLen>0?wallSum/wallLen:0)+",\"copingStones\":"+stones+",\"verts\":"+wv.Count+",\"byOwner\":{"+string.Join(",",perOwner.Select(kv=>"\""+kv.Key+"\":"+kv.Value.ToString("F1")))+"}},");
+        js.Append("\"alleyGarage\":"+alleyNote+",");
         js.Append("\"ledges\":["+string.Join(",",ledgeInfo)+"],\"tufts\":"+tufts+",\"footPts\":"+Foot.Count+",\"smoothedNormals\":"+smoothedN+",\"risersTri\":"+ar.Count/3+",");
         js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"halfW\":"+YardPathHalf+",\"h\":"+f2(hHouse)+"},");
         js.Append("\"garden\":{"+gardenNote+",\"h\":"+f2(hHouse)+"},\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
