@@ -151,6 +151,9 @@ def geom_gate(a, d):
     try:
         ok, items, out = fb_geom.run(d["id"])
     except RuntimeError as e:
+        if "지형 콜라이더 없음" in str(e):   # 스튜디오 씬(지형 없음) — 땅 검사 대상 아님, 건너뜀(10/30)
+            print("fb_geom 건너뜀(지형 없는 씬)")
+            return
         sys.exit("fb_geom 조사 실패 — fixed 안 함: " + str(e))
     if ok:
         print("fb_geom PASS →", os.path.relpath(out, ROOT).replace("\\", "/"))

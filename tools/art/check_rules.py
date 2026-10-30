@@ -34,7 +34,7 @@ PROP_OBJ = re.compile(r'ROOM_(furniture|props|vest)|Q3_inside_parcels|Q3_front_g
                       r'^(PARCEL|SHELF|COUNTER|CART|TABLE|RACK|PROP|JACKET|MAIL|CHAIR|POBOX|POBOX_DOOR|BIKE|POSTBOX|POT|PLANTER|CURTAIN)_\d+$|^CLOCK|'
                       r'^(RUG|BED|PILLOW|FUTON|DESK|VEST|BOOK|BOOKS|CALENDAR|PHOTO|WALLCLOCK|CERT|RADIO|MAGAZINE|NOTEBOOK|PENCIL|PIGGY|MUG|SHIRT|BOX|'
                       r'SLIPPER|SHOE|BAG|CORD|PLANT|KART|KNOB|HOOK|TOWEL|LAMP|SWITCH|SOCKET|DOOR|SHUTTER|RAIL)_\d+$|'
-                      r'^(APRON|BASKET|MAT|VASE)_\d+$|^(SINK|SOFA|STOVE|CUPBOARD|SHOERACK|STAIRS)$|^(TABLE|RAIL|DOOR)_[A-Z]+$')  # 0351 집 안 낱개  # 2230 우체국 낱개 · 2303 방 낱개
+                      r'^(APRON|BASKET|MAT|VASE|CUP|PEPPER|SALT|PLATE|PAN|PENDANT|BEDLIGHT|NIGHTSTAND|DRESSER|MIRROR|WASTE)_\d+$|^(SINK|SOFA|STOVE|CUPBOARD|SHOERACK|STAIRS)$|^(TABLE|RAIL|DOOR)_[A-Z]+$')  # 0351 집 안 낱개  # 2230 우체국 낱개 · 2303 방 낱개
 PRINT_OBJ = re.compile(r'^(PHOTO|CERT|CALENDAR|WALLCLOCK|POSTER)_\d+$')  # 2303: 인쇄물(사진·상장·달력·시계판·포스터) = 글씨 판정 — 옛 obj 'poster' · 정비소 memory 사진과 같은 취급(그림 자체가 잔결이라 결 상한 대신 AA)
 BOARD_OBJ = re.compile(r'^(PEGBOARD|POSTER|FESTIVAL|BOARD)_\d+$')  # 2148 PD 결정: 공구판·포스터·게시판·기록판 = 32 또는 64
 PROP_STEMS = {'garage_props', 'garage_details', 'garage_lamp', 'garage_memory_1', 'garage_memory_2', 'garage_memory_3',

@@ -1,0 +1,3 @@
+if (UnityEditor.EditorUtility.scriptCompilationFailed) throw new System.Exception("Compilation failed: refusing to build stale assembly");
+if (UnityEditor.EditorApplication.isPlaying) throw new System.Exception("Play active");
+return BuildBayLoop.RoadNetV2BuildAll();

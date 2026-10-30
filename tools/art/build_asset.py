@@ -17,7 +17,7 @@
   check    tools/art/check_rules.py --only <건물> --gate (텍셀·원통·글씨 포함) → docs/art/rule-audit/last_<건물>.md
 사진(CC0, Poly Haven): white_plaster_02, rubberized_track — 출처 grain_1722/1736 과 같음. AI 이미지 없음.
 """
-import sys, os, json, shutil, subprocess, hashlib, time
+import sys, os, json, shutil, subprocess, hashlib, time, math
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageFilter
@@ -330,9 +330,13 @@ def h_paint(cell, col):
             'soffit': 'soffit', 'iron': 'iron', 'soil': 'soil', 'leaf': 'leaf', 'flower': 'flower', 'brass': 'brass',
             'pane': 'pane', 'curtain': 'curtain', 'chair': 'soffit',  # 0052: 창 유리 안쪽(어두운 방) · 부엌 커튼 · 나무 의자
             'plaster': 'plaster', 'ceil': 'ceil', 'wainlow': 'wain', 'rwall': 'rwall', 'boards': 'boards', 'glass': 'glass', 'steel': 'steel', 'sinktop': 'steel',
-            'stovetop': 'stove', 'cabinet': 'cabinet', 'counter': 'trim', 'sofa': 'sofa', 'cushion': 'cushion', 'apron': 'apron', 'basket': 'basket', 'mat': 'mat'}[pt]  # 0351 집 안
+            'stovetop': 'stove', 'cabinet': 'cabinet', 'counter': 'trim', 'sofa': 'sofa', 'cushion': 'cushion', 'apron': 'apron', 'basket': 'basket', 'mat': 'mat',  # 0351 집 안
+            'plastic': 'plastic', 'ceramic': 'ceramic', 'coffee': 'coffee', 'shoecab': 'shoecab', 'sole': 'sole', 'leather': 'leather', 'hand': 'sole', 'shade': 'shade',
+            'bulb': 'bulb', 'rug': 'rug', 'pepper': 'pepper', 'pan': 'pan', 'pantop': 'pan', 'fridge': 'fridge', 'fridgef': 'fridge', 'bin': 'bin', 'bedding': 'bedding',
+            'quilt': 'quilt', 'drawer': 'soffit', 'wardrobe': 'wardrobe', 'wardrobef': 'wardrobe', 'dresserf': 'soffit', 'mirror': 'mirror', 'clockface': 'clockface'}[pt]  # 0133 생활감
     A = np.ones((h, w, 3)) * col[base]
-    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD', 'boards': 'WOOD', 'basket': 'WOOD', 'cabinet': 'C2'}.get(pt, 'A2')
+    fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD', 'boards': 'WOOD', 'basket': 'WOOD', 'cabinet': 'C2',
+          'shoecab': 'WOOD', 'drawer': 'WOOD', 'wardrobe': 'WOOD', 'wardrobef': 'WOOD', 'dresserf': 'WOOD'}.get(pt, 'A2')
     f = np.roll(np.tile(h_field(fk), (h // 128 + 2, w // 128 + 2)), (rs.integers(128), rs.integers(128)), (0, 1))[:h, :w]
     if pt in ('door', 'soffit', 'chair', 'boards'): f = np.rot90(np.tile(h_field(fk), (w // 128 + 2, h // 128 + 2)), 1)[:h, :w]  # 나무 결 = 판 방향
     vv, uu = np.mgrid[0:h, 0:w]
@@ -367,6 +371,27 @@ def h_paint(cell, col):
     if pt == 'mat': A[(uu < 2) | (uu >= w - 2) | (vv < 2) | (vv >= h - 2)] *= .8
     if pt == 'apron': A[(uu % 6 < 1) | (vv % 6 < 1)] = col['apron'] * .6 + col['trim'] * .4  # 바랜 체크
     if pt == 'pavers' and w > 6 and h > 6: A[(uu % 10 == 9) | (vv % 10 == 9)] *= .82  # 30cm 타일 줄눈
+    # 0133 도현 "생활감" 물건 무늬 — 색은 사진 중앙값(A2·C2·WOOD·E2)에서 파생, 줄·점은 64px/m 위치(미터 → px)
+    if pt in ('shoecab', 'wardrobef') and w > 6: A[uu == w // 2] *= .72                                     # 두 짝 문 가운데 틈
+    if pt == 'shoecab' and h > 6: A[vv == m(.5)] *= .75
+    if pt == 'wardrobef' and w > 6 and h > 6: A[(abs(uu - w // 2) == 3) & (vv > m(.9)) & (vv < m(1.2))] = col['brass'] * [1, .95, .85]   # 문 손잡이 2
+    if pt == 'dresserf' and w > 6 and h > 6:
+        for fr in (.28, .56): A[vv == m(fr)] *= .7
+        for fr in (.14, .42, .7): A[(abs(vv - m(fr)) <= 1) & (abs(uu - w // 2) <= 2)] = col['brass'] * [1, .95, .85]
+    if pt == 'drawer' and w > 6 and h > 6:
+        A[vv == h // 2] *= .7
+        for fr in (.25, .75): A[(abs(vv - int(h * fr)) <= 1) & (abs(uu - w // 2) <= 2)] = col['brass'] * [1, .95, .85]
+    if pt == 'fridgef' and h > 8: A[vv == m(1.2)] *= .72; A[(vv == m(.8) - 4)] *= .9
+    if pt == 'rug' and w > 8 and h > 8:
+        A[(uu < m(.05)) | (uu >= w - m(.05)) | (vv < m(.05)) | (vv >= h - m(.05))] *= .72    # 가장자리 5cm 띠
+        A[(uu % m(.14) < 2) & (uu > m(.1)) & (uu < w - m(.1))] *= .9                          # 줄무늬 14cm
+    if pt == 'quilt' and w > 8 and h > 8: A[(uu % m(.1) == 0) | (vv % m(.1) == 0)] *= .9      # 누빔 10cm 칸
+    if pt == 'mirror' and w > 6 and h > 6: A[(uu < 2) | (uu >= w - 2) | (vv < 2) | (vv >= h - 2)] *= .62
+    if pt == 'pantop' and w > 6:  # 계란 후라이: 바닥 동그라미 흰자 + 노른자
+        r = np.hypot(uu - w / 2., vv - h / 2.); A[r < m(.075)] = [234., 230., 218.]; A[r < m(.03)] = [222., 164., 48.]
+    if pt == 'clockface' and w > 6:  # 문자판: 12 눈금(바깥 1~2px)
+        for k in range(12):
+            a = k * math.pi / 6; px_, py_ = w / 2. + math.cos(a) * m(.14), h / 2. + math.sin(a) * m(.14); A[(abs(uu - px_) <= .8) & (abs(vv - py_) <= .8)] *= .45
     lum = A @ [.299, .587, .114]
     for kind in ('paint', 'rubber'):
         sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]
@@ -392,6 +417,12 @@ def h_grain(c):
                boards=col['door'] * 1.35, glass=np.array([186., 214., 226.]), steel=np.array([150., 156., 158.]), stove=np.array([54., 56., 58.]),
                cabinet=col['shutter'] * 1.45, sofa=np.array([98., 116., 132.]), cushion=np.array([112., 132., 148.]), apron=np.array([184., 92., 86.]),
                basket=np.array([178., 140., 92.]), mat=np.array([124., 90., 66.]))
+    # 0133 생활감 물건 색 — 사진 중앙값(A2 벽·C2 덧창·WOOD 문·E2 지붕)에서 파생(재질 어림 = 흰 석회·도자·가죽·고무·나무). 빛·그림자 굽지 않음
+    col.update(plastic=col['trim'] * [.78, .84, .9], ceramic=col['trim'] * [1.0, 1.0, .97], coffee=np.array([62., 40., 28.]), shoecab=col['door'] * 1.25,
+               sole=np.array([34., 34., 36.]), leather=np.array([96., 64., 46.]), shade=np.array([226., 204., 156.]), bulb=np.array([250., 236., 188.]),
+               rug=col['terra'] * [.92, .86, .82], pepper=np.array([44., 38., 34.]), pan=np.array([44., 46., 48.]), fridge=col['steel'] * [1.22, 1.2, 1.18],
+               bin=col['iron'] * [1.4, 1.45, 1.4], bedding=col['trim'] * [.96, .96, .98], quilt=col['curtain'] * [.74, .6, .6] + [12., 6., 6.],
+               wardrobe=col['door'] * 1.35, mirror=np.array([150., 176., 186.]), clockface=col['trim'] * [1., .98, .92])
     A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
     for (x, y, w, h), t in P:  # 0419: 3px edge dilation으로 얇은 면 주변 검은 빈칸 제거.
         e = np.pad(t, ((3, 3), (3, 3), (0, 0)), mode='edge')
@@ -426,6 +457,12 @@ def h_unity(c):
     code = code.replace('foreach (var e in POSE) AssetDatabase.ImportAsset(L + "/" + e.nm + "/" + e.nm + ".prefab", ImportAssetOptions.ForceUpdate);', 'AssetDatabase.ImportAsset("Assets/Art/Review/house_home/house_home.prefab", ImportAssetOptions.ForceUpdate);')
     # D-204: 편집 모드에 예전 독립 room이 함께 켜져 집 안에 방 상자가 겹쳤다.
     # 검토 스튜디오의 대상만 활성화하여 저장; 원본 room 자산은 바꾸지 않는다.
+    # 0133 도현 "방 2개": 주인공 방 = 집 오른쪽 끝(x +2.4) · 문 없는 출입구 자리의 문손잡이 제거 · 천장 펜던트마다 따뜻한 점광원(자식 Light)
+    code = code.replace('new Vector3(0, 3.2f, 1.35f) - off', 'new Vector3(-2.4f, 3.2f, 1.35f) - off')
+    code = code.replace('log.Append(" room shell dropped, lamp "',
+                        'foreach (var kn in ri.GetComponentsInChildren<Transform>(true).Where(t => t.name == "KNOB_01").ToArray()) UnityEngine.Object.DestroyImmediate(kn.gameObject);\n'
+                        '    foreach (var pn in root.GetComponentsInChildren<Transform>(true).Where(t => t.name.StartsWith("PENDANT_") || t.name.StartsWith("BEDLIGHT_")).ToArray()) { var lg = new GameObject("Light"); lg.transform.SetParent(pn, false); lg.transform.position = pn.position + Vector3.up * (pn.name.StartsWith("PENDANT_") ? 0.1f : 0.1f); var li = lg.AddComponent<Light>(); li.type = LightType.Point; li.color = new Color(1f, .82f, .55f); li.range = pn.name.StartsWith("PENDANT_") ? 4.2f : 2.2f; li.intensity = pn.name.StartsWith("PENDANT_") ? 1.1f : 0.6f; li.shadows = LightShadows.None; }\n'
+                        '    log.Append(" room shell dropped, lamp "')
     code = code.replace('UnityEditor.SceneManagement.EditorSceneManager.SaveScene(',
                         'foreach (Transform child in slotT) child.gameObject.SetActive(child.name == "house_home");\n' + ground_cut + '\nUnityEditor.SceneManagement.EditorSceneManager.SaveScene(')
     out = unity_exec(code); print('  ', out[:800])

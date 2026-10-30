@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-133255-867e",
+ "time": "2026-10-30T14:15:06+09:00",
+ "before": "shots/unity-Studio_Building-20261030-133255-867e.png",
+ "after": "shots/unity-Studio_Building-20261030-133255-867e_after.png",
+ "comment": "전등하고 테이블 그리고 실제 사는 집처럼 생활감 있는 요소들좀 후추통,후라이팬,신발장,시계 같은것들",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에는 전등 2개, 식탁 위 식기류와 후추통으로 보이는 소품, 신발과 신발장, 테이블 밑 러그가 추가돼 생활감이 눈에 띄게 늘었다. 시계와 후라이팬은 뚜렷하게 보이지 않는다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽에는 천장 전등과 식탁 위 식기·소품, 신발장과 신발이 추가되어 감독이 지적한 생활감 부족이 개선됐다."
+  }
+ },
+ "pass": true
+}

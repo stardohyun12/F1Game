@@ -24,12 +24,12 @@
       8.25,
       8.15
     ],
-    "tris": 2794,
-    "nodes": 65,
-    "mesh_nodes": 55,
-    "bytes": 891104,
+    "tris": 4336,
+    "nodes": 101,
+    "mesh_nodes": 85,
+    "bytes": 1113196,
     "source": "art/export/house-home/house_home.fbx",
-    "exported": "2026-10-30 13:08:23"
+    "exported": "2026-10-30 14:09:05"
   },
   {
     "name": "garage",

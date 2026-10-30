@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-133056-fa9f",
+ "time": "2026-10-30T14:14:43+09:00",
+ "before": "shots/unity-Studio_Building-20261030-133056-fa9f.png",
+ "after": "shots/unity-Studio_Building-20261030-133056-fa9f_after.png",
+ "comment": "방 마다 문 만들어두지 말고 2층 전체를 방으로",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에는 방마다 달린 문이 사라졌고, 벽 하나가 트여서 침대, 옷장, 책상이 한 공간으로 이어져 보여서 2층 전체가 하나의 방처럼 바뀌었다."
+  },
+  "astra": {
+   "verdict": "YES",
+   "reason": "오른쪽에도 큰 칸막이벽과 왼쪽 출입구가 남아 있어, 2층 전체가 하나의 방으로 연결되지 않았습니다."
+  }
+ },
+ "pass": false
+}

@@ -1,0 +1,138 @@
+    // Geometry design adapted from Acid3croco/berat-racer, tools/roads/junction.py
+    // ff79911c14930a3d099f61dec2254d638bb061b2 (MIT): facing-kerb trims,
+    // clear mouths, swallow short links, union stubs, shared mouth coordinates, one junction plane.
+    // Independent C# implementation; polygon operations use vendored Clipper2 (Boost-1.0).
+    sealed class V2J
+    {
+        public int n;
+        public List<int> nodes = new List<int>();
+        public List<(V2L c, bool st, Vector3 u)> inc = new List<(V2L, bool, Vector3)>();
+        public List<V2L> internalLinks = new List<V2L>();
+    }
+    static Vector3 V2At(List<Vector3> p, float d)
+    {
+        for(int i=1;i<p.Count;i++) { float l=Fl(p[i]-p[i-1]).magnitude; if(d<=l) return Vector3.Lerp(p[i-1],p[i],d/Mathf.Max(l,1e-6f)); d-=l; }
+        return p[p.Count-1];
+    }
+    static List<Vector3> V2Outward(V2L c,bool st) { var p=c.p.ToList(); if(!st)p.Reverse(); return p; }
+    static Clipper2Lib.PathD V2Path(IEnumerable<Vector3> points)
+    {
+        var p=new Clipper2Lib.PathD(points.Select(q=>new Clipper2Lib.PointD(q.x,q.z)));
+        if(Clipper2Lib.Clipper.Area(p)<0)p.Reverse(); return p;
+    }
+    static List<Vector3> V2Outline(List<Vector3> band)
+    {
+        var p=new List<Vector3>(); for(int i=0;i<band.Count;i+=2)p.Add(band[i]);
+        for(int i=band.Count-1;i>=0;i-=2)p.Add(band[i]); return p;
+    }
+    static List<V2J> V2PrepareJunctions(List<V2L> chains,List<Vector3> nodes,Dictionary<int,float> heights,List<string> log)
+    {
+        var fans=new Dictionary<int,List<(V2L c,bool st,Vector3 u)>>();
+        foreach(var c in chains) foreach(bool st in new[]{true,false}) {
+            int n=st?c.n0:c.n1; if(!fans.TryGetValue(n,out var fan))fans[n]=fan=new List<(V2L,bool,Vector3)>();
+            fan.Add((c,st,V2Dir(c.p,st)));
+        }
+        var outlines=chains.ToDictionary(c=>c,c=>V2Outline(V2BandVerts(c.p,c.w*.5f,0)));
+        var distance=chains.ToDictionary(c=>c,c=>V2Len(c.p));
+        foreach(var pair in fans) {
+            var fan=pair.Value; if(fan.Count<2||!V2In(nodes[pair.Key]))continue;
+            fan.Sort((a,b)=>Mathf.Atan2(a.u.z,a.u.x).CompareTo(Mathf.Atan2(b.u.z,b.u.x)));
+            var paths=fan.Select(a=>V2Outward(a.c,a.st)).ToList();
+            var bands=fan.Select((a,i)=>V2BandVerts(paths[i],a.c.w*.5f,0)).ToList();
+            var trims=Enumerable.Repeat(2f,fan.Count).ToArray();
+            for(int i=0;i<fan.Count;i++) {
+                int j=(i+1)%fan.Count; float sa=0; bool found=false;
+                for(int a=0;a+3<bands[i].Count&&!found;a+=2) {
+                    float sb=0;
+                    for(int b=1;b+2<bands[j].Count;b+=2) {
+                        if(V2SegX(bands[i][a],bands[i][a+2],bands[j][b],bands[j][b+2],out float t,out float u)) {
+                            var da=Fl(paths[i][a/2+1]-paths[i][a/2]); var db=Fl(paths[j][b/2+1]-paths[j][b/2]);
+                            float theta=Vector3.Angle(da,db)*Mathf.Deg2Rad;
+                            float tangent=Mathf.Clamp(V2Rc/Mathf.Max(.001f,Mathf.Tan(theta*.5f)),1f,8f);
+                            trims[i]=Mathf.Max(trims[i],sa+da.magnitude*t+tangent);
+                            trims[j]=Mathf.Max(trims[j],sb+db.magnitude*u+tangent); found=true; break;
+                        }
+                        sb+=Fl(paths[j][b/2+1]-paths[j][b/2]).magnitude;
+                    }
+                    sa+=Fl(paths[i][a/2+1]-paths[i][a/2]).magnitude;
+                }
+            }
+            for(int i=0;i<fan.Count;i++) {
+                float limit=distance[fan[i].c]-.5f; trims[i]=Mathf.Min(trims[i],limit);
+                for(;trims[i]<limit;trims[i]+=.5f) {
+                    var q=V2At(paths[i],trims[i]); var u=Fl(V2At(paths[i],trims[i]+.1f)-V2At(paths[i],Mathf.Max(0,trims[i]-.1f))).normalized;
+                    var left=new Vector3(-u.z,0,u.x)*fan[i].c.w*.5f; bool blocked=false;
+                    for(int j=0;j<fan.Count&&!blocked;j++) if(j!=i&&fan[i].c!=fan[j].c)
+                        for(int s=0;s<=4;s++) if(V2PolyE(outlines[fan[j].c],q+left*(s*.5f-1f),out _) < -.02f) {blocked=true;break;}
+                    if(!blocked)break;
+                }
+                if(fan[i].st)fan[i].c.d0=trims[i];else fan[i].c.d1=trims[i];
+            }
+        }
+        var parent=nodes.Select((_,i)=>i).ToArray();
+        int Root(int n){while(parent[n]!=n)n=parent[n]=parent[parent[n]];return n;}
+        foreach(var c in chains) if(c.d0>0&&c.d1>0&&c.d0+c.d1>=distance[c]-1f) parent[Root(c.n1)]=Root(c.n0);
+        var groups=new Dictionary<int,V2J>();
+        foreach(var pair in fans) if(pair.Value.Count>=2&&V2In(nodes[pair.Key])) {
+            int r=Root(pair.Key); if(!groups.TryGetValue(r,out var j))groups[r]=j=new V2J{n=r}; j.nodes.Add(pair.Key);
+        }
+        foreach(var j in groups.Values) {
+            float y=j.nodes.Average(n=>heights[n]); foreach(int n in j.nodes)heights[n]=y;
+            foreach(var c in chains) {
+                bool a=j.nodes.Contains(c.n0),b=j.nodes.Contains(c.n1);
+                if(a&&b)j.internalLinks.Add(c);
+                else {if(a)j.inc.Add((c,true,V2Dir(c.p,true)));if(b)j.inc.Add((c,false,V2Dir(c.p,false)));}
+            }
+        }
+        var swallowed=groups.Values.SelectMany(j=>j.internalLinks).Distinct().ToList();
+        foreach(var c in swallowed) chains.Remove(c);
+        log.Add($"입구 겹침 제거: 갈림목 {groups.Count}, 짧은 연결로 흡수 {swallowed.Count}, 최대 자름 {chains.Max(c=>Mathf.Max(c.d0,c.d1)):F1}m");
+        return groups.Values.ToList();
+    }
+    static Clipper2Lib.PathsD V2JunctionSurface(V2J junction,Dictionary<V2L,List<Vector3>> original,Dictionary<V2L,List<Vector3>> bands,List<Vector3> nodes)
+    {
+        var pieces=new Clipper2Lib.PathsD(); var cuts=new Clipper2Lib.PathsD();
+        foreach(var c in junction.internalLinks)pieces.Add(V2Path(V2Outline(V2BandVerts(original[c],c.w*.5f,0))));
+        foreach(var a in junction.inc) cuts.Add(V2Path(V2Outline(bands[a.c])));
+        foreach(int node in junction.nodes) {
+            var fan=new List<(Vector3 A,Vector3 B,Vector3 u,List<Vector3> left,List<Vector3> right)>();
+            foreach(var c in original.Keys) foreach(bool st in new[]{true,false}) {
+                if((st?c.n0:c.n1)!=node)continue;
+                var path=original[c].ToList(); if(!st)path.Reverse();
+                bool internalLink=junction.internalLinks.Contains(c); if(!internalLink&&!junction.inc.Any(a=>a.c==c&&a.st==st))continue;
+                float trim=internalLink?Mathf.Min(3f,V2Len(path)*.5f):(st?c.d0:c.d1);
+                var full=V2BandVerts(path,c.w*.5f,0); var left=new List<Vector3>();var right=new List<Vector3>();float run=0;
+                for(int i=0;i<path.Count;i++) {if(i>0)run+=Fl(path[i]-path[i-1]).magnitude;if(run>=trim-.01f)break;left.Add(full[i*2]);right.Add(full[i*2+1]);}
+                Vector3 A,B,u;
+                if(internalLink) {
+                    var mid=V2At(path,trim);u=Fl(V2At(path,trim+.1f)-V2At(path,trim-.1f)).normalized;
+                    var normal=new Vector3(-u.z,0,u.x)*c.w*.5f;A=mid+normal;B=mid-normal;
+                } else {
+                    var band=bands[c]; int m=band.Count; A=st?band[0]:band[m-1];B=st?band[1]:band[m-2];
+                    u=st?Fl(c.p[1]-c.p[0]).normalized:Fl(c.p[c.p.Count-2]-c.p[c.p.Count-1]).normalized;
+                }
+                left.Add(A);right.Add(B);var stub=new List<Vector3>(right);stub.Reverse();stub.AddRange(left);pieces.Add(V2Path(stub));
+                fan.Add((A,B,u,left,right));
+            }
+            fan=fan.OrderBy(a=>Mathf.Atan2((a.A+a.B).z*.5f-nodes[node].z,(a.A+a.B).x*.5f-nodes[node].x)).ToList();
+            for(int i=0;i<fan.Count;i++) {
+                var a=fan[i];var b=fan[(i+1)%fan.Count];var poly=new List<Vector3>(a.left); var control=(a.A+b.B)*.5f;
+                if(V2LineX(a.A,a.u,b.B,b.u,out float t,out float s)&&t<=0&&s<=0&&t>-30&&s>-30)control=a.A+a.u*t;
+                for(int k=1;k<8;k++){float t0=k/8f;poly.Add((1-t0)*(1-t0)*a.A+2*(1-t0)*t0*control+t0*t0*b.B);}
+                poly.AddRange(b.right.AsEnumerable().Reverse());pieces.Add(V2Path(poly));
+            }
+        }
+        var union=Clipper2Lib.Clipper.Union(pieces,null,Clipper2Lib.FillRule.NonZero,4);
+        return Clipper2Lib.Clipper.Difference(union,cuts,Clipper2Lib.FillRule.NonZero,4);
+    }
+    static void V2MakeUnionJunction(Transform parent,string name,Clipper2Lib.PathsD surface,float y,V2L main,List<Mesh> meshes,List<(int obj,Vector3 a,Vector3 b,Vector3 c)> topTris,int obj)
+    {
+        var result=Clipper2Lib.Clipper.Triangulate(surface,4,out var triangles);
+        if(result!=Clipper2Lib.TriangulateResult.success)throw new System.InvalidOperationException(name+" triangulation "+result);
+        var v=new List<Vector3>();var t=new List<int>();var map=new Dictionary<(int,int),int>();
+        int Add(Clipper2Lib.PointD p){var key=(Mathf.RoundToInt((float)p.x*10000),Mathf.RoundToInt((float)p.y*10000));if(!map.TryGetValue(key,out int k)){map[key]=k=v.Count;v.Add(new Vector3((float)p.x,y,(float)p.y));}return k;}
+        foreach(var tri in triangles){int a=Add(tri[0]),b=Add(tri[1]),c=Add(tri[2]);if(Vector3.Cross(v[b]-v[a],v[c]-v[a]).y<0)(b,c)=(c,b);if(Vector3.Cross(v[b]-v[a],v[c]-v[a]).y<=1e-7f)continue;t.AddRange(new[]{a,b,c});topTris.Add((obj,v[a],v[b],v[c]));}
+        var go=V2Go(parent,name,v,t,v,t,main.mat,meshes);
+        var rs=go.AddComponent<RoadSurface>();rs.roadId="v2_"+name;rs.kind=main.kind;rs.roughness=main.rough;rs.width=main.w;
+        rs.centerline=new[]{v[0],v[0]+Vector3.forward*.1f};rs.closed=false;
+    }

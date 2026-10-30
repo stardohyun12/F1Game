@@ -1,0 +1,17 @@
+var root = UnityEngine.GameObject.Find("TownV6_Gray").transform;
+var rows = new System.Collections.Generic.List<object>();
+foreach (var mf in root.GetComponentsInChildren<UnityEngine.MeshFilter>(true)) {
+ if (!mf.name.StartsWith("ROAD_")) continue;
+ var rs = mf.GetComponent<RoadSurface>();
+ var col = mf.GetComponent<UnityEngine.MeshCollider>();
+ var mesh = col != null && col.sharedMesh != null ? col.sharedMesh : mf.sharedMesh;
+ rows.Add(new {name=mf.name, active=mf.gameObject.activeInHierarchy, kind=rs != null ? rs.kind : "path", width=rs != null ? rs.width : 0,
+  points=rs != null && rs.centerline != null ? rs.centerline.Select(q=>new[]{q.x,q.y,q.z}).ToArray() : null,
+  v=mesh.vertices.Select(q=>mf.transform.TransformPoint(q)).Select(q=>new[]{q.x,q.y,q.z}).ToArray(), t=mesh.triangles});
+}
+var terrain=root.Find("TownV6_Terrain");
+var current=terrain.GetComponent<UnityEngine.MeshFilter>().sharedMesh;
+var original=UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Mesh>("Assets/Scenes/Map_TownV6_Mats/Mesh_TownV6_Terrain_0433.asset");
+return Newtonsoft.Json.JsonConvert.SerializeObject(new {roads=rows,
+ terrain=new{v=current.vertices.Select(q=>terrain.TransformPoint(q)).Select(q=>new[]{q.x,q.y,q.z}).ToArray(), t=current.triangles,
+ original=original.vertices.Select(q=>terrain.TransformPoint(q)).Select(q=>new[]{q.x,q.y,q.z}).ToArray()}});

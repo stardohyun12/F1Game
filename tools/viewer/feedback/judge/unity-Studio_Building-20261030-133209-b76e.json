@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-133209-b76e",
+ "time": "2026-10-30T14:14:55+09:00",
+ "before": "shots/unity-Studio_Building-20261030-133209-b76e.png",
+ "after": "shots/unity-Studio_Building-20261030-133209-b76e_after.png",
+ "comment": "부모님 방하고 플레이어방 2개 이렇게 놓는게 좋을듯",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "왼쪽의 문 3개가 오른쪽에서는 방 2개로 바뀌었다. 왼쪽 열린 입구 안쪽에 플레이어 방 같은 방이 있고, 난간 너머에 침대와 옷장이 있는 부모님 방이 있어서 감독이 말한 2개 배치가 보인다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽은 부모님 방과 플레이어 방으로 보이는 두 공간이 배치되어 있어, 방 2개로 구성하라는 지적이 반영됐다."
+  }
+ },
+ "pass": true
+}

@@ -1,0 +1,7 @@
+if (UnityEditor.EditorUtility.scriptCompilationFailed) return "FAIL: script compile";
+var a = new Clipper2Lib.PathD {new Clipper2Lib.PointD(0,0),new Clipper2Lib.PointD(2,0),new Clipper2Lib.PointD(2,2),new Clipper2Lib.PointD(0,2)};
+var b = new Clipper2Lib.PathD {new Clipper2Lib.PointD(1,1),new Clipper2Lib.PointD(3,1),new Clipper2Lib.PointD(3,3),new Clipper2Lib.PointD(1,3)};
+var u = Clipper2Lib.Clipper.Union(new Clipper2Lib.PathsD{a,b},null,Clipper2Lib.FillRule.NonZero,4);
+var result=Clipper2Lib.Clipper.Triangulate(u,4,out var t);
+double area=Clipper2Lib.Clipper.Area(u),triArea=t.Sum(p=>System.Math.Abs(Clipper2Lib.Clipper.Area(p)));
+return $"compile=False union={area} triangulation={result} trianglesArea={triArea} expected=7 PASS={System.Math.Abs(area-7)<1e-8 && System.Math.Abs(triArea-7)<1e-8}";

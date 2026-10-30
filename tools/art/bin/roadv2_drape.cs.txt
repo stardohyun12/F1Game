@@ -1,0 +1,68 @@
+    // Clip the walking-road footprint against the actual terrain triangles.
+    // Both surfaces then use exactly the same planes; no per-row lowering or guessed bump is needed.
+    sealed class V2Draper
+    {
+        readonly Vector3[] terrain;
+        readonly int[] triangles;
+        readonly Dictionary<(int, int), List<int>> cells = new Dictionary<(int, int), List<int>>();
+        const float Cell = 4f;
+        public V2Draper(Vector3[] vertices, int[] indices)
+        {
+            terrain = vertices; triangles = indices;
+            for (int i = 0; i < indices.Length; i += 3) {
+                var a = vertices[indices[i]]; var b = vertices[indices[i+1]]; var c = vertices[indices[i+2]];
+                for (int x = Mathf.FloorToInt(Mathf.Min(a.x, Mathf.Min(b.x,c.x))/Cell); x <= Mathf.FloorToInt(Mathf.Max(a.x,Mathf.Max(b.x,c.x))/Cell); x++)
+                for (int z = Mathf.FloorToInt(Mathf.Min(a.z, Mathf.Min(b.z,c.z))/Cell); z <= Mathf.FloorToInt(Mathf.Max(a.z,Mathf.Max(b.z,c.z))/Cell); z++) {
+                    if (!cells.TryGetValue((x,z),out var list)) cells[(x,z)] = list = new List<int>(); list.Add(i);
+                }
+            }
+        }
+        static double Cross(Vector3 a, Vector3 b, Vector3 p) => ((double)b.x-a.x)*(p.z-a.z)-((double)b.z-a.z)*(p.x-a.x);
+        static List<Vector3> Clip(List<Vector3> input, Vector3 a, Vector3 b, double sign)
+        {
+            var output = new List<Vector3>(); if (input.Count == 0) return output;
+            var prev=input[input.Count-1]; double pd=Cross(a,b,prev)*sign;
+            foreach(var cur in input) {
+                double cd=Cross(a,b,cur)*sign;
+                if ((pd >= -1e-8) != (cd >= -1e-8)) output.Add(Vector3.LerpUnclamped(prev,cur,(float)(pd/(pd-cd))));
+                if (cd >= -1e-8) output.Add(cur);
+                prev=cur; pd=cd;
+            }
+            return output;
+        }
+        public GameObject Make(Transform parent, string name, List<Vector3> band, Material material, List<Mesh> meshes)
+        {
+            var v=new List<Vector3>(); var t=new List<int>(); var index=new Dictionary<(int,int),int>();
+            int Vertex(Vector3 q) {
+                var key=(Mathf.RoundToInt(q.x*10000),Mathf.RoundToInt(q.z*10000));
+                if (!index.TryGetValue(key,out int k)) { index[key]=k=v.Count; v.Add(q); } return k;
+            }
+            void Triangle(Vector3 a, Vector3 b, Vector3 c) {
+                var candidates=new HashSet<int>();
+                for(int x=Mathf.FloorToInt(Mathf.Min(a.x,Mathf.Min(b.x,c.x))/Cell);x<=Mathf.FloorToInt(Mathf.Max(a.x,Mathf.Max(b.x,c.x))/Cell);x++)
+                for(int z=Mathf.FloorToInt(Mathf.Min(a.z,Mathf.Min(b.z,c.z))/Cell);z<=Mathf.FloorToInt(Mathf.Max(a.z,Mathf.Max(b.z,c.z))/Cell);z++)
+                    if(cells.TryGetValue((x,z),out var list)) foreach(int k in list) candidates.Add(k);
+                foreach(int k in candidates) {
+                    var A=terrain[triangles[k]]; var B=terrain[triangles[k+1]]; var C=terrain[triangles[k+2]];
+                    double det=Cross(A,B,C); if(System.Math.Abs(det)<1e-8) continue;
+                    double sign=det>0 ? 1 : -1;
+                    var poly=Clip(Clip(Clip(new List<Vector3>{a,b,c},A,B,sign),B,C,sign),C,A,sign);
+                    if(poly.Count<3) continue;
+                    for(int j=0;j<poly.Count;j++) {
+                        var q=poly[j]; double u=Cross(A,q,C)/det, s=Cross(A,B,q)/det;
+                        q.y=(float)(A.y+u*(B.y-A.y)+s*(C.y-A.y))+V2PathLift; poly[j]=q;
+                    }
+                    int first=Vertex(poly[0]);
+                    for(int j=1;j+1<poly.Count;j++) {
+                        float area=Vector3.Cross(poly[j]-poly[0],poly[j+1]-poly[0]).y;
+                        if(Mathf.Abs(area)<1e-7f) continue;
+                        int b0=Vertex(poly[j]),c0=Vertex(poly[j+1]);
+                        if(first==b0||b0==c0||c0==first) continue;
+                        t.Add(first); t.Add(area>0?b0:c0); t.Add(area>0?c0:b0);
+                    }
+                }
+            }
+            for(int i=0;i+3<band.Count;i+=2) { Triangle(band[i],band[i+2],band[i+1]); Triangle(band[i+1],band[i+2],band[i+3]); }
+            return V2Go(parent,name,v,t,null,null,material,meshes);
+        }
+    }

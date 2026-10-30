@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-133009-ea29",
+ "time": "2026-10-30T14:16:01+09:00",
+ "before": "shots/unity-Studio_Building-20261030-133009-ea29.png",
+ "after": "shots/unity-Studio_Building-20261030-133009-ea29_after.png",
+ "comment": "양옆으로 길게 해줘 발코니에 플라스틱 의자하고 철제 테이블 놔주고 거기 위에 커피하고 작은 화분하나",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "발코니가 양옆으로 길게 늘어났고, 흰 플라스틱 의자 두 개와 철제 테이블이 놓였다. 테이블 위에는 커피잔과 작은 화분으로 보이는 것도 있어서 요청한 내용이 오른쪽 화면에 반영되어 있다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "발코니가 양옆으로 길어졌고, 플라스틱 의자와 철제 테이블, 테이블 위 커피와 작은 화분이 배치되어 있다."
+  }
+ },
+ "pass": true
+}
