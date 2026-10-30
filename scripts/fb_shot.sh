@@ -52,7 +52,7 @@ if (src == null) return "FAIL: 씬 뷰·메인 카메라 없음";
 var pos = new UnityEngine.Vector3(${PX}f, ${PY}f, ${PZ}f); var tgt = new UnityEngine.Vector3(${TX}f, ${TY}f, ${TZ}f);
 var go = new UnityEngine.GameObject("_FbShotSrc") { hideFlags = UnityEngine.HideFlags.HideAndDontSave };
 try {
-  var cam = go.AddComponent<UnityEngine.Camera>(); cam.CopyFrom(src); cam.enabled = false;
+  var cam = go.AddComponent<UnityEngine.Camera>(); cam.CopyFrom(src); cam.cameraType = UnityEngine.CameraType.Game; cam.enabled = false;
   cam.fieldOfView = ${FOV}f;
   go.transform.SetPositionAndRotation(pos, UnityEngine.Quaternion.LookRotation(tgt - pos));
   bool ok = PitCrewPlan.PlanIO.RenderPng(cam, "$OUT", $W, $H, null);
