@@ -1,0 +1,146 @@
+diff --git a/F1/Assets/Editor/RoadNetV2.cs b/F1/Assets/Editor/RoadNetV2.cs
+index 595101aa..0e769626 100644
+--- a/F1/Assets/Editor/RoadNetV2.cs
++++ b/F1/Assets/Editor/RoadNetV2.cs
+@@ -196,6 +196,8 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+                 {
+                     var inc = edges.Where(x => !x.dead && (x.n0 == n || x.n1 == n)).ToList();
+                     if (inc.Count != 2 || inc[0] == inc[1] || (inc[0].n0 == n && inc[0].n1 == n)) continue;
++                    // 1302: 종류가 다르면 잇지 않는다 — Main 사슬이 Village 토막(ridge_up_b_s0_0·ridge_up_c_0)을 삼켜 Main 색으로 칠함(4100). 그 마디는 아래에서 이음 마디(사다리꼴)가 된다
++                    if (inc[0].kind != inc[1].kind) continue;
+                     var a = inc[0]; var b = inc[1]; if (a.n0 == n) V2Rev(a); if (b.n1 == n) V2Rev(b);
+                     a.p.AddRange(b.p.Skip(1)); a.fix.AddRange(b.fix.Skip(1)); a.n1 = b.n1; if (b.w > a.w) { a.w = b.w; a.kind = b.kind; a.mat = b.mat; a.rough = b.rough; }
+                     a.id += "+" + b.id; b.dead = true; ch = true;
+@@ -217,12 +219,14 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+             var nodeY = new Dictionary<int, float>();
+             foreach (int n in nodes) { var q = nP[n]; float g = G(q.x, q.z); nodeY[n] = V2In(q) && !float.IsNaN(g) ? g : chains.Where(x => x.n0 == n).Select(x => x.p[0].y).Concat(chains.Where(x => x.n1 == n).Select(x => x.p[x.p.Count - 1].y)).Average(); }
+             // ── 4 갈림목: 자를 거리(평면만 보고 정한다 → 높이 단계에서 그 구간을 마디 높이로 고정) ──
+-            var juncs = new List<(int n, List<(V2L c, bool st, Vector3 u)> inc)>();
++            var juncs = new List<(int n, List<(V2L c, bool st, Vector3 u)> inc)>(); int nSeam = 0;
+             foreach (int n in nodes)
+             {
+                 var inc = new List<(V2L c, bool st, Vector3 u)>();
+                 foreach (var c in chains) { if (c.n0 == n) inc.Add((c, true, V2Dir(c.p, true))); if (c.n1 == n) inc.Add((c, false, V2Dir(c.p, false))); }
+-                if (inc.Count < 3 || !V2In(nP[n])) continue;
++                bool kindSeam = inc.Count == 2 && inc[0].c != inc[1].c && inc[0].c.kind != inc[1].c.kind;   // 1302: 종류가 바뀌는 차수 2 마디 = 이음 마디(짧은 사다리꼴, 재질 경계 하나)
++                if ((inc.Count < 3 && !kindSeam) || !V2In(nP[n])) continue;
++                if (kindSeam) nSeam++;
+                 inc = inc.OrderBy(x => Mathf.Atan2(x.u.z, x.u.x)).ToList();
+                 var d = inc.Select(x => Mathf.Max(x.c.w * .5f, 2f)).ToArray();
+                 for (int i = 0; i < inc.Count; i++)
+@@ -278,19 +282,29 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+                 objN++;
+                 report.Add(V2Stats(c));
+             }
+-            var jPolys = new List<(List<Vector3> poly, float y)>(); var jCen = new List<Vector3>(); int gapN = 0;
++            var jPolys = new List<(List<Vector3> poly, float y)>(); var jCen = new List<Vector3>(); int gapN = 0, jBig = 0;
++            float PolyArea(List<Vector3> pl) { float s = 0; for (int i = 0; i < pl.Count; i++) { var a = pl[i]; var b = pl[(i + 1) % pl.Count]; s += a.x * b.z - b.x * a.z; } return Mathf.Abs(s) * .5f; }
+             foreach (var (n, inc) in juncs)
+             {
+                 var poly = new List<Vector3>(); var cut = new List<bool>(); float ny = nodeY[n] + RoadColLift;
+                 var AB = inc.Select(x => { var v = bands[x.c]; int m = v.Count; return x.st ? (A: v[0], B: v[1]) : (A: v[m - 1], B: v[m - 2]); }).ToList();
+                 var U = inc.Select(x => x.st ? Fl(x.c.p[1] - x.c.p[0]).normalized : Fl(x.c.p[x.c.p.Count - 2] - x.c.p[x.c.p.Count - 1]).normalized).ToList();
+-                for (int i = 0; i < inc.Count; i++)
++                // 1302: 넓이 상한 = 1.5 × Σ(팔 폭 × 자른 길이) + π(최대 반폭)². 넘으면(좁은 각 두 팔의 베지어 꼭짓점이 멀리 감 — j_244 162 m²) 팔 끝을 직선으로만 잇는다
++                float cap = 1.5f * inc.Sum(x => x.c.w * (x.st ? x.c.d0 : x.c.d1)) + Mathf.PI * Mathf.Pow(inc.Max(x => x.c.w) * .5f, 2);
++                for (int pass = 0; pass < 2; pass++)
+                 {
+-                    int j = (i + 1) % inc.Count; var A = AB[i].A; var B = AB[j].B;
+-                    poly.Add(AB[i].B); cut.Add(true); poly.Add(A); cut.Add(false);
+-                    Vector3 X = (A + B) * .5f;
+-                    if (V2LineX(A, U[i], B, U[j], out float t, out float s) && t <= .01f && s <= .01f && t > -20f && s > -20f) X = A + U[i] * t;
+-                    for (int k = 1; k < 8; k++) { float q = k / 8f; var P = (1 - q) * (1 - q) * A + 2 * (1 - q) * q * X + q * q * B; P.y = Mathf.Lerp(A.y, B.y, q); poly.Add(P); cut.Add(false); }
++                    poly.Clear(); cut.Clear();
++                    for (int i = 0; i < inc.Count; i++)
++                    {
++                        int j = (i + 1) % inc.Count; var A = AB[i].A; var B = AB[j].B;
++                        poly.Add(AB[i].B); cut.Add(true); poly.Add(A); cut.Add(false);
++                        Vector3 X = (A + B) * .5f; float lim = Mathf.Max(inc[i].c.w, inc[j].c.w) * 1.5f;   // 꼭짓점이 팔 폭 1.5배 넘게 가면 직선
++                        if (pass == 0 && V2LineX(A, U[i], B, U[j], out float t, out float s) && t <= .01f && s <= .01f && t > -lim && s > -lim) X = A + U[i] * t;
++                        for (int k = 1; k < 8; k++) { float q = k / 8f; var P = (1 - q) * (1 - q) * A + 2 * (1 - q) * q * X + q * q * B; P.y = Mathf.Lerp(A.y, B.y, q); poly.Add(P); cut.Add(false); }
++                    }
++                    float ar = PolyArea(poly);
++                    if (ar <= cap) break;
++                    lg.Add($"갈림목 넓이 초과: j_{n} 팔 {inc.Count}({string.Join("/", inc.Select(x => x.c.w.ToString("F1")))}) 넓이 {ar:F0} > 상한 {cap:F0} @({nP[n].x:F0},{nP[n].z:F0}) pass{pass}"); if (pass == 0) jBig++;
+                 }
+                 var center = new Vector3(nP[n].x, ny, nP[n].z);
+                 V2MakeJunction(v2T, "ROAD_V2j_" + n, center, poly, cut, inc.OrderByDescending(x => x.c.w).First().c, meshes, topTris, objN++);
+@@ -313,7 +327,7 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+             var pGrid = new Dictionary<(int, int), List<int>>(); for (int i = 0; i < pads.Count; i++) { var pd = pads[i]; GAdd(pGrid, i, pd.c.x - pd.r - 16f, pd.c.z - pd.r - 16f, pd.c.x + pd.r + 16f, pd.c.z + pd.r + 16f); }
+             var none = new List<int>();
+             var tr = terrGo.transform; var sv = srcMesh.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
+-            int moved = 0, padN = 0; float maxD = 0; Vector3 maxAt = Vector3.zero; int big = 0;
++            int moved = 0, padN = 0; float maxD = 0; Vector3 maxAt = Vector3.zero; int big = 0; var bigL = new List<(Vector3 p, float orig, float y, float yO, float eO)>();
+             for (int k = 0; k < w.Length; k++)
+             {
+                 var p = w[k]; float out0 = V2Out(p); if (out0 >= margin) continue;
+@@ -350,7 +364,14 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+                 // 1d: 구역 밖 여유띠의 원래 높이 되돌림이 874_s1 끝(구역 밖 1.4 m) 캡 너머 0.6 m 정점을 24.54 로 남겨, 2 m 삼각형이 띠 끝을 2 cm 덮음
+                 //  → 띠 가장자리 1 m 안은 되돌림보다 띠−깎기가 우선
+                 if (out0 > 0 && eO <= 1f) y = Mathf.Min(y, yO - V2Under);   // 구역 안까지 걸면 D198_postoffice 판 모서리를 0.31 깎음
+-                if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; if (Mathf.Abs(y - orig) > maxD) { maxD = Mathf.Abs(y - orig); maxAt = p; } if (Mathf.Abs(y - orig) > 3f) big++; }
++                if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; if (Mathf.Abs(y - orig) > maxD) { maxD = Mathf.Abs(y - orig); maxAt = p; } if (Mathf.Abs(y - orig) > 3f) { big++; bigL.Add((p, orig, y, yO, eO)); } }
++            }
++            // 1302: 3 m 넘게 바뀐 정점 — 20 m 칸 상위 10(최대 변화), 가까운 사슬·그 자리 길 높이 vs 원지형
++            foreach (var g in bigL.GroupBy(b => (Mathf.FloorToInt(b.p.x / 20f), Mathf.FloorToInt(b.p.z / 20f))).OrderByDescending(g => g.Max(b => Mathf.Abs(b.y - b.orig))).Take(10))
++            {
++                var b = g.OrderByDescending(x => Mathf.Abs(x.y - x.orig)).First(); var nc = chains.OrderBy(c => V2Dist(c.p, b.p, out _)).First(); V2Dist(nc.p, b.p, out var nq);
++                float gd = G(nq.x, nq.z);
++                lg.Add($"지형 큰 변화: ({b.p.x:F0},{b.p.z:F0}) 정점 {g.Count()} 최대 {b.y - b.orig:+0.0;-0.0} m(원 {b.orig:F1}→{b.y:F1}) 길까지 {b.eO:F1} m · 사슬 {V2Short(nc.id)} {nc.kind} 길높이 {nq.y:F1} vs 원지형 {gd:F1} ({(b.y > b.orig ? "메움(둑)" : "깎음")})");
+             }
+             var m2 = Object.Instantiate(srcMesh); m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
+             m2.vertices = v2v; m2.RecalculateNormals(); m2.RecalculateBounds();
+@@ -361,7 +382,7 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+             // ── 걷는 길: 차길 띠와 겹친 부분 지우고 새 지형에 깐다 ──────────
+             tmc.sharedMesh = m2;
+             var plan = (Dictionary<string, object>)Json.Parse(System.IO.File.ReadAllText(TownV6Json, Encoding.UTF8));
+-            int pathN = 0, pathCut = 0;
++            int pathN = 0, pathCut = 0; float pathFloat = 0;
+             foreach (Dictionary<string, object> r in (List<object>)plan["roads"])
+             {
+                 string kind = (string)r["kind"]; if (kind == "main" || kind == "village") continue;
+@@ -369,9 +390,9 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+                 if (!ks.Any(q => V2Out(q) < margin)) continue;
+                 var old = roadsT.Find("ROAD_" + (string)r["id"]); if (old == null || !old.gameObject.activeSelf) continue;
+                 var mat = old.GetComponent<MeshRenderer>().sharedMaterial; disabled.Add(old.name);
+-                var pts = new List<Vector3>(); for (int i = 0; i + 1 < ks.Count; i++) { int nn = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude)); for (int s = 0; s < nn; s++) pts.Add(Vector3.Lerp(ks[i], ks[i + 1], s / (float)nn)); }
++                var pts = new List<Vector3>(); for (int i = 0; i + 1 < ks.Count; i++) { int nn = Mathf.Max(1, Mathf.CeilToInt(Fl(ks[i + 1] - ks[i]).magnitude * 2f));   // 1302: 1 m → 0.5 m (오목한 곳에서 띠 사이가 +0.19 뜸 @343.8,−82.5) for (int s = 0; s < nn; s++) pts.Add(Vector3.Lerp(ks[i], ks[i + 1], s / (float)nn)); }
+                 pts.Add(ks[ks.Count - 1]); float hw = F(r["width"]) * .5f;
+-                var keep = pts.Select(q => segs.All(s => V2SegE(s.a, s.b, q) - s.hw > hw + .3f) && jPolys.All(j => V2PolyE(j.poly, q, out _) > hw + .3f)).ToList();
++                var keep = pts.Select(q => segs.All(s => V2SegE(s.a, s.b, q) - s.hw > hw + .5f) && jPolys.All(j => V2PolyE(j.poly, q, out _) > hw + .5f)).ToList();
+                 int piece = 0;
+                 for (int i = 0; i < pts.Count;)
+                 {
+@@ -387,14 +408,21 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+                             float g = G(v[q].x, v[q].z); if (float.IsNaN(g)) continue; float bump = 0;
+                             foreach (var o in new[] { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) })
+                             { float gm = G(v[q].x + o.x * .5f, v[q].z + o.y * .5f), gf = G(v[q].x + o.x, v[q].z + o.y); if (!float.IsNaN(gm) && !float.IsNaN(gf)) bump = Mathf.Max(bump, gm - (g + gf) * .5f); }
+-                            v[q] = new Vector3(v[q].x, g + V2PathLift + Mathf.Min(bump, .1f), v[q].z);
++                            v[q] = new Vector3(v[q].x, g + V2PathLift + Mathf.Min(bump, .05f), v[q].z);
++                        }
++                        // 1302: 띠 사이(행 가운데·대각선 가운데)가 지형에서 뜬 높이 — 0.1 넘으면 그 행 두 정점을 내린다(한 번)
++                        for (int q = 0; q + 3 < v.Count; q += 2)
++                        {
++                            var mid = (v[q] + v[q + 3]) * .5f; float g = G(mid.x, mid.z); if (float.IsNaN(g)) continue; float fl = mid.y - g;
++                            if (fl > .1f) { float dn = fl - .08f; for (int o = 0; o < 4; o++) v[q + o] -= Vector3.up * dn * .5f; }
++                            pathFloat = Mathf.Max(pathFloat, fl);
+                         }
+                         var go = V2MakeRoad(v2T, "ROAD_V2p_" + (string)r["id"] + "_" + piece++, v, null, mat, meshes, false); pathN++;
+                     }
+                     i = j;
+                 }
+             }
+-            Tk("걷는 길"); lg.Add($"걷는 길 조각 {pathN}, 차길 띠와 겹쳐 지운 점 {pathCut}");
++            Tk("걷는 길"); lg.Add($"걷는 길 조각 {pathN}, 차길 띠와 겹쳐 지운 점 {pathCut}, 고치기 전 최대 뜸 {pathFloat:F2} m");
+             // 1f: v2 는 구역에 닿은 길 전체(165_6 은 x 608 까지)를 새로 까는데, 구역에 안 닿은 옛 곁길(camo_794408003_237 @371,−95)은 그대로라
+             //  그 끝이 새 띠와 0 cm 차로 겹쳐 깊이 싸움 → 띠 안 삼각형을 뺀 사본을 RoadsV2 에 두고 옛 것은 끈다(되돌리기 = 다시 켬)
+             //  띠 경계에 걸친 삼각형은 띠 안 정점만 0.10 m 내려 띠 밑으로 숨긴다
+@@ -430,7 +458,7 @@ public static string RoadNetV2Build(float x0, float z0, float x1, float z1, floa
+             int unconnected = 0;
+             foreach (var c in chains) foreach (var (q, n) in new[] { (c.p[0], c.n0), (c.p[c.p.Count - 1], c.n1) })
+                 if (Deg2(chains, n) == 1 && V2In(q) && chains.Any(o => o != c && V2Dist(o.p, q, out _) - o.w * .5f < 4f)) unconnected++;
+-            lg.Add($"검사: 접힌 삼각형 {fold}, 겹친 삼각형 쌍 {overN}(삼각형 {overTris}), 갈림목 이음 틈 {gapN}, 다른 길 4 m 안 끊긴 끝 {unconnected}, 갈림목 {juncs.Count}");
++            lg.Add($"검사: 접힌 삼각형 {fold}, 겹친 삼각형 쌍 {overN}(삼각형 {overTris}), 갈림목 이음 틈 {gapN}, 다른 길 4 m 안 끊긴 끝 {unconnected}, 갈림목 {juncs.Count}(종류 이음 마디 {nSeam}, 넓이 초과→직선 {jBig})");
+             lg.Add("겹침 위치(5 m 칸): " + string.Join(", ", v2OverAt.OrderByDescending(x => x.Value).Take(10).Select(x => x.Key + "=" + x.Value)));
+             lg.Add("물체 번호: " + string.Join(", ", v2T.Cast<Transform>().Where(x => x.name.StartsWith("ROAD_V2e") || x.name.StartsWith("ROAD_V2j")).Select((x, i) => i + ":" + x.name.Substring(9, Mathf.Min(18, x.name.Length - 9)))));
+             lg.AddRange(report);

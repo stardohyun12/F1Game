@@ -122,3 +122,8 @@ if [ "$(md5sum "$REPORT" | cut -c1-32)" = "$REPORT_MD5" ]; then
   echo "FAILED-NOREPORT: $REPORT 뼈대 그대로 (턴 한도 추정)"
   { echo; echo "## 하네스 자동 기록 (팀원이 보고서를 못 씀)"; echo '```'; awk '/===== 새 과제/{n=NR} {a[NR]=$0} END{for(k=n;k<=NR;k++) print a[k]}' "$LIVE" | grep -a -e "💬" -e "끝:" -e "🔧" | tail -8 | cut -c1-300; echo '```'; echo "변경 파일:"; git status --short | grep -v '^??' | head -20; } >> "$REPORT"
 fi
+# 하네스(10/30): 에디터 과제가 컴파일을 깨뜨린 채 끝나면 크게 알린다(본 에디터·도현 작업이 막힘)
+if [ "$HOLD_LOCK" = 1 ] || [ "$ROLE" = "artlive" ]; then
+  CF=$(timeout 20 bash scripts/ucli-http.sh exec 'return UnityEditor.EditorUtility.scriptCompilationFailed ? "BROKEN" : "OK";' 2>/dev/null | tail -1 | tr -d '\r')
+  if [ "$CF" = "BROKEN" ]; then echo "COMPILE-BROKEN: 과제가 컴파일 에러를 남김 — 바로 고치거나 되돌릴 것"; printf '\n## 하네스: 컴파일 깨진 채 끝남 (COMPILE-BROKEN)\n' >> "$REPORT"; fi
+fi
