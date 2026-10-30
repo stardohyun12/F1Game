@@ -14,7 +14,7 @@
   "d": 1.8
  },
  "glass": 18,
- "tris": 10970,
+ "tris": 11210,
  "objects": [
   "HOUSE_shell",
   "GLASS_01",
@@ -184,6 +184,8 @@
   "SHOE_08",
   "SHOE_09",
   "CAT_01",
+  "DOOR_ROOM",
+  "DOOR_PARENTSROOM",
   "STUDIO_CamBalc",
   "STUDIO_CamBalcLook",
   "STUDIO_Cam_balc",
@@ -221,9 +223,9 @@
  ],
  "atlas": [
   2048,
-  9216
+  9344
  ],
- "faces": 4976,
+ "faces": 5096,
  "balusters": 88,
  "size_m": {
   "w": 8.6,

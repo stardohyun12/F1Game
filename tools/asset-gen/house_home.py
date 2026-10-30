@@ -308,7 +308,7 @@ hface(SHELL, -XI, XI, YI, YB, H2C, 'ceil', up=False)                            
 SYE = SY0 - .06                                                                                    # 칸막이 북쪽 끝 y(난간 가로대 y SY0-.05 앞)
 #   1608 fa9f [다시] "방 2개 — 하나는 올라오자마자 바로, 하나는 옆에": 출입구를 문틀 없는 넓은 트임(1.2m, 높이 2.15)으로. 옆·머리 면 = 벽과 같은 회벽(흰 문틀 칠 없음)
 #   1729 02d3 도현 "부모님방과 자기방 들어가는 입구부터 나눠게": 방끼리 트임 없앰. 계단 올라온 계단참(폭 1.2m = 벽 LY1 ~ 난간 SY0-.05)에서 입구 둘이 따로 —
-#     주인공 방 입구 = 계단참 벽(y LY0..LY1) 의 PDX, 부모님 방 입구 = 칸막이 계단참 쪽 PDY. 둘 다 문짝·문틀 없는 열린 출입구(0.9×2.1, 옆·머리 = 회벽).
+#     주인공 방 입구 = 계단참 벽(y LY0..LY1) 의 PDX, 부모님 방 입구 = 칸막이 계단참 쪽 PDY. 둘 다 0.9×2.1 출입구 — 2150: 나무 문틀 + 반쯤 열린 판문(맨 아래 room_door).
 #     부모님 방이 계단 구멍 서쪽 끝(x SX0..DIVX)에 난간으로만 트여 있던 것 → 벽 A(y 1.75..SY0)·B(x -.3..SX0)로 막음(계단참에서 부모님 방이 안 보이게)
 LY0, LY1 = .5, .6                                                                                  # 계단참 벽(주인공 방 ↔ 계단참) y
 PDX = (2.55, 3.45, H2, H2 + 2.1)                                                                   # 주인공 방 입구(계단참 벽, 계단 도착 바로 서쪽)
@@ -316,12 +316,13 @@ PDY = (.75, 1.65, H2, H2 + 2.1)                                                 
 WA = SY0 - .1                                                                                      # 벽 A 남쪽 면 y(부모님 방 쪽)
 hwall(SHELL, (PW, YI), (PW, SY0), H2, H2C, [PDY, (LY0, LY1, H2, H2C)], lambda c, z: rw(0, z) if c < LY0 else 'plaster', (), (RW,))   # 칸막이 동쪽 면: 주인공 방(판벽) · 계단참 벽 자리 비움 · 계단참(회벽, 입구)
 hwall(SHELL, (DIVX, WA), (DIVX, YI), H2, H2C, [PDY])                                               # 칸막이 부모님 방 쪽 면(−x 를 봄)
-face(SHELL, [(DIVX, PDY[0], H2), (PW, PDY[0], H2), (PW, PDY[0], PDY[3]), (DIVX, PDY[0], PDY[3])][::-1], 'plaster'); face(SHELL, [(DIVX, PDY[1], H2), (PW, PDY[1], H2), (PW, PDY[1], PDY[3]), (DIVX, PDY[1], PDY[3])], 'plaster')  # 부모님 입구 옆 면 2
-hface(SHELL, DIVX, PW, PDY[0], PDY[1], PDY[3], 'plaster', up=False)                                 # 부모님 입구 머리 밑면
+EJ = .001   # 2150: 문설주 면을 입구 안쪽으로 1mm — 벽 끝선과 같은 자리면 회벽이 나무 면 위로 점점이 이김(z 동점)
+face(SHELL, [(DIVX - .02, PDY[0] + EJ, H2), (PW + .02, PDY[0] + EJ, H2), (PW + .02, PDY[0] + EJ, PDY[3] - EJ), (DIVX - .02, PDY[0] + EJ, PDY[3] - EJ)][::-1], 'door'); face(SHELL, [(DIVX - .02, PDY[1] - EJ, H2), (PW + .02, PDY[1] - EJ, H2), (PW + .02, PDY[1] - EJ, PDY[3] - EJ), (DIVX - .02, PDY[1] - EJ, PDY[3] - EJ)], 'door')  # 부모님 입구 옆 면 2(2150: 문틀 = 'door' 나무)
+hface(SHELL, DIVX - .02, PW + .02, PDY[0] + EJ, PDY[1] - EJ, PDY[3] - EJ, 'door', up=False)                                 # 부모님 입구 머리 밑면
 hwall(SHELL, (PW, LY0), (XI, LY0), H2, H2C, [PDX], lambda c, z: rw(0, z), (), (RW,))                # 계단참 벽 주인공 방 쪽 면(−y, 판벽)
 hwall(SHELL, (XI, LY1), (PW, LY1), H2, H2C, [PDX])                                                  # 계단참 벽 계단참 쪽 면(+y, 회벽)
-face(SHELL, [(PDX[0], LY0, H2), (PDX[0], LY1, H2), (PDX[0], LY1, PDX[3]), (PDX[0], LY0, PDX[3])], 'plaster'); face(SHELL, [(PDX[1], LY0, H2), (PDX[1], LY1, H2), (PDX[1], LY1, PDX[3]), (PDX[1], LY0, PDX[3])][::-1], 'plaster')  # 주인공 입구 옆 면 2(+x · −x)
-hface(SHELL, PDX[0], PDX[1], LY0, LY1, PDX[3], 'plaster', up=False)                                 # 주인공 입구 머리 밑면
+face(SHELL, [(PDX[0] + EJ, LY0 - .02, H2), (PDX[0] + EJ, LY1 + .02, H2), (PDX[0] + EJ, LY1 + .02, PDX[3] - EJ), (PDX[0] + EJ, LY0 - .02, PDX[3] - EJ)], 'door'); face(SHELL, [(PDX[1] - EJ, LY0 - .02, H2), (PDX[1] - EJ, LY1 + .02, H2), (PDX[1] - EJ, LY1 + .02, PDX[3] - EJ), (PDX[1] - EJ, LY0 - .02, PDX[3] - EJ)][::-1], 'door')  # 주인공 입구 옆 면 2(+x · −x, 2150: 문틀 = 'door' 나무)
+hface(SHELL, PDX[0] + EJ, PDX[1] - EJ, LY0 - .02, LY1 + .02, PDX[3] - EJ, 'door', up=False)                                 # 주인공 입구 머리 밑면
 hwall(SHELL, (-.3, WA), (DIVX, WA), H2, H2C)                                                        # 벽 A 남쪽 면(부모님 방, −y) — 벽 B 끝 포함
 hwall(SHELL, (PW, SY0), (SX0, SY0), H2, H2C)                                                        # 벽 A 북쪽 면(계단 구멍, +y) — 칸막이 북쪽 끝 포함
 hwall(SHELL, (-.3, YB), (-.3, WA), H2, H2C)                                                         # 벽 B 서쪽 면(부모님 방, −x)
@@ -634,6 +635,29 @@ for nm_, bx0 in (('SHOE_08', -.82), ('SHOE_09', -.67)):          # 현관 장화
 box('CAT_01', -3.2, -2.95, -.1, .04, .011, .12, 'terracotta', ('bottom',)); box('CAT_01', -2.95, -2.87, -.08, -.0, .02, .13, 'terracotta', ('bottom', 'right'))
 for ey in (-.075, -.02): box('CAT_01', -2.93, -2.9, ey, ey + .02, .13, .15, 'terracotta', ('bottom',))
 box('CAT_01', -3.28, -3.2, -.03, .01, .011, .045, 'sole', ('bottom', 'right'))
+# ===== 2150 fa9f [다시] 도현 "지금 상태에서 문만 달아두면 될듯": 계단참 입구 둘(PDX 주인공 방 · PDY 부모님 방)에 나무 판문 =====
+# 문틀 = 입구 옆·머리 면(위 323·319 줄, 'door' 칠) + 벽 양면 테(6cm·2cm 돋음, 벽에 닿는 면 skip). 문짝 = 현관·발코니 문과 같은 'door' 나무 + 'brass' 손잡이.
+# 안쪽으로 70° 열림(방 안이 보이게). 경첩 = 계단참 캠(동쪽)에서 먼 쪽이 아니라 시선을 안 막는 쪽: 주인공 방 = 동쪽 문설주, 부모님 방 = 북쪽(벽 A 쪽) 문설주. 피벗 = 경첩 아래.
+CW, CT, DA = .06, .02, math.radians(70)
+def casing(s0, s1, w0, w1, z1, along_x):  # 입구 테: s0..s1 = 입구 폭(벽 방향), w0·w1 = 벽 양면. 벽면마다 옆 2 + 머리(입구 머리 위 CW)
+    for a, b, side in ((w0 - CT, w0, 'back' if along_x else 'right'), (w1, w1 + CT, 'front' if along_x else 'left')):   # side = 벽에 붙는 면(skip)
+        B = (lambda p, q, zz0, zz1, sk: box(SHELL, p, q, a, b, zz0, zz1, 'door', sk)) if along_x else (lambda p, q, zz0, zz1, sk: box(SHELL, a, b, p, q, zz0, zz1, 'door', sk))
+        i0, i1 = ('right', 'left') if along_x else ('back', 'front')                                    # 입구 쪽 면 = 문설주 면(테 두께까지 한 장, 위 319·323 줄)이 대신함 → 이음매 없음
+        zh = z1 - EJ                                                                                    # 옆·머리·문설주 면 꼭짓점을 한 자리에(어긋나면 이음선에 점점이 틈)
+        B(s0 - CW, s0 + EJ, H2, zh, (side, 'top', 'bottom', i0)); B(s1 - EJ, s1 + CW, H2, zh, (side, 'top', 'bottom', i1))   # 옆 2(위 = 머리 밑에 묻힘)
+        B(s0 - CW, s0 + EJ, zh, z1 + CW, (side, 'bottom', i0)); B(s0 + EJ, s1 - EJ, zh, z1 + CW, (side, 'bottom', i0, i1)); B(s1 - EJ, s1 + CW, zh, z1 + CW, (side, 'bottom', i1))   # 머리 3토막(옆 2 위 · 문설주 머리 면 위)
+def room_door(nm, hinge, c, i):  # hinge = 방 쪽 벽면 · 경첩 문설주 모서리, c = 닫힌 문짝이 뻗는 쪽, i = 방 안쪽
+    c, i = Vector(c), Vector(i); o = Vector((*hinge, 0)) + (c + i) * .01                                  # 문설주·벽면에서 1cm
+    d = c * math.cos(DA) + i * math.sin(DA); n = Vector((d.y, -d.x, 0))
+    if n.dot(-i) < 0: n = -n                                                                          # 두께 = 벽 쪽(문 구멍 안)으로 → 문틀 테와 안 겹침
+    L, T, z0, z1 = .88, .04, H2 + .01, H2 + 2.08
+    obox(nm, o, d, L, n, T, z0, z1, 'door')                                                           # 판문(4cm)
+    for za, zb in ((H2 + .15, H2 + .95), (H2 + 1.15, H2 + 1.95)):                                    # 돋운 판 2 × 양면(1cm, 붙는 면 skip)
+        obox(nm, o + d * .12 - n * .01, d, .64, n, .01, za, zb, 'door', ('n1',)); obox(nm, o + d * .12 + n * T, d, .64, n, .01, za, zb, 'door', ('n0',))
+    obox(nm, o + d * .77 - n * .04, d, .06, n, .04, H2 + 1.0, H2 + 1.05, 'brass', ('n1',)); obox(nm, o + d * .77 + n * T, d, .06, n, .04, H2 + 1.0, H2 + 1.05, 'brass', ('n0',))   # 손잡이 양면
+    PIVOT[nm] = Vector((hinge[0], hinge[1], z0))
+casing(PDX[0], PDX[1], LY0, LY1, PDX[3], True); casing(PDY[0], PDY[1], DIVX, PW, PDY[3], False)
+room_door('DOOR_ROOM', (PDX[1], LY0), (-1, 0, 0), (0, -1, 0)); room_door('DOOR_PARENTSROOM', (DIVX, PDY[1]), (0, -1, 0), (-1, 0, 0))
 
 # ---------- UV 칸 배치(선반 쌓기) → 메시 ----------
 def local2d(pts):
@@ -660,16 +684,19 @@ objs = {}
 for t in items:
     obj, pts = FACES[t['i']][0], FACES[t['i']][1]
     # 0419: UV는 실제 길이×밀도. 2cm 난간을 최소 2px로 늘리던 80px/m 오류 제거.
-    objs.setdefault(obj, []).append((pts, [((t['x'] + .5 + a * t['dens']) / AW, (t['y'] + .5 + b * t['dens']) / AH) for a, b in t['l2']]))
+    objs.setdefault(obj, []).append((pts, [((t['x'] + .5 + a * t['dens']) / AW, (t['y'] + .5 + b * t['dens']) / AH) for a, b in t['l2']], (obj == SHELL and t['pt'] == 'door') or (obj.startswith('DOOR_') and obj.endswith('ROOM'))))   # 2150: 문틀(입구 옆면 + 테)·방문 꼭짓점 붙임 — 면마다 따로 꼭짓점이면 이음매 틈으로 뒤 방 벽이 흰 점선으로 비침
 mat = bpy.data.materials.new('HOUSE_alb'); gmat = bpy.data.materials.new('HOUSE_glass')  # 0351: 유리 = 따로 재질(Unity 에서 반투명)
 obs = []; tris = 0
 for name, fl in objs.items():
     me = bpy.data.meshes.new(name); bm = bmesh.new(); uvl = bm.loops.layers.uv.new('UVMap')
-    allp = [p for pts, _ in fl for p in pts]
+    allp = [p for pts, *_ in fl for p in pts]
     pv = Vector() if name == SHELL else PIVOT[name] if name in PIVOT else Vector(((min(p.x for p in allp) + max(p.x for p in allp)) / 2, (min(p.y for p in allp) + max(p.y for p in allp)) / 2, min(p.z for p in allp)))
-    for pts, uvs in fl:
+    wv = []
+    for pts, uvs, w in fl:
         f = bm.faces.new([bm.verts.new(p - pv) for p in pts])
         for lp, uv in zip(f.loops, uvs): lp[uvl].uv = uv
+        if w: wv.extend(f.verts)
+    if wv: bmesh.ops.remove_doubles(bm, verts=wv, dist=1e-4)   # 2150 문틀·방문만(UV 는 고리마다라 그대로)
     bm.to_mesh(me); bm.free(); ob = bpy.data.objects.new(name, me); ob.location = pv; sc.collection.objects.link(ob); me.materials.append(gmat if name.startswith('GLASS_') else mat); obs.append(ob)
     tris += sum(len(p.vertices) - 2 for p in me.polygons)
 # 캠: 발코니 문(방 안 문턱 뒤 눈높이 → 열린 문·발코니 너머 바깥) · 1층 정면 근접(테라스 앞 → 현관·부엌 창·의자)
