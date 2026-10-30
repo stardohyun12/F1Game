@@ -59,15 +59,19 @@ WL, WK = (-3.3, -2.1, .95, 2.15), (1.9, 3.1, .95, 2.15)
 DOX, DIVX = 2.4, .55                                   # 0133 도현 "방 2개": 주인공 방(q1_room)을 집 오른쪽 끝으로(방 가운데 x = 2.4, 동쪽 벽 = 집 안쪽 벽 4.15) · 부모님 방 = 그 왼쪽 전부
 PW = DIVX + .1                                         # 주인공 방 서쪽 벽면(방 로컬 x -1.75 = 0.65)
 BD = (DOX - .45, DOX + .45, H2, H2 + 2.05)             # q1_room.py 창 벽 문 구멍(방 로컬 x ±.45, z 0..2.05) → 방과 함께 +2.4
-W2L, W2M = (-3.4, -2.5, 4.0, 5.2), (-1.0, -.1, 4.0, 5.2)   # 부모님 방 창 2(옛 W2R = 주인공 방 발코니 문 자리라 없앰)
-HOLES = [(DX0, DX1, 0, DZ), WL, WK, BD, W2L, W2M]
+W2L = (-3.4, -2.5, 4.0, 5.2)                            # 부모님 방 앞 창(0133 의 W2M 은 발코니 문 BD2 로 바뀜)
+DOX2 = -.55                                            # 1421 도현 "부모님 방에서도 발코니 문 1개": 부모님 방 발코니 문 가운데 x
+BD2 = (DOX2 - .45, DOX2 + .45, H2, H2 + 2.05)
+SWY = (-2.4, -1.5, 4.0, 5.2)                           # 1421 18e9 "이쯤에 창문" Unity (-4.3, 4.68, 1.948) = Blender (+4.3, y -1.948, z 4.68) (FBX 가져오기에서 x 뒤집힘): 동쪽 벽(주인공 방) 창(y0, y1, z0, z1)
+HOLES = [(DX0, DX1, 0, DZ), WL, WK, BD, BD2, W2L]
 zs = sorted({0, WT} | {h[2] for h in HOLES} | {h[3] for h in HOLES})
 for za, zb in zip(zs, zs[1:]):  # 앞벽 = 높이 띠마다 구멍 사이 토막
     xs = [-WX]
     for x0, x1, z0, z1 in sorted(HOLES):
         if z0 <= za and zb <= z1: wall('F', xs[-1], x0, za, zb) if x0 > xs[-1] else None; xs.append(x1)
     wall('F', xs[-1], WX, za, zb)
-wall('B', -WX, WX, 0, WT); wall('L', FY, BY, 0, WT); wall('R', FY, BY, 0, WT)
+wall('B', -WX, WX, 0, WT); wall('L', FY, BY, 0, WT)
+for za, zb, ya, yb in ((0, SWY[2], FY, BY), (SWY[2], SWY[3], FY, SWY[0]), (SWY[2], SWY[3], SWY[1], BY), (SWY[3], WT, FY, BY)): wall('R', ya, yb, za, zb)   # 동쪽 벽 = 창 구멍 둘레 토막
 zr = WT + PIT * BY                      # 박공 꼭짓점(지붕 밑면)
 face(SHELL, [(-WX, BY, WT), (-WX, FY, WT), (-WX, 0, zr)], 'wall'); face(SHELL, [(WX, FY, WT), (WX, BY, WT), (WX, 0, zr)], 'wall')
 # 현관 문틀 안쪽 면(벽 두께 15cm 전부 — 0351: 안에서 보면 틈이 없게)
@@ -89,9 +93,12 @@ def inset(x0, x1, z0, z1):  # 0351 창(도현 "실제 창같이"): 벽 두께 15
     for a, b in ((x0 + fw, cx - .01), (cx + .01, x1 - fw)):
         for c, d in ((z0 + fw, cz - .01), (cz + .01, z1 - fw)):
             nmg = 'GLASS_%02d' % (len(GLASS) + 1); GLASS.append(nmg); face(nmg, [(a, yg, c), (b, yg, c), (b, yg, d), (a, yg, d)], 'glass')
-for w_ in (WL, WK, W2L, W2M): inset(*w_)
+for w_ in (WL, WK, W2L): inset(*w_)
 # 발코니 문 구멍: 벽 두께 흰 면 3 + 문턱(방 q1_room 의 껍데기를 버려서 집이 직접 — 0351)
 bx0, bx1, bz0, bz1 = BD
+face(SHELL, [(bx0, FY, bz0), (bx0, YI, bz0), (bx0, YI, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx1, YI, bz0), (bx1, FY, bz0), (bx1, FY, bz1), (bx1, YI, bz1)], 'trim')
+face(SHELL, [(bx0, YI, bz1), (bx1, YI, bz1), (bx1, FY, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx0, FY, bz0), (bx1, FY, bz0), (bx1, YI, bz0), (bx0, YI, bz0)], 'trim')
+bx0, bx1, bz0, bz1 = BD2
 face(SHELL, [(bx0, FY, bz0), (bx0, YI, bz0), (bx0, YI, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx1, YI, bz0), (bx1, FY, bz0), (bx1, FY, bz1), (bx1, YI, bz1)], 'trim')
 face(SHELL, [(bx0, YI, bz1), (bx1, YI, bz1), (bx1, FY, bz1), (bx0, FY, bz1)], 'trim'); face(SHELL, [(bx0, FY, bz0), (bx1, FY, bz0), (bx1, YI, bz0), (bx0, YI, bz0)], 'trim')
 # 흰 틀(2cm 돋음): 옆은 위·아래·뒤 skip(위 띠·창턱·발코니 바닥과 같은 면 0)
@@ -100,8 +107,35 @@ def surround(x0, x1, z0, z1, sill=True, head=True):
     box(SHELL, x0 - .12, x0, y0, FY, z0, z1, 'trim', ('back', 'top', 'bottom')); box(SHELL, x1, x1 + .12, y0, FY, z0, z1, 'trim', ('back', 'top', 'bottom'))
     if head: box(SHELL, x0 - .12, x1 + .12, y0, FY, z1, z1 + .12, 'trim', ('back',))
     if sill: box(SHELL, x0 - .18, x1 + .18, FY - .06, FY, z0 - .08, z0, 'trim', ('back',))
-surround(DX0, DX1, 0, DZ, sill=False); surround(*BD, sill=False)
-for w_ in (WL, WK, W2L, W2M): surround(*w_)
+surround(DX0, DX1, 0, DZ, sill=False); surround(*BD, sill=False); surround(*BD2, sill=False)
+for w_ in (WL, WK, W2L): surround(*w_)
+# 1421 18e9 동쪽 벽 창(주인공 방): 앞 창과 같은 규칙 — 벽 두께 흰 면 4 + 틀 5cm + 십자 살 + 반투명 유리 4 + 바깥 돋운 흰 틀 + 활짝 열린 덧창 둘
+def qf(obj, pts, pt, hint):  # 법선이 hint 쪽을 보게 자동으로 감는 사각 면
+    P = [Vector(p) for p in pts]; n = (P[1] - P[0]).cross(P[2] - P[0])
+    face(obj, pts if n.dot(Vector(hint)) > 0 else pts[::-1], pt)
+def inset_side(y0, y1, z0, z1):
+    xo, xi = WX, XI0
+    qf(SHELL, [(xo, y0, z0), (xi, y0, z0), (xi, y1, z0), (xo, y1, z0)], 'trim', (0, 0, 1)); qf(SHELL, [(xo, y0, z1), (xi, y0, z1), (xi, y1, z1), (xo, y1, z1)], 'trim', (0, 0, -1))
+    qf(SHELL, [(xo, y0, z0), (xi, y0, z0), (xi, y0, z1), (xo, y0, z1)], 'trim', (0, 1, 0)); qf(SHELL, [(xo, y1, z0), (xi, y1, z0), (xi, y1, z1), (xo, y1, z1)], 'trim', (0, -1, 0))
+    fw, xa, xb = .05, WX - .10, WX - .06
+    box(SHELL, xa, xb, y0, y0 + fw, z0, z1, 'trim', ('front', 'top', 'bottom')); box(SHELL, xa, xb, y1 - fw, y1, z0, z1, 'trim', ('back', 'top', 'bottom'))
+    box(SHELL, xa, xb, y0 + fw, y1 - fw, z0, z0 + fw, 'trim', ('front', 'back', 'bottom')); box(SHELL, xa, xb, y0 + fw, y1 - fw, z1 - fw, z1, 'trim', ('front', 'back', 'top'))
+    cy, cz = (y0 + y1) / 2, (z0 + z1) / 2 + .1
+    box(SHELL, xa + .01, xb - .01, cy - .01, cy + .01, z0 + fw, z1 - fw, 'trim', ('top', 'bottom'))
+    for a, b in ((y0 + fw, cy - .01), (cy + .01, y1 - fw)): box(SHELL, xa + .01, xb - .01, a, b, cz - .01, cz + .01, 'trim', ('front', 'back'))
+    xg = WX - .08
+    for a, b in ((y0 + fw, cy - .01), (cy + .01, y1 - fw)):
+        for c, d in ((z0 + fw, cz - .01), (cz + .01, z1 - fw)):
+            nmg = 'GLASS_%02d' % (len(GLASS) + 1); GLASS.append(nmg); qf(nmg, [(xg, a, c), (xg, b, c), (xg, b, d), (xg, a, d)], 'glass', (1, 0, 0))
+def surround_side(y0, y1, z0, z1):
+    xo = WX + .02
+    box(SHELL, WX, xo, y0 - .12, y0, z0, z1, 'trim', ('left', 'top', 'bottom')); box(SHELL, WX, xo, y1, y1 + .12, z0, z1, 'trim', ('left', 'top', 'bottom'))
+    box(SHELL, WX, xo, y0 - .12, y1 + .12, z1, z1 + .12, 'trim', ('left',)); box(SHELL, WX, WX + .06, y0 - .18, y1 + .18, z0 - .08, z0, 'trim', ('left',))
+XI0 = WX - .15
+inset_side(*SWY[:2], *SWY[2:]); surround_side(*SWY)
+hw_ = (SWY[1] - SWY[0]) / 2
+for kk, (a, b) in enumerate(((SWY[0] - .14 - hw_, SWY[0] - .14), (SWY[1] + .14, SWY[1] + .14 + hw_))):
+    box('SHUTTER_%02d' % (5 + kk), WX + .04, WX + .07, a, b, SWY[2], SWY[3], 'shutter', ('bottom',))
 # ---------- 기단(비탈, 돌) = 앞 테라스 1.2m(의자 자리) · 현관 계단 한 단 ----------
 TY = FY - 1.2
 SITE = json.load(open(R + 'tools/art/house_home_site.json', encoding='utf-8'))['foundation']
@@ -136,17 +170,19 @@ for cx in (-3.4, -1.15, 1.15, 3.4): box(SHELL, cx - .08, cx + .08, FY - 1.2, FY,
 # 현관문: 문짝(문틀 안 1cm 틈) + 손잡이. 바닥 5mm 띄움(기단 윗면과 같은 면 0)
 box('DOOR_01', DX0 + .01, DX1 - .01, DY - .04, DY, .005, DZ - .01, 'door', ('bottom', 'back'))
 box('DOOR_01', DX1 - .16, DX1 - .11, DY - .08, DY - .04, 1.0, 1.06, 'brass', ('back',))
-# 발코니 문(D-200): 방 안쪽으로 80° 열림. 경첩 = 문 구멍 오른쪽(x .43), 방 안 문틀(방 y -1.47) 바로 안. 피벗 = 경첩 아래
-HX, HY, OA, LW = DOX + .43, FY + .19, math.radians(80), .86
-dd = Vector((-math.cos(OA), math.sin(OA), 0)); nn = Vector((dd.y, -dd.x, 0))          # 닫힌 방향 -X 를 방 안(+Y)으로 80°, 두께는 경첩 바깥쪽
-box_o = Vector((HX, HY, 0)) - nn * .04
-obox('DOOR_BALCONY', box_o, dd, LW, nn, .04, H2 + .005, H2 + 2.03, 'door')
-kb = box_o + dd * (LW - .1) - nn * .04                                                 # 손잡이: 문 안쪽 면(n0)에 붙음 → 붙는 면(n1) skip
-obox('DOOR_BALCONY', kb, dd, .05, nn, .04, H2 + 1.0, H2 + 1.05, 'brass', ('n1',))
-PIVOT['DOOR_BALCONY'] = Vector((HX, HY, H2 + .005))
+# 발코니 문(D-200): 방 안쪽으로 80° 열림. 경첩 = 문 구멍 오른쪽(x .43), 방 안 문틀(방 y -1.47) 바로 안. 피벗 = 경첩 아래. 1421: 부모님 방에도 하나(DOOR_PARENTS)
+def balcony_door(nm, dox):
+    HX, HY, OA, LW = dox + .43, FY + .19, math.radians(80), .86
+    dd = Vector((-math.cos(OA), math.sin(OA), 0)); nn = Vector((dd.y, -dd.x, 0))          # 닫힌 방향 -X 를 방 안(+Y)으로 80°, 두께는 경첩 바깥쪽
+    box_o = Vector((HX, HY, 0)) - nn * .04
+    obox(nm, box_o, dd, LW, nn, .04, H2 + .005, H2 + 2.03, 'door')
+    kb = box_o + dd * (LW - .1) - nn * .04                                                 # 손잡이: 문 안쪽 면(n0)에 붙음 → 붙는 면(n1) skip
+    obox(nm, kb, dd, .05, nn, .04, H2 + 1.0, H2 + 1.05, 'brass', ('n1',))
+    PIVOT[nm] = Vector((HX, HY, H2 + .005))
+balcony_door('DOOR_BALCONY', DOX); balcony_door('DOOR_PARENTS', DOX2)
 # 덧창(C2 초록): 거실 창·2층 창 2 = 활짝 열려 벽에 붙음(4cm 띄움). 부엌 창은 덧창 대신 커튼
 k = 0
-for x0, x1, z0, z1 in (WL, W2L, W2M):
+for x0, x1, z0, z1 in (WL, W2L):
     hw = (x1 - x0) / 2
     for a, b in ((x0 - .14 - hw, x0 - .14), (x1 + .14, x1 + .14 + hw)):
         k += 1; box('SHUTTER_%02d' % k, a, b, FY - .07, FY - .04, z0, z1, 'shutter', ('bottom',))
@@ -252,9 +288,10 @@ def hexa(obj, c, pt, skip=()):  # 여섯 면 육면체(기운 손잡이용): c =
 hwall(SHELL, (XI, YI), (-XI, YI), 0, C1, [(DX0, DX1, 0, DZ), WL, WK])
 hwall(SHELL, (-XI, YB), (XI, YB), 0, C1); hwall(SHELL, (-XI, YI), (-XI, YB), 0, C1); hwall(SHELL, (XI, YB), (XI, YI), 0, C1)
 rw = lambda c, z: ('wainlow' if z < RW else 'rwall')
-hwall(SHELL, (XI, YI), (-XI, YI), H2, H2C, [BD, W2L, W2M], lambda c, z: rw(c, z) if c > PW else 'plaster', (PW, DIVX), (RW,))
-hwall(SHELL, (-XI, YB), (XI, YB), H2, H2C); hwall(SHELL, (-XI, YI), (-XI, YB), H2, H2C)
-hwall(SHELL, (XI, YB), (XI, YI), H2, H2C, (), lambda c, z: rw(c, z) if c < PB0 else 'plaster', (PB0,), (RW,))   # 동쪽 벽: 방 쪽(y < PB0)은 포스터 벽
+hwall(SHELL, (XI, YI), (-XI, YI), H2, H2C, [BD, BD2, W2L], lambda c, z: rw(c, z) if c > PW else 'plaster', (PW, DIVX), (RW,))
+hwall(SHELL, (-XI, YB), (XI, YB), H2, H2C, (), lambda c, z: rw(c, z) if c > PW else 'plaster', (PW, DIVX), (RW,))
+hwall(SHELL, (-XI, YI), (-XI, YB), H2, H2C)                                                          # 서쪽 벽(부모님 방)
+hwall(SHELL, (XI, YB), (XI, YI), H2, H2C, [SWY], lambda c, z: rw(c, z), (), (RW,))                   # 동쪽 벽: 주인공 방(계단 도착 구석까지) = 판벽 · 창 구멍 SWY
 # --- 슬래브(1층 천장 2.8 / 2층 바닥 3.2): 계단 구멍(x SX0..SX1, y SY0..YB)만 비움 ---
 for x0, x1, y0, y1 in ((-XI, XI, YI, SY0), (-XI, SX0, SY0, YB), (SX1, XI, SY0, YB)):
     hface(SHELL, x0, x1, y0, y1, H2, 'boards'); hface(SHELL, x0, x1, y0, y1, C1, 'ceil', up=False)
@@ -262,17 +299,16 @@ face(SHELL, [(SX1, SY0, C1), (SX0, SY0, C1), (SX0, SY0, H2), (SX1, SY0, H2)], 'c
 face(SHELL, [(SX0, SY0, C1), (SX0, YB, C1), (SX0, YB, H2), (SX0, SY0, H2)], 'ceil')
 face(SHELL, [(SX1, YB, C1), (SX1, SY0, C1), (SX1, SY0, H2), (SX1, YB, H2)], 'ceil')
 hface(SHELL, -XI, XI, YI, YB, H2C, 'ceil', up=False)                                   # 2층 천장
-# --- 2층 칸막이 10cm(0133 도현 "방 마다 문 만들어두지 말고 2층 전체를 방으로 / 부모님 방 · 주인공 방 2개"): 문짝·복도 없이 방 2개.
-#   주인공 방 = q1_room 3.5×3.0 상자(서쪽 벽 x .55..0.65 · 뒷벽 y .15..0.25 · 동쪽 = 집 벽) · 뒷벽에 문 없는 출입구 구멍 1(방 로컬 x .6..1.4 = 옛 방 문 자리)
-#   부모님 방 = 그 서쪽 전부(앞 y -2.85..0.15 은 칸막이 안, 그 뒤는 계단 쪽으로 트임 — 계단 홀 겸 침실 안쪽)
-RDN = (DOX + .6, DOX + 1.4, H2, H2 + 2.0)
-hwall(SHELL, (PW, YI), (PW, PB0), H2, H2C, (), lambda c, z: rw(0, z), (), (RW,))                  # 서쪽 벽(방 쪽, +x 를 봄)
-hwall(SHELL, (DIVX, PB1), (DIVX, YI), H2, H2C)                                                  # 같은 칸막이 부모님 쪽(−x 를 봄) + 뒷벽 끝면
-hwall(SHELL, (PW, PB0), (XI, PB0), H2, H2C, [RDN], lambda c, z: rw(0, z), (), (RW,))              # 뒷벽 방 쪽(−y 를 봄)
-hwall(SHELL, (XI, PB1), (DIVX, PB1), H2, H2C, [RDN])                                            # 뒷벽 계단 홀 쪽(+y 를 봄)
-x0, x1, z0, z1 = RDN                                                                            # 출입구 안쪽 면(문틀 없이 흰 면 3)
-face(SHELL, [(x0, PB0, z0), (x0, PB1, z0), (x0, PB1, z1), (x0, PB0, z1)], 'trim'); face(SHELL, [(x1, PB1, z0), (x1, PB0, z0), (x1, PB0, z1), (x1, PB1, z1)], 'trim')
-hface(SHELL, x0, x1, PB0, PB1, z1, 'trim', up=False)
+# --- 2층 칸막이 10cm(1421 도현 "2층 전체를 방으로 · 부모님 방도 방 하나 · 발코니 문 방마다 1개"): 복도 없음. 2층 = 방 2개가 바닥을 꽉 채움.
+#   주인공 방 = q1_room 3.5×3.0 앞쪽 + 계단 도착 구석(y .15..1.85, 난간까지) — 계단은 이 방으로 올라온다(계단참 = 방 안 도착 구석).
+#   부모님 방 = 칸막이(x .55..0.65) 서쪽 전부. 둘 사이 출입구 1(칸막이, 계단참 쪽 y DY0..DY1, 문짝 없음). 칸막이 북쪽 끝 = 계단 구멍 난간 앞 1cm.
+SYE = SY0 - .06                                                                                    # 칸막이 북쪽 끝 y(난간 가로대 y SY0-.05 앞)
+DY0, DY1, DZ2 = .55, 1.4, H2 + 2.0
+hwall(SHELL, (PW, YI), (PW, SYE), H2, H2C, [(DY0, DY1, H2, DZ2)], lambda c, z: rw(0, z), (), (RW,))   # 주인공 방 쪽 면(+x 를 봄)
+hwall(SHELL, (DIVX, SYE), (DIVX, YI), H2, H2C, [(DY0, DY1, H2, DZ2)])                              # 부모님 방 쪽 면(−x 를 봄)
+hwall(SHELL, (PW, SYE), (DIVX, SYE), H2, H2C)                                                      # 북쪽 끝면(+y 를 봄)
+face(SHELL, [(DIVX, DY0, H2), (PW, DY0, H2), (PW, DY0, DZ2), (DIVX, DY0, DZ2)][::-1], 'trim'); face(SHELL, [(DIVX, DY1, H2), (PW, DY1, H2), (PW, DY1, DZ2), (DIVX, DY1, DZ2)], 'trim')  # 출입구 옆 면 2
+hface(SHELL, DIVX, PW, DY0, DY1, DZ2, 'trim', up=False)                                             # 출입구 머리 밑면
 # --- 계단(STAIRS, 1층 → 2층, 38.7°): 디딤·챌판·옆판(단마다 한 장 = 톱니 다각형 없음) ---
 for i in range(SN_):
     xa, xb, zt = SX0 + i * ST, SX0 + (i + 1) * ST, (i + 1) * SR
@@ -372,6 +408,218 @@ hface('RUG_03', -2.0, -.5, -1.6, 0, Z + .011, 'rug')
 pendant('PENDANT_03', -1.9, -.6, H2C, .55)
 # 2층 방(ROOM_2F)의 전등은 Unity 에서 0.25m 올림(천장 2.4 → 2.65, library_import.cs)
 
+# ========== 1421 867e "생활감이 아직 부족함 — 소품 개수·세세한 디테일(손잡이·뚜껑·두께·라벨 자리)" — 엄마와 사는 집 ==========
+import random
+RNG = random.Random(1421)
+CT = .86                                             # 조리대 윗면 z
+def kettle(nm, cx, cy):  # 주전자: 몸통 16면 + 뚜껑 턱 + 꼭지 + 주둥이(서쪽) + 손잡이(ㄷ자, 동쪽)
+    cyl(nm, cx, cy, .085, CT, CT + .15, 'steel', 'steel', bottom=False); cyl(nm, cx, cy, .06, CT + .15, CT + .17, 'steel', 'steel', bottom=False)
+    cyl(nm, cx, cy, .013, CT + .17, CT + .2, 'sole', 'sole', bottom=False)
+    box(nm, cx - .14, cx - .07, cy - .015, cy + .015, CT + .09, CT + .125, 'steel', ('right',))
+    box(nm, cx + .08, cx + .125, cy - .012, cy + .012, CT + .13, CT + .15, 'sole', ('left',)); box(nm, cx + .105, cx + .125, cy - .012, cy + .012, CT + .04, CT + .13, 'sole', ('top', 'bottom'))
+    box(nm, cx + .08, cx + .125, cy - .012, cy + .012, CT + .02, CT + .04, 'sole', ('left',))
+def pot(nm, cx, cy, r=.12, h=.13):  # 냄비: 몸통 + 뚜껑(조금 큼) + 꼭지 + 양 귀 손잡이
+    cyl(nm, cx, cy, r, CT, CT + h, 'steel', 'steel', bottom=False); cyl(nm, cx, cy, r + .006, CT + h, CT + h + .012, 'steel', 'steel', bottom=False)
+    cyl(nm, cx, cy, .013, CT + h + .012, CT + h + .04, 'sole', 'sole', bottom=False)
+    box(nm, cx + r - .01, cx + r + .05, cy - .02, cy + .02, CT + h - .05, CT + h - .03, 'sole', ('left',)); box(nm, cx - r - .05, cx - r + .01, cy - .02, cy + .02, CT + h - .05, CT + h - .03, 'sole', ('right',))
+def bottle(nm, cx, cy, pt):  # 양념 병: 몸통 + 라벨 띠 + 뚜껑
+    cyl(nm, cx, cy, .025, CT, CT + .1, pt, 'ceramic', bottom=False)       # 라벨 띠는 칠(spice 칸 가운데 종이색) — 따로 덧대면 겹침
+    cyl(nm, cx, cy, .022, CT + .1, CT + .122, 'ceramic', 'ceramic', bottom=False)
+kettle('KETTLE_01', 3.82, -1.3); pot('POT_02', 3.85, -2.5)
+for i, pt_ in enumerate(('spice1', 'spice2', 'spice3', 'spice1', 'spice2')): bottle('SPICE_01', 4.05, -1.52 + i * .1, pt_)
+box('TOWEL_01', 3.65, 3.85, -.3, -.06, CT, CT + .012, 'apron', ('bottom',)); box('TOWEL_01', 3.67, 3.83, -.27, -.09, CT + .012, CT + .024, 'apron', ('bottom',))   # 행주(접은 두 겹)
+cyl('COOKER_01', 3.82, .3, .13, CT, CT + .2, 'ceramic', 'ceramic', bottom=False); cyl('COOKER_01', 3.82, .3, .125, CT + .2, CT + .25, 'steel', 'steel', bottom=False)
+box('COOKER_01', 3.77, 3.87, .27, .33, CT + .25, CT + .27, 'sole', ('bottom',)); cyl('COOKER_01', 3.9, .3, .014, CT + .25, CT + .275, 'steel', 'steel', bottom=False)
+box('COOKER_01', 3.68, 3.7, .25, .35, CT + .06, CT + .12, 'sole', ('right',)); box('COOKER_01', 3.675, 3.68, .26, .28, CT + .08, CT + .1, 'brass', ('right',)); box('COOKER_01', 3.675, 3.68, .32, .34, CT + .08, CT + .1, 'apron', ('right',))
+box('CUTBOARD_01', 3.68, 3.96, .62, 1.0, CT, CT + .02, 'chair', ('bottom',)); box('CUTBOARD_01', 3.78, 3.86, 1.0, 1.07, CT, CT + .02, 'chair', ('bottom', 'front')); box('CUTBOARD_01', 3.81, 3.83, 1.02, 1.05, CT + .02, CT + .021, 'sole', ('bottom',))
+for i in range(3): cyl('CUTBOARD_01', 3.77 + i * .03, .8, .02, CT + .02, CT + .03, 'flower', 'flower', bottom=False)   # 썰어 둔 당근 세 점
+box('KNIFE_01', 3.99, 4.09, .64, .76, CT, CT + .2, 'chair', ('bottom',))                                        # 칼꽂이
+for i, yy in enumerate((.67, .70, .73)): box('KNIFE_01', 4.025, 4.045, yy, yy + .018, CT + .2, CT + .27, 'sole', ('bottom',)); box('KNIFE_01', 4.025, 4.045, yy, yy + .018, CT + .27, CT + .272, 'steel', ('bottom',))
+box('RICE_01', 3.7, 4.05, 2.05, 2.4, 0, .5, 'plastic', ('bottom',)); box('RICE_01', 3.68, 4.07, 2.03, 2.42, .5, .54, 'plastic', ('bottom',)); box('RICE_01', 3.69, 3.7, 2.12, 2.33, .18, .38, 'paper', ('right',))  # 쌀통 + 뚜껑 + 라벨 자리
+cyl('RICE_01', 3.92, 2.22, .045, .54, .6, 'plastic', 'plastic', bottom=False)                                    # 뚜껑 위 계량컵
+box('CEREAL_01', 3.6, 3.72, 1.35, 1.5, 1.7, 1.98, {'*': 'cereal', 'left': 'cerealf'}, ('bottom',)); box('CEREAL_01', 3.61, 3.71, 1.36, 1.49, 1.98, 1.995, 'cereal', ('bottom',))   # 냉장고 위
+box('BASKET_02', 3.76, 4.06, 1.42, 1.72, 1.7, 1.82, 'basket', ('bottom',)); box('BASKET_02', 3.75, 4.07, 1.41, 1.73, 1.82, 1.85, 'basket', ('bottom',))
+for cx_, cy_ in ((3.84, 1.52), (3.95, 1.62)): cyl('BASKET_02', cx_, cy_, .035, 1.85, 1.91, 'apron', 'apron', bottom=False)
+cyl('JAR_01', 3.66, 1.66, .045, 1.7, 1.8, 'jar', 'jar', bottom=False); cyl('JAR_01', 3.66, 1.66, .048, 1.8, 1.83, 'brass', 'brass', bottom=False)
+box('MEMO_01', 3.488, 3.5, 1.42, 1.62, 1.35, 1.55, 'paper', ('right',)); box('MEMO_01', 3.486, 3.488, 1.45, 1.59, 1.4, 1.42, 'sole', ('right',))
+box('MEMO_01', 3.478, 3.486, 1.45, 1.48, 1.5, 1.53, 'apron', ('right',)); box('MEMO_01', 3.478, 3.486, 1.56, 1.59, 1.38, 1.41, 'sofa', ('right',))   # 자석 둘
+# 현관: 열쇠 걸이 · 우산꽂이 · 장바구니 · 전화기
+box('KEYRACK_01', -1.3, -.95, YI, YI + .02, 1.32, 1.44, 'chair', ('front',))
+for hx in (-1.22, -1.12, -1.02): box('KEYRACK_01', hx - .008, hx + .008, YI + .02, YI + .05, 1.36, 1.38, 'brass', ('front',)); box('KEYRACK_01', hx - .008, hx + .008, YI + .05, YI + .056, 1.2, 1.36, 'steel', ('front',))
+cyl('UMBRELLA_01', .72, YI + .16, .09, 0, .45, 'bin', 'bin', bottom=True)
+for dx, dy, h_, pt_ in ((-.04, -.02, .42, 'sole'), (.03, .03, .38, 'sofa'), (.0, -.045, .34, 'apron')):
+    cyl('UMBRELLA_01', .72 + dx, YI + .16 + dy, .012, .45, .45 + h_, pt_, pt_, bottom=False); box('UMBRELLA_01', .72 + dx - .02, .72 + dx + .02, YI + .16 + dy - .012, YI + .16 + dy + .012, .45 + h_, .45 + h_ + .03, 'sole', ('bottom',))
+box('BAG_02', .85, 1.15, YI + .1, YI + .36, 0, .28, 'bagcloth', ('bottom',))
+for hx in (.9, 1.04):
+    box('BAG_02', hx, hx + .01, YI + .22, YI + .24, .28, .4, 'bagcloth', ('bottom',)); box('BAG_02', hx + .09, hx + .1, YI + .22, YI + .24, .28, .4, 'bagcloth', ('bottom',))
+    box('BAG_02', hx + .01, hx + .09, YI + .22, YI + .24, .4, .41, 'bagcloth', ('bottom', 'left', 'right'))
+box('BAG_02', .95, .98, YI + .18, YI + .22, .28, .52, 'leaf', ('bottom',)); box('BAG_02', 1.02, 1.1, YI + .12, YI + .2, .28, .34, 'basket', ('bottom',)); box('BAG_02', 1.05, 1.07, YI + .15, YI + .17, .34, .36, 'flower', ('bottom',))   # 대파·빵·당근 머리
+box('PHONE_01', -1.26, -1.02, YI + .05, YI + .2, .95, .98, 'plastic', ('bottom',))
+for xx in (-1.235, -1.055): box('PHONE_01', xx, xx + .02, YI + .08, YI + .095, .98, 1.0, 'plastic', ('bottom', 'top'))
+box('PHONE_01', -1.215, -1.06, YI + .075, YI + .1, 1.0, 1.025, 'plastic'); box('PHONE_01', -1.26, -1.215, YI + .072, YI + .103, 1.0, 1.03, 'plastic', ('right',)); box('PHONE_01', -1.06, -1.02, YI + .072, YI + .103, 1.0, 1.03, 'plastic', ('left',))
+for i in range(3):
+    for j in range(2): box('PHONE_01', -1.2 + i * .035, -1.2 + i * .035 + .02, YI + .13 + j * .03, YI + .13 + j * .03 + .02, .98, .985, 'sole', ('bottom',))
+# 거실: 리모컨 · 잡지 · 쿠션 · 담요 · 큰 화분 · 액자 둘 · 달력
+box('REMOTE_01', -2.56, -2.49, -.78, -.58, .4, .42, {'*': 'sole', 'top': 'remote'}, ('bottom',))                  # 리모컨: 버튼은 윗면 칠(1~2px 짜리 면을 따로 만들면 단색 칸)
+box('MAGAZINE_01', -2.85, -2.62, -.95, -.67, .4, .41, 'cover', ('bottom',)); box('MAGAZINE_01', -2.83, -2.61, -.93, -.65, .41, .42, 'paper', ('bottom',))
+box('CUSHION_01', -3.83, -3.58, -1.35, -1.0, .52, .66, 'cushionB', ('bottom',)); box('CUSHION_01', -3.81, -3.6, -1.33, -1.02, .66, .68, 'cushionB', ('bottom',))
+box('CUSHION_02', -3.83, -3.58, -.12, .18, .52, .65, 'cushion', ('bottom',)); box('CUSHION_02', -3.81, -3.6, -.1, .16, .65, .67, 'cushion', ('bottom',))
+for i, (a, b, c, d) in enumerate(((-3.78, -3.4, -.62, -.25), (-3.76, -3.42, -.6, -.27), (-3.74, -3.44, -.58, -.29))): box('BLANKET_01', a, b, c, d, .52 + i * .022, .52 + (i + 1) * .022, 'blanket', ('bottom',))
+cyl('PLANTER_05', -3.88, -2.55, .15, 0, .28, 'terracotta', 'soil', bottom=True); cyl('PLANTER_05', -3.88, -2.55, .165, .28, .31, 'terracotta', 'terracotta', bottom=False)
+for dx, dy, h_, w_ in ((-.05, .0, .5, .07), (.04, .03, .62, .08), (.02, -.05, .42, .07), (-.03, .06, .36, .06)): box('PLANT_05', -3.88 + dx - w_ / 2, -3.88 + dx + w_ / 2, -2.55 + dy - w_ / 2, -2.55 + dy + w_ / 2, .3, .3 + h_, 'leaf', ('bottom',))
+def frame(nm, x_wall, y0, y1, z0, z1, pic, dirx=1):  # 벽에 건 액자: 나무 틀 3cm + 안쪽에 들어간 그림. dirx = +1 이면 벽 법선이 +x(서쪽 벽), -1 이면 -x(칸막이 부모님 쪽)
+    xa, xb = (x_wall, x_wall + .03) if dirx > 0 else (x_wall - .03, x_wall)
+    skip = ('left',) if dirx > 0 else ('right',)
+    fw = .03
+    box(nm, xa, xb, y0, y1, z0, z0 + fw, 'chair', skip + ('top',)); box(nm, xa, xb, y0, y1, z1 - fw, z1, 'chair', skip + ('bottom',))
+    box(nm, xa, xb, y0, y0 + fw, z0 + fw, z1 - fw, 'chair', skip + ('top', 'bottom')); box(nm, xa, xb, y1 - fw, y1, z0 + fw, z1 - fw, 'chair', skip + ('top', 'bottom'))
+    xp = (x_wall, x_wall + .012) if dirx > 0 else (x_wall - .012, x_wall)
+    box(nm, xp[0], xp[1], y0 + fw, y1 - fw, z0 + fw, z1 - fw, pic, skip + ('top', 'bottom', 'front', 'back'))
+frame('FRAME_01', -XI, -1.45, -.95, 1.5, 1.9, 'pic1'); frame('FRAME_02', -XI, .02, .32, 1.4, 1.75, 'pic2')
+box('CALENDAR_01', -XI, -XI + .008, -2.72, -2.32, 1.3, 1.72, 'calpage', ('left', 'top')); box('CALENDAR_01', -XI, -XI + .02, -2.72, -2.32, 1.72, 1.8, 'apron', ('left',))
+# 책장 + 책 줄(벽에 붙은 책장 = SHELF_nn, 책 = BOOKS_nn). 'N' = 북쪽 벽(YB)에 서서 앞이 −y · 'E' = 동쪽 벽(XI)에 서서 앞이 −x
+def bookshelf(sh, bk, wall, u0, w, z0, h, nplank, d=.28):
+    def bx(nm, a0, a1, d0, d1, za, zb, pt, skip=()):  # a = 벽 따라 u 좌표, d = 벽에서 앞으로 거리. skip: 벽쪽 'wallf'
+        if wall == 'N':
+            sk = tuple({'wallf': 'back'}.get(k, k) for k in skip); box(nm, u0 + a0, u0 + a1, YB - d1, YB - d0, za, zb, pt, sk)
+        else:
+            sk = tuple({'wallf': 'right'}.get(k, k) for k in skip); box(nm, XI - d1, XI - d0, u0 + a0, u0 + a1, za, zb, pt, sk)
+    bx(sh, 0, .03, 0, d, z0, z0 + h, 'chair', ('wallf', 'bottom')); bx(sh, w - .03, w, 0, d, z0, z0 + h, 'chair', ('wallf', 'bottom'))
+    gaps = [z0 + .04 + i * (h - .08 - .03) / (nplank - 1) for i in range(nplank)]
+    for gz in gaps: bx(sh, .03, w - .03, 0, d, gz, gz + .03, 'chair', ('wallf', 'left', 'right') if wall == 'N' else ('wallf', 'front', 'back'))
+    for gz in gaps[:-1]:
+        x_ = .05
+        while x_ < w - .09:
+            bw = RNG.choice((.025, .03, .035, .04, .05)); bh = RNG.choice((.16, .19, .22, .25, .27)); ptb = RNG.choice(('bk1', 'bk2', 'bk3', 'bk4', 'bk5', 'bk6'))
+            if x_ + bw > w - .22: break
+            bx(bk, x_, x_ + bw, .03, d - .04, gz + .03, gz + .03 + bh, ptb, ('bottom',)); x_ += bw + .004
+            if RNG.random() < .12: x_ += RNG.choice((.03, .06))     # 가끔 빈틈
+        bx(bk, w - .2, w - .06, .03, d - .04, gz + .03, gz + .03 + .025, RNG.choice(('bk3', 'bk5')), ('bottom',))   # 눕혀 둔 책 한 권(오른쪽 끝, 두께 2.5cm)
+Z = H2
+bookshelf('SHELF_03', 'BOOKS_01', 'N', -3.0, 1.2, Z, 1.8, 4)        # 부모님 방 뒤 벽(북쪽)
+bookshelf('SHELF_04', 'BOOKS_02', 'E', .3, .9, Z, 1.5, 4)           # 주인공 방 동쪽 벽(계단 도착 구석 앞)
+# 부모님 방: 옷걸이 옷(스탠드 행거) · 핸드백 · 액자
+RKX0, RKX1, RKY0, RKY1, RKZ = -1.55, -.55, 2.4, 2.72, Z + 1.6
+for px in (RKX0, RKX1 - .03): box('RACK_02', px, px + .03, RKY0 + .14, RKY0 + .17, Z + .03, RKZ, 'iron', ('bottom', 'top'))
+for px in (RKX0 - .05, RKX1 - .08): box('RACK_02', px, px + .13, RKY0, RKY1, Z, Z + .03, 'iron', ('bottom',))
+box('RACK_02', RKX0, RKX1, RKY0 + .14, RKY0 + .17, RKZ, RKZ + .03, 'iron', ('left', 'right'))
+for i, (cw, pt_) in enumerate(((.17, 'clothA'), (.16, 'clothB'), (.15, 'clothC'))):
+    gx = RKX0 + .12 + i * .3; gy = RKY0 + .155
+    box('HANGER_01', gx + cw * .5 - .006, gx + cw * .5 + .006, gy - .006, gy + .006, RKZ - .04, RKZ, 'steel', ('bottom', 'top'))                     # 걸이 고리(바에서 매달림)
+    box('HANGER_01', gx, gx + cw, gy - .006, gy + .006, RKZ - .06, RKZ - .04, 'steel')                                                            # 걸이 어깨
+    box('CLOTHES_01', gx, gx + cw, gy - .02, gy + .02, RKZ - .06 - .7, RKZ - .06, pt_, ('top',))                                      # 몸판
+    box('CLOTHES_01', gx - .06, gx, gy - .016, gy + .016, RKZ - .06 - .5, RKZ - .06, pt_, ('top', 'right'))                                      # 소매 둘(몸판 옆, 얇게)
+    box('CLOTHES_01', gx + cw, gx + cw + .06, gy - .016, gy + .016, RKZ - .06 - .5, RKZ - .06, pt_, ('top', 'left'))
+box('BAG_03', .2, .5, -1.7, -1.4, Z + .85, Z + 1.0, 'leather', ('bottom',)); box('BAG_03', .22, .48, -1.71, -1.7, Z + .9, Z + .95, 'brass', ('back',))
+for yy in (-1.65, -1.45): box('BAG_03', .26, .27, yy, yy + .03, Z + 1.0, Z + 1.1, 'leather', ('bottom',)); box('BAG_03', .43, .44, yy, yy + .03, Z + 1.0, Z + 1.1, 'leather', ('bottom',))
+box('BAG_03', .27, .43, -1.65, -1.62, Z + 1.1, Z + 1.11, 'leather', ('bottom',)); box('BAG_03', .27, .43, -1.45, -1.42, Z + 1.1, Z + 1.11, 'leather', ('bottom',))
+frame('FRAME_03', DIVX, -.7, -.2, Z + 1.3, Z + 1.7, 'pic1', dirx=-1)
+# 주인공 방: 동쪽 벽 갈고리 판 + 걸린 옷(계단 도착 구석)
+box('HANGER_02', XI - .03, XI, 1.3, 1.75, Z + 1.55, Z + 1.61, 'chair', ('right',))
+for hy in (1.4, 1.62): box('HANGER_02', XI - .06, XI - .03, hy - .008, hy + .008, Z + 1.56, Z + 1.58, 'brass', ('right',))
+for hy, pt_ in ((1.4, 'clothD'), (1.62, 'clothA')):
+    box('CLOTHES_02', XI - .09, XI - .06, hy - .012, hy + .012, Z + 1.52, Z + 1.58, 'brass', ('right', 'bottom'))    # 고리
+    box('CLOTHES_02', XI - .1, XI - .06, hy - .06, hy + .06, Z + .85, Z + 1.52, pt_, ('top',))                      # 겉옷(몸판)
+    box('CLOTHES_02', XI - .1, XI - .06, hy - .09, hy - .06, Z + 1.0, Z + 1.52, pt_, ('top', 'back')); box('CLOTHES_02', XI - .1, XI - .06, hy + .06, hy + .09, Z + 1.0, Z + 1.52, pt_, ('top', 'front'))
+
+# ===== 1421b 867e 재시도 — 판정 "작고 드문드문" : 계단 위 · 바닥 가운데 · 식탁 · 부엌 벽 · 거실 · 계단 밑 =====
+# 계단 디딤(i단 윗면 z = (i+1)*SR) 위: 러너(한 단마다 한 장, 1.4cm) + 벗어 둔 신발 + 책 더미 + 접은 수건 + 빨래 바구니
+for i in range(1, 14):
+    box('RUNNER_01', SX0 + i * ST + .01, SX0 + (i + 1) * ST - .005, 2.05, 2.65, (i + 1) * SR, (i + 1) * SR + .014, 'rug', ('bottom',))
+sz = 3 * SR + .014; sx_ = SX0 + 2 * ST          # 신발: 3단째
+for nm_, dx in (('SHOE_06', .02), ('SHOE_07', .14)):
+    box(nm_, sx_ + dx, sx_ + dx + .1, 2.15, 2.42, sz, sz + .03, 'sole', ('bottom',)); box(nm_, sx_ + dx + .01, sx_ + dx + .09, 2.22, 2.41, sz + .03, sz + .1, 'leather', ('bottom',))
+bz = 6 * SR + .014; bx_ = SX0 + 5 * ST + .04      # 책 더미: 6단째
+for k, (dx, dy, wd, th, pt_) in enumerate(((0, 0, .18, .03, 'bk1'), (.01, .01, .16, .025, 'bk4'), (.005, 0, .17, .035, 'bk2'))):
+    z0_ = bz + sum((.03, .025, .035)[:k]); box('BOOKS_03', bx_ + dx, bx_ + dx + wd, 2.2 + dy, 2.42 - dy, z0_, z0_ + th, pt_, ('bottom',))
+tz = 9 * SR + .014; tx_ = SX0 + 8 * ST + .04       # 접은 수건: 9단째
+box('TOWEL_02', tx_, tx_ + .18, 2.3, 2.55, tz, tz + .026, 'apron', ('bottom',)); box('TOWEL_02', tx_ + .01, tx_ + .17, 2.32, 2.53, tz + .026, tz + .048, 'apron', ('bottom',))
+lz = 12 * SR + .014                                 # 빨래 바구니: 12단째
+cyl('LAUNDRY_01', SX0 + 11 * ST + .125, 2.35, .1, lz, lz + .19, 'basket', 'sole', bottom=False); cyl('LAUNDRY_01', SX0 + 11 * ST + .125, 2.35, .085, lz + .19, lz + .25, 'clothB', 'clothB', bottom=False)
+# 바닥 가운데: 빨래 건조대(막대 4 + 널린 천 3) · 슬리퍼 · 장난감 레이싱카
+DX0_, DX1_, DY0_, DY1_ = .9, 1.55, .7, 1.15
+for px in (DX0_, DX1_ - .03):
+    for py in (DY0_, DY1_ - .03): box('DRYER_01', px, px + .03, py, py + .03, 0, .96, 'iron', ('top',))
+    box('DRYER_01', px, px + .03, DY0_, DY1_, .96, 1.0, 'iron')
+for k, ry in enumerate((.78, .88, .98, 1.08)):
+    box('DRYER_01', DX0_ + .03, DX1_ - .03, ry, ry + .016, .96, .976, 'iron', ('left', 'right'))
+    if k < 3: box('CLOTHES_03', DX0_ + .1 + k * .05, DX1_ - .12 - (2 - k) * .05, ry + .016, ry + .026, .55 + k * .05, .976, ('clothA', 'clothB', 'clothC')[k], ('front', 'top'))
+for nm_, sx, sy in (('SLIPPER_01', -.72, 1.2), ('SLIPPER_02', -.57, 1.24)):
+    box(nm_, sx, sx + .1, sy, sy + .26, 0, .02, 'sole', ('bottom',)); box(nm_, sx + .01, sx + .09, sy + .12, sy + .25, .02, .055, 'apron', ('bottom',)); box(nm_, sx + .01, sx + .09, sy + .08, sy + .12, .02, .04, 'apron', ('bottom',))
+TX0, TY0 = -1.9, -.62
+box('TOY_01', TX0, TX0 + .12, TY0, TY0 + .05, .012, .04, 'flower', ('bottom',)); box('TOY_01', TX0 + .05, TX0 + .08, TY0 + .01, TY0 + .04, .04, .06, 'chair', ('bottom',))
+box('TOY_01', TX0 - .03, TX0, TY0 + .015, TY0 + .035, .012, .03, 'flower', ('bottom', 'right')); box('TOY_01', TX0 + .125, TX0 + .13, TY0 - .005, TY0 + .055, .04, .055, 'sole', ('bottom', 'left'))
+for wx_ in (TX0 + .015, TX0 + .085):
+    box('TOY_01', wx_, wx_ + .025, TY0 - .015, TY0, 0, .03, 'sole', ('back',)); box('TOY_01', wx_, wx_ + .025, TY0 + .05, TY0 + .065, 0, .03, 'sole', ('front',))
+# 식탁 위: 빵 바구니 · 물병 · 과일 그릇 · 수저 2벌 · 의자 방석 2
+cyl('BREAD_01', 2.2, -.55, .06, .76, .8, 'basket', 'basket', bottom=False); box('BREAD_01', 2.155, 2.245, -.585, -.515, .8, .83, 'terracotta', ('bottom',))
+cyl('PITCHER_01', 1.68, -.47, .045, .76, .92, 'ceramic', 'coffee', bottom=False); box('PITCHER_01', 1.725, 1.755, -.482, -.458, .8, .9, 'ceramic', ('left',))
+cyl('FRUIT_01', 1.66, -.2, .07, .76, .8, 'ceramic', 'ceramic', bottom=False)
+for ax, ay, pt_ in ((1.63, -.2, 'flower'), (1.692, -.2, 'leaf'), (1.661, -.146, 'flower')): cyl('FRUIT_01', ax, ay, .03, .8, .86, pt_, pt_, bottom=False)
+for cx_, cy_ in ((1.65, -.76), (2.05, -.3)):
+    box('CUTLERY_01', cx_ - .01, cx_ + .01, cy_ - .06, cy_ + .06, .76, .766, 'steel', ('bottom',)); box('CUTLERY_01', cx_ - .022, cx_ + .022, cy_ + .06, cy_ + .1, .76, .766, 'steel', ('bottom', 'front'))
+    box('CUTLERY_01', cx_ + .27 + (.0 if cy_ < -.5 else .06), cx_ + .29 + (.0 if cy_ < -.5 else .06), cy_ - .06, cy_ + .0, .76, .77, 'sole', ('bottom',)); box('CUTLERY_01', cx_ + .27 + (.0 if cy_ < -.5 else .06), cx_ + .29 + (.0 if cy_ < -.5 else .06), cy_ + .0, cy_ + .1, .76, .766, 'steel', ('bottom', 'front'))
+box('CUSHION_03', 1.8, 2.2, -1.4, -1.02, .46, .49, 'cushionB', ('bottom',)); box('CUSHION_04', 1.8, 2.2, .04, .42, .46, .49, 'cushion', ('bottom',))
+# 부엌 벽: 걸이 막대 + 걸린 도구 4 · 싱크 위 선반 + 단지 3
+box('UTENSIL_01', 4.12, 4.14, -2.05, -2.0, 1.28, 1.34, 'steel', ('right',)); box('UTENSIL_01', 4.12, 4.14, -1.1, -1.05, 1.28, 1.34, 'steel', ('right',)); box('UTENSIL_01', 4.12, 4.14, -2.0, -1.1, 1.3, 1.32, 'steel', ('front', 'back', 'right'))
+for uy, kind in ((-1.88, 'spat'), (-1.74, 'ladle'), (-1.6, 'whisk'), (-1.46, 'tong')):
+    box('UTENSIL_01', 4.125, 4.135, uy - .004, uy + .004, 1.22, 1.3, 'steel', ('top', 'right'))
+    wd = .02 if kind != 'whisk' else .035
+    box('UTENSIL_01', 4.115, 4.135, uy - wd / 2, uy + wd / 2, 1.0 + (.03 if kind == 'tong' else 0), 1.22, 'sole', ('top', 'right'))
+    if kind == 'spat': box('UTENSIL_01', 4.115, 4.135, uy - .035, uy + .035, .94, 1.0, 'steel', ('top', 'right'))
+    if kind == 'ladle': box('UTENSIL_01', 4.115, 4.135, uy - .04, uy + .04, .9, 1.0, 'steel', ('top', 'right'))
+    if kind == 'whisk': box('UTENSIL_01', 4.115, 4.135, uy - .035, uy + .035, .9, 1.0, 'steel', ('top', 'right'))
+box('SHELF_05', 3.98, 4.15, -.9, -.35, 1.18, 1.2, 'chair', ('right',))
+for jy in (-.8, -.65, -.5):
+    cyl('JAR_02', 4.06, jy, .04, 1.2, 1.3, 'jar', 'jar', bottom=False); cyl('JAR_02', 4.06, jy, .043, 1.3, 1.32, 'brass', 'brass', bottom=False)
+# 거실: 스탠드 조명(소파 옆) · 벽 선반(소파 북쪽 벽, 화분·책·사진)
+cyl('LAMP_02', -3.85, -2.0, .1, 0, .03, 'iron', 'iron'); cyl('LAMP_02', -3.85, -2.0, .012, .03, 1.3, 'iron', 'iron', bottom=False)
+cyl('LAMP_02', -3.85, -2.0, .16, 1.15, 1.5, 'shade', 'shade', btm='bulb')
+box('SHELF_06', -XI, -XI + .22, .65, 1.45, 1.5, 1.53, 'chair', ('left',))
+cyl('PLANTER_06', -4.03, .8, .04, 1.53, 1.6, 'terracotta', 'soil', bottom=False); box('PLANT_06', -4.045, -4.015, .785, .815, 1.6, 1.7, 'leaf', ('bottom',))
+box('BOOKS_04', -4.1, -3.96, 1.0, 1.04, 1.53, 1.75, 'bk1', ('bottom',)); box('BOOKS_04', -4.1, -3.96, 1.04, 1.075, 1.53, 1.69, 'bk3', ('bottom',)); box('BOOKS_04', -4.1, -3.96, 1.075, 1.12, 1.53, 1.72, 'bk5', ('bottom',))
+box('FRAME_04', -4.1, -4.07, 1.2, 1.36, 1.53, 1.66, 'chair', ('bottom', 'right')); box('FRAME_04', -4.07, -4.058, 1.215, 1.345, 1.545, 1.645, 'pic2', ('bottom', 'left', 'top', 'front', 'back'))
+# 계단 밑(계단 옆판 = 안쪽 벽 y 1.85): 나무 상자 2단 · 빗자루 · 양동이 · 코트 걸이 + 외투 2
+def crate(nm, x0, x1, y0, y1, z0, h):
+    box(nm, x0, x1, y0, y1, z0, z0 + .02, 'chair', ('bottom',))
+    for px, py in ((x0, y0), (x1 - .03, y0), (x0, y1 - .03), (x1 - .03, y1 - .03)): box(nm, px, px + .03, py, py + .03, z0 + .02, z0 + h, 'chair', ('bottom',))
+    for k in range(3):
+        zs = z0 + .04 + k * .08
+        box(nm, x0 + .03, x1 - .03, y0, y0 + .02, zs, zs + .05, 'chair', ('left', 'right')); box(nm, x0 + .03, x1 - .03, y1 - .02, y1, zs, zs + .05, 'chair', ('left', 'right'))
+        box(nm, x0, x0 + .02, y0 + .03, y1 - .03, zs, zs + .05, 'chair', ('front', 'back')); box(nm, x1 - .02, x1, y0 + .03, y1 - .03, zs, zs + .05, 'chair', ('front', 'back'))
+crate('CRATE_01', .2, .7, 1.3, 1.82, 0, .3); crate('CRATE_02', .22, .66, 1.34, 1.8, .3, .26)
+for cx_, cy_ in ((.35, 1.5), (.52, 1.62)): cyl('CRATE_02', cx_, cy_, .07, .32, .4, 'leaf', 'leaf', bottom=False)
+box('BROOM_01', 1.0, 1.1, 1.74, 1.82, 0, .14, 'basket', ('bottom',)); box('BROOM_01', 1.04, 1.06, 1.77, 1.79, .14, 1.4, 'chair', ('bottom',)); box('BROOM_01', 1.03, 1.07, 1.765, 1.795, .14, .18, 'sole', ('bottom',))
+cyl('BUCKET_01', 1.5, 1.6, .13, 0, .28, 'bin', 'sole')
+for px in (1.365, 1.625): box('BUCKET_01', px, px + .01, 1.595, 1.605, .28, .4, 'steel', ('top', 'bottom'))
+box('BUCKET_01', 1.365, 1.635, 1.595, 1.605, .4, .41, 'steel', ('bottom',))
+box('HOOK_03', 2.0, 2.8, 1.8, 1.85, 1.5, 1.54, 'chair', ('back',))
+for hx, nm_, pt_ in ((2.15, 'COAT_01', 'clothD'), (2.55, 'COAT_02', 'clothB')):
+    box('HOOK_03', hx - .01, hx + .01, 1.77, 1.8, 1.5, 1.54, 'brass', ('back', 'bottom'))
+    box(nm_, hx - .12, hx + .12, 1.78, 1.82, .8, 1.46, pt_, ('top',)); box(nm_, hx - .17, hx - .12, 1.785, 1.815, .9, 1.46, pt_, ('top', 'right')); box(nm_, hx + .12, hx + .17, 1.785, 1.815, .9, 1.46, pt_, ('top', 'left'))
+    box(nm_, hx - .01, hx + .01, 1.79, 1.8, 1.46, 1.5, 'steel', ('bottom', 'top'))
+
+# ===== 1421c 867e 3차 — 판정 "주방·가구 위 소품 종류·수량 · 세부 표현 적음" : 손잡이 · 벽 액자·거울 · 식탁 깔개 · 현관 장화·화분 · 고양이 =====
+for k in range(6):                                             # 윗장 문짝 6장: 각 문 오른쪽 가장자리 세로 손잡이(1.8cm 폭, 3cm 튀어나옴)
+    hy = -2.3 + 3.2 / 6 * (k + 1) - .05; box('KNOB_03', 3.77, 3.8, hy - .009, hy + .009, 1.5, 1.64, 'brass', ('right',))
+for k in range(8):                                             # 하부장 문짝 8장
+    hy = YI + .03 + .5 * (k + 1) - .05; box('KNOB_04', 3.52, 3.55, hy - .009, hy + .009, .66, .78, 'steel', ('right',))
+def fy(nm, x0, x1, z0, z1, pic):                               # 앞벽 안쪽 면(y = YI, 법선 +y) 액자: 틀 3cm + 안쪽 그림
+    fw = .03; sk = ('front',)
+    box(nm, x0, x1, YI, YI + .03, z0, z0 + fw, 'chair', sk + ('top',)); box(nm, x0, x1, YI, YI + .03, z1 - fw, z1, 'chair', sk + ('bottom',))
+    box(nm, x0, x0 + fw, YI, YI + .03, z0 + fw, z1 - fw, 'chair', sk + ('top', 'bottom', 'right')); box(nm, x1 - fw, x1, YI, YI + .03, z0 + fw, z1 - fw, 'chair', sk + ('top', 'bottom', 'left'))
+    box(nm, x0 + fw, x1 - fw, YI, YI + .012, z0 + fw, z1 - fw, pic, sk + ('top', 'bottom', 'left', 'right'))
+fy('FRAME_05', 1.3, 1.65, 1.45, 1.85, 'pic2'); fy('FRAME_06', -1.55, -1.1, 1.65, 2.0, 'pic1')
+box('MIRROR_02', .8, 1.2, YI, YI + .025, 1.35, 1.85, {'*': 'chair', 'back': 'mirror'}, ('front',))
+hface('RUG_04', 1.25, 2.75, -1.5, .5, .011, 'rug')             # 식탁 밑 깔개
+cyl('PLANTER_07', 1.6, -2.55, .17, 0, .3, 'terracotta', 'soil', bottom=True); cyl('PLANTER_07', 1.6, -2.55, .185, .3, .33, 'terracotta', 'terracotta', bottom=False)
+for dx, dy, h_, w_ in ((-.06, .0, .75, .09), (.05, .04, .95, .1), (.02, -.06, .6, .08), (-.04, .07, .5, .07), (.08, -.02, .4, .07)): box('PLANT_07', 1.6 + dx - w_ / 2, 1.6 + dx + w_ / 2, -2.55 + dy - w_ / 2, -2.55 + dy + w_ / 2, .32, .32 + h_, 'leaf', ('bottom',))
+for nm_, bx0 in (('SHOE_08', -.82), ('SHOE_09', -.67)):          # 현관 장화 한 켤레(문 옆 벽)
+    box(nm_, bx0, bx0 + .12, YI + .1, YI + .36, 0, .03, 'sole', ('bottom',)); box(nm_, bx0 + .01, bx0 + .11, YI + .12, YI + .35, .03, .1, 'bin', ('bottom',)); box(nm_, bx0 + .01, bx0 + .11, YI + .12, YI + .26, .1, .3, 'bin', ('bottom',))
+box('CAT_01', -3.2, -2.95, -.1, .04, .011, .12, 'terracotta', ('bottom',)); box('CAT_01', -2.95, -2.87, -.08, -.0, .02, .13, 'terracotta', ('bottom', 'right'))
+for ey in (-.075, -.02): box('CAT_01', -2.93, -2.9, ey, ey + .02, .13, .15, 'terracotta', ('bottom',))
+box('CAT_01', -3.28, -3.2, -.03, .01, .011, .045, 'sole', ('bottom', 'right'))
+
 # ---------- UV 칸 배치(선반 쌓기) → 메시 ----------
 def local2d(pts):
     nrm = Vector()
@@ -416,8 +664,16 @@ for en, loc in (('STUDIO_CamBalc', (-.15, FY + .75, H2 + 1.5)), ('STUDIO_CamBalc
                 ('STUDIO_CamDoor1', (.9, FY - 4.6, 1.55)), ('STUDIO_CamDoor1Look', (.9, FY, 1.15)),
                 ('STUDIO_Cam_living', (3.3, YI + .35, 1.6)), ('STUDIO_Cam_livingLook', (-3.2, 1.2, .7)),          # 0351: 부엌 앞 구석 → 거실·식탁·계단
                 ('STUDIO_Cam_stairs', (-2.6, .2, 1.55)), ('STUDIO_Cam_stairsLook', (2.2, 2.35, 2.3)),             # 거실 → 계단 올라감
-                ('STUDIO_Cam_hall2f', (3.85, 1.6, H2 + 1.55)), ('STUDIO_Cam_hall2fLook', (-3.6, -.2, H2 + .8)),   # 2층 도착 → 부모님 방(침대·옷장) 트임
-                ('STUDIO_Cam_room2f', (3.4, .5, H2 + 1.5)), ('STUDIO_Cam_room2fLook', (2.2, -1.5, H2 + .5))):  # 문 없는 출입구 → 주인공 방
+                ('STUDIO_Cam_hall2f', (3.2, 1.0, H2 + 1.55)), ('STUDIO_Cam_hall2fLook', (-3.0, -.4, H2 + .9)),    # 1421: 주인공 방 안쪽 → 칸막이 출입구(층계참 쪽) 너머 부모님 방
+                ('STUDIO_Cam_room2f', (3.9, -2.4, H2 + 1.6)), ('STUDIO_Cam_room2fLook', (1.2, .6, H2 + .8)),      # 주인공 방 남동 구석 → 방 안(책장·옷 걸이·계단 도착)
+                ('STUDIO_Cam_parents', (-.3, 1.5, H2 + 1.55)), ('STUDIO_Cam_parentsLook', (-3.4, -1.6, H2 + .6)),  # 1421: 부모님 방 출입구 안쪽 → 침대·옷장·서랍·핸드백
+                ('STUDIO_Cam_parentsB', (-.3, -2.3, H2 + 1.6)), ('STUDIO_Cam_parentsBLook', (-3.2, 2.2, H2 + 1.0)),  # 부모님 방 앞 문 쪽 → 뒤 책장·스탠드 행거·옷
+                ('STUDIO_Cam_win', (1.5, .5, H2 + 1.45)), ('STUDIO_Cam_winLook', (4.15, -1.95, H2 + 1.35)),    # 18e9: 안에서 본 동쪽 창
+                ('STUDIO_Cam_winout', (8.2, -4.2, 5.2)), ('STUDIO_Cam_winoutLook', (4.3, -1.95, H2 + 1.4)),     # 18e9: 밖에서 본 동쪽 창(틀·유리·창살·덧창)
+                ('STUDIO_Cam_fridge', (1.6, -.3, 1.5)), ('STUDIO_Cam_fridgeLook', (3.8, 1.5, 1.4)),                # 867e: 냉장고 위·쌀통·메모
+                ('STUDIO_Cam_counter', (2.4, -2.6, 1.55)), ('STUDIO_Cam_counterLook', (3.9, -1.0, .95)),           # 867e: 조리대 위 주전자·냄비·양념·도마·칼꽂이
+                ('STUDIO_Cam_entry', (0.0, .5, 1.5)), ('STUDIO_Cam_entryLook', (.0, YI, .9)),                      # 867e: 현관 열쇠 걸이·우산꽂이·장바구니
+                ('STUDIO_Cam_sofa', (-1.4, 1.1, 1.4)), ('STUDIO_Cam_sofaLook', (-3.8, -.8, .6))):                 # 867e: 소파 쿠션·담요·액자·달력·화분
     e = bpy.data.objects.new(en, None); e.location = loc; sc.collection.objects.link(e); obs.append(e)
 bpy.ops.object.select_all(action='DESELECT')
 for ob in obs: ob.select_set(True)

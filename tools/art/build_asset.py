@@ -333,7 +333,10 @@ def h_paint(cell, col):
             'stovetop': 'stove', 'cabinet': 'cabinet', 'counter': 'trim', 'sofa': 'sofa', 'cushion': 'cushion', 'apron': 'apron', 'basket': 'basket', 'mat': 'mat',  # 0351 집 안
             'plastic': 'plastic', 'ceramic': 'ceramic', 'coffee': 'coffee', 'shoecab': 'shoecab', 'sole': 'sole', 'leather': 'leather', 'hand': 'sole', 'shade': 'shade',
             'bulb': 'bulb', 'rug': 'rug', 'pepper': 'pepper', 'pan': 'pan', 'pantop': 'pan', 'fridge': 'fridge', 'fridgef': 'fridge', 'bin': 'bin', 'bedding': 'bedding',
-            'quilt': 'quilt', 'drawer': 'soffit', 'wardrobe': 'wardrobe', 'wardrobef': 'wardrobe', 'dresserf': 'soffit', 'mirror': 'mirror', 'clockface': 'clockface'}[pt]  # 0133 생활감
+            'quilt': 'quilt', 'drawer': 'soffit', 'wardrobe': 'wardrobe', 'wardrobef': 'wardrobe', 'dresserf': 'soffit', 'mirror': 'mirror', 'clockface': 'clockface',
+            'paper': 'paper', 'spice1': 'spice1', 'spice2': 'spice2', 'spice3': 'spice3', 'jar': 'jar', 'cereal': 'cereal', 'cerealf': 'cereal', 'bagcloth': 'bagcloth',
+            'cover': 'cover', 'remote': 'sole', 'cushionB': 'cushionB', 'blanket': 'blanket', 'pic1': 'pic1', 'pic2': 'pic2', 'calpage': 'paper',
+            'bk1': 'bk1', 'bk2': 'bk2', 'bk3': 'bk3', 'bk4': 'bk4', 'bk5': 'bk5', 'bk6': 'bk6', 'clothA': 'clothA', 'clothB': 'clothB', 'clothC': 'clothC', 'clothD': 'clothD'}[pt]  # 0133 생활감
     A = np.ones((h, w, 3)) * col[base]
     fk = {'shutter': 'C2', 'door': 'WOOD', 'soffit': 'WOOD', 'chair': 'WOOD', 'boards': 'WOOD', 'basket': 'WOOD', 'cabinet': 'C2',
           'shoecab': 'WOOD', 'drawer': 'WOOD', 'wardrobe': 'WOOD', 'wardrobef': 'WOOD', 'dresserf': 'WOOD'}.get(pt, 'A2')
@@ -392,11 +395,25 @@ def h_paint(cell, col):
     if pt == 'clockface' and w > 6:  # 문자판: 12 눈금(바깥 1~2px)
         for k in range(12):
             a = k * math.pi / 6; px_, py_ = w / 2. + math.cos(a) * m(.14), h / 2. + math.sin(a) * m(.14); A[(abs(uu - px_) <= .8) & (abs(vv - py_) <= .8)] *= .45
+    # 1421: 새 소품 무늬 (64px/m)
+    if pt == 'blanket' and w > 8 and h > 8: A[(vv % m(.06) < m(.025))] *= .86; A[(uu < 2) | (uu >= w - 2)] *= .9              # 담요 가로 줄 6cm
+    if pt == 'remote' and w > 3 and h > 6:  # 리모컨 윗면: 위 전원(어두운 붉은) · 가운데 동그라미 · 아래 숫자판 띠(살짝 밝게) — 대비는 잔결 상한 안
+        A[(vv < h // 6) & (uu > w // 3) & (uu < 2 * w // 3)] = col['apron'] * .5; A[(abs(vv - h // 2) <= 1) & (abs(uu - w // 2) <= 1)] = col['steel'] * .42
+        A[(vv > 2 * h // 3) & (vv % 3 == 0)] *= 1.5
+    if pt == 'calpage' and w > 8 and h > 8:  # 달력 칸 7x5
+        A[(uu % max(2, w // 7) == 0) | ((vv > h // 5) & (vv % max(2, h // 6) == 0))] *= .78; A[vv < h // 6] = col['apron'] * .8 + col['trim'] * .2
+    if pt == 'pic1' and w > 8 and h > 8:  # 액자 그림: 하늘 위 · 풀 아래 · 가운데 지붕색 집 덩어리
+        A[vv > h * .62] = col['leaf'] * .95; A[(uu > w * .35) & (uu < w * .65) & (vv > h * .4) & (vv <= h * .62)] = col['terra']
+    if pt == 'pic2' and w > 8 and h > 8: A[uu > w // 2] = col['sofa'] * [1.05, 1.0, .95]; A[(vv > h * .5) & (uu > w // 4) & (uu < 3 * w // 4)] = col['trim']
+    if pt in ('bk1', 'bk2', 'bk3', 'bk4', 'bk5', 'bk6') and w > 4 and h > 4: A[(vv > h * .3) & (vv < h * .4)] *= 1.15; A[vv < 2] *= .85    # 책등 띠
+    if pt in ('spice1', 'spice2', 'spice3', 'cereal') and w > 4 and h > 4: A[(vv > h * .35) & (vv < h * .65)] = col['paper'] * .96    # 병 라벨 자리
     lum = A @ [.299, .587, .114]
     for kind in ('paint', 'rubber'):
         sel = (lum < 70) if kind == 'rubber' else (lum >= 70); st = STEPS[kind]
         if pt in ('plaster', 'ceil', 'apron', 'basket', 'curtain', 'brass'):
             st = np.array([-.08, -.025, .025, .08])  # D-197 하한 ±8%, 사진 결 유지
+        if kind == 'rubber' and w * h <= 60: st = np.array([-.15, -.07, .07, .15])
+        if kind == 'paint' and w * h <= 60: st = np.array([-.12, -.06, .06, .12])  # 1421: 2~6px 짜리 가는 면(컵 손잡이·걸이·병)은 ±10% 결이 양자화 뒤 잔결 기준 아래 → ±12%(D-197 범위 안, 사서함 손잡이와 같은 처리)
         ff = f * (st[2] + st[3]) / 2
         q = st[np.abs(ff[..., None] - st).argmin(-1)]; A[sel] *= (1 + q[sel])[:, None]
     return A
@@ -423,6 +440,13 @@ def h_grain(c):
                rug=col['terra'] * [.92, .86, .82], pepper=np.array([44., 38., 34.]), pan=np.array([44., 46., 48.]), fridge=col['steel'] * [1.22, 1.2, 1.18],
                bin=col['iron'] * [1.4, 1.45, 1.4], bedding=col['trim'] * [.96, .96, .98], quilt=col['curtain'] * [.74, .6, .6] + [12., 6., 6.],
                wardrobe=col['door'] * 1.35, mirror=np.array([150., 176., 186.]), clockface=col['trim'] * [1., .98, .92])
+    # 1421 생활감 2차 — 종이·병·책등·옷감 색. 모두 위 사진 중앙값 파생 색(trim·terra·leaf·flower·sofa·curtain)에 재질 어림 곱 — 빛 굽기 없음
+    col.update(paper=col['trim'] * [1.0, .99, .95], spice1=col['terra'] * [.9, .7, .5], spice2=col['leaf'] * [.9, .9, .6], spice3=col['flower'] * [.9, .8, .5],
+               jar=col['basket'] * [1.0, .9, .8], cereal=col['apron'] * [1.0, 1.05, .8], bagcloth=col['trim'] * [.88, .86, .78], cover=col['sofa'] * [1.1, .95, .8],
+               cushionB=col['apron'] * [.9, 1.1, 1.2], blanket=col['curtain'] * [.9, .85, .8] + [10., 6., 0.], pic1=col['pane'] * [.9, 1.1, 1.15], pic2=col['terra'] * [1.1, .95, .75],
+               bk1=col['apron'] * [.8, .8, .8], bk2=col['sofa'] * [.75, .8, .85], bk3=col['leaf'] * [.75, .8, .8], bk4=col['brass'] * [.8, .75, .7],
+               bk5=col['trim'] * [.8, .78, .72], bk6=col['terra'] * [.75, .7, .7],
+               clothA=col['sofa'] * [1.0, .95, .85], clothB=col['apron'] * [.95, 1.1, 1.0], clothC=col['trim'] * [.92, .9, .84], clothD=col['leaf'] * [.85, .85, .7])
     A = np.zeros((AH, AW, 4)); P = [(cell['rect'], h_paint(cell, col)) for cell in L['cells']]
     for (x, y, w, h), t in P:  # 0419: 3px edge dilation으로 얇은 면 주변 검은 빈칸 제거.
         e = np.pad(t, ((3, 3), (3, 3), (0, 0)), mode='edge')
