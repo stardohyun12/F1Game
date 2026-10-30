@@ -22,7 +22,7 @@ FACES = []                              # (obj, [Vector], pt, dens)
 PIVOT = {}                              # 낱개 피벗 예외(문 = 경첩 아래)
 
 def dens_for(obj, pts):
-    if obj == SHELL: return 32
+    if obj in (SHELL, 'WARDROBE_01'): return 32          # 1729: 옷장 = 큰 가구(check_rules 소품 목록 밖) → 세상 32
     L = max((pts[i] - pts[i - 1]).length for i in range(len(pts)))
     return 64 if L <= 1.5 else 32
 def face(obj, pts, pt):
@@ -292,9 +292,9 @@ hwall(SHELL, (XI, YI), (-XI, YI), 0, C1, [(DX0, DX1, 0, DZ), WL, WK])
 hwall(SHELL, (-XI, YB), (XI, YB), 0, C1); hwall(SHELL, (-XI, YI), (-XI, YB), 0, C1); hwall(SHELL, (XI, YB), (XI, YI), 0, C1)
 rw = lambda c, z: ('wainlow' if z < RW else 'rwall')
 hwall(SHELL, (XI, YI), (-XI, YI), H2, H2C, [BD, BD2, W2L], lambda c, z: rw(c, z) if c > PW else 'plaster', (PW, DIVX), (RW,))
-hwall(SHELL, (-XI, YB), (XI, YB), H2, H2C, (), lambda c, z: rw(c, z) if c > PW else 'plaster', (PW, DIVX), (RW,))
+hwall(SHELL, (-XI, YB), (XI, YB), H2, H2C)                                                           # 뒷벽 2층 = 부모님 방 북쪽 + 계단 구멍·계단참(1729: 계단참은 회벽)
 hwall(SHELL, (-XI, YI), (-XI, YB), H2, H2C)                                                          # 서쪽 벽(부모님 방)
-hwall(SHELL, (XI, YB), (XI, YI), H2, H2C, [SWY], lambda c, z: rw(c, z), (), (RW,))                   # 동쪽 벽: 주인공 방(계단 도착 구석까지) = 판벽 · 창 구멍 SWY
+hwall(SHELL, (XI, YB), (XI, YI), H2, H2C, [SWY], lambda c, z: rw(c, z) if c < .5 else 'plaster', (.5, .6), (RW,))   # 동쪽 벽: 주인공 방 = 판벽 · 창 구멍 SWY / 1729 계단참(y > LY1) = 회벽
 # --- 슬래브(1층 천장 2.8 / 2층 바닥 3.2): 계단 구멍(x SX0..SX1, y SY0..YB)만 비움 ---
 for x0, x1, y0, y1 in ((-XI, XI, YI, SY0), (-XI, SX0, SY0, YB), (SX1, XI, SY0, YB)):
     hface(SHELL, x0, x1, y0, y1, H2, 'boards'); hface(SHELL, x0, x1, y0, y1, C1, 'ceil', up=False)
@@ -307,12 +307,25 @@ hface(SHELL, -XI, XI, YI, YB, H2C, 'ceil', up=False)                            
 #   부모님 방 = 칸막이(x .55..0.65) 서쪽 전부. 둘 사이 출입구 1(칸막이, 계단참 쪽 y DY0..DY1, 문짝 없음). 칸막이 북쪽 끝 = 계단 구멍 난간 앞 1cm.
 SYE = SY0 - .06                                                                                    # 칸막이 북쪽 끝 y(난간 가로대 y SY0-.05 앞)
 #   1608 fa9f [다시] "방 2개 — 하나는 올라오자마자 바로, 하나는 옆에": 출입구를 문틀 없는 넓은 트임(1.2m, 높이 2.15)으로. 옆·머리 면 = 벽과 같은 회벽(흰 문틀 칠 없음)
-DY0, DY1, DZ2 = .35, 1.55, H2 + 2.15
-hwall(SHELL, (PW, YI), (PW, SYE), H2, H2C, [(DY0, DY1, H2, DZ2)], lambda c, z: rw(0, z), (), (RW,))   # 주인공 방 쪽 면(+x 를 봄)
-hwall(SHELL, (DIVX, SYE), (DIVX, YI), H2, H2C, [(DY0, DY1, H2, DZ2)])                              # 부모님 방 쪽 면(−x 를 봄)
-hwall(SHELL, (PW, SYE), (DIVX, SYE), H2, H2C)                                                      # 북쪽 끝면(+y 를 봄)
-face(SHELL, [(DIVX, DY0, H2), (PW, DY0, H2), (PW, DY0, DZ2), (DIVX, DY0, DZ2)][::-1], 'plaster'); face(SHELL, [(DIVX, DY1, H2), (PW, DY1, H2), (PW, DY1, DZ2), (DIVX, DY1, DZ2)], 'plaster')  # 트임 옆 면 2
-hface(SHELL, DIVX, PW, DY0, DY1, DZ2, 'plaster', up=False)                                          # 트임 머리 밑면
+#   1729 02d3 도현 "부모님방과 자기방 들어가는 입구부터 나눠게": 방끼리 트임 없앰. 계단 올라온 계단참(폭 1.2m = 벽 LY1 ~ 난간 SY0-.05)에서 입구 둘이 따로 —
+#     주인공 방 입구 = 계단참 벽(y LY0..LY1) 의 PDX, 부모님 방 입구 = 칸막이 계단참 쪽 PDY. 둘 다 문짝·문틀 없는 열린 출입구(0.9×2.1, 옆·머리 = 회벽).
+#     부모님 방이 계단 구멍 서쪽 끝(x SX0..DIVX)에 난간으로만 트여 있던 것 → 벽 A(y 1.75..SY0)·B(x -.3..SX0)로 막음(계단참에서 부모님 방이 안 보이게)
+LY0, LY1 = .5, .6                                                                                  # 계단참 벽(주인공 방 ↔ 계단참) y
+PDX = (2.55, 3.45, H2, H2 + 2.1)                                                                   # 주인공 방 입구(계단참 벽, 계단 도착 바로 서쪽)
+PDY = (.75, 1.65, H2, H2 + 2.1)                                                                    # 부모님 방 입구(칸막이, 계단참 서쪽 끝)
+WA = SY0 - .1                                                                                      # 벽 A 남쪽 면 y(부모님 방 쪽)
+hwall(SHELL, (PW, YI), (PW, SY0), H2, H2C, [PDY, (LY0, LY1, H2, H2C)], lambda c, z: rw(0, z) if c < LY0 else 'plaster', (), (RW,))   # 칸막이 동쪽 면: 주인공 방(판벽) · 계단참 벽 자리 비움 · 계단참(회벽, 입구)
+hwall(SHELL, (DIVX, WA), (DIVX, YI), H2, H2C, [PDY])                                               # 칸막이 부모님 방 쪽 면(−x 를 봄)
+face(SHELL, [(DIVX, PDY[0], H2), (PW, PDY[0], H2), (PW, PDY[0], PDY[3]), (DIVX, PDY[0], PDY[3])][::-1], 'plaster'); face(SHELL, [(DIVX, PDY[1], H2), (PW, PDY[1], H2), (PW, PDY[1], PDY[3]), (DIVX, PDY[1], PDY[3])], 'plaster')  # 부모님 입구 옆 면 2
+hface(SHELL, DIVX, PW, PDY[0], PDY[1], PDY[3], 'plaster', up=False)                                 # 부모님 입구 머리 밑면
+hwall(SHELL, (PW, LY0), (XI, LY0), H2, H2C, [PDX], lambda c, z: rw(0, z), (), (RW,))                # 계단참 벽 주인공 방 쪽 면(−y, 판벽)
+hwall(SHELL, (XI, LY1), (PW, LY1), H2, H2C, [PDX])                                                  # 계단참 벽 계단참 쪽 면(+y, 회벽)
+face(SHELL, [(PDX[0], LY0, H2), (PDX[0], LY1, H2), (PDX[0], LY1, PDX[3]), (PDX[0], LY0, PDX[3])], 'plaster'); face(SHELL, [(PDX[1], LY0, H2), (PDX[1], LY1, H2), (PDX[1], LY1, PDX[3]), (PDX[1], LY0, PDX[3])][::-1], 'plaster')  # 주인공 입구 옆 면 2(+x · −x)
+hface(SHELL, PDX[0], PDX[1], LY0, LY1, PDX[3], 'plaster', up=False)                                 # 주인공 입구 머리 밑면
+hwall(SHELL, (-.3, WA), (DIVX, WA), H2, H2C)                                                        # 벽 A 남쪽 면(부모님 방, −y) — 벽 B 끝 포함
+hwall(SHELL, (PW, SY0), (SX0, SY0), H2, H2C)                                                        # 벽 A 북쪽 면(계단 구멍, +y) — 칸막이 북쪽 끝 포함
+hwall(SHELL, (-.3, YB), (-.3, WA), H2, H2C)                                                         # 벽 B 서쪽 면(부모님 방, −x)
+hwall(SHELL, (SX0, SY0), (SX0, YB), H2, H2C)                                                        # 벽 B 동쪽 면(계단 구멍, +x)
 # --- 계단(STAIRS, 1층 → 2층, 38.7°): 디딤·챌판·옆판(단마다 한 장 = 톱니 다각형 없음) ---
 for i in range(SN_):
     xa, xb, zt = SX0 + i * ST, SX0 + (i + 1) * ST, (i + 1) * SR
@@ -338,8 +351,7 @@ def rail_run(obj, x0, x1, y0, y1, z0, h=.95, skip_end=()):  # 2층 계단 구멍
         t = min(max(.03, k * .12), L - .03)
         if alongx: box(obj, x0 + t - .01, x0 + t + .01, y0 + .01, y1 - .01, z0, z0 + h, 'iron', ('bottom', 'top'))
         else: box(obj, x0 + .01, x1 - .01, y0 + t - .01, y0 + t + .01, z0, z0 + h, 'iron', ('bottom', 'top'))
-rail_run('RAIL_02', SX0 - .05, SX1, SY0 - .05, SY0, H2)                        # 복도 쪽(도착 x SX1..XI 는 비움)
-rail_run('RAIL_02', SX0 - .05, SX0, SY0, YB, H2, skip_end=('front', 'back'))   # 끝(앞 = 위 손잡이에 닿음 · 뒤 = 뒷벽)
+rail_run('RAIL_02', PW, SX1, SY0 - .05, SY0, H2, skip_end=('left',))         # 1729: 계단참 쪽만(서쪽 끝 = 칸막이 면 → skip). 부모님 쪽·서쪽 끝 난간은 벽 A·B 로 바뀜. 도착 x SX1..XI 는 비움
 # --- 1층 가구(낱개, 피벗 바닥 가운데) ---
 def chair(nm_, x0, x1, y0, y1, back_low):
     yb0 = y0 if back_low else y1 - .04
@@ -405,7 +417,14 @@ for nm_, y0 in (('NIGHTSTAND_01', -1.5), ('NIGHTSTAND_02', .45)):
     box(nm_, -4.1, -3.65, y0, y0 + .45, Z, Z + .5, {'*': 'chair', 'right': 'drawer'}, ('bottom',))
 for nm_, ly in (('BEDLIGHT_01', -1.275), ('BEDLIGHT_02', .675)):
     cyl(nm_, -3.88, ly, .035, Z + .5, Z + .62, 'brass', bottom=False); cyl(nm_, -3.88, ly, .1, Z + .62, Z + .8, 'shade', 'shade', bottom=False)
-box('WARDROBE_01', -4.1, -3.5, 1.0, 2.4, Z, Z + 2.0, {'*': 'wardrobe', 'right': 'wardrobef'}, ('bottom',))
+# 1729 fa9f 판정 "오른쪽 끝 두 짝 옷장이 문처럼": 문 크기(2.0m) 아래로 — 다리 10cm · 아래 서랍 단(손잡이 2) · 두 짝 문 1.35m · 위 머리판(2cm 내밂) · 위에 상자 둘
+for lx, ly in ((-4.08, 1.02), (-3.56, 1.02), (-4.08, 2.34), (-3.56, 2.34)): box('WARDROBE_01', lx, lx + .04, ly, ly + .04, Z, Z + .1, 'wardrobe', ('bottom', 'top'))
+box('WARDROBE_01', -4.1, -3.5, 1.0, 2.4, Z + .1, Z + .5, {'*': 'wardrobe', 'right': 'drawer'}, ('top',))          # 서랍 단(밑면 = 다리 위, 바닥에서 10cm 뜸이 보이게 남김)
+box('WARDROBE_01', -4.1, -3.5, 1.0, 2.4, Z + .5, Z + 1.85, {'*': 'wardrobe', 'right': 'wardrobef'}, ('bottom', 'top'))
+box('WARDROBE_01', -4.12, -3.48, .98, 2.42, Z + 1.85, Z + 1.89, 'wardrobe')                                      # 머리판
+for ky in (1.42, 1.94): box('WARDROBE_01', -3.5, -3.475, ky, ky + .04, Z + .28, Z + .32, 'brass', ('left',))     # 서랍 손잡이
+box('BOX_03', -4.05, -3.6, 1.12, 1.7, Z + 1.89, Z + 2.13, 'basket', ('bottom',))                                 # 위 상자(낱개)
+box('BOX_04', -4.0, -3.62, 1.85, 2.25, Z + 1.89, Z + 2.05, 'shoecab', ('bottom',))
 box('DRESSER_01', .15, .55, -2.1, -.9, Z, Z + .85, {'*': 'chair', 'left': 'dresserf'}, ('bottom', 'right'))
 box('MIRROR_01', .52, .55, -1.85, -1.15, Z + 1.05, Z + 1.75, {'*': 'chair', 'left': 'mirror'}, ('right',))   # 벽 거울(벽에 닿는 면 skip)
 hface('RUG_03', -2.0, -.5, -1.6, 0, Z + .011, 'rug')
@@ -501,7 +520,7 @@ def bookshelf(sh, bk, wall, u0, w, z0, h, nplank, d=.28):
         bx(bk, w - .2, w - .06, .03, d - .04, gz + .03, gz + .03 + .025, RNG.choice(('bk3', 'bk5')), ('bottom',))   # 눕혀 둔 책 한 권(오른쪽 끝, 두께 2.5cm)
 Z = H2
 bookshelf('SHELF_03', 'BOOKS_01', 'N', -3.0, 1.2, Z, 1.8, 4)        # 부모님 방 뒤 벽(북쪽)
-bookshelf('SHELF_04', 'BOOKS_02', 'E', .3, .9, Z, 1.5, 4)           # 주인공 방 동쪽 벽(계단 도착 구석 앞)
+bookshelf('SHELF_04', 'BOOKS_02', 'E', .65, .9, Z, 1.5, 4)          # 계단참 동쪽 벽(1729: 계단참 벽 LY1 뒤 5cm 부터 — 계단 도착 바로 앞)
 # 부모님 방: 옷걸이 옷(스탠드 행거) · 핸드백 · 액자
 RKX0, RKX1, RKY0, RKY1, RKZ = -1.55, -.55, 2.4, 2.72, Z + 1.6
 for px in (RKX0, RKX1 - .03): box('RACK_02', px, px + .03, RKY0 + .14, RKY0 + .17, Z + .03, RKZ, 'iron', ('bottom', 'top'))
@@ -518,13 +537,13 @@ box('BAG_03', .2, .5, -1.7, -1.4, Z + .85, Z + 1.0, 'leather', ('bottom',)); box
 for yy in (-1.65, -1.45): box('BAG_03', .26, .27, yy, yy + .03, Z + 1.0, Z + 1.1, 'leather', ('bottom',)); box('BAG_03', .43, .44, yy, yy + .03, Z + 1.0, Z + 1.1, 'leather', ('bottom',))
 box('BAG_03', .27, .43, -1.65, -1.62, Z + 1.1, Z + 1.11, 'leather', ('bottom',)); box('BAG_03', .27, .43, -1.45, -1.42, Z + 1.1, Z + 1.11, 'leather', ('bottom',))
 frame('FRAME_03', DIVX, -.7, -.2, Z + 1.3, Z + 1.7, 'pic1', dirx=-1)
-# 주인공 방: 동쪽 벽 갈고리 판 + 걸린 옷(계단 도착 구석)
-box('HANGER_02', XI - .03, XI, 1.3, 1.75, Z + 1.55, Z + 1.61, 'chair', ('right',))
-for hy in (1.4, 1.62): box('HANGER_02', XI - .06, XI - .03, hy - .008, hy + .008, Z + 1.56, Z + 1.58, 'brass', ('right',))
-for hy, pt_ in ((1.4, 'clothD'), (1.62, 'clothA')):
-    box('CLOTHES_02', XI - .09, XI - .06, hy - .012, hy + .012, Z + 1.52, Z + 1.58, 'brass', ('right', 'bottom'))    # 고리
-    box('CLOTHES_02', XI - .1, XI - .06, hy - .06, hy + .06, Z + .85, Z + 1.52, pt_, ('top',))                      # 겉옷(몸판)
-    box('CLOTHES_02', XI - .1, XI - .06, hy - .09, hy - .06, Z + 1.0, Z + 1.52, pt_, ('top', 'back')); box('CLOTHES_02', XI - .1, XI - .06, hy + .06, hy + .09, Z + 1.0, Z + 1.52, pt_, ('top', 'front'))
+# 주인공 방: 갈고리 판 + 걸린 옷 — 1729: 계단참 벽 방 쪽 면(y LY0, −y 를 봄), 입구 동쪽(x 3.6..4.05)
+box('HANGER_02', 3.6, 4.05, LY0 - .03, LY0, Z + 1.55, Z + 1.61, 'chair', ('back',))
+for hx in (3.71, 3.93): box('HANGER_02', hx - .008, hx + .008, LY0 - .06, LY0 - .03, Z + 1.56, Z + 1.58, 'brass', ('back',))
+for hx, pt_ in ((3.71, 'clothD'), (3.93, 'clothA')):
+    box('CLOTHES_02', hx - .012, hx + .012, LY0 - .09, LY0 - .06, Z + 1.52, Z + 1.58, 'brass', ('back', 'bottom'))  # 고리
+    box('CLOTHES_02', hx - .06, hx + .06, LY0 - .1, LY0 - .06, Z + .85, Z + 1.52, pt_, ('top',))                    # 겉옷(몸판)
+    box('CLOTHES_02', hx - .09, hx - .06, LY0 - .1, LY0 - .06, Z + 1.0, Z + 1.52, pt_, ('top', 'right')); box('CLOTHES_02', hx + .06, hx + .09, LY0 - .1, LY0 - .06, Z + 1.0, Z + 1.52, pt_, ('top', 'left'))
 
 # ===== 1421b 867e 재시도 — 판정 "작고 드문드문" : 계단 위 · 바닥 가운데 · 식탁 · 부엌 벽 · 거실 · 계단 밑 =====
 # 1608 PD "계단 디딤마다 물건(러너·신발·책·수건·바구니)" → 계단은 비움. 첫 단 옆 바닥에 둘만: 벗어 둔 신발 한 켤레(첫 단 앞 뒷벽 쪽) · 빨래 바구니(계단 옆판 앞, 상자 옆)
@@ -664,7 +683,8 @@ for en, loc in (('STUDIO_CamBalc', (-.15, FY + .75, H2 + 1.5)), ('STUDIO_CamBalc
                 ('STUDIO_Cam_room2f', (3.9, -2.4, H2 + 1.6)), ('STUDIO_Cam_room2fLook', (1.2, .6, H2 + .8)),      # 주인공 방 남동 구석 → 방 안(책장·옷 걸이·계단 도착)
                 ('STUDIO_Cam_parents', (-.3, 1.5, H2 + 1.55)), ('STUDIO_Cam_parentsLook', (-3.4, -1.6, H2 + .6)),  # 1421: 부모님 방 출입구 안쪽 → 침대·옷장·서랍·핸드백
                 ('STUDIO_Cam_parentsB', (-.3, -2.3, H2 + 1.6)), ('STUDIO_Cam_parentsBLook', (-3.2, 2.2, H2 + 1.0)),  # 부모님 방 앞 문 쪽 → 뒤 책장·스탠드 행거·옷
-                ('STUDIO_Cam_win', (1.5, .5, H2 + 1.45)), ('STUDIO_Cam_winLook', (4.15, -1.95, H2 + 1.35)),    # 18e9: 안에서 본 동쪽 창
+                ('STUDIO_Cam_landing', (4.0, 2.5, H2 + 1.55)), ('STUDIO_Cam_landingLook', (1.0, .3, H2 + 1.0)),   # 1729 02d3: 계단 도착 → 계단참 · 입구 둘(왼쪽 = 주인공 방, 끝 = 부모님 방)
+                ('STUDIO_Cam_win', (1.5, .2, H2 + 1.45)), ('STUDIO_Cam_winLook', (4.15, -1.95, H2 + 1.35)),    # 18e9: 안에서 본 동쪽 창
                 ('STUDIO_Cam_winout', (8.2, -4.2, 5.2)), ('STUDIO_Cam_winoutLook', (4.3, -1.95, H2 + 1.4)),     # 18e9: 밖에서 본 동쪽 창(틀·유리·창살·덧창)
                 ('STUDIO_Cam_fridge', (1.6, -.3, 1.5)), ('STUDIO_Cam_fridgeLook', (3.8, 1.5, 1.4)),                # 867e: 냉장고 위·쌀통·메모
                 ('STUDIO_Cam_counter', (2.4, -2.6, 1.55)), ('STUDIO_Cam_counterLook', (3.9, -1.0, .95)),           # 867e: 조리대 위 주전자·냄비·양념·도마·칼꽂이
@@ -676,7 +696,8 @@ for ob in obs: ob.select_set(True)
 bpy.context.view_layer.objects.active = obs[0]
 bpy.ops.export_scene.fbx(filepath=OUT + 'house_home.fbx', use_selection=True, axis_forward='-Z', axis_up='Y', apply_scale_options='FBX_SCALE_ALL',
                          path_mode='STRIP', embed_textures=False, mesh_smooth_type='FACE', object_types={'MESH', 'EMPTY'})
-lay = dict(atlas=[AW, AH], cells=[dict(obj=t['obj'], pt=t['pt'], dens=t['dens'], rect=[t['x'], t['y'], t['w'], t['h']], m=[round(t['m'][0], 3), round(t['m'][1], 3)], seed=t['i'])
+SEED_OFF = {'PITCHER_01': 7}  # 1729: 칸 순번(seed)이 앞 면 추가로 밀려 주전자 결이 사진 매끈한 자리에 떨어짐(잔결 0.019) → 결 자리만 옮김
+lay = dict(atlas=[AW, AH], cells=[dict(obj=t['obj'], pt=t['pt'], dens=t['dens'], rect=[t['x'], t['y'], t['w'], t['h']], m=[round(t['m'][0], 3), round(t['m'][1], 3)], seed=t['i'] + SEED_OFF.get(t['obj'], 0))
                                   for t in items])
 json.dump(lay, open(OUT + 'layout.json', 'w', encoding='utf-8'), indent=0)
 meas = dict(stairs=dict(rise=SR, tread=ST, steps=SN_ + 1, deg=round(math.degrees(math.atan2(SR, ST)), 1)), ceil=dict(f1=C1, f2=round(H2C - H2, 2)),

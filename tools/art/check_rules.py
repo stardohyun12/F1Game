@@ -529,7 +529,18 @@ def sheet(res, out, n=15):
 REGION_MASKS = {}
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--only', nargs='*'); ap.add_argument('--dump'); ap.add_argument('--json'); ap.add_argument('--md'); ap.add_argument('--sheet')
+    ap.add_argument('--env-dir', help='Review-only env_auto manifest directory; checks exported meshes against the unchanged shared kit, skips Unity import checks')
     ap.add_argument('--gate', action='store_true'); a = ap.parse_args()
+    if a.env_dir:
+        envdir = Path(a.env_dir).resolve()
+        manifest = json.loads((envdir / 'manifest.json').read_text(encoding='utf-8'))
+        kitdir = R / 'art/export/kit-shared-v2'
+        for item in manifest['buildings']:
+            name = item['name']
+            if Path(name).name != name or not (envdir / (name + '.fbx')).is_file():
+                ap.error('Missing or invalid env asset: ' + name)
+            B[name] = dict(fbx=envdir / (name + '.fbx'), dir=kitdir,
+                           gpl={'*': kitdir / 'palette.gpl'}, tex=lambda mat, img: re.sub(r'\.png\.\d+$', '.png', img), nomat=True)
     global measure_row
     _mr = measure_row
     def mr(*x, **k):

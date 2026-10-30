@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261030-164321-02d3",
+ "time": "2026-10-30T17:58:36+09:00",
+ "before": "shots/unity-Studio_Building-20261030-164321-02d3.png",
+ "after": "shots/unity-Studio_Building-20261030-164321-02d3_after.png",
+ "comment": "부모님방과 자기방 들어가는 입구부터 나눠게",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에서는 자기방(왼쪽)과 부모님방(가운데) 입구가 벽 기둥으로 갈라져 각각 따로 열려 있어, 감독이 말한 입구 분리는 고쳐진 것으로 보입니다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽은 두 방 사이 벽이 입구까지 이어져 부모님방과 자기방의 진입 입구가 각각 분리되어 있다."
+  }
+ },
+ "pass": true
+}

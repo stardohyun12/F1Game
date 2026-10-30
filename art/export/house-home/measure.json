@@ -14,7 +14,7 @@
   "d": 1.8
  },
  "glass": 18,
- "tris": 10976,
+ "tris": 10970,
  "objects": [
   "HOUSE_shell",
   "GLASS_01",
@@ -100,6 +100,8 @@
   "BEDLIGHT_01",
   "BEDLIGHT_02",
   "WARDROBE_01",
+  "BOX_03",
+  "BOX_04",
   "DRESSER_01",
   "MIRROR_01",
   "RUG_03",
@@ -202,6 +204,8 @@
   "STUDIO_Cam_parentsLook",
   "STUDIO_Cam_parentsB",
   "STUDIO_Cam_parentsBLook",
+  "STUDIO_Cam_landing",
+  "STUDIO_Cam_landingLook",
   "STUDIO_Cam_win",
   "STUDIO_Cam_winLook",
   "STUDIO_Cam_winout",
@@ -217,9 +221,9 @@
  ],
  "atlas": [
   2048,
-  9088
+  9216
  ],
- "faces": 4979,
+ "faces": 4976,
  "balusters": 88,
  "size_m": {
   "w": 8.6,
