@@ -1,0 +1,26 @@
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90
+env_camo_204696009_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 25.45..26.64 (spread 1.18) manifest y 27.4
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06
+env_camo_204693578_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 0.940) ground 31.06..31.06 (spread 0.00) manifest y 33.2
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06 H3:floor-ground=0.95
+env_camo_204701091_v02 signs (-1.00, 1.00) insideFrac 0.932 (차점 0.890) ground 27.83..27.83 (spread 0.00) manifest y 30.3
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06
+env_camo_204695467_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 14.74..16.04 (spread 1.29) manifest y 16.1
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90
+env_tomo_1355595398_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 14.91..15.27 (spread 0.36) manifest y 13
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06
+env_camo_204697918_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 34.20..35.86 (spread 1.67) manifest y 35.5
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06 H3:floor-ground=0.95
+env_camo_204695159_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 20.02..24.60 (spread 4.58) manifest y 24
+  houses(층바닥-지면 중심, +뜸/-묻힘) H1:floor-ground=0.90 H2:floor-ground=1.06
+env_camo_204694937_v02 signs (-1.00, 1.00) insideFrac 1.000 (차점 1.000) ground 37.45..39.75 (spread 2.30) manifest y 39.6
+OSM Walls_0 삼각형 17800 → 제거 80
+OSM Roofs_0 삼각형 6683 → 제거 26
+cam clearFlags=SolidColor bg=RGBA(0.560, 0.720, 0.900, 1.000) near=0.1 far=900 fog=True skybox=none srcIsSceneView=True
+A7Shade=RGBA(0.419, 0.505, 0.536, 1.000) _A7T=(0.30, 0.02, 0.00, 0.00) _A7Mid=0.6 aShadeObj=True
+cart_home_1 pos=(200.0, 22.5, -79.0) tgt=(212.0, 30.6, -57.0) fov 64 1280x720
+cart_home_2 pos=(185.0, 29.8, -52.0) tgt=(184.0, 36.1, -28.0) fov 64 1280x720
+cart_route_1 pos=(235.0, 26.5, -76.0) tgt=(263.0, 27.2, -73.5) fov 64 1280x720
+cart_route_2 pos=(268.0, 27.7, -50.0) tgt=(252.0, 38.8, -20.0) fov 64 1280x720
+top pos=(210.0, 300.0, -55.0) tgt=(210.0, 0.0, -55.0) ortho 56 1280x720
+cleanup remaining=0 dirty=False
