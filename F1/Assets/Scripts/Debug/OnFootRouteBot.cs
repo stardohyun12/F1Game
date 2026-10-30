@@ -21,17 +21,21 @@ public class OnFootRouteBot : MonoBehaviour
     static readonly Step[] Route =
     {
         new Step("shot", "01_room", 0, 0),
-        new Step("walk", "방문 앞", 186.0f, -61.75f),
+        // 20261030-2334 house_home 9차: 방문 = 방 뒷벽(집 z -0.5) 동쪽 끝, 계단참 통로 = RAIL_02 끝 ~ 동쪽 벽 0.86 m.
+        //   점은 집 로컬 → 월드(집 (185, 25.27, -61) yaw 190). 방문은 복도 쪽으로 열려 통로를 반쯤 막으니 지나서 닫는다.
+        //   지나는 점 = 문턱에서 0.65 m 복도 안쪽(로컬 z -1.15) — 문턱(z -0.6)에서 닫으면 문짝이 사람을 방 쪽으로 밀어냄(1회차 막힘).
+        new Step("walk", "방문 앞", 187.94f, -61.62f),
         new Step("door", "방문", 0, 0),
-        new Step("shot", "02_door_open", 0, 0),
-        new Step("walk", "복도", 186.0f, -60.3f),
-        // 집이 190° 돌아 있어 벽이 10° 비스듬하다 — 동쪽 벽(z-60.1 에서 x189.37)에 안 붙게 안쪽으로
-        new Step("walk", "복도 동쪽", 188.75f, -60.2f),
-        new Step("walk", "층계참", 189.0f, -59.45f),
-        new Step("walk", "계단 위", 188.5f, -59.3f),
-        new Step("walk", "계단 아래", 185.1f, -59.3f),
-        new Step("walk", "1층 현관 복도", 184.5f, -59.7f),
-        new Step("walk", "현관 앞", 184.5f, -63.1f),
+        new Step("walk", "방문 지나", 188.06f, -60.37f),
+        new Step("close", "방문 닫기", 0, 0),
+        new Step("walk", "복도", 188.20f, -60.14f),
+        new Step("walk", "계단참 입구", 188.82f, -60.05f),
+        new Step("walk", "계단참", 189.14f, -59.39f),
+        new Step("walk", "계단 위", 188.66f, -59.26f),
+        new Step("shot", "02_landing", 0, 0),
+        new Step("walk", "계단 아래", 184.62f, -58.55f),
+        new Step("walk", "1층 계단 앞", 184.42f, -59.68f),
+        new Step("walk", "현관 앞", 184.62f, -63.17f),
         new Step("door", "현관문", 0, 0),
         new Step("walk", "현관 밖", 184.6f, -65.0f),
         new Step("close", "현관문 닫기", 0, 0),

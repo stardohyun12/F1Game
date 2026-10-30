@@ -14,8 +14,8 @@ using UnityEngine;
 public static class OnFootSetup
 {
     const string RootName = "OnFoot_HomeGarage";
-    // 주인공 방 = house_home 좌표(2층 바닥 3.2 m, 방 가운데). house_home.py ROOM_2F/room 기준.
-    static readonly Vector3 SpawnHouseLocal = new Vector3(0.0f, 3.25f, 1.35f);
+    // 주인공 방 = house_home 좌표(2층 바닥 3.2 m, 방 가운데). 9차 집: 방 = 칸막이(x -0.65) ~ 동쪽 벽(x -4.15), ROOM_2F 가운데 x -2.4(library_import 0133).
+    static readonly Vector3 SpawnHouseLocal = new Vector3(-2.4f, 3.25f, 1.35f);
 
     [MenuItem("PitCrew/기능/집-차고 구간 설치")]
     public static void Install() => Debug.Log(Run());
@@ -103,28 +103,6 @@ public static class OnFootSetup
             rails++;
         }
         log.Append($"난간 콜라이더 메시로 {rails}개. ");
-
-        // ⚠ 임시(아트 수정 전까지): 2층 계단참 입구 — RAIL_02 동쪽 끝 기둥 ~ 동쪽 벽 사이가 0.41 m 라 사람(0.6 m)이 못 지나간다.
-        //   그 기둥 둘레 0.35 m 안 삼각형만 콜라이더에서 뺀다(보이는 난간은 그대로). house_home 에서 난간을 줄이거나 계단참을 넓히면 지울 것.
-        var rail02 = house.GetComponentsInChildren<MeshCollider>(true).FirstOrDefault(c => c.name == "RAIL_02");
-        if (rail02 != null && rail02.GetComponent<MeshFilter>() != null)
-        {
-            var src = rail02.GetComponent<MeshFilter>().sharedMesh;
-            var b = rail02.GetComponent<Renderer>().bounds;
-            Vector3 post = new Vector3(b.max.x, 0f, b.min.z);
-            var tr = rail02.transform;
-            var v = src.vertices; var tri = src.triangles; var keep = new List<int>();
-            for (int i = 0; i < tri.Length; i += 3)
-            {
-                bool near = false;
-                for (int j = 0; j < 3 && !near; j++) { var w = tr.TransformPoint(v[tri[i + j]]); near = new Vector2(w.x - post.x, w.z - post.z).magnitude < 0.35f; }
-                if (!near) keep.AddRange(new[] { tri[i], tri[i + 1], tri[i + 2] });
-            }
-            var trimmed = new Mesh { name = "RAIL_02_onfoot_trim", vertices = v, triangles = keep.ToArray() };
-            Undo.RecordObject(rail02, "OnFoot rail trim");
-            rail02.sharedMesh = trimmed;
-            log.Append($"임시: RAIL_02 계단참 입구 기둥 콜라이더 뺌(삼각형 {tri.Length / 3}→{keep.Count / 3}). ");
-        }
 
         var so2 = new SerializedObject(dir);
         so2.FindProperty("cartReach").floatValue = 2.0f;

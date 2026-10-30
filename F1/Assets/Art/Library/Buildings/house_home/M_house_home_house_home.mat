@@ -61,7 +61,7 @@ Material:
     - _S2: 0
     - _S3: 0
     - _S3Flat: 0.12
-    - _SN: 0.04
+    - _SN: 0
     - _SNDens: 8
     - _Sat: 1
     - _SplitAmt: 0.2
