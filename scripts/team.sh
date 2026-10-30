@@ -120,6 +120,5 @@ EOF
 # 하네스 사후 검사(10/30): 보고서가 뼈대 그대로면 FAILED-NOREPORT + 마지막 기록·변경 파일을 붙여 둔다(정보 유실 방지)
 if [ "$(md5sum "$REPORT" | cut -c1-32)" = "$REPORT_MD5" ]; then
   echo "FAILED-NOREPORT: $REPORT 뼈대 그대로 (턴 한도 추정)"
-  { echo; echo "## 하네스 자동 기록 (팀원이 보고서를 못 씀)"; echo '```'; awk '/===== 새 과제/{buf=""} {buf=buf $0 "
-"} END{printf "%s", buf}' "$LIVE" | grep -a -e "💬" -e "끝:" -e "🔧" | tail -8 | cut -c1-300; echo '```'; echo "변경 파일:"; git status --short | grep -v '^??' | head -20; } >> "$REPORT"
+  { echo; echo "## 하네스 자동 기록 (팀원이 보고서를 못 씀)"; echo '```'; awk '/===== 새 과제/{n=NR} {a[NR]=$0} END{for(k=n;k<=NR;k++) print a[k]}' "$LIVE" | grep -a -e "💬" -e "끝:" -e "🔧" | tail -8 | cut -c1-300; echo '```'; echo "변경 파일:"; git status --short | grep -v '^??' | head -20; } >> "$REPORT"
 fi

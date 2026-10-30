@@ -30,8 +30,10 @@ if [ "$TRIES" -gt 3 ]; then
 fi
 echo "$TRIES" > ".claude/team/fix/$ID.tries"
 TAG=""; [ "$ROLE" = "programmer" ] && TAG="[EDITOR]"
+EXTRA=""; case "$SCENE" in *Studio*) EXTRA="Unity 는 F1Studio 만 쓴다(export UCLI_PROJ=D:/Github/F1Game/F1Studio, 켜져 있음) — 쓰는 것이 허용이자 의무다. 고친 뒤 python -X utf8 tools/art/build_asset.py <건물> 로 Unity 임포트까지 하고 fb_geom·fb.py fixed 를 직접 돌린다. 본 F1 금지.";; esac
 TASK="$TAG[fix $ID — $TRIES/3회차] 도현 코멘트 하나를 고정 절차로 고친다. 커밋 금지. 다른 코멘트·다른 건물 건드리지 않음(같은 원인 목록만).
 코멘트 파일: $FILE  (python -X utf8 scripts/fb.py list 로 원문·스샷·thread 전부 읽기 — thread 의 PD·판정 글이 이전 실패 이유다)
+$EXTRA
 절차(순서 고정, 단계마다 보고서에 한 줄):
 1. 보기: 원본 스샷을 Read 로 직접 본다. 도현이 무엇을 문제라고 했는지 한 줄로 다시 쓴다.
 2. 원인: 그 문제가 왜 생겼는지 한 줄(추측이면 '가설'). 보고서 맨 위.
