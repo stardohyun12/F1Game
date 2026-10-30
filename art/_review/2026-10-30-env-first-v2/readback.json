@@ -1,0 +1,159 @@
+{
+  "status": "PASS",
+  "errors": 0,
+  "scope": "Actual reimported FBX triangles: texel, coplanar overlaps (1e-4m plane tolerance, 1e-5m edge erosion and 1e-5m2 area), degenerate/duplicate, glass, roof and pivot. Live terrain / Unity NOT RUN.",
+  "buildings": [
+    {
+      "name": "env_camo_204696009_v02",
+      "triangles": 946,
+      "mesh_uv_sha256": "4a7616ad61bd151083faff0029a0427e7c8358b95edeb9143b04d20454cbd84c",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9989,
+        32.0001
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 3.891382789333875e-07
+    },
+    {
+      "name": "env_camo_204693578_v02",
+      "triangles": 1838,
+      "mesh_uv_sha256": "fa5ac6ae64d0d427f4583a8fcdf61f9f1be981d06abe9275b7b4598080c5a55d",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9986,
+        32.0002
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 7.739602665424172e-07
+    },
+    {
+      "name": "env_camo_204701091_v02",
+      "triangles": 3448,
+      "mesh_uv_sha256": "31e3078b74cb06f08bf7c907e36ce09decd72b420f9cf6e91214558a97256e7c",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9985,
+        32.0015
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 9.270972327612981e-07
+    },
+    {
+      "name": "env_camo_204695467_v02",
+      "triangles": 2194,
+      "mesh_uv_sha256": "30db8cd46a1d8cefbe2472eb42f0559a9d46b0a64b159b6b51b5a4939513aaf4",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9985,
+        32.0004
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 6.743904918948829e-07
+    },
+    {
+      "name": "env_tomo_1355595398_v02",
+      "triangles": 740,
+      "mesh_uv_sha256": "619c99f074245b18ce161dcc5db533e74191812b316fb75bdcaf04092862366c",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9988,
+        32.0001
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 4.04598154091218e-07
+    },
+    {
+      "name": "env_camo_204697918_v02",
+      "triangles": 2204,
+      "mesh_uv_sha256": "67db35a922a78ed4e336417da9e7757b128d7353e2038a955dc6d6e80370b3b1",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9984,
+        32.0002
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 7.641216939191509e-07
+    },
+    {
+      "name": "env_camo_204695159_v02",
+      "triangles": 3672,
+      "mesh_uv_sha256": "70896842d718aa7320264352ca1cb2216906ab98aef15a0c01903737f5a94674",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.999,
+        32.0003
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 5.901726467527624e-07
+    },
+    {
+      "name": "env_camo_204694937_v02",
+      "triangles": 1732,
+      "mesh_uv_sha256": "2a300fc481bfa333ad4615baa72143a7dbe98e82620cb326f675a5da766d7774",
+      "errors": 0,
+      "degenerate_triangles": 0,
+      "exact_duplicate_triangles": 0,
+      "coplanar_overlap_count": 0,
+      "coplanar_overlap_area_m2": 0,
+      "coplanar_overlaps": [],
+      "texel_range_px_m": [
+        31.9851,
+        32.012
+      ],
+      "texel_outside_5percent": 0,
+      "window_corners_outside": 0,
+      "roof_errors": [],
+      "bottom_error_m": 8.433297580268118e-07
+    }
+  ]
+}

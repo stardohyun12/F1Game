@@ -1,0 +1,89 @@
+{
+  "baseline_original_conditions": [
+    {
+      "name": "env_camo_204696009_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204693578_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204701091_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204695467_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_tomo_1355595398_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204697918_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204695159_v01",
+      "mesh_uv_equal": true
+    },
+    {
+      "name": "env_camo_204694937_v01",
+      "mesh_uv_equal": true
+    }
+  ],
+  "v2_repeat": [
+    {
+      "name": "env_camo_204696009_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204693578_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204701091_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204695467_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_tomo_1355595398_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204697918_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204695159_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    },
+    {
+      "name": "env_camo_204694937_v02",
+      "mesh_uv_equal": true,
+      "glb_bytes_equal": true
+    }
+  ],
+  "fbx_bytes": "Not compared: FBX timestamp metadata varies",
+  "original_v1_artifacts": "Preserved; baseline exported to isolated _baseline directory",
+  "status": "PASS",
+  "source_sha256": {
+    "tools/asset-gen/env_v2.py": "327eee636041b5df35471c03b57175c0bd6c7424ed0b2997fbad73829d780b90",
+    "tools/asset-gen/env_auto_bpy.py": "66f750a5aacedfe5f6e87b5193cd0900200d72367d8af3b19d9ef611e27cb18e",
+    "tools/asset-gen/env_home_kit.py": "8428f38af074373c52820ed09375316fd95a669557b196db1327549ab0f538f4",
+    "tools/asset-gen/env_verify.py": "f585ed9af18c784b660d6a771b10070b5ee0ed39599fc12f0e2f85cc6676c95d",
+    "tools/asset-gen/env_verify_bpy.py": "e369d25f39587aeb5699502d8cf1b595c58417ca2c20519c9b0f3141a7c12211",
+    "tools/asset-gen/env_v2_verify.py": "6a3d35fdf33ce6413e1e4bdb71da7541dbe091da0d5b0df433f28edd7a732007"
+  }
+}

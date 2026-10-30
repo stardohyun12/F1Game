@@ -1,13 +1,20 @@
 """Independent footprint and window checks from reimported FBX, no Unity calls."""
 from pathlib import Path
-import json, math, subprocess
+import json, math, subprocess, sys
 from shapely.geometry import Polygon,LineString,Point
 from shapely.ops import unary_union
 R=Path(__file__).resolve().parents[2];E=R/'art/export/env-first';V=R/'art/_review/2026-10-30-env-first'
-p=subprocess.run(['D:/Tools/Blender/blender.exe','-b','--factory-startup','--python',str(R/'tools/asset-gen/env_verify_bpy.py')],capture_output=True,text=True,encoding='utf-8',errors='replace')
+v2='--v2' in sys.argv
+if v2:E=R/'art/export/env-first-v2';V=R/'art/_review/2026-10-30-env-first-v2'
+p=subprocess.run(['D:/Tools/Blender/blender.exe','-b','--factory-startup','--python',str(R/'tools/asset-gen/env_verify_bpy.py')]+(['--','--v2'] if v2 else []),capture_output=True,text=True,encoding='utf-8',errors='replace')
 (V/'readback.log').write_text(p.stdout+p.stderr,encoding='utf-8')
 if p.returncode or 'Traceback' in p.stdout+p.stderr:raise SystemExit('FBX readback failed')
 M=json.loads((E/'manifest.json').read_text(encoding='utf-8'));data=json.loads((V/'fbx-geometry.json').read_text(encoding='utf-8'));result=[]
+if v2:
+    from env_v2_verify import verify
+    out=verify(M,data)
+    (V/'readback.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+    print(json.dumps(out,ensure_ascii=False,indent=1));raise SystemExit(0 if out['status']=='PASS' else 1)
 for b,d in zip(M['buildings'],data):
     px,pz=b['pivot_xz'];pts=[(x-px,z-pz) for x,z in b['poly']];foot=Polygon(pts)
     roof=unary_union([Polygon(t) for t in d['roof_projected_triangles']]);edges=[LineString([a,z]) for a,z in zip(pts,pts[1:]+pts[:1])]

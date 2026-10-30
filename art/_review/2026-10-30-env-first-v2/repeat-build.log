@@ -1,0 +1,291 @@
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204696009_v02.fbx'
+export finished in 0.0082 sec.
+INFO Draco is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at D:\Tools\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+20:18:35 | INFO: Starting glTF 2.0 export
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204696009_v02_H1_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Finished glTF 2.0 export in 0.02865433692932129 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204693578_v02.fbx'
+export finished in 0.0120 sec.
+20:18:35 | INFO: Starting glTF 2.0 export
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H1_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204693578_v02_H2_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Finished glTF 2.0 export in 0.021922826766967773 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204701091_v02.fbx'
+export finished in 0.0148 sec.
+20:18:35 | INFO: Starting glTF 2.0 export
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H1_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H2_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204701091_v02_H3_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Finished glTF 2.0 export in 0.030373811721801758 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204695467_v02.fbx'
+export finished in 0.0125 sec.
+20:18:35 | INFO: Starting glTF 2.0 export
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H1_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_camo_204695467_v02_H2_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Finished glTF 2.0 export in 0.022933244705200195 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_tomo_1355595398_v02.fbx'
+export finished in 0.0080 sec.
+20:18:35 | INFO: Starting glTF 2.0 export
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_BODY
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_DOOR_SLOT
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_FOUNDATION
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_GLASS
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_LIFE
+20:18:35 | INFO: Primitives created: 3
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_ROOF
+20:18:35 | INFO: Primitives created: 2
+20:18:35 | INFO: Extracting primitive: env_tomo_1355595398_v02_H1_TRIM
+20:18:35 | INFO: Primitives created: 1
+20:18:35 | INFO: Finished glTF 2.0 export in 0.014972209930419922 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204697918_v02.fbx'
+export finished in 0.0137 sec.
+20:18:36 | INFO: Starting glTF 2.0 export
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_LIFE
+20:18:36 | INFO: Primitives created: 4
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H1_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_LIFE
+20:18:36 | INFO: Primitives created: 3
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204697918_v02_H2_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Finished glTF 2.0 export in 0.03644442558288574 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204695159_v02.fbx'
+export finished in 0.0160 sec.
+20:18:36 | INFO: Starting glTF 2.0 export
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_LIFE
+20:18:36 | INFO: Primitives created: 4
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H1_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_LIFE
+20:18:36 | INFO: Primitives created: 3
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H2_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_LIFE
+20:18:36 | INFO: Primitives created: 3
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204695159_v02_H3_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Finished glTF 2.0 export in 0.031308889389038086 s
+
+
+FBX export starting... 'D:\\Github\\F1Game\\art\\export\\env-first-v2\\env_camo_204694937_v02.fbx'
+export finished in 0.0164 sec.
+20:18:36 | INFO: Starting glTF 2.0 export
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_LIFE
+20:18:36 | INFO: Primitives created: 3
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_ROOF
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H1_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_BODY
+20:18:36 | INFO: Primitives created: 2
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_DOOR_SLOT
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_FOUNDATION
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_GLASS
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_LIFE
+20:18:36 | INFO: Primitives created: 3
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_ROOF
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Finished glTF 2.0 export in 0.022235631942749023 s
+
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+Info: Saved as "env_first.blend"
+ENV_FIRST_DONE buildings= 8 tris= 16774
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat=bpy.data.materials.new('Shared_'+slot);mat.use_nodes=True
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:245: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not m or not m.use_nodes:continue
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:305: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  sc.world=bpy.data.worlds.new('Review_sky');sc.world.use_nodes=True
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:313: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not m.use_nodes:continue

@@ -1,0 +1,24 @@
+94937_v02_H2_ROOF
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Extracting primitive: env_camo_204694937_v02_H2_TRIM
+20:18:36 | INFO: Primitives created: 1
+20:18:36 | INFO: Finished glTF 2.0 export in 0.022235631942749023 s
+
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+FBX version: 7400
+Info: Saved as "env_first.blend"
+ENV_FIRST_DONE buildings= 8 tris= 16774
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat=bpy.data.materials.new('Shared_'+slot);mat.use_nodes=True
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:245: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not m or not m.use_nodes:continue
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:305: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  sc.world=bpy.data.worlds.new('Review_sky');sc.world.use_nodes=True
+D:\Github\F1Game\tools\asset-gen\env_auto_bpy.py:313: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if not m.use_nodes:continue
+

@@ -1,11 +1,19 @@
 """Geometry and reference studio for env_auto.py; Blender 5.2, no Unity writes."""
-import bpy, math, json, hashlib
+import bpy, math, json, hashlib, sys
 from pathlib import Path
 from mathutils import Vector
 from mathutils.geometry import tessellate_polygon
 
 R=Path(__file__).resolve().parents[2];E=R/'art/export/env-first';V=R/'art/_review/2026-10-30-env-first'
 K=R/'art/export/kit-shared-v2';S=R/'art/models/env_first';S.mkdir(parents=True,exist_ok=True)
+V2='--v2' in sys.argv
+if V2:
+    E=R/'art/export/env-first-v2';V=R/'art/_review/2026-10-30-env-first-v2';S=R/'art/models/env_first_v2';S.mkdir(parents=True,exist_ok=True)
+    K=E/'textures'
+elif '--baseline-repro' in sys.argv:
+    base=R/'art/_review/2026-10-30-env-first-v2/_baseline'
+    E=base/'export';V=base/'review';S=base/'model'
+    for path in (E,V,S):path.mkdir(parents=True,exist_ok=True)
 manifest=json.loads((E/'manifest.json').read_text(encoding='utf-8'))
 layout=json.loads((K/'layout.json').read_text(encoding='utf-8'))
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -53,12 +61,23 @@ class Mesh:
                 x0=minx+ix*tw;y0=miny+iy*th
                 pp=poly
                 for ax,b,pos in [(0,x0,True),(0,x0+tw,False),(1,y0,True),(1,y0+th,False)]:pp=clip(pp,ax,b,pos)
+                if V2:
+                    # Collinear vertices on a stair profile/cell boundary can create
+                    # zero-area triangles in FBX triangulation. Remove only those.
+                    changed=True
+                    while changed and len(pp)>3:
+                        changed=False
+                        for k in range(len(pp)):
+                            a,b,c=pp[k-1],pp[k],pp[(k+1)%len(pp)]
+                            if abs((b[0]-a[0])*(c[1]-b[1])-(b[1]-a[1])*(c[0]-b[0]))<1e-9:
+                                pp.pop(k);changed=True;break
                 if len(pp)<3:continue
                 area=abs(sum(a[0]*b[1]-a[1]*b[0] for a,b in zip(pp,pp[1:]+pp[:1])))/2
                 if area<1e-8:continue
                 idx=len(self.v);self.v += [tuple(p0+u*x+vv*y) for x,y in pp]
                 self.f.append(tuple(range(idx,idx+len(pp))));self.mi.append(list(mats).index(slot))
-                self.uv.append([((sx+.5+(x-x0)*32)/512,1-(sy+sh-.5-(y-y0)*32)/512) for x,y in pp])
+                iw,ih=(80,60) if slot=='retain_stone' else (512,512)
+                self.uv.append([((sx+.5+(x-x0)*32)/iw,1-(sy+sh-.5-(y-y0)*32)/ih) for x,y in pp])
                 uvlog.append({'object':self.name,'cell':cell,'area':area,'ppm':32.0})
     def obj(self,parent=None):
         if not self.f:return None
@@ -195,7 +214,13 @@ def make_building(b):
     exports.append(root)
     return root
 
-for b in manifest['buildings']:make_building(b)
+if V2:
+    sys.path.insert(0,str(R/'tools/asset-gen'))
+    import env_home_kit
+    env_home_kit.install(globals())
+    for b in manifest['buildings']:env_home_kit.make_building(b)
+else:
+    for b in manifest['buildings']:make_building(b)
 (V/'geometry.json').write_text(json.dumps(dict(buildings=checks,total_tris=sum(c['tris'] for c in checks),uv_density='32 px/m analytic; separately checked from exported FBX',kit_unchanged=all(hashlib.sha256((K/n).read_bytes()).hexdigest()==h for n,h in manifest['kit_sha256'].items())),ensure_ascii=False,indent=2),encoding='utf-8')
 
 # Import real library landmarks as references. Never regenerate or modify their source files.
@@ -232,7 +257,7 @@ for key,path in refs.items():
 ground=Mesh('STUDIO_source_height_pads')
 for b in manifest['buildings']:
     pts=[Vector((x-185,-(z+61),0)) for x,z in b['poly']]
-    cap(ground,pts,b['y']-25.27-.025,'floor_concrete')
+    cap(ground,pts,b.get('review_pad_y',b['y'])-25.27-.025,'floor_concrete')
 for n,p in manifest['landmarks'].items():
     x,z=p['world'];size={'house_home':(12,10),'garage':(16,14),'depot':(16,12),'postoffice':(14,12)}[n]
     box(ground,(x-185,-(z+61),p['y']-25.27-.075),(size[0],size[1],.1),'floor_concrete')
@@ -300,7 +325,8 @@ for name,v in views.items():
     cam.location=v['location'];cam.rotation_euler=(Vector(v['target'])-cam.location).to_track_quat('-Z','Y').to_euler()
     cam.data.type='ORTHO' if 'orthographic' in v else 'PERSP'
     if 'orthographic' in v:cam.data.ortho_scale=v['orthographic']
-    sc.render.filepath=str(V/(name+'.png'));bpy.ops.render.render(write_still=True)
+    sc.render.filepath=str(V/(name+'.png'))
+    if '--no-render' not in sys.argv:bpy.ops.render.render(write_still=True)
 (V/'cameras.json').write_text(json.dumps(dict(renderer='Blender EEVEE reference, NOT Unity A7',resolution=[1280,720],fov_vertical=64,origin_unity=[185,25.27,-61],views=views),indent=2),encoding='utf-8')
 bpy.ops.wm.save_as_mainfile(filepath=str(S/'env_first.blend'))
 print('ENV_FIRST_DONE buildings=',len(checks),'tris=',sum(c['tris'] for c in checks))

@@ -1,0 +1,54 @@
+{
+  "renderer": "Blender EEVEE reference, NOT Unity A7",
+  "resolution": [
+    1280,
+    720
+  ],
+  "fov_vertical": 64,
+  "origin_unity": [
+    185,
+    25.27,
+    -61
+  ],
+  "views": {
+    "cart_home": {
+      "location": [
+        -8,
+        19,
+        2.8
+      ],
+      "target": [
+        16,
+        0,
+        4.8
+      ],
+      "height_above_home_pad": 2.8
+    },
+    "cart_route": {
+      "location": [
+        67,
+        -11,
+        5.1
+      ],
+      "target": [
+        88,
+        -36,
+        8.73
+      ],
+      "height_above_reference_ground": 2.8
+    },
+    "top": {
+      "location": [
+        42,
+        5,
+        180
+      ],
+      "target": [
+        42,
+        5,
+        0
+      ],
+      "orthographic": 157
+    }
+  }
+}

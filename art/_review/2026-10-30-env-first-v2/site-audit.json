@@ -1,0 +1,3729 @@
+{
+  "scope": "Static manifest 2D footprint audit plus actual garage FBX convex hull; NOT live-map terrain/Unity verification.",
+  "manifest_sha256": "b641892c2c920aa13b222a96b8d60e5ebd15644e4057f0c9377260e70fd0c232",
+  "garage_source": "art\\export\\q2-garage\\garage_v5_combo.fbx",
+  "garage_sha256": "a096a84cc9e0a6f16150315e8dcb7e169c365a069c8d1e2e04210e9450dd1ffb",
+  "limitations": [
+    "Convex hull includes every mesh and may fill empty garage yard/concavities.",
+    "Roofs use conservative 2D eave envelopes; height separation is not tested.",
+    "House attachments, foundation extensions, stairs and actual generated FBX geometry are not audited.",
+    "Live ground burial, Unity FBX import handedness and collider clearance are NOT verified."
+  ],
+  "garage": {
+    "mesh_count": 79,
+    "vertex_count": 4404,
+    "mesh_names": [
+      "BENCH_01",
+      "BOARD_01",
+      "CAN_01",
+      "CAN_02",
+      "CAN_03",
+      "CAN_04",
+      "CHAIR_01",
+      "CRATE_01",
+      "CRATE_02",
+      "CRATE_03",
+      "CRATE_04",
+      "CRATE_05",
+      "CRATE_06",
+      "DOOR_01",
+      "DRUM_01",
+      "DRUM_02",
+      "DRUM_03",
+      "DRUM_04",
+      "DRUM_05",
+      "ENGINE_01",
+      "FESTIVAL_01",
+      "GARAGE_shell",
+      "HELMET_01",
+      "HOIST_01",
+      "KEYS_01",
+      "LADDER_01",
+      "LAMP_01",
+      "LAMP_02",
+      "PARTBOX_01",
+      "PART_01",
+      "PART_02",
+      "PART_03",
+      "PART_04",
+      "PART_05",
+      "PART_06",
+      "PART_07",
+      "PART_08",
+      "PART_09",
+      "PART_10",
+      "PART_11",
+      "PART_12",
+      "PART_13",
+      "PART_14",
+      "PEGBOARD_01",
+      "PHOTO_01",
+      "PHOTO_02",
+      "PHOTO_03",
+      "POSTER_01",
+      "POSTER_02",
+      "POSTER_03",
+      "SHELF_01",
+      "SHELF_02",
+      "SHUTTER_01",
+      "SIGN_01",
+      "SLOTS_01",
+      "TABLE_01",
+      "TIRE_01",
+      "TIRE_02",
+      "TIRE_03",
+      "TIRE_04",
+      "TIRE_05",
+      "TIRE_06",
+      "TIRE_07",
+      "TIRE_08",
+      "TIRE_09",
+      "TIRE_10",
+      "TIRE_11",
+      "TIRE_12",
+      "TIRE_13",
+      "TIRE_14",
+      "TIRE_15",
+      "TIRE_16",
+      "TIRE_17",
+      "TIRE_18",
+      "TIRE_19",
+      "TIRE_20",
+      "TIRE_21",
+      "TOOLBOX_01",
+      "VISE_01"
+    ],
+    "blender_bounds_xyz": [
+      [
+        -7.800000190734863,
+        -12.0,
+        -0.06498143076896667
+      ],
+      [
+        8.199999809265137,
+        12.90595531463623,
+        5.701432704925537
+      ]
+    ],
+    "local_hull_unity_xz": [
+      [
+        0.06630077213048935,
+        -12.90595531463623
+      ],
+      [
+        -2.8155517578125,
+        -12.905035018920898
+      ],
+      [
+        -4.869508266448975,
+        -12.902592658996582
+      ],
+      [
+        -5.613783359527588,
+        -12.900891304016113
+      ],
+      [
+        -6.10722017288208,
+        -12.899109840393066
+      ],
+      [
+        -7.800000190734863,
+        1.600000023841858
+      ],
+      [
+        -7.599999904632568,
+        5.199999809265137
+      ],
+      [
+        -2.9000000953674316,
+        12.0
+      ],
+      [
+        4.099999904632568,
+        12.0
+      ],
+      [
+        7.900000095367432,
+        5.599999904632568
+      ],
+      [
+        8.199999809265137,
+        1.899999976158142
+      ],
+      [
+        6.189573764801025,
+        -12.899109840393066
+      ],
+      [
+        5.687429904937744,
+        -12.900891304016113
+      ],
+      [
+        4.972631931304932,
+        -12.902592658996582
+      ],
+      [
+        2.9400205612182617,
+        -12.905035018920898
+      ]
+    ],
+    "placement": {
+      "world": [
+        234.1,
+        -53.79
+      ],
+      "y": 26.7,
+      "yaw": 85.15
+    },
+    "transform": "local=(Blender x,-y); world x=wx+cos(yaw)*x+sin(yaw)*z; world z=wz-sin(yaw)*x+cos(yaw)*z",
+    "world_hull_xz": [
+      [
+        236.68648573517217,
+        -61.79999927110484
+      ],
+      [
+        221.7703884398091,
+        -61.047998128908894
+      ],
+      [
+        221.7261583892684,
+        -60.54780283480848
+      ],
+      [
+        221.66402880483847,
+        -59.83570807113099
+      ],
+      [
+        221.48974315197793,
+        -57.81058104841498
+      ],
+      [
+        221.2458605705889,
+        -54.94722854485662
+      ],
+      [
+        221.0031243880943,
+        -52.07561680282203
+      ],
+      [
+        220.8319012888373,
+        -50.0288080783016
+      ],
+      [
+        220.77067001655598,
+        -49.28705404893555
+      ],
+      [
+        220.73072629432593,
+        -48.7952333891006
+      ],
+      [
+        235.03480129869683,
+        -45.88265217764435
+      ],
+      [
+        238.63882063782617,
+        -45.77756567674868
+      ],
+      [
+        245.81184597273844,
+        -49.88581449416383
+      ],
+      [
+        246.40367788073522,
+        -56.86075069406394
+      ],
+      [
+        240.34787345483923,
+        -61.18824828800746
+      ]
+    ],
+    "world_bounds_xz": [
+      220.73072629432593,
+      -61.79999927110484,
+      246.40367788073522,
+      -45.77756567674868
+    ],
+    "target_comparison": {
+      "original_source_lot": {
+        "intersection_area_m2": 0.0,
+        "distance_m": 5.9303665771662795
+      },
+      "v2_body": {
+        "intersection_area_m2": 0.0,
+        "distance_m": 6.891001657434811
+      },
+      "v2_roof_envelope": {
+        "intersection_area_m2": 0.0,
+        "distance_m": 6.314531209589131
+      }
+    },
+    "existing_review_negative_blender_yaw": {
+      "note": "env_auto_bpy.py applies Blender -yaw; under x,-y mapping that is the opposite Unity yaw. Included separately without changing source.",
+      "world_hull_xz": [
+        [
+          231.84625898837237,
+          -61.426796088954156
+        ],
+        [
+          228.27605866379272,
+          -60.92314123505126
+        ],
+        [
+          221.89777900165237,
+          -55.66504753556156
+        ],
+        [
+          221.90623375528978,
+          -55.56540544730976
+        ],
+        [
+          222.42197298133817,
+          -49.487246853851346
+        ],
+        [
+          222.48961090964914,
+          -48.690111335661456
+        ],
+        [
+          229.18797572505102,
+          -45.44482067532387
+        ],
+        [
+          232.9000918455965,
+          -45.45872055429989
+        ],
+        [
+          247.47623648902203,
+          -48.71317466774814
+        ],
+        [
+          247.43555660851365,
+          -49.21367119813857
+        ],
+        [
+          247.37681755049576,
+          -49.92605365214872
+        ],
+        [
+          247.20739912753507,
+          -51.951593665303015
+        ],
+        [
+          246.96535054726013,
+          -54.815101786109686
+        ],
+        [
+          246.72078036365144,
+          -57.686557910895964
+        ],
+        [
+          246.54469003449458,
+          -59.7329536449781
+        ],
+        [
+          246.48006823580124,
+          -60.4744199840115
+        ],
+        [
+          246.43657434353887,
+          -60.965939407556434
+        ]
+      ],
+      "world_bounds_xz": [
+        221.89777900165237,
+        -61.426796088954156,
+        247.47623648902203,
+        -45.44482067532387
+      ],
+      "target_comparison": {
+        "original_source_lot": {
+          "intersection_area_m2": 0.0,
+          "distance_m": 6.778734323603054
+        },
+        "v2_body": {
+          "intersection_area_m2": 0.0,
+          "distance_m": 7.546315041375641
+        },
+        "v2_roof_envelope": {
+          "intersection_area_m2": 0.0,
+          "distance_m": 7.0191118068075165
+        }
+      }
+    }
+  },
+  "houses": [
+    {
+      "house": "camo_204696009/H1",
+      "body_area_m2": 19.800001340667567,
+      "roof_envelope_area_m2": 28.620001606220704,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.6413525712995765,
+      "body_polygon_xz": [
+        [
+          214.530053,
+          -57.297066
+        ],
+        [
+          210.445202,
+          -59.184918
+        ],
+        [
+          208.599301,
+          -55.190841
+        ],
+        [
+          212.684153,
+          -53.302988
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          215.12732337055635,
+          -57.51676595471307
+        ],
+        [
+          210.22550214987086,
+          -59.78218836427306
+        ],
+        [
+          208.00203052670543,
+          -54.97114114655242
+        ],
+        [
+          212.90385295286734,
+          -52.70571753446144
+        ]
+      ]
+    },
+    {
+      "house": "camo_204693578/H1",
+      "body_area_m2": 19.498882658410995,
+      "roof_envelope_area_m2": 28.381854099845473,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 1.208213130185223,
+      "source_boundary_distance_m": 0.07082852391429142,
+      "body_polygon_xz": [
+        [
+          178.552185,
+          -24.346682
+        ],
+        [
+          183.792385,
+          -24.906029
+        ],
+        [
+          183.399672,
+          -28.585129
+        ],
+        [
+          178.159472,
+          -28.025782
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          178.15248928558364,
+          -23.851461531198222
+        ],
+        [
+          184.2876054971173,
+          -24.50633326272998
+        ],
+        [
+          183.79936771441638,
+          -29.080349468801778
+        ],
+        [
+          177.66425150288268,
+          -28.42547773727002
+        ]
+      ]
+    },
+    {
+      "house": "camo_204693578/H2",
+      "body_area_m2": 39.524761512880126,
+      "roof_envelope_area_m2": 51.82773288505655,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 1.0518156949565252,
+      "source_boundary_distance_m": 0.16097971965753738,
+      "body_polygon_xz": [
+        [
+          184.883546,
+          -24.670513
+        ],
+        [
+          190.123746,
+          -25.22986
+        ],
+        [
+          189.327706,
+          -32.687495
+        ],
+        [
+          184.087506,
+          -32.128148
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          184.48385029445612,
+          -24.175292532145285
+        ],
+        [
+          190.61896650598982,
+          -24.83016426367704
+        ],
+        [
+          189.72740170554388,
+          -33.18271546785471
+        ],
+        [
+          183.59228549401018,
+          -32.52784373632296
+        ]
+      ]
+    },
+    {
+      "house": "camo_204701091/H1",
+      "body_area_m2": 40.45640802233605,
+      "roof_envelope_area_m2": 53.05156427243473,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 3.7405756355522506,
+      "source_boundary_distance_m": 0.07086221517564646,
+      "body_polygon_xz": [
+        [
+          229.56458,
+          -35.473778
+        ],
+        [
+          221.871767,
+          -38.009644
+        ],
+        [
+          220.308102,
+          -33.266105
+        ],
+        [
+          228.000915,
+          -30.730238
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          230.13284000214372,
+          -35.76027507906105
+        ],
+        [
+          221.58526995221746,
+          -38.57790398440768
+        ],
+        [
+          219.739841987586,
+          -32.97960797988001
+        ],
+        [
+          228.2874120580528,
+          -30.16197795665126
+        ]
+      ]
+    },
+    {
+      "house": "camo_204701091/H2",
+      "body_area_m2": 33.97641598337799,
+      "roof_envelope_area_m2": 45.85157341152284,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 2.1427479018119895,
+      "source_boundary_distance_m": 0.03152772543990052,
+      "body_polygon_xz": [
+        [
+          220.524844,
+          -37.400715
+        ],
+        [
+          212.83203,
+          -39.936581
+        ],
+        [
+          211.518821,
+          -35.952825
+        ],
+        [
+          219.211635,
+          -33.416959
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          221.09310399930916,
+          -37.68721209830882
+        ],
+        [
+          212.54553291170387,
+          -40.50484097944923
+        ],
+        [
+          210.95056100069084,
+          -35.666327901691176
+        ],
+        [
+          219.49813208829613,
+          -32.84869902055077
+        ]
+      ]
+    },
+    {
+      "house": "camo_204701091/H3",
+      "body_area_m2": 34.019995934762036,
+      "roof_envelope_area_m2": 45.89999537381916,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.2543251060601861,
+      "source_boundary_distance_m": 0.16549623591685605,
+      "body_polygon_xz": [
+        [
+          211.954712,
+          -40.752246
+        ],
+        [
+          204.261898,
+          -43.288112
+        ],
+        [
+          202.947005,
+          -39.299246
+        ],
+        [
+          210.639818,
+          -36.76338
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          212.5229720510017,
+          -41.03874308126885
+        ],
+        [
+          203.9754008667549,
+          -43.85637199426624
+        ],
+        [
+          202.37874505108496,
+          -39.01274890339259
+        ],
+        [
+          210.92631503115842,
+          -36.195120021072306
+        ]
+      ]
+    },
+    {
+      "house": "camo_204695467/H1",
+      "body_area_m2": 38.83979768349742,
+      "roof_envelope_area_m2": 51.06057333046663,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.15915219593388105,
+      "source_boundary_distance_m": 0.3823465828452839,
+      "body_polygon_xz": [
+        [
+          168.505605,
+          -105.565058
+        ],
+        [
+          173.602365,
+          -104.647807
+        ],
+        [
+          174.93078,
+          -112.029224
+        ],
+        [
+          169.83402,
+          -112.946474
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          167.9830150844187,
+          -105.20187788912186
+        ],
+        [
+          173.96554510985487,
+          -104.12521709905889
+        ],
+        [
+          175.45336992026978,
+          -112.39240419692979
+        ],
+        [
+          169.47083988545668,
+          -113.46906381488948
+        ]
+      ]
+    },
+    {
+      "house": "camo_204695467/H2",
+      "body_area_m2": 38.83979997883401,
+      "roof_envelope_area_m2": 51.06057598898332,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.3564849520124831,
+      "source_boundary_distance_m": 0.3347478998834484,
+      "body_polygon_xz": [
+        [
+          174.769591,
+          -105.14899
+        ],
+        [
+          179.866351,
+          -104.231739
+        ],
+        [
+          181.194765,
+          -111.613156
+        ],
+        [
+          176.098005,
+          -112.530407
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          174.24700115299564,
+          -104.78580987678023
+        ],
+        [
+          180.22953116797257,
+          -103.7091490885996
+        ],
+        [
+          181.71735484700434,
+          -111.97633612321977
+        ],
+        [
+          175.73482483202744,
+          -113.0529969114004
+        ]
+      ]
+    },
+    {
+      "house": "tomo_1355595398/H1",
+      "body_area_m2": 15.43516811948794,
+      "roof_envelope_area_m2": 23.4161423081488,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.5227672491387292,
+      "body_polygon_xz": [
+        [
+          144.969038,
+          -63.013397
+        ],
+        [
+          144.78992,
+          -58.372608
+        ],
+        [
+          148.110952,
+          -58.244428
+        ],
+        [
+          148.29007,
+          -62.885217
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          144.53672828716233,
+          -63.480417668654695
+        ],
+        [
+          144.3228993230018,
+          -57.9402982794389
+        ],
+        [
+          148.54326171283768,
+          -57.7774073313453
+        ],
+        [
+          148.7570906769982,
+          -63.3175267205611
+        ]
+      ]
+    },
+    {
+      "house": "camo_204697918/H1",
+      "body_area_m2": 42.084213056557935,
+      "roof_envelope_area_m2": 54.86023672770033,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.5999998016281032,
+      "body_polygon_xz": [
+        [
+          257.454636,
+          -21.76907
+        ],
+        [
+          249.362738,
+          -21.406873
+        ],
+        [
+          249.595062,
+          -16.216488
+        ],
+        [
+          257.68696,
+          -16.578685
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          257.88406383111897,
+          -22.23874194465698
+        ],
+        [
+          248.89306605271915,
+          -21.836300833518028
+        ],
+        [
+          249.165634168881,
+          -15.746816055343015
+        ],
+        [
+          258.15663194728086,
+          -16.149257166481974
+        ]
+      ]
+    },
+    {
+      "house": "camo_204697918/H2",
+      "body_area_m2": 42.08420889444699,
+      "roof_envelope_area_m2": 54.86023209591753,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 3.1499987293264917,
+      "source_boundary_distance_m": 0.09999984296174312,
+      "body_polygon_xz": [
+        [
+          247.971767,
+          -20.844112
+        ],
+        [
+          239.879869,
+          -20.481915
+        ],
+        [
+          240.112193,
+          -15.291531
+        ],
+        [
+          248.204091,
+          -15.653727
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          248.401194831119,
+          -21.313783944656983
+        ],
+        [
+          239.4101970488501,
+          -20.911342833344847
+        ],
+        [
+          239.6827651702683,
+          -14.821859110960666
+        ],
+        [
+          248.67376294976256,
+          -15.224299111037496
+        ]
+      ]
+    },
+    {
+      "house": "camo_204695159/H1",
+      "body_area_m2": 36.19692031535109,
+      "roof_envelope_area_m2": 48.10055081483575,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.4874235330772675,
+      "body_polygon_xz": [
+        [
+          253.812877,
+          -68.257018
+        ],
+        [
+          258.581669,
+          -67.514473
+        ],
+        [
+          259.735584,
+          -74.925173
+        ],
+        [
+          254.966793,
+          -75.667719
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          253.2990000200141,
+          -67.88161085938934
+        ],
+        [
+          258.957076123533,
+          -67.00059610339088
+        ],
+        [
+          260.24946091414586,
+          -75.30058004310425
+        ],
+        [
+          254.59138594230708,
+          -76.18159599411553
+        ]
+      ]
+    },
+    {
+      "house": "camo_204695159/H2",
+      "body_area_m2": 36.19691623872794,
+      "roof_envelope_area_m2": 48.10054622433604,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 1.231954033770989,
+      "body_polygon_xz": [
+        [
+          259.729054,
+          -67.993647
+        ],
+        [
+          264.497845,
+          -67.251101
+        ],
+        [
+          265.65176,
+          -74.661802
+        ],
+        [
+          260.882969,
+          -75.404347
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          259.2151770858542,
+          -67.61823995689574
+        ],
+        [
+          264.8732521162726,
+          -66.73722399676306
+        ],
+        [
+          266.16563691919913,
+          -75.03720913555739
+        ],
+        [
+          260.5075618786741,
+          -75.9182239107838
+        ]
+      ]
+    },
+    {
+      "house": "camo_204695159/H3",
+      "body_area_m2": 36.19691735399763,
+      "roof_envelope_area_m2": 48.10054733960515,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.529999622551503,
+      "body_polygon_xz": [
+        [
+          265.468296,
+          -66.593968
+        ],
+        [
+          270.237088,
+          -65.851423
+        ],
+        [
+          271.391003,
+          -73.262123
+        ],
+        [
+          266.622212,
+          -74.004668
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          264.9544190108927,
+          -66.21856086080965
+        ],
+        [
+          270.61249512353305,
+          -65.33754610339088
+        ],
+        [
+          271.9048799283205,
+          -73.63753013413711
+        ],
+        [
+          266.24680493725384,
+          -74.51854490166238
+        ]
+      ]
+    },
+    {
+      "house": "camo_204694937/H1",
+      "body_area_m2": 30.970898537711513,
+      "roof_envelope_area_m2": 41.86475437339607,
+      "eaves_m": 0.45,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.5234448246139257,
+      "body_polygon_xz": [
+        [
+          277.578585,
+          -1.652796
+        ],
+        [
+          273.013577,
+          -3.590966
+        ],
+        [
+          270.573044,
+          2.157268
+        ],
+        [
+          275.138052,
+          4.095437
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          278.16866061689456,
+          -1.8911460896653949
+        ],
+        [
+          272.7752268837639,
+          -4.181041629507134
+        ],
+        [
+          269.9829683763867,
+          2.3956181775493337
+        ],
+        [
+          275.37640212295486,
+          4.685512541623224
+        ]
+      ]
+    },
+    {
+      "house": "camo_204694937/H2",
+      "body_area_m2": 30.970900442743506,
+      "roof_envelope_area_m2": 30.970900442743506,
+      "eaves_m": 0,
+      "body_outside_source_m2": 0.0,
+      "body_inside_source": true,
+      "roof_outside_source_m2": 0.0,
+      "source_boundary_distance_m": 0.0940171284330124,
+      "body_polygon_xz": [
+        [
+          271.842472,
+          -3.544984
+        ],
+        [
+          267.277464,
+          -5.483153
+        ],
+        [
+          264.836931,
+          0.26508
+        ],
+        [
+          269.40194,
+          2.20325
+        ]
+      ],
+      "roof_envelope_xz": [
+        [
+          271.842472,
+          -3.544984
+        ],
+        [
+          267.277464,
+          -5.483153
+        ],
+        [
+          264.836931,
+          0.26508
+        ],
+        [
+          269.40194,
+          2.20325
+        ]
+      ]
+    }
+  ],
+  "plots": [
+    {
+      "plot": "camo_204696009",
+      "house_count": 1,
+      "source_area_m2": 79.32450000000003,
+      "body_union_area_m2": 19.800001340667567,
+      "roof_union_area_m2": 28.620001606220704,
+      "body_area_reduction_percent": 75.03923587206026,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        208.599301,
+        -59.184918,
+        214.530053,
+        -53.302988
+      ],
+      "roof_union_bounds_xz": [
+        208.00203052670543,
+        -59.78218836427306,
+        215.12732337055635,
+        -52.70571753446144
+      ]
+    },
+    {
+      "plot": "camo_204693578",
+      "house_count": 2,
+      "source_area_m2": 103.80110000000003,
+      "body_union_area_m2": 59.02364417129113,
+      "roof_union_area_m2": 80.20958698490202,
+      "body_area_reduction_percent": 43.13774693014707,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        178.159472,
+        -32.687495,
+        190.123746,
+        -24.346682
+      ],
+      "roof_union_bounds_xz": [
+        177.66425150288268,
+        -33.18271546785471,
+        190.61896650598982,
+        -23.851461531198222
+      ]
+    },
+    {
+      "plot": "camo_204701091",
+      "house_count": 3,
+      "source_area_m2": 173.85075000000003,
+      "body_union_area_m2": 108.45281994047608,
+      "roof_union_area_m2": 144.80313305777673,
+      "body_area_reduction_percent": 37.61728382507636,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        202.947005,
+        -43.288112,
+        229.56458,
+        -30.730238
+      ],
+      "roof_union_bounds_xz": [
+        202.37874505108496,
+        -43.85637199426624,
+        230.13284000214372,
+        -30.16197795665126
+      ]
+    },
+    {
+      "plot": "camo_204695467",
+      "house_count": 2,
+      "source_area_m2": 124.55559999999977,
+      "body_union_area_m2": 77.67959766233143,
+      "roof_union_area_m2": 102.12114931944994,
+      "body_area_reduction_percent": 37.63460040148209,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        168.505605,
+        -112.946474,
+        181.194765,
+        -104.231739
+      ],
+      "roof_union_bounds_xz": [
+        167.9830150844187,
+        -113.46906381488948,
+        181.71735484700434,
+        -103.7091490885996
+      ]
+    },
+    {
+      "plot": "tomo_1355595398",
+      "house_count": 1,
+      "source_area_m2": 26.349400000000028,
+      "body_union_area_m2": 15.43516811948794,
+      "roof_union_area_m2": 23.4161423081488,
+      "body_area_reduction_percent": 41.42117801738209,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        144.78992,
+        -63.013397,
+        148.29007,
+        -58.244428
+      ],
+      "roof_union_bounds_xz": [
+        144.3228993230018,
+        -63.480417668654695,
+        148.7570906769982,
+        -57.7774073313453
+      ]
+    },
+    {
+      "plot": "camo_204697918",
+      "house_count": 2,
+      "source_area_m2": 123.36454999999995,
+      "body_union_area_m2": 84.16842195100494,
+      "roof_union_area_m2": 109.72046882361786,
+      "body_area_reduction_percent": 31.772602460751507,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        239.879869,
+        -21.76907,
+        257.68696,
+        -15.291531
+      ],
+      "roof_union_bounds_xz": [
+        239.4101970488501,
+        -22.23874194465698,
+        258.15663194728086,
+        -14.821859110960666
+      ]
+    },
+    {
+      "plot": "camo_204695159",
+      "house_count": 3,
+      "source_area_m2": 255.65259999999984,
+      "body_union_area_m2": 108.59075390807666,
+      "roof_union_area_m2": 144.30164437877693,
+      "body_area_reduction_percent": 57.5240956250487,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        253.812877,
+        -75.667719,
+        271.391003,
+        -65.851423
+      ],
+      "roof_union_bounds_xz": [
+        253.2990000200141,
+        -76.18159599411553,
+        271.9048799283205,
+        -65.33754610339088
+      ]
+    },
+    {
+      "plot": "camo_204694937",
+      "house_count": 2,
+      "source_area_m2": 90.67884999999984,
+      "body_union_area_m2": 61.94179898045502,
+      "roof_union_area_m2": 72.83565481613957,
+      "body_area_reduction_percent": 31.691018379197434,
+      "body_outside_source_m2": 0.0,
+      "body_union_bounds_xz": [
+        264.836931,
+        -5.483153,
+        277.578585,
+        4.095437
+      ],
+      "roof_union_bounds_xz": [
+        264.836931,
+        -5.483153,
+        278.16866061689456,
+        4.685512541623224
+      ]
+    }
+  ],
+  "body_pairs": [
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204693578/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 36.6453982481373,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204693578/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 29.62760461191118,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 17.84092547250091,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 13.367224981153644,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 12.148183418874654,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 58.517253134737025,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 54.44522211072558,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 60.56537590333581,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.60741455473074,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 42.62428652334236,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 40.7830946503239,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.44745995732773,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 51.77969666505061,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.17240262074755,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.57524526565477,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204693578/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.059999972594966,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 37.204082321399554,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 29.068358825923017,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 22.291041485372038,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 76.67289861752782,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 75.72908266829292,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 42.615491552529534,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 65.66365269505609,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 56.261697860402805,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 80.82003597623762,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 85.90230408701649,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 90.44297035912354,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 90.90272174684588,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 84.86343832673761,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 30.866811107807788,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 22.430068322502382,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 15.13937107469797,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 73.2737273739105,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.14433021535837,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 44.456411447094055,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 59.36222201685372,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 49.98214438891307,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 73.6446077139852,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.7583276185078,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 83.34889535469459,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 84.98320027382579,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.94334663825586,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.0885755455067525,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 10.27715159790143,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 82.2835338172357,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.42079341298505,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 76.38776671096316,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 23.307780177583506,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 15.688775364777376,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 40.77647277901569,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 44.35580425912529,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.513609084606024,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 52.5612007569864,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.69114051237801,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.0885755213162147,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 75.67370340108447,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.25374270012597,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 67.19919085081261,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 32.455063978430324,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 24.382191451153286,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.38947648780383,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 49.728237150342714,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 53.59253584593954,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 61.51616715471968,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 55.59335783259433,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 68.59314203527285,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 65.64501797809442,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 58.010615522152555,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 41.65677424582285,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 33.46739734471188,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 50.0861104492973,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 54.99528781610081,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 59.42641052974966,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 70.64626573554669,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.70143387586434,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.0599994527703418,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.22538176787464,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 112.55526291689556,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 107.12891725685311,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 86.371382090684,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 92.04935517088872,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 97.9371936685789,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 141.75709571026147,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 136.4135358958176,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 49.873756030451226,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 108.11894484303723,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 103.0323025209439,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 80.3491109294668,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 85.99250503200605,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 91.87086175219191,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 137.13121782268473,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 131.87867876536436,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 107.74474291847292,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 99.23477976711622,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 105.65944843289147,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 111.55600930482035,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 117.2369032450409,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 136.33659318200696,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 130.3242484032491,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.414743929559153,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.75928429308633,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.02414515124254,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.53559297193795,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 20.089450801046056,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 14.665899131558222,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.74706477105734,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.593337488966476,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.98140311453499,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 27.586605418704867,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 21.61559929973271,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.0600000473163598,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 6.946255182343419,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 65.53239439925504,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 62.63786004984864,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.0599996996032215,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.22717866848932,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 61.830459176006975,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H3",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 62.32233465633303,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H3",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 60.4407759464939,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204694937/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 1.059999679848411,
+      "same_plot": true
+    }
+  ],
+  "roof_pairs": [
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204693578/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 35.44152904300322,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204693578/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 28.43760805882523,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 16.58198169163408,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 12.20613706143537,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 11.199719116730122,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 57.28078806997898,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 53.191504524908964,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 59.524955428466164,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.414600567789556,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 41.39406406683987,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 39.553848208850056,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.23028434841276,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 50.581228677632915,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 77.0663713175474,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.01708255349034,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204693578/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.15999996367206631,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 36.15137491045927,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 27.93854700565367,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 21.06764867626604,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 75.66471322105276,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 74.71413163291308,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 41.346920287337696,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.66061093721949,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 55.23969637467728,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 79.59734151411077,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 84.69187272945007,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 89.24902854558792,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 89.81876313056645,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 84.27227749386094,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 29.821352592284676,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 21.367985894526647,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 13.930031525673447,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.2416638987983,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 71.13614480231459,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 43.196927318413216,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 58.35095454421087,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.94835379549933,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.42486764674834,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 77.55228090868638,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 82.16125128968322,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 83.90404056075813,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.34588399072264,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204701091/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.18857550858212394,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 9.377151580397397,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 81.01906226692857,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 77.1516443066058,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 75.38097903019057,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 22.224083245582325,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 14.466879281173807,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 39.6036763733643,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 43.13597404032867,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.26283105718041,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 51.51868321688623,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.143998002738925,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204701091/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.18857546688756283,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 74.40408400344309,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 70.98667855490392,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 66.19240319532933,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 31.39004709462144,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 23.216175476024144,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 44.14659052565213,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.46812235982931,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 52.324495379820156,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 60.50027611619235,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 55.06121744868748,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695467/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 67.3270015136233,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.39115819470486,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 57.00382789908386,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 40.59125363417665,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 32.325305565792846,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.81827534318824,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 53.72738282457246,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 58.16424893109808,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 69.64329912211683,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091/H3",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.17691881363587,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695467/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.15999939371898778,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.08616974897311,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 111.29060667819437,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 105.86572314836515,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 85.33095669448781,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 91.0228275277031,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 96.91432274919951,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 140.54248974082435,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 135.78428118410417,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "tomo_1355595398/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.67601097048455,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 106.85431345653963,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 101.77341467587087,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 79.29345259760643,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 84.95232626024607,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 90.83536073302028,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 135.90640150452256,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 131.24667202610033,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204697918/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 106.59196202031679,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 98.06072939219754,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 104.64149116440218,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 110.54177937525468,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 116.23353694617477,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 135.30022759284404,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 129.74012420542925,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204697918/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.5147439295591326,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 44.77471321077819,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.043979637986965,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 44.544521484305264,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 18.89289551806321,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 14.034078360339635,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.766915288046214,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.550445411111355,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 47.85862744203267,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 26.511018455829692,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 20.99970524372156,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204695159/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.1600000473163038,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 6.046255123057811,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 64.32136281772733,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 62.07756970431262,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204695159/H3",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.1599996310862907,
+      "same_plot": true
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 63.05328823773944,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H2",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 61.301235293086435,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H3",
+      "b": "camo_204694937/H1",
+      "intersection_area_m2": 0.0,
+      "distance_m": 61.19473382678344,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159/H3",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 59.9472335172373,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204694937/H1",
+      "b": "camo_204694937/H2",
+      "intersection_area_m2": 0.0,
+      "distance_m": 0.6099996135199147,
+      "same_plot": true
+    }
+  ],
+  "source_lot_pairs": [
+    {
+      "a": "camo_204696009",
+      "b": "camo_204693578",
+      "intersection_area_m2": 0.0,
+      "distance_m": 26.40948314526432,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "camo_204701091",
+      "intersection_area_m2": 0.0,
+      "distance_m": 7.474482862250689,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "camo_204695467",
+      "intersection_area_m2": 0.0,
+      "distance_m": 46.882390084124346,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "tomo_1355595398",
+      "intersection_area_m2": 0.0,
+      "distance_m": 54.234766534587706,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "camo_204697918",
+      "intersection_area_m2": 0.0,
+      "distance_m": 39.94677583985971,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 38.89447390054274,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204696009",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 70.57487159038972,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "camo_204701091",
+      "intersection_area_m2": 0.0,
+      "distance_m": 13.43661043567165,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "camo_204695467",
+      "intersection_area_m2": 0.0,
+      "distance_m": 69.882194646736,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "tomo_1355595398",
+      "intersection_area_m2": 0.0,
+      "distance_m": 41.07683166944597,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "camo_204697918",
+      "intersection_area_m2": 0.0,
+      "distance_m": 48.837055603301856,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 72.18702653524386,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204693578",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 77.79347659026429,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091",
+      "b": "camo_204695467",
+      "intersection_area_m2": 0.0,
+      "distance_m": 61.424342080318624,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091",
+      "b": "tomo_1355595398",
+      "intersection_area_m2": 0.0,
+      "distance_m": 56.74977505000768,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091",
+      "b": "camo_204697918",
+      "intersection_area_m2": 0.0,
+      "distance_m": 13.65937773106811,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 39.93992613914052,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204701091",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.32729420558873,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467",
+      "b": "tomo_1355595398",
+      "intersection_area_m2": 0.0,
+      "distance_m": 45.69462659875886,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467",
+      "b": "camo_204697918",
+      "intersection_area_m2": 0.0,
+      "distance_m": 100.30680136461336,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 78.15656082505167,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695467",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 129.6220575365165,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398",
+      "b": "camo_204697918",
+      "intersection_area_m2": 0.0,
+      "distance_m": 97.37312822334505,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 104.39446153891498,
+      "same_plot": false
+    },
+    {
+      "a": "tomo_1355595398",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 129.04667566427273,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918",
+      "b": "camo_204695159",
+      "intersection_area_m2": 0.0,
+      "distance_m": 43.90668384521005,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204697918",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 12.79395560411244,
+      "same_plot": false
+    },
+    {
+      "a": "camo_204695159",
+      "b": "camo_204694937",
+      "intersection_area_m2": 0.0,
+      "distance_m": 58.237008851760244,
+      "same_plot": false
+    }
+  ],
+  "summary": {
+    "plots": 8,
+    "houses": 16,
+    "body_outside_source_count": 0,
+    "body_overlap_count": 0,
+    "roof_envelope_overlap_count": 0,
+    "source_lot_overlap_count": 0,
+    "minimum_body_gap_m": 1.0599994527703418,
+    "minimum_roof_envelope_gap_m": 0.15999939371898778,
+    "target_reduction_percent": 75.03923587206026
+  },
+  "review_ground": {
+    "scope": "REVIEW GEOMETRY ONLY; not the actual map terrain, Unity scene, or gameplay collision.",
+    "terrain_path": "art\\export\\env-first-v2\\review-terrain.json",
+    "terrain_sha256": "de25dfd1904e3f1d80da48218c37e607b66d0ca7ea0649b754963efb272c5544",
+    "method": "Boundary subdivisions <=0.25m plus <=0.25m world grid inside each body polygon and centroid; exact height on generated [a,d,c]/[a,c,b] triangles; maximum with all containing source-lot pads.",
+    "pad_top_rule": "review_pad_y - 0.025",
+    "body_bottom_rule": "building.y + house.foundation",
+    "foundation_bottom_rule": "building.y",
+    "tolerance_m": 1e-05,
+    "sample_spacing_m": 0.25,
+    "excluded": [
+      "Road overlays",
+      "Landmark display pads",
+      "Foundation projection outside house body",
+      "Live-map ground",
+      "Unsampled points"
+    ],
+    "houses": [
+      {
+        "house": "camo_204696009/H1",
+        "sample_count": 391,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 28.299999999999997,
+        "foundation_bottom_y": 27.4,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999957,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            208.599301,
+            -55.190841
+          ],
+          "terrain_y": 27.42,
+          "pad_y": 27.475,
+          "highest_ground_y": 27.475,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            208.599301,
+            -55.190841
+          ],
+          "terrain_y": 27.42,
+          "pad_y": 27.475,
+          "highest_ground_y": 27.475,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204693578/H1",
+        "sample_count": 385,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 34.1,
+        "foundation_bottom_y": 33.2,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8250000000000028,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999574,
+        "worst_body_sample": {
+          "xz": [
+            178.159472,
+            -28.025782
+          ],
+          "terrain_y": 33.22,
+          "pad_y": 33.275,
+          "highest_ground_y": 33.275,
+          "body_clearance_m": 0.8250000000000028,
+          "foundation_bottom_gap_m": -0.07499999999999574
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            178.159472,
+            -28.025782
+          ],
+          "terrain_y": 33.22,
+          "pad_y": 33.275,
+          "highest_ground_y": 33.275,
+          "body_clearance_m": 0.8250000000000028,
+          "foundation_bottom_gap_m": -0.07499999999999574
+        }
+      },
+      {
+        "house": "camo_204693578/H2",
+        "sample_count": 735,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 34.260000000000005,
+        "foundation_bottom_y": 33.2,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9850000000000065,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999574,
+        "worst_body_sample": {
+          "xz": [
+            184.087506,
+            -32.128148
+          ],
+          "terrain_y": 33.22,
+          "pad_y": 33.275,
+          "highest_ground_y": 33.275,
+          "body_clearance_m": 0.9850000000000065,
+          "foundation_bottom_gap_m": -0.07499999999999574
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            184.087506,
+            -32.128148
+          ],
+          "terrain_y": 33.22,
+          "pad_y": 33.275,
+          "highest_ground_y": 33.275,
+          "body_clearance_m": 0.9850000000000065,
+          "foundation_bottom_gap_m": -0.07499999999999574
+        }
+      },
+      {
+        "house": "camo_204701091/H1",
+        "sample_count": 755,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 31.2,
+        "foundation_bottom_y": 30.3,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999993,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            220.308102,
+            -33.266105
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.8249999999999993,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            220.308102,
+            -33.266105
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.8249999999999993,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "camo_204701091/H2",
+        "sample_count": 646,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 31.36,
+        "foundation_bottom_y": 30.3,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9849999999999994,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            211.518821,
+            -35.952825
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            211.518821,
+            -35.952825
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "camo_204701091/H3",
+        "sample_count": 646,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 31.25,
+        "foundation_bottom_y": 30.3,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.875,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            202.947005,
+            -39.299246
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.875,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            202.947005,
+            -39.299246
+          ],
+          "terrain_y": 30.32,
+          "pad_y": 30.375,
+          "highest_ground_y": 30.375,
+          "body_clearance_m": 0.875,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "camo_204695467/H1",
+        "sample_count": 724,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 17.0,
+        "foundation_bottom_y": 16.1,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999993,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            168.505605,
+            -105.565058
+          ],
+          "terrain_y": 16.12,
+          "pad_y": 16.175,
+          "highest_ground_y": 16.175,
+          "body_clearance_m": 0.8249999999999993,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            168.505605,
+            -105.565058
+          ],
+          "terrain_y": 16.12,
+          "pad_y": 16.175,
+          "highest_ground_y": 16.175,
+          "body_clearance_m": 0.8249999999999993,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "camo_204695467/H2",
+        "sample_count": 725,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 17.16,
+        "foundation_bottom_y": 16.1,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9849999999999994,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            174.769591,
+            -105.14899
+          ],
+          "terrain_y": 16.12,
+          "pad_y": 16.175,
+          "highest_ground_y": 16.175,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            174.769591,
+            -105.14899
+          ],
+          "terrain_y": 16.12,
+          "pad_y": 16.175,
+          "highest_ground_y": 16.175,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "tomo_1355595398/H1",
+        "sample_count": 303,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 13.9,
+        "foundation_bottom_y": 13.0,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8250000000000011,
+        "maximum_foundation_bottom_gap_m": -0.07499999999999929,
+        "worst_body_sample": {
+          "xz": [
+            144.78992,
+            -58.372608
+          ],
+          "terrain_y": 13.02,
+          "pad_y": 13.075,
+          "highest_ground_y": 13.075,
+          "body_clearance_m": 0.8250000000000011,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            144.78992,
+            -58.372608
+          ],
+          "terrain_y": 13.02,
+          "pad_y": 13.075,
+          "highest_ground_y": 13.075,
+          "body_clearance_m": 0.8250000000000011,
+          "foundation_bottom_gap_m": -0.07499999999999929
+        }
+      },
+      {
+        "house": "camo_204697918/H1",
+        "sample_count": 777,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 36.4,
+        "foundation_bottom_y": 35.5,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999957,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            249.362738,
+            -21.406873
+          ],
+          "terrain_y": 35.52,
+          "pad_y": 35.575,
+          "highest_ground_y": 35.575,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            249.362738,
+            -21.406873
+          ],
+          "terrain_y": 35.52,
+          "pad_y": 35.575,
+          "highest_ground_y": 35.575,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204697918/H2",
+        "sample_count": 777,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 36.56,
+        "foundation_bottom_y": 35.5,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9849999999999994,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            239.879869,
+            -20.481915
+          ],
+          "terrain_y": 35.52,
+          "pad_y": 35.575,
+          "highest_ground_y": 35.575,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            239.879869,
+            -20.481915
+          ],
+          "terrain_y": 35.52,
+          "pad_y": 35.575,
+          "highest_ground_y": 35.575,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204695159/H1",
+        "sample_count": 681,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 24.9,
+        "foundation_bottom_y": 24.0,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999957,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            253.812877,
+            -68.257018
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            253.812877,
+            -68.257018
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204695159/H2",
+        "sample_count": 681,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 25.06,
+        "foundation_bottom_y": 24.0,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9849999999999959,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            259.729054,
+            -67.993647
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.9849999999999959,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            259.729054,
+            -67.993647
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.9849999999999959,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204695159/H3",
+        "sample_count": 680,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 24.95,
+        "foundation_bottom_y": 24.0,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8749999999999964,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            265.468296,
+            -66.593968
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.8749999999999964,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            265.468296,
+            -66.593968
+          ],
+          "terrain_y": 24.020000000000003,
+          "pad_y": 24.075000000000003,
+          "highest_ground_y": 24.075000000000003,
+          "body_clearance_m": 0.8749999999999964,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204694937/H1",
+        "sample_count": 586,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 40.5,
+        "foundation_bottom_y": 39.6,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.8249999999999957,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            270.573044,
+            2.157268
+          ],
+          "terrain_y": 39.620000000000005,
+          "pad_y": 39.675000000000004,
+          "highest_ground_y": 39.675000000000004,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            270.573044,
+            2.157268
+          ],
+          "terrain_y": 39.620000000000005,
+          "pad_y": 39.675000000000004,
+          "highest_ground_y": 39.675000000000004,
+          "body_clearance_m": 0.8249999999999957,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      },
+      {
+        "house": "camo_204694937/H2",
+        "sample_count": 586,
+        "missing_terrain_sample_count": 0,
+        "missing_xz": [],
+        "body_bottom_y": 40.660000000000004,
+        "foundation_bottom_y": 39.6,
+        "body_buried_sample_count": 0,
+        "floating_foundation_sample_count": 0,
+        "minimum_body_clearance_m": 0.9849999999999994,
+        "maximum_foundation_bottom_gap_m": -0.07500000000000284,
+        "worst_body_sample": {
+          "xz": [
+            264.836931,
+            0.26508
+          ],
+          "terrain_y": 39.620000000000005,
+          "pad_y": 39.675000000000004,
+          "highest_ground_y": 39.675000000000004,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        },
+        "worst_foundation_sample": {
+          "xz": [
+            264.836931,
+            0.26508
+          ],
+          "terrain_y": 39.620000000000005,
+          "pad_y": 39.675000000000004,
+          "highest_ground_y": 39.675000000000004,
+          "body_clearance_m": 0.9849999999999994,
+          "foundation_bottom_gap_m": -0.07500000000000284
+        }
+      }
+    ],
+    "summary": {
+      "houses": 16,
+      "samples": 10078,
+      "missing_terrain_samples": 0,
+      "body_buried_samples": 0,
+      "floating_foundation_samples": 0,
+      "minimum_body_clearance_m": 0.8249999999999957,
+      "maximum_foundation_bottom_gap_m": -0.07499999999999574
+    }
+  }
+}

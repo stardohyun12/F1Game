@@ -1,0 +1,726 @@
+{
+  "buildings": [
+    {
+      "name": "env_camo_204696009_v02",
+      "tris": 946,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 946,
+          "floors": 2,
+          "width": 4.5,
+          "depth": 4.4,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                0.6375,
+                1.6575,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.575,
+                -0.675,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.3275,
+                1.4275000000000002,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "gate",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204693578_v02",
+      "tris": 1838,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1008,
+          "floors": 2,
+          "width": 5.269968,
+          "depth": 3.7,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                0.8338418400000001,
+                1.85384184,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.767492,
+                -0.8674920000000002,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.4776437600000001,
+                1.5776437600000002,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "gate",
+          "wall": "wall_apricot"
+        },
+        {
+          "key": "H2",
+          "tris": 830,
+          "floors": 1,
+          "width": 5.269968,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "hip",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                -1.71114216,
+                -0.8711421600000002,
+                2.0300000000000002,
+                3.13
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.9011421600000001,
+                1.6811421600000003,
+                2.18,
+                3.18
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "shop",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204701091_v02",
+      "tris": 3448,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1146,
+          "floors": 2,
+          "width": 8.1,
+          "depth": 4.994619,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                1.5555,
+                2.5755,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -2.475,
+                -1.575,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                1.0294999999999999,
+                2.1295,
+                4.140000000000001,
+                6.16
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "balcony",
+          "wall": "wall_cream"
+        },
+        {
+          "key": "H2",
+          "tris": 1288,
+          "floors": 3,
+          "width": 8.1,
+          "depth": 4.194619,
+          "eaves": 0.45,
+          "roof": "cross_gable",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                1.5555,
+                2.5755,
+                2.0100000000000002,
+                3.2100000000000004
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -2.475,
+                -1.575,
+                5.01,
+                6.209999999999999
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                1.0294999999999999,
+                2.1295,
+                5.279999999999999,
+                6.279999999999999
+              ],
+              "shutters": "closed"
+            },
+            {
+              "local_rect": [
+                -0.9059999999999999,
+                -0.066,
+                7.635000000000001,
+                8.785
+              ],
+              "shutters": "open"
+            }
+          ],
+          "treatment": "gate",
+          "wall": "wall_apricot_B"
+        },
+        {
+          "key": "H3",
+          "tris": 1014,
+          "floors": 2,
+          "width": 8.1,
+          "depth": 4.2,
+          "eaves": 0.45,
+          "roof": "hip",
+          "foundation": 0.9500000000000001,
+          "windows": [
+            {
+              "local_rect": [
+                1.5555,
+                2.5755,
+                1.9,
+                3.1
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -2.475,
+                -1.575,
+                4.9,
+                6.1
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                1.0294999999999999,
+                2.1295,
+                5.17,
+                6.17
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "awning",
+          "wall": "wall_mint"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204695467_v02",
+      "tris": 2194,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1118,
+          "floors": 2,
+          "width": 5.17864,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "hip",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                0.8105532,
+                1.8305532,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.7446599999999999,
+                -0.84466,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.4598347999999999,
+                1.5598348,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "shop",
+          "wall": "wall_apricot_B"
+        },
+        {
+          "key": "H2",
+          "tris": 1076,
+          "floors": 2,
+          "width": 5.17864,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "cross_gable",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                0.8105532,
+                1.8305532,
+                2.0100000000000002,
+                3.2100000000000004
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.7446599999999999,
+                -0.84466,
+                5.01,
+                6.209999999999999
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.4598347999999999,
+                1.5598348,
+                4.300000000000001,
+                6.32
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "balcony",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_tomo_1355595398_v02",
+      "tris": 740,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 740,
+          "floors": 1,
+          "width": 4.644244,
+          "depth": 3.323505,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                -1.55783978,
+                -0.71783978,
+                1.8699999999999999,
+                2.9699999999999998
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.74783978,
+                1.5278397799999999,
+                2.02,
+                3.02
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "shop",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204697918_v02",
+      "tris": 2204,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1194,
+          "floors": 2,
+          "width": 8.1,
+          "depth": 5.195582,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                1.5555,
+                2.5755,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -2.475,
+                -1.575,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                1.0294999999999999,
+                2.1295,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "stairs",
+          "wall": "wall_apricot"
+        },
+        {
+          "key": "H2",
+          "tris": 1010,
+          "floors": 2,
+          "width": 8.1,
+          "depth": 5.195582,
+          "eaves": 0.45,
+          "roof": "cross_gable",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                1.5555,
+                2.5755,
+                2.0100000000000002,
+                3.2100000000000004
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -2.475,
+                -1.575,
+                5.01,
+                6.209999999999999
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                1.0294999999999999,
+                2.1295,
+                5.279999999999999,
+                6.279999999999999
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "awning",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204695159_v02",
+      "tris": 3672,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1186,
+          "floors": 2,
+          "width": 4.826256,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "gable",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                0.7206952799999999,
+                1.74069528,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.656564,
+                -0.756564,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.39111991999999995,
+                1.49111992,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "stairs",
+          "wall": "wall_cream"
+        },
+        {
+          "key": "H2",
+          "tris": 1422,
+          "floors": 3,
+          "width": 4.826256,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "hip",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                0.7206952799999999,
+                1.74069528,
+                2.0100000000000002,
+                3.2100000000000004
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.656564,
+                -0.756564,
+                5.01,
+                6.209999999999999
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.39111991999999995,
+                1.49111992,
+                4.300000000000001,
+                6.32
+              ],
+              "shutters": "closed"
+            },
+            {
+              "local_rect": [
+                -0.70957536,
+                0.13042463999999998,
+                7.635000000000001,
+                8.785
+              ],
+              "shutters": "open"
+            }
+          ],
+          "treatment": "balcony",
+          "wall": "wall_apricot_B"
+        },
+        {
+          "key": "H3",
+          "tris": 1064,
+          "floors": 2,
+          "width": 4.826256,
+          "depth": 7.5,
+          "eaves": 0.45,
+          "roof": "cross_gable",
+          "foundation": 0.9500000000000001,
+          "windows": [
+            {
+              "local_rect": [
+                0.7206952799999999,
+                1.74069528,
+                1.9,
+                3.1
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.656564,
+                -0.756564,
+                4.9,
+                6.1
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.39111991999999995,
+                1.49111992,
+                5.17,
+                6.17
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "shop",
+          "wall": "wall_mint"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    },
+    {
+      "name": "env_camo_204694937_v02",
+      "tris": 1732,
+      "budget": 18000,
+      "houses": [
+        {
+          "key": "H1",
+          "tris": 1008,
+          "floors": 2,
+          "width": 4.959416,
+          "depth": 6.244869,
+          "eaves": 0.45,
+          "roof": "hip",
+          "foundation": 0.9,
+          "windows": [
+            {
+              "local_rect": [
+                0.7546510799999999,
+                1.77465108,
+                1.85,
+                3.0500000000000003
+              ],
+              "shutters": "half"
+            },
+            {
+              "local_rect": [
+                -1.689854,
+                -0.7898540000000001,
+                4.8500000000000005,
+                6.05
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.41708612,
+                1.51708612,
+                5.12,
+                6.12
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "gate",
+          "wall": "wall_apricot_B"
+        },
+        {
+          "key": "H2",
+          "tris": 724,
+          "floors": 1,
+          "width": 4.959416,
+          "depth": 6.244869,
+          "eaves": 0.45,
+          "roof": "flat_parapet",
+          "foundation": 1.06,
+          "windows": [
+            {
+              "local_rect": [
+                -1.63505692,
+                -0.7950569200000002,
+                2.0300000000000002,
+                3.13
+              ],
+              "shutters": "open"
+            },
+            {
+              "local_rect": [
+                0.8250569200000001,
+                1.60505692,
+                2.18,
+                3.18
+              ],
+              "shutters": "closed"
+            }
+          ],
+          "treatment": "awning",
+          "wall": "wall_cream"
+        }
+      ],
+      "bottom": 0,
+      "ground_check": "Source reference terrain only; live D-209 map NOT RUN"
+    }
+  ],
+  "total_tris": 16774,
+  "uv_density": "32 px/m analytic; separately checked from exported FBX",
+  "kit_unchanged": true
+}

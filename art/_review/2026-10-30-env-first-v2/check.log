@@ -1,0 +1,165 @@
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          177/177 100.0%
+  uvcollapse UV 붕괴(단색 점 UV) 177/177 100.0%
+  grain      잔결(사진 결)       45/177 25.4%
+  flat       단색 칸 비율        177/177 100.0%
+  palette    팔레트 일치         177/177 100.0%
+  colors     영역 색 수         161/177 91.0%
+  speckle    1px 반점         81/177 45.8%
+  baked      구운 빛 흔적(면 안 기울기) 177/177 100.0%
+  blob       원형 어두운 얼룩      161/177 91.0%
+  satval     채도·명도 폭        154/177 87.0%
+  cyl        원통 면 수         0/0 None%
+  text       글씨 텍셀·획        0/0 None%
+  mirror     거울 UV          0/0 None%
+  alpha      투명/컷아웃         177/177 100.0%
+  mat        재질·임포트         0/0 None%
+  tris       삼각형 수          177/177 100.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    5.3 env_camo_204695159_v02/env_camo_204695159_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.277 (기준 0.027~0.246); 반점 32.39%; 둥근 얼룩 4
+    5.3 env_camo_204697918_v02/env_camo_204697918_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.277 (기준 0.027~0.246); 반점 32.69%; 둥근 얼룩 4
+    5.2 env_camo_204697918_v02/env_camo_204697918_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204701091_v02/env_camo_204701091_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204693578_v02/env_camo_204693578_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204695467_v02/env_camo_204695467_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204695159_v02/env_camo_204695159_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204701091_v02/env_camo_204701091_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+    5.2 env_camo_204701091_v02/env_camo_204701091_v02_H3_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.67%; 둥근 얼룩 1
+    5.2 env_camo_204694937_v02/env_camo_204694937_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+    5.2 env_camo_204695159_v02/env_camo_204695159_v02_H3_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.67%; 둥근 얼룩 1
+    5.2 env_camo_204695467_v02/env_camo_204695467_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+    5.2 env_camo_204694937_v02/env_camo_204694937_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+    5.2 env_camo_204693578_v02/env_camo_204693578_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.76%
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.64%
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 2
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204696009_v02/env_camo_204696009_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 2.59%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_LIFE [wall.png] 잔결 0.017 (기준 0.027~0.246); 반점 5.33%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_BODY [wall.png] 잔결 0.015 (기준 0.027~0.246); 반점 3.14%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.62%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_GLASS [trim.png] 잔결 0.006 (기준 0.027~0.246)
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204693578_v02/env_camo_204693578_v02_H2_ROOF [roof.png] 잔결 0.009 (기준 0.027~0.246); S0.48 V154~166
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.81%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.65%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_LIFE [wall.png] 잔결 0.017 (기준 0.027~0.246); 반점 5.33%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 3.25%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.67%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H2_ROOF [roof.png] 잔결 0.008 (기준 0.027~0.246); S0.48 V154~166
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.21%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.67%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.67%; 둥근 얼룩 1
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_LIFE [roof.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204701091_v02/env_camo_204701091_v02_H3_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 3.43%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_DOOR_SLOT [trim.png] 잔결 0.011 (기준 0.027~0.246)
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.90%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204695467_v02/env_camo_204695467_v02_H2_ROOF [roof.png] 잔결 0.008 (기준 0.027~0.246); S0.48 V154~166
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_BODY [wall.png] 잔결 0.015 (기준 0.027~0.246); 반점 3.10%
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.65%
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 2
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_GLASS [trim.png] 잔결 0.006 (기준 0.027~0.246)
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_tomo_1355595398_v02/env_tomo_1355595398_v02_H1_ROOF [roof.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 2.27%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.65%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.277 (기준 0.027~0.246); 반점 32.69%; 둥근 얼룩 4
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_LIFE [trim.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.47%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_LIFE [wall.png] 잔결 0.017 (기준 0.027~0.246); 반점 5.33%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_LIFE [floor.png] 잔결 0.011 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.75%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.65%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_LIFE [roof.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204697918_v02/env_camo_204697918_v02_H2_ROOF [roof.png] 잔결 0.008 (기준 0.027~0.246); S0.48 V154~166
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.73%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.277 (기준 0.027~0.246); 반점 32.39%; 둥근 얼룩 4
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_LIFE [trim.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.47%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_LIFE [wall.png] 잔결 0.017 (기준 0.027~0.246); 반점 5.33%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_LIFE [floor.png] 잔결 0.011 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 3.43%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H2_ROOF [roof.png] 잔결 0.009 (기준 0.027~0.246); S0.48 V154~166
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_BODY [wall.png] 잔결 0.013 (기준 0.027~0.246); 반점 2.27%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_DOOR_SLOT [trim.png] 잔결 0.011 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.67%; 둥근 얼룩 1
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204695159_v02/env_camo_204695159_v02_H3_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 3.24%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_FOUNDATION [retain_stone.png] 잔결 0.280 (기준 0.027~0.246); 반점 32.59%; 둥근 얼룩 1
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_GLASS [trim.png] 잔결 0.008 (기준 0.027~0.246)
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_LIFE [wall.png] 잔결 0.018 (기준 0.027~0.246); 반점 5.20%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_LIFE [roof.png] 잔결 0.010 (기준 0.027~0.246); S0.59 V154~163
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H1_ROOF [roof.png] 잔결 0.006 (기준 0.027~0.246); S0.59 V151~163
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_BODY [wall.png] 잔결 0.014 (기준 0.027~0.246); 반점 2.96%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_BODY [floor.png] 잔결 0.009 (기준 0.027~0.246); 반점 0.63%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_DOOR_SLOT [trim.png] 잔결 0.010 (기준 0.027~0.246)
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_FOUNDATION [retain_stone.png] 잔결 0.296 (기준 0.027~0.246); 반점 33.52%; 둥근 얼룩 1
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_GLASS [trim.png] 잔결 0.006 (기준 0.027~0.246)
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_LIFE [wall.png] 잔결 0.016 (기준 0.027~0.246); 반점 4.15%
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_LIFE [roof.png] 잔결 0.009 (기준 0.027~0.246)
+  위반 grain      env_camo_204694937_v02/env_camo_204694937_v02_H2_ROOF [roof.png] 잔결 0.009 (기준 0.027~0.246)
+GATE FAIL (132 위반)
