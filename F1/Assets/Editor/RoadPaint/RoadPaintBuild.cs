@@ -8,7 +8,7 @@ using UnityEngine;
 //  deleted = 지운 원본 길 id — 빌더가 안 깔고 옛 길도 끈다
 //  파일이 없으면 빌더는 예전과 똑같이 돈다.
 [System.Serializable] public class RoadPaintHand { public string id, kind; public float w; public bool walk; public float[] k; public int[] m; public float[] p; }
-[System.Serializable] public class RoadPaintFile { public string note = "D-215 길 그리기 — PitCrew/길 그리기 가 쓴다. 손으로 고치지 말 것"; public List<RoadPaintHand> roads = new List<RoadPaintHand>(); public List<string> deleted = new List<string>(); }
+[System.Serializable] public class RoadPaintFile { public string note = "D-215 길 그리기 — PitCrew/길 그리기 가 쓴다. 손으로 고치지 말 것"; public List<RoadPaintHand> roads = new List<RoadPaintHand>(); public List<string> deleted = new List<string>(); public List<string> noProps = new List<string>(); }   // noProps = 소품 끈 길 id(2300, RoadsideBuild)
 
 public static class RoadPaintData
 {
@@ -18,11 +18,11 @@ public static class RoadPaintData
     {
         if (!System.IO.File.Exists(FilePath)) return null;
         var f = JsonUtility.FromJson<RoadPaintFile>(System.IO.File.ReadAllText(FilePath, Encoding.UTF8));
-        if (f == null) return null; f.roads ??= new List<RoadPaintHand>(); f.deleted ??= new List<string>(); return f;
+        if (f == null) return null; f.roads ??= new List<RoadPaintHand>(); f.deleted ??= new List<string>(); f.noProps ??= new List<string>(); return f;
     }
     public static void Save(RoadPaintFile f)
     {
-        if (f.roads.Count == 0 && f.deleted.Count == 0) { if (System.IO.File.Exists(FilePath)) System.IO.File.Delete(FilePath); return; }
+        if (f.roads.Count == 0 && f.deleted.Count == 0 && (f.noProps == null || f.noProps.Count == 0)) { if (System.IO.File.Exists(FilePath)) System.IO.File.Delete(FilePath); return; }
         System.IO.File.WriteAllText(FilePath, JsonUtility.ToJson(f, true), new UTF8Encoding(false));
     }
     public static List<Vector3> Pts(RoadPaintHand h) { var r = new List<Vector3>(); if (h.p != null) for (int i = 0; i + 2 < h.p.Length; i += 3) r.Add(new Vector3(h.p[i], h.p[i + 1], h.p[i + 2])); return r; }

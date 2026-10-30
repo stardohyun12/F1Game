@@ -24,6 +24,7 @@ public static class RoadPaintMode
     static GameObject root, groundGo; static MeshCollider ground;
     static readonly Dictionary<string, Orig> orig = new Dictionary<string, Orig>();
     static HashSet<string> prevDeleted = new HashSet<string>();
+    static HashSet<string> noProps = new HashSet<string>();   // 2300: 소품 끈 길 id → roads-hand.json noProps
     static HashSet<int> foreign = new HashSet<int>();   // 켜기 전부터 씬에 있던 스플라인(남의 것) — 입양 안 함
     static readonly Dictionary<SplineContainer, Cache> cache = new Dictionary<SplineContainer, Cache>();
     static string lastMsg = "";
@@ -81,7 +82,7 @@ public static class RoadPaintMode
     static void Load()
     {
         var hand = RoadPaintData.Load(); var hBy = new Dictionary<string, RoadPaintHand>(); if (hand != null) foreach (var h in hand.roads) hBy[h.id] = h;
-        prevDeleted = new HashSet<string>(hand?.deleted ?? new List<string>()); orig.Clear();
+        prevDeleted = new HashSet<string>(hand?.deleted ?? new List<string>()); noProps = new HashSet<string>(hand?.noProps ?? new List<string>()); orig.Clear();
         foreach (var s in BuildBayLoop.RoadPaintSources())
         {
             if (orig.ContainsKey(s.id)) continue;
@@ -143,6 +144,7 @@ public static class RoadPaintMode
             f.roads.Add(new RoadPaintHand { id = id, kind = kind, w = w, walk = RoadPaintData.IsWalk(kind), k = k.ToArray(), m = m.ToArray(), p = p });
         }
         foreach (var id in orig.Keys.Concat(prevDeleted).Distinct()) if (!present.Contains(id)) f.deleted.Add(id);
+        f.noProps = noProps.Where(present.Contains).OrderBy(x => x, System.StringComparer.Ordinal).ToList();
         RoadPaintData.Save(f);
         lastMsg = $"저장: 바뀐 길 {f.roads.Count} · 지운 길 {f.deleted.Count}";
     }
@@ -353,7 +355,7 @@ public static class RoadPaintMode
     {
         Parse(c.name, out var kind, out var w, out var id);
         Handles.BeginGUI();
-        float bw = 96, W = bw * 5 + 20; var r = new Rect((sv.position.width - W) / 2, sv.position.height - 78, W, 54);
+        float bw = 96, W = bw * 6 + 26; var r = new Rect((sv.position.width - W) / 2, sv.position.height - 78, W, 54);
         EditorGUI.DrawRect(r, new Color(0, 0, 0, .75f));
         GUI.Label(new Rect(r.x + 8, r.y + 2, W - 16, 18), $"{id}  ·  {kind} {w:0.##} m  ·  {Get(c).pts.Length - 1} m", EditorStyles.whiteLabel);
         for (int i = 0; i < Kinds.Length; i++)
@@ -364,6 +366,13 @@ public static class RoadPaintMode
         }
         GUI.color = new Color(1f, .6f, .6f);
         if (GUI.Button(new Rect(r.x + 8 + 4 * (bw + 2) + 6, r.y + 24, bw - 6, 24), "이 길 지우기")) { Selection.activeObject = null; Undo.DestroyObjectImmediate(c.gameObject); SceneView.RepaintAll(); }
+        // 2300: 이 길 소품 끄기/켜기 — 저장하고 길가 소품만 바로 다시(길·지형 재빌드 없음, 몇 초)
+        bool off = noProps.Contains(id); GUI.color = off ? new Color(1f, .85f, .4f) : Color.white;
+        if (GUI.Button(new Rect(r.x + 8 + 5 * (bw + 2) + 6, r.y + 24, bw, 24), off ? "소품 켜기" : "소품 끄기"))
+        {
+            if (off) noProps.Remove(id); else noProps.Add(id);
+            EditorApplication.delayCall += () => { SaveJson(); lastMsg = RoadsideBuild.Run(true); SceneView.RepaintAll(); };
+        }
         GUI.color = Color.white;
         Handles.EndGUI();
     }
@@ -373,17 +382,19 @@ public static class RoadPaintMode
     {
         if (root == null) return "길 그리기 꺼짐";
         SaveJson();
-        var sw = System.Diagnostics.Stopwatch.StartNew(); string a, b;
+        var sw = System.Diagnostics.Stopwatch.StartNew(); string a, b, rs;
         try
         {
             EditorUtility.DisplayProgressBar("길 적용", "길·지형 다시 깔기 (약 2분)…", .3f);
             a = BuildBayLoop.RoadNetV2BuildAll(); var t1 = sw.Elapsed.TotalSeconds;
             EditorUtility.DisplayProgressBar("길 적용", "집 블록 계단 땅·벽…", .85f);
-            b = TerraceBlock.Build(TerraceBlock.HouseCenter, 60);
-            lastMsg = $"적용 끝 {sw.Elapsed.TotalSeconds:F0}s (길 {t1:F0}s)";
+            b = TerraceBlock.Build(TerraceBlock.HouseCenter, 60); var t2 = sw.Elapsed.TotalSeconds;
+            EditorUtility.DisplayProgressBar("길 적용", "길가 소품(바뀐 길만)…", .95f);
+            rs = RoadsideBuild.Run(true);
+            lastMsg = $"적용 끝 {sw.Elapsed.TotalSeconds:F0}s (길 {t1:F0}s · 집 블록 {t2 - t1:F0}s · 소품 {sw.Elapsed.TotalSeconds - t2:F0}s)";
         }
         finally { EditorUtility.ClearProgressBar(); }
-        var log = lastMsg + "\n" + a + "\n" + b;
+        var log = lastMsg + "\n" + a + "\n" + b + "\n" + rs;
         System.IO.File.WriteAllText(System.IO.Path.GetFullPath(Application.dataPath + "/../../docs/qa/tmp/roadpaint_last.txt"), log);
         Debug.Log("[RoadPaint] " + log); cache.Clear(); SceneView.RepaintAll();
         return log;

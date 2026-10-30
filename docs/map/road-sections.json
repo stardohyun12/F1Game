@@ -1,0 +1,88 @@
+{
+  "note": "D-216 길 단면 슬롯 표 — RoadsideBuild(PitCrew/길가 소품 다시 깔기, 길 그리기 Enter) 가 읽는다. 수치만 고치면 다음 적용에 반영. 결정적: 같은 표·같은 길 = 같은 결과(seed 고정). 연석·보도·축대는 TerraceBlock 몫(by) — 여기선 안 만들고 그 위에 얹는다. 볼라드 없음(D-138).",
+  "version": 1,
+  "seed": 216,
+  "centers": [185, -61, 234, -54],
+  "radius": 120,
+  "ridgeCore": ["house_home", "D198_garage", "D198_depot", "D198_postoffice"],
+  "ridgeRadius": 28,
+  "zones": [
+    { "id": "tomo",  "mult": 1.9,  "flower": 1.0, "why": "art-1321 소품/100m 7.35 ÷ camo 3.86" },
+    { "id": "camo",  "mult": 1.0,  "flower": 1.0, "why": "기준 3.86/100m" },
+    { "id": "posi",  "mult": 0.66, "flower": 2.0, "why": "2.54/100m, 꽃 위주(D-205 2)" },
+    { "id": "ridge", "mult": 0.4,  "flower": 1.0, "why": "1.52/100m, 능선 성김" },
+    { "id": "outer", "mult": 0.2,  "flower": 1.0, "why": "0.72/100m, 바깥·연결" }
+  ],
+  "avoid": {
+    "junction": 2.0, "walkMouth": 2.0, "door": 1.8, "between": 0.25, "roadClear": 0.12,
+    "maxGap": 0.03, "maxTilt": 8.0, "reach": 4.0, "dropH": 1.0,
+    "sightMain": 14.0, "sightVillage": 10.0, "sightAlley": 6.0, "tallH": 0.9,
+    "search": 1.5
+  },
+  "prefabs": [
+    { "id": "lamp",      "path": "Assets/Art/LofiPilot/StreetLamp.prefab",            "kind": "pole",  "footW": 0.32, "footD": 0.32, "h": 3.17 },
+    { "id": "walllamp",  "path": "Assets/Art/LofiPilot/WallLamp.prefab",              "kind": "mount", "footW": 0.26, "footD": 0.34, "h": 0.23 },
+    { "id": "planter",   "path": "Assets/Art/LofiPilot/Planter.prefab",               "kind": "box",   "footW": 0.96, "footD": 0.36, "h": 0.62 },
+    { "id": "pots",      "path": "Assets/Art/LofiPilot/Pots.prefab",                  "kind": "box",   "footW": 0.99, "footD": 0.34, "h": 0.58 },
+    { "id": "bench",     "path": "Assets/Art/LofiPilot/Bench.prefab",                 "kind": "box",   "footW": 1.40, "footD": 0.43, "h": 0.85 },
+    { "id": "bench2",    "path": "Assets/Art/StreetFurniture/Bench.prefab",           "kind": "box",   "footW": 1.80, "footD": 0.61, "h": 0.88 },
+    { "id": "bin",       "path": "Assets/Art/StreetFurniture/Bin.prefab",             "kind": "box",   "footW": 0.50, "footD": 0.47, "h": 0.95 },
+    { "id": "planterrow","path": "Assets/Art/BayLoop/Props/planter_row.prefab",       "kind": "box",   "footW": 1.56, "footD": 0.60, "h": 0.78 },
+    { "id": "sign1",     "path": "Assets/Art/BayLoop/Props/street_sign_01.prefab",    "kind": "pole",  "footW": 0.20, "footD": 0.20, "h": 2.52 },
+    { "id": "sign2",     "path": "Assets/Art/BayLoop/Props/street_sign_02.prefab",    "kind": "pole",  "footW": 0.20, "footD": 0.20, "h": 2.40 },
+    { "id": "sign3",     "path": "Assets/Art/BayLoop/Props/street_sign_03.prefab",    "kind": "pole",  "footW": 0.20, "footD": 0.22, "h": 2.52 },
+    { "id": "plateA",    "path": "Assets/Art/BayLoop/Props/small_signs_a.prefab",     "kind": "panel", "footW": 0.78, "footD": 0.10, "h": 0.40 },
+    { "id": "plateC",    "path": "Assets/Art/BayLoop/Props/small_signs_c.prefab",     "kind": "panel", "footW": 1.10, "footD": 0.10, "h": 0.50 },
+    { "id": "mirror",    "path": "Assets/Art/BayLoop/Props/traffic_mirror_01.prefab", "kind": "pole",  "footW": 0.20, "footD": 0.20, "h": 2.45 },
+    { "id": "lowwall",   "path": "Assets/Art/LofiPilot/Wall3m.prefab",                "kind": "box",   "footW": 3.10, "footD": 0.40, "h": 1.37 }
+  ],
+  "sections": [
+    {
+      "id": "main", "label": "큰길", "kinds": ["main"], "minW": 0, "maxW": 99, "walk": false,
+      "slots": [ { "name": "차로", "w": -1, "by": "RoadNetV2" }, { "name": "연석", "w": 0.15, "by": "TerraceBlock" }, { "name": "보도", "w": 1.8, "by": "TerraceBlock" }, { "name": "소품 줄", "w": 0.8, "by": "" }, { "name": "담·울", "w": 0.4, "by": "" } ],
+      "rules": [
+        { "id": "lamp",    "prefabs": ["lamp"],                "at": "curb", "spacing": 25, "jitter": 0.12, "prob": 1.0,  "sides": "stagger", "decor": false, "flower": false, "approach": 0, "mountH": 0 },
+        { "id": "sign",    "prefabs": ["sign1", "sign2", "sign3"], "at": "curb", "spacing": 0, "jitter": 0, "prob": 1.0, "sides": "approachRight", "decor": false, "flower": false, "approach": 9, "mountH": 0 },
+        { "id": "planter", "prefabs": ["planterrow", "planter"], "at": "row", "spacing": 20, "jitter": 0.3, "prob": 0.6, "sides": "both",  "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "bench",   "prefabs": ["bench", "bench2"],     "at": "row",  "spacing": 70, "jitter": 0.2,  "prob": 0.6,  "sides": "left",    "decor": true,  "flower": false, "approach": 0, "mountH": 0 },
+        { "id": "bin",     "prefabs": ["bin"],                 "at": "row",  "spacing": 70, "jitter": 0.2,  "prob": 0.5,  "sides": "right",   "decor": true,  "flower": false, "approach": 0, "mountH": 0 },
+        { "id": "walllamp","prefabs": ["walllamp"],            "at": "wall", "spacing": 16, "jitter": 0.15, "prob": 0.8,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 2.2 },
+        { "id": "lowwall", "prefabs": ["lowwall"],             "at": "drop", "spacing": 3.15,"jitter": 0,   "prob": 1.0,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 0 }
+      ]
+    },
+    {
+      "id": "village", "label": "마을길", "kinds": ["village", "shortcut"], "minW": 4, "maxW": 99, "walk": false,
+      "slots": [ { "name": "차로", "w": -1, "by": "RoadNetV2" }, { "name": "연석", "w": 0.15, "by": "TerraceBlock" }, { "name": "보도", "w": 1.5, "by": "TerraceBlock" }, { "name": "소품 줄", "w": 0.7, "by": "" }, { "name": "담·울", "w": 0.4, "by": "" } ],
+      "rules": [
+        { "id": "lamp",    "prefabs": ["lamp"],                "at": "curb", "spacing": 32, "jitter": 0.12, "prob": 0.9,  "sides": "left",    "decor": false, "flower": false, "approach": 0, "mountH": 0 },
+        { "id": "sign",    "prefabs": ["sign1", "sign2", "sign3"], "at": "curb", "spacing": 0, "jitter": 0, "prob": 0.7, "sides": "approachRight", "decor": false, "flower": false, "approach": 9, "mountH": 0 },
+        { "id": "mirror",  "prefabs": ["mirror"],              "at": "curb", "spacing": 0,  "jitter": 0,    "prob": 0.6,  "sides": "approachLeft", "decor": false, "flower": false, "approach": 4, "mountH": 0 },
+        { "id": "planter", "prefabs": ["planter", "pots"],     "at": "row",  "spacing": 12, "jitter": 0.35, "prob": 0.55, "sides": "both",    "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "pots",    "prefabs": ["pots"],                "at": "row",  "spacing": 9,  "jitter": 0.4,  "prob": 0.45, "sides": "both",    "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "walllamp","prefabs": ["walllamp"],            "at": "wall", "spacing": 14, "jitter": 0.15, "prob": 0.75, "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 2.2 },
+        { "id": "plate",   "prefabs": ["plateA", "plateC"],    "at": "wall", "spacing": 45, "jitter": 0.3,  "prob": 0.35, "sides": "both",    "decor": true,  "flower": false, "approach": 0, "mountH": 1.5 },
+        { "id": "lowwall", "prefabs": ["lowwall"],             "at": "drop", "spacing": 3.15,"jitter": 0,   "prob": 1.0,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 0 }
+      ]
+    },
+    {
+      "id": "lane", "label": "골목", "kinds": ["village", "shortcut"], "minW": 0, "maxW": 4, "walk": false,
+      "slots": [ { "name": "차로", "w": -1, "by": "RoadNetV2" }, { "name": "연석", "w": 0, "by": "" }, { "name": "보도", "w": 0, "by": "" }, { "name": "소품 줄", "w": 0.5, "by": "" }, { "name": "담·울", "w": 0.4, "by": "" } ],
+      "rules": [
+        { "id": "mirror",  "prefabs": ["mirror"],              "at": "curb", "spacing": 0,  "jitter": 0,    "prob": 0.8,  "sides": "approachLeft", "decor": false, "flower": false, "approach": 3, "mountH": 0 },
+        { "id": "pots",    "prefabs": ["pots"],                "at": "row",  "spacing": 6,  "jitter": 0.4,  "prob": 0.6,  "sides": "both",    "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "planter", "prefabs": ["planter"],             "at": "row",  "spacing": 10, "jitter": 0.3,  "prob": 0.3,  "sides": "both",    "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "walllamp","prefabs": ["walllamp"],            "at": "wall", "spacing": 12, "jitter": 0.15, "prob": 0.8,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 2.1 },
+        { "id": "lowwall", "prefabs": ["lowwall"],             "at": "drop", "spacing": 3.15,"jitter": 0,   "prob": 1.0,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 0 }
+      ]
+    },
+    {
+      "id": "walk", "label": "보도·계단", "kinds": ["alley", "stairs"], "minW": 0, "maxW": 99, "walk": true,
+      "slots": [ { "name": "차로", "w": -1, "by": "RoadNetV2(걷는 길)" }, { "name": "연석", "w": 0, "by": "" }, { "name": "보도", "w": 0, "by": "" }, { "name": "소품 줄", "w": 0.5, "by": "" }, { "name": "담·울", "w": 0, "by": "" } ],
+      "rules": [
+        { "id": "mouth",   "prefabs": ["pots", "planter"],     "at": "row",  "spacing": 0,  "jitter": 0,    "prob": 0.7,  "sides": "ends",    "decor": false, "flower": true,  "approach": 2.6, "mountH": 0 },
+        { "id": "pots",    "prefabs": ["pots"],                "at": "row",  "spacing": 8,  "jitter": 0.4,  "prob": 0.45, "sides": "both",    "decor": true,  "flower": true,  "approach": 0, "mountH": 0 },
+        { "id": "walllamp","prefabs": ["walllamp"],            "at": "wall", "spacing": 10, "jitter": 0.15, "prob": 0.6,  "sides": "both",    "decor": false, "flower": false, "approach": 0, "mountH": 2.1 }
+      ]
+    }
+  ]
+}
