@@ -4,7 +4,7 @@
 # 사용: powershell -NoProfile -File scripts/open-editor.ps1   (이미 떠 있으면 아무것도 안 한다)
 $exe  = 'C:\Program Files\Unity\Hub\Editor\6000.3.19f1\Editor\Unity.exe'
 $proj = 'D:\Github\F1Game\F1'
-$running = Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" | Where-Object { $_.CommandLine -match 'projectPath' -and $_.CommandLine -match 'F1Game' }
+$running = Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" | Where-Object { $_.CommandLine -match 'projectPath' -and $_.CommandLine -match 'F1Game' -and $_.CommandLine -notmatch 'F1Game_shot' }
 if ($running) { "already running: PID $($running.ProcessId -join ',')"; exit 0 }
 $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "`"$exe`" -projectPath `"$proj`"" }
 if ($r.ReturnValue -ne 0) { "WMI create failed: $($r.ReturnValue)"; exit 1 }
