@@ -125,6 +125,9 @@ if [ "$(md5sum "$REPORT" | cut -c1-32)" = "$REPORT_MD5" ]; then
   echo "FAILED-NOREPORT: $REPORT 뼈대 그대로 (턴 한도 추정)"
   { echo; echo "## 하네스 자동 기록 (팀원이 보고서를 못 씀)"; echo '```'; awk '/===== 새 과제/{n=NR} {a[NR]=$0} END{for(k=n;k<=NR;k++) print a[k]}' "$LIVE" | grep -a -e "💬" -e "끝:" -e "🔧" | tail -8 | cut -c1-300; echo '```'; echo "변경 파일:"; git status --short | grep -v '^??' | head -20; } >> "$REPORT"
 fi
+# 하네스(10/30): 과제 글에 도현 코멘트 id 가 있으면 끝난 뒤 자동으로 fixed 판정(재촬영+판정자 둘) — 잠금은 아직 이 과제 것
+SUM=$(tail -1 "$LIVE" 2>/dev/null | sed 's/^.*| //' | cut -c1-80)
+bash scripts/fb_autofix.sh "$TASK" "$ROLE $STAMP 과제 결과 — 보고서 docs/team/reports/$ROLE-$STAMP.md" 2>&1 | tee -a "$REPORT"
 # 하네스(10/30): 에디터 과제가 컴파일을 깨뜨린 채 끝나면 크게 알린다(본 에디터·도현 작업이 막힘)
 if [ "$HOLD_LOCK" = 1 ] || [ "$ROLE" = "artlive" ]; then
   CF=$(timeout 20 bash scripts/ucli-http.sh exec 'return UnityEditor.EditorUtility.scriptCompilationFailed ? "BROKEN" : "OK";' 2>/dev/null | tail -1 | tr -d '\r')

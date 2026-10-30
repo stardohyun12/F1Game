@@ -36,7 +36,11 @@ def probe(d, radius, dry):
     if not p or (d.get("space") or "unity-world") != "unity-world":
         raise RuntimeError("world 좌표(point, space=unity-world) 없음")
     name, dy = (dry.split("=", 1) + ["0"])[:2] if dry else ("", "0")
-    cs = open(os.path.join(ROOT, "scripts", "fb_geom.cs.txt"), encoding="utf-8").read()
+    # This studio probe validates the house floor only; do not apply it to other comments.
+    sensor = "tools/art/bin/floor_8a68_geom.cs" if d.get("id") == "unity-Studio_Building-20261030-123455-8a68" else "scripts/fb_geom.cs.txt"
+    if dry and sensor.endswith("floor_8a68_geom.cs"):
+        raise RuntimeError("Studio floor sensor does not support --dry-offset; use its duplicate/missing-floor controls")
+    cs = open(os.path.join(ROOT, sensor), encoding="utf-8").read()
     for k, v in {"__PX__": p[0], "__PY__": p[1], "__PZ__": p[2], "__RAD__": radius, "__SCENE__": d.get("scene") or "",
                  "__DRYNAME__": name, "__DRYDY__": float(dy)}.items():
         cs = cs.replace(k, str(v))
@@ -73,6 +77,11 @@ def ucli_exec(proj, code):
 
 
 def judge(rows):
+    if any(r[0] == "F" for r in rows):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("studio_floor_geom", os.path.join(ROOT, "tools/art/bin/floor_8a68_geom.py"))
+        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+        return module.judge(rows)
     items, B = [], {}
     for r in rows:
         if r[0] == "B":
@@ -127,8 +136,13 @@ def run(cid, radius=25.0, dry=None):
            "pass": all(i["problem"] is None for i in items), "items": items}
     os.makedirs(os.path.join(FB, "geom"), exist_ok=True)
     out = os.path.join(FB, "geom", d["id"] + (".dry" if dry else "") + ".json")
-    with open(out, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(res, fh, ensure_ascii=False, indent=1)
+    for k in range(20):   # Windows 파일 잠금 OSError 재시도(10/30)
+        try:
+            with open(out, "w", encoding="utf-8", newline="\n") as fh:
+                json.dump(res, fh, ensure_ascii=False, indent=1)
+            break
+        except OSError:
+            import time; time.sleep(0.5)
     return res["pass"], items, out
 
 

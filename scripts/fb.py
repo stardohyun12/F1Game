@@ -65,10 +65,16 @@ def mutate(cid, edit):
                 hit = True
         if hit:
             tmp = path + ".tmp"
-            with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
-                fh.write("".join(dump(d) + "\n" for d in rows))
-            os.replace(tmp, path)
-            return path
+            data = "".join(dump(d) + "\n" for d in rows)
+            for k in range(20):   # Unity 기획 창이 2초마다 읽어서 Windows 에서 OSError 22/13 가 가끔 남(10/30) → 재시도
+                try:
+                    with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
+                        fh.write(data)
+                    os.replace(tmp, path)
+                    return path
+                except OSError:
+                    import time; time.sleep(0.5)
+            sys.exit("쓰기 실패(파일 잠김): " + path)
     sys.exit("id 없음: " + cid)
 
 
