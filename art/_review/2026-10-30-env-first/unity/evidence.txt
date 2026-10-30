@@ -1,0 +1,16 @@
+env_camo_204696009_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 25.79..26.64 (spread 0.84) manifest y 27.5
+env_camo_204693578_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 31.06..31.06 (spread 0.00) manifest y 33.3
+env_camo_204701091_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 27.83..27.83 (spread 0.00) manifest y 30.4
+env_camo_204695467_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 14.74..16.04 (spread 1.29) manifest y 16.2
+env_tomo_1355595398_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 14.91..15.27 (spread 0.36) manifest y 13.1
+env_camo_204697918_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 34.20..35.86 (spread 1.67) manifest y 35.6
+env_camo_204695159_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 20.02..24.60 (spread 4.58) manifest y 24.1
+env_camo_204694937_v01 signs (-1.00, 1.00) footprintRMS 0.000 ground 37.45..39.75 (spread 2.30) manifest y 39.7
+OSM Walls_0 삼각형 17800 → 제거 80
+OSM Roofs_0 삼각형 6683 → 제거 26
+A7Shade=RGBA(0.419, 0.505, 0.536, 1.000) _A7T=(0.30, 0.02, 0.00, 0.00) _A7Mid=0.6 aShadeObj=True
+cart_home_1 pos=(200.0, 22.5, -79.0) tgt=(212.0, 30.6, -57.0) fov 64 1280x720
+cart_home_2 pos=(185.0, 29.8, -52.0) tgt=(184.0, 36.1, -28.0) fov 64 1280x720
+cart_route_1 pos=(235.0, 26.5, -76.0) tgt=(263.0, 27.2, -73.5) fov 64 1280x720
+cart_route_2 pos=(268.0, 27.7, -50.0) tgt=(252.0, 38.8, -20.0) fov 64 1280x720
+cleanup remaining=0 dirty=False
