@@ -74,6 +74,13 @@ def mutate(cid, edit):
                     return path
                 except OSError:
                     import time; time.sleep(0.5)
+                    if k >= 10:   # os.replace 가 계속 막히면(Unity 가 읽기 핸들 보유) 제자리 덮어쓰기(10/30)
+                        try:
+                            with open(path, "r+", encoding="utf-8", newline="\n") as fh:
+                                fh.seek(0); fh.write(data); fh.truncate()
+                            return path
+                        except OSError:
+                            pass
             sys.exit("쓰기 실패(파일 잠김): " + path)
     sys.exit("id 없음: " + cid)
 
