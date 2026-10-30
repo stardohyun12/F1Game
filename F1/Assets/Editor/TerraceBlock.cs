@@ -33,6 +33,11 @@ public static class TerraceBlock
     //   돌 = B 방식 한 장 20×4 m(벽 길이 × 밑동부터 높이, 32 px/m, Point — 집과 같은 필터) · 갓돌 = 이어진 띠(가장 밝은 돌보다 한 단 밝게)
     //   벽 밑동·계단 옆 풀 덤불 · 계단 챌판 = 디딤보다 어두운 재질
     const float SlopeMax=.6f,WallMinB=.45f,StoneBU=20f,StoneBV=4f;const bool PlaceGarden=false;static bool TwoStairs=false;
+    // 8차(D-214 「밭은 괜찮은듯」): 아트 field_patch 프리팹을 밭 칸에 인스턴스로 꽂는다(빌드마다 다시 꽂음). 회전 = 집과 같음 → 울 입구(프리팹 +z)가 앞문과 같은 쪽.
+    //   프리팹 겉 상자 6.03×5.57 m, 원점 = 밭 가운데(겉 상자 z 중심 +0.019) · 입구 = 문기둥 두 개 사이 프리팹 (0.41, 2.59) · 흙판 앞 끝 z 2.60.
+    //   흙길: 앞문 → 집 앞을 따라 → 입구 0.9 m 앞에서 곧게 -z → 흙판 앞 끝(문기둥 사이를 직각으로 지남)
+    const bool PlaceField=true;const string FieldPrefab="Assets/Art/Library/Buildings/field_patch/field_patch.prefab";
+    const float FieldBoxZ=.019f,FieldGateX=.41f,FieldSoilZ=2.60f,FieldLead=.9f;
     const string StoneTexB=Folder+"TV6_RetainStoneB.png",CapBMat=Folder+"TV6_RetainCapB.mat",RiserMat=Folder+"TV6_StairRiser.mat",TuftAsset=Folder+"Mesh_TerraceBlock_tufts.asset";
     static readonly Color CapB=new Color(.6392f,.5765f,.4706f);
     // 6차(D-213 「차고지로도 자연스럽게 걸어갈 수 있도록」): 큰길 북쪽 보도 → 곧은 돌계단(x≈214.5) → 차고 남쪽 벽 따라 포장 골목(차고 바닥 높이) → 차고 앞 마당 남쪽 가장자리.
@@ -159,7 +164,11 @@ public static class TerraceBlock
         var yardPoly=new List<Vector2>{HL(GX0-.8f,GZ0-.8f),HL(yx0,GZ0-.8f),HL(yx0,yz0),HL(yx1,yz0),HL(yx1,yz1),HL(yx0,yz1),HL(yx0,GZ1+3.2f),HL(GX0-.8f,GZ1+3.2f)};
         // 흙길 한 줄: 앞문(문 앞 바닥 끝) → 집 동쪽 모퉁이를 돌아 → 텃밭 서쪽 말뚝 틈. 집 프리팹엔 옆문·뒷문이 없어(DOOR_01 하나) 앞문에서 나간다.
         Vector2 ps=HL(-.7f,hz1+.6f),pmid=HL(GX1+.6f,hz1+.9f),pe=HL(GX1+.25f,GateZ);
-        var pathLine=new List<Vector2>();for(int k=0;k<=16;k++){float t=k/16f;pathLine.Add((1-t)*(1-t)*ps+2*(1-t)*t*pmid+t*t*pe);}
+        // 8차: 밭 프리팹 자리(집 뿌리 좌표) = 칸 가운데, 겉 상자 z 중심을 칸 가운데에 맞춤. 흙길 끝 = 입구 흙판 앞 끝, 그 0.9 m 앞까지 곧게.
+        float fcx=(GX0+GX1)*.5f,fcz=(GZ0+GZ1)*.5f-FieldBoxZ,fgx=fcx+FieldGateX,fgz=fcz+FieldSoilZ;Vector2 pq=pe;
+        if(PlaceField){pmid=HL(fgx,hz1+.9f);pq=HL(fgx,fgz+FieldLead);pe=HL(fgx,fgz);}
+        var pathLine=new List<Vector2>();for(int k=0;k<=16;k++){float t=k/16f;pathLine.Add((1-t)*(1-t)*ps+2*(1-t)*t*pmid+t*t*pq);}
+        if(PlaceField)pathLine.Add(pe);
         // OSM 건물(합친 벽 메시를 1 m 칸으로 묶어 덩어리별 최소 넓이 사각형)
         var wallsT=top.Find("Buildings/Walls_0");int osmIn=0;
         if(wallsT)
@@ -758,6 +767,18 @@ public static class TerraceBlock
             rs.centerline=new Vector3[nc];for(int k=0;k<nc;k++){float s=Lt*k/(nc-1);var p=PolyAt(driveC,s);float t=s/Lt*(driveC.Count-1);int a=Mathf.Min(Mathf.FloorToInt(t),driveC.Count-2);rs.centerline[k]=W3(p,Mathf.Lerp(driveY[a],driveY[a+1],t-a));}
         }
         var tuftGo=new GameObject("GrassTufts");tuftGo.transform.SetParent(root.transform,false);tuftGo.AddComponent<MeshFilter>().sharedMesh=AssetDatabase.LoadAssetAtPath<Mesh>(TuftAsset);tuftGo.AddComponent<MeshRenderer>().sharedMaterials=tuftMats;
+        // 8차: 밭 프리팹 인스턴스(풀지 않음). 높이 = 새 지형 레이(가운데) · 네 모서리 레이와의 차를 기록
+        string fieldNote="null";
+        if(PlaceField)
+        {
+            var fpf=AssetDatabase.LoadAssetAtPath<GameObject>(FieldPrefab);if(!fpf)throw new Exception("field_patch 프리팹 없음: "+FieldPrefab);
+            float RayY(Vector2 p){if(tmc&&tmc.Raycast(new Ray(new Vector3(p.x,500,p.y),Vector3.down),out var fh,1000))return fh.point.y;return g.Sample(F,p.x,p.y);}
+            var fc=HL(fcx,fcz);float fy=RayY(fc);
+            var fgo=(GameObject)PrefabUtility.InstantiatePrefab(fpf,terr.gameObject.scene);fgo.name="FieldPatch";fgo.transform.SetParent(root.transform,true);
+            fgo.transform.SetPositionAndRotation(new Vector3(fc.x,fy,fc.y),Quaternion.Euler(0,hyaw,0));
+            var dc=new List<string>();foreach(var (fkx,fkz) in new[]{(-3.016f,-2.766f),(3.016f,-2.766f),(-3.016f,2.804f),(3.016f,2.804f)}){var fkw=fgo.transform.TransformPoint(new Vector3(fkx,0,fkz));dc.Add((RayY(new Vector2(fkw.x,fkw.z))-fy).ToString("F3"));}
+            fieldNote="{\"pos\":["+fc.x.ToString("F3")+","+fy.ToString("F3")+","+fc.y.ToString("F3")+"],\"yaw\":"+hyaw.ToString("F1")+",\"cornerDy\":["+string.Join(",",dc)+"],\"gate\":["+pe.x.ToString("F2")+","+pe.y.ToString("F2")+"]}";
+        }
         var scene=terr.gameObject.scene;EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
 
         // --- 기록(JSON) ---
@@ -770,7 +791,7 @@ public static class TerraceBlock
         js.Append("\"alleyGarage\":"+alleyNote+",\"driveGarage\":"+driveNote+",");
         js.Append("\"ledges\":["+string.Join(",",ledgeInfo)+"],\"tufts\":"+tufts+",\"footPts\":"+Foot.Count+",\"smoothedNormals\":"+smoothedN+",\"risersTri\":"+ar.Count/3+",");
         js.Append("\"path\":{\"lengthM\":"+pathLen.ToString("F1")+",\"halfW\":"+YardPathHalf+",\"h\":"+f2(hHouse)+"},");
-        js.Append("\"garden\":{"+gardenNote+",\"h\":"+f2(hHouse)+"},\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
+        js.Append("\"garden\":{"+gardenNote+",\"h\":"+f2(hHouse)+"},\"field\":"+fieldNote+",\"chains\":["+string.Join(",",chains.Select(c=>"\""+c.name+"\""))+"],");
         js.Append("\"walk\":{\"curb\":"+Curb+",\"lengthM\":"+walkLen.ToString("F1")+",\"areaM2\":"+walkArea.ToString("F1")+",\"runs\":["+string.Join(",",walkNote)+"]},\"stairs\":["+string.Join(",",stairNote)+"]}}");
         return js.ToString();
     }

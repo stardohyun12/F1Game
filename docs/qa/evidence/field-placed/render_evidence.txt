@@ -1,0 +1,6 @@
+f1_high.png pos=(196.88, 53.71, -81.66) target=(197.27, -95.47, 39.03) fov=60
+y1_yard_door.png pos=(182.57, 25.97, -67.88) target=(194.41, 24.67, -62.91) fov=70
+y2_yard_garden.png pos=(187.26, 25.97, -68.91) target=(193.78, 24.57, -64.17) fov=70
+y3_gate.png pos=(192.46, 25.97, -68.21) target=(193.85, 24.47, -63.78) fov=70
+t_top.png pos=(190.85, 40.37, -65.28) down fov=50
+dirty=False playing=False
