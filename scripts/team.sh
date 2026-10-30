@@ -14,7 +14,7 @@ ROLEFILE=".claude/team/roles/$ROLE.md"
 mkdir -p .claude/team/sessions .ai_logs/team docs/team/reports
 # 역할별 설정(대시보드에서 편집): .claude/team/config.json — 환경 변수가 있으면 그게 우선.
 cfg() { python -c "import json,sys
-try: print(json.load(open('.claude/team/config.json',encoding='utf-8')).get('$ROLE',{}).get('$1','') or '')
+try: v=json.load(open('.claude/team/config.json',encoding='utf-8')).get('$ROLE',{}).get('$1',''); print('' if v is None else v)
 except Exception: print('')" | tr -d '\r'; }
 C_MODEL=$(cfg model); C_EFFORT=$(cfg effort); C_BUDGET=$(cfg budget); C_TURNS=$(cfg turns)
 # 과제에 [OPUS] 가 있으면 그 과제만 opus (기본은 config 의 sonnet — Claude 구독 한도 절약, 10/29)
