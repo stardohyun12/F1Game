@@ -1,0 +1,16 @@
+lane start=(170.2, 1.0, 59.4) dir=(-1.00, 0.00, 0.00) screen=1920x1080 rs=0.5
+0-none STRAIGHT t=5.4 dist=68 spd=83.8/96.0kmh fov=69.9 roll=0.00 lat=0.0 steer=0.00 shakePx=(0.28,0.05) camH=2.10 maxFovSeen=69.9 frame=10.88ms(n=570) camRender=6.68ms shakeOffsetsPx={0.76/-0.39 1.39/-0.86 1.4/-0.98 1.27/-1.01 1.07/-0.97 0.81/-0.86 0.51/-0.7 0.15/-0.44 -0.1/-0.21 -0.33/0.03 -0.49/0.23 -0.57/0.41 -0.57/0.55 -0.48/0.64 -0.31/0.64 -0.13/0.57 0.04/0.46 0.16/0.33 0.25/0.18 0.28/0.05}
+0-none CORNER spd=86.5/96.0kmh fov=70.4 roll=3.50 lat=24.0 steer=0.80 shakePx=(-0.01,-0.69) camH=2.09 camRender=5.15ms
+1-calm STRAIGHT t=5.7 dist=75 spd=85.9/96.0kmh fov=73.0 roll=0.00 lat=0.0 steer=0.00 shakePx=(0.00,0.00) camH=3.00 maxFovSeen=73.0 frame=11.66ms(n=563) camRender=4.82ms shakeOffsetsPx={}
+1-calm CORNER spd=88.0/96.0kmh fov=73.3 roll=1.56 lat=24.0 steer=0.80 shakePx=(0.00,0.00) camH=3.00 camRender=5.87ms
+2-mid STRAIGHT t=5.7 dist=74 spd=85.6/96.0kmh fov=80.4 roll=0.00 lat=0.0 steer=0.00 shakePx=(0.00,2.00) camH=2.53 maxFovSeen=80.4 frame=8.12ms(n=723) camRender=5.16ms shakeOffsetsPx={1.93/-0.13 1.95/0.04 1.95/-0.07 2/0.09 1.99/0.14 1.87/-0.03 2.04/0.01 1.98/-0.1 1.94/-0.09 2.04/-0.09 2.05/0.09 2/0.02 2.1/0.02 2.03/0.09 2.09/0.04 1.92/-0.05 2/0.07 0.02/1.94 0.07/1.96 0.05/2.03 -0.02/1.94 -0.04/2.02 0.01/2.02 -0.01/1.98 0.02/1.96 0.01/2.04 -0.02/2.01 -0.03/2.02 0.03/1.98 0.02/2.01 -0.01/2 0.01/1.99 0.01/2 0/2 -2/2}
+2-mid CORNER spd=87.8/96.0kmh fov=81.3 roll=2.87 lat=24.0 steer=0.80 shakePx=(-2.00,-2.00) camH=2.46 camRender=5.06ms
+3-f1 STRAIGHT t=5.4 dist=68 spd=83.8/96.0kmh fov=87.6 roll=0.00 lat=0.0 steer=0.00 shakePx=(0.00,-2.00) camH=1.96 maxFovSeen=87.6 frame=6.58ms(n=875) camRender=5.80ms shakeOffsetsPx={-2/2 2/4 -2/-4 0/4 0/-2}
+3-f1 CORNER spd=86.3/96.0kmh fov=91.1 roll=4.10 lat=24.0 steer=0.80 shakePx=(-4.00,-2.00) camH=1.96 camRender=4.96ms
+mood applied Mood_A_WarmMorning
+2-mid+moodA STRAIGHT t=5.7 dist=76 spd=86.0/96.0kmh fov=80.6 roll=0.00 lat=0.0 steer=0.00 shakePx=(-2.00,-2.00) camH=2.47 maxFovSeen=90.2 frame=5.63ms(n=926) camRender=5.31ms shakeOffsetsPx={2/0 2/2 -2/-2}
+2-mid+moodA CORNER spd=88.0/96.0kmh fov=81.4 roll=2.88 lat=24.0 steer=0.80 shakePx=(0.00,-2.00) camH=2.46 camRender=6.11ms
+mood applied Mood_B_FadedNoon
+2-mid+moodB STRAIGHT t=5.4 dist=68 spd=83.8/96.0kmh fov=79.0 roll=0.00 lat=0.0 steer=0.00 shakePx=(-2.00,2.00) camH=2.54 maxFovSeen=80.9 frame=8.30ms(n=688) camRender=5.33ms shakeOffsetsPx={2/2 -2/-2 -2/2 0/-2}
+2-mid+moodB CORNER spd=87.2/96.0kmh fov=81.0 roll=2.50 lat=24.0 steer=0.80 shakePx=(2.00,-2.00) camH=2.46 camRender=4.94ms
+final mood revert: reverted 21 mats

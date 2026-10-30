@@ -1,0 +1,9 @@
+tag=cur PCLookScene=False A7Shade=RGBA(0.419, 0.505, 0.536, 1.000) terrainMesh=Mesh_TownV6_Terrain_terrace1
+wallmat TV6_Retain tex=TV6_RetainStone 128x128 filter=Bilinear scale=(0.40, 0.53) col=RGBA(0.000, 0.000, 0.000, 0.000)
+wallmat TV6_RetainCap tex=- scale=(1.00, 1.00) col=RGBA(0.000, 0.000, 0.000, 0.000)
+f1_high.png pos=(196.88, 53.71, -81.66) target=(197.27, -95.47, 39.03) fov=60
+c1_cart.png pos=(170.00, 18.56, -78.25) target=(187.25, 23.20, -68.76) fov=70
+c2_cart.png pos=(188.00, 19.20, -82.50) target=(195.35, 23.49, -70.68) fov=70
+z1_close.png pos=(186.00, 19.34, -83.63) target=(189.50, 24.60, -67.00) fov=50
+z2_close.png pos=(196.00, 20.35, -77.13) target=(190.00, 24.30, -66.50) fov=45
+dirty=False playing=False

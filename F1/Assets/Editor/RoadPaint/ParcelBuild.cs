@@ -113,7 +113,7 @@ public static class ParcelBuild
         double tPad = sw.Elapsed.TotalSeconds;
         // 5. 씬에 놓기 + 빈 필지 나무
         var mroot = new GameObject("Masses").transform; mroot.SetParent(root.transform, false);
-        nRepair = Repair(parcels, masses);
+        nRepair = Repair(parcels, masses); nWin = nDoor = nStoop = 0;
         for (int i = 0; i < masses.Count; i++) { masses[i].idx = i; masses[i].go = Spawn(masses[i], mroot, mats); }
         var snote = Stairs(parcels, masses, root.transform, mats);
         var gnote2 = Greens(parcels, root.transform) + " · " + snote;
@@ -426,6 +426,9 @@ public static class ParcelBuild
             float bb = b, DD = D, zz = 0, bestW = 0; Vector2 f = f0, t = new Vector2(f0.y, -f0.x);
             var mc = Fc[Fc.Count / 2]; var fm = (P(src[mc]) - P(mc)).sqrMagnitude > 1e-6f ? (P(src[mc]) - P(mc)).normalized : f0;
             var dirs = new List<Vector2> { f0, fm }; foreach (var a in new[] { 12f, -12f, 25f, -25f }) dirs.Add(Rot(f0, a));
+            // 4판(판정 결함 3 「집 방향이 제멋대로」): 옆 필지에 이미 선 집이 있고 각도가 20° 안이면 그 방향을 먼저 — 한 줄이 같은 쪽을 본다
+            var nbF = mem.SelectMany(p => SideNb(p, parcels)).Where(q => q.mass != null && Vector2.Angle(q.mass.f, f0) < 20).Select(q => q.mass.f).FirstOrDefault();
+            if (nbF != Vector2.zero) dirs.Insert(0, nbF);
             // 둘째 판(한 채·단독만): 옆 틈 0.25 m · 폭 3.2 m 까지 — 얕고 좁은 필지의 작은 집
             for (int pass = 0; pass < (att || ty != "detached" ? 1 : 2) && !ok; pass++)
             {
@@ -930,9 +933,11 @@ public static class ParcelBuild
         }
         // 3판: 유형 구분용 회색 톤 4개(외관 아님) — 0 단독·연립 · 1 단층·평지붕(밝게) · 2 좁은 3층·2단(차갑고 어둡게) · 3 가게·헛간(따뜻하게)
         var res = new[] { Get("Parcels_Body", new Color(.74f, .74f, .72f)), Get("Parcels_Body1", new Color(.82f, .81f, .78f)), Get("Parcels_Body2", new Color(.64f, .66f, .68f)), Get("Parcels_Body3", new Color(.72f, .68f, .62f)),
-            Get("Parcels_Roof", new Color(.46f, .46f, .48f)), Get("Parcels_Plinth", new Color(.55f, .51f, .45f)), Get("Parcels_Door", new Color(.24f, .23f, .22f)) };
+            Get("Parcels_Roof", new Color(.46f, .46f, .48f)), Get("Parcels_Plinth", new Color(.55f, .51f, .45f)), Get("Parcels_Door", new Color(.24f, .23f, .22f)),
+            Get("Parcels_Window", new Color(.34f, .40f, .48f)) };   // 4판: 창(유리 쪽 푸른 회색 — 문보다 밝게)
         AssetDatabase.SaveAssets(); return res;
     }
+    static int nWin, nDoor, nStoop;
     static Transform Spawn(Mass m, Transform root, Material[] mats)
     {
         var go = new GameObject($"P{m.parcel:000}_{m.type}_{m.floors}F_{m.roof}_{m.seat}" + (m.tier >= 0 ? $"_tier{m.tier}" : "") + (m.group >= 0 ? $"_row{m.group}" : ""));
@@ -952,12 +957,54 @@ public static class ParcelBuild
             else { float x = side == 2 ? -hw - e : hw + e, zc = -D * .5f; Quad(v, td, new Vector3(x, db, zc - dw * .5f), new Vector3(x, db, zc + dw * .5f), new Vector3(x, top, zc + dw * .5f), new Vector3(x, top, zc - dw * .5f), dc); }
         }
         // 단차·반지하 집: 내리막 쪽 아래층 문 · 가게: 1층 넓은 셔터 · 헛간: 큰 문
-        if (m.door) Door(m.doorSide < 0 ? (m.doorBack ? 1 : 0) : m.doorSide, Mathf.Min(2.6f, (m.doorSide >= 2 ? D : m.w) * .6f), 2.3f);
-        if (m.shutter) Door(0, Mathf.Max(1.6f, m.w - 1f), Mathf.Min(2.6f, m.floorH - .3f));
+        // 4판(판정 결함 1 「창 없는 상자 + 거대한 검은 문 = 창고」): 아래층 문 2.6 → 사람 문 1.1 m · 셔터는 폭 3.2 m 까지
+        int lowSide = m.doorSide < 0 ? (m.doorBack ? 1 : 0) : m.doorSide;
+        if (m.door) Door(lowSide, 1.1f, 2.2f);
+        if (m.shutter) Door(0, Mathf.Clamp(m.w - 1.4f, 1.6f, 3.2f), Mathf.Min(2.4f, m.floorH - .4f));
         if (m.barnDoor) Door(0, Mathf.Min(3.4f, m.w * .45f), Mathf.Min(3.2f, H - .4f));
         var ctr = new Vector3(0, H * .5f, -D * .5f);
-        if (m.plinth) { Box(v, tp, m.attL ? -hw : -hw - .15f, m.attR ? hw : hw + .15f, -D - .15f, .15f, yb, 0, ctr); Box(v, tb, -hw, hw, -D, 0, 0, H, ctr); }
-        else Box(v, tb, -hw, hw, -D, 0, yb, H, ctr);
+        // 4판(결함 2 「밑이 풀에 박힘」): 기단이 없는 집도 밑 0.3 m 까지 기단 띠(돌 색) — 바닥 높이·노출 기단 수치는 그대로
+        if (m.plinth) { Box(v, tp, m.attL ? -hw : -hw - .15f, m.attR ? hw : hw + .15f, -D - .15f, .15f, yb, .3f, ctr); Box(v, tb, -hw, hw, -D, 0, 0, H, ctr); }
+        else { Box(v, tp, m.attL ? -hw : -hw - .06f, m.attR ? hw : hw + .06f, -D - .06f, .06f, yb, .3f, ctr); Box(v, tb, -hw, hw, -D, 0, 0, H, ctr); }
+        // 4판(결함 1): 창 — 층마다 면 길이 2.3 m 에 하나(0.9 × 1.2, 창턱 0.9). 땅에 묻힌 칸·붙은 옆면은 건너뜀. 앞면 1층 한 칸은 현관문(1.0 × 2.15) + 땅이 낮으면 디딤단
+        var tw = new List<int>(); var wr = new Rng(Fnv($"{Seed}|win|{m.parcel}|{m.tier}"));
+        float LocalGround(int side, float s)
+        {
+            Vector2 n2 = side == 0 ? m.f : side == 1 ? -m.f : side == 2 ? -t2 : t2; var at = side < 2 ? m.c + t2 * s + m.f * (side == 0 ? 0 : -D) : m.c + t2 * (side == 2 ? -hw : hw) + m.f * s;
+            float gy = TopY(at + n2 * .6f); return float.IsNaN(gy) ? 0 : gy - m.y0;
+        }
+        void Pane(List<int> tl, int side, float s, float half, float y0, float y1, float e)
+        {
+            if (side == 0) Quad(v, tl, new Vector3(s - half, y0, e), new Vector3(s + half, y0, e), new Vector3(s + half, y1, e), new Vector3(s - half, y1, e), dc);
+            else if (side == 1) Quad(v, tl, new Vector3(s - half, y0, -D - e), new Vector3(s + half, y0, -D - e), new Vector3(s + half, y1, -D - e), new Vector3(s - half, y1, -D - e), dc);
+            else { float x = side == 2 ? -hw - e : hw + e; Quad(v, tl, new Vector3(x, y0, s - half), new Vector3(x, y0, s + half), new Vector3(x, y1, s + half), new Vector3(x, y1, s - half), dc); }
+        }
+        bool front = !(m.door && lowSide == 0) && !m.shutter && !m.barnDoor;
+        for (int side = 0; side < 4; side++)
+        {
+            if (side == 2 && m.attL || side == 3 && m.attR) continue;
+            float L = side < 2 ? m.w : D; int n = Mathf.Max(L >= 2f ? 1 : 0, Mathf.FloorToInt((L - .6f) / 2.3f)); if (n == 0) continue;
+            int doorK = side == 0 && front ? (n >= 2 ? (wr.F() < .5f ? 0 : n - 1) : 0) : -1;
+            for (int k = 0; k < n; k++)
+            {
+                float s = side < 2 ? -L * .5f + L * (k + .5f) / n : -D + D * (k + .5f) / n; float g = LocalGround(side, s);
+                for (int fl = 0; fl < m.floors; fl++)
+                {
+                    float fy = fl * m.floorH;
+                    if (fl == 0 && k == doorK)
+                    {
+                        Pane(td, side, s, .5f, Mathf.Max(0, g), 2.15f, .04f); nDoor++;
+                        if (g < -.12f) { Box(v, tp, s - .7f, s + .7f, 0, Mathf.Clamp(m.b - .15f, .4f, .9f), Mathf.Max(g, yb), 0, ctr); nStoop++; }   // 디딤단(현관 앞 땅까지, 물러남 안에서)
+                        continue;
+                    }
+                    if (m.door && fl == 0 && side == lowSide) continue;   // 아래층 문 면 1층은 문만
+                    if (m.shutter && fl == 0 && side == 0) continue;
+                    if (m.barnDoor) continue;   // 헛간은 창 없이 큰 문
+                    float y0w = fy + .9f, y1w = Mathf.Min(fy + 2.1f, H - .3f); if (y1w - y0w < .6f || y0w < g + .25f) continue;
+                    Pane(tw, side, s, .45f, y0w, y1w, .04f); nWin++;
+                }
+            }
+        }
         float R = m.rise, o = .25f;
         if (m.roof == "flat")
         {
@@ -992,8 +1039,8 @@ public static class ParcelBuild
             if (m.w >= D) { float e = hw - D * .5f; var r0 = new Vector3(-e, H + R, -D * .5f); var r1 = new Vector3(e, H + R, -D * .5f); Quad(v, tr, p00, p10, r1, r0, ctr); Quad(v, tr, p11, p01, r0, r1, ctr); Tri(v, tr, p01, p00, r0, ctr); Tri(v, tr, p10, p11, r1, ctr); }
             else { float e = D * .5f - hw; var r0 = new Vector3(0, H + R, -hw); var r1 = new Vector3(0, H + R, -D + hw); Quad(v, tr, p00, p01, r1, r0, ctr); Quad(v, tr, p11, p10, r0, r1, ctr); Tri(v, tr, p10, p00, r0, ctr); Tri(v, tr, p01, p11, r1, ctr); }
         }
-        var mesh = new Mesh { name = go.name }; mesh.SetVertices(v); mesh.SetUVs(0, v.Select(q => new Vector2((q.x + q.z) * .25f, q.y * .25f)).ToList()); mesh.subMeshCount = 4; mesh.SetTriangles(tb, 0); mesh.SetTriangles(tr, 1); mesh.SetTriangles(tp, 2); mesh.SetTriangles(td, 3); mesh.RecalculateNormals(); mesh.RecalculateBounds();
-        go.AddComponent<MeshFilter>().sharedMesh = mesh; go.AddComponent<MeshRenderer>().sharedMaterials = new[] { mats[Mathf.Clamp(m.tone, 0, 3)], mats[4], mats[5], mats[6] };
+        var mesh = new Mesh { name = go.name }; mesh.SetVertices(v); mesh.SetUVs(0, v.Select(q => new Vector2((q.x + q.z) * .25f, q.y * .25f)).ToList()); mesh.subMeshCount = 5; mesh.SetTriangles(tb, 0); mesh.SetTriangles(tr, 1); mesh.SetTriangles(tp, 2); mesh.SetTriangles(td, 3); mesh.SetTriangles(tw, 4); mesh.RecalculateNormals(); mesh.RecalculateBounds();
+        go.AddComponent<MeshFilter>().sharedMesh = mesh; go.AddComponent<MeshRenderer>().sharedMaterials = new[] { mats[Mathf.Clamp(m.tone, 0, 3)], mats[4], mats[5], mats[6], mats[7] };
         return go.transform;
     }
 
@@ -1201,6 +1248,11 @@ public static class ParcelBuild
             sb.Append(" \"zones\": {" + string.Join(", ", ZoneIds.Select(z => { var g = parcels.Where(p => p.zone == z && p.empty != "땅 못 읽음·바다").ToList(); return $"\"{z}\": [{g.Count(p => p.mass != null)}, {g.Count}]"; })) + "},");
             sb.Append($" \"slopeBins\": {{\"lt15\": {Bin(0, .15f)}, \"15_35\": {Bin(.15f, .35f)}, \"35_60\": {Bin(.35f, .60f)}, \"gt60\": {Bin(.60f, 99f)}, \"unread\": {parcels.Count(p => p.slope < 0)}}},");
             sb.Append($" \"expoMaxM\": {f2(k.expoMax)}, \"pits\": {nPits}, \"sameType3Runs\": {nRunLeft}, \"repaired\": {nRepair}, \"stairs\": {nStairs}, \"overlapPairs\": {k.overlap}, \"floatSamples\": {k.floatN}, \"terrainHolesFlips\": {terrHoles}}},\n");
+        }
+        // 4판(D-221) 표: 창·현관·디딤단 수 · 옆 필지 집끼리 방향 차(같은 줄이 같은 쪽을 보나)
+        {
+            var ang = new List<float>(); foreach (var p in parcels) if (p.mass != null) foreach (var q in SideNb(p, parcels)) if (q.id > p.id && q.mass != null) ang.Add(Vector2.Angle(p.mass.f, q.mass.f));
+            sb.Append($"  \"d221\": {{\"windows\": {nWin}, \"frontDoors\": {nDoor}, \"stoops\": {nStoop}, \"lowDoorW\": 1.1, \"sidePairs\": {ang.Count}, \"sideAngleMedianDeg\": {f2(Median(ang))}, \"sideAngleLt5\": {f2((float)ang.Count(a => a < 5) / Mathf.Max(1, ang.Count))}, \"sideAngleGt15\": {ang.Count(a => a > 15)}}},\n");
         }
         var built = parcels.Where(p => p.mass != null).ToList();
         float[] wEdges = { 5, 6, 7, 8, 9, 10 };
