@@ -366,16 +366,18 @@ public static partial class BuildBayLoop
                 if (jGrid.TryGetValue(cell, out var jl)) foreach (int i in jl) if (V2PolyE(jPolys[i].poly, p, out _) < 10f) return true;
                 return false;
             }
-            var refinedTerrain = V2RefineTerrain(srcMesh, tr, NearRoad);
+            Tk("지형 준비"); var refinedTerrain = V2RefineTerrain(srcMesh, tr, NearRoad); Tk("지형 쪼개기");
             var sv = refinedTerrain.vertices; var w = new Vector3[sv.Length]; for (int i = 0; i < sv.Length; i++) w[i] = tr.TransformPoint(sv[i]);
             int moved = 0, padN = 0; float maxD = 0, farMaxD = 0; Vector3 maxAt = Vector3.zero; int big = 0, farBig = 0;
-            for (int k = 0; k < w.Length; k++)
+            // 0301: 정점마다 따로 계산(서로의 결과를 안 읽음) → 코어 여러 개로 나눠 돈다. 정점 하나 안의 계산 순서는 그대로라 결과는 한 줄씩 돌 때와 같다. 통계는 아래에서 순서대로.
+            var vy = new float[w.Length]; var nf = new byte[w.Length];
+            System.Threading.Tasks.Parallel.For(0, w.Length, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = ParcelBuild.OldPath0301 ? 1 : -1 }, k =>
             {
-                var p = w[k]; float out0 = V2Out(p); if (out0 >= margin) continue;
+                var p = w[k]; float out0 = V2Out(p); if (out0 >= margin) return;
                 float orig = p.y, y = orig; float pe = 1e9f, pH = 0;
                 var cell = (Mathf.FloorToInt(p.x / GC), Mathf.FloorToInt(p.z / GC));
                 foreach (int pi in pGrid.TryGetValue(cell, out var pl) ? pl : none) { var pd = pads[pi]; var dl = pd.w2l.MultiplyPoint3x4(p); float lx = Mathf.Max(pd.mn.x - dl.x, dl.x - pd.mx.x), lz = Mathf.Max(pd.mn.z - dl.z, dl.z - pd.mx.z); float e = Mathf.Max(lx, lz) > 0 ? new Vector2(Mathf.Max(lx, 0), Mathf.Max(lz, 0)).magnitude : Mathf.Max(lx, lz); if (e < pe) { pe = e; pH = pd.H; } }
-                if (pe <= 2f) { y = pH; padN++; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
+                if (pe <= 2f) { y = pH; nf[k] |= 2; } else if (pe < 14f) y = Mathf.Clamp(y, pH - (pe - 2f) / 3f, pH + (pe - 2f) / 2f);
                 float eO = 1e9f, yO = 0, lo = -1e9f, hi = 1e9f, weight = 0, weightedY = 0;                foreach (int si in sGrid.TryGetValue(cell, out var sl) ? sl : none)
                 {
                     var s = segs[si];
@@ -416,18 +418,25 @@ public static partial class BuildBayLoop
                 // 1d: 구역 밖 여유띠의 원래 높이 되돌림이 874_s1 끝(구역 밖 1.4 m) 캡 너머 0.6 m 정점을 24.54 로 남겨, 2 m 삼각형이 띠 끝을 2 cm 덮음
                 //  → 띠 가장자리 1 m 안은 되돌림보다 띠−깎기가 우선
                 if (out0 > 0 && eO <= 1f) y = Mathf.Min(y, yO - V2Under);   // 구역 안까지 걸면 D198_postoffice 판 모서리를 0.31 깎음
-                if (eO > 6f) { farMaxD = Mathf.Max(farMaxD, Mathf.Abs(y - orig)); if (Mathf.Abs(y - orig) > 4f) farBig++; }
+                if (eO > 6f) nf[k] |= 4;
+                vy[k] = y; nf[k] |= 1;
+            });
+            for (int k = 0; k < w.Length; k++)
+            {
+                if ((nf[k] & 1) == 0) continue; var p = w[k]; float orig = p.y, y = vy[k];
+                if ((nf[k] & 2) != 0) padN++;
+                if ((nf[k] & 4) != 0) { farMaxD = Mathf.Max(farMaxD, Mathf.Abs(y - orig)); if (Mathf.Abs(y - orig) > 4f) farBig++; }
                 if (Mathf.Abs(y - orig) > .001f) { w[k].y = y; moved++; if (Mathf.Abs(y - orig) > maxD) { maxD = Mathf.Abs(y - orig); maxAt = p; } if (Mathf.Abs(y - orig) > 3f) big++; }
             }
-            var m2 = refinedTerrain; m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
+            Tk("지형 정점"); var m2 = refinedTerrain; m2.name = "TownV6_Terrain_v2"; var v2v = new Vector3[w.Length]; for (int i = 0; i < w.Length; i++) v2v[i] = tr.InverseTransformPoint(w[i]);
             m2.vertices = v2v; m2.RecalculateNormals(); m2.RecalculateBounds();
-            if (AssetDatabase.LoadAssetAtPath<Mesh>(V2Dst) != null) AssetDatabase.DeleteAsset(V2Dst);
-            AssetDatabase.CreateAsset(m2, V2Dst); terrGo.GetComponent<MeshFilter>().sharedMesh = m2; var mc = terrGo.GetComponent<MeshCollider>(); mc.sharedMesh = null; mc.sharedMesh = m2;
+            Tk("지형 법선"); if (AssetDatabase.LoadAssetAtPath<Mesh>(V2Dst) != null) AssetDatabase.DeleteAsset(V2Dst);
+            AssetDatabase.CreateAsset(m2, V2Dst); Tk("지형 에셋 쓰기"); terrGo.GetComponent<MeshFilter>().sharedMesh = m2; var mc = terrGo.GetComponent<MeshCollider>(); mc.sharedMesh = null; mc.sharedMesh = m2;
             Tk("지형"); lg.Add($"지형 정점 {moved}개(최대 {maxD:F2} m @({maxAt.x:F0},{maxAt.z:F0}) 원래 {maxAt.y:F1}, 3 m 넘게 바뀐 정점 {big}), 건물 판 정점 {padN}, 건물 {pads.Count}");
             lg.Add($"길 밖 6 m 초과 지형 변화: 최대 {farMaxD:F3} m, 4 m 초과 {farBig}개");
 
             // ── 걷는 길: 차길 띠와 겹친 부분 지우고 새 지형에 깐다 ──────────
-            tmc.sharedMesh = m2;
+            tmc.sharedMesh = m2; Tk("지형 콜라이더");
             var plan = (Dictionary<string, object>)Json.Parse(System.IO.File.ReadAllText(TownV6Json, Encoding.UTF8));
             int pathN = 0, pathCut = 0;
             var draper = new V2Draper(w, m2.triangles);
@@ -515,7 +524,7 @@ public static partial class BuildBayLoop
 
             if (AssetDatabase.LoadAssetAtPath<Object>(V2MeshAsset) != null) AssetDatabase.DeleteAsset(V2MeshAsset);
             Tk("검사"); AssetDatabase.CreateAsset(meshes[0], V2MeshAsset); for (int i = 1; i < meshes.Count; i++) AssetDatabase.AddObjectToAsset(meshes[i], V2MeshAsset);
-            EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets();
+            EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene); AssetDatabase.SaveAssets(); Tk("에셋·씬 저장");
             return string.Join("\n", lg);
         }
         finally { Object.DestroyImmediate(tmpGo); }

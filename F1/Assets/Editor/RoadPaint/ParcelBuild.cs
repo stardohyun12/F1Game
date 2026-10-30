@@ -63,6 +63,7 @@ public static class ParcelBuild
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene()); EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
         return "필지 지움 · OSM 회색 건물 다시 켬 · 지형 terrace1 로 되돌림";
     }
+    static StringBuilder tqs; static System.Diagnostics.Stopwatch tsw; static void Tq(string n) => tqs?.Append($" {n}{tsw.Elapsed.TotalSeconds:F1}");
     static void SetTerrain(Transform terr, Mesh m)
     {
         var mf = terr.GetComponent<MeshFilter>(); if (mf != null && mf.sharedMesh != m) mf.sharedMesh = m;
@@ -75,36 +76,36 @@ public static class ParcelBuild
     {
         if (Application.isPlaying) return "Play 중엔 안 됨";
         if (EditorSceneManager.GetActiveScene().path != TownScene) return "Map_TownV6 아님";
-        var sw = System.Diagnostics.Stopwatch.StartNew();
+        skipRoot.Clear(); var sw = System.Diagnostics.Stopwatch.StartNew(); tqs = new StringBuilder(); tsw = sw;
         var tbl = JsonUtility.FromJson<RoadsideBuild.RsFile>(System.IO.File.ReadAllText(RoadsideBuild.TablePath, Encoding.UTF8));
         radius = tbl.radius; centers = new Vector2[tbl.centers.Length / 2]; for (int i = 0; i < centers.Length; i++) centers[i] = new Vector2(tbl.centers[2 * i], tbl.centers[2 * i + 1]);
         var top = Top();
         // 2판: 입력 지형은 매번 TerraceBlock 결과(terrace1) — 패드는 그 위에 새로 깎는다
         var terr = top.Find("TownV6_Terrain"); var baseMesh = AssetDatabase.LoadAssetAtPath<Mesh>(BaseTerrain);
         if (terr == null || baseMesh == null) return "지형 없음(TownV6_Terrain · terrace1)";
-        SetTerrain(terr, baseMesh);
+        Tq("tbl"); SetTerrain(terr, baseMesh); Tq("setT");
         var tb0 = terr.GetComponent<MeshRenderer>().bounds; area = Rect.MinMaxRect(tb0.min.x + 2, tb0.min.z + 2, tb0.max.x - 2, tb0.max.z - 2);
         var root = GameObject.Find(RootName); if (root != null) Object.DestroyImmediate(root);
         root = new GameObject(RootName);
         var osm = ClipOsm(top, root.transform);
-        Physics.SyncTransforms();
+        Physics.SyncTransforms(); Tq("osm");
 
         // 1. 격자 분류
         string gnote = Classify(top, tbl);
-        mix = LoadMix(); dOff = new float[type.Length];
+        Tq("classify"); mix = LoadMix(); dOff = new float[type.Length];
         // 2. 블록 → 분할
         var land = new List<int>(); for (int i = 0; i < type.Length; i++) if (type[i] == T.Land) land.Add(i);
         var blocks = Comps(land);
         var parcels = new List<Parcel>(); var lefts = new List<Left>();
         int bi = 0; foreach (var b in blocks) Split(b, bi++, parcels, lefts);
-        int nSplit = parcels.Count; Merge(parcels);
+        Tq("split"); int nSplit = parcels.Count; Merge(parcels); Tq("merge");
         cellsOf = parcels;
         foreach (var p in parcels) foreach (var c in p.cells) { int i = c % gw, j = c / gw; foreach (var q in new[] { c - 1, c + 1, c - gw, c + gw }) if (q >= 0 && q < owner.Length && owner[q] >= 0 && owner[q] != p.id && Mathf.Abs(q % gw - i) <= 1) p.nb.Add(owner[q]); }
-        var blk = new bool[type.Length]; for (int k = 0; k < blk.Length; k++) blk[k] = type[k] != T.Land || foot[k]; DT(blk, out dBlk, out _);
+        Tq("nb"); var blk = new bool[type.Length]; for (int k = 0; k < blk.Length; k++) blk[k] = type[k] != T.Land || foot[k]; DT(blk, out dBlk, out _);
         double tSplit = sw.Elapsed.TotalSeconds;
         // 3. 덩어리(앉히기 A/B/C 포함)
         var vis = Vistas(); var props = Props();
-        var masses = new List<Mass>(); Masses(parcels, masses, vis, props);
+        Tq("vis"); var masses = new List<Mass>(); Masses(parcels, masses, vis, props);
         double tMass = sw.Elapsed.TotalSeconds;
         // 4. 지형 패드 + 축대 → 새 땅으로 바닥·밑면 다시 읽기
         var mats = Materials();
@@ -120,7 +121,7 @@ public static class ParcelBuild
         // 6. 검사 + 기록
         nPits = Pits(parcels, lefts);
         var chk = Check(parcels, masses, props);
-        chk.terrain = tnote; chk.walls = walls; chk.time = $"나누기 {tSplit:F1}s · 덩어리 {tMass - tSplit:F1}s · 지형 {tPad - tMass:F1}s · 놓기·검사 {sw.Elapsed.TotalSeconds - tPad:F1}s";
+        chk.terrain = tnote; chk.walls = walls; chk.time = $"[{tqs}] 나누기 {tSplit:F1}s · 덩어리 {tMass - tSplit:F1}s · 지형 {tPad - tMass:F1}s · 놓기·검사 {sw.Elapsed.TotalSeconds - tPad:F1}s";
         var json = Json(parcels, lefts, masses, chk, gnote + $" · 합치기 {nSplit}→{parcels.Count}", osm + " · " + gnote2);
         System.IO.File.WriteAllText(System.IO.Path.GetFullPath(Application.dataPath + "/../../docs/map/parcels-home.json"), json, new UTF8Encoding(false));
         Png(parcels, masses, System.IO.Path.GetFullPath(Application.dataPath + "/../../docs/map/parcels-home.png"));
@@ -185,6 +186,7 @@ public static class ParcelBuild
             var rs = ch.GetComponent<RoadSurface>(); if (rs != null) o = SecOff(rs.kind, rs.width, false); else if (j) o = SecOff("village", 5, false);
             RasterMesh(ch, road, 0, off, o, j ? null : zc, ZoneByName(ch.name)); if (j) RasterMesh(ch, junc, 0, null, 0);
         }
+        Tq("cRoads");
         var tb = top.Find("TerraceBlock");
         if (tb != null)
         {
@@ -194,7 +196,7 @@ public static class ParcelBuild
             var fp = tb.Find("FieldPatch"); if (fp != null) foreach (var mf in fp.GetComponentsInChildren<MeshFilter>()) RasterMesh(mf.transform, foot, 0, null, 0);
             var dp = tb.Find("DirtPath_door_garden"); if (dp != null) RasterMesh(dp, foot, 0, null, 0);
         }
-        var d198 = top.Find("D198_Buildings"); if (d198 != null) foreach (var mf in d198.GetComponentsInChildren<MeshFilter>()) RasterMesh(mf.transform, foot, 0, null, 0);
+        Tq("cTerr"); var d198 = top.Find("D198_Buildings"); if (d198 != null) foreach (var mf in d198.GetComponentsInChildren<MeshFilter>()) RasterMesh(mf.transform, foot, 0, null, 0);
         ridgeR = new List<Rect>();
         if (d198 != null && tbl.ridgeCore != null) foreach (var id in tbl.ridgeCore)
         {
@@ -204,7 +206,7 @@ public static class ParcelBuild
         }
         // 길·보도에서 거리(벡터 전파) — 가장 가까운 길 칸과 그 길의 앞띠 폭
         var seed = new bool[N]; for (int k = 0; k < N; k++) seed[k] = road[k] || walkw[k];
-        DT(seed, out dist, out src); soff = off;
+        Tq("cD198"); DT(seed, out dist, out src); soff = off; Tq("cDT1");
         for (int k = 0; k < N; k++)
         {
             if (type[k] == T.Out) continue;
@@ -213,13 +215,13 @@ public static class ParcelBuild
         // 비움: 도현 건물 +3 m · 갈림목 +4 m · 걷는 길 입구 3 m · 집 마당 단
         DT(foot, out var dF, out _); DT(junc, out var dJ, out _);
         var ms = new bool[N]; foreach (var m in Mouths()) { int mk = Idx(m); if (mk >= 0) ms[mk] = true; }
-        DT(ms, out var dM, out _); int nEx = 0;
+        Tq("cDT2"); DT(ms, out var dM, out _); int nEx = 0; Tq("cDT4");
         for (int k = 0; k < N; k++)
         {
             if (type[k] != T.Land) continue;
             if (dF[k] <= FootPad || dJ[k] <= JuncPad || dM[k] < MouthPad) { type[k] = T.Excl; nEx++; }
         }
-        string yard = Yard(d198);
+        string yard = Yard(d198); Tq("cYard");
         front = new bool[N]; for (int k = 0; k < N; k++) front[k] = type[k] == T.Land && src[k] >= 0 && dist[k] <= off[src[k]] + FrontReach + C;
         tag = new int[N];
         int Cn(T t) => type.Count(x => x == t);
@@ -829,8 +831,18 @@ public static class ParcelBuild
     static float TopY(Vector2 p)
     {
         int n = Physics.RaycastNonAlloc(new Ray(new Vector3(p.x, 400, p.y), Vector3.down), buf, 800, ~0, QueryTriggerInteraction.Ignore); float best = float.NaN;
-        for (int i = 0; i < n; i++) { var rn = buf[i].collider.transform.root.name; if (rn == RootName || rn == "Roadside" || rn == "OnFoot_HomeGarage") continue; if (float.IsNaN(best) || buf[i].point.y > best) best = buf[i].point.y; }
+        for (int i = 0; i < n; i++) { if (SkipRoot(buf[i].collider)) continue; if (float.IsNaN(best) || buf[i].point.y > best) best = buf[i].point.y; }
         return best;
+    }
+    // 0301: 맞은 물체의 맨 위 부모 이름을 매번 문자열로 꺼내던 것(광선 수십만 번) → 맨 위 부모별로 한 번만 묻고 기억. 이름은 실행 중 안 바뀜.
+    public static bool OldPath0301;   // 0301 검증용: 켜면 속도 고치기 전 길(병렬 끔·기본 해시·옛 DT·이름 매번). 결과는 같아야 한다.
+    static readonly Dictionary<int, bool> skipRoot = new Dictionary<int, bool>();
+    static bool SkipRoot(Collider c)
+    {
+        if (OldPath0301) { var rn0 = c.transform.root.name; return rn0 == RootName || rn0 == "Roadside" || rn0 == "OnFoot_HomeGarage"; }
+        var r = c.transform.root; int id = r.GetInstanceID();
+        if (!skipRoot.TryGetValue(id, out bool sk)) { var rn = r.name; skipRoot[id] = sk = rn == RootName || rn == "Roadside" || rn == "OnFoot_HomeGarage"; }
+        return sk;
     }
     // 높이: 층 × 층고(+평지붕 난간). 이웃(붙은 집·옆 필지) 덩어리와 0.4 m 안 차이면 층고를 바꾸거나 한 층 더/덜 → 줄 맞춘 높이 X
     static void Heights(Mass m, Parcel p, List<Parcel> parcels)
@@ -875,7 +887,7 @@ public static class ParcelBuild
     {
         var d = top - eye; float L = d.magnitude; if (L < 1f) return false;
         int n = Physics.RaycastNonAlloc(new Ray(eye, d / L), buf, L - .5f, ~0, QueryTriggerInteraction.Ignore);
-        for (int i = 0; i < n; i++) { if (buf[i].distance < 3f) continue; var rn = buf[i].collider.transform.root.name; if (rn == RootName || rn == "Roadside" || rn == "OnFoot_HomeGarage") continue; return true; }
+        for (int i = 0; i < n; i++) { if (buf[i].distance < 3f) continue; if (SkipRoot(buf[i].collider)) continue; return true; }
         return false;
     }
     // 3판: 덩어리 둘레 2.5 m 밖 땅(구덩이 테두리) 최고 높이 — 집 꼭대기가 이보다 0.3 m 안 넘으면 땅이 이미 막는 높이라 전망을 새로 안 막는다
@@ -1345,7 +1357,8 @@ public static class ParcelBuild
         return res;
     }
     // 거리(벡터 전파 2회 왕복): 가장 가까운 씨앗 칸 번호와 그 유클리드 거리
-    static void DT(bool[] seed, out float[] d, out int[] s)
+    // 0301 검증용: 고치기 전 DT 그대로(OldPath0301 일 때만)
+    static void DTOld(bool[] seed, out float[] d, out int[] s)
     {
         int N = seed.Length; d = new float[N]; s = new int[N];
         for (int k = 0; k < N; k++) { d[k] = seed[k] ? 0 : float.MaxValue; s[k] = seed[k] ? k : -1; }
@@ -1359,6 +1372,24 @@ public static class ParcelBuild
         {
             for (int j = 0; j < gh; j++) for (int i = 0; i < gw; i++) { int k = j * gw + i; if (i > 0) { Rel(k, k - 1); if (j > 0) Rel(k, k - gw - 1); } if (j > 0) Rel(k, k - gw); if (i < gw - 1 && j > 0) Rel(k, k - gw + 1); }
             for (int j = gh - 1; j >= 0; j--) for (int i = gw - 1; i >= 0; i--) { int k = j * gw + i; if (i < gw - 1) { Rel(k, k + 1); if (j < gh - 1) Rel(k, k + gw + 1); } if (j < gh - 1) Rel(k, k + gw); if (i > 0 && j < gh - 1) Rel(k, k + gw - 1); }
+        }
+    }
+    static void DT(bool[] seed, out float[] d, out int[] s)
+    {
+        if (OldPath0301) { DTOld(seed, out d, out s); return; }
+        // 0301: 씨앗 칸의 (열, 행)을 같이 들고 다님 — 원래 Rel 마다 나눗셈 4번(k % gw, o / gw …)이 칸 수 × 16번 돌던 것. 같은 정수 → 같은 거리 값, 결과 그대로.
+        int N = seed.Length; d = new float[N]; s = new int[N]; var si = new int[N]; var sj = new int[N];
+        for (int k = 0; k < N; k++) { d[k] = seed[k] ? 0 : float.MaxValue; s[k] = seed[k] ? k : -1; if (seed[k]) { si[k] = k % gw; sj[k] = k / gw; } }
+        var dd = d; var ss = s;
+        void Rel(int k, int i, int j, int q)
+        {
+            int o = ss[q]; if (o < 0) return; float dx = (i - si[q]) * C, dz = (j - sj[q]) * C; float v = Mathf.Sqrt(dx * dx + dz * dz);
+            if (v < dd[k]) { dd[k] = v; ss[k] = o; si[k] = si[q]; sj[k] = sj[q]; }
+        }
+        for (int round = 0; round < 2; round++)
+        {
+            for (int j = 0; j < gh; j++) for (int i = 0; i < gw; i++) { int k = j * gw + i; if (i > 0) { Rel(k, i, j, k - 1); if (j > 0) Rel(k, i, j, k - gw - 1); } if (j > 0) Rel(k, i, j, k - gw); if (i < gw - 1 && j > 0) Rel(k, i, j, k - gw + 1); }
+            for (int j = gh - 1; j >= 0; j--) for (int i = gw - 1; i >= 0; i--) { int k = j * gw + i; if (i < gw - 1) { Rel(k, i, j, k + 1); if (j < gh - 1) Rel(k, i, j, k + gw + 1); } if (j < gh - 1) Rel(k, i, j, k + gw); if (i > 0 && j < gh - 1) Rel(k, i, j, k + gw - 1); }
         }
     }
     static void RasterMesh(Transform tr, bool[] G, float grow, float[] off, float o, byte[] zarr = null, byte zv = 0)
