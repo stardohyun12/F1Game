@@ -273,7 +273,7 @@ public static partial class BuildBayLoop
                 // One plane per junction, including the actual cut row (not an approximate pre-trim sample).
                 if (c.d0 > 0) c.p[0] = new Vector3(c.p[0].x, nodeY[c.n0], c.p[0].z);
                 if (c.d1 > 0) { int end = c.p.Count - 1; c.p[end] = new Vector3(c.p[end].x, nodeY[c.n1], c.p[end].z); }
-                V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1);
+                V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1, c.d0 > 0, c.d1 > 0);
             }
             // 1f: 갈림목 없는 끝(d=0)이 넓은 길 띠 안에 놓이면 두 띠가 1~4 cm 차로 겹쳐 깊이 싸움(진회색 위 밝은 가시) — 874_s1 끝은 구역 밖(x 331)이라 T 붙이기를 못 받음
             //  → 그 끝을 넓은 띠 가장자리에서 자르고 높이를 넓은 길에 맞춘다
@@ -757,32 +757,39 @@ public static partial class BuildBayLoop
         for (int i = 0; i < n; i++) c.p[i] = new Vector3(c.p[i].x, y[i], c.p[i].z);
     }
     // 2차 실행: 고정점(마디·평탄·구역 밖)끼리 맞붙은 곳에서 228~339% 가 남음 → 자른 뒤 끝점·구역 밖만 고정하고 구배를 한 번 더 끼운다(평탄 구간도 따라 움직임)
-    static void V2FinalGrade(V2L c, bool dead0 = false, bool dead1 = false)
+    // 0418(갈림목 이음): 판은 평면(구배 0)인데 띠는 입구까지 최대 26°(6° 넘는 입구 64곳)로 들어와, 서로 다른 두 메시 콜라이더가 꺾인 채 만나는 이음에서
+    //  상자 차 앞 모서리가 판 끝에 걸려 섬(0338 끼임 (86,-192)·(142,-86) = 입구 꺾임 6°). 이음 높이 차는 이미 ≤6 mm → 높이가 아니라 기울기를 잇는다:
+    //  갈림목 쪽 끝(j0/j1) 도 V2JLand m 를 판 높이로 평탄 착지 → 이음에서 두 면이 같은 평면, 꺾임은 띠 안쪽(한 메시)으로 옮겨져 아래 다듬기가 곡선으로 편다.
+    static void V2FinalGrade(V2L c, bool dead0 = false, bool dead1 = false, bool j0 = false, bool j1 = false)
     {
         // 1c: 막힌 끝 직전까지 17~24% 로 오르다 끝에서 멈추면, 끝을 사이에 둔 2 m 격자 정점 두 줄(끝 1 m 앞 = −0.24, 끝 너머 = 평평)의
         //  선형 보간이 길보다 ~0.2 m 낮아 띠 끝이 뜸(ridge_up_b_s0_2 +0.20·ridge_up_c_1 +0.24) → 막힌 끝 2.5 m 는 끝 높이로 평탄(착지)·고정
-        float L = V2Len(c.p), F = Mathf.Min(V2Land, L * .3f);
+        float L = V2Len(c.p), F = Mathf.Min(V2Land, L * .3f), FJ = 0f;
+        // 갈림목 착지는 가운데를 가파르게 한다(평탄 3 m×2 를 빼고 남은 길이에 같은 높이차) — 짧고 가파른 연결 토막(tomo_461555200_26_1 12 m 에 2.1 m → 가운데 35%, 역방향 3회 모두 공중)은
+        //  가운데 구배가 원래 평균×1.1(최소 V2Grade) 을 넘지 않을 만큼만 착지, 0.5 m 미만이면 안 함
+        if (j0 || j1) { float dh = Mathf.Abs(c.p[c.p.Count - 1].y - c.p[0].y), g = dh / Mathf.Max(L, .1f), room = L - dh / Mathf.Max(V2Grade, g * 1.1f); FJ = Mathf.Clamp(room / ((j0 ? 1 : 0) + (j1 ? 1 : 0)), 0f, V2JLand); }
+        float F0 = Mathf.Max(dead0 ? F : 0f, j0 ? FJ : 0f), F1 = Mathf.Max(dead1 ? F : 0f, j1 ? FJ : 0f);
         // 1601: 갈림목 평판에 거의 다 먹힌 막다른 꼬리(ridge_up_b_s0 4 m, 4143)는 평판 높이 → 원래 지면 높이를 4 m 에 내려 66% 계단
         //  → 막다른 끝(구역 안)은 반대쪽 끝에서 길이×16.5% 안으로 당긴다(지형이 길을 따라옴)
         { int e = c.p.Count - 1;
           if (dead1 && !dead0 && V2In(c.p[e])) { float d = L * V2Grade * 1.5f; c.p[e] = new Vector3(c.p[e].x, Mathf.Clamp(c.p[e].y, c.p[0].y - d, c.p[0].y + d), c.p[e].z); }
           if (dead0 && !dead1 && V2In(c.p[0])) { float d = L * V2Grade * 1.5f; c.p[0] = new Vector3(c.p[0].x, Mathf.Clamp(c.p[0].y, c.p[e].y - d, c.p[e].y + d), c.p[0].z); } }
-        void Land(bool st)
+        void Land(bool st, float FL, bool insert)   // insert=false: 점을 끼우지 않음(평면 모양 그대로 — 0418 갈림목 착지가 ridge_up_c_1 급커브에 점을 끼워 접힘 1)
         {
-            if (F < .5f || !V2In(st ? c.p[0] : c.p[c.p.Count - 1])) return;
+            if (FL < .5f || !V2In(st ? c.p[0] : c.p[c.p.Count - 1])) return;
             if (!st) c.p.Reverse();
             float acc = 0, y0 = c.p[0].y;
             for (int i = 1; i < c.p.Count; i++)
             {
                 float l = Fl(c.p[i] - c.p[i - 1]).magnitude;
-                if (acc + l > F) { if (acc + l - F > .3f && F - acc > .3f) c.p.Insert(i, Vector3.Lerp(c.p[i - 1], c.p[i], (F - acc) / l)); break; }
+                if (acc + l > FL) { if (insert && acc + l - FL > .3f && FL - acc > .3f) c.p.Insert(i, Vector3.Lerp(c.p[i - 1], c.p[i], (FL - acc) / l)); break; }
                 acc += l;
             }
-            acc = 0; for (int i = 1; i < c.p.Count; i++) { acc += Fl(c.p[i] - c.p[i - 1]).magnitude; if (acc > F + .01f) break; c.p[i] = new Vector3(c.p[i].x, y0, c.p[i].z); }
+            acc = 0; for (int i = 1; i < c.p.Count; i++) { acc += Fl(c.p[i] - c.p[i - 1]).magnitude; if (acc > FL + .01f) break; c.p[i] = new Vector3(c.p[i].x, y0, c.p[i].z); }
             if (!st) c.p.Reverse();
         }
-        if (dead0) Land(true); if (dead1) Land(false); c.fix = c.p.Select(q => !V2In(q)).ToList();
-        int n = c.p.Count; var land = new bool[n]; { float a = 0; for (int i = 0; i < n; i++) { if (i > 0) a += Fl(c.p[i] - c.p[i - 1]).magnitude; land[i] = (dead0 && a <= F + .01f) || (dead1 && L - a <= F + .01f); } }
+        if (F0 > 0) Land(true, F0, dead0); if (F1 > 0) Land(false, F1, dead1); c.fix = c.p.Select(q => !V2In(q)).ToList();
+        int n = c.p.Count; var land = new bool[n]; { float a = 0; for (int i = 0; i < n; i++) { if (i > 0) a += Fl(c.p[i] - c.p[i - 1]).magnitude; land[i] = ((dead0 || (j0 && V2In(c.p[0]))) && a <= F0 + .01f) || ((dead1 || (j1 && V2In(c.p[n - 1]))) && L - a <= F1 + .01f); } }
         bool Fx(int i) => i == 0 || i == n - 1 || land[i] || !V2In(c.p[i]);
         // 3차 실행: 양 끝 고정 높이차가 길이×11% 를 넘으면(능선 오르막 64 m 에 15 m) 해가 없어 마지막 패스 쪽 끝에 계단 339% → 고정점 사이 구간은 필요한 구배로 고르게
         var gl = Enumerable.Repeat(V2Grade, n).ToArray(); int a0 = 0; float run = 0;
@@ -804,6 +811,7 @@ public static partial class BuildBayLoop
         for (int pass = 0; pass < 4; pass++) Pass();
     }
     const float V2Land = 2.5f;   // 막힌 끝 착지(평탄) 길이 m
+    const float V2JLand = 0f;    // 0418: 갈림목 입구 착지(평탄) 길이 m. 0 = 꺼짐(지금 맵 그대로). 3 = 켬 — 끼임 4곳 꺾임 0°·고리 6/6·공중 0 이었으나 턱 넘기 3회·흔들림 >30 이 108→138 이라 보류(programmer-20261031-0418)
     static void V2FlatEnd(V2L c, bool start, float ny)
     {
         float d = start ? c.d0 : c.d1; if (d <= 0) return; float acc = 0; int n = c.p.Count;
