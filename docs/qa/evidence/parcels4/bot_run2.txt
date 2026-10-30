@@ -1,0 +1,4 @@
+﻿# loop ok 1 fail 1
+run	dir	result	time	maxDev	at	why	air
+0	1	이탈	55.8	7.0	122,18,8	pitch-355 upY0.87 thr1.00 hit[] legs2	1
+0	-1	ok	243.1	2.3	-57,8,-18	 legs2	0
