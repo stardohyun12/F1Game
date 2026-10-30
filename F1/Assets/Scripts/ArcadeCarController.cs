@@ -252,6 +252,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         moveInput = value.Get<Vector2>();
     }
 
+    /// <summary>기능 1(걷기 ↔ 카트, OnFootDirector): 내릴 때 눌려 있던 입력을 지운다 · 검증 봇이 키 대신 넣는다.</summary>
+    public void SetMoveInput(Vector2 v) { moveInput = v; }
+
     void FixedUpdate()
     {
         // Stage gating: 운전 단계가 아니면 입력/물리 모두 차단.
