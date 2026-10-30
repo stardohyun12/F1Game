@@ -105,7 +105,7 @@ public static class OnFootSetup
         log.Append($"난간 콜라이더 메시로 {rails}개. ");
 
         var so2 = new SerializedObject(dir);
-        so2.FindProperty("cartReach").floatValue = 2.0f;
+        so2.FindProperty("gazeReach").floatValue = 2.0f;   // 옛 이름 cartReach 는 D-219 에 gazeReach 로 바뀜 — 그대로 두면 NRE 로 MarkSceneDirty 전에 죽었다
         so2.ApplyModifiedProperties();
         EditorSceneManager.MarkSceneDirty(scene);
         return log.ToString();

@@ -25,6 +25,14 @@ public class OnFootDirector : MonoBehaviour
     [Tooltip("카트에서 내릴 때 차 옆 거리(m).")]
     [SerializeField] float exitSide = 1.7f;
 
+    [Header("기능 2 — 정비소 사장 → 첫 주문(과제 20261031-0209)")]
+    [Tooltip("정비소 사장 자리(1.7m 캡슐 대역). 비면 기능 1 처럼 바로 카트를 탈 수 있다.")]
+    [SerializeField] Transform boss;
+    [Tooltip("첫 주문 배달지(찻집 앞 길). 비면 탑승 때 주문 없이 자유 주행.")]
+    [SerializeField] DeliveryPoint firstDrop;
+    [Tooltip("사장에게 말 거는 시선 레이 길이(m). 사람은 문보다 멀리서 말을 건다.")]
+    [SerializeField] float talkReach = 3.0f;
+
     // ── QA·봇이 읽는 상태 ──
     public Mode State { get; private set; } = Mode.Starting;
     public string Prompt { get; private set; } = "";
@@ -33,6 +41,29 @@ public class OnFootDirector : MonoBehaviour
     /// <summary>지금 시선 레이가 맞은 것(없으면 null) — 봇·QA 용.</summary>
     public string GazeTarget { get; private set; }
     public readonly List<string> Log = new List<string>();
+    /// <summary>사장 대화를 끝냈는지 — 이 뒤에만 카트를 탄다.</summary>
+    public bool Talked { get; private set; }
+    public bool InTalk => talkLine >= 0;
+    /// <summary>지금 자막 한 줄(대화 중이 아니면 "").</summary>
+    public string Subtitle => InTalk ? BossLines[talkLine].who + ": " + BossLines[talkLine].text : "";
+    public bool OrderStarted { get; private set; }
+    public bool Delivered { get; private set; }
+    public Transform Boss => boss;
+    public DeliveryPoint FirstDrop => firstDrop;
+
+    // 대사: docs/design/tutorial/first-delivery.yaml 의 garage 장면 1·2줄 그대로. 3줄(첫 주문 안내)은 설계에 사장 대사가 없어
+    // 보관소 직원 대사("첫 주문. 달걀 한 판, 언덕 위 찻집.")를 사장 입으로 옮기고 줄리아 이름을 붙였다 — 도현 확인 필요.
+    static readonly (string who, string text)[] BossLines =
+    {
+        ("사장", "왔냐. 오늘부터 배달이다. 대회는 그 다음."),
+        ("사장", "뒤에 짐상자 달아 놨어. 깨지는 건 네 책임."),
+        ("사장", "첫 주문. 달걀 한 판, 언덕 위 찻집 줄리아네."),
+    };
+    int talkLine = -1;
+    float talkLineAt;
+    OrderJob firstJob;
+    TextMeshProUGUI subText;
+    GameObject subRoot;
 
     ArcadeCarController car;
     Rigidbody carRb;
@@ -121,13 +152,24 @@ public class OnFootDirector : MonoBehaviour
         bool press = InteractPressed();
         if (State == Mode.OnFoot)
         {
+            if (InTalk) { UpdateTalk(press); return; }
             // 1인칭(D-219): 화면 가운데 점이 가리키는 것만 — 시선 레이 2 m 에 처음 맞은 것이 문·카트일 때.
             Object hit = Gaze(out DoorHinge door);
             GazeTarget = hit != null ? hit.name : null;
-            if (hit == car)
+            if (boss != null && hit == boss)
             {
-                SetPrompt("E 타기");
-                if (press) EnterCart();
+                SetPrompt("E 말하기");
+                if (press) BeginTalk();
+            }
+            else if (hit == car)
+            {
+                // 기능 2: 사장 말을 듣기 전엔 못 탄다.
+                if (boss != null && !Talked) SetPrompt("사장님한테 먼저");
+                else
+                {
+                    SetPrompt("E 타기");
+                    if (press) EnterCart();
+                }
             }
             else if (door != null)
             {
@@ -152,7 +194,7 @@ public class OnFootDirector : MonoBehaviour
     {
         door = null;
         Transform eye = cam.transform;
-        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, gazeHits, gazeReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, gazeHits, Mathf.Max(gazeReach, boss != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
         Collider first = null; float best = float.MaxValue;
         for (int i = 0; i < n; i++)
         {
@@ -160,6 +202,9 @@ public class OnFootDirector : MonoBehaviour
             if (c == null || c.transform.IsChildOf(player.transform)) continue;
             if (gazeHits[i].distance < best) { best = gazeHits[i].distance; first = c; }
         }
+        // 사장(사람)은 talkReach 까지, 나머지(문·카트)는 예전처럼 gazeReach 까지.
+        if (first != null && boss != null && first.transform.IsChildOf(boss) && best <= talkReach) return boss;
+        if (first != null && best > gazeReach) first = null;
         // 카트는 낮아서(충돌 0.44m) 서서 내려다보면 레이가 빗나간다 — 카트 중심이 3m 안(가장자리 약 2m)이고 대략 앞쪽이면 타기 허용(PD 10/31, 기능팀 보고 1c)
         if (car != null)
         {
@@ -205,7 +250,8 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(false);
         footCam.enabled = false;
         SetCarControl(true);
-        if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
+        if (!OrderStarted && firstDrop != null && rc != null) { BeginFirstOrder(); freeDriveEntered = true; }
+        else if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
         else Services.Overview?.GoToFollow();
         // 같은 프레임에 B 자리로 — 눈높이에서 차 뒤로 날아가는 프레임이 없다.
         if (follow != null) { follow.enabled = true; follow.SnapToTarget(); }
@@ -224,6 +270,70 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(true);
         player.Teleport(ExitPoint(), car.transform.eulerAngles.y);
         EnterFoot();
+    }
+
+    // ── 기능 2: 사장 대화 → 첫 주문 ──
+    void BeginTalk()
+    {
+        talkLine = 0; talkLineAt = Time.unscaledTime;
+        player.enabled = false;                                    // 듣는 동안 안 걷는다(시선은 그대로)
+        Vector3 to = player.transform.position - boss.position; to.y = 0f;
+        if (to.sqrMagnitude > 1e-4f) boss.rotation = Quaternion.LookRotation(to.normalized, Vector3.up);
+        SetPrompt("");
+        ShowSubtitle();
+        Mark("사장 대화 시작");
+    }
+
+    void UpdateTalk(bool press)
+    {
+        if (!press || Time.unscaledTime - talkLineAt < 0.3f) return;   // 한 줄은 최소 0.3초(연타로 건너뛰기 방지)
+        talkLine++; talkLineAt = Time.unscaledTime;
+        if (talkLine < BossLines.Length) { ShowSubtitle(); return; }
+        talkLine = -1; Talked = true;
+        player.enabled = true;
+        if (subRoot != null) subRoot.SetActive(false);
+        Mark("사장 대화 끝");
+    }
+
+    void ShowSubtitle()
+    {
+        Mark("자막 " + Subtitle);
+        if (subText == null) return;
+        subText.text = "<b>" + BossLines[talkLine].who + "</b>  " + BossLines[talkLine].text + "  <size=70%><color=#FFFFFFAA>[E]</color></size>";
+        subRoot.SetActive(true);
+    }
+
+    /// <summary>
+    /// 첫 탑승 = 첫 주문 출발. OpeningTutorial 과 같은 달걀 주문을 만들어 기존 RunController.BeginRun 으로 시작한다
+    /// (DeliveryManager 경로·화물 종류·HUD 화살표 모두 기존 그대로). 다른 배달지는 꺼서 화살표가 찻집만 가리키게.
+    /// </summary>
+    void BeginFirstOrder()
+    {
+        var mgr = Services.Delivery as DeliveryManager ?? FindFirstObjectByType<DeliveryManager>();
+        if (mgr == null) { Mark("첫 주문 실패: DeliveryManager 없음"); rc.EnterFreeDrive(); return; }
+        foreach (var dp in FindObjectsByType<DeliveryPoint>(FindObjectsSortMode.None)) if (dp != firstDrop) dp.gameObject.SetActive(false);
+        firstDrop.gameObject.SetActive(true);
+        var route = new List<DeliveryPoint> { firstDrop };
+        mgr.SetPoints(route, null);                                // 귀환 없음 — 찻집 도착이 곧 끝(범위: 출발 → 도착 감지)
+        firstJob = ScriptableObject.CreateInstance<OrderJob>();
+        firstJob.name = "TUT_FirstEggs"; firstJob.displayName = "달걀 한 판 → 언덕 위 찻집"; firstJob.cargoType = CargoType.Eggs;
+        firstJob.destinationLabels = new List<string> { firstDrop.Label }; firstJob.timeLimitSec = 0f; firstJob.baseReward = 1200; firstJob.timeBonus = 0;
+        firstJob.callerName = "언덕 위 찻집";
+        mgr.OnDeliveryCompleted.AddListener(OnFirstDelivered);
+        var progress = FindFirstObjectByType<DeliveryProgressHUD>(FindObjectsInactive.Include);
+        if (progress != null) progress.gameObject.SetActive(true);
+        rc.BeginRun(firstJob);
+        OrderStarted = true;
+        var t = mgr.CurrentTarget;
+        Mark($"첫 주문 출발 화물={firstJob.cargoType} 목표={(t != null ? t.Label + " " + t.transform.position.ToString("F1") : "없음")}");
+    }
+
+    void OnFirstDelivered(DeliveryPoint dp)
+    {
+        if (dp != firstDrop || Delivered) return;
+        Delivered = true;
+        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+        Mark($"찻집 도착 {dp.Label} 화물={(cargo != null ? (cargo.IntegrityPercent * 100f).ToString("F0") + "%" : "?")}");
     }
 
     Vector3 ExitPoint()
@@ -304,6 +414,20 @@ public class OnFootDirector : MonoBehaviour
         drt.anchoredPosition = Vector2.zero; drt.sizeDelta = new Vector2(8f, 8f);
         var dimg = dotRoot.GetComponent<Image>(); dimg.color = new Color(1f, 1f, 1f, 0.85f); dimg.raycastTarget = false;
         dotRoot.SetActive(false);
+        // 사장 대사 자막(기능 2): 화면 아래 넓은 반투명 띠. 글만 — 연출은 나중.
+        subRoot = new GameObject("Subtitle", typeof(RectTransform), typeof(Image));
+        subRoot.transform.SetParent(go.transform, false);
+        var srt = (RectTransform)subRoot.transform;
+        srt.anchorMin = srt.anchorMax = new Vector2(0.5f, 0f); srt.pivot = new Vector2(0.5f, 0f);
+        srt.anchoredPosition = new Vector2(0f, 90f); srt.sizeDelta = new Vector2(1200f, 96f);
+        var simg = subRoot.GetComponent<Image>(); simg.color = new Color(0f, 0f, 0f, 0.55f); simg.raycastTarget = false;
+        var sgo = new GameObject("Text", typeof(RectTransform));
+        sgo.transform.SetParent(subRoot.transform, false);
+        var strt = (RectTransform)sgo.transform; strt.anchorMin = Vector2.zero; strt.anchorMax = Vector2.one; strt.offsetMin = new Vector2(32f, 0f); strt.offsetMax = new Vector2(-32f, 0f);
+        subText = sgo.AddComponent<TextMeshProUGUI>();
+        subText.font = font; subText.fontSize = 40; subText.alignment = TextAlignmentOptions.Center;
+        subText.color = Color.white; subText.raycastTarget = false; subText.richText = true;
+        subRoot.SetActive(false);
     }
 
     /// <summary>걷기 = 안내를 조준점 바로 아래에(보는 곳 옆에서 읽게) · 카트 = 화면 아래 띠.</summary>
