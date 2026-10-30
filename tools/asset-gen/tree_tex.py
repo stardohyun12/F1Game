@@ -15,6 +15,9 @@ CANDS = [('T1', 'pine', 'A'), ('T2', 'pine', 'B'), ('T3', 'celtis', 'A'), ('T4',
          ('T5', 'camellia', 'A'), ('T6', 'camellia', 'B'), ('T7', 'cypress', 'A'), ('T8', 'cypress', 'B')]
 VT = {'pine': (.36, .44), 'celtis': (.44, .46), 'camellia': (.38, .42), 'cypress': (.34, .42)}   # (잎, 껍질) 목표 명도 — 사진 명도와 반반
 STEPS = np.array([-.11, -.04, .04, .11])
+# artlive 20261031-0243: 잎 바탕색 고정(hue°|None = 사진 그대로, 채도, 명도). 곰솔 T1 잎 (84,107,76) V .42 S .29 · 팽나무 T4 V .50 S .37 사이로 맞춤.
+#   T5 동백 사진이 어두운 광택 잎이라 (48,63,37) V .25 = 거의 검은 녹색 → 명도·채도 올림. T6 올리브 잎 (107,114,102) S .10 = 회청색 → 연두 쪽 hue 88°·채도 올림.
+LEAF_FIX = {'T5': (None, .36, .44), 'T6': (88, .32, .45)}
 
 def photo(sp, st, kind):
     im = Image.open(PH / f'T_{sp}_{st}_{kind}.jpg').convert('RGB'); w, h = im.size
@@ -64,6 +67,9 @@ for tn, sp, st in CANDS:
         sel = (a[:, 1] >= a[:, 0]) & (a[:, 1] >= a[:, 2]) if kind == 'leaf' else a[:, 2] <= a[:, 0] + 8
         return np.median(a[sel] if sel.sum() > 100 else a, 0)
     col = {'leaf': tone(med(lp, 'leaf'), VT[sp][0], .42), 'bark': tone(med(bp, 'bark'), VT[sp][1], .26)}
+    if tn in LEAF_FIX:
+        hf, sf, vf = LEAF_FIX[tn]; h0, _, _ = colorsys.rgb_to_hsv(*(col['leaf'] / 255))
+        col['leaf'] = np.array(colorsys.hsv_to_rgb(h0 if hf is None else hf / 360, sf, vf)) * 255
     G = {'leaf': grain(lp, rs), 'bark': grain(bp, rs)}
     A = np.zeros((AH + 4, AW + 4, 4)); A[..., :3] = col['leaf']; A[..., 3] = 255
     for cell in L['cells']:

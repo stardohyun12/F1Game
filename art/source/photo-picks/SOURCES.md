@@ -43,3 +43,26 @@
 
 시트: `sheet_A.png`~`sheet_H.png`(범주별 3장), `sheet_all.png`(8줄×3). I = 밭(field_patch, artlive 20261030-2003): `I/sheet_I.png` 11장 — 흙 I1-3 · 배추 I4-6 · 파 I7-8 · 나무 울 I9-11. 라이선스는 받을 때 파일 페이지 API(extmetadata LicenseShortName)로 CC0 재확인, 기록 `I/prov_I.json`.
 참고: G1·G2 사진 오른쪽 아래에 촬영 날짜 스탬프가 작게 찍혀 있음(텍스처로 쓸 땐 잘라 낼 것). A1·A3·E2·E3·F1·F2·H3 은 사진 기반 타일 텍스처(정면 평면), 나머지는 실제 장면 사진.
+
+## T — 나무 후보 (artlive 20261031-0142)
+
+나무 텍스처 비교용 종별 A/B 후보 4종×(잎+껍질). Commons 는 파일 페이지 API(extmetadata LicenseShortName)로 CC0/Public domain 재확인, Poly Haven 은 전 에셋 CC0. 긴 변 1600px 이하. 대체: 곰솔 B 잎=Pinus nigra(유럽곰솔), 팽나무 B 잎=Zelkova carpinifolia(느티나무속), 동백 B=올리브(Olea europaea) 잎, 동백 A 잎은 꽃 제외 상단 크롭(Camellia japonica), 사이프러스 B 잎은 곤충 제외 하단 크롭. 껍질은 전부 Poly Haven(곰솔 껍질 2종은 Pinus 일반, 팽나무=Chinese/Japanese hackberry bark, 동백=매끈한 대체 sakura/platanus, 사이프러스=cedar 섬유질 대체). `T/sheet_T.png`·`T/prov_T.json`.
+
+| 번호 | 파일 | 출처 | 라이선스 원문 | 촬영자/작성자 | 저장 크기 |
+|---|---|---|---|---|---|
+| T:pine_A_leaf | `T/T_pine_A_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Close-up_of_pine-needle_85.JPG | Public domain (Public domain) | Conty | 1600×1200 |
+| T:pine_A_bark | `T/T_pine_A_bark.jpg` | Poly Haven: https://polyhaven.com/a/knotted_pine_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Dimitrios Savva | 1600×1600 |
+| T:pine_B_leaf | `T/T_pine_B_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:20180404Pinus_nigra3.jpg | CC0 (Creative Commons Zero, Public Domain Dedication) | AnRo0002 | 1600×1200 |
+| T:pine_B_bark | `T/T_pine_B_bark.jpg` | Poly Haven: https://polyhaven.com/a/pine_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Dimitrios Savva | 1600×1600 |
+| T:celtis_A_leaf | `T/T_celtis_A_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Celtis_sinensis_Beor_St_Creek_7th_Brigade_Park_Chermside_L1020887.jpg | CC0 (Creative Commons Zero, Public Domain Dedication) | John Robert McPherson | 1600×1202 |
+| T:celtis_A_bark | `T/T_celtis_A_bark.jpg` | Poly Haven: https://polyhaven.com/a/chinese_hackberry_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Charlotte Baglioni | 800×1600 |
+| T:celtis_B_leaf | `T/T_celtis_B_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Zelkova_carpinifolia_(Jardin_des_Plantes_de_Paris)_-_Leaves.jpg | Public domain (Public domain) | Tangopaso | 1200×1600 |
+| T:celtis_B_bark | `T/T_celtis_B_bark.jpg` | Poly Haven: https://polyhaven.com/a/japanese_hackberry_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Charlotte Baglioni | 1600×1600 |
+| T:camellia_A_leaf | `T/T_camellia_A_leaf.jpg` (원본에서 비율 크롭 (0, 0, 1, 0.38) (꽃·곤충 제외)) | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Pale_pink_camellia_bloom_among_dark_glossy_leaves_in_a_garden_in_Portland,_Oregon.jpg | CC0 (Creative Commons Zero, Public Domain Dedication) | Z3lvs | 1600×405 |
+| T:camellia_A_bark | `T/T_camellia_A_bark.jpg` | Poly Haven: https://polyhaven.com/a/sakura_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Charlotte Baglioni | 1600×1600 |
+| T:camellia_B_leaf | `T/T_camellia_B_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Olea_europaea_FruitsandLeaves_2009December13_DehesaBoyaldePuertollano.jpg | Public domain (Public domain) | Javier martin | 1600×1200 |
+| T:camellia_B_bark | `T/T_camellia_B_bark.jpg` | Poly Haven: https://polyhaven.com/a/bark_platanus | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Dimitrios Savva | 1600×1600 |
+| T:cypress_A_leaf | `T/T_cypress_A_leaf.jpg` | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Cupressus_sempervirens_A.jpg | Public domain (Public domain) | Wouter Hagens | 1071×1600 |
+| T:cypress_A_bark | `T/T_cypress_A_bark.jpg` | Poly Haven: https://polyhaven.com/a/japanese_cedar_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Charlotte Baglioni | 800×1600 |
+| T:cypress_B_leaf | `T/T_cypress_B_leaf.jpg` (원본에서 비율 크롭 (0, 0.56, 1, 1) (꽃·곤충 제외)) | Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Cupressus_sempervirens_B.jpg | Public domain (Public domain) | Wouter Hagens | 1600×632 |
+| T:cypress_B_bark | `T/T_cypress_B_bark.jpg` | Poly Haven: https://polyhaven.com/a/chinese_cedar_bark | CC0 (polyhaven.com/license) — "Our assets are all licensed as CC0, which is effectively Public Domain even in jurisdictions that do not support the Public Domain." | Charlotte Baglioni | 1600×1600 |

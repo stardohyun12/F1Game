@@ -87,36 +87,44 @@ def sp_pine():  # 곰솔: 높이 ~6.6m. 바람 = -x 쪽(바다)에서 → 줄기
             k += 1; p = Vector(pc) + Vector((math.cos(a) * rx * .78, math.sin(a) * ry * .78, -h * .35))
             card('CARD_%02d' % k, p, .9, .7, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.25, .25))
 
-def sp_celtis():  # 팽나무: 높이 ~7.4m, 수관 폭 ~8m. 굵은 줄기 + 2.2m 에서 셋 갈림 + 넓고 낮은 지붕 수관(밑이 판판)
+def sp_celtis():  # 팽나무: 높이 ~6.8m, 수관 폭 ~9m. 굵고 짧은 줄기(밑 r .62) + 1.5m 에서 넷으로 낮게 갈림 + 둥근 지붕(돔) 수관
+    # artlive 20261031-0243: 곰솔과 같은 우산 꼴(납작 판 여러 장) → 가운데 큰 돔 하나 + 둘레 어깨 덩어리 5개가 처마처럼 내려와 둥근 지붕
     rng = random.Random(22)
-    tube('TRUNK_01', [(0, 0, -.15), (.05, .02, .9), (.1, -.03, 2.2)], [.48, .36, .33], 'bark', seed=2, wob=.1)
-    limbs = [((.1, -.03, 2.1), (1.3, .3, 3.6), (2.6, .5, 4.6)), ((.1, -.03, 2.1), (-1.0, .9, 3.7), (-2.3, 1.4, 4.7)), ((.1, -.03, 2.1), (.1, -1.2, 3.9), (-.2, -2.3, 5.0))]
-    for i, (a, b, c) in enumerate(limbs):
-        tube('BRANCH_%02d' % (i + 1), bez(a, b, c, 3), [.27, .2, .15, .1], 'bark', seed=30 + i, wob=.05, cap1=False)
-    subs = [((1.3, .3, 3.6), (1.5, -1.3, 4.9)), ((-1.0, .9, 3.7), (-.6, 2.4, 5.0)), ((.1, -1.2, 3.9), (1.6, -2.2, 4.8)), ((-1.0, .9, 3.7), (-2.6, -.6, 4.9))]
+    tube('TRUNK_01', [(0, 0, -.15), (.04, .02, .75), (.08, -.02, 1.5)], [.62, .5, .45], 'bark', seed=2, wob=.1)
+    fork = (.08, -.02, 1.4)
+    limbs = [((1.0, .25, 2.2), (2.2, .5, 3.5)), ((-1.0, .45, 2.25), (-2.1, .8, 3.5)), ((-.8, -.75, 2.2), (-1.6, -1.5, 3.5)), ((.5, -.9, 2.25), (1.0, -1.9, 3.5))]
+    for i, (b, c) in enumerate(limbs):   # 굵은 가지 넷 = 1.4m 에서 옆으로 벌어져 어깨 덩어리 속(중심 .85)으로
+        tube('BRANCH_%02d' % (i + 1), bez(fork, b, c, 3), [.32, .25, .18, .12], 'bark', seed=30 + i, wob=.05, cap1=False)
+    subs = [((-1.0, .45, 2.25), (.16, 2.05, 3.65)), ((1.0, .25, 2.2), (.6, 1.0, 4.0)), ((-.8, -.75, 2.2), (-.2, -1.2, 4.0))]
     for i, (a, b) in enumerate(subs):
-        m = (Vector(a) + Vector(b)) / 2 + Vector((0, 0, .25))
-        tube('BRANCH_%02d' % (i + 4), [a, m, b], [.12, .09, .06], 'bark', seed=40 + i, cap1=False)
-    blobs = [((2.6, .5, 5.0), 2.0, 1.6, 1.5, .3), ((-2.3, 1.4, 5.1), 1.9, 1.6, 1.4, 2.0), ((-.2, -2.3, 5.3), 1.8, 1.5, 1.5, -1.3), ((1.5, -1.4, 5.3), 1.5, 1.3, 1.3, -.6),
-             ((-.6, 2.4, 5.4), 1.6, 1.3, 1.3, 1.4), ((-2.6, -.7, 5.2), 1.5, 1.3, 1.2, 3.0), ((.2, .2, 6.2), 2.2, 1.9, 1.5, .7)]
-    for i, (pc, rx, ry, h, yaw) in enumerate(blobs):
-        lump('CANOPY_%02d' % (i + 1), pc, rx, ry, h, 'leaf', 200 + i, n=10, yaw=yaw, flat=.7, top_off=(rng.uniform(-.2, .2), rng.uniform(-.2, .2)), jag=.2)
+        m = (Vector(a) + Vector(b)) / 2 + Vector((0, 0, .2))
+        tube('BRANCH_%02d' % (i + 5), [a, m, b], [.13, .1, .07], 'bark', seed=40 + i, cap1=False)
+    blobs = [((.1, .05, 4.2), 3.2, 2.95, 3.2, .7, 12, .5)]   # 돔: 꼭대기 ~6.1m, 밑 ~3.3m
+    for i, a in enumerate((.25, 1.5, 2.75, 3.95, 5.15)):   # 어깨(처마): 반지름 2.7 둘레, 돔보다 낮게(밑 ~3.1m) → 둥근 지붕 가장자리 + 줄기가 짧아 보임
+        blobs.append(((math.cos(a) * 2.7, math.sin(a) * 2.45, 3.6 + .12 * (i % 2)), 1.85, 1.5, 1.6, a, 10, .55))
+    for i, (pc, rx, ry, h, yaw, nn, fl) in enumerate(blobs):
+        lump('CANOPY_%02d' % (i + 1), pc, rx, ry, h, 'leaf', 200 + i, n=nn, yaw=yaw, flat=fl, top_off=(rng.uniform(-.12, .12), rng.uniform(-.12, .12)), jag=.16)
     k = 0
-    for i, (pc, rx, ry, h, yaw) in enumerate(blobs[:6]):   # 수관 아래 가장자리에 늘어진 잎 카드(밑선을 깨기)
+    for i, (pc, rx, ry, h, yaw, nn, fl) in enumerate(blobs[1:6]):   # 처마 아래 가장자리에 늘어진 잎 카드(밑선을 깨기)
         for a in (yaw + .9, yaw - .9):
             k += 1; p = Vector(pc) + Vector((math.cos(a) * rx * .82, math.sin(a) * ry * .82, -h * .5))
             card('CARD_%02d' % k, p, 1.2, .95, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.2, .2))
 
-def sp_camellia():  # 동백 관목: 높이 ~1.45m, 폭 ~1.6m. 밑에 줄기 3개 보임
+def sp_camellia():  # 동백 관목: 높이 ~1.4m, 폭 ~1.65m. 잎 덩어리 4개(갈라진 틈) + 밑 0~.38m 에 줄기 4개 살짝
+    # artlive 20261031-0243: 큰 덩어리 넷이 서로 .3 씩 겹쳐 한 덩이로 뭉쳐 보이던 것 → 작은 덩어리 넷(바깥 셋 + 위 하나)을 벌려 놓고 줄기마다 하나씩
     rng = random.Random(33)
-    stems = [((0, 0, -.08), (.25, .1, .6)), ((.05, .05, -.08), (-.3, .15, .55)), ((0, -.05, -.08), (0, -.3, .5))]
-    for i, (a, b) in enumerate(stems): tube('TRUNK_%02d' % (i + 1), [a, b], [.045, .035], 'bark', seed=50 + i, cap1=False)
-    blobs = [((.25, .1, .78), .62, .55, .62, .4), ((-.33, .15, .72), .58, .52, .6, 2.1), ((0, -.33, .66), .55, .5, .55, -1.2), ((0, 0, 1.08), .55, .5, .52, 1.0)]
+    blobs = [((.36, .08, .55), .48, .42, .56, .3), ((-.34, .22, .52), .46, .4, .54, 2.6), ((.02, -.38, .5), .45, .4, .52, -1.5), ((-.03, .03, .9), .44, .4, .5, 1.0)]   # 밑 ~.38m → 줄기는 밑동 한 뼘만, 덩어리끼리 살짝 겹쳐 한 덤불의 잎 뭉치 넷
     for i, (pc, rx, ry, h, yaw) in enumerate(blobs):
-        lump('CANOPY_%02d' % (i + 1), pc, rx, ry, h, 'leaf', 300 + i, n=8, yaw=yaw, flat=.45, top_off=(rng.uniform(-.2, .2), 0), jag=.2)
-    for k, a in enumerate((.3, 1.9, 3.4, 4.9, 5.8)):
-        p = Vector((math.cos(a) * .72, math.sin(a) * .66, .42 + .2 * (k % 2)))
-        card('CARD_%02d' % (k + 1), p, .55, .5, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.2, .3))
+        lump('CANOPY_%02d' % (i + 1), pc, rx, ry, h, 'leaf', 300 + i, n=8, yaw=yaw, flat=.45, top_off=(rng.uniform(-.2, .2), 0), jag=.18)
+    for i, (pc, rx, ry, h, yaw) in enumerate(blobs):   # 줄기: 밑동 가운데 → 덩어리 중심 아래(꺾인 2마디, 16각)
+        e = Vector(pc) + Vector((0, 0, -.08)); b0 = Vector((rng.uniform(-.04, .04), rng.uniform(-.04, .04), -.08)); m = b0 * .5 + e * .5 + Vector((0, 0, -.06))
+        tube('TRUNK_%02d' % (i + 1), [b0, m, e], [.045, .038, .03], 'bark', seed=50 + i, cap1=False)
+    for k, (pc, rx, ry, h, yaw) in enumerate(blobs[:3]):   # 잎 카드: 바깥 덩어리 셋의 바깥 옆(덩어리 밑선을 깨기) + 위 덩어리 둘
+        a = math.atan2(pc[1], pc[0]); p = Vector(pc) + Vector((math.cos(a) * rx * .7, math.sin(a) * ry * .7, -h * .3))
+        card('CARD_%02d' % (k + 1), p, .45, .42, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.2, .3))
+    for k, a in enumerate((.9, 3.9)):
+        pc = blobs[3][0]; p = Vector(pc) + Vector((math.cos(a) * .26, math.sin(a) * .24, -.1))
+        card('CARD_%02d' % (k + 4), p, .4, .38, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.2, .3))
 
 def sp_cypress():  # 사이프러스: 높이 ~8m, 폭 ~1.5m. 좁은 기둥 = 층마다 반지름·중심이 흔들리는 12각 링(뾰족한 끝)
     rng = random.Random(44)
