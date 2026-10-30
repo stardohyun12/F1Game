@@ -218,6 +218,29 @@ public static partial class BuildBayLoop
             // 1차 실행: 높이를 먼저 펴고 갈림목 d 구간을 나중에 마디 높이로 덮었더니 d(최대 14 m)×11% 만큼의 차가 6 m 에 몰려 구배 262% → 이제 d 구간을 고정점으로 넣고 편다
             int DegE(int n) => chains.Count(x => x.n0 == n) + chains.Count(x => x.n1 == n);
             foreach (var c in chains) { V2Profile(c, nodeY[c.n0], nodeY[c.n1], G); V2Trim(c); V2FinalGrade(c, DegE(c.n0) == 1, DegE(c.n1) == 1); }
+            // 1f: 갈림목 없는 끝(d=0)이 넓은 길 띠 안에 놓이면 두 띠가 1~4 cm 차로 겹쳐 깊이 싸움(진회색 위 밝은 가시) — 874_s1 끝은 구역 밖(x 331)이라 T 붙이기를 못 받음
+            //  → 그 끝을 넓은 띠 가장자리에서 자르고 높이를 넓은 길에 맞춘다
+            int nEndTrim = 0;
+            foreach (var c in chains) for (int side = 0; side < 2; side++)
+            {
+                if ((side == 0 ? c.d0 : c.d1) > 0f) continue;
+                if (side == 1) { c.p.Reverse(); c.fix.Reverse(); }
+                var f = chains.FirstOrDefault(o => o != c && o.w > c.w && V2Dist(o.p, c.p[0], out var nq0) < o.w * .5f && Mathf.Abs(nq0.y - c.p[0].y) < 1.5f);
+                if (f != null)
+                {
+                    float hw = f.w * .5f; int i = 0; while (i + 1 < c.p.Count && V2Dist(f.p, c.p[i + 1], out _) < hw) i++;
+                    if (i + 2 < c.p.Count)
+                    {
+                        Vector3 a = c.p[i], b = c.p[i + 1]; float lo = 0, hi = 1;
+                        for (int it = 0; it < 24; it++) { float mid = (lo + hi) * .5f; if (V2Dist(f.p, Vector3.Lerp(a, b, mid), out _) < hw) lo = mid; else hi = mid; }
+                        var X = Vector3.Lerp(a, b, hi); V2Dist(f.p, X, out var nqX); X.y = nqX.y;
+                        c.p.RemoveRange(0, i + 1); c.fix.RemoveRange(0, i + 1); c.p.Insert(0, X); c.fix.Insert(0, false);
+                        if (c.p.Count > 2 && Fl(c.p[1] - c.p[0]).magnitude < .3f) { c.p.RemoveAt(1); c.fix.RemoveAt(1); }
+                        nEndTrim++; lg.Add($"띠 안 끝 자름: {V2Short(c.id)} ⊂ {V2Short(f.id)} 점 {i + 1}개");
+                    }
+                }
+                if (side == 1) { c.p.Reverse(); c.fix.Reverse(); }
+            }
 
             // ── 띠 메시 ────────────────────────────────────────
             var v2T = new GameObject("RoadsV2").transform; v2T.SetParent(top, false);
@@ -340,6 +363,31 @@ public static partial class BuildBayLoop
                 }
             }
             lg.Add($"걷는 길 조각 {pathN}, 차길 띠와 겹쳐 지운 점 {pathCut}");
+            // 1f: v2 는 구역에 닿은 길 전체(165_6 은 x 608 까지)를 새로 까는데, 구역에 안 닿은 옛 곁길(camo_794408003_237 @371,−95)은 그대로라
+            //  그 끝이 새 띠와 0 cm 차로 겹쳐 깊이 싸움 → 띠 안 삼각형을 뺀 사본을 RoadsV2 에 두고 옛 것은 끈다(되돌리기 = 다시 켬)
+            //  띠 경계에 걸친 삼각형은 띠 안 정점만 0.10 m 내려 띠 밑으로 숨긴다
+            int oldClip = 0;
+            bool InBand(Vector3 q) => chains.Any(c => V2Dist(c.p, q, out var nq) < c.w * .5f && Mathf.Abs(nq.y + RoadColLift - q.y) < 1.5f) || jPolys.Any(j => V2PolyE(j.poly, q, out _) <= 0f && Mathf.Abs(j.y - q.y) < 1.5f);
+            foreach (var mr in roadsT.GetComponentsInChildren<MeshRenderer>(false))
+            {
+                if (!mr.name.StartsWith("ROAD_") || disabled.Contains(mr.name)) continue;
+                var b = mr.bounds; b.Expand(1f);
+                if (!chains.Any(c => c.p.Any(q => b.Contains(new Vector3(q.x, b.center.y, q.z))))) continue;
+                var mf = mr.GetComponent<MeshFilter>(); var src = mf.sharedMesh; var otr = mr.transform;
+                var wv = src.vertices.Select(q => otr.TransformPoint(q)).ToArray(); var inV = wv.Select(InBand).ToArray(); if (!inV.Any(x => x)) continue;
+                var cm = Object.Instantiate(src); cm.name = "ROAD_V2o_" + mr.name; int cut = 0;
+                for (int sm = 0; sm < src.subMeshCount; sm++)
+                {
+                    var t = src.GetTriangles(sm); var keep = new List<int>();
+                    for (int i = 0; i < t.Length; i += 3) { if (InBand((wv[t[i]] + wv[t[i + 1]] + wv[t[i + 2]]) / 3f)) { cut++; continue; } keep.Add(t[i]); keep.Add(t[i + 1]); keep.Add(t[i + 2]); }
+                    cm.SetTriangles(keep, sm);
+                }
+                cm.vertices = wv.Select((q, i) => otr.InverseTransformPoint(inV[i] ? q - Vector3.up * .10f : q)).ToArray(); cm.RecalculateBounds(); meshes.Add(cm);
+                var cl = Object.Instantiate(mr.gameObject, v2T, true); cl.name = "ROAD_V2o_" + mr.name; cl.GetComponent<MeshFilter>().sharedMesh = cm;
+                var cc = cl.GetComponent<MeshCollider>(); if (cc != null) { cc.sharedMesh = null; cc.sharedMesh = cm; }
+                disabled.Add(mr.name); oldClip++; lg.Add($"옛 길 띠 안 잘라냄: {mr.name} 삼각형 {cut}, 정점 내림 {inV.Count(x => x)}");
+            }
+            lg.Add($"띠 안 끝 자름 {nEndTrim}, 옛 길 사본 {oldClip}");
             foreach (var nm in disabled.Distinct()) roadsT.Find(nm)?.gameObject.SetActive(false);
             System.IO.File.WriteAllLines(V2DisabledFile, disabled.Distinct());
 
