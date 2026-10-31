@@ -2,6 +2,7 @@
 # 대기열 루프(10/31, 도현 ㄱㄱ): 줄이 비면 다음 과제를 자동으로 가져간다 — 밤 줄이 끝나고 14시간 놀던 것 방지.
 # 사용: bash scripts/team_queue.sh <editor|studio|feature>   (persist background 로 줄마다 하나)
 # 과제 넣기: .claude/team/queue/<줄>/NN-이름.task 파일만 쓰면 됨(번호 순). 끝난 것은 queue/<줄>/done/.
+# 모델(D-223): 과제 첫 줄 [OPUS] 면 opus, 아니면 config 기본 sonnet. 실패 시 [OPUS] 로 1회 자동 승격.
 # 결과 처리: COMPILE-BROKEN / FAILED-NOREPORT 면 커밋하지 않고 queue/<줄>/hold/ 에 남김(PD 확인).
 cd D:/Github/F1Game || exit 1
 LINE=$1; Q=.claude/team/queue/$LINE; S=.claude/team/sessions
@@ -18,7 +19,7 @@ shot_restart(){ # 사본 에디터 멈춤(가져오기 워커가 포트 쥠) →
   log "사본 에디터 재시작 실패"; return 1; }
 commit(){
   git checkout -- F1/Assets/UI/Fonts 2>/dev/null
-  for p in F1/Assets/Editor F1/Assets/Scripts F1/Assets/Scenes/Map_TownV6.unity F1/Assets/Scenes/Map_TownV6_Mats docs/map docs/qa/evidence docs/team/reports F1Studio/Assets/Art art/_review tools/asset-gen tools/viewer/feedback .claude/team/ledger.jsonl; do git add "$p" 2>/dev/null; done
+  for p in F1/Assets/Editor F1/Assets/Scripts F1/Assets/Scenes/Map_TownV6.unity F1/Assets/Scenes/Map_TownV6_Mats docs/map docs/qa/evidence docs/team/reports F1Studio/Assets/Art $(ls -d art/_review/$(date +%Y-%m-%d)-* 2>/dev/null) tools/asset-gen tools/viewer/feedback .claude/team/ledger.jsonl; do git add "$p" 2>/dev/null; done
   git commit -qm "$1 [skip-verifier]" 2>/dev/null && { timeout 900 git push -q 2>&1 | grep -E "rejected"; log "커밋 $(git log --oneline -1)"; }; }
 while true; do
   T=$(ls "$Q"/*.task 2>/dev/null | sort | head -1)
@@ -36,6 +37,13 @@ while true; do
   echo "$OUT" | tail -40 > "$Q/done/$NAME.out"
   if echo "$OUT" | grep -qE "COMPILE-BROKEN|FAILED-NOREPORT|ok=False"; then
     log "보류 $NAME ($(echo "$OUT" | grep -oE 'COMPILE-BROKEN|FAILED-NOREPORT|ok=False' | head -1)) — 커밋 안 함"
+    # D-223 자동 승격: Sonnet 과제가 실패하면 같은 과제를 [OPUS] 로 한 번 다시(이미 OPUS 면 hold)
+    if ! grep -q '\[OPUS\]' "$Q/done/$NAME.task"; then
+      { printf '[OPUS]'; cat "$Q/done/$NAME.task"; printf '
+이어 하기(자동 승격): Sonnet 시도가 실패함 — 직전 보고서 docs/team/reports/ 의 최신 %s 보고서와 git status 를 먼저 보고 이어서.
+' "$ROLE"; } > "$Q/00-$NAME-opus.task"
+      log "승격 $NAME → [OPUS] 재시도 예약"; mv "$Q/done/$NAME.task" "$Q/done/$NAME.sonnet-fail.task"; continue
+    fi
     mv "$Q/done/$NAME.task" "$Q/hold/"; continue
   fi
   if [ $ROLE = feature ]; then

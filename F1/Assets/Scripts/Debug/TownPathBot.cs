@@ -20,6 +20,13 @@ public class TownPathBot : MonoBehaviour
     System.Reflection.FieldInfo moveF;
     readonly StringBuilder sb = new StringBuilder();
 
+    // 봇은 Play 중에만 시험 스크립트가 만든다(씬에 저장 금지). 정적 값이 다음 Play 에 남아 간섭하지 않게 Play 시작 때 비운다.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics()
+    {
+        Status = "idle"; Only = ""; StuckProbe = false; LoopPts = new List<Vector3>(); LoopN = 20; LoopHalf = 3.5f; FeelLog.Clear();
+    }
+
     public static TownPathBot Begin(string mode, float ts = 3f)
     {
         var b = new GameObject("TownPathBot_" + mode).AddComponent<TownPathBot>(); b.mode = mode; b.timeScale = ts; return b;

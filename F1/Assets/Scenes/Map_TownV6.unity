@@ -670658,52 +670658,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2727466060154283441, guid: 99c60297e3ac008429971847e60537c7, type: 3}
   m_PrefabInstance: {fileID: 1264180101}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1264329685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1264329687}
-  - component: {fileID: 1264329686}
-  m_Layer: 0
-  m_Name: TownPathBot_loopBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1264329686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264329685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94239315b6551e24eba2e76d9a8e5343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: PitCrew::TownPathBot
-  mode: loopBox
-  timeScale: 8
---- !u!4 &1264329687
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264329685}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1264358984
 Mesh:
   m_ObjectHideFlags: 0
@@ -1133385,7 +1133339,6 @@ SceneRoots:
   - {fileID: 608521339}
   - {fileID: 1275828678}
   - {fileID: 11581171}
-  - {fileID: 1264329687}
   - {fileID: 1039872636}
   - {fileID: 408345758}
   - {fileID: 566464842}
