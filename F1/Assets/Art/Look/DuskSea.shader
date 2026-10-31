@@ -50,7 +50,9 @@ Shader "PitCrew/Look/DuskSea"
         _DayTint("Day tint", Color) = (0.36, 0.58, 0.70, 1)
         _DepthTex("Sea depth (R = 깊이/최대, G = sqrt(물가 거리/400 m))", 2D) = "white" {}
         _DepthRect("Depth rect (xmin, zmin, size, max m)", Vector) = (-400, -400, 800, 8)
-        _Debug("Debug (1 깊이, 2 계단 값, 3 노멀)", Float) = 0
+        _Ripple("D-235 찌 파문 (속도 m/s, 수명 s, 고리 간격 s, 선 굵기 px)", Vector) = (0.42, 1.8, 0.3, 1.3)
+        _RippleCol("D-235 파문 선(B)", Color) = (1.00, 0.84, 0.74, 1)
+        _Debug("Debug (1 깊이, 2 계단 값, 3 노멀, 5 수면 높이 wpos.y — SeaWaves 검산)", Float) = 0
     }
     SubShader
     {
@@ -66,10 +68,11 @@ Shader "PitCrew/Look/DuskSea"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
             TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn, _PCSeaClock;   // _PCSeaClock.x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
+            float4 _PCRipples[4];   // D-235 찌 파문(SeaWaves.AddRipple): x, z, 시작 시각(Now), 세기 0..1(0 = 빈 칸)
             CBUFFER_START(UnityPerMaterial)
                 float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint;
                 float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Spec, _Micro, _Dash, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
-                float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST;
+                float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST, _Ripple, _RippleCol;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
             CBUFFER_END
             struct appdata { float4 v : POSITION; float2 uv : TEXCOORD0; };
@@ -91,6 +94,32 @@ Shader "PitCrew/Look/DuskSea"
                 return float2(lerp(_DepthRect.w, dt.r * _DepthRect.w, inR), lerp(400, dt.g * dt.g * 400, inR));   // 400 = PitCrewSunsetMenu.ShoreDistMax
             }
             float ShallowAtt(float depth) { return saturate(depth / _Gerst.w) * .85 + .15 * saturate(depth / (_Gerst.w * .3)); }
+
+            // D-235 찌 파문: 파문마다 고리 2~3겹, 고리 i 반경 = 속도 × (나이 − i × 간격). 노멀엔 고리 모양 작은 둔덕(m 단위),
+            // 선은 화면 px 굵기(fwidth) → 360 줄에서도 1~2 px 로 또렷. 나이는 B 면 파와 같은 _StepFps 박자(매끄럽게 움직이면 선 픽셀이 오락가락).
+            float Ripples(float2 xz, inout float3 N)
+            {
+                float t = Now(), fps = _Style > .5 ? _StepFps : _Gerst.z; if (fps > .5) t = floor(t * fps) / fps;
+                float ln = 0;
+                [unroll] for (int r = 0; r < 4; r++)
+                {
+                    float4 rp = _PCRipples[r];
+                    float2 dv = xz - rp.xy; float rr = length(dv) + 1e-4, fr = max(fwidth(rr), 1e-4);
+                    float age = t - rp.z, life = _Ripple.y * (.75 + .25 * rp.w);
+                    float fade = step(1e-3, rp.w) * step(0, age) * step(age, life) * rp.w * pow(saturate(1 - age / life), 1.5);
+                    float rings = rp.w > .7 ? 3 : 2;
+                    [unroll] for (int q = 0; q < 3; q++)
+                    {
+                        float aq = age - q * _Ripple.z;
+                        float R = _Ripple.x * (.6 + .4 * rp.w) * max(aq, 0);
+                        float g = step(0, aq) * step(q + .5, rings) * (1 - q * .25) * fade;
+                        float w = .05 + .04 * R, u = (rr - R) / w;
+                        N.xz -= (dv / rr) * (-2 * u / w * exp(-u * u) * .012 * g);
+                        ln = max(ln, g * step(abs(rr - R) / fr, .5 * _Ripple.w));
+                    }
+                }
+                return ln;
+            }
 
             v2f vert(appdata a)
             {
@@ -128,6 +157,7 @@ Shader "PitCrew/Look/DuskSea"
                 // 격자 판과 바깥 판의 경계: 격자는 원 밖을, 바깥 판은 원 안을 버림(노을 바다를 쓰는 두 렌더러만)
                 float rc = distance(xz, _Disp.yz);
                 if (_Disp.x > .5) clip(i.xz0.z > .5 ? _Disp.w - rc : rc - _Disp.w);
+                if (_Debug > 4.5) return half4(i.wpos.y, 0, 0, 1);
 
                 float3 p = i.wpos;
                 float3 cam = _WorldSpaceCameraPos;
@@ -195,8 +225,9 @@ Shader "PitCrew/Look/DuskSea"
                         var += S * S * 1.1 * (1 - f);
                     }
                 }
+                float rip = Ripples(xz, N);
                 N = normalize(N);
-                crest = crest / max(crestA, 1e-4) * .5 + .5;                              // 너울 마루 0..1
+                crest =crest / max(crestA, 1e-4) * .5 + .5;                              // 너울 마루 0..1
                 if (_Debug > 2.5 && _Debug < 3.5) return half4(N * .5 + .5, 1);
                 if (_Debug > .5 && _Debug < 1.5) return half4(saturate(depth / 8), saturate(dist / 16), att, 1);
 
@@ -244,6 +275,7 @@ Shader "PitCrew/Look/DuskSea"
                     // A: 매끈한 실제 물
                     col += _PCDuskSunCol.rgb * P;
                     col = lerp(col, _Foam.rgb, saturate(shoreF * _FoamA.y + crestF * _FoamA.w));
+                    col = lerp(col, _RippleCol.rgb, rip * .35);
                 }
                 else
                 {
@@ -263,6 +295,8 @@ Shader "PitCrew/Look/DuskSea"
                     float fc = max(fwidth(crest), 1e-4);
                     float cl = step(abs(crest - _Crest.x), .5 * _Crest.y * fc) * step(.45, n1) * (1 - smoothstep(_Crest.z * .6, _Crest.z, d)) * step(.5, att);
                     col = lerp(col, lerp(col, _CrestCol.rgb, _Crest.w), cl);
+                    // D-235 찌 파문 선 1~2 px. 옅게 섞으면 360 줄 1× 에서 안 읽힘(첫 실측 혼합 10%대) → 바닥 .4 + 세기·나이로 .85 까지
+                    col = lerp(col, _RippleCol.rgb, step(.01, rip) * min(.85, .4 + rip * .9));
                     // 물가 2겹(4판과 같음): 안쪽 흰 테 + 한 칸 띄운 바깥 선. 1px 가 덮는 물 m 로 px 굵기 환산
                     float pixA = 2.0 / (abs(UNITY_MATRIX_P._m11) * _ScreenParams.y);
                     float mppH = d * pixA, mppV = d * pixA / max(-V.y, .003);

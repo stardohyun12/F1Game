@@ -28,6 +28,18 @@ public class FishingSpot : MonoBehaviour
     [Header("아트 슬롯(비면 회색 대역)")]
     public GameObject rodPrefab;
     public GameObject bobberPrefab;
+    [Header("D-235 물 — 노을 바다(DuskSea)일 때 셰이더와 같은 파에 뜨고 파문을 낸다")]
+    [Tooltip("착수 때 한 번(줄·찌가 물에 닿는 작은 물소리, CC0).")]
+    public AudioClip splashClip;
+    [Range(0f, 1f)] public float splashVolume = 0.55f;
+    [Tooltip("찌가 수면 기울기를 따라 기우는 비율(1 = 수면과 똑같이).")]
+    public float tiltFollow = 0.7f;
+    [Tooltip("착수 때 찌가 잠겼다 튀는 속도(m/s)와 출렁임 용수철(강도, 감쇠비).")]
+    public float plunge = 0.55f;
+    public Vector2 bobSpring = new Vector2(60f, 0.22f);
+    [Tooltip("물결에 출렁일 때 작은 파문 — 찌가 골에서 다시 오르기 시작할 때, 최소 간격(초)·세기.")]
+    public float bobRippleGap = 1.6f;
+    public float bobRippleStrength = 0.35f;
 
     [Header("검증 봇 입력(마우스 대신)")]
     public bool simActive;
@@ -35,10 +47,14 @@ public class FishingSpot : MonoBehaviour
     public bool Seated { get; private set; }
     public bool Landed => Seated && castT >= castTime;
     public Vector3 BobberPosition => bobber != null ? bobber.position : Vector3.zero;
+    /// <summary>D-235 검산용 — 이번 프레임 찌 자리의 셰이더 수면 높이(노을 바다가 아니면 NaN).</summary>
+    public float SurfaceY { get; private set; } = float.NaN;
 
     Camera cam; float savedNear; float yaw, pitch, castT;
     Transform root, rod, bobber; LineRenderer line;
     Vector3 castTo;
+    bool landed; float bobOff, bobVel, lastSurf, lastSurfVel, lastRippleT;
+    AudioSource splash;
     static readonly Vector3[] pts = new Vector3[20];
 
     Vector3 Flat(Vector3 v) { v.y = 0f; return v.sqrMagnitude > 1e-6f ? v.normalized : Vector3.forward; }
@@ -63,6 +79,7 @@ public class FishingSpot : MonoBehaviour
     public void Sit(Camera c)
     {
         cam = c; Seated = true; yaw = 0f; pitch = 0f; castT = 0f;
+        landed = false; bobOff = bobVel = 0f; lastSurfVel = 0f; lastSurf = float.NaN; SeaWaves.ClearRipples();
         savedNear = cam.nearClipPlane; cam.nearClipPlane = 0.05f;
         Build();
         castTo = seat.position + Flat(seat.forward) * castDistance; castTo.y = waterY;
@@ -75,7 +92,18 @@ public class FishingSpot : MonoBehaviour
         Seated = false;
         if (cam != null) cam.nearClipPlane = savedNear;
         if (root != null) Destroy(root.gameObject);
-        root = null; rod = null; bobber = null; line = null;
+        root = null; rod = null; bobber = null; line = null; splash = null;
+        SeaWaves.ClearRipples(); SurfaceY = float.NaN;
+    }
+
+    /// <summary>노을 바다(DuskSea 격자)가 켜져 있으면 그 머티리얼과 바다 판 y. 아니면 false(낮 바다 = 예전 흉내 출렁임).</summary>
+    bool DuskSea(out Material m, out float seaY)
+    {
+        m = null; seaY = waterY;
+        var look = SunsetLook.Find();
+        if (look == null || !look.IsOn || look.seaNear == null || !look.seaNear.enabled) return false;
+        m = look.seaNear.sharedMaterial; seaY = look.seaNear.transform.position.y;
+        return m != null && m.HasProperty("_W0");
     }
 
     public void AddLook(float dYaw, float dPitch) { yaw = Mathf.Clamp(yaw + dYaw, -yawLeft, yawRange); pitch = Mathf.Clamp(pitch + dPitch, -pitchDown, pitchUp); }
@@ -110,6 +138,8 @@ public class FishingSpot : MonoBehaviour
         var lm = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "FishingLine (대역)" };
         lm.SetColor("_BaseColor", lineColor);
         line.sharedMaterial = lm;
+        splash = root.gameObject.AddComponent<AudioSource>();
+        splash.playOnAwake = false; splash.spatialBlend = 0.85f; splash.minDistance = 4f; splash.maxDistance = 40f; splash.rolloffMode = AudioRolloffMode.Linear;
     }
 
     [Tooltip("D-229 줄 색 — 노을빛(복숭아)에 섞이게. 굵기는 매 프레임 화면 1 px(거리×픽셀 크기)로 맞춘다.")]
@@ -161,9 +191,38 @@ public class FishingSpot : MonoBehaviour
         {
             b = Vector3.Lerp(tip, castTo, k) + Vector3.up * (castArc * 4f * k * (1f - k));   // 짧은 포물선
         }
+        else if (DuskSea(out var sm, out float seaY))
+        {
+            // D-235 셰이더와 같은 Gerstner 파를 탐: 찌 = 착수 자리의 물 알갱이(옆·위로 같이 돎) + 착수 출렁임 용수철. 수면 기울기만큼 기움
+            b = SeaWaves.Particle(sm, seaY, castTo.x, castTo.z, out Vector3 n);
+            SurfaceY = b.y;
+            float dt = Time.deltaTime;
+            if (!landed)
+            {
+                landed = true; bobOff = 0f; bobVel = -plunge; lastRippleT = Time.time;
+                SeaWaves.AddRipple(b, 1f);
+                if (splash != null && splashClip != null) { splash.transform.position = b; splash.PlayOneShot(splashClip, splashVolume); }
+            }
+            else if (dt > 0f)
+            {
+                // 1/120 s 로 쪼개서 — 프레임이 한 번 길게 튀면(0.2 s+) 용수철이 발산했다(첫 실측 +40 cm)
+                float w = Mathf.Sqrt(bobSpring.x); int steps = Mathf.Min(40, Mathf.CeilToInt(dt * 120f)); float h = dt / steps;
+                for (int s = 0; s < steps; s++) { bobVel += (-bobSpring.x * bobOff - 2f * bobSpring.y * w * bobVel) * h; bobOff += bobVel * h; }
+            }
+            // 출렁 파문: 수면이 내려가다 다시 오르기 시작하는 순간(B 는 12 fps 박자로 계단처럼 바뀌니 바뀐 프레임끼리만 비교)
+            if (!float.IsNaN(lastSurf) && Mathf.Abs(b.y - lastSurf) > 1e-5f)
+            {
+                float v = b.y - lastSurf;
+                if (lastSurfVel < 0f && v > 0f && Time.time - lastRippleT > bobRippleGap) { SeaWaves.AddRipple(b, bobRippleStrength); lastRippleT = Time.time; }
+                lastSurfVel = v;
+            }
+            lastSurf = b.y;
+            b.y += bobOff;
+            bobber.rotation = Quaternion.FromToRotation(Vector3.up, Vector3.Slerp(Vector3.up, n, tiltFollow));
+        }
         else
         {
-            b = castTo + Vector3.up * (0.03f + 0.035f * Mathf.Sin(t * 1.6f) + 0.02f * Mathf.Sin(t * 2.7f + 1.1f));   // 물결 따라 위아래
+            b = castTo + Vector3.up * (0.03f + 0.035f * Mathf.Sin(t * 1.6f) + 0.02f * Mathf.Sin(t * 2.7f + 1.1f));   // 물결 따라 위아래(낮 바다 — 셰이더 파 없음)
             b += f * (0.05f * Mathf.Sin(t * 0.4f));
         }
         bobber.position = b;

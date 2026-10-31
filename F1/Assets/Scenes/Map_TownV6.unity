@@ -395439,6 +395439,13 @@ MonoBehaviour:
   waterY: 0
   rodPrefab: {fileID: 0}
   bobberPrefab: {fileID: 0}
+  splashClip: {fileID: 0}
+  splashVolume: 0.55
+  tiltFollow: 0.7
+  plunge: 0.55
+  bobSpring: {x: 60, y: 0.22}
+  bobRippleGap: 1.6
+  bobRippleStrength: 0.35
   simActive: 0
   lineColor: {r: 0.9, g: 0.62, b: 0.55, a: 1}
 --- !u!1 &749810187
