@@ -1,0 +1,13 @@
+finB_a rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+v5B_a rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0
+finB_b rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+v5B_b rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0
+finB_c rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+v5B_c rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0
+finA_a rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=0 refl=True spec=1
+finB_d rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+finB_e rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+finB_f rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=True spec=1
+v5B_d rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0
+v5B_e rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0
+v5B_f rt=1280x720 Point renderScale=0.50 lrt=(640, 360) rot=(3, 180, 0) style=1 refl=False spec=0

@@ -24,6 +24,7 @@ public sealed class SeaReflection : MonoBehaviour
 
     Camera rc;
     RenderTexture rt;
+    bool fresh;
     static readonly int TexId = Shader.PropertyToID("_PCSeaRefl"), OnId = Shader.PropertyToID("_PCSeaReflOn");
 
     public static SeaReflection Find() => FindFirstObjectByType<SeaReflection>();
@@ -61,7 +62,7 @@ public sealed class SeaReflection : MonoBehaviour
         if (rc == null)
         {
             var go = new GameObject("SeaReflCam") { hideFlags = HideFlags.HideAndDontSave };
-            rc = go.AddComponent<Camera>(); rc.enabled = false;
+            rc = go.AddComponent<Camera>(); rc.enabled = false; fresh = true;
             // PitCrew 어셈블리는 URP 를 참조하지 않음 → 카메라 추가 데이터는 이름으로(그림자 끔 = 반사 비용 줄임, 후처리 끔)
             var udT = System.Type.GetType("UnityEngine.Rendering.Universal.UniversalAdditionalCameraData, Unity.RenderPipelines.Universal.Runtime");
             if (udT != null)
@@ -78,7 +79,9 @@ public sealed class SeaReflection : MonoBehaviour
         rc.enabled = false;
         rc.cullingMask = cullMask;
         rc.farClipPlane = Mathf.Min(view.farClipPlane, farClip);
-        rc.clearFlags = CameraClearFlags.Skybox;
+        // 6판: 하늘은 셰이더가 파 노멀로 직접 계산(DuskSkyColor) → RT 는 투명 바탕에 물체만(a = 1). 스카이박스로 덮으면 파 덩어리 색이 평평해짐(실측)
+        rc.clearFlags = CameraClearFlags.SolidColor;
+        rc.backgroundColor = new Color(0, 0, 0, 0);
         rc.targetTexture = rt;
         rc.transform.SetPositionAndRotation(new Vector3(p.x, 2f * y - p.y, p.z), Quaternion.LookRotation(new Vector3(f.x, -f.y, f.z), new Vector3(u.x, -u.y, u.z)));
         rc.ResetProjectionMatrix();
@@ -90,6 +93,7 @@ public sealed class SeaReflection : MonoBehaviour
         var was = new bool[hide.Length];
         for (int i = 0; i < hide.Length; i++) if (hide[i] != null) { was[i] = hide[i].forceRenderingOff; hide[i].forceRenderingOff = true; }
         rc.Render();
+        if (fresh) { rc.Render(); fresh = false; }   // 새로 만든 카메라의 첫 그림은 물체가 빠짐(6판 편집 모드 실측) → 한 번 더
         for (int i = 0; i < hide.Length; i++) if (hide[i] != null) hide[i].forceRenderingOff = was[i];
         rc.targetTexture = null;
 

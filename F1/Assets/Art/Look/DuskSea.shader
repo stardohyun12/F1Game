@@ -14,6 +14,9 @@ Shader "PitCrew/Look/DuskSea"
         _W3("Wave 3", Vector) = (-30, 2.4, 0.018, 4.4)
         _Detail("Normal-only ripples (length a, slope a, length b, slope b)", Vector) = (1.15, 0.05, 0.7, 0.04)
         _Detail2("Normal-only ripples (travel az a, az b)", Vector) = (14, -34, 0, 0)
+        _Spec("6판 ② 노멀 전용 파 8개 (on 0/1, 가장 긴 파장 m, 파장 비, 방위 퍼짐 deg)", Vector) = (0, 12, 1.4, 40)
+        _Micro("6판 ③ 비주기 세부 노멀 2겹 (on 0/1, 크기 a m, 크기 b m, 기울기)", Vector) = (0, 0.9, 0.35, 0.05)
+        _Dash("6판 ⑤ 빛길 가로 대시 (옆 퍼짐 배수 1 = 끔, 0, 0, 0)", Vector) = (1, 0, 0, 0)
         _Gerst("Gerstner (steepness 0..1, speed, fps 0 = 매끈, shallow fade m)", Vector) = (0.55, 1.0, 0, 2.5)
         _Disp("Near grid (on, center x, center z, radius m)", Vector) = (1, -9, -291, 250)
         _Filt("Normal filter (fold start px/len)", Float) = 0.30
@@ -62,10 +65,10 @@ Shader "PitCrew/Look/DuskSea"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
-            TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn;   // 6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
+            TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn, _PCSeaClock;   // _PCSeaClock.x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
             CBUFFER_START(UnityPerMaterial)
                 float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint;
-                float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
+                float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Spec, _Micro, _Dash, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
                 float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
             CBUFFER_END
@@ -74,7 +77,8 @@ Shader "PitCrew/Look/DuskSea"
 
             float Lum(float3 c) { return dot(c, float3(.30, .55, .15)); }
             // 파 시간. B(계단)는 _StepFps 박자로만 움직임 — 매끈하게 움직이면 계단 경계 픽셀이 매 프레임 오락가락(5판 실측 깜빡임 450배)
-            float WaveTime() { float t = _Time.y, fps = _Style > .5 ? _StepFps : _Gerst.z; if (fps > .5) t = floor(t * fps) / fps; return t * _Gerst.y; }
+            float Now() { return _PCSeaClock.x > .5 ? _PCSeaClock.y : _Time.y; }
+            float WaveTime() { float t = Now(), fps = _Style > .5 ? _StepFps : _Gerst.z; if (fps > .5) t = floor(t * fps) / fps; return t * _Gerst.y; }
             float4 WaveP(int i) { return i == 0 ? _W0 : (i == 1 ? _W1 : (i == 2 ? _W2 : _W3)); }
             float2 WaveDir(float az) { float a = radians(az); return float2(sin(a), cos(a)); }   // 0 = +z(북 = 해안 쪽), 90 = +x
 
@@ -161,9 +165,39 @@ Shader "PitCrew/Look/DuskSea"
                     N.xz -= D * S * cos(ph) * f;
                     var += S * S * .5 * (1 - f);
                 }
+                // 6판 ②: 노멀 전용 파 8개 — 파장 _Spec.y 부터 _Spec.z 배씩 짧게, 방위는 ±_Spec.w 안에 흩뿌림(한 방향 원뿔 → 교차하는 잔파)
+                if (_Spec.x > .5)
+                {
+                    [unroll] for (int q = 0; q < 8; q++)
+                    {
+                        float L = _Spec.y * pow(abs(_Spec.z), -q), S = .04 * att;
+                        float hq = frac(sin(q * 12.9898 + 4.1) * 43758.5453) * 2 - 1;
+                        float2 D = WaveDir(hq * _Spec.w);
+                        float kk = 6.2832 / L, ph = kk * dot(D, xz) - sqrt(9.8 * kk) * t + 1.7 * q + .4;
+                        float f = 1 - smoothstep(_Filt, _Filt * 2, fp / L);
+                        N.xz -= D * S * cos(ph) * f;
+                        var += S * S * .5 * (1 - f);
+                    }
+                }
+                // 6판 ③: 비주기 세부 노멀 2겹 — 값 노이즈 기울기(중앙 차분), 서로 다른 회전·크기·흐름. 사인 합의 반복 무늬를 깸
+                if (_Micro.x > .5)
+                {
+                    [unroll] for (int m = 0; m < 2; m++)
+                    {
+                        float sc = m == 0 ? _Micro.y : _Micro.z, an = radians(m == 0 ? 35 : -20);
+                        float2x2 Rm = float2x2(cos(an), -sin(an), sin(an), cos(an));
+                        float2 qn = mul(Rm, xz) / sc + float2(0, t * sqrt(9.8 * sc / 6.2832) / sc) + m * 17.3;
+                        const float h = .25;
+                        float2 g = float2(dkNoise(qn + float2(h, 0)) - dkNoise(qn - float2(h, 0)), dkNoise(qn + float2(0, h)) - dkNoise(qn - float2(0, h))) / (2 * h);
+                        float S = _Micro.w * att / 1.5;
+                        float f = 1 - smoothstep(_Filt, _Filt * 2, fp / sc);
+                        N.xz -= mul(transpose(Rm), g) * S * f;
+                        var += S * S * 1.1 * (1 - f);
+                    }
+                }
                 N = normalize(N);
                 crest = crest / max(crestA, 1e-4) * .5 + .5;                              // 너울 마루 0..1
-                if (_Debug > 2.5) return half4(N * .5 + .5, 1);
+                if (_Debug > 2.5 && _Debug < 3.5) return half4(N * .5 + .5, 1);
                 if (_Debug > .5 && _Debug < 1.5) return half4(saturate(depth / 8), saturate(dist / 16), att, 1);
 
                 // 2) 음영: 프레넬로 물 색 ↔ 하늘 반사. 물 색 = 깊이 흡수(얕음 밝은 청록 → 깊음 짙은 남), 비스듬히 볼수록 물을 길게 지나 짙게
@@ -176,7 +210,8 @@ Shader "PitCrew/Look/DuskSea"
                 float2 ruv = float2(1 - suv.x, suv.y) + float2(-N.x, N.z) * _SceneRefl.y;
                 float4 refl = SAMPLE_TEXTURE2D(_PCSeaRefl, sampler_PCSeaRefl, saturate(ruv));
                 if (_Debug > 3.5 && _Debug < 4.5) return half4(refl.rgb, 1);
-                skyR = lerp(skyR, refl.rgb, saturate(_PCSeaReflOn.x * _SceneRefl.x));
+                // 반사 RT 는 물체만(투명 바탕, a = 물체 있음) → 하늘 자리는 파 노멀을 그대로 따르는 DuskSkyColor 를 지킴(구름 반사 지글거림도 없음)
+                skyR = lerp(skyR, refl.rgb, saturate(refl.a * _PCSeaReflOn.x * _SceneRefl.x));
                 float path = depth * (1 + _Absorb.y * (1 / max(-V.y, .05) - 1) * .1);
                 float3 body = lerp(_ShallowCol.rgb, _DeepCol.rgb, 1 - exp(-path / _Absorb.x));
                 float3 col = lerp(body, skyR, saturate(F * _Reflect));
@@ -185,7 +220,15 @@ Shader "PitCrew/Look/DuskSea"
 
                 // 3) 해 정반사: 파 노멀로 부서지는 빛길. 잘게 빠진 파만큼 넓고 흐리게
                 float sh = _Shine / (1 + _Shine * var * 4);
-                float P = pow(saturate(dot(R, sun)), sh) * min(1, sh / _Shine * 2.5) * _Glint;
+                float P = pow(saturate(dot(R, sun)), sh);
+                // 6판 ⑤: 옆(수평)으로만 _Dash.x 배 넓게 퍼지는 해 반사 → 파 면 하나가 가로로 긴 대시로 비침
+                if (_Dash.x > 1.01)
+                {
+                    float3 sd = normalize(float3(sun.z, 0, -sun.x)), su = cross(sun, sd);
+                    float dx = dot(R, sd), dy = dot(R, su);
+                    P = step(0, dot(R, sun)) * exp(-.5 * sh * (dx * dx / _Dash.x + dy * dy));
+                }
+                P *= min(1, sh / _Shine * 2.5) * _Glint;
 
                 // 4) 거품 조금: 물가(흔들리는 띠) + 너울 마루(노이즈로 듬성)
                 float n1 = dkNoise(xz * .45 + float2(t * .05, 0)), n2 = dkNoise(xz * 1.3 - float2(0, t * .08));
@@ -224,7 +267,7 @@ Shader "PitCrew/Look/DuskSea"
                     float pixA = 2.0 / (abs(UNITY_MATRIX_P._m11) * _ScreenParams.y);
                     float mppH = d * pixA, mppV = d * pixA / max(-V.y, .003);
                     float mpp = clamp(fwidth(dist), mppH, mppV);
-                    float surge = .5 + .5 * sin(floor(_Time.y * 4) * .25 * 6.2832 / _FoamSurge.y);
+                    float surge = .5 + .5 * sin(floor(Now() * 4) * .25 * 6.2832 / _FoamSurge.y);
                     float farK = saturate((d - 120) / 150);
                     float dpx = dist / mpp + (n1 - .5) * 3.0 * (1 - farK * .8);
                     float sw = 1 + _FoamSurge.x * (surge - .5) * 2;
@@ -241,7 +284,7 @@ Shader "PitCrew/Look/DuskSea"
                     // 반짝이: 화면 3px 칸마다 1px, 빛길 hot 안에서만
                     float2 px = floor(i.pos.xy), cid = floor(px / 3);
                     float h1 = dkHash(cid * .917 + 1.3), h2 = dkHash(cid * 1.31 + 11.7), h3 = dkHash(cid * .77 + 3.3);
-                    float ph = frac(_Time.y * _SparkleRate * (.6 + h2 * .8) + h3);
+                    float ph = frac(Now() * _SparkleRate * (.6 + h2 * .8) + h3);
                     float spk = step(ph, .10) * step(1 - _Sparkle, h1) * step(_GlintCuts.y, P);
                     float pin = step(abs(px.x - cid.x * 3 - 1), .1) * step(abs(px.y - cid.y * 3 - 1), .1);
                     col = lerp(col, _Core.rgb, spk * pin * (1 - band));
