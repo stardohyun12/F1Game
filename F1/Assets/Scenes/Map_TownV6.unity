@@ -264720,6 +264720,8 @@ MonoBehaviour:
   cloudStrips: {x: 1, y: 0.25, z: 0.6, w: 1.5}
   rim: {x: 1, y: 0.06, z: 0.12, w: 0.9}
   rimColor: {r: 1, g: 0.62, b: 0.32, a: 1}
+  screenGlow: {x: 0.1, y: 0.22, z: 0.05, w: 0.022}
+  screenGlowColor: {r: 1, g: 0.72, b: 0.45, a: 1}
   backdrop: {fileID: 1283760732}
   hideWhileOn:
   - {fileID: 1875121029}
@@ -395452,7 +395454,15 @@ MonoBehaviour:
   waterY: 0
   rodPrefab: {fileID: 0}
   bobberPrefab: {fileID: 0}
-  splashClip: {fileID: 0}
+  rodHand: {x: 0.38, y: -0.62, z: 0.35}
+  rodTip: {x: 1.07, y: -0.24, z: 2.36}
+  rodRadius: {x: 0.013, y: 0.0025}
+  rodColor: {r: 0.26, g: 0.16, b: 0.1, a: 1}
+  rodSway: 0.012
+  rodFollow: 0.35
+  pathHalfWidth: 7
+  glintColor: {r: 1, g: 0.96, b: 0.78, a: 1}
+  splashClip: {fileID: 8300000, guid: a554e43e11cc9184c955b75f8bf084c0, type: 3}
   splashVolume: 0.55
   tiltFollow: 0.7
   plunge: 0.55
@@ -395460,7 +395470,7 @@ MonoBehaviour:
   bobRippleGap: 1.6
   bobRippleStrength: 0.35
   simActive: 0
-  lineColor: {r: 0.9, g: 0.62, b: 0.55, a: 1}
+  lineColor: {r: 0.95, g: 0.74, b: 0.6, a: 1}
 --- !u!1 &749810187
 GameObject:
   m_ObjectHideFlags: 0
@@ -674150,6 +674160,15 @@ MonoBehaviour:
     haze: 0.1
     baseY: 0
     seed: 0
+  lampColor: {r: 1, g: 0.86, b: 0.52, a: 1}
+  lampBlink: {x: 5, y: 1.1, z: 4.5}
+  boatDrift: {x: 0.18, y: 40}
+  gulls: {x: 3, y: 35, z: 8, w: 5}
+  flightArc: {x: -6, y: 48}
+  gullColor: {r: 0.16, g: 0.12, b: 0.22, a: 1}
+  ambience: {fileID: 494830543}
+  gullEvery: {x: 22, y: 38}
+  firstGull: 2.5
 --- !u!4 &1283760734
 Transform:
   m_ObjectHideFlags: 0
@@ -674162,7 +674181,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1371595097}
   m_Father: {fileID: 494830545}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1283867710
@@ -732690,6 +732710,66 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371581414}
   m_Mesh: {fileID: 438115389}
+--- !u!1 &1371595096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1371595097}
+  - component: {fileID: 1371595098}
+  m_Layer: 0
+  m_Name: DuskForeground
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1371595097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371595096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1283760734}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371595098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371595096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f45758a0654494491ba9dab53f812f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::DuskForeground
+  origin: {fileID: 142401345}
+  deckY: 1.3
+  deckRect: {x: 1.3, y: 8, z: 0.3, w: 2.2}
+  board: {x: 0.145, y: 0.02}
+  paint:
+  - {r: 0.42, g: 0.32, b: 0.27, a: 1}
+  - {r: 0.46, g: 0.35, b: 0.28, a: 1}
+  - {r: 0.39, g: 0.31, b: 0.27, a: 1}
+  - {r: 0.44, g: 0.34, b: 0.3, a: 1}
+  gapColor: {r: 0.1, g: 0.08, b: 0.07, a: 1}
+  bucket: 1
+  bucketAt: {x: -1.4, y: 2.05, z: 0}
+  bucketColor: {r: 0.36, g: 0.35, b: 0.34, a: 1}
+  tackleBox: 1
+  boxAt: {x: -2.1, y: 1.9, z: 20}
+  boxColor: {r: 0.31, g: 0.4, b: 0.32, a: 1}
 --- !u!1 &1371847747
 GameObject:
   m_ObjectHideFlags: 0

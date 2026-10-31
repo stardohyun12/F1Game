@@ -35,6 +35,19 @@ public class FishingSpot : MonoBehaviour
     [Header("아트 슬롯(비면 회색 대역)")]
     public GameObject rodPrefab;
     public GameObject bobberPrefab;
+    [Header("D-236 8판 대(대역) — 손잡이는 화면 밖 오른쪽 아래, 끝은 해 오른쪽 아래 물 위(해를 안 가리게)")]
+    [Tooltip("손(대 뿌리) 자리 — 눈 기준 (오른쪽, 위, 앞) m. 화면 밖이어야 한다.")]
+    public Vector3 rodHand = new Vector3(0.38f, -0.62f, 0.35f);
+    [Tooltip("대 끝 자리 — 눈 기준 (오른쪽, 위, 앞) m. 길이는 손~끝 거리.")]
+    public Vector3 rodTip = new Vector3(1.07f, -0.24f, 2.36f);
+    [Tooltip("뿌리·끝 반지름(m) — 끝으로 갈수록 가늘다(화면에서 뿌리 쪽 ~10px → 끝 1px).")]
+    public Vector2 rodRadius = new Vector2(0.013f, 0.0025f);
+    public Color rodColor = new Color(0.26f, 0.16f, 0.10f);
+    [Tooltip("대 끝이 바람에 흔들리는 폭(m)과 찌가 잠길 때 끝이 따라 숙는 비율.")]
+    public float rodSway = 0.012f, rodFollow = 0.35f;
+    [Header("D-236 8판 찌 반짝임 — 찌가 해 빛길 안(해 방위 ±pathHalfWidth°)이면 찌 둘레에 1px 별")]
+    public float pathHalfWidth = 7f;
+    public Color glintColor = new Color(1.00f, 0.96f, 0.78f);
     [Header("D-235 물 — 노을 바다(DuskSea)일 때 셰이더와 같은 파에 뜨고 파문을 낸다")]
     [Tooltip("착수 때 한 번(줄·찌가 물에 닿는 작은 물소리, CC0).")]
     public AudioClip splashClip;
@@ -58,7 +71,8 @@ public class FishingSpot : MonoBehaviour
     public float SurfaceY { get; private set; } = float.NaN;
 
     Camera cam; float savedNear, savedFov; float yaw, pitch, castT;
-    Transform root, rod, bobber; LineRenderer line;
+    Transform root, rod, bobber, glint; LineRenderer line;
+    public bool BobberInPath { get; private set; }   // 검증용
     Vector3 castTo;
     bool landed; float bobOff, bobVel, lastSurf, lastSurfVel, lastRippleT;
     AudioSource splash;
@@ -100,7 +114,7 @@ public class FishingSpot : MonoBehaviour
         Seated = false;
         if (cam != null) { cam.nearClipPlane = savedNear; if (savedFov > 1f) cam.fieldOfView = savedFov; }
         if (root != null) Destroy(root.gameObject);
-        root = null; rod = null; bobber = null; line = null; splash = null;
+        root = null; rod = null; bobber = null; glint = null; line = null; splash = null;
         SeaWaves.ClearRipples(); SurfaceY = float.NaN;
     }
 
@@ -125,20 +139,32 @@ public class FishingSpot : MonoBehaviour
         if (rodPrefab != null) rod = Instantiate(rodPrefab, root).transform;
         else
         {
-            var g = GameObject.CreatePrimitive(PrimitiveType.Cylinder); g.name = "Rod"; Destroy(g.GetComponent<Collider>());
-            g.GetComponent<Renderer>().sharedMaterial = gray;
-            var mesh = g.transform; mesh.localScale = new Vector3(0.022f, 1.0f, 0.022f);   // 원통 높이 2 → 2 m
+            // D-236 8판: 짙은 나무색, 끝으로 가늘어지는 6각 대(저폴리 대역). 피벗 = 손, +z 로 길이 1(매 프레임 z 배율 = 실제 길이)
+            var wood = new Material(gray) { name = "FishingRod (대역)" };
+            wood.SetColor("_Tint", rodColor); wood.SetFloat("_FaceShade", 0.35f);
             rod = new GameObject("RodPivot").transform; rod.SetParent(root, false);
-            mesh.SetParent(rod, false); mesh.localPosition = new Vector3(0f, 0f, 1.0f); mesh.localRotation = Quaternion.Euler(90f, 0f, 0f);   // 피벗(손잡이)에서 +z 로 2 m
+            var g = new GameObject("Rod"); g.transform.SetParent(rod, false);
+            g.AddComponent<MeshFilter>().sharedMesh = TaperMesh(rodRadius.x, rodRadius.y);
+            var mr = g.AddComponent<MeshRenderer>(); mr.sharedMaterial = wood; mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
         if (bobberPrefab != null) bobber = Instantiate(bobberPrefab, root).transform;
         else
         {
-            // D-229 찌 = 아래 흰 띠 + 위 빨강(빛 안 받는 단색 — 노을 물 위에서도 12 m 앞 2~3 px 로 읽히게). 높이 0.22 m
+            // D-229 찌 = 아래 흰 띠 + 위 빨강(빛 안 받는 단색). 8판: 지름 0.07→0.11, 빨강을 한 단 어둡게 — 금빛 빛길 위에서 12 m 앞 4 px 짙은 점으로 읽히게
             bobber = new GameObject("Bobber").transform; bobber.SetParent(root, false);
-            Part(bobber, new Color(0.95f, 0.92f, 0.86f), 0.08f, 0.00f);
-            Part(bobber, new Color(0.86f, 0.10f, 0.07f), 0.12f, 0.10f);
+            Part(bobber, new Color(0.95f, 0.92f, 0.86f), 0.08f, 0.00f, 0.11f);
+            Part(bobber, new Color(0.62f, 0.08f, 0.06f), 0.13f, 0.10f, 0.11f);
         }
+        // D-236 8판 찌 반짝임: 화면 1px 굵기 십자(카메라를 보는 판 두 장). 빛길 안일 때만 깜빡
+        glint = new GameObject("Glint").transform; glint.SetParent(root, false);
+        var gm = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "Glint (대역)" }; gm.SetColor("_BaseColor", glintColor);
+        for (int i = 0; i < 2; i++)
+        {
+            var q = GameObject.CreatePrimitive(PrimitiveType.Quad); q.name = "GlintBar"; Destroy(q.GetComponent<Collider>());
+            var qr = q.GetComponent<Renderer>(); qr.sharedMaterial = gm; qr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            q.transform.SetParent(glint, false); q.transform.localScale = i == 0 ? new Vector3(5f, 1f, 1f) : new Vector3(1f, 5f, 1f);   // 단위 = 1 px(glint 배율로 맞춤)
+        }
+        glint.gameObject.SetActive(false);
         var lg = new GameObject("Line"); lg.transform.SetParent(root, false);
         line = lg.AddComponent<LineRenderer>();
         line.positionCount = pts.Length; line.useWorldSpace = true; line.numCapVertices = 0;
@@ -151,14 +177,35 @@ public class FishingSpot : MonoBehaviour
     }
 
     [Tooltip("D-229 줄 색 — 노을빛(복숭아)에 섞이게. 굵기는 매 프레임 화면 1 px(거리×픽셀 크기)로 맞춘다.")]
-    public Color lineColor = new Color(0.90f, 0.62f, 0.55f);
+    public Color lineColor = new Color(0.95f, 0.74f, 0.60f);   // 8판: 해 앞 역광 1px 선(옛 0.90,0.62,0.55 는 빛길에 묻혔고 1,0.84,0.66 은 해보다 눈을 끌었다)
 
-    void Part(Transform parent, Color c, float h, float y)
+    void Part(Transform parent, Color c, float h, float y, float dia)
     {
         var g = GameObject.CreatePrimitive(PrimitiveType.Cylinder); g.name = "BobberPart"; Destroy(g.GetComponent<Collider>());
         var m = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "Bobber (대역)" }; m.SetColor("_BaseColor", c);
         g.GetComponent<Renderer>().sharedMaterial = m; g.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        g.transform.SetParent(parent, false); g.transform.localScale = new Vector3(0.07f, h * 0.5f, 0.07f); g.transform.localPosition = new Vector3(0f, y + h * 0.5f - 0.06f, 0f);
+        g.transform.SetParent(parent, false); g.transform.localScale = new Vector3(dia, h * 0.5f, dia); g.transform.localPosition = new Vector3(0f, y + h * 0.5f - 0.06f, 0f);
+    }
+
+    // 6각 대: z 0(뿌리, 반지름 r0) → 1(끝, r1). 끝은 막음
+    static Mesh TaperMesh(float r0, float r1)
+    {
+        const int n = 6; var v = new Vector3[n * 2 + 1]; var t = new int[n * 6 + n * 3];
+        for (int i = 0; i < n; i++)
+        {
+            float a = i * Mathf.PI * 2f / n; var d = new Vector3(Mathf.Cos(a), Mathf.Sin(a), 0f);
+            v[i] = d * r0; v[n + i] = d * r1 + Vector3.forward;
+        }
+        v[n * 2] = Vector3.forward;
+        int k = 0;
+        for (int i = 0; i < n; i++)
+        {
+            int j = (i + 1) % n;
+            t[k++] = i; t[k++] = j; t[k++] = n + i; t[k++] = j; t[k++] = n + j; t[k++] = n + i;   // 바깥에서 시계 방향
+            t[k++] = n + i; t[k++] = n + j; t[k++] = n * 2;
+        }
+        var m = new Mesh { name = "RodTaper" }; m.vertices = v; m.triangles = t; m.RecalculateNormals(); m.RecalculateBounds();
+        return m;
     }
 
     // 지금 렌더 해상도(360 줄)에서 거리 dist(m)의 1 px 이 몇 m 인가
@@ -187,12 +234,17 @@ public class FishingSpot : MonoBehaviour
         cam.transform.SetPositionAndRotation(seat.position, Quaternion.Euler(e.x + seatLookDown - pitch, e.y + yaw, 0f));
         Vector3 f = Flat(seat.forward), r = Vector3.Cross(Vector3.up, f);
         float t = Time.time;
-        // 손: 눈 오른쪽 아래 — 대는 바다 쪽으로 30° 들어 2 m. 바람에 아주 조금 흔들림
-        Vector3 hand = seat.position + r * 0.28f - Vector3.up * 0.42f + f * 0.30f;
-        Quaternion rq = Quaternion.LookRotation(Quaternion.AngleAxis(-28f + Mathf.Sin(t * 0.9f) * 0.6f, r) * f, Vector3.up) * Quaternion.Euler(0f, Mathf.Sin(t * 0.6f) * 0.8f, 0f);
+        // D-236 8판 손: 화면 밖 오른쪽 아래(rodHand) → 끝(rodTip)은 해 오른쪽 아래 물 위. 끝이 바람에 아주 조금 흔들리고, 찌가 잠기면 따라 숙는다
+        Vector3 eye = seat.position;
+        Vector3 hand = eye + r * rodHand.x + Vector3.up * rodHand.y + f * rodHand.z;
+        Vector3 aim = eye + r * rodTip.x + Vector3.up * rodTip.y + f * rodTip.z;
+        aim += r * (rodSway * (Mathf.Sin(t * 0.63f) + 0.4f * Mathf.Sin(t * 1.7f + 0.8f))) + Vector3.up * (rodSway * 0.7f * Mathf.Sin(t * 0.91f + 2f) + Mathf.Min(0f, bobOff) * rodFollow);
+        Quaternion rq = Quaternion.LookRotation(aim - hand, Vector3.up);
         if (castT < 0.35f) rq = Quaternion.AngleAxis(Mathf.Lerp(-45f, 25f, castT / 0.35f), r) * rq;   // 휙 — 뒤로 젖혔다 앞으로
+        float rodLen = Vector3.Distance(hand, aim);
         rod.SetPositionAndRotation(hand, rq);
-        Vector3 tip = hand + rq * Vector3.forward * 2.0f;
+        if (rodPrefab == null) rod.localScale = new Vector3(1f, 1f, rodLen);
+        Vector3 tip = hand + rq * Vector3.forward * rodLen;
         Vector3 b;
         float k = Mathf.Clamp01(castT / castTime);
         if (k < 1f)
@@ -242,7 +294,37 @@ public class FishingSpot : MonoBehaviour
             pts[i] = Vector3.Lerp(tip, b, u) + Vector3.down * (4f * u * (1f - u) * sag);
         }
         line.SetPositions(pts);
-        Vector3 eye = cam.transform.position;
-        line.startWidth = 1.15f * PixelAt(Vector3.Distance(eye, tip)); line.endWidth = 1.15f * PixelAt(Vector3.Distance(eye, b));   // 1 px 딱 맞추면 기울기에 따라 픽셀 중심을 놓쳐 끊긴다 → 1.15
+        Vector3 ce = cam.transform.position;
+        line.startWidth = 1.15f * PixelAt(Vector3.Distance(ce, tip)); line.endWidth = 1.15f * PixelAt(Vector3.Distance(ce, b));   // 1 px 딱 맞추면 기울기에 따라 픽셀 중심을 놓쳐 끊긴다 → 1.15
+        Glint(b, ce, k >= 1f, t);
+    }
+
+    // D-236 8판: 찌가 해 빛길 안이면 찌 둘레(수면) 몇 자리에서 돌아가며 1px 십자가 반짝(0.22 s 켬 · 0.5 s 쉼). 화면 픽셀 크기로 맞춤
+    void Glint(Vector3 b, Vector3 ce, bool landedNow, float t)
+    {
+        if (glint == null) return;
+        var look = SunsetLook.Find();
+        bool on = false;
+        if (landedNow && look != null && look.IsOn)
+        {
+            Vector3 d = b - ce; d.y = 0f;
+            float az = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
+            BobberInPath = Mathf.Abs(Mathf.DeltaAngle(az, look.sunAzimuth)) < pathHalfWidth;
+            const float period = 0.72f;
+            int slot = Mathf.FloorToInt(t / period);
+            on = BobberInPath && (t - slot * period) < 0.22f;
+            if (on)
+            {
+                float px = PixelAt(Vector3.Distance(ce, b));
+                float h = (slot * 0.618034f) % 1f;   // 자리 돌림(찌 왼·오른쪽 0.2~0.45 m, 조금 앞뒤)
+                Vector3 side = Vector3.Cross(Vector3.up, (b - ce).normalized).normalized;
+                Vector3 p = new Vector3(b.x, b.y - bobOff, b.z) + side * ((h < 0.5f ? -1f : 1f) * (0.2f + 0.5f * (h % 0.5f))) + Vector3.up * 0.02f;
+                glint.SetPositionAndRotation(p, Quaternion.LookRotation(p - ce, cam.transform.up));
+                float s = (slot % 3 == 0 ? 1f : 0.6f) * px;   // 세 번에 한 번 큰 별(5px), 나머지 3px
+                glint.localScale = new Vector3(s, s, s);
+            }
+        }
+        else BobberInPath = false;
+        if (glint.gameObject.activeSelf != on) glint.gameObject.SetActive(on);
     }
 }

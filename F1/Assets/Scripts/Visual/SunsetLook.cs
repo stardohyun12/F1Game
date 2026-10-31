@@ -39,6 +39,9 @@ public sealed class SunsetLook : MonoBehaviour
     [Tooltip("1px 역광 테(Present): x 켬 0/1 · y 실루엣 밝기 상한 · z 하늘 밝기 하한 · w 섞음")]
     public Vector4 rim = new Vector4(1f, 0.06f, 0.12f, 0.9f);
     public Color rimColor = new Color(1.00f, 0.62f, 0.32f);
+    [Tooltip("D-236 8판 해 둘레 화면 빛무리(테 소재에서): x 1단 반지름 · y 2단 반지름(화면 높이 비) · z 1단 세기 · w 2단 세기. 0 이면 끔")]
+    public Vector4 screenGlow = new Vector4(0.10f, 0.22f, 0.05f, 0.022f);
+    public Color screenGlowColor = new Color(1.00f, 0.72f, 0.45f);
     [Tooltip("D-236 노을 때만 켜는 수평선 연출물(먼 곶·섬·등대·배 실루엣, DuskBackdrop). 끄면 숨김.")]
     public GameObject backdrop;
     [Tooltip("D-236 7판 노을일 때만 끄는 렌더러(앉은 시점 섬 자리에 비치는 회색 대역 벽 등). 끄면 다시 켬.")]
@@ -82,7 +85,8 @@ public sealed class SunsetLook : MonoBehaviour
         DayTopId = Shader.PropertyToID("_PCDayTop"), DayHorId = Shader.PropertyToID("_PCDayHor"), DayBotId = Shader.PropertyToID("_PCDayBot"),
         A7ShadeId = Shader.PropertyToID("_A7Shade"),
         BandsId = Shader.PropertyToID("_PCDuskBands"), HaloId = Shader.PropertyToID("_PCDuskHalo"), StripsId = Shader.PropertyToID("_PCDuskStrips"),
-        RimId = Shader.PropertyToID("_PCDuskRim"), RimColId = Shader.PropertyToID("_PCDuskRimCol"), RimHzId = Shader.PropertyToID("_PCDuskRimHz");
+        RimId = Shader.PropertyToID("_PCDuskRim"), RimColId = Shader.PropertyToID("_PCDuskRimCol"), RimHzId = Shader.PropertyToID("_PCDuskRimHz"),
+        SunScrId = Shader.PropertyToID("_PCDuskSunScr"), ScrGlowId = Shader.PropertyToID("_PCDuskScrGlow"), ScrGlowColId = Shader.PropertyToID("_PCDuskScrGlowCol");
 
     public static SunsetLook Find() => FindFirstObjectByType<SunsetLook>();
 
@@ -195,6 +199,8 @@ public sealed class SunsetLook : MonoBehaviour
             var sv = cm.WorldToViewportPoint(cm.transform.position + Dir(sunAzimuth, skySunElevation) * 2000f);   // y = 해 화면 x(테는 해 쪽 가장자리에만)
             var lr = cm.GetComponent<LowResRenderTest>(); var rs = lr != null ? lr.RenderSize : Vector2Int.zero;   // zw = 실제 렌더 격자(RT 는 renderScale 로 더 클 수 있음)
             Shader.SetGlobalVector(RimHzId, new Vector4(hz - 0.004f, sv.z > 0f ? sv.x : 0.5f, rs.x > 0 ? rs.x : 0, rs.y > 0 ? rs.y : 0));
+            Shader.SetGlobalVector(SunScrId, new Vector4(sv.x, sv.y, k > 0f && sv.z > 0f && screenGlow.z > 0f ? 1f : 0f, 0f));
+            Shader.SetGlobalVector(ScrGlowId, screenGlow); Shader.SetGlobalColor(ScrGlowColId, screenGlowColor.linear);
         }
         // 낮 하늘(사이 값용) = 원래 GradientSky 색
         var ds = day.skybox;

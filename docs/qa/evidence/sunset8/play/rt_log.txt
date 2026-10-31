@@ -1,0 +1,6 @@
+base fov=46 lrt=(640, 360) yaw=0
+left fov=46 lrt=(640, 360) yaw=-30
+right fov=46 lrt=(640, 360) yaw=35
+base fov=46 lrt=(640, 360) yaw=0
+left fov=46 lrt=(640, 360) yaw=-30
+right fov=46 lrt=(640, 360) yaw=35
