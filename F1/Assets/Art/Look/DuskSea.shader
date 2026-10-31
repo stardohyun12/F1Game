@@ -21,6 +21,7 @@ Shader "PitCrew/Look/DuskSea"
         _DeepCol("Water deep", Color) = (0.05, 0.08, 0.19, 1)
         _Absorb("Absorb (depth m to deep, view boost)", Vector) = (2.2, 0.6, 0, 0)
         _Reflect("Sky reflection", Range(0, 1)) = 1.0
+        _SceneRefl("Scene reflection (amount, distort, 0, 0)", Vector) = (1, 0.06, 0, 0)
         _Shine("Sun glint sharpness", Float) = 900
         _Glint("Sun glint strength", Float) = 2.2
         _Foam("Foam", Color) = (0.98, 0.89, 0.84, 1)
@@ -61,9 +62,10 @@ Shader "PitCrew/Look/DuskSea"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
+            TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn;   // 6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
             CBUFFER_START(UnityPerMaterial)
                 float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint;
-                float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade;
+                float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
                 float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
             CBUFFER_END
@@ -169,6 +171,12 @@ Shader "PitCrew/Look/DuskSea"
                 float F = .02 + .98 * pow(1 - NoV, 5);
                 float3 R = reflect(V, N);
                 float3 skyR = DuskSkyColor(float3(R.x, max(R.y, .01), R.z), 0);
+                // 6판 ①: 장면 반사(해안 나무·땅·부두·구름). 파 노멀만큼 화면에서 밀어 읽음 → 잔물결에 세로로 찢김
+                float2 suv = GetNormalizedScreenSpaceUV(i.pos);
+                float2 ruv = float2(1 - suv.x, suv.y) + float2(-N.x, N.z) * _SceneRefl.y;
+                float4 refl = SAMPLE_TEXTURE2D(_PCSeaRefl, sampler_PCSeaRefl, saturate(ruv));
+                if (_Debug > 3.5 && _Debug < 4.5) return half4(refl.rgb, 1);
+                skyR = lerp(skyR, refl.rgb, saturate(_PCSeaReflOn.x * _SceneRefl.x));
                 float path = depth * (1 + _Absorb.y * (1 / max(-V.y, .05) - 1) * .1);
                 float3 body = lerp(_ShallowCol.rgb, _DeepCol.rgb, 1 - exp(-path / _Absorb.x));
                 float3 col = lerp(body, skyR, saturate(F * _Reflect));
