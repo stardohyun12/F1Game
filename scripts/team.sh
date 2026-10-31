@@ -88,7 +88,7 @@ else
   COSTFILE=".claude/team/sessions/$ROLE.cost"
   # 역할 프롬프트 + 교훈 파일(.claude/team/lessons/<role>.md; art2·artlive 는 art.md)을 합쳐 붙임
   LESSON=".claude/team/lessons/$ROLE.md"; case "$ROLE" in art2|artlive) LESSON=".claude/team/lessons/art.md";; esac
-  SYSFILE=".claude/team/sessions/$ROLE.sys.md"; cat "$ROLEFILE" > "$SYSFILE"; if [ -f "$LESSON" ]; then echo >> "$SYSFILE"; cat "$LESSON" >> "$SYSFILE"; fi
+  SYSFILE=".claude/team/sessions/$ROLE.sys.md"; cat "$ROLEFILE" > "$SYSFILE"; if [ -f "$LESSON" ]; then echo >> "$SYSFILE"; cat "$LESSON" >> "$SYSFILE"; fi; [ -f docs/harness/dohyun-checklist.md ] && { echo; cat docs/harness/dohyun-checklist.md; } >> "$SYSFILE"
   if [ -s "$SIDFILE" ]; then SESS=(--resume "$(cat "$SIDFILE")"); export TEAM_PREV_COST=$(cat "$COSTFILE" 2>/dev/null || echo 0)
   else SID=$(python -c "import uuid; print(uuid.uuid4())"); echo "$SID" > "$SIDFILE"; SESS=(--session-id "$SID"); export TEAM_PREV_COST=0; fi
   # --setting-sources user: 프로젝트 훅(stop 게이트·창 깜빡임 알림)은 팀원 세션에선 끈다 — 도현 알림 폭주 방지.
@@ -133,3 +133,11 @@ if [ "$HOLD_LOCK" = 1 ] || [ "$ROLE" = "artlive" ]; then
   CF=$(timeout 20 bash scripts/ucli-http.sh exec 'return UnityEditor.EditorUtility.scriptCompilationFailed ? "BROKEN" : "OK";' 2>/dev/null | tail -1 | tr -d '\r')
   if [ "$CF" = "BROKEN" ]; then echo "COMPILE-BROKEN: 과제가 컴파일 에러를 남김 — 바로 고치거나 되돌릴 것"; printf '\n## 하네스: 컴파일 깨진 채 끝남 (COMPILE-BROKEN)\n' >> "$REPORT"; fi
 fi
+# 하네스(10/31): 비용 장부 — 과제마다 한 줄. result 칸은 PD 가 pass/redo/drop 으로 채움(python scripts/ledger.py mark)
+python -X utf8 - "$RESULT" "$ROLE" "$STAMP" "$TASK" >> .claude/team/ledger.jsonl 2>/dev/null <<'PYEOF'
+import json,sys,re
+try: d=json.load(open(sys.argv[1],encoding="utf-8"))
+except Exception: d={}
+t=sys.argv[4]; m=re.search(r"\]\[([^\]]+)\]",t) or re.search(r"\[([^\]]+)\]",t)
+print(json.dumps({"stamp":sys.argv[3],"role":sys.argv[2],"title":(m.group(1) if m else t[:60]),"model":"opus" if "[OPUS]" in t else "cfg","cost":d.get("cost_usd"),"ok":d.get("ok"),"result":""},ensure_ascii=False))
+PYEOF

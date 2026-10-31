@@ -1,12 +1,12 @@
 {
  "programmer": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "high",
   "budget": 15.0,
   "turns": 0
  },
  "qa": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "",
   "budget": 5.0,
   "turns": 80
@@ -26,19 +26,19 @@
   "effort": "medium"
  },
  "art2": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "high",
   "budget": 5.0,
   "turns": 60
  },
  "mapgen": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "",
   "budget": 5.0,
   "turns": 80
  },
  "artlive": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "high",
   "budget": 10.0,
   "turns": 0
@@ -50,7 +50,7 @@
   "turns": 0
  },
  "feature": {
-  "model": "opus",
+  "model": "sonnet",
   "effort": "high",
   "budget": 15.0,
   "turns": 0
