@@ -675,6 +675,11 @@ public static class ParcelBuild
     //     길에서 1.5 m 까진 0, 6.5 m 에서 다 더함(길 옆 비탈은 1935 그대로). 여전히 돋우기만 — 원래 땅이 더 높은 곳은 그대로 둔다.
     const float SinkMed = -1f, SinkTol = .6f, SinkUnder = .05f, SinkSlope = .25f, SinkTbR = 60f;
     const float RelHalf = 12f, RelMax = .8f, RelIn = 1.5f, RelRamp = 5f;
+    // 2253(D-231 「둘 다 안쪽으로 움푹」): 2147 은 중앙값 ≤ -1 m 블록만, 면보다 0.6 m 아래 + 1:4 비탈 + ±0.8 m 기복 → 길 따라 둑 띠, 안은 접시.
+    //  원칙 「블록 안은 둘레 길 가장자리보다 오목하면 안 된다」: 문턱 없이 모든 둘레 블록에서 목표 = S − 0.05 m(길 윗면 바로 밑 = 길 가장자리와 같은 높이)
+    //  + 원지형 기복의 위쪽 절반만(아래로 파지 않음). 돋우기만 — 원래 땅이 S 보다 높은 곳(블록이 언덕)은 그대로. 건너뜀 조건(도현 건물·계단 땅·바다·가장자리)은 그대로.
+    public static bool OldSink2147;   // 켜면 2147 규칙(전/후 비교용)
+    public static List<Vector2> ProbePts; static HashSet<int> Probe; public static StringBuilder ProbeOut = new StringBuilder();   // 검증용: 점 → FillSunk 목표 기록
     static (float a, float b, float c) FitPlane(List<Vector3> pts)
     {
         double mx = 0, mz = 0, my = 0; foreach (var p in pts) { mx += p.x; mz += p.z; my += p.y; } int n = pts.Count; mx /= n; mz /= n; my /= n;
@@ -712,6 +717,8 @@ public static class ParcelBuild
         var cells = new List<int>(); for (int k = 0; k < N; k++) if (type[k] == T.Land || type[k] == T.Strip || type[k] == T.Excl) cells.Add(k);
         var del = new float[N]; int nChk = 0, nSunk = 0; var skip = new List<string>(); var done = new List<string>(); float maxD = 0;
         var tbC = new Vector2(TerraceBlock.HouseCenter.x, TerraceBlock.HouseCenter.z);
+        Probe = ProbePts == null ? null : new HashSet<int>(ProbePts.Select(Idx)); ProbeOut.Clear();
+        if (ProbePts != null) foreach (var pp in ProbePts) { int k = Idx(pp); ProbeOut.Append($"{pp.x:F0},{pp.y:F0} type {(k < 0 ? "?" : type[k].ToString())} dist {(k < 0 ? -1 : dist[k]):F1}\n"); }
         foreach (var comp in Comps(cells))
         {
             float area = comp.Count * C * C; if (area < 150 || area > 40000) continue;
@@ -731,7 +738,7 @@ public static class ParcelBuild
             var defs = new List<float>(); int cs = Mathf.Max(1, comp.Count / 2000); bool sea = false;
             for (int q = 0; q < comp.Count; q += cs) { var p = P(comp[q]); float y = TerrY(p); if (float.IsNaN(y) || y < .6f) { sea = true; break; } defs.Add(y - E(p)); }
             if (sea || defs.Count == 0) continue;
-            float med = Median(defs); if (med > SinkMed) continue;
+            float med = Median(defs); if (OldSink2147 && med > SinkMed) continue;
             nSunk++; var ctr = Mean(comp); string tg = $"({ctr.x:F0},{ctr.y:F0}) {area:F0}㎡ 중앙 {med:F1} m";
             if (comp.Any(c => foot[c])) { skip.Add(tg + " 도현 건물 있음"); continue; }
             if ((ctr - tbC).magnitude < SinkTbR) { skip.Add(tg + " 계단 땅"); continue; }
@@ -744,7 +751,10 @@ public static class ParcelBuild
             {
                 int c = comp[q]; var p = P(c); float y = y0[q]; if (float.IsNaN(y)) continue;
                 float wd = Mathf.Clamp01((dist[c] - RelIn) / RelRamp);
-                float d = S(p) - Mathf.Min(SinkTol, SinkUnder + SinkSlope * dist[c]) + wd * det[q] - y; if (d > 0) { del[c] = d; bmax = Mathf.Max(bmax, d); }
+                float d = OldSink2147 ? S(p) - Mathf.Min(SinkTol, SinkUnder + SinkSlope * dist[c]) + wd * det[q] - y
+                                      : S(p) - SinkUnder + wd * Mathf.Max(0, det[q]) - y;
+                if (d > 0) { del[c] = d; bmax = Mathf.Max(bmax, d); }
+                if (Probe != null && Probe.Contains(c)) ProbeOut.Append($"{p.x:F0},{p.y:F0} {tg} S {S(p):F2} y {y:F2} det {det[q]:F2} dist {dist[c]:F1} del {d:F2}\n");
                 if (wd > .99f) { dsum += det[q] * det[q]; dn++; }
             }
             maxD = Mathf.Max(maxD, bmax); done.Add(tg + $" 돋움 최대 {bmax:F1} m · 기울기 {100 * Mathf.Sqrt(pb * pb + pc * pc):F0}% · 기복 σ {System.Math.Sqrt(dsum / Mathf.Max(1, dn)):F2} m");
@@ -765,7 +775,15 @@ public static class ParcelBuild
         for (int i = 0; i < tris.Length; i += 3) if (chg[tris[i]] || chg[tris[i + 1]] || chg[tris[i + 2]]) mark[tris[i]] = mark[tris[i + 1]] = mark[tris[i + 2]] = true;
         var bn = baseMesh.normals; mesh.RecalculateNormals(); var nn = mesh.normals; for (int i = 0; i < nv; i++) if (!mark[i]) nn[i] = bn[i]; mesh.normals = nn; mesh.RecalculateBounds();
         SetTerrain(terr, mesh); baseMesh = mesh; filled = mesh;
-        return note + $" · 정점 {moved} 돋움(최대 {maxD:F2} m)";
+        // 2253: 메운 칸 위 Roadside 소품(화분 등)이 묻히지 않게 — 밑면이 새 땅보다 낮으면 땅 위로(다시 돌려도 같은 결과: 이미 땅 위면 그대로)
+        int lifted = 0; var rsd = GameObject.Find("Roadside");
+        if (rsd != null) foreach (Transform road in rsd.transform) foreach (Transform pr in road)
+        {
+            var rr = pr.GetComponentsInChildren<Renderer>(); if (rr.Length == 0) continue; var bb = rr[0].bounds; foreach (var r in rr) bb.Encapsulate(r.bounds);
+            if (Bil(bb.center.x, bb.center.z) < .01f) continue; float g = TerrY(new Vector2(bb.center.x, bb.center.z));
+            if (!float.IsNaN(g) && bb.min.y < g - .02f) { pr.position += Vector3.up * (g - bb.min.y); lifted++; }
+        }
+        return note + $" · 정점 {moved} 돋움(최대 {maxD:F2} m) · 소품 올림 {lifted}";
     }
     // ── 지형 패드(2판) ─────────────────────────────────────────
     // B·C 덩어리: 바닥 밑은 깎기만(최대 0.65), 앞 1.5 m · 옆 0.8 m(아래 단 뒷문이면 뒤 1.5 m) 마당은 바닥 - 0.15 로 깎기·돋우기(각 0.65 까지).
