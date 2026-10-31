@@ -1,0 +1,3 @@
+seated_v4a seated=True sunset=True rt=1280x720 filter=Point renderScale=0.50 lrt.RenderSize=(640, 360) rot=(3, 180, 0) seaMat=TV6_SeaDusk shader=PitCrew/Look/DuskSea
+seated_v4b seated=True sunset=True rt=1280x720 filter=Point renderScale=0.50 lrt.RenderSize=(640, 360) rot=(3, 180, 0) seaMat=TV6_SeaDusk shader=PitCrew/Look/DuskSea
+seated_v4c seated=True sunset=True rt=1280x720 filter=Point renderScale=0.50 lrt.RenderSize=(640, 360) rot=(3, 180, 0) seaMat=TV6_SeaDusk shader=PitCrew/Look/DuskSea
