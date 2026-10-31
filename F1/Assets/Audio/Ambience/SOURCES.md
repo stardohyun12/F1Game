@@ -19,3 +19,6 @@
 - **갈매기는 가까이서 녹음**돼 있다(배경 대비 +20 dB). "멀리서" 느낌은 AudioSource 거리 감쇠·로우패스로 낸다. 5개 모두 같은 녹음(작은 어항)에서 잘라서 목소리 톤이 비슷하다.
 - 루프 이음매는 수치로만 검사했다(클릭·음량 단차 없음). **귀로 듣는 판정은 도현 몫.**
 - Unity 가져오기: `.meta` 는 에디터가 만든다. 루프 파일은 AudioSource 의 `Loop` 를 켜고 Load Type 은 Streaming 이 아니라 Decompress On Load 로 하면 이음매가 안 틘다(권장, 미검증).
+
+## sfx_splash_01 (11/01, PD)
+- 원본: https://bigsoundbank.com/splash-small-2-s1530.html (Joseph Sardin, CC0, 페이지에서 라이선스 확인), raw 1530.wav 그대로(3초, 48kHz/24bit mono). 찌 착수 소리(FishingSpot.splashClip).
