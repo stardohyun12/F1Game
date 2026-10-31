@@ -18,6 +18,9 @@ float _PCSnapK, _PCKeep, _PCAffine, _PCField;  // _PCField = 1: 밭(라임 → �
 float4 _PCSunDir, _PCSunGlow;   // 2203: 해 쪽 방향(월드, 해를 향함) · 해 쪽 지평선 금빛(a = 세기, 오후 0)
 float _PCSea;   // 2203 렌더러별: 1 = 바다(노을에 차가운 청보라 + 해 반사 띠)
 float _PCSnapOn, _PCMip;   // 5c 전역(PCLookScene): 정점 스냅 켬 · 1 = 밉맵 읽기(먼 곳 텍셀 크롤링 제거)
+// D-227 노을(SunsetLook, 씬 전역 — Look 0 판에만): x = 섞임 0~1(0 = 지금 판 그대로). 머티리얼 안개·그늘색을 노을 묶음 쪽으로 당긴다.
+//  _PCDuskFog = 안개색 · _PCDuskGlow = 해 쪽 안개 금빛(a 세기) · _PCDuskAmb = 그늘(하늘빛) · _PCDuskFogP = (시작 m, 끝 m) · _PCDuskSunDir = 해를 향한 방향
+float4 _PCDusk, _PCDuskFog, _PCDuskGlow, _PCDuskAmb, _PCDuskFogP, _PCDuskSunDir;
 SamplerState sampler_linear_clamp;
 int PCMode() { return (int)(_PCLook + 0.5); }
 
@@ -39,6 +42,12 @@ half3 PCFog(half3 col, float3 wpos, float3 matFog, float s, float e)
         // 2203(TONE 4 노을 색 분리): 해 쪽을 보면 금빛, 반대쪽은 안개색(노을 = 라벤더) — 먼 산이 라벤더로 녹는다
         float3 fc = lerp(_PCFogColor.rgb, _PCSunGlow.rgb, pow(saturate(dot((wpos - _WorldSpaceCameraPos) / max(d, 1e-3), _PCSunDir.xyz)), 8) * _PCSunGlow.a);   // 3→8: 해 쪽 좁게, 먼 산은 라벤더
         return lerp(col, fc, saturate((d - _PCFogParams.x) / max(1, _PCFogParams.y - _PCFogParams.x)) * _PCFogParams.z);
+    }
+    if (_PCDusk.x > 0)
+    {
+        // D-227: 해 쪽을 보면 금빛, 반대쪽은 노을 안개(라벤더)
+        float3 fc = lerp(_PCDuskFog.rgb, _PCDuskGlow.rgb, pow(saturate(dot((wpos - _WorldSpaceCameraPos) / max(d, 1e-3), _PCDuskSunDir.xyz)), 6) * _PCDuskGlow.a);
+        matFog = lerp(matFog, fc, _PCDusk.x); s = lerp(s, _PCDuskFogP.x, _PCDusk.x); e = lerp(e, _PCDuskFogP.y, _PCDusk.x);
     }
     return lerp(col, matFog, saturate((d - s) / max(1, e - s)));
 }
@@ -125,6 +134,7 @@ float3 PCShade(float3 amb, float3 sunCol, float ndl, float att, float faceShade)
         float3 face = t > .5 ? warm : cool;
         return _PCLight.rgb * lerp(float3(1, 1, 1), face, saturate(faceShade * 2));
     }
+    amb = lerp(amb, _PCDuskAmb.rgb, _PCDusk.x);   // D-227: 노을 그늘 = 청보라 하늘빛(0 이면 그대로)
     if (m == 1) { s = s < .12 ? 0 : (s < .5 ? .55 : 1); faceShade = max(faceShade, .5); }   // 3단: 그늘·반그늘·해
     if (m == 4)
     {
