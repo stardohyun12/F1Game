@@ -1,7 +1,7 @@
 """빽빽한 짙은 숲 나무 후보 2종 — 과제 artlive 20261031-1926 (D-222 「빽빽한 검은 숲 느낌을 낼 나무」). 산비탈·마을 뒤를 덮는 무리용.
     D:/Tools/Blender/blender.exe -b --factory-startup -P tools/asset-gen/forest_cands.py
 종:
-  sugi    짙은 상록 침엽(삼나무·편백류) — 11m 좁은 원뿔. 들쭉한 치마(아래로 처진 끝) 7단이 겹쳐 쌓인 꼴, 밑동 1.4m 만 줄기.
+  sugi    짙은 상록 침엽(삼나무·편백류) — 11m 원뿔. 들쭉한 치마(아래로 처진 끝) 8단이 겹쳐 쌓인 꼴, 밑동 .5m 만 줄기. sugi_b = 같은 꼴 변주(F2). *_lod = LOD1(4단·≤150).
   laurel  짙은 상록 활엽(후박·구실잣밤) — 9.5m 둥근 덩어리(콜리플라워). 가운데 돔 + 둘레 어깨 6 + 꼭대기 2, 밑 2.2m 까지 잎.
 형태 규칙: 1그루 ≤600 삼각형(멀리 수백 그루 깔림). 줄기 16각(교훈 5). 피벗 = 밑동 땅 가운데. 낱개 = TRUNK_01 · CANOPY_nn · CARD_nn.
 UV·덩어리·카드 = tree_cands.py 와 같은 방식(32px/m 선반 쌓기). 칸 표 layout_<종>.json → forest_tex.py 가 사진으로 칠함.
@@ -66,13 +66,18 @@ def card(obj, c, w, h, yaw, pitch=0.0, pt='card'):
     c = Vector(c); s = Vector((math.cos(yaw), math.sin(yaw), 0)); up = Vector((0, 0, 1)) * math.cos(pitch) + Vector((-math.sin(yaw), math.cos(yaw), 0)) * math.sin(pitch)
     face(obj, [c - s * w / 2, c + s * w / 2, c + s * w / 2 + up * h, c - s * w / 2 + up * h], pt)
 
-def sp_sugi():  # 삼나무·편백: 높이 ~11m, 폭 ~4.4m. 치마 7단(아래 넓고 위로 좁게), 단마다 중심 조금씩 흔들림 → 손으로 깎은 원뿔 아닌 들쭉한 탑
-    rng = random.Random(61)
-    tube('TRUNK_01', [(0, 0, -.15), (0, 0, 1.0), (0, 0, 2.2)], [.3, .25, .2], 'bark', seed=6, wob=.06, cap1=False)
-    # s02: s01(단 간격 1.2m)은 단마다 밝은 윗면이 드러나 전나무 크리스마스트리 꼴 → 간격 1.05m·높이 2.5m 로 더 겹쳐 빽빽한 삼나무 탑
-    tiers = [(1.5, 2.05, 2.5), (2.55, 1.9, 2.5), (3.6, 1.72, 2.45), (4.65, 1.5, 2.4), (5.7, 1.26, 2.35), (6.75, .98, 2.3), (7.8, .66, 2.7)]   # (밑 z, 반지름, 높이)
+def sp_sugi(vseed=0, lod=False):  # 삼나무·편백: 높이 ~11m, 폭 ~5.2m. 치마 8단(아래 넓고 위로 좁게), 단마다 중심 조금씩 흔들림 → 손으로 깎은 원뿔 아닌 들쭉한 탑
+    # vseed: 0 = A(F1) · 1 = B(F2) 형태 변주(단 흔들림·돌림). lod: LOD1 = 4단 6각 치마(≤150 삼각형), 줄기·카드 없음
+    rng = random.Random(61 + 100 * vseed)
+    if lod:   # 멀리(수백 그루)용 단순판. 아래 단이 땅 가까이 내려와 줄기 없이도 빈틈 없음
+        for i, (z, r, h) in enumerate([(.3, 2.3, 3.5), (2.7, 1.85, 3.3), (5.0, 1.3, 3.2), (7.1, .75, 3.9)]):
+            skirt('CANOPY_%02d' % (i + 1), (rng.uniform(-.1, .1), rng.uniform(-.1, .1), z), r, h, 'leaf', 600 + i + 10 * vseed, n=6, rot=.5 * (i % 2) + rng.uniform(0, .3))
+        return
+    tube('TRUNK_01', [(0, 0, -.15), (0, 0, 1.0), (0, 0, 2.2)], [.3, .25, .2], 'bark', seed=6 + vseed, wob=.06, cap1=False)
+    # artlive 2009: 무리로 심으면 아래 가지 사이로 비탈이 비쳤다 → 맨 아래 단을 .6m 내리고 아래 4단 반지름 +.3~.4m(폭 4.3 → 5.2m), 단 하나 더(7 → 8단)
+    tiers = [(.9, 2.35, 2.6), (1.95, 2.2, 2.55), (3.0, 2.0, 2.5), (4.05, 1.75, 2.4), (5.1, 1.45, 2.35), (6.15, 1.1, 2.3), (7.2, .78, 2.3), (8.25, .5, 2.6)]   # (밑 z, 반지름, 높이)
     for i, (z, r, h) in enumerate(tiers):
-        skirt('CANOPY_%02d' % (i + 1), (rng.uniform(-.12, .12), rng.uniform(-.12, .12), z), r, h, 'leaf', 600 + i, n=9 if i < 5 else 7, rot=.5 * (i % 2) + rng.uniform(0, .3))
+        skirt('CANOPY_%02d' % (i + 1), (rng.uniform(-.12, .12), rng.uniform(-.12, .12), z), r, h, 'leaf', 600 + i + 10 * vseed, n=9 if i < 5 else 7, rot=.5 * (i % 2) + rng.uniform(0, .3))
     k = 0
     for i, (z, r, h) in enumerate(tiers[:6]):   # 잎 카드: 치마 끝에서 아래로 처진 가지 끝(밑선·옆선 깨기)
         a = rng.uniform(0, 6.28) + i * 2.1; k += 1
@@ -95,7 +100,7 @@ def sp_laurel():  # 후박·구실잣밤: 높이 ~9.5m, 폭 ~7.6m. 콜리플라�
         k += 1; a = yaw + rng.uniform(-.4, .4); p = Vector(pc) + Vector((math.cos(a) * rx * .8, math.sin(a) * ry * .8, -h * .45))
         card('CARD_%02d' % k, p, 1.1, .9, a + 1.57 + rng.uniform(-.3, .3), pitch=rng.uniform(-.2, .2))
 
-SPECIES = {'sugi': sp_sugi, 'laurel': sp_laurel}
+SPECIES = {'sugi': sp_sugi, 'sugi_b': lambda: sp_sugi(1), 'sugi_lod': lambda: sp_sugi(0, True), 'sugi_b_lod': lambda: sp_sugi(1, True), 'laurel': sp_laurel}
 DENS = 32
 def local2d(pts):
     nrm = Vector()

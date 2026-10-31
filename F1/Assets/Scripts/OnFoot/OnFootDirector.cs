@@ -13,7 +13,7 @@ using UnityEngine.UI;
 /// </summary>
 public class OnFootDirector : MonoBehaviour
 {
-    public enum Mode { Starting, OnFoot, InCart }
+    public enum Mode { Starting, OnFoot, InCart, Seated }
 
     [SerializeField] OnFootPlayer player;
     [SerializeField] Transform spawn;
@@ -42,6 +42,8 @@ public class OnFootDirector : MonoBehaviour
     FollowCamera follow;
     OnFootCamera footCam;
     readonly List<DoorHinge> doors = new List<DoorHinge>();
+    readonly List<FishingSpot> spots = new List<FishingSpot>();   // D-227 낚시 자리(E 앉기)
+    FishingSpot seatedAt;
     readonly List<Canvas> hud = new List<Canvas>();
     TextMeshProUGUI promptText;
     GameObject promptRoot;
@@ -89,6 +91,7 @@ public class OnFootDirector : MonoBehaviour
         if (follow != null) follow.enabled = false;
 
         foreach (var d in FindObjectsByType<DoorHinge>(FindObjectsSortMode.None)) if (d.configured) doors.Add(d);
+        foreach (var s in FindObjectsByType<FishingSpot>(FindObjectsSortMode.None)) if (s.seat != null) spots.Add(s);
         CollectHud();
         BuildUI();
 
@@ -134,7 +137,16 @@ public class OnFootDirector : MonoBehaviour
                 SetPrompt(door.IsOpen ? "E 닫기" : "E 열기");
                 if (press && !door.Moving) { door.Toggle(player.transform.position); Mark((door.IsOpen ? "열기 " : "닫기 ") + door.name); }
             }
+            else if (NearSpot() is FishingSpot spot)
+            {
+                SetPrompt("E 앉기");
+                if (press) Sit(spot);
+            }
             else SetPrompt("");
+        }
+        else if (State == Mode.Seated)
+        {
+            if (press) StandUp();   // 앉아 있는 동안 화면에 아무것도 없음(D-227)
         }
         else if (State == Mode.InCart)
         {
@@ -214,6 +226,46 @@ public class OnFootDirector : MonoBehaviour
         PlacePrompt(false);
         SetHud(true);
         SetPrompt("");
+    }
+
+    FishingSpot NearSpot()
+    {
+        foreach (var s in spots) if (s != null && s.CanSit(player.transform.position)) return s;
+        return null;
+    }
+
+    /// <summary>D-227 낚시 자리에 앉기 — 몸·걷기 카메라·조준점·안내를 끄고 자리(FishingSpot)가 카메라를 잡는다.</summary>
+    void Sit(FishingSpot s)
+    {
+        Mark("앉기 " + s.name);
+        State = Mode.Seated; seatedAt = s;
+        footCam.enabled = false;
+        player.gameObject.SetActive(false);
+        if (dotRoot != null) dotRoot.SetActive(false);
+        SetPrompt("");
+        GazeTarget = null;
+        s.Sit(cam);
+    }
+
+    void StandUp()
+    {
+        var s = seatedAt; seatedAt = null;
+        Mark("일어나기 " + (s != null ? s.name : "-"));
+        if (s != null) s.Stand();
+        player.gameObject.SetActive(true);
+        if (s != null) player.Teleport(s.StandPoint(), s.SeatYaw);
+        EnterFoot();
+    }
+
+    /// <summary>개발용(메뉴 PitCrew/노을/낚시 자리로 가기): 걷는 중이면 자리 바로 뒤로 옮긴다.</summary>
+    public bool GoToSpot()
+    {
+        if (State != Mode.OnFoot || spots.Count == 0) return false;
+        var s = spots[0];
+        player.Teleport(s.StandPoint(), s.SeatYaw);
+        footCam.Yaw = s.SeatYaw; footCam.Pitch = 0f;
+        Mark("자리로 이동 " + s.name);
+        return true;
     }
 
     void ExitCart()

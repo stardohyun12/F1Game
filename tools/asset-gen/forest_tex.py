@@ -11,8 +11,11 @@ import numpy as np
 from PIL import Image, ImageFilter
 R = Path('D:/Github/F1Game'); E = R / 'art/export/forest-cands'; PH = R / 'art/source/photo-picks/T'
 # (번호, 종, 잎 사진, 껍질 사진, 잎 HSV(°, S, V), 껍질 목표 V)
+# artlive 2009: F1·F2 납품 — 형태 sugi / sugi_b(변주), LOD1 = F1L·F2L(sugi_lod / sugi_b_lod, 같은 사진·색, 줄기 없음 → 잎 칸만)
 CANDS = [('F1', 'sugi', 'T_cypress_A_leaf', 'T_cypress_A_bark', (122, .36, .30), .34),
-         ('F2', 'sugi', 'T_pine_B_leaf', 'T_cypress_B_bark', (106, .33, .32), .36),
+         ('F2', 'sugi_b', 'T_pine_B_leaf', 'T_cypress_B_bark', (106, .33, .32), .36),
+         ('F1L', 'sugi_lod', 'T_cypress_A_leaf', 'T_cypress_A_bark', (122, .36, .30), .34),
+         ('F2L', 'sugi_b_lod', 'T_pine_B_leaf', 'T_cypress_B_bark', (106, .33, .32), .36),
          ('F3', 'laurel', 'T_camellia_A_leaf', 'T_celtis_A_bark', (90, .40, .31), .40),
          ('F4', 'laurel', 'T_celtis_B_leaf', 'T_celtis_B_bark', (100, .35, .34), .42)]
 STEPS = np.array([-.14, -.05, .05, .14])
@@ -31,11 +34,11 @@ def grain(im):  # tree_tex.py 와 같음: 96px(3m) 결 타일 = 큰 얼룩 .5 + 
 
 def mask(sp, w, h, rs):  # 잎 뭉치 실루엣(아래 가운데 = 붙는 곳). 1px 털·구멍 없음
     yy, xx = np.mgrid[0:h, 0:w] + .5; M = np.zeros((h, w), bool)
-    cnt, sx, sy = {'sugi': (7, .2, .16), 'laurel': (8, .17, .2)}[sp]
+    cnt, sx, sy = {'sugi': (7, .2, .16), 'laurel': (8, .17, .2)}['laurel' if sp == 'laurel' else 'sugi']
     for k in range(cnt):
         cx = w * rs.uniform(.22, .78); cy = h * rs.uniform(.15, .85) if k else h * .2
         rx = w * sx * rs.uniform(.8, 1.25); ry = h * sy * rs.uniform(.8, 1.25)
-        if sp == 'sugi': rx *= 1 - .45 * cy / h   # 처진 가지 끝 = 아래 넓고 위 좁게
+        if sp != 'laurel': rx *= 1 - .45 * cy / h   # 처진 가지 끝 = 아래 넓고 위 좁게
         M |= ((xx - cx) / rx) ** 2 + ((yy - cy) / ry) ** 2 <= 1
     M[:max(2, h // 6), int(w * .42):int(w * .58) + 1] = True
     def er(m): return m & np.roll(m, 1, 0) & np.roll(m, -1, 0) & np.roll(m, 1, 1) & np.roll(m, -1, 1)
@@ -59,7 +62,7 @@ def fine(q):
 rec = {}
 for tn, sp, lf, bk, (hh, ss, vv), bv in CANDS:
     L = json.loads((E / f'layout_{sp}.json').read_text(encoding='utf-8')); AW, AH = L['atlas']
-    rs = np.random.default_rng(int(tn[1:]) * 17); rr = np.random.default_rng(int(tn[1:]) * 19)
+    sn_ = int(tn[1:].rstrip('L')) + (10 if tn.endswith('L') else 0); rs = np.random.default_rng(sn_ * 17); rr = np.random.default_rng(sn_ * 19)
     lp, bp = photo(lf), photo(bk)
     a = np.asarray(bp.resize((64, 64), Image.BOX), np.float64).reshape(-1, 3); sel = a[:, 2] <= a[:, 0] + 8
     bh, bs, bvv = colorsys.rgb_to_hsv(*(np.median(a[sel] if sel.sum() > 100 else a, 0) / 255))
