@@ -462,7 +462,7 @@ public class OnFootRouteBot : MonoBehaviour
         }
         float drive = Time.time - tDrive;
         dir.Car.SetMoveInput(Vector2.zero);
-        Line($"운전 {drive:F1}s 도착={dir.Delivered} 차={P(dir.Car.transform.position)} 찻집까지 {Vector3.Distance(Flat(dir.Car.transform.position), Flat(dir.FirstDrop.transform.position)):F1}m 화물={Pct(cargo)} 진행판정 runActive={(Services.Run != null && Services.Run.RunActive)}");
+        Line($"운전 {drive:F1}s 도착={dir.Delivered} 보조이동={LastAssists}회 차={P(dir.Car.transform.position)} 찻집까지 {Vector3.Distance(Flat(dir.Car.transform.position), Flat(dir.FirstDrop.transform.position)):F1}m 화물={Pct(cargo)} 진행판정 runActive={(Services.Run != null && Services.Run.RunActive)}");
         if (!dir.Delivered) stuck.Add("찻집 도착");
         yield return new WaitForSecondsRealtime(1.0f);              // EndRun 이 timeScale 0 으로 만든다 — 실시간으로 기다림
         yield return ShotUI("f2_06_arrival");
@@ -470,6 +470,19 @@ public class OnFootRouteBot : MonoBehaviour
         Line($"결과: 총 {Time.time - tStart:F1}s(게임 시간, 도착 뒤 정지) 화물 상태 {Pct(cargo)}");
         Status = dir.Delivered ? "arrived" : "FAIL not arrived";
         Finish(tStart);
+    }
+
+    /// <summary>먼 이음 검사: 두 점 사이를 0.8 m 마다 아래로 쏴서 전부 길 면(부모 RoadsV2)이고 높이가 직선에서 0.25 m 안이어야 한다. 길 사이 땅 틈(실측: (71,-61) 5 m 틈에서 카트가 걸림)을 건너는 이음을 뺀다.</summary>
+    static bool OnRoadAll(Vector3 a, Vector3 b)
+    {
+        int n = Mathf.Max(2, Mathf.CeilToInt(Vector3.Distance(a, b) / 0.8f));
+        for (int k = 0; k <= n; k++)
+        {
+            Vector3 p = Vector3.Lerp(a, b, k / (float)n);
+            if (!Physics.Raycast(p + Vector3.up * 3f, Vector3.down, out var h, 8f)) return false;
+            if (Mathf.Abs(h.point.y - p.y) > 0.8f) return false;           // 건물·벽·절벽 위로 건너는 이음은 뺀다. 땅 틈(11 cm)은 허용(보조 이동으로 건넌다)
+        }
+        return true;
     }
 
     static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
@@ -503,6 +516,14 @@ public class OnFootRouteBot : MonoBehaviour
         int Near(Vector3 q) { int bi = 0; float bd = float.MaxValue; for (int i = 0; i < nodes.Count; i++) { float d = Flat(nodes[i] - q).sqrMagnitude; if (d < bd) { bd = d; bi = i; } } return bi; }
         int na = Near(from), nb = Near(to);
         info += $" 시작점 오차 {Vector3.Distance(Flat(nodes[na]), Flat(from)):F1}m 끝점 오차 {Vector3.Distance(Flat(nodes[nb]), Flat(to)):F1}m";
+        // 2.5 m 연결만으론 길이 201 조각이라(실측: 차고 진입로 끝이 큰길과 4.2 m) 시작→찻집이 안 이어진다. 12 m 에서 이어진다(실측).
+        // 먼 이음은 비용 ×3 (진짜 갈림목을 먼저 쓴다), 높이차 3 m 넘는 이음은 안 한다.
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int gx = (int)Mathf.Floor(nodes[i].x / 3f), gz = (int)Mathf.Floor(nodes[i].z / 3f);
+            for (int dx = -4; dx <= 4; dx++) for (int dz = -4; dz <= 4; dz++) if (grid.TryGetValue((gx + dx, gz + dz), out var l))
+                foreach (var j in l) if (j > i && road[j] != road[i]) { float d = Vector3.Distance(nodes[i], nodes[j]); if (d >= 2.5f && d < 12f && Mathf.Abs(nodes[i].y - nodes[j].y) < 3f && OnRoadAll(nodes[i], nodes[j])) { adj[i].Add((j, d * 3f)); adj[j].Add((i, d * 3f)); } }
+        }
         foreach (bool rough in new[] { false, true })
         {
             var dist = new float[nodes.Count]; var prev = new int[nodes.Count];
@@ -531,9 +552,11 @@ public class OnFootRouteBot : MonoBehaviour
     }
 
     /// <summary>순수 추종: 앞 4 + v·0.5 m 점을 향해 조향. 달걀이라 살살(곧은 길 8 m/s, 굽은 길 4.5 m/s, 스로틀 0.5). 막히면 1.5초 후진 후 다시.</summary>
+    static int LastAssists;
     IEnumerator Follow(List<Vector3> path, CargoBox cargo)
     {
-        var car = dir.Car; int idx = 0; float t0 = Time.time, lastImprove = Time.time, bestLeft = float.MaxValue; int recover = 0;
+        LastAssists = 0;
+        var car = dir.Car; int idx = 0; float t0 = Time.time, lastImprove = Time.time, bestLeft = float.MaxValue; int recover = 0, assists = 0;
         float total = 0f; for (int i = 1; i < path.Count; i++) total += Vector3.Distance(path[i], path[i - 1]);
         float nextLog = 0f;
         while (!dir.Delivered)
@@ -565,6 +588,19 @@ public class OnFootRouteBot : MonoBehaviour
                 Stuck("운전", $"남은 {left:F0}m 차={P(cp)} 속도={v:F1} → 후진 {recover}번째");
                 float rb = 0f; while (rb < 1.5f) { car.SetMoveInput(new Vector2(-Mathf.Clamp(err / 35f, -1f, 1f), -0.6f)); rb += Time.deltaTime; yield return null; }
                 lastImprove = Time.time;
+                if (recover == 2)
+                {
+                    // 보조 이동(봇 전용, 게임 기능 아님): 길 사이 땅 틈에서 걸리면 앞 10 m 점으로 옮긴다. 로그에 남겨 완주 시간에서 따로 본다.
+                    int ti = idx; float aa = 0f; while (ti + 1 < path.Count && aa < 10f) { aa += Vector3.Distance(path[ti], path[ti + 1]); ti++; }
+                    Vector3 fwd = Flat(path[Mathf.Min(ti + 1, path.Count - 1)] - path[ti]).normalized;
+                    var rbd = car.GetComponent<Rigidbody>(); if (rbd != null) { rbd.linearVelocity = Vector3.zero; rbd.angularVelocity = Vector3.zero; }
+                    car.transform.SetPositionAndRotation(path[ti] + Vector3.up * 0.4f, Quaternion.LookRotation(fwd));
+                    Physics.SyncTransforms();
+                    Line($"  보조 이동: {P(cp)} → {P(path[ti])} (게임 기능 아님, 봇 보정)");
+                    assists++; LastAssists = assists;
+                    lastImprove = Time.time; recover = 0;
+                    continue;
+                }
                 if (recover >= 4) { Line("  4번 막혀서 포기"); yield break; }
             }
             if (Time.time - t0 > 300f) { Line("  300초 초과 — 포기"); yield break; }
