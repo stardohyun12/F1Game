@@ -14,6 +14,12 @@ using UnityEngine;
 public class OnFootRouteBot : MonoBehaviour
 {
     public static string Status = "idle";
+    /// <summary>UI 1판 캡처(과제 20261101-0515): 비어 있지 않으면 기능 2 길에서 PresentGrab 으로 RT 그대로(도트 UI 포함) 찍는다.</summary>
+    public static string GrabDir = "";
+    static void Grab(string prefix, int count = 1, float interval = 0f, float delay = 0f)
+    {
+        if (!string.IsNullOrEmpty(GrabDir)) PresentGrab.Begin(GrabDir, prefix, count, interval, delay);
+    }
 
     // shot 의 p 가 (0,0) 이 아니면 그 점(발 높이 + aimY)을 바라보고 찍는다(1인칭, 과제 20261031-0044).
     struct Step { public string kind, label; public Vector2 p; public float aimY; public Step(string k, string l, float x, float z, float ay = 1.4f) { kind = k; label = l; p = new Vector2(x, z); aimY = ay; } }
@@ -416,7 +422,10 @@ public class OnFootRouteBot : MonoBehaviour
         while (dir.Prompt != "E 말하기" && w < 2f) { w += Time.deltaTime; yield return null; }
         if (dir.Prompt != "E 말하기") { Stuck("사장 보기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL talk"; Finish(tStart); yield break; }
         yield return ShotUI("f2_02_boss_prompt");
-        dir.SimInteract(); yield return null; yield return null;
+        Grab("chip_1_boss"); yield return null; yield return null;
+        dir.SimInteract();
+        Grab("talk_focus", 6, 0.08f);                              // 시선 이동 0.5초를 6장(약 0.1초 간격)
+        yield return null; yield return null;
         int shown = 0;
         while (dir.InTalk && shown < 6)
         {
@@ -437,7 +446,10 @@ public class OnFootRouteBot : MonoBehaviour
         while (dir.Prompt != "E 타기" && w < 2f) { w += Time.deltaTime; yield return null; }
         if (dir.Prompt != "E 타기") { Stuck("카트 타기", $"안내 '{dir.Prompt}'"); Status = "FAIL board"; Finish(tStart); yield break; }
         yield return ShotUI("f2_04_beside_cart");
+        Grab("chip_2_cart"); yield return null; yield return null;
         dir.SimInteract();
+        Grab("drive", 3, 5f, 1.2f);                                // 탑승 1.2·6.2·11.2초
+        if (!string.IsNullOrEmpty(GrabDir)) StartCoroutine(SlipShot());
         yield return CamTrace("타기");
         if (dir.State != OnFootDirector.Mode.InCart) { Stuck("카트 타기", "타기 안 됨"); Status = "FAIL board"; Finish(tStart); yield break; }
         var mgr = FindFirstObjectByType<DeliveryManager>();
@@ -607,6 +619,19 @@ public class OnFootRouteBot : MonoBehaviour
             if (left < 1f && Flat(path[path.Count - 1] - cp).magnitude < 2f) { car.SetMoveInput(new Vector2(0f, -0.3f)); }
             yield return null;
         }
+    }
+
+    /// <summary>탑승 3초 뒤 Tab(전표)을 0.6초 누른 것처럼 하고 한 장.</summary>
+    IEnumerator SlipShot()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        var ui = FindFirstObjectByType<DotScreenUI>();
+        if (ui == null) yield break;
+        ui.SimSlip = true;
+        yield return new WaitForSecondsRealtime(0.3f);
+        Grab("drive_slip");
+        yield return new WaitForSecondsRealtime(0.3f);
+        ui.SimSlip = false;
     }
 
     /// <summary>UI(자막·안내·HUD) 까지 들어간 화면 캡처 — Shot() 은 카메라만 찍어서 화면 글이 안 나온다.</summary>

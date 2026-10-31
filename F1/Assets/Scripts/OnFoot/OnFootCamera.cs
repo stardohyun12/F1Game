@@ -23,6 +23,8 @@ public class OnFootCamera : MonoBehaviour
     [Header("검증 봇 입력(마우스 대신)")]
     public bool simActive;
 
+    /// <summary>UI 1판(D-240): 켜져 있으면 마우스 시선을 받지 않는다(대화 중 감독이 시선을 잡을 때).</summary>
+    public bool HoldLook { get; set; }
     public float Yaw { get; set; }
     public float Pitch { get; set; }
     /// <summary>게임 기본 FOV. 감독이 FollowCamera 정지 FOV 를 넣는다. 0 이면 켤 때 카메라 FOV 를 그대로 쓴다.</summary>
@@ -69,7 +71,7 @@ public class OnFootCamera : MonoBehaviour
     void LateUpdate()
     {
         if (target == null) return;
-        if (!simActive && Mouse.current != null && Cursor.lockState == CursorLockMode.Locked)
+        if (!simActive && !HoldLook && Mouse.current != null && Cursor.lockState == CursorLockMode.Locked)
         {
             Vector2 d = Mouse.current.delta.ReadValue() * mouseSensitivity;
             AddLook(d.x, -d.y);

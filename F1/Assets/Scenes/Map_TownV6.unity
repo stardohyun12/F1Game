@@ -1015367,6 +1015367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1927327246}
   - component: {fileID: 1927327245}
+  - component: {fileID: 1927327247}
   m_Layer: 0
   m_Name: OnFoot_HomeGarage
   m_TagString: Untagged
@@ -1015395,6 +1015396,8 @@ MonoBehaviour:
   boss: {fileID: 1054955446}
   firstDrop: {fileID: 1463419647}
   talkReach: 3
+  talkFocusSec: 0.5
+  talkFocusDrop: 0.05
 --- !u!4 &1927327246
 Transform:
   m_ObjectHideFlags: 0
@@ -1015414,6 +1015417,34 @@ Transform:
   - {fileID: 1054955446}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1927327247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927327244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914d7de415e93584584d18d1a7863532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::DotScreenUI
+  director: {fileID: 1927327245}
+  font: {fileID: 12800000, guid: ed8c86d0174823f459b128d735aee10a, type: 3}
+  smallFont: {fileID: 12800000, guid: 23b8eb61eb8618344a2e6f820c3f902d, type: 3}
+  fontSize: 12
+  smallSize: 10
+  typeCps: 30
+  bubbleMaxW: 190
+  hideLegacyHud: 1
+  warnShow: 0.7
+  warnCrit: 1
+  slipHintSec: 6
+  boxSprite: {fileID: 0}
+  tabSprite: {fileID: 0}
+  keySprite: {fileID: 0}
+  tailSprite: {fileID: 0}
+  warnSprite: {fileID: 0}
 --- !u!1 &1927366251
 GameObject:
   m_ObjectHideFlags: 0

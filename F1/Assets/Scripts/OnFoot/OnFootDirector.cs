@@ -51,6 +51,27 @@ public class OnFootDirector : MonoBehaviour
     public Transform Boss => boss;
     public DeliveryPoint FirstDrop => firstDrop;
 
+    // ── UI 1판(D-240): DotScreenUI 가 읽는 것 ──
+    /// <summary>지금 안내([E] 칩)가 붙을 세상 점 — 문짝 가운데·카트 손잡이·사장 머리·낚시 자리. 없으면 null.</summary>
+    public Vector3? PromptAnchor { get; private set; }
+    public string TalkWho => InTalk ? BossLines[talkLine].who : "";
+    public string TalkText => InTalk ? BossLines[talkLine].text : "";
+    /// <summary>지금 줄이 시작된 때(unscaled) — 말풍선 한 글자씩.</summary>
+    public float TalkLineAt => talkLineAt;
+    /// <summary>말하는 사람 머리 꼭대기(렌더러 경계 맨 위).</summary>
+    public Vector3 SpeakerTop => TopOf(boss);
+
+    [Header("UI 1판(D-240) — 대화 시선")]
+    [Tooltip("대화가 시작되면 카메라가 말하는 사람 쪽으로 도는 시간(초). 0 = 안 돌림.")]
+    [SerializeField] float talkFocusSec = 0.5f;
+    [Tooltip("화면 가운데에 둘 점 = 머리 꼭대기에서 이만큼 아래(m). 말풍선이 그 위에 들어갈 자리.")]
+    [SerializeField] float talkFocusDrop = 0.05f;
+    Coroutine talkFocus;
+    DotScreenUI dotUI;
+    Canvas overlayUI;
+    readonly Dictionary<Object, Vector3> anchorOffset = new Dictionary<Object, Vector3>();
+    bool UseDot => dotUI != null && dotUI.isActiveAndEnabled;
+
     // 대사: docs/design/tutorial/first-delivery.yaml 의 garage 장면 1·2줄 그대로. 3줄(첫 주문 안내)은 설계에 사장 대사가 없어
     // 보관소 직원 대사("첫 주문. 달걀 한 판, 언덕 위 찻집.")를 사장 입으로 옮기고 줄리아 이름을 붙였다 — 도현 확인 필요.
     static readonly (string who, string text)[] BossLines =
@@ -125,6 +146,7 @@ public class OnFootDirector : MonoBehaviour
         foreach (var s in FindObjectsByType<FishingSpot>(FindObjectsSortMode.None)) if (s.seat != null) spots.Add(s);
         CollectHud();
         BuildUI();
+        dotUI = FindFirstObjectByType<DotScreenUI>();
 
         if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
         SetCarControl(false);
@@ -152,13 +174,15 @@ public class OnFootDirector : MonoBehaviour
     void Update()
     {
         if (State == Mode.Starting) return;
+        if (overlayUI != null && overlayUI.enabled == UseDot) overlayUI.enabled = !UseDot;   // 도트 UI 가 켜져 있으면 예전 화면 안내·자막을 끈다
         bool press = InteractPressed();
         if (State == Mode.OnFoot)
         {
-            if (InTalk) { UpdateTalk(press); return; }
+            if (InTalk) { PromptAnchor = null; UpdateTalk(press); return; }
             // 1인칭(D-219): 화면 가운데 점이 가리키는 것만 — 시선 레이 2 m 에 처음 맞은 것이 문·카트일 때.
             Object hit = Gaze(out DoorHinge door);
             GazeTarget = hit != null ? hit.name : null;
+            PromptAnchor = hit == null ? (Vector3?)null : hit == car ? car.transform.position + Vector3.up * 0.8f : hit == boss ? TopOf(boss) : CenterOf(door);
             if (boss != null && hit == boss)
             {
                 SetPrompt("E 말하기");
@@ -182,17 +206,20 @@ public class OnFootDirector : MonoBehaviour
             else if (NearSpot() is FishingSpot spot)
             {
                 SetPrompt("E 앉기");
+                PromptAnchor = spot.transform.position + Vector3.up * 0.6f;
                 if (press) Sit(spot);
             }
             else SetPrompt("");
         }
         else if (State == Mode.Seated)
         {
+            PromptAnchor = null;
             if (press) StandUp();   // 앉아 있는 동안 화면에 아무것도 없음(D-227)
         }
         else if (State == Mode.InCart)
         {
             bool slow = Mathf.Abs(car.CurrentSpeedMps) < exitMaxSpeed;
+            PromptAnchor = car.transform.position + Vector3.up * 1.0f;
             SetPrompt(slow ? "E 내리기" : "");
             if (press && slow) ExitCart();
         }
@@ -338,7 +365,60 @@ public class OnFootDirector : MonoBehaviour
         if (to.sqrMagnitude > 1e-4f) boss.rotation = Quaternion.LookRotation(to.normalized, Vector3.up);
         SetPrompt("");
         ShowSubtitle();
+        if (talkFocusSec > 0f) { if (talkFocus != null) StopCoroutine(talkFocus); talkFocus = StartCoroutine(FocusSpeaker()); }
         Mark("사장 대화 시작");
+    }
+
+    /// <summary>
+    /// UI 1판(D-240): 대화가 시작되면 카메라가 말하는 사람 쪽으로 talkFocusSec 동안 부드럽게 돈다(머리가 화면 가운데 근처, 말풍선은 그 위).
+    /// 말하는 사람이 화면 밖이어도 이 회전으로 화면 안에 들어온다. 대화 동안 마우스 시선은 잠그고, 끝나면 그 자리에서 다시 플레이어 조작.
+    /// </summary>
+    IEnumerator FocusSpeaker()
+    {
+        footCam.HoldLook = true;
+        float y0 = footCam.Yaw, p0 = footCam.Pitch;
+        footCam.LookAt(SpeakerTop - Vector3.up * talkFocusDrop);
+        float dy = Mathf.DeltaAngle(y0, footCam.Yaw), p1 = footCam.Pitch;
+        Mark($"시선 이동 {dy:F1}° 옆 / {p1 - p0:F1}° 위아래, {talkFocusSec:F2}s");
+        // 한 프레임이 길어도(첫 한글 글자 굽기 등) 최대 1/30초씩만 — 회전이 한 번에 건너뛰지 않게.
+        for (float t = 0f; t < talkFocusSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
+        {
+            float k = Mathf.SmoothStep(0f, 1f, t / talkFocusSec);
+            footCam.Yaw = y0 + dy * k; footCam.Pitch = Mathf.Lerp(p0, p1, k);
+            yield return null;
+        }
+        footCam.Yaw = y0 + dy; footCam.Pitch = p1;
+        talkFocus = null;
+    }
+
+    /// <summary>개발·캡처용: 시선이 어디를 보든 바로 사장 대화를 시작한다(화면 밖 사장 → 시선 이동 확인).</summary>
+    public bool ForceTalk()
+    {
+        if (State != Mode.OnFoot || InTalk || boss == null) return false;
+        BeginTalk();
+        return true;
+    }
+
+    Vector3 TopOf(Transform t)
+    {
+        if (t == null) return Vector3.zero;
+        if (!anchorOffset.TryGetValue(t, out var off))
+        {
+            var rs = t.GetComponentsInChildren<Renderer>();
+            if (rs.Length == 0) off = Vector3.up * 1.8f;
+            else { var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds); off = new Vector3(b.center.x, b.max.y, b.center.z) - t.position; }
+            anchorOffset[t] = off;
+        }
+        return t.position + off;
+    }
+
+    Vector3? CenterOf(DoorHinge d)
+    {
+        if (d == null) return null;
+        var rs = d.GetComponentsInChildren<Renderer>();   // 문은 돌아가므로 매번(문 몇 개뿐)
+        if (rs.Length == 0) return d.transform.position;
+        var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds);
+        return b.center;
     }
 
     void UpdateTalk(bool press)
@@ -348,6 +428,8 @@ public class OnFootDirector : MonoBehaviour
         if (talkLine < BossLines.Length) { ShowSubtitle(); return; }
         talkLine = -1; Talked = true;
         player.enabled = true;
+        if (talkFocus != null) { StopCoroutine(talkFocus); talkFocus = null; }
+        footCam.HoldLook = false;                                  // 다시 플레이어 시선
         if (subRoot != null) subRoot.SetActive(false);
         Mark("사장 대화 끝");
     }
@@ -447,6 +529,7 @@ public class OnFootDirector : MonoBehaviour
         var go = new GameObject("OnFootUI", typeof(Canvas), typeof(CanvasScaler));
         go.transform.SetParent(transform, false);
         var ui = go.GetComponent<Canvas>(); ui.renderMode = RenderMode.ScreenSpaceOverlay; ui.sortingOrder = 90;
+        overlayUI = ui;
         var sc = go.GetComponent<CanvasScaler>(); sc.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize; sc.referenceResolution = new Vector2(1920, 1080); sc.matchWidthOrHeight = 0.5f;
         // 한 줄 안내: 반투명 띠 + 글(외곽선은 폰트 재질을 건드리므로 안 씀). 아트는 나중에 띠 스프라이트 슬롯에.
         var bg = new GameObject("Prompt", typeof(RectTransform), typeof(Image));
