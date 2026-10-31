@@ -242,10 +242,13 @@ public class OnFootDirector : MonoBehaviour
         if (promptText != null) { promptText.text = s; promptRoot.SetActive(s.Length > 0); }
     }
 
+    void OnDestroy() { EngineAudio.OnFootMute = false; }   // 감독 없는 씬에선 엔진 소리 원래대로
+
     // ── 걷기 ↔ 카트 ──
     void EnterFoot()
     {
         State = Mode.OnFoot;
+        EngineAudio.OnFootMute = true;
         if (follow != null) follow.enabled = false;
         player.gameObject.SetActive(true);
         footCam.Yaw = player.transform.eulerAngles.y;
@@ -259,6 +262,7 @@ public class OnFootDirector : MonoBehaviour
     {
         Mark("카트 타기");
         State = Mode.InCart;
+        EngineAudio.OnFootMute = false;
         player.gameObject.SetActive(false);
         footCam.enabled = false;
         SetCarControl(true);
@@ -285,6 +289,7 @@ public class OnFootDirector : MonoBehaviour
     {
         Mark("앉기 " + s.name);
         State = Mode.Seated; seatedAt = s;
+        EngineAudio.OnFootMute = true;
         footCam.enabled = false;
         player.gameObject.SetActive(false);
         if (dotRoot != null) dotRoot.SetActive(false);

@@ -40,6 +40,8 @@ public sealed class SunsetLook : MonoBehaviour
     public Material seaMaterial;   // PitCrew/Look/DuskSea
     public Renderer sea;
     public Light sun;
+    [Tooltip("D-229 이 장면에서 숲 나무 F1·F2 로 바꾸느라 꺼 둔 옛 대역 나무(메뉴 PitCrew/노을/나무 되돌리기 로 다시 켬).")]
+    public GameObject[] hiddenTrees;
 
     // 켜기 직전 낮 값 — 끌 때 이것으로 되돌린다(씬에 저장돼 도메인 리로드·Play 진입에도 남는다)
     [System.Serializable]

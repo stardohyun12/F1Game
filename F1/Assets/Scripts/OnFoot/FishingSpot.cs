@@ -15,7 +15,9 @@ public class FishingSpot : MonoBehaviour
     public float sitRadius = 2.4f;
     [Tooltip("일어나면 설 자리(없으면 seat 뒤 1.1 m 땅).")]
     public Transform standPoint;
+    [Tooltip("둘러보기: 오른쪽(+) yawRange°, 왼쪽(−) yawLeft°. D-229 왼쪽은 마을이라 좁게.")]
     public float yawRange = 35f, pitchUp = 15f, pitchDown = 22f;
+    public float yawLeft = 35f;
     [Tooltip("마우스 1 픽셀당 도(걷기 0.12 보다 느리게 — 앉아서 천천히 둘러봄).")]
     public float mouseSensitivity = 0.07f;
     [Header("던지기")]
@@ -76,7 +78,7 @@ public class FishingSpot : MonoBehaviour
         root = null; rod = null; bobber = null; line = null;
     }
 
-    public void AddLook(float dYaw, float dPitch) { yaw = Mathf.Clamp(yaw + dYaw, -yawRange, yawRange); pitch = Mathf.Clamp(pitch + dPitch, -pitchDown, pitchUp); }
+    public void AddLook(float dYaw, float dPitch) { yaw = Mathf.Clamp(yaw + dYaw, -yawLeft, yawRange); pitch = Mathf.Clamp(pitch + dPitch, -pitchDown, pitchUp); }
 
     void Build()
     {
@@ -96,20 +98,37 @@ public class FishingSpot : MonoBehaviour
         if (bobberPrefab != null) bobber = Instantiate(bobberPrefab, root).transform;
         else
         {
-            var b = GameObject.CreatePrimitive(PrimitiveType.Sphere); b.name = "Bobber"; Destroy(b.GetComponent<Collider>());
-            var bm = new Material(gray) { name = "BobberGray (대역)" }; bm.SetColor("_Tint", new Color(0.86f, 0.84f, 0.80f));
-            b.GetComponent<Renderer>().sharedMaterial = bm; b.transform.SetParent(root, false); b.transform.localScale = Vector3.one * 0.13f;
-            bobber = b.transform;
+            // D-229 찌 = 아래 흰 띠 + 위 빨강(빛 안 받는 단색 — 노을 물 위에서도 12 m 앞 2~3 px 로 읽히게). 높이 0.22 m
+            bobber = new GameObject("Bobber").transform; bobber.SetParent(root, false);
+            Part(bobber, new Color(0.95f, 0.92f, 0.86f), 0.08f, 0.00f);
+            Part(bobber, new Color(0.86f, 0.10f, 0.07f), 0.12f, 0.10f);
         }
         var lg = new GameObject("Line"); lg.transform.SetParent(root, false);
         line = lg.AddComponent<LineRenderer>();
         line.positionCount = pts.Length; line.useWorldSpace = true; line.numCapVertices = 0;
         line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; line.receiveShadows = false;
         var lm = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "FishingLine (대역)" };
-        lm.SetColor("_BaseColor", new Color(0.86f, 0.82f, 0.78f));
+        lm.SetColor("_BaseColor", lineColor);
         line.sharedMaterial = lm;
-        // 360 줄 화면에서 1 px 남짓 — 가까운 끝(대 끝 ~2 m)은 가늘게, 먼 끝(찌 ~12 m)은 굵게 해서 거리와 상관없이 1 px 로 보이게
-        line.widthCurve = new AnimationCurve(new Keyframe(0f, 0.010f), new Keyframe(1f, 0.045f));
+    }
+
+    [Tooltip("D-229 줄 색 — 노을빛(복숭아)에 섞이게. 굵기는 매 프레임 화면 1 px(거리×픽셀 크기)로 맞춘다.")]
+    public Color lineColor = new Color(0.90f, 0.62f, 0.55f);
+
+    void Part(Transform parent, Color c, float h, float y)
+    {
+        var g = GameObject.CreatePrimitive(PrimitiveType.Cylinder); g.name = "BobberPart"; Destroy(g.GetComponent<Collider>());
+        var m = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "Bobber (대역)" }; m.SetColor("_BaseColor", c);
+        g.GetComponent<Renderer>().sharedMaterial = m; g.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        g.transform.SetParent(parent, false); g.transform.localScale = new Vector3(0.07f, h * 0.5f, 0.07f); g.transform.localPosition = new Vector3(0f, y + h * 0.5f - 0.06f, 0f);
+    }
+
+    // 지금 렌더 해상도(360 줄)에서 거리 dist(m)의 1 px 이 몇 m 인가
+    float PixelAt(float dist)
+    {
+        int h = 360; var lr = cam.GetComponent<LowResRenderTest>();
+        if (lr != null && lr.isActiveAndEnabled && lr.RenderSize.y > 0) h = lr.RenderSize.y; else if (cam.pixelHeight > 0) h = cam.pixelHeight;
+        return 2f * dist * Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad) / h;
     }
 
     void LateUpdate()
@@ -156,5 +175,7 @@ public class FishingSpot : MonoBehaviour
             pts[i] = Vector3.Lerp(tip, b, u) + Vector3.down * (4f * u * (1f - u) * sag);
         }
         line.SetPositions(pts);
+        Vector3 eye = cam.transform.position;
+        line.startWidth = 1.15f * PixelAt(Vector3.Distance(eye, tip)); line.endWidth = 1.15f * PixelAt(Vector3.Distance(eye, b));   // 1 px 딱 맞추면 기울기에 따라 픽셀 중심을 놓쳐 끊긴다 → 1.15
     }
 }

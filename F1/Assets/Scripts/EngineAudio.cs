@@ -19,6 +19,9 @@ public class EngineAudio : MonoBehaviour
 
     private AudioSource src;
 
+    /// <summary>D-229 걷기·앉기(OnFootDirector) 중엔 주차된 카트 엔진 무음. 감독이 켜고 끈다.</summary>
+    public static bool OnFootMute;
+
     void Awake()
     {
         src = GetComponent<AudioSource>();
@@ -45,7 +48,7 @@ public class EngineAudio : MonoBehaviour
 
         // 엔진은 "실제 런 주행 중"에만 소리. 보드/정산/차고(런 비활성) 또는 일시정지면 무음.
         // (이전엔 timeScale만 봤는데, 런 후 보드 등에서 timeScale 경로가 새서 소리 잔류 — 2026-05-22 도현 보고)
-        bool driving = Time.timeScale >= 0.01f
+        bool driving = !OnFootMute && Time.timeScale >= 0.01f
                        && car != null
                        && Services.Run != null && Services.Run.RunActive;
         if (!driving)
