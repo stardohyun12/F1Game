@@ -92,7 +92,7 @@ public static class PitCrewSunsetMenu
     // D-229 물가 거품용 물 밑 깊이 — 깊이 텍스처는 이 RT 카메라에서 비어 나와서(2판 실측) 레이로 굽는다.
     // 자리 둘레 DepthSize m 정사각을 DepthTexel m 칸으로: 위에서 아래로 레이 → 처음 맞은 것(지형·부두 윗면·방파제)의 높이.
     // R = 물 밑 깊이 / 8 m (물 위로 나온 곳 = 0). 부두는 윗면이 맞으니 거품은 부두 테두리를 두른다.
-    public const float DepthSize = 320f, DepthTexel = 0.5f, DepthMax = 8f;
+    public const float DepthSize = 320f, DepthTexel = 0.5f, DepthMax = 8f, ShoreDistMax = 400f;   // ShoreDistMax = DuskSea.shader 의 400 과 같이
     [MenuItem("PitCrew/노을/물 밑 깊이 굽기", false, 2)]
     public static void BakeSeaDepth()
     {
@@ -102,15 +102,59 @@ public static class PitCrewSunsetMenu
         float x0 = SeatPos.x - DepthSize * .5f, z0 = SeatPos.z - DepthSize * .5f;
         var tex = new Texture2D(n, n, TextureFormat.RGB24, false, true);
         var px = new Color32[n * n];
+        // 3판(D-230): 부두 윗면 밑은 물로 본다(윗면에서 다시 아래로 쏴 바닥이 물 밑이면 물) + 물 높이에 박힌 기둥·바위는 CheckBox 로 땅.
+        //  G = 물가(땅)까지 거리 — 2-패스 챔퍼 거리, sqrt(거리/ShoreDistMax) 로 담아 가까운 곳 정밀도를 남긴다.
+        //  상한이 커야 하는 이유: 먼 물가(150 m)는 화면 1px 가 물 28 m 라 4~5px 거품 띠 = 물가에서 140 m
+        var depth = new float[n * n]; var land = new bool[n * n];
+        var half = new Vector3(DepthTexel * .5f, .12f, DepthTexel * .5f);
         for (int j = 0; j < n; j++)
             for (int i = 0; i < n; i++)
             {
-                var o = new Vector3(x0 + (i + .5f) * DepthTexel, 40f, z0 + (j + .5f) * DepthTexel);
-                float d = DepthMax;
-                if (Physics.Raycast(o, Vector3.down, out var hit, 60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) d = Mathf.Clamp(-hit.point.y, 0f, DepthMax);
-                byte b = (byte)Mathf.RoundToInt(d / DepthMax * 255f);
-                px[j * n + i] = new Color32(b, b, b, 255);
+                float wx = x0 + (i + .5f) * DepthTexel, wz = z0 + (j + .5f) * DepthTexel;
+                float d = DepthMax; bool isLand = false;
+                float y0 = 40f;
+                for (int k = 0; k < 4; k++)
+                {
+                    if (!Physics.Raycast(new Vector3(wx, y0, wz), Vector3.down, out var hit, 60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                    break;   // 밑에 아무것도 없음 = 깊은 물
+                    if (hit.point.y <= 0f) { d = Mathf.Clamp(-hit.point.y, 0f, DepthMax); break; }
+                    // 물 위로 나온 면: 그 밑이 비었으면(지형 속) 땅, 밑에 또 면이 있으면 다시
+                    if (!Physics.Raycast(hit.point - Vector3.up * .05f, Vector3.down, 60f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) { isLand = true; break; }
+                    y0 = hit.point.y - .05f;
+                    if (k == 3) isLand = true;
+                }
+                if (!isLand && Physics.CheckBox(new Vector3(wx, 0f, wz), half, Quaternion.identity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) isLand = true;
+                if (isLand) d = 0f;
+                depth[j * n + i] = d; land[j * n + i] = isLand || d <= 0.02f;
             }
+        var dist = new float[n * n];
+        const float Big = 1e6f, DiagW = 1.41421f;
+        for (int q = 0; q < dist.Length; q++) dist[q] = land[q] ? 0f : Big;
+        for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i++)
+            {
+                int q = j * n + i; float v = dist[q];
+                if (i > 0) v = Mathf.Min(v, dist[q - 1] + 1f);
+                if (j > 0) { v = Mathf.Min(v, dist[q - n] + 1f); if (i > 0) v = Mathf.Min(v, dist[q - n - 1] + DiagW); if (i < n - 1) v = Mathf.Min(v, dist[q - n + 1] + DiagW); }
+                dist[q] = v;
+            }
+        for (int j = n - 1; j >= 0; j--)
+            for (int i = n - 1; i >= 0; i--)
+            {
+                int q = j * n + i; float v = dist[q];
+                if (i < n - 1) v = Mathf.Min(v, dist[q + 1] + 1f);
+                if (j < n - 1) { v = Mathf.Min(v, dist[q + n] + 1f); if (i < n - 1) v = Mathf.Min(v, dist[q + n + 1] + DiagW); if (i > 0) v = Mathf.Min(v, dist[q + n - 1] + DiagW); }
+                dist[q] = v;
+            }
+        int landCount = 0;
+        for (int q = 0; q < px.Length; q++)
+        {
+            if (land[q]) landCount++;
+            byte r = (byte)Mathf.RoundToInt(depth[q] / DepthMax * 255f);
+            float m = Mathf.Min(dist[q] * DepthTexel, ShoreDistMax);
+            byte g = (byte)Mathf.RoundToInt(Mathf.Sqrt(m / ShoreDistMax) * 255f);
+            px[q] = new Color32(r, g, 0, 255);
+        }
         tex.SetPixels32(px); tex.Apply();
         string path = MatDir + "TV6_SeaDepth.png";
         System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
@@ -125,7 +169,7 @@ public static class PitCrewSunsetMenu
         look.seaMaterial.SetTexture("_DepthTex", dt);
         look.seaMaterial.SetVector("_DepthRect", new Vector4(x0, z0, DepthSize, DepthMax));
         EditorUtility.SetDirty(look.seaMaterial); AssetDatabase.SaveAssets();
-        Debug.Log("[노을] 물 밑 깊이 " + n + "×" + n + " → " + path);
+        Debug.Log("[노을] 물 밑 깊이·물가 거리 " + n + "×" + n + " 땅 칸 " + landCount + " → " + path);
     }
 
     // D-229 이 장면에서 보이는 옛 대역 나무(LofiPilot CoastalTree)만 숲 나무 F1·F2 로. 원본은 끄기만 하고(SunsetLook.hiddenTrees) 새 나무는 Sunset_D227/Trees_F 아래.

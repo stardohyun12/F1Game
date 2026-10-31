@@ -1,0 +1,1 @@
+state=Seated seated=True sunset=True rt=1280x720 filter=Point renderScale=0.50 lrt.RenderSize=(640, 360) screen=1920x1080 rot=(3, 180, 0)

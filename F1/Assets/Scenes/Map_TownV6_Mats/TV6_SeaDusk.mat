@@ -44,19 +44,27 @@ Material:
     m_Colors:
     - _Bands: {r: 0.3, g: 0.56, b: 0.78, a: 0.97}
     - _Core: {r: 1, g: 0.93, b: 0.74, a: 1}
+    - _Dash: {r: 2, g: 0.3, b: 0.55, a: 1}
+    - _DashLen: {r: 7, g: 2, b: 18, a: 6}
     - _DayTint: {r: 0.3599998, g: 0.58, b: 0.7, a: 1}
-    - _Deep: {r: 0.2, g: 0.16, b: 0.32, a: 1}
+    - _Deep: {r: 0.22, g: 0.18, b: 0.4, a: 1}
     - _DepthRect: {r: -169, g: -451, b: 320, a: 8}
     - _Foam: {r: 0.95, g: 0.8, b: 0.78, a: 1}
     - _FoamDepth: {r: 0.9, g: 1.6, b: 2.8, a: 0}
+    - _FoamSurge: {r: 0.45, g: 11, b: 6, a: 14}
+    - _FoamW: {r: 2, g: 5, b: 0.5, a: 1.6}
+    - _Glow: {r: 0.96, g: 0.55, b: 0.4, a: 1}
     - _HorizonFade: {r: 150, g: 1100, b: 0, a: 0}
-    - _Hot: {r: 1, g: 0.72, b: 0.45, a: 1}
+    - _Hot: {r: 1, g: 0.76, b: 0.46, a: 1}
     - _Light: {r: 0.78, g: 0.43999997, b: 0.4699999, a: 1}
     - _Line: {r: 0.26999995, g: 0.19999996, b: 0.39999998, a: 1}
     - _Mid: {r: 0.35999998, g: 0.22999996, b: 0.42999998, a: 1}
-    - _PathWidth: {r: 0.004, g: 0.03, b: 0, a: 0}
+    - _PathCuts: {r: 0.22, g: 0.5, b: 0.82, a: 0}
+    - _PathWidth: {r: 0.02, g: 0.03, b: 0, a: 0}
+    - _ReflAz: {r: 28, g: 0.92, b: 0, a: 0}
     - _RippleScale: {r: 0.1, g: 0.45, b: 0.12, a: 0}
     - _Shallow: {r: 0.41999996, g: 0.35999998, b: 0.58, a: 1}
     - _ShoreRect: {r: -400, g: -400, b: 800, a: 0}
+    - _SkyBands: {r: 5, g: 0.55, b: 0.02, a: 0.4}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
