@@ -1,0 +1,32 @@
+{
+ "sugi": {
+  "tris": 371,
+  "by_part": {
+   "TRUNK": 64,
+   "CANOPY": 295,
+   "CARD": 12
+  },
+  "objects": 14,
+  "atlas": [
+   1024,
+   832
+  ],
+  "height": 10.5,
+  "width": 4.25
+ },
+ "laurel": {
+  "tris": 508,
+  "by_part": {
+   "TRUNK": 64,
+   "CANOPY": 432,
+   "CARD": 12
+  },
+  "objects": 16,
+  "atlas": [
+   1024,
+   896
+  ],
+  "height": 7.79,
+  "width": 8.36
+ }
+}

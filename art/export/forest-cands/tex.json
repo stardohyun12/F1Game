@@ -1,0 +1,82 @@
+{
+ "F1": {
+  "species": "sugi",
+  "leaf_photo": "T_cypress_A_leaf",
+  "bark_photo": "T_cypress_A_bark",
+  "leaf": [
+   49,
+   76,
+   50
+  ],
+  "bark": [
+   79,
+   69,
+   60
+  ],
+  "colors": 9,
+  "atlas": [
+   1024,
+   832
+  ]
+ },
+ "F2": {
+  "species": "sugi",
+  "leaf_photo": "T_pine_B_leaf",
+  "bark_photo": "T_cypress_B_bark",
+  "leaf": [
+   61,
+   82,
+   55
+  ],
+  "bark": [
+   85,
+   74,
+   65
+  ],
+  "colors": 9,
+  "atlas": [
+   1024,
+   832
+  ]
+ },
+ "F3": {
+  "species": "laurel",
+  "leaf_photo": "T_camellia_A_leaf",
+  "bark_photo": "T_celtis_A_bark",
+  "leaf": [
+   63,
+   79,
+   47
+  ],
+  "bark": [
+   93,
+   84,
+   71
+  ],
+  "colors": 9,
+  "atlas": [
+   1024,
+   896
+  ]
+ },
+ "F4": {
+  "species": "laurel",
+  "leaf_photo": "T_celtis_B_leaf",
+  "bark_photo": "T_celtis_B_bark",
+  "leaf": [
+   66,
+   87,
+   56
+  ],
+  "bark": [
+   116,
+   106,
+   88
+  ],
+  "colors": 9,
+  "atlas": [
+   1024,
+   896
+  ]
+ }
+}
