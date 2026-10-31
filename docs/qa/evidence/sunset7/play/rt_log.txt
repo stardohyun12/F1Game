@@ -1,0 +1,15 @@
+p7_y0 fov=46 lrt=(640, 360) yaw=0
+p7_yL fov=46 lrt=(640, 360) yaw=-30
+p7_yR fov=46 lrt=(640, 360) yaw=35
+p7_y0 fov=46 lrt=(640, 360) yaw=0
+p7_yL fov=46 lrt=(640, 360) yaw=-30
+p7_yR fov=46 lrt=(640, 360) yaw=35
+p7_y0 fov=46 lrt=(640, 360) yaw=0
+p7_yL fov=46 lrt=(640, 360) yaw=-30
+p7_yR fov=46 lrt=(640, 360) yaw=35
+p7_y0 fov=46 lrt=(640, 360) yaw=0
+p7_yL fov=46 lrt=(640, 360) yaw=-30
+p7_yR fov=46 lrt=(640, 360) yaw=35
+p7_y0 fov=46 lrt=(640, 360) yaw=0
+p7_yL fov=46 lrt=(640, 360) yaw=-30
+p7_yR fov=46 lrt=(640, 360) yaw=35

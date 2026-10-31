@@ -41,6 +41,8 @@ Material:
     - _Style: 1
     m_Colors:
     - _Absorb: {r: 2.2, g: 0.6, b: 0, a: 0}
+    - _Cool: {r: 0.55, g: 1.5, b: 0, a: 0}
+    - _CoolCol: {r: 0.16, g: 0.32, b: 0.46, a: 1}
     - _Core: {r: 1, g: 0.93, b: 0.74, a: 1}
     - _Crest: {r: 0.72, g: 1, b: 70, a: 0.45}
     - _CrestCol: {r: 1, g: 0.78, b: 0.7, a: 1}

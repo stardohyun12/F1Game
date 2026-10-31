@@ -22,12 +22,17 @@ public class LowResRenderTest : MonoBehaviour
     public Material presentMaterial;
     [Tooltip("RT 멀티샘플(1/2/4/8). 저해상도 가장자리 계단이 움직일 때 기어가는 것(크롤링)을 줄인다.")]
     public int msaa = 1;
+    /// <summary>D-236 Nearest(smooth 꺼짐)일 때 화면에 올리는 머티리얼(없으면 그냥 Nearest). SunsetLook 이 노을일 때만 역광 테 머티리얼을 꽂는다.</summary>
+    [System.NonSerialized] public Material overlay;
 
     Camera cam;
     RenderTexture rt;
     GameObject canvasGO;
     RawImage image;
     int builtW, builtH, builtAA;
+    Material builtMat;
+
+    Material WantMat => smooth ? presentMaterial : overlay;
 
     /// <summary>지금 실제로 그리는 해상도(가로×세로).</summary>
     public Vector2Int RenderSize { get; private set; }
@@ -61,6 +66,7 @@ public class LowResRenderTest : MonoBehaviour
         Size(out int w, out int h, out _);
         bool wantSmooth = smooth && presentMaterial != null;
         if (w != RenderSize.x || h != RenderSize.y || Mathf.ClosestPowerOfTwo(Mathf.Clamp(msaa, 1, 8)) != builtAA || (image != null && (image.material == presentMaterial) != wantSmooth)) Rebuild();
+        else if (image != null && builtMat != WantMat) { builtMat = WantMat; image.material = builtMat; }
     }
 
     /// <summary>지금 화면에 올라가는 것과 같은 방법으로 RT 를 dst 에 확대한다(캡처·깜빡임 측정용).</summary>
@@ -69,7 +75,7 @@ public class LowResRenderTest : MonoBehaviour
         if (rt == null) return;
         var f = rt.filterMode;
         if (smooth && presentMaterial != null) { rt.filterMode = FilterMode.Bilinear; Graphics.Blit(rt, dst, presentMaterial); }
-        else { rt.filterMode = FilterMode.Point; Graphics.Blit(rt, dst); }
+        else { rt.filterMode = FilterMode.Point; if (overlay != null) Graphics.Blit(rt, dst, overlay); else Graphics.Blit(rt, dst); }
         rt.filterMode = f;
     }
 
@@ -105,7 +111,8 @@ public class LowResRenderTest : MonoBehaviour
         if (prop != null) scale = Mathf.Max(0.1f, (float)prop.GetValue(rp));
         int rw = Mathf.RoundToInt(w / scale), rh = Mathf.RoundToInt(h / scale);
         int aa = Mathf.ClosestPowerOfTwo(Mathf.Clamp(msaa, 1, 8));
-        if (image != null) image.material = smooth ? presentMaterial : null;
+        builtMat = WantMat;
+        if (image != null) image.material = builtMat;
         if (rt != null && rw == builtW && rh == builtH && aa == builtAA) { rt.filterMode = smooth ? FilterMode.Bilinear : FilterMode.Point; return; }
         if (cam != null) cam.targetTexture = null;
         if (rt != null) { rt.Release(); Destroy(rt); }

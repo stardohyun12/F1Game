@@ -14,7 +14,7 @@ Shader "PitCrew/Look/DuskSky"
             #include "Assets/Art/Look/Dusk.hlsl"
             struct v2f { float4 pos : SV_POSITION; float3 dir : TEXCOORD0; };
             v2f vert(float4 v : POSITION) { v2f o; o.pos = TransformObjectToHClip(v.xyz); o.dir = v.xyz; return o; }
-            half4 frag(v2f i) : SV_Target { return half4(DuskSkyColor(i.dir, 1), 1); }
+            half4 frag(v2f i) : SV_Target { return half4(DuskSkyPixel(i.dir, i.pos.xy), 1); }   // D-236: 도트 하늘(끄면 DuskSkyColor 그대로)
             ENDHLSL
         }
     }

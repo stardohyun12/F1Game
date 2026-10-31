@@ -18,6 +18,13 @@ public class FishingSpot : MonoBehaviour
     [Tooltip("둘러보기: 오른쪽(+) yawRange°, 왼쪽(−) yawLeft°. D-229 왼쪽은 마을이라 좁게.")]
     public float yawRange = 35f, pitchUp = 15f, pitchDown = 22f;
     public float yawLeft = 35f;
+    [Header("D-236 7판 구도 — 앉은 동안만(걷기는 그대로)")]
+    [Tooltip("앉은 시야각(°). 좁히면 해·먼 실루엣이 커지고 엽서처럼 눌린다. 0 = 걷기 시야각 그대로.")]
+    public float seatedFov = 46f;
+    [Tooltip("seat 기본 각 위에 더 숙이는 각(°) — 바다 면적↑, 수평선이 화면 위 1/3 쪽으로.")]
+    public float seatLookDown = 5f;
+    [Tooltip("던지는 방향을 seat 정면에서 오른쪽(+)으로 돌리는 각(°) — 찌를 해 빛길 위에 놓는다.")]
+    public float castYaw = 0f;
     [Tooltip("마우스 1 픽셀당 도(걷기 0.12 보다 느리게 — 앉아서 천천히 둘러봄).")]
     public float mouseSensitivity = 0.07f;
     [Header("던지기")]
@@ -50,7 +57,7 @@ public class FishingSpot : MonoBehaviour
     /// <summary>D-235 검산용 — 이번 프레임 찌 자리의 셰이더 수면 높이(노을 바다가 아니면 NaN).</summary>
     public float SurfaceY { get; private set; } = float.NaN;
 
-    Camera cam; float savedNear; float yaw, pitch, castT;
+    Camera cam; float savedNear, savedFov; float yaw, pitch, castT;
     Transform root, rod, bobber; LineRenderer line;
     Vector3 castTo;
     bool landed; float bobOff, bobVel, lastSurf, lastSurfVel, lastRippleT;
@@ -81,8 +88,9 @@ public class FishingSpot : MonoBehaviour
         cam = c; Seated = true; yaw = 0f; pitch = 0f; castT = 0f;
         landed = false; bobOff = bobVel = 0f; lastSurfVel = 0f; lastSurf = float.NaN; SeaWaves.ClearRipples();
         savedNear = cam.nearClipPlane; cam.nearClipPlane = 0.05f;
+        savedFov = cam.fieldOfView; if (seatedFov > 1f) cam.fieldOfView = seatedFov;
         Build();
-        castTo = seat.position + Flat(seat.forward) * castDistance; castTo.y = waterY;
+        castTo = seat.position + (Quaternion.Euler(0f, castYaw, 0f) * Flat(seat.forward)) * castDistance; castTo.y = waterY;
         if (!simActive) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
         Place();
     }
@@ -90,7 +98,7 @@ public class FishingSpot : MonoBehaviour
     public void Stand()
     {
         Seated = false;
-        if (cam != null) cam.nearClipPlane = savedNear;
+        if (cam != null) { cam.nearClipPlane = savedNear; if (savedFov > 1f) cam.fieldOfView = savedFov; }
         if (root != null) Destroy(root.gameObject);
         root = null; rod = null; bobber = null; line = null; splash = null;
         SeaWaves.ClearRipples(); SurfaceY = float.NaN;
@@ -176,7 +184,7 @@ public class FishingSpot : MonoBehaviour
     void Place()
     {
         var e = seat.eulerAngles;
-        cam.transform.SetPositionAndRotation(seat.position, Quaternion.Euler(e.x - pitch, e.y + yaw, 0f));
+        cam.transform.SetPositionAndRotation(seat.position, Quaternion.Euler(e.x + seatLookDown - pitch, e.y + yaw, 0f));
         Vector3 f = Flat(seat.forward), r = Vector3.Cross(Vector3.up, f);
         float t = Time.time;
         // 손: 눈 오른쪽 아래 — 대는 바다 쪽으로 30° 들어 2 m. 바람에 아주 조금 흔들림

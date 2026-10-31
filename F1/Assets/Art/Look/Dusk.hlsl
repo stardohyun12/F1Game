@@ -38,4 +38,69 @@ float3 DuskSkyColor(float3 dir, float clouds)
     float3 day = y >= 0 ? lerp(_PCDayHor.rgb, _PCDayTop.rgb, smoothstep(0, .6, y)) : _PCDayBot.rgb;
     return lerp(day, c, saturate(_PCDusk.x));
 }
+
+// ── D-236 7판 도트 하늘(하늘 셰이더만 — 바다 반사는 위 DuskSkyColor 그대로) ──
+//  _PCDuskBands = (켬, 단 수, 단 끝 디더 폭, 디더 칸 px) · _PCDuskHalo = (원반°, 빛무리 1단°, 2단°, 세기) · _PCDuskStrips = (켬, 흐름 °/s, 덮는 양, 두께 배수)
+float4 _PCDuskBands, _PCDuskHalo, _PCDuskStrips, _PCSeaClock;
+
+// 화면 픽셀 고정 Bayer 4×4(0..1)
+float dkBayer2(float2 a) { a = floor(a); return frac(a.x * .5 + a.y * a.y * .75); }
+float dkBayer4(float2 a) { return dkBayer2(.5 * a) * .25 + dkBayer2(a); }
+// 계단 값 v(0..n) → 정수 단. 각 단 끝 w 만큼만 다음 단과 디더로 섞는다(단 안은 한 색)
+float dkStep(float v, float w, float th) { float fi = floor(v), f = v - fi; return fi + step(th, (f - (1 - w)) / max(w, 1e-3)); }
+
+float3 DuskSkyPixel(float3 dir, float2 spos)
+{
+    dir = normalize(dir);
+    if (_PCDuskBands.x < .5 || _PCDusk.x <= 0) return DuskSkyColor(dir, 1);
+    float pxs = _PCDuskBands.w > .5 ? _PCDuskBands.w : max(1, round(_ScreenParams.y / 360));
+    float th = dkBayer4(floor(spos / pxs));
+    float3 sd3 = _PCDuskSunDir.xyz;
+    float y = dir.y, el = asin(saturate(y));                                   // 고도(rad)
+    float n = max(_PCDuskBands.y, 2);
+    // 1) 하늘 바탕: 고도를 n 단으로(지평선 쪽 좁게 — sqrt), 단 대표 고도에서 기존 색을 읽음 → 단 안은 한 색
+    float g = sqrt(saturate(el / .9));
+    float gi = min(dkStep(g * n, _PCDuskBands.z, th), n - 1);
+    float gq = (gi + .5) / n; float yq = sin(gq * gq * .9);
+    float3 dq = normalize(float3(dir.x, 0, dir.z)) * sqrt(1 - yq * yq) + float3(0, yq, 0);
+    float sd = dot(dir, sd3), toward = saturate(sd * .5 + .5); toward *= toward;
+    float3 hor = lerp(_PCDuskAway.rgb, _PCDuskHor.rgb, toward);
+    float3 c = lerp(hor, _PCDuskMid.rgb, smoothstep(0.0, 0.20, yq));
+    c = lerp(c, _PCDuskTop.rgb, smoothstep(0.12, 0.70, yq));
+    // 2) 해 둘레 빛무리 2단(테두리만 디더)
+    float ang = degrees(acos(clamp(sd, -1, 1)));
+    float hv = 2 - saturate((ang - _PCDuskHalo.y) / 1.2) - saturate((ang - _PCDuskHalo.z) / 2.0);   // 2 = 1단 안, 1 = 2단 안
+    float hi = min(dkStep(hv, .5, th), 2);
+    c += _PCDuskGlow.rgb * _PCDuskHalo.w * (hi > 1.5 ? .85 : (hi > .5 ? .38 : 0));
+    // 3) 해 원반(가장자리 계단 — 픽셀 그대로)
+    if (ang < _PCDuskHalo.x) c = _PCDuskSunCol.rgb;
+    // 4) 납작한 구름 띠 3줄: 아래가 노을빛, 위는 그늘 보라. 해 앞을 가로질러도 됨. 느리게 흐름
+    if (_PCDuskStrips.x > .5)
+    {
+        float t = _PCSeaClock.x > .5 ? _PCSeaClock.y : _Time.y;
+        float2 sf = normalize(float2(sd3.x, sd3.z) + 1e-5);
+        float az = degrees(atan2(dir.x * sf.y - dir.z * sf.x, dot(dir.xz, sf)));   // 해 기준 방위(°)
+        float eld = degrees(el), pxDeg = max(fwidth(eld), 1e-3);
+        float3 lit = lerp(_PCDuskCloudDark.rgb, _PCDuskCloudLit.rgb, saturate(1.2 - abs(az) / 40));
+        [unroll] for (int k = 0; k < 3; k++)
+        {
+            float ce = k == 0 ? 1.6 : (k == 1 ? 4.4 : 8.6);                 // 줄 중심 고도°
+            float tk = (k == 0 ? .55 : (k == 1 ? .85 : 1.1)) * _PCDuskStrips.w;
+            float a = az + t * _PCDuskStrips.y * (1 + k * .35) + k * 37;
+            float m = dkNoise(float2(a / (14 - k * 3), k * 5.1)) * .65 + dkNoise(float2(a / 4.5, k * 9.7)) * .35;
+            float thick = tk * saturate((m - (1 - _PCDuskStrips.z)) / .18);
+            float c0 = ce + (dkNoise(float2(a / 9, k * 2.3 + 40)) - .5) * tk;
+            float u = (eld - (c0 - thick * .35)) / max(thick, 1e-3);      // 0 = 바닥, 1 = 꼭대기(바닥이 평평하게 아래로)
+            if (thick > pxDeg * .8 && u >= 0 && u <= 1)
+            {
+                float3 cc = u < .45 ? lit : lerp(_PCDuskCloudDark.rgb, lit, .35);
+                if ((eld - (c0 - thick * .35)) < pxDeg * 1.05) cc = lerp(lit, _PCDuskSunCol.rgb, saturate(1 - abs(az) / 25) * .8);   // 바닥 1px 노을 테
+                c = cc;
+            }
+        }
+    }
+    if (y < 0) c = hor * lerp(1, .85, saturate(-y * 6));
+    float3 day = y >= 0 ? lerp(_PCDayHor.rgb, _PCDayTop.rgb, smoothstep(0, .6, y)) : _PCDayBot.rgb;
+    return lerp(day, c, saturate(_PCDusk.x));
+}
 #endif

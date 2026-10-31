@@ -52,6 +52,8 @@ Shader "PitCrew/Look/DuskSea"
         _DepthRect("Depth rect (xmin, zmin, size, max m)", Vector) = (-400, -400, 800, 8)
         _Ripple("D-235 찌 파문 (속도 m/s, 수명 s, 고리 간격 s, 선 굵기 px)", Vector) = (0.42, 1.8, 0.3, 1.3)
         _RippleCol("D-235 파문 선(B)", Color) = (1.00, 0.84, 0.74, 1)
+        _Cool("D-236 차가운 물 (섞음 0..1, 밝은 단 덜 0..1, 0, 0)", Vector) = (0, 0.6, 0, 0)
+        _CoolCol("D-236 차가운 물 색(청록~남)", Color) = (0.18, 0.34, 0.50, 1)
         _Debug("Debug (1 깊이, 2 계단 값, 3 노멀, 5 수면 높이 wpos.y — SeaWaves 검산)", Float) = 0
     }
     SubShader
@@ -67,10 +69,10 @@ Shader "PitCrew/Look/DuskSea"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
-            TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn, _PCSeaClock;   // _PCSeaClock.x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
+            TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn;   // _PCSeaClock(Dusk.hlsl 에 선언).x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
             float4 _PCRipples[4];   // D-235 찌 파문(SeaWaves.AddRipple): x, z, 시작 시각(Now), 세기 0..1(0 = 빈 칸)
             CBUFFER_START(UnityPerMaterial)
-                float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint;
+                float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint, _Cool, _CoolCol;
                 float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Spec, _Micro, _Dash, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
                 float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST, _Ripple, _RippleCol;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
@@ -289,6 +291,9 @@ Shader "PitCrew/Look/DuskSea"
                     float3 pal = lerp(_DeepCol.rgb, DuskSkyColor(float3(refXZ.x * sqrt(1 - e * e), e, refXZ.y * sqrt(1 - e * e)), 0), saturate(kq / 3 * .8 + .2));
                     float3 aq = col * (lv * lumHz / L);
                     col = lerp(pal * (lv * lumHz / max(Lum(pal), 1e-4)), aq, _StepKeep);
+                    // D-236 7판: 빛길 밖 물은 하늘보다 한 단 차갑게(청록~남) — 따뜻한 하늘·빛길 ↔ 차가운 물. 밝은 단일수록 덜
+                    float3 coolM = _CoolCol.rgb * (Lum(col) / max(Lum(_CoolCol.rgb), 1e-4));
+                    col = lerp(col, coolM, _Cool.x * saturate(1 - kq / 3 * _Cool.y));
                     // 빛길 3단
                     if (P >= _GlintCuts.x) col = P < _GlintCuts.y ? _Glow.rgb : (P < _GlintCuts.z ? _Hot.rgb : _Core.rgb);
                     // 파 마루 선: 너울 마루 높이 한 값의 등고선 1px, 가까이만, 노이즈로 끊어 짧은 선으로

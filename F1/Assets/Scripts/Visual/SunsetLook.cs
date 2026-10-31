@@ -29,6 +29,23 @@ public sealed class SunsetLook : MonoBehaviour
     public Color cloudLit = new Color(1.00f, 0.56f, 0.50f);
     public Color cloudDark = new Color(0.40f, 0.33f, 0.48f);
 
+    [Header("D-236 7판 도트 하늘 — 색 단 + 단 사이 Bayer 디더(화면 픽셀 고정)")]
+    [Tooltip("x 켬 0/1 · y 단 수 · z 단 끝 디더 폭 0..1 · w 디더 칸 크기(렌더 px, 0 = 360 줄 기준 자동)")]
+    public Vector4 skyBands = new Vector4(1f, 5f, 0.35f, 0f);
+    [Tooltip("x 해 원반 반지름° · y 빛무리 1단 반지름° · z 2단 반지름° · w 빛무리 세기")]
+    public Vector4 sunHalo = new Vector4(1.9f, 4.2f, 9.0f, 0.55f);
+    [Tooltip("납작한 구름 띠: x 켬 0/1 · y 흐름 °/s · z 덮는 양 0..1 · w 두께 배수")]
+    public Vector4 cloudStrips = new Vector4(1f, 0.25f, 0.6f, 1.5f);
+    [Tooltip("1px 역광 테(Present): x 켬 0/1 · y 실루엣 밝기 상한 · z 하늘 밝기 하한 · w 섞음")]
+    public Vector4 rim = new Vector4(1f, 0.06f, 0.12f, 0.9f);
+    public Color rimColor = new Color(1.00f, 0.62f, 0.32f);
+    [Tooltip("D-236 노을 때만 켜는 수평선 연출물(먼 곶·섬·등대·배 실루엣, DuskBackdrop). 끄면 숨김.")]
+    public GameObject backdrop;
+    [Tooltip("D-236 7판 노을일 때만 끄는 렌더러(앉은 시점 섬 자리에 비치는 회색 대역 벽 등). 끄면 다시 켬.")]
+    public Renderer[] hideWhileOn;
+    [Tooltip("D-236 7판 역광 테 소재(PitCrew/Look/DuskRim). 노을 동안만 LowResRenderTest 화면 올리기에 꽂는다.")]
+    public Material rimMaterial;
+
     [Header("안개·그늘")]
     public Color fog = new Color(0.66f, 0.52f, 0.62f);
     public Vector2 fogStartEnd = new Vector2(60f, 700f);
@@ -63,7 +80,9 @@ public sealed class SunsetLook : MonoBehaviour
         HorId = Shader.PropertyToID("_PCDuskHor"), AwayId = Shader.PropertyToID("_PCDuskAway"), MidId = Shader.PropertyToID("_PCDuskMid"), TopId = Shader.PropertyToID("_PCDuskTop"),
         DiscId = Shader.PropertyToID("_PCDuskSunCol"), CLitId = Shader.PropertyToID("_PCDuskCloudLit"), CDarkId = Shader.PropertyToID("_PCDuskCloudDark"),
         DayTopId = Shader.PropertyToID("_PCDayTop"), DayHorId = Shader.PropertyToID("_PCDayHor"), DayBotId = Shader.PropertyToID("_PCDayBot"),
-        A7ShadeId = Shader.PropertyToID("_A7Shade");
+        A7ShadeId = Shader.PropertyToID("_A7Shade"),
+        BandsId = Shader.PropertyToID("_PCDuskBands"), HaloId = Shader.PropertyToID("_PCDuskHalo"), StripsId = Shader.PropertyToID("_PCDuskStrips"),
+        RimId = Shader.PropertyToID("_PCDuskRim"), RimColId = Shader.PropertyToID("_PCDuskRimCol"), RimHzId = Shader.PropertyToID("_PCDuskRimHz");
 
     public static SunsetLook Find() => FindFirstObjectByType<SunsetLook>();
 
@@ -99,6 +118,9 @@ public sealed class SunsetLook : MonoBehaviour
         if (day.skybox != null) RenderSettings.skybox = day.skybox;
         if (sea != null && day.seaMat != null) sea.sharedMaterial = day.seaMat;
         if (seaNear != null) seaNear.enabled = false;
+        if (backdrop != null) backdrop.SetActive(false);
+        SetHidden(false);
+        SetRimOverlay(false);
         Shader.SetGlobalVector(DuskId, Vector4.zero);
         if (a7 == null) a7 = FindFirstObjectByType<A7ShadeGlobals>(); if (a7 != null) a7.Apply();
         captured = false;
@@ -134,7 +156,21 @@ public sealed class SunsetLook : MonoBehaviour
         if (k > 0f && skyMaterial != null) RenderSettings.skybox = skyMaterial; else if (day.skybox != null) RenderSettings.skybox = day.skybox;
         if (sea != null) sea.sharedMaterial = k > 0f && seaMaterial != null ? seaMaterial : day.seaMat;
         if (seaNear != null) seaNear.enabled = k > 0f && seaMaterial != null && sea != null;
+        if (backdrop != null && backdrop.activeSelf != k > 0f) backdrop.SetActive(k > 0f);
+        SetHidden(k > 0f);
         PushGlobals();
+    }
+
+    void SetHidden(bool hide)
+    {
+        if (hideWhileOn == null) return;
+        foreach (var r in hideWhileOn) if (r != null) r.enabled = !hide;
+    }
+
+    void SetRimOverlay(bool on)
+    {
+        var cm = Camera.main; var lr = cm != null ? cm.GetComponent<LowResRenderTest>() : null;
+        if (lr != null) lr.overlay = on ? rimMaterial : null;
     }
 
     void PushGlobals()
@@ -149,6 +185,17 @@ public sealed class SunsetLook : MonoBehaviour
         Shader.SetGlobalColor(HorId, skyHorizon.linear); Shader.SetGlobalColor(AwayId, skyAway.linear);
         Shader.SetGlobalColor(MidId, skyMid.linear); Shader.SetGlobalColor(TopId, skyTop.linear);
         Shader.SetGlobalColor(DiscId, sunDisc.linear); Shader.SetGlobalColor(CLitId, cloudLit.linear); Shader.SetGlobalColor(CDarkId, cloudDark.linear);
+        Shader.SetGlobalVector(BandsId, skyBands); Shader.SetGlobalVector(HaloId, sunHalo); Shader.SetGlobalVector(StripsId, cloudStrips);
+        Shader.SetGlobalVector(RimId, k > 0f ? rim : Vector4.zero); Shader.SetGlobalColor(RimColId, rimColor.linear);
+        SetRimOverlay(k > 0f && rim.x > .5f);
+        var cm = Camera.main;   // 테는 수평선 위만(물속 어두운 단 + 빛길 밝은 단 경계에 테가 생기지 않게)
+        if (cm != null)
+        {
+            var f = cm.transform.forward; f.y = 0f; float hz = f.sqrMagnitude > 1e-6f ? cm.WorldToViewportPoint(cm.transform.position + f.normalized * 2000f).y : 0f;
+            var sv = cm.WorldToViewportPoint(cm.transform.position + Dir(sunAzimuth, skySunElevation) * 2000f);   // y = 해 화면 x(테는 해 쪽 가장자리에만)
+            var lr = cm.GetComponent<LowResRenderTest>(); var rs = lr != null ? lr.RenderSize : Vector2Int.zero;   // zw = 실제 렌더 격자(RT 는 renderScale 로 더 클 수 있음)
+            Shader.SetGlobalVector(RimHzId, new Vector4(hz - 0.004f, sv.z > 0f ? sv.x : 0.5f, rs.x > 0 ? rs.x : 0, rs.y > 0 ? rs.y : 0));
+        }
         // 낮 하늘(사이 값용) = 원래 GradientSky 색
         var ds = day.skybox;
         if (ds != null && ds.HasProperty("_TopColor"))

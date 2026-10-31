@@ -264702,7 +264702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: PitCrew::SunsetLook
   amount: 0
-  sunAzimuth: 186
+  sunAzimuth: 192
   skySunElevation: 3.2
   lightElevation: 12
   sunLight: {r: 1, g: 0.62, b: 0.38, a: 1}
@@ -264715,10 +264715,19 @@ MonoBehaviour:
   sunGlow: {r: 1, g: 0.6, b: 0.3, a: 1}
   cloudLit: {r: 1, g: 0.56, b: 0.5, a: 1}
   cloudDark: {r: 0.4, g: 0.33, b: 0.48, a: 1}
+  skyBands: {x: 1, y: 5, z: 0.35, w: 0}
+  sunHalo: {x: 1.9, y: 4.2, z: 9, w: 0.55}
+  cloudStrips: {x: 1, y: 0.25, z: 0.6, w: 1.5}
+  rim: {x: 1, y: 0.06, z: 0.12, w: 0.9}
+  rimColor: {r: 1, g: 0.62, b: 0.32, a: 1}
+  backdrop: {fileID: 1283760732}
+  hideWhileOn:
+  - {fileID: 1875121029}
+  rimMaterial: {fileID: 2100000, guid: 33de90f9cf3fe3244aa4de60ea2e1439, type: 2}
   fog: {r: 0.66, g: 0.52, b: 0.62, a: 1}
-  fogStartEnd: {x: 60, y: 700}
-  shade: {r: 0.44, g: 0.4, b: 0.66, a: 1}
-  a7Shade: {r: 0.34, g: 0.3, b: 0.5, a: 1}
+  fogStartEnd: {x: 100, y: 800}
+  shade: {r: 0.2, g: 0.18, b: 0.34, a: 1}
+  a7Shade: {r: 0.09, g: 0.07, b: 0.17, a: 1}
   skyMaterial: {fileID: 2100000, guid: 4eff3c3eaf9a1cf40a301956d65bebd7, type: 2}
   seaMaterial: {fileID: 2100000, guid: 00efb82dc48d6054fa6c65ed519e8809, type: 2}
   sea: {fileID: 618144390}
@@ -264813,6 +264822,7 @@ Transform:
   - {fileID: 1742239167}
   - {fileID: 382952770}
   - {fileID: 752631479}
+  - {fileID: 1283760734}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &494830546
@@ -395431,7 +395441,10 @@ MonoBehaviour:
   yawRange: 35
   pitchUp: 15
   pitchDown: 22
-  yawLeft: 8
+  yawLeft: 30
+  seatedFov: 46
+  seatLookDown: 5
+  castYaw: 12
   mouseSensitivity: 0.07
   castDistance: 12
   castTime: 1.1
@@ -674069,6 +674082,89 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8273873696725456450, guid: f6a19aa17c31f6940b38979f7fbe869a, type: 3}
   m_PrefabInstance: {fileID: 1283612068}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1283760732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283760734}
+  - component: {fileID: 1283760733}
+  m_Layer: 0
+  m_Name: DuskBackdrop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1283760733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283760732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9b8dcf029c76642b39771de1735ac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::DuskBackdrop
+  origin: {fileID: 142401345}
+  material: {fileID: 2100000, guid: b8d2509a1d47b0b4ab1d98718d7b8c27, type: 2}
+  pieces:
+  - kind: 0
+    azimuth: 228
+    distance: 420
+    width: 520
+    height: 24
+    tipSide: -1
+    haze: 0.25
+    baseY: 0
+    seed: 3
+  - kind: 2
+    azimuth: 205
+    distance: 417
+    width: 1
+    height: 0
+    tipSide: 0
+    haze: 0.25
+    baseY: 15
+    seed: 0
+  - kind: 1
+    azimuth: 167
+    distance: 640
+    width: 140
+    height: 13
+    tipSide: 1
+    haze: 0.62
+    baseY: 0
+    seed: 7
+  - kind: 3
+    azimuth: 190
+    distance: 170
+    width: 1
+    height: 0
+    tipSide: 0
+    haze: 0.1
+    baseY: 0
+    seed: 0
+--- !u!4 &1283760734
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283760732}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 494830545}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1283867710
 Mesh:
   m_ObjectHideFlags: 0
