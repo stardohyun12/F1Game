@@ -98,8 +98,29 @@ public static class PitCrewSunsetMenu
     {
         var look = SunsetLook.Find();
         if (look == null || look.seaMaterial == null) { Debug.LogWarning("[노을] 자리 설치 먼저"); return; }
-        int n = Mathf.RoundToInt(DepthSize / DepthTexel);
         float x0 = SeatPos.x - DepthSize * .5f, z0 = SeatPos.z - DepthSize * .5f;
+        var dt = BakeDepth(x0, z0, DepthSize, DepthTexel, "TV6_SeaDepth.png", 1024);
+        look.seaMaterial.SetTexture("_DepthTex", dt);
+        look.seaMaterial.SetVector("_DepthRect", new Vector4(x0, z0, DepthSize, DepthMax));
+        EditorUtility.SetDirty(look.seaMaterial); AssetDatabase.SaveAssets();
+    }
+
+    // D-239 맵 전체 바다 깊이(성긴 칸). 낚시 자리 촘촘한 칸(_DepthTex) 밖에서 DuskSea 가 이것(_DepthTex2)을 쓴다 → 오후 바다도 물가 거품·얕은 물.
+    public const float MapDepthX0 = -800f, MapDepthZ0 = -800f, MapDepthSize = 1600f, MapDepthTexel = 1.25f;
+    [MenuItem("PitCrew/노을/맵 전체 물 밑 깊이 굽기", false, 2)]
+    public static void BakeSeaDepthMap()
+    {
+        var look = SunsetLook.Find();
+        if (look == null || look.seaMaterial == null) { Debug.LogWarning("[노을] 자리 설치 먼저"); return; }
+        var dt = BakeDepth(MapDepthX0, MapDepthZ0, MapDepthSize, MapDepthTexel, "TV6_SeaDepthMap.png", 2048);
+        look.seaMaterial.SetTexture("_DepthTex2", dt);
+        look.seaMaterial.SetVector("_DepthRect2", new Vector4(MapDepthX0, MapDepthZ0, MapDepthSize, 1));
+        EditorUtility.SetDirty(look.seaMaterial); AssetDatabase.SaveAssets();
+    }
+
+    static Texture2D BakeDepth(float x0, float z0, float DepthSize, float DepthTexel, string file, int maxTex)
+    {
+        int n = Mathf.RoundToInt(DepthSize / DepthTexel);
         var tex = new Texture2D(n, n, TextureFormat.RGB24, false, true);
         var px = new Color32[n * n];
         // 3판(D-230): 부두 윗면 밑은 물로 본다(윗면에서 다시 아래로 쏴 바닥이 물 밑이면 물) + 물 높이에 박힌 기둥·바위는 CheckBox 로 땅.
@@ -156,20 +177,18 @@ public static class PitCrewSunsetMenu
             px[q] = new Color32(r, g, 0, 255);
         }
         tex.SetPixels32(px); tex.Apply();
-        string path = MatDir + "TV6_SeaDepth.png";
+        string path = MatDir + file;
         System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
         Object.DestroyImmediate(tex);
         AssetDatabase.ImportAsset(path);
         var ti = (TextureImporter)AssetImporter.GetAtPath(path);
         ti.sRGBTexture = false; ti.mipmapEnabled = false; ti.wrapMode = TextureWrapMode.Clamp; ti.filterMode = FilterMode.Bilinear;
-        ti.textureCompression = TextureImporterCompression.Uncompressed; ti.maxTextureSize = 1024; ti.npotScale = TextureImporterNPOTScale.None; ti.SaveAndReimport();
+        ti.textureCompression = TextureImporterCompression.Uncompressed; ti.maxTextureSize = maxTex; ti.npotScale = TextureImporterNPOTScale.None; ti.SaveAndReimport();
         AssetDatabase.Refresh();
         var dt = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         if (dt == null) Debug.LogWarning("[노을] 깊이 텍스처를 못 읽음 — 메뉴를 한 번 더 누를 것");
-        look.seaMaterial.SetTexture("_DepthTex", dt);
-        look.seaMaterial.SetVector("_DepthRect", new Vector4(x0, z0, DepthSize, DepthMax));
-        EditorUtility.SetDirty(look.seaMaterial); AssetDatabase.SaveAssets();
         Debug.Log("[노을] 물 밑 깊이·물가 거리 " + n + "×" + n + " 땅 칸 " + landCount + " → " + path);
+        return dt;
     }
 
     // D-232 5판 자리 둘레 바다 격자(SeaNear): 원판, 중심 = 앉은 눈 xz, 반경 NearRadius m.

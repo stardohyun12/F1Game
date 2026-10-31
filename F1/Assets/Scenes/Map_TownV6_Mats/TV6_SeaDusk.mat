@@ -27,6 +27,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 8e67534da51e51146a2b87420e797704, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DepthTex2:
+        m_Texture: {fileID: 2800000, guid: 2d369d57d517fcf49a6b7d8eeec1979d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Debug: 0
@@ -51,6 +55,7 @@ Material:
     - _DayTint: {r: 0.3599998, g: 0.58, b: 0.7, a: 1}
     - _DeepCol: {r: 0.049999982, g: 0.079999976, b: 0.18999997, a: 1}
     - _DepthRect: {r: -169, g: -451, b: 320, a: 8}
+    - _DepthRect2: {r: -800, g: -800, b: 1600, a: 1}
     - _Detail: {r: 1.15, g: 0.05, b: 0.7, a: 0.04}
     - _Detail2: {r: 14, g: -34, b: 0, a: 0}
     - _Disp: {r: 1, g: -9, b: -291, a: 250}

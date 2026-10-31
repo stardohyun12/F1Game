@@ -58,10 +58,24 @@ public sealed class DuskBackdrop : MonoBehaviour
     public int Flights { get; private set; }   // 검증용
     public bool LampOn => lamp != null && lamp.enabled;
 
+    // D-239 오후엔 수평선 실루엣·갈매기 무리만 끈다(앞쪽 부두 판자 DuskForeground 는 자식이라 그대로 켜짐). SunsetLook 이 정한다.
+    [System.NonSerialized] bool horizon = true;
+    public bool Horizon
+    {
+        get => horizon;
+        set
+        {
+            if (horizon == value) return; horizon = value;
+            if (!isActiveAndEnabled) return;
+            Rebuild(); flightT0 = -1f; flightNext = Now + firstGull;
+            if (ambience != null && Application.isPlaying) { if (horizon) ambience.leader = this; else if (ambience.leader == this) ambience.leader = null; }
+        }
+    }
+
     void OnEnable()
     {
         Rebuild(); flightT0 = -1f; flightNext = Now + firstGull; lastCalls = ambience != null ? ambience.GullCalls : 0;
-        if (ambience != null && Application.isPlaying) ambience.leader = this;   // 노을 동안 갈매기 울음은 무리가 지날 때만
+        if (ambience != null && Application.isPlaying && horizon) ambience.leader = this;   // 노을 동안 갈매기 울음은 무리가 지날 때만
     }
     void OnDisable()
     {
@@ -93,8 +107,8 @@ public sealed class DuskBackdrop : MonoBehaviour
     public void Rebuild()
     {
         Clear();
-        if (material == null) return;
-        Vector3 o = origin != null ? origin.position : transform.position; o.y = 0f;
+        if (material == null || !horizon) return;
+        Vector3 o =origin != null ? origin.position : transform.position; o.y = 0f;
         for (int i = 0; i < pieces.Count; i++)
         {
             var p = pieces[i];

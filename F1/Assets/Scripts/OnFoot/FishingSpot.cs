@@ -321,7 +321,7 @@ public class FishingSpot : MonoBehaviour
         {
             Vector3 d = b - ce; d.y = 0f;
             float az = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
-            BobberInPath = Mathf.Abs(Mathf.DeltaAngle(az, look.sunAzimuth)) < pathHalfWidth;
+            BobberInPath = Mathf.Abs(Mathf.DeltaAngle(az, look.SunAzimuthNow)) < pathHalfWidth;
             const float period = 0.72f;
             int slot = Mathf.FloorToInt(t / period);
             on = BobberInPath && (t - slot * period) < 0.22f;

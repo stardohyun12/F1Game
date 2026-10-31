@@ -50,6 +50,8 @@ Shader "PitCrew/Look/DuskSea"
         _DayTint("Day tint", Color) = (0.36, 0.58, 0.70, 1)
         _DepthTex("Sea depth (R = 깊이/최대, G = sqrt(물가 거리/400 m))", 2D) = "white" {}
         _DepthRect("Depth rect (xmin, zmin, size, max m)", Vector) = (-400, -400, 800, 8)
+        _DepthTex2("D-239 맵 전체 깊이(같은 형식, 성김). 촘촘한 칸 밖에서 씀", 2D) = "white" {}
+        _DepthRect2("D-239 맵 깊이 칸 (xmin, zmin, size, 켬 0/1)", Vector) = (0, 0, 1, 0)
         _Ripple("D-235 찌 파문 (속도 m/s, 수명 s, 고리 간격 s, 선 굵기 px)", Vector) = (0.42, 1.8, 0.3, 1.3)
         _RippleCol("D-235 파문 선(B)", Color) = (1.00, 0.84, 0.74, 1)
         _Cool("D-236 차가운 물 (섞음 0..1, 밝은 단 덜 0..1, 0, 0)", Vector) = (0, 0.6, 0, 0)
@@ -69,12 +71,13 @@ Shader "PitCrew/Look/DuskSea"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
+            TEXTURE2D(_DepthTex2); SAMPLER(sampler_DepthTex2);
             TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn;   // _PCSeaClock(Dusk.hlsl 에 선언).x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
             float4 _PCRipples[4];   // D-235 찌 파문(SeaWaves.AddRipple): x, z, 시작 시각(Now), 세기 0..1(0 = 빈 칸)
             CBUFFER_START(UnityPerMaterial)
                 float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint, _Cool, _CoolCol;
                 float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Spec, _Micro, _Dash, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
-                float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST, _Ripple, _RippleCol;
+                float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST, _DepthRect2, _Ripple, _RippleCol;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
             CBUFFER_END
             struct appdata { float4 v : POSITION; float2 uv : TEXCOORD0; };
@@ -93,7 +96,12 @@ Shader "PitCrew/Look/DuskSea"
                 float2 duv = (xz - _DepthRect.xy) / _DepthRect.z;
                 float inR = step(0, duv.x) * step(duv.x, 1) * step(0, duv.y) * step(duv.y, 1);
                 float4 dt = SAMPLE_TEXTURE2D_LOD(_DepthTex, sampler_DepthTex, duv, lod);
-                return float2(lerp(_DepthRect.w, dt.r * _DepthRect.w, inR), lerp(400, dt.g * dt.g * 400, inR));   // 400 = PitCrewSunsetMenu.ShoreDistMax
+                // D-239 촘촘한 칸(낚시 자리) 밖 = 맵 전체 칸(켜져 있으면), 그것도 밖 = 먼 바다
+                float2 duv2 = (xz - _DepthRect2.xy) / _DepthRect2.z;
+                float in2 = (1 - inR) * step(.5, _DepthRect2.w) * step(0, duv2.x) * step(duv2.x, 1) * step(0, duv2.y) * step(duv2.y, 1);
+                float4 dt2 = SAMPLE_TEXTURE2D_LOD(_DepthTex2, sampler_DepthTex2, duv2, lod);
+                dt = lerp(dt, dt2, in2); float inAny = max(inR, in2);
+                return float2(lerp(_DepthRect.w, dt.r * _DepthRect.w, inAny), lerp(400, dt.g * dt.g * 400, inAny));   // 400 = PitCrewSunsetMenu.ShoreDistMax
             }
             float ShallowAtt(float depth) { return saturate(depth / _Gerst.w) * .85 + .15 * saturate(depth / (_Gerst.w * .3)); }
 
