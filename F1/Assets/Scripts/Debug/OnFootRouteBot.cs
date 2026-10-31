@@ -104,6 +104,8 @@ public class OnFootRouteBot : MonoBehaviour
         Line($"시작 {P(pl.transform.position)}");
         foreach (var s in Route)
         {
+            // 기능 2: 차고 마당까지는 기능 1 길 그대로, 거기서부터 사장 대화 → 카트 → 찻집.
+            if (firstOrder && s.label == "카트 옆") { yield return FirstOrderTail(tStart, tSeg); yield break; }
             Status = s.label;
             switch (s.kind)
             {
@@ -365,7 +367,259 @@ public class OnFootRouteBot : MonoBehaviour
     {
         Line($"총 {Time.time - tStart:F1}s 막힘 {stuck.Count}곳: {string.Join(", ", stuck)}");
         Line("감독 기록:"); foreach (var l in dir.Log) Line("  " + l);
-        File.WriteAllText(Path.Combine(logDir, "route.txt"), log.ToString(), new UTF8Encoding(false));
+        File.WriteAllText(Path.Combine(logDir, firstOrder ? "route_feature2.txt" : "route.txt"), log.ToString(), new UTF8Encoding(false));
         if (!Status.StartsWith("FAIL")) Status = $"done stuck={stuck.Count}";
+    }
+
+    // ───────────────────────── 기능 2(과제 20261031-0209): 방 → 사장 대화 → 카트 → 찻집 도착 ─────────────────────────
+    bool firstOrder;
+
+    /// <summary>기능 2 봇. 결과 = 로그폴더/route_feature2.txt, 캡처(UI 포함) = 증거폴더/f2_*.png, 진행 = Status.</summary>
+    public static string BeginFirstOrder(string evidenceDir, string logDirectory)
+    {
+        var r = Begin(evidenceDir, logDirectory);
+        if (r != "OK") return r;
+        var bot = FindFirstObjectByType<OnFootRouteBot>();
+        bot.firstOrder = true;
+        if (bot.dir.Boss == null || bot.dir.FirstDrop == null) return "WARN: 사장·배달지 배선 없음(PitCrew/기능/정비소 첫 주문 설치 먼저) — 봇은 돈다";
+        return "OK";
+    }
+
+    // 기능 1 운전 길에서 큰길에 올라선 점까지(진입로는 RoadSurface 가 아닐 수 있다). 그 뒤는 차길 그래프로.
+    static readonly Vector2[] Driveway = { new Vector2(233.5f, -48.0f), new Vector2(238.5f, -46.8f), new Vector2(243.0f, -51.0f), new Vector2(245.5f, -57.0f), new Vector2(244.5f, -64.0f) };
+
+    IEnumerator FirstOrderTail(float tStart, float tSeg)
+    {
+        var pl = dir.Player; var cam = pl.Cam;
+        pl.simMove = Vector2.zero;
+        Seg("방 → 차고 마당", ref tSeg);
+
+        // 1) 사장 말 듣기 전 카트: 안내 "사장님한테 먼저", E 눌러도 안 탄다
+        cam.LookAt(CarAim()); yield return null; yield return null; yield return null;
+        string pre = dir.Prompt;
+        yield return ShotUI("f2_01_cart_before_talk");
+        dir.SimInteract(); yield return null; yield return null;
+        bool refused = dir.State == OnFootDirector.Mode.OnFoot;
+        Line($"대화 전 카트: 안내='{pre}' 시선={dir.GazeTarget ?? "-"} E→ 안 탐={refused}");
+        if (pre != "사장님한테 먼저" || !refused) stuck.Add("대화 전 카트 막기");
+
+        // 2) 사장 앞으로 걸어가서 바라보고 E
+        var boss = dir.Boss;
+        if (boss == null) { Stuck("사장", "배선 없음"); Status = "FAIL no boss"; Finish(tStart); yield break; }
+        Vector3 bp = boss.position; Vector3 me = pl.transform.position;
+        Vector3 away = me - bp; away.y = 0f; if (away.sqrMagnitude < 1e-4f) away = boss.forward;
+        Vector3 front = bp + away.normalized * 1.6f;
+        yield return Walk(new Step("walk", "사장 앞", front.x, front.z));
+        Line($"사장 앞 도착 {P(pl.transform.position)} 사장={P(bp)} 거리={Vector3.Distance(Flat(pl.transform.position), Flat(bp)):F2}m");
+        cam.LookAt(bp + Vector3.up * 1.3f);
+        float w = 0f;
+        while (dir.Prompt != "E 말하기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        if (dir.Prompt != "E 말하기") { Stuck("사장 보기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL talk"; Finish(tStart); yield break; }
+        yield return ShotUI("f2_02_boss_prompt");
+        dir.SimInteract(); yield return null; yield return null;
+        int shown = 0;
+        while (dir.InTalk && shown < 6)
+        {
+            shown++;
+            Line($"자막 {shown}: {dir.Subtitle}");
+            yield return new WaitForSecondsRealtime(0.4f);
+            yield return ShotUI($"f2_03_talk_{shown}");
+            dir.SimInteract(); yield return null; yield return null;
+        }
+        Line($"대화 끝 줄수={shown} Talked={dir.Talked}");
+        if (!dir.Talked) { Stuck("사장 대화", "안 끝남"); Status = "FAIL talk"; Finish(tStart); yield break; }
+        Seg("사장 대화", ref tSeg);
+
+        // 3) 카트 옆 → 타기 = 첫 주문 출발
+        yield return Walk(new Step("walk", "카트 옆", 229.45f, -57.2f));
+        cam.LookAt(CarAim());
+        w = 0f;
+        while (dir.Prompt != "E 타기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        if (dir.Prompt != "E 타기") { Stuck("카트 타기", $"안내 '{dir.Prompt}'"); Status = "FAIL board"; Finish(tStart); yield break; }
+        yield return ShotUI("f2_04_beside_cart");
+        dir.SimInteract();
+        yield return CamTrace("타기");
+        if (dir.State != OnFootDirector.Mode.InCart) { Stuck("카트 타기", "타기 안 됨"); Status = "FAIL board"; Finish(tStart); yield break; }
+        var mgr = FindFirstObjectByType<DeliveryManager>();
+        var cargo = FindFirstObjectByType<CargoBox>();
+        var tgt = mgr != null ? mgr.CurrentTarget : null;
+        Line($"탑승: 주문시작={dir.OrderStarted} 목표={(tgt != null ? tgt.Label + " " + P(tgt.transform.position) : "없음")} 화물={(cargo != null ? cargo.Type + " " + Pct(cargo) : "없음")}");
+        if (!dir.OrderStarted || tgt == null || tgt != dir.FirstDrop) stuck.Add("첫 주문 시작");
+        yield return new WaitForSecondsRealtime(1.2f);
+        yield return ShotUI("f2_05_hud_target");
+        Seg("걷기 끝 → 탑승", ref tSeg);
+
+        // 4) 찻집까지 운전: 진입로(기능 1 점) → 차길 그래프 최단길 → 도착 감지
+        float tDrive = Time.time;
+        foreach (var q in Driveway) { yield return Drive(new Step("drive", "진입로", q.x, q.y)); if (dir.Delivered) break; }
+        Line($"진입로 끝 {P(dir.Car.transform.position)} 화물={Pct(cargo)}");
+        if (!dir.Delivered)
+        {
+            var path = RoadPath(dir.Car.transform.position, dir.FirstDrop.transform.position, out string pinfo);
+            Line("길찾기 " + pinfo);
+            if (path == null) { Stuck("찻집 길찾기", pinfo); Status = "FAIL path"; Finish(tStart); yield break; }
+            yield return Follow(path, cargo);
+        }
+        float drive = Time.time - tDrive;
+        dir.Car.SetMoveInput(Vector2.zero);
+        Line($"운전 {drive:F1}s 도착={dir.Delivered} 보조이동={LastAssists}회 차={P(dir.Car.transform.position)} 찻집까지 {Vector3.Distance(Flat(dir.Car.transform.position), Flat(dir.FirstDrop.transform.position)):F1}m 화물={Pct(cargo)} 진행판정 runActive={(Services.Run != null && Services.Run.RunActive)}");
+        if (!dir.Delivered) stuck.Add("찻집 도착");
+        yield return new WaitForSecondsRealtime(1.0f);              // EndRun 이 timeScale 0 으로 만든다 — 실시간으로 기다림
+        yield return ShotUI("f2_06_arrival");
+        Seg("운전(출발 → 도착)", ref tSeg);
+        Line($"결과: 총 {Time.time - tStart:F1}s(게임 시간, 도착 뒤 정지) 화물 상태 {Pct(cargo)}");
+        Status = dir.Delivered ? "arrived" : "FAIL not arrived";
+        Finish(tStart);
+    }
+
+    /// <summary>먼 이음 검사: 두 점 사이를 0.8 m 마다 아래로 쏴서 전부 길 면(부모 RoadsV2)이고 높이가 직선에서 0.25 m 안이어야 한다. 길 사이 땅 틈(실측: (71,-61) 5 m 틈에서 카트가 걸림)을 건너는 이음을 뺀다.</summary>
+    static bool OnRoadAll(Vector3 a, Vector3 b)
+    {
+        int n = Mathf.Max(2, Mathf.CeilToInt(Vector3.Distance(a, b) / 0.8f));
+        for (int k = 0; k <= n; k++)
+        {
+            Vector3 p = Vector3.Lerp(a, b, k / (float)n);
+            if (!Physics.Raycast(p + Vector3.up * 3f, Vector3.down, out var h, 8f)) return false;
+            if (Mathf.Abs(h.point.y - p.y) > 0.8f) return false;           // 건물·벽·절벽 위로 건너는 이음은 뺀다. 땅 틈(11 cm)은 허용(보조 이동으로 건넌다)
+        }
+        return true;
+    }
+
+    static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
+    static string Pct(CargoBox c) => c != null ? (c.IntegrityPercent * 100f).ToString("F0", CultureInfo.InvariantCulture) + "%" : "?";
+
+    /// <summary>
+    /// 차길 그래프 최단길(TownPathBot.Pairs 와 같은 방식): 중심선 점 = 노드, 앞뒤 연결 + 다른 길 점 2.5 m 안이면 갈림목.
+    /// 계단·인도 띠는 뺀다. 지름길(shortcut)은 달걀이 흔들려서 먼저 빼 보고, 길이 없으면 넣는다.
+    /// </summary>
+    static List<Vector3> RoadPath(Vector3 from, Vector3 to, out string info)
+    {
+        var roads = new List<RoadSurface>();
+        foreach (var r in FindObjectsByType<RoadSurface>(FindObjectsSortMode.None))
+            if (r.centerline != null && r.centerline.Length >= 2 && r.kind != "stairs" && (r.kind == null || !r.kind.StartsWith("walk"))) roads.Add(r);
+        roads.Sort((a, b) => string.CompareOrdinal(a.roadId, b.roadId));
+        var nodes = new List<Vector3>(); var road = new List<int>();
+        for (int ri = 0; ri < roads.Count; ri++) foreach (var p in roads[ri].centerline) { nodes.Add(p); road.Add(ri); }
+        info = $"길 {roads.Count}개 노드 {nodes.Count}";
+        if (nodes.Count == 0) return null;
+        var adj = new List<(int, float)>[nodes.Count]; for (int i = 0; i < nodes.Count; i++) adj[i] = new List<(int, float)>();
+        void Link(int a, int b) { float d = Vector3.Distance(nodes[a], nodes[b]); adj[a].Add((b, d)); adj[b].Add((a, d)); }
+        for (int i = 0; i + 1 < nodes.Count; i++) if (road[i] == road[i + 1]) Link(i, i + 1);
+        var grid = new Dictionary<(int, int), List<int>>();
+        for (int i = 0; i < nodes.Count; i++) { var k = ((int)Mathf.Floor(nodes[i].x / 3f), (int)Mathf.Floor(nodes[i].z / 3f)); if (!grid.TryGetValue(k, out var l)) grid[k] = l = new List<int>(); l.Add(i); }
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int gx = (int)Mathf.Floor(nodes[i].x / 3f), gz = (int)Mathf.Floor(nodes[i].z / 3f);
+            for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++) if (grid.TryGetValue((gx + dx, gz + dz), out var l))
+                foreach (var j in l) if (j > i && road[j] != road[i] && Vector3.Distance(nodes[i], nodes[j]) < 2.5f) Link(i, j);
+        }
+        int Near(Vector3 q) { int bi = 0; float bd = float.MaxValue; for (int i = 0; i < nodes.Count; i++) { float d = Flat(nodes[i] - q).sqrMagnitude; if (d < bd) { bd = d; bi = i; } } return bi; }
+        int na = Near(from), nb = Near(to);
+        info += $" 시작점 오차 {Vector3.Distance(Flat(nodes[na]), Flat(from)):F1}m 끝점 오차 {Vector3.Distance(Flat(nodes[nb]), Flat(to)):F1}m";
+        // 2.5 m 연결만으론 길이 201 조각이라(실측: 차고 진입로 끝이 큰길과 4.2 m) 시작→찻집이 안 이어진다. 12 m 에서 이어진다(실측).
+        // 먼 이음은 비용 ×3 (진짜 갈림목을 먼저 쓴다), 높이차 3 m 넘는 이음은 안 한다.
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            int gx = (int)Mathf.Floor(nodes[i].x / 3f), gz = (int)Mathf.Floor(nodes[i].z / 3f);
+            for (int dx = -4; dx <= 4; dx++) for (int dz = -4; dz <= 4; dz++) if (grid.TryGetValue((gx + dx, gz + dz), out var l))
+                foreach (var j in l) if (j > i && road[j] != road[i]) { float d = Vector3.Distance(nodes[i], nodes[j]); if (d >= 2.5f && d < 12f && Mathf.Abs(nodes[i].y - nodes[j].y) < 3f && OnRoadAll(nodes[i], nodes[j])) { adj[i].Add((j, d * 3f)); adj[j].Add((i, d * 3f)); } }
+        }
+        foreach (bool rough in new[] { false, true })
+        {
+            var dist = new float[nodes.Count]; var prev = new int[nodes.Count];
+            for (int i = 0; i < nodes.Count; i++) { dist[i] = float.MaxValue; prev[i] = -1; }
+            var pq = new SortedSet<(float, int)>(); dist[na] = 0; pq.Add((0, na));
+            while (pq.Count > 0)
+            {
+                var (d, u) = pq.Min; pq.Remove(pq.Min); if (u == nb) break; if (d > dist[u]) continue;
+                foreach (var (wv, c) in adj[u])
+                {
+                    if (!rough && roads[road[wv]].kind == "shortcut") continue;
+                    float nd = d + c; if (nd < dist[wv]) { if (dist[wv] < float.MaxValue) pq.Remove((dist[wv], wv)); dist[wv] = nd; prev[wv] = u; pq.Add((nd, wv)); }
+                }
+            }
+            if (prev[nb] < 0 && na != nb) continue;
+            var ids = new List<int>(); for (int x = nb; x >= 0; x = prev[x]) ids.Add(x); ids.Reverse();
+            var path = new List<Vector3> { nodes[ids[0]] };
+            foreach (var i in ids) if (Vector3.Distance(nodes[i], path[path.Count - 1]) > 0.3f) path.Add(nodes[i]);
+            path.Add(to);
+            var used = new HashSet<string>(); foreach (var i in ids) used.Add(roads[road[i]].roadId + ":" + roads[road[i]].kind);
+            info += $" 길이 {dist[nb]:F0}m 지름길{(rough ? " 포함" : " 뺌")} 지나는 길 {string.Join(",", used)}";
+            return path;
+        }
+        info += " 경로 없음";
+        return null;
+    }
+
+    /// <summary>순수 추종: 앞 4 + v·0.5 m 점을 향해 조향. 달걀이라 살살(곧은 길 8 m/s, 굽은 길 4.5 m/s, 스로틀 0.5). 막히면 1.5초 후진 후 다시.</summary>
+    static int LastAssists;
+    IEnumerator Follow(List<Vector3> path, CargoBox cargo)
+    {
+        LastAssists = 0;
+        var car = dir.Car; int idx = 0; float t0 = Time.time, lastImprove = Time.time, bestLeft = float.MaxValue; int recover = 0, assists = 0;
+        float total = 0f; for (int i = 1; i < path.Count; i++) total += Vector3.Distance(path[i], path[i - 1]);
+        float nextLog = 0f;
+        while (!dir.Delivered)
+        {
+            Transform c = car.transform; Vector3 cp = c.position;
+            float bd = float.MaxValue;
+            for (int i = idx; i < Mathf.Min(path.Count, idx + 40); i++) { float d = Flat(path[i] - cp).sqrMagnitude; if (d < bd) { bd = d; idx = i; } }
+            float v = car.CurrentSpeedMps;
+            float look = 4f + Mathf.Abs(v) * 0.5f;
+            int li = idx; float acc = 0f;
+            while (li + 1 < path.Count && acc < look) { acc += Vector3.Distance(path[li], path[li + 1]); li++; }
+            Vector3 la = path[li];
+            // 앞 15 m 의 꺾임으로 속도 결정
+            int ci = idx; float a2 = 0f; while (ci + 1 < path.Count && a2 < 15f) { a2 += Vector3.Distance(path[ci], path[ci + 1]); ci++; }
+            float bend = 0f;
+            if (ci > idx + 2) bend = Vector3.Angle(Flat(path[idx + 1] - path[idx]), Flat(path[ci] - path[ci - 1]));
+            Vector3 d3 = la - cp;
+            float want = Mathf.Atan2(d3.x, d3.z) * Mathf.Rad2Deg;
+            float err = Mathf.DeltaAngle(c.eulerAngles.y, want);
+            float target = (bend > 45f || Mathf.Abs(err) > 35f) ? 4.5f : 8f;
+            float thr = v < target ? 0.5f : (v > target + 1.5f ? -0.2f : 0.08f);
+            car.SetMoveInput(new Vector2(Mathf.Clamp(err / 35f, -1f, 1f), thr));
+            float left = 0f; for (int i = idx; i + 1 < path.Count; i++) left += Vector3.Distance(path[i], path[i + 1]);
+            if (left < bestLeft - 0.5f) { bestLeft = left; lastImprove = Time.time; }
+            if (Time.time >= nextLog) { nextLog = Time.time + 5f; Line($"  운전 {Time.time - t0:F0}s 남은 {left:F0}/{total:F0}m 속도 {v:F1} 화물 {Pct(cargo)}"); }
+            if (Time.time - lastImprove > 5f)
+            {
+                recover++;
+                Stuck("운전", $"남은 {left:F0}m 차={P(cp)} 속도={v:F1} → 후진 {recover}번째");
+                float rb = 0f; while (rb < 1.5f) { car.SetMoveInput(new Vector2(-Mathf.Clamp(err / 35f, -1f, 1f), -0.6f)); rb += Time.deltaTime; yield return null; }
+                lastImprove = Time.time;
+                if (recover == 2)
+                {
+                    // 보조 이동(봇 전용, 게임 기능 아님): 길 사이 땅 틈에서 걸리면 앞 10 m 점으로 옮긴다. 로그에 남겨 완주 시간에서 따로 본다.
+                    int ti = idx; float aa = 0f; while (ti + 1 < path.Count && aa < 10f) { aa += Vector3.Distance(path[ti], path[ti + 1]); ti++; }
+                    Vector3 fwd = Flat(path[Mathf.Min(ti + 1, path.Count - 1)] - path[ti]).normalized;
+                    var rbd = car.GetComponent<Rigidbody>(); if (rbd != null) { rbd.linearVelocity = Vector3.zero; rbd.angularVelocity = Vector3.zero; }
+                    car.transform.SetPositionAndRotation(path[ti] + Vector3.up * 0.4f, Quaternion.LookRotation(fwd));
+                    Physics.SyncTransforms();
+                    Line($"  보조 이동: {P(cp)} → {P(path[ti])} (게임 기능 아님, 봇 보정)");
+                    assists++; LastAssists = assists;
+                    lastImprove = Time.time; recover = 0;
+                    continue;
+                }
+                if (recover >= 4) { Line("  4번 막혀서 포기"); yield break; }
+            }
+            if (Time.time - t0 > 300f) { Line("  300초 초과 — 포기"); yield break; }
+            if (left < 1f && Flat(path[path.Count - 1] - cp).magnitude < 2f) { car.SetMoveInput(new Vector2(0f, -0.3f)); }
+            yield return null;
+        }
+    }
+
+    /// <summary>UI(자막·안내·HUD) 까지 들어간 화면 캡처 — Shot() 은 카메라만 찍어서 화면 글이 안 나온다.</summary>
+    IEnumerator ShotUI(string name)
+    {
+        yield return new WaitForEndOfFrame();
+        var tx = ScreenCapture.CaptureScreenshotAsTexture();
+        if (tx != null)
+        {
+            File.WriteAllBytes(Path.Combine(evDir, name + ".png"), tx.EncodeToPNG());
+            Line($"캡처 {name} {tx.width}x{tx.height} 안내='{dir.Prompt}' 자막='{dir.Subtitle}'");
+            Destroy(tx);
+        }
+        else { Line($"캡처 {name} 실패(UI) — 카메라만"); yield return Shot(name); }
     }
 }
