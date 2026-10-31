@@ -148,13 +148,12 @@ public class FishingSpot : MonoBehaviour
             b += f * (0.05f * Mathf.Sin(t * 0.4f));
         }
         bobber.position = b;
-        // 줄: 날아가는 동안은 거의 곧게, 내려앉으면 가운데가 늘어짐
-        float sag = k < 1f ? 0.1f : Mathf.Min(1.2f, Vector3.Distance(tip, b) * 0.08f);
-        Vector3 mid = (tip + b) * 0.5f + Vector3.down * sag * 2f;
+        // 줄: 날아가는 동안은 거의 곧게, 내려앉으면 가운데가 늘어짐. 처짐은 대 끝~찌 높이차의 1/5 까지만 — 넘으면 찌 앞에서 줄이 물 아래로 꺾였다 올라온다(갈고리)
+        float sag = k < 1f ? 0.05f : Mathf.Min(Mathf.Max(0f, tip.y - b.y) * 0.2f, Vector3.Distance(tip, b) * 0.05f);
         for (int i = 0; i < pts.Length; i++)
         {
             float u = i / (pts.Length - 1f);
-            pts[i] = (1 - u) * (1 - u) * tip + 2 * (1 - u) * u * mid + u * u * b;
+            pts[i] = Vector3.Lerp(tip, b, u) + Vector3.down * (4f * u * (1f - u) * sag);
         }
         line.SetPositions(pts);
     }
