@@ -1,46 +1,52 @@
 // D-227/D-232 노을 바다(씬 전용 — Map_TownV6 Sea 가 노을일 때만 이 머티리얼로 바뀐다. 끄면 원래 TV6_Sea).
-// 4판(D-232, 도현 "1판 방향에서 예시(A Short Hike)에 더 가깝게"): 2·3판(색 띠·대시)을 버리고 1판 구조에서 다시 출발.
-//  · 물결 덩어리 = 1판 그대로(조각 셰이더 노멀 물결 4개 → 하늘 반사 · 해 반사). 다만 나온 밝기를 4단 색 계단으로 자른다
-//    (계단 색 = 해에서 _ReflAz 비킨 하늘을 높이별로 반사 — 한 단 = 한 색, 픽셀 경계 또렷). 움직임은 _Wave.w 박자에만.
-//  · 해 빛길 = 1판 해 반사(물결이 잘게 빠진 먼 쪽은 넓고 흐림)를 3단(주황·노랑·심)으로 자른 것.
-//  · 물결 선 = Roystan toon water: 노이즈를 왜곡 노이즈로 흔든 뒤 한 값의 등고선만 1~2px 선으로(살구색). 가까이 2px · 멀리 1px,
-//    노이즈 칸이 화면에서 작아지는 먼 곳은 칸마다 빠져 성기게. 얕은 물에선 굵어짐(문턱 낮춤).
-//  · 깊이 = _DepthTex.R(물 밑 깊이) — 얕은 곳 계단 한두 단 밝게 + _Shallow 쪽으로.
-//  · 물가 = _DepthTex.G(물가 거리) → 안쪽 흰 테 + 한 칸 띄운 바깥 선(2겹). 경계를 물결 노이즈로 흔들고 천천히 밀려왔다 빠진다.
+// 5판(D-232, 도현 "바다 생김새부터 실제 물처럼, 그 위에 스타일"): 4판(평평한 판에 물결·등고선·계단을 다 그림)을 버리고 두 단계로.
+//  A. 생김새 = 실제 물: 자리 둘레 반경 _Disp.w m 격자 판(SeaNear, uv.x = 2 로 표시)만 정점을 Gerstner 파 4개로 움직인다
+//     (너울 2 + 잔물결 2, 바다 → 해안). 얕을수록 작게(_DepthTex.R). 노멀은 같은 파를 조각마다 다시 계산 → 바깥 판(Sea)과 음영이 이어진다.
+//     바깥 판은 원 안을 잘라 내서(clip) 격자와 안 겹친다. 음영 = 프레넬(하늘 반사) + 깊이 흡수색 + 해 정반사(파 노멀로 부서짐) + 물가·마루 거품 조금.
+//  B. 스타일(_Style = 1)은 마지막에 얇게: A 최종 색의 밝기를 4단으로 끊고(색조는 그대로), 흰/살구 선은 물가·부두 둘레·파 마루에만, 빛길 3단 + 반짝이 1px.
 Shader "PitCrew/Look/DuskSea"
 {
     Properties
     {
-        _Deep("Deep (반사 밑색)", Color) = (0.20, 0.16, 0.32, 1)
-        _StepA("Step reflect amount (0..3)", Vector) = (0.30, 0.48, 0.64, 0.80)
-        _StepE("Step sky elevation (0..3)", Vector) = (0.55, 0.36, 0.22, 0.11)
-        _Cuts("Step cuts (1, 2, 3)", Vector) = (0.16, 0.30, 0.62, 0)
-        _ReflAz("Reflect azimuth off sun (deg)", Vector) = (28, 0, 0, 0)
-        _Reflect("Sky reflection", Range(0, 1)) = 0.85
-        _Wave("Wave (amp, speed, filter, fps)", Vector) = (0.10, 0.35, 0.35, 12)
-        _Shine("Sun glint sharpness", Float) = 600
-        _Glint("Sun glint strength", Float) = 1.6
-        _GlintCuts("Sun path cuts (outer, hot, core)", Vector) = (0.025, 0.14, 0.55, 0)
+        _W0("Wave 0 (travel az deg, length m, height m, phase)", Vector) = (8, 31, 0.32, 0)
+        _W1("Wave 1", Vector) = (-22, 17, 0.16, 1.7)
+        _W2("Wave 2", Vector) = (24, 4.3, 0.035, 3.1)
+        _W3("Wave 3", Vector) = (-30, 2.4, 0.018, 4.4)
+        _Detail("Normal-only ripples (length a, slope a, length b, slope b)", Vector) = (1.15, 0.05, 0.7, 0.04)
+        _Detail2("Normal-only ripples (travel az a, az b)", Vector) = (14, -34, 0, 0)
+        _Gerst("Gerstner (steepness 0..1, speed, fps 0 = 매끈, shallow fade m)", Vector) = (0.55, 1.0, 0, 2.5)
+        _Disp("Near grid (on, center x, center z, radius m)", Vector) = (1, -9, -291, 250)
+        _Filt("Normal filter (fold start px/len)", Float) = 0.30
+        _ShallowCol("Water shallow", Color) = (0.20, 0.50, 0.50, 1)
+        _DeepCol("Water deep", Color) = (0.05, 0.08, 0.19, 1)
+        _Absorb("Absorb (depth m to deep, view boost)", Vector) = (2.2, 0.6, 0, 0)
+        _Reflect("Sky reflection", Range(0, 1)) = 1.0
+        _Shine("Sun glint sharpness", Float) = 900
+        _Glint("Sun glint strength", Float) = 2.2
+        _Foam("Foam", Color) = (0.98, 0.89, 0.84, 1)
+        _FoamA("Foam A (shore m, shore amount, crest start, crest amount)", Vector) = (0.9, 0.80, 0.82, 0.12)
+        _HorizonFade("Horizon fade (start m, end m, amount)", Vector) = (300, 650, 0.5, 0)
+        [Header(B style)]
+        _Style("Style (0 = A 실제 물, 1 = B 계단·선)", Float) = 1
+        _Cuts("Step cuts on lum/horizon (1, 2, 3)", Vector) = (0.18, 0.34, 0.62, 0)
+        _Lv("Step levels (0..3)", Vector) = (0.10, 0.24, 0.45, 0.80)
+        _StepKeep("Step keeps A color", Range(0, 1)) = 0.35
+        _StepFps("Step wave beat fps", Float) = 12
+        _GlintCuts("Sun path cuts (outer, hot, core)", Vector) = (0.05, 0.25, 0.80, 0)
         _Glow("Sun path outer", Color) = (0.96, 0.55, 0.40, 1)
         _Hot("Sun path", Color) = (1.00, 0.76, 0.46, 1)
         _Core("Sun path core", Color) = (1.00, 0.93, 0.74, 1)
-        _Rip("Ripple (scale 1/m, distort, drift m/s, fps)", Vector) = (0.30, 0.9, 0.05, 6)
-        _RipW("Ripple (px near, px far, shallow boost, far cut)", Vector) = (2.0, 1.0, 1.0, 0.16)
-        _RipLv("Ripple contour levels (a, b)", Vector) = (0.40, 0.62, 0, 0)
-        _RipCol("Ripple line (rgb, mix)", Color) = (1.00, 0.74, 0.70, 0.32)
-        _Shallow("Shallow", Color) = (0.70, 0.50, 0.62, 1)
-        _ShallowCut("Shallow m (1 step, 2 step, wobble m)", Vector) = (3.5, 1.5, 1.2, 0)
-        _Foam("Foam", Color) = (0.98, 0.89, 0.84, 1)
+        _Crest("Crest line (level, px, near m, mix)", Vector) = (0.72, 1.0, 70, 0.45)
+        _CrestCol("Crest line", Color) = (1.00, 0.78, 0.70, 1)
         _FoamW("Foam (inner px, ring px, inner m min, ring m min)", Vector) = (2.0, 6.0, 0.5, 1.8)
-        _FoamMax("Foam max (inner px, ring px, far inner m, far ring m)", Vector) = (5, 12, 10, 20)
-        _FoamSurge("Foam surge (amount, period s, inner max m, ring max m)", Vector) = (0.35, 11, 6, 14)
+        _FoamMax("Foam max (inner px, ring px, far inner m, far ring m)", Vector) = (4, 8, 10, 20)
+        _FoamSurge("Foam surge (amount, period s, inner max m, ring max m)", Vector) = (0.35, 11, 3, 7)
         _Sparkle("Sparkle density", Range(0, 1)) = 0.16
         _SparkleRate("Sparkle blink (per sec)", Float) = 0.5
         _DayTint("Day tint", Color) = (0.36, 0.58, 0.70, 1)
-        _HorizonFade("Horizon fade start/end m", Vector) = (150, 1100, 0, 0)
         _DepthTex("Sea depth (R = 깊이/최대, G = sqrt(물가 거리/400 m))", 2D) = "white" {}
         _DepthRect("Depth rect (xmin, zmin, size, max m)", Vector) = (-400, -400, 800, 8)
-        _Debug("Debug (1 깊이, 2 계단 값)", Float) = 0
+        _Debug("Debug (1 깊이, 2 계단 값, 3 노멀)", Float) = 0
     }
     SubShader
     {
@@ -56,136 +62,182 @@ Shader "PitCrew/Look/DuskSea"
             #include "Assets/Art/Look/Dusk.hlsl"
             TEXTURE2D(_DepthTex); SAMPLER(sampler_DepthTex);
             CBUFFER_START(UnityPerMaterial)
-                float4 _Deep, _Glow, _Hot, _Core, _RipCol, _Shallow, _Foam, _DayTint;
-                float4 _StepA, _StepE, _Cuts, _ReflAz, _Wave, _GlintCuts, _Rip, _RipW, _RipLv, _ShallowCut, _FoamW, _FoamMax, _FoamSurge, _HorizonFade, _DepthRect;
-                float _Reflect, _Shine, _Glint, _Sparkle, _SparkleRate, _Debug;
+                float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint;
+                float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade;
+                float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST;
+                float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
             CBUFFER_END
-            struct v2f { float4 pos : SV_POSITION; float3 wpos : TEXCOORD0; };
-            v2f vert(float4 v : POSITION) { v2f o; o.wpos = TransformObjectToWorld(v.xyz); o.pos = TransformWorldToHClip(o.wpos); return o; }
+            struct appdata { float4 v : POSITION; float2 uv : TEXCOORD0; };
+            struct v2f { float4 pos : SV_POSITION; float3 wpos : TEXCOORD0; float3 xz0 : TEXCOORD1; };   // xz0 = 움직이기 전 xz, z = 격자 여부
 
             float Lum(float3 c) { return dot(c, float3(.30, .55, .15)); }
+            // 파 시간. B(계단)는 _StepFps 박자로만 움직임 — 매끈하게 움직이면 계단 경계 픽셀이 매 프레임 오락가락(5판 실측 깜빡임 450배)
+            float WaveTime() { float t = _Time.y, fps = _Style > .5 ? _StepFps : _Gerst.z; if (fps > .5) t = floor(t * fps) / fps; return t * _Gerst.y; }
+            float4 WaveP(int i) { return i == 0 ? _W0 : (i == 1 ? _W1 : (i == 2 ? _W2 : _W3)); }
+            float2 WaveDir(float az) { float a = radians(az); return float2(sin(a), cos(a)); }   // 0 = +z(북 = 해안 쪽), 90 = +x
 
-            // 계단 k(0 = 짙음 ~ 3 = 밝음) 색: 해에서 비킨 방위 refXZ 의 하늘을 높이 _StepE[k] 에서 읽어 _StepA[k] 만큼 섞는다
-            float3 StepCol(float k, float2 refXZ)
+            // 물 밑 깊이(m)·물가 거리(m). 깊이 칸 밖 = 먼 바다(최대 깊이)
+            float2 DepthDist(float2 xz, float lod)
             {
-                float a = k < .5 ? _StepA.x : (k < 1.5 ? _StepA.y : (k < 2.5 ? _StepA.z : _StepA.w));
-                float e = k < .5 ? _StepE.x : (k < 1.5 ? _StepE.y : (k < 2.5 ? _StepE.z : _StepE.w));
-                float h = sqrt(1 - e * e);
-                return lerp(_Deep.rgb, DuskSkyColor(float3(refXZ.x * h, e, refXZ.y * h), 0), a);
+                float2 duv = (xz - _DepthRect.xy) / _DepthRect.z;
+                float inR = step(0, duv.x) * step(duv.x, 1) * step(0, duv.y) * step(duv.y, 1);
+                float4 dt = SAMPLE_TEXTURE2D_LOD(_DepthTex, sampler_DepthTex, duv, lod);
+                return float2(lerp(_DepthRect.w, dt.r * _DepthRect.w, inR), lerp(400, dt.g * dt.g * 400, inR));   // 400 = PitCrewSunsetMenu.ShoreDistMax
+            }
+            float ShallowAtt(float depth) { return saturate(depth / _Gerst.w) * .85 + .15 * saturate(depth / (_Gerst.w * .3)); }
+
+            v2f vert(appdata a)
+            {
+                v2f o;
+                float3 p = TransformObjectToWorld(a.v.xyz);
+                float isNear = step(1.5, a.uv.x);
+                o.xz0 = float3(p.xz, isNear);
+                if (isNear > .5 && _Disp.x > .5)
+                {
+                    // Gerstner: 정점 간격(중심에서 멀수록 넓음, 고리 비 ≈1.054)보다 파장이 짧으면 그 파는 뺀다 — 격자가 파를 못 그리면 지글거림
+                    float r = distance(p.xz, _Disp.yz);
+                    float spacing = max(.054 * r, .02);
+                    float edge = 1 - smoothstep(_Disp.w * .7, _Disp.w * .97, r);
+                    float att = ShallowAtt(DepthDist(p.xz, 0).x) * edge;
+                    float t = WaveTime();
+                    float3 dsp = 0;
+                    [unroll] for (int i = 0; i < 4; i++)
+                    {
+                        float4 w = WaveP(i); float2 D = WaveDir(w.x);
+                        float k = 6.2832 / w.y, A = w.z * att * (1 - smoothstep(.12, .25, spacing / w.y));
+                        float Q = _Gerst.x / max(k * w.z * 4, 1e-4);
+                        float ph = k * dot(D, p.xz) - sqrt(9.8 * k) * t + w.w;
+                        float c = cos(ph), s = sin(ph);
+                        dsp += float3(Q * A * D.x * c, A * s, Q * A * D.y * c);
+                    }
+                    p += dsp;
+                }
+                o.wpos = p; o.pos = TransformWorldToHClip(p);
+                return o;
             }
 
             half4 frag(v2f i) : SV_Target
             {
+                float2 xz = i.xz0.xy;
+                // 격자 판과 바깥 판의 경계: 격자는 원 밖을, 바깥 판은 원 안을 버림(노을 바다를 쓰는 두 렌더러만)
+                float rc = distance(xz, _Disp.yz);
+                if (_Disp.x > .5) clip(i.xz0.z > .5 ? _Disp.w - rc : rc - _Disp.w);
+
                 float3 p = i.wpos;
                 float3 cam = _WorldSpaceCameraPos;
                 float3 V = normalize(p - cam);
                 float d = distance(p, cam);
-                float t = _Time.y;
+                float t = WaveTime();
                 float3 sun = _PCDuskSunDir.xyz;
-                float2 s2 = normalize(sun.xz + 1e-5), r2 = float2(-s2.y, s2.x);
-                float ra = radians(_ReflAz.x);
-                float2 refXZ = s2 * cos(ra) + r2 * sin(ra);
-                float pixA = 2.0 / (abs(UNITY_MATRIX_P._m11) * _ScreenParams.y);      // 화면 1px 의 각(RT 렌더는 투영이 뒤집혀 abs)
+                float2 dd = DepthDist(xz, 0);
+                float depth = dd.x, dist = dd.y;
+                float att = ShallowAtt(depth);
 
-                // 1) 1판 물결: 노멀 물결 4개. 픽셀 몇 개보다 잘게 접히면 빼고, 뺀 기울기는 해 반사 꼬리로(Toksvig). 시간은 _Wave.w 박자
-                float2 fw = max(fwidth(p.xz), 1e-4); float fp = max(fw.x, fw.y);
-                const float2 D[4] = { float2(0.94, 0.33), float2(0.37, 0.93), float2(-0.76, 0.65), float2(0.20, -0.98) };
-                const float L[4] = { 9.0, 5.3, 3.1, 1.7 };
-                float tw = floor(t * _Wave.w) / _Wave.w * _Wave.y;
-                float2 slope = 0; float var = 0;
+                // 1) 파 노멀(정점과 같은 Gerstner 4개 + 노멀만 잔물결 2개). 화면 몇 px 보다 잘게 접히는 파는 빼고 그 기울기는 해 반사 퍼짐으로(Toksvig)
+                float2 fw = max(fwidth(xz), 1e-4); float fp = max(fw.x, fw.y);
+                float3 N = float3(0, 1, 0); float var = 0, crest = 0, crestA = 0;
                 [unroll] for (int k = 0; k < 4; k++)
                 {
-                    float kk = 6.2832 / L[k];
-                    float w = 1 - smoothstep(_Wave.z, _Wave.z * 2, fp / L[k]);
-                    float a = _Wave.x * (k == 0 ? 1 : (k == 1 ? .8 : (k == 2 ? .6 : .45)));
-                    float ph = kk * dot(D[k], p.xz) - sqrt(9.8 * kk) * tw + k * 1.7;
-                    slope += D[k] * a * cos(ph) * w;
-                    var += a * a * .5 * (1 - w);
+                    float4 w = WaveP(k); float2 D = WaveDir(w.x);
+                    float kk = 6.2832 / w.y, A = w.z * att;
+                    float Q = _Gerst.x / max(kk * w.z * 4, 1e-4);
+                    float ph = kk * dot(D, xz) - sqrt(9.8 * kk) * t + w.w;
+                    float f = 1 - smoothstep(_Filt, _Filt * 2, fp / w.y);
+                    float c = cos(ph), s = sin(ph);
+                    N.xz -= D * kk * A * c * f;
+                    N.y -= Q * kk * A * s * f;
+                    var += (kk * A) * (kk * A) * .5 * (1 - f);
+                    if (k < 2) { crest += w.z * s; crestA += w.z; }
                 }
-                float3 N = normalize(float3(-slope.x, 1, -slope.y));
+                [unroll] for (int j = 0; j < 2; j++)
+                {
+                    float L = j == 0 ? _Detail.x : _Detail.z, S = (j == 0 ? _Detail.y : _Detail.w) * att;
+                    float2 D = WaveDir(j == 0 ? _Detail2.x : _Detail2.y);
+                    float kk = 6.2832 / L;
+                    float ph = kk * dot(D, xz) - sqrt(9.8 * kk) * t + 2.3 * j;
+                    float f = 1 - smoothstep(_Filt, _Filt * 2, fp / L);
+                    N.xz -= D * S * cos(ph) * f;
+                    var += S * S * .5 * (1 - f);
+                }
+                N = normalize(N);
+                crest = crest / max(crestA, 1e-4) * .5 + .5;                              // 너울 마루 0..1
+                if (_Debug > 2.5) return half4(N * .5 + .5, 1);
+                if (_Debug > .5 && _Debug < 1.5) return half4(saturate(depth / 8), saturate(dist / 16), att, 1);
+
+                // 2) 음영: 프레넬로 물 색 ↔ 하늘 반사. 물 색 = 깊이 흡수(얕음 밝은 청록 → 깊음 짙은 남), 비스듬히 볼수록 물을 길게 지나 짙게
+                float NoV = saturate(dot(N, -V));
+                float F = .02 + .98 * pow(1 - NoV, 5);
                 float3 R = reflect(V, N);
-                float F = .02 + .98 * pow(1 - saturate(dot(N, -V)), 5);
-                float3 skyR = DuskSkyColor(float3(R.x, max(R.y, .002), R.z), 0);
-                float3 cv = lerp(_Deep.rgb, skyR, saturate(F * 1.4) * _Reflect);           // 1판 연속 색
+                float3 skyR = DuskSkyColor(float3(R.x, max(R.y, .01), R.z), 0);
+                float path = depth * (1 + _Absorb.y * (1 / max(-V.y, .05) - 1) * .1);
+                float3 body = lerp(_ShallowCol.rgb, _DeepCol.rgb, 1 - exp(-path / _Absorb.x));
+                float3 col = lerp(body, skyR, saturate(F * _Reflect));
                 float3 hz = DuskSkyColor(float3(V.x, .001, V.z), 0);
-                // 계단 값: 1판 색의 밝기를 지평선 밝기에 견줌(0 짙음 ~ 1 지평선만큼). 멀리는 1판처럼 지평선 쪽으로
-                float v = Lum(cv) / max(Lum(hz), 1e-3);
-                v = lerp(v, 1, smoothstep(_HorizonFade.x, _HorizonFade.y, d) * .9);
+                col = lerp(col, hz, smoothstep(_HorizonFade.x, _HorizonFade.y, d) * _HorizonFade.z);
 
-                // 2) 물 밑 깊이·물가 거리
-                float2 duv = (p.xz - _DepthRect.xy) / _DepthRect.z;
-                float inR = step(0, duv.x) * step(duv.x, 1) * step(0, duv.y) * step(duv.y, 1);
-                float4 dt = SAMPLE_TEXTURE2D(_DepthTex, sampler_DepthTex, duv);
-                float depth = lerp(_DepthRect.w, dt.r * _DepthRect.w, inR);
-                float dist = lerp(400, dt.g * dt.g * 400, inR);                            // 400 = PitCrewSunsetMenu.ShoreDistMax
-                if (_Debug > .5 && _Debug < 1.5) return half4(saturate(depth / 8), saturate(dist / 16), inR, 1);
-                if (_Debug > 1.5) return half4(v, v, v, 1);
+                // 3) 해 정반사: 파 노멀로 부서지는 빛길. 잘게 빠진 파만큼 넓고 흐리게
+                float sh = _Shine / (1 + _Shine * var * 4);
+                float P = pow(saturate(dot(R, sun)), sh) * min(1, sh / _Shine * 2.5) * _Glint;
 
-                // 3) 물결 선 노이즈(Roystan): 세상 좌표 노이즈 → 왜곡 노이즈로 흔들고 → 두 값(_RipLv)의 등고선(먼 곳은 한 값만). 박자 _Rip.w
-                float tr = floor(t * _Rip.w) / _Rip.w;
-                float2 ru = p.xz * _Rip.x;
-                float2 dis = float2(dkNoise(ru * .45 + float2(tr * .04, 1.7)), dkNoise(ru * .45 + float2(5.3, -tr * .04))) - .5;
-                float2 ru2 = ru + dis * _Rip.y + s2 * (tr * _Rip.z * _Rip.x);
-                float rn = dkNoise(ru2) * .7 + dkNoise(ru2 * 2.07 + 7.1) * .3;
+                // 4) 거품 조금: 물가(흔들리는 띠) + 너울 마루(노이즈로 듬성)
+                float n1 = dkNoise(xz * .45 + float2(t * .05, 0)), n2 = dkNoise(xz * 1.3 - float2(0, t * .08));
+                float fwS = _FoamA.x * (.6 + .8 * n1);
+                float shoreF = (1 - smoothstep(fwS * .7, fwS, dist)) * step(dist, 390);   // 좁고 또렷한 흰 띠(넓게 번지면 회색 얼룩)
+                float crestF = smoothstep(_FoamA.z, 1, crest) * smoothstep(.55, .8, n2) * (1 - smoothstep(60, 140, d));
 
-                // 계단 나누기 + 얕은 곳 한두 단 위로(경계는 물결 노이즈로 흔듦)
-                float kq = step(_Cuts.x, v) + step(_Cuts.y, v) + step(_Cuts.z, v);
-                float dW = depth + (rn - .5) * 2 * _ShallowCut.z;
-                float up = step(dW, _ShallowCut.x) + step(dW, _ShallowCut.y);
-                float3 col = StepCol(min(kq + up, 3), refXZ);
-                col = lerp(col, _Shallow.rgb, up * .28);
+                float lumHz = max(Lum(hz), 1e-3);
+                if (_Debug > 1.5) { float v = Lum(col) / lumHz; return half4(v, v, v, 1); }
 
-                // 4) 해 빛길: 1판 해 반사를 3단으로
-                float sh = _Shine / (1 + _Shine * var * 6);
-                float glint = pow(saturate(dot(R, sun)), sh) * min(1, sh / _Shine * 3) * _Glint;
-                float P = glint * (.85 + .3 * rn) * (.3 + .7 * saturate(d / 40));          // 바로 앞 물결의 해 반사는 약하게(큰 얼룩 방지)
-                if (P >= _GlintCuts.x) col = P < _GlintCuts.y ? _Glow.rgb : (P < _GlintCuts.z ? _Hot.rgb : _Core.rgb);
-
-                // 5) 물결 선: 등고선 굵기 = 화면 px(가까이 _RipW.x · 멀리 .y, 얕을수록 굵게). 노이즈 칸이 작아지는 먼 곳은 칸마다 빠짐
-                float fq = max(fwidth(ru.x), fwidth(ru.y));                                // 노이즈 칸 / px
-                float far = saturate((fq - .02) / .10);
-                float shK = saturate(1 - depth / _ShallowCut.x);
-                float wpx = lerp(_RipW.x, _RipW.y, far) * (1 + _RipW.z * shK);
-                float frn = max(fwidth(rn), 1e-4);
-                float lineOn = max(step(abs(rn - _RipLv.x), .5 * wpx * frn), step(abs(rn - _RipLv.y), .5 * wpx * frn) * (1 - far));
-                float keepR = step(fq, _RipW.w * (.35 + 1.3 * dkNoise(ru * .2 + 3.3)));
-                float onPath = step(_GlintCuts.x, P);
-                col = lerp(col, lerp(col, onPath > .5 ? _Core.rgb : _RipCol.rgb, _RipCol.a), lineOn * keepR);
-
-                // 6) 물가 2겹: 안쪽 흰 테 + 한 칸 띄운 바깥 선. 1px 가 덮는 물 m 로 px 굵기 환산(3판과 같음), 경계는 물결 노이즈로 흔듦
-                float mppH = d * pixA, mppV = d * pixA / max(-V.y, .003);
-                float mpp = clamp(fwidth(dist), mppH, mppV);
-                float surge = .5 + .5 * sin(floor(t * 4) * .25 * 6.2832 / _FoamSurge.y);
-                float farK = saturate((d - 120) / 150);
-                float dpx = dist / mpp + (rn - .5) * 3.0 * (1 - farK * .8);
-                float sw = 1 + _FoamSurge.x * (surge - .5) * 2;
-                float wIn = max(_FoamW.x, _FoamW.z / mpp) * sw;
-                float wOut = max(_FoamW.y, _FoamW.w / mpp) * sw;
-                wIn = min(wIn, _FoamMax.x * sw); wOut = min(wOut, _FoamMax.y * sw);                 // 바로 앞 부두가 수십 px 로 번지지 않게
-                wIn = min(wIn, _FoamSurge.z * sw / mpp); wOut = min(wOut, _FoamSurge.w * sw / mpp);
-                // 먼 물가는 1px 테 + 2px 바깥 선, 단 1px 가 물 수십 m 인 수평선 근처는 m 상한(_FoamMax.zw)으로 사라짐(수평선 흰 띠 방지)
-                wIn = lerp(wIn, min(1.0, _FoamMax.z / mpp), farK); wOut = lerp(wOut, min(2.0, _FoamMax.w / mpp), farK);
-                float ringW = lerp(1.0, .5, farK);
-                float isShore = inR * step(dist, 390);                                       // 깊이 칸 밖(먼 바다)은 물가 아님
-                dpx = lerp(1e4, dpx, isShore);
-                float band = step(dpx, wOut + ringW) * step(.0, dpx);
-                col = lerp(col, lerp(col, _Foam.rgb, .30), band);                             // 테두리 안쪽 물은 한 단 밝게
-                float ring = step(abs(dpx - wOut), ringW) * (1 - farK * .5);
-                float inner = step(dpx, wIn);
-                col = lerp(col, lerp(col, _Foam.rgb, .85), ring);
-                col = lerp(col, _Foam.rgb, inner);
-
-                // 반짝이: 화면 픽셀 격자 3px 칸 → 칸마다 1px, 빛길 hot 안에서만
-                float2 px = floor(i.pos.xy);
-                float2 cid = floor(px / 3);
-                float h1 = dkHash(cid * .917 + 1.3), h2 = dkHash(cid * 1.31 + 11.7), h3 = dkHash(cid * .77 + 3.3);
-                float ph = frac(t * _SparkleRate * (.6 + h2 * .8) + h3);
-                float spk = step(ph, .10) * step(1 - _Sparkle, h1) * step(_GlintCuts.y, P);
-                float pin = step(abs(px.x - cid.x * 3 - 1), .1) * step(abs(px.y - cid.y * 3 - 1), .1);
-                col = lerp(col, _Core.rgb, spk * pin * (1 - band));
-
-                // 수평선: 먼 물은 하늘 지평선 색 한 단으로(계단 1번)
-                col = lerp(col, hz, step(_HorizonFade.y, d + (rn - .5) * 120) * .85);
+                if (_Style < .5)
+                {
+                    // A: 매끈한 실제 물
+                    col += _PCDuskSunCol.rgb * P;
+                    col = lerp(col, _Foam.rgb, saturate(shoreF * _FoamA.y + crestF * _FoamA.w));
+                }
+                else
+                {
+                    // B: 밝기 4단(색조는 A 그대로 — 단 하나의 밝기로 맞춤)
+                    // 단 색 = 단마다 정한 색(짙은 물 ↔ 해에서 비킨 하늘 높이별 반사)에 A 색을 _StepKeep 만큼만 남김 → 단 안은 거의 한 색
+                    float L = max(Lum(col), 1e-4), v = L / lumHz;
+                    float kq = step(_Cuts.x, v) + step(_Cuts.y, v) + step(_Cuts.z, v);
+                    float lv = kq < .5 ? _Lv.x : (kq < 1.5 ? _Lv.y : (kq < 2.5 ? _Lv.z : _Lv.w));
+                    float e = kq < .5 ? .55 : (kq < 1.5 ? .30 : (kq < 2.5 ? .15 : .05));
+                    float2 s2 = normalize(sun.xz + 1e-5), r2 = float2(-s2.y, s2.x), refXZ = s2 * cos(.49) + r2 * sin(.49);
+                    float3 pal = lerp(_DeepCol.rgb, DuskSkyColor(float3(refXZ.x * sqrt(1 - e * e), e, refXZ.y * sqrt(1 - e * e)), 0), saturate(kq / 3 * .8 + .2));
+                    float3 aq = col * (lv * lumHz / L);
+                    col = lerp(pal * (lv * lumHz / max(Lum(pal), 1e-4)), aq, _StepKeep);
+                    // 빛길 3단
+                    if (P >= _GlintCuts.x) col = P < _GlintCuts.y ? _Glow.rgb : (P < _GlintCuts.z ? _Hot.rgb : _Core.rgb);
+                    // 파 마루 선: 너울 마루 높이 한 값의 등고선 1px, 가까이만, 노이즈로 끊어 짧은 선으로
+                    float fc = max(fwidth(crest), 1e-4);
+                    float cl = step(abs(crest - _Crest.x), .5 * _Crest.y * fc) * step(.45, n1) * (1 - smoothstep(_Crest.z * .6, _Crest.z, d)) * step(.5, att);
+                    col = lerp(col, lerp(col, _CrestCol.rgb, _Crest.w), cl);
+                    // 물가 2겹(4판과 같음): 안쪽 흰 테 + 한 칸 띄운 바깥 선. 1px 가 덮는 물 m 로 px 굵기 환산
+                    float pixA = 2.0 / (abs(UNITY_MATRIX_P._m11) * _ScreenParams.y);
+                    float mppH = d * pixA, mppV = d * pixA / max(-V.y, .003);
+                    float mpp = clamp(fwidth(dist), mppH, mppV);
+                    float surge = .5 + .5 * sin(floor(_Time.y * 4) * .25 * 6.2832 / _FoamSurge.y);
+                    float farK = saturate((d - 120) / 150);
+                    float dpx = dist / mpp + (n1 - .5) * 3.0 * (1 - farK * .8);
+                    float sw = 1 + _FoamSurge.x * (surge - .5) * 2;
+                    float wIn = min(max(_FoamW.x, _FoamW.z / mpp) * sw, _FoamMax.x * sw);
+                    float wOut = min(max(_FoamW.y, _FoamW.w / mpp) * sw, _FoamMax.y * sw);
+                    wIn = min(wIn, _FoamSurge.z * sw / mpp); wOut = min(wOut, _FoamSurge.w * sw / mpp);
+                    wIn = lerp(wIn, min(1.0, _FoamMax.z / mpp), farK); wOut = lerp(wOut, min(2.0, _FoamMax.w / mpp), farK);
+                    float ringW = lerp(1.0, .5, farK);
+                    dpx = lerp(1e4, dpx, step(dist, 390));
+                    float band = step(dpx, wOut + ringW) * step(.0, dpx);
+                    col = lerp(col, lerp(col, _Foam.rgb, .30), band);
+                    col = lerp(col, lerp(col, _Foam.rgb, .85), step(abs(dpx - wOut), ringW) * (1 - farK * .5));
+                    col = lerp(col, _Foam.rgb, step(dpx, wIn));
+                    // 반짝이: 화면 3px 칸마다 1px, 빛길 hot 안에서만
+                    float2 px = floor(i.pos.xy), cid = floor(px / 3);
+                    float h1 = dkHash(cid * .917 + 1.3), h2 = dkHash(cid * 1.31 + 11.7), h3 = dkHash(cid * .77 + 3.3);
+                    float ph = frac(_Time.y * _SparkleRate * (.6 + h2 * .8) + h3);
+                    float spk = step(ph, .10) * step(1 - _Sparkle, h1) * step(_GlintCuts.y, P);
+                    float pin = step(abs(px.x - cid.x * 3 - 1), .1) * step(abs(px.y - cid.y * 3 - 1), .1);
+                    col = lerp(col, _Core.rgb, spk * pin * (1 - band));
+                }
                 col = lerp(_DayTint.rgb, col, saturate(_PCDusk.x));
                 return half4(col, 1);
             }

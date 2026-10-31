@@ -172,6 +172,60 @@ public static class PitCrewSunsetMenu
         Debug.Log("[노을] 물 밑 깊이·물가 거리 " + n + "×" + n + " 땅 칸 " + landCount + " → " + path);
     }
 
+    // D-232 5판 자리 둘레 바다 격자(SeaNear): 원판, 중심 = 앉은 눈 xz, 반경 NearRadius m.
+    // 고리 반경이 NearRing 배씩 커짐(가까이 0.3 m 칸 → 끝 13 m 칸) · 둘레 NearSegs 칸. uv.x = 2 = 격자 표시(DuskSea 가 이것만 정점을 움직임).
+    // 노을 바다 머티리얼을 쓰고, 노을일 때만 켜짐(SunsetLook.seaNear). 바깥 Sea 판은 셰이더가 원 안을 잘라 냄. 다시 누르면 새로.
+    public const float NearRadius = 250f, NearR0 = 0.3f; public const int NearRings = 128, NearSegs = 256;
+    [MenuItem("PitCrew/노을/가까운 바다 격자", false, 5)]
+    public static void BuildSeaNear()
+    {
+        var look = SunsetLook.Find(); if (look == null || look.sea == null) { Debug.LogWarning("[노을] 자리 설치 먼저"); return; }
+        float rOut = NearRadius / Mathf.Cos(Mathf.PI / NearSegs) + 0.05f;               // 다각형이 원을 다 덮게
+        float q = Mathf.Pow(rOut / NearR0, 1f / NearRings);
+        var v = new Vector3[1 + (NearRings + 1) * NearSegs]; var uv = new Vector2[v.Length];
+        v[0] = Vector3.zero; uv[0] = new Vector2(2, 0);
+        for (int j = 0; j <= NearRings; j++)
+        {
+            float r = NearR0 * Mathf.Pow(q, j);
+            for (int s = 0; s < NearSegs; s++)
+            {
+                float a = s * Mathf.PI * 2 / NearSegs; int id = 1 + j * NearSegs + s;
+                v[id] = new Vector3(Mathf.Sin(a) * r, 0, Mathf.Cos(a) * r); uv[id] = new Vector2(2, r / NearRadius);
+            }
+        }
+        var tri = new int[(NearSegs + NearRings * NearSegs * 2) * 3]; int t = 0;
+        for (int s = 0; s < NearSegs; s++) { tri[t++] = 0; tri[t++] = 1 + s; tri[t++] = 1 + (s + 1) % NearSegs; }
+        for (int j = 0; j < NearRings; j++)
+            for (int s = 0; s < NearSegs; s++)
+            {
+                int a = 1 + j * NearSegs + s, b = 1 + j * NearSegs + (s + 1) % NearSegs, c = a + NearSegs, d = b + NearSegs;
+                tri[t++] = a; tri[t++] = c; tri[t++] = b; tri[t++] = b; tri[t++] = c; tri[t++] = d;
+            }
+        string path = MatDir + "TV6_SeaNear.asset";
+        var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+        if (mesh == null) { mesh = new Mesh(); AssetDatabase.CreateAsset(mesh, path); }
+        mesh.Clear(); mesh.name = "TV6_SeaNear"; mesh.vertices = v; mesh.uv = uv; mesh.triangles = tri;
+        var nrm = new Vector3[v.Length]; for (int i = 0; i < nrm.Length; i++) nrm[i] = Vector3.up; mesh.normals = nrm;
+        mesh.bounds = new Bounds(Vector3.zero, new Vector3(rOut * 2 + 4, 4, rOut * 2 + 4));   // 파 높이·옆 움직임 여유
+        EditorUtility.SetDirty(mesh); AssetDatabase.SaveAssets();
+
+        var seaY = look.sea.transform.position.y;
+        var old = look.seaNear != null ? look.seaNear.gameObject : GameObject.Find(RootName + "/SeaNear");
+        if (old != null) Object.DestroyImmediate(old);
+        var go = new GameObject("SeaNear"); go.transform.SetParent(look.transform, false);
+        go.transform.SetPositionAndRotation(new Vector3(SeatPos.x, seaY, SeatPos.z), Quaternion.identity);
+        go.layer = look.sea.gameObject.layer;
+        go.AddComponent<MeshFilter>().sharedMesh = mesh;
+        var mr = go.AddComponent<MeshRenderer>(); mr.sharedMaterial = look.seaMaterial;
+        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
+        mr.enabled = look.IsOn;
+        look.seaNear = mr;
+        look.seaMaterial.SetVector("_Disp", new Vector4(1, SeatPos.x, SeatPos.z, NearRadius));
+        EditorUtility.SetDirty(look.seaMaterial); EditorUtility.SetDirty(look); AssetDatabase.SaveAssets();
+        EditorSceneManager.MarkSceneDirty(look.gameObject.scene);
+        Debug.Log("[노을] 바다 격자 정점 " + v.Length + " 삼각형 " + tri.Length / 3 + " → " + path);
+    }
+
     // D-229 이 장면에서 보이는 옛 대역 나무(LofiPilot CoastalTree)만 숲 나무 F1·F2 로. 원본은 끄기만 하고(SunsetLook.hiddenTrees) 새 나무는 Sunset_D227/Trees_F 아래.
     // 범위 = 앉은 눈에서 수평 TreeRadius m 안, 방위 TreeBearing.x~y°(둘러보기 범위 + 화면 반폭). 다시 누르면 되돌린 뒤 새로.
     public const float TreeRadius = 450f;

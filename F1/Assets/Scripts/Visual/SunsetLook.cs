@@ -39,6 +39,8 @@ public sealed class SunsetLook : MonoBehaviour
     public Material skyMaterial;   // PitCrew/Look/DuskSky
     public Material seaMaterial;   // PitCrew/Look/DuskSea
     public Renderer sea;
+    [Tooltip("D-232 5판 자리 둘레 촘촘한 바다 격자(SeaNear, seaMaterial 고정). 노을일 때만 켜짐 — 낮엔 꺼서 원래 Sea 판만.")]
+    public Renderer seaNear;
     public Light sun;
     [Tooltip("D-229 이 장면에서 숲 나무 F1·F2 로 바꾸느라 꺼 둔 옛 대역 나무(메뉴 PitCrew/노을/나무 되돌리기 로 다시 켬).")]
     public GameObject[] hiddenTrees;
@@ -96,6 +98,7 @@ public sealed class SunsetLook : MonoBehaviour
         RenderSettings.ambientSkyColor = day.ambSky; RenderSettings.ambientEquatorColor = day.ambEq; RenderSettings.ambientGroundColor = day.ambGround; RenderSettings.ambientLight = day.ambLight;
         if (day.skybox != null) RenderSettings.skybox = day.skybox;
         if (sea != null && day.seaMat != null) sea.sharedMaterial = day.seaMat;
+        if (seaNear != null) seaNear.enabled = false;
         Shader.SetGlobalVector(DuskId, Vector4.zero);
         if (a7 == null) a7 = FindFirstObjectByType<A7ShadeGlobals>(); if (a7 != null) a7.Apply();
         captured = false;
@@ -130,6 +133,7 @@ public sealed class SunsetLook : MonoBehaviour
         RenderSettings.ambientSkyColor = Color.Lerp(day.ambSky, shade, k);
         if (k > 0f && skyMaterial != null) RenderSettings.skybox = skyMaterial; else if (day.skybox != null) RenderSettings.skybox = day.skybox;
         if (sea != null) sea.sharedMaterial = k > 0f && seaMaterial != null ? seaMaterial : day.seaMat;
+        if (seaNear != null) seaNear.enabled = k > 0f && seaMaterial != null && sea != null;
         PushGlobals();
     }
 
