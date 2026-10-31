@@ -46,6 +46,9 @@ public sealed class DuskBackdrop : MonoBehaviour
     public Vector2 gullEvery = new Vector2(22f, 38f);
     [Tooltip("켜진 뒤 첫 무리까지(s)")]
     public float firstGull = 2.5f;
+    [Tooltip("D-236 9판: 무리가 지나는 길의 이 비율(0..1)에서 맨 앞 갈매기 자리에서 한 번 운다(CoastAmbience.CallAt). 음수 = 울지 않음")]
+    public float cryAt = 0.4f;
+    bool cried;
 
     readonly List<GameObject> built = new List<GameObject>();
     static readonly int HazeId = Shader.PropertyToID("_Haze"), ColorId = Shader.PropertyToID("_Color");
@@ -55,8 +58,16 @@ public sealed class DuskBackdrop : MonoBehaviour
     public int Flights { get; private set; }   // 검증용
     public bool LampOn => lamp != null && lamp.enabled;
 
-    void OnEnable() { Rebuild(); flightT0 = -1f; flightNext = Now + firstGull; lastCalls = ambience != null ? ambience.GullCalls : 0; }
-    void OnDisable() => Clear();
+    void OnEnable()
+    {
+        Rebuild(); flightT0 = -1f; flightNext = Now + firstGull; lastCalls = ambience != null ? ambience.GullCalls : 0;
+        if (ambience != null && Application.isPlaying) ambience.leader = this;   // 노을 동안 갈매기 울음은 무리가 지날 때만
+    }
+    void OnDisable()
+    {
+        if (ambience != null && ambience.leader == this) ambience.leader = null;
+        Clear();
+    }
     static float Now => Application.isPlaying ? Time.time : (float)UnityEditor_Time();
     static double UnityEditor_Time()
     {
@@ -176,12 +187,18 @@ public sealed class DuskBackdrop : MonoBehaviour
         if (gullT.Count == 0) return;
         bool flying = flightT0 >= 0f;
         int calls = ambience != null ? ambience.GullCalls : 0;
-        bool called = calls != lastCalls; lastCalls = calls;
-        if (!flying && (called || now >= flightNext)) StartFlight(now);
+        // 9판: 무리가 울음을 부르므로(leader) 남이 낸 울음으로 날기 시작하는 건 편집 모드·leader 아닐 때만
+        bool called = calls != lastCalls && (ambience == null || ambience.leader != this); lastCalls = calls;
+        if (!flying && (called || now >= flightNext)) { StartFlight(now); cried = called; }
         if (flightT0 < 0f) return;
         float dur = Vector3.Distance(flightA, flightB) / Mathf.Max(0.5f, gulls.w);
         float u = (now - flightT0) / dur;
         if (u > 1f) { flightT0 = -1f; flightNext = now + Random.Range(gullEvery.x, gullEvery.y); foreach (var g in gullT) g.gameObject.SetActive(false); return; }
+        if (!cried && cryAt >= 0f && u >= cryAt && Application.isPlaying)
+        {
+            cried = true;
+            if (ambience != null) { ambience.CallAt(Vector3.Lerp(flightA, flightB, u)); lastCalls = ambience.GullCalls; }
+        }
         var cam = Camera.main; Vector3 ce = cam != null ? cam.transform.position : flightA;
         Vector3 dir = (flightB - flightA).normalized;
         for (int i = 0; i < gullT.Count; i++)

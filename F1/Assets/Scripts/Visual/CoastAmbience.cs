@@ -16,6 +16,10 @@ public class CoastAmbience : MonoBehaviour
 
     float next;
     public int GullCalls { get; private set; }   // 검증용
+    public float LastCallTime { get; private set; } = -1f;   // 검증용
+    public Vector3 LastCallPos { get; private set; }
+    // D-236 9판: 이게 켜져 있으면 울음 시각·자리를 그쪽(노을 갈매기 무리)이 정한다 — 혼자 울지 않음
+    [System.NonSerialized] public Behaviour leader;
 
     void Start()
     {
@@ -27,12 +31,20 @@ public class CoastAmbience : MonoBehaviour
     {
         if (Time.time < next) return;
         next = Time.time + Random.Range(gullInterval.x, gullInterval.y);
+        if (leader != null && leader.isActiveAndEnabled) return;
+        Vector2 o = Random.insideUnitCircle.normalized * gullRadius * Random.Range(0.6f, 1f);
+        CallAt(transform.position + new Vector3(o.x, gullHeight, o.y));
+    }
+
+    /// <summary>그 자리에서 갈매기 한 번 울음(3D). 노을 갈매기 무리가 화면을 지날 때 부른다.</summary>
+    public void CallAt(Vector3 pos)
+    {
+        next = Time.time + Random.Range(gullInterval.x, gullInterval.y);
         if (gulls == null || gullClips == null || gullClips.Length == 0) return;
         var c = gullClips[Random.Range(0, gullClips.Length)]; if (c == null) return;
-        Vector2 o = Random.insideUnitCircle.normalized * gullRadius * Random.Range(0.6f, 1f);
-        gulls.transform.position = transform.position + new Vector3(o.x, gullHeight, o.y);
+        gulls.transform.position = pos;
         gulls.pitch = Random.Range(0.92f, 1.08f);
         gulls.PlayOneShot(c, gullVolume);
-        GullCalls++;
+        GullCalls++; LastCallTime = Time.time; LastCallPos = pos;
     }
 }

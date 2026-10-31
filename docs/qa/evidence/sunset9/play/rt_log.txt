@@ -1,0 +1,5 @@
+p9_y0 fov=46 lrt=(640, 360) yaw=0
+p9_yL fov=46 lrt=(640, 360) yaw=-30
+p9_yR fov=46 lrt=(640, 360) yaw=35
+p9_y0b fov=46 lrt=(640, 360) yaw=0
+p9_y0c fov=46 lrt=(640, 360) yaw=0

@@ -43,6 +43,9 @@ public class FishingSpot : MonoBehaviour
     [Tooltip("뿌리·끝 반지름(m) — 끝으로 갈수록 가늘다(화면에서 뿌리 쪽 ~10px → 끝 1px).")]
     public Vector2 rodRadius = new Vector2(0.013f, 0.0025f);
     public Color rodColor = new Color(0.26f, 0.16f, 0.10f);
+    [Tooltip("D-236 9판: 끝 쪽 이 비율(0..1)을 역광 받은 밝은 색(빛 안 받는 단색)으로. 0 = 끔")]
+    [Range(0f, 1f)] public float rodTipFrac = 0.3f;
+    public Color rodTipColor = new Color(0.78f, 0.52f, 0.38f);
     [Tooltip("대 끝이 바람에 흔들리는 폭(m)과 찌가 잠길 때 끝이 따라 숙는 비율.")]
     public float rodSway = 0.012f, rodFollow = 0.35f;
     [Header("D-236 8판 찌 반짝임 — 찌가 해 빛길 안(해 방위 ±pathHalfWidth°)이면 찌 둘레에 1px 별")]
@@ -146,6 +149,15 @@ public class FishingSpot : MonoBehaviour
             var g = new GameObject("Rod"); g.transform.SetParent(rod, false);
             g.AddComponent<MeshFilter>().sharedMesh = TaperMesh(rodRadius.x, rodRadius.y);
             var mr = g.AddComponent<MeshRenderer>(); mr.sharedMaterial = wood; mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            // D-236 9판: 끝 쪽 rodTipFrac 만큼 역광 받은 밝은 대(빛 안 받는 단색) — 짙은 물 위에서 대 끝이 묻히지 않고 줄로 이어지게
+            if (rodTipFrac > 0f)
+            {
+                var tm = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "FishingRodTip (대역)" }; tm.SetColor("_BaseColor", rodTipColor);
+                var tg = new GameObject("RodTip"); tg.transform.SetParent(rod, false);
+                float z0 = 1f - rodTipFrac, r0 = Mathf.Lerp(rodRadius.x, rodRadius.y, z0) * 1.12f;
+                tg.AddComponent<MeshFilter>().sharedMesh = TaperMesh(r0, rodRadius.y * 1.12f, z0);
+                var tr = tg.AddComponent<MeshRenderer>(); tr.sharedMaterial = tm; tr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
         }
         if (bobberPrefab != null) bobber = Instantiate(bobberPrefab, root).transform;
         else
@@ -187,14 +199,14 @@ public class FishingSpot : MonoBehaviour
         g.transform.SetParent(parent, false); g.transform.localScale = new Vector3(dia, h * 0.5f, dia); g.transform.localPosition = new Vector3(0f, y + h * 0.5f - 0.06f, 0f);
     }
 
-    // 6각 대: z 0(뿌리, 반지름 r0) → 1(끝, r1). 끝은 막음
-    static Mesh TaperMesh(float r0, float r1)
+    // 6각 대: z z0(뿌리, 반지름 r0) → 1(끝, r1). 끝은 막음
+    static Mesh TaperMesh(float r0, float r1, float z0 = 0f)
     {
         const int n = 6; var v = new Vector3[n * 2 + 1]; var t = new int[n * 6 + n * 3];
         for (int i = 0; i < n; i++)
         {
             float a = i * Mathf.PI * 2f / n; var d = new Vector3(Mathf.Cos(a), Mathf.Sin(a), 0f);
-            v[i] = d * r0; v[n + i] = d * r1 + Vector3.forward;
+            v[i] = d * r0 + Vector3.forward * z0; v[n + i] = d * r1 + Vector3.forward;
         }
         v[n * 2] = Vector3.forward;
         int k = 0;

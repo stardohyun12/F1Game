@@ -41,8 +41,8 @@ Material:
     - _Style: 1
     m_Colors:
     - _Absorb: {r: 2.2, g: 0.6, b: 0, a: 0}
-    - _Cool: {r: 0.55, g: 1.5, b: 0, a: 0}
-    - _CoolCol: {r: 0.16, g: 0.32, b: 0.46, a: 1}
+    - _Cool: {r: 0.75, g: 1.5, b: 0, a: 0}
+    - _CoolCol: {r: 0.12, g: 0.3, b: 0.52, a: 1}
     - _Core: {r: 1, g: 0.93, b: 0.74, a: 1}
     - _Crest: {r: 0.72, g: 1, b: 22, a: 0}
     - _CrestCol: {r: 1, g: 0.78, b: 0.7, a: 1}
@@ -54,9 +54,9 @@ Material:
     - _Detail: {r: 1.15, g: 0.05, b: 0.7, a: 0.04}
     - _Detail2: {r: 14, g: -34, b: 0, a: 0}
     - _Disp: {r: 1, g: -9, b: -291, a: 250}
-    - _Foam: {r: 0.97999996, g: 0.89, b: 0.8399999, a: 1}
+    - _Foam: {r: 0.93, g: 0.72, b: 0.6, a: 1}
     - _FoamA: {r: 0.9, g: 0.8, b: 0.82, a: 0.12}
-    - _FoamMax: {r: 4, g: 8, b: 10, a: 20}
+    - _FoamMax: {r: 4, g: 8, b: 4, a: 6}
     - _FoamSurge: {r: 0.35, g: 11, b: 3, a: 7}
     - _FoamW: {r: 2, g: 6, b: 0.5, a: 1.8}
     - _Gerst: {r: 0.55, g: 1, b: 0, a: 2.5}
@@ -68,7 +68,7 @@ Material:
     - _Micro: {r: 0, g: 0.9, b: 0.35, a: 0.05}
     - _Ripple: {r: 0.42, g: 1.8, b: 0.3, a: 1.3}
     - _RippleCol: {r: 1, g: 0.84, b: 0.74, a: 1}
-    - _SceneRefl: {r: 1, g: 0.06, b: 0, a: 0}
+    - _SceneRefl: {r: 0.6, g: 0.06, b: 0, a: 0}
     - _ShallowCol: {r: 0.19999996, g: 0.5, b: 0.5, a: 1}
     - _Spec: {r: 1, g: 12, b: 1.4, a: 40}
     - _W0: {r: 8, g: 31, b: 0.32, a: 0}
