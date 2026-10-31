@@ -669,7 +669,42 @@ public static class ParcelBuild
     // 블록 = 길(T.Road)·축대에 막힌 땅·앞띠·비움 칸 덩어리. 기대 높이 E = 둘레 길 칸 높이의 역거리²(1/d⁴) 가중 평균.
     // 중앙값(땅 − E) ≤ -1 m 인 블록만: 땅이 E − min(0.6, 0.05 + 0.25 × 길까지 거리) 보다 낮은 곳을 그 높이까지 돋운다(깎지 않음 → 길 옆은 1:4 로 내려가 0.6 m 아래에서 평평).
     // 건너뜀: 맵 가장자리·범위 밖·바다(땅 < 0.6 m)에 닿는 블록, 도현 건물 발자국이 든 블록, TerraceBlock 집 블록(중심이 반경 60 m 안).
+    // 2147(D-228): 평평한 E 판 → 밋밋하다. 목표 높이를 둘 더한 것으로 바꿈:
+    //  ① S = 둘레 길 점에 맞춘 평면 + 평면에서 남은 것(길 높이 − 평면)의 역거리 평균 → 길에선 길 높이, 가운데는 평면 따라 기울어짐(큰 경사 방향 유지).
+    //  ② 원지형 작은 기복 = 원래 높이 − 24 m 창 평균(블록 안 칸만; 17 m 창은 블록 안 σ 0.47 m 로 눈에 안 띔 → 24 m), 블록 평균 빼고 ±0.8 m 로 부드럽게 자름(tanh). 큰 그릇(창보다 큰 것)은 빠지고 수 m~20 m 기복만 남음.
+    //     길에서 1.5 m 까진 0, 6.5 m 에서 다 더함(길 옆 비탈은 1935 그대로). 여전히 돋우기만 — 원래 땅이 더 높은 곳은 그대로 둔다.
     const float SinkMed = -1f, SinkTol = .6f, SinkUnder = .05f, SinkSlope = .25f, SinkTbR = 60f;
+    const float RelHalf = 12f, RelMax = .8f, RelIn = 1.5f, RelRamp = 5f;
+    static (float a, float b, float c) FitPlane(List<Vector3> pts)
+    {
+        double mx = 0, mz = 0, my = 0; foreach (var p in pts) { mx += p.x; mz += p.z; my += p.y; } int n = pts.Count; mx /= n; mz /= n; my /= n;
+        double sxx = 0, szz = 0, sxz = 0, sxy = 0, szy = 0;
+        foreach (var p in pts) { double dx = p.x - mx, dz = p.z - mz, dy = p.y - my; sxx += dx * dx; szz += dz * dz; sxz += dx * dz; sxy += dx * dy; szy += dz * dy; }
+        double det = sxx * szz - sxz * sxz; if (System.Math.Abs(det) < 1e-6) return ((float)my, 0, 0);
+        double b = (sxy * szz - szy * sxz) / det, c = (szy * sxx - sxy * sxz) / det;
+        return ((float)(my - b * mx - c * mz), (float)b, (float)c);
+    }
+    // 블록 칸마다 원지형 높이(y0)와 작은 기복(반환). 창 평균은 블록 칸만으로(합계표 2개: 높이 합·칸 수).
+    static float[] Relief(List<int> comp, System.Func<Vector2, float> terrY, out float[] y0)
+    {
+        int n = comp.Count; y0 = new float[n]; var det = new float[n];
+        int i0 = int.MaxValue, j0 = int.MaxValue, i1 = 0, j1 = 0; foreach (var c in comp) { int i = c % gw, j = c / gw; i0 = Mathf.Min(i0, i); j0 = Mathf.Min(j0, j); i1 = Mathf.Max(i1, i); j1 = Mathf.Max(j1, j); }
+        int W = i1 - i0 + 1, H = j1 - j0 + 1; var sy = new double[(W + 1) * (H + 1)]; var sn = new int[(W + 1) * (H + 1)];
+        for (int q = 0; q < n; q++) { y0[q] = terrY(P(comp[q])); if (float.IsNaN(y0[q])) continue; int k = (comp[q] / gw - j0 + 1) * (W + 1) + comp[q] % gw - i0 + 1; sy[k] = y0[q]; sn[k] = 1; }
+        for (int j = 1; j <= H; j++) for (int i = 1; i <= W; i++) { int k = j * (W + 1) + i; sy[k] += sy[k - 1] + sy[k - W - 1] - sy[k - W - 2]; sn[k] += sn[k - 1] + sn[k - W - 1] - sn[k - W - 2]; }
+        int r = Mathf.RoundToInt(RelHalf / C); double mean = 0; int cnt = 0;
+        for (int q = 0; q < n; q++)
+        {
+            if (float.IsNaN(y0[q])) continue; int i = comp[q] % gw - i0, j = comp[q] / gw - j0;
+            int a0 = Mathf.Max(0, i - r), a1 = Mathf.Min(W, i + r + 1), b0 = Mathf.Max(0, j - r), b1 = Mathf.Min(H, j + r + 1);
+            int K(int a, int b) => b * (W + 1) + a;
+            double s = sy[K(a1, b1)] - sy[K(a0, b1)] - sy[K(a1, b0)] + sy[K(a0, b0)]; int m = sn[K(a1, b1)] - sn[K(a0, b1)] - sn[K(a1, b0)] + sn[K(a0, b0)];
+            det[q] = y0[q] - (float)(s / Mathf.Max(1, m)); mean += det[q]; cnt++;
+        }
+        mean /= Mathf.Max(1, cnt);
+        for (int q = 0; q < n; q++) det[q] = float.IsNaN(y0[q]) ? 0 : RelMax * (float)System.Math.Tanh((det[q] - mean) / RelMax);
+        return det;
+    }
     static string FillSunk(Transform terr, ref Mesh baseMesh, out Mesh filled)
     {
         filled = null; int N = type.Length; var tc = terr.GetComponent<MeshCollider>();
@@ -700,13 +735,19 @@ public static class ParcelBuild
             nSunk++; var ctr = Mean(comp); string tg = $"({ctr.x:F0},{ctr.y:F0}) {area:F0}㎡ 중앙 {med:F1} m";
             if (comp.Any(c => foot[c])) { skip.Add(tg + " 도현 건물 있음"); continue; }
             if ((ctr - tbC).magnitude < SinkTbR) { skip.Add(tg + " 계단 땅"); continue; }
-            float bmax = 0;
-            foreach (var c in comp)
+            // 2147(D-228 「메운 땅이 밋밋함」): 목표 = 기울어진 면 S + 원지형 작은 기복. 판정(E)은 그대로.
+            var (pa, pb, pc) = FitPlane(rs); var res = rs.Select(r => r.y - (pa + pb * r.x + pc * r.z)).ToArray();
+            float S(Vector2 p) { double ws = 0, wy = 0; for (int q = 0; q < rs.Count; q++) { float dx = rs[q].x - p.x, dz = rs[q].z - p.y, d2 = dx * dx + dz * dz + .25f; double w = 1.0 / (d2 * d2); ws += w; wy += w * res[q]; } return pa + pb * p.x + pc * p.y + (float)(wy / ws); }
+            var det = Relief(comp, TerrY, out var y0);
+            float bmax = 0; double dsum = 0; int dn = 0;
+            for (int q = 0; q < comp.Count; q++)
             {
-                var p = P(c); float y = TerrY(p); if (float.IsNaN(y)) continue;
-                float d = E(p) - Mathf.Min(SinkTol, SinkUnder + SinkSlope * dist[c]) - y; if (d > 0) { del[c] = d; bmax = Mathf.Max(bmax, d); }
+                int c = comp[q]; var p = P(c); float y = y0[q]; if (float.IsNaN(y)) continue;
+                float wd = Mathf.Clamp01((dist[c] - RelIn) / RelRamp);
+                float d = S(p) - Mathf.Min(SinkTol, SinkUnder + SinkSlope * dist[c]) + wd * det[q] - y; if (d > 0) { del[c] = d; bmax = Mathf.Max(bmax, d); }
+                if (wd > .99f) { dsum += det[q] * det[q]; dn++; }
             }
-            maxD = Mathf.Max(maxD, bmax); done.Add(tg + $" 돋움 최대 {bmax:F1} m");
+            maxD = Mathf.Max(maxD, bmax); done.Add(tg + $" 돋움 최대 {bmax:F1} m · 기울기 {100 * Mathf.Sqrt(pb * pb + pc * pc):F0}% · 기복 σ {System.Math.Sqrt(dsum / Mathf.Max(1, dn)):F2} m");
         }
         string note = $"꺼진 블록: 검사 {nChk} · 꺼짐 {nSunk} · 메움 {done.Count}" + (done.Count > 0 ? " [" + string.Join("; ", done) + "]" : "") + (skip.Count > 0 ? " · 건너뜀 [" + string.Join("; ", skip) + "]" : "");
         if (done.Count == 0) return note;
