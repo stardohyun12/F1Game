@@ -1,0 +1,34 @@
+{
+ "s1A": {
+  "ui_px_pct": 0.06,
+  "colors_added": 4
+ },
+ "s1B": {
+  "ui_px_pct": 0.88,
+  "colors_added": 7
+ },
+ "s2A": {
+  "ui_px_pct": 0.1,
+  "colors_added": 3
+ },
+ "s2B": {
+  "ui_px_pct": 0.32,
+  "colors_added": 3
+ },
+ "s3A": {
+  "ui_px_pct": 1.65,
+  "colors_added": 3
+ },
+ "s3B": {
+  "ui_px_pct": 10.03,
+  "colors_added": 8
+ },
+ "s4A": {
+  "ui_px_pct": 0.07,
+  "colors_added": 3
+ },
+ "s4B": {
+  "ui_px_pct": 0.39,
+  "colors_added": 5
+ }
+}

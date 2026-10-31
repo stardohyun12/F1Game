@@ -1,0 +1,7 @@
+{"name":"talk_try","OnFoot_GarageBoss:1.9":[321,133,2.9],"Race:0.8":[-2266,1540,0.2]}
+{"name":"walk_try","Race:0.6":[320,196,2.7]}
+{"name":"s2_walk","Race:0.6":[320,203,2.8],"Race:1.0":[320,152,2.7]}
+{"name":"drive_try","Race:0.6":[320,250,5.9]}
+{"name":"drive_try2","Race:0.6":[338,250,5.9],"Race:1.2":[338,214,5.8]}
+{"name":"bench_try","label":[515,331,0.7],"item_eggs":[306,209,0.8],"bub3":[500,170,0.9]}
+{"name":"s4_bench","label":[450,227,1.0],"item_eggs":[310,155,1.1],"bub3":[449,139,1.3],"box_floor":[320,180,1.2]}
