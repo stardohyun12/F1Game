@@ -92,7 +92,8 @@ public static class ParcelBuild
 
         // 1. 격자 분류
         string gnote = Classify(top, tbl);
-        Tq("classify"); mix = LoadMix(); dOff = new float[type.Length];
+        Tq("classify"); var fnote = FillSunk(terr, ref baseMesh, out var filled); gnote += " · " + fnote; Tq("fill");
+        mix = LoadMix(); dOff = new float[type.Length];
         // 2. 블록 → 분할
         var land = new List<int>(); for (int i = 0; i < type.Length; i++) if (type[i] == T.Land) land.Add(i);
         var blocks = Comps(land);
@@ -110,6 +111,7 @@ public static class ParcelBuild
         // 4. 지형 패드 + 축대 → 새 땅으로 바닥·밑면 다시 읽기
         var mats = Materials();
         var tnote = Pads(terr, baseMesh, masses, root.transform, out var walls);
+        if (filled != null) Object.DestroyImmediate(filled);   // 메운 땅은 패드 결과(parcels 에셋)에 들어갔다
         Physics.SyncTransforms(); Reseat(masses);
         double tPad = sw.Elapsed.TotalSeconds;
         // 5. 씬에 놓기 + 빈 필지 나무
@@ -661,6 +663,68 @@ public static class ParcelBuild
         int s = Mathf.Abs(m.gz) >= Mathf.Abs(m.gx) ? (m.gz > 0 ? 1 : 0) : (m.gx > 0 ? 2 : 3);
         if (s == 2 && m.attL || s == 3 && m.attR) s = 0;
         m.door = true; m.doorSide = s; m.doorBack = s == 1;
+    }
+    // ── 꺼진 블록 메우기(1935, D-222 「지형이 내려앉은 곳」) ──────────
+    // 원지형(Mesh_TownV6_Terrain)부터 그릇 모양인 땅이 길에 둘러싸이면 블록 전체가 둘레 길보다 수 m 낮은 구덩이가 됐다(예: (115,23) 가운데 5.2 m, 둘레 길 14~30 m).
+    // 블록 = 길(T.Road)·축대에 막힌 땅·앞띠·비움 칸 덩어리. 기대 높이 E = 둘레 길 칸 높이의 역거리²(1/d⁴) 가중 평균.
+    // 중앙값(땅 − E) ≤ -1 m 인 블록만: 땅이 E − min(0.6, 0.05 + 0.25 × 길까지 거리) 보다 낮은 곳을 그 높이까지 돋운다(깎지 않음 → 길 옆은 1:4 로 내려가 0.6 m 아래에서 평평).
+    // 건너뜀: 맵 가장자리·범위 밖·바다(땅 < 0.6 m)에 닿는 블록, 도현 건물 발자국이 든 블록, TerraceBlock 집 블록(중심이 반경 60 m 안).
+    const float SinkMed = -1f, SinkTol = .6f, SinkUnder = .05f, SinkSlope = .25f, SinkTbR = 60f;
+    static string FillSunk(Transform terr, ref Mesh baseMesh, out Mesh filled)
+    {
+        filled = null; int N = type.Length; var tc = terr.GetComponent<MeshCollider>();
+        float TerrY(Vector2 p) => tc.Raycast(new Ray(new Vector3(p.x, 400, p.y), Vector3.down), out var h, 800) ? h.point.y : float.NaN;
+        var cells = new List<int>(); for (int k = 0; k < N; k++) if (type[k] == T.Land || type[k] == T.Strip || type[k] == T.Excl) cells.Add(k);
+        var del = new float[N]; int nChk = 0, nSunk = 0; var skip = new List<string>(); var done = new List<string>(); float maxD = 0;
+        var tbC = new Vector2(TerraceBlock.HouseCenter.x, TerraceBlock.HouseCenter.z);
+        foreach (var comp in Comps(cells))
+        {
+            float area = comp.Count * C * C; if (area < 150 || area > 40000) continue;
+            var ring = new HashSet<int>(); bool edge = false;
+            foreach (var c in comp)
+            {
+                int i = c % gw, j = c / gw; if (i == 0 || j == 0 || i == gw - 1 || j == gh - 1) { edge = true; break; }
+                foreach (var q in new[] { c - 1, c + 1, c - gw, c + gw }) { if (type[q] == T.Out) edge = true; else if (type[q] == T.Road) ring.Add(q); }
+                if (edge) break;
+            }
+            if (edge || ring.Count < 40) continue;
+            nChk++;
+            var rl = ring.ToList(); int st = Mathf.Max(1, rl.Count / 300); var rs = new List<Vector3>();
+            for (int q = 0; q < rl.Count; q += st) { var p = P(rl[q]); float y = TopY(p); if (!float.IsNaN(y)) rs.Add(new Vector3(p.x, y, p.y)); }
+            if (rs.Count < 10) continue;
+            float E(Vector2 p) { double ws = 0, wy = 0; foreach (var r in rs) { float dx = r.x - p.x, dz = r.z - p.y, d2 = dx * dx + dz * dz + .25f; double w = 1.0 / (d2 * d2); ws += w; wy += w * r.y; } return (float)(wy / ws); }
+            var defs = new List<float>(); int cs = Mathf.Max(1, comp.Count / 2000); bool sea = false;
+            for (int q = 0; q < comp.Count; q += cs) { var p = P(comp[q]); float y = TerrY(p); if (float.IsNaN(y) || y < .6f) { sea = true; break; } defs.Add(y - E(p)); }
+            if (sea || defs.Count == 0) continue;
+            float med = Median(defs); if (med > SinkMed) continue;
+            nSunk++; var ctr = Mean(comp); string tg = $"({ctr.x:F0},{ctr.y:F0}) {area:F0}㎡ 중앙 {med:F1} m";
+            if (comp.Any(c => foot[c])) { skip.Add(tg + " 도현 건물 있음"); continue; }
+            if ((ctr - tbC).magnitude < SinkTbR) { skip.Add(tg + " 계단 땅"); continue; }
+            float bmax = 0;
+            foreach (var c in comp)
+            {
+                var p = P(c); float y = TerrY(p); if (float.IsNaN(y)) continue;
+                float d = E(p) - Mathf.Min(SinkTol, SinkUnder + SinkSlope * dist[c]) - y; if (d > 0) { del[c] = d; bmax = Mathf.Max(bmax, d); }
+            }
+            maxD = Mathf.Max(maxD, bmax); done.Add(tg + $" 돋움 최대 {bmax:F1} m");
+        }
+        string note = $"꺼진 블록: 검사 {nChk} · 꺼짐 {nSunk} · 메움 {done.Count}" + (done.Count > 0 ? " [" + string.Join("; ", done) + "]" : "") + (skip.Count > 0 ? " · 건너뜀 [" + string.Join("; ", skip) + "]" : "");
+        if (done.Count == 0) return note;
+        // 0.5 m 칸 돋움 → 지형 정점에 이중선형으로 더함(Pads 와 같은 방식, 정점은 위로만)
+        float Bil(float x, float z)
+        {
+            float fx = (x - g0.x) / C - .5f, fz = (z - g0.y) / C - .5f; int i = Mathf.FloorToInt(fx), j = Mathf.FloorToInt(fz); float u = fx - i, v = fz - j;
+            float V(int a, int b) => a < 0 || b < 0 || a >= gw || b >= gh ? 0 : del[b * gw + a];
+            return Mathf.Lerp(Mathf.Lerp(V(i, j), V(i + 1, j), u), Mathf.Lerp(V(i, j + 1), V(i + 1, j + 1), u), v);
+        }
+        var vs = baseMesh.vertices; int nv = vs.Length, moved = 0; var chg = new bool[nv];
+        for (int i = 0; i < nv; i++) { var w = terr.TransformPoint(vs[i]); float d = Bil(w.x, w.z); if (d < 1e-4f) continue; w.y += d; vs[i] = terr.InverseTransformPoint(w); chg[i] = true; moved++; }
+        var mesh = Object.Instantiate(baseMesh); mesh.name = "Mesh_TownV6_Terrain_fill"; mesh.SetVertices(vs);
+        var tris = baseMesh.triangles; var mark = new bool[nv];
+        for (int i = 0; i < tris.Length; i += 3) if (chg[tris[i]] || chg[tris[i + 1]] || chg[tris[i + 2]]) mark[tris[i]] = mark[tris[i + 1]] = mark[tris[i + 2]] = true;
+        var bn = baseMesh.normals; mesh.RecalculateNormals(); var nn = mesh.normals; for (int i = 0; i < nv; i++) if (!mark[i]) nn[i] = bn[i]; mesh.normals = nn; mesh.RecalculateBounds();
+        SetTerrain(terr, mesh); baseMesh = mesh; filled = mesh;
+        return note + $" · 정점 {moved} 돋움(최대 {maxD:F2} m)";
     }
     // ── 지형 패드(2판) ─────────────────────────────────────────
     // B·C 덩어리: 바닥 밑은 깎기만(최대 0.65), 앞 1.5 m · 옆 0.8 m(아래 단 뒷문이면 뒤 1.5 m) 마당은 바닥 - 0.15 로 깎기·돋우기(각 0.65 까지).
