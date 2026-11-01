@@ -20,6 +20,14 @@ public class OnFootCamera : MonoBehaviour
     [Tooltip("늦춰 따라가는 높이가 실제 눈높이에서 벌어질 수 있는 최대(m). 이보다 크면 붙인다(순간이동·낙하).")]
     [SerializeField] float maxHeightLag = 0.25f;
 
+    [Header("착지 눌림 (D-248 ②)")]
+    [Tooltip("착지 때 눈이 내려갔다 올라오는 깊이(m) — 약한 착지 ~ 센 착지.")]
+    [SerializeField] float landDipMin = 0.02f, landDipMax = 0.04f;
+    [Tooltip("눌렸다 올라오는 데 걸리는 시간(초).")]
+    [SerializeField] float landDipTime = 0.15f;
+    [Tooltip("이 낙하 속도(m/s)에서 landDipMin, landDipMax 는 landDipFast 에서.")]
+    [SerializeField] float landDipSlow = 2.5f, landDipFast = 8f;
+
     [Header("검증 봇 입력(마우스 대신)")]
     public bool simActive;
 
@@ -35,6 +43,10 @@ public class OnFootCamera : MonoBehaviour
     Camera cam;
     float eyeY, eyeVel, savedNear;
     bool hasEye;
+    OnFootPlayer body;
+    float dipAmp, dipT0 = -10f;
+    /// <summary>지금 착지 눌림으로 눈이 내려가 있는 양(m, 0 이상) — 봇·QA 용.</summary>
+    public float LandDip { get; private set; }
 
     void Awake() { cam = GetComponent<Camera>(); }
 
@@ -45,6 +57,9 @@ public class OnFootCamera : MonoBehaviour
         Pitch = 0f;
         if (target != null) Yaw = target.eulerAngles.y;
         hasEye = false;
+        dipT0 = -10f; LandDip = 0f;
+        body = target != null ? target.GetComponent<OnFootPlayer>() : null;
+        if (body != null) body.Landed += OnLanded;
         SetBodyVisible(false);
         if (!simActive) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
     }
@@ -52,6 +67,8 @@ public class OnFootCamera : MonoBehaviour
     void OnDisable()
     {
         if (cam != null) cam.nearClipPlane = savedNear;
+        if (body != null) body.Landed -= OnLanded;
+        body = null;
         SetBodyVisible(true);
         Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
     }
@@ -66,6 +83,12 @@ public class OnFootCamera : MonoBehaviour
         if (d.sqrMagnitude < 1e-6f) return;
         Yaw = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
         Pitch = Mathf.Clamp(-Mathf.Atan2(d.y, new Vector2(d.x, d.z).magnitude) * Mathf.Rad2Deg, minPitch, maxPitch);
+    }
+
+    void OnLanded(float fallSpeed)
+    {
+        dipAmp = Mathf.Lerp(landDipMin, landDipMax, Mathf.InverseLerp(landDipSlow, landDipFast, fallSpeed));
+        dipT0 = Time.time;
     }
 
     Vector3 EyeTarget() => target.position + Vector3.up * eyeHeight;
@@ -83,13 +106,17 @@ public class OnFootCamera : MonoBehaviour
 
         // 수평은 발에 딱 붙이고 높이만 늦춘다 — 계단 단마다 0.165 m 씩 툭툭 올라가는 걸 부드럽게.
         Vector3 eye = EyeTarget();
-        if (!hasEye || heightSmoothTime <= 0f || Mathf.Abs(eye.y - eyeY) > 1f) { eyeY = eye.y; eyeVel = 0f; hasEye = true; }
+        // 점프·낙하 중엔 늦추지 않는다 — 늦추면 0.45 m 점프가 0.2 m 로 보인다.
+        if (!hasEye || heightSmoothTime <= 0f || Mathf.Abs(eye.y - eyeY) > 1f || (body != null && body.Airborne)) { eyeY = eye.y; eyeVel = 0f; hasEye = true; }
         else
         {
             eyeY = Mathf.SmoothDamp(eyeY, eye.y, ref eyeVel, heightSmoothTime);
             eyeY = Mathf.Clamp(eyeY, eye.y - maxHeightLag, eye.y + maxHeightLag);
         }
-        transform.SetPositionAndRotation(new Vector3(eye.x, eyeY, eye.z), Quaternion.Euler(Pitch, Yaw, 0f));
+        // 착지 눌림: 눈 높이에서 sin 반 주기만큼 뺀다(내려갔다 올라옴). 높이 따라가기와 따로라 계단 걷기엔 영향 없음.
+        float dt = Time.time - dipT0;
+        LandDip = dt >= 0f && dt < landDipTime ? dipAmp * Mathf.Sin(dt / landDipTime * Mathf.PI) : 0f;
+        transform.SetPositionAndRotation(new Vector3(eye.x, eyeY - LandDip, eye.z), Quaternion.Euler(Pitch, Yaw, 0f));
     }
 
     // 1인칭 = 몸이 화면을 가린다 → 걷는 동안 몸은 그림자만 그린다.

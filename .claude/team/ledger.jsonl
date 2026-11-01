@@ -27,3 +27,4 @@
 {"stamp": "20261102-0110", "role": "programmer", "title": "OPUS", "model": "opus", "cost": 5.1251, "ok": true, "result": ""}
 {"stamp": "20261102-0144", "role": "programmer", "title": "\"Display 1 No cameras rendering\" 안내 없애기 (D-245)", "model": "cfg", "cost": 1.5661, "ok": true, "result": ""}
 {"stamp": "20261102-0247", "role": "programmer", "title": "디버그 창 — 장소 옮기기·낚시·시간대 바로 시험 (D-248 ①)", "model": "cfg", "cost": 3.7953, "ok": true, "result": ""}
+{"stamp": "20261102-0315", "role": "programmer", "title": "기본 점프 (D-248 ②)", "model": "cfg", "cost": 3.0883, "ok": true, "result": ""}

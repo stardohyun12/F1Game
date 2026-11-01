@@ -1,0 +1,45 @@
+flat     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+flat     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+flat     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+flat     walk  apex 0.427 m  air 0.467 s  horiz 1.45 m  landDy 0.16  camDip 2.0 cm  ok=1
+flat     walk  apex 0.427 m  air 0.467 s  horiz 1.45 m  landDy 0.16  camDip 2.0 cm  ok=1
+flat     walk  apex 0.427 m  air 0.467 s  horiz 1.45 m  landDy 0.16  camDip 2.0 cm  ok=1
+slope    still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+slope    still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+slope    still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+slope    walk  apex 0.427 m  air 0.567 s  horiz 1.75 m  landDy -0.15  camDip 2.4 cm  ok=1
+slope    walk  apex 0.427 m  air 0.567 s  horiz 1.75 m  landDy -0.15  camDip 2.4 cm  ok=1
+slope    walk  apex 0.427 m  air 0.567 s  horiz 1.75 m  landDy -0.15  camDip 2.4 cm  ok=1
+stairs   still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+stairs   still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+stairs   still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+stairs   walk  apex 0.427 m  air 0.833 s  horiz 2.55 m  landDy -1.58  camDip 3.5 cm  ok=1
+stairs   walk  apex 0.427 m  air 0.833 s  horiz 2.55 m  landDy -1.61  camDip 3.5 cm  ok=1
+stairs   walk  apex 0.427 m  air 0.833 s  horiz 2.55 m  landDy -1.61  camDip 3.5 cm  ok=1
+pier     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+pier     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+pier     still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+pier     walk  apex 0.330 m  air 0.317 s  horiz 0.78 m  landDy 0.00  camDip 2.0 cm  ok=1
+pier     walk  apex 0.358 m  air 0.383 s  horiz 0.87 m  landDy 0.00  camDip 2.0 cm  ok=1
+pier     walk  apex 0.330 m  air 0.317 s  horiz 0.78 m  landDy 0.00  camDip 2.0 cm  ok=1
+pier_end still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+garageyard still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+garageyard walk  apex 0.427 m  air 0.517 s  horiz 1.60 m  landDy 0.00  camDip 2.2 cm  ok=1
+rand2_GARAGE_shell still apex 0.427 m  air 0.517 s  horiz 0.00 m  landDy 0.00  camDip 2.2 cm  ok=1
+rand2_GARAGE_shell walk  apex 0.427 m  air 0.533 s  horiz 1.65 m  landDy 0.00  camDip 2.3 cm  ok=1
+PASS 연속점프 내리막 slope — 점프 10/10회 · 끼임 0 · 점프당 최소 수평 1.60 m · 최대 프레임당 y변화 0.08 m · 점프 후 최대 상승(이륙점 기준) 0.38 m · 이동 15.8 m, 높이차 -1.51 · 5.3s
+PASS 연속점프 내리막 stairs — 점프 10/10회 · 끼임 0 · 점프당 최소 수평 1.60 m · 최대 프레임당 y변화 0.11 m · 점프 후 최대 상승(이륙점 기준) 0.38 m · 이동 17.3 m, 높이차 -4.33 · 5.8s
+문 이동: (187.9, 28.5, -62.6) 땅 RUG_01 y=28.48 카트 그대로
+PASS 문턱 방문 — 통과 · 점프 6회 · 3.1s · 시작 대비 끝 2.84/2.70 m · 최고 y 상승 0.43 · 끼임 False
+문 이동: (184.6, 25.3, -61.8) 땅 HOUSE_shell y=25.27 카트 그대로
+PASS 문턱 현관문 — 통과 · 점프 3회 · 1.3s · 시작 대비 끝 3.85/3.80 m · 최고 y 상승 0.43 · 끼임 False
+PASS 코요테 0.05s 뒤 Space — 뜬 뒤 0.05s 에 누름 → 점프 함 (기대 함) · 뜬 시각 확인
+PASS 코요테 0.20s 뒤 Space — 뜬 뒤 0.20s 에 누름 → 점프 안 함 (기대 안 함) · 뜬 시각 확인
+PASS 미리 누름 착지 0.06s 전 — 2번째 점프 함 (기대 함) · 체공 0.517s
+PASS 미리 누름 착지 0.25s 전 — 2번째 점프 안 함 (기대 안 함) · 체공 0.517s
+PASS 대화 중 점프 불가 — ForceTalk=True InTalk=True 점프 0회 y변화 0.000
+PASS 대화 뒤 유령 점프 없음 — 점프 0회
+PASS 낚시 앉은 상태 점프 불가 — 앉음 FishingSpot State=Seated 점프 0회
+PASS 일어난 뒤 유령 점프 없음 — 점프 0회
+PASS 카트 안 점프 불가 — 탐 State→InCart=True 점프 0회
+PASS 내린 뒤 유령 점프 없음 — 내림 State=OnFoot 점프 0회
