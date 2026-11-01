@@ -1,0 +1,58 @@
+{
+ "rows": 1870,
+ "transitions": [
+  {
+   "t": 8.7,
+   "from": 1.0,
+   "to": 0.0,
+   "sec": 3.8,
+   "pos": [
+    184.5,
+    26.9,
+    -59.0
+   ],
+   "windDb": [
+    -16.6,
+    -2.1
+   ],
+   "cutoff": [
+    800.0,
+    22000.0
+   ],
+   "ear": [
+    -55.2,
+    -44.6
+   ]
+  }
+ ],
+ "indoor_segments": [
+  {
+   "t0": 0.1,
+   "start": [
+    187.1,
+    30.1,
+    -62.7
+   ],
+   "t1": 11.8,
+   "end": [
+    184.6,
+    26.9,
+    -64.5
+   ]
+  }
+ ],
+ "drive": {
+  "rows": 600,
+  "speed_med": 0.27,
+  "windDb_med": -2.0,
+  "waveDb_med": -23.6,
+  "ear_med": -14.5,
+  "windDb_range": [
+   -3.4,
+   1.1
+  ],
+  "indoor_max": 0.0,
+  "cutoff_min": 22000.0
+ },
+ "onfoot_outdoor_ear_med": -15.4
+}

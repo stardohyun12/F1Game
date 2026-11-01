@@ -168,6 +168,8 @@ public class DebugWindow : MonoBehaviour
         GUILayout.Label(StateLine(), sText);
         var l = SunsetLook.Find();
         GUILayout.Label($"시간대 dusk={(l != null ? l.dusk.ToString("F2") : "-")}   배속 {Time.timeScale:F1}×", sText);
+        var amb = AmbienceZones.Active;   // D-248 ③ 지금 자리의 소리 구역
+        if (amb != null) GUILayout.Label($"소리: {amb.Label}  바람 {amb.WindDb:F0}dB  파도 {amb.WaveDb:F0}dB  먹먹 {amb.CutoffHz:F0}Hz  바다 {Mathf.Min(amb.SeaDist, 999f):F0}m", sText);
         GUILayout.Space(4 * s);
 
         GUILayout.Label("장소 (걷기 상태로 이동 · 카트는 근처에)", sLabel);

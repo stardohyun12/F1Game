@@ -37,6 +37,9 @@ public static class DebugPlaces
         new Place("항구",             new Vector3(272.2f, 1.3f, -234.7f), 180f, CarRule.Near,     "동쪽 부두 갑판(Pier 272,-235), 바다를 봄"),
         new Place("언덕 꺼짐(sink_1031)", new Vector3(110.0f, 18.7f, 30.0f), 140f, CarRule.Near,   "Cam_FB_sink 가 보는 점(120,19,18)을 내려다보는 자리"),
         new Place("큰길",             new Vector3(175.2f, 18.0f, -75.2f), 90f,  CarRule.Near,     "main 도로 중심선 점(175,-75)"),
+        // D-248 ③ 환경음 확인용 — 지붕·벽 판정이 갈리는 자리
+        new Place("정비소 안",         new Vector3(216.0f, 26.7f, -55.5f), 90f,  CarRule.CartSpot, "차고 가운데(벽까지 5~8 m) — 바람·파도가 먹먹해야 함"),
+        new Place("언덕 꼭대기",       new Vector3(244.0f, 64.8f, 118.0f), 200f, CarRule.Near,     "마을 둘레 지형 최고점(y 64.8, 레이 격자 4 m) — 바람이 가장 큼"),
     };
 }
 #endif

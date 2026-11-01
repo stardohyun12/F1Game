@@ -1,0 +1,5 @@
+[
+{"name":"예전_방","ear":[187.1,30.1,-62.7],"label":"바닷가","roof":0,"walls":0.00,"indoor":0.00,"alley":0.00,"open":1.00,"seaDist":12.6,"speed":0.00,"cmd":{"windDb":-3.9,"waveDb":-6.4,"gullDb":0.0,"cutoffHz":22000,"windVol":0.3199,"waveVol":0.5500,"gullVol":1.000 },"earDbFS":{"wind":-40.5,"waves":-52.0,"gull":-32.7,"all":-35.0 },"wav":"01_예전_방.wav"},
+{"name":"예전_집 앞 골목","ear":[184.1,26.0,-66.5],"label":"바닷가","roof":0,"walls":0.00,"indoor":0.00,"alley":0.00,"open":1.00,"seaDist":12.6,"speed":0.00,"cmd":{"windDb":-3.9,"waveDb":-6.4,"gullDb":0.0,"cutoffHz":22000,"windVol":0.2852,"waveVol":0.5500,"gullVol":1.000 },"earDbFS":{"wind":-38.1,"waves":-51.9,"gull":-32.5,"all":-35.5 },"wav":"02_예전_집_앞_골목.wav"},
+{"name":"예전_부두 끝","ear":[-9.0,2.9,-289.9],"label":"바닷가","roof":0,"walls":0.00,"indoor":0.00,"alley":0.00,"open":1.00,"seaDist":12.6,"speed":0.00,"cmd":{"windDb":-3.9,"waveDb":-6.4,"gullDb":0.0,"cutoffHz":22000,"windVol":0.2106,"waveVol":0.5500,"gullVol":1.000 },"earDbFS":{"wind":-37.4,"waves":-32.4,"gull":-32.2,"all":-30.0 },"wav":"03_예전_부두_끝.wav"}
+]

@@ -13,6 +13,8 @@ public class WindAmbience : MonoBehaviour
     public bool ignoreRun;
     [Range(0f, 1f), Tooltip("D-227: 돌풍 — 음량을 십몇 초 주기로 천천히 오르내림(0 = 일정).")]
     public float gust;
+    /// <summary>D-248 ③: AmbienceZones 가 장소(실내·골목·언덕·카트)로 정한 배율(loudVolume 기준). 음수면 예전처럼 높이로만.</summary>
+    [System.NonSerialized] public float zoneGain = -1f;
     AudioSource src;
     Transform listener;
 
@@ -36,6 +38,8 @@ public class WindAmbience : MonoBehaviour
         float k = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(lowY, highY, listener.position.y));
         // D-227: 녹음 바람(amb_wind_01)은 음량이 거의 일정 → gust 만큼 천천히 흔든다(0 = 예전 그대로)
         float g = gust > 0f ? 1f - gust + gust * Mathf.PerlinNoise(Time.time * 0.11f, 0.37f) * 1.6f : 1f;
+        // 구역 값은 AmbienceZones 가 이미 0.7초에 걸쳐 섞어 주므로 바로 따른다(여기서 또 늦추면 문을 지나도 1초 넘게 끌림)
+        if (zoneGain >= 0f) { src.volume = loudVolume * zoneGain * g; return; }
         src.volume = Mathf.MoveTowards(src.volume, Mathf.Lerp(quietVolume, loudVolume, k) * g, Time.deltaTime * 0.2f);
     }
 

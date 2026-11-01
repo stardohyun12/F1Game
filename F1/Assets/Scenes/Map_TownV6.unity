@@ -264658,6 +264658,7 @@ GameObject:
   - component: {fileID: 494830544}
   - component: {fileID: 494830543}
   - component: {fileID: 494830546}
+  - component: {fileID: 494830547}
   m_Layer: 0
   m_Name: Sunset_D227
   m_TagString: Untagged
@@ -264898,6 +264899,38 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   clipOffset: 0.05
+--- !u!114 &494830547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494830542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df5ffd08806e7c43a451eaaac8a0a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::AmbienceZones
+  wind: {fileID: 1168417143}
+  coast: {fileID: 494830543}
+  seaLevel: 0
+  indoorDb: -15
+  indoorCutoff: 800
+  wallReach: 9
+  windLowY: 2
+  windHighY: 40
+  lowDb: -6
+  alleyReach: 14
+  alleyDb: -4
+  openReach: 30
+  openDb: 2
+  waveVolume: 0.6
+  waveNearDist: 6
+  waveFarDist: 220
+  seaGridStep: 5
+  speedWindDb: 3
+  blendTime: 0.7
+  probeInterval: 0.1
 --- !u!1 &495114062
 GameObject:
   m_ObjectHideFlags: 0
@@ -642479,6 +642512,12 @@ MonoBehaviour:
   turnSpeedDeg: 720
   gravity: 20
   groundSnap: 0.35
+  jumpSpeed: 3.3
+  jumpGravity: 12
+  coyoteTime: 0.1
+  jumpBuffer: 0.1
+  airAccel: 4
+  minLandAir: 0.12
   simActive: 0
   simMove: {x: 0, y: 0}
   simRun: 0

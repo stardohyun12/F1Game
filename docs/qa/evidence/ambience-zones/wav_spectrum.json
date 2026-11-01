@@ -1,0 +1,93 @@
+[
+ {
+  "wav": "before/01_예전_방.wav",
+  "sec": 4.99,
+  "dbfs": -36.3,
+  "pct_above_1k": 8.8,
+  "pct_above_3k": 0.34
+ },
+ {
+  "wav": "before/02_예전_집_앞_골목.wav",
+  "sec": 5.01,
+  "dbfs": -36.4,
+  "pct_above_1k": 21.2,
+  "pct_above_3k": 0.52
+ },
+ {
+  "wav": "before/03_예전_부두_끝.wav",
+  "sec": 5.01,
+  "dbfs": -30.8,
+  "pct_above_1k": 26.3,
+  "pct_above_3k": 3.62
+ },
+ {
+  "wav": "01_방.wav",
+  "sec": 5.01,
+  "dbfs": -53.0,
+  "pct_above_1k": 1.7,
+  "pct_above_3k": 0.0
+ },
+ {
+  "wav": "02_정비소_안.wav",
+  "sec": 5.01,
+  "dbfs": -51.8,
+  "pct_above_1k": 0.9,
+  "pct_above_3k": 0.0
+ },
+ {
+  "wav": "03_집_앞_골목.wav",
+  "sec": 5.01,
+  "dbfs": -36.3,
+  "pct_above_1k": 17.2,
+  "pct_above_3k": 0.92
+ },
+ {
+  "wav": "04_언덕_꼭대기.wav",
+  "sec": 5.4,
+  "dbfs": -32.5,
+  "pct_above_1k": 7.5,
+  "pct_above_3k": 0.27
+ },
+ {
+  "wav": "05_언덕_꺼짐_sink_.wav",
+  "sec": 5.01,
+  "dbfs": -34.4,
+  "pct_above_1k": 13.9,
+  "pct_above_3k": 0.45
+ },
+ {
+  "wav": "06_부두_끝.wav",
+  "sec": 4.99,
+  "dbfs": -22.0,
+  "pct_above_1k": 35.7,
+  "pct_above_3k": 7.41
+ },
+ {
+  "wav": "07_항구_새_자리_.wav",
+  "sec": 5.01,
+  "dbfs": -25.0,
+  "pct_above_1k": 33.5,
+  "pct_above_3k": 5.62
+ },
+ {
+  "wav": "08_큰길.wav",
+  "sec": 4.99,
+  "dbfs": -36.6,
+  "pct_above_1k": 24.8,
+  "pct_above_3k": 0.64
+ },
+ {
+  "wav": "09_찻집_앞.wav",
+  "sec": 5.01,
+  "dbfs": -31.2,
+  "pct_above_1k": 32.0,
+  "pct_above_3k": 4.97
+ },
+ {
+  "wav": "10_카트주행.wav",
+  "sec": 5.01,
+  "dbfs": -14.9,
+  "pct_above_1k": 30.6,
+  "pct_above_3k": 6.21
+ }
+]
