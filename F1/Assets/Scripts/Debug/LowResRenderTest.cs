@@ -28,6 +28,7 @@ public class LowResRenderTest : MonoBehaviour
     Camera cam;
     RenderTexture rt;
     GameObject canvasGO;
+    GameObject displayCamGO;
     RawImage image;
     int builtW, builtH, builtAA;
     Material builtMat;
@@ -50,13 +51,34 @@ public class LowResRenderTest : MonoBehaviour
         r.anchorMin = Vector2.zero; r.anchorMax = Vector2.one; r.offsetMin = r.offsetMax = Vector2.zero;
         image = imgGO.AddComponent<RawImage>();
         image.raycastTarget = false;
+        MakeDisplayCamera();
         Rebuild();
+    }
+
+    /// <summary>
+    /// D-245: 메인 카메라는 RT 로만 그려서 Display 1 을 직접 그리는 카메라가 0개가 된다 → Game 뷰에 "Display 1 / No cameras rendering" 안내가 뜬다.
+    /// 아무것도 안 그리는 빈 카메라(cullingMask 0·검정 클리어·가장 낮은 depth·후처리 없음)를 Display 1 에 하나 둬서 안내를 없앤다. 화면 내용은 오버레이 캔버스가 그대로 덮는다.
+    /// </summary>
+    void MakeDisplayCamera()
+    {
+        displayCamGO = new GameObject("LowResRenderTest_DisplayCam");
+        displayCamGO.transform.SetParent(canvasGO.transform, false);
+        var dc = displayCamGO.AddComponent<Camera>();
+        dc.cullingMask = 0;
+        dc.clearFlags = CameraClearFlags.SolidColor;
+        dc.backgroundColor = Color.black;
+        dc.depth = -100;
+        dc.allowHDR = false; dc.allowMSAA = false; dc.allowDynamicResolution = false;
+        dc.useOcclusionCulling = false;
+        dc.targetDisplay = 0;
+        dc.nearClipPlane = 0.3f; dc.farClipPlane = 1f;
     }
 
     void OnDisable()
     {
         if (cam != null) cam.targetTexture = null;
-        if (canvasGO != null) Destroy(canvasGO);
+        if (canvasGO != null) Destroy(canvasGO);   // 빈 카메라(displayCamGO)는 캔버스 자식이라 같이 사라진다
+        displayCamGO = null;
         if (rt != null) { rt.Release(); Destroy(rt); rt = null; }
         builtW = builtH = builtAA = 0;
     }
