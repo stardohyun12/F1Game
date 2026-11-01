@@ -49,6 +49,10 @@ public class DotScreenUI : MonoBehaviour
     Text chipLabel, chipKeyText, bubbleText, nameText, warnText, slipTitle, slipBody, hintText;
     Texture2D arrowTex;
     int arrowStep = int.MinValue;
+    // 방향 표시 크기: 1판은 15칸 격자·모양 1배. 화면 높이(360줄)의 약 5% = 화살표 전체 길이 ~19px 가 되게 모양째 1.5배, 격자 23칸(D-243).
+    const int ArrowN = 23;
+    const float ArrowScale = 1.5f;
+    bool arrowOld;
     readonly List<GameObject> hidden = new List<GameObject>();
     OnFootDirector.Mode lastState;
     float cartAt = -99f;
@@ -121,8 +125,8 @@ public class DotScreenUI : MonoBehaviour
         var wb = warnSprite != null ? warnSprite : MakeBox(Signal, Ink);
 
         dot = Img("Dot", null, Paper, 2, 2);
-        arrowTex = new Texture2D(15, 15, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Arrow" };
-        arrowImg = Img("Arrow", Sprite.Create(arrowTex, new Rect(0, 0, 15, 15), Vector2.zero, 100f), Color.white, 15, 15);
+        arrowTex = new Texture2D(ArrowN, ArrowN, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Arrow" };
+        arrowImg = Img("Arrow", Sprite.Create(arrowTex, new Rect(0, 0, ArrowN, ArrowN), Vector2.zero, 100f), Color.white, ArrowN, ArrowN);
         warnBox = Img("Warn", wb, Color.white, 11, 14, true);
         warnText = Txt("Text", warnBox.transform, font, fontSize, Paper, TextAnchor.MiddleCenter); warnText.text = "!";
         Fill(warnText.rectTransform, 0, 1, 0, 0);
@@ -214,28 +218,29 @@ public class DotScreenUI : MonoBehaviour
         return Sprite.Create(t, new Rect(0, 0, 7, 4), Vector2.zero, 100f);
     }
 
-    /// <summary>방향 화살표를 픽셀 단위로 직접 찍는다(16방향). 회전한 그림을 늘리지 않으니 흐린 픽셀이 없다.</summary>
+    /// <summary>방향 화살표를 픽셀 단위로 직접 찍는다(16방향). 회전한 그림을 늘리지 않으니 흐린 픽셀이 없다. 모양은 1판 그대로, arrowScale 배.</summary>
     void DrawArrow(int step)
     {
+        int n = ArrowN; float k = arrowOld ? 1f : ArrowScale, c0 = (n - 1) * 0.5f;
         float a = step * (Mathf.PI * 2f / 16f);
         float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
-        var inside = new bool[15, 15];
-        for (int y = 0; y < 15; y++)
-            for (int x = 0; x < 15; x++)
+        var inside = new bool[n, n];
+        for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
             {
-                float px = x - 7f, py = y - 7f;
-                // 화면 점을 +a 만큼 돌려 화살표 공간(+y 가 앞)에서 판정 = 화살표는 시계 방향으로 a. step 양수 = 오른쪽.
-                float ux = px * ca - py * sa, uy = px * sa + py * ca;
+                float px = x - c0, py = y - c0;
+                // 화면 점을 +a 만큼 돌려 화살표 공간(+y 가 앞)에서 판정 = 화살표는 시계 방향으로 a. step 양수 = 오른쪽. 1/k 로 줄여 판정 = 모양이 k 배.
+                float ux = (px * ca - py * sa) / k, uy = (px * sa + py * ca) / k;
                 bool head = uy >= -0.5f && uy <= 5.5f && Mathf.Abs(ux) <= (5.5f - uy) * 0.95f;
                 bool stem = uy >= -5.5f && uy < -0.5f && Mathf.Abs(ux) <= 1.6f;
                 inside[x, y] = head || stem;
             }
-        for (int y = 0; y < 15; y++)
-            for (int x = 0; x < 15; x++)
+        for (int y = 0; y < n; y++)
+            for (int x = 0; x < n; x++)
             {
                 Color c = Color.clear;
                 if (inside[x, y]) c = Paper;
-                else if ((x > 0 && inside[x - 1, y]) || (x < 14 && inside[x + 1, y]) || (y > 0 && inside[x, y - 1]) || (y < 14 && inside[x, y + 1])) c = Ink;
+                else if ((x > 0 && inside[x - 1, y]) || (x < n - 1 && inside[x + 1, y]) || (y > 0 && inside[x, y - 1]) || (y < n - 1 && inside[x, y + 1])) c = Ink;
                 arrowTex.SetPixel(x, y, c);
             }
         arrowTex.Apply(false);
@@ -302,7 +307,7 @@ public class DotScreenUI : MonoBehaviour
                 float ang = Vector3.SignedAngle(f, d, Vector3.up);
                 int step = Mathf.RoundToInt(ang / 22.5f);
                 if (step != arrowStep) { arrowStep = step; DrawArrow(step); }
-                Show(arrowImg, W / 2 - 7, H - 6 - 15); vis.Append("arrow ");
+                Show(arrowImg, W / 2 - ArrowN / 2, arrowOld ? H - 6 - 15 - 4 : H - 4 - ArrowN); vis.Append("arrow ");   // 1판 중심(위에서 14줄) → 새 중심(16줄): 화살 끝이 화면 위에서 ~7줄로 같다
             }
         }
         // 화물 위험 "!": CargoWarningHUD 와 같은 4 소스(급제동·코너·스핀·경사) 중 큰 것.
@@ -329,6 +334,8 @@ public class DotScreenUI : MonoBehaviour
 
     /// <summary>봇·캡처용: Tab 을 누른 것과 같다.</summary>
     public bool SimSlip { get; set; }
+    /// <summary>비교 캡처용: 1판 크기(모양 1배)로 같은 화면에 그린다.</summary>
+    public bool SimArrowV1 { get => arrowOld; set { arrowOld = value; arrowStep = int.MinValue; } }
 
     void ChipUI(System.Text.StringBuilder vis)
     {

@@ -1,0 +1,6 @@
+drive0_v1.png t=0.00s yaw=272.1 pitch=10.7 ui='arrow'
+drive0_v1b.png t=0.00s yaw=272.1 pitch=10.7 ui='arrow'
+drive1_v1.png t=0.00s yaw=280.2 pitch=10.6 ui='arrow'
+drive1_v1b.png t=0.00s yaw=280.2 pitch=10.6 ui='arrow'
+drive2_v1.png t=0.00s yaw=313.2 pitch=10.6 ui='arrow'
+drive2_v1b.png t=0.00s yaw=313.2 pitch=10.6 ui='arrow'
