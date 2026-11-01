@@ -26,6 +26,10 @@ public sealed class SunsetLook : MonoBehaviour
         public float sunAzimuth, skySunElevation, lightElevation; public Color sunLight; public float sunIntensity;
         public Color skyHorizon, skyAway, skyMid, skyTop, sunDisc, sunGlow, cloudLit, cloudDark;
         public Vector4 skyBands, sunHalo, cloudStrips, rim; public Color rimColor; public Vector4 screenGlow; public Color screenGlowColor;
+        [Header("D-244 살아 있는 하늘 — 씬에 값이 없던 옛 판은 아래 초기값(오후)")]
+        [Tooltip("x 켬 0/1 · y 숨쉬기 세기 · z 숨쉬기 주기 s · w 색 단 경계 휨°(해 쪽 빛 돔 + 출렁)")] public Vector4 skyLife = new Vector4(1f, 0.10f, 150f, 1.5f);
+        [Tooltip("x 뭉게구름 덮는 양 0..1 · y 새털구름 덮는 양 · z 모양 변형 속도 · w 땅 구름 그림자 세기 0..1")] public Vector4 skyClouds = new Vector4(0.42f, 0.30f, 0.02f, 0.30f);
+        [Tooltip("x 뭉게 바람 m/s · y 방향°(0 = +z 쪽으로) · z 새털 m/s · w 방향°")] public Vector4 skyWind = new Vector4(9f, 255f, 14f, 275f);
         public Color fog; public Vector2 fogStartEnd; public Color shade, a7Shade;
         [Header("바다(DuskSea 색) — 노을 프리셋은 seaMaterial 값을 그대로 쓴다")]
         public Color seaShallow, seaDeep, seaCoolCol, seaGlow, seaHot, seaCore, seaFoam, seaCrest, seaRipple;
@@ -43,6 +47,8 @@ public sealed class SunsetLook : MonoBehaviour
                 skyBands = new Vector4(b.skyBands.x, Mathf.Round(Mathf.Lerp(a.skyBands.y, b.skyBands.y, t)), Mathf.Lerp(a.skyBands.z, b.skyBands.z, t), Mathf.Round(Mathf.Lerp(a.skyBands.w, b.skyBands.w, t))),
                 sunHalo = Vector4.Lerp(a.sunHalo, b.sunHalo, t), cloudStrips = Vector4.Lerp(a.cloudStrips, b.cloudStrips, t), rim = Vector4.Lerp(a.rim, b.rim, t), rimColor = Color.Lerp(a.rimColor, b.rimColor, t),
                 screenGlow = Vector4.Lerp(a.screenGlow, b.screenGlow, t), screenGlowColor = Color.Lerp(a.screenGlowColor, b.screenGlowColor, t),
+                skyLife = new Vector4(b.skyLife.x, Mathf.Lerp(a.skyLife.y, b.skyLife.y, t), Mathf.Lerp(a.skyLife.z, b.skyLife.z, t), Mathf.Lerp(a.skyLife.w, b.skyLife.w, t)),
+                skyClouds = Vector4.Lerp(a.skyClouds, b.skyClouds, t), skyWind = Vector4.Lerp(a.skyWind, b.skyWind, t),
                 fog = Color.Lerp(a.fog, b.fog, t), fogStartEnd = Vector2.Lerp(a.fogStartEnd, b.fogStartEnd, t), shade = Color.Lerp(a.shade, b.shade, t), a7Shade = Color.Lerp(a.a7Shade, b.a7Shade, t),
                 seaShallow = Color.Lerp(a.seaShallow, b.seaShallow, t), seaDeep = Color.Lerp(a.seaDeep, b.seaDeep, t), seaCoolCol = Color.Lerp(a.seaCoolCol, b.seaCoolCol, t),
                 seaGlow = Color.Lerp(a.seaGlow, b.seaGlow, t), seaHot = Color.Lerp(a.seaHot, b.seaHot, t), seaCore = Color.Lerp(a.seaCore, b.seaCore, t), seaFoam = Color.Lerp(a.seaFoam, b.seaFoam, t),
@@ -63,6 +69,7 @@ public sealed class SunsetLook : MonoBehaviour
         skyBands = new Vector4(1f, 6f, 0.35f, 0f), sunHalo = new Vector4(1.6f, 4.0f, 8.5f, 0.30f), cloudStrips = new Vector4(1f, 0.25f, 0.45f, 1.2f),
         rim = new Vector4(1f, 0.22f, 0.55f, 0.5f), rimColor = new Color(1.00f, 0.92f, 0.74f),
         screenGlow = new Vector4(0.08f, 0.18f, 0.035f, 0.015f), screenGlowColor = new Color(1.00f, 0.95f, 0.82f),
+        skyLife = new Vector4(1f, 0.10f, 150f, 1.5f), skyClouds = new Vector4(0.42f, 0.30f, 0.02f, 0.30f), skyWind = new Vector4(9f, 255f, 14f, 275f),
         fog = new Color(0.80f, 0.86f, 0.92f), fogStartEnd = new Vector2(90f, 900f), shade = new Color(0.56f, 0.62f, 0.76f), a7Shade = new Color(0.40f, 0.48f, 0.60f),
         seaShallow = new Color(0.22f, 0.55f, 0.56f), seaDeep = new Color(0.06f, 0.16f, 0.30f), seaCoolCol = new Color(0.14f, 0.40f, 0.56f),
         seaGlow = new Color(0.80f, 0.88f, 0.92f), seaHot = new Color(0.95f, 0.96f, 0.92f), seaCore = new Color(1.00f, 1.00f, 0.96f),
@@ -100,6 +107,15 @@ public sealed class SunsetLook : MonoBehaviour
     [Tooltip("D-236 8판 해 둘레 화면 빛무리(테 소재에서): x 1단 반지름 · y 2단 반지름(화면 높이 비) · z 1단 세기 · w 2단 세기. 0 이면 끔")]
     public Vector4 screenGlow = new Vector4(0.10f, 0.22f, 0.05f, 0.022f);
     public Color screenGlowColor = new Color(1.00f, 0.72f, 0.45f);
+    [Header("D-244 살아 있는 하늘(노을) — 오후 값은 afternoon 안")]
+    [Tooltip("x 켬 0/1 · y 숨쉬기 세기 · z 숨쉬기 주기 s · w 색 단 경계 휨°(해 쪽 빛 돔 + 출렁)")]
+    public Vector4 skyLife = new Vector4(1f, 0.14f, 110f, 2.5f);
+    [Tooltip("x 뭉게구름 덮는 양 0..1 · y 새털구름 덮는 양 · z 모양 변형 속도 · w 땅 구름 그림자 세기 0..1")]
+    public Vector4 skyClouds = new Vector4(0.24f, 0.36f, 0.02f, 0.15f);
+    [Tooltip("x 뭉게 바람 m/s · y 방향°(0 = +z 쪽으로) · z 새털 m/s · w 방향°")]
+    public Vector4 skyWind = new Vector4(7f, 255f, 11f, 275f);
+    /// <summary>QA 전용: true 면 D-244 이전(9판) 하늘로 — 같은 Play 안 전/후 비교 캡처용. 저장 안 됨.</summary>
+    public static bool DebugOldSky;
     [Tooltip("D-236 노을 때만 켜는 수평선 연출물(먼 곶·섬·등대·배 실루엣, DuskBackdrop). 끄면 숨김.")]
     public GameObject backdrop;
     [Tooltip("D-236 7판 노을일 때만 끄는 렌더러(앉은 시점 섬 자리에 비치는 회색 대역 벽 등). 끄면 다시 켬.")]
@@ -144,7 +160,8 @@ public sealed class SunsetLook : MonoBehaviour
         A7ShadeId = Shader.PropertyToID("_A7Shade"),
         BandsId = Shader.PropertyToID("_PCDuskBands"), HaloId = Shader.PropertyToID("_PCDuskHalo"), StripsId = Shader.PropertyToID("_PCDuskStrips"),
         RimId = Shader.PropertyToID("_PCDuskRim"), RimColId = Shader.PropertyToID("_PCDuskRimCol"), RimHzId = Shader.PropertyToID("_PCDuskRimHz"),
-        SunScrId = Shader.PropertyToID("_PCDuskSunScr"), ScrGlowId = Shader.PropertyToID("_PCDuskScrGlow"), ScrGlowColId = Shader.PropertyToID("_PCDuskScrGlowCol");
+        SunScrId = Shader.PropertyToID("_PCDuskSunScr"), ScrGlowId = Shader.PropertyToID("_PCDuskScrGlow"), ScrGlowColId = Shader.PropertyToID("_PCDuskScrGlowCol"),
+        SkyLifeId = Shader.PropertyToID("_PCSkyLife"), SkyCloudsId = Shader.PropertyToID("_PCSkyClouds"), SkyWindId = Shader.PropertyToID("_PCSkyWind");
 
     public static SunsetLook Find() => FindFirstObjectByType<SunsetLook>();
 
@@ -184,13 +201,13 @@ public sealed class SunsetLook : MonoBehaviour
         if (backdrop != null) backdrop.SetActive(false);
         SetHidden(false);
         SetRimOverlay(false);
-        Shader.SetGlobalVector(DuskId, Vector4.zero);
+        Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero);
         if (a7 == null) a7 = FindFirstObjectByType<A7ShadeGlobals>(); if (a7 != null) a7.Apply();
         captured = false;
     }
 
-    void OnEnable() { if (captured) Apply(); else Shader.SetGlobalVector(DuskId, Vector4.zero); }
-    void OnDisable() { Shader.SetGlobalVector(DuskId, Vector4.zero); }
+    void OnEnable() { if (captured) Apply(); else { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); } }
+    void OnDisable() { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); }
     void Update() { if (captured) PushGlobals(); }   // 다른 컴포넌트가 전역을 덮어도 매 프레임 다시
 
     static Vector3 Dir(float az, float el)
@@ -217,6 +234,7 @@ public sealed class SunsetLook : MonoBehaviour
         p.sunAzimuth = sunAzimuth; p.skySunElevation = skySunElevation; p.lightElevation = lightElevation; p.sunLight = sunLight; p.sunIntensity = sunIntensity;
         p.skyHorizon = skyHorizon; p.skyAway = skyAway; p.skyMid = skyMid; p.skyTop = skyTop; p.sunDisc = sunDisc; p.sunGlow = sunGlow; p.cloudLit = cloudLit; p.cloudDark = cloudDark;
         p.skyBands = skyBands; p.sunHalo = sunHalo; p.cloudStrips = cloudStrips; p.rim = rim; p.rimColor = rimColor; p.screenGlow = screenGlow; p.screenGlowColor = screenGlowColor;
+        p.skyLife = skyLife; p.skyClouds = skyClouds; p.skyWind = skyWind;
         p.fog = fog; p.fogStartEnd = fogStartEnd; p.shade = shade; p.a7Shade = a7Shade;
         var m = seaMaterial;
         if (m != null)
@@ -329,6 +347,10 @@ public sealed class SunsetLook : MonoBehaviour
         Shader.SetGlobalColor(MidId, P.skyMid.linear); Shader.SetGlobalColor(TopId, P.skyTop.linear);
         Shader.SetGlobalColor(DiscId, P.sunDisc.linear); Shader.SetGlobalColor(CLitId, P.cloudLit.linear); Shader.SetGlobalColor(CDarkId, P.cloudDark.linear);
         Shader.SetGlobalVector(BandsId, P.skyBands); Shader.SetGlobalVector(HaloId, P.sunHalo); Shader.SetGlobalVector(StripsId, P.cloudStrips);
+        bool life = !DebugOldSky && P.skyLife.x > .5f;   // D-244: 끄면 9판 하늘 그대로(구름 그림자도 0)
+        Shader.SetGlobalVector(SkyLifeId, life ? P.skyLife : Vector4.zero);
+        Shader.SetGlobalVector(SkyCloudsId, life ? new Vector4(P.skyClouds.x, P.skyClouds.y, P.skyClouds.z, P.skyClouds.w * k) : Vector4.zero);
+        Shader.SetGlobalVector(SkyWindId, P.skyWind);
         Shader.SetGlobalVector(RimId, k > 0f ? P.rim : Vector4.zero); Shader.SetGlobalColor(RimColId, P.rimColor.linear);
         SetRimOverlay(k > 0f && P.rim.x > .5f);
         PushSea(P, k);

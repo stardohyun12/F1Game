@@ -21,6 +21,7 @@ float _PCSnapOn, _PCMip;   // 5c 전역(PCLookScene): 정점 스냅 켬 · 1 = �
 // D-227 노을(SunsetLook, 씬 전역 — Look 0 판에만): x = 섞임 0~1(0 = 지금 판 그대로). 머티리얼 안개·그늘색을 노을 묶음 쪽으로 당긴다.
 //  _PCDuskFog = 안개색 · _PCDuskGlow = 해 쪽 안개 금빛(a 세기) · _PCDuskAmb = 그늘(하늘빛) · _PCDuskFogP = (시작 m, 끝 m) · _PCDuskSunDir = 해를 향한 방향
 float4 _PCDusk, _PCDuskFog, _PCDuskGlow, _PCDuskAmb, _PCDuskFogP, _PCDuskSunDir;
+#include "Assets/Art/Look/SkyClouds.hlsl"   // D-244 땅 구름 그림자(SkyCloudShade — 하늘 뭉게구름과 같은 무늬, 전역 0 이면 1)
 SamplerState sampler_linear_clamp;
 int PCMode() { return (int)(_PCLook + 0.5); }
 

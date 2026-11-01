@@ -1,0 +1,34 @@
+{
+ "aft_seat_old": {
+  "sky_changed_first_last": 0.0317,
+  "sky_changed_per_1s_median": 0.0045
+ },
+ "aft_seat_new": {
+  "sky_changed_first_last": 0.1002,
+  "sky_changed_per_1s_median": 0.0134
+ },
+ "aft_road_old": {
+  "sky_changed_first_last": 0.0,
+  "sky_changed_per_1s_median": 0.0
+ },
+ "aft_road_new": {
+  "sky_changed_first_last": 0.0357,
+  "sky_changed_per_1s_median": 0.0042
+ },
+ "dusk_seat_old": {
+  "sky_changed_first_last": 0.0592,
+  "sky_changed_per_1s_median": 0.0098
+ },
+ "dusk_seat_new": {
+  "sky_changed_first_last": 0.091,
+  "sky_changed_per_1s_median": 0.0159
+ },
+ "dusk_road_old": {
+  "sky_changed_first_last": 0.0,
+  "sky_changed_per_1s_median": 0.0
+ },
+ "dusk_road_new": {
+  "sky_changed_first_last": 0.0419,
+  "sky_changed_per_1s_median": 0.0047
+ }
+}
