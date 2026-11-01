@@ -22,3 +22,10 @@
 ## 정할 것
 - 계정 이름(게임 제목이 아직 가제 PitCrew), 개발 일지 성격을 섞을지(과정 공개) 순수 장면만 할지, 올리는 주기(주 1~2회 추천).
 - 계정 만들기는 도현 본인 이메일/전화 인증 필요 — 에이전트가 대신 만들지 않음. 만든 뒤 글·이미지 초안은 PD 가 준비, 올리는 건 도현.
+
+## 11/02 도현 레퍼런스 ("이런느낌") — 방향 수정
+- @thalazydog (12K, 48개) "A hobby game developer. Currently working on a Frieren inspired magic game, Steam page releasing soon"
+- @escapismdev (1.5K, 4개) "Indie game dev, working on ESCAPISM: NO EXIT / STEAM PAGE COMING SOON"
+- @magnixgames (92K, 88개) "Solo dev of Tenebyss / Wishlist my game on Steam"
+- 게시물 본문은 로그인 벽으로 PD 가 못 봄(소개·숫자만 확인). 공통: 1인 개발자 본인 계정 + 게임 하나에 집중 + 소개 한두 줄 + 스팀 찜 유도.
+→ "마을 일기장(세계관 계정)" 안보다 **1인 개발자 계정이 게임 하나를 감성 있게 보여 주는** 쪽. @dev_log77 을 이 형식으로 다듬는 안이 유력.
