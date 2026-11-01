@@ -38,3 +38,7 @@
 1. 레퍼런스 수집·해체(리서치): A Short Hike·Lil Gator Game·Easy Delivery Co·Jalopy·Toem·Mail Time·Wheel World 의 HUD/대화/전표 문법 — 직접 연 스샷·개발자 글만.
 2. 게임 화면 목업 2안(원화 승인 규칙): 노을 낚시 자리·카트 주행 컷 위에 (A) 디에제틱 위주 (B) 최소 도트 HUD — 도현 고름.
 3. 고른 안으로 대화창·전표·작업대 포장 순서로 하나씩(도현 판정 → 다음).
+
+## UI 참고처 (11/01 도현 제안)
+- https://www.gameuidatabase.com/ — 게임별 UI 화면 모음(1,983 게임). 비슷한 분위기 게임(A Short Hike·Lil Gator Game·Easy Delivery Co·Toem 등)의 HUD·대화·버튼 안내·나침반 화면을 분류(Dialogue & Speech, Button Prompts, Compass, Waypoints)로 찾아봄.
+- 주의: 사이트 약관이 "AI 생성·머신러닝 용도 금지" — 스샷을 내려받아 저장소에 넣거나 학습·생성 입력으로 쓰지 않음. 사람이 보고 문법(위치·크기·말투)만 메모, 링크로만 남김.
