@@ -59,6 +59,9 @@ public class DotScreenUI : MonoBehaviour
     string bubbleLine;
     TextGenerator gen;
 
+    /// <summary>본문 글꼴(Galmuri11) — 개발 디버그 창(DebugWindow)이 같은 글꼴을 쓴다.</summary>
+    public Font BodyFont => font;
+
     /// <summary>QA·봇이 읽는 것 — 지금 보이는 요소 이름들.</summary>
     public string Visible { get; private set; } = "";
 

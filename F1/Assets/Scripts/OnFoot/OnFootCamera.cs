@@ -25,6 +25,8 @@ public class OnFootCamera : MonoBehaviour
 
     /// <summary>UI 1판(D-240): 켜져 있으면 마우스 시선을 받지 않는다(대화 중 감독이 시선을 잡을 때).</summary>
     public bool HoldLook { get; set; }
+    /// <summary>개발 디버그 창(DebugWindow)이 마우스를 쓰는 동안 true — 시선 잠금·클릭 재잠금을 막는다(걷기·낚시 공통).</summary>
+    public static bool UiCapture;
     public float Yaw { get; set; }
     public float Pitch { get; set; }
     /// <summary>게임 기본 FOV. 감독이 FollowCamera 정지 FOV 를 넣는다. 0 이면 켤 때 카메라 FOV 를 그대로 쓴다.</summary>
@@ -71,12 +73,12 @@ public class OnFootCamera : MonoBehaviour
     void LateUpdate()
     {
         if (target == null) return;
-        if (!simActive && !HoldLook && Mouse.current != null && Cursor.lockState == CursorLockMode.Locked)
+        if (!simActive && !HoldLook && !UiCapture && Mouse.current != null && Cursor.lockState == CursorLockMode.Locked)
         {
             Vector2 d = Mouse.current.delta.ReadValue() * mouseSensitivity;
             AddLook(d.x, -d.y);
         }
-        if (!simActive && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
+        if (!simActive && !UiCapture && Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
         Pitch = Mathf.Clamp(Pitch, minPitch, maxPitch);
 
         // 수평은 발에 딱 붙이고 높이만 늦춘다 — 계단 단마다 0.165 m 씩 툭툭 올라가는 걸 부드럽게.

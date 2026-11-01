@@ -112,6 +112,16 @@ public class FishingSpot : MonoBehaviour
         Place();
     }
 
+    /// <summary>개발용(디버그 창 "찌 다시 던지기"): 앉은 채로 던지기부터 다시 — 찌가 대 끝에서 다시 날아가 착수한다.</summary>
+    public bool Recast()
+    {
+        if (!Seated || cam == null || bobber == null) return false;
+        castT = 0f; landed = false; bobOff = bobVel = 0f; lastSurfVel = 0f; lastSurf = float.NaN;
+        SeaWaves.ClearRipples(); SurfaceY = float.NaN;
+        Place();
+        return true;
+    }
+
     public void Stand()
     {
         Seated = false;
@@ -231,7 +241,7 @@ public class FishingSpot : MonoBehaviour
     void LateUpdate()
     {
         if (!Seated || cam == null) return;
-        if (!simActive && Mouse.current != null)
+        if (!simActive && !OnFootCamera.UiCapture && Mouse.current != null)
         {
             if (Cursor.lockState == CursorLockMode.Locked) { Vector2 d = Mouse.current.delta.ReadValue() * mouseSensitivity; AddLook(d.x, -d.y); }
             if (Mouse.current.leftButton.wasPressedThisFrame) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
