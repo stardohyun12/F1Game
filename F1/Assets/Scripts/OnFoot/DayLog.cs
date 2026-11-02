@@ -21,7 +21,10 @@ public static class DayLog
     /// <summary>오늘 만난 사람(건넨 순서).</summary>
     public static readonly List<Visit> Today = new List<Visit>();
     public static int Visits => Today.Count;
-    public static int TodayMoney { get { int s = 0; foreach (var v in Today) s += v.money; return s; } }
+    /// <summary>C-001: 오늘 정비소에서 낸 수리비(고친 순서). 오늘 번 돈에서 뺀다.</summary>
+    public static readonly List<int> Repairs = new List<int>();
+    public static int TodayRepair { get { int s = 0; foreach (var r in Repairs) s += r; return s; } }
+    public static int TodayMoney { get { int s = 0; foreach (var v in Today) s += v.money; return s - TodayRepair; } }
     /// <summary>지금까지 하루를 마친 횟수(QA).</summary>
     public static int DaysEnded { get; private set; }
 
@@ -29,7 +32,7 @@ public static class DayLog
 
     public static void ResetAll()
     {
-        Day = 1; DaysEnded = 0; Today.Clear();
+        Day = 1; DaysEnded = 0; Today.Clear(); Repairs.Clear();
         Changed?.Invoke();
     }
 
@@ -39,12 +42,18 @@ public static class DayLog
         Changed?.Invoke();
     }
 
+    public static void RecordRepair(int cost)
+    {
+        Repairs.Add(cost);
+        Changed?.Invoke();
+    }
+
     /// <summary>일기를 덮고 다음 날 아침 — 날짜가 하나 간다(28일째는 그대로: 방학 끝 장면은 이 과제 밖).</summary>
     public static void NextDay()
     {
         DaysEnded++;
         if (Day < TotalDays) Day++;
-        Today.Clear();
+        Today.Clear(); Repairs.Clear();
         Changed?.Invoke();
     }
 }

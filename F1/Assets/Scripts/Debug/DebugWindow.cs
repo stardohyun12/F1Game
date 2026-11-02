@@ -72,6 +72,15 @@ public class DebugWindow : MonoBehaviour
     public static string Recast() { var d = Dir(); return Say(d != null && d.DebugRecast() ? "찌 다시 던짐" : "낚시 자리에 앉아 있을 때만"); }
     public static string ToggleCart() { var d = Dir(); return Say(d == null ? "감독 없음" : "카트: " + d.DebugToggleCart()); }
     public static string SetSpeed(float s) { Time.timeScale = s; return Say("시간 " + s + "배속"); }
+    /// <summary>C-001: 세게 부딪힌 것과 같다 — 카트 상처 한 단계(최대 3).</summary>
+    public static string CartHurt()
+    {
+        var car = FeelCar();
+        if (car == null) return Say("이 씬엔 카트가 없음");
+        var dm = CartDamage.Of(car);
+        dm.AddStage(1, "디버그 창");
+        return Say("카트 상처 " + dm.Stage + "단계");
+    }
     /// <summary>D-258 UI 비교판: 0 지금 · 1 A 세상 속 물건 · 2 B 화면 UI + 게임 텍스처.</summary>
     public static string SetUIStyle(int i) { DotScreenUI.UiStyle = (DotScreenUI.UIStyle)Mathf.Clamp(i, 0, 2); return Say("UI: " + DotScreenUI.StyleLabel(DotScreenUI.UiStyle)); }
 
@@ -224,6 +233,9 @@ public class DebugWindow : MonoBehaviour
         if (GUILayout.Button("1×", Mathf.Approximately(Time.timeScale, 1f) ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetSpeed(1f);
         if (GUILayout.Button("3×", Mathf.Approximately(Time.timeScale, 3f) ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetSpeed(3f);
         GUILayout.EndHorizontal();
+        var hurtCar = FeelCar();
+        var cd = hurtCar != null ? hurtCar.GetComponent<CartDamage>() : null;
+        if (GUILayout.Button($"카트 상처 +1 (지금 {(cd != null ? cd.Stage : 0)}/{CartDamage.MaxStage})", sBtn, GUILayout.Height(rowH))) CartHurt();
         GUILayout.Space(4 * s);
 
         var fc = FeelCar();

@@ -392,6 +392,13 @@ public class OnFootDirector : MonoBehaviour
                 if (HandedOver) { SetPrompt("E 자기 (일기)"); if (press) OpenDiary(); }
                 else SetPrompt("오늘 배달 먼저");
             }
+            else if ((hit == car || hit == null) && RepairSpot.Ready(player.transform.position, car))
+            {
+                // C-001: 정비 자리 안에 상한 카트와 같이 서 있으면 타기보다 고치기가 먼저
+                PromptAnchor = car.transform.position + Vector3.up * 0.8f;
+                SetPrompt("E 고치기");
+                if (press) RepairCart();
+            }
             else if (hit == car)
             {
                 // 기능 2: 사장 말을 듣기 전엔 못 탄다. D-250: 주문을 맡았으면 포장해야 싣는다.
@@ -672,6 +679,18 @@ public class OnFootDirector : MonoBehaviour
         MoneyEnd = MoneyAt + moneySec;
         MoneyAnchor = handover.HandsPoint;
         Mark($"상자 건넴 → {HandoverTier.Name[HandoverTierIdx]} 반응 '{HandoverTier.Reaction[HandoverTierIdx]}' 돈 {moneyText}(×{HandoverTier.Pay[HandoverTierIdx]:F1}) 정산창={ResultPanel.ShowCount}회");
+    }
+
+    /// <summary>C-001: 정비 자리에서 E — 상처를 지우고 수리비 글자(−숫자)를 카트 위에 띄운다(건네기 돈 글자와 같은 자리 쓰기).</summary>
+    void RepairCart()
+    {
+        int cost = RepairSpot.Repair(car);
+        moneyText = $"−{cost:N0}원";
+        MoneyAt = Time.unscaledTime;
+        MoneyEnd = MoneyAt + moneySec;
+        MoneyAnchor = car.transform.position + Vector3.up * 1.5f;   // 칩(0.8 m)과 안 겹치게 더 위
+        SetPrompt(""); PromptAnchor = null;
+        Mark($"수리 — 수리비 {moneyText} · 오늘 수리 합 {DayLog.TodayRepair}");
     }
 
     IEnumerator MoveBoxToHands()
