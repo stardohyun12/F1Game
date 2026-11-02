@@ -5,6 +5,9 @@ env = pathlib.Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / ".env"
 tok = next(l.split("=", 1)[1].strip().strip('"') for l in env.read_text(encoding="utf-8").splitlines() if l.startswith("TELEGRAM_BOT_TOKEN="))
 CHAT, THREAD = "7449275102", "5864"
 txt = sys.argv[1] if len(sys.argv) > 1 else sys.stdin.read()
+# D-265: 도현은 데스크톱 대화에서 봄 — 텔레그램은 긴급(응답 감시·한도)만. 조용 모드 파일이 있으면 나머지는 안 보냄
+if (pathlib.Path("D:/Github/F1Game/.claude/team/tg_quiet").exists() and not txt.startswith(("⚠️ PD 응답 감시", "⚠️ Codex"))):
+    print("tg quiet (skipped)"); sys.exit(0)
 img = sys.argv[2] if len(sys.argv) > 2 else ""
 base = f"https://api.telegram.org/bot{tok}/"
 if img and os.path.isfile(img):
