@@ -6,6 +6,10 @@
 # 결과 처리: COMPILE-BROKEN / FAILED-NOREPORT 면 커밋하지 않고 queue/<줄>/hold/ 에 남김(PD 확인).
 cd D:/Github/F1Game || exit 1
 LINE=$1; Q=.claude/team/queue/$LINE; S=.claude/team/sessions
+# 줄마다 하나만(중복 실행 = 같은 과제 두 번·에디터 충돌): PID 파일 잠금
+PIDF=.claude/team/queue/$LINE.pid
+if [ -s "$PIDF" ] && kill -0 "$(cat "$PIDF")" 2>/dev/null; then echo "queue/$LINE 이미 실행 중 PID $(cat "$PIDF")"; exit 0; fi
+echo $$ > "$PIDF"
 case $LINE in editor) ROLE=programmer;; studio) ROLE=artlive;; feature) ROLE=feature;; *) echo "줄 이름?"; exit 1;; esac
 mkdir -p "$Q/done" "$Q/hold"
 log(){ echo "[$(date '+%m/%d %H:%M')] queue/$LINE $*" | tee -a .ai_logs/team/queue.log; }
