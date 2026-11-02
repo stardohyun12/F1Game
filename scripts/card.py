@@ -143,6 +143,10 @@ def dispatch(cid, by="pd"):
 """
         q = f"{QUEUE}/editor"
     elif st in ("verify", "final_verify"):
+        # 지난 판정은 verdict-<n>.json 으로 옮겨 둔다 — 검증 일꾼이 못 쓰고 끝나면 옛 판정을 새 판정으로 읽지 않게
+        if os.path.exists(f"{d}/verdict.json"):
+            k = len(glob.glob(f"{d}/verdict-*.json")) + 1
+            os.replace(f"{d}/verdict.json", f"{d}/verdict-{k}.json")
         ev = f"{d}/evidence.json"
         accept = re.search(r"## 수용 기준.*?(?=\n## )", body, re.S)
         human = re.search(r"## 사람 확인.*?(?=\n## |\Z)", body, re.S)
