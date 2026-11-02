@@ -24,7 +24,11 @@ foreach ($l in "editor","studio","feature") {
   $role = @{editor="programmer";studio="artlive";feature="feature"}[$l]
   $st = Get-Content ".claude\team\sessions\$role.state" -ErrorAction SilentlyContinue
   if (-not $pending -and -not ($st -match '^working')) {
-    $next = Get-ChildItem "$q\backlog\*.task" -ErrorAction SilentlyContinue | Sort-Object Name | Select-Object -First 1
+    # D-264 회고 개선 6: BATCH 판정 대기(⬜)가 5개 넘으면 그림 과제는 안 넣고 [NOPIC](그림 없는 일)만
+    $pend = (Select-String -Path docs\review\BATCH.md -Pattern '⬜' -ErrorAction SilentlyContinue).Count
+    $cands = Get-ChildItem "$q\backlog\*.task" -ErrorAction SilentlyContinue | Sort-Object Name
+    if ($pend -gt 5) { $cands = $cands | ? { (Get-Content $_.FullName -TotalCount 1 -Encoding UTF8) -match '\[NOPIC\]' } }
+    $next = $cands | Select-Object -First 1
     if ($next) {
       Move-Item $next.FullName "$q\" -Force
       Add-Content -Encoding utf8 .ai_logs\team\queue.log ("[{0}] watchdog: {1} 비어서 backlog 에서 {2} 넣음" -f (Get-Date -Format 'MM/dd HH:mm'), $l, $next.BaseName)
