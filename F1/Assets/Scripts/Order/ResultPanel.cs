@@ -60,8 +60,13 @@ public class ResultPanel : MonoBehaviour, IResultPanel
         public UpgradeDef def;
     }
 
+    /// <summary>QA: 이번 Play 에서 정산창이 뜬 횟수(D-250 문 앞 흐름에선 0 이어야).</summary>
+    public static int ShowCount;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetCount() => ShowCount = 0;
+
     public void Show(RunController ctrl)
     {
+        ShowCount++;
         controller = ctrl;
         isOpen = true;
         EnsureBuilt();

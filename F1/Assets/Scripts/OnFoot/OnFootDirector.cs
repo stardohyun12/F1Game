@@ -13,7 +13,7 @@ using UnityEngine.UI;
 /// </summary>
 public class OnFootDirector : MonoBehaviour
 {
-    public enum Mode { Starting, OnFoot, InCart, Seated }
+    public enum Mode { Starting, OnFoot, InCart, Seated, Board, Pack }
 
     [SerializeField] OnFootPlayer player;
     [SerializeField] Transform spawn;
@@ -33,6 +33,46 @@ public class OnFootDirector : MonoBehaviour
     [Tooltip("사장에게 말 거는 시선 레이 길이(m). 사람은 문보다 멀리서 말을 건다.")]
     [SerializeField] float talkReach = 3.0f;
 
+    [Header("D-250·251 — 택배 보관소에서 주문 받기(과제 20261102-1515)")]
+    [Tooltip("보관소 안 주문 칠판. 비면 예전 기능 2(사장이 말로 찻집 주문, 탑승 = 출발).")]
+    [SerializeField] DepotOrderBoard orderBoard;
+    [Tooltip("포장 자리 대역(작업대 위 상자). 비면 칠판에서 고르는 것만으로 출발할 수 있다.")]
+    [SerializeField] DepotPackSpot packSpot;
+    [Tooltip("사장 대화 뒤 목적지 표식이 가리킬 곳(보관소 앞). 꺼진 DeliveryPoint — 표식 자리로만 쓴다.")]
+    [SerializeField] DeliveryPoint depotDest;
+    [Tooltip("칠판 보기 시점으로 옮겨 가는 시간(초).")]
+    [SerializeField] float boardFocusSec = 0.5f;
+
+    [Header("D-250 ③④ — 문 앞 건네기(과제 20261102-1543)")]
+    [Tooltip("배달지 문 앞 대역(문짝·받는 사람). 비면 예전처럼 도착 = 끝(정산창).")]
+    [SerializeField] DoorHandover handover;
+    [Tooltip("배달지 표식에서 이 거리(m, 수평) 안에서 세우고 내리면 도착으로 친다(트리거를 못 밟았어도).")]
+    [SerializeField] float arriveM = 15f;
+    [Tooltip("돈 글자가 떠 있는 시간(초).")]
+    [SerializeField] float moneySec = 2.6f;
+    [Tooltip("두드린 뒤 문이 열리기까지(초).")]
+    [SerializeField] float knockWaitSec = 0.9f;
+
+    // ── 문 앞 건네기 상태(QA·봇·DotScreenUI 가 읽음) ──
+    public DoorHandover Handover => handover;
+    /// <summary>카트에서 상자를 내려 들고 있다(화면 아래 상자).</summary>
+    public bool CarryingBox { get; private set; }
+    /// <summary>문을 두드렸다 ~ 받는 사람이 나올 때까지(입력 막음).</summary>
+    public bool Knocking { get; private set; }
+    public bool HandedOver { get; private set; }
+    /// <summary>건넬 때 화물 상태 3단(0 멀쩡 · 1 조금 상함 · 2 깨짐, -1 = 아직).</summary>
+    public int HandoverTierIdx { get; private set; } = -1;
+    public int HandoverMoney { get; private set; }
+    /// <summary>떠오르는 돈 글자("" = 없음) · 시작 시각(unscaled) · 사라지는 시각 · 세상 자리(받는 사람 손).
+    /// 최소 moneySec 초, 반응 말풍선이 떠 있는 동안은 계속 + 대화 끝난 뒤 1.2초.</summary>
+    public string MoneyText => moneyText != null && Time.unscaledTime < MoneyEnd ? moneyText : "";
+    public float MoneyAt { get; private set; } = -99f;
+    public float MoneyEnd { get; private set; } = -99f;
+    public float MoneySec => moneySec;
+    public Vector3 MoneyAnchor { get; private set; }
+    string moneyText;
+    GameObject heldBox;
+
     // ── QA·봇이 읽는 상태 ──
     public Mode State { get; private set; } = Mode.Starting;
     public string Prompt { get; private set; } = "";
@@ -45,21 +85,51 @@ public class OnFootDirector : MonoBehaviour
     public bool Talked { get; private set; }
     public bool InTalk => talkLine >= 0;
     /// <summary>지금 자막 한 줄(대화 중이 아니면 "").</summary>
-    public string Subtitle => InTalk ? BossLines[talkLine].who + ": " + BossLines[talkLine].text : "";
+    public string Subtitle => InTalk ? Lines[talkLine].who + ": " + Lines[talkLine].text : "";
     public bool OrderStarted { get; private set; }
     public bool Delivered { get; private set; }
     public Transform Boss => boss;
     public DeliveryPoint FirstDrop => firstDrop;
+    // ── D-250 보관소 흐름 ──
+    public bool DepotFlow => orderBoard != null;
+    public DepotOrderBoard OrderBoard => orderBoard;
+    public DepotPackSpot PackSpot => packSpot;
+    public DeliveryPoint DepotDest => depotDest;
+    /// <summary>칠판에서 주문을 맡았다 — 전표(Tab)가 생기고 목적지 표식이 찻집으로.</summary>
+    public bool OrderPicked => pickedJob != null;
+    public OrderJob PickedJob => pickedJob;
+    public bool Packed => packSpot == null ? OrderPicked : packSpot.Packed;
+    /// <summary>칠판 보기 시점으로 옮겨 가는 중/돌아오는 중(QA·캡처용).</summary>
+    public bool BoardMoving => boardMove != null;
+    OrderJob pickedJob;
+    Coroutine boardMove;
+    Vector3 boardEyePos; Quaternion boardEyeRot;
+    bool simBoardClose; int simBoardMove;
+    // ── D-251 보관소 포장 작업대 ──
+    /// <summary>포장 시점(작업대 앞)으로 옮겨 가는 중/돌아오는 중.</summary>
+    public bool PackMoving => packMove != null;
+    /// <summary>작업대를 떠나려고 든 상자가 내려앉길 기다리는 중.</summary>
+    bool packLeaving, simPackLeave;
+    Coroutine packMove;
+    Vector3 packEyePos; Quaternion packEyeRot;
+    /// <summary>출발 때 정한 화물 상태 시작값(0~1, 포장 결과). 음수 = 아직.</summary>
+    public float StartIntegrity { get; private set; } = -1f;
 
     // ── UI 1판(D-240): DotScreenUI 가 읽는 것 ──
     /// <summary>지금 안내([E] 칩)가 붙을 세상 점 — 문짝 가운데·카트 손잡이·사장 머리·낚시 자리. 없으면 null.</summary>
     public Vector3? PromptAnchor { get; private set; }
-    public string TalkWho => InTalk ? BossLines[talkLine].who : "";
-    public string TalkText => InTalk ? BossLines[talkLine].text : "";
+    public string TalkWho => InTalk ? Lines[talkLine].who : "";
+    public string TalkText => InTalk ? Lines[talkLine].text : "";
     /// <summary>지금 줄이 시작된 때(unscaled) — 말풍선 한 글자씩.</summary>
     public float TalkLineAt => talkLineAt;
     /// <summary>말하는 사람 머리 꼭대기(렌더러 경계 맨 위).</summary>
-    public Vector3 SpeakerTop => TopOf(boss);
+    public Vector3 SpeakerTop => TopOf(speaker != null ? speaker : boss);
+    /// <summary>지금 말하는 사람(사장 또는 문 앞 받는 사람).</summary>
+    public Transform Speaker => speaker != null ? speaker : boss;
+    Transform speaker;                       // null = 사장
+    (string who, string text)[] curLines;    // null = 사장 대사
+    System.Action<int> onTalkLine;           // 줄이 바뀔 때(새 줄 번호)
+    System.Action onTalkEnd;
 
     [Header("UI 1판(D-240) — 대화 시선")]
     [Tooltip("대화가 시작되면 카메라가 말하는 사람 쪽으로 도는 시간(초). 0 = 안 돌림.")]
@@ -72,7 +142,20 @@ public class OnFootDirector : MonoBehaviour
     [Tooltip("표식 쪽을 본 채 멈춰 있는 시간(초) — 그 뒤 다시 플레이어 시선.")]
     [SerializeField] float destHoldSec = 0.8f;
     /// <summary>사장 대화가 끝나 첫 배달지를 들었다 — DotScreenUI 가 걷는 동안에도 목적지 표식을 그린다(탑승 전까지).</summary>
-    public bool DestKnown => Talked && firstDrop != null && !Delivered;
+    public bool DestKnown => WalkDest != null;
+    /// <summary>
+    /// 주문 출발 전 목적지 표식이 가리킬 곳. 예전 흐름 = 사장 대화 뒤 찻집.
+    /// 보관소 흐름(D-250) = 사장 대화 뒤 보관소 앞(depotDest) → 칠판에서 주문을 맡은 뒤 찻집.
+    /// </summary>
+    public DeliveryPoint WalkDest
+    {
+        get
+        {
+            if (!Talked || firstDrop == null || Delivered) return null;
+            if (!DepotFlow) return firstDrop;
+            return OrderPicked ? firstDrop : depotDest;
+        }
+    }
     /// <summary>대화 끝 시선 이동 중(QA·캡처용).</summary>
     public bool DestFocusing => destFocus != null;
     Coroutine talkFocus, destFocus;
@@ -88,6 +171,21 @@ public class OnFootDirector : MonoBehaviour
         ("사장", "왔냐. 오늘부터 배달이다. 대회는 그 다음."),
         ("사장", "뒤에 짐상자 달아 놨어. 깨지는 건 네 책임."),
         ("사장", "첫 주문. 달걀 한 판, 언덕 위 찻집 줄리아네."),
+    };
+    // D-250 보관소 흐름의 사장 대사 — 대역(도현이 정함). 정비소 = 카트 점검, 주문은 택배 보관소 칠판에서.
+    static readonly (string who, string text)[] DepotBossLines =
+    {
+        ("사장", "왔냐. 카트는 내가 봐 놨다. 브레이크 멀쩡해."),
+        ("사장", "뒤에 짐상자 달아 놨어. 깨지는 건 네 책임."),
+        ("사장", "주문은 택배 보관소 칠판에 있어. 오늘은 거기 가 봐."),
+    };
+    (string who, string text)[] Lines => curLines ?? (DepotFlow ? DepotBossLines : BossLines);
+    // 칠판 줄: 첫 주문 1줄(찻집·줄리아·달걀 한 판) + 대역 2줄 — 글은 도현이 정함.
+    static readonly DepotOrderBoard.Line[] BoardLines =
+    {
+        new DepotOrderBoard.Line("달걀 한 판 → 언덕 위 찻집 (줄리아)", true),
+        new DepotOrderBoard.Line("(주문 자리)", false),
+        new DepotOrderBoard.Line("(주문 자리)", false),
     };
     int talkLine = -1;
     float talkLineAt;
@@ -155,13 +253,15 @@ public class OnFootDirector : MonoBehaviour
         foreach (var s in FindObjectsByType<FishingSpot>(FindObjectsSortMode.None)) if (s.seat != null) spots.Add(s);
         CollectHud();
         BuildUI();
+        BuildHeldBox();
         dotUI = FindFirstObjectByType<DotScreenUI>();
 
         if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
         SetCarControl(false);
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
+        if (orderBoard != null) orderBoard.SetLines(BoardLines);
         EnterFoot();
-        Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")}");
+        Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")} 흐름={(DepotFlow ? "보관소(D-250)" : "사장 말 주문")}");
     }
 
     void Mark(string s)
@@ -185,25 +285,72 @@ public class OnFootDirector : MonoBehaviour
         if (State == Mode.Starting) return;
         if (overlayUI != null && overlayUI.enabled == UseDot) overlayUI.enabled = !UseDot;   // 도트 UI 가 켜져 있으면 예전 화면 안내·자막을 끈다
         bool press = InteractPressed();
+        UpdateHeldBox();
+        if (moneyText != null && InTalk && handover != null && Speaker == handover.recipient) MoneyEnd = Mathf.Max(MoneyEnd, Time.unscaledTime + 1.2f);
         if (State == Mode.OnFoot)
         {
             if (InTalk) { PromptAnchor = null; UpdateTalk(press); return; }
+            if (Knocking) { PromptAnchor = null; SetPrompt(""); return; }
             // 1인칭(D-219): 화면 가운데 점이 가리키는 것만 — 시선 레이 2 m 에 처음 맞은 것이 문·카트일 때.
             Object hit = Gaze(out DoorHinge door);
             GazeTarget = hit != null ? hit.name : null;
-            PromptAnchor = hit == null ? (Vector3?)null : hit == car ? car.transform.position + Vector3.up * 0.8f : hit == boss ? TopOf(boss) : CenterOf(door);
-            if (boss != null && hit == boss)
+            PromptAnchor = hit == null ? (Vector3?)null : hit == car ? car.transform.position + Vector3.up * 0.8f : hit == boss ? TopOf(boss)
+                         : orderBoard != null && hit == orderBoard ? orderBoard.Center : packSpot != null && hit == packSpot ? packSpot.Top
+                         : handover != null && hit == handover ? handover.DoorCenter : CenterOf(door);
+            if (handover != null && hit == handover)
+            {
+                // D-250 ③: 상자를 들고 있을 때만 두드린다. 건네기 전·후엔 그냥 문.
+                if (CarryingBox && !handover.Busy && !handover.IsOpen)
+                {
+                    SetPrompt("E 두드리기");
+                    if (press) Knock();
+                }
+                else { SetPrompt(""); PromptAnchor = null; }
+            }
+            else if (boss != null && hit == boss)
             {
                 SetPrompt("E 말하기");
                 if (press) BeginTalk();
             }
-            else if (hit == car)
+            else if (orderBoard != null && hit == orderBoard)
             {
-                // 기능 2: 사장 말을 듣기 전엔 못 탄다.
-                if (boss != null && !Talked) SetPrompt("사장님한테 먼저");
+                SetPrompt(OrderPicked ? "E 칠판 보기(맡음)" : "E 칠판 보기");
+                if (press) OpenBoard();
+            }
+            else if (packSpot != null && hit == packSpot && packSpot.HasBench)
+            {
+                // D-251: 작업대 — 서서 싸고 흔들어 본 상자를 들고 나간다
+                if (!OrderPicked) SetPrompt("칠판에서 주문 먼저");
+                else if (packSpot.Taken) { SetPrompt(""); PromptAnchor = null; }
+                else if (packSpot.Ready && !CarryingBox)
+                {
+                    SetPrompt("E 상자 들기");
+                    if (press) TakePacked();
+                }
                 else
                 {
-                    SetPrompt("E 타기");
+                    SetPrompt(packSpot.NeedsShake ? "E 작업대(들어서 흔들어 보기)" : "E 포장하기");
+                    if (press) EnterPack();
+                }
+            }
+            else if (packSpot != null && hit == packSpot)
+            {
+                if (!OrderPicked) SetPrompt("칠판에서 주문 먼저");
+                else if (!packSpot.Packed)
+                {
+                    SetPrompt("E 포장하기");
+                    if (press) { packSpot.Pack(); Mark("포장됨(대역 — E 한 번)"); }
+                }
+                else SetPrompt("포장됨 — 카트로");
+            }
+            else if (hit == car)
+            {
+                // 기능 2: 사장 말을 듣기 전엔 못 탄다. D-250: 주문을 맡았으면 포장해야 싣는다.
+                if (boss != null && !Talked) SetPrompt("사장님한테 먼저");
+                else if (DepotFlow && OrderPicked && !Packed) SetPrompt(packSpot != null && packSpot.Ready ? "작업대 상자 들고 오기" : "포장 먼저");
+                else
+                {
+                    SetPrompt(DepotFlow && Packed && !OrderStarted ? "E 싣고 타기" : "E 타기");
                     if (press) EnterCart();
                 }
             }
@@ -225,12 +372,14 @@ public class OnFootDirector : MonoBehaviour
             PromptAnchor = null;
             if (press) StandUp();   // 앉아 있는 동안 화면에 아무것도 없음(D-227)
         }
+        else if (State == Mode.Board) UpdateBoard(press);
+        else if (State == Mode.Pack) UpdatePack();
         else if (State == Mode.InCart)
         {
             bool slow = Mathf.Abs(car.CurrentSpeedMps) < exitMaxSpeed;
             PromptAnchor = car.transform.position + Vector3.up * 1.0f;
             SetPrompt(slow ? "E 내리기" : "");
-            if (press && slow) ExitCart();
+            if (press && slow) { ArriveIfNear(); ExitCart(); }
         }
     }
 
@@ -242,16 +391,24 @@ public class OnFootDirector : MonoBehaviour
     {
         door = null;
         Transform eye = cam.transform;
-        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, gazeHits, Mathf.Max(gazeReach, boss != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
-        Collider first = null; float best = float.MaxValue;
+        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, gazeHits, Mathf.Max(gazeReach, boss != null || orderBoard != null || handover != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        Collider first = null; float best = float.MaxValue; float packD = float.MaxValue;
         for (int i = 0; i < n; i++)
         {
             var c = gazeHits[i].collider;
             if (c == null || c.transform.IsChildOf(player.transform)) continue;
             if (gazeHits[i].distance < best) { best = gazeHits[i].distance; first = c; }
+            if (packSpot != null && c.transform.IsChildOf(packSpot.transform)) packD = Mathf.Min(packD, gazeHits[i].distance);
         }
+        // 작업대 판(BenchTop)은 카운터 윗면과 같은 높이 — 2cm 안으로 비기면 작업대가 이긴다.
+        if (packD <= best + 0.02f && packD <= gazeReach) return packSpot;
         // 사장(사람)은 talkReach 까지, 나머지(문·카트)는 예전처럼 gazeReach 까지.
         if (first != null && boss != null && first.transform.IsChildOf(boss) && best <= talkReach) return boss;
+        // 칠판은 벽에 붙어 있어 한 발 물러서서 본다 — 사장처럼 talkReach 까지.
+        if (first != null && orderBoard != null && first.transform.IsChildOf(orderBoard.transform) && best <= talkReach) return orderBoard;
+        if (first != null && packSpot != null && first.transform.IsChildOf(packSpot.transform) && best <= gazeReach) return packSpot;
+        // 문 앞 건네기: 문은 사람처럼 한 발 떨어져서 두드린다(talkReach).
+        if (first != null && handover != null && first.transform.IsChildOf(handover.transform) && best <= talkReach) return handover;
         if (first != null && best > gazeReach) first = null;
         // 카트는 낮아서(충돌 0.44m) 서서 내려다보면 레이가 빗나간다 — 카트 중심이 3m 안(가장자리 약 2m)이고 대략 앞쪽이면 타기 허용(PD 10/31, 기능팀 보고 1c)
         if (car != null)
@@ -305,7 +462,14 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(false);
         footCam.enabled = false;
         SetCarControl(true);
-        if (!OrderStarted && firstDrop != null && rc != null && !debugFreeCart) { BeginFirstOrder(); freeDriveEntered = true; }
+        // D-250: 보관소 흐름이면 포장까지 끝낸 뒤 탈 때 출발(정비소 → 보관소 운전은 자유 주행).
+        bool ready = !DepotFlow || Packed;
+        if (!OrderStarted && ready && firstDrop != null && rc != null && !debugFreeCart)
+        {
+            if (DepotFlow && packSpot != null) { packSpot.Load(); CarryingBox = false; Mark("상자 카트에 실음"); }
+            BeginFirstOrder(); freeDriveEntered = true;
+            ApplyPackResult();
+        }
         else if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
         else Services.Overview?.GoToFollow();
         // 같은 프레임에 B 자리로 — 눈높이에서 차 뒤로 날아가는 프레임이 없다.
@@ -366,19 +530,145 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(true);
         player.Teleport(ExitPoint(), car.transform.eulerAngles.y);
         EnterFoot();
+        if (Delivered && handover != null && !HandedOver && !CarryingBox) BeginCarry();
+    }
+
+    // ── D-250 ③④ 문 앞 건네기 ──
+    /// <summary>배달지 표식 arriveM 안에서 세우고 내리면 도착(트리거를 못 밟았어도). 도착 처리 = 기존 DeliveryManager 경로 그대로.</summary>
+    void ArriveIfNear()
+    {
+        if (!OrderStarted || Delivered || firstDrop == null || handover == null) return;
+        Vector3 d = car.transform.position - firstDrop.transform.position; d.y = 0f;
+        if (d.magnitude > arriveM) return;
+        var mgr = Services.Delivery as DeliveryManager ?? FindFirstObjectByType<DeliveryManager>();
+        Mark($"내린 자리가 배달지 {d.magnitude:F1}m 안(≤{arriveM:F0}) → 도착 처리");
+        if (mgr != null) mgr.OnDeliveryReached(firstDrop);
+    }
+
+    /// <summary>카트 짐칸에서 상자를 내려 든다 — 짐칸 상자는 숨기고 화면 아래 상자(대역)를 켠다.</summary>
+    void BeginCarry()
+    {
+        CarryingBox = true;
+        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+        if (cargo != null && car != null && cargo.transform != car.transform)
+            foreach (var r in cargo.GetComponentsInChildren<Renderer>()) r.enabled = false;
+        Mark($"상자 내림(들고 걷기) 화물={(cargo != null ? (cargo.IntegrityPercent * 100f).ToString("F0") + "%" : "?")}");
+    }
+
+    /// <summary>걷는 동안만 손에 든 상자를 보인다(카메라는 주행과 같이 쓰므로 카트·대화 시점에선 끈다).</summary>
+    void UpdateHeldBox()
+    {
+        if (heldBox == null) return;
+        bool on = CarryingBox && State == Mode.OnFoot && footCam != null && footCam.enabled;
+        if (heldBox.activeSelf != on) heldBox.SetActive(on);
+    }
+
+    void BuildHeldBox()
+    {
+        // 회색 대역 상자: 카메라 자식, 화면 아래 가운데 조금 오른쪽. 아트는 나중에 이 자리(HeldBox)에 모델로.
+        heldBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        heldBox.name = "HeldBox";
+        Destroy(heldBox.GetComponent<Collider>());
+        heldBox.transform.SetParent(cam.transform, false);
+        heldBox.transform.localPosition = new Vector3(0.06f, -0.34f, 0.62f);
+        heldBox.transform.localRotation = Quaternion.Euler(14f, -4f, 0f);
+        heldBox.transform.localScale = new Vector3(0.42f, 0.24f, 0.32f);
+        var mr = heldBox.GetComponent<MeshRenderer>();
+        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        var mpb = new MaterialPropertyBlock();
+        mpb.SetColor("_BaseColor", new Color(0.58f, 0.57f, 0.55f)); mpb.SetColor("_Color", new Color(0.58f, 0.57f, 0.55f));
+        mr.SetPropertyBlock(mpb);
+        heldBox.SetActive(false);
+    }
+
+    void Knock()
+    {
+        Knocking = true;
+        player.enabled = false;
+        SetPrompt(""); PromptAnchor = null;
+        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+        float pct = cargo != null ? cargo.IntegrityPercent : 1f;
+        HandoverTierIdx = HandoverTier.Of(pct);
+        handover.PlayKnock();
+        Mark($"똑똑 — 문 {handover.name} 화물 {pct * 100f:F0}% → {HandoverTier.Name[HandoverTierIdx]}");
+        StartCoroutine(KnockSeq(pct));
+    }
+
+    IEnumerator KnockSeq(float pct)
+    {
+        yield return new WaitForSecondsRealtime(knockWaitSec);
+        yield return handover.Open(player.transform.position);
+        Knocking = false;
+        string who = handover.recipientName;
+        var lines = new[] { (who, HandoverTier.Greeting), (who, HandoverTier.Reaction[HandoverTierIdx]) };
+        Mark($"{who} 나옴 {handover.recipient.position.ToString("F1")}");
+        BeginTalk(lines, handover.recipient, line => { if (line == 1) GiveBox(pct); }, EndHandover);
+    }
+
+    /// <summary>둘째 줄(반응)로 넘어갈 때 상자를 건넨다 — 상자가 받는 사람 손으로 옮겨 가고, 돈 글자가 떠오른다.</summary>
+    void GiveBox(float pct)
+    {
+        CarryingBox = false;
+        if (heldBox != null) StartCoroutine(MoveBoxToHands());
+        int money = rc != null ? rc.PayHandover(HandoverTier.Pay[HandoverTierIdx], pct) : 0;
+        HandoverMoney = money;
+        moneyText = $"+{money:N0}원";
+        MoneyAt = Time.unscaledTime;
+        MoneyEnd = MoneyAt + moneySec;
+        MoneyAnchor = handover.HandsPoint;
+        Mark($"상자 건넴 → {HandoverTier.Name[HandoverTierIdx]} 반응 '{HandoverTier.Reaction[HandoverTierIdx]}' 돈 {moneyText}(×{HandoverTier.Pay[HandoverTierIdx]:F1}) 정산창={ResultPanel.ShowCount}회");
+    }
+
+    IEnumerator MoveBoxToHands()
+    {
+        // 카메라 자식에서 떼어 세상에서 받는 사람 손 앞으로(0.35초), 그 뒤 받는 사람 자식으로.
+        var go = heldBox; heldBox = null; heldBoxGiven = go;       // UpdateHeldBox 가 더는 안 건드린다
+        var t = go.transform;
+        go.SetActive(true);
+        t.SetParent(null, true);
+        Vector3 p0 = t.position; Quaternion r0 = t.rotation;
+        var rcp = handover.recipient;
+        for (float k = 0f; k < 0.35f; k += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
+        {
+            float s = Mathf.SmoothStep(0f, 1f, k / 0.35f);
+            t.SetPositionAndRotation(Vector3.Lerp(p0, handover.HandsPoint, s), Quaternion.Slerp(r0, rcp.rotation, s));
+            yield return null;
+        }
+        t.SetPositionAndRotation(handover.HandsPoint, rcp.rotation);
+        t.SetParent(rcp, true);
+    }
+    GameObject heldBoxGiven;
+
+    void EndHandover()
+    {
+        HandedOver = true;
+        Mark($"건네기 끝 — {HandoverTier.Name[HandoverTierIdx]} 돈 {HandoverMoney} 정산창 {ResultPanel.ShowCount}회");
+        StartCoroutine(CloseDoorLater());
+    }
+
+    IEnumerator CloseDoorLater()
+    {
+        yield return new WaitForSecondsRealtime(0.8f);
+        yield return handover.Close();
+        if (heldBoxGiven != null) heldBoxGiven.SetActive(false);
     }
 
     // ── 기능 2: 사장 대화 → 첫 주문 ──
-    void BeginTalk()
+    void BeginTalk() => BeginTalk(null, null, null, null);
+
+    /// <summary>대화 시작. lines·who 가 null 이면 사장 대사. 문 앞 건네기도 같은 말풍선·시선 이동(D-240)을 쓴다.</summary>
+    void BeginTalk((string who, string text)[] lines, Transform who, System.Action<int> onLine, System.Action onEnd)
     {
+        curLines = lines; speaker = who; onTalkLine = onLine; onTalkEnd = onEnd;
+        var sp = Speaker;
         talkLine = 0; talkLineAt = Time.unscaledTime;
         player.enabled = false;                                    // 듣는 동안 안 걷는다(시선은 그대로)
-        Vector3 to = player.transform.position - boss.position; to.y = 0f;
-        if (to.sqrMagnitude > 1e-4f) boss.rotation = Quaternion.LookRotation(to.normalized, Vector3.up);
+        Vector3 to = player.transform.position - sp.position; to.y = 0f;
+        if (to.sqrMagnitude > 1e-4f) sp.rotation = Quaternion.LookRotation(to.normalized, Vector3.up);
         SetPrompt("");
         ShowSubtitle();
         if (talkFocusSec > 0f) { if (talkFocus != null) StopCoroutine(talkFocus); talkFocus = StartCoroutine(FocusSpeaker()); }
-        Mark("사장 대화 시작");
+        Mark(sp == boss ? "사장 대화 시작" : sp.name + " 대화 시작");
     }
 
     /// <summary>
@@ -437,25 +727,185 @@ public class OnFootDirector : MonoBehaviour
     {
         if (!press || Time.unscaledTime - talkLineAt < 0.3f) return;   // 한 줄은 최소 0.3초(연타로 건너뛰기 방지)
         talkLine++; talkLineAt = Time.unscaledTime;
-        if (talkLine < BossLines.Length) { ShowSubtitle(); return; }
-        talkLine = -1; Talked = true;
+        if (talkLine < Lines.Length) { ShowSubtitle(); onTalkLine?.Invoke(talkLine); return; }
+        talkLine = -1;
         player.enabled = true;
         if (talkFocus != null) { StopCoroutine(talkFocus); talkFocus = null; }
         footCam.HoldLook = false;                                  // 다시 플레이어 시선
         if (subRoot != null) subRoot.SetActive(false);
-        Mark("사장 대화 끝");
-        if (destFocusSec > 0f && firstDrop != null && UseDot) destFocus = StartCoroutine(FocusDest());
+        if (curLines != null)
+        {
+            // 문 앞 건네기 등 사장 아닌 대화 — 사장 대화 끝 처리(목적지 시선)는 안 한다.
+            var end = onTalkEnd;
+            curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
+            end?.Invoke();
+            return;
+        }
+        Talked = true;
+        Mark("사장 대화 끝" + (DepotFlow ? " → 보관소로" : ""));
+        if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
+    }
+
+    // ── D-250: 주문 칠판 보기 ──
+    /// <summary>칠판 보기 시점: 카메라가 boardFocusSec 동안 칠판 앞(DepotOrderBoard.ViewPose)으로 옮겨 가 정면으로 본다. 몸은 그 자리.</summary>
+    void OpenBoard()
+    {
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
+        State = Mode.Board;
+        player.enabled = false;
+        footCam.enabled = false;
+        boardEyePos = cam.transform.position; boardEyeRot = cam.transform.rotation;
+        orderBoard.SetHint(true);
+        SetPrompt(""); PromptAnchor = null; GazeTarget = null;
+        if (dotRoot != null) dotRoot.SetActive(false);
+        orderBoard.ViewPose(cam.fieldOfView, cam.aspect, out var pos, out var rot);
+        if (boardMove != null) StopCoroutine(boardMove);
+        boardMove = StartCoroutine(MoveCam(pos, rot, boardFocusSec, null));
+        Mark($"칠판 보기 시점 {pos.ToString("F2")} 칠판까지 {Vector3.Distance(pos, orderBoard.Center):F2}m fov={cam.fieldOfView:F0}");
+    }
+
+    void CloseBoard()
+    {
+        orderBoard.SetHint(false);
+        if (boardMove != null) StopCoroutine(boardMove);
+        boardMove = StartCoroutine(MoveCam(boardEyePos, boardEyeRot, boardFocusSec * 0.6f, () =>
+        {
+            player.enabled = true;
+            EnterFoot();
+            footCam.HoldLook = false;
+            Mark("칠판 닫기");
+            if (OrderPicked && destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
+        }));
+    }
+
+    IEnumerator MoveCam(Vector3 to, Quaternion toRot, float sec, System.Action done)
+    {
+        Vector3 p0 = cam.transform.position; Quaternion r0 = cam.transform.rotation;
+        for (float t = 0f; t < sec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
+        {
+            float k = Mathf.SmoothStep(0f, 1f, t / sec);
+            cam.transform.SetPositionAndRotation(Vector3.Lerp(p0, to, k), Quaternion.Slerp(r0, toRot, k));
+            yield return null;
+        }
+        cam.transform.SetPositionAndRotation(to, toRot);
+        boardMove = null;
+        done?.Invoke();
+    }
+
+    /// <summary>봇: 칠판에서 W(-1)/S(+1) 한 번, 닫기(Esc).</summary>
+    public void SimBoardMove(int d) { simBoardMove = d; }
+    public void SimBoardClose() { simBoardClose = true; }
+
+    void UpdateBoard(bool press)
+    {
+        PromptAnchor = null;
+        var kb = Keyboard.current;
+        int mv = simBoardMove; simBoardMove = 0;
+        if (kb != null) { if (kb.wKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame) mv = -1; if (kb.sKey.wasPressedThisFrame || kb.downArrowKey.wasPressedThisFrame) mv = 1; }
+        bool close = simBoardClose || (kb != null && (kb.escapeKey.wasPressedThisFrame || kb.qKey.wasPressedThisFrame));
+        simBoardClose = false;
+        if (boardMove != null) return;                                      // 옮겨 가는 동안은 입력 안 받음
+        if (mv != 0) orderBoard.Move(mv);
+        if (close) { CloseBoard(); return; }
+        if (!press) return;
+        if (OrderPicked) { CloseBoard(); return; }                          // 이미 맡았으면 E = 닫기
+        if (!orderBoard.IsOpenLine(orderBoard.Selected)) { Mark($"칠판 {orderBoard.Selected + 1}줄 = 대역(주문 자리) — 못 맡음"); return; }
+        orderBoard.Pick();
+        pickedJob = MakeFirstJob();
+        if (packSpot != null) packSpot.ShowCargo();                        // D-251: 맡은 화물(달걀 한 판)이 작업대에 놓인다
+        Mark($"주문 맡음: {pickedJob.displayName} → 전표·목적지 표식 {firstDrop?.Label}");
+        StartCoroutine(CloseBoardAfter(0.6f));
+    }
+
+    IEnumerator CloseBoardAfter(float sec)
+    {
+        yield return new WaitForSecondsRealtime(sec);
+        if (State == Mode.Board && boardMove == null) CloseBoard();
+    }
+
+    // ── D-251: 보관소 포장 작업대(Proto_PackBench 그대로) ──
+    /// <summary>작업대 앞에 서기: 카메라가 칠판 보기와 같은 방식으로 작업대 눈 자리로 옮겨 간 뒤 PackBench 가 마우스·시선을 맡는다. 몸은 그 자리.</summary>
+    void EnterPack()
+    {
+        if (packSpot == null || packSpot.Eye == null) return;
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
+        State = Mode.Pack; packLeaving = false;
+        player.enabled = false;
+        footCam.enabled = false;
+        packEyePos = cam.transform.position; packEyeRot = cam.transform.rotation;
+        SetPrompt(""); PromptAnchor = null; GazeTarget = null;
+        if (dotRoot != null) dotRoot.SetActive(false);
+        var e = packSpot.Eye;
+        if (packMove != null) StopCoroutine(packMove);
+        packMove = StartCoroutine(MovePackCam(e.position, e.rotation, boardFocusSec, () => packSpot.SetPacking(true, cam)));
+        Mark($"작업대 서기 눈 {e.position.ToString("F2")} 내려다봄 {e.eulerAngles.x:F0}°");
+    }
+
+    /// <summary>봇: 작업대에서 물러나기(Q 와 같은 길).</summary>
+    public void SimPackLeave() { simPackLeave = true; }
+
+    void UpdatePack()
+    {
+        PromptAnchor = null;
+        var kb = Keyboard.current;
+        bool leave = simPackLeave || (kb != null && kb.qKey.wasPressedThisFrame);
+        simPackLeave = false;
+        if (packMove != null) return;                                       // 옮겨 가는 동안은 입력 안 받음
+        var bench = packSpot.Bench;
+        if (leave && !packLeaving) { packLeaving = true; bench.ReleaseAll(); }
+        if (packLeaving && bench.CanLeave) LeavePack();
+    }
+
+    void LeavePack()
+    {
+        packLeaving = false;
+        packSpot.SetPacking(false);                                         // PackBench.OnDisable 가 커서 잠금을 푼다 → 걷기 카메라가 다시 잠금
+        if (packMove != null) StopCoroutine(packMove);
+        packMove = StartCoroutine(MovePackCam(packEyePos, packEyeRot, boardFocusSec * 0.6f, () =>
+        {
+            player.enabled = true;
+            EnterFoot();
+            footCam.HoldLook = false;
+            Mark(packSpot.Ready ? $"작업대에서 물러남 — 흔들어 본 상자 있음(시작 {packSpot.StartIntegrity01 * 100f:F0}%)" : "작업대에서 물러남");
+        }));
+    }
+
+    IEnumerator MovePackCam(Vector3 to, Quaternion toRot, float sec, System.Action done)
+    {
+        yield return MoveCam(to, toRot, sec, null);
+        packMove = null;
+        done?.Invoke();
+    }
+
+    /// <summary>걷기 시점에서 흔들어 본 상자를 든다 → 화면 아래 든 상자(HeldBox 대역), 카트에서 [E] 싣고 타기.</summary>
+    void TakePacked()
+    {
+        packSpot.Take();
+        CarryingBox = true;
+        Mark($"작업대 상자 들기 rattle={packSpot.Result.rattle:F2} → 화물 시작 {packSpot.StartIntegrity01 * 100f:F0}% 예정");
+    }
+
+    /// <summary>출발 직후(BeginRun 이 화물을 새것으로 채운 뒤) 포장 결과를 화물 상태 시작값으로.</summary>
+    void ApplyPackResult()
+    {
+        if (packSpot == null || !packSpot.HasBench || !packSpot.Taken) return;
+        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+        if (cargo == null) { Mark("포장 결과 적용 실패: CargoBox 없음"); return; }
+        cargo.SetStartIntegrity(packSpot.StartIntegrity01);
+        StartIntegrity = cargo.IntegrityPercent;
+        var r = packSpot.Result;
+        Mark($"출발 화물 상태 {StartIntegrity * 100f:F0}% ← 포장 rattle={r.rattle:F2} upright={r.upright} escaped={r.escaped} gap={r.gap:F3}");
     }
 
     /// <summary>
     /// D-252: 목적지 표식이 처음 뜨는 순간(사장이 "언덕 위 찻집"이라고 말한 뒤) 시선이 한 번 그쪽으로 — FocusSpeaker 와 같은 방식(destFocusSec 동안 SmoothStep).
     /// 멀리(수백 m) 있어도 표식은 도트 UI 라 건물에 안 가린다. 위아래는 반만 따라간다(먼 점을 정확히 보면 하늘·땅만 보여서).
     /// </summary>
-    IEnumerator FocusDest()
+    IEnumerator FocusDest(DeliveryPoint target)
     {
         footCam.HoldLook = true;
         float y0 = footCam.Yaw, p0 = footCam.Pitch;
-        footCam.LookAt(DotScreenUI.DestAnchorOf(firstDrop));
+        footCam.LookAt(DotScreenUI.DestAnchorOf(target));
         float dy = Mathf.DeltaAngle(y0, footCam.Yaw), p1 = Mathf.Lerp(p0, footCam.Pitch, 0.5f);
         Mark($"목적지 시선 {dy:F1}° 옆 / {p1 - p0:F1}° 위아래, {destFocusSec:F2}s + {destHoldSec:F2}s");
         for (float t = 0f; t < destFocusSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
@@ -474,7 +924,7 @@ public class OnFootDirector : MonoBehaviour
     {
         Mark("자막 " + Subtitle);
         if (subText == null) return;
-        subText.text = "<b>" + BossLines[talkLine].who + "</b>  " + BossLines[talkLine].text + "  <size=70%><color=#FFFFFFAA>[E]</color></size>";
+        subText.text = "<b>" + Lines[talkLine].who + "</b>  " + Lines[talkLine].text +"  <size=70%><color=#FFFFFFAA>[E]</color></size>";
         subRoot.SetActive(true);
     }
 
@@ -490,18 +940,25 @@ public class OnFootDirector : MonoBehaviour
         firstDrop.gameObject.SetActive(true);
         var route = new List<DeliveryPoint> { firstDrop };
         mgr.SetPoints(route, null);                                // 귀환 없음 — 찻집 도착이 곧 끝(범위: 출발 → 도착 감지)
-        firstJob = ScriptableObject.CreateInstance<OrderJob>();
-        firstJob.name = "TUT_FirstEggs"; firstJob.displayName = "달걀 한 판 → 언덕 위 찻집"; firstJob.cargoType = CargoType.Eggs;
-        firstJob.destinationLabels = new List<string> { firstDrop.Label }; firstJob.timeLimitSec = 0f; firstJob.baseReward = 1200; firstJob.timeBonus = 0;
-        firstJob.callerName = "언덕 위 찻집";
-        firstJob.recipientName = "줄리아";                         // 사장 대사(BossLines)의 이름 — 도현 확인 필요(위 주석)
+        firstJob = pickedJob != null ? pickedJob : MakeFirstJob();   // D-250: 칠판에서 맡은 주문 그대로
         mgr.OnDeliveryCompleted.AddListener(OnFirstDelivered);
         var progress = FindFirstObjectByType<DeliveryProgressHUD>(FindObjectsInactive.Include);
         if (progress != null) progress.gameObject.SetActive(true);
+        rc.DoorHandover = handover != null;                        // D-250 ③: 도착 = 정산창 대신 문 앞 건네기
         rc.BeginRun(firstJob);
         OrderStarted = true;
         var t = mgr.CurrentTarget;
         Mark($"첫 주문 출발 화물={firstJob.cargoType} 목표={(t != null ? t.Label + " " + t.transform.position.ToString("F1") : "없음")}");
+    }
+
+    OrderJob MakeFirstJob()
+    {
+        var j = ScriptableObject.CreateInstance<OrderJob>();
+        j.name = "TUT_FirstEggs"; j.displayName = "달걀 한 판 → 언덕 위 찻집"; j.cargoType = CargoType.Eggs;
+        j.destinationLabels = new List<string> { firstDrop.Label }; j.timeLimitSec = 0f; j.baseReward = 1200; j.timeBonus = 0;
+        j.callerName = "언덕 위 찻집";
+        j.recipientName = "줄리아";                                 // 사장 대사(BossLines)의 이름 — 도현 확인 필요(위 주석)
+        return j;
     }
 
     void OnFirstDelivered(DeliveryPoint dp)
@@ -557,10 +1014,25 @@ public class OnFootDirector : MonoBehaviour
         if (InTalk)
         {
             talkLine = -1;
+            curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
             player.enabled = true;
             if (talkFocus != null) { StopCoroutine(talkFocus); talkFocus = null; }
             footCam.HoldLook = false;
             if (subRoot != null) subRoot.SetActive(false);
+        }
+        if (State == Mode.Board)
+        {
+            if (boardMove != null) { StopCoroutine(boardMove); boardMove = null; }
+            orderBoard.SetHint(false);
+            cam.transform.SetPositionAndRotation(boardEyePos, boardEyeRot);
+            player.enabled = true;
+        }
+        if (State == Mode.Pack)
+        {
+            if (packMove != null) { StopCoroutine(packMove); packMove = null; }
+            packSpot.Bench.ReleaseAll(); packSpot.SetPacking(false); packLeaving = false;
+            cam.transform.SetPositionAndRotation(packEyePos, packEyeRot);
+            player.enabled = true;
         }
         if (State == Mode.Seated)
         {
@@ -651,6 +1123,40 @@ public class OnFootDirector : MonoBehaviour
     }
 
     public bool DebugRecast() => seatedAt != null && seatedAt.Recast();
+
+    /// <summary>
+    /// QA(과제 20261102-1543): 첫 주문을 출발시키고(아직이면) 카트를 배달지 앞 길에 세운 뒤 화물 HP 를 hp01 로 맞추고 도착·내리기까지.
+    /// 그 뒤는 사람이 하듯 문을 보고 E. 운전을 건너뛰고 3단 반응만 빨리 보려는 것.
+    /// </summary>
+    public string DebugArriveForHandover(float hp01, Vector3 carPos, float carYaw, Vector3 feet, float feetYaw)
+    {
+        if (!DebugReady) return "감독이 아직 시작 전";
+        if (handover == null || firstDrop == null) return "배선 없음(handover/firstDrop)";
+        if (Delivered) return "이미 도착함 — Play 다시";
+        DebugLeaveState();
+        Talked = true;
+        if (!OrderStarted) { if (pickedJob == null) pickedJob = MakeFirstJob(); BeginFirstOrder(); freeDriveEntered = true; }
+        ParkCar(carPos, carYaw);
+        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+        if (cargo != null) cargo.DebugSetIntegrity(hp01);
+        var mgr = Services.Delivery as DeliveryManager ?? FindFirstObjectByType<DeliveryManager>();
+        if (mgr != null) mgr.OnDeliveryReached(firstDrop);
+        SetCarControl(false);
+        player.gameObject.SetActive(true);
+        player.Teleport(feet, feetYaw);
+        EnterFoot();
+        footCam.Yaw = feetYaw; footCam.Pitch = 0f;
+        if (!CarryingBox) BeginCarry();
+        return $"도착={Delivered} 들기={CarryingBox} 화물={(cargo != null ? (cargo.IntegrityPercent * 100f).ToString("F0") : "?")}% runActive={(rc != null && rc.RunActive)} 정산창={ResultPanel.ShowCount}";
+    }
+
+    /// <summary>QA: 시선이 어디를 보든 바로 두드린다(문이 화면 밖 → 받는 사람이 시선 이동으로 들어오는지).</summary>
+    public bool DebugKnock()
+    {
+        if (State != Mode.OnFoot || !CarryingBox || handover == null || handover.Busy || handover.IsOpen || InTalk || Knocking) return false;
+        Knock();
+        return true;
+    }
 
     /// <summary>타기 ↔ 내리기. 정지 속도 조건·사장 대화 조건 없이 바로.</summary>
     public string DebugToggleCart()

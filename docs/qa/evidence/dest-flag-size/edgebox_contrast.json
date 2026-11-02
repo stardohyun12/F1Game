@@ -1,0 +1,86 @@
+{
+ "p1_start_noon_new": {
+  "paperRGB": [
+   214,
+   197,
+   169
+  ],
+  "bgRGB": [
+   156,
+   145,
+   130
+  ],
+  "paper_vs_bg": 1.82,
+  "ink_vs_bg(잉크 상자만 있을 때)": 2.01
+ },
+ "p2_fork1_noon_new": {
+  "paperRGB": [
+   218,
+   202,
+   173
+  ],
+  "bgRGB": [
+   83,
+   83,
+   57
+  ],
+  "paper_vs_bg": 4.9,
+  "ink_vs_bg(잉크 상자만 있을 때)": 1.7
+ },
+ "p6_path15_noon_new": {
+  "paperRGB": [
+   220,
+   203,
+   175
+  ],
+  "bgRGB": [
+   98,
+   96,
+   97
+  ],
+  "paper_vs_bg": 3.92,
+  "ink_vs_bg(잉크 상자만 있을 때)": 2.1
+ },
+ "p1_start_dusk_new": {
+  "paperRGB": [
+   221,
+   204,
+   175
+  ],
+  "bgRGB": [
+   71,
+   65,
+   64
+  ],
+  "paper_vs_bg": 6.35,
+  "ink_vs_bg(잉크 상자만 있을 때)": 1.27
+ },
+ "p2_fork1_dusk_new": {
+  "paperRGB": [
+   218,
+   202,
+   173
+  ],
+  "bgRGB": [
+   70,
+   63,
+   44
+  ],
+  "paper_vs_bg": 6.5,
+  "ink_vs_bg(잉크 상자만 있을 때)": 1.28
+ },
+ "p6_path15_dusk_new": {
+  "paperRGB": [
+   220,
+   203,
+   175
+  ],
+  "bgRGB": [
+   76,
+   71,
+   68
+  ],
+  "paper_vs_bg": 5.76,
+  "ink_vs_bg(잉크 상자만 있을 때)": 1.44
+ }
+}

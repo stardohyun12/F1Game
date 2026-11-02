@@ -45,6 +45,8 @@ namespace PitCrew.PackBench
         public bool Taped => TapeCover >= 0.8f;
         public bool Labeled => labelGo != null;
         public Rigidbody Body { get; private set; }
+        /// <summary>뚜껑을 다시 연 횟수 — 흔들어 본 뒤 다시 열었으면 그 결과는 무효(보관소 작업대, D-251).</summary>
+        public int OpenCount { get; private set; }
 
         Transform lidPivot; Collider lidCol; Transform tapeStrip; GameObject labelGo;
         float lidT = 1f, lidFrom, lidTo; // 0 = 닫힘, 1 = 열림
@@ -157,6 +159,7 @@ namespace PitCrew.PackBench
         {
             if (!IsClosed) return;
             IsClosed = false; lidFrom = lidT; lidTo = 1f;
+            OpenCount++;
             ClearTape();
         }
 

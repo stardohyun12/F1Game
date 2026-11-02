@@ -701,6 +701,7 @@ namespace PitCrew.PackBench
                     LastPairs = lifted.PairsJson();
                     ShakeLog.Add(LastShakeJson);
                     Debug.Log("[PackBench] 흔들기 결과 " + LastShakeJson);
+                    Shaken?.Invoke(lifted, res);
                     if (res.escaped > 0) Debug.LogWarning($"[PackBench] 상자 밖으로 나간 물건 {res.escaped}개");
                     Sfx(sfxClose, 0.5f, 1.1f);
                     lifted = null; liftedReturning = false;
@@ -804,6 +805,19 @@ namespace PitCrew.PackBench
             if (it.kind == PackItemKind.Eggs) Sfx(sfxHard, Mathf.Clamp01(vol * 1.2f), Random.Range(1.15f, 1.35f));
             else if (it.kind == PackItemKind.Bubble) Sfx(sfxLight, vol, Random.Range(0.8f, 0.95f));
             else Sfx(sfxScratch[Random.Range(0, sfxScratch.Length)], vol * 0.8f, Random.Range(1.3f, 1.6f));
+        }
+
+        // ══ 보관소 작업대(D-251) — 걷기 감독이 켜고 끈다 ══
+        /// <summary>흔들어 보고 작업대에 다시 내려놓은 순간(상자, 결과).</summary>
+        public static event System.Action<PackBox, PackBox.ShakeResult> Shaken;
+        /// <summary>작업대를 떠나도 되나 — 든 상자가 아직 공중이거나 선반 상자가 옮겨지는 중이면 아니다.</summary>
+        public bool CanLeave => lifted == null && moving == null;
+        /// <summary>손에 든 물건·종이·도구를 놓는다. 든 상자는 내려놓기 시작(CanLeave 가 될 때까지 기다릴 것).</summary>
+        public void ReleaseAll()
+        {
+            ReleaseLeft();                                  // 왼손을 뗀 것과 같은 길(구기던 종이 마무리·뽁뽁이 뜯기·든 상자 내려놓기)
+            if (tool != Tool.None) PutToolBack();
+            simHold = false; prevSimHold = false;
         }
 
         // ══ 봇·QA (마우스 대신 — 같은 동작을 스크립트로) ══

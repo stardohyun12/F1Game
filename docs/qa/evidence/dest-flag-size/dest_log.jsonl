@@ -1,0 +1,38 @@
+{"path":"길 242개 노드 10126 시작점 오차 7.0m 끝점 오차 0.2m 길이 729m 지름길 포함 지나는 길 v2_ridge_up_b_s0:village,drive_garage:village,v2_camo_309378634_165_1:main,v2_tomo_723378509_33+seam7_tomo_camo_T:village,v2_tomo_118267044_13_0:village,v2_tomo_1296977705_61_s0:main,v2_ROAD_V2j_37:village,v2_tomo_461555200_26_1:village,v2_tomo_118267021_11_s1:village,v2_tomo_726995051_53:shortcut,v2_tomo_118267021_11_s0:village,v2_ROAD_V2j_197:main,v2_tomo_1373208325_64_1:main,v2_tomo_118267009_9_s1:shortcut,v2_ROAD_V2j_41_l:shortcut,v2_tomo_118267009_9_s0_1:shortcut","n":378}
+{"shot":"p1_start_noon_old","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p1_start_noon_new","mode":"edge","px":[609.0,199.0],"distM":279.6,"areaPct":0.82,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p2_fork1_noon_old","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p2_fork1_noon_new","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.80,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p3_fork2_noon_old","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.29,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p3_fork2_noon_new","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.36,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p4_before_noon_old","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.31,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p4_before_noon_new","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.38,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p5_near_noon_old","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":0.82,"ui":"arrow dist chip destchip dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p5_near_noon_new","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":0.82,"ui":"arrow dist chip destchip dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p6_path15_noon_old","mode":"edge","px":[18.0,199.0],"distM":231.0,"areaPct":0.62,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p6_path15_noon_new","mode":"edge","px":[18.0,199.0],"distM":231.0,"areaPct":0.82,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p7_path50_noon_old","mode":"on","px":[110.0,240.0],"distM":211.7,"areaPct":0.29,"ui":"arrow dist warn chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p7_path50_noon_new","mode":"on","px":[110.0,240.0],"distM":211.7,"areaPct":0.36,"ui":"arrow dist warn chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p8_path80_noon_old","mode":"on","px":[502.0,255.0],"distM":90.3,"areaPct":0.27,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p8_path80_noon_new","mode":"on","px":[502.0,255.0],"distM":90.3,"areaPct":0.35,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":0.0}
+{"shot":"p9_before20_noon_old","mode":"on","px":[344.0,263.0],"distM":18.7,"areaPct":0.33,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p9_before20_noon_new","mode":"on","px":[344.0,263.0],"distM":18.7,"areaPct":0.33,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":0.0}
+{"shot":"p1_start_dusk_old","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p1_start_dusk_new","mode":"edge","px":[609.0,199.0],"distM":279.6,"areaPct":0.82,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p2_fork1_dusk_old","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p2_fork1_dusk_new","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.80,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p3_fork2_dusk_old","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.29,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p3_fork2_dusk_new","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.36,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p4_before_dusk_old","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.31,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p4_before_dusk_new","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.38,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p5_near_dusk_old","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":0.82,"ui":"arrow dist chip destchip dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p5_near_dusk_new","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":0.82,"ui":"arrow dist chip destchip dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p6_path15_dusk_old","mode":"edge","px":[18.0,199.0],"distM":231.0,"areaPct":0.62,"ui":"arrow dist chip destedge","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p6_path15_dusk_new","mode":"edge","px":[18.0,199.0],"distM":231.0,"areaPct":0.82,"ui":"arrow dist chip destedge","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p7_path50_dusk_old","mode":"on","px":[110.0,240.0],"distM":211.7,"areaPct":0.29,"ui":"arrow dist warn chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p7_path50_dusk_new","mode":"on","px":[110.0,240.0],"distM":211.7,"areaPct":0.36,"ui":"arrow dist warn chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p8_path80_dusk_old","mode":"on","px":[502.0,255.0],"distM":90.3,"areaPct":0.27,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p8_path80_dusk_new","mode":"on","px":[502.0,255.0],"distM":90.3,"areaPct":0.35,"ui":"arrow dist chip dest dots","flag":"far","flagWH":[17.0,24.0],"dusk":1.0}
+{"shot":"p9_before20_dusk_old","mode":"on","px":[344.0,263.0],"distM":18.7,"areaPct":0.33,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"shot":"p9_before20_dusk_new","mode":"on","px":[344.0,263.0],"distM":18.7,"areaPct":0.33,"ui":"arrow dist chip dest dots","flag":"near","flagWH":[13.0,18.0],"dusk":1.0}
+{"sweep":{"changes":4,"badSwitch":0,"farM":25.0,"nearBelowM":22.0,"seq":[[40.0,39.1,"far",24.0],[30.0,29.1,"far",24.0],[26.0,25.1,"far",24.0],[24.0,23.1,"far",24.0],[23.0,22.1,"far",24.0],[22.5,21.6,"near",18.0],[21.0,20.1,"near",18.0],[20.0,19.1,"near",18.0],[18.0,17.1,"near",18.0],[20.0,19.1,"near",18.0],[21.5,20.6,"near",18.0],[23.0,22.1,"near",18.0],[24.0,23.1,"near",18.0],[24.5,23.6,"near",18.0],[26.0,25.1,"far",24.0],[27.0,26.1,"far",24.0],[24.0,23.1,"far",24.0],[22.5,21.6,"near",18.0],[21.5,20.6,"near",18.0],[18.0,17.1,"near",18.0]]}}

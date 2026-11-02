@@ -66,6 +66,10 @@ namespace PitCrew.PackBench
             chipLabel.horizontalOverflow = HorizontalWrapMode.Overflow;
         }
 
+        // 보관소 작업대(D-251): 포장 시점에서만 켠다 — 캔버스는 카메라 자식이라 컴포넌트와 같이 켜고 끈다.
+        void OnEnable() { if (root != null) root.gameObject.SetActive(true); }
+        void OnDisable() { if (root != null) root.gameObject.SetActive(false); }
+
         void LateUpdate()
         {
             if (root == null) return;

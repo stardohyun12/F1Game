@@ -18,13 +18,19 @@ public static class DebugPlaces
         Near,
         /// <summary>카트 옆에 선다(카트는 그대로).</summary>
         BesideCar,
+        /// <summary>정해 둔 자리(carAt, carYaw)에 놓는다 — 둘레 찾기가 건물 안을 고를 수 있는 곳(택배 보관소).</summary>
+        Fixed,
     }
 
     public struct Place
     {
-        public string name; public Vector3 feet; public float yaw; public CarRule car; public string note;
-        public Place(string name, Vector3 feet, float yaw, CarRule car, string note) { this.name = name; this.feet = feet; this.yaw = yaw; this.car = car; this.note = note; }
+        public string name; public Vector3 feet; public float yaw; public CarRule car; public string note; public Vector3 carAt; public float carYaw;
+        public Place(string name, Vector3 feet, float yaw, CarRule car, string note) { this.name = name; this.feet = feet; this.yaw = yaw; this.car = car; this.note = note; carAt = Vector3.zero; carYaw = 0f; }
+        public Place(string name, Vector3 feet, float yaw, Vector3 carAt, float carYaw, string note) : this(name, feet, yaw, CarRule.Fixed, note) { this.carAt = carAt; this.carYaw = carYaw; }
     }
+
+    /// <summary>D-250 택배 보관소 앞 카트 자리 — 셔터 앞 마을 길(v2_ridge_up_c_1, 273.1,-37.1) 위, 동쪽을 봄.</summary>
+    public static readonly Vector3 DepotCart = new Vector3(273.5f, 29.6f, -37.4f);
 
     public static readonly Place[] All =
     {
@@ -40,6 +46,9 @@ public static class DebugPlaces
         // D-248 ③ 환경음 확인용 — 지붕·벽 판정이 갈리는 자리
         new Place("정비소 안",         new Vector3(216.0f, 26.7f, -55.5f), 90f,  CarRule.CartSpot, "차고 가운데(벽까지 5~8 m) — 바람·파도가 먹먹해야 함"),
         new Place("언덕 꼭대기",       new Vector3(244.0f, 64.8f, 118.0f), 200f, CarRule.Near,     "마을 둘레 지형 최고점(y 64.8, 레이 격자 4 m) — 바람이 가장 큼"),
+        // D-250 택배 보관소(Q3_Depot, D198_depot 271.9,-32.4) — 주문 칠판·포장 대역
+        new Place("택배 보관소 앞",     new Vector3(270.5f, 30.9f, -34.0f), 0f,   DepotCart, 90f,  "열린 셔터(x 268~271.5) 앞 마당, 안을 봄 — 카트는 앞 길, 마당엔 동쪽 회색 경사로(x 277)로"),
+        new Place("택배 보관소 칠판",   new Vector3(268.9f, 31.1f, -29.4f), 270f, DepotCart, 90f,  "서쪽 벽 칠판 1.8 m 앞 — E 칠판 보기가 떠야 함"),
     };
 }
 #endif

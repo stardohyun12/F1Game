@@ -61,7 +61,8 @@ public class DebugWindow : MonoBehaviour
             Vector3? carPos = null;
             if (p.car == DebugPlaces.CarRule.CartSpot) carPos = d.DebugCartSpot;
             else if (p.car == DebugPlaces.CarRule.Near) carPos = d.DebugFindCarSpot(p.feet, p.yaw);
-            r = d.DebugTeleport(p.feet, p.yaw, carPos, p.yaw + 90f);
+            else if (p.car == DebugPlaces.CarRule.Fixed) carPos = p.carAt;
+            r = d.DebugTeleport(p.feet, p.yaw, carPos, p.car == DebugPlaces.CarRule.Fixed ? p.carYaw : p.yaw + 90f);
             if (p.car == DebugPlaces.CarRule.Near && !carPos.HasValue) r += " (둘레가 막혀 카트는 그대로)";
         }
         return Say(p.name + ": " + r);

@@ -40,6 +40,8 @@ public class DotScreenUI : MonoBehaviour
     [SerializeField] DestStyle destStyle = DestStyle.Dots;
     [Tooltip("이 거리(m, 수평) 안이면 깃발 대신 '여기' 칩.")]
     [SerializeField] float destNearM = 15f;
+    /// <summary>깃발 크기 2단(4cccf317 후속): 이 거리(m, 수평)보다 멀면 큰 깃발(17×24), 가까우면 원래 13×18(15 m 안은 '여기' 칩). 되돌아올 땐 FlagHysteresisM 만큼 더 가까워야 한다. 상수라 씬 직렬화에 안 남는다.</summary>
+    public const float FlagFarM = 25f;
     [Tooltip("화살표 왼쪽에 목적지까지 거리(m).")]
     [SerializeField] bool showDistance = true;
     [Tooltip("빛기둥 높이(m)·너비(m)·불투명도.")]
@@ -59,11 +61,26 @@ public class DotScreenUI : MonoBehaviour
     Image dot, arrowImg, warnBox, chipBox, chipKey, bubble, tail, nameTab, slip;
     Text chipLabel, chipKeyText, bubbleText, nameText, warnText, slipTitle, slipBody, hintText;
     // D-252 목적지: 깃발(문 위) · 아래로 점선 · 화면 밖이면 가장자리 화살 · 15 m 안 '여기' 칩 · 거리 숫자 · 전표 받는 곳/주소/대역 약도.
-    Image destFlag, destDots, destEdge, destEdgeBox, destChip, distBox, slipMap;
+    Image destFlag, destDots, destEdge, destEdgeBox, destChip, distBox, slipMap, moneyBox;
+    Text moneyText;
+    /// <summary>QA: 돈 글자가 지금 그려진 RT 픽셀(왼쪽 아래)과 글.</summary>
+    public Vector2 MoneyPx { get; private set; }
+    public string MoneyShown { get; private set; } = "";
     Text destChipText, distText, slipTo, slipAddr;
     Texture2D edgeTex, mapTex;
     int edgeStep = int.MinValue;
     const int EdgeN = 11, MapN = 52;
+    /// <summary>깃발 2단 상수(RT 픽셀): 가까운 쪽 13×18(1판 그대로), 먼 쪽 17×24 — 높이 최소 20 이상.</summary>
+    public const int FlagNearW = 13, FlagNearH = 18, FlagFarW = 17, FlagFarH = 24;
+    // 3 m: 차가 서서 흔들리는 거리 잡음(<0.5 m)보다 넉넉하고, 다가갈 때 22~15 m 구간에서 원래 깃발이 실제로 보인다(8 m 면 17~15 m 뿐이라 2단이 사실상 1단).
+    public const float FlagHysteresisM = 3f;
+    Sprite flagNearSp, flagFarSp;
+    bool flagFar;
+    /// <summary>QA: true 면 거리와 상관없이 원래(가까운) 깃발 — 같은 카메라 전/후 비교용.</summary>
+    public bool SimFlagNear;
+    /// <summary>QA: 지금 그려진 깃발 단계("near"/"far")와 크기.</summary>
+    public string FlagTier => flagFar && !SimFlagNear ? "far" : "near";
+    public Vector2 FlagSize => destFlag != null ? destFlag.rectTransform.sizeDelta : Vector2.zero;
     GameObject beam;
     Material beamMat;
     DeliveryPoint groundFor; Vector3 groundAt;
@@ -191,8 +208,9 @@ public class DotScreenUI : MonoBehaviour
         // D-252 목적지 표식 — 그리는 순서상 화살표·칩보다 먼저(뒤에) 만들면 겹칠 때 안내가 위로 온다 → 맨 앞으로 옮긴다.
         destDots = Img("DestDots", MakeDots(), Color.white, 3, 4);
         destDots.type = Image.Type.Tiled; destDots.pixelsPerUnitMultiplier = 1f;
-        var fl = flagSprite != null ? flagSprite : MakeFlag();
-        destFlag = Img("DestFlag", fl, Color.white, (int)fl.rect.width, (int)fl.rect.height);
+        flagNearSp = flagSprite != null ? flagSprite : MakeFlag(FlagNearW, FlagNearH, 9, 15, 11, 10, 12);
+        flagFarSp = flagSprite != null ? flagSprite : MakeFlag(FlagFarW, FlagFarH, 12, 20, 15, 13, 16);
+        destFlag = Img("DestFlag", flagNearSp, Color.white, (int)flagNearSp.rect.width, (int)flagNearSp.rect.height);
         edgeTex = new Texture2D(EdgeN, EdgeN, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Edge" };
         destEdge = Img("DestEdge", Sprite.Create(edgeTex, new Rect(0, 0, EdgeN, EdgeN), Vector2.zero, 100f), Color.white, EdgeN, EdgeN);
         destChip = Img("DestChip", dark, Color.white, 40, 15, true);
@@ -202,8 +220,13 @@ public class DotScreenUI : MonoBehaviour
         distText = Txt("Text", distBox.transform, smallFont, smallSize, Paper, TextAnchor.MiddleCenter);
         Fill(distText.rectTransform, 0, 0, 0, 1);
         // 화면 밖 표식 받침(1409 캡처: 가장자리 깃발 13×18 이 가로등·잔디에 묻혀 안 읽힘) — 잉크 상자 위에 깃발+화살.
-        destEdgeBox = Img("DestEdgeBox", dark, Color.white, 10, 10, true);
+        // 받침은 잉크 상자 + 종이색 1px 테 — 어두운 땅·노을 그늘에서 잉크 상자가 배경과 섞여(대비 1.3) 테로 가장자리를 세운다.
+        destEdgeBox = Img("DestEdgeBox", tabSprite != null ? tabSprite : MakeBox(Ink, Paper), Color.white, 10, 10, true);
         foreach (var g in new Graphic[] { destDots, destFlag, destEdge, destChip, destEdgeBox }) g.transform.SetAsFirstSibling();
+        // D-250 ③ 문 앞 돈 글자: 잉크 상자 + 종이색 글자, 받는 사람 손 옆에서 몇 초 떠오른다.
+        moneyBox = Img("Money", dark, Color.white, 40, 15, true);
+        moneyText = Txt("Text", moneyBox.transform, font, fontSize, Paper, TextAnchor.MiddleCenter);
+        Fill(moneyText.rectTransform, 0, 1, 0, 0);
         // 전표 2·3줄 + 대역 약도(북쪽 위, 나 = 잉크 점, 받는 곳 = 신호색 점) — 진짜 약도는 다음 판.
         slipTo = Txt("To", slip.transform, font, fontSize, Ink, TextAnchor.UpperLeft); slipTo.horizontalOverflow = HorizontalWrapMode.Overflow;
         slipAddr = Txt("Addr", slip.transform, font, fontSize, Ink, TextAnchor.UpperLeft); slipAddr.horizontalOverflow = HorizontalWrapMode.Overflow;
@@ -273,17 +296,17 @@ public class DotScreenUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 목적지 깃발 13×18(테 1px 포함): 종이색 깃대 + 신호색 깃발(오른쪽 끝 제비꼬리). 깃대 아래 끝 = 그림 왼쪽 아래(x 2) — 점선이 여기서 이어진다.
+    /// 목적지 깃발(테 1px 포함): 종이색 깃대 + 신호색 깃발(오른쪽 끝 제비꼬리). 깃대 아래 끝 = 그림 왼쪽 아래(x 2) — 점선이 여기서 이어진다.
+    /// 깃발은 x 3..fx1, y fy0..fy1, 제비꼬리 홈은 x ≥ notchX 부터 yc 를 가운데로 한 칸씩 벌어진다. 가까운 쪽 13×18 · 먼 쪽 17×24 가 같은 모양의 큰 판이다.
     /// </summary>
-    static Sprite MakeFlag()
+    static Sprite MakeFlag(int w, int h, int fy0, int fy1, int fx1, int notchX, int yc)
     {
-        const int w = 13, h = 18;
         var kind = new int[w, h];   // 0 빈칸, 1 깃대(종이), 2 깃발(신호)
         for (int y = 1; y < h - 1; y++) kind[2, y] = 1;
-        for (int y = 9; y <= 15; y++)
-            for (int x = 3; x <= 11; x++)
-                if (!(x >= 10 && Mathf.Abs(y - 12) <= x - 10)) kind[x, y] = 2;   // 제비꼬리 홈
-        var t = new Texture2D(w, h, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Flag" };
+        for (int y = fy0; y <= fy1; y++)
+            for (int x = 3; x <= fx1; x++)
+                if (!(x >= notchX && Mathf.Abs(y - yc) <= x - notchX)) kind[x, y] = 2;   // 제비꼬리 홈
+        var t = new Texture2D(w, h, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Flag" + w };
         for (int y = 0; y < h; y++)
             for (int x = 0; x < w; x++)
             {
@@ -367,11 +390,38 @@ public class DotScreenUI : MonoBehaviour
             {
                 Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot ");
                 ChipUI(vis);
+                if (director.PickedJob != null && !director.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표
+                    SlipUI(director.PickedJob, director.FirstDrop, director.Player != null ? director.Player.transform.position : cam.transform.position, vis);
             }
         }
         else if (director != null && st == OnFootDirector.Mode.InCart && director.Prompt.Length > 0) ChipUI(vis);
         DestUI(DestTarget(st), vis);
+        if (director != null && st == OnFootDirector.Mode.OnFoot) MoneyUI(vis);
         Visible = vis.ToString().Trim();
+    }
+
+    /// <summary>D-250 ③: 상자를 건넨 순간부터(반응 말풍선이 떠 있는 동안 + 끝난 뒤 1.2초, 최소 MoneySec 초) — 받는 사람 손 오른쪽에서 위로 14px 떠오르고 마지막 0.5초에 옅어진다.</summary>
+    void MoneyUI(System.Text.StringBuilder vis)
+    {
+        string s = director.MoneyText;
+        if (string.IsNullOrEmpty(s)) { MoneyShown = ""; return; }
+        if (moneyText.text != s)
+        {
+            moneyText.text = s;
+            moneyBox.rectTransform.sizeDelta = new Vector2(Mathf.CeilToInt(Pref(moneyText, s, 300)) + 8, 15);
+        }
+        float age = Time.unscaledTime - director.MoneyAt, dur = Mathf.Max(0.5f, director.MoneySec);
+        var sz = moneyBox.rectTransform.sizeDelta;
+        int x, y;
+        if (ToScreen(director.MoneyAnchor, out var sp)) { x = Mathf.RoundToInt(sp.x) + 8; y = Mathf.RoundToInt(sp.y); }
+        else { x = W / 2 + 20; y = H / 2 - 20; }
+        y += Mathf.RoundToInt(14f * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(age / (dur * 0.6f))));
+        x = Mathf.Clamp(x, 2, W - (int)sz.x - 2); y = Mathf.Clamp(y, 2, H - (int)sz.y - 2);
+        float a = Mathf.Clamp01((director.MoneyEnd - Time.unscaledTime) / 0.5f);
+        moneyBox.color = new Color(1f, 1f, 1f, a); moneyText.color = new Color(Paper.r, Paper.g, Paper.b, a);
+        Show(moneyBox, x, y);
+        MoneyPx = new Vector2(x, y); MoneyShown = s;
+        vis.Append("money ");
     }
 
     // 실제 도트 격자 = LowResRenderTest.RenderSize(360 줄). 카메라 RT 는 URP renderScale 0.5 를 감안해 그 2배(1280×720)로
@@ -382,7 +432,7 @@ public class DotScreenUI : MonoBehaviour
 
     void HideAll()
     {
-        foreach (var g in new Graphic[] { dot, arrowImg, warnBox, chipBox, bubble, tail, nameTab, slip, hintText, destFlag, destDots, destEdge, destEdgeBox, destChip, distBox })
+        foreach (var g in new Graphic[] { dot, arrowImg, warnBox, chipBox, bubble, tail, nameTab, slip, hintText, destFlag, destDots, destEdge, destEdgeBox, destChip, distBox, moneyBox })
             if (g != null && g.gameObject.activeSelf) g.gameObject.SetActive(false);
     }
 
@@ -400,10 +450,13 @@ public class DotScreenUI : MonoBehaviour
     DeliveryPoint DestTarget(OnFootDirector.Mode st)
     {
         if (SimDestOff) return null;
-        if (st == OnFootDirector.Mode.InCart) { var mgr = Services.Delivery as DeliveryManager; return mgr != null ? mgr.CurrentTarget : null; }
-        if (st == OnFootDirector.Mode.OnFoot && director != null && director.DestKnown && !director.OrderStarted && !director.InTalk) return director.FirstDrop;
+        if (st == OnFootDirector.Mode.InCart) { var mgr = Services.Delivery as DeliveryManager; return mgr != null && mgr.CurrentTarget != null ? mgr.CurrentTarget : PreOrderDest; }
+        if (st == OnFootDirector.Mode.OnFoot && director != null && !director.InTalk) return PreOrderDest;
         return null;
     }
+
+    /// <summary>주문 출발 전 갈 곳(D-250): 보관소 흐름이면 사장 말 뒤 = 택배 보관소, 칠판에서 맡은 뒤 = 찻집. 옛 흐름이면 찻집.</summary>
+    DeliveryPoint PreOrderDest => director != null && director.isActiveAndEnabled && !director.OrderStarted ? director.WalkDest : null;
 
     Vector3 Ground(DeliveryPoint dp)
     {
@@ -427,6 +480,7 @@ public class DotScreenUI : MonoBehaviour
             Vector3 gnd = Ground(tgt), top = DestAnchorOf(tgt);
             float dist = Vector2.Distance(new Vector2(me.x, me.z), new Vector2(gnd.x, gnd.z));
             DestDistM = dist;
+            ApplyFlagTier(dist);
             beamOn = destStyle != DestStyle.Dots && dist > destNearM * 0.5f;
 
             var s = cam.WorldToScreenPoint(top);
@@ -495,6 +549,18 @@ public class DotScreenUI : MonoBehaviour
         foreach (var g in new Graphic[] { destFlag, destDots, destEdge, destEdgeBox, destChip, distBox })
             if (g.gameObject.activeSelf) area += Mathf.RoundToInt(g.rectTransform.sizeDelta.x * g.rectTransform.sizeDelta.y);
         DestAreaPct = area * 100f / (W * H);
+    }
+
+    /// <summary>먼 곳은 큰 깃발, 가까우면 원래 크기. 경계(FlagFarM)에서 FlagHysteresisM 만큼 여유를 둬 깜빡이지 않게 한다. 슬롯 스프라이트를 쓰면 정수 2배.</summary>
+    void ApplyFlagTier(float dist)
+    {
+        if (!flagFar && dist > FlagFarM) flagFar = true;
+        else if (flagFar && dist < FlagFarM - FlagHysteresisM) flagFar = false;
+        bool far = flagFar && !SimFlagNear;
+        var sp = far ? flagFarSp : flagNearSp;
+        if (destFlag.sprite != sp) destFlag.sprite = sp;
+        int k = far && flagSprite != null ? 2 : 1;
+        destFlag.rectTransform.sizeDelta = new Vector2(sp.rect.width * k, sp.rect.height * k);
     }
 
     /// <summary>표식(깃발·점선·가장자리·칩·거리) 화면 면적 합(%, 겹침 포함 위쪽 어림) — 과제 기준 4% 이내.</summary>
@@ -588,7 +654,7 @@ public class DotScreenUI : MonoBehaviour
     {
         // 목적지 방향: 차 카메라 앞(수평) 기준으로 목적지가 몇 도 옆인지 → 16방향 화살표.
         var mgr = Services.Delivery as DeliveryManager;
-        var tgt = mgr != null ? mgr.CurrentTarget : null;
+        var tgt = mgr != null && mgr.CurrentTarget != null ? mgr.CurrentTarget : PreOrderDest;   // D-250: 정비소 → 보관소 자유 주행 중엔 보관소
         if (tgt != null)
         {
             Vector3 f = cam.transform.forward; f.y = 0f;
@@ -623,9 +689,18 @@ public class DotScreenUI : MonoBehaviour
             if (r >= warnShow && !blinkOff) { Show(warnBox, W / 2 + 7 + 4, H - 6 - 14); vis.Append("warn "); }
         }
         // 전표: Tab 누르는 동안. 탑승 직후 잠깐 안내.
-        bool tab = Keyboard.current != null && Keyboard.current.tabKey.isPressed;
         var rc = Services.Run as RunController;
         var job = rc != null ? rc.CurrentJob : null;
+        Vector3 at = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
+        if (!SlipUI(job, mgr != null ? mgr.CurrentTarget : null, at, vis) && job != null && Time.unscaledTime - cartAt < slipHintSec) { Show(hintText, 8, 8); vis.Append("hint "); }
+    }
+
+    /// <summary>
+    /// 전표(Tab 누르는 동안). 운전 중 = 지금 주문, 걷는 중(D-250) = 칠판에서 맡은 주문(출발 전). 그렸으면 true.
+    /// </summary>
+    bool SlipUI(OrderJob job, DeliveryPoint tgt, Vector3 me, System.Text.StringBuilder vis)
+    {
+        bool tab = Keyboard.current != null && Keyboard.current.tabKey.isPressed;
         if (job != null && (tab || SimSlip))
         {
             slipBody.text = job.displayName;
@@ -651,14 +726,14 @@ public class DotScreenUI : MonoBehaviour
                 int bw = Mathf.Clamp(tw + 11 + 4 + MapN + 5, 120, 420);
                 slip.rectTransform.sizeDelta = new Vector2(bw, h);
                 slipMap.rectTransform.anchoredPosition = new Vector2(bw - 5 - MapN, 5);
-                Vector3 me = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
                 DrawMap(me, Ground(tgt));
                 foreach (var g in new Graphic[] { slipTo, slipAddr, slipMap }) g.gameObject.SetActive(true);
                 vis.Append("map ");
             }
             Show(slip, 8, 8); vis.Append("slip ");
+            return true;
         }
-        else if (job != null && Time.unscaledTime - cartAt < slipHintSec) { Show(hintText, 8, 8); vis.Append("hint "); }
+        return false;
     }
 
     /// <summary>봇·캡처용: Tab 을 누른 것과 같다.</summary>

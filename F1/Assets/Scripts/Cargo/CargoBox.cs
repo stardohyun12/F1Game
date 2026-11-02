@@ -314,6 +314,24 @@ public class CargoBox : MonoBehaviour, ICargoBox
         ApplyDamage(dmg);
     }
 
+    /// <summary>D-251: 출발할 때 화물 상태 시작값(0~1) — 보관소 포장 결과(덜그럭)로 정한다. BeginRun(→ Repair) 뒤에 부른다.</summary>
+    public void SetStartIntegrity(float pct01)
+    {
+        integrityHP = Mathf.Clamp01(pct01) * maxHP;
+        totaledFired = integrityHP <= 0f;
+        OnIntegrityChanged?.Invoke(IntegrityPercent);
+    }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    /// <summary>QA·디버그: HP 를 비율(0~1)로 바로 맞춘다(타이어 배율·유예 무시, 이벤트는 그대로).</summary>
+    public void DebugSetIntegrity(float pct01)
+    {
+        integrityHP = Mathf.Clamp01(pct01) * maxHP;
+        totaledFired = integrityHP <= 0f;
+        OnIntegrityChanged?.Invoke(IntegrityPercent);
+    }
+#endif
+
     /// <summary>박스를 새것으로 교체 (허브에서 호출).</summary>
     public void Repair()
     {

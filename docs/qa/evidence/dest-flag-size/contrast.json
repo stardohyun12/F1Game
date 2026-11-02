@@ -1,0 +1,1166 @@
+{
+ "p1_start_noon_old": {
+  "flagBBox": [
+   614,
+   145,
+   622,
+   151
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   610,
+   131,
+   635,
+   161
+  ],
+  "ringMedianRGB": [
+   89,
+   88,
+   90
+  ],
+  "signalRGB": [
+   200,
+   62,
+   48
+  ],
+  "inkRGB": [
+   46,
+   51,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.8,
+  "contrast_signal_vs_ink": 2.55,
+  "contrast_signal_vs_ring": 1.41,
+  "ring_dark_share": 0.41
+ },
+ "p1_start_noon_new": {
+  "flagBBox": [
+   610,
+   140,
+   622,
+   148
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   606,
+   128,
+   635,
+   161
+  ],
+  "ringMedianRGB": [
+   97,
+   95,
+   96
+  ],
+  "signalRGB": [
+   200,
+   62,
+   48
+  ],
+  "inkRGB": [
+   47,
+   51,
+   55
+  ],
+  "contrast_ring_vs_ink": 2.01,
+  "contrast_signal_vs_ink": 2.54,
+  "contrast_signal_vs_ring": 1.26,
+  "ring_dark_share": 0.33
+ },
+ "p2_fork1_noon_old": {
+  "flagBBox": [
+   19,
+   270,
+   27,
+   276
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   5,
+   267,
+   29,
+   288
+  ],
+  "ringMedianRGB": [
+   84,
+   84,
+   57
+  ],
+  "signalRGB": [
+   198,
+   59,
+   46
+  ],
+  "inkRGB": [
+   43,
+   48,
+   53
+  ],
+  "contrast_ring_vs_ink": 1.71,
+  "contrast_signal_vs_ink": 2.58,
+  "contrast_signal_vs_ring": 1.5,
+  "ring_dark_share": 0.25
+ },
+ "p2_fork1_noon_new": {
+  "flagBBox": [
+   19,
+   265,
+   31,
+   273
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   5,
+   261,
+   33,
+   286
+  ],
+  "ringMedianRGB": [
+   84,
+   83,
+   57
+  ],
+  "signalRGB": [
+   199,
+   59,
+   46
+  ],
+  "inkRGB": [
+   43,
+   48,
+   53
+  ],
+  "contrast_ring_vs_ink": 1.7,
+  "contrast_signal_vs_ink": 2.6,
+  "contrast_signal_vs_ring": 1.53,
+  "ring_dark_share": 0.21
+ },
+ "p3_fork2_noon_old": {
+  "flagBBox": [
+   428,
+   92,
+   436,
+   98
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   427,
+   90,
+   437,
+   109
+  ],
+  "ringMedianRGB": [
+   91,
+   90,
+   92
+  ],
+  "signalRGB": [
+   203,
+   61,
+   47
+  ],
+  "inkRGB": [
+   44,
+   50,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.89,
+  "contrast_signal_vs_ink": 2.62,
+  "contrast_signal_vs_ring": 1.39,
+  "ring_dark_share": 0.18
+ },
+ "p3_fork2_noon_new": {
+  "flagBBox": [
+   428,
+   87,
+   440,
+   95
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   427,
+   84,
+   441,
+   108
+  ],
+  "ringMedianRGB": [
+   91,
+   90,
+   92
+  ],
+  "signalRGB": [
+   203,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   50,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.89,
+  "contrast_signal_vs_ink": 2.62,
+  "contrast_signal_vs_ring": 1.39,
+  "ring_dark_share": 0.11
+ },
+ "p4_before_noon_old": {
+  "flagBBox": [
+   338,
+   84,
+   346,
+   90
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   337,
+   82,
+   347,
+   101
+  ],
+  "ringMedianRGB": [
+   123,
+   52,
+   32
+  ],
+  "signalRGB": [
+   204,
+   62,
+   48
+  ],
+  "inkRGB": [
+   45,
+   51,
+   56
+  ],
+  "contrast_ring_vs_ink": 1.43,
+  "contrast_signal_vs_ink": 2.62,
+  "contrast_signal_vs_ring": 1.83,
+  "ring_dark_share": 0.61
+ },
+ "p4_before_noon_new": {
+  "flagBBox": [
+   338,
+   79,
+   350,
+   87
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   337,
+   76,
+   351,
+   100
+  ],
+  "ringMedianRGB": [
+   102,
+   100,
+   100
+  ],
+  "signalRGB": [
+   204,
+   62,
+   48
+  ],
+  "inkRGB": [
+   46,
+   51,
+   56
+  ],
+  "contrast_ring_vs_ink": 2.17,
+  "contrast_signal_vs_ink": 2.61,
+  "contrast_signal_vs_ring": 1.2,
+  "ring_dark_share": 0.43
+ },
+ "p6_path15_noon_old": {
+  "flagBBox": [
+   19,
+   145,
+   27,
+   151
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   5,
+   142,
+   29,
+   161
+  ],
+  "ringMedianRGB": [
+   98,
+   96,
+   97
+  ],
+  "signalRGB": [
+   200,
+   60,
+   47
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 2.1,
+  "contrast_signal_vs_ink": 2.59,
+  "contrast_signal_vs_ring": 1.23,
+  "ring_dark_share": 0.0
+ },
+ "p6_path15_noon_new": {
+  "flagBBox": [
+   19,
+   140,
+   31,
+   148
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   5,
+   136,
+   33,
+   161
+  ],
+  "ringMedianRGB": [
+   98,
+   96,
+   97
+  ],
+  "signalRGB": [
+   200,
+   60,
+   47
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 2.1,
+  "contrast_signal_vs_ink": 2.59,
+  "contrast_signal_vs_ring": 1.23,
+  "ring_dark_share": 0.0
+ },
+ "p7_path50_noon_old": {
+  "flagBBox": [
+   111,
+   104,
+   119,
+   110
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   109,
+   102,
+   120,
+   121
+  ],
+  "ringMedianRGB": [
+   90,
+   89,
+   91
+  ],
+  "signalRGB": [
+   202,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.88,
+  "contrast_signal_vs_ink": 2.63,
+  "contrast_signal_vs_ring": 1.4,
+  "ring_dark_share": 0.04
+ },
+ "p7_path50_noon_new": {
+  "flagBBox": [
+   111,
+   99,
+   123,
+   107
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   109,
+   96,
+   124,
+   120
+  ],
+  "ringMedianRGB": [
+   90,
+   89,
+   91
+  ],
+  "signalRGB": [
+   202,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.88,
+  "contrast_signal_vs_ink": 2.63,
+  "contrast_signal_vs_ring": 1.4,
+  "ring_dark_share": 0.03
+ },
+ "p8_path80_noon_old": {
+  "flagBBox": [
+   503,
+   89,
+   511,
+   95
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   502,
+   87,
+   512,
+   106
+  ],
+  "ringMedianRGB": [
+   90,
+   89,
+   91
+  ],
+  "signalRGB": [
+   202,
+   61,
+   47
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.88,
+  "contrast_signal_vs_ink": 2.64,
+  "contrast_signal_vs_ring": 1.4,
+  "ring_dark_share": 0.02
+ },
+ "p8_path80_noon_new": {
+  "flagBBox": [
+   503,
+   84,
+   515,
+   92
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   502,
+   81,
+   516,
+   105
+  ],
+  "ringMedianRGB": [
+   90,
+   89,
+   91
+  ],
+  "signalRGB": [
+   201,
+   60,
+   47
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.88,
+  "contrast_signal_vs_ink": 2.61,
+  "contrast_signal_vs_ring": 1.38,
+  "ring_dark_share": 0.02
+ },
+ "p9_before20_noon_old": {
+  "flagBBox": [
+   345,
+   81,
+   353,
+   87
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   344,
+   79,
+   354,
+   98
+  ],
+  "ringMedianRGB": [
+   123,
+   52,
+   32
+  ],
+  "signalRGB": [
+   204,
+   62,
+   48
+  ],
+  "inkRGB": [
+   45,
+   50,
+   56
+  ],
+  "contrast_ring_vs_ink": 1.45,
+  "contrast_signal_vs_ink": 2.65,
+  "contrast_signal_vs_ring": 1.83,
+  "ring_dark_share": 0.68
+ },
+ "p9_before20_noon_new": {
+  "flagBBox": [
+   345,
+   81,
+   353,
+   87
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   344,
+   79,
+   354,
+   98
+  ],
+  "ringMedianRGB": [
+   123,
+   52,
+   32
+  ],
+  "signalRGB": [
+   204,
+   62,
+   48
+  ],
+  "inkRGB": [
+   45,
+   50,
+   56
+  ],
+  "contrast_ring_vs_ink": 1.45,
+  "contrast_signal_vs_ink": 2.65,
+  "contrast_signal_vs_ring": 1.83,
+  "ring_dark_share": 0.68
+ },
+ "p1_start_dusk_old": {
+  "flagBBox": [
+   614,
+   145,
+   622,
+   151
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   610,
+   142,
+   635,
+   161
+  ],
+  "ringMedianRGB": [
+   71,
+   65,
+   62
+  ],
+  "signalRGB": [
+   200,
+   61,
+   47
+  ],
+  "inkRGB": [
+   49,
+   50,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.28,
+  "contrast_signal_vs_ink": 2.54,
+  "contrast_signal_vs_ring": 1.99,
+  "ring_dark_share": 0.62
+ },
+ "p1_start_dusk_new": {
+  "flagBBox": [
+   610,
+   140,
+   622,
+   148
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   606,
+   136,
+   635,
+   161
+  ],
+  "ringMedianRGB": [
+   71,
+   65,
+   60
+  ],
+  "signalRGB": [
+   201,
+   61,
+   47
+  ],
+  "inkRGB": [
+   50,
+   50,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.27,
+  "contrast_signal_vs_ink": 2.55,
+  "contrast_signal_vs_ring": 2.01,
+  "ring_dark_share": 0.63
+ },
+ "p2_fork1_dusk_old": {
+  "flagBBox": [
+   19,
+   270,
+   27,
+   276
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   5,
+   267,
+   29,
+   288
+  ],
+  "ringMedianRGB": [
+   73,
+   63,
+   44
+  ],
+  "signalRGB": [
+   198,
+   59,
+   46
+  ],
+  "inkRGB": [
+   43,
+   48,
+   53
+  ],
+  "contrast_ring_vs_ink": 1.29,
+  "contrast_signal_vs_ink": 2.58,
+  "contrast_signal_vs_ring": 2.0,
+  "ring_dark_share": 1.0
+ },
+ "p2_fork1_dusk_new": {
+  "flagBBox": [
+   19,
+   265,
+   31,
+   273
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   5,
+   261,
+   33,
+   286
+  ],
+  "ringMedianRGB": [
+   72,
+   63,
+   44
+  ],
+  "signalRGB": [
+   199,
+   59,
+   46
+  ],
+  "inkRGB": [
+   43,
+   48,
+   53
+  ],
+  "contrast_ring_vs_ink": 1.28,
+  "contrast_signal_vs_ink": 2.6,
+  "contrast_signal_vs_ring": 2.02,
+  "ring_dark_share": 1.0
+ },
+ "p3_fork2_dusk_old": {
+  "flagBBox": [
+   428,
+   92,
+   436,
+   98
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   427,
+   90,
+   437,
+   109
+  ],
+  "ringMedianRGB": [
+   71,
+   66,
+   65
+  ],
+  "signalRGB": [
+   203,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.64,
+  "contrast_signal_vs_ring": 2.0,
+  "ring_dark_share": 0.96
+ },
+ "p3_fork2_dusk_new": {
+  "flagBBox": [
+   428,
+   87,
+   440,
+   95
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   427,
+   84,
+   441,
+   108
+  ],
+  "ringMedianRGB": [
+   71,
+   66,
+   65
+  ],
+  "signalRGB": [
+   203,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   55
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.64,
+  "contrast_signal_vs_ring": 2.0,
+  "ring_dark_share": 0.97
+ },
+ "p4_before_dusk_old": {
+  "flagBBox": [
+   338,
+   84,
+   346,
+   90
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": null,
+  "ringMedianRGB": [
+   112,
+   62,
+   40
+  ],
+  "signalRGB": [
+   207,
+   75,
+   54
+  ],
+  "inkRGB": [
+   35,
+   48,
+   59
+  ],
+  "contrast_ring_vs_ink": 1.55,
+  "contrast_signal_vs_ink": 3.03,
+  "contrast_signal_vs_ring": 1.96,
+  "ring_dark_share": 0.61
+ },
+ "p4_before_dusk_new": {
+  "flagBBox": [
+   338,
+   79,
+   350,
+   87
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": null,
+  "ringMedianRGB": [
+   101,
+   84,
+   75
+  ],
+  "signalRGB": [
+   207,
+   75,
+   54
+  ],
+  "inkRGB": [
+   35,
+   48,
+   59
+  ],
+  "contrast_ring_vs_ink": 1.88,
+  "contrast_signal_vs_ink": 3.03,
+  "contrast_signal_vs_ring": 1.61,
+  "ring_dark_share": 0.43
+ },
+ "p6_path15_dusk_old": {
+  "flagBBox": [
+   19,
+   145,
+   27,
+   151
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   5,
+   142,
+   29,
+   161
+  ],
+  "ringMedianRGB": [
+   77,
+   71,
+   68
+  ],
+  "signalRGB": [
+   200,
+   60,
+   46
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.44,
+  "contrast_signal_vs_ink": 2.59,
+  "contrast_signal_vs_ring": 1.8,
+  "ring_dark_share": 0.91
+ },
+ "p6_path15_dusk_new": {
+  "flagBBox": [
+   19,
+   140,
+   31,
+   148
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   5,
+   136,
+   33,
+   161
+  ],
+  "ringMedianRGB": [
+   77,
+   71,
+   68
+  ],
+  "signalRGB": [
+   200,
+   60,
+   46
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.44,
+  "contrast_signal_vs_ink": 2.59,
+  "contrast_signal_vs_ring": 1.8,
+  "ring_dark_share": 0.9
+ },
+ "p7_path50_dusk_old": {
+  "flagBBox": [
+   111,
+   104,
+   119,
+   110
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   109,
+   102,
+   120,
+   121
+  ],
+  "ringMedianRGB": [
+   70,
+   66,
+   64
+  ],
+  "signalRGB": [
+   202,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.63,
+  "contrast_signal_vs_ring": 2.0,
+  "ring_dark_share": 0.98
+ },
+ "p7_path50_dusk_new": {
+  "flagBBox": [
+   111,
+   99,
+   123,
+   107
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   109,
+   96,
+   124,
+   120
+  ],
+  "ringMedianRGB": [
+   70,
+   66,
+   64
+  ],
+  "signalRGB": [
+   202,
+   61,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.63,
+  "contrast_signal_vs_ring": 2.0,
+  "ring_dark_share": 0.98
+ },
+ "p8_path80_dusk_old": {
+  "flagBBox": [
+   503,
+   89,
+   511,
+   95
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": [
+   502,
+   87,
+   512,
+   106
+  ],
+  "ringMedianRGB": [
+   70,
+   66,
+   64
+  ],
+  "signalRGB": [
+   202,
+   60,
+   47
+  ],
+  "inkRGB": [
+   44,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.62,
+  "contrast_signal_vs_ring": 1.99,
+  "ring_dark_share": 0.96
+ },
+ "p8_path80_dusk_new": {
+  "flagBBox": [
+   503,
+   84,
+   515,
+   92
+  ],
+  "flagWH": [
+   13,
+   9
+  ],
+  "inkBBox": [
+   502,
+   81,
+   516,
+   105
+  ],
+  "ringMedianRGB": [
+   70,
+   66,
+   64
+  ],
+  "signalRGB": [
+   201,
+   60,
+   47
+  ],
+  "inkRGB": [
+   45,
+   49,
+   54
+  ],
+  "contrast_ring_vs_ink": 1.32,
+  "contrast_signal_vs_ink": 2.6,
+  "contrast_signal_vs_ring": 1.97,
+  "ring_dark_share": 0.97
+ },
+ "p9_before20_dusk_old": {
+  "flagBBox": [
+   345,
+   81,
+   353,
+   87
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": null,
+  "ringMedianRGB": [
+   112,
+   61,
+   40
+  ],
+  "signalRGB": [
+   207,
+   75,
+   54
+  ],
+  "inkRGB": [
+   35,
+   48,
+   59
+  ],
+  "contrast_ring_vs_ink": 1.53,
+  "contrast_signal_vs_ink": 3.03,
+  "contrast_signal_vs_ring": 1.97,
+  "ring_dark_share": 0.68
+ },
+ "p9_before20_dusk_new": {
+  "flagBBox": [
+   345,
+   81,
+   353,
+   87
+  ],
+  "flagWH": [
+   9,
+   7
+  ],
+  "inkBBox": null,
+  "ringMedianRGB": [
+   112,
+   61,
+   40
+  ],
+  "signalRGB": [
+   207,
+   75,
+   54
+  ],
+  "inkRGB": [
+   35,
+   48,
+   59
+  ],
+  "contrast_ring_vs_ink": 1.53,
+  "contrast_signal_vs_ink": 3.03,
+  "contrast_signal_vs_ring": 1.97,
+  "ring_dark_share": 0.68
+ }
+}

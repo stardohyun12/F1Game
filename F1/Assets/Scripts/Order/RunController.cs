@@ -105,6 +105,33 @@ public class RunController : MonoBehaviour, IRunController
     /// <summary>D-142 튜토리얼: 주문을 받기 전(MART 까지) 차를 움직이게 주행 단계로만 넘긴다. 주문판·카메라 정리 포함.</summary>
     public void EnterFreeDrive() { SetStage(RunStage.Driving); StartFollowCameraAndCloseBoard(); }
 
+    /// <summary>
+    /// D-250 ③④ 문 앞 건네기: 도착(EndRun) 때 정산창·timeScale 0·오버뷰를 띄우지 않고, 돈은 문 앞에서 상자를 건넬 때 PayHandover 로 준다.
+    /// OnFootDirector 가 배달지에 DoorHandover 가 있을 때 켠다.
+    /// </summary>
+    public bool DoorHandover { get; set; }
+    /// <summary>화물 상태 배율을 곱하기 전 보상(도착 때 계산). PayHandover 가 여기에 3단 비율을 곱한다.</summary>
+    public int LastRewardBase { get; private set; }
+    /// <summary>문 앞에서 아직 안 준 돈이 있다.</summary>
+    public bool HandoverPending { get; private set; }
+
+    /// <summary>문 앞에서 상자를 건넬 때: 보상 = 도착 때 기본 보상 × pay(3단 비율). 포장비를 빼고 지갑에 넣는다. 받은 돈(보상)을 돌려준다.</summary>
+    public int PayHandover(float pay, float integrity01)
+    {
+        if (!HandoverPending) return LastReward;
+        HandoverPending = false;
+        LastIntegrityPercent = integrity01;
+        LastReward = Mathf.RoundToInt(LastRewardBase * pay);
+        LastNet = LastReward - LastPackCost;
+        if (Upgrade != null)
+        {
+            if (LastNet > 0) Upgrade.AddReward(LastNet);
+            else if (LastNet < 0) Upgrade.Spend(Mathf.Min(-LastNet, Mathf.Max(0, Upgrade.Wallet)));
+        }
+        Debug.Log($"[RunController] 문 앞 정산 기본 {LastRewardBase} × {pay:F2} = {LastReward} (포장비 {LastPackCost}, 화물 {integrity01 * 100f:F0}%)");
+        return LastReward;
+    }
+
     /// <summary>유효 시간 제한(초). 프로토타입: 목표 시간 × parHardLimitMul. 그 외: 픽한 주문들 중 가장 큰 값 (0 무제한이 하나라도 있으면 0).</summary>
     public float EffectiveTimeLimit
     {
@@ -487,6 +514,7 @@ public class RunController : MonoBehaviour, IRunController
         if (success && urgentOrders.Count > 0)
             foreach (var o in CurrentOrders)
                 if (o != null && urgentOrders.Contains(o)) reward += Mathf.RoundToInt(o.baseReward * urgentRewardBonus);
+        LastRewardBase = reward;
         reward = Mathf.RoundToInt(reward * integrityMul);
         LastReward = reward;
         ClockRunning = false;
@@ -495,6 +523,14 @@ public class RunController : MonoBehaviour, IRunController
         LastPackCost = pendingPackCost;
         pendingPackCost = 0;
         LastNet = reward - LastPackCost;
+        // D-250 ③: 문 앞 건네기 흐름 — 돈은 건넬 때(PayHandover), 정산창·멈춤 없음.
+        if (DoorHandover && success)
+        {
+            HandoverPending = true;
+            OnRunEnded?.Invoke(this);
+            Debug.Log($"[RunController] 도착 — 문 앞 건네기로(정산창 안 띄움) 기본 보상 {LastRewardBase} 화물 {LastIntegrityPercent * 100f:F0}%");
+            return;
+        }
         if (Upgrade != null)
         {
             if (LastNet > 0) Upgrade.AddReward(LastNet);

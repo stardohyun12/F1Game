@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using PitCrew.PackBench;
 using UnityEngine;
 
 /// <summary>
@@ -452,6 +453,12 @@ public class OnFootRouteBot : MonoBehaviour
         if (!string.IsNullOrEmpty(GrabDir)) StartCoroutine(SlipShot());
         yield return CamTrace("타기");
         if (dir.State != OnFootDirector.Mode.InCart) { Stuck("카트 타기", "타기 안 됨"); Status = "FAIL board"; Finish(tStart); yield break; }
+        // D-250: 보관소 흐름 — 정비소에서 탄 건 자유 주행. 보관소에서 칠판 → 포장 → 다시 타야 출발.
+        if (dir.DepotFlow)
+        {
+            yield return DepotLeg(tStart);
+            if (Status.StartsWith("FAIL")) yield break;
+        }
         var mgr = FindFirstObjectByType<DeliveryManager>();
         var cargo = FindFirstObjectByType<CargoBox>();
         var tgt = mgr != null ? mgr.CurrentTarget : null;
@@ -463,7 +470,7 @@ public class OnFootRouteBot : MonoBehaviour
 
         // 4) 찻집까지 운전: 진입로(기능 1 점) → 차길 그래프 최단길 → 도착 감지
         float tDrive = Time.time;
-        foreach (var q in Driveway) { yield return Drive(new Step("drive", "진입로", q.x, q.y)); if (dir.Delivered) break; }
+        if (!dir.DepotFlow) foreach (var q in Driveway) { yield return Drive(new Step("drive", "진입로", q.x, q.y)); if (dir.Delivered) break; }
         Line($"진입로 끝 {P(dir.Car.transform.position)} 화물={Pct(cargo)}");
         if (!dir.Delivered)
         {
@@ -479,12 +486,182 @@ public class OnFootRouteBot : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.0f);              // EndRun 이 timeScale 0 으로 만든다 — 실시간으로 기다림
         yield return ShotUI("f2_06_arrival");
         Seg("운전(출발 → 도착)", ref tSeg);
+        if (dir.Handover != null)
+        {
+            yield return HandoverLeg();
+            Seg("문 앞 건네기", ref tSeg);
+            if (Status.StartsWith("FAIL")) { Finish(tStart); yield break; }
+        }
         Line($"결과: 총 {Time.time - tStart:F1}s(게임 시간, 도착 뒤 정지) 화물 상태 {Pct(cargo)}");
         Status = dir.Delivered ? "arrived" : "FAIL not arrived";
         Finish(tStart);
     }
 
-    /// <summary>먼 이음 검사: 두 점 사이를 0.8 m 마다 아래로 쏴서 전부 길 면(부모 RoadsV2)이고 높이가 직선에서 0.25 m 안이어야 한다. 길 사이 땅 틈(실측: (71,-61) 5 m 틈에서 카트가 걸림)을 건너는 이음을 뺀다.</summary>
+    /// <summary>
+    /// D-250 보관소 구간(과제 20261102-1515): 정비소 → 보관소 자유 주행 → 내림 → 셔터로 들어가 칠판 [E] → 보기 시점 캡처 → 대역 줄 E(안 맡아짐) → 첫 줄 맡기
+    /// → 걷는 중 전표 → 카운터 포장 [E] → 나와서 카트 「E 싣고 타기」. 끝나면 주문 출발 상태로 FirstOrderTail 의 찻집 운전이 이어진다.
+    /// </summary>
+    IEnumerator DepotLeg(float tStart)
+    {
+        var pl = dir.Player; var cam = pl.Cam; var ui = FindFirstObjectByType<DotScreenUI>();
+        float tSeg = Time.time;
+        Line($"보관소 흐름: 주문시작={dir.OrderStarted}(false 여야) 걸어갈 곳={(dir.WalkDest != null ? dir.WalkDest.Label : "없음")}");
+        if (dir.OrderStarted) stuck.Add("정비소 탑승이 주문 출발이 됨");
+        yield return new WaitForSecondsRealtime(1.2f);
+        yield return ShotUI("d_01_free_drive_to_depot");
+        Line($"  표식 {(ui != null ? ui.DestMode + " " + ui.DestDistM.ToString("F0") + "m" : "-")} 보이는 것={(ui != null ? ui.Visible : "-")}");
+
+        // 1) 운전: 진입로 → 차길 그래프 → 보관소 앞 길
+        foreach (var q in Driveway) yield return Drive(new Step("drive", "진입로", q.x, q.y));
+        Vector3 park = DebugPlaces.DepotCart;
+        var path = RoadPath(dir.Car.transform.position, park, out string pinfo);
+        Line("보관소 길찾기 " + pinfo);
+        if (path == null) { Stuck("보관소 길찾기", pinfo); Status = "FAIL depot path"; Finish(tStart); yield break; }
+        yield return Follow(path, null, () => Flat(dir.Car.transform.position - park).magnitude < 3f);
+        float w = 0f;
+        while (Mathf.Abs(dir.Car.CurrentSpeedMps) > 0.3f && w < 6f) { dir.Car.SetMoveInput(new Vector2(0f, -0.5f * Mathf.Sign(dir.Car.CurrentSpeedMps))); w += Time.deltaTime; yield return null; }
+        dir.Car.SetMoveInput(Vector2.zero);
+        yield return new WaitForSeconds(0.4f);
+        Line($"보관소 앞 도착 차={P(dir.Car.transform.position)} 자리까지 {Flat(dir.Car.transform.position - park).magnitude:F1}m 보조이동={LastAssists}");
+        Seg("정비소 → 보관소 운전", ref tSeg);
+        w = 0f;
+        while (dir.Prompt != "E 내리기" && w < 3f) { w += Time.deltaTime; yield return null; }
+        dir.SimInteract();
+        yield return new WaitForSeconds(1.0f);
+        if (dir.State != OnFootDirector.Mode.OnFoot) { Stuck("보관소 앞 내리기", $"안내='{dir.Prompt}'"); Status = "FAIL depot exit"; Finish(tStart); yield break; }
+        Line($"내림 {P(pl.transform.position)}");
+
+        // 2) 셔터로 들어가 칠판 앞
+        // 앞마당이 길보다 0.8~1.7 m 높다 → 동쪽 회색 경사로(x 277, DepotOrderSetup)로 올라가 셔터(x 268~271.5)로
+        foreach (var q in new[] { new Vector2(277.0f, -37.0f), new Vector2(277.0f, -33.6f), new Vector2(272.5f, -33.6f), new Vector2(270.3f, -32.6f), new Vector2(269.6f, -31.6f), new Vector2(268.9f, -29.4f) })
+        {
+            int before = stuck.Count;
+            yield return Walk(new Step("walk", "보관소 " + q, q.x, q.y));
+            Line($"  걸음 {q} → {P(pl.transform.position)}{(stuck.Count > before ? " (막힘→순간이동)" : "")}{stepNote}"); stepNote = "";
+        }
+        var board = dir.OrderBoard;
+        cam.LookAt(board.Center); yield return null; yield return null;
+        w = 0f;
+        while (!dir.Prompt.StartsWith("E 칠판") && w < 2f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("d_02_board_prompt");
+        if (!dir.Prompt.StartsWith("E 칠판")) { Stuck("칠판 보기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL board prompt"; Finish(tStart); yield break; }
+        dir.SimInteract();
+        Grab("board_open", 6, 0.1f);
+        w = 0f;
+        while ((dir.State != OnFootDirector.Mode.Board || dir.BoardMoving) && w < 3f) { w += Time.unscaledDeltaTime; yield return null; }
+        yield return new WaitForSecondsRealtime(0.2f);
+        yield return ShotUI("d_03_board_view");
+        Line($"칠판 보기: 상태={dir.State} 카메라={P(Camera.main.transform.position)} 칠판까지 {Vector3.Distance(Camera.main.transform.position, board.Center):F2}m 글:\n{board.Written}");
+        // 대역 줄(2번)은 못 맡는다
+        dir.SimBoardMove(1); yield return null; yield return null;
+        dir.SimInteract(); yield return null; yield return null;
+        yield return ShotUI("d_04_board_placeholder");
+        Line($"대역 줄 E: 선택={board.Selected} 맡음={dir.OrderPicked}(false 여야)");
+        if (dir.OrderPicked) stuck.Add("대역 줄이 맡아짐");
+        dir.SimBoardMove(-1); yield return null; yield return null;
+        dir.SimInteract(); yield return null; yield return null;
+        yield return ShotUI("d_05_board_picked");
+        Line($"첫 줄 E: 맡음={dir.OrderPicked} 주문={(dir.PickedJob != null ? dir.PickedJob.displayName : "-")}");
+        if (!dir.OrderPicked) { Stuck("주문 맡기", "안 됨"); Status = "FAIL pick"; Finish(tStart); yield break; }
+        w = 0f;
+        while (dir.State != OnFootDirector.Mode.OnFoot && w < 3f) { w += Time.unscaledDeltaTime; yield return null; }
+        yield return new WaitForSecondsRealtime(1.2f);                              // 목적지 시선 돌리기 끝까지
+        if (ui != null) ui.SimSlip = true;
+        yield return null; yield return null;
+        yield return ShotUI("d_06_slip_on_foot");
+        Line($"걷는 중 전표: 보이는 것={(ui != null ? ui.Visible : "-")} 표식={(ui != null ? ui.DestMode : "-")} 걸어갈 곳={(dir.WalkDest != null ? dir.WalkDest.Label : "없음")}");
+        if (ui != null) { if (!ui.Visible.Contains("slip")) stuck.Add("걷는 중 전표 안 보임"); ui.SimSlip = false; }
+        Seg("칠판", ref tSeg);
+
+        // 3) 카트 먼저 가 보기 = 안 됨은 아래(포장 전), 카운터 포장
+        yield return Walk(new Step("walk", "카운터 앞", 273.4f, -29.5f));
+        if (dir.PackSpot != null && dir.PackSpot.HasBench) { yield return BenchPack(tStart); if (Status.StartsWith("FAIL")) yield break; }
+        else
+        {
+        cam.LookAt(dir.PackSpot.Top - Vector3.up * 0.2f); yield return null; yield return null;   // Top = 칩 자리(윗면 +5 cm) — 상자 몸을 본다
+        w = 0f;
+        while (dir.Prompt != "E 포장하기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("d_07_pack_prompt");
+        if (dir.Prompt != "E 포장하기") { Stuck("포장", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL pack"; Finish(tStart); yield break; }
+        dir.SimInteract(); yield return null; yield return null;
+        yield return ShotUI("d_08_packed");
+        Line($"포장: Packed={dir.Packed} 안내='{dir.Prompt}'");
+        if (!dir.Packed) { Stuck("포장", "안 됨"); Status = "FAIL pack"; Finish(tStart); yield break; }
+        }
+
+        // 4) 나와서 카트에 싣고 타기
+        foreach (var q in new[] { new Vector2(272.6f, -31.8f), new Vector2(272.5f, -33.6f), new Vector2(277.0f, -33.6f), new Vector2(277.0f, -37.0f) })
+            yield return Walk(new Step("walk", "보관소 나가기 " + q, q.x, q.y));
+        Vector3 cp = dir.Car.transform.position, side = dir.Car.transform.right;
+        Vector3 beside = cp - side * 1.7f; if (Flat(beside - pl.transform.position).magnitude > Flat(cp + side * 1.7f - pl.transform.position).magnitude) beside = cp + side * 1.7f;
+        yield return Walk(new Step("walk", "카트 옆(보관소)", beside.x, beside.z));
+        cam.LookAt(CarAim());
+        w = 0f;
+        while (dir.Prompt != "E 싣고 타기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("d_09_load_prompt");
+        if (dir.Prompt != "E 싣고 타기") { Stuck("싣고 타기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL load"; Finish(tStart); yield break; }
+        dir.SimInteract();
+        yield return new WaitForSeconds(1.0f);
+        if (dir.State != OnFootDirector.Mode.InCart) { Stuck("싣고 타기", "타기 안 됨"); Status = "FAIL load"; Finish(tStart); yield break; }
+        Line($"싣고 탐: 주문시작={dir.OrderStarted} 상자 치움={(dir.PackSpot != null && (!dir.PackSpot.gameObject.activeSelf || dir.PackSpot.Taken))} 들기={dir.CarryingBox}(false 여야)");
+        if (dir.PackSpot != null && dir.PackSpot.HasBench)
+        {
+            var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
+            Line($"출발 화물 상태: 시나리오={PackScenario} 시작값={dir.StartIntegrity * 100f:F0}% 지금={(cargo != null ? (cargo.IntegrityPercent * 100f).ToString("F0") : "?")}% 포장예상={dir.PackSpot.StartIntegrity01 * 100f:F0}%");
+            if (dir.StartIntegrity < 0f) stuck.Add("출발 화물 상태에 포장 결과가 안 들어감");
+        }
+        Seg("보관소 안(칠판·포장·싣기)", ref tSeg);
+    }
+
+    /// <summary>D-251 보관소 작업대 시나리오(PackBench.BotRun: bare|bottom|full|flip). 정해진 값으로 바꿔 두 번 돌려 출발 화물 상태를 비교한다.</summary>
+    public static string PackScenario = "full";
+
+    /// <summary>
+    /// D-251: 작업대 [E] → 포장 시점(카메라·마우스 넘김 확인) → PackBench 봇(같은 코드 경로)으로 싸고 흔들기 → Q 물러나기(카메라 원위치 확인) → [E] 상자 들기.
+    /// </summary>
+    IEnumerator BenchPack(float tStart)
+    {
+        var pl = dir.Player; var cam = pl.Cam; var ps = dir.PackSpot;
+        cam.LookAt(ps.Top - Vector3.up * 0.15f); yield return null; yield return null;
+        float w = 0f;
+        while (!dir.Prompt.StartsWith("E 포장") && w < 2f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("d_07_pack_prompt");
+        if (!dir.Prompt.StartsWith("E 포장")) { Stuck("작업대", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL bench prompt"; Finish(tStart); yield break; }
+        var c = Camera.main.transform; Vector3 walkPos = c.position; Quaternion walkRot = c.rotation;
+        dir.SimInteract();
+        w = 0f;
+        while ((dir.State != OnFootDirector.Mode.Pack || dir.PackMoving) && w < 4f) { w += Time.unscaledDeltaTime; yield return null; }
+        yield return null;
+        var bench = ps.Bench;
+        float eyeErr = Vector3.Distance(c.position, ps.Eye.position), eyeAng = Quaternion.Angle(c.rotation, ps.Eye.rotation);
+        Line($"작업대 서기: 상태={dir.State} 눈 오차 {eyeErr * 100f:F1}cm {eyeAng:F1}° 작업대 켜짐={bench.enabled} 걷기 카메라 켜짐={pl.Cam.enabled} 몸 걷기={pl.enabled} 커서잠금={Cursor.lockState} 달걀판={(bench.Tray() != null)}");
+        if (dir.State != OnFootDirector.Mode.Pack || !bench.enabled || pl.Cam.enabled || eyeErr > 0.01f) stuck.Add("작업대 시점 전환");
+        yield return ShotUI("d_08a_bench_view");
+        PackBench.BotRun(PackScenario);
+        w = 0f;
+        while (!PackBench.BotStatus.Contains(" done ") && w < 40f) { w += Time.deltaTime; yield return null; }
+        Line($"작업대 봇({PackScenario}): {PackBench.BotStatus}");
+        yield return ShotUI("d_08b_bench_shaken");
+        if (!ps.Ready) { Stuck("작업대 포장", $"흔들어 본 상자 없음 Ready={ps.Ready} 상자={(bench.BenchBox != null ? bench.BenchBox.name : "-")}"); Status = "FAIL bench pack"; Finish(tStart); yield break; }
+        dir.SimPackLeave();
+        w = 0f;
+        while (dir.State != OnFootDirector.Mode.OnFoot && w < 5f) { w += Time.unscaledDeltaTime; yield return null; }
+        yield return null;
+        float backErr = Vector3.Distance(c.position, walkPos);
+        Line($"물러남: 상태={dir.State} 카메라 원위치 오차 {backErr * 100f:F1}cm 작업대 켜짐={bench.enabled} 걷기 카메라 켜짐={pl.Cam.enabled} 몸 걷기={pl.enabled} 커서잠금={Cursor.lockState} 커서캔버스={(c.Find("PackBenchCursor_Canvas") is Transform cc ? cc.gameObject.activeSelf.ToString() : "없음")}");
+        if (dir.State != OnFootDirector.Mode.OnFoot || bench.enabled || !pl.Cam.enabled || !pl.enabled || backErr > 0.05f) stuck.Add("작업대에서 걷기로 전환");
+        cam.LookAt(ps.Top - Vector3.up * 0.1f); yield return null; yield return null;
+        w = 0f;
+        while (dir.Prompt != "E 상자 들기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("d_08c_take_prompt");
+        if (dir.Prompt != "E 상자 들기") { Stuck("상자 들기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL take"; Finish(tStart); yield break; }
+        dir.SimInteract(); yield return null; yield return null;
+        Line($"상자 들기: 들기={dir.CarryingBox} Packed={dir.Packed} 예상 시작값={ps.StartIntegrity01 * 100f:F0}%");
+        yield return ShotUI("d_08d_carrying");
+        if (!dir.Packed || !dir.CarryingBox) { Stuck("상자 들기", "안 됨"); Status = "FAIL take"; Finish(tStart); yield break; }
+    }
+
+    /// <summary>먼 이음 검사:두 점 사이를 0.8 m 마다 아래로 쏴서 전부 길 면(부모 RoadsV2)이고 높이가 직선에서 0.25 m 안이어야 한다. 길 사이 땅 틈(실측: (71,-61) 5 m 틈에서 카트가 걸림)을 건너는 이음을 뺀다.</summary>
     static bool OnRoadAll(Vector3 a, Vector3 b)
     {
         int n = Mathf.Max(2, Mathf.CeilToInt(Vector3.Distance(a, b) / 0.8f));
@@ -565,13 +742,13 @@ public class OnFootRouteBot : MonoBehaviour
 
     /// <summary>순수 추종: 앞 4 + v·0.5 m 점을 향해 조향. 달걀이라 살살(곧은 길 8 m/s, 굽은 길 4.5 m/s, 스로틀 0.5). 막히면 1.5초 후진 후 다시.</summary>
     static int LastAssists;
-    IEnumerator Follow(List<Vector3> path, CargoBox cargo)
+    IEnumerator Follow(List<Vector3> path, CargoBox cargo, System.Func<bool> done = null)
     {
         LastAssists = 0;
         var car = dir.Car; int idx = 0; float t0 = Time.time, lastImprove = Time.time, bestLeft = float.MaxValue; int recover = 0, assists = 0;
         float total = 0f; for (int i = 1; i < path.Count; i++) total += Vector3.Distance(path[i], path[i - 1]);
         float nextLog = 0f;
-        while (!dir.Delivered)
+        while (!(done != null ? done() : dir.Delivered))
         {
             Transform c = car.transform; Vector3 cp = c.position;
             float bd = float.MaxValue;
@@ -632,6 +809,52 @@ public class OnFootRouteBot : MonoBehaviour
         Grab("drive_slip");
         yield return new WaitForSecondsRealtime(0.3f);
         ui.SimSlip = false;
+    }
+
+    /// <summary>
+    /// D-250 ③④ 문 앞 건네기(과제 20261102-1543): 멈춤 → E 내리기(15 m 안 도착) → 상자 들고 걷기 → 문 [E] 두드리기
+    /// → 문 열림·받는 사람 나옴 → 인사·반응 2줄 → 건넴 + 돈 글자. 캡처 h_01~h_06 = 도착→건넴 연속 시트.
+    /// </summary>
+    IEnumerator HandoverLeg()
+    {
+        var pl = dir.Player; var cam = pl.Cam; var ho = dir.Handover;
+        var ui = FindFirstObjectByType<DotScreenUI>();
+        float w = 0f;
+        while (Mathf.Abs(dir.Car.CurrentSpeedMps) > 0.3f && w < 6f) { dir.Car.SetMoveInput(new Vector2(0f, -0.5f * Mathf.Sign(dir.Car.CurrentSpeedMps))); w += Time.deltaTime; yield return null; }
+        dir.Car.SetMoveInput(Vector2.zero);
+        w = 0f;
+        while (dir.Prompt != "E 내리기" && w < 3f) { w += Time.deltaTime; yield return null; }
+        yield return ShotUI("h_01_arrive");
+        dir.SimInteract();
+        yield return CamTrace("내리기(찻집)");
+        if (dir.State != OnFootDirector.Mode.OnFoot || !dir.CarryingBox) { Stuck("건네기 내림", $"상태={dir.State} 상자={dir.CarryingBox} 안내='{dir.Prompt}'"); Status = "FAIL handover exit"; yield break; }
+        cam.LookAt(ho.DoorCenter);
+        yield return null;
+        yield return ShotUI("h_02_carry");
+        Vector3 front = (ho.standOut != null ? ho.standOut.position : ho.transform.position) + ho.transform.forward * 2.0f;
+        yield return Walk(new Step("walk", "문 앞", front.x, front.z));
+        cam.LookAt(ho.DoorCenter);
+        w = 0f;
+        while (dir.Prompt != "E 두드리기" && w < 2f) { w += Time.deltaTime; yield return null; }
+        if (dir.Prompt != "E 두드리기") { Stuck("두드리기", $"안내 '{dir.Prompt}' 사람={P(pl.transform.position)}"); Status = "FAIL knock prompt"; yield break; }
+        yield return ShotUI("h_03_knock_prompt");
+        dir.SimInteract();
+        yield return new WaitForSecondsRealtime(1.1f);
+        yield return ShotUI("h_04_door_open");
+        w = 0f;
+        while (!dir.InTalk && w < 3f) { w += Time.unscaledDeltaTime; yield return null; }
+        yield return new WaitForSecondsRealtime(0.6f);
+        yield return ShotUI("h_05_greet");
+        dir.SimInteract(); yield return null; yield return null;
+        yield return new WaitForSecondsRealtime(0.5f);
+        yield return ShotUI("h_06_given_money");
+        Line($"건넴: 단={dir.HandoverTierIdx}({(dir.HandoverTierIdx >= 0 ? HandoverTier.Name[dir.HandoverTierIdx] : "-")}) 돈={dir.HandoverMoney} 화면돈='{(ui != null ? ui.MoneyShown : "")}' 정산창={ResultPanel.ShowCount}회 자막='{dir.Subtitle}'");
+        w = 0f;
+        while (dir.InTalk && w < 3f) { dir.SimInteract(); yield return null; yield return null; w += 0.1f; }
+        yield return new WaitForSecondsRealtime(1.6f);
+        Line($"건네기 끝: 건넴={dir.HandedOver} 문열림={ho.IsOpen} 정산창={ResultPanel.ShowCount}회 timeScale={Time.timeScale}");
+        if (!dir.HandedOver) { Stuck("건네기", "HandedOver=false"); Status = "FAIL handover"; }
+        else if (ResultPanel.ShowCount > 0) { Stuck("건네기", "정산창이 떴다"); Status = "FAIL result panel"; }
     }
 
     /// <summary>UI(자막·안내·HUD) 까지 들어간 화면 캡처 — Shot() 은 카메라만 찍어서 화면 글이 안 나온다.</summary>
