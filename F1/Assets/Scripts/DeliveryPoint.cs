@@ -32,6 +32,8 @@ public class DeliveryPoint : MonoBehaviour
 
     public void SetActive(bool v) { IsActive = v; }
     public void SetCompleted() { IsCompleted = true; IsActive = false; }
+    /// <summary>다음 날 같은 배달지를 다시 쓴다(과제 20261102-1951 하루 끝 → 다음 날 아침).</summary>
+    public void ResetCompleted() { IsCompleted = false; IsActive = false; }
 
     void OnTriggerEnter(Collider other)
     {

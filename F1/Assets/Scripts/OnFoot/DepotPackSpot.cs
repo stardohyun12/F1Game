@@ -57,6 +57,53 @@ public class DepotPackSpot : MonoBehaviour
         if (cursor != null) cursor.enabled = false;
     }
 
+    // ── 다음 날 아침(과제 20261102-1951): 처음 모습 스냅샷 → 되돌리기 ──
+    struct Snap { public Transform t, parent; public Vector3 lp, ls; public Quaternion lr; public bool active; public Rigidbody rb; public bool kin, grav; }
+    readonly System.Collections.Generic.List<Snap> snaps = new System.Collections.Generic.List<Snap>();
+    readonly System.Collections.Generic.HashSet<Transform> snapSet = new System.Collections.Generic.HashSet<Transform>();
+
+    void Start()
+    {
+        // Awake(숨기기)와 PackBox.Build 가 다 끝난 첫 모습 — 작업대 하위 전부
+        foreach (var t in GetComponentsInChildren<Transform>(true))
+        {
+            var rb = t.GetComponent<Rigidbody>();
+            snaps.Add(new Snap { t = t, parent = t.parent, lp = t.localPosition, lr = t.localRotation, ls = t.localScale, active = t.gameObject.activeSelf,
+                                 rb = rb, kin = rb != null && rb.isKinematic, grav = rb != null && rb.useGravity });
+            snapSet.Add(t);
+        }
+    }
+
+    /// <summary>하루가 바뀌었다: 손·상자·재료를 처음 자리로, 만든 것(구긴 종이·뽁뽁이·라벨)은 치우고, 흔들기 결과·포장 상태를 비운다.</summary>
+    public void ResetForNextDay()
+    {
+        if (snaps.Count == 0) return;
+        if (bench != null) { SetPacking(false); bench.ResetForNextDay(); }
+        // 작업 중 새로 생긴 물건(뽁뽁이·구긴 신문지 등)
+        foreach (var it in FindObjectsByType<PackItem>(FindObjectsInactive.Include, FindObjectsSortMode.None)) if (!snapSet.Contains(it.transform)) Destroy(it.gameObject);
+        foreach (var sh in FindObjectsByType<BubbleSheet>(FindObjectsInactive.Include, FindObjectsSortMode.None)) if (!snapSet.Contains(sh.transform)) Destroy(sh.gameObject);
+        foreach (var t in GetComponentsInChildren<Transform>(true)) if (t != null && !snapSet.Contains(t) && t.parent != null) Destroy(t.gameObject);
+        foreach (var sn in snaps)
+        {
+            if (sn.t == null) continue;
+            if (sn.t.parent != sn.parent) sn.t.SetParent(sn.parent, false);
+            sn.t.localPosition = sn.lp; sn.t.localRotation = sn.lr; sn.t.localScale = sn.ls;
+            if (sn.t.gameObject.activeSelf != sn.active) sn.t.gameObject.SetActive(sn.active);
+            if (sn.rb != null)
+            {
+                sn.rb.isKinematic = sn.kin; sn.rb.useGravity = sn.grav;
+                if (!sn.kin) { sn.rb.linearVelocity = Vector3.zero; sn.rb.angularVelocity = Vector3.zero; }
+            }
+        }
+        Physics.SyncTransforms();
+        foreach (var b in GetComponentsInChildren<PackBox>(true)) b.ResetForNextDay();
+        Taken = false; hasResult = false; resultBox = null; resultOpenCount = 0; result = default;
+        StartIntegrity01 = 1f; packedLegacy = false;
+        if (packedMark != null) packedMark.SetActive(false);
+        if (cargo != null) cargo.SetActive(false);
+        gameObject.SetActive(true);
+    }
+
     void OnEnable() { PackBench.Shaken += OnShaken; }
     void OnDisable() { PackBench.Shaken -= OnShaken; }
 

@@ -14,7 +14,7 @@ using UnityEngine.UI;
 /// 글꼴: Galmuri11/9(OFL, Assets/UI/Fonts/Galmuri) — 가져오기 설정 Hinted Raster = 안티앨리어싱 없음. 아트 스프라이트 슬롯은 아래 *Sprite 필드(비면 코드 임시 모양).
 /// </summary>
 [DefaultExecutionOrder(200)]
-public class DotScreenUI : MonoBehaviour
+public partial class DotScreenUI : MonoBehaviour
 {
     [SerializeField] OnFootDirector director;
     [Tooltip("본문 글꼴(Galmuri11, 12px).")]
@@ -101,6 +101,8 @@ public class DotScreenUI : MonoBehaviour
 
     /// <summary>본문 글꼴(Galmuri11) — 개발 디버그 창(DebugWindow)이 같은 글꼴을 쓴다.</summary>
     public Font BodyFont => font;
+    /// <summary>작은 글꼴(Galmuri9, 10px) — 방 달력 숫자가 같은 글꼴을 쓴다.</summary>
+    public Font SmallFont => smallFont;
 
     /// <summary>QA·봇이 읽는 것 — 지금 보이는 요소 이름들.</summary>
     public string Visible { get; private set; } = "";
@@ -233,6 +235,7 @@ public class DotScreenUI : MonoBehaviour
         mapTex = new Texture2D(MapN, MapN, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Map" };
         slipMap = Img("Map", Sprite.Create(mapTex, new Rect(0, 0, MapN, MapN), Vector2.zero, 100f), Color.white, MapN, MapN, false, slip.transform);
 
+        BuildDiary();
         HideAll();
         Debug.Log($"[DotScreenUI] 캔버스 {W}×{H} (RT={(cam.targetTexture != null ? cam.targetTexture.width + "×" + cam.targetTexture.height : "없음")}) font={(font != null ? font.name : "없음")}");
     }
@@ -397,6 +400,7 @@ public class DotScreenUI : MonoBehaviour
         else if (director != null && st == OnFootDirector.Mode.InCart && director.Prompt.Length > 0) ChipUI(vis);
         DestUI(DestTarget(st), vis);
         if (director != null && st == OnFootDirector.Mode.OnFoot) MoneyUI(vis);
+        if (director != null && st == OnFootDirector.Mode.Diary) DiaryUI(vis); else MorningUI(vis);
         Visible = vis.ToString().Trim();
     }
 
@@ -434,6 +438,7 @@ public class DotScreenUI : MonoBehaviour
     {
         foreach (var g in new Graphic[] { dot, arrowImg, warnBox, chipBox, bubble, tail, nameTab, slip, hintText, destFlag, destDots, destEdge, destEdgeBox, destChip, distBox, moneyBox })
             if (g != null && g.gameObject.activeSelf) g.gameObject.SetActive(false);
+        if (diaryRoot != null && diaryRoot.activeSelf) diaryRoot.SetActive(false);
     }
 
     // ── D-252 목적지 표식 ──

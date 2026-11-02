@@ -81,6 +81,7 @@ public class DeliveryManager : MonoBehaviour, IDeliveryManager
             points[i].Bind(this, points[i].Label);
             bool used = route.Contains(points[i]);
             points[i].gameObject.SetActive(used);
+            if (used) points[i].ResetCompleted();                    // 하루가 바뀌어 같은 배달지를 또 도는 경우
             points[i].SetActive(used && route.Count > 0 && points[i] == route[0]);
         }
     }

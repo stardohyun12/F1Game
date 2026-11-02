@@ -165,6 +165,16 @@ namespace PitCrew.PackBench
 
         public void SnapLid() => SetLidImmediate(IsClosed ? 0f : 1f);
 
+        /// <summary>다음 날 아침(과제 20261102-1951): 선반에 막 놓인 새 상자처럼 — 뚜껑 처음 상태·테이프·라벨 없음·연 횟수 0. 위치는 부르는 쪽(DepotPackSpot)이 되돌린다.</summary>
+        public void ResetForNextDay()
+        {
+            ClearTape();
+            if (labelGo != null) { Destroy(labelGo); labelGo = null; }
+            OpenCount = 0;
+            IsClosed = startClosed;
+            SetLidImmediate(IsClosed ? 0f : 1f);
+        }
+
         // ── 테이프 ──
         /// <summary>뚜껑 위 이음선(앞뒤 가운데 줄, 상자 X 방향)에 world 점을 투영한 값(0~1). 뚜껑 위가 아니면 false.</summary>
         public bool SeamParam(Vector3 world, out float t)

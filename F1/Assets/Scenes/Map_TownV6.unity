@@ -274425,6 +274425,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513465795}
   m_Mesh: {fileID: 822284207}
+--- !u!1 &513532240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513532242}
+  - component: {fileID: 513532241}
+  m_Layer: 0
+  m_Name: Room_BedSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &513532241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513532240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29618c4984b160e4dbade54f1487b070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::RoomBed
+  center: {x: 185.86914, y: 28.830002, z: -62.549465}
+  size: {x: 1.2741814, y: 0.72000074, z: 2.0853412}
+--- !u!4 &513532242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513532240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 185.86914, y: 28.830002, z: -62.549465}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1927327246}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513890526
 GameObject:
   m_ObjectHideFlags: 0
@@ -393656,6 +393702,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4985636051649254327, guid: 1bc2c2191bbd0794d870ba80bb88cd27, type: 3}
   m_PrefabInstance: {fileID: 742697923}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &742969503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 742969506}
+  - component: {fileID: 742969504}
+  - component: {fileID: 742969505}
+  m_Layer: 0
+  m_Name: Room_Calendar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &742969504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742969503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadd62f6d1676df4e84f57b95af7cbae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PitCrew::RoomCalendar
+  font: {fileID: 0}
+  titleFont: {fileID: 0}
+  size: {x: 0.46, y: 0.58}
+  viewFill: 0.8
+--- !u!65 &742969505
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742969503}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.46, y: 0.58, z: 0.03}
+  m_Center: {x: 0, y: 0, z: -0.01}
+--- !u!4 &742969506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742969503}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.64278764, z: -0, w: 0.7660445}
+  m_LocalPosition: {x: 188.98372, y: 29.6, z: -62.139072}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1927327246}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &743426294
 Mesh:
   m_ObjectHideFlags: 0
@@ -1023263,6 +1023379,9 @@ MonoBehaviour:
   arriveM: 15
   moneySec: 2.6
   knockWaitSec: 0.9
+  calendar: {fileID: 742969504}
+  bed: {fileID: 513532241}
+  diaryMinSec: 0.8
   talkFocusSec: 0.5
   talkFocusDrop: 0.05
   destFocusSec: 0.5
@@ -1023285,6 +1023404,8 @@ Transform:
   - {fileID: 1222887635}
   - {fileID: 1054955446}
   - {fileID: 791966174}
+  - {fileID: 742969506}
+  - {fileID: 513532242}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1927327247
