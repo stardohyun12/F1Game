@@ -1829,3 +1829,7 @@ Unity 실측: 후처리+낮 무드(v2)만으론 목표의 3할, **구역별 팔�
 ## D-259 (11/02 20:2x) Codex 한도로 아트 후보
 도현 원문: "또한 chatgpt한도 초기화 얼마 안남아서 그거 이용해서 아트좀 만들어놔 필요한거"
 - Codex 주간 한도 초기화 11/04 19:40. queue/art(art_queue.sh, Codex·Blender bpy·CC0, AI 생성 금지): ① 택배 보관소 소품 ② 포장 재료 ③ 노을 자리 소품·실루엣 ④ 전표·일기장·달력. F1/Assets 미투입, 시트만 → BATCH 확인.
+
+## D-260 (11/02 20:4x) 끝나면 회고
+도현 원문: "또한 지금 워크플로우 끝나면 지금까지 한거 보고 개선점 찾아보자 이러한 제작방식과 ai와 컴퓨터 사용방식에"
+- scripts/retro_when_idle.sh: 에디터·backlog·아트 줄 다 비면 research(Opus) 회고 → docs/retro/2026-11-02-retro.md → PD 정리.
