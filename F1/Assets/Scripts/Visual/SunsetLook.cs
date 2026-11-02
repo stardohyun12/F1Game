@@ -34,6 +34,9 @@ public sealed class SunsetLook : MonoBehaviour
         [Header("바다(DuskSea 색) — 노을 프리셋은 seaMaterial 값을 그대로 쓴다")]
         public Color seaShallow, seaDeep, seaCoolCol, seaGlow, seaHot, seaCore, seaFoam, seaCrest, seaRipple;
         public Vector4 seaCool, seaLv, seaSceneRefl;
+        [Header("D-236 10판 — 오후·9판은 0(끔)")]
+        [Tooltip("A7 나무 어두운 쪽을 들어올릴 실루엣 색(rgb), a = 섞음")] public Color silhouette;
+        [Tooltip("물 밝기 단·해 반사를 해 빛길 쪽으로 모으기: x 세기 0..1 · y 빛길 반폭°(방위) · z 빛길 안 밝기 더함 배수 · w 0")] public Vector4 seaPathFocus;
 
         public static Palette Lerp(Palette a, Palette b, float t)
         {
@@ -54,6 +57,7 @@ public sealed class SunsetLook : MonoBehaviour
                 seaGlow = Color.Lerp(a.seaGlow, b.seaGlow, t), seaHot = Color.Lerp(a.seaHot, b.seaHot, t), seaCore = Color.Lerp(a.seaCore, b.seaCore, t), seaFoam = Color.Lerp(a.seaFoam, b.seaFoam, t),
                 seaCrest = Color.Lerp(a.seaCrest, b.seaCrest, t), seaRipple = Color.Lerp(a.seaRipple, b.seaRipple, t),
                 seaCool = Vector4.Lerp(a.seaCool, b.seaCool, t), seaLv = Vector4.Lerp(a.seaLv, b.seaLv, t), seaSceneRefl = Vector4.Lerp(a.seaSceneRefl, b.seaSceneRefl, t),
+                silhouette = Color.Lerp(a.silhouette, b.silhouette, t), seaPathFocus = new Vector4(Mathf.Lerp(a.seaPathFocus.x, b.seaPathFocus.x, t), b.seaPathFocus.y, b.seaPathFocus.z, b.seaPathFocus.w),
             };
         }
     }
@@ -114,6 +118,20 @@ public sealed class SunsetLook : MonoBehaviour
     public Vector4 skyClouds = new Vector4(0.24f, 0.36f, 0.02f, 0.15f);
     [Tooltip("x 뭉게 바람 m/s · y 방향°(0 = +z 쪽으로) · z 새털 m/s · w 방향°")]
     public Vector4 skyWind = new Vector4(7f, 255f, 11f, 275f);
+    [Header("D-236 10판 — 9판 값 위에 얹는 변경(9판 필드는 위에 그대로)")]
+    [Tooltip("켜면 9판 값 그대로(10판 변경 전부 끔). 메뉴 PitCrew/Look/노을 9판 값으로")]
+    public bool v9;
+    [System.Serializable]
+    public class Sunset10
+    {
+        [Tooltip("보이는 해 방위° — 빛 방향·물 빛길도 따라감(9판 192)")] public float sunAzimuth = 190f;
+        [Tooltip("보이는 해 고도° — 원반 아래끝이 수평선 바로 위(9판 3.2)")] public float skySunElevation = 3.3f;
+        [Tooltip("원반°·빛무리 1단°·2단°·세기(9판 1.9, 4.2, 9.0, 0.55)")] public Vector4 sunHalo = new Vector4(2.9f, 5.6f, 11.0f, 0.55f);
+        [Tooltip("해 둘레 화면 빛무리(9판 0.10, 0.22, 0.05, 0.022)")] public Vector4 screenGlow = new Vector4(0.14f, 0.28f, 0.05f, 0.022f);
+        [Tooltip("나무 실루엣 남보라(rgb sRGB), a 섞음")] public Color silhouette = new Color(0.21f, 0.17f, 0.31f, 0.8f);
+        [Tooltip("물 빛길로 모으기 x 세기 · y 반폭° · z 안쪽 더함 · w 이 거리(m)부터 먼 물은 안 모음(빛길 경계 세로선 방지)")] public Vector4 seaPathFocus = new Vector4(0.4f, 20f, 0.2f, 160f);
+    }
+    public Sunset10 v10 = new Sunset10();
     /// <summary>QA 전용: true 면 D-244 이전(9판) 하늘로 — 같은 Play 안 전/후 비교 캡처용. 저장 안 됨.</summary>
     public static bool DebugOldSky;
     [Tooltip("D-236 노을 때만 켜는 수평선 연출물(먼 곶·섬·등대·배 실루엣, DuskBackdrop). 끄면 숨김.")]
@@ -161,7 +179,8 @@ public sealed class SunsetLook : MonoBehaviour
         BandsId = Shader.PropertyToID("_PCDuskBands"), HaloId = Shader.PropertyToID("_PCDuskHalo"), StripsId = Shader.PropertyToID("_PCDuskStrips"),
         RimId = Shader.PropertyToID("_PCDuskRim"), RimColId = Shader.PropertyToID("_PCDuskRimCol"), RimHzId = Shader.PropertyToID("_PCDuskRimHz"),
         SunScrId = Shader.PropertyToID("_PCDuskSunScr"), ScrGlowId = Shader.PropertyToID("_PCDuskScrGlow"), ScrGlowColId = Shader.PropertyToID("_PCDuskScrGlowCol"),
-        SkyLifeId = Shader.PropertyToID("_PCSkyLife"), SkyCloudsId = Shader.PropertyToID("_PCSkyClouds"), SkyWindId = Shader.PropertyToID("_PCSkyWind");
+        SkyLifeId = Shader.PropertyToID("_PCSkyLife"), SkyCloudsId = Shader.PropertyToID("_PCSkyClouds"), SkyWindId = Shader.PropertyToID("_PCSkyWind"),
+        SilId = Shader.PropertyToID("_PCDuskSil");   // D-236 10판 A7 나무 실루엣(SceneA7Lit)
 
     public static SunsetLook Find() => FindFirstObjectByType<SunsetLook>();
 
@@ -201,13 +220,13 @@ public sealed class SunsetLook : MonoBehaviour
         if (backdrop != null) backdrop.SetActive(false);
         SetHidden(false);
         SetRimOverlay(false);
-        Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero);
+        Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); Shader.SetGlobalVector(SilId, Vector4.zero);
         if (a7 == null) a7 = FindFirstObjectByType<A7ShadeGlobals>(); if (a7 != null) a7.Apply();
         captured = false;
     }
 
-    void OnEnable() { if (captured) Apply(); else { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); } }
-    void OnDisable() { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); }
+    void OnEnable() { if (captured) Apply(); else { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); Shader.SetGlobalVector(SilId, Vector4.zero); } }
+    void OnDisable() { Shader.SetGlobalVector(DuskId, Vector4.zero); Shader.SetGlobalVector(SkyCloudsId, Vector4.zero); Shader.SetGlobalVector(SilId, Vector4.zero); }
     void Update() { if (captured) PushGlobals(); }   // 다른 컴포넌트가 전역을 덮어도 매 프레임 다시
 
     static Vector3 Dir(float az, float el)
@@ -221,7 +240,7 @@ public sealed class SunsetLook : MonoBehaviour
     static readonly int SeaShallowId = Shader.PropertyToID("_ShallowCol"), SeaDeepId = Shader.PropertyToID("_DeepCol"), SeaCoolColId = Shader.PropertyToID("_CoolCol"),
         SeaGlowId = Shader.PropertyToID("_Glow"), SeaHotId = Shader.PropertyToID("_Hot"), SeaCoreId = Shader.PropertyToID("_Core"), SeaFoamId = Shader.PropertyToID("_Foam"),
         SeaCrestId = Shader.PropertyToID("_CrestCol"), SeaRippleId = Shader.PropertyToID("_RippleCol"), SeaCoolId = Shader.PropertyToID("_Cool"), SeaLvId = Shader.PropertyToID("_Lv"),
-        SeaReflId = Shader.PropertyToID("_SceneRefl"), SeaDispId = Shader.PropertyToID("_Disp");
+        SeaReflId = Shader.PropertyToID("_SceneRefl"), SeaDispId = Shader.PropertyToID("_Disp"), SeaFocusId = Shader.PropertyToID("_PathFocus");
     MaterialPropertyBlock seaMpb;
     [Tooltip("D-239 촘촘한 바다 격자가 카메라를 따라갈 때의 걸음(m). 원점 = 처음 놓인 자리(낚시 자리) → 거기선 9판과 같은 격자")]
     public float seaNearStep = 4f;
@@ -242,6 +261,12 @@ public sealed class SunsetLook : MonoBehaviour
             p.seaShallow = m.GetColor(SeaShallowId); p.seaDeep = m.GetColor(SeaDeepId); p.seaCoolCol = m.GetColor(SeaCoolColId); p.seaGlow = m.GetColor(SeaGlowId);
             p.seaHot = m.GetColor(SeaHotId); p.seaCore = m.GetColor(SeaCoreId); p.seaFoam = m.GetColor(SeaFoamId); p.seaCrest = m.GetColor(SeaCrestId); p.seaRipple = m.GetColor(SeaRippleId);
             p.seaCool = m.GetVector(SeaCoolId); p.seaLv = m.GetVector(SeaLvId); p.seaSceneRefl = m.GetVector(SeaReflId);
+        }
+        p.silhouette = Color.clear; p.seaPathFocus = Vector4.zero;
+        if (!v9 && v10 != null)   // D-236 10판: 해 크게·수평선 바로 위, 나무 남보라, 물 빛길로 모으기
+        {
+            p.sunAzimuth = v10.sunAzimuth; p.skySunElevation = v10.skySunElevation; p.sunHalo = v10.sunHalo; p.screenGlow = v10.screenGlow;
+            p.silhouette = v10.silhouette; p.seaPathFocus = v10.seaPathFocus;
         }
         return p;
     }
@@ -308,7 +333,7 @@ public sealed class SunsetLook : MonoBehaviour
             seaMpb.SetColor(SeaGlowId, P.seaGlow); seaMpb.SetColor(SeaHotId, P.seaHot); seaMpb.SetColor(SeaCoreId, P.seaCore);
             seaMpb.SetColor(SeaFoamId, P.seaFoam); seaMpb.SetColor(SeaCrestId, P.seaCrest); seaMpb.SetColor(SeaRippleId, P.seaRipple);
             seaMpb.SetVector(SeaCoolId, P.seaCool); seaMpb.SetVector(SeaLvId, P.seaLv); seaMpb.SetVector(SeaReflId, P.seaSceneRefl);
-            seaMpb.SetVector(SeaDispId, disp);
+            seaMpb.SetVector(SeaDispId, disp); seaMpb.SetVector(SeaFocusId, P.seaPathFocus);
             r.SetPropertyBlock(seaMpb);
         }
     }
@@ -351,6 +376,7 @@ public sealed class SunsetLook : MonoBehaviour
         Shader.SetGlobalVector(SkyLifeId, life ? P.skyLife : Vector4.zero);
         Shader.SetGlobalVector(SkyCloudsId, life ? new Vector4(P.skyClouds.x, P.skyClouds.y, P.skyClouds.z, P.skyClouds.w * k) : Vector4.zero);
         Shader.SetGlobalVector(SkyWindId, P.skyWind);
+        var sl = P.silhouette.linear; Shader.SetGlobalVector(SilId, new Vector4(sl.r, sl.g, sl.b, P.silhouette.a * k));
         Shader.SetGlobalVector(RimId, k > 0f ? P.rim : Vector4.zero); Shader.SetGlobalColor(RimColId, P.rimColor.linear);
         SetRimOverlay(k > 0f && P.rim.x > .5f);
         PushSea(P, k);

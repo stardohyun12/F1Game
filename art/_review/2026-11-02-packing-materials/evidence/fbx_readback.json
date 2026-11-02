@@ -51,13 +51,45 @@
         0.5240000486373901,
         0.3240000734412156
       ],
-      "triangles": 108,
+      "triangles": 156,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
       "textures": [
         {
           "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft_edge.png",
           "exists": true
         },
         {
@@ -93,14 +125,244 @@
           "exists": true
         }
       ],
-      "mesh_count": 9,
+      "mesh_count": 13,
       "id": "box_l",
       "max_bounds_error_m": 4.2685218915039513e-08,
+      "hinge_motion": [
+        {
+          "side": "Back",
+          "axis_blender": "X",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                0.1312500536441803,
+                0.32100000977516174
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                0.14655466377735138,
+                0.38238340616226196
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                0.18888559937477112,
+                0.4293966591358185
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                0.24833297729492188,
+                0.45103371143341064
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                0.3109799027442932,
+                0.4422292709350586
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Front",
+          "axis_blender": "X",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                -0.13124993443489075,
+                0.32100000977516174
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                -0.14655452966690063,
+                0.38238343596458435
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                -0.18888545036315918,
+                0.42939668893814087
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                -0.24833282828330994,
+                0.4510337710380554
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -7.450580596923828e-09,
+                -0.3109797239303589,
+                0.44222933053970337
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Left",
+          "axis_blender": "Y",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -0.13124999403953552,
+                5.1320014904376876e-08,
+                0.3149999976158142
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -0.1465545892715454,
+                6.132064100938805e-08,
+                0.37638339400291443
+              ],
+              "formula_error_m": 3.1435504474910454e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -0.18888552486896515,
+                6.898007143263385e-08,
+                0.42339664697647095
+              ],
+              "formula_error_m": 2.3106756350548726e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -0.2483329027891159,
+                7.250520184243214e-08,
+                0.4450337290763855
+              ],
+              "formula_error_m": 2.118518727046882e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -0.31097981333732605,
+                7.107077237833437e-08,
+                0.43622928857803345
+              ],
+              "formula_error_m": 1.9750757483691542e-08,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Right",
+          "axis_blender": "Y",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                0.13124999403953552,
+                5.1320014904376876e-08,
+                0.3149999976158142
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                0.1465545892715454,
+                6.132064100938805e-08,
+                0.37638339400291443
+              ],
+              "formula_error_m": 3.1435504474910454e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                0.18888552486896515,
+                6.898007143263385e-08,
+                0.42339664697647095
+              ],
+              "formula_error_m": 2.3106756350548726e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                0.2483329027891159,
+                7.250520184243214e-08,
+                0.4450337290763855
+              ],
+              "formula_error_m": 2.118518727046882e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                0.31097981333732605,
+                7.107077237833437e-08,
+                0.43622928857803345
+              ],
+              "formula_error_m": 1.9750757483691542e-08,
+              "pass": true
+            }
+          ]
+        }
+      ],
       "dedicated_checks": {
         "root_zero": true,
         "four_independent_hinges": true,
         "hinges_on_rim": true,
-        "hinge_rotates_leaf": true
+        "all_four_hinges_open_outward": true
       },
       "pass": true
     },
@@ -120,13 +382,45 @@
         0.33900001645088196,
         0.17400006731174855
       ],
-      "triangles": 108,
+      "triangles": 156,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
       "textures": [
         {
           "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft_edge.png",
           "exists": true
         },
         {
@@ -162,14 +456,244 @@
           "exists": true
         }
       ],
-      "mesh_count": 9,
+      "mesh_count": 13,
       "id": "box_m",
       "max_bounds_error_m": 2.9802322387695312e-08,
+      "hinge_motion": [
+        {
+          "side": "Back",
+          "axis_blender": "X",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                0.0,
+                0.08500002324581146,
+                0.17099998891353607
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                0.0,
+                0.09489095956087112,
+                0.2106703370809555
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                0.0,
+                0.12224823236465454,
+                0.24105365574359894
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                0.0,
+                0.16066738963127136,
+                0.2550370693206787
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                0.0,
+                0.20115429162979126,
+                0.2493470013141632
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Front",
+          "axis_blender": "X",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                0.0,
+                -0.08499996364116669,
+                0.17100001871585846
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                0.0,
+                -0.09489089250564575,
+                0.2106703668832779
+              ],
+              "formula_error_m": 7.450580596923828e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                0.0,
+                -0.12224815785884857,
+                0.24105370044708252
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                0.0,
+                -0.1606673002243042,
+                0.2550371289253235
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                0.0,
+                -0.2011542022228241,
+                0.24934707581996918
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Left",
+          "axis_blender": "Y",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -0.08499999344348907,
+                2.6881913584020367e-08,
+                0.16500000655651093
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -0.09489092230796814,
+                3.334503517748999e-08,
+                0.20467035472393036
+              ],
+              "formula_error_m": 6.463121485559679e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -0.12224819511175156,
+                3.829510575314998e-08,
+                0.23505368828773499
+              ],
+              "formula_error_m": 1.3629824394494612e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -0.16066734492778778,
+                4.057329405782184e-08,
+                0.24903711676597595
+              ],
+              "formula_error_m": 1.3691380388460977e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -0.20115424692630768,
+                3.964626671404403e-08,
+                0.24334704875946045
+              ],
+              "formula_error_m": 1.2764352959056945e-08,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Right",
+          "axis_blender": "Y",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                0.08499999344348907,
+                2.6881913584020367e-08,
+                0.16500000655651093
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                0.09489092230796814,
+                3.334503517748999e-08,
+                0.20467035472393036
+              ],
+              "formula_error_m": 6.463121485559679e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                0.12224819511175156,
+                3.829510575314998e-08,
+                0.23505368828773499
+              ],
+              "formula_error_m": 1.3629824394494612e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                0.16066734492778778,
+                4.057329405782184e-08,
+                0.24903711676597595
+              ],
+              "formula_error_m": 1.3691380388460977e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                0.20115424692630768,
+                3.964626671404403e-08,
+                0.24334704875946045
+              ],
+              "formula_error_m": 1.9620736769765225e-08,
+              "pass": true
+            }
+          ]
+        }
+      ],
       "dedicated_checks": {
         "root_zero": true,
         "four_independent_hinges": true,
         "hinges_on_rim": true,
-        "hinge_rotates_leaf": true
+        "all_four_hinges_open_outward": true
       },
       "pass": true
     },
@@ -189,13 +713,45 @@
         0.34400002658367157,
         0.12400005579812401
       ],
-      "triangles": 108,
+      "triangles": 156,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
       "textures": [
         {
           "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft_edge.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft_edge.png",
           "exists": true
         },
         {
@@ -231,14 +787,244 @@
           "exists": true
         }
       ],
-      "mesh_count": 9,
+      "mesh_count": 13,
       "id": "box_s",
       "max_bounds_error_m": 2.9802322387695312e-08,
+      "hinge_motion": [
+        {
+          "side": "Back",
+          "axis_blender": "X",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                0.08625002205371857,
+                0.12099998444318771
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                0.09628727287054062,
+                0.16125717759132385
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                0.12404924631118774,
+                0.19208994507789612
+              ],
+              "formula_error_m": 1.4901161193847656e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                0.16303671896457672,
+                0.20628023147583008
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                0.20412254333496094,
+                0.20050597190856934
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Front",
+          "axis_blender": "X",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                -0.08624999225139618,
+                0.1210000142455101
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                -0.09628723561763763,
+                0.16125720739364624
+              ],
+              "formula_error_m": 7.450580596923828e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                -0.12404918670654297,
+                0.1920899897813797
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                -0.16303665935993195,
+                0.20628029108047485
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -3.725290298461914e-09,
+                -0.20412249863147736,
+                0.2005060464143753
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Left",
+          "axis_blender": "Y",
+          "degrees": -112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                -0.08625000715255737,
+                1.8735878626330305e-08,
+                0.11500000208616257
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                -0.09628725051879883,
+                2.5294607297610128e-08,
+                0.1552571952342987
+              ],
+              "formula_error_m": 6.5587287075783076e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                -0.12404921650886536,
+                3.0317906407617556e-08,
+                0.18608996272087097
+              ],
+              "formula_error_m": 1.3771510992199806e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                -0.16303668916225433,
+                3.2629795754246516e-08,
+                0.20028024911880493
+              ],
+              "formula_error_m": 1.3893917356041563e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                -0.20412251353263855,
+                3.168905493566854e-08,
+                0.19450601935386658
+              ],
+              "formula_error_m": 1.295317616724849e-08,
+              "pass": true
+            }
+          ]
+        },
+        {
+          "side": "Right",
+          "axis_blender": "Y",
+          "degrees": 112,
+          "samples": [
+            {
+              "fraction_open": 0,
+              "leaf_center": [
+                0.08625000715255737,
+                1.8735878626330305e-08,
+                0.11500000208616257
+              ],
+              "formula_error_m": 0.0,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.25,
+              "leaf_center": [
+                0.09628725051879883,
+                2.5294607297610128e-08,
+                0.1552571952342987
+              ],
+              "formula_error_m": 6.5587287075783076e-09,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.5,
+              "leaf_center": [
+                0.12404921650886536,
+                3.0317906407617556e-08,
+                0.18608996272087097
+              ],
+              "formula_error_m": 1.3771510992199806e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 0.75,
+              "leaf_center": [
+                0.16303668916225433,
+                3.2629795754246516e-08,
+                0.20028024911880493
+              ],
+              "formula_error_m": 1.3893917356041563e-08,
+              "pass": true
+            },
+            {
+              "fraction_open": 1,
+              "leaf_center": [
+                0.20412251353263855,
+                3.168905493566854e-08,
+                0.19450601935386658
+              ],
+              "formula_error_m": 1.9744097288678598e-08,
+              "pass": true
+            }
+          ]
+        }
+      ],
       "dedicated_checks": {
         "root_zero": true,
         "four_independent_hinges": true,
         "hinges_on_rim": true,
-        "hinge_rotates_leaf": true
+        "all_four_hinges_open_outward": true
       },
       "pass": true
     },
@@ -258,21 +1044,25 @@
         0.1600000411272049,
         0.320000022649765
       ],
-      "triangles": 512,
+      "triangles": 1280,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
       "textures": [
         {
-          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_rgba.png",
-          "exists": true
-        },
-        {
-          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_rgba.png",
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_albedo.png",
           "exists": true
         },
         {
           "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_normal.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_roughness.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_albedo.png",
           "exists": true
         },
         {
@@ -356,7 +1146,7 @@
         0.30000001192092896,
         0.06500004604458809
       ],
-      "triangles": 1724,
+      "triangles": 1984,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
@@ -621,7 +1411,7 @@
         0.2200000137090683,
         0.06000003591179848
       ],
-      "triangles": 352,
+      "triangles": 880,
       "nonmanifold": [],
       "negative_volume": [],
       "missing_uv": [],
@@ -698,14 +1488,25 @@
         0.07000000834465027
       ],
       "single_mesh": true,
-      "pass": true
+      "pass": true,
+      "raw_fbx_mesh_dimensions_y_up": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "raw_fbx_mesh_center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_mesh_axis_pass": true
     },
     {
       "id": "bubble_roll",
       "unit_dimensions_unity": [
         1.0,
-        2.000000238418579,
-        1.0000003576278687
+        2.0,
+        1.0000001192092896
       ],
       "existing_root_scale": [
         0.16,
@@ -714,11 +1515,22 @@
       ],
       "result_m": [
         0.16,
-        0.32000003814697264,
-        0.16000005722045899
+        0.32,
+        0.16000001907348632
       ],
       "single_mesh": true,
-      "pass": true
+      "pass": true,
+      "raw_fbx_mesh_dimensions_y_up": [
+        1.0,
+        2.0,
+        1.0
+      ],
+      "raw_fbx_mesh_center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_mesh_axis_pass": true
     },
     {
       "id": "label_stack",
@@ -738,7 +1550,18 @@
         0.07000000834465027
       ],
       "single_mesh": true,
-      "pass": true
+      "pass": true,
+      "raw_fbx_mesh_dimensions_y_up": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "raw_fbx_mesh_center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_mesh_axis_pass": true
     },
     {
       "id": "newspaper_stack",
@@ -758,14 +1581,25 @@
         0.2200000262260437
       ],
       "single_mesh": true,
-      "pass": true
+      "pass": true,
+      "raw_fbx_mesh_dimensions_y_up": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "raw_fbx_mesh_center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_mesh_axis_pass": true
     },
     {
       "id": "tape_roll",
       "unit_dimensions_unity": [
         1.0,
-        2.000000238418579,
-        1.0000003576278687
+        2.0,
+        1.0000001192092896
       ],
       "existing_root_scale": [
         0.1,
@@ -774,11 +1608,22 @@
       ],
       "result_m": [
         0.1,
-        0.02500000298023224,
-        0.10000003576278688
+        0.025,
+        0.10000001192092896
       ],
       "single_mesh": true,
-      "pass": true
+      "pass": true,
+      "raw_fbx_mesh_dimensions_y_up": [
+        1.0,
+        2.0,
+        1.0
+      ],
+      "raw_fbx_mesh_center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "raw_mesh_axis_pass": true
     }
   ],
   "negative_controls": [

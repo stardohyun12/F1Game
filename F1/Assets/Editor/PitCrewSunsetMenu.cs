@@ -33,6 +33,20 @@ public static class PitCrewSunsetMenu
     [MenuItem(Toggle, true)]
     static bool ToggleCheck() { var s = SunsetLook.Find(); Menu.SetChecked(Toggle, s != null && s.IsOn); return true; }
 
+    // D-236 10판: 체크 = 9판 값 그대로(10판 변경 끔). Play 중에도 바로 바뀐다(저장 안 됨)
+    const string V9 = "PitCrew/Look/노을 9판 값으로";
+    [MenuItem(V9, false, 21)]
+    static void ToggleV9()
+    {
+        var s = SunsetLook.Find(); if (s == null) return;
+        s.v9 = !s.v9; s.Apply();
+        if (!Application.isPlaying) { EditorUtility.SetDirty(s); EditorSceneManager.MarkSceneDirty(s.gameObject.scene); }
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+        Debug.Log("[노을] " + (s.v9 ? "9판 값" : "10판 값"));
+    }
+    [MenuItem(V9, true)]
+    static bool ToggleV9Check() { var s = SunsetLook.Find(); Menu.SetChecked(V9, s != null && s.v9); return s != null; }
+
     [MenuItem("PitCrew/노을/자리 설치", false, 0)]
     public static void Install()
     {

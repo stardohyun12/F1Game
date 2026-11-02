@@ -24,11 +24,15 @@
     },
     {
       "case": "roll one-sheet transparency",
-      "fix": "wound layers alpha .72 and added 6 winding edge rings"
+      "fix": "wound roll uses RGB-only albedo to avoid alpha darkening; opaque bulk with 6 winding edges; end faces omit cylindrical normals"
     },
     {
       "case": "newspaper stack thick layers",
       "fix": "20 folded layers at3mm instead8 at7.5mm"
+    },
+    {
+      "case": "independent visual review",
+      "fix": "gentler irregular paper A folds, 10-sided narrower-top eggs with simpler tray bottom (1984 tris), stronger sheet alpha and contrast proof, word-safe dimension caption wrapping"
     }
   ]
 }

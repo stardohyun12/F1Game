@@ -1,0 +1,18 @@
+{
+  "depot-props": {
+    "fbx_readback.json": true,
+    "delivery_check.json": true,
+    "broken_html_links": []
+  },
+  "packing-materials": {
+    "fbx_readback.json": true,
+    "delivery_check.json": true,
+    "broken_html_links": []
+  },
+  "provenance": {
+    "rows": 26,
+    "hash_mismatches": []
+  },
+  "art-20261102-2028.md": [],
+  "art-20261102-2052.md": []
+}

@@ -56,6 +56,7 @@ Shader "PitCrew/Look/DuskSea"
         _RippleCol("D-235 파문 선(B)", Color) = (1.00, 0.84, 0.74, 1)
         _Cool("D-236 차가운 물 (섞음 0..1, 밝은 단 덜 0..1, 0, 0)", Vector) = (0, 0.6, 0, 0)
         _CoolCol("D-236 차가운 물 색(청록~남)", Color) = (0.18, 0.34, 0.50, 1)
+        _PathFocus("D-236 10판 빛길로 모으기 (세기 0..1 · 반폭° · 안쪽 더함 · 먼 물 풀림 m) 0 = 9판", Vector) = (0, 16, 0.25, 0)
         _Debug("Debug (1 깊이, 2 계단 값, 3 노멀, 5 수면 높이 wpos.y — SeaWaves 검산)", Float) = 0
     }
     SubShader
@@ -75,7 +76,7 @@ Shader "PitCrew/Look/DuskSea"
             TEXTURE2D(_PCSeaRefl); SAMPLER(sampler_PCSeaRefl); float4 _PCSeaReflOn;   // _PCSeaClock(Dusk.hlsl 에 선언).x = 1 → 시간을 y 로 고정(편집 모드 전/후 캡처용).  6판 평면 반사(SeaReflection.cs) — 좌우 뒤집힌 그림
             float4 _PCRipples[4];   // D-235 찌 파문(SeaWaves.AddRipple): x, z, 시작 시각(Now), 세기 0..1(0 = 빈 칸)
             CBUFFER_START(UnityPerMaterial)
-                float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint, _Cool, _CoolCol;
+                float4 _ShallowCol, _DeepCol, _Foam, _Glow, _Hot, _Core, _CrestCol, _DayTint, _Cool, _CoolCol, _PathFocus;
                 float4 _W0, _W1, _W2, _W3, _Detail, _Detail2, _Spec, _Micro, _Dash, _Gerst, _Disp, _Absorb, _FoamA, _HorizonFade, _SceneRefl;
                 float4 _Cuts, _Lv, _GlintCuts, _Crest, _FoamW, _FoamMax, _FoamSurge, _DepthRect, _DepthTex_ST, _DepthRect2, _Ripple, _RippleCol;
                 float _StepKeep, _StepFps, _Filt, _Reflect, _Shine, _Glint, _Style, _Sparkle, _SparkleRate, _Debug;
@@ -292,6 +293,17 @@ Shader "PitCrew/Look/DuskSea"
                     // B: 밝기 4단(색조는 A 그대로 — 단 하나의 밝기로 맞춤)
                     // 단 색 = 단마다 정한 색(짙은 물 ↔ 해에서 비킨 하늘 높이별 반사)에 A 색을 _StepKeep 만큼만 남김 → 단 안은 거의 한 색
                     float L = max(Lum(col), 1e-4), v = L / lumHz;
+                    // D-236 10판: 해 방위에서 비킨 물일수록 밝기 단·해 반사를 깎고 빛길 안은 살짝 더함 → 노을 조각이 빛길(쐐기)로 모임
+                    if (_PathFocus.x > 0)
+                    {
+                        float2 vh = normalize(V.xz + 1e-5), shz = normalize(sun.xz + 1e-5);
+                        float ang = degrees(acos(clamp(dot(vh, shz), -1, 1)));
+                        float m = 1 - smoothstep(_PathFocus.y * .5, _PathFocus.y, ang);
+                        // 먼 물(수평선 띠)은 고르게 펴져 있어 경계가 곧은 세로선으로 끊김 → _PathFocus.w m 부터 풀어 줌(0 = 안 풂)
+                        float fx = _PathFocus.x * (_PathFocus.w > 0 ? 1 - smoothstep(_PathFocus.w * .5, _PathFocus.w, d) : 1);
+                        v *= lerp(1 - fx, 1 + _PathFocus.z * fx / max(_PathFocus.x, 1e-4), m);
+                        P *= lerp(1 - fx, 1, m);
+                    }
                     float kq = step(_Cuts.x, v) + step(_Cuts.y, v) + step(_Cuts.z, v);
                     float lv = kq < .5 ? _Lv.x : (kq < 1.5 ? _Lv.y : (kq < 2.5 ? _Lv.z : _Lv.w));
                     float e = kq < .5 ? .55 : (kq < 1.5 ? .30 : (kq < 2.5 ? .15 : .05));
