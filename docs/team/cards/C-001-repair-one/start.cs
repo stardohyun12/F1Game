@@ -1,6 +1,6 @@
 // C-001 시연(그레이박스). 하네스가 장소 9 정비소 안으로 옮긴 뒤 exec 로 부른다. Play 중에만.
 // 앞부분(바로 실행) = 기계 확인: 상처 +1 두 번 -> 2단계, 정비 자리 준비, 수리 -> 0단계, DayLog 수리비 증가를 직접 읽어 return 에 찍는다.
-// 뒷부분(12초 콜백) = 화면 시연(exec 한 번이 2~3초 걸려 클립이 늦게 시작해도 보이게 늦춤): 3.0초 상처 +1, 5.0초 +1, 7.0초 E 누름(감독 SimInteract, 실제 E 와 같은 길) -> 칩 E 고치기, 표시 사라짐, 돈 글자.
+// 뒷부분(콜백) = 화면 시연, 클립 시작에 맞춤: 깨끗 → 1 → 2 → 3단계(조각·연기가 늘어남) → E 누름(감독 SimInteract, 실제 E 와 같은 길) -> 표시 사라짐, 돈 글자.
 if (!Application.isPlaying) return "FAIL: Play 중에만";
 Application.runInBackground = true;
 var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
@@ -19,21 +19,28 @@ int r0 = DayLog.TodayRepair, m0 = DayLog.TodayMoney;
 int cost = RepairSpot.Repair(car);
 int s2 = dm.Stage, dr = DayLog.TodayRepair - r0, dmoney = DayLog.TodayMoney - m0;
 string check = "상처 " + s1 + "→" + s2 + " · DayLog 수리 −" + dr + " (오늘 번 돈 " + dmoney + ") · 정비 자리 준비=" + ready;
-float t0 = Time.realtimeSinceStartup; int step = 0; UnityEditor.SessionState.SetFloat("c001.t0", t0);
+// 시연 시계는 클립이 실제로 시작한 순간부터(clip.cs.tmpl 이 시작할 때 ev.done 을 "" 로 비운다 — 그걸 신호로). 8초 안에 안 오면(손으로 돌릴 때) 그냥 시작.
+// 증거 strip 은 클립을 8칸으로 고르게 자른다(약 1.25초 간격) → 칸마다 한 단계씩: 0.0 깨끗 · 0.9 1단계 · 2.2 2단계 · 3.5 3단계 · 4.9 E 수리 → 나머지 칸 −돈 글자·깨끗.
+UnityEditor.SessionState.SetString("ev.done", "c001-wait");
+float t0 = Time.realtimeSinceStartup, c0 = -1f; int step = 0;
+int run = UnityEngine.Random.Range(1, int.MaxValue); UnityEditor.SessionState.SetInt("c001.run", run);   // 같은 Play 에서 다시 부르면 앞 콜백은 빠진다
 UnityEditor.SessionState.SetString("c001.e", "");
 UnityEditor.EditorApplication.CallbackFunction cb = null;
 cb = () => {
-    if (!Application.isPlaying) { UnityEditor.EditorApplication.update -= cb; return; }
-    float t = Time.realtimeSinceStartup - t0;
-    if (step == 0 && t >= 3.0f) { DebugWindow.CartHurt(); step = 1; }
-    else if (step == 1 && t >= 5.0f) { DebugWindow.CartHurt(); step = 2; }
-    else if (step == 2 && t >= 6.6f) { UnityEditor.SessionState.SetString("c001.chip", d.Prompt + " / 상처 " + dm.Stage); step = 3; }
-    else if (step == 3 && t >= 7.0f) { d.SimInteract(); step = 4; }
-    else if (step == 4 && t >= 7.3f) {
+    if (!Application.isPlaying || UnityEditor.SessionState.GetInt("c001.run", 0) != run) { UnityEditor.EditorApplication.update -= cb; return; }
+    float now = Time.realtimeSinceStartup;
+    if (c0 < 0f) { if (UnityEditor.SessionState.GetString("ev.done", "") != "c001-wait" || now - t0 > 8f) c0 = now; else return; }
+    float t = now - c0;
+    if (step == 0 && t >= 0.9f) { DebugWindow.CartHurt(); step = 1; }
+    else if (step == 1 && t >= 2.2f) { DebugWindow.CartHurt(); step = 2; }
+    else if (step == 2 && t >= 3.5f) { DebugWindow.CartHurt(); step = 3; }
+    else if (step == 3 && t >= 4.7f) { UnityEditor.SessionState.SetString("c001.chip", d.Prompt + " / 상처 " + dm.Stage); step = 4; }
+    else if (step == 4 && t >= 4.9f) { d.SimInteract(); step = 5; }
+    else if (step == 5 && t >= 5.2f) {
         string r = "E 경로: 칩 '" + UnityEditor.SessionState.GetString("c001.chip", "") + "' → 상처 " + dm.Stage + " · 돈 글자 '" + d.MoneyText + "' · 오늘 수리 합 " + DayLog.TodayRepair;
-        UnityEditor.SessionState.SetString("c001.e", r); Debug.Log("[C-001] " + r); step = 5;
+        UnityEditor.SessionState.SetString("c001.e", r); Debug.Log("[C-001] " + r); step = 6;
+        UnityEditor.EditorApplication.update -= cb;
     }
-    else if (step == 5 && t >= 12f) { UnityEditor.EditorApplication.update -= cb; }
 };
 UnityEditor.EditorApplication.update += cb;
-return check + " · 시연 시작(3.0s +1, 5.0s +1, 7.0s E)";
+return check + " · 시연 대기(클립 시작 +0.9s 1단계, +2.2s 2단계, +3.5s 3단계, +4.9s E)";
