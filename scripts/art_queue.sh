@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Codex 아트 줄(D-259): queue/art/*.task 를 순서대로 team.sh art 로. 끝날 때마다 텔레그램 알림 + BATCH.md. Codex 한도 걸리면 멈추고 알림.
 cd /d/Github/F1Game || exit 1
+export GIT_TERMINAL_PROMPT=0 GIT_ASKPASS= SSH_ASKPASS= GCM_INTERACTIVE=never  # 창 없는 실행에서 GitHub 로그인 창 금지(D-268)
 Q=.claude/team/queue/art; mkdir -p $Q/done $Q/hold
 PY=/c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe
 PIDF=$Q.pid; if [ -s "$PIDF" ] && kill -0 "$(cat $PIDF)" 2>/dev/null; then exit 0; fi; echo $$ > $PIDF

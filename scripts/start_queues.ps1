@@ -3,14 +3,14 @@ $bash = "C:\Users\rtx40\AppData\Local\hermes\tools\git-2.53.0+3-win32-x64\bin\ba
 foreach ($l in "editor","studio","feature") {
   $running = Get-CimInstance Win32_Process -Filter "Name='bash.exe'" | ? { $_.CommandLine -match "bash scripts/team_queue.sh $l" -and $_.CommandLine -notmatch 'Get-CimInstance' }
   if ($running) { "$l already running"; continue }
-  $cmd = "conhost.exe --headless `"$bash`" -lc `"export PYTHONUTF8=1 PYTHONIOENCODING=utf-8; cd /d/Github/F1Game && bash scripts/team_queue.sh $l >> .ai_logs/team/queue-$l.out 2>&1`""
+  $cmd = "conhost.exe --headless `"$bash`" -lc `"export PYTHONUTF8=1 PYTHONIOENCODING=utf-8 GIT_TERMINAL_PROMPT=0 GIT_ASKPASS= SSH_ASKPASS= GCM_INTERACTIVE=never; cd /d/Github/F1Game && bash scripts/team_queue.sh $l >> .ai_logs/team/queue-$l.out 2>&1`""
   $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = $cmd; CurrentDirectory = "D:\Github\F1Game" }
   "$l started PID $($r.ProcessId) (outside agent job)"
 }
 # Codex 아트 줄(D-259)
 $ar = Get-CimInstance Win32_Process -Filter "Name='bash.exe'" | ? { $_.CommandLine -match 'art_queue.sh' -and $_.CommandLine -notmatch 'Get-CimInstance' }
 if (-not $ar) {
-  $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$bash`" -lc `"export PYTHONUTF8=1 PYTHONIOENCODING=utf-8; cd /d/Github/F1Game && bash scripts/art_queue.sh >> .ai_logs/team/queue-art.out 2>&1`""; CurrentDirectory = "D:\Github\F1Game" }
+  $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$bash`" -lc `"export PYTHONUTF8=1 PYTHONIOENCODING=utf-8 GIT_TERMINAL_PROMPT=0 GIT_ASKPASS= SSH_ASKPASS= GCM_INTERACTIVE=never; cd /d/Github/F1Game && bash scripts/art_queue.sh >> .ai_logs/team/queue-art.out 2>&1`""; CurrentDirectory = "D:\Github\F1Game" }
   "art started PID $($r.ProcessId)"
 }
 # 텔레그램 고정 상태 메시지(1분마다 갱신, D-254)

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 1회용(D-260): 본 에디터 줄·backlog·아트 줄이 다 비고 아무도 안 일하면 회고 과제를 research(Opus)로 돌림 → 커밋·알림·BATCH.
 cd /d/Github/F1Game || exit 1
+export GIT_TERMINAL_PROMPT=0 GIT_ASKPASS= SSH_ASKPASS= GCM_INTERACTIVE=never  # 창 없는 실행에서 GitHub 로그인 창 금지(D-268)
 PY=/c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe
 idle(){ ! ls .claude/team/queue/editor/*.task .claude/team/queue/editor/backlog/*.task .claude/team/queue/art/*.task >/dev/null 2>&1 \
   && ! grep -qs '^working' .claude/team/sessions/programmer.state .claude/team/sessions/art.state; }

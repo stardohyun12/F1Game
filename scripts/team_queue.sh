@@ -5,6 +5,7 @@
 # 모델(D-223): 과제 첫 줄 [OPUS] 면 opus, 아니면 config 기본 sonnet. 실패 시 [OPUS] 로 1회 자동 승격.
 # 결과 처리: COMPILE-BROKEN / FAILED-NOREPORT 면 커밋하지 않고 queue/<줄>/hold/ 에 남김(PD 확인).
 cd D:/Github/F1Game || exit 1
+export GIT_TERMINAL_PROMPT=0 GIT_ASKPASS= SSH_ASKPASS= GCM_INTERACTIVE=never  # 창 없는 실행에서 GitHub 로그인 창 금지(D-268)
 LINE=$1; Q=.claude/team/queue/$LINE; S=.claude/team/sessions
 # 줄마다 하나만(중복 실행 = 같은 과제 두 번·에디터 충돌): PID 파일 잠금
 PIDF=.claude/team/queue/$LINE.pid
