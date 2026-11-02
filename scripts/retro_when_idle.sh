@@ -4,7 +4,7 @@ cd /d/Github/F1Game || exit 1
 PY=/c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe
 idle(){ ! ls .claude/team/queue/editor/*.task .claude/team/queue/editor/backlog/*.task .claude/team/queue/art/*.task >/dev/null 2>&1 \
   && ! grep -qs '^working' .claude/team/sessions/programmer.state .claude/team/sessions/art.state; }
-for i in $(seq 1 2000); do idle && { sleep 300; idle && break; }; sleep 60; done
+: # 도현 지시로 바로 시작(D-262)
 echo "[$(date '+%m/%d %H:%M')] 회고 시작(research Opus)" >> .ai_logs/team/queue.log
 $PY -X utf8 scripts/tg_notify.py "▶ 쌓인 작업 다 끝남 → 회고(제작 방식·AI·컴퓨터 사용) 시작" >/dev/null
 mv -f .claude/team/sessions/research.id .claude/team/sessions/archive/research-pre-retro.id 2>/dev/null
