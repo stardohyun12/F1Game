@@ -125,7 +125,7 @@ public static partial class BuildBayLoop
         {
             bool rough = r.kind == "alley" || (r.kind == "village" && r.rough > 0f);
             string key = r.kind == "stairs" ? "Stairs" : r.kind == "main" ? "Main" : rough ? "Stone" : "Village";
-            Color c = key switch { "Main" => new Color(.45f, .45f, .47f), "Village" => new Color(.72f, .72f, .70f), "Stone" => new Color(.72f, .56f, .30f), _ => new Color(1f, .45f, .12f) };
+            Color c = key switch { "Main" => new Color(.45f, .45f, .47f), "Village" => new Color(.72f, .72f, .70f), "Stone" => new Color(.72f, .56f, .30f), _ => new Color(.64f, .58f, .47f) };   // 계단·걷는 길 띠 — 20261102-2305: 주황은 실제 화면에서 잔디 위 주황 띠로 보였다
             float lift = r.kind == "main" ? .06f : r.Car ? .04f : .02f;   // 겹친 갈림목에서 위계가 위로
             var go = Ribbon(roadsT, "ROAD_" + r.id, r.pts, r.width, lift, GM(key, c), r.Car);
             if (!r.Car) continue;

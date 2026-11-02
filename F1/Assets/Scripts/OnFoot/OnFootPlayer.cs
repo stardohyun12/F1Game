@@ -61,6 +61,16 @@ public class OnFootPlayer : MonoBehaviour
     float sinceGround, jumpBuf, airTime, jumpT0;
     Vector3 hv;
 
+    [Header("물에 빠졌을 때 (20261102-2305)")]
+    [Tooltip("발이 이 높이(m) 아래로 내려가 있으면 물 속이다 — 바다는 y=0.")]
+    [SerializeField] float waterY = 0f;
+    [Tooltip("물 속에 이 시간(초) 있으면 마지막 마른 땅으로 돌려보낸다.")]
+    [SerializeField] float drownReturnSec = 2f;
+    const int SafeN = 5;
+    readonly Vector3[] safe = new Vector3[SafeN];
+    int safeCount, safeHead;
+    float safeT, underT;
+
     void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -140,6 +150,31 @@ public class OnFootPlayer : MonoBehaviour
         else if (!grounded) airTime += dt;
         wasGrounded = grounded;
         Speed = new Vector3(cc.velocity.x, 0f, cc.velocity.z).magnitude;
+        TrackWater(dt, grounded);
+    }
+
+    /// <summary>
+    /// 부두 끝·방파제에서 바다로 떨어져 바닥을 걸어다니다 못 돌아오는 것을 막는다(20261102-2305 ①).
+    /// 마른 땅(y&gt;waterY)에 선 자리를 0.4 s 마다 5개 기억해 두고, 발이 waterY 아래로 drownReturnSec 동안 있으면 가장 오래된 자리(≈1.6 s 전)로 순간 이동한다.
+    /// </summary>
+    void TrackWater(float dt, bool grounded)
+    {
+        if (transform.position.y < waterY) underT += dt;
+        else
+        {
+            underT = 0f;
+            safeT += dt;
+            if (grounded && safeT >= 0.4f)
+            {
+                safeT = 0f;
+                safe[safeHead] = transform.position; safeHead = (safeHead + 1) % SafeN; if (safeCount < SafeN) safeCount++;
+            }
+        }
+        if (underT >= drownReturnSec && safeCount > 0)
+        {
+            Vector3 to = safe[(safeHead - safeCount + SafeN) % SafeN];
+            Teleport(to + Vector3.up * 0.05f, transform.eulerAngles.y);
+        }
     }
 
     /// <summary>순간 이동(카트에서 내릴 때·시작점). CharacterController 를 껐다 켜야 자리가 먹는다.</summary>
@@ -150,5 +185,6 @@ public class OnFootPlayer : MonoBehaviour
         transform.SetPositionAndRotation(pos, Quaternion.Euler(0f, yawDeg, 0f));
         cc.enabled = true;
         vy = 0f; wasGrounded = false; jumped = false; airTime = 0f; sinceGround = 0f; jumpBuf = 0f; hv = Vector3.zero;
+        underT = 0f; safeT = 0f;
     }
 }

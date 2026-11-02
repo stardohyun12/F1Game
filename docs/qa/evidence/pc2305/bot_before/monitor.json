@@ -1,0 +1,1 @@
+{"tag":"bot_before","ms":{"n":15299,"med":14.0,"p95":19.6,"p99":23.4,"max":389.7,"over33":45,"over50":35},"logs":["Warning: Releasing render texture that is set to be RenderTexture.active! ×5"],"dropouts":[]}

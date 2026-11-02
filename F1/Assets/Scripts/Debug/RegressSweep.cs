@@ -34,9 +34,42 @@ public class RegressSweep : MonoBehaviour
             logs.TryGetValue(key, out int n); logs[key] = n + 1;
         }
 
+        /// <summary>50 ms 를 넘은 프레임의 순간: 시각·ms·상태·플레이어 자리·안내·GC 횟수 변화·메모리 변화(원인 짚기용).</summary>
+        public readonly List<string> spikes = new List<string>();
+        int lastGc = -1; long lastMem; OnFootDirector spikeDir;
+        public string SpikesJson()
+        {
+            var sb = new StringBuilder("[");
+            for (int i = 0; i < spikes.Count; i++) { if (i > 0) sb.Append(','); sb.Append('"').Append(Esc(spikes[i])).Append('"'); }
+            return sb.Append(']').ToString();
+        }
+
+        /// <summary>봇이 1920×1080 스크린샷(ReadPixels+PNG 인코딩, 한 번에 60~420 ms)을 찍은 프레임 번호. 그 다음 프레임의 긴 ms 는 게임이 아니라 캡처 비용이다.</summary>
+        public static int CaptureMark = -10;
+        public int capFrames; public float capMaxMs;
+
         public void Tick()
         {
-            dts.Add(Time.unscaledDeltaTime);
+            float dtNow = Time.unscaledDeltaTime;
+            int gc = System.GC.CollectionCount(0); long mem = UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
+            if (Time.frameCount <= CaptureMark + 2)
+            {
+                // 20261102-2305 ③: 봇 캡처 프레임 — 프레임 ms 통계에서 빼고 따로 센다(게임 끊김 아님)
+                capFrames++; capMaxMs = Mathf.Max(capMaxMs, dtNow * 1000f);
+                lastGc = gc; lastMem = mem;
+                return;
+            }
+            if (dtNow > 0.05f && dts.Count > 3)
+            {
+                if (spikeDir == null) spikeDir = FindFirstObjectByType<OnFootDirector>();
+                string st = spikeDir != null ? spikeDir.State + "/" + spikeDir.Prompt : "?";
+                var pl = spikeDir != null ? spikeDir.Player : null;
+                string pos = pl != null ? pl.transform.position.ToString("F1") : "-";
+                spikes.Add(string.Format(CultureInfo.InvariantCulture, "t={0:F1}s f={1} {2:F0}ms gc+{3} mem{4:+0.0;-0.0}MB {5} {6}",
+                    Time.realtimeSinceStartup - tStart, Time.frameCount, dtNow * 1000f, lastGc < 0 ? 0 : gc - lastGc, (mem - lastMem) / 1048576f, st, pos));
+            }
+            lastGc = gc; lastMem = mem;
+            dts.Add(dtNow);
             if (srcs == null || Time.realtimeSinceStartup - srcT > 1f) { srcs = FindObjectsByType<AudioSource>(FindObjectsSortMode.None); srcT = Time.realtimeSinceStartup; }   // 목록만 1초마다 — 프레임 ms 를 흔들지 않게
             foreach (var a in srcs)
             {
@@ -109,7 +142,7 @@ public class RegressSweep : MonoBehaviour
     {
         if (active == m) active = null;
         foreach (var t in FindObjectsByType<MonTicker>(FindObjectsSortMode.None)) if (t.m == m) Destroy(t.gameObject);
-        return "{\"tag\":\"" + m.tag + "\",\"ms\":" + m.MsJson(3) + ",\"logs\":" + m.LogsJson() + ",\"dropouts\":" + m.DropJson() + "}";
+        return "{\"tag\":\"" + m.tag + "\",\"ms\":" + m.MsJson(3) + ",\"logs\":" + m.LogsJson() + ",\"dropouts\":" + m.DropJson() + ",\"captureFrames\":" + m.capFrames + ",\"captureMaxMs\":" + m.capMaxMs.ToString("F0", CultureInfo.InvariantCulture) + ",\"spikes\":" + m.SpikesJson() + "}";
     }
     class MonTicker : MonoBehaviour { public Monitor m; void Update() { m.Tick(); } }
 

@@ -137,6 +137,8 @@ public class OnFootDirector : MonoBehaviour
     // ── UI 1판(D-240): DotScreenUI 가 읽는 것 ──
     /// <summary>지금 안내([E] 칩)가 붙을 세상 점 — 문짝 가운데·카트 손잡이·사장 머리·낚시 자리. 없으면 null.</summary>
     public Vector3? PromptAnchor { get; private set; }
+    /// <summary>[E] 칩을 물건 곁이 아니라 화면 아래쪽 자리에 둔다 — 칠판 글씨·앞 나무를 가리지 않게(20261102-2305 ②). 칠판·앉기.</summary>
+    public bool PromptLow { get; private set; }
     public string TalkWho => InTalk ? Lines[talkLine].who : "";
     public string TalkText => InTalk ? Lines[talkLine].text : "";
     /// <summary>지금 줄이 시작된 때(unscaled) — 말풍선 한 글자씩.</summary>
@@ -304,6 +306,7 @@ public class OnFootDirector : MonoBehaviour
     {
         if (State == Mode.Starting) return;
         if (overlayUI != null && overlayUI.enabled == UseDot) overlayUI.enabled = !UseDot;   // 도트 UI 가 켜져 있으면 예전 화면 안내·자막을 끈다
+        PromptLow = false;
         bool press = InteractPressed();
         UpdateHeldBox();
         if (moneyText != null && InTalk && handover != null && Speaker == handover.recipient) MoneyEnd = Mathf.Max(MoneyEnd, Time.unscaledTime + 1.2f);
@@ -336,6 +339,7 @@ public class OnFootDirector : MonoBehaviour
             else if (orderBoard != null && hit == orderBoard)
             {
                 SetPrompt(OrderPicked ? "E 칠판 보기(맡음)" : "E 칠판 보기");
+                PromptLow = true;
                 if (press) OpenBoard();
             }
             else if (packSpot != null && hit == packSpot && packSpot.HasBench)
@@ -395,6 +399,7 @@ public class OnFootDirector : MonoBehaviour
             {
                 SetPrompt("E 앉기");
                 PromptAnchor = spot.transform.position + Vector3.up * 0.6f;
+                PromptLow = true;
                 if (press) Sit(spot);
             }
             else SetPrompt("");

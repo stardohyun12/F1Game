@@ -762,7 +762,8 @@ public partial class DotScreenUI : MonoBehaviour
         var lr = chipLabel.rectTransform; lr.anchoredPosition = new Vector2(3 + keyW, 1); lr.sizeDelta = new Vector2(lw + 2, 13);
         // 그 물건 곁(오른쪽 위)에. 화면 밖·뒤면 조준점 바로 아래.
         int x, y;
-        if (director.PromptAnchor is Vector3 a && ToScreen(a, out var sp) && sp.x > 0 && sp.x < W && sp.y > 0 && sp.y < H)
+        if (director.PromptLow) { x = W / 2 - w / 2; y = Mathf.RoundToInt(H * 0.28f); }   // 칠판·앉기: 글씨·나무 위가 아니라 아래쪽 빈 자리
+        else if (director.PromptAnchor is Vector3 a && ToScreen(a, out var sp) && sp.x > 0 && sp.x < W && sp.y > 0 && sp.y < H)
         { x = Mathf.RoundToInt(sp.x) + 6; y = Mathf.RoundToInt(sp.y) + 2; }
         else { x = W / 2 - w / 2; y = H / 2 - 10 - h; }
         x = Mathf.Clamp(x, 2, W - w - 2); y = Mathf.Clamp(y, 2, H - h - 2);

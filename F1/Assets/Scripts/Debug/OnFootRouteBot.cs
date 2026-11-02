@@ -248,6 +248,7 @@ public class OnFootRouteBot : MonoBehaviour
         tx.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0); tx.Apply(); RenderTexture.active = prev;
         File.WriteAllBytes(Path.Combine(evDir, name + ".png"), tx.EncodeToPNG());
         rt.Release(); Destroy(rt); Destroy(tx);
+        RegressSweep.Monitor.CaptureMark = Time.frameCount;
         Line($"캡처 {name} 안내='{dir.Prompt}'");
     }
 
@@ -590,7 +591,7 @@ public class OnFootRouteBot : MonoBehaviour
         }
 
         // 4) 나와서 카트에 싣고 타기
-        foreach (var q in new[] { new Vector2(272.6f, -31.8f), new Vector2(272.5f, -33.6f), new Vector2(277.0f, -33.6f), new Vector2(277.0f, -37.0f) })
+        foreach (var q in new[] { new Vector2(271.9f, -30.4f), new Vector2(269.8f, -30.5f), new Vector2(269.6f, -31.6f), new Vector2(270.3f, -32.6f), new Vector2(272.5f, -33.6f), new Vector2(277.0f, -33.6f), new Vector2(277.0f, -37.0f) })   // 셔터 열린 칸(x 268~271.5)으로 나온다 — 앞벽(x 272~275)에 걸리던 (272.6,-31.8) 대체
             yield return Walk(new Step("walk", "보관소 나가기 " + q, q.x, q.y));
         Vector3 cp = dir.Car.transform.position, side = dir.Car.transform.right;
         Vector3 beside = cp - side * 1.7f; if (Flat(beside - pl.transform.position).magnitude > Flat(cp + side * 1.7f - pl.transform.position).magnitude) beside = cp + side * 1.7f;
@@ -894,6 +895,7 @@ public class OnFootRouteBot : MonoBehaviour
                 if (cvw.isActiveAndEnabled && (!cvw.TryGetComponent<CanvasGroup>(out var g) || g.alpha > 0.01f)) trunk = true;
             Line($"캡처 {name} {tx.width}x{tx.height} 안내='{dir.Prompt}' 자막='{dir.Subtitle}' TRUNKCAM={(trunk ? "보임" : "안보임")}");
             Destroy(tx);
+            RegressSweep.Monitor.CaptureMark = Time.frameCount;
         }
         else { Line($"캡처 {name} 실패(UI) — 카메라만"); yield return Shot(name); }
     }

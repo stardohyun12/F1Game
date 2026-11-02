@@ -48,3 +48,5 @@
 {"stamp": "20261102-2052", "role": "art", "title": "아트 후보 ② 포장 재료 — 상자·뽁뽁이·신문지·달걀판·테이프 (D-259)", "model": "cfg", "cost": null, "ok": true, "result": ""}
 {"stamp": "20261102-2157", "role": "research", "title": "OPUS", "model": "opus", "cost": 2.7842, "ok": true, "result": ""}
 {"stamp": "20261102-2227", "role": "programmer", "title": "NOPIC", "model": "cfg", "cost": 3.6768, "ok": true, "result": ""}
+{"stamp": "20261102-2255", "role": "research", "title": "UI 레퍼런스: 세상 속 정보 + 최소 화면 UI — 1인칭 배달 게임에 가져올 것 (D-267)", "model": "cfg", "cost": 1.8803, "ok": true, "result": ""}
+{"stamp": "20261102-2305", "role": "programmer", "title": "NOPIC", "model": "cfg", "cost": 3.7936, "ok": true, "result": ""}
