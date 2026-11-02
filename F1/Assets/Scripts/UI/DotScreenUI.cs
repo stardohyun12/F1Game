@@ -34,8 +34,19 @@ public class DotScreenUI : MonoBehaviour
     [Tooltip("탑승 직후 이 초 동안만 'Tab 전표' 안내를 보인다.")]
     [SerializeField] float slipHintSec = 6f;
 
+    public enum DestStyle { Dots, Beam, Both }
+    [Header("목적지 표식(D-252)")]
+    [Tooltip("깃발 아래 땅까지: Dots = 도트 점선(UI), Beam = 세상 속 은은한 빛기둥(건물에 가려짐), Both = 둘 다.")]
+    [SerializeField] DestStyle destStyle = DestStyle.Dots;
+    [Tooltip("이 거리(m, 수평) 안이면 깃발 대신 '여기' 칩.")]
+    [SerializeField] float destNearM = 15f;
+    [Tooltip("화살표 왼쪽에 목적지까지 거리(m).")]
+    [SerializeField] bool showDistance = true;
+    [Tooltip("빛기둥 높이(m)·너비(m)·불투명도.")]
+    [SerializeField] float beamHeight = 40f, beamWidth = 1.4f, beamAlpha = 0.45f;
+
     [Header("아트 슬롯(비면 코드 임시 모양)")]
-    public Sprite boxSprite, tabSprite, keySprite, tailSprite, warnSprite;
+    public Sprite boxSprite, tabSprite, keySprite, tailSprite, warnSprite, flagSprite;
 
     // 9판 UI 토큰(UIPalette) — 종이 크림·잉크.
     static Color Paper => UIPalette.Paper;
@@ -47,6 +58,18 @@ public class DotScreenUI : MonoBehaviour
     RectTransform root;
     Image dot, arrowImg, warnBox, chipBox, chipKey, bubble, tail, nameTab, slip;
     Text chipLabel, chipKeyText, bubbleText, nameText, warnText, slipTitle, slipBody, hintText;
+    // D-252 목적지: 깃발(문 위) · 아래로 점선 · 화면 밖이면 가장자리 화살 · 15 m 안 '여기' 칩 · 거리 숫자 · 전표 받는 곳/주소/대역 약도.
+    Image destFlag, destDots, destEdge, destEdgeBox, destChip, distBox, slipMap;
+    Text destChipText, distText, slipTo, slipAddr;
+    Texture2D edgeTex, mapTex;
+    int edgeStep = int.MinValue;
+    const int EdgeN = 11, MapN = 52;
+    GameObject beam;
+    Material beamMat;
+    DeliveryPoint groundFor; Vector3 groundAt;
+    /// <summary>표식 깃발 아래 끝(문 위) = 배달점 + 이만큼 위(m). 배달점은 길 위 트리거(땅 + 0.6 m) — 문 꼭대기쯤.</summary>
+    public const float DestAnchorUp = 3f;
+    public static Vector3 DestAnchorOf(DeliveryPoint dp) => dp.transform.position + Vector3.up * DestAnchorUp;
     Texture2D arrowTex;
     int arrowStep = int.MinValue;
     // 방향 표시 크기: 1판은 15칸 격자·모양 1배. 화면 높이(360줄)의 약 5% = 화살표 전체 길이 ~19px 가 되게 모양째 1.5배, 격자 23칸(D-243).
@@ -77,12 +100,18 @@ public class DotScreenUI : MonoBehaviour
     void OnDisable()
     {
         if (canvas != null) canvas.gameObject.SetActive(false);
+        if (beam != null) beam.SetActive(false);
         RestoreLegacy();
     }
 
     void OnEnable() { if (canvas != null) canvas.gameObject.SetActive(true); }
 
-    void OnDestroy() { Font.textureRebuilt -= OnFontRebuilt; if (canvas != null) Destroy(canvas.gameObject); if (arrowTex != null) Destroy(arrowTex); }
+    void OnDestroy()
+    {
+        Font.textureRebuilt -= OnFontRebuilt;
+        if (canvas != null) Destroy(canvas.gameObject);
+        foreach (var t in new Object[] { arrowTex, edgeTex, mapTex, beam, beamMat }) if (t != null) Destroy(t);
+    }
 
     void OnFontRebuilt(Font f)
     {
@@ -159,6 +188,28 @@ public class DotScreenUI : MonoBehaviour
         hintText = Txt("Hint", root, smallFont, smallSize, Paper, TextAnchor.LowerLeft); hintText.text = "Tab 전표";
         hintText.rectTransform.sizeDelta = new Vector2(80, 11);
 
+        // D-252 목적지 표식 — 그리는 순서상 화살표·칩보다 먼저(뒤에) 만들면 겹칠 때 안내가 위로 온다 → 맨 앞으로 옮긴다.
+        destDots = Img("DestDots", MakeDots(), Color.white, 3, 4);
+        destDots.type = Image.Type.Tiled; destDots.pixelsPerUnitMultiplier = 1f;
+        var fl = flagSprite != null ? flagSprite : MakeFlag();
+        destFlag = Img("DestFlag", fl, Color.white, (int)fl.rect.width, (int)fl.rect.height);
+        edgeTex = new Texture2D(EdgeN, EdgeN, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Edge" };
+        destEdge = Img("DestEdge", Sprite.Create(edgeTex, new Rect(0, 0, EdgeN, EdgeN), Vector2.zero, 100f), Color.white, EdgeN, EdgeN);
+        destChip = Img("DestChip", dark, Color.white, 40, 15, true);
+        destChipText = Txt("Label", destChip.transform, font, fontSize, Paper, TextAnchor.MiddleLeft);
+        destChipText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        distBox = Img("Dist", dark, Color.white, 30, 13, true);
+        distText = Txt("Text", distBox.transform, smallFont, smallSize, Paper, TextAnchor.MiddleCenter);
+        Fill(distText.rectTransform, 0, 0, 0, 1);
+        // 화면 밖 표식 받침(1409 캡처: 가장자리 깃발 13×18 이 가로등·잔디에 묻혀 안 읽힘) — 잉크 상자 위에 깃발+화살.
+        destEdgeBox = Img("DestEdgeBox", dark, Color.white, 10, 10, true);
+        foreach (var g in new Graphic[] { destDots, destFlag, destEdge, destChip, destEdgeBox }) g.transform.SetAsFirstSibling();
+        // 전표 2·3줄 + 대역 약도(북쪽 위, 나 = 잉크 점, 받는 곳 = 신호색 점) — 진짜 약도는 다음 판.
+        slipTo = Txt("To", slip.transform, font, fontSize, Ink, TextAnchor.UpperLeft); slipTo.horizontalOverflow = HorizontalWrapMode.Overflow;
+        slipAddr = Txt("Addr", slip.transform, font, fontSize, Ink, TextAnchor.UpperLeft); slipAddr.horizontalOverflow = HorizontalWrapMode.Overflow;
+        mapTex = new Texture2D(MapN, MapN, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Map" };
+        slipMap = Img("Map", Sprite.Create(mapTex, new Rect(0, 0, MapN, MapN), Vector2.zero, 100f), Color.white, MapN, MapN, false, slip.transform);
+
         HideAll();
         Debug.Log($"[DotScreenUI] 캔버스 {W}×{H} (RT={(cam.targetTexture != null ? cam.targetTexture.width + "×" + cam.targetTexture.height : "없음")}) font={(font != null ? font.name : "없음")}");
     }
@@ -221,10 +272,57 @@ public class DotScreenUI : MonoBehaviour
         return Sprite.Create(t, new Rect(0, 0, 7, 4), Vector2.zero, 100f);
     }
 
-    /// <summary>방향 화살표를 픽셀 단위로 직접 찍는다(16방향). 회전한 그림을 늘리지 않으니 흐린 픽셀이 없다. 모양은 1판 그대로, arrowScale 배.</summary>
-    void DrawArrow(int step)
+    /// <summary>
+    /// 목적지 깃발 13×18(테 1px 포함): 종이색 깃대 + 신호색 깃발(오른쪽 끝 제비꼬리). 깃대 아래 끝 = 그림 왼쪽 아래(x 2) — 점선이 여기서 이어진다.
+    /// </summary>
+    static Sprite MakeFlag()
     {
-        int n = ArrowN; float k = arrowOld ? 1f : ArrowScale, c0 = (n - 1) * 0.5f;
+        const int w = 13, h = 18;
+        var kind = new int[w, h];   // 0 빈칸, 1 깃대(종이), 2 깃발(신호)
+        for (int y = 1; y < h - 1; y++) kind[2, y] = 1;
+        for (int y = 9; y <= 15; y++)
+            for (int x = 3; x <= 11; x++)
+                if (!(x >= 10 && Mathf.Abs(y - 12) <= x - 10)) kind[x, y] = 2;   // 제비꼬리 홈
+        var t = new Texture2D(w, h, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_Flag" };
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                Color c = Color.clear;
+                if (kind[x, y] == 1) c = Paper;
+                else if (kind[x, y] == 2) c = Signal;
+                else
+                {
+                    for (int dy = -1; dy <= 1 && c.a == 0f; dy++)
+                        for (int dx = -1; dx <= 1; dx++)
+                        {
+                            if (Mathf.Abs(dx) + Mathf.Abs(dy) != 1) continue;
+                            int xx = x + dx, yy = y + dy;
+                            if (xx >= 0 && xx < w && yy >= 0 && yy < h && kind[xx, yy] != 0) { c = Ink; break; }
+                        }
+                }
+                t.SetPixel(x, y, c);
+            }
+        t.Apply(false, true);
+        return Sprite.Create(t, new Rect(0, 0, w, h), Vector2.zero, 100f);
+    }
+
+    /// <summary>점선 한 칸 3×4: 종이 점 2줄(양옆 잉크 테) + 빈 2줄. 세로로 바둑처럼 이어 붙인다(Tiled).</summary>
+    static Sprite MakeDots()
+    {
+        var t = new Texture2D(3, 4, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Repeat, name = "DotUI_Dots" };
+        for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 3; x++)
+                t.SetPixel(x, y, y >= 2 ? (x == 1 ? Paper : Ink) : Color.clear);
+        t.Apply(false, true);
+        return Sprite.Create(t, new Rect(0, 0, 3, 4), Vector2.zero, 100f, 0, SpriteMeshType.FullRect);
+    }
+
+    /// <summary>방향 화살표를 픽셀 단위로 직접 찍는다(16방향). 회전한 그림을 늘리지 않으니 흐린 픽셀이 없다. 모양은 1판 그대로, arrowScale 배.</summary>
+    void DrawArrow(int step) => DrawArrowInto(arrowTex, ArrowN, arrowOld ? 1f : ArrowScale, step);
+
+    static void DrawArrowInto(Texture2D arrowTex, int n, float k, int step)
+    {
+        float c0 = (n - 1) * 0.5f;
         float a = step * (Mathf.PI * 2f / 16f);
         float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
         var inside = new bool[n, n];
@@ -272,6 +370,7 @@ public class DotScreenUI : MonoBehaviour
             }
         }
         else if (director != null && st == OnFootDirector.Mode.InCart && director.Prompt.Length > 0) ChipUI(vis);
+        DestUI(DestTarget(st), vis);
         Visible = vis.ToString().Trim();
     }
 
@@ -283,8 +382,197 @@ public class DotScreenUI : MonoBehaviour
 
     void HideAll()
     {
-        foreach (var g in new Graphic[] { dot, arrowImg, warnBox, chipBox, bubble, tail, nameTab, slip, hintText })
+        foreach (var g in new Graphic[] { dot, arrowImg, warnBox, chipBox, bubble, tail, nameTab, slip, hintText, destFlag, destDots, destEdge, destEdgeBox, destChip, distBox })
             if (g != null && g.gameObject.activeSelf) g.gameObject.SetActive(false);
+    }
+
+    // ── D-252 목적지 표식 ──
+    /// <summary>QA·봇이 읽는 것: 표식 상태(none / on = 문 위 / edge = 화면 가장자리 / near = '여기' 칩), 깃발 아래 끝 픽셀(RT), 거리(m).</summary>
+    public string DestMode { get; private set; } = "none";
+    public Vector2 DestPx { get; private set; }
+    public float DestDistM { get; private set; } = -1f;
+    /// <summary>비교 캡처용: 이 판 이전(표식·거리·전표 추가 없음) 화면.</summary>
+    public bool SimDestOff { get; set; }
+    /// <summary>비교 캡처용: 점선/빛기둥 바꾸기.</summary>
+    public DestStyle Style { get => destStyle; set => destStyle = value; }
+
+    /// <summary>지금 그릴 목적지: 운전 중 = DeliveryManager.CurrentTarget, 걷는 중 = 사장에게 들은 첫 배달지(탑승 전).</summary>
+    DeliveryPoint DestTarget(OnFootDirector.Mode st)
+    {
+        if (SimDestOff) return null;
+        if (st == OnFootDirector.Mode.InCart) { var mgr = Services.Delivery as DeliveryManager; return mgr != null ? mgr.CurrentTarget : null; }
+        if (st == OnFootDirector.Mode.OnFoot && director != null && director.DestKnown && !director.OrderStarted && !director.InTalk) return director.FirstDrop;
+        return null;
+    }
+
+    Vector3 Ground(DeliveryPoint dp)
+    {
+        if (groundFor != dp)
+        {
+            groundFor = dp;
+            Vector3 p = dp.transform.position;
+            groundAt = Physics.Raycast(p + Vector3.up * 1f, Vector3.down, out var h, 6f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) ? h.point : p;
+        }
+        return groundAt;
+    }
+
+    void DestUI(DeliveryPoint tgt, System.Text.StringBuilder vis)
+    {
+        DestMode = "none"; DestDistM = -1f;
+        bool beamOn = false;
+        if (tgt != null)
+        {
+            Vector3 me = director != null && director.State == OnFootDirector.Mode.InCart && director.Car != null ? director.Car.transform.position
+                       : director != null && director.Player != null ? director.Player.transform.position : cam.transform.position;
+            Vector3 gnd = Ground(tgt), top = DestAnchorOf(tgt);
+            float dist = Vector2.Distance(new Vector2(me.x, me.z), new Vector2(gnd.x, gnd.z));
+            DestDistM = dist;
+            beamOn = destStyle != DestStyle.Dots && dist > destNearM * 0.5f;
+
+            var s = cam.WorldToScreenPoint(top);
+            Vector2 p = new Vector2(s.x * W / cam.pixelWidth, s.y * H / cam.pixelHeight);
+            bool front = s.z > 0.05f;
+            var fs = destFlag.rectTransform.sizeDelta;
+            int fw = (int)fs.x, fh = (int)fs.y;
+            // 위쪽 띠(화살표·거리·위험 '!')는 비워 둔다.
+            float xMin = 4, xMax = W - 4 - fw, yMin = 4, yMax = H - 4 - ArrowN - 4 - fh;
+            bool inside = front && p.x - 2 >= xMin && p.x - 2 <= xMax && p.y >= yMin && p.y <= yMax;
+
+            if (inside && dist <= destNearM)
+            {
+                string who = NearLabel();
+                destChipText.text = who;
+                int lw = Mathf.CeilToInt(Pref(destChipText, who, 400));
+                int w = 4 + lw + 4;
+                destChip.rectTransform.sizeDelta = new Vector2(w, 15);
+                var lr = destChipText.rectTransform; lr.anchoredPosition = new Vector2(4, 1); lr.sizeDelta = new Vector2(lw + 2, 13);
+                int cx = Mathf.Clamp(Mathf.RoundToInt(p.x) - w / 2, 2, W - w - 2), cy = Mathf.Clamp(Mathf.RoundToInt(p.y), 2, H - 15 - 2);
+                Show(destChip, cx, cy); vis.Append("destchip ");
+                DotsDown(p, gnd, cx + w / 2, cy, vis);
+                DestMode = "near"; DestPx = new Vector2(cx + w / 2, cy);
+            }
+            else if (inside)
+            {
+                int fx = Mathf.RoundToInt(p.x) - 2, fy = Mathf.RoundToInt(p.y);
+                Show(destFlag, fx, fy); vis.Append("dest ");
+                if (destStyle != DestStyle.Beam) DotsDown(p, gnd, fx + 2, fy, vis);
+                DestMode = "on"; DestPx = new Vector2(fx + 2, fy);
+            }
+            else
+            {
+                // 화면 밖·카메라 뒤: 가운데에서 그 방향으로 뻗은 선이 테두리에 닿는 곳에 깃발 + 바깥쪽 화살.
+                Vector2 c = new Vector2(W * 0.5f, H * 0.5f), d;
+                if (front) d = p - c;
+                else
+                {
+                    Vector3 f = cam.transform.forward; f.y = 0f; Vector3 to = top - cam.transform.position; to.y = 0f;
+                    d = new Vector2(Mathf.Sign(Vector3.SignedAngle(f, to, Vector3.up)), -0.35f);
+                }
+                if (d.sqrMagnitude < 1e-4f) d = Vector2.down;
+                float ex = (d.x > 0 ? xMax - EdgeN - 1 - c.x : c.x - xMin - EdgeN - 1) / Mathf.Max(1e-3f, Mathf.Abs(d.x));
+                float ey = (d.y > 0 ? yMax - c.y : c.y - yMin) / Mathf.Max(1e-3f, Mathf.Abs(d.y));
+                Vector2 q = c + d * Mathf.Min(ex, ey);
+                int fx = Mathf.RoundToInt(Mathf.Clamp(q.x, xMin + EdgeN + 1, xMax - EdgeN - 1)), fy = Mathf.RoundToInt(Mathf.Clamp(q.y, yMin, yMax));
+                Show(destFlag, fx, fy);
+                int step = Mathf.RoundToInt(Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg / 22.5f);   // 위 = 0, 오른쪽 = +4
+                if (step != edgeStep) { edgeStep = step; DrawArrowInto(edgeTex, EdgeN, 0.8f, step); }
+                Vector2 dn = d.normalized;
+                int axp = Mathf.RoundToInt(fx + fw * 0.5f + dn.x * (fw * 0.5f + EdgeN * 0.5f + 1) - EdgeN * 0.5f);
+                int ayp = Mathf.RoundToInt(fy + fh * 0.5f + dn.y * (fh * 0.5f + EdgeN * 0.5f + 1) - EdgeN * 0.5f);
+                axp = Mathf.Clamp(axp, 1, W - EdgeN - 1); ayp = Mathf.Clamp(ayp, 1, H - EdgeN - 1);
+                Show(destEdge, axp, ayp);
+                int bx0 = Mathf.Min(fx, axp) - 2, by0 = Mathf.Min(fy, ayp) - 2;
+                int bx1 = Mathf.Max(fx + fw, axp + EdgeN) + 2, by1 = Mathf.Max(fy + fh, ayp + EdgeN) + 2;
+                destEdgeBox.rectTransform.sizeDelta = new Vector2(bx1 - bx0, by1 - by0);
+                Show(destEdgeBox, bx0, by0);
+                vis.Append("destedge ");
+                DestMode = "edge"; DestPx = new Vector2(fx + 2, fy);
+            }
+        }
+        Beam(tgt, beamOn);
+        if (beamOn) vis.Append("beam ");
+        int area = 0;
+        foreach (var g in new Graphic[] { destFlag, destDots, destEdge, destEdgeBox, destChip, distBox })
+            if (g.gameObject.activeSelf) area += Mathf.RoundToInt(g.rectTransform.sizeDelta.x * g.rectTransform.sizeDelta.y);
+        DestAreaPct = area * 100f / (W * H);
+    }
+
+    /// <summary>표식(깃발·점선·가장자리·칩·거리) 화면 면적 합(%, 겹침 포함 위쪽 어림) — 과제 기준 4% 이내.</summary>
+    public float DestAreaPct { get; private set; }
+
+    string NearLabel()
+    {
+        var rc = Services.Run as RunController;
+        var job = rc != null ? rc.CurrentJob : null;
+        string to = job != null && !string.IsNullOrEmpty(job.callerName) ? job.callerName : "받는 곳";
+        return "여기 · " + to;
+    }
+
+    /// <summary>깃발 아래(fx,fy)에서 배달점 땅까지 도트 점선. 땅이 화면 밖·뒤면 화면 아래 끝까지.</summary>
+    void DotsDown(Vector2 topPx, Vector3 gnd, int x, int y, System.Text.StringBuilder vis)
+    {
+        float gy = ToScreen(gnd, out var gp) ? gp.y : 0f;
+        int len = Mathf.Clamp(y - Mathf.RoundToInt(gy), 0, y - 2);
+        len -= len % 4;
+        if (len < 4) return;
+        destDots.rectTransform.sizeDelta = new Vector2(3, len);
+        Show(destDots, x - 1, y - len); vis.Append("dots ");
+    }
+
+    /// <summary>은은한 빛기둥(세상 속, 건물에 가려진다): 배달점 땅에서 위로 beamHeight, 카메라 쪽으로 도는 판 하나. 위로 갈수록 옅다.</summary>
+    void Beam(DeliveryPoint tgt, bool on)
+    {
+        if (!on || tgt == null) { if (beam != null && beam.activeSelf) beam.SetActive(false); return; }
+        if (beam == null)
+        {
+            beam = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            beam.name = "DotUI_DestBeam";
+            Destroy(beam.GetComponent<Collider>());
+            var tex = new Texture2D(1, 32, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp, name = "DotUI_BeamFade" };
+            for (int y = 0; y < 32; y++) tex.SetPixel(0, y, new Color(1f, 1f, 1f, Mathf.Pow(1f - y / 31f, 1.6f)));
+            tex.Apply(false, true);
+            beamMat = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "DotUI_DestBeam" };
+            beamMat.SetTexture("_BaseMap", tex);
+            beamMat.SetFloat("_Surface", 1f); beamMat.SetFloat("_Blend", 0f);
+            beamMat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            beamMat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            beamMat.SetInt("_ZWrite", 0);
+            beamMat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            beamMat.renderQueue = 3000;
+            var mr = beam.GetComponent<MeshRenderer>();
+            mr.sharedMaterial = beamMat; mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
+        }
+        if (!beam.activeSelf) beam.SetActive(true);
+        var l = UIPalette.Lemon;
+        beamMat.SetColor("_BaseColor", new Color(l.r, l.g, l.b, beamAlpha));
+        Vector3 g = Ground(tgt);
+        beam.transform.position = g + Vector3.up * (beamHeight * 0.5f);
+        Vector3 to = cam.transform.position - g; to.y = 0f;
+        if (to.sqrMagnitude > 1e-4f) beam.transform.rotation = Quaternion.LookRotation(-to.normalized, Vector3.up);
+        beam.transform.localScale = new Vector3(beamWidth, beamHeight, 1f);
+    }
+
+    /// <summary>대역 약도: 북쪽 위. 나(잉크 3×3)와 받는 곳(신호색 5×5)이 다 들어가게 줄이고, 사이를 점선으로.</summary>
+    void DrawMap(Vector3 me, Vector3 dst)
+    {
+        var px = new Color32[MapN * MapN];
+        Color32 bg = UIPalette.PaperDeep, ink = Ink, sig = Signal, pap = Paper;
+        for (int i = 0; i < px.Length; i++) px[i] = bg;
+        for (int i = 0; i < MapN; i++) { px[i] = ink; px[(MapN - 1) * MapN + i] = ink; px[i * MapN] = ink; px[i * MapN + MapN - 1] = ink; }
+        Vector2 a = new Vector2(me.x, me.z), b = new Vector2(dst.x, dst.z), mid = (a + b) * 0.5f;
+        float span = Mathf.Max(Mathf.Abs(a.x - b.x), Mathf.Abs(a.y - b.y), 20f) * 0.5f;
+        float k = (MapN * 0.5f - 7f) / span;
+        Vector2Int P(Vector2 w) => new Vector2Int(Mathf.RoundToInt(MapN * 0.5f + (w.x - mid.x) * k), Mathf.RoundToInt(MapN * 0.5f + (w.y - mid.y) * k));
+        void Put(int x, int y, Color32 c) { if (x > 0 && y > 0 && x < MapN - 1 && y < MapN - 1) px[y * MapN + x] = c; }
+        var pa = P(a); var pb = P(b);
+        int steps = Mathf.Max(1, Mathf.RoundToInt(Vector2Int.Distance(pa, pb)));
+        for (int s = 0; s <= steps; s++) if (s % 3 == 0) { var q = Vector2.Lerp(pa, pb, s / (float)steps); Put(Mathf.RoundToInt(q.x), Mathf.RoundToInt(q.y), ink); }
+        for (int y = -2; y <= 2; y++) for (int x = -2; x <= 2; x++) Put(pb.x + x, pb.y + y, (Mathf.Abs(x) == 2 || Mathf.Abs(y) == 2) ? ink : sig);
+        for (int y = -1; y <= 1; y++) for (int x = -1; x <= 1; x++) Put(pa.x + x, pa.y + y, ink);
+        Put(pa.x, pa.y, pap);
+        // 북쪽 표시: 위 가운데 잉크 삼각 3줄
+        for (int r = 0; r < 3; r++) for (int x = -r; x <= r; x++) Put(MapN / 2 + x, MapN - 3 - r, ink);
+        mapTex.SetPixels32(px); mapTex.Apply(false);
     }
 
     static void Show(Graphic g, int x, int y) { g.gameObject.SetActive(true); g.rectTransform.anchoredPosition = new Vector2(x, y); }
@@ -312,6 +600,19 @@ public class DotScreenUI : MonoBehaviour
                 if (step != arrowStep) { arrowStep = step; DrawArrow(step); }
                 Show(arrowImg, W / 2 - ArrowN / 2, arrowOld ? H - 6 - 15 - 4 : H - 4 - ArrowN); vis.Append("arrow ");   // 1판 중심(위에서 14줄) → 새 중심(16줄): 화살 끝이 화면 위에서 ~7줄로 같다
             }
+            // D-252 거리: 화살표 왼쪽(오른쪽은 위험 '!' 자리). 100 m 넘으면 10 m, 그 안은 5 m 단위 — 숫자가 매 프레임 떨지 않게.
+            if (showDistance && !SimDestOff)
+            {
+                Vector3 me = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
+                Vector3 g = Ground(tgt);
+                float dm = Vector2.Distance(new Vector2(me.x, me.z), new Vector2(g.x, g.z));
+                int unit = dm >= 100f ? 10 : 5;
+                string s = (Mathf.RoundToInt(dm / unit) * unit) + "m";
+                distText.text = s;
+                int bw = Mathf.CeilToInt(Pref(distText, s, 100)) + 7;
+                distBox.rectTransform.sizeDelta = new Vector2(bw, 13);
+                Show(distBox, W / 2 - ArrowN / 2 - 2 - bw, H - 4 - ArrowN / 2 - 7); vis.Append("dist ");
+            }
         }
         // 화물 위험 "!": CargoWarningHUD 와 같은 4 소스(급제동·코너·스핀·경사) 중 큰 것.
         var cargo = Services.Cargo as CargoBox;
@@ -328,8 +629,33 @@ public class DotScreenUI : MonoBehaviour
         if (job != null && (tab || SimSlip))
         {
             slipBody.text = job.displayName;
-            int bw = Mathf.Clamp(Mathf.CeilToInt(Pref(slipBody, job.displayName, 400)) + 11, 60, 300);
-            slip.rectTransform.sizeDelta = new Vector2(bw, 34);
+            if (SimDestOff || tgt == null)
+            {
+                foreach (var g in new Graphic[] { slipTo, slipAddr, slipMap }) g.gameObject.SetActive(false);
+                slipTitle.rectTransform.anchoredPosition = new Vector2(5, 22); slipBody.rectTransform.anchoredPosition = new Vector2(5, 6);
+                int bw = Mathf.Clamp(Mathf.CeilToInt(Pref(slipBody, job.displayName, 400)) + 11, 60, 300);
+                slip.rectTransform.sizeDelta = new Vector2(bw, 34);
+            }
+            else
+            {
+                // D-252: 받는 곳·받는 사람 / 주소 / 대역 약도(오른쪽). 높이 = 위 5 + 제목 11 + 줄 3×13 + 아래 5 = 60 → 약도 52 와 맞춘다.
+                string to = "받는 곳  " + (string.IsNullOrEmpty(job.callerName) ? tgt.Label : job.callerName) + (string.IsNullOrEmpty(job.recipientName) ? "" : " · " + job.recipientName);
+                string addr = "주소  " + (string.IsNullOrEmpty(job.address) ? "○○길(이름 미정)" : job.address);
+                slipTo.text = to; slipAddr.text = addr;
+                int tw = Mathf.CeilToInt(Mathf.Max(Pref(slipBody, job.displayName, 400), Mathf.Max(Pref(slipTo, to, 400), Pref(slipAddr, addr, 400))));
+                int h = 62;
+                slipTitle.rectTransform.anchoredPosition = new Vector2(5, h - 16);
+                slipBody.rectTransform.anchoredPosition = new Vector2(5, h - 31);
+                slipTo.rectTransform.anchoredPosition = new Vector2(5, h - 45); slipTo.rectTransform.sizeDelta = new Vector2(400, 14);
+                slipAddr.rectTransform.anchoredPosition = new Vector2(5, h - 59); slipAddr.rectTransform.sizeDelta = new Vector2(400, 14);
+                int bw = Mathf.Clamp(tw + 11 + 4 + MapN + 5, 120, 420);
+                slip.rectTransform.sizeDelta = new Vector2(bw, h);
+                slipMap.rectTransform.anchoredPosition = new Vector2(bw - 5 - MapN, 5);
+                Vector3 me = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
+                DrawMap(me, Ground(tgt));
+                foreach (var g in new Graphic[] { slipTo, slipAddr, slipMap }) g.gameObject.SetActive(true);
+                vis.Append("map ");
+            }
             Show(slip, 8, 8); vis.Append("slip ");
         }
         else if (job != null && Time.unscaledTime - cartAt < slipHintSec) { Show(hintText, 8, 8); vis.Append("hint "); }

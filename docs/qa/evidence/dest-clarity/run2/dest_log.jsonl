@@ -1,0 +1,39 @@
+{"gaze":[[14.3,204.7,"on"],[14.4,205.4,"on"],[14.5,206.8,"on"],[14.6,208.6,"on"],[14.7,210.0,"on"],[14.8,210.8,"on"],[14.9,210.8,"on"],[15.0,210.8,"on"],[15.1,210.8,"on"],[15.2,210.8,"on"],[15.3,210.8,"on"],[15.4,210.8,"on"],[15.5,210.8,"on"],[15.6,210.8,"on"],[15.7,210.8,"on"],[15.7,210.8,"on"]],"talked":true}
+{"shot":"onfoot_after_talk","mode":"on","px":[320.0,163.0],"distM":272.3,"areaPct":0.11,"ui":"dot chip dest dots","dusk":0.0}
+{"path":"길 242개 노드 10126 시작점 오차 7.0m 끝점 오차 0.2m 길이 729m 지름길 포함 지나는 길 v2_ridge_up_b_s0:village,drive_garage:village,v2_camo_309378634_165_1:main,v2_tomo_723378509_33+seam7_tomo_camo_T:village,v2_tomo_118267044_13_0:village,v2_tomo_1296977705_61_s0:main,v2_ROAD_V2j_37:village,v2_tomo_461555200_26_1:village,v2_tomo_118267021_11_s1:village,v2_tomo_726995051_53:shortcut,v2_tomo_118267021_11_s0:village,v2_ROAD_V2j_197:main,v2_tomo_1373208325_64_1:main,v2_tomo_118267009_9_s1:shortcut,v2_ROAD_V2j_41_l:shortcut,v2_tomo_118267009_9_s0_1:shortcut","n":378}
+{"shot":"p1_start_noon_before","mode":"none","px":[613.0,199.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow hint chip","dusk":0.0}
+{"shot":"p1_start_noon_dots","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist hint chip destedge","dusk":0.0}
+{"shot":"p1_start_noon_beam","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist hint chip destedge beam","dusk":0.0}
+{"shot":"p2_fork1_noon_before","mode":"none","px":[18.0,74.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow hint chip","dusk":0.0}
+{"shot":"p2_fork1_noon_dots","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist hint chip destedge","dusk":0.0}
+{"shot":"p2_fork1_noon_beam","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist hint chip destedge beam","dusk":0.0}
+{"shot":"p3_fork2_noon_before","mode":"none","px":[427.0,252.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow hint chip","dusk":0.0}
+{"shot":"p3_fork2_noon_dots","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.29,"ui":"arrow dist hint chip dest dots","dusk":0.0}
+{"shot":"p3_fork2_noon_beam","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.28,"ui":"arrow dist hint chip dest beam","dusk":0.0}
+{"shot":"p4_before_noon_before","mode":"none","px":[337.0,260.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":0.0}
+{"shot":"p4_before_noon_dots","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.31,"ui":"arrow dist chip dest dots","dusk":0.0}
+{"shot":"p4_before_noon_beam","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.25,"ui":"arrow dist chip dest beam","dusk":0.0}
+{"shot":"p5_near_noon_before","mode":"none","px":[332.0,271.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":0.0}
+{"shot":"p5_near_noon_dots","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":1.01,"ui":"arrow dist chip destchip dots","dusk":0.0}
+{"shot":"p5_near_noon_beam","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":1.01,"ui":"arrow dist chip destchip dots beam","dusk":0.0}
+{"shot":"p1_start_dusk_before","mode":"none","px":[613.0,199.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":1.0}
+{"shot":"p1_start_dusk_dots","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist chip destedge","dusk":1.0}
+{"shot":"p1_start_dusk_beam","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist chip destedge beam","dusk":1.0}
+{"shot":"p2_fork1_dusk_before","mode":"none","px":[18.0,74.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":1.0}
+{"shot":"p2_fork1_dusk_dots","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist chip destedge","dusk":1.0}
+{"shot":"p2_fork1_dusk_beam","mode":"edge","px":[18.0,74.0],"distM":199.5,"areaPct":0.63,"ui":"arrow dist chip destedge beam","dusk":1.0}
+{"shot":"p3_fork2_dusk_before","mode":"none","px":[427.0,252.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":1.0}
+{"shot":"p3_fork2_dusk_dots","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.29,"ui":"arrow dist chip dest dots","dusk":1.0}
+{"shot":"p3_fork2_dusk_beam","mode":"on","px":[427.0,252.0],"distM":147.2,"areaPct":0.28,"ui":"arrow dist chip dest beam","dusk":1.0}
+{"shot":"p4_before_dusk_before","mode":"none","px":[337.0,260.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":1.0}
+{"shot":"p4_before_dusk_dots","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.31,"ui":"arrow dist chip dest dots","dusk":1.0}
+{"shot":"p4_before_dusk_beam","mode":"on","px":[337.0,260.0],"distM":28.6,"areaPct":0.25,"ui":"arrow dist chip dest beam","dusk":1.0}
+{"shot":"p5_near_dusk_before","mode":"none","px":[332.0,271.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow chip","dusk":1.0}
+{"shot":"p5_near_dusk_dots","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":1.01,"ui":"arrow dist chip destchip dots","dusk":1.0}
+{"shot":"p5_near_dusk_beam","mode":"near","px":[332.0,271.0],"distM":9.8,"areaPct":1.01,"ui":"arrow dist chip destchip dots beam","dusk":1.0}
+{"shot":"slip_before","mode":"none","px":[613.0,199.0],"distM":-1.0,"areaPct":0.00,"ui":"arrow slip chip","dusk":0.0}
+{"shot":"slip_after","mode":"edge","px":[613.0,199.0],"distM":279.6,"areaPct":0.62,"ui":"arrow dist map slip chip destedge","dusk":0.0}
+{"flicker":{"d0":147.2,"d1":111.9,"samples":81,"modeChanges":2,"pxJumps40":6,"none":0,"seq":[[0.4,"on",428.0,252.0,147.0],[0.9,"on",424.0,252.0,146.3],[1.4,"on",429.0,251.0,145.0],[1.9,"edge",613.0,246.0,143.6],[2.4,"edge",613.0,234.0,140.8],[2.9,"edge",613.0,229.0,138.9],[3.4,"on",352.0,253.0,137.6],[3.9,"on",291.0,253.0,136.2],[4.4,"on",314.0,253.0,134.5],[4.9,"on",315.0,252.0,132.3],[5.4,"on",326.0,252.0,129.9],[5.9,"on",370.0,252.0,127.3],[6.4,"on",412.0,251.0,124.4],[6.9,"on",439.0,251.0,121.4],[7.4,"on",456.0,251.0,118.1],[7.9,"on",479.0,251.0,112.6]]}}
+{"shot":"alt_STOP_hill_field_noon","mode":"edge","px":[613.0,241.0],"distM":109.7,"areaPct":0.59,"ui":"arrow dist destedge","dusk":0.0}
+{"shot":"alt_STOP_hill_field_dusk","mode":"edge","px":[613.0,240.0],"distM":108.8,"areaPct":0.59,"ui":"arrow dist destedge","dusk":1.0}
+{"shot":"alt_slip","mode":"edge","px":[613.0,240.0],"distM":108.7,"areaPct":0.59,"ui":"arrow dist map slip chip destedge","dusk":1.0}

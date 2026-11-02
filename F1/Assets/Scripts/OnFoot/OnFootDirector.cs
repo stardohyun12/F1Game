@@ -66,7 +66,16 @@ public class OnFootDirector : MonoBehaviour
     [SerializeField] float talkFocusSec = 0.5f;
     [Tooltip("화면 가운데에 둘 점 = 머리 꼭대기에서 이만큼 아래(m). 말풍선이 그 위에 들어갈 자리.")]
     [SerializeField] float talkFocusDrop = 0.05f;
-    Coroutine talkFocus;
+    [Header("목적지 표식(D-252) — 대화 끝 시선")]
+    [Tooltip("사장 대화가 끝나면 카메라가 첫 배달지 표식 쪽으로 도는 시간(초). 0 = 안 돌림(대화 시선과 같은 방식).")]
+    [SerializeField] float destFocusSec = 0.5f;
+    [Tooltip("표식 쪽을 본 채 멈춰 있는 시간(초) — 그 뒤 다시 플레이어 시선.")]
+    [SerializeField] float destHoldSec = 0.8f;
+    /// <summary>사장 대화가 끝나 첫 배달지를 들었다 — DotScreenUI 가 걷는 동안에도 목적지 표식을 그린다(탑승 전까지).</summary>
+    public bool DestKnown => Talked && firstDrop != null && !Delivered;
+    /// <summary>대화 끝 시선 이동 중(QA·캡처용).</summary>
+    public bool DestFocusing => destFocus != null;
+    Coroutine talkFocus, destFocus;
     DotScreenUI dotUI;
     Canvas overlayUI;
     readonly Dictionary<Object, Vector3> anchorOffset = new Dictionary<Object, Vector3>();
@@ -290,6 +299,7 @@ public class OnFootDirector : MonoBehaviour
     void EnterCart()
     {
         Mark("카트 타기");
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
         State = Mode.InCart;
         EngineAudio.OnFootMute = false;
         player.gameObject.SetActive(false);
@@ -434,6 +444,30 @@ public class OnFootDirector : MonoBehaviour
         footCam.HoldLook = false;                                  // 다시 플레이어 시선
         if (subRoot != null) subRoot.SetActive(false);
         Mark("사장 대화 끝");
+        if (destFocusSec > 0f && firstDrop != null && UseDot) destFocus = StartCoroutine(FocusDest());
+    }
+
+    /// <summary>
+    /// D-252: 목적지 표식이 처음 뜨는 순간(사장이 "언덕 위 찻집"이라고 말한 뒤) 시선이 한 번 그쪽으로 — FocusSpeaker 와 같은 방식(destFocusSec 동안 SmoothStep).
+    /// 멀리(수백 m) 있어도 표식은 도트 UI 라 건물에 안 가린다. 위아래는 반만 따라간다(먼 점을 정확히 보면 하늘·땅만 보여서).
+    /// </summary>
+    IEnumerator FocusDest()
+    {
+        footCam.HoldLook = true;
+        float y0 = footCam.Yaw, p0 = footCam.Pitch;
+        footCam.LookAt(DotScreenUI.DestAnchorOf(firstDrop));
+        float dy = Mathf.DeltaAngle(y0, footCam.Yaw), p1 = Mathf.Lerp(p0, footCam.Pitch, 0.5f);
+        Mark($"목적지 시선 {dy:F1}° 옆 / {p1 - p0:F1}° 위아래, {destFocusSec:F2}s + {destHoldSec:F2}s");
+        for (float t = 0f; t < destFocusSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
+        {
+            float k = Mathf.SmoothStep(0f, 1f, t / destFocusSec);
+            footCam.Yaw = y0 + dy * k; footCam.Pitch = Mathf.Lerp(p0, p1, k);
+            yield return null;
+        }
+        footCam.Yaw = y0 + dy; footCam.Pitch = p1;
+        yield return new WaitForSecondsRealtime(destHoldSec);
+        footCam.HoldLook = false;
+        destFocus = null;
     }
 
     void ShowSubtitle()
@@ -460,6 +494,7 @@ public class OnFootDirector : MonoBehaviour
         firstJob.name = "TUT_FirstEggs"; firstJob.displayName = "달걀 한 판 → 언덕 위 찻집"; firstJob.cargoType = CargoType.Eggs;
         firstJob.destinationLabels = new List<string> { firstDrop.Label }; firstJob.timeLimitSec = 0f; firstJob.baseReward = 1200; firstJob.timeBonus = 0;
         firstJob.callerName = "언덕 위 찻집";
+        firstJob.recipientName = "줄리아";                         // 사장 대사(BossLines)의 이름 — 도현 확인 필요(위 주석)
         mgr.OnDeliveryCompleted.AddListener(OnFirstDelivered);
         var progress = FindFirstObjectByType<DeliveryProgressHUD>(FindObjectsInactive.Include);
         if (progress != null) progress.gameObject.SetActive(true);
@@ -518,6 +553,7 @@ public class OnFootDirector : MonoBehaviour
     /// <summary>대화·앉기·카트에서 빠져나와 걷기 몸을 켠다(위치는 그대로). 카메라·시야각은 각자 정리한다.</summary>
     void DebugLeaveState()
     {
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
         if (InTalk)
         {
             talkLine = -1;

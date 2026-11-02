@@ -1015443,6 +1015443,8 @@ MonoBehaviour:
   talkReach: 3
   talkFocusSec: 0.5
   talkFocusDrop: 0.05
+  destFocusSec: 0.5
+  destHoldSec: 0.8
 --- !u!4 &1927327246
 Transform:
   m_ObjectHideFlags: 0
@@ -1015485,11 +1015487,18 @@ MonoBehaviour:
   warnShow: 0.7
   warnCrit: 1
   slipHintSec: 6
+  destStyle: 0
+  destNearM: 15
+  showDistance: 1
+  beamHeight: 40
+  beamWidth: 1.4
+  beamAlpha: 0.45
   boxSprite: {fileID: 0}
   tabSprite: {fileID: 0}
   keySprite: {fileID: 0}
   tailSprite: {fileID: 0}
   warnSprite: {fileID: 0}
+  flagSprite: {fileID: 0}
 --- !u!1 &1927366251
 GameObject:
   m_ObjectHideFlags: 0

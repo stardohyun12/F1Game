@@ -56,4 +56,10 @@ public class OrderJob : ScriptableObject
     public string callerName = "";
     [Tooltip("급한 상황 한두 문장. 비우면 화물 종류별 기본 문구.")]
     [TextArea(2, 4)] public string urgentSituation = "";
+
+    [Header("전표 (D-252)")]
+    [Tooltip("받는 사람 이름. 비우면 전표에 받는 곳만.")]
+    public string recipientName = "";
+    [Tooltip("받는 곳 주소 한 줄. 비우면 '주소 ○○길(이름 미정)'.")]
+    public string address = "";
 }
