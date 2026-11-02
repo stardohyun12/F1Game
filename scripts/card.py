@@ -245,6 +245,17 @@ def advance(cid, bundle_rc=None):
         print(f"{cid}: {st} 에서 advance 할 것 없음")
 
 
+def note(cid, text, fails=None, by="pd"):
+    """같은 단계 안의 기록(예: 하네스 오류로 센 불통과 정정). 넘김 기록에도 남긴다."""
+    d, h, body = read(cid)
+    if fails is not None:
+        h["fails"] = str(int(fails))
+    h["updated"] = now()
+    write(d, h, body.rstrip("\n") + f"\n- {now()[:16]} {by} · {text}\n")
+    handoff(cid, by, h.get("owner", "pd"), h["stage"], h["stage"], text, fails=int(h.get("fails", 0)))
+    board()
+
+
 def hold(cid, why):
     move(cid, "blocked", by="harness", note=f"일꾼 과제 보류 — {why}")
 
@@ -289,6 +300,8 @@ def main(a):
         dispatch(a[1])
     elif cmd == "advance":
         advance(a[1], opt("--bundle-rc"))
+    elif cmd == "note":
+        note(a[1], a[2], fails=opt("--fails"), by=opt("--by", "pd"))
     elif cmd == "hold":
         hold(a[1], a[2] if len(a) > 2 else "")
     elif cmd == "board":

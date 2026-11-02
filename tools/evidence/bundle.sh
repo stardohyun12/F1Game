@@ -60,7 +60,9 @@ d=f"{card}/evidence/{label}"
 m=json.load(open(f"{d}/meta.json",encoding="utf-8"))
 adv=m["frame_end"]-m["frame_start"]
 m["frames_advanced"]=adv
-m["frames_ok"]= adv >= max(20, secs*10) and m["unique_frames"] >= secs*10    # 초당 10프레임 이상 실제로 돌았나
+m["fps"]=round(m["unique_frames"]/max(0.1,m["seconds"]),1)
+# 멈춤 검출이 목적(성능 판정 아님): 캡처(PNG 저장)가 에디터를 느리게 해 6~13fps 가 정상 범위였다(2026-11-03 실측) → 초당 2프레임 이상이면 「돈다」
+m["frames_ok"]= adv >= max(20, secs*2) and m["unique_frames"] >= max(20, secs*2)
 m["log_ok"]= m["errors"]==0
 m["console_errors_after"]=cons
 for k in ("clip.mp4","strip.png","shot.png"):

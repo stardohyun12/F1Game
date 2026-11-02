@@ -51,7 +51,7 @@
 | 항목 | 어떻게 | 기계 판정 |
 |---|---|---|
 | 로그 WARNING/ERROR 검사 | 클립 동안 `Application.logMessageReceived` 로 경고·에러 수·첫 12줄 + 끝난 뒤 콘솔 에러 | `log_ok` = 에러 0 |
-| Time.frameCount 증가 | 클립 시작·끝 frameCount, 실제로 바뀐 프레임 수(멈춘 화면도 사진은 찍힌다 — Unity 공식 unity-agent-plugin playmode-verification-loop) | `frames_ok` = 10초에 ≥100프레임 |
+| Time.frameCount 증가 | 클립 시작·끝 frameCount, 실제로 바뀐 프레임 수(멈춘 화면도 사진은 찍힌다 — Unity 공식 unity-agent-plugin playmode-verification-loop) | `frames_ok` = 초당 2프레임 이상(멈춤 검출 — 캡처가 에디터를 6~13fps 로 늦추므로 성능 판정 아님) |
 | 8~15초 클립 | 기본 10초, 초당 12장. Unity Recorder 는 -batchmode 에서 녹화 안 됨(공식 Known issues)이라 쓰지 않는다 → GUI 에디터 Play 중 `EditorApplication.update` 콜백에서 도현이 보는 저해상도 화면(`LowResRenderTest.Present`, 없으면 Main Camera)을 PNG 로 받아 ffmpeg 으로 `clip.mp4` | — |
 | 검증용 한 장 | `strip.png` = 클립을 시간 순 8칸(검증 일꾼은 영상을 못 보므로) | — |
 | 전/후 사진 1쌍 | `before/shot.png`(작업 전 PD 가 `bundle.sh <ID> before`) · `after/shot.png`(클립 마지막 장) | — |

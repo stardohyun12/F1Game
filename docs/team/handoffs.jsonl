@@ -7,3 +7,4 @@
 {"ts": "2026-11-03T01:45:32+09:00", "card": "C-001", "from": "harness", "to": "build", "stage_from": "greybox", "stage_to": "greybox", "note": "대기열에 과제 → .claude/team/queue/editor/60-C-001-greybox-1.task"}
 {"ts": "2026-11-03T01:59:32+09:00", "card": "C-001", "from": "harness", "to": "build", "stage_from": "greybox", "stage_to": "greybox", "note": "기계 확인 FAIL(rc=0, 프레임 +68, 에러 0)", "evidence": "docs/team/cards/C-001-repair-one/evidence.json", "fails": 2}
 {"ts": "2026-11-03T01:59:32+09:00", "card": "C-001", "from": "harness", "to": "build", "stage_from": "greybox", "stage_to": "greybox", "note": "대기열에 과제 → .claude/team/queue/editor/60-C-001-greybox-2.task"}
+{"ts": "2026-11-03T02:05:50+09:00", "card": "C-001", "from": "pd", "to": "build", "stage_from": "greybox", "stage_to": "greybox", "note": "PD 정정: 2번째 불통과(기계 FAIL 프레임 +68/10초)는 하네스 기준 오류 — 캡처가 에디터를 6~13fps 로 늦추는데 기준을 10fps 로 잡았음. 기준을 「초당 2프레임 이상(멈춤 검출)」으로 고치고 불통과 2→1", "fails": 1}
