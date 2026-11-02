@@ -105,25 +105,26 @@ public class CartDamage : MonoBehaviour
         }
         Build();
         for (int i = 0; i < MaxStage; i++) parts[i].gameObject.SetActive(i < Stage);
-        // 0 앞판: 카트 코 위 회색 판. 단계마다 더 꺾이고 비틀린다.
-        parts[0].localPosition = new Vector3(0.08f * Stage, 0.45f + 0.04f * Stage, 0.95f);
-        parts[0].localRotation = Quaternion.Euler(20f * Stage, 8f * Stage, -12f * Stage);
-        parts[0].localScale = new Vector3(0.95f, 0.34f, 0.07f);
-        // 1 왼쪽 펜더: 옆으로 들려 바깥으로 벌어진 판(2단계부터)
-        parts[1].localPosition = new Vector3(-0.62f, 0.42f, 0.55f);
-        parts[1].localRotation = Quaternion.Euler(0f, 30f, -35f);
-        parts[1].localScale = new Vector3(0.07f, 0.34f, 0.75f);
-        // 2 앞 범퍼: 한쪽이 떨어져 비스듬히 처진 막대(3단계)
-        parts[2].localPosition = new Vector3(0.1f, 0.2f, 1.18f);
-        parts[2].localRotation = Quaternion.Euler(-10f, 0f, 22f);
-        parts[2].localScale = new Vector3(1.15f, 0.14f, 0.12f);
+        // 0 앞판: 카트 코 위 회색 판. 단계마다 더 꺾이고 비틀린다(1단계 살짝 → 3단계 크게 젖혀짐).
+        parts[0].localPosition = new Vector3(0.1f * Stage, 0.45f + 0.06f * Stage, 0.95f);
+        parts[0].localRotation = Quaternion.Euler(18f * Stage, 10f * Stage, -15f * Stage);
+        parts[0].localScale = new Vector3(0.95f, 0.38f, 0.08f);
+        // 1 왼쪽 펜더: 옆으로 들려 카트 폭 밖으로 크게 벌어진 판(2단계부터) — 앞에서 봐도 옆으로 삐져나와 보이게
+        parts[1].localPosition = new Vector3(-0.85f, 0.5f, 0.6f);
+        parts[1].localRotation = Quaternion.Euler(0f, 25f, -50f);
+        parts[1].localScale = new Vector3(0.08f, 0.5f, 0.8f);
+        // 2 앞 범퍼: 한쪽이 떨어져 땅까지 비스듬히 처진 막대(3단계)
+        parts[2].localPosition = new Vector3(0.15f, 0.22f, 1.2f);
+        parts[2].localRotation = Quaternion.Euler(-10f, 0f, 28f);
+        parts[2].localScale = new Vector3(1.3f, 0.16f, 0.14f);
         // 단계가 오를수록 전체가 어두워진다
         for (int i = 0; i < MaxStage; i++)
         {
             float g = 0.6f - 0.12f * Stage - 0.04f * i;
             partMats[i].color = new Color(g, g, g);
         }
-        float sg = 0.85f - 0.08f * Stage;              // 연기: 짐 상자(갈색)와 갈리게 밝은 회색, 단계마다 조금 진해진다
+        // 연기: 정비소 문 밖(밝은 모래·하늘)을 등지고 보이므로 어두운 회색. 단계마다 더 진해진다.
+        float sg = 0.42f - 0.09f * Stage;
         smokeMat.color = new Color(sg, sg, sg);
     }
 
@@ -131,14 +132,14 @@ public class CartDamage : MonoBehaviour
     {
         if (Stage == 0) return;
         float dt = Time.deltaTime;
-        // 연기: 1단계 0.6초 · 2단계 0.25초 · 3단계 0.1초마다 한 조각, 조각 크기도 단계마다 커진다
+        // 연기: 1단계 0.4초 · 2단계 0.2초 · 3단계 0.12초마다 한 조각, 조각 크기도 단계마다 커진다(0.3 → 0.45 → 0.6 m)
         puffNext -= dt;
         if (puffNext <= 0f)
         {
-            puffNext = Stage == 1 ? 0.6f : Stage == 2 ? 0.25f : 0.1f;
+            puffNext = Stage == 1 ? 0.4f : Stage == 2 ? 0.2f : 0.12f;
             Puff();
         }
-        float big = 0.18f + 0.1f * Stage;
+        float big = 0.15f + 0.15f * Stage;
         for (int i = 0; i < PuffCount; i++)
         {
             var p = puffs[i];
@@ -146,7 +147,7 @@ public class CartDamage : MonoBehaviour
             puffAge[i] += dt;
             float k = puffAge[i] / PuffLife;
             if (k >= 1f) { p.gameObject.SetActive(false); continue; }
-            p.position += Vector3.up * (0.8f * dt);
+            p.position += Vector3.up * (1.0f * dt);
             p.localScale = Vector3.one * Mathf.Lerp(0.1f, big, k) * (k > 0.75f ? (1f - k) / 0.25f : 1f);
         }
     }

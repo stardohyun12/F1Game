@@ -9,7 +9,10 @@ var car = d.Car;
 if (RepairSpot.Active == null) return "FAIL: 정비 자리(RepairSpot) 없음 — Map_TownV6 아님?";
 Vector3 feet = new Vector3(216.6f, 26.7f, -55.4f);
 d.DebugTeleport(feet, 90f, new Vector3(219.4f, 26.7f, -55.4f), 270f);
-var fc = UnityEngine.Object.FindFirstObjectByType<OnFootCamera>(); if (fc != null) fc.Pitch = 22f;
+// 1인칭 카메라 Yaw 는 마우스·이전 값에 따라 달라진다(앞 판 자체 확인에서 작업대 쪽을 봄) → 카트 코 위(연기 나는 자리)를 매 틱 바라보게 고정
+var fc = UnityEngine.Object.FindFirstObjectByType<OnFootCamera>();
+System.Func<Vector3> lookAt = () => car.transform.position + Vector3.up * 0.7f;
+if (fc != null) fc.LookAt(lookAt());
 var dm = CartDamage.Of(car);
 dm.Clear();
 DebugWindow.CartHurt(); DebugWindow.CartHurt();
@@ -31,6 +34,7 @@ UnityEditor.EditorApplication.CallbackFunction cb = null;
 cb = () => {
     if (!Application.isPlaying || UnityEditor.SessionState.GetInt("c001.run", 0) != run) { UnityEditor.EditorApplication.update -= cb; return; }
     float now = Time.realtimeSinceStartup;
+    if (fc != null) fc.LookAt(lookAt());
     if (c0 < 0f) { if (UnityEditor.SessionState.GetString("ev.done", "") != "c001-wait" || now - t0 > 20f) c0 = now; else return; }
     float t = now - c0;
     if (step == 0 && t >= 0.6f) { DebugWindow.CartHurt(); step = 1; }
@@ -41,8 +45,8 @@ cb = () => {
     else if (step == 5 && t >= 6.9f) {
         string r = "E 경로: 칩 '" + UnityEditor.SessionState.GetString("c001.chip", "") + "' → 상처 " + dm.Stage + " · 돈 글자 '" + d.MoneyText + "' · 오늘 수리 합 " + DayLog.TodayRepair;
         UnityEditor.SessionState.SetString("c001.e", r); Debug.Log("[C-001] " + r); step = 6;
-        UnityEditor.EditorApplication.update -= cb;
     }
+    else if (step == 6 && t >= 11f) UnityEditor.EditorApplication.update -= cb;   // 클립(10초) 끝까지 카메라를 카트에 붙여 둔다
 };
 UnityEditor.EditorApplication.update += cb;
 return check + " · 시연 대기(클립 시작 +0.6s 1단계, +2.4s 2단계, +4.2s 3단계, +6.6s E)";
