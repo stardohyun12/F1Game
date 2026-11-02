@@ -47,13 +47,21 @@ def status():
         out.append("최근: " + " / ".join(re.sub(r"^\[\S+ ", "[", l)[:70] for l in last3))
     return "\n".join(out)
 
-prev = ""
+prev = ""; prevkey = None
+def key_of(txt): return tuple(l for l in txt.splitlines() if l.startswith(("▶", "⏸")))
 while True:
     try:
         txt = status()
         if txt != prev:
             mid = IDF.read_text().strip() if IDF.exists() else ""
             ok = False
+            k = key_of(txt)
+            if mid and prevkey is not None and k != prevkey:
+                # 작업이 바뀌면 옛 메시지를 지우고 맨 아래에 새로 올림(위로 묻혀 안 보이는 것 방지)
+                try: call("deleteMessage", chat_id=CHAT, message_id=int(mid))
+                except Exception: pass
+                mid = ""
+            prevkey = k
             if mid:
                 try:
                     call("editMessageText", chat_id=CHAT, message_id=int(mid), text=txt); ok = True
