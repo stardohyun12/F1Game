@@ -22,6 +22,10 @@ public struct DriveFeelValues
     public float minTurnRadius;
     /// <summary>최고속에 가까울수록 미는 힘이 이만큼 준다(0~1). 0 = 끝까지 같은 힘(예전).</summary>
     public float accelFalloff;
+    /// <summary>바닥 마찰 보정(m/s²) — 페달을 밟는 동안 차가 바닥에서 받는 구름 저항만큼을 (1−페달) 몫으로 보탠다. 풀 페달 가속은 그대로, 반 페달도 "반만큼 순가속"이 나온다. 0 = 끔(예전).</summary>
+    public float rollAssist;
+    /// <summary>오르막 보정(0~1) — 같은 방식으로 비탈이 끌어내리는 힘(중력의 진행방향 성분)을 (1−페달) 몫으로 상쇄. 0 = 끔(예전).</summary>
+    public float slopeAssist;
     /// <summary>조향을 놓을 때(중앙 복귀) 지연. 0 = steerLag 와 같게.</summary>
     public float steerReturnLag;
     /// <summary>화물 무게가 가속·제동·출렁임에 먹는 정도(0 = 무시, 1 = 그대로).</summary>
@@ -60,6 +64,9 @@ public static class DriveFeel
         // 차 상자 마찰(CarLowFriction 0.15 ≈ 1.5 m/s²)·공기 저항이 늘 빠진다 — 3.6·0.45 로는 0→40 이 9.6초였다(1차 실측).
         accelTime = 2.9f,           // 엔진 힘 = 100kg × 20m/s ÷ 2.9 (A 는 ÷ 2.8 에 최고속 26.7)
         accelFalloff = 0.3f,        // 끝으로 갈수록 힘이 빠져 최고속엔 천천히 붙는다
+        // 반 페달 봇이 오르막에서 33곳 섰다(D-257 4번 이슈). 실측: 45kg 상자 + 페달 0.5 는 평지에서도 0m — 엔진 힘(2.4 m/s²)이 바닥 마찰(≈2.6)과 같다.
+        rollAssist = 2.6f,
+        slopeAssist = 1f,
         brakeDecel = 9f,            // 13 → 9: 제동 거리 조금 길게
         steerLag = 0.16f,           // 0.05 → 0.16: 핸들이 손을 따라오는 데 걸리는 시간
         steerReturnLag = 0.12f,

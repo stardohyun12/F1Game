@@ -1,0 +1,16 @@
+{
+  "조건": "Map_TownV6 Play, DriveFeelProbe(y=400 임시 평지·10° 비탈 30m), 프리셋 B, 상자 45kg(LoadOverrideKg). 평지=정지에서 6초, 비탈=10m 앞에서 20초",
+  "전(rollAssist=0, slopeAssist=0)": {
+    "p0.3": {"flatDistM": 0.0, "rampTop": false, "rampZ": -10.0},
+    "p0.5": {"flatDistM": 0.0, "rampTop": false, "rampZ": -10.0},
+    "p0.7": {"flatDistM": 8.0, "flatKmh": 11.6, "rampTop": false, "rampZ": 5.6}
+  },
+  "후(rollAssist=2.6, slopeAssist=1)": {
+    "p0.3": {"flatDistM": 5.6, "flatKmh": 7.7, "rampTop": false, "rampZ": 27.5},
+    "p0.5": {"flatDistM": 14.4, "flatKmh": 17.6, "rampTopS": 12.82, "rampZ": 29.6},
+    "p0.7": {"flatDistM": 22.1, "flatKmh": 25.5, "rampTopS": 10.20, "rampZ": 29.6}
+  },
+  "중간 시도(저속 토크 0.8, 폐기)": {"p0.3": {"flatDistM": 3.7}, "p0.5": {"flatDistM": 3.8, "rampTop": false, "rampZ": -0.9}},
+  "풀 페달 후": {"t0to40": 4.04, "kmhAt5s": 45.8, "brakeDistM": 5.53, "cargoBrakeG": 1.133, "turn35LatG": 1.242, "bump8cm": "통과", "ramp10_timeToTopS": 6.00, "ramp10_kmhAtTop": 36.1},
+  "풀 페달 전(1816 보고)": {"t0to40": 4.1, "kmhAt5s": 45.4, "brakeDistM": 5.23, "cargoBrakeG": 1.13, "turn35LatG": 1.24, "bump8cm": "통과", "ramp10_timeToTopS": 6.06, "ramp10_kmhAtTop": 36.1}
+}

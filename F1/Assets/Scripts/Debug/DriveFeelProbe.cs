@@ -11,6 +11,12 @@ using UnityEngine;
 /// </summary>
 public class DriveFeelProbe : MonoBehaviour
 {
+    /// <summary>QA: 0 이상이면 프리셋 적용 뒤 오르막 보정(slopeAssist)을 이 값으로 덮는다(전/후 비교용). −1 = 프리셋 값.</summary>
+    public static float QaSlopeAssist = -1f;
+    /// <summary>QA: 0 이상이면 바닥 마찰 보정(rollAssist)를 이 값으로 덮는다. −1 = 프리셋 값.</summary>
+    public static float QaRollAssist = -1f;
+    /// <summary>QA: true 면 반 페달 시험(평지 출발·10° 비탈)만 돌린다.</summary>
+    public static bool QaOnlyHalf;
     public static bool Busy { get; private set; }
     public static string Result { get; private set; } = "";
     public static string Status { get; private set; } = "";
@@ -42,9 +48,12 @@ public class DriveFeelProbe : MonoBehaviour
         if (rc != null && rc.CurrentStage != RunStage.Driving) rc.EnterFreeDrive();
         Vector3 homePos = rb.position; Quaternion homeRot = rb.rotation;
         car.SetFeelPreset((DriveFeelPreset)preset);
+        if (QaSlopeAssist >= 0f) typeof(ArcadeCarController).GetField("slopeAssist", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(car, QaSlopeAssist);
+        if (QaRollAssist >= 0f) typeof(ArcadeCarController).GetField("rollAssist", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(car, QaRollAssist);
         BuildField();
         js.Append("{\"preset\":\"").Append(DriveFeel.Label(car.FeelPreset)).Append("\",\"mode\":\"").Append(car.Mode).Append("\"");
 
+        if (QaOnlyHalf) { yield return HalfPedal(); goto Finish; }
         // 1) 직진 가속 7초
         yield return Place(new Vector3(0, Y0, -250), 0);
         float t40 = -1, v5 = 0, vmax = 0, t = 0; ResetPeaks();
@@ -104,6 +113,8 @@ public class DriveFeelProbe : MonoBehaviour
         while (t < 12f) { yield return new WaitForFixedUpdate(); t += Time.fixedDeltaTime; Sample(); if (rb.position.z >= topZ) { tTop = t; break; } }
         Put("ramp10", $"\"timeToTopS\":{tTop:F2},\"kmhAtTop\":{Kmh():F1}," + Peaks());
 
+        yield return HalfPedal();
+
         // 6) 핸드브레이크 — 40km/h 에서 조향 0.5 + 1초
         yield return Place(new Vector3(-120, Y0, -250), 0);
         yield return SpeedUp(40f);
@@ -129,6 +140,7 @@ public class DriveFeelProbe : MonoBehaviour
         car.LoadOverrideKg = -1f;
         car.SetMoveInput(Vector2.zero);
 
+    Finish:
         js.Append("}");
         Result = js.ToString();
         System.IO.Directory.CreateDirectory(outDir);
@@ -138,6 +150,29 @@ public class DriveFeelProbe : MonoBehaviour
         Destroy(field); if (sideCam != null) Destroy(sideCam.gameObject); if (rt != null) rt.Release();
         Status = "done"; Busy = false;
         Destroy(gameObject);
+    }
+
+    /// <summary>QA: 반 페달(D-257 4번 이슈) — 평지 출발 6초 거리 + 10° 비탈 30m. 상자 45kg 와 빈 차.</summary>
+    IEnumerator HalfPedal()
+    {
+        float t, topZ = 240f + 30f * Mathf.Cos(10f * Mathf.Deg2Rad);
+        foreach (float kg in new[] { 45f, 0f })
+            foreach (float pedal in new[] { 0.3f, 0.5f, 0.7f })
+            {
+                car.LoadOverrideKg = kg;
+                // 평지: 정지에서 6초 — 간 거리·끝 속도
+                yield return Place(new Vector3(-60, Y0, -200), 0);
+                Vector3 p0 = rb.position; t = 0;
+                while (t < 6f) { car.SetMoveInput(new Vector2(0, pedal)); yield return new WaitForFixedUpdate(); t += Time.fixedDeltaTime; }
+                string flat = $"\"flatDistM\":{Vector3.Distance(p0, rb.position):F1},\"flatKmh\":{Kmh():F1}";
+                // 10° 비탈: 10m 앞에서 출발, 20초 안에 꼭대기
+                yield return Place(new Vector3(120, Y0, 230), 0);
+                t = 0; float tTop = -1; ResetPeaks();
+                while (t < 20f) { car.SetMoveInput(new Vector2(0, pedal)); yield return new WaitForFixedUpdate(); t += Time.fixedDeltaTime; Sample(); if (rb.position.z >= topZ) { tTop = t; break; } }
+                Put($"half_kg{kg}_p{pedal}", flat + $",\"rampTopS\":{tTop:F2},\"rampZ\":{rb.position.z - 240f:F1},\"rampKmh\":{Kmh():F1}");
+            }
+        car.SetMoveInput(Vector2.zero);
+        car.LoadOverrideKg = -1f;
     }
 
     // ── 보조 ──

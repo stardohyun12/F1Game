@@ -114,6 +114,10 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [SerializeField] private float minTurnRadius = 0f;
     [Tooltip("최고속 가까이서 미는 힘이 줄어드는 몫(0~1). 0 = 끝까지 같은 힘.")]
     [SerializeField] private float accelFalloff = 0f;
+    [Tooltip("바닥 마찰 보정(m/s²): 페달 밟는 동안 (1−페달) 몫으로 보태는 가속. 풀 페달은 그대로, 반 페달도 비례한 순가속. 0 = 끔.")]
+    [SerializeField] private float rollAssist = 0f;
+    [Tooltip("오르막 보정(0~1): 같은 방식으로 비탈이 끌어내리는 힘을 상쇄. 0 = 끔.")]
+    [SerializeField] private float slopeAssist = 0f;
     [Tooltip("조향을 놓을 때(중앙 복귀) 지연. 0 = steerLag.")]
     [SerializeField] private float steerReturnLag = 0f;
     [Tooltip("화물 무게가 가속·제동에 먹는 정도. 0 = 무시.")]
@@ -143,7 +147,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         maxTurnDegPerSec = maxTurnDegPerSec, sideGripDamping = sideGripDamping, downforceGripGain = downforceGripGain,
         downforceAccel = downforceAccel, coastDrag = coastDrag, driveMode = driveMode, wheelSpring = wheelSpring, wheelDamper = wheelDamper,
         driftEnabled = driftEnabled, minTurnRadius = minTurnRadius, accelFalloff = accelFalloff, steerReturnLag = steerReturnLag,
-        weightInfluence = weightInfluence,
+        weightInfluence = weightInfluence, slopeAssist = slopeAssist, rollAssist = rollAssist,
         // 차체·카메라·소리 손잡이는 A 에서 0 = 예전 동작
     };
 
@@ -156,7 +160,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         maxTurnDegPerSec = v.maxTurnDegPerSec; sideGripDamping = v.sideGripDamping; downforceGripGain = v.downforceGripGain;
         downforceAccel = v.downforceAccel; coastDrag = v.coastDrag; wheelSpring = v.wheelSpring; wheelDamper = v.wheelDamper;
         driftEnabled = v.driftEnabled; minTurnRadius = v.minTurnRadius; accelFalloff = v.accelFalloff; steerReturnLag = v.steerReturnLag;
-        weightInfluence = v.weightInfluence;
+        weightInfluence = v.weightInfluence; slopeAssist = v.slopeAssist; rollAssist = v.rollAssist;
         feelNow = v;
         RecalculateForces();
         driveMode = v.driveMode;
@@ -542,6 +546,13 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
                 float falloff = 1f - accelFalloff * Mathf.Clamp01(forwardSpeed / EffectiveMaxSpeedMps);
                 if (HandbrakeHeld && !driftEnabled) throttleScale = 0f;
                 rb.AddForce(transform.forward * (effectiveAccelForce * t * throttleScale * lowSpeedRamp * falloff), ForceMode.Force);
+                // 바닥 마찰·비탈 보정: 반 페달이면 엔진 힘이 마찰(≈2.6 m/s²)과 비슷해 평지에서도 못 떠났다(실측).
+                // 마찰+비탈 몫을 (1−페달) 만큼 되돌려 주면 순가속 = 페달 × (풀 페달 순가속) — 풀 페달은 그대로.
+                if ((rollAssist > 0f || slopeAssist > 0f) && throttleScale > 0f)
+                {
+                    float grav = -Physics.gravity.y * Mathf.Max(0f, transform.forward.y) * slopeAssist;
+                    rb.AddForce(transform.forward * (rb.mass * (rollAssist + grav) * (1f - Mathf.Clamp01(t)) * Mathf.Clamp01(t * 10f)), ForceMode.Force);
+                }
             }
         }
         else if (t < -0.01f)
