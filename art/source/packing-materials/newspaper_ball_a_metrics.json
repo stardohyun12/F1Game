@@ -1,0 +1,78 @@
+{
+  "id": "newspaper_ball_a",
+  "triangles": 224,
+  "limit": 1500,
+  "dimensions_unity": [
+    0.9999999701976776,
+    1.0,
+    1.0
+  ],
+  "bounds_min": [
+    -0.4999999701976776,
+    -0.5,
+    -0.5
+  ],
+  "bounds_max": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "spec": {
+    "pivot": "center",
+    "expected_unity": [
+      1,
+      1,
+      1
+    ],
+    "root_scale": "dynamic diameter .110 to .048",
+    "normalized_mesh": true,
+    "display_scale": 0.11,
+    "physics_sphere_radius": 0.5
+  },
+  "mesh_count": 1,
+  "nonmanifold_meshes": [],
+  "views": [
+    {
+      "label": "hero",
+      "location": [
+        0.4411287307739258,
+        -0.7352145910263062,
+        0.5146502256393433
+      ],
+      "target": [
+        1.862645149230957e-09,
+        0.0,
+        0.0
+      ],
+      "ortho_scale": 0.3546700179576874
+    },
+    {
+      "label": "side",
+      "location": [
+        0.9999494552612305,
+        -0.0009999495232477784,
+        0.009999494068324566
+      ],
+      "target": [
+        1.862645149230957e-09,
+        0.0,
+        0.0
+      ],
+      "ortho_scale": 0.2291036695241928
+    },
+    {
+      "label": "top",
+      "location": [
+        1.862645149230957e-09,
+        -0.000999999581836164,
+        0.9999995231628418
+      ],
+      "target": [
+        1.862645149230957e-09,
+        0.0,
+        0.0
+      ],
+      "ortho_scale": 0.22706586122512817
+    }
+  ]
+}

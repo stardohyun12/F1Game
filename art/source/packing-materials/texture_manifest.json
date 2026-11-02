@@ -1,0 +1,89 @@
+[
+  {
+    "name": "kraft",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "kraft_edge",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "paper",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "pulp",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "egg",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "tape",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "label",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "ink",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "core",
+    "source": "art\\source\\photos\\cargo-box\\CardboardSet001_1K-PNG_Color.png",
+    "source_url": "https://ambientcg.com/view?id=CardboardSet001",
+    "license": "CC0-1.0",
+    "processing": "blank paper crop; subtract low-frequency lighting; downsample/repeat source grain 4x; bound grain +/-3.5%; recolor; paper only adds blurred authored non-text bars",
+    "source_sha256": "199ffb0717e6ea8bec89d72c5b12ad651a9753cf2711ca7d78e7560cb71d01ea"
+  },
+  {
+    "name": "bubble maps",
+    "source": "art/source/packing-materials/reference/bubble_wrap_cc0.jpg",
+    "source_url": "https://www.rawpixel.com/image/6040280/photo-image-texture-public-domain-plastic",
+    "license": "CC0-1.0",
+    "processing": "manual cell contour interpretation; source high-pass roughness; neutral albedo, authored dome normal/height/alpha, no source highlights or shadow bake",
+    "repeat_metres": 0.024,
+    "crop": [
+      1500,
+      1100,
+      2000,
+      1600
+    ],
+    "source_sha256": "eb7815acb4d8d22c4c06cf28cbe80dfb670fd63ca1c8b2406b5b0a5a977e28e9"
+  }
+]
