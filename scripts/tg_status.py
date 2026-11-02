@@ -15,7 +15,7 @@ def call(m, **kw):
 
 def mins(t): return int((time.time() - t) / 60)
 
-ROLES = [("editor", "programmer", "본 에디터"), ("studio", "artlive", "스튜디오"), ("feature", "feature", "기능(사본)"), (None, "research", "리서치")]
+ROLES = [("editor", "programmer", "본 에디터"), ("studio", "artlive", "스튜디오"), ("feature", "feature", "기능(사본)"), (None, "research", "리서치"), ("art", "art", "아트(Codex)")]
 def status():
     now = dt.datetime.now().strftime("%H:%M")
     out = [f"📋 PitCrew 지금 상태 ({now} 갱신)"]

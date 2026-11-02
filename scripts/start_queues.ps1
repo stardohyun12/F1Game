@@ -7,6 +7,12 @@ foreach ($l in "editor","studio","feature") {
   $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = $cmd; CurrentDirectory = "D:\Github\F1Game" }
   "$l started PID $($r.ProcessId) (outside agent job)"
 }
+# Codex 아트 줄(D-259)
+$ar = Get-CimInstance Win32_Process -Filter "Name='bash.exe'" | ? { $_.CommandLine -match 'art_queue.sh' -and $_.CommandLine -notmatch 'Get-CimInstance' }
+if (-not $ar) {
+  $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$bash`" -lc `"export PYTHONUTF8=1 PYTHONIOENCODING=utf-8; cd /d/Github/F1Game && bash scripts/art_queue.sh >> .ai_logs/team/queue-art.out 2>&1`""; CurrentDirectory = "D:\Github\F1Game" }
+  "art started PID $($r.ProcessId)"
+}
 # 텔레그램 고정 상태 메시지(1분마다 갱신, D-254)
 $py = "C:\Users\rtx40\AppData\Local\Programs\Python\Python313\python.exe"
 $sp = Get-Content .claude\team\tg_status.pid -ErrorAction SilentlyContinue
