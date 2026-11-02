@@ -1,7 +1,7 @@
 # 10분마다(작업 스케줄러): 대기열이 죽었으면 다시 띄우고, 팀원이 'working' 인데 로그가 20분 넘게 멈추면 도현 스레드에 알림.
 Set-Location D:\Github\F1Game
 $out = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start_queues.ps1
-$py = "C:SERSTX40APPDATAocalprogramspythonpython313python.exe"
+$py = "C:\Users\rtx40\AppData\Local\Programs\Python\Python313\python.exe"
 $restarted = $out | ? { $_ -match 'started' }
 if ($restarted) {
   Add-Content .ai_logs\team\queue.log ("[{0}] watchdog: 대기열 재기동 {1}" -f (Get-Date -Format 'MM/dd HH:mm'), ($restarted -join ', '))
