@@ -411,13 +411,16 @@ namespace PitCrew.PackBench
             {
                 if (it.kind == PackItemKind.Eggs) continue;
                 cur.softTotal++;
+                // 뽁뽁이 시트(2판): 상자 안에서 내려앉으면 이미 상자 몸의 일부(굽힌 칸 콜라이더)
+                if (it.sheet != null) { if (it.transform.IsChildOf(transform)) cur.softPinned++; continue; }
                 if (!IsPinned(it)) continue;
                 var j = it.gameObject.AddComponent<FixedJoint>();
                 j.connectedBody = Body;
                 softJoints.Add(j); pinned.Add(it);
                 cur.softPinned++;
             }
-            foreach (var it in shakeSet) { it.Body.WakeUp(); }
+            foreach (var it in shakeSet) { if (it.Body != null) it.Body.WakeUp(); }
+            pairs.Clear();
             prevPos = Body.position; prevVel = Vector3.zero;
             shakeT0 = Time.time; shaking = true;
         }
@@ -463,7 +466,7 @@ namespace PitCrew.PackBench
         readonly List<FixedJoint> softJoints = new List<FixedJoint>();
         readonly List<PackItem> pinned = new List<PackItem>();
 
-        bool IsLocked(PackItem it) => it != null && (it.kind == PackItemKind.Eggs ? trayLocked : pinned.Contains(it));
+        bool IsLocked(PackItem it) => it != null && (it.kind == PackItemKind.Eggs ? trayLocked : pinned.Contains(it) || (it.sheet != null && it.transform.IsChildOf(transform)));
 
         /// <summary>완충재 하나가 위·아래(상자 축) 둘 다 supportTol 안에서 막혀 있나.</summary>
         bool IsPinned(PackItem it)
@@ -487,6 +490,17 @@ namespace PitCrew.PackBench
             return false;
         }
 
+        /// <summary>QA: 흔드는 동안 부딪힌 짝별 (횟수, 소리 합) — "Eggs-Lid" 꼴.</summary>
+        readonly Dictionary<string, Vector2> pairs = new Dictionary<string, Vector2>();
+        public static Collider lastHitCollider;
+        public string PairsJson()
+        {
+            var sb = new System.Text.StringBuilder("{");
+            foreach (var kv in pairs) sb.Append('"').Append(kv.Key).Append("\":[").Append(kv.Value.x.ToString("F0")).Append(',').Append(kv.Value.y.ToString("F2")).Append("],");
+            if (sb.Length > 1) sb.Length--;
+            return sb.Append('}').ToString();
+        }
+
         public void ReportHit(PackItem it, PackItem other, float relSpeed)
         {
             if (!shaking || relSpeed < hitMinSpeed) return;
@@ -498,6 +512,8 @@ namespace PitCrew.PackBench
             float vol = w * Mathf.Clamp01((relSpeed - hitMinSpeed) / (hitFullSpeed - hitMinSpeed));
             if (vol <= 0.005f) return;
             cur.rattle += vol; cur.hits++; cur.peakHit = Mathf.Max(cur.peakHit, vol);
+            string key = it.kind + "-" + (other != null ? other.kind.ToString() : (lastHitCollider != null ? lastHitCollider.name : "?"));
+            pairs.TryGetValue(key, out var pv); pairs[key] = new Vector2(pv.x + 1f, pv.y + vol);
             bool trayHit = it.kind == PackItemKind.Eggs || (other != null && other.kind == PackItemKind.Eggs);
             if (trayHit) { cur.rattleTray += vol; cur.hitsTray++; } else { cur.rattleSoft += vol; cur.hitsSoft++; }
             PackBench.PlayRattle(other != null && other.SoundWeight < it.SoundWeight ? other : it, vol); // 소리 종류도 무른 쪽
