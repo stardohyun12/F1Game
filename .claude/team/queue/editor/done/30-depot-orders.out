@@ -1,0 +1,15 @@
+md5sum: failed to set file descriptor text/binary mode: Bad file descriptor
+[programmer] ok=True cost=$8.73
+ `docs/team/reports/programmer-20261102-1515.md`
+
+- **Flow:** you take the cart from the garage, but the order doesn't start yet — the arrow points at the depot. At the depot you pick an order on the chalkboard; empty lines can't be picked. The Tab slip then shows the order, you pack the box on the counter, and "E 싣고 타기" starts the order to the teahouse.
+- **Board view:** the capture is 1920×1080, which is the 640×360 screen at 3×. Text is about 17 px on the 360 screen, readable, and all four board edges are visible. "택배 보관소 앞" and "택배 보관소 칠판" are in the debug window's place list, and jumping to the board place shows the "E 칠판 보기" prompt. In this scene the depot route replaces the old feature-2 bot route. Play is off, fonts are reverted, and no shared .mat files changed; the scene is saved.
+- **Left over:**
+  - **Yard step:** the depot yard is 0.8–1.7 m higher than the road, so you couldn't walk in. I added a temporary grey ramp; the map team needs to replace it with real steps or a ramp.
+  - **Bot car stuck:** at the garage–road join, which happened in both runs, and on the hill to the teahouse.
+  - **Bot on foot:** it also got stuck once walking out of the depot.
+  - **Box broke on the way:** it left at 100% and arrived at 0% because the bot drove the hill roughly.
+  - **Placeholders:** the boss lines and board text are placeholders for Doh-hyun to decide.
+  - **Not checked:** the bot never tried boarding the cart after picking but before packing, which should show "포장 먼저".
+md5sum: failed to set file descriptor text/binary mode: Bad file descriptor
+FAILED-NOREPORT: docs/team/reports/programmer-20261102-1515.md 뼈대 그대로 (턴 한도 추정)

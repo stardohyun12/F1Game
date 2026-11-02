@@ -1,0 +1,5 @@
+[EDITOR]["Display 1 No cameras rendering" 안내 없애기 (D-245)] 새 세션. 먼저 editor stop·폰트. 커밋 금지. 30분 안.
+도현 원문: "화면에 디스플레이 없다는거 해결좀 해주고" — Game 뷰 가운데 회색 상자 "Display 1 / No cameras rendering" (도현 스샷 C:/Users/rtx40/AppData/Local/hermes/cache/documents/native-inputs/a8c181171e473ca0b10d4133d7075194d47307ea8b43055b73277cf1aaecd6ba/dashboard_20261102_012553_b1038c4f_image_5c03f9.png).
+원인(PD 진단, 확인할 것): F1/Assets/Scripts/Debug/LowResRenderTest.cs:123 `cam.targetTexture = rt` — 메인 카메라가 RT 로만 그리고, 화면에는 Screen Space-Overlay 캔버스 RawImage 로 보여 주므로 Display 1 을 직접 그리는 카메라가 0개 → Unity 가 Game 뷰에 경고를 띄움(Play 중, 특히 카메라 전환·노을/걷기 때 보일 수 있음 — 언제 뜨는지 재현 먼저).
+고칠 것: 화면 표시용 빈 카메라 1개(LowResRenderTest 가 런타임에 만들고 지움: cullingMask 0, clearFlags SolidColor 검정, depth 가장 낮게, URP 후처리 끔, targetDisplay 0) — 그리는 내용 0, 비용 최소. 또는 더 깔끔한 Unity 정식 방법이 있으면 그쪽. 다른 카메라 경로(Cam_Sunset, 걷기, 카트, UI World Space 캔버스 DotScreenUI)도 Play 로 전부 확인.
+검증: Play 시작·걷기·카트·낚시 자리 앉기·노을 켬 각각 Game 뷰 캡처(경고 없음), 화면 픽셀이 이전과 같음(같은 카메라 차이 %), 프레임 ms 변화, 콘솔 에러 0, 기능 2 봇 1회 완주 → docs/qa/evidence/no-display-fix/. 씬 저장 필요 없으면 안 함. 보고 3줄.

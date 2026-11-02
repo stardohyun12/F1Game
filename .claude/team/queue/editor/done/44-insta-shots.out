@@ -1,0 +1,3 @@
+md5sum: failed to set file descriptor text/binary mode: Bad file descriptor
+scripts/team.sh: line 117: syntax error near unexpected token `('
+scripts/team.sh: line 117: `if [ "$ROLE" != "art" ] && [ "$ROLE" != "artui" ]; then python -c "import json;d=json.load(open('$RESULT',encoding='utf-8'));print(d.get('session_cost_usd') or 0)" 2>/dev/null | tr -d ''

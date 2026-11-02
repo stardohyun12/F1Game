@@ -1,0 +1,7 @@
+[programmer] ok=True cost=$1.57
+보고서: `docs/team/reports/programmer-20261102-0144.md`
+
+- **고침**: `LowResRenderTest.cs:54,62`에서 화면용 빈 카메라(cullingMask 0, 검정 클리어, depth -100, targetDisplay 0)를 런타임에 만든다. 캔버스 자식이라 같이 사라진다. 경고는 노을·걷기 때만이 아니라 Play 내내 떴다.
+- **검증**: Unity 가 경고에 쓰는 판정(`IsDisplayReferencedByCameras`)이 빈 카메라를 켜면 True, 끄면 False 였다. 걷기/낚시 앉기(노을 켬·끔)/카트에서 확인했고, 켜고 끈 화면의 픽셀 차이는 0.000%였다(카트만 0.048%인데 왼쪽 위 HUD 글자). 기능 2 봇 1회 완주(delivered=True)에 콘솔 에러 0이다. 프레임 ms 는 +0.45ms 로 노이즈 수준(±0.6)이다.
+- **미확인**: Game 뷰 창을 직접 찍은 사진은 없다(IMGUI 경고는 ScreenCapture 에 안 잡히고 창 캡처는 권한이 막힘). 눈으로 최종 확인은 도현이 Play 한 번 해야 한다.
+- **PD 요청**: `docs/qa/evidence/no-display-fix/probe-lowres-off.png` 는 시도 중 엉뚱한 앱 화면이 찍힌 파일이다. 내 쪽에서 삭제 권한이 없으니 지워 주세요.

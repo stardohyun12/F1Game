@@ -36,7 +36,9 @@ while true; do
     shot_alive || shot_restart || { mv "$Q/done/$NAME.task" "$Q/hold/"; continue; }
     OUT=$(UCLI_PROJ=D:/Github/F1Game_shot/F1 bash scripts/team_feature.sh feature "$(cat "$Q/done/$NAME.task")" 2>&1)
   else
-    OUT=$(bash scripts/team.sh $ROLE "$(cat "$Q/done/$NAME.task")" 2>&1)
+    RULE="[하네스 고정 규칙 D-270] 기능 2 봇 전체 경로(방→찻집)는 돌리지 마라 — PD 가 여러 과제 끝에 한 번 따로 돌린다. 확인은 디버그 창 순간이동(DebugWindow.GoPlace)으로 고친 자리에서 바로, 캡처 1~2장. sleep 으로 기다리는 검사 금지. 과제 글에 '봇 1회'가 있어도 이 규칙이 우선."
+    OUT=$(bash scripts/team.sh $ROLE "$(printf '%s
+%s' "$RULE" "$(cat "$Q/done/$NAME.task")")" 2>&1)
   fi
   rm -f .claude/team/editor.lock
   echo "$OUT" | tail -40 > "$Q/done/$NAME.out"

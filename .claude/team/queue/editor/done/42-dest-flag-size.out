@@ -1,0 +1,11 @@
+md5sum: failed to set file descriptor text/binary mode: Bad file descriptor
+[programmer] ok=True cost=$1.88
+목적지 깃발이 멀리서 17×24 로 커졌고, 4쌍 전/후 캡처와 봇 1회까지 끝냈습니다. 콘솔 에러는 0이고 Play 는 꺼져 있으며, 씬은 저장하지 않았습니다.
+- **크기**: 25 m 보다 멀면 큰 깃발(17×24), 가까우면 원래 13×18 입니다. 값은 상수라 씬에 남지 않습니다. 캡처에서 천만 재면 9×7 → 13×9 였고, 면적은 최대 0.82 %(과제 기준 4 % 이내)입니다.
+- **받침 상자**: 가장자리 표식 받침 상자가 노을에서 배경과 섞여(대비 1.27~1.44:1) 종이색 1px 테를 추가했고, 노을에서 5.8~6.5:1 이 됐습니다. 싫으시면 `MakeBox(Ink, Paper)` → `MakeBox(Ink, Ink)` 한 줄로 되돌립니다.
+- **검증**: 오후·노을 각 4쌍(출발·갈림길 2곳·도착 직전)에 처음 보는 지점 3곳을 더 찍었고, 증거는 `docs/qa/evidence/dest-flag-size/`(`pair_*.png`)에 있습니다. 봇은 찻집에 도착(도착=True)했고 막힘 9곳은 기존 흐름의 경사·끼임입니다. 25↔17 m 경계 왕복 시험은 안 돌렸습니다.
+- **판정은 도현 Play 로**: 큰 깃발도 천은 화면 높이의 2.5 % 라 "충분히 큰가"는 도현이 정합니다.
+
+보고 파일: `docs/team/reports/programmer-20261102-1616.md`
+md5sum: failed to set file descriptor text/binary mode: Bad file descriptor
+FAILED-NOREPORT: docs/team/reports/programmer-20261102-1616.md 뼈대 그대로 (턴 한도 추정)

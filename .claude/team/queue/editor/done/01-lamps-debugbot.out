@@ -1,0 +1,8 @@
+[programmer] ok=True cost=$0.92
+보고 파일: `docs/team/reports/programmer-20261031-1914.md`
+
+1. **벽등 3개**는 규칙(`road-sections.json`)이 놓은 것이라 되살리지 않았습니다. 이름이 `{prefab}@{rule}#번호` 꼴이라 `RoadsideBuild.cs:498` 이 만든 것입니다. `placements.yaml`·기획 기록에는 벽등이 없습니다. 빠진 이유는 길 그리기 구역 모드 뒤로 벽 배치가 달라져 `Mount` 레이가 걸린 탓이라고 보는데, 이건 가설입니다. 레이 실패 지점은 다시 돌려 확인하지 않았습니다. 보호 목록은 만들지 않았습니다.
+2. **디버그 봇 `TownPathBot_loopBox`**는 `Map_TownV6.unity`에서 삭제하고 씬을 저장했습니다. 씬 diff 는 47줄 삭제뿐입니다. `TownPathBot.cs` 에 Play 시작 때 static 을 초기화하는 `ResetStatics()` 를 넣었습니다. Play 전에 값을 일부러 오염시켰고, Play 진입 뒤 전부 초기값이었습니다.
+3. **봇 검증**은 둘 다 통과했습니다. 기능 1 봇(방 → 큰길)은 새 Play 에서 44.3초에 완주했고 막힘 0곳입니다. 고리 봇은 새 Play 에서 정·역 1회씩 ok 2 / fail 0, 끼임 0입니다. Play 는 꺼졌고 씬은 저장됐습니다. 폰트 SDF·.mat·ProjectSettings 변경은 0이며, 이번 과제에서 바뀐 추적 파일은 `Map_TownV6.unity`·`TownPathBot.cs` 둘뿐입니다.
+autofix 261031-0301: open 아님 — 건너뜀
+autofix 261031-0338: open 아님 — 건너뜀

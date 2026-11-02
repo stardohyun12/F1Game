@@ -1,0 +1,4 @@
+[EDITOR][해상도 360 적용 (D-222)] 새 세션. 먼저 editor stop·폰트. 커밋 금지. 30분 안.
+도현 결정 D-222 "3.360": Map_TownV6 의 PCLookScene.lowResHeight 720 → 360 (에디트 모드 SerializedObject + SaveScene). 다른 씬의 값·코드 기본값은 그대로.
+주의: LowResRenderTest.integerScale 이 켜져 있으면 1080 화면에서 k=round 로 다른 값이 될 수 있음 — Play 후 실제 RT 크기 로그로 360 높이 확인(skill 기록: 720 에서 540 으로 조용히 바뀐 적 있음).
+검증: Play 1회 RT 크기 로그, 도현 8b98 카메라 캡처 1장 → docs/qa/evidence/res360/after.png. 보고 3줄.

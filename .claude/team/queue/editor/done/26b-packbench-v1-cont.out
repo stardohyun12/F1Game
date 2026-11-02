@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "D:\Github\F1Game\scripts\team_log.py", line 51, in <module>
+    out("\U0001f4ac " + c["text"])
+    ~~~^^^^^^^^^^^^^^^^^^^
+  File "D:\Github\F1Game\scripts\team_log.py", line 22, in out
+    live.write(f"[{time.strftime('%H:%M:%S')}] {role:<10} | {msg}\n")
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'utf-8' codec can't encode character '\udcec' in position 26: surrogates not allowed
+[programmer] ok=True cost=$0.42
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+UnicodeEncodeError: 'cp949' codec can't encode character '\u20a9' in position 429: illegal multibyte sequence
+autofix 261102-1108: open 아님 — 건너뜀

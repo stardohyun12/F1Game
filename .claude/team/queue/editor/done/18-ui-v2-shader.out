@@ -1,0 +1,8 @@
+[programmer] ok=True cost=$5.93
+Report: `docs/team/reports/programmer-20261101-2330.md`
+Comparison board: `docs/qa/evidence/ui-v2/compare.png`
+
+1. The UI now gets the same dot treatment as the world. A new UI-only shader snaps every pixel to a 10-color palette with Bayer dither, and the palette picks up the time-of-day light: warm in the afternoon, apricot at sunset. The slip, speech bubble and [E] chip have paper or wood grain from 2 CC0 photos, a slightly uneven 1px border and a 1px shadow, and the slip has a folded corner and tape. Text is dark navy-violet. The direction marker is now 19px (5.3% of screen height). Shared .mat files untouched.
+2. Afternoon and sunset runs each completed once: delivered=True, 0 console errors. Scene saved, 0 font changes, 0 .mat changes. Not run: regression-check and the 3-run median.
+3. Speech bubble text is still faint grey rather than ink. Version 1 had the same problem, and I could not fix it this round. My guess is the bubble text sits half a dot off the grid. I picked the compass as the default direction marker (가설) because the road arrow gets lost on the asphalt. 도현 should judge the wood chip on dirt and the sunset tint strength. Checklist item 5 may fail because of the faint bubble text.
+autofix 261101-0515: open 아님 — 건너뜀

@@ -1,0 +1,24 @@
+[programmer] ok=True cost=$4.32
+I tested the five real-water elements. Two of them survive the B look and are now on; the other three are off. One side effect: the sun path got weaker, and that needs your call on screen.
+
+- **Kept:**
+  - ① planar reflection: the island trees now show upside down on the water in B (7.2% of pixels change).
+  - ② 8 normal-only waves: they break that reflection into orange dashes (25.2% change).
+- **Dropped:**
+  - ③ fine ripples get wiped out by the 4-step cut.
+  - ④ far water → sky colour changed nothing (0.0%), because physics already makes distant water sky-coloured.
+  - ⑤ horizontal dashes are already there from B's 3-step sun path.
+- **Cost and checks:**
+  - Frame time is about +1.7 ms (19.5 vs 17.7 ms).
+  - B flicker is the same as 5판.
+  - Console errors are 0, and the scene is saved with sunset off.
+  - Bright pixels in the sun path dropped 27% (2572 → 1881); whether it looks too weak is Dohyun's call on screen. If it does, the fix is shortening the longest wave (`_Spec.y` 12 → 8).
+
+The board has a link panel instead of the sunset photo: the research said not to copy it into the repo, and the download was blocked. I didn't run `regression-check.sh`. The whole job took about 75 minutes, inside the 90-minute box but over the 60-minute guideline.
+
+Report: `docs/team/reports/programmer-20261101-0016.md`
+
+Boards are in `docs/qa/evidence/sunset6/`:
+- `board_final.png`
+- `board_sea4x.png`
+autofix 261031-2338: open 아님 — 건너뜀
