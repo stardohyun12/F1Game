@@ -20,7 +20,7 @@ shot_restart(){ # 사본 에디터 멈춤(가져오기 워커가 포트 쥠) →
 commit(){
   git checkout -- F1/Assets/UI/Fonts 2>/dev/null
   for p in F1/Assets/Editor F1/Assets/Scripts F1/Assets/Art/Look F1/Assets/Art/Library F1/Assets/Audio F1/Assets/Scenes/Map_TownV6.unity F1/Assets/Scenes/Map_TownV6_Mats docs/map docs/qa/evidence docs/team/reports F1Studio/Assets/Art $(ls -d art/_review/$(date +%Y-%m-%d)-* 2>/dev/null) tools/asset-gen tools/viewer/feedback .claude/team/ledger.jsonl; do git add "$p" 2>/dev/null; done
-  git commit -qm "$1 [skip-verifier]" 2>/dev/null && { timeout 900 git push -q 2>&1 | grep -E "rejected"; log "커밋 $(git log --oneline -1)"; python -X utf8 scripts/notify_done.py $LINE "$NAME" ok "$(git rev-parse --short HEAD)" >/dev/null 2>&1; }; }
+  git commit -qm "$1 [skip-verifier]" 2>/dev/null && { timeout 900 git push -q 2>&1 | grep -E "rejected"; log "커밋 $(git log --oneline -1)"; /c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe -X utf8 scripts/notify_done.py $LINE "$NAME" ok "$(git rev-parse --short HEAD)" >/dev/null 2>&1; }; }
 while true; do
   T=$(ls "$Q"/*.task 2>/dev/null | sort | head -1)
   if [ -z "$T" ] || grep -q '^working' "$S/$ROLE.state" 2>/dev/null || { [ $ROLE = programmer ] && [ -s .claude/team/editor.lock ]; }; then sleep 60; continue; fi
@@ -37,7 +37,7 @@ while true; do
   echo "$OUT" | tail -40 > "$Q/done/$NAME.out"
   if echo "$OUT" | grep -qE "COMPILE-BROKEN|FAILED-NOREPORT|ok=False"; then
     log "보류 $NAME ($(echo "$OUT" | grep -oE 'COMPILE-BROKEN|FAILED-NOREPORT|ok=False' | head -1)) — 커밋 안 함"
-    python -X utf8 scripts/notify_done.py $LINE "$NAME" hold >/dev/null 2>&1
+    /c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe -X utf8 scripts/notify_done.py $LINE "$NAME" hold >/dev/null 2>&1
     # D-223 자동 승격: Sonnet 과제가 실패하면 같은 과제를 [OPUS] 로 한 번 다시(이미 OPUS 면 hold)
     if ! grep -q '\[OPUS\]' "$Q/done/$NAME.task"; then
       { printf '[OPUS]'; cat "$Q/done/$NAME.task"; printf '
