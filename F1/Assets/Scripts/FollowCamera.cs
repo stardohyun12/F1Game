@@ -162,15 +162,20 @@ public class FollowCamera : MonoBehaviour
         }
 
         // 과제 2338: 차 방향·높이를 그대로 물지 않고 짧게 늦춰 따라간다 — 조향 툭툭·노면 턱이 화면 전체를 흔들던 길.
-        smoothYaw = yawSmoothTime > 0f ? Mathf.SmoothDampAngle(smoothYaw, target.eulerAngles.y, ref yawVel, yawSmoothTime) : target.eulerAngles.y;
-        smoothY = heightSmoothTime > 0f ? Mathf.SmoothDamp(smoothY, target.position.y, ref yVel, heightSmoothTime) : target.position.y;
+        // D-257 주행감 프리셋 B·C: 카메라가 살짝 더 늦게 따라온다(0 이면 씬 값). A 는 전부 0.
+        var feel = car != null ? car.Feel : default;
+        float ySmooth = feel.camYawSmooth > 0f ? feel.camYawSmooth : yawSmoothTime;
+        float hSmooth = feel.camHeightSmooth > 0f ? feel.camHeightSmooth : heightSmoothTime;
+        float pSmooth = feel.camPosSmooth > 0f ? feel.camPosSmooth : positionSmoothTime;
+        smoothYaw = ySmooth > 0f ? Mathf.SmoothDampAngle(smoothYaw, target.eulerAngles.y, ref yawVel, ySmooth) : target.eulerAngles.y;
+        smoothY = hSmooth > 0f ? Mathf.SmoothDamp(smoothY, target.position.y, ref yVel, hSmooth) : target.position.y;
         Vector3 anchor = new Vector3(target.position.x, smoothY, target.position.z);
         Quaternion yawRot = Quaternion.Euler(0f, smoothYaw, 0f);
 
         Vector3 off = preset != null ? new Vector3(0f, preset.height, -preset.distance) : offset;
         float lookH = preset != null ? preset.lookHeight : lookHeight;
         Vector3 desiredPos = anchor + yawRot * off;
-        basePos = Vector3.SmoothDamp(basePos, desiredPos, ref posVelocity, positionSmoothTime);
+        basePos = Vector3.SmoothDamp(basePos, desiredPos, ref posVelocity, pSmooth);
         transform.position = basePos;
 
         Vector3 lookPoint = anchor + Vector3.up * (lookH - CameraFramingZone.Drop) + (preset != null ? yawRot * Vector3.forward * preset.lookAhead : Vector3.zero);

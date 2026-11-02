@@ -73,6 +73,20 @@ public class DebugWindow : MonoBehaviour
     public static string ToggleCart() { var d = Dir(); return Say(d == null ? "감독 없음" : "카트: " + d.DebugToggleCart()); }
     public static string SetSpeed(float s) { Time.timeScale = s; return Say("시간 " + s + "배속"); }
 
+    /// <summary>D-257 주행감 비교판 — 0 = A 지금 · 1 = B 부드러운 배달 · 2 = C 무게감.</summary>
+    public static string SetFeel(int i)
+    {
+        var car = FeelCar();
+        if (car == null) return Say("이 씬엔 카트가 없음");
+        car.SetFeelPreset((DriveFeelPreset)Mathf.Clamp(i, 0, 2));
+        return Say("주행감 → " + DriveFeel.Label(car.FeelPreset));
+    }
+    static ArcadeCarController FeelCar()
+    {
+        var d = Dir();
+        return d != null && d.Car != null ? d.Car : Object.FindFirstObjectByType<ArcadeCarController>();
+    }
+
     /// <summary>0 = 오후 · 1 = 노을. 꺼져 있던 SunsetLook 은 켠다.</summary>
     public static string SetDusk(float v)
     {
@@ -209,6 +223,22 @@ public class DebugWindow : MonoBehaviour
         if (GUILayout.Button("3×", Mathf.Approximately(Time.timeScale, 3f) ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetSpeed(3f);
         GUILayout.EndHorizontal();
         GUILayout.Space(4 * s);
+
+        var fc = FeelCar();
+        if (fc != null)
+        {
+            GUILayout.Label("주행감 (D-257) — 바꾸고 바로 타 보기", sLabel);
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < 3; i++)
+            {
+                var p = (DriveFeelPreset)i;
+                if (GUILayout.Button(DriveFeel.Label(p), fc.FeelPreset == p ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetFeel(i);
+            }
+            GUILayout.EndHorizontal();
+            var fv = fc.Feel;
+            GUILayout.Label($"최고 {fv.maxSpeedKmh:F0}km/h · {fc.Mode} · 드리프트 {(fv.driftEnabled ? "켬" : "끔")} · 짐 {fc.CargoLoadKg:F0}kg", sText);
+            GUILayout.Space(4 * s);
+        }
         GUILayout.Label(LastResult, sText);
 
         GUILayout.EndScrollView();

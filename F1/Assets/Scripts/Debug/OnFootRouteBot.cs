@@ -615,6 +615,8 @@ public class OnFootRouteBot : MonoBehaviour
 
     /// <summary>D-251 보관소 작업대 시나리오(PackBench.BotRun: bare|bottom|full|flip). 정해진 값으로 바꿔 두 번 돌려 출발 화물 상태를 비교한다.</summary>
     public static string PackScenario = "full";
+    /// <summary>D-257: 찻집 길에서 느릴 때(목표-1.5m/s 아래) 페달 끝까지. 기본 꺼짐 = 예전 기준(반 페달)과 같음.</summary>
+    public static bool FullThrottleWhenSlow = false;
 
     /// <summary>
     /// D-251: 작업대 [E] → 포장 시점(카메라·마우스 넘김 확인) → PackBench 봇(같은 코드 경로)으로 싸고 흔들기 → Q 물러나기(카메라 원위치 확인) → [E] 상자 들기.
@@ -767,6 +769,7 @@ public class OnFootRouteBot : MonoBehaviour
             float err = Mathf.DeltaAngle(c.eulerAngles.y, want);
             float target = (bend > 45f || Mathf.Abs(err) > 35f) ? 4.5f : 8f;
             float thr = v < target ? 0.5f : (v > target + 1.5f ? -0.2f : 0.08f);
+            if (FullThrottleWhenSlow && v < target - 1.5f) thr = 1f;   // D-257: 약한 엔진(B·C)은 반 페달로 오르막·틈을 못 넘는다
             car.SetMoveInput(new Vector2(Mathf.Clamp(err / 35f, -1f, 1f), thr));
             float left = 0f; for (int i = idx; i + 1 < path.Count; i++) left += Vector3.Distance(path[i], path[i + 1]);
             if (left < bestLeft - 0.5f) { bestLeft = left; lastImprove = Time.time; }

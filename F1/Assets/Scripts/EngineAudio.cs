@@ -21,6 +21,8 @@ public class EngineAudio : MonoBehaviour
 
     /// <summary>D-229 걷기·앉기(OnFootDirector) 중엔 주차된 카트 엔진 무음. 감독이 켜고 끈다.</summary>
     public static bool OnFootMute;
+    /// <summary>QA: 마지막 목표 음높이(클립이 없어도 계산된다).</summary>
+    public float LastLoadPitch { get; private set; }
 
     void Awake()
     {
@@ -61,6 +63,16 @@ public class EngineAudio : MonoBehaviour
         float speedNorm = Mathf.Clamp01(Mathf.Abs(car.CurrentSpeedMps) / Mathf.Max(0.1f, car.MaxSpeedMps));
         float targetPitch = Mathf.Lerp(idlePitch, maxPitch, speedNorm);
         float targetVolume = Mathf.Lerp(idleVolume, maxVolume, speedNorm);
+        // D-257: 힘쓰는 소리 — 밟고 있으면(특히 오르막·무거운 짐) 속도보다 먼저 음이 올라가고 커진다. A 프리셋은 0 = 예전.
+        var feel = car.Feel;
+        if (feel.engineLoadPitch > 0f)
+        {
+            float slopeLoad = Mathf.Clamp01(car.CurrentSlopeDeg * feel.engineSlopeLoad);
+            float load = Mathf.Clamp01(Mathf.Max(0f, car.ThrottleInput) * (1f - 0.5f * speedNorm) + slopeLoad + (1f - car.LoadMul));
+            targetPitch += feel.engineLoadPitch * load;
+            targetVolume += feel.engineLoadVolume * load;
+        }
+        LastLoadPitch = targetPitch;
 
         src.pitch = Mathf.Lerp(src.pitch, targetPitch, pitchLerpSpeed * Time.deltaTime);
         src.volume = Mathf.Lerp(src.volume, targetVolume, volumeLerpSpeed * Time.deltaTime);

@@ -105,6 +105,65 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     [Tooltip("바퀴 하나 힘 상한 = 질량 × 이 값(m/s²).")]
     [SerializeField] private float wheelMaxAccel = 25f;
 
+    // ── 주행감 비교판 (D-257) — 프리셋 A 지금 / B 부드러운 배달 / C 무게감. 값 표는 DriveFeel.cs ──
+    [Header("주행감 프리셋 (D-257) — A = 씬 값 그대로")]
+    [SerializeField] private DriveFeelPreset feelPreset = DriveFeelPreset.B_Delivery;
+    [Tooltip("끄면 핸드브레이크 = 짧은 미끄러짐만(배달). 켜면 예전 드리프트.")]
+    [SerializeField] private bool driftEnabled = true;
+    [Tooltip("회전 반경 하한(m). 0 = 끔(속도와 무관하게 휙 돎).")]
+    [SerializeField] private float minTurnRadius = 0f;
+    [Tooltip("최고속 가까이서 미는 힘이 줄어드는 몫(0~1). 0 = 끝까지 같은 힘.")]
+    [SerializeField] private float accelFalloff = 0f;
+    [Tooltip("조향을 놓을 때(중앙 복귀) 지연. 0 = steerLag.")]
+    [SerializeField] private float steerReturnLag = 0f;
+    [Tooltip("화물 무게가 가속·제동에 먹는 정도. 0 = 무시.")]
+    [SerializeField] private float weightInfluence = 0f;
+    [Tooltip("드리프트 끔일 때 핸드브레이크 옆 그립 배율.")]
+    [SerializeField] private float handbrakeGrip = 0.35f;
+
+    private DriveFeelValues feelA, feelNow;
+    private bool feelCaptured;
+    private DriveFeelPreset appliedFeel;
+    private CargoBox cargoBox;
+    public DriveFeelPreset FeelPreset => feelPreset;
+    /// <summary>지금 적용된 주행감 값(카메라·차체·엔진 소리가 읽는다).</summary>
+    public DriveFeelValues Feel => feelNow;
+    /// <summary>지금 실은 화물 무게(kg). 런 밖 = 빈 차 0.</summary>
+    public float CargoLoadKg { get; private set; }
+    /// <summary>QA 측정용: 0 이상이면 실은 짐 무게를 이 값으로(빈 차·달걀·상자 비교). −1 = 실제 화물.</summary>
+    public float LoadOverrideKg { get; set; } = -1f;
+    /// <summary>화물 무게 반영 배율(가속·제동, 1 = 빈 차).</summary>
+    public float LoadMul => DriveFeel.CarRefKg / (DriveFeel.CarRefKg + CargoLoadKg * weightInfluence);
+    public bool HandbrakeHeld { get; private set; }
+    public static event System.Action<ArcadeCarController> FeelChanged;
+
+    DriveFeelValues CaptureFeel() => new DriveFeelValues
+    {
+        maxSpeedKmh = maxSpeedKmh, accelTime = accelTime, brakeDecel = brakeDecel, steerLag = steerLag, throttleLag = throttleLag,
+        maxTurnDegPerSec = maxTurnDegPerSec, sideGripDamping = sideGripDamping, downforceGripGain = downforceGripGain,
+        downforceAccel = downforceAccel, coastDrag = coastDrag, driveMode = driveMode, wheelSpring = wheelSpring, wheelDamper = wheelDamper,
+        driftEnabled = driftEnabled, minTurnRadius = minTurnRadius, accelFalloff = accelFalloff, steerReturnLag = steerReturnLag,
+        weightInfluence = weightInfluence,
+        // 차체·카메라·소리 손잡이는 A 에서 0 = 예전 동작
+    };
+
+    public void SetFeelPreset(DriveFeelPreset p)
+    {
+        if (!feelCaptured) { feelA = CaptureFeel(); feelCaptured = true; }
+        feelPreset = p; appliedFeel = p;
+        var v = p == DriveFeelPreset.A_Now ? feelA : p == DriveFeelPreset.B_Delivery ? DriveFeel.B : DriveFeel.C;
+        maxSpeedKmh = v.maxSpeedKmh; accelTime = v.accelTime; brakeDecel = v.brakeDecel; steerLag = v.steerLag; throttleLag = v.throttleLag;
+        maxTurnDegPerSec = v.maxTurnDegPerSec; sideGripDamping = v.sideGripDamping; downforceGripGain = v.downforceGripGain;
+        downforceAccel = v.downforceAccel; coastDrag = v.coastDrag; wheelSpring = v.wheelSpring; wheelDamper = v.wheelDamper;
+        driftEnabled = v.driftEnabled; minTurnRadius = v.minTurnRadius; accelFalloff = v.accelFalloff; steerReturnLag = v.steerReturnLag;
+        weightInfluence = v.weightInfluence;
+        feelNow = v;
+        RecalculateForces();
+        driveMode = v.driveMode;
+        ApplyDriveMode();
+        FeelChanged?.Invoke(this);
+    }
+
     public DriveMode Mode => driveMode;
     public int WheelsGrounded { get; private set; }
     /// <summary>바퀴별 눌림(m, 0 = 공중). 화물·QA 측정용.</summary>
@@ -124,6 +183,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
             Debug.Log($"[ArcadeCarController] 주행 방식 → {driveMode} (F9)");
         }
         else if (driveMode != appliedMode) ApplyDriveMode(); // 인스펙터에서 바꾼 경우
+        if (feelCaptured && feelPreset != appliedFeel) SetFeelPreset(feelPreset);   // 인스펙터에서 프리셋을 바꾼 경우
     }
 
     void ApplyDriveMode()
@@ -222,7 +282,9 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         RecalculateForces();
         bodyBox = GetComponent<BoxCollider>();
         if (bodyBox != null) { bodyBoxCenter0 = bodyBox.center; bodyBoxSize0 = bodyBox.size; }
-        ApplyDriveMode();
+        cargoBox = GetComponent<CargoBox>();
+        SetFeelPreset(feelPreset);   // A 면 씬 값 그대로(ApplyDriveMode 포함)
+        if (GetComponent<CartBodyMotion>() == null) gameObject.AddComponent<CartBodyMotion>();
     }
 
     /// <summary>
@@ -275,8 +337,14 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         if (rb.position.y < fallRespawnY) RespawnAtSafePoint();
 
         // TOP 1: 입력 SmoothDamp (세션 14 리서치) — steer/throttle에 자연 지연
-        smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, steerLag);
-        smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, throttleLag);
+        // D-257: 중앙으로 돌아올 땐 steerReturnLag(놓으면 조금 더 빨리 펴진다). 반대로 꺾을 땐 steerLag.
+        bool returning = steerReturnLag > 0f && Mathf.Abs(moveInput.x) < Mathf.Abs(smoothedMove.x) && moveInput.x * smoothedMove.x >= 0f;
+        smoothedMove.x = Mathf.SmoothDamp(smoothedMove.x, moveInput.x, ref smoothVel.x, returning ? steerReturnLag : steerLag);
+        // 제동(뒤로)은 발을 서서히 떼는 지연을 짧게 — 브레이크가 늦게 들면 위험하게 느껴진다.
+        float tLag = moveInput.y < -0.01f ? Mathf.Min(throttleLag, 0.08f) : throttleLag;
+        smoothedMove.y = Mathf.SmoothDamp(smoothedMove.y, moveInput.y, ref smoothVel.y, tLag);
+        CargoLoadKg = LoadOverrideKg >= 0f ? LoadOverrideKg
+            : cargoBox != null && Services.Run != null && Services.Run.RunActive ? DriveFeel.CargoKg(cargoBox.Type) : 0f;
 
         // TOP 2: 접지 복원 (기존 하드코딩 제거)
         // 세션 14 fix: transform.position이 BoxCollider 바닥과 같은 높이라 raycast origin이
@@ -287,7 +355,8 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         isGrounded = driveMode == DriveMode.Wheels && bodyBox != null
             ? ApplyWheels()
             : Physics.Raycast(groundOrigin, Vector3.down, groundCheckDistance + 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
-        IsDrifting = (handbrakeAction != null && handbrakeAction.IsPressed()) || qaForceHandbrake;
+        HandbrakeHeld = (handbrakeAction != null && handbrakeAction.IsPressed()) || qaForceHandbrake;
+        IsDrifting = HandbrakeHeld && driftEnabled;   // D-257: 드리프트 끔이면 핸드브레이크 = 짧은 미끄러짐(ApplyThrottle·ApplySideGrip)
         RecordSafePoint();
 
         if (IsDrifting && !wasDrifting)
@@ -455,7 +524,12 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         if (!isGrounded) return;
         float t = smoothedMove.y;
         float boostMul = (Services.Boost?.IsActive ?? false) ? 1.50f : 1f;
-        float effectiveAccelForce = accelForce * Mathf.Max(0.01f, engineAccelMul) * boostMul;
+        float loadMul = LoadMul;   // D-257: 무거운 짐 = 느긋한 가속·긴 제동
+        float effectiveAccelForce = accelForce * Mathf.Max(0.01f, engineAccelMul) * boostMul * loadMul;
+
+        // D-257: 드리프트 끔 — 핸드브레이크는 바퀴를 잠가 속도를 줄이고(ApplySideGrip 에서 옆 그립도 낮춰) 짧게 미끄러진다.
+        if (HandbrakeHeld && !driftEnabled && Mathf.Abs(forwardSpeed) > 0.2f)
+            rb.AddForce(-transform.forward * (Mathf.Sign(forwardSpeed) * brakeDecel * 0.7f * rb.mass * loadMul), ForceMode.Force);
 
         if (t > 0.01f)
         {
@@ -464,7 +538,10 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
                 float throttleScale = IsDrifting ? driftBrakeThrottleScale : 1f;
                 // 세션 16 #1-3: 너무 빠름 → 저속 약간 무게 복귀 (0.85). 도달 1.5m/s.
                 float lowSpeedRamp = Mathf.Lerp(0.85f, 1f, Mathf.Clamp01(Mathf.Abs(forwardSpeed) / 1.5f));
-                rb.AddForce(transform.forward * (effectiveAccelForce * t * throttleScale * lowSpeedRamp), ForceMode.Force);
+                // D-257: 작은 엔진 — 최고속에 가까울수록 힘이 빠진다(끝에서 바로 서는 대신 천천히 붙는다).
+                float falloff = 1f - accelFalloff * Mathf.Clamp01(forwardSpeed / EffectiveMaxSpeedMps);
+                if (HandbrakeHeld && !driftEnabled) throttleScale = 0f;
+                rb.AddForce(transform.forward * (effectiveAccelForce * t * throttleScale * lowSpeedRamp * falloff), ForceMode.Force);
             }
         }
         else if (t < -0.01f)
@@ -473,7 +550,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
             {
                 float brakeSpeedNorm = Mathf.Clamp01(forwardSpeed / EffectiveMaxSpeedMps);
                 float brakeMult = brakeStrengthBySpeed.Evaluate(brakeSpeedNorm);
-                rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult), ForceMode.Force);
+                rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult * loadMul), ForceMode.Force);
             }
             else if (forwardSpeed > -reverseMaxMps)
                 rb.AddForce(transform.forward * (effectiveAccelForce * t * 0.5f), ForceMode.Force);
@@ -503,7 +580,10 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         }
         else
         {
-            float yaw = maxTurnDegPerSec * smoothedMove.x * response * Time.fixedDeltaTime;
+            float rate = maxTurnDegPerSec * response;
+            // D-257: 회전 반경 하한 — 느릴 땐 작은 원으로 잘 돌고, 빠르면 반경이 넓어진다(제자리에서 휙 도는 것 방지).
+            if (minTurnRadius > 0f) rate = Mathf.Min(rate, speedMag / minTurnRadius * Mathf.Rad2Deg);
+            float yaw = rate * smoothedMove.x * Time.fixedDeltaTime;
             rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, yaw, 0f));
         }
     }
@@ -515,6 +595,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         float grip = Mathf.Lerp(sideGripDamping * driftGripMultiplier, sideGripDamping, driftGripBlend);
         float n = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / Mathf.Max(0.1f, EffectiveMaxSpeedMps));
         grip *= 1f + downforceGripGain * n * n;
+        if (HandbrakeHeld && !driftEnabled) grip *= handbrakeGrip;   // D-257: 짧은 미끄러짐
         // Day 20: 타이어 그립 배율 — Soft ×1.4, Medium ×1.0, Hard ×0.7. 마모 시 점진 감소.
         if (tireSystem != null) grip *= tireSystem.GripMultiplier;
         rb.AddForce(-transform.right * (sideSpeed * grip), ForceMode.Acceleration);
