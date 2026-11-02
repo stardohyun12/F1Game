@@ -1,7 +1,7 @@
-# PitCrew 상주 팀 (Hermes 하이브리드, 2026-10-23 도현 결정)
+# PitCrew 상주 팀 (Hermes 하이브리드, 2026-10-23 도현 결정) — 보관됨
 
 > **2026-11-03 팀 재편(D-271): 일꾼 5개 — PD · build(구현) · verify(블라인드 검증) · art · research. 규칙은 `docs/team/FLOW.md`.**
-> 역할 프롬프트 `roles/{pd,build,verify,art,research}.md`, 옛 10개는 `roles/archive/2026-11-03/`. 아래 표는 옛 기록.
+> 역할 프롬프트 `roles/{pd,build,verify,art,research}.md`, 옛 10개는 `roles/archive/2026-11-03/`. **아래 표·설명은 보관됨(옛 기록)** — 지금 입구는 `docs/team/README.md`, 화면은 http://localhost:8765 (스튜디오 화면).
 
 AionUi 팀 모드 대신, **PD(Hermes 대화)** + **상주 팀원(Claude Code 세션, 역할별로 이어짐)**.
 
@@ -20,5 +20,5 @@ AionUi 팀 모드 대신, **PD(Hermes 대화)** + **상주 팀원(Claude Code �
 - **Unity 에디터는 하나** → `.claude/team/editor.lock` 을 가진 팀원만 Play·씬 저장. `team.sh` 가 `[EDITOR]` 과제에 잠금을 잡고 끝나면 푼다.
 
 ## 도현이 팀원과 직접 대화하고 싶을 때
-`claude -r $(cat .claude/team/sessions/programmer.id)` (프로젝트 폴더에서) — 그 팀원의 기억 그대로 대화.
+`claude -r $(cat .claude/team/sessions/build.id)` (옛 programmer → build) (프로젝트 폴더에서) — 그 팀원의 기억 그대로 대화.
 진행 상황 보기: `.ai_logs/team/<role>.log`, `docs/team/reports/`.

@@ -1,0 +1,163 @@
+<!doctype html><html lang=ko><meta charset=utf-8><title>PitCrew 스튜디오</title>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#17181b;--card:#202226;--card2:#25282d;--border:#34373d;--fg:#e4e4e4;--mut:#8d929a;--accent:#e8a33d;--green:#5fbf77;--red:#e06363;--blue:#6aa7e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:13.5px/1.45 'Pretendard','Malgun Gothic',sans-serif}
+.s{max-width:1500px;margin:0 auto;padding:14px 18px 30px}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:var(--mut);font-size:12px}
+.top b{color:var(--fg);font-size:15px;margin-right:10px}
+.top .links a{margin-left:12px}
+.goal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--accent);border-radius:12px;padding:12px 16px;background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.goal .t{font-size:16px;font-weight:700;margin-right:auto}
+.goal .lbl{font-size:12px;color:var(--accent);font-weight:700;margin-right:6px}
+.pill{border:1px solid var(--border);border-radius:999px;padding:2px 11px;font-size:12.5px;background:var(--card);white-space:nowrap}
+.pill.hot{border-color:var(--accent);color:var(--accent);font-weight:700}
+.pill.bad{border-color:var(--red);color:var(--red);font-weight:700}
+.flow{display:flex;align-items:stretch;gap:4px;margin:12px 0}
+.st{flex:1;text-align:center;border:1px solid var(--border);border-radius:9px;padding:7px 3px 6px;background:var(--card);font-size:12.5px;white-space:nowrap;position:relative}
+.st small{display:block;color:var(--mut);font-size:11px}
+.st .n{font-size:17px;font-weight:700;line-height:1.2}
+.st .ids{font-size:10.5px;color:var(--accent);min-height:13px}
+.st.zero .n{color:#555}
+.st.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;background:color-mix(in srgb,var(--accent) 9%,var(--card))}
+.st.on::after{content:'● 움직이는 중';position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:10px;background:var(--accent);color:#222;border-radius:6px;padding:0 6px;font-weight:700}
+.st.opt{border-style:dashed}
+.st.blk{border-color:#5a3434}.st.blk.has{border-color:var(--red);background:#2b1d1d}
+.ar{color:var(--mut);align-self:center;font-size:13px}
+.sep{width:10px}
+.grid{display:grid;grid-template-columns:330px 1fr 300px;gap:12px}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}}
+.box{border:1px solid var(--border);border-radius:12px;padding:11px 12px;background:var(--card)}
+.h{font-weight:700;font-size:13.5px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.h span{font-weight:400;color:var(--mut);font-size:11.5px}
+.card{border:1px solid var(--border);border-radius:9px;padding:9px 10px;margin-bottom:9px;background:var(--card2)}
+.card:last-child{margin-bottom:0}
+.card.ask{border-left:3px solid var(--accent)}
+.mut{color:var(--mut);font-size:11.5px}
+.q{margin:7px 0 7px;font-weight:700;font-size:13.5px}
+.q::before{content:'❓ '}
+video,img.sh{width:100%;border-radius:7px;border:1px solid var(--border);display:block;background:#000}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px}
+.pair figure{margin:0;position:relative}.pair figcaption{position:absolute;left:5px;top:3px;font-size:10.5px;background:#000a;padding:0 5px;border-radius:4px}
+.btns{display:flex;gap:6px;margin-top:6px}
+.btns button{flex:1;border:1px solid var(--border);background:var(--card);color:var(--fg);border-radius:7px;padding:5px 0;cursor:pointer;font:inherit;font-size:12.5px}
+.btns button.p:hover{border-color:var(--green);color:var(--green)}.btns button.f:hover{border-color:var(--accent);color:var(--accent)}.btns button.d:hover{border-color:var(--red);color:var(--red)}
+.fixrow{display:none;gap:5px;margin-top:5px}.fixrow.open{display:flex}
+.fixrow input{flex:1;background:#151618;border:1px solid var(--border);color:var(--fg);border-radius:6px;padding:4px 7px;font:inherit;font-size:12.5px}
+.fixrow button{border:0;background:var(--accent);color:#222;border-radius:6px;padding:0 10px;cursor:pointer;font-weight:700}
+.answered{margin-top:6px;padding:5px 8px;border-radius:6px;background:#1d2a20;color:var(--green);font-size:12.5px}
+.empty{color:var(--mut);font-size:12.5px;padding:10px 2px}
+.lane{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--border)}
+.lane:first-of-type{border-top:0;padding-top:2px}
+.who{font-weight:700;font-size:13px}
+.who small{display:block;font-weight:400;color:var(--mut);font-size:11px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;background:#555;vertical-align:1px}
+.dot.run{background:var(--green);box-shadow:0 0 6px var(--green)}.dot.wait{background:var(--accent)}.dot.stall{background:var(--red)}
+.ct{font-weight:600}.ct b{color:var(--accent);margin-right:4px}
+.meta{color:var(--mut);font-size:11.8px;margin-top:2px}
+.meta em{font-style:normal;color:var(--fg)}
+.pos{display:flex;gap:3px;margin-top:6px;align-items:center}
+.pos u{text-decoration:none;flex:0 0 26px;height:5px;border-radius:3px;background:var(--border)}
+.pos u.d{background:color-mix(in srgb,var(--accent) 45%,transparent)}
+.pos u.n{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+.pos i{font-style:normal;font-size:10.5px;color:var(--mut);margin-left:6px}
+.last{font-size:11.5px;color:#a9b4a9;margin-top:3px;font-family:Consolas,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shot{margin-bottom:10px}.shot:last-child{margin-bottom:0}
+.shot .cap{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut);margin-top:3px}
+.warns{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.warn{border:1px solid var(--accent);border-radius:9px;padding:7px 12px;font-size:13px;background:#2a241a}
+.warn.red{border-color:var(--red);background:#2b1d1d}
+.warn.ok{border-color:#2f4a36;background:#1b241e;color:#9fcca9}
+.log{margin-top:12px}
+.lr{display:grid;grid-template-columns:86px 130px 210px 1fr;gap:10px;padding:5px 0;border-top:1px solid var(--border);font-size:12.5px;align-items:baseline}
+.lr .mut{font-family:Consolas,monospace}
+.lr b{font-weight:700}.lr .arrow{color:var(--accent)}
+.lr.lq{opacity:.5}
+.v{font-size:10.5px;border-radius:4px;padding:0 5px;margin-left:4px;font-weight:700}
+.v.PASS,.v.통과{background:#1f3a26;color:var(--green)}.v.FAIL,.v.버림{background:#3a1f1f;color:var(--red)}.v.수정{background:#3a321f;color:var(--accent)}
+#toast{position:fixed;right:16px;bottom:16px;background:#333;border:1px solid #555;padding:8px 14px;border-radius:8px;display:none;z-index:9}
+.foot{margin-top:10px;color:var(--mut);font-size:11.5px}
+</style>
+<div class=s>
+ <div class=top><div><b>PitCrew 스튜디오</b>카드 흐름 · 일꾼 5개 · 5초마다 갱신 <span id=upd></span></div>
+  <div class=links><span id=lock></span><a href="/graph" target=_blank title="Hermes 칸반 카드(비서·PD 카드)의 부모→자식 그래프">칸반 그래프 ↗</a><a href="hermes://open/kanban-graph?task=default/t_faee99de">데스크톱에서 열기</a><a href="/classic">일꾼 로그·설정</a></div></div>
+ <div class=goal id=goal></div>
+ <div class=flow id=flow></div>
+ <div class=grid>
+  <div class=box><div class=h>✋ 도현 판정 대기 <span>최대 3장 · 영상 보고 답 하나</span></div><div id=ask></div></div>
+  <div class=box><div class=h>👥 누가 뭘 하나 <span>막대 = 카드가 흐름(기획→…→완료)의 어디쯤인지</span></div><div id=lanes></div></div>
+  <div class=box><div class=h>🎮 최근 게임 화면 <span>증거 묶음(10초 클립·전/후)</span></div><div id=shots></div></div>
+ </div>
+ <div class=warns id=warns></div>
+ <div class="box log"><div class=h>🔁 넘김 기록 <span>시간 · 누가 → 누구 · 카드 · 한 줄 (흐린 줄 = 대기열에 과제 넣음)</span></div><div id=log></div></div>
+ <div class=foot id=foot></div>
+</div>
+<div id=toast></div>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const F=p=>'/file?p='+encodeURIComponent(p);
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',3500)}
+const PATHN=['기획','그레이박스','검증','도현 한 판','아트','통합','검증(통합)','완료'];
+let last='';
+function set(id,html){const e=$(id);if(e._h!==html){e.innerHTML=html;e._h=html}}
+async function tick(){
+ let d; try{d=await (await fetch('/api/studio')).json()}catch(e){$('upd').textContent=' · 서버 연결 끊김';return}
+ $('upd').textContent=' · '+d.updated;
+ $('lock').textContent='본 에디터: '+(d.lock||'비어 있음');
+ const g=d.goal, dd=g.dday==null?'':(g.dday>0?'D-'+g.dday:g.dday==0?'D-DAY':'D+'+(-g.dday));
+ const costPct=g.budget?g.cost/g.budget:0;
+ set('goal',`<span class=lbl>🎯 지금 목표</span><span class=t>${esc(g.name)}</span>
+  <span class="pill hot">${dd} (${esc(g.deadline||'')})</span><span class=pill>카드 ${g.done}/${g.total} 완료</span>
+  <span class="pill ${g.wip>g.wip_limit?'bad':''}">동시 진행 ${g.wip}/${g.wip_limit}</span>
+  <span class="pill ${costPct>=.8?'bad':''}" title="${esc(Object.entries(g.cost_by).map(([k,v])=>k+' $'+v).join(' · '))} — 팀원 Claude 과제 장부 기준(Codex 아트·PD 제외)">오늘 비용 $${g.cost.toFixed(2)} / $${g.budget}</span>`);
+ const main=d.flow.filter(s=>s.id!=='blocked'), blk=d.flow.find(s=>s.id==='blocked');
+ set('flow',main.map(s=>`<div class="st ${s.on?'on':''} ${s.n?'':'zero'} ${s.optional?'opt':''}" title="${esc(s.cards.join(', '))}">${esc(s.label)}<div class=n>${s.n}</div><small>${esc(s.who||'')}${s.optional?' · 필요할 때':''}</small><div class=ids>${esc(s.cards.join(' '))}</div></div>`).join('<span class=ar>→</span>')
+  +(blk?`<span class=sep></span><div class="st blk ${blk.n?'has':''}">⛔ ${esc(blk.label)}<div class=n>${blk.n}</div><small>3회 불통과·보류</small><div class=ids>${esc(blk.cards.join(' '))}</div></div>`:''));
+ set('ask',d.ask.length?d.ask.map(c=>{
+  const media=c.clip?`<video src="${F(c.clip)}" controls muted loop playsinline preload=metadata poster="${c.shot_after?F(c.shot_after):''}"></video>`:'';
+  const pair=(c.shot_before||c.shot_after)?`<div class=pair>${c.shot_before?`<figure><img class=sh src="${F(c.shot_before)}"><figcaption>전</figcaption></figure>`:''}${c.shot_after?`<figure><img class=sh src="${F(c.shot_after)}"><figcaption>후</figcaption></figure>`:''}</div>`:'';
+  const act=c.answer?`<div class=answered>답함: ${esc(c.answer.label)}${c.answer.text?' — '+esc(c.answer.text):''} · PD 가 다음 칸으로 옮기는 중</div>`
+   :`<div class=btns><button class=p onclick="ans('${c.id}','pass')">통과</button><button class=f onclick="$('fx-${c.id}').classList.toggle('open')">수정</button><button class=d onclick="ans('${c.id}','drop')">버림</button></div>
+    <div class=fixrow id="fx-${c.id}"><input id="fxt-${c.id}" placeholder="무엇을 고칠지 한 줄"><button onclick="ans('${c.id}','fix')">보내기</button></div>`;
+  return `<div class="card ask"><div class=ct><b>${c.id}</b>${esc(c.title)}</div>
+   <div class=mut>검증 ${esc(c.verdict||'-')}${c.verdict_reason?' — '+esc(c.verdict_reason.slice(0,90)):''}</div>
+   <div class=q>${esc(c.question||'직접 해 보고 통과/수정/버림')}</div>${media}${pair}${act}</div>`}).join('')
+  :'<div class=empty>지금 도현이 판정할 카드 없음 👍</div>');
+ // 버튼 상태 보존: 수정 입력 중이면 다시 그리지 않음 — set() 이 같은 html 이면 안 바꿈
+ set('lanes',d.lanes.map(l=>{
+  const c=l.card, stall=l.working&&l.quiet>=20;
+  const dot=stall?'stall':l.working?'run':(c?'wait':'');
+  const state=l.working?(stall?`⛔ ${l.quiet}분째 조용`:`일하는 중 ${l.elapsed??'?'}분`):(c?(l.worker==='dohyun'?'도현이 판정할 차례':'차례 기다림'):(l.worker==='dohyun'?'판정할 것 없음':'쉬는 중'));
+  let body='';
+  if(c){
+   const bar=PATHN.map((n,i)=>`<u class="${i<c.pos?'d':i==c.pos?'n':''}" title="${n}"></u>`).join('');
+   body=`<div class=ct><b>${c.id}</b>${esc(c.title)}</div>
+    <div class=meta><em>${state}</em> · 지금 칸 <em>${esc(c.stage_label)}</em> (${esc(c.since)} 전부터) · 만지는 파일 ${c.files}개${c.fails?` · 불통과 ${c.fails}`:''} · 끝나면 → <em>${esc(c.next)}</em></div>
+    <div class=pos>${c.pos>=0?bar:''}<i>${c.pos>=0?PATHN[c.pos]:esc(c.stage_label)}</i></div>`;
+  }else if(l.working){
+   body=`<div class=ct>${esc(l.task_title||'카드 밖 과제')}</div><div class=meta><em>${state}</em> · 카드에 안 묶인 과제</div>`;
+  }else body=`<div class=mut>${state}${l.worker==='pd'?' — 도현 답·막힘이 오면 카드를 옮김':l.worker==='dohyun'?'':' — 카드가 넘어오면 바로 시작'}</div>`;
+  const q=l.queued.length?`<div class=meta>다음 대기: ${esc(l.queued.join(', '))}</div>`:'';
+  const o=l.others.length?`<div class=meta>그 밖에 맡은 카드: ${esc(l.others.join(', '))}</div>`:'';
+  const lastl=l.working&&l.last?`<div class=last>↳ ${esc(l.last)}</div>`:'';
+  return `<div class=lane><div class=who><span class="dot ${dot}"></span>${esc(l.name)}<small>${esc(l.label)}</small></div><div>${body}${lastl}${q}${o}</div></div>`}).join(''));
+ set('shots',d.shots.length?d.shots.map(c=>`<div class=shot>${c.clip?`<video src="${F(c.clip)}" controls muted loop playsinline preload=metadata poster="${c.shot_after?F(c.shot_after):''}"></video>`:`<img class=sh src="${F(c.shot_after)}">`}
+   ${c.strip?`<a href="${F(c.strip)}" target=_blank><img class=sh src="${F(c.strip)}" style="margin-top:5px" title="10초를 8칸으로"></a>`:''}
+   <div class=cap><span><b style="color:var(--fg)">${c.id}</b> ${esc(c.title.slice(0,28))}</span><span>${esc(c.evidence_made||'')}</span></div></div>`).join('')
+  :'<div class=empty>아직 증거 묶음 없음</div>');
+ set('warns',d.warns.length?d.warns.map(w=>`<div class="warn ${w.level==='red'?'red':''}">⚠ ${esc(w.text)}</div>`).join('')
+  :'<div class="warn ok">✓ 막힘 없음 — 3회 불통과·오래 멈춘 일꾼·보류 없음</div>');
+ set('log',d.log.map(r=>`<div class="lr ${r.queue?'lq':''}"><span class=mut>${esc(r.d)} ${esc(r.t)}</span><span><b>${esc(r.from)}</b> <span class=arrow>→</span> <b>${esc(r.to)}</b></span><span><b>${esc(r.card)}</b> <span class=mut>${esc(r.stage)}</span></span><span>${esc(r.note)}${r.verdict?`<span class="v ${esc(r.verdict)}">${esc(r.verdict)}</span>`:''}</span></div>`).join(''));
+ $('foot').textContent=`텔레그램 묶음 메시지: 매일 ${d.digest_hours.join('시·')}시 · 즉시 알림은 판정 급함·빌드(과제) 실패·같은 카드 반복 실패·비용 한도 근접 4가지만`;
+}
+async function ans(id,a){
+ const text=a==='fix'?($('fxt-'+id)||{}).value||'':'';
+ if(a!=='fix'&&!confirm(`${id} 를 「${a==='pass'?'통과':'버림'}」으로 PD 에게 넘길까요?`))return;
+ const r=await (await fetch('/verdict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({card:id,answer:a,text})})).json();
+ toast(r.msg);tick();
+}
+tick();setInterval(tick,5000);
+</script></html>

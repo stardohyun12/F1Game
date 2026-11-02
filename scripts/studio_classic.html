@@ -1,0 +1,99 @@
+<!doctype html><html lang=ko><meta charset=utf-8><title>PitCrew 옛 화면 — 일꾼 로그</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#1e1e1e;color:#ddd;font:14px/1.45 'Pretendard','Malgun Gothic',sans-serif}
+header{display:flex;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid #333}
+header h1{font-size:18px;margin:0 8px 0 0}.chip{padding:3px 10px;border-radius:12px;background:#2c2c2c;font-size:12px}
+.cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:12px}
+.col{background:#262626;border:1px solid #333;border-radius:8px;display:flex;flex-direction:column;height:calc(100vh - 230px);min-height:420px}
+.col h2{font-size:15px;margin:0;padding:10px 12px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;background:#3a3a3a;white-space:nowrap}.badge.on{background:#2f6b3a;color:#cfe}
+.meta{display:block;font-size:11px;color:#8a8a8a;font-weight:normal;margin-top:2px}
+.gear{background:none;border:1px solid #444;color:#bbb;border-radius:6px;cursor:pointer;padding:2px 7px;font-size:13px}
+.gear:hover{border-color:#777;color:#fff}
+.task{padding:8px 12px;background:#2d2d2d;border-bottom:1px solid #333;font-size:12px;color:#bbb;max-height:80px;overflow:auto}
+.log{flex:1;overflow:auto;padding:6px 12px;font-size:12.5px}.ev{padding:3px 0;border-bottom:1px solid #2e2e2e}
+.ev,.task{overflow-wrap:anywhere}.ev time{color:#777;margin-right:6px;font-family:monospace}
+.rep{padding:6px 12px;border-top:1px solid #333;font-size:12px;color:#9ab}
+.send{border-top:1px solid #333;padding:8px;display:flex;flex-direction:column;gap:6px}
+.send textarea{width:100%;min-height:52px;resize:vertical;background:#1c1c1c;color:#ddd;border:1px solid #3a3a3a;border-radius:6px;padding:6px;font:inherit;font-size:12.5px}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:12px;color:#aaa}
+button.pri{background:#3d5a80;color:#fff;border:0;border-radius:6px;padding:5px 12px;cursor:pointer}button.pri:disabled{opacity:.4;cursor:default}
+.settings{display:none;padding:10px 12px;border-bottom:1px solid #333;background:#2a2a2a;font-size:12.5px}
+.settings.open{display:block}.settings label{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:8px;margin:4px 0}
+.settings input,.settings select{background:#1c1c1c;color:#ddd;border:1px solid #3a3a3a;border-radius:5px;padding:4px 6px;font:inherit;width:100%}
+.settings .hint{color:#888;font-size:11px;margin:4px 0 8px}
+.danger{background:none;border:1px solid #6a3a3a;color:#d99;border-radius:6px;padding:4px 10px;cursor:pointer}
+.board{margin:0 12px 12px;background:#262626;border:1px solid #333;border-radius:8px;padding:8px 14px;white-space:pre-wrap;font-size:12px;max-height:140px;overflow:auto}
+.waits{display:flex;flex-direction:column;gap:6px;padding:10px 12px 0}
+.wait{display:flex;gap:10px;align-items:center;padding:8px 12px;border-radius:8px;border:1px solid #333;background:#262626;font-size:13px}
+.wait b{white-space:nowrap}.wait .sub{color:#8a8a8a;font-size:12px;margin-left:auto;white-space:nowrap}
+.wait.running{border-color:#3d5a80}.wait.ready{border-color:#c9a03a;background:#2e2a1e}.wait.stalled{border-color:#a04848;background:#2e1e1e}
+#toast{position:fixed;right:16px;bottom:16px;background:#333;border:1px solid #555;padding:8px 14px;border-radius:8px;display:none}
+</style>
+<header><h1>일꾼 로그·설정</h1><a class=chip href="/" style="color:#9cf">← 스튜디오 화면</a><span class=chip id=lock></span><span class=chip id=upd></span></header>
+<div class=waits id=waits></div><div class=cols id=cols></div><div class=board id=board></div><div id=toast></div>
+<script>
+const ROLES=__ROLES__, ENGINES=__ENGINES__, ENGINE_OF=__ENGINE_OF__, WORKERS=__WORKERS__;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',3000)}
+async function post(url,body){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return r.json()}
+const effLabel={'':'기본','low':'낮음','medium':'보통','high':'높음','xhigh':'매우 높음','max':'최대'};
+
+function build(){
+ $('cols').innerHTML=ROLES.map(([r,name,color])=>{
+  const w=WORKERS.includes(r), eng=w?ENGINES[ENGINE_OF[r]]:null;
+  const set=w?`<div class=settings id=set-${r}>
+    <label>모델${ENGINE_OF[r]==='claude'
+      ?`<select id=model-${r}>${eng.models.map(m=>`<option value="${m}">${m}${m==='opus'?' (최신 Opus)':m==='sonnet'?' (최신 Sonnet)':m==='haiku'?' (최신 Haiku)':''}</option>`).join('')}</select>`
+      :`<input list=ml-${r} id=model-${r} placeholder="기본 (codex 설정)"><datalist id=ml-${r}>${eng.models.map(m=>`<option value="${m}">`).join('')}</datalist>`}</label>
+    <label>추론<select id=effort-${r}>${eng.efforts.map(e=>`<option value="${e}">${effLabel[e]}</option>`).join('')}</select></label>
+    ${eng.limits?`<label>예산 $<input type=number step=0.5 min=0.1 max=50 id=budget-${r}></label>
+    <label>최대 턴<input type=number step=10 min=0 max=300 id=turns-${r} title="0 = 제한 없음"></label>`:''}
+    <div class=hint>${eng.limits?'과제 하나당 상한. 넘으면 그 자리에서 멈춰요.':'Codex 사용량에서 나가요.'} 다음 과제부터 적용.</div>
+    <div class=row><button class=danger onclick="resetMem('${r}')">기억 초기화</button><button class=pri onclick="saveSet('${r}')">저장</button></div>
+   </div>`:'';
+  const send=w?`<div class=send><textarea id=txt-${r} placeholder="${name}에게 과제 보내기"></textarea>
+    <div class=row><label><input type=checkbox id=ed-${r}> 에디터 필요</label><button class=pri id=btn-${r} onclick="sendTask('${r}')">보내기</button></div></div>`:'';
+  return `<div class=col><h2><span><span style="color:${color}">${name}</span><span class=meta id=meta-${r}></span></span>
+   <span style="display:flex;gap:6px;align-items:center"><span class=badge id=badge-${r}></span>${w?`<button class=gear title="설정" onclick="$('set-${r}').classList.toggle('open')">⚙</button>`:''}</span></h2>
+   ${set}<div class=task id=task-${r} style="display:none"></div><div class=log id=log-${r}></div>
+   <div class=rep id=rep-${r}></div>${send}</div>`}).join('');
+}
+let filled=false;
+function fillSettings(cfg){
+ for(const r of WORKERS){const c=cfg[r]||{};
+  $('model-'+r).value=c.model||(ENGINE_OF[r]==='claude'?'sonnet':''); $('effort-'+r).value=c.effort||'';
+  if($('budget-'+r)){$('budget-'+r).value=c.budget??5;$('turns-'+r).value=c.turns??80}}
+}
+function metaText(r,cfg){const c=cfg[r]||{};
+ const m=c.model||(ENGINE_OF[r]==='codex'?'codex 기본':'sonnet');
+ return m+' · 추론 '+effLabel[c.effort||'']+(ENGINE_OF[r]==='claude'?' · $'+(c.budget??5)+' · '+((c.turns??80)==0?'턴 무제한':(c.turns??80)+'턴'):'')}
+async function tick(){
+ const d=await (await fetch('/api')).json();
+ $('lock').textContent='에디터: '+(d.lock||'비어 있음');
+ $('upd').textContent='갱신 '+new Date().toLocaleTimeString();
+ if(!filled){fillSettings(d.config);filled=true}
+ for(const [r] of ROLES){const x=d.roles[r];
+  $('badge-'+r).textContent=x.working?(x.quiet>=10?'⛔ 로그 '+x.quiet+'분 조용':'작업 중'):(x.state.startsWith('idle')?'쉬는 중 '+x.state.slice(5):x.state);
+  $('badge-'+r).className='badge '+(x.working&&x.quiet<10?'on':'');
+  if(WORKERS.includes(r)){$('meta-'+r).textContent=metaText(r,d.config);$('btn-'+r).disabled=x.working}
+  const t=$('task-'+r); t.style.display=x.task?'block':'none'; t.textContent=x.task?'📋 '+x.task:'';
+  const html=x.events.slice().reverse().map(e=>`<div class=ev><time>${e.t}</time>${esc(e.msg)}</div>`).join('')||'<div class=ev style="color:#666">활동 없음</div>';
+  const lg=$('log-'+r); if(lg._h!==html){lg.innerHTML=html;lg._h=html}
+  $('rep-'+r).innerHTML=x.reports.map(esc).join('<br>')||'보고서 없음';
+ }
+ 
+ $('waits').innerHTML=([]).map(w=>`<div class="wait ${w.status}"><b>${esc(w.label)}</b><span>${esc(w.what)}${w.next?' → '+esc(w.next):''}</span>
+   <span class=sub>기다리는 것: ${esc(w.on)}${w.why?' · '+esc(w.why):''} · ${w.since}부터</span></div>`).join('');
+}
+async function saveSet(r){const v={model:$('model-'+r).value,effort:$('effort-'+r).value};
+ if($('budget-'+r)){v.budget=$('budget-'+r).value;v.turns=$('turns-'+r).value}
+ const res=await post('/config',{role:r,values:v}); toast(res.ok?'저장했어요 (다음 과제부터)':res.msg); tick()}
+async function sendTask(r){const res=await post('/task',{role:r,text:$('txt-'+r).value,editor:$('ed-'+r).checked});
+ toast(res.msg); if(res.ok){$('txt-'+r).value='';$('ed-'+r).checked=false} setTimeout(tick,800)}
+async function resetMem(r){if(!confirm('이 팀원의 대화 기억을 지울까요? (보고서·파일은 그대로)'))return;
+ const res=await post('/reset',{role:r}); toast(res.msg)}
+build();tick();setInterval(tick,3000);
+</script></html>

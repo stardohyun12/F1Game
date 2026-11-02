@@ -1,6 +1,6 @@
 # PIPELINE — PitCrew(F1Game) AionUi 팀 운영 규약
 
-> **2026-11-03 팀 재편(D-271, 도현 진행 신호) — 팀 구성·넘김은 `docs/team/FLOW.md` 가 이 문서 §1·§3 을 대체한다.**
+> **2026-11-03 팀 재편(D-271, 도현 진행 신호) — 팀 구성·넘김은 `docs/team/FLOW.md` 가 이 문서 §1·§3 을 대체한다. 옛 10역할 설명은 보관됨. 도현이 보는 곳 = 스튜디오 화면 http://localhost:8765 + 텔레그램 하루 2번 묶음(D-272, `docs/team/README.md`).**
 > 일꾼 5개(PD·구현 build·검증 verify·아트 art·리서치 research), 단계 기획→그레이박스→검증→도현 한 판→아트→통합→검증→완료(+막힘),
 > 카드 양식 `docs/team/CARD_TEMPLATE.md`, 증거 묶음 `tools/evidence/bundle.sh`, 넘김 기록 `docs/team/handoffs.jsonl`. 카드에 안 묶인 아트·리서치는 하지 않는다.
 

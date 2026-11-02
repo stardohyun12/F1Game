@@ -95,3 +95,12 @@ python -X utf8 scripts/card.py board | log 20                                   
 python -X utf8 scripts/card.py move C-00N integrate --by dohyun --note "<도현 원문>"      # 통과(아트 불필요)
 python -X utf8 scripts/card.py move C-00N greybox --by dohyun --note "<원문>" && python -X utf8 scripts/card.py dispatch C-00N   # 수정
 ```
+
+## 9. 보이게 하기 — 스튜디오 화면 + 하루 2번 묶음 (D-272, 2026-11-03)
+- **PC 화면** http://localhost:8765 (`scripts/team_dashboard.py` + `scripts/studio_page.html`, 5초 갱신): 목표 띠(마일스톤·D-day·카드 N/M 완료·동시 진행/`wip_limit`·오늘 비용/`daily_budget_usd`) → 단계 흐름(칸마다 카드 수, 일꾼이 지금 일하는 칸·도현이 답할 칸 강조) → 도현 판정 대기(최대 3장: 클립·전/후·질문 1개·통과/수정/버림) · 일꾼 레인(카드·경과·「범위」 파일 수·끝나면 → 누구·흐름 막대) · 최근 게임 화면 → 막힘 경고 → 넘김 기록.
+- 판정 버튼은 `cards/<ID>/dohyun.json` + 카드 기록 + handoffs(dohyun→pd) + queue.log 「도현 판정 끝」만 쓴다. 단계 이동(아트/통합/그레이박스/완료)은 PD 가 `card.py move` 로 — 화면이 판정을 대신 내리지 않는다.
+- 카드의 「사람 확인」 절에 `묻는 질문: 「…」` 한 줄을 꼭 쓴다 — 화면·묶음 메시지가 이 줄을 질문으로 띄운다.
+- **폰** `scripts/tg_digest.py`(대시보드 프로세스 안 스레드, 60초): `digest_hours`(13·21시) 묶음 = 목표 1줄 + 판정 카드 최대 3장(클립 + 질문) + 막힘 1줄 + 비용 1줄. 즉시 알림은 4가지만 — 판정 급함(대기 3장 참 / 3회 막힘 2지선다 / 일꾼 모두 쉬고 남은 일이 도현 답뿐 60분), 과제(빌드) 실패(queue.log 새 「보류」·컴파일 실패), 같은 카드 반복 실패(불통과 2+), 비용 한도 80%·100%. 밤 1~9시는 소리 없이. 나머지 자동 메시지는 D-265 조용 모드로 끔(옛 고정 상태 메시지 tg_status.py 는 꺼진 채, 과제 끝 알림 notify_done 은 tg_quiet 로 막힘).
+- 값(`wip_limit` 3, `daily_budget_usd` 40, `digest_hours`, `stall_min`, `stale_hours`, `alert_quiet_hours`)은 `flow.json` — PD 가설값, 도현이 정하면 그대로 바꾼다.
+- Hermes 칸반(비서·PD 카드)은 따로 — 화면 오른쪽 위 「칸반 그래프」(`/graph`, kanban-graph 플러그인). F1 팀 내부 넘김은 handoffs.jsonl 을 화면이 직접 그린다.
+

@@ -26,3 +26,9 @@ if (-not ($ss -and (Get-Process -Id $ss -ErrorAction SilentlyContinue))) {
   $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$py`" -X utf8 D:\Github\F1Game\scripts\status_server.py"; CurrentDirectory = "D:\Github\F1Game" }
   "status server started PID $($r.ProcessId)"
 }
+# 스튜디오 화면(127.0.0.1:8765) — 카드 흐름 화면 + 워치독 + 텔레그램 하루 2번 묶음·즉시 알림 4종을 한 프로세스로 (2026-11-03 t_faee99de)
+$dp = Get-Content .claude\team\dashboard.pid -ErrorAction SilentlyContinue
+if (-not ($dp -and (Get-Process -Id $dp -ErrorAction SilentlyContinue))) {
+  $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$py`" -X utf8 D:\Github\F1Game\scripts\team_dashboard.py"; CurrentDirectory = "D:\Github\F1Game" }
+  "studio dashboard started PID $($r.ProcessId)"
+}

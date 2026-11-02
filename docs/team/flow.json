@@ -35,5 +35,13 @@
   "blocked":      ["plan", "research", "greybox", "verify", "dohyun", "art", "integrate", "final_verify", "done"]
  },
  "fail_limit": 3,
+ "wip_limit": 3,
+ "daily_budget_usd": 40,
+ "digest_hours": [13, 21],
+ "stall_min": 20,
+ "stale_hours": 6,
+ "idle_wait_alert_min": 60,
+ "alert_quiet_hours": [1, 9],
+ "_screen_note": "스튜디오 화면(team_dashboard.py 8765)·묶음 메시지(tg_digest.py) 값 — wip_limit·daily_budget_usd 는 PD 가설값(2026-11-03), 도현이 바꾸면 그대로",
  "dohyun_queue_max": 3
 }

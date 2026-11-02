@@ -5,7 +5,7 @@ cd /d/Github/F1Game || exit 1
 L=.ai_logs/team/queue.log
 N=$(wc -l < "$L")
 for i in $(seq 1 1440); do
-  NEW=$(tail -n +$((N+1)) "$L" | grep -aE "커밋 |보류 |회고 끝|기획 끝|실패" | head -1)
+  NEW=$(tail -n +$((N+1)) "$L" | grep -aE "커밋 |보류 |회고 끝|기획 끝|실패|판정 끝" | head -1)
   [ -n "$NEW" ] && { echo "$NEW"; exit 0; }
   sleep 30
 done
