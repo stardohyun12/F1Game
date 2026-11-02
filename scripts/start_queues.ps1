@@ -20,3 +20,9 @@ if (-not ($sp -and (Get-Process -Id $sp -ErrorAction SilentlyContinue))) {
   $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$py`" -X utf8 D:\Github\F1Game\scripts\tg_status.py"; CurrentDirectory = "D:\Github\F1Game" }
   "status started PID $($r.ProcessId)"
 }
+# 데스크톱 플러그인용 상태 서버(127.0.0.1:8799)
+$ss = Get-Content .claude\team\status_server.pid -ErrorAction SilentlyContinue
+if (-not ($ss -and (Get-Process -Id $ss -ErrorAction SilentlyContinue))) {
+  $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = "conhost.exe --headless `"$py`" -X utf8 D:\Github\F1Game\scripts\status_server.py"; CurrentDirectory = "D:\Github\F1Game" }
+  "status server started PID $($r.ProcessId)"
+}
