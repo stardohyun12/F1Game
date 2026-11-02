@@ -48,8 +48,9 @@ LAST=$(ls "$OUT/frames"/f*.png 2>/dev/null | tail -1)
 [ -n "$LAST" ] && cp "$LAST" "$OUT/shot.png"
 if [ "$LABEL" = "after" ] && [ "$N" -gt 2 ] && [ -n "$FF" ]; then
   "$FF" -v error -y -framerate $FPS -i "$OUT/frames/f%03d.png" -c:v libx264 -pix_fmt yuv420p -crf 26 "$OUT/clip.mp4"
-  # 그림만 볼 수 있는 검증 일꾼용: 클립을 8칸(시간 순) 한 장으로
-  "$FF" -v error -y -i "$OUT/clip.mp4" -vf "fps=8/$SECS,scale=480:-1,tile=4x2" -frames:v 1 "$OUT/strip.png"
+  # 그림만 볼 수 있는 검증 일꾼용: 클립 전체에서 고르게 8장 → 4×2 한 장(칸 = 시간 순, 왼쪽 위 → 오른쪽 아래)
+  K=$(( (N + 7) / 8 ))
+  "$FF" -v error -y -i "$OUT/clip.mp4" -vf "select='not(mod(n\,$K))',scale=480:-1,tile=4x2" -fps_mode vfr -frames:v 1 "$OUT/strip.png"
 fi
 rm -rf "$OUT/frames" "$OUT/clip.cs"
 python -X utf8 - "$CARD" "$LABEL" "$SECS" "$CONS" <<'EOF'

@@ -113,7 +113,7 @@ def next_num(q):
     return 60
 
 
-def dispatch(cid):
+def dispatch(cid, by="pd"):
     d, h, body = read(cid)
     st, title = h["stage"], h["title"]
     opus = "[OPUS]" if h.get("opus", "") in ("true", "yes", "1") and st in ("greybox", "integrate") else ""
@@ -184,7 +184,7 @@ def dispatch(cid):
     path = f"{q}/{next_num(q)}-{cid}-{st}-{tries}.task"
     open(path, "w", encoding="utf-8", newline="\n").write(task)
     worker = STAGES[st]["owner"]
-    handoff(cid, "pd", worker, st, st, f"대기열에 과제 → {path}")
+    handoff(cid, by, worker, st, st, f"대기열에 과제 → {path}")
     print(path)
     return path
 
@@ -217,10 +217,10 @@ def advance(cid, bundle_rc=None):
             write(d2, h2, b2.rstrip("\n") + f"\n- {now()[:16]} harness→build · {note} · 다시 구현\n")
             handoff(cid, "harness", "build", st, st, note, evidence=evp, fails=fails)
             board()
-            dispatch(cid)
+            dispatch(cid, by="harness")
             return
         move(cid, nxt, by="build", note=f"증거 묶음 기계 PASS(프레임 +{a.get('frames_advanced')}, 경고 {a.get('warnings')}, 에러 0) → 블라인드 검증", evidence=evp)
-        dispatch(cid)
+        dispatch(cid, by="harness")
     elif st in ("verify", "final_verify"):
         vp = f"{d}/verdict.json"
         try:
@@ -235,10 +235,10 @@ def advance(cid, bundle_rc=None):
             back = "greybox" if st == "verify" else "integrate"
             to = move(cid, back, by="verify", fail=True, note=f"검증 FAIL — {v.get('reason','')}", verdict="FAIL", evidence=vp)
             if to == back:
-                dispatch(cid)
+                dispatch(cid, by="harness")
     elif st == "art":
         move(cid, "integrate", by="art", note="아트 납품 → 통합")
-        dispatch(cid)
+        dispatch(cid, by="harness")
     elif st == "research":
         move(cid, "plan", by="research", note="질문 답 → PD 가 카드 고침")
     else:
