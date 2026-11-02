@@ -1,0 +1,34 @@
+{
+  "observed_failures": [
+    {
+      "case": "bake_space_transform True with nested hinges",
+      "box_s_bounds_blender": [
+        -0.172,
+        0.172,
+        -0.172,
+        0.172,
+        -0.172,
+        0.172
+      ],
+      "expected_height_m": 0.124,
+      "fix": "main FBX bake_space_transform=False; verify all 12 roundtrip bounds"
+    },
+    {
+      "case": "concurrent second GPU Blender preview",
+      "error": "Cycles OIDN out of memory",
+      "fix": "single GPU render queue; failed images overwritten"
+    },
+    {
+      "case": "paper grain broad mottling",
+      "fix": "photo grain resample/repeat 4x, amplitude3.5%; full rerender"
+    },
+    {
+      "case": "roll one-sheet transparency",
+      "fix": "wound layers alpha .72 and added 6 winding edge rings"
+    },
+    {
+      "case": "newspaper stack thick layers",
+      "fix": "20 folded layers at3mm instead8 at7.5mm"
+    }
+  ]
+}

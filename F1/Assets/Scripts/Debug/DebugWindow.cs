@@ -72,6 +72,8 @@ public class DebugWindow : MonoBehaviour
     public static string Recast() { var d = Dir(); return Say(d != null && d.DebugRecast() ? "찌 다시 던짐" : "낚시 자리에 앉아 있을 때만"); }
     public static string ToggleCart() { var d = Dir(); return Say(d == null ? "감독 없음" : "카트: " + d.DebugToggleCart()); }
     public static string SetSpeed(float s) { Time.timeScale = s; return Say("시간 " + s + "배속"); }
+    /// <summary>D-258 UI 비교판: 0 지금 · 1 A 세상 속 물건 · 2 B 화면 UI + 게임 텍스처.</summary>
+    public static string SetUIStyle(int i) { DotScreenUI.UiStyle = (DotScreenUI.UIStyle)Mathf.Clamp(i, 0, 2); return Say("UI: " + DotScreenUI.StyleLabel(DotScreenUI.UiStyle)); }
 
     /// <summary>D-257 주행감 비교판 — 0 = A 지금 · 1 = B 부드러운 배달 · 2 = C 무게감.</summary>
     public static string SetFeel(int i)
@@ -239,6 +241,15 @@ public class DebugWindow : MonoBehaviour
             GUILayout.Label($"최고 {fv.maxSpeedKmh:F0}km/h · {fc.Mode} · 드리프트 {(fv.driftEnabled ? "켬" : "끔")} · 짐 {fc.CargoLoadKg:F0}kg", sText);
             GUILayout.Space(4 * s);
         }
+        GUILayout.Label("UI 질감 (D-258) — 칠판·Tab 전표·말풍선", sLabel);
+        GUILayout.BeginHorizontal();
+        for (int i = 0; i < 3; i++)
+        {
+            var us = (DotScreenUI.UIStyle)i;
+            if (GUILayout.Button(DotScreenUI.StyleLabel(us), DotScreenUI.UiStyle == us ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetUIStyle(i);
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.Space(4 * s);
         GUILayout.Label(LastResult, sText);
 
         GUILayout.EndScrollView();

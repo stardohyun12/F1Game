@@ -1,0 +1,824 @@
+{
+  "models": [
+    {
+      "bounds_min": [
+        -0.05000000074505806,
+        -0.03500000014901161,
+        -0.0010000057518482208
+      ],
+      "bounds_max": [
+        0.05000000074505806,
+        0.03500000014901161,
+        0.0010000057518482208
+      ],
+      "dimensions": [
+        0.10000000149011612,
+        0.07000000029802322,
+        0.0020000115036964417
+      ],
+      "triangles": 44,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_address_label_v01.fbm\\label.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "address_label",
+      "max_bounds_error_m": 5.704350769519806e-09,
+      "dedicated_checks": {
+        "root_zero": true,
+        "TakeTool_single_renderer": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.26200002431869507,
+        -0.2619999945163727,
+        -4.2685218915039513e-08
+      ],
+      "bounds_max": [
+        0.26200002431869507,
+        0.26200005412101746,
+        0.3240000307559967
+      ],
+      "dimensions": [
+        0.5240000486373901,
+        0.5240000486373901,
+        0.3240000734412156
+      ],
+      "triangles": 108,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_l_v01.fbm\\kraft.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 9,
+      "id": "box_l",
+      "max_bounds_error_m": 4.2685218915039513e-08,
+      "dedicated_checks": {
+        "root_zero": true,
+        "four_independent_hinges": true,
+        "hinges_on_rim": true,
+        "hinge_rotates_leaf": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.16949999332427979,
+        -0.16949999332427979,
+        -2.7615055131491317e-08
+      ],
+      "bounds_max": [
+        0.16949999332427979,
+        0.16950002312660217,
+        0.17400003969669342
+      ],
+      "dimensions": [
+        0.33899998664855957,
+        0.33900001645088196,
+        0.17400006731174855
+      ],
+      "triangles": 108,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_m_v01.fbm\\kraft.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 9,
+      "id": "box_m",
+      "max_bounds_error_m": 2.9802322387695312e-08,
+      "dedicated_checks": {
+        "root_zero": true,
+        "four_independent_hinges": true,
+        "hinges_on_rim": true,
+        "hinge_rotates_leaf": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.1720000058412552,
+        -0.1720000058412552,
+        -2.802235954391108e-08
+      ],
+      "bounds_max": [
+        0.1720000058412552,
+        0.17200002074241638,
+        0.12400002777576447
+      ],
+      "dimensions": [
+        0.3440000116825104,
+        0.34400002658367157,
+        0.12400005579812401
+      ],
+      "triangles": 108,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_box_s_v01.fbm\\kraft.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 9,
+      "id": "box_s",
+      "max_bounds_error_m": 2.9802322387695312e-08,
+      "dedicated_checks": {
+        "root_zero": true,
+        "four_independent_hinges": true,
+        "hinges_on_rim": true,
+        "hinge_rotates_leaf": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.07999999821186066,
+        -0.08000002056360245,
+        -0.1600000113248825
+      ],
+      "bounds_max": [
+        0.07999999821186066,
+        0.08000002056360245,
+        0.1600000113248825
+      ],
+      "dimensions": [
+        0.1599999964237213,
+        0.1600000411272049,
+        0.320000022649765
+      ],
+      "triangles": 512,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_rgba.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_rgba.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_normal.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\bubble_roughness.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_roll_v01.fbm\\core.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "bubble_roll",
+      "max_bounds_error_m": 2.2351741790771484e-08,
+      "dedicated_checks": {
+        "root_zero": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.15000000596046448,
+        -0.30000001192092896,
+        -4.88762061934267e-08
+      ],
+      "bounds_max": [
+        0.15000000596046448,
+        0.30000001192092896,
+        0.007000000216066837
+      ],
+      "dimensions": [
+        0.30000001192092896,
+        0.6000000238418579,
+        0.007000049092273031
+      ],
+      "triangles": 144,
+      "nonmanifold": [
+        "FlexibleSheet_REFERENCE_ONLY"
+      ],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_sheet_v01.fbm\\bubble_rgba.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_sheet_v01.fbm\\bubble_rgba.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_sheet_v01.fbm\\bubble_normal.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_bubble_sheet_v01.fbm\\bubble_roughness.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "bubble_sheet",
+      "max_bounds_error_m": 4.88762061934267e-08,
+      "dedicated_checks": {
+        "root_zero": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.15000000596046448,
+        -0.15000000596046448,
+        -0.032500024884939194
+      ],
+      "bounds_max": [
+        0.15000000596046448,
+        0.15000000596046448,
+        0.032500021159648895
+      ],
+      "dimensions": [
+        0.30000001192092896,
+        0.30000001192092896,
+        0.06500004604458809
+      ],
+      "triangles": 1724,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\egg.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_egg_tray_v01.fbm\\pulp.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 31,
+      "id": "egg_tray",
+      "max_bounds_error_m": 2.60770320892334e-08,
+      "dedicated_checks": {
+        "root_zero": true,
+        "30_individual_eggs": true,
+        "inside_unchanged_collider": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.05000000074505806,
+        -0.03500000014901161,
+        -0.010000006295740604
+      ],
+      "bounds_max": [
+        0.05000000074505806,
+        0.03500000014901161,
+        0.010000006295740604
+      ],
+      "dimensions": [
+        0.10000000149011612,
+        0.07000000029802322,
+        0.02000001259148121
+      ],
+      "triangles": 220,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_label_stack_v01.fbm\\label.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "label_stack",
+      "max_bounds_error_m": 5.587935447692871e-09,
+      "dedicated_checks": {
+        "root_zero": true,
+        "TakeTool_single_renderer": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.4999999701976776,
+        -0.5,
+        -0.5
+      ],
+      "bounds_max": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "dimensions": [
+        0.9999999701976776,
+        1.0,
+        1.0
+      ],
+      "triangles": 224,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_newspaper_ball_a_v01.fbm\\paper.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "newspaper_ball_a",
+      "max_bounds_error_m": 0.0,
+      "dedicated_checks": {
+        "root_zero": true,
+        "within_unit_sphere": true,
+        "dynamic_flat_dimensions": true,
+        "dynamic_tight_dimensions": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.4999999701976776,
+        -0.5,
+        -0.5
+      ],
+      "bounds_max": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "dimensions": [
+        0.9999999701976776,
+        1.0,
+        1.0
+      ],
+      "triangles": 224,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_newspaper_ball_b_v01.fbm\\paper.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "newspaper_ball_b",
+      "max_bounds_error_m": 0.0,
+      "dedicated_checks": {
+        "root_zero": true,
+        "within_unit_sphere": true,
+        "dynamic_flat_dimensions": true,
+        "dynamic_tight_dimensions": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.15000000596046448,
+        -0.11000000685453415,
+        -0.03000001795589924
+      ],
+      "bounds_max": [
+        0.15000000596046448,
+        0.11000000685453415,
+        0.03000001795589924
+      ],
+      "dimensions": [
+        0.30000001192092896,
+        0.2200000137090683,
+        0.06000003591179848
+      ],
+      "triangles": 352,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_newspaper_stack_v01.fbm\\paper.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "newspaper_stack",
+      "max_bounds_error_m": 1.862645149230957e-08,
+      "dedicated_checks": {
+        "root_zero": true
+      },
+      "pass": true
+    },
+    {
+      "bounds_min": [
+        -0.05000000074505806,
+        -0.05000000447034836,
+        -0.012500008568167686
+      ],
+      "bounds_max": [
+        0.05000000074505806,
+        0.05000000447034836,
+        0.012500008568167686
+      ],
+      "dimensions": [
+        0.10000000149011612,
+        0.10000000894069672,
+        0.025000017136335373
+      ],
+      "triangles": 512,
+      "nonmanifold": [],
+      "negative_volume": [],
+      "missing_uv": [],
+      "textures": [
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_tape_roll_v01.fbm\\tape.png",
+          "exists": true
+        },
+        {
+          "path": "D:\\Github\\F1Game\\art\\source\\packing-materials\\packing_tape_roll_v01.fbm\\core.png",
+          "exists": true
+        }
+      ],
+      "mesh_count": 1,
+      "id": "tape_roll",
+      "max_bounds_error_m": 8.381903171539307e-09,
+      "dedicated_checks": {
+        "root_zero": true,
+        "TakeTool_single_renderer": true
+      },
+      "pass": true
+    }
+  ],
+  "adapters": [
+    {
+      "id": "address_label",
+      "unit_dimensions_unity": [
+        1.0,
+        1.0000001192092896,
+        1.0000001192092896
+      ],
+      "existing_root_scale": [
+        0.1,
+        0.002,
+        0.07
+      ],
+      "result_m": [
+        0.1,
+        0.002000000238418579,
+        0.07000000834465027
+      ],
+      "single_mesh": true,
+      "pass": true
+    },
+    {
+      "id": "bubble_roll",
+      "unit_dimensions_unity": [
+        1.0,
+        2.000000238418579,
+        1.0000003576278687
+      ],
+      "existing_root_scale": [
+        0.16,
+        0.16,
+        0.16
+      ],
+      "result_m": [
+        0.16,
+        0.32000003814697264,
+        0.16000005722045899
+      ],
+      "single_mesh": true,
+      "pass": true
+    },
+    {
+      "id": "label_stack",
+      "unit_dimensions_unity": [
+        1.0,
+        1.0000001192092896,
+        1.0000001192092896
+      ],
+      "existing_root_scale": [
+        0.1,
+        0.02,
+        0.07
+      ],
+      "result_m": [
+        0.1,
+        0.02000000238418579,
+        0.07000000834465027
+      ],
+      "single_mesh": true,
+      "pass": true
+    },
+    {
+      "id": "newspaper_stack",
+      "unit_dimensions_unity": [
+        1.0,
+        1.0000001192092896,
+        1.0000001192092896
+      ],
+      "existing_root_scale": [
+        0.3,
+        0.06,
+        0.22
+      ],
+      "result_m": [
+        0.3,
+        0.06000000715255737,
+        0.2200000262260437
+      ],
+      "single_mesh": true,
+      "pass": true
+    },
+    {
+      "id": "tape_roll",
+      "unit_dimensions_unity": [
+        1.0,
+        2.000000238418579,
+        1.0000003576278687
+      ],
+      "existing_root_scale": [
+        0.1,
+        0.0125,
+        0.1
+      ],
+      "result_m": [
+        0.1,
+        0.02500000298023224,
+        0.10000003576278688
+      ],
+      "single_mesh": true,
+      "pass": true
+    }
+  ],
+  "negative_controls": [
+    {
+      "id": "address_label",
+      "unadapted_double_scale_detected": true
+    },
+    {
+      "id": "box_l",
+      "deliberate_missing_flap_detected": true
+    },
+    {
+      "id": "box_m",
+      "deliberate_missing_flap_detected": true
+    },
+    {
+      "id": "box_s",
+      "deliberate_missing_flap_detected": true
+    },
+    {
+      "id": "bubble_roll",
+      "unadapted_double_scale_detected": true
+    },
+    {
+      "id": "egg_tray",
+      "egg_removed_detected": true
+    },
+    {
+      "id": "label_stack",
+      "unadapted_double_scale_detected": true
+    },
+    {
+      "id": "newspaper_stack",
+      "unadapted_double_scale_detected": true
+    },
+    {
+      "id": "tape_roll",
+      "unadapted_double_scale_detected": true
+    }
+  ],
+  "Unity_tested": false,
+  "all_pass": true
+}

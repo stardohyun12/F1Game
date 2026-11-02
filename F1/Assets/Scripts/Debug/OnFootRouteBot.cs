@@ -861,14 +861,38 @@ public class OnFootRouteBot : MonoBehaviour
     }
 
     /// <summary>UI(자막·안내·HUD) 까지 들어간 화면 캡처 — Shot() 은 카메라만 찍어서 화면 글이 안 나온다.</summary>
+    /// <summary>D-258 UI 비교: 이름이 여기 든 캡처는 같은 순간·같은 카메라로 지금/A/B 세 장(_now/_a/_b)을 더 찍는다. 비면 끔(기본).</summary>
+    public static string StyleTripleShots = "";
+
     IEnumerator ShotUI(string name)
     {
+        if (!string.IsNullOrEmpty(StyleTripleShots) && StyleTripleShots.Contains(name))
+        {
+            var keep = DotScreenUI.UiStyle;
+            if (dir.InTalk) yield return new WaitForSecondsRealtime(1.2f);   // 타자 효과가 다 찍힌 뒤 — 세 장 글자가 같게
+            string[] tag = { "now", "a", "b" };
+            for (int s = 0; s < 3; s++)
+            {
+                DotScreenUI.UiStyle = (DotScreenUI.UIStyle)s;
+                yield return new WaitForSecondsRealtime(0.35f);   // A 전표 올라오는 0.18초 + RT 한 바퀴
+                yield return new WaitForEndOfFrame();
+                var t3 = ScreenCapture.CaptureScreenshotAsTexture();
+                if (t3 != null) { File.WriteAllBytes(Path.Combine(evDir, name + "_" + tag[s] + ".png"), t3.EncodeToPNG()); Destroy(t3); }
+                var dui = FindFirstObjectByType<DotScreenUI>();
+                Line($"캡처 {name}_{tag[s]} {(dui != null ? dui.StyleState + " 보이는것=" + dui.Visible : "")}");
+            }
+            DotScreenUI.UiStyle = keep;
+            yield return null; yield return null;
+        }
         yield return new WaitForEndOfFrame();
         var tx = ScreenCapture.CaptureScreenshotAsTexture();
         if (tx != null)
         {
             File.WriteAllBytes(Path.Combine(evDir, name + ".png"), tx.EncodeToPNG());
-            Line($"캡처 {name} {tx.width}x{tx.height} 안내='{dir.Prompt}' 자막='{dir.Subtitle}'");
+            bool trunk = false;
+            foreach (var cvw in FindObjectsByType<CargoView>(FindObjectsSortMode.None))
+                if (cvw.isActiveAndEnabled && (!cvw.TryGetComponent<CanvasGroup>(out var g) || g.alpha > 0.01f)) trunk = true;
+            Line($"캡처 {name} {tx.width}x{tx.height} 안내='{dir.Prompt}' 자막='{dir.Subtitle}' TRUNKCAM={(trunk ? "보임" : "안보임")}");
             Destroy(tx);
         }
         else { Line($"캡처 {name} 실패(UI) — 카메라만"); yield return Shot(name); }

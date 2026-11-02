@@ -59,7 +59,19 @@ public class DepotOrderBoard : MonoBehaviour
         return true;
     }
 
-    public void SetHint(bool viewing) { if (hint != null) { hint.gameObject.SetActive(viewing); } }
+    /// <summary>칠판 글씨 캔버스(D-258 A안이 칠판 면에 인쇄할 때 읽는다).</summary>
+    public Canvas ChalkCanvas => canvas;
+    /// <summary>D-258 A/B: 키 안내 줄은 처음 볼 때 1회만(기본 false = 볼 때마다).</summary>
+    public static bool HintOnce;
+    static bool hintSeen;
+
+    public void SetHint(bool viewing)
+    {
+        if (hint == null) return;
+        if (viewing && HintOnce && hintSeen) viewing = false;
+        if (viewing) hintSeen = true;
+        hint.gameObject.SetActive(viewing);
+    }
 
     /// <summary>
     /// 보기 시점: 칠판 면 앞(법선 = transform.forward) 거리 d, 높이 = 칠판 가운데. d 는 세로 시야각에서 칠판 높이가 viewFill 이 되게.

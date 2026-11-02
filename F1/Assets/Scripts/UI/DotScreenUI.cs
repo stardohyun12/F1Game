@@ -401,6 +401,7 @@ public partial class DotScreenUI : MonoBehaviour
         DestUI(DestTarget(st), vis);
         if (director != null && st == OnFootDirector.Mode.OnFoot) MoneyUI(vis);
         if (director != null && st == OnFootDirector.Mode.Diary) DiaryUI(vis); else MorningUI(vis);
+        StyleLate();   // D-258 A/B 비교판(기본 Now = 아무것도 안 바꿈)
         Visible = vis.ToString().Trim();
     }
 
@@ -697,7 +698,7 @@ public partial class DotScreenUI : MonoBehaviour
         var rc = Services.Run as RunController;
         var job = rc != null ? rc.CurrentJob : null;
         Vector3 at = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
-        if (!SlipUI(job, mgr != null ? mgr.CurrentTarget : null, at, vis) && job != null && Time.unscaledTime - cartAt < slipHintSec) { Show(hintText, 8, 8); vis.Append("hint "); }
+        if (!SlipUI(job, mgr != null ? mgr.CurrentTarget : null, at, vis) && job != null && Time.unscaledTime - cartAt < slipHintSec && SlipHintAllowed()) { Show(hintText, 8, 8); MarkSlipHint(); vis.Append("hint "); }
     }
 
     /// <summary>
@@ -833,7 +834,7 @@ public partial class DotScreenUI : MonoBehaviour
     }
 
     /// <summary>이름이 HUD 로 안 끝나지만 주행 화면에 뜨던 것.</summary>
-    static readonly HashSet<string> LegacyExtra = new HashSet<string> { "DirectionArrow" };
+    static readonly HashSet<string> LegacyExtra = new HashSet<string> { "DirectionArrow", "CargoView" };   // CargoView(TRUNK CAM) — 이름이 HUD 로 안 끝나 주행 중 다시 보였다(D-258 과제)
 
     void RestoreLegacy()
     {
