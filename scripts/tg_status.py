@@ -1,0 +1,70 @@
+"""텔레그램 스레드에 '지금 상태' 메시지 하나를 고정해 두고 1분마다 고쳐 씀(D-254: 일하는지 안 하는지 보이게).
+사용: python -X utf8 scripts/tg_status.py  (무한 루프, 창 없이 start_queues.ps1 이 띄움)"""
+import os, json, time, glob, pathlib, re, urllib.request, datetime as dt
+root = pathlib.Path("D:/Github/F1Game"); os.chdir(root)
+env = pathlib.Path(os.environ.get("LOCALAPPDATA", r"C:\Users\rtx40\AppData\Local")) / "hermes" / ".env"
+tok = next(l.split("=", 1)[1].strip().strip('"') for l in env.read_text(encoding="utf-8").splitlines() if l.startswith("TELEGRAM_BOT_TOKEN="))
+CHAT, THREAD = "7449275102", 5864
+API = f"https://api.telegram.org/bot{tok}/"
+IDF = root / ".claude/team/tg_status_msg.txt"
+pidf = root / ".claude/team/tg_status.pid"; pidf.write_text(str(os.getpid()))
+
+def call(m, **kw):
+    r = urllib.request.Request(API + m, data=json.dumps(kw).encode(), headers={"Content-Type": "application/json"})
+    return json.loads(urllib.request.urlopen(r, timeout=30).read())
+
+def mins(t): return int((time.time() - t) / 60)
+
+ROLES = [("editor", "programmer", "본 에디터"), ("studio", "artlive", "스튜디오"), ("feature", "feature", "기능(사본)"), (None, "research", "리서치")]
+def status():
+    now = dt.datetime.now().strftime("%H:%M")
+    out = [f"📋 PitCrew 지금 상태 ({now} 갱신)"]
+    busy = False
+    for line, role, label in ROLES:
+        st = (root / f".claude/team/sessions/{role}.state")
+        s = st.read_text(encoding="utf-8", errors="ignore").strip() if st.exists() else "idle"
+        live = root / f".ai_logs/team/{role}.live.log"
+        if s.startswith("working"):
+            busy = True
+            title = re.sub(r"^working \S+ ", "", s)
+            title = re.sub(r"^(\[[^\]]*\])+", "", title).lstrip("[")[:60]
+            last = ""
+            if live.exists():
+                m = mins(live.stat().st_mtime)
+                tail = live.read_bytes()[-1500:].decode("utf-8", "ignore").strip().splitlines()
+                act = re.sub(r"^\[\S+\] \S+\s*\|\s*", "", tail[-1])[:70] if tail else ""
+                flag = "🟢" if m < 5 else ("🟡" if m < 20 else "🔴 멈춘 듯")
+                last = f"\n   {flag} 마지막 움직임 {m}분 전: {act}"
+            started = s.split()[1] if len(s.split()) > 1 else "?"
+            out.append(f"▶ {label}: {title} (시작 {started}){last}")
+        if line:
+            nxt = sorted(glob.glob(f".claude/team/queue/{line}/*.task"))
+            if nxt: out.append(f"   다음 대기: " + ", ".join(pathlib.Path(n).stem for n in nxt[:3]))
+    if not busy: out.append("⏸ 지금 도는 작업 없음 — PD 차례 또는 도현 답 대기")
+    ql = root / ".ai_logs/team/queue.log"
+    if ql.exists():
+        last3 = ql.read_text(encoding="utf-8", errors="ignore").strip().splitlines()[-3:]
+        out.append("최근: " + " / ".join(re.sub(r"^\[\S+ ", "[", l)[:70] for l in last3))
+    return "\n".join(out)
+
+prev = ""
+while True:
+    try:
+        txt = status()
+        if txt != prev:
+            mid = IDF.read_text().strip() if IDF.exists() else ""
+            ok = False
+            if mid:
+                try:
+                    call("editMessageText", chat_id=CHAT, message_id=int(mid), text=txt); ok = True
+                except Exception as e:
+                    ok = "not modified" in str(getattr(e, "read", lambda: b"")()) 
+            if not ok:
+                r = call("sendMessage", chat_id=CHAT, message_thread_id=THREAD, text=txt, disable_notification=True)
+                mid = str(r["result"]["message_id"]); IDF.write_text(mid)
+                try: call("pinChatMessage", chat_id=CHAT, message_id=int(mid), disable_notification=True)
+                except Exception: pass
+            prev = txt
+    except Exception as e:
+        (root / ".ai_logs/team/tg_status.err").write_text(f"{dt.datetime.now()} {e}")
+    time.sleep(60)
