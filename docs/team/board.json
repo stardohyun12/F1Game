@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T02:05:51+09:00",
+ "updated": "2026-11-03T02:14:17+09:00",
  "goal": {
   "name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개",
   "deadline": "2026-11-05"
@@ -58,12 +58,12 @@
   {
    "id": "C-001",
    "title": "수리 1개 — 부딪혀 상한 카트를 정비소에서 고친다",
-   "stage": "greybox",
-   "owner": "build",
+   "stage": "verify",
+   "owner": "verify",
    "fails": 1,
-   "updated": "2026-11-03T02:05:50+09:00",
+   "updated": "2026-11-03T02:14:17+09:00",
    "dir": "docs/team/cards/C-001-repair-one",
-   "machine": "FAIL",
+   "machine": "PASS",
    "clip": "docs/team/cards/C-001-repair-one/evidence/after/clip.mp4",
    "strip": "docs/team/cards/C-001-repair-one/evidence/after/strip.png"
   }
