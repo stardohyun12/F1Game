@@ -134,10 +134,14 @@ if [ "$HOLD_LOCK" = 1 ] || [ "$ROLE" = "artlive" ]; then
   if [ "$CF" = "BROKEN" ]; then echo "COMPILE-BROKEN: 과제가 컴파일 에러를 남김 — 바로 고치거나 되돌릴 것"; printf '\n## 하네스: 컴파일 깨진 채 끝남 (COMPILE-BROKEN)\n' >> "$REPORT"; fi
 fi
 # 하네스(10/31): 비용 장부 — 과제마다 한 줄. result 칸은 PD 가 pass/redo/drop 으로 채움(python scripts/ledger.py mark)
-python -X utf8 - "$RESULT" "$ROLE" "$STAMP" "$TASK" >> .claude/team/ledger.jsonl 2>/dev/null <<'PYEOF'
+python -X utf8 - "$RESULT" "$ROLE" "$STAMP" "$TASK" "$REPORT" >> .claude/team/ledger.jsonl 2>/dev/null <<'PYEOF'
 import json,sys,re
 try: d=json.load(open(sys.argv[1],encoding="utf-8"))
 except Exception: d={}
-t=sys.argv[4]; m=re.search(r"\]\[([^\]]+)\]",t) or re.search(r"\[([^\]]+)\]",t)
-print(json.dumps({"stamp":sys.argv[3],"role":sys.argv[2],"title":(m.group(1) if m else t[:60]),"model":"opus" if "[OPUS]" in t else "cfg","cost":d.get("cost_usd"),"ok":d.get("ok"),"result":""},ensure_ascii=False))
+t=sys.argv[4]; gs=[g for g in re.findall(r"\[([^\]]+)\]",(t.splitlines() or [""])[0]) if g not in ("EDITOR","OPUS","NOLIMIT","research","pd")]
+m=None
+try: rep=open(sys.argv[5],encoding="utf-8",errors="ignore").read()
+except Exception: rep=""
+bad=("## 하네스 자동 기록" in rep) or ("COMPILE-BROKEN" in rep)  # D-264: 보류는 ok=False
+print(json.dumps({"stamp":sys.argv[3],"role":sys.argv[2],"title":(gs[0][:80] if gs else t[:60]),"model":"opus" if "[OPUS]" in t else "cfg","cost":d.get("cost_usd"),"ok":(False if bad else d.get("ok")),"result":""},ensure_ascii=False))
 PYEOF

@@ -43,7 +43,8 @@ while true; do
     log "보류 $NAME ($(echo "$OUT" | grep -oE 'COMPILE-BROKEN|FAILED-NOREPORT|ok=False' | head -1)) — 커밋 안 함"
     /c/Users/rtx40/AppData/Local/Programs/Python/Python313/python.exe -X utf8 scripts/notify_done.py $LINE "$NAME" hold >/dev/null 2>&1
     # D-223 자동 승격: Sonnet 과제가 실패하면 같은 과제를 [OPUS] 로 한 번 다시(이미 OPUS 면 hold)
-    if ! grep -q '\[OPUS\]' "$Q/done/$NAME.task"; then
+    CHG=$(git status --porcelain -- F1/Assets docs/qa/evidence 2>/dev/null | grep -vcE 'UI/Fonts|LofiSurface')   # D-264: 일을 해 놓고 보고서만 못 쓴 경우는 승격 안 함
+    if ! grep -q '\[OPUS\]' "$Q/done/$NAME.task" && [ "${CHG:-0}" -eq 0 ]; then
       { printf '[OPUS]'; cat "$Q/done/$NAME.task"; printf '
 이어 하기(자동 승격): Sonnet 시도가 실패함 — 직전 보고서 docs/team/reports/ 의 최신 %s 보고서와 git status 를 먼저 보고 이어서.
 ' "$ROLE"; } > "$Q/00-$NAME-opus.task"

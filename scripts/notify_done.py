@@ -11,7 +11,8 @@ title = ""
 if task.exists():
     m = re.search(r"\]\[?([^\[\]]{4,80})\]", task.read_text(encoding="utf-8", errors="ignore").splitlines()[0] + "]")
     first = task.read_text(encoding="utf-8", errors="ignore").splitlines()[0]
-    title = re.sub(r"^(\[[^\]]*\])+", "", first).split("]")[0][:80] or name
+    gs = [g for g in re.findall(r"\[([^\]]+)\]", first) if g not in ("EDITOR", "OPUS", "NOLIMIT", "research", "pd")]
+    title = (gs[0] if gs else name)[:80]
 summ = ""
 if out.exists():
     t = out.read_text(encoding="utf-8", errors="ignore")
@@ -31,10 +32,11 @@ head = f"✅ 끝남 {commit} — {title}" if status == "ok" else f"⚠️ 보류
 msg = f"{head}\n\n{summ}{tail}"
 subprocess.run([sys.executable, "-X", "utf8", str(root / "scripts/tg_notify.py"), msg] + ([img] if img else []))
 # D-256 도현이 한 번에 확인: 끝난 과제를 묶음 문서에 쌓음(제목·커밋·요약·그림·Play 순서는 보고서에)
-import datetime as _dt
-rv = root / "docs/review/BATCH.md"; rv.parent.mkdir(parents=True, exist_ok=True)
+# D-264 BATCH 한 장: 표 한 줄(그림 1장 + 첫 요약 한 줄 + 판정 칸)
+rv = root / "docs/review/BATCH.md"
 rel = (pathlib.Path(img).relative_to(root).as_posix() if img else "")
+one = (summ.splitlines() or [""])[0][:120].replace("|", "/")
 with open(rv, "a", encoding="utf-8") as f:
-    nl = chr(10)
-    head2 = f"## {_dt.datetime.now():%m/%d %H:%M} " + ("✅" if status == "ok" else "⚠️ 보류") + f" {title} ({commit})"
-    f.write(nl + head2 + nl + summ + nl + ((nl + "![](../../" + rel + ")" + nl) if rel else ""))
+    pic = ("![](../../" + rel + ")") if rel else "(그림 없음)"
+    mark = "⬜" if status == "ok" else "⚠️ 보류"
+    f.write(f"| + | {title} ({commit}) | {pic} | {one} | {mark} |" + chr(10))

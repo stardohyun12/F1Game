@@ -32,3 +32,6 @@ foreach ($l in "editor","studio","feature") {
     }
   }
 }
+
+# 회고 개선 3(D-264): 도현 메시지 무응답·게이트웨이 멈춤 감시
+if ($py) { & $py -X utf8 scripts\check_unanswered.py | Out-Null }
