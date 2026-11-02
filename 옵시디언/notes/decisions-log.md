@@ -1865,3 +1865,7 @@ Unity 실측: 후처리+낮 무드(v2)만으론 목표의 3할, **구역별 팔�
 ## D-268 (11/02 23:1x) GitHub 로그인 창
 도현 원문: "이건 왜 뜨는거지" (Git for Windows Username for github.com 창)
 - 원인: 창 없는 리서치 실행의 git push 가 gh 로그인 정보를 한 번 못 받아 로그인 창을 띄움. 고침: 저장소 core.askPass=true(창 대신 바로 실패) + 백그라운드 스크립트 GIT_TERMINAL_PROMPT=0. 로그인 자체는 정상(gh stardohyun12).
+
+## D-269 (11/02 23:2x) 손에 든 종이
+도현 원문: "A"
+- 공용 HeldPaper(Firewatch 지도 동작) + 보관소 칠판 쪽지 = 전표. queue editor 55-held-paper[OPUS] (버그 묶음 뒤).
