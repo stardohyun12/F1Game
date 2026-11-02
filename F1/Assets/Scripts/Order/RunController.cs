@@ -393,6 +393,8 @@ public class RunController : MonoBehaviour, IRunController
         // D-119: 주문판·포장(timeScale 0) 에서도 시계가 돈다. 0 이 돼도 여기선 끝내지 않고(UI 꼬임 방지) 출발 즉시 시간 초과.
         if (ClockRunning && !RunActive && (stage == RunStage.Board || stage == RunStage.Routing || stage == RunStage.Packing))
         {
+            // D-250 ①: 포장 중엔 시계를 멈춘다(D-238 포장 타이머 없음) — 포장에 오래 머물러도 출발 즉시 시간 초과가 되지 않게.
+            if (stage == RunStage.Packing && PitCrew.Packing.PackingScreen.HideLegacyReadouts) return;
             Elapsed += Time.unscaledDeltaTime;
             return;
         }

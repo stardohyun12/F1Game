@@ -80,6 +80,8 @@ public class CountdownHUD : MonoBehaviour
         bool show = controller != null && (controller.CurrentStage == RunStage.Driving
             || (controller.ClockRunning && (controller.CurrentStage == RunStage.Board
                 || controller.CurrentStage == RunStage.Routing || controller.CurrentStage == RunStage.Packing)));
+        // D-250 ①: 포장 중엔 시계를 숨긴다(포장 타이머 없음, D-238).
+        if (show && controller.CurrentStage == RunStage.Packing && PitCrew.Packing.PackingScreen.HideLegacyReadouts) show = false;
         if (!show) { group.alpha = 0f; return; }
         float remaining = controller.TimeRemaining;
         if (remaining < 0f) { group.alpha = 0f; return; }

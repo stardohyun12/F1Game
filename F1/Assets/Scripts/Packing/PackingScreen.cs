@@ -310,6 +310,23 @@ namespace PitCrew.Packing
 
             EnsureEventSystem();
             BuildSidePanels(panelRoot.transform);
+            ApplyLegacyReadoutsHidden();
+        }
+
+        /// <summary>
+        /// D-250 ①: 옛 포장 화면의 시계·₩ 비용·면별 % 막대·등급 도장을 끈다(D-238 "포장 타이머 없음").
+        /// 지우지 않고 가리기만 — false 로 두면 옛 화면이 그대로 돌아온다. 같은 스위치가
+        /// 포장 단계의 런 시계 정지(RunController)와 CountdownHUD 숨김도 같이 켠다.
+        /// </summary>
+        public static bool HideLegacyReadouts = true;
+
+        void ApplyLegacyReadoutsHidden()
+        {
+            if (!HideLegacyReadouts) return;
+            if (rightPanel != null) rightPanel.SetActive(false);   // 포장 비용 + 합계 + 면별 보호 막대 + 예상 등급
+            if (timeLeftText != null) timeLeftText.gameObject.SetActive(false);
+            for (int i = 0; i < cardCostText.Length; i++)           // 재료 카드의 '다 감으면 약 ₩N / 보상의 N%'
+                if (cardCostText[i] != null) cardCostText[i].gameObject.SetActive(false);
         }
 
         static void EnsureEventSystem()
@@ -1363,9 +1380,12 @@ namespace PitCrew.Packing
 
             char grade = ComputeGrade(out float score);
             Debug.Log($"[PackingScreen] 포장 완료 도장 {grade} (가중 흡수 {score * 100f:F0}%)");
-            var stamp = BuildStamp(grade, score);
-            PackingSfx.PlayStamp();
-            if (stamp != null) StartCoroutine(AnimateStamp(stamp));
+            if (!HideLegacyReadouts)   // D-250 ①: 등급 도장은 끈다(전환 지연만 유지)
+            {
+                var stamp = BuildStamp(grade, score);
+                PackingSfx.PlayStamp();
+                if (stamp != null) StartCoroutine(AnimateStamp(stamp));
+            }
 
             yield return new WaitForSecondsRealtime(kStampLeadSec);
             stamping = false;

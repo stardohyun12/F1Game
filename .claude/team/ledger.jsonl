@@ -29,3 +29,5 @@
 {"stamp": "20261102-0247", "role": "programmer", "title": "디버그 창 — 장소 옮기기·낚시·시간대 바로 시험 (D-248 ①)", "model": "cfg", "cost": 3.7953, "ok": true, "result": ""}
 {"stamp": "20261102-0315", "role": "programmer", "title": "기본 점프 (D-248 ②)", "model": "cfg", "cost": 3.0883, "ok": true, "result": ""}
 {"stamp": "20261102-0348", "role": "programmer", "title": "OPUS", "model": "opus", "cost": 5.4718, "ok": true, "result": ""}
+{"stamp": "20261102-0500", "role": "research", "title": "OPUS", "model": "opus", "cost": 2.1079, "ok": true, "result": ""}
+{"stamp": "20261102-1106", "role": "programmer", "title": "옛 포장 화면 시계·비용표 끄기 (D-250 ①)", "model": "cfg", "cost": 0.4192, "ok": true, "result": ""}
