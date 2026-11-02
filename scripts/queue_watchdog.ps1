@@ -7,21 +7,21 @@ if ($restarted) {
   Add-Content -Encoding utf8 .ai_logs\team\queue.log ("[{0}] watchdog: 대기열 재기동 {1}" -f (Get-Date -Format 'MM/dd HH:mm'), ($restarted -join ', '))
   if ($py) { & $py -X utf8 scripts\tg_notify.py ("🔁 대기열이 죽어 있어서 다시 띄움: " + ($restarted -join ', ')) | Out-Null }
 }
-$st = Get-Content .claude\team\sessions\programmer.state -ErrorAction SilentlyContinue
-$log = Get-Item .ai_logs\team\programmer.live.log -ErrorAction SilentlyContinue
+$st = Get-Content .claude\team\sessions\build.state -ErrorAction SilentlyContinue
+$log = Get-Item .ai_logs\team\build.live.log -ErrorAction SilentlyContinue
 if ($st -match '^working' -and $log -and ((Get-Date) - $log.LastWriteTime).TotalMinutes -gt 20) {
   $flag = ".ai_logs\team\stall.flag"
   if (-not (Test-Path $flag) -or (Get-Item $flag).LastWriteTime -lt $log.LastWriteTime) {
     Set-Content $flag "x"
-    if ($py) { & $py -X utf8 scripts\tg_notify.py ("⚠️ 팀원(programmer) 로그가 " + [int]((Get-Date) - $log.LastWriteTime).TotalMinutes + "분째 멈춤 — PD 확인 필요") | Out-Null }
+    if ($py) { & $py -X utf8 scripts\tg_notify.py ("⚠️ 구현 일꾼(build) 로그가 " + [int]((Get-Date) - $log.LastWriteTime).TotalMinutes + "분째 멈춤 — PD 확인 필요") | Out-Null }
   }
 }
 # 줄이 비면 backlog 에서 다음 과제를 자동으로 넣음(D-255: 중간에 끊기지 않게). backlog = PD 가 미리 승인된 결정만 넣는 곳.
-foreach ($l in "editor","studio","feature") {
+foreach ($l in "editor","studio","verify","research") {
   $q = ".claude\team\queue\$l"
   if (-not (Test-Path "$q\backlog")) { continue }
   $pending = Get-ChildItem "$q\*.task" -ErrorAction SilentlyContinue
-  $role = @{editor="programmer";studio="artlive";feature="feature"}[$l]
+  $role = @{editor="build";studio="art";verify="verify";research="research"}[$l]   # 일꾼 5개(2026-11-03)
   $st = Get-Content ".claude\team\sessions\$role.state" -ErrorAction SilentlyContinue
   if (-not $pending -and -not ($st -match '^working')) {
     # D-264 회고 개선 6: BATCH 판정 대기(⬜)가 5개 넘으면 그림 과제는 안 넣고 [NOPIC](그림 없는 일)만

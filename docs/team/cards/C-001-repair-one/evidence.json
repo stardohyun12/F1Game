@@ -1,0 +1,23 @@
+{
+ "before": {
+  "frame_start": 1070,
+  "frame_end": 1120,
+  "unique_frames": 50,
+  "seconds": 2.01,
+  "captured": 25,
+  "warnings": 0,
+  "errors": 0,
+  "playing_at_end": true,
+  "source": "LowResRenderTest.Present",
+  "samples": [],
+  "frames_advanced": 50,
+  "frames_ok": true,
+  "log_ok": true,
+  "console_errors_after": "[]",
+  "clip": null,
+  "strip": null,
+  "shot": "docs/team/cards/C-001-repair-one/evidence/before/shot.png",
+  "made": "2026-11-03 01:15"
+ },
+ "machine": "-"
+}

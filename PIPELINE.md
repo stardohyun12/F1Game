@@ -1,5 +1,9 @@
 # PIPELINE — PitCrew(F1Game) AionUi 팀 운영 규약
 
+> **2026-11-03 팀 재편(D-271, 도현 진행 신호) — 팀 구성·넘김은 `docs/team/FLOW.md` 가 이 문서 §1·§3 을 대체한다.**
+> 일꾼 5개(PD·구현 build·검증 verify·아트 art·리서치 research), 단계 기획→그레이박스→검증→도현 한 판→아트→통합→검증→완료(+막힘),
+> 카드 양식 `docs/team/CARD_TEMPLATE.md`, 증거 묶음 `tools/evidence/bundle.sh`, 넘김 기록 `docs/team/handoffs.jsonl`. 카드에 안 묶인 아트·리서치는 하지 않는다.
+
 > AionUi 팀 모드로 이 저장소에서 일하는 모든 팀원(Claude·Codex)이 작업 전에 읽는 문서.
 > 우선순위: `CLAUDE.md`와 `project_rules/*`가 최상위. 이 문서는 그것들을 "팀으로 어떻게 나눠 수행하는가"로 번역한다.
 > AionUi 어시스턴트 규칙(범용)과 충돌하면 **이 문서가 이긴다.**

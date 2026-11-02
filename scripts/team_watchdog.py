@@ -23,8 +23,8 @@ from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ROLES = ["programmer", "qa", "art", "artui", "research"]
-CODEX = {"art", "artui"}
+ROLES = ["build", "verify", "art", "research"]   # 일꾼 5개(2026-11-03 팀 재편, PD 는 대화)
+CODEX = {"art"}
 RETRY = ROOT / ".claude/team/watchdog.json"   # 과제별 자동 재시작 횟수
 NOWIN = 0x08000000                             # CREATE_NO_WINDOW
 FLAGS = 0x00000200 | NOWIN                     # + CREATE_NEW_PROCESS_GROUP (호스트가 죽여도 같이 안 죽게)

@@ -1,5 +1,8 @@
 # PitCrew 상주 팀 (Hermes 하이브리드, 2026-10-23 도현 결정)
 
+> **2026-11-03 팀 재편(D-271): 일꾼 5개 — PD · build(구현) · verify(블라인드 검증) · art · research. 규칙은 `docs/team/FLOW.md`.**
+> 역할 프롬프트 `roles/{pd,build,verify,art,research}.md`, 옛 10개는 `roles/archive/2026-11-03/`. 아래 표는 옛 기록.
+
 AionUi 팀 모드 대신, **PD(Hermes 대화)** + **상주 팀원(Claude Code 세션, 역할별로 이어짐)**.
 
 | 역할 | 누구 | 하는 일 | 결정권 |

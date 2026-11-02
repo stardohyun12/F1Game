@@ -1,0 +1,72 @@
+{
+ "updated": "2026-11-03T01:24:10+09:00",
+ "goal": {
+  "name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개",
+  "deadline": "2026-11-05"
+ },
+ "stages": [
+  {
+   "id": "plan",
+   "label": "기획"
+  },
+  {
+   "id": "research",
+   "label": "리서치"
+  },
+  {
+   "id": "greybox",
+   "label": "그레이박스"
+  },
+  {
+   "id": "verify",
+   "label": "검증"
+  },
+  {
+   "id": "dohyun",
+   "label": "도현 한 판"
+  },
+  {
+   "id": "art",
+   "label": "아트"
+  },
+  {
+   "id": "integrate",
+   "label": "통합"
+  },
+  {
+   "id": "final_verify",
+   "label": "검증(통합)"
+  },
+  {
+   "id": "done",
+   "label": "완료"
+  },
+  {
+   "id": "blocked",
+   "label": "막힘"
+  }
+ ],
+ "workers": {
+  "pd": "PD (프로듀서)",
+  "build": "구현",
+  "verify": "검증 (블라인드)",
+  "art": "아트",
+  "research": "리서치",
+  "dohyun": "도현 (디렉터)"
+ },
+ "cards": [
+  {
+   "id": "C-001",
+   "title": "수리 1개 — 부딪혀 상한 카트를 정비소에서 고친다",
+   "stage": "greybox",
+   "owner": "build",
+   "fails": 0,
+   "updated": "2026-11-03T01:24:10+09:00",
+   "dir": "docs/team/cards/C-001-repair-one",
+   "machine": "-",
+   "clip": null,
+   "strip": null
+  }
+ ],
+ "dohyun_waiting": []
+}

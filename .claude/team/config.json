@@ -1,19 +1,24 @@
 {
- "programmer": {
+ "build": {
   "model": "sonnet",
   "effort": "high",
   "budget": 15.0,
   "turns": 0
  },
- "qa": {
+ "verify": {
   "model": "sonnet",
   "effort": "",
-  "budget": 5.0,
-  "turns": 80
+  "budget": 3.0,
+  "turns": 40
  },
  "art": {
+  "engine": "codex",
   "model": "gpt-6-astra",
-  "effort": "high"
+  "effort": "high",
+  "claude_model": "sonnet",
+  "claude_effort": "high",
+  "claude_budget": 10.0,
+  "claude_turns": 0
  },
  "research": {
   "model": "sonnet",
@@ -21,38 +26,57 @@
   "budget": 4,
   "turns": 60
  },
- "artui": {
-  "model": "gpt-6-astra",
-  "effort": "medium"
+ "_archive_2026-11-03": {
+  "programmer": {
+   "model": "sonnet",
+   "effort": "high",
+   "budget": 15.0,
+   "turns": 0
+  },
+  "qa": {
+   "model": "sonnet",
+   "effort": "",
+   "budget": 5.0,
+   "turns": 80
+  },
+  "art": {
+   "model": "gpt-6-astra",
+   "effort": "high"
+  },
+  "artui": {
+   "model": "gpt-6-astra",
+   "effort": "medium"
+  },
+  "art2": {
+   "model": "sonnet",
+   "effort": "high",
+   "budget": 5.0,
+   "turns": 60
+  },
+  "mapgen": {
+   "model": "sonnet",
+   "effort": "",
+   "budget": 5.0,
+   "turns": 80
+  },
+  "artlive": {
+   "model": "sonnet",
+   "effort": "high",
+   "budget": 10.0,
+   "turns": 0
+  },
+  "mapshot": {
+   "model": "sonnet",
+   "effort": "high",
+   "budget": 8.0,
+   "turns": 0
+  },
+  "feature": {
+   "model": "sonnet",
+   "effort": "high",
+   "budget": 15.0,
+   "turns": 0
+  }
  },
- "art2": {
-  "model": "sonnet",
-  "effort": "high",
-  "budget": 5.0,
-  "turns": 60
- },
- "mapgen": {
-  "model": "sonnet",
-  "effort": "",
-  "budget": 5.0,
-  "turns": 80
- },
- "artlive": {
-  "model": "sonnet",
-  "effort": "high",
-  "budget": 10.0,
-  "turns": 0
- },
- "mapshot": {
-  "model": "sonnet",
-  "effort": "high",
-  "budget": 8.0,
-  "turns": 0
- },
- "feature": {
-  "model": "sonnet",
-  "effort": "high",
-  "budget": 15.0,
-  "turns": 0
- }
+ "_note": "일꾼 5개(2026-11-03, docs/team/FLOW.md): pd(Hermes)·build·verify·art·research. art.engine = codex|claude. 옛 역할 값은 _archive_2026-11-03 (되돌릴 때 위로 복사)."
 }

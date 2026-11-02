@@ -1,0 +1,39 @@
+{
+ "version": "2026-11-03",
+ "decision": "도현 진행 신호 2026-11-03 (D-271)",
+ "goal": {"name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개", "deadline": "2026-11-05"},
+ "workers": {
+  "pd":       {"label": "PD (프로듀서)", "who": "Hermes 대화", "one_card": false, "merges": []},
+  "build":    {"label": "구현", "who": "Claude Code", "one_card": true, "merges": ["programmer", "feature", "mapgen"], "line": "editor"},
+  "verify":   {"label": "검증 (블라인드)", "who": "Claude Code", "one_card": true, "merges": ["qa"], "line": "verify"},
+  "art":      {"label": "아트", "who": "config.json art.engine (codex|claude)", "one_card": true, "merges": ["art", "art2", "artui", "artlive", "mapshot"], "line": "art"},
+  "research": {"label": "리서치", "who": "Claude Code + 웹", "one_card": true, "merges": ["research"], "line": "research"},
+  "dohyun":   {"label": "도현 (디렉터)", "who": "사람", "one_card": false, "merges": []}
+ },
+ "stages": [
+  {"id": "plan",         "label": "기획",        "owner": "pd"},
+  {"id": "research",     "label": "리서치",      "owner": "research", "optional": true},
+  {"id": "greybox",      "label": "그레이박스",  "owner": "build"},
+  {"id": "verify",       "label": "검증",        "owner": "verify"},
+  {"id": "dohyun",       "label": "도현 한 판",  "owner": "dohyun"},
+  {"id": "art",          "label": "아트",        "owner": "art", "optional": true},
+  {"id": "integrate",    "label": "통합",        "owner": "build"},
+  {"id": "final_verify", "label": "검증(통합)",  "owner": "verify"},
+  {"id": "done",         "label": "완료",        "owner": null},
+  {"id": "blocked",      "label": "막힘",        "owner": "pd"}
+ ],
+ "transitions": {
+  "plan":         ["research", "greybox"],
+  "research":     ["plan", "greybox"],
+  "greybox":      ["verify"],
+  "verify":       ["dohyun", "greybox"],
+  "dohyun":       ["art", "integrate", "greybox", "done"],
+  "art":          ["integrate"],
+  "integrate":    ["final_verify"],
+  "final_verify": ["done", "integrate"],
+  "done":         [],
+  "blocked":      ["plan", "research", "greybox", "verify", "dohyun", "art", "integrate", "final_verify", "done"]
+ },
+ "fail_limit": 3,
+ "dohyun_queue_max": 3
+}
