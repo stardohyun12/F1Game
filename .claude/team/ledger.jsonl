@@ -32,3 +32,4 @@
 {"stamp": "20261102-0500", "role": "research", "title": "OPUS", "model": "opus", "cost": 2.1079, "ok": true, "result": ""}
 {"stamp": "20261102-1106", "role": "programmer", "title": "옛 포장 화면 시계·비용표 끄기 (D-250 ①)", "model": "cfg", "cost": 0.4192, "ok": true, "result": ""}
 {"stamp": "20261102-1153", "role": "programmer", "title": "OPUS", "model": "opus", "cost": 0.4192, "ok": true, "result": ""}
+{"stamp": "20261102-1213", "role": "programmer", "title": "25 검증만 — 옛 포장 화면 시계·비용표 끄기 (D-250 ① 확인)", "model": "cfg", "cost": 0.4192, "ok": true, "result": ""}
