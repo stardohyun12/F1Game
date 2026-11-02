@@ -27,7 +27,9 @@ def status():
         if s.startswith("working"):
             busy = True
             title = re.sub(r"^working \S+ ", "", s)
-            title = re.sub(r"^(\[[^\]]*\])+", "", title).lstrip("[")[:60]
+            full = title
+            groups = re.findall(r"\[([^\]]*)\]", title)
+            title = ([g for g in groups if g not in ("EDITOR", "OPUS", "research", "pd", "NOLIMIT")] or [title])[0][:60]
             last = ""
             if live.exists():
                 m = mins(live.stat().st_mtime)
@@ -36,11 +38,43 @@ def status():
                 flag = "🟢" if m < 5 else ("🟡" if m < 20 else "🔴 멈춘 듯")
                 last = f"\n   {flag} 마지막 움직임 {m}분 전: {act}"
             started = s.split()[1] if len(s.split()) > 1 else "?"
-            out.append(f"▶ {label}: {title} (시작 {started}){last}")
+            prog = ""
+            try:
+                h, mi = map(int, started.split(":")); n = dt.datetime.now()
+                el = (n.hour * 60 + n.minute - h * 60 - mi) % 1440
+                box = 60
+                tk = ""
+                for fp in glob.glob(f".claude/team/queue/{line}/done/*.task") if line else []:
+                    head = open(fp, encoding="utf-8", errors="ignore").read(600)
+                    if head[:30] == full[:30]: tk = head
+                mm = re.search(r"(\d+)분 (넘으면|안)", tk)
+                if mm: box = int(mm.group(1))
+                pct = min(99, int(el * 100 / box))
+                bar = "■" * (pct // 10) + "□" * (10 - pct // 10)
+                rep = sorted(glob.glob(f"docs/team/reports/{role}-*.md"), key=os.path.getmtime)
+                secs = ""
+                if rep:
+                    t = open(rep[-1], encoding="utf-8", errors="ignore").read()
+                    parts = t.split(chr(10) + "## ")[1:]
+                    filled = sum(1 for x in parts if len(x.strip().splitlines()) > 1 and "작성 중" not in x)
+                    secs = f" · 보고서 {filled}/{max(4, len(parts))}절"
+                prog = chr(10) + f"   진행 {bar} {el}분/{box}분 시간상자{secs}"
+            except Exception:
+                pass
+            out.append(f"▶ {label}: {title} (시작 {started}){prog}{last}")
         if line:
             nxt = sorted(glob.glob(f".claude/team/queue/{line}/*.task"))
             if nxt: out.append(f"   다음 대기: " + ", ".join(pathlib.Path(n).stem for n in nxt[:3]))
     if not busy: out.append("⏸ 지금 도는 작업 없음 — PD 차례 또는 도현 답 대기")
+    # 오늘 전체 진행: 오늘 끝난 과제 수 / (끝난 + 대기 + 예비)
+    try:
+        ql_ = (root / ".ai_logs/team/queue.log").read_text(encoding="utf-8", errors="ignore").splitlines()
+        today = dt.datetime.now().strftime("%m/%d")
+        done_n = sum(1 for l in ql_ if l.startswith(f"[{today}") and "queue/editor 커밋" in l)
+        wait_n = len(glob.glob(".claude/team/queue/editor/*.task")) + len(glob.glob(".claude/team/queue/editor/backlog/*.task")) + (1 if busy else 0)
+        out.append(f"오늘 끝낸 과제 {done_n}개 · 남은 과제 {wait_n}개(지금 것 포함)")
+    except Exception:
+        pass
     ql = root / ".ai_logs/team/queue.log"
     if ql.exists():
         last3 = ql.read_text(encoding="utf-8", errors="ignore").strip().splitlines()[-3:]
