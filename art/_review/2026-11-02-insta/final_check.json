@@ -1,0 +1,170 @@
+{
+ "01_fishing_sunset_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "01_fishing_sunset_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "02_cart_cargo_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "02_cart_cargo_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "03_slope_alley_afternoon_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "03_slope_alley_afternoon_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "04_garage_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "04_garage_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "05_depot_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "05_depot_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "06_room_window_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "06_room_window_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "07_lighthouse_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "07_lighthouse_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "08_slip_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "08_slip_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "09_sea_from_slope_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "09_sea_from_slope_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "10_cloud_shadow_road_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "10_cloud_shadow_road_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "11_mainroad_sunset_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "11_mainroad_sunset_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ },
+ "12_jump_1080x1350": {
+  "size": [
+   1080,
+   1350
+  ],
+  "3x3_uniform": false
+ },
+ "12_jump_1080x1080": {
+  "size": [
+   1080,
+   1080
+  ],
+  "3x3_uniform": false
+ }
+}
