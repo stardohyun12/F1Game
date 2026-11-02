@@ -309,6 +309,7 @@ public class OnFootDirector : MonoBehaviour
         PromptLow = false;
         bool press = InteractPressed();
         UpdateHeldBox();
+        UpdateHeldPaper();
         if (moneyText != null && InTalk && handover != null && Speaker == handover.recipient) MoneyEnd = Mathf.Max(MoneyEnd, Time.unscaledTime + 1.2f);
         if (State == Mode.OnFoot)
         {
@@ -335,6 +336,18 @@ public class OnFootDirector : MonoBehaviour
             {
                 SetPrompt("E 말하기");
                 if (press) BeginTalk();
+            }
+            else if (orderBoard != null && hit == orderBoard && orderBoard.NotesOn)
+            {
+                // D-269: 칠판에 꽂힌 쪽지를 집으면 그 쪽지가 손에 든 전표가 된다. [E] 칩은 쪽지 곁.
+                var note = orderBoard.NearestNote(gazePoint);
+                if (note != null && !OrderPicked)
+                {
+                    PromptAnchor = DepotOrderBoard.NoteChipAnchor(note);
+                    SetPrompt("E 쪽지 집기");
+                    if (press) PickNote(note);
+                }
+                else { SetPrompt(""); PromptAnchor = null; }
             }
             else if (orderBoard != null && hit == orderBoard)
             {
@@ -436,7 +449,7 @@ public class OnFootDirector : MonoBehaviour
         {
             var c = gazeHits[i].collider;
             if (c == null || c.transform.IsChildOf(player.transform)) continue;
-            if (gazeHits[i].distance < best) { best = gazeHits[i].distance; first = c; }
+            if (gazeHits[i].distance < best) { best = gazeHits[i].distance; first = c; gazePoint = gazeHits[i].point; }
             if (packSpot != null && c.transform.IsChildOf(packSpot.transform)) packD = Mathf.Min(packD, gazeHits[i].distance);
         }
         // 방 달력(벽에 붙은 판)·침대(충돌체 없이 경계 상자) — 앞에 다른 것이 먼저 맞으면 못 잡는다.
@@ -880,6 +893,7 @@ public class OnFootDirector : MonoBehaviour
         // 손에 든 상자: 받는 사람에게 건넨 것은 치우고 새로 만든다(MoveBoxToHands 가 heldBox 를 비웠다)
         if (heldBoxGiven != null) { Destroy(heldBoxGiven); heldBoxGiven = null; }
         if (heldBox == null) BuildHeldBox();
+        if (Held != null) { Destroy(Held.gameObject); Held = null; }   // D-269: 어제 전표는 버리고 칠판에 새 쪽지
         // 화물(카트 짐칸) — BeginCarry 가 꺼 둔 모양을 되살린다
         var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
         if (cargo != null && car != null && cargo.transform != car.transform)
@@ -976,6 +990,50 @@ public class OnFootDirector : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(sec);
         if (State == Mode.Board && boardMove == null) CloseBoard();
+    }
+
+    // ── D-269: 손에 든 종이(전표) ──
+    /// <summary>지금 손에 든 전표(칠판에서 집은 쪽지). 없으면 null.</summary>
+    public HeldPaper Held { get; private set; }
+    Vector3 gazePoint;
+    bool simTab;
+    Mode heldPaperMode = Mode.OnFoot;
+    /// <summary>봇: 이번 프레임에 Tab 을 누른 것과 같다.</summary>
+    public void SimTab() { simTab = true; }
+    /// <summary>디버그 창: HeldPaper.On 을 바꾼 뒤 칠판을 다시 쓴다(맡기 전에만).</summary>
+    public void RefreshBoard() { if (orderBoard != null && !OrderPicked) orderBoard.SetLines(BoardLines); }
+
+    void PickNote(HeldPaper note)
+    {
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
+        orderBoard.PickNote(note);
+        pickedJob = MakeFirstJob();
+        if (packSpot != null) packSpot.ShowCargo();
+        note.SetSlip(pickedJob);
+        note.TakeToHand(cam, HeldPaper.Pose.Up);
+        Held = note;
+        SetPrompt(""); PromptAnchor = null;
+        Mark($"쪽지 집음: {pickedJob.displayName} → 손에 든 전표 · 목적지 표식 {firstDrop?.Label}");
+        if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDestAfter(HeldPaperLiftSec));
+    }
+
+    const float HeldPaperLiftSec = 0.6f;
+    IEnumerator FocusDestAfter(float sec)
+    {
+        yield return new WaitForSecondsRealtime(sec);
+        if (State == Mode.OnFoot && WalkDest != null) yield return FocusDest(WalkDest);
+    }
+
+    /// <summary>Tab: 걷기·카트에서 들기 → 읽기 → 내려놓기. 대화·상자 들기·작업대·칠판·달력·일기에선 내려놓는다.</summary>
+    void UpdateHeldPaper()
+    {
+        bool tab = simTab || (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame);
+        simTab = false;
+        if (Held == null) return;
+        if (State != heldPaperMode) { heldPaperMode = State; if (Held.State != HeldPaper.Pose.Down) Held.SetPose(HeldPaper.Pose.Down); }   // 타고 내릴 때 내려놓음
+        bool free = (State == Mode.OnFoot && !InTalk && !Knocking && !CarryingBox && footCam != null && footCam.enabled) || State == Mode.InCart;
+        if (!free) { if (Held.State != HeldPaper.Pose.Down) Held.SetPose(HeldPaper.Pose.Down); return; }
+        if (tab) { Held.Cycle(); Mark($"전표 {Held.State}"); }
     }
 
     // ── D-251: 보관소 포장 작업대(Proto_PackBench 그대로) ──

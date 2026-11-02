@@ -249,6 +249,14 @@ public class DebugWindow : MonoBehaviour
             if (GUILayout.Button(DotScreenUI.StyleLabel(us), DotScreenUI.UiStyle == us ? sBtnOn : sBtn, GUILayout.Height(rowH))) SetUIStyle(i);
         }
         GUILayout.EndHorizontal();
+        // D-269: 손에 든 종이(칠판 쪽지 = 전표). 끄면 다음 날(또는 지금 칠판 다시 쓰기)부터 예전 칠판 보기·Tab 화면 전표.
+        if (GUILayout.Button(HeldPaper.On ? "손에 든 전표 (D-269) 켬" : "손에 든 전표 (D-269) 끔 — 예전 화면", HeldPaper.On ? sBtnOn : sBtn, GUILayout.Height(rowH)))
+        {
+            HeldPaper.On = !HeldPaper.On;
+            var dir = FindFirstObjectByType<OnFootDirector>();
+            if (dir != null && !dir.OrderPicked) dir.RefreshBoard();
+            Say("손에 든 전표 " + (HeldPaper.On ? "켬" : "끔"));
+        }
         GUILayout.Space(4 * s);
         GUILayout.Label(LastResult, sText);
 

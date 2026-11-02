@@ -391,7 +391,7 @@ public partial class DotScreenUI : MonoBehaviour
             if (director.InTalk) TalkUI(vis);
             else
             {
-                Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot ");
+                if (director.Held == null || director.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
                 ChipUI(vis);
                 if (director.PickedJob != null && !director.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표
                     SlipUI(director.PickedJob, director.FirstDrop, director.Player != null ? director.Player.transform.position : cam.transform.position, vis);
@@ -479,7 +479,8 @@ public partial class DotScreenUI : MonoBehaviour
     {
         DestMode = "none"; DestDistM = -1f;
         bool beamOn = false;
-        if (tgt != null)
+        // D-269: 전표를 읽는 동안(Read)만 목적지 깃발·칩이 종이 위에 겹치지 않게 잠깐 숨김. 내려놓거나 Up 이면 그대로.
+        if (tgt != null && !(director != null && director.Held != null && director.Held.State == HeldPaper.Pose.Read))
         {
             Vector3 me = director != null && director.State == OnFootDirector.Mode.InCart && director.Car != null ? director.Car.transform.position
                        : director != null && director.Player != null ? director.Player.transform.position : cam.transform.position;
@@ -706,6 +707,8 @@ public partial class DotScreenUI : MonoBehaviour
     /// </summary>
     bool SlipUI(OrderJob job, DeliveryPoint tgt, Vector3 me, System.Text.StringBuilder vis)
     {
+        // D-269: 손에 든 전표(HeldPaper)가 있으면 화면 상자 전표는 끈다(스위치 HeldPaper.On = false 로 되돌림). "Tab 전표" 안내는 그대로.
+        if (HeldPaper.On && director != null && director.Held != null) return false;
         bool tab = Keyboard.current != null && Keyboard.current.tabKey.isPressed;
         if (job != null && (tab || SimSlip))
         {
@@ -751,6 +754,7 @@ public partial class DotScreenUI : MonoBehaviour
     {
         string p = director.Prompt;
         if (string.IsNullOrEmpty(p)) return;
+        if (director.Held != null && director.Held.State == HeldPaper.Pose.Read) return;   // D-269: 전표를 읽는 동안 [E] 칩이 종이 위에 겹치지 않게
         bool hasKey = p.StartsWith("E ");
         string label = hasKey ? p.Substring(2) : p;
         chipLabel.text = label;

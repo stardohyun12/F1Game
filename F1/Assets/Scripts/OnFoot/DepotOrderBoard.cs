@@ -40,8 +40,65 @@ public class DepotOrderBoard : MonoBehaviour
         lines.Clear(); lines.AddRange(ls);
         Selected = 0; Picked = -1;
         Build();
+        BuildNotes();
         Redraw();
     }
+
+    // ── D-269: 핀 꽂힌 쪽지(오늘 주문 수만큼). HeldPaper.On 이면 분필 줄 대신 쪽지를 집는다. ──
+    readonly List<HeldPaper> notes = new List<HeldPaper>();
+    readonly List<int> noteLine = new List<int>();
+    public bool NotesOn { get; private set; }
+    /// <summary>아직 칠판에 꽂혀 있는 쪽지 수.</summary>
+    public int NotesLeft { get { int n = 0; foreach (var p in notes) if (p != null && p.State == HeldPaper.Pose.Pinned) n++; return n; } }
+
+    void BuildNotes()
+    {
+        for (int i = 0; i < notes.Count; i++)
+            if (notes[i] != null && notes[i].State == HeldPaper.Pose.Pinned) Destroy(notes[i].gameObject);   // 손에 든 건 감독이 치운다
+        notes.Clear(); noteLine.Clear();
+        NotesOn = HeldPaper.On;
+        foreach (var r in rows) r.gameObject.SetActive(!NotesOn);
+        if (!NotesOn) return;
+        var ui = FindFirstObjectByType<DotScreenUI>();
+        Font small = ui != null ? ui.SmallFont : font;
+        int k = 0;
+        for (int i = 0; i < lines.Count; i++)
+        {
+            if (!lines[i].open) continue;
+            var n = HeldPaper.Create("OrderNote" + i, font, small);
+            // 제목 아래 왼쪽부터 한 줄로, 조금씩 기울게(손으로 꽂은 것)
+            n.PinTo(transform, new Vector3(-size.x * 0.5f + 0.32f + k * 0.2f, size.y * 0.5f - 0.32f, 0.006f));
+            n.transform.localRotation *= Quaternion.Euler(0f, 0f, (k % 2 == 0 ? -4f : 3f));
+            n.SetPreview(lines[i].text);
+            notes.Add(n); noteLine.Add(i); k++;
+        }
+    }
+
+    /// <summary>시선이 칠판 어디에 닿았을 때 그 점에서 가장 가까운, 아직 꽂힌 쪽지.</summary>
+    public HeldPaper NearestNote(Vector3 point)
+    {
+        HeldPaper best = null; float bd = float.MaxValue;
+        foreach (var p in notes)
+        {
+            if (p == null || p.State != HeldPaper.Pose.Pinned) continue;
+            float d = (p.transform.position - point).sqrMagnitude;
+            if (d < bd) { bd = d; best = p; }
+        }
+        return best;
+    }
+
+    /// <summary>쪽지를 집음 = 그 줄을 맡음(Picked·Written 은 예전과 같게 — QA 호환).</summary>
+    public bool PickNote(HeldPaper n)
+    {
+        int i = notes.IndexOf(n);
+        if (i < 0) return false;
+        Selected = noteLine[i];
+        return Pick();
+    }
+
+    /// <summary>[E] 칩 자리 — 쪽지 오른쪽 위 모서리 곁.</summary>
+    public static Vector3 NoteChipAnchor(HeldPaper n) =>
+        n.transform.TransformPoint(new Vector3(HeldPaper.WidthM * 0.5f + 0.01f, HeldPaper.HeightM * 0.35f, 0f));
 
     public void Move(int d)
     {
@@ -68,6 +125,7 @@ public class DepotOrderBoard : MonoBehaviour
     public void SetHint(bool viewing)
     {
         if (hint == null) return;
+        if (NotesOn) viewing = false;
         if (viewing && HintOnce && hintSeen) viewing = false;
         if (viewing) hintSeen = true;
         hint.gameObject.SetActive(viewing);
@@ -133,6 +191,7 @@ public class DepotOrderBoard : MonoBehaviour
             rows[i].color = lines[i].open ? chalk : chalkDim;
             sb.Append('\n').Append(rows[i].text);
         }
+        if (NotesOn) sb.Append("\n[쪽지 ").Append(NotesLeft).Append("장]");
         Written = sb.ToString();
     }
 }

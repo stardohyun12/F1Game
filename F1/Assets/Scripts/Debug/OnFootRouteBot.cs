@@ -541,6 +541,36 @@ public class OnFootRouteBot : MonoBehaviour
             Line($"  걸음 {q} → {P(pl.transform.position)}{(stuck.Count > before ? " (막힘→순간이동)" : "")}{stepNote}"); stepNote = "";
         }
         var board = dir.OrderBoard;
+        if (board.NotesOn)
+        {
+            // D-269: 칠판 쪽지 집기 → 손에 든 전표 → 걷는 중 Tab 들기·읽기·내려놓기
+            var note = board.NearestNote(board.Center);
+            if (note == null) { Stuck("칠판 쪽지", "쪽지 없음"); Status = "FAIL no note"; Finish(tStart); yield break; }
+            cam.LookAt(note.transform.position); yield return null; yield return null;
+            w = 0f;
+            while (dir.Prompt != "E 쪽지 집기" && w < 2f) { w += Time.deltaTime; yield return null; }
+            yield return ShotUI("d_02_note_prompt");
+            if (dir.Prompt != "E 쪽지 집기") { Stuck("쪽지 집기", $"안내 '{dir.Prompt}' 시선={dir.GazeTarget ?? "-"}"); Status = "FAIL note prompt"; Finish(tStart); yield break; }
+            Line($"칠판 글:\n{board.Written}");
+            dir.SimInteract();
+            Grab("note_pick", 6, 0.06f);
+            yield return new WaitForSecondsRealtime(0.45f);
+            yield return ShotUI("d_03_paper_up");
+            var hp = dir.Held;
+            Line($"쪽지 집음: 맡음={dir.OrderPicked} 손={(hp != null ? hp.State.ToString() : "없음")} 덮음 세로 {(hp != null ? hp.CoverY : 0f):P0} 칠판 남은 쪽지={board.NotesLeft}");
+            if (hp == null || !dir.OrderPicked) { Stuck("쪽지 집기", "안 됨"); Status = "FAIL pick"; Finish(tStart); yield break; }
+            yield return new WaitForSecondsRealtime(1.2f);                              // 목적지 시선 돌리기 끝까지
+            dir.SimTab(); yield return new WaitForSecondsRealtime(0.45f);
+            yield return ShotUI("d_04_paper_read");
+            Line($"걷는 중 Tab: {hp.State} 덮음 세로 {hp.CoverY:P0} 가로 {hp.CoverX:P0} 화면전표={(ui != null && ui.Visible.Contains("slip"))} 글:\n{hp.Written}");
+            if (hp.State != HeldPaper.Pose.Read) stuck.Add("Tab 으로 읽기 안 됨");
+            dir.SimTab(); yield return new WaitForSecondsRealtime(0.45f);
+            yield return ShotUI("d_05_paper_down");
+            Line($"Tab 한 번 더: {hp.State} 덮음 세로 {hp.CoverY:P0} 표식={(ui != null ? ui.DestMode : "-")} 걸어갈 곳={(dir.WalkDest != null ? dir.WalkDest.Label : "없음")}");
+            if (hp.State != HeldPaper.Pose.Down) stuck.Add("Tab 으로 내려놓기 안 됨");
+            Seg("칠판", ref tSeg);
+            goto Packing;
+        }
         cam.LookAt(board.Center); yield return null; yield return null;
         w = 0f;
         while (!dir.Prompt.StartsWith("E 칠판") && w < 2f) { w += Time.deltaTime; yield return null; }
@@ -574,6 +604,7 @@ public class OnFootRouteBot : MonoBehaviour
         if (ui != null) { if (!ui.Visible.Contains("slip")) stuck.Add("걷는 중 전표 안 보임"); ui.SimSlip = false; }
         Seg("칠판", ref tSeg);
 
+        Packing:
         // 3) 카트 먼저 가 보기 = 안 됨은 아래(포장 전), 카운터 포장
         yield return Walk(new Step("walk", "카운터 앞", 273.4f, -29.5f));
         if (dir.PackSpot != null && dir.PackSpot.HasBench) { yield return BenchPack(tStart); if (Status.StartsWith("FAIL")) yield break; }
@@ -808,6 +839,21 @@ public class OnFootRouteBot : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
         var ui = FindFirstObjectByType<DotScreenUI>();
         if (ui == null) yield break;
+        var od = FindFirstObjectByType<OnFootDirector>();
+        if (od != null && od.Held != null)
+        {
+            // D-269: 카트에서 Tab = 손에 든 전표 들기 → 읽기 → 내려놓기
+            od.SimTab(); yield return new WaitForSecondsRealtime(0.45f);
+            Grab("drive_paper_up");
+            Line($"  카트 Tab 1: {od.Held.State} 덮음 세로 {od.Held.CoverY:P0} 가로 {od.Held.CoverX:P0} 화면전표={ui.Visible.Contains("slip")}");
+            od.SimTab(); yield return new WaitForSecondsRealtime(0.45f);
+            Grab("drive_paper_read");
+            Line($"  카트 Tab 2: {od.Held.State} 덮음 세로 {od.Held.CoverY:P0} 가로 {od.Held.CoverX:P0}");
+            od.SimTab(); yield return new WaitForSecondsRealtime(0.45f);
+            Line($"  카트 Tab 3: {od.Held.State} 덮음 세로 {od.Held.CoverY:P0}");
+            if (od.Held.State != HeldPaper.Pose.Down) stuck.Add("카트 Tab 3번에 안 내려놓음");
+            yield break;
+        }
         ui.SimSlip = true;
         yield return new WaitForSecondsRealtime(0.3f);
         Grab("drive_slip");
