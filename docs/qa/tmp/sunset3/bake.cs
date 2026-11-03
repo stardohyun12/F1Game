@@ -1,0 +1,10 @@
+var look = SunsetLook.Find(); if (look.IsOn) look.SetOn(false);
+var sw = System.Diagnostics.Stopwatch.StartNew();
+PitCrewSunsetMenu.BakeSeaDepth();
+var m = look.seaMaterial;
+m.SetVector("_PathWidth", new Vector4(0.012f, 0.06f, 0f, 0f));
+m.SetColor("_Deep", new Color(0.22f, 0.18f, 0.40f, 1f));
+UnityEditor.EditorUtility.SetDirty(m); UnityEditor.AssetDatabase.SaveAssets();
+var tex = m.GetTexture("_DepthTex");
+string ts = "null"; if (tex != null) ts = tex.width + "x" + tex.height;
+return "bake " + sw.ElapsedMilliseconds + "ms tex=" + ts;

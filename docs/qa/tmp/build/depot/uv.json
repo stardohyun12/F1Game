@@ -1,0 +1,56 @@
+{
+ "mode": "uv",
+ "cyl": [
+  [
+   "CART_01",
+   10,
+   16,
+   0.14,
+   0.1
+  ],
+  [
+   "CART_01",
+   10,
+   16,
+   0.14,
+   0.1
+  ],
+  [
+   "COUNTER_01",
+   10,
+   16,
+   0.07,
+   0.05
+  ],
+  [
+   "PROP_01",
+   10,
+   16,
+   0.07,
+   0.05
+  ],
+  [
+   "PROP_02",
+   10,
+   16,
+   0.07,
+   0.05
+  ]
+ ],
+ "fix": {
+  "collapsed": 110,
+  "rescaled": 258,
+  "clamped": 0,
+  "tape": 588,
+  "rotated": 0,
+  "moved": 6,
+  "hand_trim": 2
+ },
+ "moved": {
+  "CART_01:gutter→glass": 2,
+  "CLOCK:eaves→wood_door": 2,
+  "CLOCK_hand_hour:clock_dial→glass": 1,
+  "CLOCK_hand_min:clock_dial→glass": 1
+ },
+ "cream_building_top_row": 59.660003662109375
+}

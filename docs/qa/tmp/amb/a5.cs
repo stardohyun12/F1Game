@@ -1,0 +1,12 @@
+var host = GameObject.Find("Sunset_D227");
+if (host == null) return "no host";
+var z = host.GetComponent<AmbienceZones>();
+if (z == null) z = UnityEditor.Undo.AddComponent<AmbienceZones>(host);
+var so = new UnityEditor.SerializedObject(z);
+so.FindProperty("wind").objectReferenceValue = host.transform.Find("Amb_Wind").GetComponent<WindAmbience>();
+so.FindProperty("coast").objectReferenceValue = host.GetComponent<CoastAmbience>();
+so.ApplyModifiedProperties();
+var sc = host.scene;
+UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(sc);
+bool ok = UnityEditor.SceneManagement.EditorSceneManager.SaveScene(sc);
+return "added wind=" + (z.wind != null) + " coast=" + (z.coast != null) + " saved=" + ok;

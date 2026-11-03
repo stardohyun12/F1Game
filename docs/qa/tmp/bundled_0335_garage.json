@@ -1,0 +1,673 @@
+{
+ "objects": 79,
+ "bundled": {
+  "ENGINE_01": {
+   "islands": 2,
+   "separate": 2,
+   "polys": 23,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "KEYS_01": {
+   "islands": 5,
+   "separate": 3,
+   "polys": 46,
+   "mats": [
+    "Garage_Details_Photo"
+   ]
+  },
+  "LADDER_01": {
+   "islands": 7,
+   "separate": 3,
+   "polys": 28,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  }
+ },
+ "all": {
+  "BENCH_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 27,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "BOARD_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Garage_Posters_Photo"
+   ]
+  },
+  "CAN_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "CAN_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "CAN_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "CAN_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "CHAIR_01": {
+   "islands": 10,
+   "separate": 1,
+   "polys": 144,
+   "mats": [
+    "Garage_Details_Photo"
+   ]
+  },
+  "CRATE_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "CRATE_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "CRATE_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "CRATE_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "CRATE_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "CRATE_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "DOOR_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 16,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "DRUM_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "DRUM_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "DRUM_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "DRUM_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "DRUM_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "ENGINE_01": {
+   "islands": 2,
+   "separate": 2,
+   "polys": 23,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "FESTIVAL_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 7,
+   "mats": [
+    "Garage_Details_Photo",
+    "festival_registration_Photo"
+   ]
+  },
+  "GARAGE_shell": {
+   "islands": 24,
+   "separate": 1,
+   "polys": 159,
+   "mats": [
+    "Garage_Albedo",
+    "Garage_Dirt",
+    "Garage_Props_Photo"
+   ]
+  },
+  "HELMET_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 119,
+   "mats": [
+    "Garage_Details_Photo"
+   ]
+  },
+  "HOIST_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 16,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "KEYS_01": {
+   "islands": 5,
+   "separate": 3,
+   "polys": 46,
+   "mats": [
+    "Garage_Details_Photo"
+   ]
+  },
+  "LADDER_01": {
+   "islands": 7,
+   "separate": 3,
+   "polys": 28,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "LAMP_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 17,
+   "mats": [
+    "Garage_Albedo",
+    "Garage_Lamp_Emit"
+   ]
+  },
+  "LAMP_02": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 17,
+   "mats": [
+    "Garage_Albedo",
+    "Garage_Lamp_Emit"
+   ]
+  },
+  "PART_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_07": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_08": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_09": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_10": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_11": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_12": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_13": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PART_14": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PARTBOX_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "PEGBOARD_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "PHOTO_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 7,
+   "mats": [
+    "Garage_Details_Photo",
+    "race_photo_0_Photo"
+   ]
+  },
+  "PHOTO_02": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 7,
+   "mats": [
+    "Garage_Details_Photo",
+    "race_photo_1_Photo"
+   ]
+  },
+  "PHOTO_03": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 7,
+   "mats": [
+    "Garage_Details_Photo",
+    "race_photo_2_Photo"
+   ]
+  },
+  "POSTER_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Garage_Posters_Photo"
+   ]
+  },
+  "POSTER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Garage_Posters_Photo"
+   ]
+  },
+  "POSTER_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Garage_Posters_Photo"
+   ]
+  },
+  "SHELF_01": {
+   "islands": 7,
+   "separate": 1,
+   "polys": 31,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "SHELF_02": {
+   "islands": 7,
+   "separate": 1,
+   "polys": 31,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "SHUTTER_01": {
+   "islands": 5,
+   "separate": 1,
+   "polys": 28,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "SIGN_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Albedo",
+    "Garage_Sign_Photo"
+   ]
+  },
+  "SLOTS_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Garage_Posters_Photo",
+    "Garage_Albedo"
+   ]
+  },
+  "TABLE_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 14,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "TIRE_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_07": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_08": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_09": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_10": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_11": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_12": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_13": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_14": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_15": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_16": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_17": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_18": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_19": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_20": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TIRE_21": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Garage_Props_Photo"
+   ]
+  },
+  "TOOLBOX_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  },
+  "VISE_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "Garage_Albedo"
+   ]
+  }
+ }
+}

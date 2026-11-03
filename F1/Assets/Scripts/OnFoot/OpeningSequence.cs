@@ -64,7 +64,8 @@ public class OpeningSequence : MonoBehaviour
 
     public void OnTalkBegin() { if (Step == Stage.Front || Step == Stage.Room) Set(Stage.Talk); }
     public void OnTalkEnd() { if (Step == Stage.Talk) { HasKey = true; Set(Stage.Key); } }
-    public void OnCartEnter() { if (Step == Stage.Key) Set(Stage.Cart); }
+    // 첫 과제(SPEC §11-7): 사장 대화 없이 타도 오프닝을 끝낸다 — 안 그러면 Front 안내 글이 배달 내내 남아 배달 안내를 가렸다.
+    public void OnCartEnter() { if (Step == Stage.Key || Step == Stage.Front || Step == Stage.Room) Set(Stage.Cart); }
 
     void Update()
     {
@@ -144,7 +145,7 @@ public class OpeningSequence : MonoBehaviour
         switch (Step)
         {
             case Stage.Room: return "방학 1일째 아침 — 집을 나서자";
-            case Stage.Front: return "정비소로 — 사장님이 카트를 봐 놨다";
+            case Stage.Front: return dir.OrderPicked ? "" : "정비소로 — 사장님이 카트를 봐 놨다";
             case Stage.Key: return "카트 열쇠를 받았다 — 카트에 타자";
             default: return "";
         }

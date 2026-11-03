@@ -1,0 +1,17 @@
+
+FBX export starting... 'D:/Github/F1Game/art/export/house-types/H1.fbx'
+export finished in 0.0258 sec.
+
+FBX export starting... 'D:/Github/F1Game/art/export/house-types/H2.fbx'
+export finished in 0.0352 sec.
+
+FBX export starting... 'D:/Github/F1Game/art/export/house-types/H3.fbx'
+export finished in 0.0210 sec.
+
+FBX export starting... 'D:/Github/F1Game/art/export/house-types/H4.fbx'
+export finished in 0.0222 sec.
+
+FBX export starting... 'D:/Github/F1Game/art/export/house-types/site.fbx'
+export finished in 0.0051 sec.
+MEAS {"H1": {"tris": 956, "objects": ["DOOR_01", "H1_shell", "LAUNDRY_01", "PLANTER_01", "PLANTER_02", "PLANTER_03", "PLANT_01", "PLANT_02", "PLANT_03", "RAIL_01", "SHUTTER_01", "SHUTTER_02", "SHUTTER_03", "SHUTTER_04", "SHUTTER_05", "SHUTTER_06", "SHUTTER_07", "SHUTTER_08"], "atlas": [1024, 1792], "size": [7.76, 7.43, 8.62]}, "H2": {"tris": 1408, "objects": ["DOOR_01", "DOOR_02", "DOOR_03", "H2_shell", "LAUNDRY_01", "PLANTER_01", "PLANTER_02", "PLANTER_03", "PLANTER_04", "PLANT_01", "PLANT_02", "PLANT_03", "PLANT_04", "RAIL_01", "SHUTTER_01", "SHUTTER_02", "SHUTTER_03", "SHUTTER_04", "SHUTTER_05", "SHUTTER_06", "SHUTTER_07", "SHUTTER_08", "SHUTTER_09", "SHUTTER_10"], "atlas": [1024, 2560], "size": [13.04, 8.55, 8.27], "units": {"w": [4.0, 4.4, 3.8], "floor": [0.0, 0.55, 1.1], "eave": [5.2, 5.7, 5.3]}}, "H3": {"tris": 962, "objects": ["DOOR_01", "H3_shell", "LAUNDRY_01", "PLANTER_01", "PLANTER_02", "PLANTER_03", "PLANT_01", "PLANT_02", "PLANT_03", "RAIL_01", "SHUTTER_01", "SHUTTER_02", "SHUTTER_03", "SHUTTER_04", "SHUTTER_05", "SHUTTER_06"], "atlas": [1024, 1792], "size": [4.84, 8.05, 9.88]}, "H4": {"tris": 884, "objects": ["CRATE_01", "CRATE_02", "CRATE_03", "DOOR_01", "H4_shell", "LAUNDRY_01", "PLANTER_01", "PLANTER_02", "PLANT_01", "PLANT_02", "RAIL_01", "SHUTTER_01", "SHUTTER_02", "SHUTTER_03", "SHUTTER_04", "SHUTTER_05", "SHUTTER_06"], "atlas": [1024, 1792], "size": [8.02, 8.37, 8.02]}, "site": {"tris": 26, "objects": ["SITE_shell"], "atlas": [1024, 1408], "size": [30.0, 27.5, 2.8]}}
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)

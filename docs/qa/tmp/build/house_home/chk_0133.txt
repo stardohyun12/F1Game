@@ -1,0 +1,22 @@
+[09 check]
+  위반 grain      house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+  위반 texel      house_home/WASTE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 2.38%
+GATE FAIL (29 위반)
+   다른 건물과 md5 같은 텍스처(D-196): 없음
+house_home 규칙 게이트 실패: ~255
+  위반 grain      house_home/PENDANT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 4.22%; S0.31 V63~255
+  위반 texel      house_home/PENDANT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 12.46%; S0.31 V63~255
+  위반 texel      house_home/PENDANT_03 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.027 (기준 0.027~0.246); 반점 7.69%; S0.31 V63~255
+  위반 grain      house_home/PENDANT_03 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.027 (기준 0.027~0.246); 반점 7.69%; S0.31 V63~255
+  위반 texel      house_home/PEPPER_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); S0.22 V38~73
+  위반 grain      house_home/PILLOW_02 [house_home.png] 잔결 0.024 (기준 0.027~0.246); 반점 2.55%
+  위반 grain      house_home/PILLOW_03 [house_home.png] 잔결 0.025 (기준 0.027~0.246); 반점 3.60%
+  위반 texel      house_home/PLATE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246); 반점 0.75%
+  위반 grain      house_home/PLATE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246); 반점 0.75%
+  위반 texel      house_home/PLATE_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.97%
+  위반 grain      house_home/PLATE_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.97%
+  위반 texel      house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+  위반 grain      house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+  위반 texel      house_home/WASTE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 2.38%
+GATE FAIL (29 위반)
+

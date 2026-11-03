@@ -1,0 +1,33 @@
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          38/38 100.0%
+  uvcollapse UV 붕괴(단색 점 UV) 38/38 100.0%
+  grain      잔결(사진 결)       38/38 100.0%
+  flat       단색 칸 비율        38/38 100.0%
+  palette    팔레트 일치         38/38 100.0%
+  colors     영역 색 수         38/38 100.0%
+  speckle    1px 반점         0/38 0.0%
+  baked      구운 빛 흔적(면 안 기울기) 38/38 100.0%
+  blob       원형 어두운 얼룩      38/38 100.0%
+  satval     채도·명도 폭        38/38 100.0%
+  cyl        원통 면 수         0/0 None%
+  text       글씨 텍셀·획        0/0 None%
+  mirror     거울 UV          0/0 None%
+  alpha      투명/컷아웃         26/38 68.4%
+  mat        재질·임포트         38/38 100.0%
+  tris       삼각형 수          38/38 100.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    1.5 forest_F1/CARD_01 [forest_F1.png] 반점 7.96%; 알파 58%
+    1.5 forest_F1/CARD_02 [forest_F1.png] 반점 6.12%; 알파 57%
+    1.5 forest_F1/CARD_03 [forest_F1.png] 반점 10.06%; 알파 67%
+    1.5 forest_F1/CARD_04 [forest_F1.png] 반점 9.52%; 알파 66%
+    1.5 forest_F1/CARD_05 [forest_F1.png] 반점 6.36%; 알파 54%
+    1.5 forest_F1/CARD_06 [forest_F1.png] 반점 5.47%; 알파 57%
+    1.5 forest_F2/CARD_01 [forest_F2.png] 반점 15.26%; 알파 52%
+    1.5 forest_F2/CARD_02 [forest_F2.png] 반점 14.48%; 알파 54%
+    1.5 forest_F2/CARD_03 [forest_F2.png] 반점 6.90%; 알파 56%
+    1.5 forest_F2/CARD_04 [forest_F2.png] 반점 13.54%; 알파 53%
+    1.5 forest_F2/CARD_05 [forest_F2.png] 반점 5.54%; 알파 49%
+    1.5 forest_F2/CARD_06 [forest_F2.png] 반점 11.31%; 알파 49%
+    1.2 forest_F1_lod1/CANOPY_01 [forest_F1_lod1.png] 반점 4.64%
+    1.2 forest_F2_lod1/CANOPY_01 [forest_F2_lod1.png] 반점 5.56%
+GATE PASS (0 위반)

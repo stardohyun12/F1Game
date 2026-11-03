@@ -1,0 +1,62 @@
+{
+  "garage": {
+    "art/export/q2-garage/APPLY.md": "8eaafb9c6dc28930bd28440a0e5e36485779dcfd9c327166e1671a164cd25a1b",
+    "art/export/q2-garage/ceiling_photo.png": "bbe034076b6abb47d8f75862858b411a49575d9057855cf074ed79fb4818cfaf",
+    "art/export/q2-garage/delivery-validation-v2.json": "81c9b93138881602f6c46448986fe370ed3d8cdb56df821f93311aeeeb49c86f",
+    "art/export/q2-garage/dirt-geometry-v2.json": "93e5b441ea4a0936862f86db310bd62835c78530f62f35f36d77e8b0d9146d64",
+    "art/export/q2-garage/dirt_baked32.png": "ef36867430befd4885d966ab28cd97e33c6f407b8bfbcb77871b19d0a0833e0c",
+    "art/export/q2-garage/dirt_v5_combo.fbx": "8ed28fff447c4ce4fa78af17ff4bad46049c7626e24bf7a3edea35e83a723833",
+    "art/export/q2-garage/garage_baked32.png": "979a469af4503c18f486599c52710bc8363e3f73d1bb3b53d3571c91c88819fe",
+    "art/export/q2-garage/garage_details.png": "936e0ff8ad0a5bc6c02656fbc40784ba9c3408f42bf44d700fd3b92186a1cfb4",
+    "art/export/q2-garage/garage_festival.png": "a1b0063d6901a52d776c4af03cfcc63155e52fac86dac0d1b34e41162138b3de",
+    "art/export/q2-garage/garage_lamp.png": "3a9963091c85e413e339dd7c77c6dd45ed7b10fb3fd8ed09647e50e3abcf4d8d",
+    "art/export/q2-garage/garage_memory_1.png": "09556a96816a66e2ec18e9c787e03c3d7ed0214f7af883ba5e667047d2bb96f8",
+    "art/export/q2-garage/garage_memory_2.png": "3e6278d6a11e8503840c05d593c3b0d78dd6d841a12a6c1fe38410c60438e9b6",
+    "art/export/q2-garage/garage_memory_3.png": "1751ae6ba18640f423c64c5fa8e3ca7d863799feb6b02d613ef83a1674ea9292",
+    "art/export/q2-garage/garage_posters.gpl": "57d719baf5dcb106cbc1e580b890f746ba36c8c1611308c76cbb05c9b9efb27d",
+    "art/export/q2-garage/garage_posters.png": "84cdf4566af1cc9f3d8364ab2bed447d20c5d44c104c2c8cf9a5b67549f233c9",
+    "art/export/q2-garage/garage_props.gpl": "55d4826e40122ebca633a0f615614727244071a15091c88b734f6ff44f31ef7f",
+    "art/export/q2-garage/garage_props.png": "6b47f99025546db0f115b47b500ba73e67d43af2a50245fa347fb04c52017f6d",
+    "art/export/q2-garage/garage_sign.png": "16a3b19ac19a09c0698da5d4ea27bdf545e70b4bfdc254b7c20aa990ec116f67",
+    "art/export/q2-garage/garage_tin_F2_atlas.png": "9c5520e4d4c9e5ccd6eec3cd36323e477ee6fb73a0e8955abe5519acab3ce5a6",
+    "art/export/q2-garage/garage_tin_F3_atlas.png": "47665f9e8e7d792724f3924250bb66b988f74903821420c4c0f660034e63024b",
+    "art/export/q2-garage/garage_v5_combo.fbx": "a096a84cc9e0a6f16150315e8dcb7e169c365a069c8d1e2e04210e9450dd1ffb",
+    "art/export/q2-garage/geometry-validation.json": "92c3ed8c8eb93da912628d79b9a5d04564a130df222fb1b08314c5bdc64299ac",
+    "art/export/q2-garage/palette.gpl": "a8032e2852b81b12cfb1f83f8d44bf3bae4bab41058b69835e1292f16b2c6dc3",
+    "art/export/q2-garage/provenance.csv": "ca6aec0f4d8b82942eb24977e1abab0325599ae2f0e8187b7f60a32305dd2aa6",
+    "art/export/q2-garage/texture-fix-v2.json": "b517c6dd95c7f83287642bb32ca01e2c1bede2b7cf023d99902fe68728f567fb",
+    "art/export/q2-garage/texture-validation.json": "302d2a01f08c548d92a6ddcb3092f8573c3975f0d361cb8845a2dd34d23bceb7",
+    "art/export/q2-garage/uv-fix-v2.json": "17a4d1d7a3201bd71a030342bfc129fcbbded37527ad1db0f1f23cbea2660c10"
+  },
+  "postoffice": {
+    "art/export/q4-postoffice/decals.png": "83a18c178a0ab97e9779467be4a4fcc6dcccd2f00f5ea7e9cd5c94b937170d2a",
+    "art/export/q4-postoffice/floor.png": "8967a7baf2b532c35c9c0ff89f01f8509f7f821799c532fc8e767f02f7498845",
+    "art/export/q4-postoffice/icons.png": "afe1d7b7edd720553d1d2f0c5ecdd8261962ea86215a8bfdffd30702147dfba2",
+    "art/export/q4-postoffice/layout.json": "483ac5e55a05d671255b95d88e6905192317efae2ff412deb498f10b76880477",
+    "art/export/q4-postoffice/palette.gpl": "efef4e96e488a9eaad9de341dfe0ec0090a5fe0b33f75c6ab2c4f0acbd58c7ad",
+    "art/export/q4-postoffice/postbox_G1.png": "bdf2e24ff5342235ff9c40da4586f01913c66a1a9f056a6262a43cf771305063",
+    "art/export/q4-postoffice/provenance.csv": "f975f0bf00f4015af817af5ef0e715cc16a04aa1be6fd47cd82fc33a2c8ffa2b",
+    "art/export/q4-postoffice/q4_postoffice.blend": "351c71f1c01a1e91b5f92fe91fa36c71544a27414b76114fb1a9e34d5e2444c7",
+    "art/export/q4-postoffice/q4_postoffice.blend1": "2744d380a4432bb25daec7d1f9d1627bc876e2344e837e956bbb6c1a26c8dbd0",
+    "art/export/q4-postoffice/q4_postoffice.fbx": "664592f9ba867a5fe1bd967d3d3fbfcf184199e8cbda30b6c4b070cdfd727901",
+    "art/export/q4-postoffice/roof.png": "46e1add6b1354706553e7f4b3d92c9057c3ecc35eeb7672fb98c0918b97125fa",
+    "art/export/q4-postoffice/trim.png": "cfe1ea9cfa0d85749fae948cd02a24389f5354f02e9f8eccb5060cd541ca54c7",
+    "art/export/q4-postoffice/validation.json": "7c9fb0c12c2f09511dc697ec946b7db0a8996dfd1a96a0f58a3c5147f7d5a74b",
+    "art/export/q4-postoffice/wall.png": "75f1941864bf8b576f0dd31321984d32dcb01254ae433a739cd1b667a83ac458"
+  },
+  "room": {
+    "art/export/q1-room/measure.json": "c11995b700c64cb35e38db8020b6f9c33d0b5a5ce5243f15ee0744b43278e9a7",
+    "art/export/q1-room/palette53.gpl": "6b6ceea8e6b203df3c38c33ed8e444a9d9678d8c5a430224a4ee87c0be6d0234",
+    "art/export/q1-room/palette_q1v2.gpl": "a0fc739334429fdd233dfb733bde516c76d7c31bfbfa3b17f8d92562427edf0c",
+    "art/export/q1-room/provenance.csv": "4c2b61687e2f1baec0bb7cd4271f5c39f1b9e33f953c0fc655671f786a0e90fc",
+    "art/export/q1-room/room.fbx": "90f2dd26de31ed23b54c7a479777a98f7b6985e17181b8bc38163a145eda8588",
+    "art/export/q1-room/room.png": "ac9547862e56727048fcb851121a9fa65af68c3b99d2435a0dd6cd7c6f2fc208"
+  },
+  "house_home": {
+    "art/export/house-home/house_home.fbx": "73b5495f8aacde8b34b4974269e2418f33256d09f458960830441a21944322ca",
+    "art/export/house-home/house_home.png": "f48bc49c855560cc6df1ce0538904e42dedff14c810ae868f346ec6e95aa276b",
+    "art/export/house-home/layout.json": "4f71b9df2ecabeb6404889c5b789524444dac7478eab46b6508ccd0260c1e90a",
+    "art/export/house-home/measure.json": "fadb5d46220bf4040971e260417e7001d2b190f38b7bed87041d82031cd2d183",
+    "art/export/house-home/palette.gpl": "a3241ff2728a661063cba345ee3b236d5db650380e3072379ba065f3065869c0"
+  }
+}

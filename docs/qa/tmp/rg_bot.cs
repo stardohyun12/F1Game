@@ -1,0 +1,8 @@
+Application.runInBackground = true;
+string root = "D:/Github/F1Game/docs/qa/evidence/regress-1102/bot";
+System.IO.Directory.CreateDirectory(root);
+if (System.IO.File.Exists(root + "/route_feature2.txt")) System.IO.File.Delete(root + "/route_feature2.txt");
+OnFootRouteBot.GrabDir = "";
+var m = RegressSweep.MonitorBegin("bot");
+System.AppDomain.CurrentDomain.SetData("rgmon", m);
+return OnFootRouteBot.BeginFirstOrder(root, root) + " " + root;

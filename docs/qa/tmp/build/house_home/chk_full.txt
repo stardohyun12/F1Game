@@ -1,0 +1,78 @@
+  (텍스처 없음: house_home/GLASS_01 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_02 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_03 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_04 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_05 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_06 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_07 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_08 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_09 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_10 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_11 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_12 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_13 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_14 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_15 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_16 재질 HOUSE_glass → '')
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          52/69 75.4%
+  uvcollapse UV 붕괴(단색 점 UV) 69/69 100.0%
+  grain      잔결(사진 결)       56/68 82.4%
+  flat       단색 칸 비율        64/64 100.0%
+  palette    팔레트 일치         69/69 100.0%
+  colors     영역 색 수         67/68 98.5%
+  speckle    1px 반점         9/69 13.0%
+  baked      구운 빛 흔적(면 안 기울기) 68/68 100.0%
+  blob       원형 어두운 얼룩      67/68 98.5%
+  satval     채도·명도 폭        37/69 53.6%
+  cyl        원통 면 수         15/15 100.0%
+  text       글씨 텍셀·획        1/1 100.0%
+  mirror     거울 UV          1/1 100.0%
+  alpha      투명/컷아웃         69/69 100.0%
+  mat        재질·임포트         69/69 100.0%
+  tris       삼각형 수          69/69 100.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    5.5 house_home/PENDANT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 4.22%; S0.31 V63~255
+    5.5 house_home/PENDANT_03 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.027 (기준 0.027~0.246); 반점 7.69%; S0.31 V63~255
+    5.0 house_home/BEDLIGHT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.72%
+    5.0 house_home/BEDLIGHT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 1.68%
+    5.0 house_home/PLATE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246); 반점 0.75%
+    5.0 house_home/PLATE_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.97%
+    5.0 house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+    4.0 house_home/CUP_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246)
+    4.0 house_home/CUP_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246)
+    3.9 house_home/HOUSE_shell [house_home.png] 반점 16.33%; 둥근 얼룩 1; S0.44 V91~248
+    3.6 house_home/DRESSER_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.90%; S0.61 V92~113
+    3.5 house_home/NIGHTSTAND_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.13%; S0.61 V92~113
+    3.5 house_home/NIGHTSTAND_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.17%; S0.61 V92~113
+    3.5 house_home/PENDANT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 12.46%; S0.31 V63~255
+  위반 texel      house_home/BEDLIGHT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.72%
+  위반 grain      house_home/BEDLIGHT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.72%
+  위반 texel      house_home/BEDLIGHT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 1.68%
+  위반 grain      house_home/BEDLIGHT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 1.68%
+  위반 grain      house_home/CHAIR_04 [house_home.png] 잔결 0.023 (기준 0.027~0.246); 반점 2.77%
+  위반 texel      house_home/CUP_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246)
+  위반 grain      house_home/CUP_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246)
+  위반 texel      house_home/CUP_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246)
+  위반 grain      house_home/CUP_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246)
+  위반 texel      house_home/DRESSER_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.90%; S0.61 V92~113
+  위반 texel      house_home/MIRROR_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 25.19%
+  위반 texel      house_home/NIGHTSTAND_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.13%; S0.61 V92~113
+  위반 texel      house_home/NIGHTSTAND_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 1.17%; S0.61 V92~113
+  위반 texel      house_home/PAN_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 21.95%
+  위반 texel      house_home/PENDANT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 4.22%; S0.31 V63~255
+  위반 grain      house_home/PENDANT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.024 (기준 0.027~0.246); 반점 4.22%; S0.31 V63~255
+  위반 texel      house_home/PENDANT_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 12.46%; S0.31 V63~255
+  위반 texel      house_home/PENDANT_03 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.027 (기준 0.027~0.246); 반점 7.69%; S0.31 V63~255
+  위반 grain      house_home/PENDANT_03 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.027 (기준 0.027~0.246); 반점 7.69%; S0.31 V63~255
+  위반 texel      house_home/PEPPER_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); S0.22 V38~73
+  위반 grain      house_home/PILLOW_02 [house_home.png] 잔결 0.024 (기준 0.027~0.246); 반점 2.55%
+  위반 grain      house_home/PILLOW_03 [house_home.png] 잔결 0.025 (기준 0.027~0.246); 반점 3.60%
+  위반 texel      house_home/PLATE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246); 반점 0.75%
+  위반 grain      house_home/PLATE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.022 (기준 0.027~0.246); 반점 0.75%
+  위반 texel      house_home/PLATE_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.97%
+  위반 grain      house_home/PLATE_02 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.025 (기준 0.027~0.246); 반점 5.97%
+  위반 texel      house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+  위반 grain      house_home/SALT_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 잔결 0.018 (기준 0.027~0.246); 반점 25.00%
+  위반 texel      house_home/WASTE_01 [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 2.38%
+GATE FAIL (29 위반)

@@ -1,0 +1,41 @@
+  (텍스처 없음: postoffice/Q4_counter_glass_1 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_counter_glass_2 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_door_glass_1 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_door_glass_2 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_window_glass_1 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_window_glass_2 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_window_glass_3 재질 Glass → '')
+  (텍스처 없음: postoffice/Q4_window_glass_4 재질 Glass → '')
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          135/135 100.0%
+  uvcollapse UV 붕괴(단색 점 UV) 135/135 100.0%
+  grain      잔결(사진 결)       100/107 93.5%
+  flat       단색 칸 비율        72/72 100.0%
+  palette    팔레트 일치         135/135 100.0%
+  colors     영역 색 수         105/107 98.1%
+  speckle    1px 반점         35/135 25.9%
+  baked      구운 빛 흔적(면 안 기울기) 107/107 100.0%
+  blob       원형 어두운 얼룩      107/107 100.0%
+  satval     채도·명도 폭        98/135 72.6%
+  cyl        원통 면 수         10/10 100.0%
+  text       글씨 텍셀·획        3/28 10.7%
+  mirror     거울 UV          28/28 100.0%
+  alpha      투명/컷아웃         135/135 100.0%
+  mat        재질·임포트         135/135 100.0%
+  tris       삼각형 수          135/135 100.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    3.5 postoffice/MAIL_02 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_03 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_04 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_05 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_06 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_07 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_08 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_09 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_10 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_11 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_12 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_13 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_14 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+    3.5 postoffice/MAIL_15 [icons.png] 반점 13.33%; S0.04 V58~246; 글씨 밀도 66 획 6.0px AA 40%
+GATE FAIL (32 위반)

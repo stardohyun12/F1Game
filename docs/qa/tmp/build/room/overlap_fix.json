@@ -1,0 +1,37 @@
+{
+ "building": "room",
+ "passes": [
+  [
+   [
+    "ROOM_props",
+    56,
+    2.2,
+    2
+   ]
+  ]
+ ],
+ "before": {
+  "pairs": 1,
+  "same_island_dups": 10,
+  "list": [
+   [
+    "DESK_01",
+    4,
+    "ROOM_props",
+    56,
+    2.2,
+    2,
+    [
+     -0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  ]
+ },
+ "after": {
+  "pairs": 0,
+  "same_island_dups": 0,
+  "list": []
+ }
+}

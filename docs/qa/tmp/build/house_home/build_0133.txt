@@ -1,0 +1,51 @@
+[00 source]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\house_home.py -- (1s, exit 0)
+     export finished in 0.1023 sec.
+     MEAS {'stairs': {'rise': 0.2, 'tread': 0.25, 'steps': 16, 'deg': 38.7}, 'ceil': {'f1': 2.8, 'f2': 2.65}, 'balcony': {'w': 7.8, 'd': 1.8}, 'glass': 16, 'tris': 4
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+  → docs\qa\tmp\build\house_home\00_source
+[01 overlap]
+   $ s/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\fix_1846.py -- house_home check (2s, exit 0)
+     [1846] objs [('APRON_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BASKET_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BEDLIGHT_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 
+     [1846] BEFORE pairs 0 dups 0
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+   overlap_check.json: 겹친 쌍 0 · 같은 덩어리 중복 0
+   $ nder/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\fix_1846.py -- house_home check both (2s, exit 0)
+     [1846] objs [('APRON_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BASKET_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BEDLIGHT_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 
+     [1846] BEFORE pairs 0 dups 0
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+   overlap_both.json: 겹친 쌍 0 · 같은 덩어리 중복 0
+  → docs\qa\tmp\build\house_home\01_overlap
+[02 split]
+   낱개(DOOR_·SHUTTER_·RAIL_·PLANTER_·PLANT_)는 생성기가 이름·피벗까지
+  → docs\qa\tmp\build\house_home\02_split
+[03 snap]
+   접지: 생성기 좌표(덧창 바닥 = 창턱, 화분 = 발코니 바닥, 잎 = 흙)
+  → docs\qa\tmp\build\house_home\03_snap
+[04 uv]
+   텍셀 32/64 = 생성기 dens_for
+  → docs\qa\tmp\build\house_home\04_uv
+[05 grain]
+   colors {'wall': [221, 158, 124], 'trim': [212, 206, 191], 'door': [64, 40, 25], 'shutter': [78, 86, 68], 'roof': [146, 81, 44], 'terra': [158, 79, 40], 'ridge': [123, 68, 37], 'soffit': [102, 64, 40], 'iron': [58, 66, 60], 'soil': [112, 84, 60], 'leaf': [88, 124, 72], 'flower': [196, 78, 82], 'brass': [176, 146, 82], 'pane': [74, 86, 92], 'curtain': [220, 210, 179], 'plaster': [242, 228, 200], 'ceil': [246, 238, 218], 'wain': [178, 209, 183], 'rwall': [244, 235, 200], 'boards': [86, 54, 34], 'glass': [186, 214, 226], 'steel': [150, 156, 158], 'stove': [54, 56, 58], 'cabinet': [113, 125, 99], 'sofa': [98, 116, 132], 'cushion': [112, 132, 148], 'apron': [184, 92, 86], 'basket': [178, 140, 92], 'mat': [124, 90, 66], 'plastic': [165, 173, 172], 'ceramic': [212, 206, 185], 'coffee': [62, 40, 28], 'shoecab': [80, 50, 31], 'sole': [34, 34, 36], 'leather': [96, 64, 46], 'shade': [226, 204, 156], 'bulb': [250, 236, 188], 'rug': [145, 68, 33], 'pepper': [44, 38, 34], 'pan': [44, 46, 48], 'fridge': [183, 187, 186], 'bin': [81, 96, 84], 'bedding': [204, 197, 187], 'quilt': [175, 132, 114], 'wardrobe': [86, 54, 34], 'mirror': [150, 176, 186], 'clockface': [212, 202, 176]}
+  → docs\qa\tmp\build\house_home\05_grain
+[06 quant]
+   colors {'house_home': 948, 'palette': 948}
+  → docs\qa\tmp\build\house_home\06_quant
+[07 unity]
+   _GroundY=0 _FootDark=0 _Blotch=0 _Lift=0 _Sat=1 _A7Lit=1 _Cutoff=0.5 _FogStart=40 _FogEnd=220 _FogMax=0.4 
+house_home raw box (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) -> (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) size (9.16, 8.25, 8.15) mats 2
+ items 67 room2F offset (0.000, 0.000, -1.650) room shell dropped, lamp 5.25
+  → docs\qa\tmp\build\house_home\07_unity
+[08 viewer]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\viewer\export_glb.py -- house_home (2s, exit 0)
+     [export_glb] manifest: D:\Github\F1Game\tools\viewer\assets\manifest.json ['room', 'house_home', 'garage', 'depot', 'postoffice']
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+     Blender quit
+  → docs\qa\tmp\build\house_home\08_viewer
+[09 check]
+    1.5 house_home/CHAIR_01 [house_home.png] 반점 1.57%; S0.61 V92~113
+    1.5 house_home/CHAIR_02 [house_home.png] 반점 1.57%; S0.61 V92~113
+GATE PASS (0 위반)
+   다른 건물과 md5 같은 텍스처(D-196): 없음
+  → docs\qa\tmp\build\house_home\09_check
+BUILD DONE house_home

@@ -61,6 +61,16 @@ public class OnFootDirector : MonoBehaviour
     [Tooltip("일기를 펼친 뒤 이 초가 지나야 덮인다(실수로 바로 넘기지 않게).")]
     [SerializeField] float diaryMinSec = 0.8f;
 
+    [Header("첫 과제 01-first-loop — 건넨 뒤 노을(SPEC §11-3 가설)")]
+    [Tooltip("문 앞 건네기가 끝나면 SunsetLook.dusk 를 0 → 1 로 이 시간(초, 실시간)에 걸쳐 올린다. 0 = 안 바꿈.")]
+    [SerializeField] float duskRampSec = 60f;
+    [Tooltip("건넨 뒤 '첫 배달 끝' 글이 떠 있는 시간(초). 그 뒤 돌아오는 길은 화면 0(SPEC §6-9).")]
+    [SerializeField] float handedCaptionSec = 6f;
+    /// <summary>건네기가 끝난 때(unscaled) — 노을 시작.</summary>
+    public float HandedAt { get; private set; } = -99f;
+    Coroutine duskRamp;
+    bool lookWasOn;
+
     public RoomCalendar Calendar => calendar;
     public RoomBed Bed => bed;
     /// <summary>일기를 펼친 때(unscaled) · 덮어서 아침이 된 때 — DotScreenUI 가 읽는다.</summary>
@@ -102,6 +112,10 @@ public class OnFootDirector : MonoBehaviour
     public readonly List<string> Log = new List<string>();
     /// <summary>사장 대화를 끝냈는지 — 이 뒤에만 카트를 탄다.</summary>
     public bool Talked { get; private set; }
+    /// <summary>카트를 타려면 사장 대화가 먼저인가. 보관소 흐름(SPEC §11-7: 사장은 정비만)이면 아니다 — 불변 조건 「첫 배달 한 바퀴 배선」이 본다.</summary>
+    public bool CartNeedsBossTalk => boss != null && !DepotFlow;
+    /// <summary>SPEC §11-4: 옛 배달 지점(AlleyEnd·CoastCafe·HairpinOrchard·LoneHouse — DP_ 접두가 아닌 DeliveryPoint)은 Play 때 끈다.</summary>
+    public static bool IsLegacyPoint(DeliveryPoint dp) => dp != null && !dp.name.StartsWith("DP_") && dp.transform.parent != null && dp.transform.parent.name == "DeliverySystem";
     public bool InTalk => talkLine >= 0;
     /// <summary>지금 자막 한 줄(대화 중이 아니면 "").</summary>
     public string Subtitle => InTalk ? Lines[talkLine].who + ": " + Lines[talkLine].text : "";
@@ -173,9 +187,10 @@ public class OnFootDirector : MonoBehaviour
         get
         {
             if (firstDrop == null || Delivered) return null;
+            // 첫 과제 01-first-loop(SPEC §11-7): 보관소 흐름은 사장 대화가 없어도 칠판 쪽지를 집으면 찻집을 가리킨다.
+            if (DepotFlow && OrderPicked) return firstDrop;
             if (!Talked) return null;   // C-002(도현 D-277 B): 걷는 구간엔 방향 표시 없음 — 집을 나서면 정비소 건물이 화면에 들어온다(OpeningSequence)
-            if (!DepotFlow) return firstDrop;
-            return OrderPicked ? firstDrop : depotDest;
+            return DepotFlow ? depotDest : firstDrop;
         }
     }
     /// <summary>대화 끝 시선 이동 중(QA·캡처용).</summary>
@@ -286,11 +301,43 @@ public class OnFootDirector : MonoBehaviour
         SetCarControl(false);
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
         if (orderBoard != null) orderBoard.SetLines(BoardLines);
+        HideLegacyPoints();
+        var look0 = SunsetLook.Find();
+        lookWasOn = look0 != null && look0.IsOn;
+        if (look0 != null && look0.IsOn && DepotFlow) { look0.dusk = 0f; look0.Apply(); }   // 아침은 오후 빛(D-239)
         EnterFoot();
         opening = GetComponent<OpeningSequence>();
         if (opening == null) opening = gameObject.AddComponent<OpeningSequence>();
         opening.Begin(this);                     // C-002: 방에서 눈을 뜬다
         Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")} 흐름={(DepotFlow ? "보관소(D-250)" : "사장 말 주문")}");
+    }
+
+    /// <summary>SPEC §11-4: 옛 배달 지점 4곳을 끈다(DeliveryManager.Start 가 켠 뒤 — Start 는 한 프레임 늦게 돈다).</summary>
+    void HideLegacyPoints()
+    {
+        int n = 0;
+        foreach (var dp in FindObjectsByType<DeliveryPoint>(FindObjectsSortMode.None))
+            if (IsLegacyPoint(dp)) { dp.gameObject.SetActive(false); n++; }
+        if (n > 0) Mark($"옛 배달 지점 {n}곳 끔(SPEC §11-4)");
+    }
+
+    /// <summary>SPEC §11-3 가설: 건넨 뒤 duskRampSec 동안 오후 → 노을. SunsetLook 이 꺼져 있었으면 dusk 0 으로 켠 뒤 올린다(켜는 순간 튀지 않게).</summary>
+    IEnumerator DuskRamp()
+    {
+        var look = SunsetLook.Find();
+        if (look == null) { Mark("노을 실패: SunsetLook 없음"); yield break; }
+        float d0 = look.IsOn ? look.dusk : 0f;
+        if (!look.IsOn) { look.dusk = 0f; look.SetOn(true); }
+        Mark($"노을 시작 dusk {d0:F2} → 1 ({duskRampSec:F0}s)");
+        for (float t = 0f; t < duskRampSec; t += Time.unscaledDeltaTime)
+        {
+            look.dusk = Mathf.Lerp(d0, 1f, t / duskRampSec);
+            look.Apply();
+            yield return null;
+        }
+        look.dusk = 1f; look.Apply();
+        duskRamp = null;
+        Mark("노을 1.0");
     }
 
     void Mark(string s)
@@ -411,7 +458,7 @@ public class OnFootDirector : MonoBehaviour
             else if (hit == car)
             {
                 // 기능 2: 사장 말을 듣기 전엔 못 탄다. D-250: 주문을 맡았으면 포장해야 싣는다.
-                if (boss != null && !Talked) SetPrompt("사장님한테 먼저");
+                if (CartNeedsBossTalk && !Talked) SetPrompt("사장님한테 먼저");
                 else if (DepotFlow && OrderPicked && !Packed) SetPrompt(packSpot != null && packSpot.Ready ? "작업대 상자 들고 오기" : "포장 먼저");
                 else
                 {
@@ -765,6 +812,8 @@ public class OnFootDirector : MonoBehaviour
         DayLog.Record(metWho, firstJob != null ? firstJob.callerName : "", HandoverTier.Name[HandoverTierIdx], HandoverMoney);
         Mark($"건네기 끝 — {HandoverTier.Name[HandoverTierIdx]} 돈 {HandoverMoney} 정산창 {ResultPanel.ShowCount}회");
         StartCoroutine(CloseDoorLater());
+        HandedAt = Time.unscaledTime;
+        if (duskRampSec > 0f && duskRamp == null) duskRamp = StartCoroutine(DuskRamp());
     }
 
     IEnumerator CloseDoorLater()
@@ -956,6 +1005,11 @@ public class OnFootDirector : MonoBehaviour
         HandoverTierIdx = -1; HandoverMoney = 0; moneyText = null; MoneyAt = -99f; MoneyEnd = -99f;
         StartIntegrity = -1f; freeDriveEntered = false;
         StepTrail = "없음";
+        // 아침 = 오후 빛으로(노을은 건넨 뒤에만)
+        if (duskRamp != null) { StopCoroutine(duskRamp); duskRamp = null; }
+        HandedAt = -99f;
+        var look = SunsetLook.Find();
+        if (look != null && look.IsOn) { look.dusk = 0f; if (lookWasOn) look.Apply(); else look.SetOn(false); }
         talkLine = -1; curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
         // 손에 든 상자: 받는 사람에게 건넨 것은 치우고 새로 만든다(MoveBoxToHands 가 heldBox 를 비웠다)
         if (heldBoxGiven != null) { Destroy(heldBoxGiven); heldBoxGiven = null; }
@@ -1136,7 +1190,7 @@ public class OnFootDirector : MonoBehaviour
         var job = firstJob != null ? firstJob : pickedJob;
         string place = !string.IsNullOrEmpty(job.callerName) ? job.callerName : firstDrop != null ? firstDrop.Label : "배달지";
         string who = string.IsNullOrEmpty(job.recipientName) ? "" : " " + job.recipientName;
-        if (HandedOver) return $"첫 배달 끝 +{HandoverMoney:N0}원 — 집에 가서 자자";
+        if (HandedOver) return State == Mode.OnFoot && Time.unscaledTime - HandedAt < handedCaptionSec ? $"첫 배달 끝 +{HandoverMoney:N0}원 — 집에 가서 자자" : "";   // 돌아오는 길 = 화면 0(SPEC §6-9)
         if (Delivered) return CarryingBox ? $"상자 들고{who}네 문 두드리기" : $"다 왔다 — 내려서{who}에게";
         if (OrderStarted)
         {

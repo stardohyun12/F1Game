@@ -1,0 +1,11 @@
+var sb=new System.Text.StringBuilder();
+var top=UnityEngine.GameObject.Find("TownV6_Gray").transform;
+System.Action<UnityEngine.Transform,int> dump=null;
+dump=(t,d)=>{ var mf=t.GetComponent<UnityEngine.MeshFilter>(); var mr=t.GetComponent<UnityEngine.MeshRenderer>(); var col=t.GetComponent<UnityEngine.Collider>();
+  sb.AppendLine(new string(' ',d*2)+t.name+" act="+t.gameObject.activeInHierarchy+" ch="+t.childCount+(mf&&mf.sharedMesh?" v="+mf.sharedMesh.vertexCount:"")+(mr?" mr="+mr.enabled:"")+(col?" col="+col.GetType().Name:"")+" "+(mr?mr.bounds.center.ToString("F0")+mr.bounds.size.ToString("F0"):""));
+  if(d<2) { int k=0; foreach(UnityEngine.Transform c in t){ if(k++>6){sb.AppendLine(new string(' ',d*2+2)+"...");break;} dump(c,d+1);} } };
+foreach(var n in new[]{"Buildings","TerraceBlock","TownV6_Terrain","Delivery","DeadEnds"}) dump(top.Find(n),0);
+dump(UnityEngine.GameObject.Find("OnFoot_HomeGarage").transform,0);
+var roads=top.Find("Roads"); int on=0; foreach(UnityEngine.Transform c in roads){ var r=c.GetComponent<UnityEngine.Renderer>(); if(r&&r.enabled&&c.gameObject.activeInHierarchy) on++; } sb.AppendLine("old Roads renderers on="+on);
+int pj=0,pe=0,pp=0; foreach(UnityEngine.Transform c in top.Find("RoadsV2")){ if(!c.gameObject.activeInHierarchy) continue; if(c.name.StartsWith("ROAD_V2j"))pj++; else if(c.name.StartsWith("ROAD_V2e"))pe++; else if(c.name.StartsWith("ROAD_V2p"))pp++; else sb.AppendLine(" other "+c.name);} sb.AppendLine("V2 e="+pe+" j="+pj+" p="+pp);
+return sb.ToString();

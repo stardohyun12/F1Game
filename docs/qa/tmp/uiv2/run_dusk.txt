@@ -1,0 +1,23 @@
+play
+OK dusk=1
+2 s status=starting frame=226 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+6 s status=방문 닫기 frame=338 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+11 s status=계단 아래 frame=442 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+15 s status=현관 앞 frame=564 ts=1 state=OnFoot prompt='E 열기' talked=False order=False delivered=False
+19 s status=마당 frame=696 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+23 s status=마당 동쪽 frame=807 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+28 s status=돌계단 아래 frame=927 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+36 s status=인도 205 frame=1178 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+41 s status=인도 210 frame=1290 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+45 s status=차고 계단 앞 frame=1417 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+49 s status=차고 계단 위 frame=1536 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+53 s status=골목 222 frame=1654 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+58 s status=골목 230 frame=1785 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+62 s status=차고 마당 frame=1903 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+road: OK tint=RGBA(1.000, 0.867, 0.783, 1.000) vis=compass
+compass: OK tint=RGBA(1.000, 0.867, 0.783, 1.000) vis=road warn
+reset pending=0
+console: v2=True entries=26 errors=0
+
+status=done stuck=2 frame=6675 ts=0 state=InCart prompt='' talked=True order=True delivered=True
+stop

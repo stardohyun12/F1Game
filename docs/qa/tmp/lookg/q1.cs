@@ -1,0 +1,17 @@
+var s = SunsetLook.Find(); var sb = new System.Text.StringBuilder();
+sb.Append("captured=" + s.IsOn + " amount=" + s.amount + "\n");
+sb.Append("sea=" + (s.sea ? s.sea.name + " mat=" + s.sea.sharedMaterial.name + " b=" + s.sea.bounds : "-") + "\n");
+sb.Append("seaNear=" + (s.seaNear ? s.seaNear.enabled + " " + s.seaNear.transform.position : "-") + "\n");
+sb.Append("sky=" + RenderSettings.skybox.name + " sh=" + RenderSettings.skybox.shader.name + " fog=" + RenderSettings.fogColor + " " + RenderSettings.fogStartDistance + "-" + RenderSettings.fogEndDistance + " mode=" + RenderSettings.fogMode + " amb=" + RenderSettings.ambientMode + " " + RenderSettings.ambientSkyColor + "\n");
+var sun = RenderSettings.sun; sb.Append("sun=" + (sun ? sun.name + sun.transform.eulerAngles + " c=" + sun.color + " i=" + sun.intensity + " sh=" + sun.shadows : "-") + "\n");
+var pc = UnityEngine.Object.FindFirstObjectByType<PCLookScene>(); sb.Append("pclook=" + (pc ? pc.look + " h=" + pc.lowResHeight : "-") + "\n");
+var a7 = UnityEngine.Object.FindFirstObjectByType<A7ShadeGlobals>(); sb.Append("a7=" + (a7 ? a7.name : "-") + "\n");
+var mood = UnityEngine.Object.FindFirstObjectByType<MoodController>(); sb.Append("mood=" + (mood ? mood.name : "-") + "\n");
+var sr = SeaReflection.Find(); sb.Append("seaRefl=" + (sr ? sr.enabled + " hide=" + sr.hide.Length + " far=" + sr.farClip : "-") + "\n");
+var m = s.seaMaterial; foreach (var n in new[] { "_ShallowCol", "_DeepCol", "_CoolCol", "_Glow", "_Hot", "_Core", "_Foam", "_CrestCol", "_DayTint", "_RippleCol" }) sb.Append(n + "=" + m.GetColor(n) + " ");
+sb.Append("\n"); foreach (var n in new[] { "_Cool", "_Lv", "_Cuts", "_SceneRefl", "_Disp", "_DepthRect", "_HorizonFade", "_FoamMax", "_GlintCuts" }) sb.Append(n + "=" + m.GetVector(n) + " ");
+sb.Append("\nhideWhileOn=" + (s.hideWhileOn == null ? 0 : s.hideWhileOn.Length) + " backdrop=" + (s.backdrop ? s.backdrop.name : "-") + " hiddenTrees=" + (s.hiddenTrees == null ? 0 : s.hiddenTrees.Length));
+foreach (var c in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None)) sb.Append("\ncam " + c.name + " " + c.transform.position + " " + c.transform.eulerAngles + " en=" + c.enabled);
+foreach (var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None)) if (r.sharedMaterial != null && r.sharedMaterial.name.Contains("Sea")) sb.Append("\nseaR " + r.name + " " + r.sharedMaterial.name + " " + r.bounds.min + "~" + r.bounds.max);
+var t = UnityEngine.Object.FindObjectsByType<Terrain>(FindObjectsSortMode.None); foreach (var tt in t) sb.Append("\nterrain " + tt.name + " " + tt.transform.position + " " + tt.terrainData.size);
+return sb.ToString();

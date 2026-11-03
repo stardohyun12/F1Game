@@ -1,0 +1,24 @@
+play
+OK
+1 s status=starting frame=369 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+3 s status=방문 닫기 frame=698 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+7 s status=계단 아래 frame=986 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+10 s status=현관 앞 frame=1285 ts=1 state=OnFoot prompt='E 열기' talked=False order=False delivered=False
+13 s status=마당 frame=1682 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+16 s status=마당 동쪽 frame=1990 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+19 s status=돌계단 아래 frame=2312 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+24 s status=인도 205 frame=3057 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+27 s status=인도 210 frame=3368 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+30 s status=차고 계단 앞 frame=3686 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+33 s status=차고 계단 위 frame=3983 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+36 s status=골목 222 frame=4297 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+39 s status=골목 230 frame=4538 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+42 s status=차고 마당 frame=4749 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+cmp 0 OK/OK
+cmp 1 OK/OK
+cmp 2 OK/OK
+175 s status=done stuck=2 frame=13011 ts=0 state=InCart prompt='' talked=True order=True delivered=True
+console: entries=26 errors=0
+
+status=done stuck=2 frame=13289 ts=0 state=InCart prompt='' talked=True order=True delivered=True
+stop

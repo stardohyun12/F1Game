@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TV6_SeaDusk
+  m_Shader: {fileID: 4800000, guid: 64acb78d2e44a9b4aafc4b6c8680a6ae, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DepthTex:
+        m_Texture: {fileID: 2800000, guid: 8e67534da51e51146a2b87420e797704, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Debug: 0
+    - _Filt: 0.3
+    - _Glint: 2.2
+    - _Reflect: 1
+    - _Shine: 900
+    - _Sparkle: 0.16
+    - _SparkleRate: 0.5
+    - _StepFps: 12
+    - _StepKeep: 0.35
+    - _Style: 1
+    m_Colors:
+    - _Absorb: {r: 2.2, g: 0.6, b: 0, a: 0}
+    - _Core: {r: 1, g: 0.93, b: 0.74, a: 1}
+    - _Crest: {r: 0.72, g: 1, b: 70, a: 0.45}
+    - _CrestCol: {r: 1, g: 0.78, b: 0.7, a: 1}
+    - _Cuts: {r: 0.18, g: 0.34, b: 0.62, a: 0}
+    - _DayTint: {r: 0.3599998, g: 0.58, b: 0.7, a: 1}
+    - _DeepCol: {r: 0.049999982, g: 0.079999976, b: 0.18999997, a: 1}
+    - _DepthRect: {r: -169, g: -451, b: 320, a: 8}
+    - _Detail: {r: 1.15, g: 0.05, b: 0.7, a: 0.04}
+    - _Detail2: {r: 14, g: -34, b: 0, a: 0}
+    - _Disp: {r: 1, g: -9, b: -291, a: 250}
+    - _Foam: {r: 0.97999996, g: 0.89, b: 0.8399999, a: 1}
+    - _FoamA: {r: 0.9, g: 0.8, b: 0.82, a: 0.12}
+    - _FoamMax: {r: 4, g: 8, b: 10, a: 20}
+    - _FoamSurge: {r: 0.35, g: 11, b: 3, a: 7}
+    - _FoamW: {r: 2, g: 6, b: 0.5, a: 1.8}
+    - _Gerst: {r: 0.55, g: 1, b: 0, a: 2.5}
+    - _GlintCuts: {r: 0.05, g: 0.25, b: 0.8, a: 0}
+    - _Glow: {r: 0.96, g: 0.54999995, b: 0.39999998, a: 1}
+    - _HorizonFade: {r: 300, g: 650, b: 0.5, a: 0}
+    - _Hot: {r: 1, g: 0.76, b: 0.45999992, a: 1}
+    - _Lv: {r: 0.1, g: 0.24, b: 0.45, a: 0.8}
+    - _ShallowCol: {r: 0.19999996, g: 0.5, b: 0.5, a: 1}
+    - _W0: {r: 8, g: 31, b: 0.32, a: 0}
+    - _W1: {r: -22, g: 17, b: 0.16, a: 1.7}
+    - _W2: {r: 24, g: 4.3, b: 0.035, a: 3.1}
+    - _W3: {r: -30, g: 2.4, b: 0.018, a: 4.4}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

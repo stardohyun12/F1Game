@@ -1,0 +1,20 @@
+// 편집 모드 캡처(__TAG__): 앉은 자리 = seat 각 + FishingSpot.seatLookDown, FOV = seatedFov(0 이면 52), 640x360 Point, 시간 고정 20 s. yaw 오프셋 __YAW__
+var dir = "D:/Github/F1Game/docs/qa/evidence/sunset7/raw/"; System.IO.Directory.CreateDirectory(dir);
+var look = SunsetLook.Find(); var seat = GameObject.Find("Sunset_D227/Cam_Sunset").transform;
+var spot = UnityEngine.Object.FindFirstObjectByType<FishingSpot>();
+float fov = __V6__ > 0 ? 52f : (spot.seatedFov > 1 ? spot.seatedFov : 52f), down = __V6__ > 0 ? 0f : spot.seatLookDown;
+var sr = SeaReflection.Find(); int ds0 = sr.downscale; sr.downscale = 1;
+var go = new GameObject("_tmpC"); var c = go.AddComponent<Camera>(); c.CopyFrom(Camera.main); c.fieldOfView = fov; c.farClipPlane = 1800; c.nearClipPlane = 0.05f;
+var e = seat.eulerAngles; c.transform.SetPositionAndRotation(seat.position, Quaternion.Euler(e.x + down, e.y + __YAW__f, 0));
+var rt = new RenderTexture(640, 360, 24); rt.filterMode = FilterMode.Point; c.targetTexture = rt;
+var tex = new Texture2D(640, 360, TextureFormat.RGB24, false);
+look.SetOn(true);
+Shader.SetGlobalVector("_PCSeaClock", new Vector4(1, 20f, 0, 0));
+sr.RenderFor(c); c.Render();
+RenderTexture.active = rt; tex.ReadPixels(new Rect(0, 0, 640, 360), 0, 0); tex.Apply();
+System.IO.File.WriteAllBytes(dir + "__TAG__.png", tex.EncodeToPNG());
+var hz = c.WorldToViewportPoint(c.transform.position + Vector3.ProjectOnPlane(c.transform.forward, Vector3.up).normalized * 2000f).y;
+var sd = Quaternion.Euler(-look.skySunElevation, look.sunAzimuth, 0) * Vector3.forward; var sv = c.WorldToViewportPoint(c.transform.position + sd * 2000f);
+look.SetOn(false); Shader.SetGlobalVector("_PCSeaReflOn", Vector4.zero); Shader.SetGlobalVector("_PCSeaClock", Vector4.zero); sr.downscale = ds0;
+RenderTexture.active = null; c.targetTexture = null; UnityEngine.Object.DestroyImmediate(go); rt.Release();
+return "{\"tag\":\"__TAG__\",\"fov\":" + fov + ",\"down\":" + down + ",\"horizonFromTop\":" + (1 - hz).ToString("F3") + ",\"sunX\":" + sv.x.ToString("F3") + ",\"sunFromTop\":" + (1 - sv.y).ToString("F3") + "}";

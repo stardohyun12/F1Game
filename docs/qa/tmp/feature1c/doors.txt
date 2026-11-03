@@ -1,0 +1,6 @@
+DOOR_PARENTS: OK 섬=(184.08,28.52,-62.74) 열기 안내='E 열기' 시선=DOOR_PARENTS → 열림=True · 닫기 안내='E 닫기' 시선=DOOR_PARENTS → 닫힘=True
+DOOR_BALCONY: OK 섬=(187.09,28.53,-63.29) 열기 안내='E 열기' 시선=DOOR_BALCONY → 열림=True · 닫기 안내='E 닫기' 시선=DOOR_BALCONY → 닫힘=True
+DOOR_01: OK 섬=(184.37,25.32,-64.86) 열기 안내='E 열기' 시선=DOOR_01 → 열림=True · 닫기 안내='E 닫기' 시선=DOOR_01 → 닫힘=True
+DOOR_PARENTSROOM: OK 섬=(184.75,28.52,-59.73) 열기 안내='E 열기' 시선=DOOR_PARENTSROOM → 열림=True · 닫기 안내='E 닫기' 시선=DOOR_PARENTSROOM → 닫힘=True
+DOOR_ROOM: OK 섬=(187.82,28.52,-62.00) 열기 안내='E 열기' 시선=DOOR_ROOM → 열림=True · 닫기 안내='E 닫기' 시선=DOOR_ROOM → 닫힘=True
+문 5/5 통과

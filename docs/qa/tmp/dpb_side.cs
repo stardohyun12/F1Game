@@ -1,0 +1,11 @@
+var go = new GameObject("tmp_sidecam");
+var cam = go.AddComponent<Camera>();
+cam.orthographic = true; cam.orthographicSize = 0.5f;
+go.transform.SetPositionAndRotation(new Vector3(274.4f, 32.3f, -27.6f), Quaternion.Euler(0f, 180f, 0f));
+cam.nearClipPlane = 0.05f; cam.farClipPlane = 1.4f;
+var rt = new RenderTexture(512, 512, 24); cam.targetTexture = rt; cam.Render();
+RenderTexture.active = rt; var tex = new Texture2D(512, 512, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 512, 512), 0, 0); tex.Apply(); RenderTexture.active = null;
+System.IO.File.WriteAllBytes("D:/Github/F1Game/docs/qa/evidence/depot-packbench/side_paper.png", tex.EncodeToPNG());
+cam.targetTexture = null; UnityEngine.Object.Destroy(rt); UnityEngine.Object.Destroy(go);
+var p = GameObject.Find("OnFoot_Depot/PackSpot/PackBench/Supplies/Newspaper");
+return "side view from +z looking -z, center (274.4, 32.3), 1m tall; newspaper " + (p ? p.transform.position.ToString("F3") + " b.min.y=" + p.GetComponent<Renderer>().bounds.min.y.ToString("F3") : "none");

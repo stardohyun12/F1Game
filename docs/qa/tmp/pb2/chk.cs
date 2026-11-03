@@ -1,0 +1,2 @@
+var t = System.Type.GetType("PitCrew.PackBench.PackBench, PitCrew");
+return (t != null && t.GetMethod("Qa2Run") != null) + " compiling=" + UnityEditor.EditorApplication.isCompiling + " playing=" + UnityEditor.EditorApplication.isPlaying;

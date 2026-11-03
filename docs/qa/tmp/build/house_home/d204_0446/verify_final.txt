@@ -1,0 +1,6 @@
+project=D:/Github/F1Game/F1Studio/Assets
+active=house_home
+missingMaterials=0
+glass=16
+M_house_home_house_home SN=0
+M_house_home_glass SN=n/a

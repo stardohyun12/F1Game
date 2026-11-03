@@ -1,0 +1,20 @@
+[
+ {
+  "id": "unity-Studio_Building-20261029-033744-ad8b",
+  "status": "fixed",
+  "reply": "거실·부엌·계단·2층 복도 구조를 유지하고 벽·천장 결을 줄였으며 주인공 방의 미색 상단·하늘색 판벽을 복원했습니다.",
+  "after_shot": "art/_review/2026-10-29-house-home-calm/sheet.png"
+ },
+ {
+  "id": "unity-Studio_Building-20261029-033830-1808",
+  "status": "fixed",
+  "reply": "발코니를 폭 3.7m·깊이 1.8m로 넓힌 상태를 재빌드하고 새 캡처로 확인했습니다.",
+  "after_shot": "docs/qa/evidence/studio-house_home/s04_calm_balcony.png"
+ },
+ {
+  "id": "unity-Studio_Building-20261029-033845-a0bc",
+  "status": "fixed",
+  "reply": "벽 안 6~10cm 창틀·얇은 창살·반투명 유리 16장을 재빌드하고 실제 창 캡처로 확인했습니다.",
+  "after_shot": "docs/qa/evidence/studio-house_home/s04_calm_window.png"
+ }
+]

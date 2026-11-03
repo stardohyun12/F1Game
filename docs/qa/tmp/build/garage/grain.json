@@ -1,0 +1,34 @@
+{
+ "garage_baked32": [
+  4096,
+  1024
+ ],
+ "garage_details": [
+  512,
+  256
+ ],
+ "dirt_baked32": [
+  2048,
+  1024
+ ],
+ "garage_props": [
+  256,
+  512
+ ],
+ "garage_lamp": [
+  32,
+  32
+ ],
+ "garage_sign": [
+  256,
+  128
+ ],
+ "garage_festival": [
+  128,
+  128
+ ],
+ "garage_posters": [
+  256,
+  256
+ ]
+}

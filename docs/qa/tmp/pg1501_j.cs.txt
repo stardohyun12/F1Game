@@ -1,0 +1,6 @@
+var sb=new System.Text.StringBuilder();
+var root=GameObject.Find("TownV6_Gray").transform.Find("RoadsV2");
+foreach(Transform t in root){ if(!t.name.StartsWith("ROAD_V2j_216"))continue; var mf=t.GetComponent<MeshFilter>(); var v=mf.sharedMesh.vertices; var b=t.GetComponent<MeshRenderer>().bounds;
+ sb.Append(t.name+" mat="+t.GetComponent<MeshRenderer>().sharedMaterial.name+" n="+v.Length+" min="+b.min.ToString("F1")+" max="+b.max.ToString("F1")+"\n");
+ foreach(var q in v){ var p=t.TransformPoint(q); if(Mathf.Abs(p.x-262.1f)<3&&Mathf.Abs(p.z+50.5f)<3){ float ty=float.NaN; if(Physics.Raycast(new Vector3(p.x,200,p.z),Vector3.down,out var h,400,~0)) ty=h.point.y; sb.Append("  ("+p.x.ToString("F1")+","+p.y.ToString("F2")+","+p.z.ToString("F1")+") hit="+ty.ToString("F2")+"\n"); } } }
+return sb.ToString();

@@ -1,0 +1,70 @@
+95	TownV6_Gray/RoadsV2
+90	TownV6_Gray/TerraceBlock/FieldPatch
+79	TownV6_Gray/D198_Buildings/D198_depot
+116	TownV6_Gray/D198_Buildings/house_home
+79	TownV6_Gray/D198_Buildings/D198_garage
+85	TownV6_Gray/D198_Buildings/D198_postoffice
+2	TV6_Loop/AssetSlots
+2	TownV6_Gray/DeadEnds/DEADEND_foot_camo_300240479_153
+5	TownV6_Gray/TerraceBlock
+2	TownV6_Gray/DeadEnds/DEADEND_foot_camo_1413355212_296
+2	TownV6_Gray/DeadEnds/DEADEND_foot_tomo_726995051_53
+2	TownV6_Gray/Delivery/STOP_hill_field
+2	TownV6_Gray/Delivery/STOP_MART
+1	TownV6_Gray/DeadEnds/DEADEND_wall_camo_794408002_236
+V2p verts=385 tris=622 topo=Triangles
+  pair 0 (208.50, 20.34, -87.35) (208.50, 20.34, -87.39) d=0.04
+  pair 2 (208.41, 20.33, -87.36) (208.82, 20.38, -87.32) d=0.41
+  pair 4 (209.00, 20.40, -87.30) (209.00, 20.39, -87.50) d=0.20
+  pair 6 (209.00, 20.39, -87.56) (208.83, 20.38, -87.50) d=0.18
+  pair 8 (209.09, 20.39, -87.59) (209.27, 20.43, -87.27) d=0.37
+  pair 10 (209.50, 20.45, -87.50) (209.85, 20.40, -87.85) d=0.50
+  tri0 0,1,2 tri1 3,4,5
+door: POBOX_DOOR_02 (282.0, 32.3, -30.1) parent=q4_postoffice
+door: POBOX_DOOR_26 (282.0, 33.2, -29.2) parent=q4_postoffice
+door: POBOX_DOOR_15 (282.0, 32.9, -30.4) parent=q4_postoffice
+door: POBOX_DOOR_32 (282.0, 33.5, -29.5) parent=q4_postoffice
+door: POBOX_DOOR_18 (282.0, 32.9, -29.5) parent=q4_postoffice
+door: STUDIO_CamDoor1Look (185.4, 26.4, -64.1) parent=house_home
+door: POBOX_DOOR_11 (282.0, 32.6, -29.5) parent=q4_postoffice
+door: POBOX_DOOR_14 (282.0, 32.6, -28.6) parent=q4_postoffice
+door: POBOX_DOOR_12 (282.0, 32.6, -29.2) parent=q4_postoffice
+door: POBOX_DOOR_28 (282.0, 33.2, -28.6) parent=q4_postoffice
+door: POBOX_DOOR_05 (282.0, 32.3, -29.2) parent=q4_postoffice
+door: POBOX_DOOR_22 (282.0, 33.2, -30.4) parent=q4_postoffice
+door: POBOX_DOOR_17 (282.0, 32.9, -29.8) parent=q4_postoffice
+door: Q4_door_glass_2 (286.3, 31.6, -31.8) parent=q4_postoffice
+door: POBOX_DOOR_10 (282.0, 32.6, -29.8) parent=q4_postoffice
+door: POBOX_DOOR_09 (282.0, 32.6, -30.1) parent=q4_postoffice
+door: DOOR_BALCONY (184.9, 28.5, -63.8) parent=house_home
+door: POBOX_DOOR_16 (282.0, 32.9, -30.1) parent=q4_postoffice
+door: POBOX_DOOR_01 (282.0, 32.3, -30.4) parent=q4_postoffice
+door: POBOX_DOOR_27 (282.0, 33.2, -28.9) parent=q4_postoffice
+door: POBOX_DOOR_04 (282.0, 32.3, -29.5) parent=q4_postoffice
+door: POBOX_DOOR_13 (282.0, 32.6, -28.9) parent=q4_postoffice
+door: DOOR_MOM (182.2, 28.5, -60.3) parent=house_home
+door: POBOX_DOOR_08 (282.0, 32.6, -30.4) parent=q4_postoffice
+door: DOOR_BATH (188.0, 28.5, -61.3) parent=house_home
+door: STUDIO_CamDoor1 (184.6, 26.8, -68.6) parent=house_home
+door: POBOX_DOOR_03 (282.0, 32.3, -29.8) parent=q4_postoffice
+door: POBOX_DOOR_20 (282.0, 32.9, -28.9) parent=q4_postoffice
+door: DOOR_01 (184.5, 25.3, -63.9) parent=house_home
+door: POBOX_DOOR_30 (282.0, 33.5, -30.1) parent=q4_postoffice
+door: POBOX_DOOR_35 (282.0, 33.5, -28.6) parent=q4_postoffice
+door: POBOX_DOOR_33 (282.0, 33.5, -29.2) parent=q4_postoffice
+door: Q4_door_glass_1 (286.3, 31.6, -31.8) parent=q4_postoffice
+door: POBOX_DOOR_19 (282.0, 32.9, -29.2) parent=q4_postoffice
+door: POBOX_DOOR_06 (282.0, 32.3, -28.9) parent=q4_postoffice
+door: GATEPOST_01 (193.0, 24.4, -65.3) parent=field_patch
+door: POBOX_DOOR_25 (282.0, 33.2, -29.5) parent=q4_postoffice
+door: POBOX_DOOR_34 (282.0, 33.5, -28.9) parent=q4_postoffice
+door: Q3_person_door (275.1, 30.9, -35.2) parent=Q3_Depot
+door: GATEPOST_02 (194.2, 24.4, -65.5) parent=field_patch
+door: POBOX_DOOR_29 (282.0, 33.5, -30.4) parent=q4_postoffice
+door: POBOX_DOOR_24 (282.0, 33.2, -29.8) parent=q4_postoffice
+door: POBOX_DOOR_21 (282.0, 32.9, -28.6) parent=q4_postoffice
+door: POBOX_DOOR_07 (282.0, 32.3, -28.6) parent=q4_postoffice
+door: DOOR_ROOM (186.0, 28.5, -61.0) parent=house_home
+door: DOOR_01 (221.9, 26.7, -50.7) parent=garage_v5_combo
+door: POBOX_DOOR_23 (282.0, 33.2, -30.1) parent=q4_postoffice
+door: POBOX_DOOR_31 (282.0, 33.5, -29.8) parent=q4_postoffice

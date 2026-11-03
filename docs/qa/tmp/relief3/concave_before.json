@@ -1,0 +1,12 @@
+[
+{"id":15,"cx":112.6,"cz":-47.5,"area":3797,"lowFrac":0.727,"concave":true,"bankMed":0.32,"worst":-2.09,"worstAt":[118,-14],"skip":""},
+{"id":24,"cx":115.2,"cz":23.4,"area":3274,"lowFrac":0.692,"concave":true,"bankMed":0.34,"worst":-2.40,"worstAt":[138,20],"skip":""},
+{"id":27,"cx":-182.8,"cz":209.1,"area":13864,"lowFrac":0.572,"concave":true,"bankMed":0.28,"worst":-3.49,"worstAt":[-76,183],"skip":""},
+{"id":7,"cx":55.0,"cz":-163.7,"area":2885,"lowFrac":0.542,"concave":true,"bankMed":0.18,"worst":-1.28,"worstAt":[50,-133],"skip":""},
+{"id":16,"cx":-53.7,"cz":0.1,"area":37635,"lowFrac":0.529,"concave":true,"bankMed":0.11,"worst":-7.08,"worstAt":[69,-18],"skip":""},
+{"id":13,"cx":154.8,"cz":-79.7,"area":562,"lowFrac":0.443,"concave":true,"bankMed":0.41,"worst":-1.66,"worstAt":[169,-84],"skip":"terrace"},
+{"id":28,"cx":-45.0,"cz":268.7,"area":883,"lowFrac":0.145,"concave":true,"bankMed":-0.05,"worst":-0.90,"worstAt":[-56,282],"skip":""},
+{"id":10,"cx":-210.0,"cz":-109.1,"area":3251,"lowFrac":0.073,"concave":false,"bankMed":0.06,"worst":-0.37,"worstAt":[-226,-104],"skip":""},
+{"id":17,"cx":-207.1,"cz":-45.3,"area":3045,"lowFrac":0.022,"concave":false,"bankMed":0.05,"worst":-0.33,"worstAt":[-224,-56],"skip":""},
+{"id":6,"cx":114.0,"cz":-209.2,"area":750,"lowFrac":0.021,"concave":false,"bankMed":-0.05,"worst":-0.59,"worstAt":[117,-230],"skip":""}
+]

@@ -1,0 +1,15 @@
+{
+  "mode": "check",
+  "threshold_m": 0.01,
+  "solver_epsilon_m": 0.0005,
+  "before": {
+    "parcel_pairs": [],
+    "fixture_pairs": []
+  },
+  "moves": [],
+  "after": {
+    "parcel_pairs": [],
+    "fixture_pairs": []
+  },
+  "max_parcel_tris": 38
+}

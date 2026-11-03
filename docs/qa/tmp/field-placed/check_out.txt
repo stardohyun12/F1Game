@@ -1,0 +1,25 @@
+FieldPatch count=1 instanceRoot=True src=Assets/Art/Library/Buildings/field_patch/field_patch.prefab overrides=0 added=0
+pos=(194.414, 24.370, -62.895) yaw=190.0
+  BASKET_01 minY-ground=0.014 topY-ground=0.274
+  CAN_01 minY-ground=0.014 topY-ground=0.456
+  FENCE_01 minY-ground=-0.151 topY-ground=0.739
+  FENCE_02 minY-ground=-0.150 topY-ground=0.737
+  FENCE_03 minY-ground=-0.150 topY-ground=0.749
+  GATEPOST_01 minY-ground=-0.151 topY-ground=0.801
+  GATEPOST_02 minY-ground=-0.151 topY-ground=0.801
+  RIDGE_01 minY-ground=-0.010 topY-ground=0.247
+  RIDGE_02 minY-ground=-0.010 topY-ground=0.254
+  RIDGE_03 minY-ground=-0.010 topY-ground=0.330
+  RIDGE_04 minY-ground=-0.010 topY-ground=0.233
+  SOIL_base minY-ground=0.006 topY-ground=0.028
+most raised bottom: STRING_21 0.684 / most sunk: GATEPOST_01 -0.151
+  FENCE_01 bottom verts vs ground [-0.151,-0.149] world=(191.71, 24.37, -62.44)
+  FENCE_02 bottom verts vs ground [-0.150,-0.150] world=(194.90, 24.37, -60.22)
+  FENCE_03 bottom verts vs ground [-0.150,-0.150] world=(197.11, 24.37, -63.41)
+  GATEPOST_01 bottom verts vs ground [-0.151,-0.149] world=(192.95, 24.37, -65.27)
+  GATEPOST_02 bottom verts vs ground [-0.151,-0.149] world=(194.18, 24.37, -65.48)
+gateposts field-local x -0.215..1.030 z 2.589
+path at gate line x -0.140..0.960 (center 0.410, opening center 0.407), path min z(field-local)=2.600, verts inside field=0, verts within 6cm of a post=0
+path verts under field colliders=2 STONE_06,STONE_05
+A7ShadeGlobals active=1 dirty=False
+

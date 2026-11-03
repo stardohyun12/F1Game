@@ -1,0 +1,8 @@
+var sb=new System.Text.StringBuilder();
+sb.Append(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().path+"\n");
+var top=GameObject.Find("TownV6_Gray").transform; var v2=top.Find("RoadsV2");
+var P=new[]{new Vector3(277.2f,0,-66.2f),new Vector3(246.7f,0,-54.6f),new Vector3(264.9f,0,-56.8f)};
+foreach(Transform t in v2){ var mr=t.GetComponent<MeshRenderer>(); if(mr==null)continue; var b=mr.bounds;
+ foreach(var p in P){ var q=new Vector3(Mathf.Clamp(p.x,b.min.x,b.max.x),0,Mathf.Clamp(p.z,b.min.z,b.max.z)); if((q-p).magnitude<25){ var rs=t.GetComponent<RoadSurface>(); string cl=""; if(rs!=null&&rs.centerline!=null&&rs.centerline.Length>1){var a=rs.centerline[0];var z=rs.centerline[rs.centerline.Length-1]; cl=" cl("+a.x.ToString("F1")+","+a.z.ToString("F1")+","+a.y.ToString("F1")+")-("+z.x.ToString("F1")+","+z.z.ToString("F1")+","+z.y.ToString("F1")+") n"+rs.centerline.Length+" k="+rs.kind;}
+  sb.Append(t.name+" mat="+mr.sharedMaterial.name+" b=("+b.min.x.ToString("F0")+","+b.min.z.ToString("F0")+")-("+b.max.x.ToString("F0")+","+b.max.z.ToString("F0")+")"+cl+"\n"); break; } } }
+return sb.ToString();

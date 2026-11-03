@@ -1,0 +1,4 @@
+﻿# loop ok 1 fail 1
+run	dir	result	time	maxDev	at	why	air
+0	1	이탈	55.4	6.6	122,18,8	pitch-357 upY0.91 thr1.00 hit[TownV6_Terrain(-0.3,0.9,0.2)] legs2	1
+0	-1	ok	243.6	2.3	-57,8,-18	 legs2	0

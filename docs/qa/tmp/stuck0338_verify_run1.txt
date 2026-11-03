@@ -1,0 +1,8 @@
+﻿# loop ok 0 fail 6
+run	dir	result	time	maxDev	at	why	air
+0	1	이탈	1.2	210.0	230,27,-56	pitch0 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot  hit[] legs2 step0	0
+0	-1	끼임	6.0	0.0	-63,8,-19	pitch-358 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot slowFrom v0.2@2.0s hit[ROAD_V2j_208(0.0,1.0,0.0)] legs2 step0	1
+1	1	끼임	6.0	0.0	-63,8,-19	pitch-358 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot slowFrom v0.2@2.0s hit[ROAD_V2j_208(0.0,1.0,0.0)] legs2 step0	1
+1	-1	끼임	6.0	0.0	-63,8,-19	pitch-358 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot slowFrom v0.2@2.0s hit[ROAD_V2j_208(0.0,1.0,0.0)] legs2 step0	1
+2	1	끼임	6.0	0.0	-63,8,-19	pitch-358 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot slowFrom v0.2@2.0s hit[ROAD_V2j_208(0.0,1.0,0.0)] legs2 step0	1
+2	-1	끼임	6.0	0.0	-63,8,-19	pitch-358 upY1.00 thr1.00 stageBoard gnd0 in1.00/0.00 v0.00 kin0 ts1.0 step0 footOnFoot slowFrom v0.2@2.0s hit[ROAD_V2j_208(0.0,1.0,0.0)] legs2 step0	1

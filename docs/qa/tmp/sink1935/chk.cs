@@ -1,0 +1,2 @@
+var m = typeof(ParcelBuild).GetMethod("FillSunk", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+return (UnityEditor.EditorApplication.isCompiling ? "compiling " : "idle ") + (m != null ? "has FillSunk" : "no FillSunk") + " dirty=" + UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty + " scene=" + UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;

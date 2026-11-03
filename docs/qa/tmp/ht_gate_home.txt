@@ -1,0 +1,50 @@
+  (텍스처 없음: house_home/GLASS_01 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_02 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_03 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_04 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_05 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_06 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_07 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_08 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_09 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_10 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_11 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_12 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_13 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_14 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_15 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_16 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_17 재질 HOUSE_glass → '')
+  (텍스처 없음: house_home/GLASS_18 재질 HOUSE_glass → '')
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          152/152 100.0%
+  uvcollapse UV 붕괴(단색 점 UV) 152/152 100.0%
+  grain      잔결(사진 결)       150/150 100.0%
+  flat       단색 칸 비율        141/141 100.0%
+  palette    팔레트 일치         152/152 100.0%
+  colors     영역 색 수         147/150 98.0%
+  speckle    1px 반점         12/152 7.9%
+  baked      구운 빛 흔적(면 안 기울기) 150/150 100.0%
+  blob       원형 어두운 얼룩      148/150 98.7%
+  satval     채도·명도 폭        57/152 37.5%
+  cyl        원통 면 수         35/35 100.0%
+  text       글씨 텍셀·획        2/2 100.0%
+  mirror     거울 UV          2/2 100.0%
+  alpha      투명/컷아웃         152/152 100.0%
+  mat        재질·임포트         152/152 100.0%
+  tris       삼각형 수          0/152 0.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    4.4 house_home/HOUSE_shell [house_home.png] 반점 16.11%; 둥근 얼룩 1; S0.44 V86~248; 삼각형 880 / 섬 최대 54
+    3.0 house_home/SINK [house_home.png] 반점 13.47%; 둥근 얼룩 1; 삼각형 30 / 섬 최대 2
+    2.6 house_home/BOOKS_01 [house_home.png] 반점 11.26%; S0.49 V95~176; 삼각형 690 / 섬 최대 2
+    2.6 house_home/BOOKS_02 [house_home.png] 반점 9.03%; S0.53 V93~176; 삼각형 440 / 섬 최대 2
+    2.2 house_home/STAIRS [house_home.png] 반점 1.89%; S0.61 V74~248; 삼각형 92 / 섬 최대 2
+    2.2 house_home/BED_02 [house_home.png] 반점 9.28%; S0.60 V92~212; 삼각형 38 / 섬 최대 2
+    2.2 house_home/WARDROBE_01 [house_home.png] 반점 3.28%; S0.61 V74~98; 삼각형 82 / 섬 최대 2
+    2.1 house_home/DOOR_PARENTSROOM [house_home.png] 반점 0.37%; S0.61 V54~73; 삼각형 72 / 섬 최대 12
+    2.1 house_home/DOOR_ROOM [house_home.png] 반점 0.43%; S0.61 V54~73; 삼각형 72 / 섬 최대 12
+    2.1 house_home/RUG_04 [house_home.png] 반점 2.03%; S0.77 V99~151; 삼각형 2 / 섬 최대 2
+    2.1 house_home/RUG_02 [house_home.png] 반점 3.49%; S0.77 V99~151; 삼각형 2 / 섬 최대 2
+    2.1 house_home/RUG_03 [house_home.png] 반점 2.04%; S0.77 V99~151; 삼각형 2 / 섬 최대 2
+    2.1 house_home/SHOERACK [house_home.png] 반점 2.73%; S0.61 V69~106; 삼각형 10 / 섬 최대 2
+    2.1 house_home/DRESSER_01 [house_home.png] 반점 2.02%; S0.61 V92~113; 삼각형 8 / 섬 최대 2

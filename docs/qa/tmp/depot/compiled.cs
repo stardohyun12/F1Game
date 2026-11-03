@@ -1,0 +1,1 @@
+return UnityEditor.EditorApplication.isCompiling ? "C" : "done failed=" + UnityEditor.EditorUtility.scriptCompilationFailed + " type=" + (System.Type.GetType("DepotOrderSetup, Assembly-CSharp-Editor") != null);

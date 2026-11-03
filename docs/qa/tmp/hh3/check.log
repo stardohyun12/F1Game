@@ -1,0 +1,3 @@
+  위반 texel      house_home/TABLE_LIVING [house_home.png] 텍셀 64px/m (기대 32, 범위 안 0%); 반점 0.33%; S0.61 V92~113
+  위반 texel      house_home/VASE_01 [house_home.png] 텍셀 63px/m (기대 32, 범위 안 0%); 반점 4.05%; S0.74 V142~204
+GATE FAIL (37 위반)

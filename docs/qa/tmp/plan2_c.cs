@@ -1,0 +1,24 @@
+var sv = UnityEditor.SceneView.lastActiveSceneView;
+PitCrewPlan.PlanMode.On = true;
+float ppp = UnityEditor.EditorGUIUtility.pixelsPerPoint, pw = sv.camera.pixelWidth / ppp, ph = sv.camera.pixelHeight / ppp;
+var s = new System.Collections.Generic.List<UnityEngine.Vector2>();
+for (int i = 0; i <= 30; i++) { float a = i / 30f * 6.283f; s.Add(new UnityEngine.Vector2(pw * 0.62f + UnityEngine.Mathf.Cos(a) * 60, ph * 0.45f + UnityEngine.Mathf.Sin(a) * 40)); }
+PitCrewPlan.PlanMode.Strokes.Clear(); PitCrewPlan.PlanMode.Strokes.Add(s);
+sv.Repaint();
+var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public;
+var parent = typeof(UnityEditor.EditorWindow).GetField("m_Parent", bf).GetValue(sv);
+parent.GetType().GetMethod("RepaintImmediately", bf, null, System.Type.EmptyTypes, null)?.Invoke(parent, null);
+var pos = (UnityEngine.Rect)parent.GetType().GetProperty("position", bf).GetValue(parent);
+int W = (int)(pos.width * ppp), H = (int)(pos.height * ppp);
+var rt = new UnityEngine.RenderTexture(W, H, 0, UnityEngine.RenderTextureFormat.ARGB32);
+parent.GetType().GetMethod("GrabPixels", bf).Invoke(parent, new object[] { rt, new UnityEngine.Rect(0, 0, W, H) });
+var prev = UnityEngine.RenderTexture.active; UnityEngine.RenderTexture.active = rt;
+var tex = new UnityEngine.Texture2D(W, H, UnityEngine.TextureFormat.RGB24, false);
+tex.ReadPixels(new UnityEngine.Rect(0, 0, W, H), 0, 0); tex.Apply();
+UnityEngine.RenderTexture.active = prev;
+var px = tex.GetPixels(); var fl = new UnityEngine.Color[px.Length];
+for (int y = 0; y < H; y++) System.Array.Copy(px, y * W, fl, (H - 1 - y) * W, W);
+tex.SetPixels(fl); tex.Apply();
+System.IO.File.WriteAllBytes("D:/Github/F1Game/docs/qa/evidence/plan-window/overlay.png", tex.EncodeToPNG());
+rt.Release();
+return W + "x" + H + " on=" + PitCrewPlan.PlanMode.On;

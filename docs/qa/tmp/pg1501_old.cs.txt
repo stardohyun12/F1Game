@@ -1,0 +1,6 @@
+var sb=new System.Text.StringBuilder();
+var top=GameObject.Find("TownV6_Gray").transform; var roads=top.Find("Roads"); var v2=top.Find("RoadsV2");
+foreach(var id in new[]{"camo_204693153_107","posi_1425000546_376","camo_266536091_110","camo_419509899_193","tomo_726989353_47","cape_shore"}){
+ var o=roads.Find("ROAD_"+id); sb.Append(id+": old="+(o==null?"none":(o.gameObject.activeSelf+" b="+o.GetComponent<MeshRenderer>().bounds.center.ToString("F0"))));
+ int n=0; foreach(Transform t in v2) if(t.name.Contains(id)) n++; sb.Append(" v2pieces="+n+"\n"); }
+return sb.ToString();

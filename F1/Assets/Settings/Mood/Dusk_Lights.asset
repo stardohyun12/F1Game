@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc46e964d2eaf1746b2a4e031d3d1a61, type: 3}
+  m_Name: Dusk_Lights
+  m_EditorClassIdentifier: PitCrew::MoodProfile
+  sunRotationEuler: {x: 40, y: 160, z: 0}
+  sunColor: {r: 0.55, g: 0.62, b: 0.9, a: 1}
+  sunIntensity: 0.8
+  castShadows: 1
+  shadowStrength: 0.25
+  ambientMode: 3
+  ambientColor: {r: 0.28, g: 0.322, b: 0.462, a: 0.7}
+  ambientIntensity: 1
+  fog: 1
+  fogMode: 1
+  fogColor: {r: 0.4, g: 0.46, b: 0.66, a: 1}
+  fogDensity: 0.0035
+  skybox: {fileID: 2100000, guid: 0421a399b646d684c9aa94a32cf8baee, type: 2}
+  postProfile: {fileID: 11400000, guid: 6d9af79ead1a18044a6a8d866bdffedb, type: 2}
+  syncWorld: 1
+  fogStart: 40
+  fogEnd: 500
+  worldAmbientScale: 1.35
+  railTint: {r: 0.62, g: 0.58, b: 0.5, a: 1}
+  seaTint: {r: 0.2, g: 0.3, b: 0.46, a: 1}
+  windowsLit: 1

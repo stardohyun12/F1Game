@@ -1,0 +1,8 @@
+[
+ {"name": "주행 — 방향 표시(나침반 기본)", "v1": "drive_01.png", "v2": "drive_compass_01.png", "crop_v1": [290, 0, 80, 30]},
+ {"name": "주행 — 방향 표시(길 위 화살표, 비교용)", "v1": "drive_01.png", "v2": "drive_road_01.png", "crop_v1": [290, 0, 80, 30], "crop_v2": [280, 190, 80, 40]},
+ {"name": "전표", "v1": "drive_slip.png", "v2": "drive_slip.png", "crop_v1": [0, 310, 180, 50]},
+ {"name": "[E] 사장", "v1": "chip_1_boss.png", "v2": "chip_1_boss.png", "crop_v1": [315, 75, 80, 30], "crop_v2": [315, 60, 80, 30]},
+ {"name": "[E] 카트", "v1": "chip_2_cart.png", "v2": "chip_2_cart.png", "crop_v1": [285, 180, 80, 30]},
+ {"name": "대화(2판은 글자 다 나온 _05)", "v1": "talk_focus_04.png", "v2": "talk_focus_05.png", "crop_v1": [220, 90, 200, 60], "crop_v2": [220, 90, 200, 60]}
+]

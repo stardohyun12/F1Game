@@ -1,0 +1,5 @@
+bare 0
+full 0
+bottom 0
+flip 1
+bottom 0

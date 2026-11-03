@@ -1,0 +1,1 @@
+return PitCrew.PackBench.PackBench.Qa2Status + " | bot=" + PitCrew.PackBench.PackBench.BotStatus.Split(' ')[0] + " t=" + UnityEngine.Time.time.ToString("F1") + " dt=" + (UnityEngine.Time.smoothDeltaTime * 1000f).ToString("F1") + "ms\n" + string.Join("\n", PitCrew.PackBench.PackBench.Qa2Log);

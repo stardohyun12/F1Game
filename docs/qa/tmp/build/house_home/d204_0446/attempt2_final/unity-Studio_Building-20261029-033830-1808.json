@@ -1,0 +1,19 @@
+{
+ "id": "unity-Studio_Building-20261029-033830-1808",
+ "time": "2026-10-29T05:00:24+09:00",
+ "before": "shots/unity-Studio_Building-20261029-033830-1808.png",
+ "after": "shots/unity-Studio_Building-20261029-033830-1808_after.png",
+ "comment": "발코니 조금 더 넓게",
+ "last_director": null,
+ "judges": {
+  "claude": {
+   "verdict": "NO",
+   "reason": "오른쪽 화면에서는 발코니가 앞으로 더 튀어나오고 폭도 넓어졌으며, 난간이 건물 모서리 쪽으로 꺾여 한결 넓어 보여서 \"더 넓게\" 요구가 반영됐다."
+  },
+  "astra": {
+   "verdict": "NO",
+   "reason": "오른쪽 발코니는 왼쪽보다 폭과 돌출 깊이가 커져 더 넓어졌습니다."
+  }
+ },
+ "pass": true
+}

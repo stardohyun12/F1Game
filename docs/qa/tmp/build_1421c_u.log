@@ -1,0 +1,6 @@
+[07 unity]
+   _GroundY=0 _FootDark=0 _Blotch=0 _Lift=0 _Sat=1 _A7Lit=1 _Cutoff=0.5 _FogStart=40 _FogEnd=220 _FogMax=0.4 
+house_home raw box (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) -> (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) size (9.16, 8.25, 8.15) mats 2
+ items 149 room2F offset (0.000, 0.000, -1.650) room shell dropped, lamp 5.25
+  → docs\qa\tmp\build\house_home\07_unity
+[08 viewer]

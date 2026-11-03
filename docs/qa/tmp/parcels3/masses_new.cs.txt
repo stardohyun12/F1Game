@@ -1,0 +1,171 @@
+    static void Masses(List<Parcel> parcels, List<Mass> masses, Vis vis, List<(Vector2 c, Vector2 h)> props)
+    {
+        foreach (var p in parcels) p.zone = ZoneOf(p);
+        // 붙은 집 묶음: 앞 방향이 비슷한(25° 안) 이웃 필지를 +t 쪽으로 2~3채, 구역 비율(rowShare). 옆에 묶음이 이미 둘 연속이면 안 묶는다(같은 유형 3연속 금지)
+        int gid = 0;
+        foreach (var p in parcels)
+        {
+            if (p.group >= 0) continue; var rng = new Rng(Fnv($"{Seed}|grp|{p.id}"));
+            if (rng.F() >= mix[p.zone].row) continue; int want = rng.F() < .6f ? 2 : 3; var mem = new List<Parcel> { p }; var cur = p;
+            if (RowRun(p, parcels)) continue;
+            while (mem.Count < want)
+            {
+                var nx = cur.nb.Select(i => parcels[i]).Where(q => q.group < 0 && !mem.Contains(q) && Vector2.Angle(q.toRoad, p.toRoad) < 25 && Vector2.Dot(q.ctr - cur.ctr, p.t) > 2f).OrderBy(q => Vector2.Dot(q.ctr - cur.ctr, p.t)).FirstOrDefault();
+                if (nx == null) break; mem.Add(nx); cur = nx;
+            }
+            if (mem.Count < 2) continue; foreach (var q in mem) q.group = gid; gid++;
+            foreach (var q in mem) q.type = "row";
+        }
+        var groups = parcels.GroupBy(p => p.group < 0 ? -1 - p.id : p.group).OrderBy(g => g.Min(p => p.id)).Select(g => (mem: g.OrderBy(p => Vector2.Dot(p.ctr, g.First().t)).ToList(), type: (string)null)).ToList();
+        // 안 들어가면: 묶음은 풀어 한 채씩, 한 채 유형은 단독 박공으로 한 번 더(대기열 뒤에)
+        for (int gi = 0; gi < groups.Count; gi++)
+        {
+            var mem = groups[gi].mem; bool att = mem.Count > 1; var p0 = mem[0]; var zm = mix[p0.zone];
+            var f0 = Vector2.zero; foreach (var p in mem) f0 += p.toRoad * p.frontW; f0.Normalize();
+            var set = new HashSet<int>(mem.Select(p => p.id));
+            var rng = new Rng(Fnv($"{Seed}|mass|{p0.id}|{groups[gi].type}"));
+            string ty = att ? "row" : groups[gi].type ?? PickType(p0, parcels, zm, rng);
+            if (!att) p0.type = ty;
+            var Fc = mem.SelectMany(p => p.cells).Where(c => front[c]).OrderBy(c => Vector2.Dot(P(c), new Vector2(f0.y, -f0.x))).ToList();
+            if (Fc.Count == 0) { foreach (var p in mem) p.empty = "앞선 없음"; continue; }
+            // 유형별 치수(가설): 앞 물러남·옆 틈은 구역 표, 가게는 0.3~0.6, 단층 마당집은 +1 m
+            float b = att ? zm.s0 + rng.F() * (Mathf.Min(zm.s1, 1.2f) - zm.s0) : ty == "shop" ? .3f + rng.F() * .3f : zm.s0 + rng.F() * (zm.s1 - zm.s0) + (ty == "bungalow" ? 1f : 0);
+            int fl0 = ty == "bungalow" || ty == "barn" ? 1 : ty == "narrow3" ? 3 : ty == "detached" || ty == "stepped2" ? 2 : rng.F() < .6f ? 2 : 3;
+            float D = ty switch { "bungalow" => 5.5f + rng.F() * 1.5f, "shop" => 8 + rng.F() * 2, "stepped2" => 9 + rng.F() * 2, "barn" => 6 + rng.F() * 2.5f, "row" => 6.5f + rng.F() * 2.5f, _ => 7 + rng.F() * 2 };
+            float needOne = ty == "narrow3" ? 3.8f : ty == "bungalow" ? 5f : ty == "barn" ? 6f : ty == "shop" ? 4.5f : 3.6f;
+            bool ok = false; float x0 = 0, x1 = 0;
+            // 안 들어가면: 깊이 줄임 → 물러남 0.8 m → 앞선을 뒤로(밀어 넣기). 그래도 안 되면 다른 유형/빈 필지.
+            var tries = new[] { (0f, 0f, 0f), (-1.5f, 0f, 0f), (-1.5f, -9f, 0f), (-3f, -9f, 0f), (-3f, -9f, -1.5f), (-4f, -9f, -3f), (-9f, -9f, -1f) };
+            float gL = zm.g0 + rng.F() * (zm.g1 - zm.g0), gR = zm.g0 + rng.F() * (zm.g1 - zm.g0);
+            float bb = b, DD = D, zz = 0, bestW = 0; Vector2 f = f0, t = new Vector2(f0.y, -f0.x);
+            var mc = Fc[Fc.Count / 2]; var fm = (P(src[mc]) - P(mc)).sqrMagnitude > 1e-6f ? (P(src[mc]) - P(mc)).normalized : f0;
+            var dirs = new List<Vector2> { f0, fm }; foreach (var a in new[] { 12f, -12f, 25f, -25f }) dirs.Add(Rot(f0, a));
+            // 둘째 판(한 채·단독만): 옆 틈 0.25 m · 폭 3.2 m 까지 — 얕고 좁은 필지의 작은 집
+            for (int pass = 0; pass < (att || ty != "detached" ? 1 : 2) && !ok; pass++)
+            {
+                if (pass == 1) { gL = gR = .25f; }
+                float need = pass == 0 ? (att ? 3.6f * mem.Count : needOne) : 3.2f;
+                foreach (var fd in dirs)
+                {
+                    f = fd; t = new Vector2(f.y, -f.x);
+                    var F = Fc.Select(c => Vector2.Dot(P(c), f)).OrderBy(z => z).ToList(); float zF = F[F.Count / 2];
+                    foreach (var (dD, db, dz) in tries)
+                    {
+                        DD = Mathf.Max(dD < -5 ? (pass == 1 ? 3.6f : 4f) : 4.5f, D + dD); bb = db < -5 ? (pass == 1 ? .5f : Mathf.Min(b, .8f)) : b; zz = zF + dz;
+                        if (Fit(set, f, t, zz - bb - DD, zz - bb, out x0, out x1)) { bestW = Mathf.Max(bestW, x1 - x0); if (x1 - x0 - gL - gR >= need) { ok = true; break; } }
+                    }
+                    if (ok) break;
+                }
+            }
+            if (!ok)
+            {
+                if (att) { foreach (var p in mem) { p.group = -1; p.type = null; groups.Add((new List<Parcel> { p }, null)); } continue; }
+                if (ty != "detached") { groups.Add((mem, "detached")); continue; }
+                foreach (var p in mem) { p.empty = "덩어리 안 들어감(폭·모양)"; p.fitW = bestW; p.type = null; }
+                continue;
+            }
+            x0 += gL; x1 -= gR; float total = x1 - x0;
+            // 유형 폭 상한: 좁은 3층 4~5 · 단층 마당집 6~8(한쪽으로 붙여 마당) · 그 밖 한 채 10 m
+            float cap = att ? 10f * mem.Count : ty == "narrow3" ? 4 + rng.F() : ty == "bungalow" ? 6 + 2 * rng.F() : 10f;
+            if (total > cap) { bool side = ty == "narrow3" || ty == "bungalow" || ty == "barn"; float mid = side ? (rng.F() < .5f ? x0 + cap * .5f : x1 - cap * .5f) : (x0 + x1) * .5f; x0 = mid - cap * .5f; x1 = mid + cap * .5f; total = cap; }
+            float sumW = mem.Sum(p => p.frontW); float xa = x0; string prevRoof = null; int prevFl = 0;
+            bool avoidC2 = Avoid(p0, parcels).Contains("stepped2");
+            for (int k = 0; k < mem.Count; k++)
+            {
+                var p = mem[k]; float w = k == mem.Count - 1 ? x1 - xa : total * p.frontW / sumW; float xb = xa + w;
+                var r2 = new Rng(Fnv($"{Seed}|m|{p.id}"));
+                var m = new Mass { parcel = p.id, group = att ? p.group : -1, member = k, f = f, b = bb, d = DD, w = w, attL = att && k > 0, attR = att && k < mem.Count - 1, type = ty };
+                m.floorH = 2.75f + r2.F() * .35f; m.pitch = 24 + r2.F() * 8;
+                switch (ty)
+                {
+                    case "row":
+                        // 붙은 집: 옆 집과 층·지붕을 다르게
+                        m.floors = k == 0 ? fl0 : (r2.F() < .65f ? (prevFl == 2 ? 3 : 2) : prevFl);
+                        var rf = new[] { "gable", "hip", "flat" }.Where(x => x != prevRoof).ToArray(); m.roof = rf[(int)(r2.F() * rf.Length) % rf.Length]; m.ridgeX = true; break;
+                    case "detached": m.floors = 2; m.roof = "gable"; m.ridgeX = r2.F() < .6f; m.pitch = 26 + r2.F() * 6; break;
+                    case "bungalow": m.floors = 1; m.roof = r2.F() < .5f ? "hip" : "gable"; m.ridgeX = r2.F() < .7f; break;
+                    case "narrow3": m.floors = 3; if (r2.F() < .6f) { m.roof = "gable"; m.ridgeX = false; } else m.roof = "flat"; break;
+                    case "shop": m.floors = fl0; m.roof = r2.F() < .5f ? "flat" : "gable"; m.ridgeX = true; m.shutter = true; break;
+                    case "flat": m.floors = fl0; m.roof = "flat"; m.roofRoom = true; break;
+                    case "stepped2": m.floors = 2; m.roof = r2.F() < .5f ? "gable" : "flat"; m.ridgeX = true; break;
+                    case "barn": m.floors = 1; m.floorH = 3.8f + r2.F() * .6f; m.roof = "gable"; m.ridgeX = true; m.pitch = 14 + r2.F() * 4; m.barnDoor = true; break;
+                }
+                prevRoof = m.roof; prevFl = m.floors; m.tone = Tone(m.type);
+                // 앞면 가운데(피벗) = x 가운데, z = 앞선 - 물러남
+                float xc = (xa + xb) * .5f, zc0 = zz - bb; m.c = t * xc + f * zc0;
+                xa = xb;
+                // 비탈 앉히기 — A 낮은 기단 · B 바닥 = 최저 + 0.5(패드+축대) · C1 반지하 한 채 · C2 경사 쪽 둘로 · 60% 넘으면 비움
+                string why = SeatAll(m, att, avoidC2, out var m2); p.slope = m.slope; if (why != null) { p.empty = why; continue; }
+                Heights(m, p, parcels); if (m2 != null) Heights(m2, p, parcels);
+                why = Blocked(m, vis, props) ?? (m2 != null ? Blocked(m2, vis, props) : null); if (why != null) { p.empty = why; continue; }
+                // 옆 필지 덩어리와 처마·기단이 겹치면: 박공 방향을 길 따라로(옆 처마 없음) → 그래도면 모임지붕 → 뺀다
+                bool Hit(Mass x) => x != null && masses.Any(o => (o.c - x.c).sqrMagnitude < 900 && !(o.group >= 0 && o.group == x.group) && PolyPoly(Corners(o, 0), Corners(x, 0)));
+                if ((Hit(m) || Hit(m2)) && m.roof == "gable" && !m.ridgeX && m2 == null) { m.ridgeX = true; Heights(m, p, parcels); }
+                if ((Hit(m) || Hit(m2)) && m.roof == "gable" && m2 == null && m.type != "detached" && m.type != "barn") { m.roof = "hip"; Heights(m, p, parcels); }
+                if (Hit(m) || Hit(m2)) { p.empty = "옆집과 겹침"; continue; }
+                p.type = m.type; p.mass = m; masses.Add(m); if (m2 != null) { p.mass2 = m2; masses.Add(m2); }
+            }
+            foreach (var p in mem) if (p.mass == null) p.type = null;
+        }
+        // 묶음에서 빠진 이웃이 생기면 붙은 쪽 표시를 끈다(뒤에 틈이 생긴 쪽은 사실상 따로 집)
+        foreach (var m in masses) if (m.group >= 0)
+        {
+            m.attL = m.attL && masses.Any(o => o.group == m.group && o.member == m.member - 1);
+            m.attR = m.attR && masses.Any(o => o.group == m.group && o.member == m.member + 1);
+        }
+        // 묶음이 한 채만 남으면 그 집은 단독으로 센다
+        foreach (var g in masses.Where(m => m.group >= 0).GroupBy(m => m.group).ToList()) if (g.Select(m => m.parcel).Distinct().Count() < 2) foreach (var m in g) { m.type = m.roof == "flat" ? "flat" : "detached"; m.tone = Tone(m.type); parcels[m.parcel].type = m.type; }
+        foreach (var p in parcels) { if (p.mass == null) p.type = null; Types(p); }
+    }
+    static int Tone(string ty) => ty == "detached" || ty == "row" ? 0 : ty == "bungalow" || ty == "flat" ? 1 : ty == "narrow3" || ty == "stepped2" ? 2 : 3;
+    // 구역: 앞선 칸들의 가장 가까운 길 칸 구역 중 가장 많은 것(갈림목·골목 안쪽은 이웃 길로), 도현 건물 둘레 28 m 는 ridge
+    static string ZoneOf(Parcel p)
+    {
+        if (ridgeR.Any(r => r.Contains(p.ctr))) return "ridge";
+        var cnt = new int[5]; foreach (var c in p.cells) { if (!front[c] || src[c] < 0) continue; var z = zc[src[c]]; if (z < 5) cnt[z]++; }
+        int best = 4, bn = 0; for (int i = 0; i < 5; i++) if (cnt[i] > bn) { bn = cnt[i]; best = i; }
+        if (bn == 0) foreach (var c in p.cells) { if (src[c] >= 0 && zc[src[c]] < 5) { best = zc[src[c]]; break; } }
+        return ZoneIds[best];
+    }
+    // 옆 필지: 이웃 중 앞 방향이 같고(30° 안) 앞선이 거의 같은 줄(앞뒤 6 m 안), 옆으로 2 m 넘게 떨어진 것
+    static IEnumerable<Parcel> SideNb(Parcel p, List<Parcel> ps) => p.nb.Select(i => ps[i]).Where(q => Vector2.Angle(q.toRoad, p.toRoad) < 30 && Mathf.Abs(Vector2.Dot(q.ctr - p.ctr, p.toRoad)) < 6 && Mathf.Abs(Vector2.Dot(q.ctr - p.ctr, p.t)) > 2);
+    // 이 필지에 X 를 놓으면 X 가 3연속이 되는 유형들: 옆 필지 둘이 X, 또는 옆 필지가 X 이고 그 너머 옆도 X(붙은 묶음은 한 단위)
+    static HashSet<string> Avoid(Parcel p, List<Parcel> ps)
+    {
+        var res = new HashSet<string>(); var sn = SideNb(p, ps).Where(q => q.type != null && !(p.group >= 0 && q.group == p.group)).ToList();
+        foreach (var g in sn.GroupBy(q => q.group >= 0 ? -1 - q.group : q.id).Select(g => g.First()).GroupBy(q => q.type)) if (g.Count() >= 2) res.Add(g.Key);
+        foreach (var q in sn) if (SideNb(q, ps).Any(r => r != p && r.type == q.type && !(q.group >= 0 && r.group == q.group) && !(p.group >= 0 && r.group == p.group))) res.Add(q.type);
+        return res;
+    }
+    static bool RowRun(Parcel p, List<Parcel> ps) => Avoid(p, ps).Contains("row");
+    static string PickType(Parcel p, List<Parcel> ps, Zm zm, Rng rng)
+    {
+        var av = Avoid(p, ps); var opts = new List<(string t, float w)>();
+        foreach (var kv in zm.w)
+        {
+            var ty = kv.Key; float w = kv.Value; if (w <= 0 || av.Contains(ty)) continue;
+            if (ty == "shop" && !(p.road == "main" || p.zone == "tomo" && p.road == "village")) continue;   // 가게주택 = 큰길·마을 중심 길만
+            if (ty == "barn" && !(p.zone == "outer" || p.zone == "ridge")) continue;
+            if (ty == "bungalow" && p.area < 80) continue;
+            if (ty == "stepped2" && p.depth < 9) continue;
+            opts.Add((ty, w));
+        }
+        if (opts.Count == 0) return av.Contains("detached") ? "flat" : "detached";
+        float s = opts.Sum(o => o.w), u = rng.F() * s; foreach (var o in opts) { if (u < o.w) return o.t; u -= o.w; }
+        return opts[opts.Count - 1].t;
+    }
+    static Dictionary<string, Zm> LoadMix()
+    {
+        var res = new Dictionary<string, Zm>(); var path = System.IO.Path.GetFullPath(Application.dataPath + MixPath);
+        float F(object o) => System.Convert.ToSingle(o, System.Globalization.CultureInfo.InvariantCulture);
+        var js = (Dictionary<string, object>)PitCrewPlan.MiniJson.Parse(System.IO.File.ReadAllText(path, Encoding.UTF8));
+        foreach (var kv in (Dictionary<string, object>)js["zones"])
+        {
+            var z = (Dictionary<string, object>)kv.Value; var g = (List<object>)z["sideGap"]; var s = (List<object>)z["setback"];
+            var zm = new Zm { row = F(z["rowShare"]), g0 = F(g[0]), g1 = F(g[1]), s0 = F(s[0]), s1 = F(s[1]) };
+            foreach (var w in (Dictionary<string, object>)z["w"]) zm.w[w.Key] = F(w.Value);
+            res[kv.Key] = zm;
+        }
+        foreach (var id in ZoneIds) if (!res.ContainsKey(id)) res[id] = res["camo"];
+        return res;
+    }

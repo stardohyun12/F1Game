@@ -1,0 +1,4 @@
+﻿# loop ok 0 fail 2
+run	dir	result	time	maxDev	at	why	air
+0	1	끼임	87.3	2.1	142,13,-86	pitch-6 upY0.99 thr1.00 hit[ROAD_V2e_tomo_118267044_13_1(0.0,1.0,-0.1)] legs2	0
+0	-1	끼임	80.0	2.3	-180,4,-70	pitch-1 upY1.00 thr1.00 hit[ROAD_V2e_tomo_118267060_15(0.0,1.0,0.0)] legs2	0

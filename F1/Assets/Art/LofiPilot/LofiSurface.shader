@@ -40,6 +40,7 @@ Shader "PitCrew/LofiPilot/Surface"
     // D-101 v3: 해 색·세기가 면에 실린다 (전엔 0.55~1.0 고정 명암이라 해를 올려도 "햇빛"이 안 생겼다). 그늘 바닥 = _Ambient*0.42 (하늘빛), 양지 = + sun*0.75
     float3 lit=_Ambient.rgb*0.36+sun.color.rgb*(diffuse*sun.shadowAttenuation)*1.0;   // v4: 양지 1.0·그늘 0.36 → 차이 2배 ("쨍쨍")
     float3 shade=PCShade(_Ambient.rgb,sun.color.rgb,diffuse,sun.shadowAttenuation,_FaceShade);
+    shade*=SkyCloudShade(i.pos,sun.direction,diffuse);   // D-244 하늘 구름 그림자(SunsetLook 이 켤 때만, 아니면 1)
     half3 col=PCTex(TEXTURE2D_ARGS(_MainTex,sampler_MainTex),i.uv,_MainTex_TexelSize)*_Tint.rgb*shade; col=PCPost(col,i.pos,normalize(i.normal));
     return half4(PCFog(col,i.pos,_FogColor.rgb,_FogStart,_FogEnd),1);
    }

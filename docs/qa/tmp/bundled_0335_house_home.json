@@ -1,0 +1,158 @@
+{
+ "objects": 19,
+ "bundled": {},
+ "all": {
+  "CHAIR_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "CURTAIN_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "CURTAIN_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "DOOR_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 9,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "DOOR_BALCONY": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 11,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "HOUSE_shell": {
+   "islands": 12,
+   "separate": 1,
+   "polys": 167,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANT_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANT_02": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANT_03": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 15,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANTER_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANTER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "PLANTER_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "RAIL_01": {
+   "islands": 44,
+   "separate": 1,
+   "polys": 204,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  },
+  "SHUTTER_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "HOUSE_alb"
+   ]
+  }
+ }
+}

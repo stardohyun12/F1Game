@@ -1,0 +1,458 @@
+{
+  "mode": "fix",
+  "threshold_m": 0.01,
+  "solver_epsilon_m": 0.0005,
+  "before": {
+    "parcel_pairs": [],
+    "fixture_pairs": [
+      {
+        "a": "PARCEL_04",
+        "b": "CART_01",
+        "depth_m": [
+          0.004999995231628418,
+          0.2799999713897705,
+          0.03814789652824402
+        ]
+      },
+      {
+        "a": "PARCEL_08",
+        "b": "SHELF_01",
+        "depth_m": [
+          0.04999995231628418,
+          0.33100032806396484,
+          0.4480001926422119
+        ]
+      },
+      {
+        "a": "PARCEL_30",
+        "b": "SHELF_01",
+        "depth_m": [
+          0.04999995231628418,
+          0.47800159454345703,
+          0.3680003881454468
+        ]
+      },
+      {
+        "a": "PARCEL_37",
+        "b": "SHELF_02",
+        "depth_m": [
+          0.04999995231628418,
+          0.42100000381469727,
+          0.3680001497268677
+        ]
+      },
+      {
+        "a": "PARCEL_45",
+        "b": "SHELF_01",
+        "depth_m": [
+          0.02138042449951172,
+          0.42100000381469727,
+          0.44800031185150146
+        ]
+      },
+      {
+        "a": "PARCEL_52",
+        "b": "SHELF_02",
+        "depth_m": [
+          0.04999995231628418,
+          0.41099977493286133,
+          0.3680002689361572
+        ]
+      }
+    ]
+  },
+  "moves": [
+    {
+      "name": "PARCEL_05",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_06",
+      "delta_m": [
+        0.0,
+        -0.0029993057250976562,
+        1.6093254089355469e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_07",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_08",
+      "delta_m": [
+        0.3170323371887207,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_09",
+      "delta_m": [
+        0.2282954454421997,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_10",
+      "delta_m": [
+        0.15116548538208008,
+        -0.0029993057250976562,
+        1.6093254089355469e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_27",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_28",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_29",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_30",
+      "delta_m": [
+        0.26055169105529785,
+        -0.009999752044677734,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_31",
+      "delta_m": [
+        0.20097923278808594,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_32",
+      "delta_m": [
+        0.15030574798583984,
+        -0.0029993057250976562,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_33",
+      "delta_m": [
+        0.0808645486831665,
+        -0.0029993057250976562,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_41",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_42",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_43",
+      "delta_m": [
+        0.0,
+        -0.0029997825622558594,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_44",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_45",
+      "delta_m": [
+        0.031380414962768555,
+        0.0,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_46",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_47",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_48",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_11",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6093254089355469e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_12",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_13",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_14",
+      "delta_m": [
+        0.0,
+        -0.0029993057250976562,
+        1.6093254089355469e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_15",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_16",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_17",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6391277313232422e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_34",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_35",
+      "delta_m": [
+        -0.03691130876541138,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_36",
+      "delta_m": [
+        -0.1207805871963501,
+        -0.0029997825622558594,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_37",
+      "delta_m": [
+        -0.17873108386993408,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_38",
+      "delta_m": [
+        0.0,
+        -0.0029997825622558594,
+        1.5497207641601562e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_39",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_40",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_49",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_50",
+      "delta_m": [
+        0.0,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_51",
+      "delta_m": [
+        0.0,
+        -0.0029993057250976562,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_52",
+      "delta_m": [
+        0.2671091556549072,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_53",
+      "delta_m": [
+        0.1871325969696045,
+        0.0,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_54",
+      "delta_m": [
+        0.14252495765686035,
+        -0.0029993057250976562,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_55",
+      "delta_m": [
+        0.03794741630554199,
+        -0.0029997825622558594,
+        1.6689300537109375e-06
+      ],
+      "reason": "shelf row: avoid uprights, keep support and order"
+    },
+    {
+      "name": "PARCEL_04",
+      "delta_m": [
+        0.004999995231628418,
+        0.0,
+        0.0
+      ],
+      "reason": "parcel/fixture clearance"
+    }
+  ],
+  "after": {
+    "parcel_pairs": [],
+    "fixture_pairs": []
+  },
+  "max_parcel_tris": 38
+}

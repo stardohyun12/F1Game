@@ -14,6 +14,8 @@ var jobs = new (string id, string asset, Vector3 c, Vector3 l, float fov, float 
   ("garage-20261028-183904-q85r", "garage", new Vector3(-0.924f, 1.535f, 3.525f), new Vector3(3.083f, 1.445f, 0.536f), 50f, -1f),
   ("depot-20261028-184108-1yzo", "depot", new Vector3(2.39f, 1.6f, 3.653f), new Vector3(3.943f, 3.106f, -0.854f), 50f, -1f),  // 1914 D-196 겉
   ("postoffice-20261028-184329-i97z", "postoffice", new Vector3(-1.941f, 1.6f, 6.74f), new Vector3(-0.617f, 1.55f, 1.919f), 50f, -1f),
+  ("depot-20261028-193403-mshy", "depot", new Vector3(3.628f, 1.59f, 3.19f), new Vector3(3.548f, -0.357f, -1.415f), 50f, -1f),  // 1950 떠 있는 택배
+  ("depot_shelf_close", "depot", new Vector3(-2.3f, 0.62f, -4.6f), new Vector3(-2.3f, 0.45f, -6.0f), 50f, -1f),  // 1950 선반 아래 단 근접
   ("clock_0310", "depot", new Vector3(0f, -0.25f, 1.3f), Vector3.zero, 40f, 190f),   // 3:10
   ("clock_1045", "depot", new Vector3(0f, -0.25f, 1.3f), Vector3.zero, 40f, 645f) }; // 10:45
 var dst = new RenderTexture(1280, 720, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB); var log = new System.Text.StringBuilder();

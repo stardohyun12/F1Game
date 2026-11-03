@@ -1,0 +1,1 @@
+UnityEditor.AssetDatabase.Refresh(); UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation(); return UnityEngine.SceneManagement.SceneManager.GetActiveScene().path+" playing="+Application.isPlaying;

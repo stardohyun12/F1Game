@@ -1,0 +1,51 @@
+[00 source]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\house_home.py -- (1s, exit 0)
+     export finished in 0.1163 sec.
+     MEAS {'stairs': {'rise': 0.2, 'tread': 0.25, 'steps': 16, 'deg': 38.7}, 'ceil': {'f1': 2.8, 'f2': 2.65}, 'balcony': {'w': 7.8, 'd': 1.8}, 'glass': 16, 'tris': 8
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+  → docs\qa\tmp\build\house_home\00_source
+[01 overlap]
+   $ s/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\fix_1846.py -- house_home check (2s, exit 0)
+     [1846] objs [('APRON_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BAG_02', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BAG_03', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), (
+     [1846] BEFORE pairs 0 dups 0
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+   overlap_check.json: 겹친 쌍 0 · 같은 덩어리 중복 0
+   $ nder/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\asset-gen\fix_1846.py -- house_home check both (2s, exit 0)
+     [1846] objs [('APRON_01', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BAG_02', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), ('BAG_03', (-0.0, -0.0, 0.0), (1.0, 1.0, 1.0)), (
+     [1846] BEFORE pairs 0 dups 0
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+   overlap_both.json: 겹친 쌍 0 · 같은 덩어리 중복 0
+  → docs\qa\tmp\build\house_home\01_overlap
+[02 split]
+   낱개(DOOR_·SHUTTER_·RAIL_·PLANTER_·PLANT_)는 생성기가 이름·피벗까지
+  → docs\qa\tmp\build\house_home\02_split
+[03 snap]
+   접지: 생성기 좌표(덧창 바닥 = 창턱, 화분 = 발코니 바닥, 잎 = 흙)
+  → docs\qa\tmp\build\house_home\03_snap
+[04 uv]
+   텍셀 32/64 = 생성기 dens_for
+  → docs\qa\tmp\build\house_home\04_uv
+[05 grain]
+   colors {'wall': [221, 158, 124], 'trim': [212, 206, 191], 'door': [64, 40, 25], 'shutter': [78, 86, 68], 'roof': [146, 81, 44], 'terra': [158, 79, 40], 'ridge': [123, 68, 37], 'soffit': [102, 64, 40], 'iron': [58, 66, 60], 'soil': [112, 84, 60], 'leaf': [88, 124, 72], 'flower': [196, 78, 82], 'brass': [176, 146, 82], 'pane': [74, 86, 92], 'curtain': [220, 210, 179], 'plaster': [242, 228, 200], 'ceil': [246, 238, 218], 'wain': [178, 209, 183], 'rwall': [244, 235, 200], 'boards': [86, 54, 34], 'glass': [186, 214, 226], 'steel': [150, 156, 158], 'stove': [54, 56, 58], 'cabinet': [113, 125, 99], 'sofa': [98, 116, 132], 'cushion': [112, 132, 148], 'apron': [184, 92, 86], 'basket': [178, 140, 92], 'mat': [124, 90, 66], 'plastic': [165, 173, 172], 'ceramic': [212, 206, 185], 'coffee': [62, 40, 28], 'shoecab': [80, 50, 31], 'sole': [34, 34, 36], 'leather': [96, 64, 46], 'shade': [226, 204, 156], 'bulb': [250, 236, 188], 'rug': [145, 68, 33], 'pepper': [44, 38, 34], 'pan': [44, 46, 48], 'fridge': [183, 187, 186], 'bin': [81, 96, 84], 'bedding': [204, 197, 187], 'quilt': [175, 132, 114], 'wardrobe': [86, 54, 34], 'mirror': [150, 176, 186], 'clockface': [212, 202, 176], 'paper': [212, 204, 181], 'spice1': [142, 56, 20], 'spice2': [79, 112, 43], 'spice3': [176, 62, 41], 'jar': [178, 126, 74], 'cereal': [184, 97, 69], 'bagcloth': [187, 177, 149], 'cover': [108, 110, 106], 'cushionB': [166, 101, 103], 'blanket': [208, 184, 143], 'pic1': [67, 95, 106], 'pic2': [173, 75, 30], 'bk1': [147, 74, 69], 'bk2': [74, 93, 112], 'bk3': [66, 99, 58], 'bk4': [141, 110, 57], 'bk5': [170, 160, 137], 'bk6': [118, 56, 28], 'clothA': [98, 110, 112], 'clothB': [175, 101, 86], 'clothC': [195, 185, 160], 'clothD': [75, 105, 50]}
+  → docs\qa\tmp\build\house_home\05_grain
+[06 quant]
+   colors {'house_home': 1387, 'palette': 1387}
+  → docs\qa\tmp\build\house_home\06_quant
+[07 unity]
+Traceback (most recent call last):
+  File "D:\Github\F1Game\tools\art\build_asset.py", line 517, in <module>
+    print(f'[{i:02d} {sn}]'); PER.get(name, {}).get(sn, fn)(c); snapshot(c, i, sn)
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\Github\F1Game\tools\art\build_asset.py", line 473, in h_unity
+    ground_cut, _ = prepare()
+                    ~~~~~~~^^
+  File "D:\Github\F1Game\tools\art\house_studio_ground.py", line 149, in prepare
+    (OUT/'index.html').write_text('<!doctype html><meta charset="utf-8"><title>House floor geometry</title><h1>집 바닥 중복 제거 — 정적 계산 미리보기</h1><p>도현 승인 필요. Unity 적용·촬영·판정 전. 빨간 경계 안 스튜디오 지면·도로만 제거하며 집 모델은 그대로입니다.</p><img src="sheet.png" width="1000"><p><a href="geometry.json">계산 증거</a></p>', encoding='utf-8')
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rtx40\AppData\Local\hermes\tools\python-3.14.9+20261021-win32-x64\Lib\pathlib\__init__.py", line 809, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\rtx40\AppData\Local\hermes\tools\python-3.14.9+20261021-win32-x64\Lib\pathlib\__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 22] Invalid argument: 'D:\\Github\\F1Game\\art\\_review\\2026-10-30-house-floor\\index.html'

@@ -1,0 +1,5 @@
+project=D:/Github/F1Game/F1Studio/Assets scene=Studio_Building playing=False dirty=False compiling=False
+prefab=Assets/Art/Review/house_home/house_home.prefab
+glass=Assets/Art/Review/house_home/M_house_home_glass.mat alpha=0.32 surface=1 queue=3000
+glass_count=16 meshes=116
+missing_materials=

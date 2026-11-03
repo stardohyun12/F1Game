@@ -1,0 +1,10 @@
+var look = SunsetLook.Find();
+look.shade = new Color(0.44f, 0.40f, 0.66f);
+look.a7Shade = new Color(0.34f, 0.30f, 0.50f);
+UnityEditor.EditorUtility.SetDirty(look);
+var m = look.seaMaterial;
+m.SetFloat("_WaveAmp", 0.08f);
+m.SetColor("_Deep", new Color(0.20f, 0.16f, 0.32f));
+UnityEditor.EditorUtility.SetDirty(m); UnityEditor.AssetDatabase.SaveAssetIfDirty(m);
+UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(look.gameObject.scene);
+return "tuned";

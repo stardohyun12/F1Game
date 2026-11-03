@@ -1,0 +1,10 @@
+var go = new GameObject("tmp_topcam");
+var cam = go.AddComponent<Camera>();
+cam.orthographic = true; cam.orthographicSize = 1.6f;
+go.transform.SetPositionAndRotation(new Vector3(274.2f, 33.4f, -29.5f), Quaternion.Euler(90f, 0f, 0f));
+cam.nearClipPlane = 0.05f; cam.farClipPlane = 3f;
+var rt = new RenderTexture(512, 512, 24); cam.targetTexture = rt; cam.Render();
+RenderTexture.active = rt; var tex = new Texture2D(512, 512, TextureFormat.RGB24, false); tex.ReadPixels(new Rect(0, 0, 512, 512), 0, 0); tex.Apply(); RenderTexture.active = null;
+System.IO.File.WriteAllBytes("D:/Github/F1Game/docs/qa/evidence/depot-packbench/top_counter.png", tex.EncodeToPNG());
+cam.targetTexture = null; UnityEngine.Object.Destroy(rt); UnityEngine.Object.Destroy(go);
+return "ok (x right, z up; center 274.2,-29.5; 3.2m wide)";

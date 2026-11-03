@@ -1,0 +1,4 @@
+﻿# loop ok 2 fail 0
+run	dir	result	time	maxDev	at	why	air
+0	1	ok	9.3	1.9	231,27,-47	 legs1	0
+0	-1	ok	7.7	1.7	227,23,-77	 legs1	0

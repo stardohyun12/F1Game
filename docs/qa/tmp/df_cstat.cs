@@ -1,0 +1,1 @@
+return "compiling=" + UnityEditor.EditorApplication.isCompiling + " failed=" + UnityEditor.EditorUtility.scriptCompilationFailed + " B.accel=" + DriveFeel.B.accelTime + " C.mode=" + DriveFeel.C.driveMode;

@@ -1,0 +1,6 @@
+scene ok
+arg ok
+play
+OK D:\Github\F1Game\docs\qa\evidence\studio-house_home\ s12_life3b_road.png; s12_life3b_front.png; s12_life3b_34.png; s12_life3b_close.png; s12_life3b_in.png; s12_life3b_in_balc.png; s12_life3b_in_counter.png; s12_life3b_in_entry.png; s12_life3b_in_fridge.png; s12_life3b_in_hall2f.png; s12_life3b_in_kitchen.png; s12_life3b_in_living.png; s12_life3b_in_parents.png; s12_life3b_in_parentsB.png; s12_life3b_in_room2f.png; s12_life3b_in_sofa.png; s12_life3b_in_stairs.png; s12_life3b_in_win.png; s12_life3b_in_winout.png; 
+stop
+sheet docs/qa/evidence/studio-house_home\s12_sheet.png (6400, 1440)

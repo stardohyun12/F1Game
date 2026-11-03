@@ -25,6 +25,14 @@ foreach (var v in new[] { "road", "front", "34", "close", "in" }) {
   var prev = RenderTexture.active; RenderTexture.active = dst; var tx = new Texture2D(1280, 720, TextureFormat.RGB24, false); tx.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0); tx.Apply(); RenderTexture.active = prev;
   string file = "s" + nn + "_" + desc + "_" + v + ".png"; System.IO.File.WriteAllBytes(outDir + file, tx.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tx); log.Append(file + "; ");
   lr.targetHeight = h0; lr.smooth = s0; lr.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver); }
+// 0351: 에셋 안 STUDIO_Cam_<이름> + STUDIO_Cam_<이름>Look 짝 = 실내 추가 컷(Cam_ST_in 으로, 파일 sNN_<설명>_in_<이름>.png)
+{ Camera ic = null; foreach (var c in cams) if (c.name == "Cam_ST_in") ic = c; var ts = slot.transform.Find(asset).GetComponentsInChildren<Transform>(true);
+  if (ic) foreach (var t in ts) { if (!t.name.StartsWith("STUDIO_Cam_") || t.name.EndsWith("Look")) continue; var lk = ts.FirstOrDefault(q => q.name == t.name + "Look"); if (!lk) continue;
+    ic.transform.position = t.position; ic.transform.LookAt(lk.position); foreach (var c in was.Keys) c.gameObject.SetActive(c == ic);
+    var lr = ic.GetComponent<LowResRenderTest>(); int h0 = lr.targetHeight; bool s0 = lr.smooth; lr.targetHeight = 720; lr.smooth = false; lr.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver);
+    ic.Render(); lr.Present(dst); var prev = RenderTexture.active; RenderTexture.active = dst; var tx = new Texture2D(1280, 720, TextureFormat.RGB24, false); tx.ReadPixels(new Rect(0, 0, 1280, 720), 0, 0); tx.Apply(); RenderTexture.active = prev;
+    string file = "s" + nn + "_" + desc + "_in_" + t.name.Substring(11) + ".png"; System.IO.File.WriteAllBytes(outDir + file, tx.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(tx); log.Append(file + "; ");
+    lr.targetHeight = h0; lr.smooth = s0; lr.SendMessage("LateUpdate", SendMessageOptions.DontRequireReceiver); } }
 foreach (var kv in was) if (kv.Key) kv.Key.gameObject.SetActive(kv.Value); dst.Release();
 foreach (var kv in on) if (kv.Key) kv.Key.SetActive(kv.Value);
 return "OK " + outDir + " " + log;

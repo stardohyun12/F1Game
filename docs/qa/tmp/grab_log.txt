@@ -1,0 +1,1 @@
+first_loop_diary.png t=0.00s yaw=270.0 pitch=40.0 ui='diary'

@@ -1,0 +1,10 @@
+var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
+float x = float.Parse(UnityEditor.SessionState.GetString("c002.x", "185.5")), z = float.Parse(UnityEditor.SessionState.GetString("c002.z", "-70"));
+float k = float.Parse(UnityEditor.SessionState.GetString("c002.k", "0.3"));
+RaycastHit h; Physics.Raycast(new Vector3(x, 60, z), Vector3.down, out h, 100f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+d.Player.Teleport(h.point, 77f);
+Physics.SyncTransforms();
+var b = GameObject.Find("GARAGE_shell").GetComponent<Renderer>().bounds;
+Vector3 aim = new Vector3(Mathf.Lerp(b.min.x, b.max.x, k), b.max.y - 1.5f, b.center.z);
+d.Player.Cam.LookAt(aim);
+return "at " + h.point.ToString("F1") + " aim " + aim.ToString("F1") + " yaw=" + d.Player.Cam.Yaw.ToString("F0");

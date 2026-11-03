@@ -1,0 +1,4 @@
+1_note_pick.png t=1.35s yaw=91.5 pitch=3.8 ui='dot destedge'
+2_handover_a.png t=0.91s yaw=180.0 pitch=321.6 ui='bubble'
+2_handover.png t=1.09s yaw=180.0 pitch=321.6 ui='bubble money'
+3_sunset_home.png t=0.00s yaw=180.0 pitch=10.7 ui='chip'

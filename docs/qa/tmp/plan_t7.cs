@@ -1,0 +1,25 @@
+var w = PitCrewPlan.PitCrewPlanWindow.Open();
+var g = UnityEngine.GameObject.Find("TownV6_Gray/D198_Buildings/D198_depot");
+UnityEditor.Selection.activeGameObject = g;
+w.Show(); w.Focus(); w.Repaint();
+var bf = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public;
+var parent = typeof(UnityEditor.EditorWindow).GetField("m_Parent", bf).GetValue(w);
+parent.GetType().GetMethod("RepaintImmediately", bf, null, System.Type.EmptyTypes, null)?.Invoke(parent, null);
+var pos = (UnityEngine.Rect)parent.GetType().GetProperty("position", bf).GetValue(parent);
+float ppp = UnityEditor.EditorGUIUtility.pixelsPerPoint;
+int W = (int)(pos.width * ppp), H = (int)(pos.height * ppp);
+var rt = new UnityEngine.RenderTexture(W, H, 0, UnityEngine.RenderTextureFormat.ARGB32);
+var grab = parent.GetType().GetMethod("GrabPixels", bf);
+grab.Invoke(parent, new object[] { rt, new UnityEngine.Rect(0, 0, W, H) });
+var prev = UnityEngine.RenderTexture.active; UnityEngine.RenderTexture.active = rt;
+var tex = new UnityEngine.Texture2D(W, H, UnityEngine.TextureFormat.RGB24, false);
+tex.ReadPixels(new UnityEngine.Rect(0, 0, W, H), 0, 0); tex.Apply();
+UnityEngine.RenderTexture.active = prev;
+// GrabPixels 는 위아래가 뒤집혀 나올 수 있다 — 뒤집어 저장
+var px = tex.GetPixels(); var fl = new UnityEngine.Color[px.Length];
+for (int y = 0; y < H; y++) System.Array.Copy(px, y * W, fl, (H - 1 - y) * W, W);
+tex.SetPixels(fl); tex.Apply();
+System.IO.Directory.CreateDirectory("D:/Github/F1Game/docs/qa/evidence/plan-window");
+System.IO.File.WriteAllBytes("D:/Github/F1Game/docs/qa/evidence/plan-window/window.png", tex.EncodeToPNG());
+rt.Release();
+return W + "x" + H;

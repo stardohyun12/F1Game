@@ -34,6 +34,7 @@ public static class WorldInvariants
         ("DP 컴포넌트·트리거", () => DpComponents()),
         ("보관소 출구", () => DepotExit()),
         ("디렉터 1개", () => OneDirector()),
+        ("첫 배달 한 바퀴 배선", () => FirstLoopWiring()),
     };
 
     public static string Check()
@@ -184,6 +185,30 @@ public static class WorldInvariants
     {
         int n = UnityEngine.Object.FindObjectsByType<OnFootDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
         return n == 1 ? new List<string>() : new List<string> { "OnFootDirector " + n + "개(1개여야)" };
+    }
+
+    /// <summary>
+    /// 첫 과제 01-first-loop(SPEC §6·§11): 방 → 칠판 → 작업대 → 찻집 문 → 노을 → 침대가 한 줄로 이어지는 배선.
+    /// 감독에 칠판·작업대·문 앞·첫 배달지·침대가 꽂혀 있고, 카트 타기가 사장 대화에 묶이지 않으며(§11-7), 노을 장치(SunsetLook)가 있다(§11-3).
+    /// 사장 게이트가 되살아나거나 노을이 빠지면 Play 를 안 해도 여기서 잡힌다.
+    /// </summary>
+    static List<string> FirstLoopWiring()
+    {
+        var bad = new List<string>();
+        var ds = UnityEngine.Object.FindObjectsByType<OnFootDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (ds.Length == 0) return bad;   // 감독 없는 씬은 대상 아님
+        var d = ds[0];
+#if UNITY_EDITOR
+        var so = new UnityEditor.SerializedObject(d);
+        foreach (var f in new[] { "orderBoard", "packSpot", "handover", "firstDrop", "bed", "spawn", "cartSpot" })
+        {
+            var p = so.FindProperty(f);
+            if (p == null || p.objectReferenceValue == null) bad.Add("OnFootDirector." + f + " 비어 있음 — 한 바퀴가 끊긴다");
+        }
+#endif
+        if (d.DepotFlow && d.CartNeedsBossTalk) bad.Add("보관소 흐름인데 카트가 사장 대화를 기다린다(SPEC §11-7 위반)");
+        if (UnityEngine.Object.FindFirstObjectByType<SunsetLook>(FindObjectsInactive.Include) == null) bad.Add("SunsetLook 없음 — 건넨 뒤 노을이 안 온다(SPEC §11-3)");
+        return bad;
     }
 }
 #endif

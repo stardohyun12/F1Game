@@ -1,0 +1,665 @@
+{
+ "objects": 79,
+ "bundled": {},
+ "all": {
+  "CART_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 60,
+   "mats": [
+    "Shared_floor",
+    "Shared_trim"
+   ]
+  },
+  "CLOCK": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "CLOCK_dial": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 16,
+   "mats": [
+    "Clock_dial"
+   ]
+  },
+  "CLOCK_hand_hour": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "CLOCK_hand_min": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "COUNTER_01": {
+   "islands": 12,
+   "separate": 1,
+   "polys": 74,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons",
+    "Shared_roof"
+   ]
+  },
+  "COUNTER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "JACKET_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "JACKET_02": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_02": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_03": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_04": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_05": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_06": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_07": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_08": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_09": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_10": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_11": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_12": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_13": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_14": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_15": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_16": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_17": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_18": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_19": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_20": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_27": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_28": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_29": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_30": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_31": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_32": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_33": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_34": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_35": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_36": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_37": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_38": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_39": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_40": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_41": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_42": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_43": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_44": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_45": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_46": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_47": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_48": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_49": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PARCEL_50": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_51": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_52": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_53": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_54": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "PARCEL_55": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 19,
+   "mats": [
+    "Shared_wall",
+    "Shared_icons"
+   ]
+  },
+  "PROP_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "PROP_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 18,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "Q3_building": {
+   "islands": 25,
+   "separate": 1,
+   "polys": 188,
+   "mats": [
+    "Shared_wall",
+    "Shared_floor",
+    "Shared_roof",
+    "Shared_trim"
+   ]
+  },
+  "Q3_decals_NOTICE_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_decals"
+   ]
+  },
+  "Q3_decals_NOTICE_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_decals"
+   ]
+  },
+  "Q3_decals_NOTICE_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_decals"
+   ]
+  },
+  "Q3_decals_NOTICE_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_decals"
+   ]
+  },
+  "Q3_decals_NOTICE_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_decals"
+   ]
+  },
+  "Q3_lamp": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "Q3_person_door": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "Q3_reception_glass": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "Q3_shutter": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "Q3_sign_frame_SIGN_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "Q3_sign_frame_SIGN_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "Q3_sign_SIGN_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "Q3_sign_SIGN_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "Q3_sign_SIGN_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "RACK_01": {
+   "islands": 5,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "SHELF_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 36,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "SHELF_02": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 36,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "TABLE_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 36,
+   "mats": [
+    "Shared_trim"
+   ]
+  }
+ }
+}

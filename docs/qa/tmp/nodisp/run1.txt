@@ -1,0 +1,24 @@
+play
+OK
+1 s status=starting frame=305 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+ref 0 display0Referenced=True warningShown=False state=OnFoot sunset=True
+5 s status=방문 닫기 frame=461 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+8 s status=계단 아래 frame=583 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+12 s status=현관 앞 frame=756 ts=1 state=OnFoot prompt='E 열기' talked=False order=False delivered=False
+15 s status=마당 frame=958 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+18 s status=마당 동쪽 frame=1124 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+21 s status=돌계단 아래 frame=1300 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+27 s status=인도 205 frame=1702 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+30 s status=인도 210 frame=1918 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+33 s status=차고 계단 앞 frame=2087 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+36 s status=차고 계단 위 frame=2240 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+40 s status=골목 222 frame=2395 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+43 s status=골목 230 frame=2541 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+ref 1 display0Referenced=True warningShown=False state=OnFoot sunset=True
+48 s status=차고 마당 frame=2693 ts=1 state=OnFoot prompt='' talked=False order=False delivered=False
+ref 2 display0Referenced=True warningShown=False state=InCart sunset=True
+ref end display0Referenced=True warningShown=False state=InCart sunset=True
+console: entries=26 errors=0
+
+status=done stuck=2 frame=10202 ts=0 state=InCart prompt='' talked=True order=True delivered=True
+stop

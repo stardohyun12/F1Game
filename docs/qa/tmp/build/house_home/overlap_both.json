@@ -1,0 +1,9 @@
+{
+ "building": "house_home",
+ "passes": [],
+ "before": {
+  "pairs": 0,
+  "same_island_dups": 0,
+  "list": []
+ }
+}

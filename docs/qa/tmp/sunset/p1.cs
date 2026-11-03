@@ -1,0 +1,11 @@
+Application.runInBackground = true;
+var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
+var spot = UnityEngine.Object.FindFirstObjectByType<FishingSpot>();
+var look = SunsetLook.Find();
+if (d == null || spot == null || look == null) return "missing d=" + (d != null) + " spot=" + (spot != null) + " look=" + (look != null);
+if (d.State != OnFootDirector.Mode.OnFoot) return "state=" + d.State;
+look.SetOn(true);
+spot.simActive = true;
+bool moved = d.GoToSpot();
+d.SimInteract();
+return "moved=" + moved + " canSit=" + spot.CanSit(d.Player.transform.position) + " sunset=" + look.IsOn;

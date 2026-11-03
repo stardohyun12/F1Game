@@ -1,0 +1,166 @@
+FBX version: 7400
+## CART_01 ['Shared_floor', 'Shared_trim']
+  Shared_trim  wa 0.0310 dd   64.0 edges 0.620x0.050 uvx 0.5-40.2 uvy 76.3-79.5
+  Shared_trim  wa 0.0310 dd   64.0 edges 0.620x0.050 uvx 0.5-40.2 uvy 76.3-79.5
+  Shared_trim  wa 0.0225 dd   64.0 edges 0.450x0.050 uvx 0.5-29.3 uvy 76.3-79.5
+  Shared_trim  wa 0.0225 dd   64.0 edges 0.450x0.050 uvx 0.5-29.3 uvy 76.3-79.5
+  Shared_trim  wa 0.2790 dd   33.3 edges 0.620x0.450 uvx 0.5-21.2 uvy 64.5-79.5
+  Shared_trim  wa 0.2790 dd   33.3 edges 0.620x0.450 uvx 0.5-21.2 uvy 64.5-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 75.7-79.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0690 dd   64.0 edges 1.150x0.060 uvx 0.5-74.1 uvy 75.7-79.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 75.7-79.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 75.7-79.5
+  Shared_trim  wa 0.0312 dd   64.0 edges 0.520x0.060 uvx 0.5-33.8 uvy 507.7-511.5
+  Shared_trim  wa 0.0312 dd   64.0 edges 0.520x0.060 uvx 0.5-33.8 uvy 507.7-511.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 507.7-511.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 507.7-511.5
+  Shared_trim  wa 0.0312 dd   64.0 edges 0.520x0.060 uvx 0.5-33.8 uvy 507.7-511.5
+  Shared_trim  wa 0.0312 dd   64.0 edges 0.520x0.060 uvx 0.5-33.8 uvy 507.7-511.5
+## CLOCK ['Shared_trim']
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.1482 dd   34.8 edges 0.086x0.086 uvx 146.1-161.1 uvy 0.5-15.5
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.0034 dd   64.0 edges 0.086x0.040 uvx 150.9-156.3 uvy 6.7-9.3
+  Shared_trim  wa 0.1482 dd   34.8 edges 0.086x0.086 uvx 146.1-161.1 uvy 0.5-15.5
+## CLOCK_dial ['Clock_dial']
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-21.0 uvy 3.0-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-25.2 uvy 4.0-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-28.0 uvy 6.8-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-29.0 uvy 11.0-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-29.0 uvy 16.0-21.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-28.0 uvy 16.0-25.2
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-25.2 uvy 16.0-28.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 16.0-21.0 uvy 16.0-29.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 11.0-16.0 uvy 16.0-29.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 6.8-16.0 uvy 16.0-28.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 4.0-16.0 uvy 16.0-25.2
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 3.0-16.0 uvy 16.0-21.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 3.0-16.0 uvy 11.0-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 4.0-16.0 uvy 6.8-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 6.8-16.0 uvy 4.0-16.0
+  Clock_dial   wa 0.0078 dd   64.0 edges 0.202x0.079 uvx 11.0-16.0 uvy 3.0-16.0
+## CLOCK_hand_hour ['Clock_dial']
+  Clock_dial   wa 0.0032 dd   55.3 edges 0.127x0.025 uvx 0.5-7.5 uvy 30.1-31.5
+## CLOCK_hand_min ['Clock_dial']
+  Clock_dial   wa 0.0032 dd   35.5 edges 0.197x0.016 uvx 0.5-7.5 uvy 30.7-31.3
+## COUNTER_01 ['Shared_trim', 'Shared_icons', 'Shared_roof']
+  Shared_trim  wa 0.5280 dd   32.0 edges 0.880x0.600 uvx 9.6-28.8 uvy 469.8-497.9
+  Shared_trim  wa 0.5280 dd   32.0 edges 0.880x0.600 uvx 9.6-28.8 uvy 469.8-497.9
+  Shared_trim  wa 2.1120 dd   32.0 edges 2.400x0.880 uvx 38.4-115.2 uvy 469.8-497.9
+  Shared_trim  wa 2.1120 dd   32.0 edges 2.400x0.880 uvx 38.4-115.2 uvy 469.8-497.9
+  Shared_trim  wa 1.4400 dd   32.0 edges 2.400x0.600 uvx 9.6-28.8 uvy 396.8-473.6
+  Shared_trim  wa 1.4400 dd   32.0 edges 2.400x0.600 uvx 9.6-28.8 uvy 396.8-473.6
+  Shared_trim  wa 0.0432 dd   32.0 edges 0.720x0.060 uvx 11.5-34.6 uvy 509.1-511.0
+  Shared_trim  wa 0.0432 dd   32.0 edges 0.720x0.060 uvx 11.5-34.6 uvy 509.1-511.0
+  Shared_trim  wa 0.1512 dd   32.0 edges 2.520x0.060 uvx 40.3-121.0 uvy 509.1-511.0
+  Shared_trim  wa 0.1512 dd   32.0 edges 2.520x0.060 uvx 40.3-121.0 uvy 509.1-511.0
+  Shared_trim  wa 1.8144 dd   32.0 edges 2.520x0.720 uvx 11.5-34.6 uvy 391.0-471.7
+  Shared_trim  wa 1.8144 dd   32.0 edges 2.520x0.720 uvx 11.5-34.6 uvy 391.0-471.7
+  Shared_trim  wa 0.0240 dd   64.0 edges 0.300x0.080 uvx 0.5-19.7 uvy 122.4-127.5
+  Shared_trim  wa 0.0240 dd   64.0 edges 0.300x0.080 uvx 0.5-19.7 uvy 122.4-127.5
+  Shared_trim  wa 0.0240 dd   64.0 edges 0.300x0.080 uvx 0.5-19.7 uvy 122.4-127.5
+  Shared_trim  wa 0.0240 dd   64.0 edges 0.300x0.080 uvx 0.5-19.7 uvy 122.4-127.5
+  Shared_trim  wa 0.0900 dd   64.0 edges 0.300x0.300 uvx 0.5-19.7 uvy 108.3-127.5
+  Shared_trim  wa 0.0900 dd   64.0 edges 0.300x0.300 uvx 0.5-19.7 uvy 108.3-127.5
+  Shared_trim  wa 0.0068 dd   64.0 edges 0.340x0.020 uvx 0.5-22.3 uvy 126.2-127.5
+  Shared_trim  wa 0.0068 dd   64.0 edges 0.340x0.020 uvx 0.5-22.3 uvy 126.2-127.5
+  Shared_trim  wa 0.0068 dd   64.0 edges 0.340x0.020 uvx 0.5-22.3 uvy 126.2-127.5
+  Shared_trim  wa 0.0068 dd   64.0 edges 0.340x0.020 uvx 0.5-22.3 uvy 126.2-127.5
+  Shared_trim  wa 0.1156 dd   64.0 edges 0.340x0.340 uvx 0.5-22.3 uvy 105.7-127.5
+  Shared_trim  wa 0.1156 dd   64.0 edges 0.340x0.340 uvx 0.5-22.3 uvy 105.7-127.5
+  Shared_trim  wa 0.0012 dd   64.0 edges 0.060x0.020 uvx 0.5-1.8 uvy 251.7-255.5
+  Shared_trim  wa 0.0012 dd   64.0 edges 0.060x0.020 uvx 0.5-1.8 uvy 251.7-255.5
+  Shared_trim  wa 0.0084 dd   64.0 edges 0.140x0.060 uvx 0.5-9.5 uvy 251.7-255.5
+  Shared_trim  wa 0.0084 dd   64.0 edges 0.140x0.060 uvx 0.5-9.5 uvy 251.7-255.5
+  Shared_trim  wa 0.0028 dd   64.0 edges 0.140x0.020 uvx 0.5-1.8 uvy 246.5-255.5
+  Shared_trim  wa 0.0028 dd   64.0 edges 0.140x0.020 uvx 0.5-1.8 uvy 246.5-255.5
+  Shared_trim  wa 0.0200 dd   64.0 edges 0.200x0.100 uvx 0.5-6.9 uvy 498.7-511.5
+  Shared_trim  wa 0.0200 dd   64.0 edges 0.200x0.100 uvx 0.5-6.9 uvy 498.7-511.5
+  Shared_trim  wa 0.0640 dd   64.0 edges 0.320x0.200 uvx 0.5-21.0 uvy 498.7-511.5
+  Shared_trim  wa 0.0640 dd   64.0 edges 0.320x0.200 uvx 0.5-21.0 uvy 498.7-511.5
+  Shared_trim  wa 0.0320 dd   64.0 edges 0.320x0.100 uvx 0.5-6.9 uvy 491.0-511.5
+  Shared_trim  wa 0.0320 dd   64.0 edges 0.320x0.100 uvx 0.5-6.9 uvy 491.0-511.5
+  Shared_icons wa 0.0294 dd   69.6 edges 0.210x0.140 uvx 60.2-69.8 uvy 10.2-24.8
+  Shared_icons wa 0.0294 dd   69.6 edges 0.210x0.140 uvx 60.2-69.8 uvy 10.2-24.8
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.120x0.030 uvx 0.5-8.2 uvy 77.6-79.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.120x0.030 uvx 0.5-8.2 uvy 77.6-79.5
+  Shared_trim  wa 0.0048 dd   64.0 edges 0.160x0.030 uvx 0.5-10.7 uvy 77.6-79.5
+  Shared_trim  wa 0.0048 dd   64.0 edges 0.160x0.030 uvx 0.5-10.7 uvy 77.6-79.5
+  Shared_trim  wa 0.0192 dd   64.0 edges 0.160x0.120 uvx 0.5-8.2 uvy 69.3-79.5
+  Shared_trim  wa 0.0192 dd   64.0 edges 0.160x0.120 uvx 0.5-8.2 uvy 69.3-79.5
+  Shared_trim  wa 0.0072 dd   64.0 edges 0.120x0.060 uvx 0.5-4.3 uvy 7.8-15.5
+  Shared_trim  wa 0.0072 dd   64.0 edges 0.120x0.060 uvx 0.5-4.3 uvy 7.8-15.5
+  Shared_trim  wa 0.0072 dd   64.0 edges 0.120x0.060 uvx 0.5-4.3 uvy 7.8-15.5
+  Shared_trim  wa 0.0072 dd   64.0 edges 0.120x0.060 uvx 0.5-4.3 uvy 7.8-15.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 11.7-15.5
+  Shared_trim  wa 0.0036 dd   64.0 edges 0.060x0.060 uvx 0.5-4.3 uvy 11.7-15.5
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0151 dd   64.0 edges 0.027x0.027 uvx 251.6-260.4 uvy 379.6-388.4
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0014 dd   64.0 edges 0.050x0.027 uvx 254.4-257.6 uvy 383.1-384.9
+  Shared_trim  wa 0.0151 dd   64.0 edges 0.027x0.027 uvx 251.6-260.4 uvy 379.6-388.4
+## Q3_sign ['Shared_trim', 'Shared_icons']
+  Shared_trim  wa 0.8832 dd   32.0 edges 0.960x0.920 uvx 0.5-31.2 uvy 482.1-511.5
+  Shared_trim  wa 0.8832 dd   32.0 edges 0.960x0.920 uvx 0.5-31.2 uvy 482.1-511.5
+  Shared_trim  wa 0.1104 dd   32.0 edges 0.920x0.120 uvx 0.5-4.3 uvy 482.1-511.5
+  Shared_trim  wa 0.1104 dd   32.0 edges 0.920x0.120 uvx 0.5-4.3 uvy 482.1-511.5
+  Shared_trim  wa 0.1152 dd   32.0 edges 0.960x0.120 uvx 0.5-31.2 uvy 507.7-511.5
+  Shared_trim  wa 0.1152 dd   32.0 edges 0.960x0.120 uvx 0.5-31.2 uvy 507.7-511.5
+  Shared_icons wa 0.7056 dd   47.2 edges 0.840x0.840 uvx 0.2-39.8 uvy 0.2-39.8
+  Shared_trim  wa 0.0025 dd   32.0 edges 0.050x0.050 uvx 0.5-2.1 uvy 77.9-79.5
+  Shared_trim  wa 0.0025 dd   32.0 edges 0.050x0.050 uvx 0.5-2.1 uvy 77.9-79.5
+  Shared_trim  wa 0.0450 dd   32.0 edges 0.900x0.050 uvx 0.5-29.3 uvy 77.9-79.5
+  Shared_trim  wa 0.0450 dd   32.0 edges 0.900x0.050 uvx 0.5-29.3 uvy 77.9-79.5
+  Shared_trim  wa 0.0450 dd   32.0 edges 0.900x0.050 uvx 0.5-29.3 uvy 77.9-79.5
+  Shared_trim  wa 0.0450 dd   32.0 edges 0.900x0.050 uvx 0.5-29.3 uvy 77.9-79.5
+  Shared_trim  wa 0.0420 dd   32.0 edges 0.840x0.050 uvx 0.5-2.1 uvy 484.6-511.5
+  Shared_trim  wa 0.0420 dd   32.0 edges 0.840x0.050 uvx 0.5-2.1 uvy 484.6-511.5
+  Shared_trim  wa 0.7056 dd   32.0 edges 0.840x0.840 uvx 0.5-27.4 uvy 484.6-511.5
+  Shared_trim  wa 0.7056 dd   32.0 edges 0.840x0.840 uvx 0.5-27.4 uvy 484.6-511.5
+  Shared_trim  wa 0.0420 dd   32.0 edges 0.840x0.050 uvx 0.5-2.1 uvy 484.6-511.5
+  Shared_trim  wa 0.0420 dd   32.0 edges 0.840x0.050 uvx 0.5-2.1 uvy 484.6-511.5
+  Shared_icons wa 0.5776 dd   52.2 edges 0.760x0.760 uvx 0.2-39.8 uvy 0.2-39.8
+  Shared_icons wa 0.5776 dd   52.2 edges 0.760x0.760 uvx 0.2-39.8 uvy 0.2-39.8
+  TRIMCELL eaves [0, 0, 512, 16]
+  TRIMCELL window_frame [0, 16, 512, 16]
+  TRIMCELL door_frame [0, 32, 512, 16]
+  TRIMCELL skirting [0, 48, 512, 16]
+  TRIMCELL gutter [0, 64, 512, 16]
+  TRIMCELL shutter [0, 80, 512, 48]
+  TRIMCELL glass [0, 128, 512, 128]
+  TRIMCELL wood_door [0, 256, 512, 256]
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)

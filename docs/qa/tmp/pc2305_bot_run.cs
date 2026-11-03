@@ -1,0 +1,11 @@
+Application.runInBackground = true;
+string tag = UnityEditor.SessionState.GetString("pc.tag", "bot_before");
+string root = "D:/Github/F1Game/docs/qa/evidence/pc2305/" + tag;
+System.IO.Directory.CreateDirectory(root);
+if (System.IO.File.Exists(root + "/route_feature2.txt")) System.IO.File.Delete(root + "/route_feature2.txt");
+OnFootRouteBot.GrabDir = "";
+OnFootRouteBot.FullThrottleWhenSlow = true;
+DebugWindow.SetDusk(1);
+var m = RegressSweep.MonitorBegin(tag);
+System.AppDomain.CurrentDomain.SetData("rgmon", m);
+return OnFootRouteBot.BeginFirstOrder(root, root) + " " + root;

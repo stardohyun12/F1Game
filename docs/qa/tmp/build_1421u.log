@@ -1,0 +1,18 @@
+[07 unity]
+   _GroundY=0 _FootDark=0 _Blotch=0 _Lift=0 _Sat=1 _A7Lit=1 _Cutoff=0.5 _FogStart=40 _FogEnd=220 _FogMax=0.4 
+house_home raw box (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) -> (-4.58, -0.90, -3.35)..(4.58, 7.35, 4.80) size (9.16, 8.25, 8.15) mats 2
+ items 105 room2F offset (0.000, 0.000, -1.650) room shell dropped, lamp 5.25
+  → docs\qa\tmp\build\house_home\07_unity
+[08 viewer]
+   $ D:/Tools/Blender/blender.exe -b --factory-startup -P D:\Github\F1Game\tools\viewer\export_glb.py -- house_home (2s, exit 0)
+     [export_glb] manifest: D:\Github\F1Game\tools\viewer\assets\manifest.json ['room', 'house_home', 'garage', 'depot', 'postoffice']
+     Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+     Blender quit
+  → docs\qa\tmp\build\house_home\08_viewer
+[09 check]
+    2.1 house_home/DRESSER_01 [house_home.png] 반점 2.03%; S0.61 V92~113; 삼각형 8 / 섬 최대 2
+    2.1 house_home/DOOR_01 [house_home.png] 반점 0.46%; S0.61 V54~73; 삼각형 18 / 섬 최대 2
+GATE PASS (0 위반)
+   다른 건물과 md5 같은 텍스처(D-196): 없음
+  → docs\qa\tmp\build\house_home\09_check
+BUILD DONE house_home

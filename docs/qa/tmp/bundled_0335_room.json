@@ -1,0 +1,511 @@
+{
+ "objects": 62,
+ "bundled": {
+  "ROOM_props": {
+   "islands": 3,
+   "separate": 2,
+   "polys": 17,
+   "mats": [
+    "ROOM_alb"
+   ]
+  }
+ },
+ "all": {
+  "BAG_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 17,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BED_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 13,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_07": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_08": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_09": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_10": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_11": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_12": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_13": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_14": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_15": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_16": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_17": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_18": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_19": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOK_20": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOKS_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 15,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOKS_02": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 10,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOOKS_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 15,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOX_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "BOX_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 4,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "CALENDAR_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "CERT_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "CHAIR_01": {
+   "islands": 5,
+   "separate": 1,
+   "polys": 32,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "DESK_01": {
+   "islands": 3,
+   "separate": 1,
+   "polys": 11,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "FUTON_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 13,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "HOOK_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "KART_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "KNOB_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "LAMP_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 11,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "MAGAZINE_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "MUG_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "NOTEBOOK_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PENCIL_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PHOTO_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PHOTO_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PHOTO_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PHOTO_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PIGGY_01": {
+   "islands": 9,
+   "separate": 1,
+   "polys": 41,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PILLOW_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "PLANT_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 23,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "POSTER_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "POSTER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "RADIO_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 9,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "ROOM_props": {
+   "islands": 3,
+   "separate": 2,
+   "polys": 17,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "ROOM_shell": {
+   "islands": 9,
+   "separate": 1,
+   "polys": 62,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "RUG_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SHELF_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 31,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SHIRT_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SHOE_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 10,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SHOE_02": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 10,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SLIPPER_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "SLIPPER_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "TOWEL_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 5,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "VEST_01": {
+   "islands": 4,
+   "separate": 1,
+   "polys": 14,
+   "mats": [
+    "ROOM_alb"
+   ]
+  },
+  "WALLCLOCK_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "ROOM_alb"
+   ]
+  }
+ }
+}

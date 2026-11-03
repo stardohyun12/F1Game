@@ -1,0 +1,4 @@
+fontsize.png t=0.00s yaw=94.1 pitch=10.1 ui='bubble'
+fontsize.png t=0.00s yaw=41.0 pitch=0.0 ui='dot'
+fontsize.png t=0.00s yaw=41.0 pitch=0.0 ui='dot'
+fontsize.png t=0.00s yaw=41.0 pitch=0.0 ui='dot'

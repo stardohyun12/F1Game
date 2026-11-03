@@ -1,0 +1,1 @@
+return "compiling=" + UnityEditor.EditorApplication.isCompiling + " updating=" + UnityEditor.EditorApplication.isUpdating + " play=" + Application.isPlaying + " sig=" + (typeof(BuildBayLoop).GetMethod("V2FinalGrade", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)?.GetParameters().Length ?? -1);

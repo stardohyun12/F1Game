@@ -1,0 +1,1 @@
+return "day " + UnityEditor.SessionState.GetString("lookg_ms_day", "-") + " | aft " + UnityEditor.SessionState.GetString("lookg_ms_aft", "-") + " | dusk " + UnityEditor.SessionState.GetString("lookg_ms_dusk", "-");

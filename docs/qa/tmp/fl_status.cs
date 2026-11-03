@@ -1,0 +1,13 @@
+UnityEngine.Application.runInBackground = true;
+var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
+var lk = SunsetLook.Find();
+var sp = UnityEngine.Object.FindFirstObjectByType<DepotPackSpot>(UnityEngine.FindObjectsInactive.Include);
+int legacyOn = 0;
+foreach (var dp in UnityEngine.Object.FindObjectsByType<DeliveryPoint>(UnityEngine.FindObjectsSortMode.None)) if (OnFootDirector.IsLegacyPoint(dp)) legacyOn++;
+var sb = new System.Text.StringBuilder();
+sb.Append("mode=" + d.State + " step=" + d.DeliveryStep + " trail=" + d.StepTrail + " prompt=" + d.Prompt + " caption=" + d.DeliveryCaption);
+sb.Append(" | look on=" + (lk != null && lk.IsOn) + " dusk=" + (lk != null ? lk.dusk.ToString("F2") : "-"));
+sb.Append(" | pack ready=" + (sp != null && sp.Ready) + " taken=" + (sp != null && sp.Taken) + " needsShake=" + (sp != null && sp.NeedsShake));
+sb.Append(" | legacyOn=" + legacyOn + " bot=" + PitCrew.PackBench.PackBench.BotStatus);
+sb.Append("\nLOG: " + string.Join(" / ", d.Log.GetRange(System.Math.Max(0, d.Log.Count - 8), System.Math.Min(8, d.Log.Count))));
+return sb.ToString();

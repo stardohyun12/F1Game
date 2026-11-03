@@ -1,0 +1,4 @@
+﻿# loop ok 1 fail 1
+run	dir	result	time	maxDev	at	why	air
+0	1	ok	85.3	2.2	-57,8,-18	 legs1	0
+0	-1	끼임	70.5	2.3	-197,4,5	pitch0 upY1.00 thr1.00 stageDriving gnd1 in1.00/1.00 v0.01 kin0 ts8.0 footOnFoot slowFrom v6.8@66.5s hit[] legs1	0

@@ -1,0 +1,6 @@
+var sb=new System.Text.StringBuilder();
+var roads=GameObject.Find("TownV6_Gray").transform.Find("Roads");
+foreach(var rs in roads.GetComponentsInChildren<RoadSurface>(true)){ if(rs.roadId!="__ID__")continue;
+ sb.Append(rs.name+" active="+rs.gameObject.activeInHierarchy+" n="+rs.centerline.Length+" w="+rs.width+"\n");
+ for(int i=0;i<rs.centerline.Length;i++){ var c=rs.centerline[i]; if(c.x<__X0__||c.x>__X1__||c.z<__Z0__||c.z>__Z1__)continue; sb.Append(i+"\t("+c.x.ToString("F1")+","+c.z.ToString("F1")+")\n"); } }
+return sb.ToString();

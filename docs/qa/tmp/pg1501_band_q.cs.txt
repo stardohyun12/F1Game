@@ -1,0 +1,6 @@
+var sb=new System.Text.StringBuilder();
+var root=GameObject.Find("TownV6_Gray").transform.Find("RoadsV2");
+foreach(Transform t in root){ var mc=t.GetComponent<MeshCollider>(); if(mc==null||mc.sharedMesh==null)continue; var v=mc.sharedMesh.vertices; int hits=0; float ylo=999,yhi=-999;
+ foreach(var q in v){ var p=t.TransformPoint(q); if(Mathf.Abs(p.x-262f)>4f||Mathf.Abs(p.z+50.5f)>4f)continue; hits++; ylo=Mathf.Min(ylo,p.y); yhi=Mathf.Max(yhi,p.y); }
+ if(hits>0) sb.Append(t.name+" pts="+hits+" y="+ylo.ToString("F2")+".."+yhi.ToString("F2")+"\n"); }
+return sb.ToString();

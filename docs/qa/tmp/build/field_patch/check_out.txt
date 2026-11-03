@@ -1,0 +1,32 @@
+REF house_shop 잔결 p25 0.0272 med 0.0984 단색칸 17% | 채도 {'s_min': 0.14832535885167464, 's_max': 0.3939393939393939, 'v5_min': 70.0, 'v95_max': 244.0}
+  texel      텍셀 밀도          90/90 100.0%
+  uvcollapse UV 붕괴(단색 점 UV) 90/90 100.0%
+  grain      잔결(사진 결)       24/90 26.7%
+  flat       단색 칸 비율        57/57 100.0%
+  palette    팔레트 일치         90/90 100.0%
+  colors     영역 색 수         71/90 78.9%
+  speckle    1px 반점         36/90 40.0%
+  baked      구운 빛 흔적(면 안 기울기) 90/90 100.0%
+  blob       원형 어두운 얼룩      90/90 100.0%
+  satval     채도·명도 폭        63/90 70.0%
+  cyl        원통 면 수         1/1 100.0%
+  text       글씨 텍셀·획        0/0 None%
+  mirror     거울 UV          0/0 None%
+  alpha      투명/컷아웃         90/90 100.0%
+  mat        재질·임포트         90/90 100.0%
+  tris       삼각형 수          0/90 0.0%
+    7.9 ref/house_shop [house_shop.png] UV 붕괴 47%; 잔결 0.005 (기준 0.027~0.246); 단색 칸 48%; 반점 3.81%; 둥근 얼룩 6
+    4.1 field_patch/CABBAGE_14 [field_patch.png] 잔결 0.023 (기준 0.027~0.246); 반점 6.12%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_09 [field_patch.png] 잔결 0.023 (기준 0.027~0.246); 반점 5.83%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_15 [field_patch.png] 잔결 0.020 (기준 0.027~0.246); 반점 5.91%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_01 [field_patch.png] 잔결 0.022 (기준 0.027~0.246); 반점 6.31%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_03 [field_patch.png] 잔결 0.024 (기준 0.027~0.246); 반점 7.41%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_02 [field_patch.png] 잔결 0.022 (기준 0.027~0.246); 반점 5.65%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_10 [field_patch.png] 잔결 0.023 (기준 0.027~0.246); 반점 6.95%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_06 [field_patch.png] 잔결 0.024 (기준 0.027~0.246); 반점 6.84%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_17 [field_patch.png] 잔결 0.023 (기준 0.027~0.246); 반점 7.09%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_11 [field_patch.png] 잔결 0.022 (기준 0.027~0.246); 반점 6.75%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_13 [field_patch.png] 잔결 0.023 (기준 0.027~0.246); 반점 6.43%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_18 [field_patch.png] 잔결 0.022 (기준 0.027~0.246); 반점 6.95%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_05 [field_patch.png] 잔결 0.025 (기준 0.027~0.246); 반점 7.25%; 삼각형 342 / 섬 최대 14
+    4.1 field_patch/CABBAGE_12 [field_patch.png] 잔결 0.025 (기준 0.027~0.246); 반점 8.22%; 삼각형 342 / 섬 최대 14

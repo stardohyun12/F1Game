@@ -1,0 +1,777 @@
+{
+ "objects": 85,
+ "bundled": {
+  "BIKE_01": {
+   "islands": 14,
+   "separate": 2,
+   "polys": 132,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "COUNTER_01": {
+   "islands": 13,
+   "separate": 3,
+   "polys": 67,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "Q4_PostOffice_body": {
+   "islands": 175,
+   "separate": 3,
+   "polys": 1556,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof",
+    "Shared_decals",
+    "Shared_icons"
+   ]
+  }
+ },
+ "all": {
+  "BIKE_01": {
+   "islands": 14,
+   "separate": 2,
+   "polys": 132,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "CHAIR_01": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 36,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "CHAIR_02": {
+   "islands": 6,
+   "separate": 1,
+   "polys": 36,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "COUNTER_01": {
+   "islands": 13,
+   "separate": 3,
+   "polys": 67,
+   "mats": [
+    "Shared_trim",
+    "Shared_icons"
+   ]
+  },
+  "MAIL_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_wall"
+   ]
+  },
+  "MAIL_02": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_03": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_04": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_05": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_06": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_07": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_08": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_09": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_10": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_11": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_12": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_13": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_14": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_15": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_16": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_17": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_18": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_19": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_20": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_21": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_22": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_23": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_24": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_25": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "MAIL_26": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Shared_icons"
+   ]
+  },
+  "PLANTER_01": {
+   "islands": 13,
+   "separate": 1,
+   "polys": 90,
+   "mats": [
+    "Shared_trim",
+    "Shared_roof"
+   ]
+  },
+  "POBOX_01": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 6,
+   "mats": [
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_02": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_03": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_04": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_05": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_06": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_07": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_08": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_09": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_10": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_11": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_12": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_13": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_14": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_15": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_16": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_17": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_18": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_19": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_20": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_21": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_22": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_23": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_24": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_25": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_26": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_27": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_28": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_29": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_30": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_31": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_32": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_33": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_34": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POBOX_DOOR_35": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 12,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim"
+   ]
+  },
+  "POSTBOX_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 32,
+   "mats": [
+    "postbox_G1_unlit"
+   ]
+  },
+  "POT_01": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_02": {
+   "islands": 5,
+   "separate": 1,
+   "polys": 46,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_03": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_04": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 28,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_05": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_06": {
+   "islands": 5,
+   "separate": 1,
+   "polys": 46,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "POT_07": {
+   "islands": 2,
+   "separate": 1,
+   "polys": 30,
+   "mats": [
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof"
+   ]
+  },
+  "Q4_counter_glass_1": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_counter_glass_2": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_door_glass_1": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_door_glass_2": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_PostOffice_body": {
+   "islands": 175,
+   "separate": 3,
+   "polys": 1556,
+   "mats": [
+    "Shared_wall",
+    "Shared_trim",
+    "Shared_floor",
+    "Shared_roof",
+    "Shared_decals",
+    "Shared_icons"
+   ]
+  },
+  "Q4_window_glass_1": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_window_glass_2": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_window_glass_3": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "Q4_window_glass_4": {
+   "islands": 1,
+   "separate": 1,
+   "polys": 1,
+   "mats": [
+    "Glass"
+   ]
+  },
+  "SHELF_01": {
+   "islands": 17,
+   "separate": 1,
+   "polys": 102,
+   "mats": [
+    "Shared_trim"
+   ]
+  }
+ }
+}

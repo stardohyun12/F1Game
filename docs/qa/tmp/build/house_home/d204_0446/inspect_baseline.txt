@@ -1,0 +1,7 @@
+scene=Studio_Building dirty=False play=False compiling=False
+garage active=False pos=(0.00, 0.00, 0.00) prefab=Assets/Art/Library/Buildings/garage/garage.prefab
+postoffice active=False pos=(0.00, 0.00, 0.00) prefab=Assets/Art/Library/Buildings/postoffice/postoffice.prefab
+room active=True pos=(0.00, 0.00, 0.00) prefab=Assets/Art/Library/Buildings/room/room.prefab
+ROOM_shell active=True pos=(0.00, 0.00, -1.65) prefab=Assets/Art/Library/Buildings/room/room.prefab
+depot active=False pos=(0.00, 0.00, 0.00) prefab=Assets/Art/Library/Buildings/depot/depot.prefab
+house_home active=True pos=(0.00, 0.00, 0.00) prefab=Assets/Art/Review/house_home/house_home.prefab

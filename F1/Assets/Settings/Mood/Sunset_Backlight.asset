@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc46e964d2eaf1746b2a4e031d3d1a61, type: 3}
+  m_Name: Sunset_Backlight
+  m_EditorClassIdentifier: PitCrew::MoodProfile
+  sunRotationEuler: {x: 8, y: 70, z: 0}
+  sunColor: {r: 1, g: 0.62, b: 0.34, a: 1}
+  sunIntensity: 1.7
+  castShadows: 1
+  shadowStrength: 0.6
+  ambientMode: 3
+  ambientColor: {r: 0.672, g: 0.532, b: 0.434, a: 0.7}
+  ambientIntensity: 1
+  fog: 1
+  fogMode: 1
+  fogColor: {r: 0.96, g: 0.76, b: 0.62, a: 1}
+  fogDensity: 0.0035
+  skybox: {fileID: 2100000, guid: 48793e9de3e67a946bbaa85b9dc5a2bc, type: 2}
+  postProfile: {fileID: 11400000, guid: 5a9055fdda210ff468c7c6528562180a, type: 2}
+  syncWorld: 1
+  fogStart: 60
+  fogEnd: 700
+  worldAmbientScale: 1.15
+  railTint: {r: 0.9, g: 0.64, b: 0.38, a: 1}
+  seaTint: {r: 0.4, g: 0.46, b: 0.62, a: 1}
+  windowsLit: 0

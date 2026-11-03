@@ -1,0 +1,14 @@
+// pg1501: RoadsV2 삼각형(XZ)+재질을 사각 구역 안만 JSON 으로. __X0__ 등은 python 이 치환.
+var sb=new System.Text.StringBuilder(); sb.Append("[");
+var top=GameObject.Find("TownV6_Gray").transform; var v2=top.Find("__PARENT__");
+float x0=__X0__f,z0=__Z0__f,x1=__X1__f,z1=__Z1__f; bool first=true;
+foreach(Transform t in v2){ var mr=t.GetComponent<MeshRenderer>(); var mf=t.GetComponent<MeshFilter>(); if(!t.name.StartsWith("ROAD")||(__ACTIVEONLY__&&!t.gameObject.activeInHierarchy)||mr==null||mf==null||mf.sharedMesh==null)continue; var b=mr.bounds;
+ if(b.max.x<x0||b.min.x>x1||b.max.z<z0||b.min.z>z1)continue;
+ var v=mf.sharedMesh.vertices; var tr=mf.sharedMesh.triangles; var sb2=new System.Text.StringBuilder();
+ for(int i=0;i<tr.Length;i+=3){ var a=t.TransformPoint(v[tr[i]]); var c=t.TransformPoint(v[tr[i+1]]); var d=t.TransformPoint(v[tr[i+2]]);
+  if(Mathf.Max(a.x,Mathf.Max(c.x,d.x))<x0||Mathf.Min(a.x,Mathf.Min(c.x,d.x))>x1||Mathf.Max(a.z,Mathf.Max(c.z,d.z))<z0||Mathf.Min(a.z,Mathf.Min(c.z,d.z))>z1)continue;
+  if(sb2.Length>0)sb2.Append(","); sb2.Append("["+a.x.ToString("F2")+","+a.z.ToString("F2")+","+c.x.ToString("F2")+","+c.z.ToString("F2")+","+d.x.ToString("F2")+","+d.z.ToString("F2")+","+a.y.ToString("F2")+"]"); }
+ if(sb2.Length==0)continue;
+ if(!first)sb.Append(","); first=false;
+ sb.Append("{\"name\":\""+t.name+"\",\"mat\":\""+mr.sharedMaterial.name+"\",\"tris\":["+sb2+"]}"); }
+sb.Append("]"); return sb.ToString();

@@ -1,0 +1,4 @@
+var sb=new System.Text.StringBuilder();
+var roads=GameObject.Find("TownV6_Gray").transform.Find("Roads");
+foreach(var rs in roads.GetComponentsInChildren<RoadSurface>(true)){ var mr=rs.GetComponent<MeshRenderer>(); sb.Append(rs.name+"\t"+rs.roadId+"\t"+rs.kind+"\t"+rs.width+"\t"+(mr!=null&&mr.sharedMaterial!=null?mr.sharedMaterial.name:"-")+"\n"); }
+return sb.ToString();

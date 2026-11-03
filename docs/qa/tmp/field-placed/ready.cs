@@ -1,0 +1,1 @@
+return UnityEditor.EditorApplication.isCompiling+"|"+(typeof(TerraceBlock).GetField("FieldPrefab",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static)!=null)+"|"+UnityEditor.EditorUtility.scriptCompilationFailed;

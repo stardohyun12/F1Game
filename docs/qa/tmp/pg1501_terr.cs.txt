@@ -1,0 +1,3 @@
+var sb=new System.Text.StringBuilder();
+foreach(var mf in GameObject.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None)){ if(mf.sharedMesh==null||!mf.sharedMesh.name.Contains("Terrain"))continue; var b=mf.GetComponent<MeshRenderer>().bounds; sb.Append(mf.name+" mesh="+mf.sharedMesh.name+" active="+mf.gameObject.activeInHierarchy+" min="+b.min.ToString("F0")+" max="+b.max.ToString("F0")+"\n"); }
+return sb.ToString();
