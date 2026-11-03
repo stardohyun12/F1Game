@@ -13,6 +13,7 @@ DRY="${RUN_DRY:-0}"
 U="bash scripts/ucli-http.sh"
 SESS=.claude/team/sessions; mkdir -p "$SESS" .ai_logs docs/qa
 LOG=.ai_logs/task.log
+tasklist //FI "WINDOWTITLE eq PitCrew 스튜디오*" 2>/dev/null | grep -q python || cmd //c "start \"\" \"$(cygpath -w "$PWD")\scripts\studio.cmd" >/dev/null 2>&1 || true   # 스튜디오 창(D-291) 없으면 띄움
 NOW=docs/NOW.md
 T0=$(date +%s)
 say() { printf '[%s] run_task %s | %s\n' "$(date +%H:%M:%S)" "$NAME" "$*"; }

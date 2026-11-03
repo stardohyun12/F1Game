@@ -45,6 +45,7 @@ $TASK
 [ -f "$REPORT" ] || printf '# %s %s\n> 하네스가 만든 뼈대. 구현이 채운다.\n## 1. 한 것\n## 2. 확인 방법\n## 3. 검증 증거\n## 4. 남은 이슈\n' "$ROLE" "$STAMP" > "$REPORT"
 REPORT_MD5=$(python -c "import hashlib,sys;print(hashlib.md5(open(sys.argv[1],'rb').read()).hexdigest())" "$REPORT")
 echo "working $(date +%H:%M) $(printf '%s' "$TASK" | tr '\n' ' ' | head -c 80)" > "$STATE"
+printf '{"model":"%s","effort":"%s","budget":%s,"start":"%s"}' "$C_MODEL" "$C_EFFORT" "$C_BUDGET" "$(date +%H:%M)" > ".claude/team/sessions/$ROLE.run.json"   # 스튜디오 창용(D-291)
 printf '%s' "$TASK" > ".claude/team/sessions/$ROLE.task"
 printf '\n[%s] %-10s | ===== 새 과제 =====\n[%s] %-10s | 📋 %s\n' "$(date +%H:%M:%S)" "$ROLE" \
   "$(date +%H:%M:%S)" "$ROLE" "$(printf '%s' "$TASK" | tr '\n' ' ' | head -c 200)" >> "$LIVE"
