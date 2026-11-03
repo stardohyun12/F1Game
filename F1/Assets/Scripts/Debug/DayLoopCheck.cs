@@ -11,7 +11,11 @@ using UnityEngine;
 public class DayLoopCheck : MonoBehaviour
 {
     public static string Status = "idle";
+    /// <summary>D-293 걷기 검사 결과(집은 뒤 걸어도 물건-카메라 거리가 안 변하나). 한 줄 JSON-ish.</summary>
+    public static string WalkResult = "";
+    public const float WalkHoldTol = 0.05f;
     static string outPath;
+    bool walkOnly;
     OnFootDirector d;
     float t0;
     readonly List<string> steps = new List<string>();
@@ -23,6 +27,17 @@ public class DayLoopCheck : MonoBehaviour
         outPath = path; Status = "run";
         var go = new GameObject("DayLoopCheck");
         go.AddComponent<DayLoopCheck>().d = dir;
+        return "OK";
+    }
+
+    /// <summary>D-293: 선반 앞에서 물건만 집고 걷기 검사 한 번(포장 손동작 없이). exec 'return DayLoopCheck.BeginWalk();' → WalkResult.</summary>
+    public static string BeginWalk()
+    {
+        var dir = FindFirstObjectByType<OnFootDirector>();
+        if (dir == null) return "no dir";
+        outPath = null; Status = "run"; WalkResult = "";
+        var go = new GameObject("DayLoopCheck");
+        var c = go.AddComponent<DayLoopCheck>(); c.d = dir; c.walkOnly = true;
         return "OK";
     }
 
@@ -55,6 +70,15 @@ public class DayLoopCheck : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         t0 = T;
         Step("시작");
+
+        if (walkOnly)
+        {
+            var t2 = d.PackSpot != null ? d.PackSpot.V3Table : null;
+            if (t2 == null) { WalkResult = "FAIL no V3Table"; Status = "done"; Destroy(gameObject); yield break; }
+            yield return PickFromShelf(t2);
+            yield return WalkWhileHolding(t2);
+            Status = "done"; Destroy(gameObject); yield break;
+        }
 
         // 사장
         DebugWindow.GoPlace(2); yield return null;
@@ -148,15 +172,9 @@ public class DayLoopCheck : MonoBehaviour
     /// </summary>
     IEnumerator PackV3(PackTable2 t)
     {
+        yield return PickFromShelf(t);
+        yield return WalkWhileHolding(t);
         var parcel = t.receive.today[0];
-        var pp = parcel.transform.position;
-        d.DebugTeleport(new Vector3(pp.x, 31.1f, pp.z - 1.1f), 0f, null, 0f); yield return null;
-        yield return Look(pp);
-        Step("받는 곳 선반 앞 시선=" + d.GazeTarget);
-        yield return Press();
-        if (!t.Picked) { Step("시선 E 안 잡힘 → SimUse"); t.SimUse(parcel); yield return null; }
-        yield return new WaitForSecondsRealtime(0.5f);
-        Step("물건 집음 OrderPicked=" + d.OrderPicked + " 손=" + t.Holding);
         d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
         yield return Look(t.workSpot.position);
         Step("포장대 앞");
@@ -174,5 +192,50 @@ public class DayLoopCheck : MonoBehaviour
         Step($"포장 v3 끝 Ready={d.PackSpot.Ready} 시작={t.StartIntegrity01 * 100f:F0}% rattle={t.Result.rattle:F2} | {t.LastAct}");
         t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(2f);   // 상자 들기(BoxTaken)
         Step("상자 들기 Carrying=" + d.CarryingBox);
+    }
+
+    /// <summary>받는 곳 선반 앞에서 시선 E 로 물건을 집는다(안 잡히면 SimUse).</summary>
+    IEnumerator PickFromShelf(PackTable2 t)
+    {
+        var parcel = t.receive.today[0];
+        var pp = parcel.transform.position;
+        d.DebugTeleport(new Vector3(pp.x, 31.1f, pp.z - 1.1f), 0f, null, 0f); yield return null;
+        yield return Look(pp);
+        Step("받는 곳 선반 앞 시선=" + d.GazeTarget);
+        yield return Press();
+        if (!t.Picked) { Step("시선 E 안 잡힘 → SimUse"); t.SimUse(parcel); yield return null; }
+        yield return new WaitForSecondsRealtime(0.5f);
+        Step("물건 집음 OrderPicked=" + d.OrderPicked + " 손=" + t.Holding);
+    }
+
+    /// <summary>
+    /// D-293: 집은 뒤 순간이동 없이 Sim 입력 W 2초로 걷는다. 든 물건-카메라 거리가 걷기 전과 0.05 m 이상 다르면 실패(WalkResult "FAIL …").
+    /// 들고 있지 않거나 실제로 1 m 도 못 걸었어도 실패 — 검사가 빈 채로 통과하지 못하게.
+    /// </summary>
+    IEnumerator WalkWhileHolding(PackTable2 t)
+    {
+        var held = PackTable2.HeldNow;
+        var cam = Camera.main;
+        if (held == null || cam == null || t.Holding != PackTable2.Hold.Parcel) { WalkResult = $"FAIL 손에 안 듦 held={(held != null)} cam={(cam != null)} Holding={t.Holding}"; Step(WalkResult); yield break; }
+        var pl = d.Player;
+        d.Player.Cam.AddLook(180f - d.Player.Cam.Yaw, 0f);   // 선반을 등지고(뒤는 열린 보관소 바닥)
+        yield return null; yield return null;
+        float d0 = Vector3.Distance(held.position, cam.transform.position);
+        Vector3 p0 = pl.transform.position, rel0 = cam.transform.InverseTransformPoint(held.position);
+        bool oldSim = pl.simActive, oldCamSim = pl.Cam.simActive;
+        pl.simActive = true; pl.Cam.simActive = true; pl.simMove = new Vector2(0f, 1f);
+        float maxDev = 0f; float w = 0f;
+        while (w < 2f)
+        {
+            w += Time.unscaledDeltaTime; yield return new WaitForEndOfFrame();
+            float dev = Vector3.Distance(cam.transform.InverseTransformPoint(held.position), rel0);   // 카메라 기준 자리 변화(거리+방향)
+            if (dev > maxDev) maxDev = dev;
+        }
+        pl.simMove = Vector2.zero; pl.simActive = oldSim; pl.Cam.simActive = oldCamSim;
+        float d1 = Vector3.Distance(held.position, cam.transform.position);
+        float walked = Vector3.Distance(pl.transform.position, p0);
+        bool ok = held == PackTable2.HeldNow && Mathf.Abs(d1 - d0) < WalkHoldTol && maxDev < WalkHoldTol && walked > 1f;
+        WalkResult = $"{(ok ? "PASS" : "FAIL")} 걸음={walked:F2}m 거리 {d0:F3}→{d1:F3} (Δ{Mathf.Abs(d1 - d0):F3}) 카메라기준 최대이탈={maxDev:F3} 부모={(held.parent != null ? held.parent.name : "null")} 부모의부모={(held.parent != null && held.parent.parent != null ? held.parent.parent.name : "null")} 카메라={cam.name}";
+        Step("걷기 검사 " + WalkResult);
     }
 }

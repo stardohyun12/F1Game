@@ -1,0 +1,11 @@
+var t = PackTable2.I;
+var p = t.receive.today[0];
+var bx = t.WorkBox.Box;
+var lp = bx.transform.InverseTransformPoint(p.transform.position);
+var sb = new System.Text.StringBuilder();
+sb.Append("parcel local=" + lp.ToString("F3") + " rot=" + p.transform.rotation.eulerAngles.ToString("F1") + " box rot=" + bx.transform.rotation.eulerAngles.ToString("F1"));
+sb.Append(" kin=" + p.Body.isKinematic + " sleep=" + p.Body.IsSleeping() + " parent=" + (p.transform.parent ? p.transform.parent.name : "null"));
+sb.Append(" inside0=" + bx.InsideInner(p.transform.position, 0f) + " inner=" + bx.inner.ToString("F3") + " closed=" + bx.IsClosed);
+var hits = UnityEngine.Physics.OverlapBox(p.transform.position, p.transform.lossyScale * 0.5f + UnityEngine.Vector3.one * 0.003f, p.transform.rotation);
+foreach (var h in hits) if (h.gameObject != p.gameObject) sb.Append(" | touch " + h.name + "@" + h.transform.parent?.name);
+return sb.ToString();

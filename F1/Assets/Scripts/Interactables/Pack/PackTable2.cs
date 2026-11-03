@@ -17,6 +17,7 @@ public abstract class PackThing : MonoBehaviour
 /// 걷기 시점 그대로(작업대 화면 전환 없음). 결과 = Core.PackRules(상자 크기·완충재 궁합) + 흔들기 덜그럭.
 /// 옛 PackBench 는 DepotPackSpot.useV3 스위치로 꺼 둔다(지우지 않음).
 /// </summary>
+[DefaultExecutionOrder(100)]   // 카메라(OnFootCamera.LateUpdate, 순서 0) 뒤에 손 자리로 다시 맞춘다(D-293)
 public class PackTable2 : PackThing
 {
     public static PackTable2 I { get; private set; }
@@ -53,6 +54,7 @@ public class PackTable2 : PackThing
     Parcel heldParcel; BoxPick heldBox; GameObject heldSheet; PackFiller heldKind; float heldThick;
     Parcel dropped; float droppedAt;
     readonly List<GameObject> made = new List<GameObject>();
+    readonly List<(Rigidbody rb, RigidbodyInterpolation interp)> heldBodies = new List<(Rigidbody, RigidbodyInterpolation)>();
     float stack;   // 바닥에 깐 두께 합
     Transform hand; Camera cam;
     float shakeT, simShake; bool simTape;
@@ -203,12 +205,30 @@ public class PackTable2 : PackThing
     {
         var h = Hand(); if (h == null) return;
         foreach (var c in t.GetComponentsInChildren<Collider>()) c.enabled = false;
+        // D-293: 보간(Interpolate)이 켜진 Rigidbody 는 부모(손)가 움직여도 물리 자세로 월드 위치를 되돌린다 → 걸으면 선반 자리에 남았다. 든 동안은 끈다.
+        FreezeForHand(t, heldBodies);
         t.SetParent(h, false);
         t.localPosition = Vector3.zero; t.localRotation = Quaternion.identity;
         HeldNow = t;
     }
 
-    void Release() { Holding = Hold.None; heldParcel = null; heldBox = null; heldSheet = null; HeldNow = null; }
+    /// <summary>든 물건의 Rigidbody 를 손에 맞게(보간 끔·kinematic·충돌 감지 끔). 원래 보간값은 saved 에 — Release 가 되돌린다. 불변 조건(WorldInvariants)이 직접 부른다.</summary>
+    public static void FreezeForHand(Transform t, List<(Rigidbody rb, RigidbodyInterpolation interp)> saved)
+    {
+        saved.Clear();
+        foreach (var rb in t.GetComponentsInChildren<Rigidbody>())
+        {
+            saved.Add((rb, rb.interpolation));
+            rb.interpolation = RigidbodyInterpolation.None; rb.isKinematic = true; rb.detectCollisions = false;
+        }
+    }
+
+    void Release()
+    {
+        foreach (var (rb, interp) in heldBodies) if (rb != null) { rb.detectCollisions = true; rb.interpolation = interp; }
+        heldBodies.Clear();
+        Holding = Hold.None; heldParcel = null; heldBox = null; heldSheet = null; HeldNow = null;
+    }
 
     void SetDown(Transform t, Transform at)
     {
@@ -302,6 +322,15 @@ public class PackTable2 : PackThing
         Holding = Hold.None; HeldNow = null;
         Act($"내려놓음 rattle={r.rattle:F2} hits={r.hits} fit={Fit} 바닥={Bottom} 덮기={Top} 테이프={r.taped} → 시작 {StartIntegrity01 * 100f:F0}% Ready={Ready}");
         Sfx(3);
+    }
+
+    /// <summary>든 동안 카메라가 움직인 뒤(LateUpdate) 손 자리에 다시 맞춘다 — 다른 코드가 위치를 건드려도 따라온다. 상자 들기(Lifted)는 FixedUpdate 가 몬다.</summary>
+    void LateUpdate()
+    {
+        if (HeldNow == null || Holding == Hold.None || Holding == Hold.Lifted) return;
+        var h = Hand(); if (h == null) return;
+        if (HeldNow.parent != h) HeldNow.SetParent(h, false);
+        HeldNow.localPosition = Vector3.zero; HeldNow.localRotation = Quaternion.identity;
     }
 
     // ── 매 프레임 ──

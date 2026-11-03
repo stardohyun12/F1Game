@@ -43,6 +43,7 @@ public static class WorldInvariants
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
+        ("들린 물건 Rigidbody 보간 꺼짐(걸을 때 따라옴)", () => HeldFollowsHand()),
     };
 
     /// <summary>
@@ -60,6 +61,32 @@ public static class WorldInvariants
         foreach (var rb in bodies)
             if (rb == null) bad.Add("Rigidbody 없음");
             else if (rb.collisionDetectionMode == CollisionDetectionMode.Discrete) bad.Add($"{rb.name} 충돌 감지 Discrete(들면 물건이 빠진다)");
+        return bad;
+    }
+
+    /// <summary>
+    /// D-293 버그: 손(카메라 자식)에 붙인 물건이 걸을 때 따라오지 않고 선반 자리에 남았다 — 보간(Interpolate) 켜진 Rigidbody 가 월드 위치를 되돌렸다.
+    /// 받는 곳 물건·포장대 상자를 실제 집기 준비(FreezeForHand)에 넣어 보간이 꺼지는지 본다(되돌려 놓고). 걷기 실측은 DayLoopCheck.BeginWalk.
+    /// </summary>
+    static List<string> HeldFollowsHand()
+    {
+        var bad = new List<string>();
+        var t = UnityEngine.Object.FindFirstObjectByType<PackTable2>(FindObjectsInactive.Include);
+        if (t == null) return bad;
+        var things = new List<Transform>();
+        if (t.boxes != null) foreach (var b in t.boxes) if (b != null) things.Add(b.transform);
+        if (t.receive != null && t.receive.today != null) foreach (var p in t.receive.today) if (p != null) things.Add(p.transform);
+        var saved = new List<(Rigidbody rb, RigidbodyInterpolation interp)>();
+        foreach (var x in things)
+        {
+            var body = x.GetComponent<Rigidbody>();
+            bool kin = body != null && body.isKinematic;
+            PackTable2.FreezeForHand(x, saved);
+            if (body == null) bad.Add($"{x.name} Rigidbody 없음");
+            else if (body.interpolation != RigidbodyInterpolation.None) bad.Add($"{x.name} 들 때 보간 {body.interpolation} 그대로(걸으면 따라오지 않는다)");
+            foreach (var (rb, interp) in saved) if (rb != null) { rb.interpolation = interp; rb.detectCollisions = true; }
+            if (body != null) body.isKinematic = kin;
+        }
         return bad;
     }
 
