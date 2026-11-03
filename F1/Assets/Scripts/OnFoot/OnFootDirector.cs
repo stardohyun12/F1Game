@@ -317,6 +317,7 @@ public class OnFootDirector : MonoBehaviour
         TrackStep();
         bool press = InteractPressed();
         UpdateHeldBox();
+        UpdateBedBox();
         UpdateHeldPaper();
         if (moneyText != null && InTalk && handover != null && Speaker == handover.recipient) MoneyEnd = Mathf.Max(MoneyEnd, Time.unscaledTime + 1.2f);
         if (State == Mode.OnFoot)
@@ -537,7 +538,7 @@ public class OnFootDirector : MonoBehaviour
         bool ready = !DepotFlow || Packed;
         if (!OrderStarted && ready && firstDrop != null && rc != null && !debugFreeCart)
         {
-            if (DepotFlow && packSpot != null) { packSpot.Load(); CarryingBox = false; Mark("상자 카트에 실음"); }
+            if (DepotFlow && packSpot != null) { packSpot.Load(); CarryingBox = false; BedBox = true; Mark("상자 카트에 실음"); }
             BeginFirstOrder(); freeDriveEntered = true;
             ApplyPackResult();
         }
@@ -620,6 +621,7 @@ public class OnFootDirector : MonoBehaviour
     void BeginCarry()
     {
         CarryingBox = true;
+        BedBox = false;
         var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
         if (cargo != null && car != null && cargo.transform != car.transform)
             foreach (var r in cargo.GetComponentsInChildren<Renderer>()) r.enabled = false;
@@ -632,6 +634,27 @@ public class OnFootDirector : MonoBehaviour
         if (heldBox == null) return;
         bool on = CarryingBox && State == Mode.OnFoot && footCam != null && footCam.enabled;
         if (heldBox.activeSelf != on) heldBox.SetActive(on);
+    }
+
+    /// <summary>C-003: 보관소 흐름에서 카트 짐칸 상자(카트 모델의 delivery_box·끈)는 실었을 때만 보인다 — 빈 카트로 와서, 실으면 생기고, 내려 들면 사라진다.</summary>
+    public bool BedBox { get; private set; }
+    Renderer[] bedRs; int bedShown = -1;
+    void UpdateBedBox()
+    {
+        if (!DepotFlow || car == null) return;
+        if (bedRs == null || bedRs.Length == 0 || bedRs[0] == null)   // 카트 모델은 감독보다 늦게 붙거나 바뀐다 → 못 찾았으면 다시
+        {
+            var l = new List<Renderer>();
+            foreach (var r in car.GetComponentsInChildren<Renderer>(true))
+                if (r.name.StartsWith("delivery_box") || r.name.StartsWith("delivery_strap")) l.Add(r);
+            bedRs = l.ToArray();
+            bedShown = -1;
+            if (bedRs.Length == 0) return;
+        }
+        int want = BedBox ? 1 : 0;
+        if (want == bedShown) return;
+        bedShown = want;
+        foreach (var r in bedRs) if (r != null) r.enabled = BedBox;
     }
 
     void BuildHeldBox()
@@ -916,7 +939,7 @@ public class OnFootDirector : MonoBehaviour
         if (mgr != null) mgr.OnDeliveryCompleted.RemoveListener(OnFirstDelivered);
         // 이번 날 주문·건네기 상태
         pickedJob = null; firstJob = null;
-        OrderStarted = false; Delivered = false; HandedOver = false; CarryingBox = false; Knocking = false;
+        OrderStarted = false; Delivered = false; HandedOver = false; CarryingBox = false; Knocking = false; BedBox = false;
         HandoverTierIdx = -1; HandoverMoney = 0; moneyText = null; MoneyAt = -99f; MoneyEnd = -99f;
         StartIntegrity = -1f; freeDriveEntered = false;
         StepTrail = "없음";
