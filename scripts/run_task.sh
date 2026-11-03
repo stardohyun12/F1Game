@@ -42,6 +42,7 @@ if [ "$PREV" != "$NAME" ] && [ -s "$SESS/build.id" ]; then
   say "새 과제 → 새 세션(옛 세션 $PREV 보관)"
 fi
 printf '%s' "$NAME" > "$SESS/build.task_name"
+rm -f "$SESS/build.playcount"   # D-292 Play 횟수 과제마다 초기화
 RUN_DRY="$DRY" bash scripts/team.sh build "$BRIEF"; RC=$?
 say "team.sh rc=$RC"
 

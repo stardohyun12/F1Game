@@ -52,6 +52,16 @@ def main():
         m = SLEEP_RE.search(cmd)
         if m:
             deny("D-270: 기다리는 검사 금지(sleep 100+·until -f 루프). 순간이동으로 바로 확인하고 캡처 1~2장", f"대기 {m.group(0)} :: {cmd[:120]}")
+        # D-292: 같은 장면 Play 반복 금지 — 과제당 editor play 최대 2번(확인 1 + 재확인 1)
+        if re.search(r"editor\s+play", cmd) and os.environ.get("TEAM_ROLE"):
+            cnt_file = ".claude/team/sessions/" + os.environ["TEAM_ROLE"] + ".playcount"
+            try: n = int(open(cnt_file).read().strip() or 0)
+            except Exception: n = 0
+            n += cmd.count("editor play")
+            try: open(cnt_file, "w").write(str(n))
+            except Exception: pass
+            if n > 2 and os.environ.get("TEAM_ALLOW_PLAY") != "1":
+                deny("D-292: 과제당 Play 는 2번까지. 같은 장면을 다시 찍지 말고 지금 있는 캡처·로그로 보고하라(캡처는 1장이면 충분, 도현이 직접 플레이한다)", f"play {n}번째 :: {cmd[:120]}")
         m = RULE_DOCS_CMD.search(cmd)
         if m and os.environ.get("TEAM_ROLE") and re.match(r"\s*(cat|head|tail|less|more|sed|awk|grep|rg|type)\b", cmd):
             deny("D-277: 규칙 문서는 읽지 않는다 — 브리프(과제 글)에 필요한 규칙이 다 있다. 나머지는 훅이 막는다", f"규칙문서 {m.group(2)} :: {cmd[:120]}")
