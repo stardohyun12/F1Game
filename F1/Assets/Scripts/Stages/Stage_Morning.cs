@@ -54,6 +54,7 @@ public partial class OnFootDirector
     }
 
     /// <summary>봇: 달력 닫기 · 일기 덮기.</summary>
+    bool simCalClose;
     public void SimCalendarClose() { simCalClose = true; }
     void UpdateCalendar(bool press)
     {

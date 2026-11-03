@@ -10,7 +10,7 @@ public partial class OnFootDirector
 {
     // ── UI 1판(D-240): DotScreenUI 가 읽는 것 ──
     /// <summary>지금 안내([E] 칩)가 붙을 세상 점 — 문짝 가운데·카트 손잡이·사장 머리·낚시 자리. 없으면 null.</summary>
-    public Vector3? PromptAnchor { get; private set; }
+    public Vector3? PromptAnchor { get; internal set; }
     /// <summary>[E] 칩을 물건 곁이 아니라 화면 아래쪽 자리에 둔다 — 칠판 글씨·앞 나무를 가리지 않게(20261102-2305 ②). 칠판·앉기.</summary>
     public bool PromptLow { get; private set; }
     // ── C-003 첫 배달 안내 글(그레이박스 대역 문구 — 도현 확인 필요) ──
@@ -23,7 +23,7 @@ public partial class OnFootDirector
     {
         if (!DepotFlow || !OrderPicked || InTalk || Knocking) return "";
         if (State != Mode.OnFoot && State != Mode.InCart) return "";
-        var job = firstJob != null ? firstJob : pickedJob;
+        var job = firstJob != null ? firstJob : depot.PickedJob;
         string place = !string.IsNullOrEmpty(job.callerName) ? job.callerName : firstDrop != null ? firstDrop.Label : "배달지";
         string who = string.IsNullOrEmpty(job.recipientName) ? "" : " " + job.recipientName;
         if (HandedOver) return State == Mode.OnFoot && Time.unscaledTime - HandedAt < handedCaptionSec ? $"첫 배달 끝 +{HandoverMoney:N0}원 — 집에 가서 자자" : "";   // 돌아오는 길 = 화면 0(SPEC §6-9)

@@ -24,21 +24,6 @@ public partial class OnFootDirector
     public static string CartChip(bool depotFlow, bool orderPicked, bool packed, bool orderStarted)
         => OrderRules.CartChip(depotFlow, orderPicked, packed, orderStarted);   // D-287: 몸통은 Core/OrderRules
 
-    /// <summary>카트 몸 가장자리까지 수평 거리가 within 이내.</summary>
-    bool NearCart(float within)
-    {
-        if (car == null) return false;
-        Vector3 p = player.transform.position; bool any = false; Bounds b = default;
-        foreach (var c in car.GetComponentsInChildren<Collider>())
-        {
-            if (c.isTrigger) continue;
-            if (!any) { b = c.bounds; any = true; } else b.Encapsulate(c.bounds);
-        }
-        if (!any) return Vector2.Distance(new Vector2(p.x, p.z), new Vector2(car.transform.position.x, car.transform.position.z)) <= within + 1f;
-        Vector3 q = b.ClosestPoint(new Vector3(p.x, b.center.y, p.z));
-        return Vector2.Distance(new Vector2(p.x, p.z), new Vector2(q.x, q.z)) <= within;
-    }
-
     /// <summary>상자를 들었고 아직 싣기 전 — 카트 위 「!」(DotScreenUI)가 켜진다.</summary>
     public bool CartMark => State == Mode.OnFoot && DepotFlow && !OrderStarted && CarryingBox && car != null;
     public Vector3 CartMarkAnchor => car.transform.position + Vector3.up * 1.5f;
@@ -149,7 +134,7 @@ public partial class OnFootDirector
         firstDrop.gameObject.SetActive(true);
         var route = new List<DeliveryPoint> { firstDrop };
         mgr.SetPoints(route, null);                                // 귀환 없음 — 찻집 도착이 곧 끝(범위: 출발 → 도착 감지)
-        firstJob = pickedJob != null ? pickedJob : MakeFirstJob();   // D-250: 칠판에서 맡은 주문 그대로
+        firstJob = depot.PickedJob != null ? depot.PickedJob : depot.MakeFirstJob();   // D-250: 칠판에서 맡은 주문 그대로
         mgr.OnDeliveryCompleted.AddListener(OnFirstDelivered);
         var progress = FindFirstObjectByType<DeliveryProgressHUD>(FindObjectsInactive.Include);
         if (progress != null) progress.gameObject.SetActive(true);

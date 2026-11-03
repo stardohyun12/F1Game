@@ -142,7 +142,7 @@ public partial class OnFootDirector
         if (Delivered) return "이미 도착함 — Play 다시";
         DebugLeaveState();
         Talked = true;
-        if (!OrderStarted) { if (pickedJob == null) pickedJob = MakeFirstJob(); BeginFirstOrder(); freeDriveEntered = true; }
+        if (!OrderStarted) { if (depot.PickedJob == null) depot.PickedJob = depot.MakeFirstJob(); BeginFirstOrder(); freeDriveEntered = true; }
         ParkCar(carPos, carYaw);
         var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
         if (cargo != null) cargo.DebugSetIntegrity(hp01);

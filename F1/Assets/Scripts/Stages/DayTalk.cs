@@ -81,23 +81,8 @@ public partial class OnFootDirector
     Vector3 TopOf(Transform t)
     {
         if (t == null) return Vector3.zero;
-        if (!anchorOffset.TryGetValue(t, out var off))
-        {
-            var rs = t.GetComponentsInChildren<Renderer>();
-            if (rs.Length == 0) off = Vector3.up * 1.8f;
-            else { var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds); off = new Vector3(b.center.x, b.max.y, b.center.z) - t.position; }
-            anchorOffset[t] = off;
-        }
+        if (!anchorOffset.TryGetValue(t, out var off)) anchorOffset[t] = off = Gaze.TopOffset(t);
         return t.position + off;
-    }
-
-    Vector3? CenterOf(DoorHinge d)
-    {
-        if (d == null) return null;
-        var rs = d.GetComponentsInChildren<Renderer>();   // 문은 돌아가므로 매번(문 몇 개뿐)
-        if (rs.Length == 0) return d.transform.position;
-        var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds);
-        return b.center;
     }
 
     void UpdateTalk(bool press)

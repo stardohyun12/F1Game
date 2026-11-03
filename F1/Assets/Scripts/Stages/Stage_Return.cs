@@ -8,7 +8,7 @@ using UnityEngine.UI;
 // D-287: OnFootDirector 의 한 조각 — 자리만 옮김(동작 그대로). 지도: docs/world/CODEMAP.md
 public partial class OnFootDirector
 {
-    [SerializeField] OnFootPlayer player;
+    [SerializeField] internal OnFootPlayer player;
     [SerializeField] Transform spawn;
     [SerializeField] Transform cartSpot;
     [Tooltip("1인칭 시선 레이 길이(m). 눈에서 이 거리 안에 문·카트가 맞으면 E.")]
@@ -22,19 +22,19 @@ public partial class OnFootDirector
     [Tooltip("정비소 사장 자리(1.7m 캡슐 대역). 비면 기능 1 처럼 바로 카트를 탈 수 있다.")]
     [SerializeField] Transform boss;
     [Tooltip("첫 주문 배달지(찻집 앞 길). 비면 탑승 때 주문 없이 자유 주행.")]
-    [SerializeField] DeliveryPoint firstDrop;
+    [SerializeField] internal DeliveryPoint firstDrop;
     [Tooltip("사장에게 말 거는 시선 레이 길이(m). 사람은 문보다 멀리서 말을 건다.")]
     [SerializeField] float talkReach = 3.0f;
 
     [Header("D-250·251 — 택배 보관소에서 주문 받기(과제 20261102-1515)")]
     [Tooltip("보관소 안 주문 칠판. 비면 예전 기능 2(사장이 말로 찻집 주문, 탑승 = 출발).")]
-    [SerializeField] DepotOrderBoard orderBoard;
+    [SerializeField] internal DepotOrderBoard orderBoard;
     [Tooltip("포장 자리 대역(작업대 위 상자). 비면 칠판에서 고르는 것만으로 출발할 수 있다.")]
-    [SerializeField] DepotPackSpot packSpot;
+    [SerializeField] internal DepotPackSpot packSpot;
     [Tooltip("사장 대화 뒤 목적지 표식이 가리킬 곳(보관소 앞). 꺼진 DeliveryPoint — 표식 자리로만 쓴다.")]
     [SerializeField] DeliveryPoint depotDest;
     [Tooltip("칠판 보기 시점으로 옮겨 가는 시간(초).")]
-    [SerializeField] float boardFocusSec = 0.5f;
+    [SerializeField] internal float boardFocusSec = 0.5f;
 
     [Header("D-250 ③④ — 문 앞 건네기(과제 20261102-1543)")]
     [Tooltip("배달지 문 앞 대역(문짝·받는 사람). 비면 예전처럼 도착 = 끝(정산창).")]
@@ -48,11 +48,11 @@ public partial class OnFootDirector
 
     [Header("하루 끝 일기장·방 달력(과제 20261102-1951, DELIVERY-LOOP 5-5)")]
     [Tooltip("방 벽 달력 실물. 비면 달력 [E] 없음.")]
-    [SerializeField] RoomCalendar calendar;
+    [SerializeField] internal RoomCalendar calendar;
     [Tooltip("방 침대 [E] 자리. 비면 하루 끝 일기장 없음.")]
     [SerializeField] RoomBed bed;
     [Tooltip("일기를 펼친 뒤 이 초가 지나야 덮인다(실수로 바로 넘기지 않게).")]
-    [SerializeField] float diaryMinSec = 0.8f;
+    [SerializeField] internal float diaryMinSec = 0.8f;
 
     [Header("첫 과제 01-first-loop — 건넨 뒤 노을(SPEC §11-3 가설)")]
     [Tooltip("문 앞 건네기가 끝나면 SunsetLook.dusk 를 0 → 1 로 이 시간(초, 실시간)에 걸쳐 올린다. 0 = 안 바꿈.")]
