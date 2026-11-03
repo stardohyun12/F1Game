@@ -97,13 +97,15 @@ public class OpeningSequence : MonoBehaviour
         if (capBox.gameObject.activeSelf != on) capBox.gameObject.SetActive(on);
         if (!on) return;
         if (capText.text != s) capText.text = s;
-        // Galmuri11 12px: 한글 12, 나머지 6 픽셀로 어림(그레이박스)
+        // Galmuri11 12px: 한글·화살표 12, 나머지 6 픽셀로 어림(그레이박스)
         int w = 8;
-        foreach (char c in s) w += c >= 0xAC00 && c <= 0xD7A3 ? 12 : 6;
+        foreach (char c in s) w += (c >= 0xAC00 && c <= 0xD7A3) || (c >= 0x2190 && c <= 0x21FF) ? 12 : 6;
         Vector2 sz = capRoot.sizeDelta;
         var r = capBox.rectTransform;
         r.sizeDelta = new Vector2(w, 15);
-        r.anchoredPosition = new Vector2(Mathf.Round((sz.x - w) * 0.5f), Mathf.Round(sz.y - 44f));
+        // 카트 안에선 화면 아래 — 위쪽은 화살·거리·목적지 깃발 자리(위에 두면 보관소 깃발 머리를 가렸다).
+        bool low = dir.State == OnFootDirector.Mode.InCart;
+        r.anchoredPosition = new Vector2(Mathf.Round((sz.x - w) * 0.5f), low ? 20f : Mathf.Round(sz.y - 44f));
         r.SetAsLastSibling();
     }
 
@@ -113,15 +115,33 @@ public class OpeningSequence : MonoBehaviour
         if (dir == null || !dir.isActiveAndEnabled) return "";
         var st = dir.State;
         if (st == OnFootDirector.Mode.InCart)
-            return Step == Stage.Cart && Time.unscaledTime - stepAt < cartCaptionSec ? "카트 출발 → 택배 보관소로" : "";
+            return Step == Stage.Cart && Time.unscaledTime - stepAt < cartCaptionSec ? "열쇠로 출발 · " + Toward(dir.WalkDest, "택배 보관소") : "";
         if (st != OnFootDirector.Mode.OnFoot || dir.InTalk) return "";
         switch (Step)
         {
             case Stage.Room: return "방학 1일째 아침 — 집을 나서자";
-            case Stage.Front: return "정비소로 → 사장님이 카트를 봐 놨다";
+            case Stage.Front: return Toward(garageDest, "정비소") + " — 사장님이 카트를 봐 놨다";
             case Stage.Key: return "카트 열쇠 받음 — 카트에 타자";
             default: return "";
         }
+    }
+
+    static readonly string[] Arrows = { "↑", "↗", "→", "↘", "↓", "↙", "←", "↖" };
+
+    /// <summary>안내 글의 방향 한 토막: "정비소 ↗ 45m" — 화살은 지금 카메라 앞 기준 8방향(깃발이 화면 밖이어도 어디인지 글로 남는다).</summary>
+    string Toward(DeliveryPoint dp, string fallback)
+    {
+        var cam = Camera.main;
+        if (dp == null || cam == null) return fallback + "로";
+        Vector3 me = dir.State == OnFootDirector.Mode.InCart && dir.Car != null ? dir.Car.transform.position : dir.Player.transform.position;
+        Vector3 to = dp.transform.position - me; to.y = 0f;
+        Vector3 f = cam.transform.forward; f.y = 0f;
+        float ang = f.sqrMagnitude > 1e-4f && to.sqrMagnitude > 1e-4f ? Vector3.SignedAngle(f, to, Vector3.up) : 0f;
+        int k = ((Mathf.RoundToInt(ang / 45f) % 8) + 8) % 8;
+        float m = to.magnitude;
+        int unit = m >= 100f ? 10 : 5;
+        string name = string.IsNullOrEmpty(dp.Label) ? fallback : dp.Label;
+        return name + " " + Arrows[k] + " " + Mathf.RoundToInt(m / unit) * unit + "m";
     }
 
     bool EnsureCaption()

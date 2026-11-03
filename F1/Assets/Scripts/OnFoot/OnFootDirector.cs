@@ -542,7 +542,7 @@ public class OnFootDirector : MonoBehaviour
             BeginFirstOrder(); freeDriveEntered = true;
             ApplyPackResult();
         }
-        else if (rc != null && !freeDriveEntered) { rc.EnterFreeDrive(); freeDriveEntered = true; }
+        else if (rc != null && !freeDriveEntered) { if (DepotFlow) ClearPreOrderRoute(); rc.EnterFreeDrive(); freeDriveEntered = true; }
         else Services.Overview?.GoToFollow();
         // 같은 프레임에 B 자리로 — 눈높이에서 차 뒤로 날아가는 프레임이 없다.
         if (follow != null) { follow.enabled = true; follow.SnapToTarget(); }
@@ -551,6 +551,19 @@ public class OnFootDirector : MonoBehaviour
         PlacePrompt(false);
         SetHud(true);
         SetPrompt("");
+    }
+
+    /// <summary>
+    /// C-002: 정비소 → 보관소 자유 주행(주문 전)엔 배달 경로를 비운다. DeliveryManager.Start 가 씬 배달지 전부를 미리 켜 두어
+    /// 카트 화살·거리·깃발(DotScreenUI 는 CurrentTarget 먼저)이 보관소 대신 찻집(270 m)을 가리켰다. 비우면 WalkDest(보관소)로 떨어진다.
+    /// 주문 출발(BeginFirstOrder)이 찻집 경로를 다시 세운다.
+    /// </summary>
+    void ClearPreOrderRoute()
+    {
+        var mgr = Services.Delivery as DeliveryManager ?? FindFirstObjectByType<DeliveryManager>();
+        if (mgr == null || mgr.CurrentTarget == null) return;
+        mgr.ActivateRoute(new List<DeliveryPoint>());
+        Mark("주문 전 자유 주행 — 배달 경로 비움(표식 = 보관소)");
     }
 
     FishingSpot NearSpot()
