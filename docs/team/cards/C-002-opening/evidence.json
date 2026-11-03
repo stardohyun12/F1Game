@@ -1,9 +1,9 @@
 {
  "machine": "PASS",
  "after": {
-  "frame_start": 1603,
-  "frame_end": 2321,
-  "unique_frames": 718,
+  "frame_start": 1509,
+  "frame_end": 2314,
+  "unique_frames": 805,
   "seconds": 10.0,
   "captured": 121,
   "warnings": 0,
@@ -11,14 +11,28 @@
   "playing_at_end": true,
   "source": "LowResRenderTest.Present",
   "samples": [],
-  "frames_advanced": 718,
-  "fps": 71.8,
+  "frames_advanced": 805,
+  "fps": 80.5,
   "frames_ok": true,
   "log_ok": true,
   "console_errors_after": "[]",
   "clip": "docs/team/cards/C-002-opening/evidence/after/clip.mp4",
   "strip": "docs/team/cards/C-002-opening/evidence/after/strip.png",
   "shot": "docs/team/cards/C-002-opening/evidence/after/shot.png",
-  "made": "2026-11-03 12:50"
+  "crit": {
+   "1": {
+    "png": "docs/team/cards/C-002-opening/evidence/after/crit1.png",
+    "png3x": "docs/team/cards/C-002-opening/evidence/after/crit1_3x.png"
+   },
+   "3": {
+    "png": "docs/team/cards/C-002-opening/evidence/after/crit3.png",
+    "png3x": "docs/team/cards/C-002-opening/evidence/after/crit3_3x.png"
+   }
+  },
+  "crit_missing": [
+   2
+  ],
+  "crit_ok": false,
+  "made": "2026-11-03 14:50"
  }
 }
