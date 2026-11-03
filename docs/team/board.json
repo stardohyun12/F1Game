@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T12:19:24+09:00",
+ "updated": "2026-11-03T12:21:10+09:00",
  "goal": {
   "name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개",
   "deadline": "2026-11-05"
@@ -70,10 +70,10 @@
   {
    "id": "C-002",
    "title": "오프닝 — 방에서 깨어나 정비소에서 카트를 받는다",
-   "stage": "verify",
-   "owner": "verify",
-   "fails": 1,
-   "updated": "2026-11-03T12:19:24+09:00",
+   "stage": "greybox",
+   "owner": "build",
+   "fails": 2,
+   "updated": "2026-11-03T12:21:10+09:00",
    "dir": "docs/team/cards/C-002-opening",
    "machine": "PASS",
    "clip": "docs/team/cards/C-002-opening/evidence/after/clip.mp4",
