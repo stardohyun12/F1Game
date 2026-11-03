@@ -5,7 +5,8 @@ using UnityEngine.UI;
 /// <summary>
 /// C-002 오프닝(그레이박스): 방에서 깨어남 → 집을 나섬 → 정비소 사장 대화(카트 열쇠) → 카트 탑승.
 /// OnFootDirector 가 시작 때 같은 오브젝트에 붙이고 단계를 알려 준다. 이 컴포넌트는 단계 값과
-/// 사장 대화 전 목적지 표식(정비소)만 맡는다 — 대화·탑승·표식 그리기는 감독·DotScreenUI 그대로.
+/// 안내 글만 맡는다 — 대화·탑승·표식 그리기는 감독·DotScreenUI 그대로. 걷는 구간엔 방향 표시가 없다(도현 D-277 B):
+/// 집을 나서는 순간 시선이 정비소 건물 쪽으로 돌아 건물이 화면에 들어온다.
 /// QA: <c>Opening.Step</c> 이 Room → Front → Talk → Key → Cart 순으로 바뀐다.
 /// </summary>
 public class OpeningSequence : MonoBehaviour
@@ -18,8 +19,10 @@ public class OpeningSequence : MonoBehaviour
     [SerializeField] float wakeSec = 1.4f;
     [Tooltip("카트에 탄 뒤 '택배 보관소로' 안내 글을 보이는 시간(초).")]
     [SerializeField] float cartCaptionSec = 6f;
-    [Tooltip("사장에게 이 거리(m, 수평) 안이면 정비소 표식을 끈다 — 사장 [E] 칩과 겹치지 않게.")]
-    [SerializeField] float bossNearM = 5f;
+    [Tooltip("집을 나설 때 시선이 정비소 건물 쪽으로 도는 시간(초). 0 = 안 돌림.")]
+    [SerializeField] float frontTurnSec = 0.8f;
+    [Tooltip("집을 나선 자리에서 이만큼(m, 수평) 걸어 나오면 시선을 돌린다 — 현관 처마 밑에선 집 벽이 정비소를 반쯤 가린다.")]
+    [SerializeField] float frontWalkM = 2.8f;
 
     public static OpeningSequence Current { get; private set; }
     public Stage Step { get; private set; } = Stage.None;
@@ -28,7 +31,11 @@ public class OpeningSequence : MonoBehaviour
     public string Trail { get; private set; } = "";
 
     OnFootDirector dir;
-    DeliveryPoint garageDest;
+    Renderer garage;          // 정비소 건물(씬 GARAGE_shell) — 집 앞에서 시선을 돌릴 목표
+    bool frontTurned;
+    Vector3 frontAt;
+    /// <summary>QA: 집 앞 시선 돌림이 일어났나.</summary>
+    public bool FrontTurned => frontTurned;
     float spawnY, stepAt;
     // 그레이박스 안내 글(대역) — 도트 UI 캔버스 위쪽 가운데. 단계마다 어디로 가는지 한 줄.
     Image capBox;
@@ -47,32 +54,12 @@ public class OpeningSequence : MonoBehaviour
     public void Begin(OnFootDirector d)
     {
         dir = d; Current = this;
-        if (garageDest == null && d.Boss != null)
-        {
-            // 꺼진 DeliveryPoint — 표식 자리로만 쓴다(depotDest 와 같은 방식). 꺼 둬서 배달 목록·트리거에 안 걸린다.
-            var go = new GameObject("DP_opening_garage");
-            go.SetActive(false);
-            go.transform.SetParent(transform, false);
-            go.transform.position = d.Boss.position;
-            garageDest = go.AddComponent<DeliveryPoint>();
-            garageDest.Bind(null, "정비소");
-        }
-        HasKey = false; Trail = ""; Step = Stage.None;
+        if (garage == null) { var g = GameObject.Find("GARAGE_shell"); if (g != null) garage = g.GetComponent<Renderer>(); }
+        HasKey = false; Trail = ""; Step = Stage.None; frontTurned = false;
         spawnY = d.Player.transform.position.y;
         Set(Stage.Room);
         StopAllCoroutines();
         StartCoroutine(Wake());
-    }
-
-    /// <summary>사장 대화 전 걷는 동안 표식이 가리킬 곳 — 집을 나선 뒤에만, 사장 바로 앞에선 끔.</summary>
-    public DeliveryPoint PreTalkDest
-    {
-        get
-        {
-            if (garageDest == null || dir == null || Step != Stage.Front) return null;
-            Vector3 a = dir.Player.transform.position, b = garageDest.transform.position;
-            return Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z)) < bossNearM ? null : garageDest;
-        }
     }
 
     public void OnTalkBegin() { if (Step == Stage.Front || Step == Stage.Room) Set(Stage.Talk); }
@@ -81,11 +68,48 @@ public class OpeningSequence : MonoBehaviour
 
     void Update()
     {
-        if (dir == null || Step != Stage.Room || dir.State != OnFootDirector.Mode.OnFoot) return;
+        if (dir == null || dir.State != OnFootDirector.Mode.OnFoot) return;
+        // 집을 나와 몇 걸음(처마 밖 마당) 걸으면 정비소 쪽으로 고개를 돌린다 — 표식 없이 건물이 화면 가운데.
+        if (Step == Stage.Front && !frontTurned && !dir.InTalk && frontTurnSec > 0f && garage != null)
+        {
+            Vector3 d = dir.Player.transform.position - frontAt; d.y = 0f;
+            if (d.magnitude >= frontWalkM) { frontTurned = true; StartCoroutine(LookToGarage(GarageAim)); }
+        }
+        if (Step != Stage.Room) return;
         // 집을 나섰다 = 2층에서 내려왔고 머리 위가 하늘(지붕·천장 없음).
         Vector3 p = dir.Player.transform.position;
         if (p.y < spawnY - 1.5f && !Physics.Raycast(p + Vector3.up * 1.9f, Vector3.up, 30f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
             Set(Stage.Front);
+            frontAt = p;
+        }
+    }
+
+    /// <summary>시선 목표: 정비소 서쪽 아치(집 쪽에서 집들 사이로 보이는 면) — 건물 폭 30% 지점, 지붕 아래 1.5 m.</summary>
+    Vector3 GarageAim
+    {
+        get { Bounds b = garage.bounds; return new Vector3(Mathf.Lerp(b.min.x, b.max.x, 0.3f), b.max.y - 1.5f, b.center.z); }
+    }
+
+    /// <summary>정비소가 보이는 자리에 섰다: 그쪽으로 고개를 돌린다 — 표식 없이 건물이 화면 가운데 들어온다. 그 뒤엔 마우스 그대로.</summary>
+    IEnumerator LookToGarage(Vector3 aim)
+    {
+        var cam = dir.Player.Cam;
+        if (cam == null) yield break;
+        float y0 = cam.Yaw, p0 = cam.Pitch;
+        cam.LookAt(aim);
+        float y1 = cam.Yaw, p1 = cam.Pitch;
+        cam.HoldLook = true;
+        for (float t = 0f; t < frontTurnSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
+        {
+            if (Step != Stage.Front || dir.State != OnFootDirector.Mode.OnFoot) break;
+            float k = Mathf.SmoothStep(0f, 1f, t / frontTurnSec);
+            cam.Yaw = Mathf.LerpAngle(y0, y1, k); cam.Pitch = Mathf.Lerp(p0, p1, k);
+            yield return null;
+        }
+        if (Step == Stage.Front) { cam.Yaw = y1; cam.Pitch = p1; }
+        cam.HoldLook = false;
+        Debug.Log($"[Opening] 집 앞 → 정비소 쪽 시선 yaw {y1:F0}");
     }
 
     void LateUpdate()
@@ -120,8 +144,8 @@ public class OpeningSequence : MonoBehaviour
         switch (Step)
         {
             case Stage.Room: return "방학 1일째 아침 — 집을 나서자";
-            case Stage.Front: return Toward(garageDest, "정비소") + " — 사장님이 카트를 봐 놨다";
-            case Stage.Key: return "카트 열쇠 받음 — 카트에 타자";
+            case Stage.Front: return "정비소로 — 사장님이 카트를 봐 놨다";
+            case Stage.Key: return "카트 열쇠를 받았다 — 카트에 타자";
             default: return "";
         }
     }

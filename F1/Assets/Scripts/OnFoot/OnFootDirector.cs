@@ -173,7 +173,7 @@ public class OnFootDirector : MonoBehaviour
         get
         {
             if (firstDrop == null || Delivered) return null;
-            if (!Talked) return opening != null ? opening.PreTalkDest : null;   // C-002: 집을 나서면 정비소
+            if (!Talked) return null;   // C-002(도현 D-277 B): 걷는 구간엔 방향 표시 없음 — 집을 나서면 정비소 건물이 화면에 들어온다(OpeningSequence)
             if (!DepotFlow) return firstDrop;
             return OrderPicked ? firstDrop : depotDest;
         }
