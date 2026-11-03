@@ -19,6 +19,7 @@ if ($st -match '^working' -and $log -and ((Get-Date) - $log.LastWriteTime).Total
 # 줄이 비면 backlog 에서 다음 과제를 자동으로 넣음(D-255: 중간에 끊기지 않게). backlog = PD 가 미리 승인된 결정만 넣는 곳.
 foreach ($l in "editor","studio","verify","research") {
   $q = ".claude\team\queue\$l"
+  if (Test-Path "D:\Github\F1Game\.claude	eam\queue\STOP") { continue }   # 정지 깃발(D-277)
   if (-not (Test-Path "$q\backlog")) { continue }
   $pending = Get-ChildItem "$q\*.task" -ErrorAction SilentlyContinue
   $role = @{editor="build";studio="art";verify="verify";research="research"}[$l]   # 일꾼 5개(2026-11-03)
