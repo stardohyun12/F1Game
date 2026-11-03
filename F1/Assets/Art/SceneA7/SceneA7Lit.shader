@@ -76,10 +76,58 @@ Shader "PitCrew/SceneA7/Lit"
             float _S1; float4 _S1P; float _S2; float4 _Warm; float _WarmAmt; float4 _ShadeTeal; float _SplitAmt; float _S3; float _S3Flat; float4 _Haze; float4 _HazeP; float _T1; float _T2;
             float4 _FogColor; float _FogStart; float _FogEnd; float _FogMax;
             float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff; float _Sat; float4 _WB; float _Lift; float4 _LiftTint;
-            float _SN; float _SNDens; float _A7Lit;
+            float _SN; float _SNDens; float _A7Lit; float4 _BaseMap_TexelSize;
         CBUFFER_END
         // A7 전역(A7LightToggles): 그늘 색, 3단 문턱(해 받는 면, 옆), 옆 단 높이
         float4 _A7Shade; float4 _A7T; float _A7Mid;
+        // 실내 도트(과제 20261104-0501, A7ShadeGlobals 가 넣음): 방 상자 안 조각만 바다 화면과 같은 문법으로.
+        //  _A7InBox = 월드 → 상자(-1..1) 행렬 · _A7InP = (켬, 밝기 단 수, 근거리 안개 최대, 안개 끝 m)
+        //  ① 텍스처 걸러 읽기(텍셀 네모·나무결·벽 얼룩 없앰) ② 빛 3단(해 자국 / 면 방향 2단) ③ 근거리 안개(그늘색) ④ 밝기 n단 + Bayer 4×4 디더(렌더 픽셀 고정)
+        //  _A7InQ = (거르는 탭 간격 텍셀, 국소 평균 쪽 대비 줄임 0..1, 단 끝 디더 폭 0..1, 단 자를 때 결 빼기 0..1)
+        float4x4 _A7InBox; float4 _A7InP; float4 _A7InQ;
+        SAMPLER(sampler_linear_repeat);
+        bool A7Inside(float3 wp)
+        {
+            if (_A7InP.x < 0.5) return false;
+            float3 b = abs(mul(_A7InBox, float4(wp, 1)).xyz);
+            return max(b.x, max(b.y, b.z)) <= 1;
+        }
+        // ① 바이리니어 9탭(1-2-1, 간격 _A7InQ.x 텍셀) → 국소 평균(±2.5간격) 쪽으로 대비 _A7InQ.y 만큼 줄임. 큰 모양(문·포스터 그림)은 남고 1텍셀 결은 사라진다
+        static float a7InK = 1;   // 넓은 평균 / 이 픽셀 텍스처 밝기(선형). 외곽선 패스는 1
+        half3 A7InTex(float2 uv)
+        {
+            float2 st = _BaseMap_TexelSize.xy * _A7InQ.x;
+            half3 c = 0;
+            [unroll] for (int y = -1; y <= 1; y++) [unroll] for (int x = -1; x <= 1; x++)
+                c += (x == 0 ? 2 : 1) * (y == 0 ? 2 : 1) * SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv + float2(x, y) * st, 0).rgb;
+            c /= 16;
+            half3 m = 0;
+            [unroll] for (int k = 0; k < 4; k++) m += SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv + float2(k < 2 ? -2.5 : 2.5, k % 2 ? -2.5 : 2.5) * st, 0).rgb;
+            c = lerp(c, m * 0.25, _A7InQ.y);
+            // 단을 자를 밝기는 텍스처 결이 아니라 넓은 평균(밉 _A7InQ.w) 기준 — 결이 단 문턱에 걸려 벽 전체가 얼룩지는 것 막기
+            half3 wide = SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv, 3).rgb;
+            float3 lw = float3(0.299, 0.587, 0.114);
+            a7InK = clamp(max(1e-4, dot(wide, lw)) / max(1e-4, dot(c, lw)), 0.25, 4);
+            return c * _Tint.rgb;
+        }
+        float A7InBayer2(float2 a) { a = floor(a); return frac(a.x * .5 + a.y * a.y * .75); }
+        float A7InBayer4(float2 a) { return A7InBayer2(.5 * a) * .25 + A7InBayer2(a); }
+        // ③④ 마지막(화면 감마 값): 근거리 안개 → 밝기 n단(디더). 색상은 그대로, 밝기만 자른다
+        float3 A7InPost(float3 lin, float3 wp, float2 spos)
+        {
+            float d = distance(_WorldSpaceCameraPos, wp);
+            lin = lerp(lin, _A7Shade.rgb * 0.95, saturate((d - 0.6) / max(0.5, _A7InP.w - 0.6)) * _A7InP.z);
+            float3 g = pow(max(lin, 0), 1.0 / 2.2);
+            float L = max(1e-4, dot(g, float3(0.299, 0.587, 0.114)));
+            float n = max(2, _A7InP.y);
+            // 하늘(Dusk.hlsl dkStep)처럼 단 끝 _A7InQ.z 폭만 디더 — 면 전체가 체커가 되지 않게
+            // 자를 밝기 = 텍스처 결을 _A7InQ.w 만큼 빼고 본 밝기(0 = 결째로 자름 → 얼룩이 단으로 뭉개짐, 1 = 빛·안개만 자르고 결은 비율로 되얹음)
+            float Ls = L * pow(a7InK, _A7InQ.w / 2.2);
+            float v = Ls * n, fi = floor(v), f = v - fi, w = max(1e-3, _A7InQ.z);
+            float Lq = (fi + step(A7InBayer4(spos), (f - (1 - w)) / w)) / n;
+            g *= max(Lq, 0.5 / n) / Ls;
+            return pow(max(g, 0), 2.2);
+        }
         half4 SampleBase(float2 uv)
         {
             if (_R2 > 0.5 && _HasR2 > 0.5) return SAMPLE_TEXTURE2D(_BaseMapR2, sampler_BaseMap, uv) * _Tint;
@@ -150,6 +198,8 @@ Shader "PitCrew/SceneA7/Lit"
             {
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
+                bool inside = A7Inside(i.wp);
+                if (inside) t.rgb = A7InTex(i.uv);
                 float3 n = normalize(i.n) * (front ? 1 : -1);
                 float ndl = saturate(dot(n, normalize(_SunDir.xyz)));
                 if (_Steps > 0.5) ndl = floor(ndl * _Steps + 0.5) / _Steps;
@@ -164,6 +214,13 @@ Shader "PitCrew/SceneA7/Lit"
                     float lv = k > _A7T.x ? 1.0 : (k > _A7T.y ? _A7Mid : 0.0);
                     if (ml.shadowAttenuation < 0.5) lv = 0.0;                                  // 단단한 그림자: 반쯤도 없음
                     c = t.rgb * lerp(_A7Shade.rgb, ml.color, lv);
+                    // 실내 ②: 해 자국이 아닌 곳(그늘 한 색)을 면 방향 3단으로 — 바닥 = 밝은 단, 해 쪽(창 쪽)을 보는 벽 = 가운데 단, 천장·등진 벽 = 어두운 단. 지금 해 방향에서 매 프레임 계산
+                    if (inside && lv < 0.5)
+                    {
+                        float2 sxz = normalize(ml.direction.xz + 1e-4), nxz = n.xz / max(1e-4, length(n.xz));
+                        float face = n.y > 0.5 ? 1.0 : (n.y < -0.5 ? 0.0 : (dot(nxz, sxz) > -0.2 ? 0.5 : 0.0));
+                        c *= face > 0.75 ? 1.16 : (face > 0.25 ? 1.06 : 0.84);   // 1.06 = 벽 결이 밝기 단 문턱에 안 걸리는 값(0.96 은 벽 전체가 디더 얼룩, 실측)
+                    }
                 }
                 // R1: 해 방향 계단 3단. 밝은 단 = 1(텍스처 그대로), 그늘 = 안개색 × _RampDark
                 if (_Ramp > 0.5 && _R1Ok > 0.5)
@@ -192,7 +249,9 @@ Shader "PitCrew/SceneA7/Lit"
                 float lum = dot(c, float3(0.299, 0.587, 0.114));
                 c = max(0, lerp(lum.xxx, c, _Sat)) * _WB.rgb;
                 c = lerp(c, _LiftTint.rgb, _Lift * saturate(1 - lum * 1.6));
-                return half4(Grade(Fog(c, i.wp), i.wp), 1);
+                c = Grade(Fog(c, i.wp), i.wp);
+                if (inside) c = A7InPost(c, i.wp, i.pos.xy);
+                return half4(c, 1);
             }
             ENDHLSL
         }
@@ -252,7 +311,9 @@ Shader "PitCrew/SceneA7/Lit"
                 clip(t.a - _Cutoff);
                 float3 c = max(0, lerp(dot(t.rgb, float3(0.299, 0.587, 0.114)).xxx, t.rgb, _Sat * 1.15)) * _WB.rgb * _OutlineDark;
                 if (_T1 > 0.5 && i.sun > 0.45) c = min(1, t.rgb * _WB.rgb * 1.35 + 0.04);   // T1(약식): 해를 보는 쪽 실루엣은 밝은 선
-                return half4(Grade(Fog(c, i.wp), i.wp), 1);
+                c = Grade(Fog(c, i.wp), i.wp);
+                if (A7Inside(i.wp)) c = A7InPost(c, i.wp, i.pos.xy);
+                return half4(c, 1);
             }
             ENDHLSL
         }

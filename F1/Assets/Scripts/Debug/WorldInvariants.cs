@@ -40,6 +40,7 @@ public static class WorldInvariants
         ("아침 카트는 정비소 앞", () => MorningCartAtGarage()),
         ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
         ("스크립트 Missing 0", () => NoMissingScripts()),
+        ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
@@ -498,6 +499,34 @@ public static class WorldInvariants
         var b = DriveFeel.B;
         if (b.reverseMaxRatio < 0.5f) bad.Add(string.Format(Inv, "B 후진 최고속 비율 {0:0.00} < 0.5 — 후진이 기어간다", b.reverseMaxRatio));
         if (b.reverseAccelMul < 1f) bad.Add(string.Format(Inv, "B 후진 가속 배율 {0:0.00} < 1 — 바닥 마찰에 먹혀 4초에 7 km/h 였다", b.reverseAccelMul));
+        return bad;
+    }
+
+    /// <summary>
+    /// 과제 20261104-0501: 방(ROOM_2F) 안 A7 면은 A7ShadeGlobals 가 레이로 잡은 방 상자 안에서만 도트 문법(거른 텍스처·밝기 단·디더)을 쓴다.
+    /// 집이 옮겨지거나 벽이 빠져 레이가 못 닿으면 상자가 없어져 조용히 옛 화면(사진 결·한 색 그늘)으로 돌아간다 — 여기서 잡는다.
+    /// 상자는 방 소품 가운데를 품고, 반폭이 0.8~8 m(집 한 칸)여야 한다(벽을 지나쳐 바깥까지 먹으면 거리 풍경도 바뀐다).
+    /// </summary>
+    static List<string> IndoorDotBox()
+    {
+        var bad = new List<string>();
+        var g = UnityEngine.Object.FindFirstObjectByType<A7ShadeGlobals>();
+        if (g == null || !g.indoorDot) return bad;
+        g.Apply();
+        if (!g.IndoorReady) { bad.Add("방 상자 없음(" + g.roomName + ") — 방 소품 묶음 이름이나 벽 콜라이더 확인"); return bad; }
+        Transform room = null;
+        foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (t.name == g.roomName && t.parent != null) { room = t; break; }
+        var rs = room.GetComponentsInChildren<Renderer>(); var bb = rs[0].bounds; foreach (var r in rs) bb.Encapsulate(r.bounds);
+        var c = g.IndoorBox.MultiplyPoint3x4(bb.center);
+        if (Mathf.Max(Mathf.Abs(c.x), Mathf.Max(Mathf.Abs(c.y), Mathf.Abs(c.z))) > 1f) bad.Add("방 소품 가운데 " + V(bb.center) + " 가 방 상자 밖");
+        var inv = g.IndoorBox.inverse;
+        for (int a = 0; a < 3; a++)
+        {
+            var ax = Vector3.zero; ax[a] = 1f;
+            float half = (inv.MultiplyPoint3x4(ax) - inv.MultiplyPoint3x4(Vector3.zero)).magnitude;
+            if (half < 0.8f || half > 8f) bad.Add(string.Format(Inv, "방 상자 축{0} 반폭 {1:0.00} m — 0.8~8 m 밖(레이가 벽을 지나쳤거나 소품에 막힘)", a, half));
+        }
         return bad;
     }
 
