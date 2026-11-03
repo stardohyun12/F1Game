@@ -1,10 +1,12 @@
-[EDITOR][OPUS][기능별로 다 나누기 — 감독·포장·화면 UI 분리, 동작은 그대로 (D-286)]
-도현 원문: "먼저 해서 기능별로 다 나눠". 목적: 과제마다 1,747줄을 읽는 일을 없앤다. **동작·값·씬은 1도 바꾸지 않는다** — 자리만 옮긴다. 시간 상자 150분. 새 기능 금지.
-대상: `F1/Assets/Scripts/OnFoot/OnFootDirector.cs`(1,747줄) · `Packing/Bench/PackBench.cs`(1,012줄, partial 포함) · `UI/DotScreenUI.cs`(900줄). 그 외는 손대지 않는다.
-나누는 기준 = world/SPEC.md §6 단계. 폴더 `F1/Assets/Scripts/Day/` 아래 단계마다 파일 하나(partial class 가 아니라 **독립 클래스**, 감독이 인터페이스로 부름):
-- `DayDirector.cs` — 지금 단계가 무엇인지·전환만. 200줄 안. (OnFootDirector 는 이 이름으로 바뀌거나 얇은 껍데기로 남김 — 씬 참조가 깨지지 않게 컴포넌트 이름·직렬화 필드는 유지. 필드를 옮기면 씬의 참조값도 옮겨 적을 것 — 에디터 exec 로 복사, 손으로 .unity 편집 금지.)
-- `Stage_Morning.cs`(방·달력·라디오·집 앞) · `Stage_Garage.cs`(사장·열쇠·수리·카트 받기) · `Stage_Depot.cs`(칠판·쪽지·직원) · `Stage_Packing.cs`(작업대 연결 — 포장 내부는 Packing/ 에 그대로) · `Stage_Drive.cs`(싣기·목적지·방향 표시 켜고 끄기) · `Stage_Door.cs`(문 앞·건네기·결과·돈) · `Stage_Return.cs`(노을·귀가) · `Stage_DayEnd.cs`(침대·일기·달력·다음 날).
-- 화면 UI: `DotScreenUI.cs` 는 그리기만 남기고, "언제 무엇을 보일지" 결정은 각 Stage 가 UI 에 요청(ShowChip/ShowArrow/…)하는 식으로. UI 가 게임 상태를 직접 뒤지는 코드는 Stage 로.
-- 포장: PackBench 의 Step 상태기·커서·BotRun·Day 연결을 `Packing/Bench/{PackFlow,PackCursor,PackBot,PackDay}.cs` 로. (04 가 만든 Packing/Hands/ 는 건드리지 않는다.)
-- 디버그(DebugWindow·OnFootRouteBot·GarageDriveCheck 등)가 옛 이름을 부르면 호출만 고친다.
-확인(이게 안 됐으면 실패할 검사): ① 컴파일 0 ② `world_check` 통과(15/15 이상) ③ **분리 전·후 같은 Play 로그**: 과제 01 의 play_log.json 과 같은 순서(없음→쪽지→포장→실음→도착→건넴→노을→침대→일기→아침)가 그대로 나오는지 입력 시뮬로 1회, 단계 전환 시각 ±1초 ④ 씬 참조 끊김 0(Missing 컴포넌트 검사 exec) ⑤ 파일별 줄 수 표(전·후, 모든 파일 400줄 이하). 캡처는 1장(아무 단계)만. 보고 4줄 + 파일 지도(파일→맡은 단계 한 줄씩) → docs/world/CODEMAP.md 로 저장(브리프가 읽게). 씬 저장.
+[EDITOR][OPUS][아키텍처대로 나누기 — docs/ARCHITECTURE.md (D-287), 동작은 그대로]
+도현 원문: "우리 게임에 알맞는 아키텍쳐 정하고 그 방식으로 스크립트를 나누자 그리고 구현할 때 하나씩 고칠 수 있는 쪽으로" → **docs/ARCHITECTURE.md 를 먼저 읽고 그 층·폴더·asmdef·규칙 7개 그대로.** 동작·값·씬은 바꾸지 않는다 — 자리만 옮긴다. 시간 상자 240분(끝나면 바로 마무리). 새 기능 금지. 04 가 만든 Packing/Hands/ 는 Interactables(Box/Bubble/Tape)·Presentation(Hands 그리기)로 같이 옮긴다.
+순서(각 단계 끝마다 컴파일 0 확인, 중간 커밋은 하지 말고 끝에 한 번):
+1. asmdef 7개와 폴더. Core 는 noEngineReferences. 참조 방향은 ARCHITECTURE 대로. 기존 스크립트는 일단 맞는 폴더로 **이동만**(guid 유지 — .meta 같이 이동, 씬 참조 안 깨짐).
+2. Core: 돈·파손 확률·수리비·달력(28일·주말)·주문 규칙을 순수 C# 클래스로 꺼낸다(지금 코드의 수식·수치 그대로). `Core.Tests/`(이 프로젝트에서 실제로 도는 쪽: Unity Test Framework EditMode 또는 csproj dotnet test) 테스트 10개 이상: 파손 3단 80/40%·×1.0/0.7/0.3, 수리 −300, 첫 배달 +1,200, 달력 28칸·주말 등. 게임 코드는 Core 를 호출하게.
+3. Signals: 이벤트 버스 + 지금 흐름에 실제 있는 신호만(NotePicked, BoxPacked, BoxLoaded, Arrived, HandedOver, DuskStarted, SleptIn, DayStarted, KeyReceived…).
+4. Stages: DayDirector(200줄 안) + Stage_Morning/Garage/Depot/Packing/Drive/Door/Return/DayEnd. OnFootDirector 의 단계 코드를 여기로. 씬 컴포넌트 이름·직렬화 필드가 바뀌면 씬 참조값을 에디터 exec 로 옮겨 적는다(.unity 손 편집 금지).
+5. Interactables: IInteractable(Prompt/CanUse/Use) + 물건 하나 = 파일 하나(Note, Board, Box, Bubble, Tape, Cart, Door, Bed, Diary, Calendar, Radio…). 단계는 물건을 직접 부르지 않고 신호만.
+6. Presentation: DotScreenUI 는 View 모델만 그린다. 상태를 뒤지는 코드는 Stages/Interactables 로. SunsetLook·소리·손도 신호만.
+7. Debug: DebugWindow·봇·GarageDriveCheck·WorldInvariants·WorldSnapshot → Debug asmdef. 옛 이름 호출만 고침.
+확인(안 됐으면 실패): ① 컴파일 0 ② asmdef 거꾸로 참조 0 ③ Core 테스트 전부 통과(실행 로그) ④ `world_check` 통과 ⑤ **분리 전·후 같은 Play 로그** — 과제 01 play_log.json 순서(없음→쪽지→포장→실음→도착→건넴→노을→침대→일기→아침) 입력 시뮬 1회, 전환 시각 ±1초 ⑥ Missing 컴포넌트·끊긴 참조 0(exec 검사) ⑦ 파일별 줄 수 전·후 표, 전부 400줄 이하. 캡처 1장.
+보고 4줄 + `docs/world/CODEMAP.md`(파일 → 층 → 맡은 것 한 줄씩, 브리프가 읽음) + 안 옮긴 것과 이유. 씬 저장.
