@@ -19,5 +19,37 @@
   "shot": "docs/team/cards/C-001-repair-one/evidence/before/shot.png",
   "made": "2026-11-03 01:15"
  },
- "machine": "-"
+ "machine": "PASS",
+ "after": {
+  "frame_start": 1920,
+  "frame_end": 2494,
+  "unique_frames": 574,
+  "seconds": 10.0,
+  "captured": 121,
+  "warnings": 0,
+  "errors": 0,
+  "playing_at_end": true,
+  "source": "LowResRenderTest.Present",
+  "samples": [],
+  "frames_advanced": 574,
+  "fps": 57.4,
+  "frames_ok": true,
+  "log_ok": true,
+  "console_errors_after": "[]",
+  "clip": "docs/team/cards/C-001-repair-one/evidence/after/clip.mp4",
+  "strip": "docs/team/cards/C-001-repair-one/evidence/after/strip.png",
+  "shot": "docs/team/cards/C-001-repair-one/evidence/after/shot.png",
+  "crit": {
+   "2": {
+    "png": "docs/team/cards/C-001-repair-one/evidence/after/crit2.png",
+    "png3x": "docs/team/cards/C-001-repair-one/evidence/after/crit2_3x.png"
+   }
+  },
+  "crit_missing": [
+   1,
+   3
+  ],
+  "crit_ok": false,
+  "made": "2026-11-03 15:16"
+ }
 }
