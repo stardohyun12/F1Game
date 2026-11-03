@@ -2,7 +2,7 @@
 
 | 훅 | 이벤트 | 하는 일 |
 |---|---|---|
-| `guard-pre.py` | PreToolUse (Bash·Edit·Write·MultiEdit) | **막음**(D-270/D-276): Bash 에 봇 전체 경로(`OnFootRouteBot.Begin/Run`·`BeginFirstOrder`·`route_feature2`·`RegressSweep.Run`), `sleep 100+`·`until [ -f … ]; do sleep` 대기 루프 / Edit·Write 가 잠긴 경로(`F1/ProjectSettings/`, `F1/Assets/**/*.mat`, `ArcadeCarController.cs`, `DriveFeel.cs`, `*.unity`, `*.prefab`)를 건드릴 때. 막은 것은 `.ai_logs/team/guard.log` 한 줄. |
+| `guard-pre.py` | PreToolUse (Bash·Edit·Write·MultiEdit·Read) | **막음**(D-270/D-276): Bash 에 봇 전체 경로(`OnFootRouteBot.Begin/Run`·`BeginFirstOrder`·`route_feature2`·`RegressSweep.Run`), `sleep 100+`·`until [ -f … ]; do sleep` 대기 루프 / Edit·Write 가 잠긴 경로(`F1/ProjectSettings/`, `F1/Assets/**/*.mat`, `ArcadeCarController.cs`, `DriveFeel.cs`, `*.unity`, `*.prefab`)를 건드릴 때 / **D-277** 팀원 세션(`TEAM_ROLE` 있음)이 규칙 문서(`PIPELINE.md`·`AGENTS.md`·`project_rules/*.md`·`docs/harness/dohyun-checklist.md`·`docs/team/FLOW.md`·`WORKFLOW-v2.md`)를 Read 하거나 cat/head/grep 할 때(브리프 한 장에 다 있다). 막은 것은 `.ai_logs/team/guard.log` 한 줄. |
 | `guard-post.py` | PostToolUse (Edit·Write·MultiEdit) | `F1/Assets/**/*.cs` 수정 뒤 중괄호 짝·`using UnityEngine;` 누락만 경고(additionalContext, 막지 않음). |
 | `session-start.sh`·`session-end.sh`·`stop.sh`·`activity-log.py`·`flash.ps1`·`feedback-detect.sh` | 기존 | 로그·대시보드·알림용(막지 않음). |
 

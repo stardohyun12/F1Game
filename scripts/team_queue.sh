@@ -45,13 +45,15 @@ while true; do
   fi
   printf '%s' "$CARD" > "$S/$ROLE.last_card"
   log "시작 $NAME"
-  if [ $ROLE = build ]; then
-    bash scripts/world_snapshot.sh >/dev/null 2>&1 || log "세계 스냅숏 실패 — 옛 docs/world/WORLD.md 유지(D-275)"
-    RULE="[하네스 고정 규칙 D-270] 기능 2 봇 전체 경로(방→찻집)는 돌리지 마라 — PD 가 여러 과제 끝에 한 번 따로 돌린다. 확인은 디버그 창 순간이동(DebugWindow.GoPlace)으로 고친 자리에서 바로, 캡처 1~2장. sleep 으로 기다리는 검사 금지. 과제 글에 '봇 1회'가 있어도 이 규칙이 우선.
-[세계 스냅숏 D-275] docs/world/WORLD.md 를 먼저 읽어라(지금 세계 상태: 장소·배달 지점·상호작용 물건·흐름·대역). 끝에 bash scripts/world_check.sh 가 자동으로 돈다 — 불변 조건 위반이면 네 과제는 보류된다(조건 목록 docs/world/README.md)."
-    OUT=$(bash scripts/team.sh $CALL "$(printf '%s
-%s' "$(cat "$Q/done/$NAME.task")" "$RULE")" 2>&1)   # 과제 첫 줄이 먼저(상태·대시보드 제목) — 규칙은 뒤에
+  # D-277 브리프 한 장: 과제 글 대신 scripts/brief.py 출력(과제+카드+훅이 못 막는 규칙+세계 스냅숏+파일 지도+에디터 치트)을 넘긴다.
+  # 옛 RULE(D-270 봇 금지·D-275 스냅숏 안내)은 브리프 규칙 절에 흡수. 브리프 생성이 실패하면 과제 글 그대로(옛 방식).
+  [ $ROLE = build ] && { bash scripts/world_snapshot.sh >/dev/null 2>&1 || log "세계 스냅숏 실패 — 옛 docs/world/WORLD.md 유지(D-275)"; }
+  BRIEF="$Q/done/$NAME.brief.md"
+  if $PY -X utf8 scripts/brief.py "$Q/done/$NAME.task" ${CARD:+"$CARD"} > "$BRIEF" 2>>.ai_logs/team/queue.err && [ -s "$BRIEF" ]; then
+    log "브리프 $NAME $(wc -m < "$BRIEF" | tr -d ' ')자"
+    OUT=$(bash scripts/team.sh $CALL "$(cat "$BRIEF")" 2>&1)
   else
+    log "브리프 실패 $NAME — 과제 글 그대로"
     OUT=$(bash scripts/team.sh $CALL "$(cat "$Q/done/$NAME.task")" 2>&1)
   fi
   rm -f .claude/team/editor.lock

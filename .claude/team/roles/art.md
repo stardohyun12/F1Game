@@ -1,6 +1,7 @@
 # 일꾼: 아트 (art) — 옛 art·art2·artui·artlive·mapshot 을 합침 (2026-11-03 팀 재편)
 
-- 프로젝트 D:/Github/F1Game. 흐름 규칙 `docs/team/FLOW.md`. **카드에 묶인 아트만 만든다** — 과제 글의 `[C-NNN 아트]` 카드 `docs/team/cards/C-NNN-*/card.md` 의 「아트」 절과 도현 한 판 판정 원문(카드 끝 기록)이 지시의 전부다. 카드에 없는 에셋·후보·「하는 김에」는 만들지 않는다.
+- **브리프만 읽어라(D-277).** 과제 글이 시작 글의 전부다. 다른 규칙 문서(PIPELINE.md·project_rules·FLOW.md·체크리스트)는 읽지 마라 — 훅이 막는다.
+- 프로젝트 D:/Github/F1Game. **카드에 묶인 아트만 만든다** — 과제 글의 `[C-NNN 아트]` 카드 `docs/team/cards/C-NNN-*/card.md` 의 「아트」 절과 도현 한 판 판정 원문(카드 끝 기록)이 지시의 전부다. 카드에 없는 에셋·후보·「하는 김에」는 만들지 않는다.
 - 엔진은 config(`.claude/team/config.json` art.engine)나 과제 태그로 정해진다: Codex(Blender bpy 반복·생성기·검사) / Claude(형태·취향 판단, 스튜디오 라이브 수정). 너는 어느 쪽이든 같은 규칙.
 - 기준: 아트 작업 전 항상 `docs/design/ART-RULES.md`(충돌하면 이게 이긴다)·`docs/design/TONE.md`. AI 생성 이미지·소리 금지, CC0 사진만(출처 `art/provenance.csv`).
 

@@ -138,12 +138,13 @@ def dispatch(cid, by="pd"):
         except Exception:
             pass
         task = f"""[EDITOR]{opus}[{cid} {STAGES[st]['label']}] {title}
-카드: {d}/card.md — 먼저 카드 전체를 읽는다. 카드의 「범위」 파일만 만지고 「하지 말 것」은 건드리지 않는다. 카드 밖 일·아트·다듬기는 하지 않는다.
+카드: {d}/card.md — 본문은 브리프(이 과제 글) 안에 있다. 카드의 「범위」 파일만 만지고 「하지 말 것」은 건드리지 않는다. 카드 밖 일·아트·다듬기는 하지 않는다.
 {last}{mfail}단계 = {STAGES[st]['label']}: {'회색 대역으로 수용 기준이 실제로 돌게만 만든다(겉모습은 나중 — 아트 단계가 따로 있다).' if st == 'greybox' else '도현이 통과시킨 그레이박스에 아트 납품을 끼워 넣고 수용 기준이 그대로 도는지.'}
-끝낼 것(이 셋이 없으면 미완료). 시간 상자 60분 — 40분이 지나면 start.cs·보고서부터 지금 상태로 쓰고 이어서:
-1. {d}/start.cs — Play 중 exec 로 실행되는 C# 조각. 카드 「시작 장면」(start_place {h.get('start_place','?')}, 하네스가 먼저 순간이동함)에서 수용 기준의 동작을 10초 안에 화면에 보여 준다(입력 흉내·순간이동·EditorApplication.update 콜백 허용, 마지막 줄 return "<한 줄 상태>";). 네가 직접 한 번 돌려 확인.
-2. 보고서(4요소) — 무엇을 바꿨나·파일 목록. 스크린샷은 1~2장만(증거 묶음은 하네스가 tools/evidence/bundle.sh 로 따로 찍는다).
-3. 카드의 「기계 확인」 항목을 실제로 돌린 결과를 보고서에.
+끝낼 것(이 넷이 없으면 미완료). 시간 상자 60분 — 40분이 지나면 start.cs·critN.cs·보고서부터 지금 상태로 쓰고 이어서:
+1. {d}/start.cs — Play 중 exec 로 실행되는 C# 조각. 카드 「시작 장면」(start_place {h.get('start_place','?')}, 하네스가 먼저 순간이동함)에서 수용 기준의 동작을 10초 안에 화면에 보여 준다(입력 흉내·순간이동·EditorApplication.update 콜백 허용, 마지막 줄 return "<한 줄 상태>";). 하네스는 이걸로 10초 클립(프레임 증가·에러 0)을 찍는다. 네가 직접 한 번 돌려 확인.
+2. {d}/crit1.cs, crit2.cs, … — **수용 기준 번호마다 하나.** 각각 새 Play 에서 start_place 순간이동 뒤 exec 되며, 순간이동·상태 세팅(단계 값·든 물건·카트 위치·시선)으로 **그 기준이 화면에 보이는 순간**을 2초 안에 만든다. 하네스가 2초 뒤 캡처 1장(critN.png, 1×+3×)을 찍고 검증 일꾼은 기준 N 을 그 사진으로 판정한다 — 긴 흐름을 클립 하나에 욱여넣지 마라(지난 불통과의 원인). 마지막 줄 return "<그 기준의 상태 값>";. 네가 각각 돌려 화면을 확인.
+3. 보고서(4요소) — 무엇을 바꿨나·파일 목록. 스크린샷은 1~2장만(증거 묶음은 하네스가 tools/evidence/bundle.sh 로 따로 찍는다).
+4. 카드의 「기계 확인」 항목을 실제로 돌린 결과를 보고서에.
 """
         q = f"{QUEUE}/editor"
     elif st in ("verify", "final_verify"):
@@ -159,13 +160,14 @@ def dispatch(cid, by="pd"):
 {accept.group(0) if accept else '(수용 기준 없음 → FAIL)'}
 
 증거 묶음(이것만 본다):
-- {ev} — 기계 확인(frames_ok = 프레임이 실제로 늘었나, log_ok = 에러 0, warnings 수·samples)
-- {d}/evidence/after/strip.png — 클립 10초를 시간 순 8칸(왼쪽 위 → 오른쪽 아래)
+- {ev} — 기계 확인(frames_ok = 프레임이 실제로 늘었나, log_ok = 에러 0, warnings 수·samples, after.crit = 기준별 사진 목록·crit_missing = 빠진 번호)
+- {d}/evidence/after/crit<N>.png (+ crit<N>_3x.png 3배 확대) — **수용 기준 N 은 critN.png 로 판정한다.** 그 번호 사진이 없으면(crit_missing) 그 기준은 strip 으로 찾고, 거기도 없으면 안 보임.
+- {d}/evidence/after/strip.png — 클립 10초를 시간 순 8칸(왼쪽 위 → 오른쪽 아래). 흐름이 돌았나(프레임 증가)·기준 사진이 없는 기준용
 - {d}/evidence/after/shot.png · {d}/evidence/before/shot.png — 전/후 한 쌍
 (클립 원본 {d}/evidence/after/clip.mp4 는 도현용 — 너는 strip 으로 본다)
 
-판정: 수용 기준 문장마다 「보인다/안 보인다」 + 근거 칸(strip 몇 번째 칸, 또는 evidence.json 값). 하나라도 안 보이거나 기계 확인이 false 면 FAIL.
-결과를 {d}/verdict.json 에 쓴다(덮어씀): {{"verdict":"PASS|FAIL","reason":"한 줄","frames":"strip 3·5칸","criteria":[{{"text":"...","seen":true,"evidence":"..."}}],"by":"verify"}}
+판정: 수용 기준 문장마다 「보인다/안 보인다」 + 근거(critN.png, strip 몇 번째 칸, 또는 evidence.json 값). 하나라도 안 보이거나 기계 확인이 false 면 FAIL.
+결과를 {d}/verdict.json 에 쓴다(덮어씀): {{"verdict":"PASS|FAIL","reason":"한 줄","frames":"crit2.png · strip 3·5칸","criteria":[{{"text":"...","seen":true,"evidence":"..."}}],"by":"verify"}}
 보고서는 verdict 한 줄 + 표만. 다른 파일은 고치지 않는다.
 """
         q = f"{QUEUE}/verify"

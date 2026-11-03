@@ -17,6 +17,9 @@ LOCKED = [
     (re.compile(r"\.unity$"), ".unity 씬은 텍스트 편집 금지 — 에디터(ucli-http.sh exec)로만"),
     (re.compile(r"\.prefab$"), ".prefab 은 텍스트 편집 금지 — 에디터로만"),
 ]
+# D-277 브리프 한 장: 팀원 세션(TEAM_ROLE 있음)은 규칙 문서를 열지 않는다 — 시작 글(브리프)에 필요한 규칙이 다 있고, 나머지는 이 훅이 막는다.
+RULE_DOCS = re.compile(r"(^|/)(PIPELINE\.md|AGENTS\.md|project_rules/[^/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md)$")
+RULE_DOCS_CMD = re.compile(r"(^|[\s/])(PIPELINE\.md|AGENTS\.md|project_rules/[^\s/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md)\b")
 
 
 def log(what):
@@ -49,6 +52,13 @@ def main():
         m = SLEEP_RE.search(cmd)
         if m:
             deny("D-270: 기다리는 검사 금지(sleep 100+·until -f 루프). 순간이동으로 바로 확인하고 캡처 1~2장", f"대기 {m.group(0)} :: {cmd[:120]}")
+        m = RULE_DOCS_CMD.search(cmd)
+        if m and os.environ.get("TEAM_ROLE") and re.match(r"\s*(cat|head|tail|less|more|sed|awk|grep|rg|type)\b", cmd):
+            deny("D-277: 규칙 문서는 읽지 않는다 — 브리프(과제 글)에 필요한 규칙이 다 있다. 나머지는 훅이 막는다", f"규칙문서 {m.group(2)} :: {cmd[:120]}")
+    elif tool == "Read":
+        fp = (ti.get("file_path") or "").replace("\\", "/")
+        if fp and os.environ.get("TEAM_ROLE") and RULE_DOCS.search(fp):
+            deny("D-277: 규칙 문서는 읽지 않는다 — 브리프(과제 글)에 필요한 규칙이 다 있다. 나머지는 훅이 막는다", f"Read {fp}")
     elif tool in ("Edit", "Write", "MultiEdit"):
         fp = (ti.get("file_path") or "").replace("\\", "/")
         if fp and os.environ.get("TEAM_UNLOCK") != "1":
