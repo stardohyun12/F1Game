@@ -109,10 +109,12 @@ else
   # 턴 한도(10/30 도현: "필요한 에이전트에 한해 턴 제한 없애기"): config turns=0 또는 과제에 [NOLIMIT] 이면 --max-turns 없음(예산 상한은 유지)
   TURNS="${TEAM_MAX_TURNS:-${C_TURNS:-80}}"; TURNARG=()
   if [ "$TURNS" != "0" ] && ! printf '%s' "$TASK" | grep -q '\[NOLIMIT\]'; then TURNARG=(--max-turns "$TURNS"); fi
+  # D-276 규칙 강제 훅(guard-pre/guard-post): --setting-sources user 라 프로젝트 settings.json 이 안 읽히니 --settings 로 따로 붙임. TEAM_ROLE 은 guard.log 용.
+  export TEAM_ROLE="$ROLE"
   claude -p "$PROMPT" "${SESS[@]}" \
     --model "${TEAM_MODEL:-${C_MODEL:-sonnet}}" ${C_EFFORT:+--effort "$C_EFFORT"} \
     --append-system-prompt-file "$SYSFILE" \
-    --setting-sources user \
+    --setting-sources user --settings .claude/team/guard.settings.json \
     --permission-mode acceptEdits \
     --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
        "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/regression-check.sh:*)" "Bash(bash scripts/fb_shot.sh:*)" "Bash(python scripts/fb.py:*)" "Bash(python -X utf8 scripts/fb.py:*)" "Bash(python scripts/fb_judge.py:*)" "Bash(python -X utf8 scripts/fb_judge.py:*)" "Bash(bash tools/art/bin/check.sh:*)" "Bash(bash tools/art/bin/viewer_export.sh:*)" "Bash(bash tools/art/bin/studio_cap.sh:*)" "Bash(bash tools/art/bin/iter_cap.sh:*)" "Bash(awk:*)" "Bash(bash tools/viewer/export_all.sh:*)" "Bash(D:/Tools/Blender/blender.exe:*)" \

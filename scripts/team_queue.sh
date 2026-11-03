@@ -36,7 +36,13 @@ while true; do
   if [ -z "$T" ] || grep -q '^working' "$S/$ROLE.state" 2>/dev/null || { [ $ROLE = build ] && [ -s .claude/team/editor.lock ]; }; then sleep 60; continue; fi
   NAME=$(basename "$T" .task); mv "$T" "$Q/done/$NAME.task"
   CARD=$(printf '%s' "$NAME" | grep -oE 'C-[0-9]{3}' | head -1)
-  mv -f "$S/$ROLE.id" "$S/archive/$ROLE-$NAME.id" 2>/dev/null; mv -f "$S/$ROLE.claude.id" "$S/archive/$ROLE-claude-$NAME.id" 2>/dev/null   # 과제마다 새 세션(긴 세션 = 비용 증가)
+  # D-276: 같은 카드(greybox-0 → greybox-1)면 세션 이어감(규칙 문서 재독 절약). 카드가 바뀌거나 카드 과제가 아니면 새 세션(archive). 앞 카드는 $S/$ROLE.last_card
+  if [ -n "$CARD" ] && [ "$(cat "$S/$ROLE.last_card" 2>/dev/null)" = "$CARD" ] && { [ -s "$S/$ROLE.id" ] || [ -s "$S/$ROLE.claude.id" ]; }; then
+    sed -i '1a [같은 카드 이어감 — 앞 판 기억을 써라, 규칙 문서 다시 읽지 마라]' "$Q/done/$NAME.task"; log "이어감 $NAME (카드 $CARD 세션 유지)"   # 첫 줄은 제목이라 둘째 줄에
+  else
+    mv -f "$S/$ROLE.id" "$S/archive/$ROLE-$NAME.id" 2>/dev/null; mv -f "$S/$ROLE.claude.id" "$S/archive/$ROLE-claude-$NAME.id" 2>/dev/null   # 새 세션(긴 세션 = 비용 증가)
+  fi
+  printf '%s' "$CARD" > "$S/$ROLE.last_card"
   log "시작 $NAME"
   if [ $ROLE = build ]; then
     bash scripts/world_snapshot.sh >/dev/null 2>&1 || log "세계 스냅숏 실패 — 옛 docs/world/WORLD.md 유지(D-275)"
