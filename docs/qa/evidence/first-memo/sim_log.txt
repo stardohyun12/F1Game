@@ -1,0 +1,22 @@
+카트 처음 자리=(273.5,29.4,-37.4) 안내글='방학 1일째 아침 — 집을 나서자'
+시작 (184.1,24.4,-66.5)
+칠판 앞 도착 t=51s (269.0,31.1,-29.7) (순간이동 없이 걸어옴)
+쪽지 집음: 맡음=True
+작업대 앞 안내='E 포장하기'
+  작업대 칩 +0.0s [Pick] '상자 고르기'
+  작업대 칩 +1.4s [Floor] ''
+  작업대 칩 +1.8s [Floor] '바닥 깔기'
+  작업대 칩 +2.3s [Put] '물건 넣기'
+  작업대 칩 +2.9s [Fill] '빈틈 채우기'
+  작업대 칩 +3.7s [Close] 'E 닫고 테이프'
+  작업대 칩 +4.7s [Close] '닫고 테이프'
+  작업대 칩 +5.2s [Shake] '들어서 흔들기'
+  작업대 칩 +5.6s [Shake] ''
+  작업대 칩 +9.6s [Done] 'Q 물러나기'
+작업대 봇: pairs={} done full closed=True played=0 volSum=0.00 botSec=8.3 {"box":"M","sec":4.11,"rattle":0.000,"peakHit":0.000,"hits":0,"trayMovedM":0.0116,"eggShock":20.06,"rattleTray":0.000,"hitsTray":0,"rattleSoft":0.000,"hitsSoft":0,"softPinned":"10/10","gap":0.206,"bottomCushion":1.00,"bareFloor":0.11,"upright":true,"escaped":0,"closed":true,"taped":true,"labeled":true,"locks":"XYZ","faces":"+X=1.00 -X=1.00 +Y(위)=0.67 -Y(바닥)=1.00 +Z=1.00 -Z=1.00"} 칩 지금='Q 물러나기'
+물러난 뒤 안내='E 상자 들기'
+상자 들기: 들기=True Packed=True 카트 느낌표=True
+카트 옆 1.6m, 시선 70° 돌림: 안내='E 싣고 타기' 시선=Race
+카트 앞(바라봄): 안내='E 싣고 타기' 시선=Race 카트 느낌표=True
+싣고 탄 뒤: 상태=InCart 주문시작=True 들기=False
+총 75s 막힘 0곳:  결과=memo ok

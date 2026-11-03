@@ -35,6 +35,7 @@ public static class WorldInvariants
         ("보관소 출구", () => DepotExit()),
         ("디렉터 1개", () => OneDirector()),
         ("첫 배달 한 바퀴 배선", () => FirstLoopWiring()),
+        ("상자 든 채 카트 칩", () => CartChipWithBox()),
     };
 
     public static string Check()
@@ -208,6 +209,31 @@ public static class WorldInvariants
 #endif
         if (d.DepotFlow && d.CartNeedsBossTalk) bad.Add("보관소 흐름인데 카트가 사장 대화를 기다린다(SPEC §11-7 위반)");
         if (UnityEngine.Object.FindFirstObjectByType<SunsetLook>(FindObjectsInactive.Include) == null) bad.Add("SunsetLook 없음 — 건넨 뒤 노을이 안 온다(SPEC §11-3)");
+        return bad;
+    }
+
+    /// <summary>
+    /// 첫 한 판 메모 1(D-283): 상자를 든 채 카트 곁에 서면 「E 싣고 타기」 칩이 뜬다(상자 없이는 안 뜬다).
+    /// 칩 글은 순수 함수(OnFootDirector.CartChip)라 Play 없이 보고, 카트 자리(보관소 앞)가 땅 위에 있고 작업대에서 걸어 들 거리(25 m) 안인지도 본다.
+    /// </summary>
+    static List<string> CartChipWithBox()
+    {
+        var bad = new List<string>();
+        string withBox = OnFootDirector.CartChip(true, true, true, false);
+        if (!withBox.StartsWith("E ") || !withBox.Contains("싣고")) bad.Add("상자를 든 채 카트 칩이 '" + withBox + "' — 'E 싣고 타기' 여야");
+        string noBox = OnFootDirector.CartChip(true, true, false, false);
+        if (noBox.StartsWith("E ")) bad.Add("주문을 맡고 상자 없이도 카트 칩 '" + noBox + "' 이 눌린다 — 상자부터 안내여야");
+        var ds = UnityEngine.Object.FindObjectsByType<OnFootDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (ds.Length == 0 || !ds[0].DepotFlow) return bad;
+        var d = ds[0];
+        if (UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>(FindObjectsInactive.Include) == null) bad.Add("씬에 ArcadeCarController 없음 — 싣고 탈 카트가 없다");
+        var spot = OnFootDirector.DepotCartSpot;
+        if (!GroundBelow(spot, 5f, out _)) bad.Add("아침 카트 자리 " + V(spot) + " — 아래 5 m 땅 없음");
+        if (d.PackSpot != null)
+        {
+            float m = Vector2.Distance(new Vector2(spot.x, spot.z), new Vector2(d.PackSpot.transform.position.x, d.PackSpot.transform.position.z));
+            if (m > 25f) bad.Add(string.Format(Inv, "아침 카트 자리가 작업대에서 {0:0} m — 상자 들고 25 m 안이어야", m));
+        }
         return bad;
     }
 }

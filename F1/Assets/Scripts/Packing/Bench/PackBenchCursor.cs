@@ -96,9 +96,10 @@ namespace PitCrew.PackBench
 
         void Chip(string p, Vector3? anchor)
         {
-            bool hasKey = p.StartsWith("E ");
+            bool hasKey = p.Length > 2 && p[1] == ' ' && (p[0] == 'E' || p[0] == 'Q');   // 키 글자 하나 + 공백 ("E 닫고 테이프" · "Q 물러나기")
             string label = hasKey ? p.Substring(2) : p;
             chipLabel.text = label;
+            if (hasKey) chipKeyText.text = p.Substring(0, 1);
             var set = chipLabel.GetGenerationSettings(new Vector2(400, 0f));
             set.horizontalOverflow = HorizontalWrapMode.Overflow; set.richText = false;
             int lw = Mathf.CeilToInt(gen.GetPreferredWidth(label, set) / Mathf.Max(0.01f, chipLabel.pixelsPerUnit));

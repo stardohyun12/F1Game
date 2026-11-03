@@ -128,8 +128,67 @@ public static class DepotOrderSetup
         so.FindProperty("packSpot").objectReferenceValue = ps;
         so.FindProperty("depotDest").objectReferenceValue = dp;
         so.ApplyModifiedProperties();
+        log.Append(PlaceRoadSign(depot));
         EditorSceneManager.MarkSceneDirty(scene);
         return log.Append("감독 연결 끝(orderBoard·packSpot·depotDest).").ToString();
+    }
+
+    // D-283 첫 한 판 메모 2: 집 앞에서 "보관소가 어디쯤"인지 알려 주는 세상 속 단서 — 걷는 길(집 → 동쪽 큰길) 가의 소포 표지판.
+    // 화면 화살표 없음. 새 아트 아님: 보관소 건물 아이콘 아틀라스(M_depot_icons)의 소포 칸을 그대로 쓴다. 충돌체 없음(길을 안 막는다).
+    static readonly Vector2 SignXZ = new Vector2(209.0f, -77.0f);
+    static readonly Vector3 HomeFrontEye = new Vector3(184.8f, 27.6f, -66.2f);
+
+    static string PlaceRoadSign(Transform depot)
+    {
+        var sign = Child(depot, "DepotRoadSign");
+        foreach (var c in sign.GetComponentsInChildren<Collider>(true)) c.enabled = false;
+        Physics.SyncTransforms();
+        float gy = 20f;
+        if (Physics.Raycast(new Vector3(SignXZ.x, 60f, SignXZ.y), Vector3.down, out var gh, 80f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) gy = gh.point.y;
+        Vector3 toEye = HomeFrontEye - new Vector3(SignXZ.x, gy, SignXZ.y); toEye.y = 0f;
+        sign.SetPositionAndRotation(new Vector3(SignXZ.x, gy, SignXZ.y), Quaternion.LookRotation(toEye.normalized, Vector3.up));   // forward = 집 앞 쪽(앞면)
+
+        var post = Mat("Depot_Sign_Post", new Color(0.30f, 0.27f, 0.24f));
+        var plate = Mat("Depot_Sign_Plate", new Color(0.86f, 0.80f, 0.64f));
+        var icon = SignIconMat();
+        Part(sign, "Post", PrimitiveType.Cube, new Vector3(0f, 1.6f, 0.06f), new Vector3(0.18f, 3.2f, 0.18f), false, post);
+        Part(sign, "Plate", PrimitiveType.Cube, new Vector3(0f, 3.4f, 0f), new Vector3(2.6f, 2.6f, 0.1f), false, plate);
+        var q = Part(sign, "Icon", PrimitiveType.Quad, new Vector3(0f, 3.4f, 0.056f), new Vector3(2.3f, 2.3f, 1f), false, icon);
+        q.localRotation = Quaternion.Euler(0f, 180f, 0f);                         // 쿼드 앞면(−z 쪽) 이 표지판 앞(+z)을 본다
+        // 걷는 방향(동쪽 큰길)을 가리키는 화살 막대 — 표지판 앞에서 보아 오른쪽(+x 가 오른쪽일 때)이 아니라 월드 +x 방향으로 눕힌다.
+        // 표지판은 집 앞 쪽을 보고 길은 그 뒤쪽(시선 방향)으로 이어진다 — 옆 화살표는 방향이 틀려 보인다. 위(↑ = 앞으로) 화살.
+        Part(sign, "Arrow", PrimitiveType.Cube, new Vector3(0f, 1.15f, 0.02f), new Vector3(0.28f, 0.9f, 0.1f), false, post);
+        var tip = Part(sign, "ArrowTip", PrimitiveType.Cube, new Vector3(0f, 1.7f, 0.02f), new Vector3(0.62f, 0.62f, 0.1f), false, post);
+        tip.localRotation = Quaternion.Euler(0f, 0f, 45f);
+
+        Physics.SyncTransforms();
+        var vis = new System.Text.StringBuilder();
+        foreach (var eye in new[] { HomeFrontEye, HomeFrontEye + new Vector3(3.2f, 0f, -0.8f) })
+            vis.Append(Physics.Linecast(eye, sign.position + Vector3.up * 3.4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) ? "가림 " : "보임 ");
+        return $"표지판=({sign.position.x:F1},{sign.position.y:F1},{sign.position.z:F1}) 집 앞 시선 {vis}. ";
+    }
+
+    /// <summary>보관소 아틀라스(M_depot_icons)의 소포 칸(왼쪽 위 1/4)만 보이게 하는 씬 전용 사본 — 원본 재질은 안 건드린다.</summary>
+    static Material SignIconMat()
+    {
+        const string path = MatDir + "/Depot_Sign_Icon.mat";
+        var src = AssetDatabase.LoadAssetAtPath<Material>("Assets/Art/Library/Buildings/depot/M_depot_icons.mat");
+        var tex = src != null && src.HasProperty("_BaseMap") ? src.GetTexture("_BaseMap") : null;
+        var m = AssetDatabase.LoadAssetAtPath<Material>(path);
+        if (m == null)
+        {
+            if (!AssetDatabase.IsValidFolder(MatDir)) AssetDatabase.CreateFolder("Assets/Scenes", "Map_TownV6_Mats");
+            m = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            AssetDatabase.CreateAsset(m, path);
+        }
+        if (tex != null)
+        {
+            m.SetTexture("_BaseMap", tex);
+            m.SetTextureScale("_BaseMap", new Vector2(0.5f, 0.5f));
+            m.SetTextureOffset("_BaseMap", new Vector2(0f, 0.5f));
+        }
+        EditorUtility.SetDirty(m);
+        return m;
     }
 
     static Transform Child(Transform parent, string n)

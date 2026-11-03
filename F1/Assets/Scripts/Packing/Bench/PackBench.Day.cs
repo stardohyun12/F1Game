@@ -20,6 +20,7 @@ namespace PitCrew.PackBench
             firstTouch = -1f; timed = false; hasHit = false;
             simHold = false; prevSimHold = false; simShakeUntil = -1f;
             Prompt = ""; PromptAnchor = null;
+            shakenBox = null; shakenOpen = 0; gapAt = -9f; CurrentStep = Step.Pick;
         }
     }
 }

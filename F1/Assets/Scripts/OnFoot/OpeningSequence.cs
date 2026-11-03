@@ -31,7 +31,8 @@ public class OpeningSequence : MonoBehaviour
     public string Trail { get; private set; } = "";
 
     OnFootDirector dir;
-    Renderer garage;          // 정비소 건물(씬 GARAGE_shell) — 집 앞에서 시선을 돌릴 목표
+    Renderer garage;          // 집 앞에서 시선을 돌릴 목표 — 길가 소포 표지판(DepotFlow), 없으면 정비소 건물(씬 GARAGE_shell)
+    bool signAim;
     bool frontTurned;
     Vector3 frontAt;
     /// <summary>QA: 집 앞 시선 돌림이 일어났나.</summary>
@@ -54,7 +55,14 @@ public class OpeningSequence : MonoBehaviour
     public void Begin(OnFootDirector d)
     {
         dir = d; Current = this;
-        if (garage == null) { var g = GameObject.Find("GARAGE_shell"); if (g != null) garage = g.GetComponent<Renderer>(); }
+        if (garage == null)
+        {
+            // 첫날 아침 카트는 보관소 앞에 서 있다(DepotFlow) — 집 앞에서 돌아볼 곳은 정비소가 아니라 길가 소포 표지판. 없으면 옛 정비소.
+            var sign = d.DepotFlow ? d.transform.Find("OnFoot_Depot/DepotRoadSign/Plate") : null;
+            var g = sign != null ? sign.gameObject : GameObject.Find("GARAGE_shell");
+            if (g != null) garage = g.GetComponent<Renderer>();
+            signAim = sign != null;
+        }
         HasKey = false; Trail = ""; Step = Stage.None; frontTurned = false;
         spawnY = d.Player.transform.position.y;
         Set(Stage.Room);
@@ -89,7 +97,7 @@ public class OpeningSequence : MonoBehaviour
     /// <summary>시선 목표: 정비소 서쪽 아치(집 쪽에서 집들 사이로 보이는 면) — 건물 폭 30% 지점, 지붕 아래 1.5 m.</summary>
     Vector3 GarageAim
     {
-        get { Bounds b = garage.bounds; return new Vector3(Mathf.Lerp(b.min.x, b.max.x, 0.3f), b.max.y - 1.5f, b.center.z); }
+        get { Bounds b = garage.bounds; if (signAim) return b.center; return new Vector3(Mathf.Lerp(b.min.x, b.max.x, 0.3f), b.max.y - 1.5f, b.center.z); }
     }
 
     /// <summary>정비소가 보이는 자리에 섰다: 그쪽으로 고개를 돌린다 — 표식 없이 건물이 화면 가운데 들어온다. 그 뒤엔 마우스 그대로.</summary>
@@ -145,7 +153,7 @@ public class OpeningSequence : MonoBehaviour
         switch (Step)
         {
             case Stage.Room: return "방학 1일째 아침 — 집을 나서자";
-            case Stage.Front: return dir.OrderPicked ? "" : "정비소로 — 사장님이 카트를 봐 놨다";
+            case Stage.Front: return dir.OrderPicked ? "" : dir.DepotFlow ? "택배 보관소로 — 큰길가 소포 표지판 쪽" : "정비소로 — 사장님이 카트를 봐 놨다";
             case Stage.Key: return "카트 열쇠를 받았다 — 카트에 타자";
             default: return "";
         }

@@ -132,6 +132,48 @@ public class OnFootDirector : MonoBehaviour
     public bool OrderPicked => pickedJob != null;
     public OrderJob PickedJob => pickedJob;
     public bool Packed => packSpot == null ? OrderPicked : packSpot.Packed;
+    /// <summary>
+    /// 첫 한 판 메모 2(D-283): 보관소 흐름의 아침 카트 자리 = 보관소 앞 길. 집 → 보관소는 걸어서(SPEC §6-2), 카트는 상자를 실을 때 거기 있다.
+    /// 좌표는 DebugPlaces.DepotCart 가 이 값을 가져다 쓴다(디버그 코드는 정식 빌드에 없어 값은 여기).
+    /// </summary>
+    public static readonly Vector3 DepotCartSpot = new Vector3(273.5f, 29.6f, -37.4f);
+    public const float DepotCartYaw = 90f;
+    /// <summary>상자를 든 채 카트에서 이만큼(m, 카트 몸 가장자리까지 수평) 안이면 시선이 카트를 안 가리켜도 [E 싣고 타기] 칩이 뜬다.</summary>
+    public const float CartLoadReach = 2f;
+
+    /// <summary>카트 칩 글(순수 함수 — WorldInvariants 「상자 든 채 카트 칩」이 부른다). "E " 로 시작하면 누를 수 있다.</summary>
+    public static string CartChip(bool depotFlow, bool orderPicked, bool packed, bool orderStarted)
+    {
+        if (!depotFlow || orderStarted) return "E 타기";
+        if (packed) return "E 싣고 타기";
+        return orderPicked ? "상자부터 실어" : "E 타기";   // 주문을 맡고도 상자가 없으면 못 탄다 — 무엇부터 할지 한 줄
+    }
+
+    /// <summary>아침 카트 자리: 보관소 흐름이면 보관소 앞, 아니면 정비소 자리(cartSpot).</summary>
+    void ParkMorningCart()
+    {
+        if (DepotFlow) ParkCar(DepotCartSpot, DepotCartYaw);
+        else if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+    }
+
+    /// <summary>카트 몸 가장자리까지 수평 거리가 within 이내.</summary>
+    bool NearCart(float within)
+    {
+        if (car == null) return false;
+        Vector3 p = player.transform.position; bool any = false; Bounds b = default;
+        foreach (var c in car.GetComponentsInChildren<Collider>())
+        {
+            if (c.isTrigger) continue;
+            if (!any) { b = c.bounds; any = true; } else b.Encapsulate(c.bounds);
+        }
+        if (!any) return Vector2.Distance(new Vector2(p.x, p.z), new Vector2(car.transform.position.x, car.transform.position.z)) <= within + 1f;
+        Vector3 q = b.ClosestPoint(new Vector3(p.x, b.center.y, p.z));
+        return Vector2.Distance(new Vector2(p.x, p.z), new Vector2(q.x, q.z)) <= within;
+    }
+
+    /// <summary>상자를 들었고 아직 싣기 전 — 카트 위 「!」(DotScreenUI)가 켜진다.</summary>
+    public bool CartMark => State == Mode.OnFoot && DepotFlow && !OrderStarted && CarryingBox && car != null;
+    public Vector3 CartMarkAnchor => car.transform.position + Vector3.up * 1.5f;
     /// <summary>칠판 보기 시점으로 옮겨 가는 중/돌아오는 중(QA·캡처용).</summary>
     public bool BoardMoving => boardMove != null;
     OrderJob pickedJob;
@@ -297,7 +339,7 @@ public class OnFootDirector : MonoBehaviour
         BuildHeldBox();
         dotUI = FindFirstObjectByType<DotScreenUI>();
 
-        if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+        ParkMorningCart();
         SetCarControl(false);
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
         if (orderBoard != null) orderBoard.SetLines(BoardLines);
@@ -373,6 +415,8 @@ public class OnFootDirector : MonoBehaviour
             if (Knocking) { PromptAnchor = null; SetPrompt(""); return; }
             // 1인칭(D-219): 화면 가운데 점이 가리키는 것만 — 시선 레이 2 m 에 처음 맞은 것이 문·카트일 때.
             Object hit = Gaze(out DoorHinge door);
+            // 첫 한 판 메모 1: 상자를 들고 카트 2 m 안이면 어디를 보든 카트가 대상 — 시선 각도 때문에 칩이 안 뜨던 것을 없앤다.
+            if (hit == null && DepotFlow && CarryingBox && !OrderStarted && NearCart(CartLoadReach)) hit = car;
             GazeTarget = hit != null ? hit.name : null;
             PromptAnchor = hit == null ? (Vector3?)null : hit == car ? car.transform.position + Vector3.up * 0.8f : hit == boss ? TopOf(boss)
                          : orderBoard != null && hit == orderBoard ? orderBoard.Center : packSpot != null && hit == packSpot ? packSpot.Top
@@ -459,11 +503,11 @@ public class OnFootDirector : MonoBehaviour
             {
                 // 기능 2: 사장 말을 듣기 전엔 못 탄다. D-250: 주문을 맡았으면 포장해야 싣는다.
                 if (CartNeedsBossTalk && !Talked) SetPrompt("사장님한테 먼저");
-                else if (DepotFlow && OrderPicked && !Packed) SetPrompt(packSpot != null && packSpot.Ready ? "작업대 상자 들고 오기" : "포장 먼저");
                 else
                 {
-                    SetPrompt(DepotFlow && Packed && !OrderStarted ? "E 싣고 타기" : "E 타기");
-                    if (press) EnterCart();
+                    string chip = CartChip(DepotFlow, OrderPicked, Packed, OrderStarted);
+                    SetPrompt(chip);
+                    if (press && chip.StartsWith("E ")) EnterCart();
                 }
             }
             else if (door != null)
@@ -1026,8 +1070,8 @@ public class OnFootDirector : MonoBehaviour
         // 칠판 · 작업대
         if (packSpot != null) packSpot.ResetForNextDay();
         if (orderBoard != null) orderBoard.SetLines(BoardLines);
-        // 카트는 정비소 자리로, 나는 방으로
-        if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+        // 카트는 아침 자리(보관소 흐름 = 보관소 앞)로, 나는 방으로
+        ParkMorningCart();
         SetCarControl(false);
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
         player.enabled = true;

@@ -393,6 +393,7 @@ public partial class DotScreenUI : MonoBehaviour
             {
                 if (director.Held == null || director.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
                 ChipUI(vis);
+                CartMarkUI(vis);
                 if (director.PickedJob != null && !director.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표
                     SlipUI(director.PickedJob, director.FirstDrop, director.Player != null ? director.Player.transform.position : cam.transform.position, vis);
             }
@@ -772,6 +773,23 @@ public partial class DotScreenUI : MonoBehaviour
         else { x = W / 2 - w / 2; y = H / 2 - 10 - h; }
         x = Mathf.Clamp(x, 2, W - w - 2); y = Mathf.Clamp(y, 2, H - h - 2);
         Show(chipBox, x, y); vis.Append("chip ");
+    }
+
+    /// <summary>첫 한 판 메모 3: 상자를 들면 카트 위에 「!」 — 화면 밖이면 카트가 있는 쪽 가장자리(방향 표시). 싣고 출발하면 사라진다.</summary>
+    void CartMarkUI(System.Text.StringBuilder vis)
+    {
+        if (!director.CartMark) return;
+        int x, y;
+        if (ToScreen(director.CartMarkAnchor, out var sp) && sp.x > 6 && sp.x < W - 18 && sp.y > 4 && sp.y < H - 18)
+        { x = Mathf.RoundToInt(sp.x) - 5; y = Mathf.RoundToInt(sp.y); }
+        else
+        {
+            Vector3 f = cam.transform.forward; f.y = 0f;
+            Vector3 d = director.CartMarkAnchor - cam.transform.position; d.y = 0f;
+            float ang = f.sqrMagnitude > 1e-4f && d.sqrMagnitude > 1e-4f ? Vector3.SignedAngle(f, d, Vector3.up) : 0f;
+            x = ang >= 0f ? W - 16 : 5; y = H / 2 - 7;
+        }
+        Show(warnBox, x, y); vis.Append("mark ");
     }
 
     void TalkUI(System.Text.StringBuilder vis)

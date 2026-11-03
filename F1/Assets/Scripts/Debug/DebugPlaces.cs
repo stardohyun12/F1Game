@@ -30,7 +30,7 @@ public static class DebugPlaces
     }
 
     /// <summary>D-250 택배 보관소 앞 카트 자리 — 셔터 앞 마을 길(v2_ridge_up_c_1, 273.1,-37.1) 위, 동쪽을 봄.</summary>
-    public static readonly Vector3 DepotCart = new Vector3(273.5f, 29.6f, -37.4f);
+    public static readonly Vector3 DepotCart = OnFootDirector.DepotCartSpot;
 
     public static readonly Place[] All =
     {

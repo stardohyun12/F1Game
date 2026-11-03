@@ -1,0 +1,4 @@
+3-depot-clue.png t=0.00s yaw=112.9 pitch=4.3 ui='dot'
+1-workbench-first-chip.png t=0.00s yaw=85.2 pitch=48.0 ui=''
+2-cart-chip.png t=0.00s yaw=185.6 pitch=43.6 ui='dot chip mark destedge'
+3-depot-clue.png t=0.00s yaw=112.9 pitch=4.3 ui='dot'
