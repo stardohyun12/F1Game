@@ -268,7 +268,10 @@ public static partial class BuildBayLoop
             triangles=refined;
         }
         var mesh=new Mesh{indexFormat=UnityEngine.Rendering.IndexFormat.UInt32};mesh.SetVertices(v);mesh.SetTriangles(triangles,0);
-        if(hasUV)mesh.SetUVs(0,uv);if(hasUV2)mesh.SetUVs(1,uv2);if(hasColors)mesh.SetColors(colors);return mesh;
+        if(hasUV)mesh.SetUVs(0,uv);if(hasUV2)mesh.SetUVs(1,uv2);if(hasColors)mesh.SetColors(colors);
+        // D-295: 이웃 안 쪼갠 큰 삼각형 변 위에 매달린 정점 → 뒤 깎기에서 벌어져 틈(실측 parcels T자 11,447 · 10 cm 넘는 틈 803). 깎기 전에 꿰맨다.
+        if(!hasUV&&!hasUV2&&!hasColors)TerrainSeal.Stitch(mesh,out _);
+        return mesh;
     }
     // Clip the walking-road footprint against the actual terrain triangles.
     // Both surfaces then use exactly the same planes; no per-row lowering or guessed bump is needed.

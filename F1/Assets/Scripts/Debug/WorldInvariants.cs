@@ -20,10 +20,12 @@ public static class WorldInvariants
     public static readonly string[] PlaceholderAllow = { };
 
     /// <summary>아직 실제 씬에서 한 번도 통과를 못 본 조건 — 위반해도 FAIL 이 아니라 WARN(과제 보류 안 함). 한 번 OK 를 보면 여기서 뺀다.</summary>
-    public static readonly HashSet<string> Soft = new HashSet<string> { "보관소 출구" };
+    public static readonly HashSet<string> Soft = new HashSet<string> { "보관소 출구", "지형 감사" };
 
     static readonly (string name, Func<List<string>> run)[] Checks =
     {
+        ("지형 감사", () => TerrainAudit.Lines()),   // 틈·뜬/묻힌 길·굴곡·흰 조각 — D-295, 처음엔 WARN
+        ("지형 안쪽 열린 변 0", () => TerrainAudit.OpenEdgeLines()),   // D-295 버그: 쪼갠 삼각형 옆 T자 이음매가 벌어져 하늘이 비침
         ("DP 땅 2m 안", () => DpGround()),
         ("장소 땅 5m 안", () => PlacesGround()),
         ("부두 난간", () => PierRails()),

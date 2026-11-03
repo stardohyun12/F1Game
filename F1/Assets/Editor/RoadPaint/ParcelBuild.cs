@@ -874,6 +874,8 @@ public static class ParcelBuild
             float n0 = Vector3.Cross(bv[b] - bv[a], bv[c] - bv[a]).y, n1 = Vector3.Cross(vs[b] - vs[a], vs[c] - vs[a]).y; if (n0 > 1e-6f && n1 <= 0) flips++;
         }
         var bn = baseMesh.normals; mesh.RecalculateNormals(); var nn = mesh.normals; for (int i = 0; i < nv; i++) if (!mark[i]) nn[i] = bn[i]; mesh.normals = nn; mesh.RecalculateBounds();
+        // D-295: 패드는 정점 높이만 옮긴다 → 입력에 T자 이음매가 남아 있으면 여기서 벌어진다. 마지막에 꿰맨다(이미 꿰맨 입력이면 0).
+        TerrainSeal.Stitch(mesh, out var sealNote); tqs?.Append(" " + sealNote);
         var ex = AssetDatabase.LoadAssetAtPath<Mesh>(ParcelTerrain);
         if (ex == null) AssetDatabase.CreateAsset(mesh, ParcelTerrain); else { EditorUtility.CopySerialized(mesh, ex); ex.name = "Mesh_TownV6_Terrain_parcels"; Object.DestroyImmediate(mesh); mesh = ex; }
         AssetDatabase.SaveAssets(); SetTerrain(terr, mesh);

@@ -602,6 +602,8 @@ public static class TerraceBlock
         Tm("verts");int tFixed=StitchTJunctions(V,tris,p=>Rad(p)<=radius+Blend,radius+Blend+2,Rad);
         var mesh=new Mesh{name="Mesh_TownV6_Terrain_terrace1",indexFormat=UnityEngine.Rendering.IndexFormat.UInt32};
         mesh.SetVertices(V);mesh.SetTriangles(tris,0);if(hUV)mesh.SetUVs(0,uv);if(hUV2)mesh.SetUVs(1,uv2);if(hCol)mesh.SetColors(col);
+        // D-295: 위 높이 맞추기는 뒤 ParcelBuild 가 정점을 또 옮기면 다시 벌어진다 → 큰 변을 매달린 정점까지 쪼개 꿰맨다(정점 위치 그대로)
+        if(!hUV&&!hUV2&&!hCol){TerrainSeal.Stitch(mesh,out _);V.Clear();mesh.GetVertices(V);}
         Tm("stitch");mesh.RecalculateNormals();Tm("nRecalc");
         // 5차: 잔디 각진 면 — 반경 안 정점 법선을 같은 자리 정점끼리 합치고, 이웃 정점 법선과 2번 섞는다(60° 넘게 꺾인 이웃은 안 섞음 → 축대 밑 단차 면은 그대로).
         int smoothedN=0;
