@@ -31,6 +31,7 @@ commit(){
   for p in F1/Assets/Editor F1/Assets/Scripts F1/Assets/Art/Look F1/Assets/Art/Library F1/Assets/Audio F1/Assets/Scenes/Map_TownV6.unity F1/Assets/Scenes/Map_TownV6_Mats docs/map docs/qa/evidence docs/team/reports docs/team/cards docs/team/handoffs.jsonl docs/team/board.json docs/research F1Studio/Assets/Art $(ls -d art/_review/$(date +%Y-%m-%d)-* 2>/dev/null) tools/asset-gen tools/viewer/feedback .claude/team/ledger.jsonl; do git add "$p" 2>/dev/null; done
   git commit -qm "$1 [skip-verifier]" 2>/dev/null && { timeout 900 git push -q 2>&1 | grep -E "rejected"; log "커밋 $(git log --oneline -1)"; $PY -X utf8 scripts/notify_done.py $LINE "$NAME" ok "$(git rev-parse --short HEAD)" >/dev/null 2>&1; }; }
 while true; do
+  if [ -f .claude/team/queue/STOP ]; then sleep 60; continue; fi   # 정지 깃발(D-277): 도현 "작업 멈추고 작업방식 정리" — 파일 지우면 재개
   T=$(ls "$Q"/*.task 2>/dev/null | sort | head -1)
   # 일꾼마다 카드 1장: 그 일꾼이 일하는 중이면 기다림. build 는 본 에디터 잠금도 봄(증거 묶음·도현 기획 창).
   if [ -z "$T" ] || grep -q '^working' "$S/$ROLE.state" 2>/dev/null || { [ $ROLE = build ] && [ -s .claude/team/editor.lock ]; }; then sleep 60; continue; fi

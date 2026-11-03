@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T13:07:44+09:00",
+ "updated": "2026-11-03T13:12:03+09:00",
  "goal": {
   "name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개",
   "deadline": "2026-11-05"
@@ -58,10 +58,10 @@
   {
    "id": "C-001",
    "title": "수리 1개 — 부딪혀 상한 카트를 정비소에서 고친다",
-   "stage": "dohyun",
-   "owner": "pd",
+   "stage": "greybox",
+   "owner": "build",
    "fails": 1,
-   "updated": "2026-11-03T11:39:40+09:00",
+   "updated": "2026-11-03T13:12:03+09:00",
    "dir": "docs/team/cards/C-001-repair-one",
    "machine": "PASS",
    "clip": "docs/team/cards/C-001-repair-one/evidence/after/clip.mp4",
@@ -70,10 +70,10 @@
   {
    "id": "C-002",
    "title": "오프닝 — 방에서 깨어나 정비소에서 카트를 받는다",
-   "stage": "blocked",
-   "owner": "dohyun",
+   "stage": "greybox",
+   "owner": "build",
    "fails": 3,
-   "updated": "2026-11-03T12:51:31+09:00",
+   "updated": "2026-11-03T13:12:03+09:00",
    "dir": "docs/team/cards/C-002-opening",
    "machine": "PASS",
    "clip": "docs/team/cards/C-002-opening/evidence/after/clip.mp4",
@@ -104,7 +104,5 @@
    "strip": null
   }
  ],
- "dohyun_waiting": [
-  "C-001"
- ]
+ "dohyun_waiting": []
 }
