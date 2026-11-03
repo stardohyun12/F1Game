@@ -1,0 +1,24 @@
+{
+ "after": {
+  "frame_start": 1776,
+  "frame_end": 2407,
+  "unique_frames": 631,
+  "seconds": 10.35,
+  "captured": 111,
+  "warnings": 0,
+  "errors": 0,
+  "playing_at_end": true,
+  "source": "LowResRenderTest.Present",
+  "samples": [],
+  "frames_advanced": 631,
+  "fps": 61.0,
+  "frames_ok": true,
+  "log_ok": true,
+  "console_errors_after": "[]",
+  "clip": "docs/team/cards/C-002-opening/evidence/after/clip.mp4",
+  "strip": "docs/team/cards/C-002-opening/evidence/after/strip.png",
+  "shot": "docs/team/cards/C-002-opening/evidence/after/shot.png",
+  "made": "2026-11-03 11:38"
+ },
+ "machine": "PASS"
+}
