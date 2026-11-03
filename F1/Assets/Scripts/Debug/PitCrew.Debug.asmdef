@@ -1,0 +1,21 @@
+{
+    "name": "PitCrew.Debug",
+    "rootNamespace": "",
+    "references": [
+        "PitCrew",
+        "PitCrew.Core",
+        "PitCrew.Signals",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Core.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,9 @@
+Play 끈 직후:  Assets/Scenes/Map_TownV6.unity dirty=False 오브젝트=10490 컴포넌트=28916 Missing=2 끊긴참조=0 MISSING@Tape MISSING@Labels
+씬 다시 연 뒤: Assets/Scenes/Map_TownV6.unity dirty=False 오브젝트=10488 컴포넌트=28908 Missing=2 끊긴참조=0 MISSING@Tape MISSING@Labels
+
+판정: 이번 이동 탓 아님(원래부터).
+- 위치: OnFoot_HomeGarage/OnFoot_Depot/PackSpot/PackBench/Supplies/Tape, …/Supplies/Labels
+- 씬 YAML(Map_TownV6.unity:432814 부근): m_Script: {fileID: 1115262571} — guid 없음. m_EditorClassIdentifier: PitCrew::PitCrew.PackBench.PackSupply
+- PackSupply 는 HEAD 에서도 Packing/Bench/PackItem.cs:101 안(파일 이름 ≠ 클래스 이름) → Unity 가 스크립트 자산을 못 잇는다.
+- Map_TownV6.unity 는 git 변경 없음(마지막 커밋 7dd8556e).
+- 고치려면 PackSupply 를 PackSupply.cs 로 떼고 빌더(PackBenchBuilder.Supply)를 다시 돌려야 한다 → 동작 변화·씬 재생성이라 이번 과제 범위 밖. 손으로 안 고침.

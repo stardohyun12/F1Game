@@ -4,7 +4,9 @@
     "references": [
         "Unity.InputSystem",
         "Unity.TextMeshPro",
-        "Unity.RenderPipelines.Core.Runtime"
+        "Unity.RenderPipelines.Core.Runtime",
+        "PitCrew.Core",
+        "PitCrew.Signals"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

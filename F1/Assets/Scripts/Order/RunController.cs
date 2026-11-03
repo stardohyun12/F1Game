@@ -121,7 +121,7 @@ public class RunController : MonoBehaviour, IRunController
         if (!HandoverPending) return LastReward;
         HandoverPending = false;
         LastIntegrityPercent = integrity01;
-        LastReward = Mathf.RoundToInt(LastRewardBase * pay);
+        LastReward = Rules.HandoverPay(LastRewardBase, pay);
         LastNet = LastReward - LastPackCost;
         if (Upgrade != null)
         {

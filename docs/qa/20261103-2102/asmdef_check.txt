@@ -1,0 +1,7 @@
+PitCrew.Editor       층6 → ['PitCrew', 'PitCrew.Debug'] noEngine=False  (F1/Assets/Editor/PitCrew.Editor.asmdef)
+PitCrew.Core.Tests   층6 → ['PitCrew.Core'] noEngine=False  (F1/Assets/Scripts/Core.Tests/PitCrew.Core.Tests.asmdef)
+PitCrew.Core         층0 → [] noEngine=True  (F1/Assets/Scripts/Core/PitCrew.Core.asmdef)
+PitCrew.Debug        층5 → ['PitCrew', 'PitCrew.Core', 'PitCrew.Signals'] noEngine=False  (F1/Assets/Scripts/Debug/PitCrew.Debug.asmdef)
+PitCrew              층3 → ['PitCrew.Core', 'PitCrew.Signals'] noEngine=False  (F1/Assets/Scripts/PitCrew.asmdef)
+PitCrew.Signals      층2 → ['PitCrew.Core'] noEngine=True  (F1/Assets/Scripts/Signals/PitCrew.Signals.asmdef)
+거꾸로 참조 0

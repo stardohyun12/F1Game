@@ -1,0 +1,3 @@
+after_1_morning.png t=0.00s yaw=41.0 pitch=29.7 ui='dot destedge'
+after_2_board.png t=0.00s yaw=270.1 pitch=4.2 ui='dot chip destedge'
+after_3_boss.png t=0.00s yaw=53.4 pitch=4.3 ui='dot chip dest dots'

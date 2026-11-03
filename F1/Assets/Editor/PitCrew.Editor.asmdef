@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "PitCrew",
+        "PitCrew.Debug",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Unity.RenderPipelines.Universal.Runtime",

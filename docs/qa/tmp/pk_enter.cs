@@ -1,0 +1,11 @@
+var F = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
+var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
+DebugWindow.GoPlace(12);
+var board = (DepotOrderBoard)typeof(OnFootDirector).GetField("orderBoard", F).GetValue(d);
+var note = board.NearestNote(board.transform.position);
+string log = "note=" + (note != null);
+if (note != null && !d.OrderPicked) typeof(OnFootDirector).GetMethod("PickNote", F).Invoke(d, new object[] { note });
+log += " picked=" + d.OrderPicked;
+DebugWindow.GoPlace(11);
+typeof(OnFootDirector).GetMethod("EnterPack", F).Invoke(d, null);
+return log + " state=" + d.State + " day=" + DayLog.Day;

@@ -1,0 +1,2 @@
+마지막 Play(after.json 하루 한 바퀴) 뒤 exec 로 읽음: Count=9 Last=DayStarted
+(정적 값이 Play 종료 뒤에도 남아 있어 읽을 수 있었다. 신호 9종이 각각 한 번씩 = 9로 맞다. 종류별 기록은 안 남겼다 — Count·Last 만.)
