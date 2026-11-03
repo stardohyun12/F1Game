@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03T13:12:22+09:00",
+ "updated": "2026-11-03T14:05:05+09:00",
  "goal": {
   "name": "11/5 프로토타입 — 오프닝 + 첫 배달 + 한 판(5분) + 수리 1개",
   "deadline": "2026-11-05"
@@ -82,10 +82,10 @@
   {
    "id": "C-003",
    "title": "첫 배달 — 칠판 쪽지부터 찻집 문 앞 건네기까지",
-   "stage": "blocked",
-   "owner": "dohyun",
+   "stage": "greybox",
+   "owner": "build",
    "fails": 3,
-   "updated": "2026-11-03T13:07:44+09:00",
+   "updated": "2026-11-03T14:05:05+09:00",
    "dir": "docs/team/cards/C-003-first-delivery",
    "machine": "PASS",
    "clip": "docs/team/cards/C-003-first-delivery/evidence/after/clip.mp4",
