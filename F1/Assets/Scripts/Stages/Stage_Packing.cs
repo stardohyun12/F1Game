@@ -1,95 +1,124 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-// D-287: OnFootDirector 의 한 조각 — 자리만 옮김(동작 그대로). 지도: docs/world/CODEMAP.md
-public partial class OnFootDirector
+/// <summary>
+/// D-287 4단계: 포장 단계 — 보관소 작업대(D-251, Proto_PackBench 그대로) 서기·물러나기 · 상자 들기 · 출발 때 포장 결과 적용.
+/// 감독이 만들고 부른다(MonoBehaviour 아님). 작업대 안(흔들기·점수)은 DepotPackSpot/PackBench 그대로 — 여기는 연결만.
+/// 듣는 신호: PackOpened(물건 PackTable → 작업대 서기 = Pack) · BoxTaken(상자 듦, Stage_Door 다음) · OrderBegan(Stage_Drive → 포장 결과) · DayStarted.
+/// 지도: docs/world/CODEMAP.md
+/// </summary>
+public class Stage_Packing : DayStage
 {
-    // ── D-251 보관소 포장 작업대 ──
+    public Stage_Packing(OnFootDirector d) : base(d) { }
+    public override OnFootDirector.Mode Mode => OnFootDirector.Mode.Pack;
+
     /// <summary>포장 시점(작업대 앞)으로 옮겨 가는 중/돌아오는 중.</summary>
-    public bool PackMoving => packMove != null;
+    public bool Moving => move != null;
     /// <summary>작업대를 떠나려고 든 상자가 내려앉길 기다리는 중.</summary>
-    bool packLeaving, simPackLeave;
-    Coroutine packMove;
-    Vector3 packEyePos; Quaternion packEyeRot;
+    bool leaving, simLeave;
+    Coroutine move;
+    Vector3 eyePos; Quaternion eyeRot;
     /// <summary>출발 때 정한 화물 상태 시작값(0~1, 포장 결과). 음수 = 아직.</summary>
     public float StartIntegrity { get; private set; } = -1f;
 
-    // ── D-251: 보관소 포장 작업대(Proto_PackBench 그대로) ──
-    /// <summary>작업대 앞에 서기: 카메라가 칠판 보기와 같은 방식으로 작업대 눈 자리로 옮겨 간 뒤 PackBench 가 마우스·시선을 맡는다. 몸은 그 자리.</summary>
-    void EnterPack()
+    public override void Plug()
     {
-        if (packSpot == null || packSpot.Eye == null) return;
-        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
-        State = Mode.Pack; packLeaving = false;
-        player.enabled = false;
-        footCam.enabled = false;
-        packEyePos = cam.transform.position; packEyeRot = cam.transform.rotation;
-        SetPrompt(""); PromptAnchor = null; GazeTarget = null;
-        if (dotRoot != null) dotRoot.SetActive(false);
-        var e = packSpot.Eye;
-        if (packMove != null) StopCoroutine(packMove);
-        packMove = StartCoroutine(MovePackCam(e.position, e.rotation, boardFocusSec, () => packSpot.SetPacking(true, cam)));
-        Mark($"작업대 서기 눈 {e.position.ToString("F2")} 내려다봄 {e.eulerAngles.x:F0}°");
+        base.Plug();
+        Listen(Signal.PackOpened, _ => Enter());
+        Listen(Signal.BoxTaken, _ => TakeBox());
+        Listen(Signal.OrderBegan, _ => ApplyPackResult());
+    }
+
+    protected override void NewDay()
+    {
+        StartIntegrity = -1f;
+        if (d.packSpot != null) d.packSpot.ResetForNextDay();
+    }
+
+    /// <summary>작업대 앞에 서기: 카메라가 칠판 보기와 같은 방식으로 작업대 눈 자리로 옮겨 간 뒤 PackBench 가 마우스·시선을 맡는다. 몸은 그 자리.</summary>
+    public override void Enter()
+    {
+        var spot = d.packSpot;
+        if (spot == null || spot.Eye == null) return;
+        d.StopDestFocus();
+        d.State = OnFootDirector.Mode.Pack; leaving = false;
+        d.player.enabled = false;
+        d.footCam.enabled = false;
+        eyePos = d.cam.transform.position; eyeRot = d.cam.transform.rotation;
+        d.SetPrompt(""); d.PromptAnchor = null; d.GazeTarget = null;
+        if (d.dotRoot != null) d.dotRoot.SetActive(false);
+        var e = spot.Eye;
+        if (move != null) d.StopCoroutine(move);
+        move = d.StartCoroutine(MoveCam(e.position, e.rotation, d.boardFocusSec, () => spot.SetPacking(true, d.cam)));
+        d.Mark($"작업대 서기 눈 {e.position.ToString("F2")} 내려다봄 {e.eulerAngles.x:F0}°");
     }
 
     /// <summary>봇: 작업대에서 물러나기(Q 와 같은 길).</summary>
-    public void SimPackLeave() { simPackLeave = true; }
+    internal void SimLeave() { simLeave = true; }
 
-    void UpdatePack()
+    public override void Tick(bool press)
     {
-        PromptAnchor = null;
+        d.PromptAnchor = null;
         var kb = Keyboard.current;
-        bool leave = simPackLeave || (kb != null && kb.qKey.wasPressedThisFrame);
-        simPackLeave = false;
-        if (packMove != null) return;                                       // 옮겨 가는 동안은 입력 안 받음
-        var bench = packSpot.Bench;
-        if (leave && !packLeaving) { packLeaving = true; bench.ReleaseAll(); }
-        if (packLeaving && bench.CanLeave) LeavePack();
+        bool leave = simLeave || (kb != null && kb.qKey.wasPressedThisFrame);
+        simLeave = false;
+        if (move != null) return;                                           // 옮겨 가는 동안은 입력 안 받음
+        var bench = d.packSpot.Bench;
+        if (leave && !leaving) { leaving = true; bench.ReleaseAll(); }
+        if (leaving && bench.CanLeave) Exit();
     }
 
-    void LeavePack()
+    public override void Exit()
     {
-        packLeaving = false;
-        packSpot.SetPacking(false);                                         // PackBench.OnDisable 가 커서 잠금을 푼다 → 걷기 카메라가 다시 잠금
-        if (packMove != null) StopCoroutine(packMove);
-        packMove = StartCoroutine(MovePackCam(packEyePos, packEyeRot, boardFocusSec * 0.6f, () =>
+        var spot = d.packSpot;
+        leaving = false;
+        spot.SetPacking(false);                                             // PackBench.OnDisable 가 커서 잠금을 푼다 → 걷기 카메라가 다시 잠금
+        if (move != null) d.StopCoroutine(move);
+        move = d.StartCoroutine(MoveCam(eyePos, eyeRot, d.boardFocusSec * 0.6f, () =>
         {
-            player.enabled = true;
-            EnterFoot();
-            footCam.HoldLook = false;
-            Mark(packSpot.Ready ? $"작업대에서 물러남 — 흔들어 본 상자 있음(시작 {packSpot.StartIntegrity01 * 100f:F0}%)" : "작업대에서 물러남");
+            d.player.enabled = true;
+            d.EnterFoot();
+            d.footCam.HoldLook = false;
+            d.Mark(spot.Ready ? $"작업대에서 물러남 — 흔들어 본 상자 있음(시작 {spot.StartIntegrity01 * 100f:F0}%)" : "작업대에서 물러남");
         }));
     }
 
-    IEnumerator MovePackCam(Vector3 to, Quaternion toRot, float sec, System.Action done)
+    /// <summary>개발 디버그 창: 작업대 화면에서 바로 빠져나온다(눈 자리 되돌림·몸 켬). 걷기 모드는 부른 쪽이 켠다.</summary>
+    internal void Abort()
     {
-        yield return MoveCam(to, toRot, sec, null);
-        packMove = null;
+        if (move != null) { d.StopCoroutine(move); move = null; }
+        d.packSpot.Bench.ReleaseAll(); d.packSpot.SetPacking(false); leaving = false;
+        d.cam.transform.SetPositionAndRotation(eyePos, eyeRot);
+        d.player.enabled = true;
+    }
+
+    IEnumerator MoveCam(Vector3 to, Quaternion toRot, float sec, System.Action done)
+    {
+        yield return d.MoveCam(to, toRot, sec, null);
+        move = null;
         done?.Invoke();
     }
 
-    /// <summary>걷기 시점에서 흔들어 본 상자를 든다 → 화면 아래 든 상자(HeldBox 대역), 카트에서 [E] 싣고 타기.</summary>
-    void TakePacked()
+    /// <summary>걷기 시점에서 흔들어 본 상자를 든다 → 화면 아래 든 상자(HeldBox 대역, Stage_Door 가 BoxTaken 을 듣고 켬), 카트에서 [E] 싣고 타기.</summary>
+    void TakeBox()
     {
-        packSpot.Take();
-        CarryingBox = true;
-        Mark($"작업대 상자 들기 rattle={packSpot.Result.rattle:F2} → 화물 시작 {packSpot.StartIntegrity01 * 100f:F0}% 예정");
-        FocusThing(car.transform.position + Vector3.up * 0.7f, "카트");   // C-003: 다음 = 카트에 싣기
+        var spot = d.packSpot;
+        spot.Take();
+        d.Mark($"작업대 상자 들기 rattle={spot.Result.rattle:F2} → 화물 시작 {spot.StartIntegrity01 * 100f:F0}% 예정");
+        d.FocusThing(d.car.transform.position + Vector3.up * 0.7f, "카트");   // C-003: 다음 = 카트에 싣기
     }
 
     /// <summary>출발 직후(BeginRun 이 화물을 새것으로 채운 뒤) 포장 결과를 화물 상태 시작값으로.</summary>
     void ApplyPackResult()
     {
-        if (packSpot == null || !packSpot.HasBench || !packSpot.Taken) return;
-        var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
-        if (cargo == null) { Mark("포장 결과 적용 실패: CargoBox 없음"); return; }
-        cargo.SetStartIntegrity(packSpot.StartIntegrity01);
+        var spot = d.packSpot;
+        if (spot == null || !spot.HasBench || !spot.Taken) return;
+        var cargo = Services.Cargo as CargoBox ?? Object.FindFirstObjectByType<CargoBox>();
+        if (cargo == null) { d.Mark("포장 결과 적용 실패: CargoBox 없음"); return; }
+        cargo.SetStartIntegrity(spot.StartIntegrity01);
         StartIntegrity = cargo.IntegrityPercent;
-        var r = packSpot.Result;
-        Mark($"출발 화물 상태 {StartIntegrity * 100f:F0}% ← 포장 rattle={r.rattle:F2} upright={r.upright} escaped={r.escaped} gap={r.gap:F3}");
+        var r = spot.Result;
+        d.Mark($"출발 화물 상태 {StartIntegrity * 100f:F0}% ← 포장 rattle={r.rattle:F2} upright={r.upright} escaped={r.escaped} gap={r.gap:F3}");
     }
 }

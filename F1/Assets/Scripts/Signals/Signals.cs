@@ -27,6 +27,9 @@ public enum Signal
     CalendarOpened,// 방 달력 [E 달력 보기]
     SeatTaken,     // 낚시 자리 [E 앉기] (arg = 자리)
     DiaryClosed,   // 일기장 덮기
+    // ── 3단계: 단계끼리 ──
+    OrderBegan,    // 첫 주문 출발 직후(Stage_Drive → 포장 결과를 화물에)
+    CartLeft,      // 카트에서 내림(Stage_Drive → Stage_Door: 도착했으면 상자 들기)
 }
 
 public static class SignalBus
@@ -62,15 +65,14 @@ public static class SignalBus
     /// <summary>
     /// 첫 배달 단계 글(OrderRules.Step) → 그 단계에 들어선 신호. "없음" 은 신호 없음.
     /// "쪽지" 는 여기서 안 쏜다 — 물건 Note 가 집는 순간 쪽지를 실어 쏜다(한 번만).
+    /// "실음"·"건넴" 도 안 쏜다(3단계) — Stage_Drive·Stage_Door 가 그 순간 바로 쏘고, 다른 단계가 같은 프레임에 듣는다.
     /// </summary>
     public static void RaiseStep(string step)
     {
         switch (step)
         {
             case "포장": Raise(Signal.BoxPacked, step); break;
-            case "실음": Raise(Signal.BoxLoaded, step); break;
             case "도착": Raise(Signal.Arrived, step); break;
-            case "건넴": Raise(Signal.HandedOver, step); break;
         }
     }
 

@@ -1,68 +1,78 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-// D-287: OnFootDirector 의 한 조각 — 자리만 옮김(동작 그대로). 지도: docs/world/CODEMAP.md
-public partial class OnFootDirector
+/// <summary>
+/// D-287 4단계: 아침 방 단계 — 방 달력 보기 · 옛 배달 지점 끄기. 감독이 만들고 부른다(MonoBehaviour 아님).
+/// 듣는 신호: CalendarOpened(물건 RoomCalendar → 달력 보기 = Calendar).
+/// 지도: docs/world/CODEMAP.md
+/// </summary>
+public class Stage_Morning : DayStage
 {
-    public RoomCalendar Calendar => calendar;
+    public Stage_Morning(OnFootDirector d) : base(d) { }
+    public override OnFootDirector.Mode Mode => OnFootDirector.Mode.Calendar;
+
     /// <summary>달력 보기 시점으로 옮겨 가는 중/돌아오는 중(QA).</summary>
-    public bool CalendarMoving => State == Mode.Calendar && boardMove != null;
+    public bool Moving => d.State == OnFootDirector.Mode.Calendar && d.boardMove != null;
+    bool simClose;
+
+    public override void Plug()
+    {
+        base.Plug();
+        Listen(Signal.CalendarOpened, _ => Enter());
+    }
+
     /// <summary>SPEC §11-4: 옛 배달 지점(AlleyEnd·CoastCafe·HairpinOrchard·LoneHouse — DP_ 접두가 아닌 DeliveryPoint)은 Play 때 끈다.</summary>
     public static bool IsLegacyPoint(DeliveryPoint dp) => dp != null && !dp.name.StartsWith("DP_") && dp.transform.parent != null && dp.transform.parent.name == "DeliverySystem";
     /// <summary>SPEC §11-4: 옛 배달 지점 4곳을 끈다(DeliveryManager.Start 가 켠 뒤 — Start 는 한 프레임 늦게 돈다).</summary>
-    void HideLegacyPoints()
+    internal void HideLegacyPoints()
     {
         int n = 0;
-        foreach (var dp in FindObjectsByType<DeliveryPoint>(FindObjectsSortMode.None))
+        foreach (var dp in Object.FindObjectsByType<DeliveryPoint>(FindObjectsSortMode.None))
             if (IsLegacyPoint(dp)) { dp.gameObject.SetActive(false); n++; }
-        if (n > 0) Mark($"옛 배달 지점 {n}곳 끔(SPEC §11-4)");
+        if (n > 0) d.Mark($"옛 배달 지점 {n}곳 끔(SPEC §11-4)");
     }
 
-    // ── 과제 20261102-1951: 방 달력 보기 · 하루 끝 일기장 · 다음 날 아침 ──
+    // ── 과제 20261102-1951: 방 달력 보기 ──
     /// <summary>달력 보기 시점: 칠판 보기와 같은 방식(카메라가 달력 앞 ViewPose 로). 몸은 그 자리.</summary>
-    void OpenCalendar()
+    public override void Enter()
     {
-        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
-        State = Mode.Calendar;
-        player.enabled = false;
-        footCam.enabled = false;
-        boardEyePos = cam.transform.position; boardEyeRot = cam.transform.rotation;
-        calendar.SetHint(true);
-        SetPrompt(""); PromptAnchor = null; GazeTarget = null;
-        if (dotRoot != null) dotRoot.SetActive(false);
-        calendar.ViewPose(cam.fieldOfView, cam.aspect, out var pos, out var rot);
-        if (boardMove != null) StopCoroutine(boardMove);
-        boardMove = StartCoroutine(MoveCam(pos, rot, boardFocusSec, null));
-        Mark($"달력 보기 시점 {pos.ToString("F2")} 달력까지 {Vector3.Distance(pos, calendar.Center):F2}m — {calendar.Written}");
+        d.StopDestFocus();
+        d.State = OnFootDirector.Mode.Calendar;
+        d.player.enabled = false;
+        d.footCam.enabled = false;
+        d.boardEyePos = d.cam.transform.position; d.boardEyeRot = d.cam.transform.rotation;
+        d.calendar.SetHint(true);
+        d.SetPrompt(""); d.PromptAnchor = null; d.GazeTarget = null;
+        if (d.dotRoot != null) d.dotRoot.SetActive(false);
+        d.calendar.ViewPose(d.cam.fieldOfView, d.cam.aspect, out var pos, out var rot);
+        if (d.boardMove != null) d.StopCoroutine(d.boardMove);
+        d.boardMove = d.StartCoroutine(d.MoveCam(pos, rot, d.boardFocusSec, null));
+        d.Mark($"달력 보기 시점 {pos.ToString("F2")} 달력까지 {Vector3.Distance(pos, d.calendar.Center):F2}m — {d.calendar.Written}");
     }
 
-    void CloseCalendar()
+    public override void Exit()
     {
-        calendar.SetHint(false);
-        if (boardMove != null) StopCoroutine(boardMove);
-        boardMove = StartCoroutine(MoveCam(boardEyePos, boardEyeRot, boardFocusSec * 0.6f, () =>
+        d.calendar.SetHint(false);
+        if (d.boardMove != null) d.StopCoroutine(d.boardMove);
+        d.boardMove = d.StartCoroutine(d.MoveCam(d.boardEyePos, d.boardEyeRot, d.boardFocusSec * 0.6f, () =>
         {
-            player.enabled = true;
-            EnterFoot();
-            footCam.HoldLook = false;
-            Mark("달력 닫기");
+            d.player.enabled = true;
+            d.EnterFoot();
+            d.footCam.HoldLook = false;
+            d.Mark("달력 닫기");
         }));
     }
 
-    /// <summary>봇: 달력 닫기 · 일기 덮기.</summary>
-    bool simCalClose;
-    public void SimCalendarClose() { simCalClose = true; }
-    void UpdateCalendar(bool press)
+    /// <summary>봇: 달력 닫기.</summary>
+    internal void SimClose() { simClose = true; }
+
+    public override void Tick(bool press)
     {
-        PromptAnchor = null;
+        d.PromptAnchor = null;
         var kb = Keyboard.current;
-        bool close = press || simCalClose || (kb != null && (kb.escapeKey.wasPressedThisFrame || kb.qKey.wasPressedThisFrame));
-        simCalClose = false;
-        if (boardMove != null) return;                                      // 옮겨 가는 동안은 입력 안 받음
-        if (close) CloseCalendar();
+        bool close = press || simClose || (kb != null && (kb.escapeKey.wasPressedThisFrame || kb.qKey.wasPressedThisFrame));
+        simClose = false;
+        if (d.boardMove != null) return;                                    // 옮겨 가는 동안은 입력 안 받음
+        if (close) Exit();
     }
 }

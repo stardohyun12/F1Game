@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 /// C-001 그레이박스: 정비소 안 정비 자리(회색 바닥 판). 상처 있는 카트가 자리 안에 있고, 사람이 내려서 자리 안에 서 있으면
 /// OnFootDirector 가 [E 고치기] 칩을 띄우고, E 를 누르면 Repair → 상처 0 + DayLog 수리비 한 줄.
 /// 씬에 저장하지 않는다 — Map_TownV6 에서 Play 시작 때 스스로 하나 만든다(정비소 문 안쪽 바닥, x 215.5~222 · z −57.5~−52.5).
-/// 카트에 CartDamage 를 붙이는 것도 여기서(감독이 카트를 찾은 뒤 첫 Update).
+/// 카트에 CartDamage 를 붙이는 것도 여기서(카트를 찾은 뒤 첫 Update).
 /// </summary>
 public class RepairSpot : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class RepairSpot : MonoBehaviour
 
     [SerializeField] Vector3 size = new Vector3(6.5f, 3f, 5f);   // 바닥 판 가로·높이(판정)·세로
 
-    OnFootDirector dir;
+    ArcadeCarController car;
 
     const string SceneName = "Map_TownV6";
     static readonly Vector3 Center = new Vector3(218.75f, 26.73f, -55.0f);   // 정비소 문(x≈222) 안쪽, 장소 9 「정비소 안」 선 자리(216)가 안에 든다
@@ -51,8 +51,9 @@ public class RepairSpot : MonoBehaviour
 
     void Update()
     {
-        if (dir == null) dir = Object.FindFirstObjectByType<OnFootDirector>();
-        if (dir != null && dir.Car != null && dir.Car.GetComponent<CartDamage>() == null) CartDamage.Of(dir.Car);
+        // D-287 6단계: 감독을 뒤지지 않고 감독과 같은 규칙으로 카트를 찾는다(Services.Car → 씬의 ArcadeCarController).
+        if (car == null) car = Services.Car as ArcadeCarController ?? Object.FindFirstObjectByType<ArcadeCarController>();
+        if (car != null && car.GetComponent<CartDamage>() == null) CartDamage.Of(car);
     }
 
     public bool Contains(Vector3 p)

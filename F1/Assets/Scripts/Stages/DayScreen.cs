@@ -19,11 +19,31 @@ public partial class OnFootDirector
     public string DeliveryCaption { get; private set; } = "";
     Image dcapBox; Text dcapText; RectTransform dcapRoot;
 
+    // ── 떠오르는 돈 글자(문 앞 건네기 +, 정비 −) — Stage_Door·정비가 ShowMoney 로 띄우고 DotScreenUI 가 그린다 ──
+    /// <summary>떠오르는 돈 글자("" = 없음) · 시작 시각(unscaled) · 사라지는 시각 · 세상 자리(받는 사람 손·카트 위).
+    /// 최소 moneySec 초, 반응 말풍선이 떠 있는 동안은 계속 + 대화 끝난 뒤 1.2초.</summary>
+    public string MoneyText => moneyText != null && Time.unscaledTime < MoneyEnd ? moneyText : "";
+    public float MoneyAt { get; private set; } = -99f;
+    public float MoneyEnd { get; private set; } = -99f;
+    public float MoneySec => moneySec;
+    public Vector3 MoneyAnchor { get; private set; }
+    string moneyText;
+
+    internal void ShowMoney(string text, Vector3 at)
+    {
+        moneyText = text;
+        MoneyAt = Time.unscaledTime;
+        MoneyEnd = MoneyAt + moneySec;
+        MoneyAnchor = at;
+    }
+
+    internal void ClearMoney() { moneyText = null; MoneyAt = -99f; MoneyEnd = -99f; }
+
     string DeliveryCaptionNow()
     {
         if (!DepotFlow || !OrderPicked || InTalk || Knocking) return "";
         if (State != Mode.OnFoot && State != Mode.InCart) return "";
-        var job = firstJob != null ? firstJob : depot.PickedJob;
+        var job = drive.FirstJob != null ? drive.FirstJob : depot.PickedJob;
         string place = !string.IsNullOrEmpty(job.callerName) ? job.callerName : firstDrop != null ? firstDrop.Label : "배달지";
         string who = string.IsNullOrEmpty(job.recipientName) ? "" : " " + job.recipientName;
         if (HandedOver) return State == Mode.OnFoot && Time.unscaledTime - HandedAt < handedCaptionSec ? $"첫 배달 끝 +{HandoverMoney:N0}원 — 집에 가서 자자" : "";   // 돌아오는 길 = 화면 0(SPEC §6-9)
@@ -48,8 +68,29 @@ public partial class OnFootDirector
         return CapArrows[((Mathf.RoundToInt(ang / 45f) % 8) + 8) % 8];
     }
 
+    // ── D-287 5단계: 화면 View(Presentation/DayView) 적기 — 감독(실행 순서 0)이 DotScreenUI(200)의 LateUpdate 보다 먼저 ──
+    void WriteView()
+    {
+        DayView.Present = true; DayView.Active = true;
+        DayView.State = (DayState.Mode)(int)State;
+        DayView.Prompt = Prompt; DayView.PromptLow = PromptLow; DayView.PromptAnchor = PromptAnchor;
+        bool talk = InTalk;
+        DayView.InTalk = talk;
+        DayView.TalkWho = TalkWho; DayView.TalkText = TalkText; DayView.TalkLineAt = TalkLineAt;
+        DayView.SpeakerTop = talk ? SpeakerTop : Vector3.zero;
+        DayView.Held = Held; DayView.PickedJob = PickedJob; DayView.OrderStarted = OrderStarted;
+        DayView.FirstDrop = firstDrop; DayView.WalkDest = WalkDest;
+        DayView.Player = player != null ? player.transform : null;
+        DayView.Car = car != null ? car.transform : null;
+        bool mark = CartMark;
+        DayView.CartMark = mark; DayView.CartMarkAnchor = mark ? CartMarkAnchor : Vector3.zero;
+        DayView.MoneyText = MoneyText; DayView.MoneyAt = MoneyAt; DayView.MoneyEnd = MoneyEnd; DayView.MoneySec = MoneySec; DayView.MoneyAnchor = MoneyAnchor;
+        DayView.DiaryCanClose = DiaryCanClose; DayView.MorningAt = MorningAt;
+    }
+
     void LateUpdate()
     {
+        WriteView();
         if (State == Mode.Starting) return;
         string s = DeliveryCaptionNow();
         DeliveryCaption = s;
@@ -105,7 +146,7 @@ public partial class OnFootDirector
         }
     }
 
-    void SetHud(bool on) { foreach (var c in hud) if (c != null) c.enabled = on; }
+    internal void SetHud(bool on) { foreach (var c in hud) if (c != null) c.enabled = on; }
 
     void BuildUI()
     {
@@ -156,7 +197,7 @@ public partial class OnFootDirector
     }
 
     /// <summary>걷기 = 안내를 조준점 바로 아래에(보는 곳 옆에서 읽게) · 카트 = 화면 아래 띠.</summary>
-    void PlacePrompt(bool nearDot)
+    internal void PlacePrompt(bool nearDot)
     {
         if (promptRoot == null) return;
         var rt = (RectTransform)promptRoot.transform;

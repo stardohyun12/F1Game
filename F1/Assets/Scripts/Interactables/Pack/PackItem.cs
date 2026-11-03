@@ -4,7 +4,7 @@ using UnityEngine;
 namespace PitCrew.PackBench
 {
     public enum PackItemKind { Eggs, Paper, Bubble }
-    public enum PackSupplyKind { Newspaper, Bubble, Tape, Label }
+    // PackSupply·PackSupplyKind 는 본체(Packing/PackSupply.cs) — 씬이 「PitCrew 어셈블리의 PackSupply」로 찾는다(D-287 6단계).
 
     /// <summary>
     /// 포장 작업대(D-250 ②)에서 손으로 집어 상자에 넣는 물건 하나 — 달걀 한 판·구긴 신문지·뽁뽁이 한 장.
@@ -95,11 +95,5 @@ namespace PitCrew.PackBench
             if (mat != null) shell.GetComponent<Renderer>().sharedMaterial = mat;
             if (Body != null) Body.mass += 0.05f;
         }
-    }
-
-    /// <summary>작업대 위 재료 더미(신문지 묶음·뽁뽁이 롤·테이프·라벨 묶음). 수량 없음(무한) — 선반 실물 수량은 다음 판.</summary>
-    public class PackSupply : MonoBehaviour
-    {
-        public PackSupplyKind kind;
     }
 }

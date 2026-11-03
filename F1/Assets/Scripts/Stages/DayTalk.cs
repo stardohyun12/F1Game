@@ -20,7 +20,8 @@ public partial class OnFootDirector
     /// <summary>지금 말하는 사람(사장 또는 문 앞 받는 사람).</summary>
     public Transform Speaker => speaker != null ? speaker : boss;
     Transform speaker;                       // null = 사장
-    (string who, string text)[] curLines;    // null = 사장 대사
+    (string who, string text)[] curLines;    // 지금 대화의 줄(사장 대사는 Stage_Garage 가 넘긴다)
+    (string who, string text)[] Lines => curLines;
     System.Action<int> onTalkLine;           // 줄이 바뀔 때(새 줄 번호)
     System.Action onTalkEnd;
 
@@ -29,11 +30,8 @@ public partial class OnFootDirector
     TextMeshProUGUI subText;
     GameObject subRoot;
 
-    // ── 기능 2: 사장 대화 → 첫 주문 ──
-    void BeginTalk() => BeginTalk(null, null, null, null);
-
-    /// <summary>대화 시작. lines·who 가 null 이면 사장 대사. 문 앞 건네기도 같은 말풍선·시선 이동(D-240)을 쓴다.</summary>
-    void BeginTalk((string who, string text)[] lines, Transform who, System.Action<int> onLine, System.Action onEnd)
+    /// <summary>대화 시작(대화 서비스 — 사장 = Stage_Garage, 문 앞 건네기 = Stage_Door). who 가 null 이면 사장. 같은 말풍선·시선 이동(D-240).</summary>
+    internal void BeginTalk((string who, string text)[] lines, Transform who, System.Action<int> onLine, System.Action onEnd)
     {
         curLines = lines; speaker = who; onTalkLine = onLine; onTalkEnd = onEnd;
         var sp = Speaker;
@@ -74,7 +72,7 @@ public partial class OnFootDirector
     public bool ForceTalk()
     {
         if (State != Mode.OnFoot || InTalk || boss == null) return false;
-        BeginTalk();
+        garage.BeginBossTalk();
         return true;
     }
 
@@ -95,18 +93,10 @@ public partial class OnFootDirector
         if (talkFocus != null) { StopCoroutine(talkFocus); talkFocus = null; }
         footCam.HoldLook = false;                                  // 다시 플레이어 시선
         if (subRoot != null) subRoot.SetActive(false);
-        if (curLines != null)
-        {
-            // 문 앞 건네기 등 사장 아닌 대화 — 사장 대화 끝 처리(목적지 시선)는 안 한다.
-            var end = onTalkEnd;
-            curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
-            end?.Invoke();
-            return;
-        }
-        Talked = true;
-        Mark("사장 대화 끝" + (DepotFlow ? " → 보관소로" : ""));
-        if (opening != null) { opening.OnTalkEnd(); Mark("카트 열쇠 받음"); SignalBus.Raise(Signal.KeyReceived); }
-        if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
+        // 끝 처리는 대화를 연 단계가(사장 = 열쇠·목적지 시선, 문 앞 = 상자 건네기)
+        var end = onTalkEnd;
+        curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
+        end?.Invoke();
     }
 
     void ShowSubtitle()

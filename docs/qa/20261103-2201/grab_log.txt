@@ -1,0 +1,3 @@
+1_morning.png t=0.00s yaw=71.9 pitch=14.4 ui='dot chip'
+2_board.png t=0.00s yaw=270.1 pitch=4.2 ui='dot chip'
+3_boss.png t=0.00s yaw=53.4 pitch=4.3 ui='dot chip'

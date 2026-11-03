@@ -8,15 +8,15 @@ using UnityEngine.UI;
 /// Screen Space - Camera 캔버스를 Main Camera 에 붙인다 → 캔버스 1 단위 = RT 1 픽셀, 세상과 같은 격자·같은 Present(Nearest·노을 역광 테)를 받는다.
 /// 그리는 것(전부 간단히):
 ///   주행 — 위 가운데 목적지 방향 화살표 1개 + 화물 위험 "!" 1개(위험할 때만) + Tab 누르는 동안 전표.
-///   걷기 — 가운데 조준점 2×2 + [E] 칩을 그 물건 곁에(OnFootDirector.PromptAnchor).
-///   대화 — 말하는 사람 머리 위 말풍선(이름표 + 한 글자씩). 시선 이동은 OnFootDirector 가 한다.
+///   걷기 — 가운데 조준점 2×2 + [E] 칩을 그 물건 곁에(DayView.PromptAnchor).
+///   대화 — 말하는 사람 머리 위 말풍선(이름표 + 한 글자씩). 시선 이동은 감독(Stages)이 한다.
+/// D-287 5단계: 감독을 직접 보지 않는다 — 감독이 매 프레임 적는 View(DayView)만 읽는다.
 /// 기존 HUD(속도·기어·화물 막대·목적지 등)는 이 컴포넌트가 켜져 있는 동안만 끈다(SetActive false, 지우지 않음). 이 컴포넌트를 끄면 되돌린다.
 /// 글꼴: Galmuri11/9(OFL, Assets/UI/Fonts/Galmuri) — 가져오기 설정 Hinted Raster = 안티앨리어싱 없음. 아트 스프라이트 슬롯은 아래 *Sprite 필드(비면 코드 임시 모양).
 /// </summary>
 [DefaultExecutionOrder(200)]
-public partial class DotScreenUI : MonoBehaviour
+public partial class DotScreenUI : MonoBehaviour, IScreenFonts
 {
-    [SerializeField] OnFootDirector director;
     [Tooltip("본문 글꼴(Galmuri11, 12px).")]
     [SerializeField] Font font;
     [Tooltip("작은 글꼴(Galmuri9, 10px) — 키 칩·전표 제목.")]
@@ -94,7 +94,7 @@ public partial class DotScreenUI : MonoBehaviour
     const float ArrowScale = 1.5f;
     bool arrowOld;
     readonly List<GameObject> hidden = new List<GameObject>();
-    OnFootDirector.Mode lastState;
+    DayState.Mode lastState;
     float cartAt = -99f;
     string bubbleLine;
     TextGenerator gen;
@@ -109,7 +109,6 @@ public partial class DotScreenUI : MonoBehaviour
 
     void Start()
     {
-        if (director == null) director = FindFirstObjectByType<OnFootDirector>();
         cam = Camera.main;
         if (cam == null) { enabled = false; return; }
         lowRes = cam.GetComponent<LowResRenderTest>();

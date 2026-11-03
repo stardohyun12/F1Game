@@ -25,8 +25,8 @@ public partial class DotScreenUI
         rigBubble.cam.enabled = true;
         printMatBubble.mainTexture = rigBubble.rt;
         SyncLight(printMatBubble);
-        Vector3 head = director.SpeakerTop + Vector3.up * 0.03f;
-        string key = director.TalkWho;
+        Vector3 head = DayView.SpeakerTop + Vector3.up * 0.03f;
+        string key = DayView.TalkWho;
         if (bubbleFor != key)
         {
             bubbleFor = key;
@@ -142,7 +142,7 @@ public partial class DotScreenUI
         EnsureStyleAssets();
         if (appliedStyle != UiStyle) ApplyStyleSprites();
         BoardStyle();
-        if (UiStyle== UIStyle.World && director != null) { WorldBubble(); WorldSlip(); }
+        if (UiStyle== UIStyle.World && DayView.Present) { WorldBubble(); WorldSlip(); }
         else
         {
             if (bubbleQuad != null && bubbleQuad.activeSelf) { bubbleQuad.SetActive(false); rigBubble.cam.enabled = false; }

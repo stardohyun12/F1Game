@@ -23,8 +23,6 @@ public partial class OnFootDirector : MonoBehaviour
     /// <summary>지금 시선 레이가 맞은 것(없으면 null) — 봇·QA 용.</summary>
     public string GazeTarget { get; internal set; }
     public readonly List<string> Log = new List<string>();
-    public bool OrderStarted { get; private set; }
-    public bool Delivered { get; private set; }
     public Transform Boss => boss;
     public DeliveryPoint FirstDrop => firstDrop;
     // ── D-250 보관소 흐름 ──
@@ -38,6 +36,12 @@ public partial class OnFootDirector : MonoBehaviour
     // ── D-287 2단계: 단계 클래스(감독이 만들고 부른다). 아래 공개 이름은 봇·화면·디버그가 그대로 쓰게 넘겨 주기만 ──
     internal Stage_Depot depot;
     internal Stage_DayEnd dayEnd;
+    internal Stage_Drive drive;     // 3단계
+    internal Stage_Door door;
+    internal Stage_Return ret;
+    internal Stage_Garage garage;   // 4단계
+    internal Stage_Morning morning;
+    internal Stage_Packing packing;
     internal Diary Diary => gaze.Diary;
     public HeldPaper Held => depot.Held;
     public void SimBoardMove(int m) => depot.SimBoardMove(m);
@@ -53,34 +57,35 @@ public partial class OnFootDirector : MonoBehaviour
     public void SimDiaryClose() => dayEnd.SimClose();
     public bool Packed => packSpot == null ? OrderPicked : packSpot.Packed;
     DotScreenUI dotUI;
-    OpeningSequence opening;
+    internal OpeningSequence opening;
     public OpeningSequence OpeningSeq => opening;
     Canvas overlayUI;
     readonly Dictionary<Object, Vector3> anchorOffset = new Dictionary<Object, Vector3>();
-    bool UseDot => dotUI != null && dotUI.isActiveAndEnabled;
+    internal bool UseDot => dotUI != null && dotUI.isActiveAndEnabled;
 
-    ArcadeCarController car;
-    Rigidbody carRb;
+    internal ArcadeCarController car;
+    internal Rigidbody carRb;
     UnityEngine.InputSystem.PlayerInput carInput;
-    RunController rc;
+    internal RunController rc;
     internal Camera cam;
-    FollowCamera follow;
+    internal FollowCamera follow;
     internal OnFootCamera footCam;
     readonly List<DoorHinge> doors = new List<DoorHinge>();
-    readonly List<FishingSpot> spots = new List<FishingSpot>();   // D-227 낚시 자리(E 앉기)
-    FishingSpot seatedAt;
+    internal readonly List<FishingSpot> spots = new List<FishingSpot>();   // D-227 낚시 자리(E 앉기)
     readonly List<Canvas> hud = new List<Canvas>();
     TextMeshProUGUI promptText;
     GameObject promptRoot;
     internal GameObject dotRoot;
     readonly Gaze gaze = new Gaze();   // D-287 2단계: 시선 → 물건(Interactables/Gaze.cs)
     bool simInteract;
-    bool freeDriveEntered;
     float t0;
 
     void Awake()
     {
+        DayView.Reset(); DayView.Present = true;   // 5단계: 화면은 감독 대신 View 를 읽는다
         depot = new Stage_Depot(this); dayEnd = new Stage_DayEnd(this);
+        drive = new Stage_Drive(this); door = new Stage_Door(this); ret = new Stage_Return(this);
+        garage = new Stage_Garage(this); morning = new Stage_Morning(this); packing = new Stage_Packing(this);
         var ot = FindFirstObjectByType<OpeningTutorial>();
         if (ot != null) ot.enabled = false;
         var drv = FindFirstObjectByType<BayLoopDriveOnly>();
@@ -122,31 +127,28 @@ public partial class OnFootDirector : MonoBehaviour
         Plug();
         CollectHud();
         BuildUI();
-        BuildHeldBox();
+        door.BuildHeldBox();
         dotUI = FindFirstObjectByType<DotScreenUI>();
 
-        ParkMorningCart();
+        garage.ParkMorningCart();
         SetCarControl(false);
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
         if (orderBoard != null) orderBoard.SetLines(Stage_Depot.BoardLines);
-        HideLegacyPoints();
+        morning.HideLegacyPoints();
         var look0 = SunsetLook.Find();
-        lookWasOn = look0 != null && look0.IsOn;
+        ret.LookWasOn = look0 != null && look0.IsOn;
         if (look0 != null && look0.IsOn && DepotFlow) { look0.dusk = 0f; look0.Apply(); }   // 아침은 오후 빛(D-239)
         EnterFoot();
         opening = GetComponent<OpeningSequence>();
         if (opening == null) opening = gameObject.AddComponent<OpeningSequence>();
-        opening.Begin(this);                     // C-002: 방에서 눈을 뜬다
+        opening.Begin(player, calendar, bed, () => State == Mode.OnFoot);   // C-002: 방에서 눈을 뜬다
         Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")} 흐름={(DepotFlow ? "보관소(D-250)" : "사장 말 주문")}");
     }
 
-    // ── D-287 2단계: 물건(Interactables)이 쏜 신호 → 그 일을 맡은 단계 메서드 ──
-    readonly List<(Signal s, System.Action<object> h)> ears = new List<(Signal, System.Action<object>)>();
+    // ── D-287: 물건(Interactables)이 쏜 신호는 그 일을 맡은 단계가 직접 듣는다(감독 귀는 Mark 한 줄만) ──
     System.Action<string> markEar;
 
-    void Listen(Signal s, System.Action<object> h) { ears.Add((s, h)); SignalBus.On(s, h); }
-
-    /// <summary>시선 배선(Gaze) + 신호 귀. Start 에서 문·낚시 자리를 모은 뒤 한 번.</summary>
+    /// <summary>시선 배선(Gaze) + 단계 귀 꽂기. Start 에서 문·낚시 자리를 모은 뒤 한 번.</summary>
     void Plug()
     {
         gaze.player = player.transform; gaze.cam = cam; gaze.car = car; gaze.boss = boss; gaze.board = orderBoard; gaze.packSpot = packSpot;
@@ -155,21 +157,12 @@ public partial class OnFootDirector : MonoBehaviour
         gaze.Build();
         DayState.Reset(); SyncDay();
         markEar = Mark; SignalBus.Marked += markEar;
-        Listen(Signal.TalkAsked, _ => BeginTalk());
-        Listen(Signal.PackOpened, _ => EnterPack());
-        Listen(Signal.BoxTaken, _ => TakePacked());
-        Listen(Signal.CartBoarded, _ => EnterCart());
-        Listen(Signal.RepairAsked, _ => RepairCart());
-        Listen(Signal.DoorKnocked, _ => Knock());
-        Listen(Signal.CalendarOpened, _ => OpenCalendar());
-        Listen(Signal.SeatTaken, a => { if (a is FishingSpot sp) Sit(sp); });
-        depot.Plug(); dayEnd.Plug();
+        // 순서 = 같은 신호를 듣는 차례: Door 가 BoxTaken 을 Packing 보다 먼저(상자 듦 → 그다음 작업대 쪽 일)
+        foreach (var st in Stages) st.Plug();
     }
 
     void Unplug()
     {
-        foreach (var (s, h) in ears) SignalBus.Off(s, h);
-        ears.Clear();
         if (markEar != null) SignalBus.Marked -= markEar;
     }
 
@@ -181,6 +174,17 @@ public partial class OnFootDirector : MonoBehaviour
         DayState.Talked = Talked; DayState.OrderPicked = OrderPicked; DayState.OrderStarted = OrderStarted; DayState.Delivered = Delivered;
         DayState.CarryingBox = CarryingBox; DayState.Knocking = Knocking; DayState.HandedOver = HandedOver; DayState.InTalk = InTalk;
         DayState.DiaryAt = dayEnd.DiaryAt; DayState.DiaryMinSec = diaryMinSec;
+    }
+
+    /// <summary>모든 단계 — 귀 꽂는 차례(Plug)이자 아침 되돌리기(DayStarted) 차례. OnDestroy 에서 귀를 뗀다.</summary>
+    System.Collections.Generic.IEnumerable<DayStage> Stages
+    {
+        get
+        {
+            yield return door; yield return drive; yield return ret;
+            yield return garage; yield return packing; yield return morning;
+            yield return depot; yield return dayEnd;
+        }
     }
 
     internal void Mark(string s)

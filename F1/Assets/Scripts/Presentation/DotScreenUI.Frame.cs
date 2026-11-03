@@ -13,28 +13,28 @@ public partial class DotScreenUI
         Fit();   // 걷기(near 0.05)·주행 카메라 near·FOV 가 다르다 — 항상 바로 앞, 화면 꽉
         HideAll();
         var vis = new System.Text.StringBuilder();
-        var st = director != null && director.isActiveAndEnabled ? director.State : OnFootDirector.Mode.InCart;
-        if (st != lastState) { if (st == OnFootDirector.Mode.InCart) cartAt = Time.unscaledTime; lastState = st; }
+        var st = DayView.Active ? DayView.State : DayState.Mode.InCart;
+        if (st != lastState) { if (st == DayState.Mode.InCart) cartAt = Time.unscaledTime; lastState = st; }
 
-        if (st == OnFootDirector.Mode.InCart) { DriveUI(vis); if (hideLegacyHud) HideLegacy(); }
+        if (st == DayState.Mode.InCart) { DriveUI(vis); if (hideLegacyHud) HideLegacy(); }
         else RestoreLegacy();
 
-        if (director != null && st == OnFootDirector.Mode.OnFoot)
+        if (DayView.Present && st == DayState.Mode.OnFoot)
         {
-            if (director.InTalk) TalkUI(vis);
+            if (DayView.InTalk) TalkUI(vis);
             else
             {
-                if (director.Held == null || director.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
+                if (DayView.Held == null || DayView.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
                 ChipUI(vis);
                 CartMarkUI(vis);
-                if (director.PickedJob != null && !director.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표
-                    SlipUI(director.PickedJob, director.FirstDrop, director.Player != null ? director.Player.transform.position : cam.transform.position, vis);
+                if (DayView.PickedJob != null && !DayView.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표
+                    SlipUI(DayView.PickedJob, DayView.FirstDrop, DayView.Player != null ? DayView.Player.position : cam.transform.position, vis);
             }
         }
-        else if (director != null && st == OnFootDirector.Mode.InCart && director.Prompt.Length > 0) ChipUI(vis);
+        else if (DayView.Present && st == DayState.Mode.InCart && DayView.Prompt.Length > 0) ChipUI(vis);
         DestUI(DestTarget(st), vis);
-        if (director != null && st == OnFootDirector.Mode.OnFoot) MoneyUI(vis);
-        if (director != null && st == OnFootDirector.Mode.Diary) DiaryUI(vis); else MorningUI(vis);
+        if (DayView.Present && st == DayState.Mode.OnFoot) MoneyUI(vis);
+        if (DayView.Present && st == DayState.Mode.Diary) DiaryUI(vis); else MorningUI(vis);
         StyleLate();   // D-258 A/B 비교판(기본 Now = 아무것도 안 바꿈)
         Visible = vis.ToString().Trim();
     }
@@ -42,21 +42,21 @@ public partial class DotScreenUI
     /// <summary>D-250 ③: 상자를 건넨 순간부터(반응 말풍선이 떠 있는 동안 + 끝난 뒤 1.2초, 최소 MoneySec 초) — 받는 사람 손 오른쪽에서 위로 14px 떠오르고 마지막 0.5초에 옅어진다.</summary>
     void MoneyUI(System.Text.StringBuilder vis)
     {
-        string s = director.MoneyText;
+        string s = DayView.MoneyText;
         if (string.IsNullOrEmpty(s)) { MoneyShown = ""; return; }
         if (moneyText.text != s)
         {
             moneyText.text = s;
             moneyBox.rectTransform.sizeDelta = new Vector2(Mathf.CeilToInt(Pref(moneyText, s, 300)) + 8, 15);
         }
-        float age = Time.unscaledTime - director.MoneyAt, dur = Mathf.Max(0.5f, director.MoneySec);
+        float age = Time.unscaledTime - DayView.MoneyAt, dur = Mathf.Max(0.5f, DayView.MoneySec);
         var sz = moneyBox.rectTransform.sizeDelta;
         int x, y;
-        if (ToScreen(director.MoneyAnchor, out var sp)) { x = Mathf.RoundToInt(sp.x) + 8; y = Mathf.RoundToInt(sp.y); }
+        if (ToScreen(DayView.MoneyAnchor, out var sp)) { x = Mathf.RoundToInt(sp.x) + 8; y = Mathf.RoundToInt(sp.y); }
         else { x = W / 2 + 20; y = H / 2 - 20; }
         y += Mathf.RoundToInt(14f * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(age / (dur * 0.6f))));
         x = Mathf.Clamp(x, 2, W - (int)sz.x - 2); y = Mathf.Clamp(y, 2, H - (int)sz.y - 2);
-        float a = Mathf.Clamp01((director.MoneyEnd - Time.unscaledTime) / 0.5f);
+        float a = Mathf.Clamp01((DayView.MoneyEnd - Time.unscaledTime) / 0.5f);
         moneyBox.color = new Color(1f, 1f, 1f, a); moneyText.color = new Color(Paper.r, Paper.g, Paper.b, a);
         Show(moneyBox, x, y);
         MoneyPx = new Vector2(x, y); MoneyShown = s;

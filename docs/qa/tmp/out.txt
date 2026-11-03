@@ -1,0 +1,227 @@
+ M F1/Assets/Editor/PitCrew.Editor.asmdef
+ M F1/Assets/Scripts/Debug/PitCrew.Debug.asmdef
+ M F1/Assets/Scripts/Debug/WorldInvariants.cs
+ M F1/Assets/Scripts/Garage/RepairSpot.cs
+ M F1/Assets/Scripts/Interactables/Pack/PackItem.cs
+ M F1/Assets/Scripts/OnFoot/DepotOrderBoard.cs
+ D F1/Assets/Scripts/OnFoot/DepotPackSpot.cs
+ D F1/Assets/Scripts/OnFoot/DepotPackSpot.cs.meta
+ M F1/Assets/Scripts/OnFoot/OpeningSequence.cs
+ M F1/Assets/Scripts/OnFoot/RoomCalendar.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.Bubble.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.Dest.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.Diary.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.Drive.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.Frame.cs
+ M F1/Assets/Scripts/Presentation/DotScreenUI.cs
+ D F1/Assets/Scripts/Presentation/LowResRenderTest.cs
+ D F1/Assets/Scripts/Presentation/LowResRenderTest.cs.meta
+ M F1/Assets/Scripts/Signals/Signals.cs
+ M F1/Assets/Scripts/Stages/DayDebug.cs
+ M F1/Assets/Scripts/Stages/DayDirector.cs
+ M F1/Assets/Scripts/Stages/DayLook.cs
+ M F1/Assets/Scripts/Stages/DayReset.cs
+ M F1/Assets/Scripts/Stages/DayScreen.cs
+ M F1/Assets/Scripts/Stages/DayTalk.cs
+ M F1/Assets/Scripts/Stages/OnFootDirector.cs
+ M F1/Assets/Scripts/Stages/Stage_Door.cs
+ M F1/Assets/Scripts/Stages/Stage_Drive.cs
+ M F1/Assets/Scripts/Stages/Stage_Garage.cs
+ M F1/Assets/Scripts/Stages/Stage_Morning.cs
+ M F1/Assets/Scripts/Stages/Stage_Packing.cs
+ M F1/Assets/Scripts/Stages/Stage_Return.cs
+ M F1/Packages/packages-lock.json
+ M F1/ProjectSettings/ProjectSettings.asset
+ M F1Studio/Assets/Scenes/Studio_Building.unity
+ M art/_review/2026-10-28-q3-depot/15m.png
+ M art/_review/2026-10-28-q3-depot/5m.png
+ M art/_review/2026-10-28-q3-depot/inside.png
+ M art/_review/2026-10-30-house-floor/index.html
+ M art/export/forest-cands/F1.png
+ M art/export/forest-cands/F2.png
+ M art/export/forest-cands/laurel.fbx
+ M art/export/forest-cands/layout_sugi.json
+ M art/export/forest-cands/measure.json
+ M art/export/forest-cands/sugi.fbx
+ M art/export/forest-cands/tex.json
+ M art/export/q4-postoffice/icons.png
+ M art/source/q3-depot/depot.blend
+ M docs/NOW.md
+ M docs/art/rule-audit/last_forest.md
+ M docs/design/tutorial/placements.yaml
+ M docs/qa/tmp/dlc_name.txt
+ M docs/world/INVARIANTS.log
+ M docs/world/WORLD.md
+ M tasks/06-split-real.md
+ M tools/art/build_asset.py
+ M tools/art/check_rules.py
+ M tools/viewer/assets/manifest.json
+ M tools/viewer/buildings.json
+?? .claude/team/dashboard.pid
+?? .claude/team/fb_seen.txt
+?? .claude/team/fix/
+?? .claude/team/status_server.pid
+?? .claude/team/tg_digest.json
+?? .claude/team/tg_status_msg.txt
+?? F1/Assets/Scripts/Interactables/DepotPackSpot.cs
+?? F1/Assets/Scripts/Interactables/DepotPackSpot.cs.meta
+?? F1/Assets/Scripts/Interactables/PitCrew.Interactables.asmdef
+?? F1/Assets/Scripts/Interactables/PitCrew.Interactables.asmdef.meta
+?? F1/Assets/Scripts/Packing/PackSupply.cs
+?? F1/Assets/Scripts/Packing/PackSupply.cs.meta
+?? F1/Assets/Scripts/Presentation/DayView.cs
+?? F1/Assets/Scripts/Presentation/DayView.cs.meta
+?? F1/Assets/Scripts/Presentation/PitCrew.Presentation.asmdef
+?? F1/Assets/Scripts/Presentation/PitCrew.Presentation.asmdef.meta
+?? F1/Assets/Scripts/Stages/DirectorFacade.cs
+?? F1/Assets/Scripts/Stages/DirectorFacade.cs.meta
+?? F1/Assets/Scripts/Stages/DirectorWiring.cs
+?? F1/Assets/Scripts/Stages/DirectorWiring.cs.meta
+?? F1/Assets/Scripts/Stages/PitCrew.Stages.asmdef
+?? F1/Assets/Scripts/Stages/PitCrew.Stages.asmdef.meta
+?? F1/Assets/Scripts/UI/ScreenFonts.cs
+?? F1/Assets/Scripts/UI/ScreenFonts.cs.meta
+?? F1/Assets/Scripts/Visual/LowResRenderTest.cs
+?? F1/Assets/Scripts/Visual/LowResRenderTest.cs.meta
+?? F1/docs/
+?? art/_prompts/20261023-car.md
+?? art/_prompts/20261023-hillhouse.md
+?? art/_review/2026-10-23-car/
+?? art/_review/2026-10-23-cargo-set-v2/
+?? art/_review/2026-10-23-cargo-set/
+?? art/_review/2026-10-23-course-ui/
+?? art/_review/2026-10-23-hillhouse/
+?? art/_review/2026-10-23-ui-final/
+?? art/_review/2026-10-23-ui-flow/
+?? art/_review/2026-10-23-ui-refboard/
+?? art/_review/2026-10-25-bayloop-buildings/
+?? art/_review/2026-10-25-bayloop-italy/
+?? art/_review/2026-10-25-bayloop-props2/
+?? art/_review/2026-10-25-bayloop-variety/
+?? art/_review/2026-10-25-bskills-trial/
+?? art/_review/2026-10-25-car-candidates/
+?? art/_review/2026-10-26-landmarks/
+?? art/_review/2026-10-26-terrain-people/
+?? art/_review/2026-10-27-harbor-kit-v0/_kit/
+?? art/_review/2026-10-27-harbor-kit-v0/kit_meta.json
+?? art/_review/2026-10-27-houses-j/
+?? art/_review/2026-10-27-houses-j4/_work/c_check.png
+?? art/_review/2026-10-27-houses-j4/_work/nb_corner6.png
+?? art/_review/2026-10-28-q2-plaza/
+?? art/_review/2026-10-30-env-first/STUDIO-HANDOFF.md
+?? art/_review/2026-10-30-env-first/build.log
+?? art/_review/2026-10-30-env-first/cameras.json
+?? art/_review/2026-10-30-env-first/cart_home.png
+?? art/_review/2026-10-30-env-first/cart_route.png
+?? art/_review/2026-10-30-env-first/check.log
+?? art/_review/2026-10-30-env-first/fbx-geometry.json
+?? art/_review/2026-10-30-env-first/geometry.json
+?? art/_review/2026-10-30-env-first/index.html
+?? art/_review/2026-10-30-env-first/plan.png
+?? art/_review/2026-10-30-env-first/readback.json
+?? art/_review/2026-10-30-env-first/readback.log
+?? art/_review/2026-10-30-env-first/repeat-build.log
+?? art/_review/2026-10-30-env-first/reproducibility.json
+?? art/_review/2026-10-30-env-first/rules.json
+?? art/_review/2026-10-30-env-first/rules.md
+?? art/_review/2026-10-30-env-first/studio_capture.cs
+?? art/_review/2026-10-30-env-first/studio_import.cs
+?? art/_review/2026-10-30-env-first/top.png
+?? art/_review/2026-10-30-env-first/ux-review.md
+?? art/_review/2026-10-30-field_terrace/dbg_A_top.png
+?? art/_review/2026-10-30-field_terrace/dbg_B_top.png
+?? art/_review/2026-10-30-field_terrace/new_A_cart.png
+?? art/_review/2026-10-30-field_terrace/new_A_eye.png
+?? art/_review/2026-10-30-field_terrace/new_A_high.png
+?? art/_review/2026-10-30-field_terrace/new_B_cart.png
+?? art/_review/2026-10-30-field_terrace/new_B_high.png
+?? art/_review/2026-10-30-field_terrace/new_base_cart.png
+?? art/_review/2026-10-30-field_terrace/old_A_cart.png
+?? art/_review/2026-10-30-field_terrace/old_A_eye.png
+?? art/_review/2026-10-30-field_terrace/old_A_high.png
+?? art/_review/2026-10-30-field_terrace/old_B_cart.png
+?? art/_review/2026-10-30-field_terrace/old_B_eye.png
+?? art/_review/2026-10-30-field_terrace/old_B_high.png
+?? art/_review/2026-10-30-field_terrace/old_evidence.txt
+?? art/_review/2026-10-30-field_terrace/params.txt
+?? art/_review/2026-10-30-field_terrace/path_albedo.png
+?? art/_review/2026-10-30-field_terrace/render_evidence.txt
+?? art/_review/2026-10-30-field_terrace/soil_albedo.json
+?? art/_review/2026-10-30-field_terrace/soil_albedo.png
+?? art/_review/2026-10-30-field_terrace/topdown_B.png
+?? art/_review/2026-10-30-field_terrace/zoom_B_high_old_vs_new.png
+?? art/_review/2026-10-30-field_terrace2/close_A_edge.png
+?? art/_review/2026-10-30-field_terrace2/close_B_edge.png
+?? art/_review/2026-10-30-field_terrace2/compare_main_vs_copy.png
+?? art/_review/2026-10-30-field_terrace2/dbg_A_top.png
+?? art/_review/2026-10-30-field_terrace2/dbg_B_top.png
+?? art/_review/2026-10-30-field_terrace2/new_A_cart.png
+?? art/_review/2026-10-30-field_terrace2/new_A_high.png
+?? art/_review/2026-10-30-field_terrace2/new_B_cart.png
+?? art/_review/2026-10-30-field_terrace2/new_B_high.png
+?? art/_review/2026-10-30-field_terrace2/render_evidence.txt
+?? art/_review/2026-10-30-retain-AB/z2_close_full.png
+?? art/_review/2026-10-30-streetscape-plan-v2/
+?? art/_review/2026-10-30-streetscape-plan/
+?? art/export/env-first-v2/
+?? art/export/forest-cands/F1L.png
+?? art/export/forest-cands/F1L_palette.gpl
+?? art/export/forest-cands/F2L.png
+?? art/export/forest-cands/F2L_palette.gpl
+?? art/export/forest-cands/layout_sugi_b.json
+?? art/export/forest-cands/layout_sugi_b_lod.json
+?? art/export/forest-cands/layout_sugi_lod.json
+?? art/export/forest-cands/sugi_b.fbx
+?? art/export/forest-cands/sugi_b_lod.fbx
+?? art/export/forest-cands/sugi_lod.fbx
+?? art/export/forest/
+?? art/export/house-types/
+?? art/export/tree-cands/
+?? art/models/env_first_v2/
+?? art/models/garage_scene_a2_kit/task-0453-selection.json
+?? art/models/opus_houses_h2_log.txt
+?? art/models/opus_houses_h2_scene_log.txt
+?? art/models/opus_houses_j2_log.txt
+?? art/models/opus_houses_j3_log.txt
+?? art/models/opus_houses_j4_log.txt
+?? art/models/opus_houses_j_diag.json
+?? art/models/opus_houses_j_log.txt
+?? art/palette/style32.png
+?? art/reference/ghibli-2026-10-26/_analysis/
+?? art/source/depot-props/
+?? art/textures/2026-10-24-kp-v2/
+?? art/textures/2026-10-24-kp/
+?? docs/art/rule-audit/last_forest_F1.md
+?? docs/art/rule-audit/last_forest_F2.md
+?? docs/art/rule-audit/last_htype_H1A.md
+?? docs/art/rule-audit/last_trees.md
+?? docs/qa/20261103-2102/s3.json
+?? docs/qa/20261103-2102/s4.json
+?? docs/qa/20261103-2102/s5.json
+?? docs/qa/20261103-2102/s6.json
+?? docs/qa/20261103-2201/
+?? docs/qa/tmp/body_refs.txt
+?? docs/qa/tmp/out.txt
+?? docs/qa/tmp/s6_asm.cs
+?? docs/qa/tmp/s6_console.txt
+?? docs/superpowers/specs/2026-10-23-return-clutch-crowd.md
+?? docs/team/reports/build-20261103-1638.md
+?? docs/team/reports/build-20261103-1827.md
+?? docs/team/reports/build-20261103-1927.md
+?? docs/team/reports/build-20261103-2019.md
+?? docs/team/reports/build-20261103-2050.md
+?? docs/team/reports/build-20261103-2102.md
+?? docs/team/reports/build-20261103-2135.md
+?? docs/team/reports/build-20261103-2201.md
+?? docs/world/CODEMAP.md
+?? generation-result.txt
+?? tools/art/bin/depot_props_build.py
+?? tools/art/bin/depot_props_prepare.py
+?? tools/art/bin/depot_props_publish.py
+?? tools/art/bin/depot_props_verify.py
+?? tools/art/bin/packing_review_extras.py
+?? tools/map/check_streetscape_v2.py
+?? tools/map/streetscape_v2_mesh.py
+?? tools/split/
+?? tools/viewer/assets/forest_F1.glb
+?? tools/viewer/assets/forest_F2.glb

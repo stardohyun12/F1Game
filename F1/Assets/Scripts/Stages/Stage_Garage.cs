@@ -1,23 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-// D-287: OnFootDirector 의 한 조각 — 자리만 옮김(동작 그대로). 지도: docs/world/CODEMAP.md
-public partial class OnFootDirector
+/// <summary>
+/// D-287 4단계: 정비소 단계 — 사장 대화(카트 열쇠) · 정비(수리) · 아침 카트 자리. 감독이 만들고 부른다(MonoBehaviour 아님).
+/// 듣는 신호: TalkAsked(물건 Boss → 사장 대화) · RepairAsked(물건 RepairSpot → 수리) · DayStarted(아침 카트 자리로).
+/// 쏘는 신호: KeyReceived.
+/// 지도: docs/world/CODEMAP.md
+/// </summary>
+public class Stage_Garage : DayStage
 {
-    /// <summary>사장 대화를 끝냈는지 — 이 뒤에만 카트를 탄다.</summary>
-    public bool Talked { get; private set; }
-    /// <summary>카트를 타려면 사장 대화가 먼저인가. 보관소 흐름(SPEC §11-7: 사장은 정비만)이면 아니다 — 불변 조건 「첫 배달 한 바퀴 배선」이 본다.</summary>
-    public bool CartNeedsBossTalk => boss != null && !DepotFlow;
-    /// <summary>아침 카트 자리 = 정비소 자리(cartSpot, SPEC §3-2 카트 자리). 불변 조건 「아침 카트 정비소」가 본다.</summary>
-    public Vector3? MorningCartAt => cartSpot != null ? cartSpot.position : (Vector3?)null;
+    public Stage_Garage(OnFootDirector d) : base(d) { }
+    public override OnFootDirector.Mode Mode => OnFootDirector.Mode.OnFoot;
 
-    void ParkMorningCart()
+    /// <summary>사장 대화를 끝냈는지 — 이 뒤에만 카트를 탄다. 다음 날에도 안 되돌린다.</summary>
+    public bool Talked { get; internal set; }
+    /// <summary>카트를 타려면 사장 대화가 먼저인가. 보관소 흐름(SPEC §11-7: 사장은 정비만)이면 아니다 — 불변 조건 「첫 배달 한 바퀴 배선」이 본다.</summary>
+    public bool CartNeedsBossTalk => d.boss != null && !d.DepotFlow;
+    /// <summary>아침 카트 자리 = 정비소 자리(cartSpot, SPEC §3-2 카트 자리). 불변 조건 「아침 카트 정비소」가 본다.</summary>
+    public Vector3? MorningCartAt => d.cartSpot != null ? d.cartSpot.position : (Vector3?)null;
+
+    public override void Plug()
     {
-        if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+        base.Plug();
+        Listen(Signal.TalkAsked, _ => BeginBossTalk());
+        Listen(Signal.RepairAsked, _ => RepairCart());
+    }
+
+    /// <summary>카트는 아침 자리(정비소)로.</summary>
+    protected override void NewDay() => ParkMorningCart();
+
+    internal void ParkMorningCart()
+    {
+        if (d.cartSpot != null) d.ParkCar(d.cartSpot.position, d.cartSpot.eulerAngles.y);
     }
 
     // 대사: docs/design/tutorial/first-delivery.yaml 의 garage 장면 1·2줄 그대로. 3줄(첫 주문 안내)은 설계에 사장 대사가 없어
@@ -37,16 +50,26 @@ public partial class OnFootDirector
         ("사장", "자, 열쇠. 뒤 짐상자 깨지는 건 네 책임이다."),
         ("사장", "상하면 가져와. 고쳐 줄 테니."),
     };
-    (string who, string text)[] Lines => curLines ?? (DepotFlow ? DepotBossLines : BossLines);
+
+    /// <summary>사장 대화 시작(말풍선·시선 이동은 감독 대화 서비스가).</summary>
+    internal void BeginBossTalk() => d.BeginTalk(d.DepotFlow ? DepotBossLines : BossLines, null, null, EndBossTalk);
+
+    /// <summary>사장 대화 끝: 열쇠를 받고 → 목적지(보관소 앞 또는 찻집) 쪽으로 시선 한 번.</summary>
+    void EndBossTalk()
+    {
+        Talked = true;
+        d.Mark("사장 대화 끝" + (d.DepotFlow ? " → 보관소로" : ""));
+        if (d.opening != null) { d.opening.OnTalkEnd(); d.Mark("카트 열쇠 받음"); SignalBus.Raise(Signal.KeyReceived); }
+        d.FocusWalkDest();
+    }
+
     /// <summary>C-001: 정비 자리에서 E — 상처를 지우고 수리비 글자(−숫자)를 카트 위에 띄운다(건네기 돈 글자와 같은 자리 쓰기).</summary>
     void RepairCart()
     {
-        int cost = RepairSpot.Repair(car);
-        moneyText = $"−{cost:N0}원";
-        MoneyAt = Time.unscaledTime;
-        MoneyEnd = MoneyAt + moneySec;
-        MoneyAnchor = car.transform.position + Vector3.up * 1.5f;   // 칩(0.8 m)과 안 겹치게 더 위
-        SetPrompt(""); PromptAnchor = null;
-        Mark($"수리 — 수리비 {moneyText} · 오늘 수리 합 {DayLog.TodayRepair}");
+        int cost = RepairSpot.Repair(d.car);
+        string text = $"−{cost:N0}원";
+        d.ShowMoney(text, d.car.transform.position + Vector3.up * 1.5f);   // 칩(0.8 m)과 안 겹치게 더 위
+        d.SetPrompt(""); d.PromptAnchor = null;
+        d.Mark($"수리 — 수리비 {text} · 오늘 수리 합 {DayLog.TodayRepair}");
     }
 }

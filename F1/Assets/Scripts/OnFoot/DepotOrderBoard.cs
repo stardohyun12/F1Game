@@ -59,7 +59,7 @@ public class DepotOrderBoard : MonoBehaviour
         NotesOn = HeldPaper.On;
         foreach (var r in rows) r.gameObject.SetActive(!NotesOn);
         if (!NotesOn) return;
-        var ui = FindFirstObjectByType<DotScreenUI>();
+        var ui = ScreenFonts.Find();
         Font small = ui != null ? ui.SmallFont : font;
         int k = 0;
         for (int i = 0; i < lines.Count; i++)
@@ -148,7 +148,7 @@ public class DepotOrderBoard : MonoBehaviour
     void Build()
     {
         if (canvas != null) return;
-        if (font == null) { var ui = FindFirstObjectByType<DotScreenUI>(); if (ui != null) font = ui.BodyFont; }
+        if (font == null) { var ui = ScreenFonts.Find(); if (ui != null) font = ui.BodyFont; }
         var go = new GameObject("ChalkCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler));
         go.transform.SetParent(transform, false);
         go.transform.localPosition = Vector3.forward * 0.004f;           // 면 바로 앞(겹침 깜박임 방지)

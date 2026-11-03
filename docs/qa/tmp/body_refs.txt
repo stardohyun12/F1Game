@@ -1,0 +1,53 @@
+F1/Assets/Scripts/Cargo/CargoBox.cs:191:        Repair();
+F1/Assets/Scripts/Cargo/CargoBox.cs:336:    public void Repair()
+F1/Assets/Scripts/Garage/RepairSpot.cs:18:    OnFootDirector dir;
+F1/Assets/Scripts/Garage/RepairSpot.cs:54:        if (dir == null) dir = Object.FindFirstObjectByType<OnFootDirector>();
+F1/Assets/Scripts/Garage/RepairSpot.cs:73:    public static int Repair(Component car)
+F1/Assets/Scripts/Map/BayLoopDriveOnly.cs:12:        yield return null; yield return null;   // RunController.Start(Board) 다음
+F1/Assets/Scripts/Map/OpeningTutorial.cs:89:        Services.Board?.Close();
+F1/Assets/Scripts/OnFoot/DepotOrderBoard.cs:12:    [Tooltip("분필 글씨(Galmuri11). 비면 DotScreenUI 본문 글꼴.")]
+F1/Assets/Scripts/OnFoot/DepotOrderBoard.cs:62:        var ui = FindFirstObjectByType<DotScreenUI>();
+F1/Assets/Scripts/OnFoot/DepotOrderBoard.cs:151:        if (font == null) { var ui = FindFirstObjectByType<DotScreenUI>(); if (ui != null) font = ui.BodyFont; }
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:1:using PitCrew.PackBench;
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:17:    [SerializeField] PackBench bench;
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:36:    PackBox resultBox; int resultOpenCount; PackBox.ShakeResult result; bool hasResult;
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:47:    public PackBench Bench => bench;
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:48:    public PackBox.ShakeResult Result => result;
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:83:        foreach (var it in FindObjectsByType<PackItem>(FindObjectsInactive.Include, FindObjectsSortMode.None)) if (!snapSet.Contains(it.transform)) Destroy(it.gameObject);
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:84:        foreach (var sh in FindObjectsByType<BubbleSheet>(FindObjectsInactive.Include, FindObjectsSortMode.None)) if (!snapSet.Contains(sh.transform)) Destroy(sh.gameObject);
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:99:        foreach (var b in GetComponentsInChildren<PackBox>(true)) b.ResetForNextDay();
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:107:    void OnEnable() { PackBench.Shaken += OnShaken; }
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:108:    void OnDisable() { PackBench.Shaken -= OnShaken; }
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:110:    void OnShaken(PackBox box, PackBox.ShakeResult r)
+F1/Assets/Scripts/OnFoot/DepotPackSpot.cs:127:        if (cam != null) bench.cam = cam;                                  // 걷기·주행과 같은 카메라(PackBenchCursor 가 첫 켜짐에 이걸 잡는다)
+F1/Assets/Scripts/OnFoot/FishingSpot.cs:236:        int h = 360; var lr = cam.GetComponent<LowResRenderTest>();
+F1/Assets/Scripts/OnFoot/HeldPaper.cs:267:        var lr = cam != null ? cam.GetComponent<LowResRenderTest>() : null;
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:13:    public enum Stage { None, Room, Front, Talk, Key, Cart }
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:26:    OnFootDirector dir;
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:35:    public void Begin(OnFootDirector d)
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:48:    public void OnCartEnter() { if (Step == Stage.Key || Step == Stage.Front || Step == Stage.Room) Set(Stage.Cart); }
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:52:        if (dir == null || dir.State != OnFootDirector.Mode.OnFoot || Step != Stage.Room) return;
+F1/Assets/Scripts/OnFoot/OpeningSequence.cs:79:        if (dir.Bed != null) cam.LookAt(dir.Bed.transform.position + new Vector3(-0.3f, 0f, 0f));
+F1/Assets/Scripts/OnFoot/RoomCalendar.cs:12:    [Tooltip("숫자 글꼴(Galmuri9, 10px). 비면 DotScreenUI 의 작은 글꼴.")]
+F1/Assets/Scripts/OnFoot/RoomCalendar.cs:14:    [Tooltip("제목 글꼴(Galmuri11, 12px). 비면 DotScreenUI 본문 글꼴.")]
+F1/Assets/Scripts/OnFoot/RoomCalendar.cs:62:        var ui = FindFirstObjectByType<DotScreenUI>();
+F1/Assets/Scripts/Order/CountdownHUD.cs:81:            || (controller.ClockRunning && (controller.CurrentStage == RunStage.Board
+F1/Assets/Scripts/Order/RunController.cs:6:public enum RunStage { Board, Routing, Packing, Driving, Result }
+F1/Assets/Scripts/Order/RunController.cs:24:    IOrderBoard Board => Services.Board;
+F1/Assets/Scripts/Order/RunController.cs:34:    RunStage stage = RunStage.Board;
+F1/Assets/Scripts/Order/RunController.cs:168:        SetStage(RunStage.Board);
+F1/Assets/Scripts/Order/RunController.cs:169:        if (Board == null)
+F1/Assets/Scripts/Order/RunController.cs:178:        Board.Open();
+F1/Assets/Scripts/Order/RunController.cs:393:        if (Board != null) Board.Close();
+F1/Assets/Scripts/Order/RunController.cs:421:        if (ClockRunning && !RunActive && (stage == RunStage.Board || stage == RunStage.Routing || stage == RunStage.Packing))
+F1/Assets/Scripts/Services/Core.cs:134:    public static IOrderBoard Board { get; internal set; }
+F1/Assets/Scripts/Services/Core.cs:158:        Board = null;
+F1/Assets/Scripts/Services/GameContext.cs:55:        Services.Board = orderBoard;
+F1/Assets/Scripts/Services/GameContext.cs:79:            if (Services.Board != null) registered++;
+F1/Assets/Scripts/Visual/A7LightToggles.cs:43:    Material kuwa; readonly Dictionary<LowResRenderTest, (bool smooth, Material mat)> lrOld = new Dictionary<LowResRenderTest, (bool, Material)>();
+F1/Assets/Scripts/Visual/A7LightToggles.cs:102:        foreach (var lr in FindObjectsByType<LowResRenderTest>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+F1/Assets/Scripts/Visual/PCLookScene.cs:102:                if (!cam.TryGetComponent<LowResRenderTest>(out var lr)) lr = cam.gameObject.AddComponent<LowResRenderTest>();
+F1/Assets/Scripts/Visual/PCLookScene.cs:287:            if (lookCam != null) { lookCam.clearFlags = camFlags; var lr = lookCam.GetComponent<LowResRenderTest>(); if (lr != null) lr.enabled = false; var sb = lookCam.GetComponent<Skybox>(); if (sb != null) sb.enabled = false; }
+F1/Assets/Scripts/Visual/SunsetLook.cs:141:    [Tooltip("D-236 7판 역광 테 소재(PitCrew/Look/DuskRim). 노을 동안만 LowResRenderTest 화면 올리기에 꽂는다.")]
+F1/Assets/Scripts/Visual/SunsetLook.cs:357:        var cm = Camera.main; var lr = cm != null ? cm.GetComponent<LowResRenderTest>() : null;
+F1/Assets/Scripts/Visual/SunsetLook.cs:388:            var lr = cm.GetComponent<LowResRenderTest>(); var rs = lr != null ? lr.RenderSize : Vector2Int.zero;   // zw = 실제 렌더 격자(RT 는 renderScale 로 더 클 수 있음)

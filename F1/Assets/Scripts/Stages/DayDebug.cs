@@ -34,16 +34,10 @@ public partial class OnFootDirector
             cam.transform.SetPositionAndRotation(boardEyePos, boardEyeRot);
             player.enabled = true;
         }
-        if (State == Mode.Pack)
-        {
-            if (packMove != null) { StopCoroutine(packMove); packMove = null; }
-            packSpot.Bench.ReleaseAll(); packSpot.SetPacking(false); packLeaving = false;
-            cam.transform.SetPositionAndRotation(packEyePos, packEyeRot);
-            player.enabled = true;
-        }
+        if (State == Mode.Pack) packing.Abort();
         if (State == Mode.Seated)
         {
-            var s = seatedAt; seatedAt = null;
+            var s = ret.SeatedAt; ret.SeatedAt = null;
             if (s != null) s.Stand();
             player.gameObject.SetActive(true);
         }
@@ -105,7 +99,7 @@ public partial class OnFootDirector
     {
         if (!DebugReady) return "감독이 아직 시작 전";
         DebugLeaveState();
-        Vector3 p = ExitPoint();
+        Vector3 p = drive.ExitPoint();
         Vector3 to = car.transform.position - p; to.y = 0f;
         float yaw = to.sqrMagnitude > 1e-4f ? Quaternion.LookRotation(to).eulerAngles.y : 0f;
         player.Teleport(p, yaw);
@@ -125,11 +119,11 @@ public partial class OnFootDirector
         player.Teleport(s.StandPoint(), s.SeatYaw);
         EnterFoot();
         footCam.Yaw = s.SeatYaw; footCam.Pitch = 0f;
-        Sit(s);
+        ret.Sit(s);
         return "앉음 " + s.name;
     }
 
-    public bool DebugRecast() => seatedAt != null && seatedAt.Recast();
+    public bool DebugRecast() => ret.SeatedAt != null && ret.SeatedAt.Recast();
 
     /// <summary>
     /// QA(과제 20261102-1543): 첫 주문을 출발시키고(아직이면) 카트를 배달지 앞 길에 세운 뒤 화물 HP 를 hp01 로 맞추고 도착·내리기까지.
@@ -141,8 +135,8 @@ public partial class OnFootDirector
         if (handover == null || firstDrop == null) return "배선 없음(handover/firstDrop)";
         if (Delivered) return "이미 도착함 — Play 다시";
         DebugLeaveState();
-        Talked = true;
-        if (!OrderStarted) { if (depot.PickedJob == null) depot.PickedJob = depot.MakeFirstJob(); BeginFirstOrder(); freeDriveEntered = true; }
+        garage.Talked = true;
+        if (!OrderStarted) { if (depot.PickedJob == null) depot.PickedJob = depot.MakeFirstJob(); drive.BeginFirstOrder(); drive.freeDriveEntered = true; }
         ParkCar(carPos, carYaw);
         var cargo = Services.Cargo as CargoBox ?? FindFirstObjectByType<CargoBox>();
         if (cargo != null) cargo.DebugSetIntegrity(hp01);
@@ -153,7 +147,7 @@ public partial class OnFootDirector
         player.Teleport(feet, feetYaw);
         EnterFoot();
         footCam.Yaw = feetYaw; footCam.Pitch = 0f;
-        if (!CarryingBox) BeginCarry();
+        if (!CarryingBox) door.BeginCarry();
         return $"도착={Delivered} 들기={CarryingBox} 화물={(cargo != null ? (cargo.IntegrityPercent * 100f).ToString("F0") : "?")}% runActive={(rc != null && rc.RunActive)} 정산창={ResultPanel.ShowCount}";
     }
 
@@ -161,7 +155,7 @@ public partial class OnFootDirector
     public bool DebugKnock()
     {
         if (State != Mode.OnFoot || !CarryingBox || handover == null || handover.Busy || handover.IsOpen || InTalk || Knocking) return false;
-        Knock();
+        door.Knock();
         return true;
     }
 
@@ -169,11 +163,11 @@ public partial class OnFootDirector
     public string DebugToggleCart()
     {
         if (!DebugReady) return "감독이 아직 시작 전";
-        if (State == Mode.InCart) { ExitCart(); return "내림"; }
+        if (State == Mode.InCart) { drive.Exit(); return "내림"; }
         DebugLeaveState();
-        debugFreeCart = true;   // 첫 주문(포장 화면·timeScale 0)을 건드리지 않고 자유 주행으로 탄다
-        EnterCart();
-        debugFreeCart = false;
+        drive.debugFreeCart = true;   // 첫 주문(포장 화면·timeScale 0)을 건드리지 않고 자유 주행으로 탄다
+        drive.Enter();
+        drive.debugFreeCart = false;
         return "탐";
     }
 #endif

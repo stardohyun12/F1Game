@@ -17,16 +17,16 @@ public partial class DotScreenUI
     public DestStyle Style { get => destStyle; set => destStyle = value; }
 
     /// <summary>지금 그릴 목적지: 운전 중 = DeliveryManager.CurrentTarget, 걷는 중 = 사장에게 들은 첫 배달지(탑승 전).</summary>
-    DeliveryPoint DestTarget(OnFootDirector.Mode st)
+    DeliveryPoint DestTarget(DayState.Mode st)
     {
         if (SimDestOff) return null;
-        if (st == OnFootDirector.Mode.InCart) { var mgr = Services.Delivery as DeliveryManager; return mgr != null && mgr.CurrentTarget != null ? mgr.CurrentTarget : PreOrderDest; }
-        if (st == OnFootDirector.Mode.OnFoot && director != null && !director.InTalk) return PreOrderDest;
+        if (st == DayState.Mode.InCart) { var mgr = Services.Delivery as DeliveryManager; return mgr != null && mgr.CurrentTarget != null ? mgr.CurrentTarget : PreOrderDest; }
+        if (st == DayState.Mode.OnFoot && DayView.Present && !DayView.InTalk) return PreOrderDest;
         return null;
     }
 
     /// <summary>주문 출발 전 갈 곳(D-250): 보관소 흐름이면 사장 말 뒤 = 택배 보관소, 칠판에서 맡은 뒤 = 찻집. 옛 흐름이면 찻집.</summary>
-    DeliveryPoint PreOrderDest => director != null && director.isActiveAndEnabled && !director.OrderStarted ? director.WalkDest : null;
+    DeliveryPoint PreOrderDest => DayView.Active && !DayView.OrderStarted ? DayView.WalkDest : null;
 
     Vector3 Ground(DeliveryPoint dp)
     {
@@ -44,10 +44,10 @@ public partial class DotScreenUI
         DestMode = "none"; DestDistM = -1f;
         bool beamOn = false;
         // D-269: 전표를 읽는 동안(Read)만 목적지 깃발·칩이 종이 위에 겹치지 않게 잠깐 숨김. 내려놓거나 Up 이면 그대로.
-        if (tgt != null && !(director != null && director.Held != null && director.Held.State == HeldPaper.Pose.Read))
+        if (tgt != null && !(DayView.Present && DayView.Held != null && DayView.Held.State == HeldPaper.Pose.Read))
         {
-            Vector3 me = director != null && director.State == OnFootDirector.Mode.InCart && director.Car != null ? director.Car.transform.position
-                       : director != null && director.Player != null ? director.Player.transform.position : cam.transform.position;
+            Vector3 me = DayView.Present && DayView.State == DayState.Mode.InCart && DayView.Car != null ? DayView.Car.position
+                       : DayView.Present && DayView.Player != null ? DayView.Player.position : cam.transform.position;
             Vector3 gnd = Ground(tgt), top = DestAnchorOf(tgt);
             float dist = Vector2.Distance(new Vector2(me.x, me.z), new Vector2(gnd.x, gnd.z));
             DestDistM = dist;

@@ -1,0 +1,31 @@
+OnFootDirector=PitCrew.Stages
+Stage_Garage=PitCrew.Stages
+DayView=PitCrew.Presentation
+DotScreenUI=PitCrew.Presentation
+Gaze=PitCrew.Interactables
+DepotPackSpot=PitCrew.Interactables
+PitCrew.PackBench.PackBench=PitCrew.Interactables
+PitCrew.PackBench.PackBenchCursor=PitCrew.Presentation
+LowResRenderTest=PitCrew
+IScreenFonts=PitCrew
+OpeningSequence=PitCrew
+RepairSpot=PitCrew
+DayLoopCheck=PitCrew.Debug
+DayState=PitCrew.Signals
+OrderRules=PitCrew.Core
+EnterPack:True
+TakePacked:True
+EnterCart:True
+ParkCar:True
+
+
+asmdef 참조(PitCrew*만):
+PitCrew.Editor -> PitCrew, PitCrew.Debug, PitCrew.Core, PitCrew.Signals, PitCrew.Interactables, PitCrew.Presentation, PitCrew.Stages
+PitCrew.Core.Tests -> PitCrew.Core
+PitCrew.Core -> 
+PitCrew.Debug -> PitCrew, PitCrew.Core, PitCrew.Signals, PitCrew.Interactables, PitCrew.Presentation, PitCrew.Stages
+PitCrew.Interactables -> PitCrew, PitCrew.Core, PitCrew.Signals
+PitCrew -> PitCrew.Core, PitCrew.Signals
+PitCrew.Presentation -> PitCrew, PitCrew.Core, PitCrew.Signals, PitCrew.Interactables
+PitCrew.Signals -> PitCrew.Core
+PitCrew.Stages -> PitCrew, PitCrew.Core, PitCrew.Signals, PitCrew.Interactables, PitCrew.Presentation

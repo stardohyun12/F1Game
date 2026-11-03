@@ -5,6 +5,9 @@
         "PitCrew",
         "PitCrew.Core",
         "PitCrew.Signals",
+        "PitCrew.Interactables",
+        "PitCrew.Presentation",
+        "PitCrew.Stages",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Unity.RenderPipelines.Core.Runtime"

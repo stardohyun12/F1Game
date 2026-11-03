@@ -23,7 +23,11 @@ public class OpeningSequence : MonoBehaviour
     /// <summary>단계가 바뀐 기록(QA 한 줄).</summary>
     public string Trail { get; private set; } = "";
 
-    OnFootDirector dir;
+    // D-287 6단계: 감독 대신 쓰는 것만 받는다(사람·달력·침대·「지금 걷기인가」).
+    OnFootPlayer player;
+    RoomCalendar calendar;
+    RoomBed bed;
+    System.Func<bool> onFoot;
     float spawnY;
 
     void OnDestroy()
@@ -32,11 +36,11 @@ public class OpeningSequence : MonoBehaviour
     }
 
     /// <summary>새 게임 시작(감독 Start 끝). 방에서 눈을 뜬다.</summary>
-    public void Begin(OnFootDirector d)
+    public void Begin(OnFootPlayer player, RoomCalendar calendar, RoomBed bed, System.Func<bool> onFoot)
     {
-        dir = d; Current = this;
+        this.player = player; this.calendar = calendar; this.bed = bed; this.onFoot = onFoot; Current = this;
         HasKey = false; Trail = ""; Step = Stage.None;
-        spawnY = d.Player.transform.position.y;
+        spawnY = player.transform.position.y;
         Set(Stage.Room);
         StopAllCoroutines();
         StartCoroutine(Wake());
@@ -49,9 +53,9 @@ public class OpeningSequence : MonoBehaviour
 
     void Update()
     {
-        if (dir == null || dir.State != OnFootDirector.Mode.OnFoot || Step != Stage.Room) return;
+        if (player == null || !onFoot() || Step != Stage.Room) return;
         // 집을 나섰다 = 2층에서 내려왔고 머리 위가 하늘(지붕·천장 없음).
-        Vector3 p = dir.Player.transform.position;
+        Vector3 p = player.transform.position;
         if (p.y < spawnY - 1.5f && !Physics.Raycast(p + Vector3.up * 1.9f, Vector3.up, 30f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             Set(Stage.Front);
     }
@@ -67,16 +71,16 @@ public class OpeningSequence : MonoBehaviour
     /// <summary>눈을 뜬다: 방금 일어난 침대를 내려다보다가 방 달력 쪽으로 고개를 돌린다 — 침대 → 방 안 → 달력 [E] 순으로 보인다.</summary>
     IEnumerator Wake()
     {
-        var cam = dir.Player.Cam;
+        var cam = player.Cam;
         if (cam == null) yield break;
         cam.HoldLook = true;
         yield return null;                       // 순간이동한 몸·눈 자리가 한 프레임 뒤에 잡힌다 — 그 뒤에 방향을 잰다
         // 달력 방향은 눈이 수평일 때 먼저 잰다 — 침대를 내려다본 자세(눈 자리가 앞·아래로 옮겨 감)에서 재면 조준점이 달력 아래로 빠져 [E] 가 안 떴다.
         // 달력 판 가운데(충돌체). PromptPoint([E] 칩 자리)는 판 위라 시선 레이가 벽에 맞는다.
-        if (dir.Calendar != null) cam.LookAt(dir.Calendar.transform.position);
+        if (calendar != null) cam.LookAt(calendar.transform.position);
         float y1 = cam.Yaw, p1 = cam.Pitch;
         // 침대 머리맡 쪽(침대 자리에서 0.3 m 서쪽) — 이불·베개가 화면 가운데.
-        if (dir.Bed != null) cam.LookAt(dir.Bed.transform.position + new Vector3(-0.3f, 0f, 0f));
+        if (bed != null) cam.LookAt(bed.transform.position + new Vector3(-0.3f, 0f, 0f));
         float y0 = cam.Yaw, p0 = cam.Pitch;
         for (float t = 0f; t < bedHoldSec; t += Time.unscaledDeltaTime) { cam.Yaw = y0; cam.Pitch = p0; yield return null; }
         for (float t = 0f; t < wakeSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))

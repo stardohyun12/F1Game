@@ -39,6 +39,7 @@ public static class WorldInvariants
         ("길 표지판 꺼짐", () => RoadSignOff()),
         ("아침 카트는 정비소 앞", () => MorningCartAtGarage()),
         ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
+        ("스크립트 Missing 0", () => NoMissingScripts()),
     };
 
     public static string Check()
@@ -272,6 +273,19 @@ public static class WorldInvariants
         var b = DriveFeel.B;
         if (b.reverseMaxRatio < 0.5f) bad.Add(string.Format(Inv, "B 후진 최고속 비율 {0:0.00} < 0.5 — 후진이 기어간다", b.reverseMaxRatio));
         if (b.reverseAccelMul < 1f) bad.Add(string.Format(Inv, "B 후진 가속 배율 {0:0.00} < 1 — 바닥 마찰에 먹혀 4초에 7 km/h 였다", b.reverseAccelMul));
+        return bad;
+    }
+
+    /// <summary>
+    /// D-287 6단계: 스크립트를 다른 어셈블리(asmdef)로 옮기면 씬이 「어셈블리::클래스」 이름으로 찾던 컴포넌트가 Missing 이 된다
+    /// (실측: 작업대 재료 PackSupply — 파일 이름이 다른 클래스라 이름으로만 찾았다). 빈 컴포넌트 칸 = 조용히 기능이 빠진다.
+    /// </summary>
+    static List<string> NoMissingScripts()
+    {
+        var bad = new List<string>();
+        foreach (var go in UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (var c in go.GetComponents<Component>())
+                if (c == null) { if (bad.Count < 10) bad.Add("Missing 스크립트 " + WorldSnapshot.Path(go.transform) + " " + V(go.transform.position) + " — 클래스를 옮겼으면 파일 이름=클래스 이름으로"); else break; }
         return bad;
     }
 }

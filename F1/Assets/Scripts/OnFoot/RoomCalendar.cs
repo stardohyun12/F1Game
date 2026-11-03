@@ -59,7 +59,7 @@ public class RoomCalendar : MonoBehaviour
     void Build()
     {
         if (canvas != null) return;
-        var ui = FindFirstObjectByType<DotScreenUI>();
+        var ui = ScreenFonts.Find();
         if (font == null && ui != null) font = ui.SmallFont;
         if (titleFont == null && ui != null) titleFont = ui.BodyFont;
         if (titleFont == null) titleFont = font;

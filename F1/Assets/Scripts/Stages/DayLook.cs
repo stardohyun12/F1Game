@@ -42,8 +42,14 @@ public partial class OnFootDirector
         else if (WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDestAfter(delay));
     }
 
+    /// <summary>D-252: 사장 대화 끝 — 목적지 표식(WalkDest) 쪽으로 시선 한 번.</summary>
+    internal void FocusWalkDest()
+    {
+        if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
+    }
+
     /// <summary>가까운 물건(작업대·카트·문) 쪽으로 — 위아래도 끝까지 따라간다.</summary>
-    void FocusThing(Vector3 at, string what)
+    internal void FocusThing(Vector3 at, string what)
     {
         if (destFocusSec <= 0f) return;
         if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }

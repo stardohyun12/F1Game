@@ -106,7 +106,7 @@ public partial class DotScreenUI
         diaryTotal.rectTransform.anchoredPosition = new Vector2(tx, ty);
         sb.Append('\n').Append(total);
 
-        bool canClose = director != null && director.DiaryCanClose;
+        bool canClose = DayView.Present && DayView.DiaryCanClose;
         if (canClose) PlaceT(diaryHint, "E 덮기 — 다음 날 아침", lx, py + 22, inner, 12);
         diaryHint.rectTransform.anchoredPosition = new Vector2(lx, py + 10);
 
@@ -117,8 +117,8 @@ public partial class DotScreenUI
     /// <summary>일기를 덮은 직후: 종이색이 0.7초 동안 걷힌다(다음 날 아침).</summary>
     void MorningUI(System.Text.StringBuilder vis)
     {
-        if (diaryRoot == null || director == null) return;
-        float age = Time.unscaledTime - director.MorningAt;
+        if (diaryRoot == null || !DayView.Present) return;
+        float age = Time.unscaledTime - DayView.MorningAt;
         if (age < 0f || age > MorningSec) return;
         foreach (Transform c in diaryRoot.transform) c.gameObject.SetActive(false);
         diaryRoot.SetActive(true);

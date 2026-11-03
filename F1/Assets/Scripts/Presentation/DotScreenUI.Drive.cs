@@ -25,7 +25,7 @@ public partial class DotScreenUI
             // D-252 거리: 화살표 왼쪽(오른쪽은 위험 '!' 자리). 100 m 넘으면 10 m, 그 안은 5 m 단위 — 숫자가 매 프레임 떨지 않게.
             if (showDistance && !SimDestOff)
             {
-                Vector3 me = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
+                Vector3 me = DayView.Present && DayView.Car != null ? DayView.Car.position : cam.transform.position;
                 Vector3 g = Ground(tgt);
                 float dm = Vector2.Distance(new Vector2(me.x, me.z), new Vector2(g.x, g.z));
                 int unit = dm >= 100f ? 10 : 5;
@@ -47,7 +47,7 @@ public partial class DotScreenUI
         // 전표: Tab 누르는 동안. 탑승 직후 잠깐 안내.
         var rc = Services.Run as RunController;
         var job = rc != null ? rc.CurrentJob : null;
-        Vector3 at = director != null && director.Car != null ? director.Car.transform.position : cam.transform.position;
+        Vector3 at = DayView.Present && DayView.Car != null ? DayView.Car.position : cam.transform.position;
         if (!SlipUI(job, mgr != null ? mgr.CurrentTarget : null, at, vis) && job != null && Time.unscaledTime - cartAt < slipHintSec && SlipHintAllowed()) { Show(hintText, 8, 8); MarkSlipHint(); vis.Append("hint "); }
     }
 
@@ -57,7 +57,7 @@ public partial class DotScreenUI
     bool SlipUI(OrderJob job, DeliveryPoint tgt, Vector3 me, System.Text.StringBuilder vis)
     {
         // D-269: 손에 든 전표(HeldPaper)가 있으면 화면 상자 전표는 끈다(스위치 HeldPaper.On = false 로 되돌림). "Tab 전표" 안내는 그대로.
-        if (HeldPaper.On && director != null && director.Held != null) return false;
+        if (HeldPaper.On && DayView.Present && DayView.Held != null) return false;
         bool tab = Keyboard.current != null && Keyboard.current.tabKey.isPressed;
         if (job != null && (tab || SimSlip))
         {
@@ -101,9 +101,9 @@ public partial class DotScreenUI
 
     void ChipUI(System.Text.StringBuilder vis)
     {
-        string p = director.Prompt;
+        string p = DayView.Prompt;
         if (string.IsNullOrEmpty(p)) return;
-        if (director.Held != null && director.Held.State == HeldPaper.Pose.Read) return;   // D-269: 전표를 읽는 동안 [E] 칩이 종이 위에 겹치지 않게
+        if (DayView.Held != null && DayView.Held.State == HeldPaper.Pose.Read) return;   // D-269: 전표를 읽는 동안 [E] 칩이 종이 위에 겹치지 않게
         bool hasKey = p.StartsWith("E ");
         string label = hasKey ? p.Substring(2) : p;
         chipLabel.text = label;
@@ -115,8 +115,8 @@ public partial class DotScreenUI
         var lr = chipLabel.rectTransform; lr.anchoredPosition = new Vector2(3 + keyW, 1); lr.sizeDelta = new Vector2(lw + 2, 13);
         // 그 물건 곁(오른쪽 위)에. 화면 밖·뒤면 조준점 바로 아래.
         int x, y;
-        if (director.PromptLow) { x = W / 2 - w / 2; y = Mathf.RoundToInt(H * 0.28f); }   // 칠판·앉기: 글씨·나무 위가 아니라 아래쪽 빈 자리
-        else if (director.PromptAnchor is Vector3 a && ToScreen(a, out var sp) && sp.x > 0 && sp.x < W && sp.y > 0 && sp.y < H)
+        if (DayView.PromptLow) { x = W / 2 - w / 2; y = Mathf.RoundToInt(H * 0.28f); }   // 칠판·앉기: 글씨·나무 위가 아니라 아래쪽 빈 자리
+        else if (DayView.PromptAnchor is Vector3 a && ToScreen(a, out var sp) && sp.x > 0 && sp.x < W && sp.y > 0 && sp.y < H)
         { x = Mathf.RoundToInt(sp.x) + 6; y = Mathf.RoundToInt(sp.y) + 2; }
         else { x = W / 2 - w / 2; y = H / 2 - 10 - h; }
         x = Mathf.Clamp(x, 2, W - w - 2); y = Mathf.Clamp(y, 2, H - h - 2);
@@ -126,14 +126,14 @@ public partial class DotScreenUI
     /// <summary>첫 한 판 메모 3: 상자를 들면 카트 위에 「!」 — 화면 밖이면 카트가 있는 쪽 가장자리(방향 표시). 싣고 출발하면 사라진다.</summary>
     void CartMarkUI(System.Text.StringBuilder vis)
     {
-        if (!director.CartMark) return;
+        if (!DayView.CartMark) return;
         int x, y;
-        if (ToScreen(director.CartMarkAnchor, out var sp) && sp.x > 6 && sp.x < W - 18 && sp.y > 4 && sp.y < H - 18)
+        if (ToScreen(DayView.CartMarkAnchor, out var sp) && sp.x > 6 && sp.x < W - 18 && sp.y > 4 && sp.y < H - 18)
         { x = Mathf.RoundToInt(sp.x) - 5; y = Mathf.RoundToInt(sp.y); }
         else
         {
             Vector3 f = cam.transform.forward; f.y = 0f;
-            Vector3 d = director.CartMarkAnchor - cam.transform.position; d.y = 0f;
+            Vector3 d = DayView.CartMarkAnchor - cam.transform.position; d.y = 0f;
             float ang = f.sqrMagnitude > 1e-4f && d.sqrMagnitude > 1e-4f ? Vector3.SignedAngle(f, d, Vector3.up) : 0f;
             x = ang >= 0f ? W - 16 : 5; y = H / 2 - 7;
         }
@@ -142,7 +142,7 @@ public partial class DotScreenUI
 
     void TalkUI(System.Text.StringBuilder vis)
     {
-        string full = director.TalkText;
+        string full = DayView.TalkText;
         if (full != bubbleLine)
         {
             bubbleLine = full;
@@ -154,17 +154,17 @@ public partial class DotScreenUI
             bubble.rectTransform.sizeDelta = new Vector2(tw + 10, th + 8);
             bubbleText.rectTransform.sizeDelta = new Vector2(tw + 1, th);
             bubbleText.rectTransform.anchoredPosition = new Vector2(5, 4);
-            nameText.text = director.TalkWho;
-            nameTab.rectTransform.sizeDelta = new Vector2(Mathf.CeilToInt(Pref(nameText, director.TalkWho, 200)) + 8, 13);
+            nameText.text = DayView.TalkWho;
+            nameTab.rectTransform.sizeDelta = new Vector2(Mathf.CeilToInt(Pref(nameText, DayView.TalkWho, 200)) + 8, 13);
         }
         // 한 글자씩: 안 나온 글자는 투명으로 그려 줄바꿈 자리를 미리 잡는다(글이 나오며 상자가 흔들리지 않게).
-        int n = Mathf.Clamp(Mathf.FloorToInt((Time.unscaledTime - director.TalkLineAt) * typeCps), 0, full.Length);
+        int n = Mathf.Clamp(Mathf.FloorToInt((Time.unscaledTime - DayView.TalkLineAt) * typeCps), 0, full.Length);
         bubbleText.supportRichText = true;
         bubbleText.text = n >= full.Length ? full : full.Substring(0, n) + "<color=#00000000>" + full.Substring(n) + "</color>";
 
         var sz = bubble.rectTransform.sizeDelta;
         int bw = (int)sz.x, bh = (int)sz.y;
-        Vector3 head = director.SpeakerTop + Vector3.up * 0.03f;   // 0.12 는 대화 거리 2m 에서 머리 위 ~20px 떠 보였다
+        Vector3 head = DayView.SpeakerTop + Vector3.up * 0.03f;   // 0.12 는 대화 거리 2m 에서 머리 위 ~20px 떠 보였다
         int ax, ay;
         if (ToScreen(head, out var sp)) { ax = Mathf.RoundToInt(sp.x); ay = Mathf.RoundToInt(sp.y); }
         else { ax = W / 2; ay = H / 2; }

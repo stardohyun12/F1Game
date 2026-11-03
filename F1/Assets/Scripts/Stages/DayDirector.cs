@@ -15,8 +15,7 @@ public partial class OnFootDirector
         PromptLow = false;
         TrackStep();
         bool press = InteractPressed();
-        UpdateHeldBox();
-        UpdateBedBox();
+        door.Always();    // 손에 든 상자·카트 짐칸 상자
         depot.Always();   // 손에 든 전표(Tab)
         SyncDay();
         if (moneyText != null && InTalk && handover != null && Speaker == handover.recipient) MoneyEnd = Mathf.Max(MoneyEnd, Time.unscaledTime + 1.2f);
@@ -32,22 +31,12 @@ public partial class OnFootDirector
             SetPrompt(it?.Prompt ?? "");
             if (press && it != null && it.CanUse) it.Use();
         }
-        else if (State == Mode.Seated)
-        {
-            PromptAnchor = null;
-            if (press) StandUp();   // 앉아 있는 동안 화면에 아무것도 없음(D-227)
-        }
+        else if (State == Mode.Seated) ret.Tick(press);
         else if (State == Mode.Board) depot.Tick(press);
-        else if (State == Mode.Pack) UpdatePack();
-        else if (State == Mode.Calendar) UpdateCalendar(press);
+        else if (State == Mode.Pack) packing.Tick(press);
+        else if (State == Mode.Calendar) morning.Tick(press);
         else if (State == Mode.Diary) dayEnd.Tick(press);
-        else if (State == Mode.InCart)
-        {
-            bool slow = Mathf.Abs(car.CurrentSpeedMps) < exitMaxSpeed;
-            PromptAnchor = car.transform.position + Vector3.up * 1.0f;
-            SetPrompt(slow ? "E 내리기" : "");
-            if (press && slow) { ArriveIfNear(); ExitCart(); }
-        }
+        else if (State == Mode.InCart) drive.Tick(press);
     }
 
     internal void SetPrompt(string s)
@@ -57,11 +46,14 @@ public partial class OnFootDirector
         if (promptText != null) { promptText.text = s; promptRoot.SetActive(s.Length > 0); }
     }
 
+    void OnDisable() { DayView.Active = false; }   // 화면: 감독이 꺼지면 예전처럼 주행 화면으로
+
     void OnDestroy()
     {
+        DayView.Reset();
         EngineAudio.OnFootMute = false;   // 감독 없는 씬에선 엔진 소리 원래대로
         Unplug();
-        depot?.Unplug(); dayEnd?.Unplug();
+        foreach (var st in Stages) st?.Unplug();
     }
 
     // ── 걷기 ↔ 카트 ──
@@ -76,5 +68,22 @@ public partial class OnFootDirector
         if (dotRoot != null) dotRoot.SetActive(true);
         PlacePrompt(true);
         SetHud(false);
+    }
+
+    internal void SetCarControl(bool on)
+    {
+        car.SetMoveInput(Vector2.zero);
+        if (carInput != null) carInput.enabled = on;
+    }
+
+    /// <summary>카트를 pos·yaw 에 세운다(땅 높이는 레이로). DestClarityShots 가 리플렉션으로 부른다(이름 그대로).</summary>
+    internal void ParkCar(Vector3 pos, float yaw)
+    {
+        if (Physics.Raycast(pos + Vector3.up * 3f, Vector3.down, out var hit, 8f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            pos.y = hit.point.y + 0.05f;
+        var rot = Quaternion.Euler(0f, yaw, 0f);
+        car.transform.SetPositionAndRotation(pos, rot);
+        if (carRb != null) { carRb.position = pos; carRb.rotation = rot; carRb.linearVelocity = Vector3.zero; carRb.angularVelocity = Vector3.zero; }
+        Physics.SyncTransforms();
     }
 }

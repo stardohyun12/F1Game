@@ -1,0 +1,22 @@
+{
+    "name": "PitCrew.Presentation",
+    "rootNamespace": "",
+    "references": [
+        "PitCrew",
+        "PitCrew.Core",
+        "PitCrew.Signals",
+        "PitCrew.Interactables",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Core.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
