@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// C-002 오프닝(그레이박스): 방에서 깨어남 → 집을 나섬 → 정비소 사장 대화(카트 열쇠) → 카트 탑승.
@@ -11,8 +12,12 @@ public class OpeningSequence : MonoBehaviour
 {
     public enum Stage { None, Room, Front, Talk, Key, Cart }
 
-    [Tooltip("깨어날 때 천장에서 방 물건(달력)으로 시선이 내려오는 시간(초).")]
-    [SerializeField] float wakeSec = 1.2f;
+    [Tooltip("깨어나서 침대를 내려다보는 시간(초) — 그 뒤 달력으로 고개를 돌린다.")]
+    [SerializeField] float bedHoldSec = 0.9f;
+    [Tooltip("침대에서 방 물건(달력)으로 시선이 옮겨 가는 시간(초).")]
+    [SerializeField] float wakeSec = 1.4f;
+    [Tooltip("카트에 탄 뒤 '택배 보관소로' 안내 글을 보이는 시간(초).")]
+    [SerializeField] float cartCaptionSec = 6f;
     [Tooltip("사장에게 이 거리(m, 수평) 안이면 정비소 표식을 끈다 — 사장 [E] 칩과 겹치지 않게.")]
     [SerializeField] float bossNearM = 5f;
 
@@ -24,9 +29,19 @@ public class OpeningSequence : MonoBehaviour
 
     OnFootDirector dir;
     DeliveryPoint garageDest;
-    float spawnY;
+    float spawnY, stepAt;
+    // 그레이박스 안내 글(대역) — 도트 UI 캔버스 위쪽 가운데. 단계마다 어디로 가는지 한 줄.
+    Image capBox;
+    Text capText;
+    RectTransform capRoot;
+    /// <summary>QA: 지금 보이는 안내 글("" = 숨김).</summary>
+    public string Caption { get; private set; } = "";
 
-    void OnDestroy() { if (Current == this) Current = null; }
+    void OnDestroy()
+    {
+        if (Current == this) Current = null;
+        if (capBox != null) Destroy(capBox.gameObject);
+    }
 
     /// <summary>새 게임 시작(감독 Start 끝). 방에서 눈을 뜬다.</summary>
     public void Begin(OnFootDirector d)
@@ -45,6 +60,7 @@ public class OpeningSequence : MonoBehaviour
         HasKey = false; Trail = ""; Step = Stage.None;
         spawnY = d.Player.transform.position.y;
         Set(Stage.Room);
+        StopAllCoroutines();
         StartCoroutine(Wake());
     }
 
@@ -72,26 +88,91 @@ public class OpeningSequence : MonoBehaviour
             Set(Stage.Front);
     }
 
+    void LateUpdate()
+    {
+        string s = CaptionNow();
+        Caption = s;
+        if (!EnsureCaption()) return;
+        bool on = s.Length > 0;
+        if (capBox.gameObject.activeSelf != on) capBox.gameObject.SetActive(on);
+        if (!on) return;
+        if (capText.text != s) capText.text = s;
+        // Galmuri11 12px: 한글 12, 나머지 6 픽셀로 어림(그레이박스)
+        int w = 8;
+        foreach (char c in s) w += c >= 0xAC00 && c <= 0xD7A3 ? 12 : 6;
+        Vector2 sz = capRoot.sizeDelta;
+        var r = capBox.rectTransform;
+        r.sizeDelta = new Vector2(w, 15);
+        r.anchoredPosition = new Vector2(Mathf.Round((sz.x - w) * 0.5f), Mathf.Round(sz.y - 44f));
+        r.SetAsLastSibling();
+    }
+
+    /// <summary>단계별 안내(대역 문구 — 도현 확인 필요). 대화·달력·일기 화면에선 숨긴다.</summary>
+    string CaptionNow()
+    {
+        if (dir == null || !dir.isActiveAndEnabled) return "";
+        var st = dir.State;
+        if (st == OnFootDirector.Mode.InCart)
+            return Step == Stage.Cart && Time.unscaledTime - stepAt < cartCaptionSec ? "카트 출발 → 택배 보관소로" : "";
+        if (st != OnFootDirector.Mode.OnFoot || dir.InTalk) return "";
+        switch (Step)
+        {
+            case Stage.Room: return "방학 1일째 아침 — 집을 나서자";
+            case Stage.Front: return "정비소로 → 사장님이 카트를 봐 놨다";
+            case Stage.Key: return "카트 열쇠 받음 — 카트에 타자";
+            default: return "";
+        }
+    }
+
+    bool EnsureCaption()
+    {
+        if (capText != null) return true;
+        var cam = Camera.main;
+        var ui = FindFirstObjectByType<DotScreenUI>();
+        var canvas = cam != null ? cam.transform.Find("DotScreenUI_Canvas") : null;
+        if (ui == null || canvas == null) return false;
+        capRoot = (RectTransform)canvas;
+        var go = new GameObject("OpeningCaption", typeof(RectTransform), typeof(Image));
+        go.transform.SetParent(capRoot, false);
+        capBox = go.GetComponent<Image>();
+        capBox.color = UIPalette.Ink; capBox.raycastTarget = false;
+        var r = capBox.rectTransform; r.anchorMin = r.anchorMax = r.pivot = Vector2.zero;
+        var tg = new GameObject("Text", typeof(RectTransform));
+        tg.transform.SetParent(go.transform, false);
+        var tr = (RectTransform)tg.transform;
+        tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one; tr.offsetMin = new Vector2(0, 1); tr.offsetMax = Vector2.zero;
+        capText = tg.AddComponent<Text>();
+        capText.font = ui.BodyFont; capText.fontSize = 12; capText.color = UIPalette.Paper;
+        capText.alignment = TextAnchor.MiddleCenter; capText.raycastTarget = false;
+        capText.horizontalOverflow = HorizontalWrapMode.Overflow; capText.verticalOverflow = VerticalWrapMode.Overflow;
+        tg.AddComponent<PixelSnapText>().root = capRoot;
+        go.SetActive(false);
+        return true;
+    }
+
     void Set(Stage s)
     {
         if (Step == s) return;
-        Step = s;
+        Step = s; stepAt = Time.unscaledTime;
         Trail += (Trail.Length > 0 ? "→" : "") + s;
         Debug.Log($"[Opening] {s} ({Trail})");
     }
 
-    /// <summary>눈을 뜬다: 누운 시선(천장)에서 방 달력 쪽으로 내려온다 — 달력 [E] 가 첫 화면에 걸린다.</summary>
+    /// <summary>눈을 뜬다: 방금 일어난 침대를 내려다보다가 방 달력 쪽으로 고개를 돌린다 — 침대 → 방 안 → 달력 [E] 순으로 보인다.</summary>
     IEnumerator Wake()
     {
         var cam = dir.Player.Cam;
         if (cam == null) yield break;
         cam.HoldLook = true;
-        float y0 = cam.Yaw;
-        cam.Pitch = -75f;
-        yield return null;                       // 순간이동한 몸·눈 자리가 한 프레임 뒤에 잡힌다 — 그 뒤에 달력 방향을 잰다
+        yield return null;                       // 순간이동한 몸·눈 자리가 한 프레임 뒤에 잡힌다 — 그 뒤에 방향을 잰다
+        // 달력 방향은 눈이 수평일 때 먼저 잰다 — 침대를 내려다본 자세(눈 자리가 앞·아래로 옮겨 감)에서 재면 조준점이 달력 아래로 빠져 [E] 가 안 떴다.
         // 달력 판 가운데(충돌체). PromptPoint([E] 칩 자리)는 판 위라 시선 레이가 벽에 맞는다.
         if (dir.Calendar != null) cam.LookAt(dir.Calendar.transform.position);
-        float y1 = cam.Yaw, p1 = cam.Pitch, p0 = -75f;
+        float y1 = cam.Yaw, p1 = cam.Pitch;
+        // 침대 머리맡 쪽(침대 자리에서 0.3 m 서쪽) — 이불·베개가 화면 가운데.
+        if (dir.Bed != null) cam.LookAt(dir.Bed.transform.position + new Vector3(-0.3f, 0f, 0f));
+        float y0 = cam.Yaw, p0 = cam.Pitch;
+        for (float t = 0f; t < bedHoldSec; t += Time.unscaledDeltaTime) { cam.Yaw = y0; cam.Pitch = p0; yield return null; }
         for (float t = 0f; t < wakeSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
         {
             float k = Mathf.SmoothStep(0f, 1f, t / wakeSec);
