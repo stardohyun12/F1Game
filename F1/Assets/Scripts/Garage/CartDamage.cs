@@ -3,8 +3,8 @@ using UnityEngine;
 /// <summary>
 /// C-001 그레이박스: 카트 상처 0~3. 벽 같은 데 세게 부딪히면(접촉면 쪽 상대 속도가 hitSpeed 이상) 한 단계 오른다.
 /// 보이기만 한다 — 운전·속도·화물에는 아무 영향 없음(카드 잠금, 영향은 도현 한 판 뒤 따로 정함).
-/// 표시 = 회색 대역만: 단계마다 상한 조각이 하나씩 는다(1 앞판 기울어짐 · 2 + 왼쪽 펜더 들림 · 3 + 앞 범퍼 처짐), 전체가 어두워짐
-/// + 반투명 연기 파티클(URP Particles/Lit — 맵 빛·안개를 받음, 단계마다 더 자주·더 크게·더 진하게).
+/// 표시 = 연기만(2026-11-03 11:39 도현 판정 「일단 연기나는것만 만들어 놔도 될듯」 — 기운 앞판·펜더·범퍼 회색 조각은 뺐다).
+/// 반투명 연기 파티클(URP Particles/Lit — 맵 빛·안개를 받음, 단계마다 더 자주·더 크게·더 진하게).
 /// 카트에 미리 붙이지 않는다 — RepairSpot 또는 디버그 창이 Of(car) 로 처음 부를 때 붙는다.
 /// </summary>
 public class CartDamage : MonoBehaviour
@@ -20,9 +20,6 @@ public class CartDamage : MonoBehaviour
     public string LastHit { get; private set; } = "";
 
     float lastHitAt = -99f;
-    // 상한 조각: 단계마다 하나씩 늘어난다(0=앞판 기울어짐, 1=왼쪽 펜더 들림, 2=앞 범퍼 처짐). 회색 대역.
-    readonly Transform[] parts = new Transform[MaxStage];
-    Material[] partMats = new Material[MaxStage];
     // 연기 = 파티클(2026-11-03 도현 판정 「연기도 어느 정도 사실적으로 — 지금은 다른 에셋·환경과 안 어울림」).
     // 불투명 회색 상자 → 반투명 부드러운 덩어리. URP Particles/Lit 라 맵 해·주변광·안개를 실시간으로 받는다
     // (텍스처는 흰색 + 모양(알파)만 — 빛·그림자를 굽지 않음). 텍스처는 코드로 만든 값 노이즈(AI·외부 에셋 아님).
@@ -68,69 +65,29 @@ public class CartDamage : MonoBehaviour
         AddStage(1, $"{c.collider.name} 에 {best:F1} m/s");
     }
 
-    Transform MakeCube(string name, Material m)
-    {
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        Destroy(cube.GetComponent<Collider>());
-        cube.name = name;
-        cube.layer = gameObject.layer;
-        var r = cube.GetComponent<Renderer>();
-        r.sharedMaterial = m;
-        r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-        return cube.transform;
-    }
-
     void Build()
     {
-        if (parts[0] != null) return;
-        var baseMat = GameObject.CreatePrimitive(PrimitiveType.Cube);   // 기본 재질만 빌림
-        var src = baseMat.GetComponent<Renderer>().sharedMaterial;
-        Destroy(baseMat);
-        for (int i = 0; i < MaxStage; i++)
-        {
-            partMats[i] = new Material(src) { hideFlags = HideFlags.DontSave };
-            parts[i] = MakeCube("CartDamage_Part" + i + " (greybox)", partMats[i]);
-            parts[i].SetParent(transform, false);
-        }
-        BuildSmoke();
+        if (smoke == null) BuildSmoke();
     }
 
     void Show()
     {
         if (Stage == 0)
         {
-            for (int i = 0; i < MaxStage; i++) if (parts[i] != null) parts[i].gameObject.SetActive(false);
             if (smoke != null) smoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             return;
         }
         Build();
-        for (int i = 0; i < MaxStage; i++) parts[i].gameObject.SetActive(i < Stage);
-        // 0 앞판: 카트 코 위 회색 판. 단계마다 더 꺾이고 비틀린다(1단계 살짝 → 3단계 크게 젖혀짐).
-        parts[0].localPosition = new Vector3(0.1f * Stage, 0.45f + 0.06f * Stage, 0.95f);
-        parts[0].localRotation = Quaternion.Euler(18f * Stage, 10f * Stage, -15f * Stage);
-        parts[0].localScale = new Vector3(0.95f, 0.38f, 0.08f);
-        // 1 왼쪽 펜더: 옆으로 들려 카트 폭 밖으로 크게 벌어진 판(2단계부터) — 앞에서 봐도 옆으로 삐져나와 보이게
-        parts[1].localPosition = new Vector3(-0.85f, 0.5f, 0.6f);
-        parts[1].localRotation = Quaternion.Euler(0f, 25f, -50f);
-        parts[1].localScale = new Vector3(0.08f, 0.5f, 0.8f);
-        // 2 앞 범퍼: 한쪽이 떨어져 땅까지 비스듬히 처진 막대(3단계)
-        parts[2].localPosition = new Vector3(0.15f, 0.22f, 1.2f);
-        parts[2].localRotation = Quaternion.Euler(-10f, 0f, 28f);
-        parts[2].localScale = new Vector3(1.3f, 0.16f, 0.14f);
-        // 단계가 오를수록 전체가 어두워진다
-        for (int i = 0; i < MaxStage; i++)
-        {
-            float g = 0.6f - 0.12f * Stage - 0.04f * i;
-            partMats[i].color = new Color(g, g, g);
-        }
-        // 연기: 단계마다 더 자주·더 크게·더 진하게(1 엷은 김 → 3 짙은 회색 연기)
+        // 연기: 단계마다 더 자주·더 크게·더 진하게(1 가는 회색 줄기 → 3 짙은 연기 기둥).
+        // 연기가 유일한 표시라(앞판 뺌) 1단계도 정비소 안 어두운 바닥·밝은 문 밖 앞에서 읽혀야 한다 — 1단계 기존 값(6개/초·옅음)은 화면에서 안 읽혔다.
         var main = smoke.main;
-        main.startSize = new ParticleSystem.MinMaxCurve(0.25f + 0.15f * Stage, 0.4f + 0.25f * Stage);
-        float sg = 0.62f - 0.1f * Stage;                       // 1단계 회색(0.52) → 3단계 어두운 회색(0.32) — 빛은 셰이더가 곱한다
-        float sa = Stage == 1 ? 0.75f : Stage == 2 ? 0.9f : 1f; // 1단계 엷은 김 → 3단계 짙은 연기
-        main.startColor = new ParticleSystem.MinMaxGradient(new Color(sg, sg * 0.97f, sg * 0.93f, sa), new Color(sg * 0.85f, sg * 0.83f, sg * 0.8f, sa * 0.8f));
+        main.startSize = new ParticleSystem.MinMaxCurve(0.35f + 0.15f * Stage, 0.55f + 0.25f * Stage);
+        // 1단계 밝은 회색 김(어두운 정비소·카트 그늘 앞에서 읽힘) → 3단계 짙은 검은 연기. 빛은 셰이더가 곱한다
+        float sg = Stage == 1 ? 0.85f : Stage == 2 ? 0.6f : 0.3f;
+        float sa = Stage == 1 ? 0.9f : 1f;
+        main.startColor = new ParticleSystem.MinMaxGradient(new Color(sg, sg * 0.97f, sg * 0.93f, sa), new Color(sg * 0.85f, sg * 0.83f, sg * 0.8f, sa * 0.85f));
         var em = smoke.emission;
-        em.rateOverTime = Stage == 1 ? 6f : Stage == 2 ? 11f : 18f;
+        em.rateOverTime = Stage == 1 ? 10f : Stage == 2 ? 16f : 24f;
         if (!smoke.isPlaying) smoke.Play();
     }
 
@@ -149,7 +106,7 @@ public class CartDamage : MonoBehaviour
         main.startSpeed = new ParticleSystem.MinMaxCurve(0.1f, 0.3f);
         main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
         main.gravityModifier = -0.02f;                                 // 더운 연기라 천천히 떠오름
-        main.maxParticles = 80;
+        main.maxParticles = 120;
         main.scalingMode = ParticleSystemScalingMode.Hierarchy;
 
         var shape = smoke.shape;
@@ -246,7 +203,6 @@ public class CartDamage : MonoBehaviour
     void OnDestroy()
     {
         if (smoke != null) Destroy(smoke.gameObject);
-        for (int i = 0; i < MaxStage; i++) if (partMats[i] != null) Destroy(partMats[i]);
         if (smokeMat != null) Destroy(smokeMat);
     }
 }

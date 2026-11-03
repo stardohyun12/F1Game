@@ -1,6 +1,6 @@
 // C-001 시연(그레이박스). 하네스가 장소 9 정비소 안으로 옮긴 뒤 exec 로 부른다. Play 중에만.
 // 앞부분(바로 실행) = 기계 확인: 상처 +1 두 번 -> 2단계, 정비 자리 준비, 수리 -> 0단계, DayLog 수리비 증가를 직접 읽어 return 에 찍는다.
-// 뒷부분(콜백) = 화면 시연, 클립 시작에 맞춤: 깨끗 → 1 → 2 → 3단계(조각·연기가 늘어남) → E 누름(감독 SimInteract, 실제 E 와 같은 길) -> 표시 사라짐, 돈 글자.
+// 뒷부분(콜백) = 화면 시연, 클립 시작에 맞춤: 깨끗 → 1 → 2 → 3단계(연기가 늘어남 — 도현 11:39 「연기나는것만」, 회색 조각은 뺐다) → E 누름(감독 SimInteract, 실제 E 와 같은 길) -> 표시 사라짐, 돈 글자.
 if (!Application.isPlaying) return "FAIL: Play 중에만";
 Application.runInBackground = true;
 var d = UnityEngine.Object.FindFirstObjectByType<OnFootDirector>();
