@@ -242,7 +242,15 @@ def advance(cid, bundle_rc=None):
             to = "dohyun" if st == "verify" else "done"
             move(cid, to, by="verify", note=f"검증 PASS — {v.get('reason','')}", verdict="PASS", evidence=vp)
         else:
+            # D-279: 검증 FAIL 은 한 번만 되돌린다. 두 번째 FAIL 부터는 도현에게 바로(검증 메모 첨부) —
+            # 오늘 실측: 불통과 대부분이 「기능 없음」이 아니라 「증거에서 안 보임」이라 3회 왕복(75분)이 게임 진전 0 이었음.
+            vf = int(h.get("verify_fails", 0)) + 1
+            d2, h2, body2 = read(cid)
+            h2["verify_fails"] = str(vf); write(d2, h2, body2)
             back = "greybox" if st == "verify" else "integrate"
+            if vf >= 2 and st == "verify":
+                move(cid, "dohyun", by="verify", note=f"검증 FAIL {vf}회 → 도현 한 판으로 바로(검증 메모: {v.get('reason','')})", verdict="FAIL", evidence=vp)
+                return
             to = move(cid, back, by="verify", fail=True, note=f"검증 FAIL — {v.get('reason','')}", verdict="FAIL", evidence=vp)
             if to == back:
                 dispatch(cid, by="harness")
