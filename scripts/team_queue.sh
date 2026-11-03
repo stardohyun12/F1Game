@@ -39,7 +39,9 @@ while true; do
   mv -f "$S/$ROLE.id" "$S/archive/$ROLE-$NAME.id" 2>/dev/null; mv -f "$S/$ROLE.claude.id" "$S/archive/$ROLE-claude-$NAME.id" 2>/dev/null   # 과제마다 새 세션(긴 세션 = 비용 증가)
   log "시작 $NAME"
   if [ $ROLE = build ]; then
-    RULE="[하네스 고정 규칙 D-270] 기능 2 봇 전체 경로(방→찻집)는 돌리지 마라 — PD 가 여러 과제 끝에 한 번 따로 돌린다. 확인은 디버그 창 순간이동(DebugWindow.GoPlace)으로 고친 자리에서 바로, 캡처 1~2장. sleep 으로 기다리는 검사 금지. 과제 글에 '봇 1회'가 있어도 이 규칙이 우선."
+    bash scripts/world_snapshot.sh >/dev/null 2>&1 || log "세계 스냅숏 실패 — 옛 docs/world/WORLD.md 유지(D-275)"
+    RULE="[하네스 고정 규칙 D-270] 기능 2 봇 전체 경로(방→찻집)는 돌리지 마라 — PD 가 여러 과제 끝에 한 번 따로 돌린다. 확인은 디버그 창 순간이동(DebugWindow.GoPlace)으로 고친 자리에서 바로, 캡처 1~2장. sleep 으로 기다리는 검사 금지. 과제 글에 '봇 1회'가 있어도 이 규칙이 우선.
+[세계 스냅숏 D-275] docs/world/WORLD.md 를 먼저 읽어라(지금 세계 상태: 장소·배달 지점·상호작용 물건·흐름·대역). 끝에 bash scripts/world_check.sh 가 자동으로 돈다 — 불변 조건 위반이면 네 과제는 보류된다(조건 목록 docs/world/README.md)."
     OUT=$(bash scripts/team.sh $CALL "$(printf '%s
 %s' "$(cat "$Q/done/$NAME.task")" "$RULE")" 2>&1)   # 과제 첫 줄이 먼저(상태·대시보드 제목) — 규칙은 뒤에
   else
@@ -63,6 +65,20 @@ while true; do
       log "승격 $NAME → [OPUS] 재시도 예약"; mv "$Q/done/$NAME.task" "$Q/done/$NAME.sonnet-fail.task"; continue
     fi
     mv "$Q/done/$NAME.task" "$Q/hold/"; continue
+  fi
+  # D-275 세계 불변 조건(커밋 전): 위반이면 기존 보류 경로와 같게 — 커밋 안 함, hold/, 카드면 card.py hold. 에디터 못 닿음(exit 2)은 넘어감.
+  if [ $ROLE = build ]; then
+    WC=$(bash scripts/world_check.sh "$NAME" 2>&1); WRC=$?
+    printf '%s\n' "$WC" >> "$Q/done/$NAME.out"
+    if [ "$WRC" -eq 1 ]; then
+      COND=$(printf '%s\n' "$WC" | grep -oE '^- \[[^]]+\]' | sort -u | sed 's/^- \[//; s/\]$//' | paste -sd, -)
+      log "불변 위반 $NAME $COND"
+      log "보류 $NAME (불변 위반) — 커밋 안 함"
+      $PY -X utf8 scripts/notify_done.py $LINE "$NAME" hold >/dev/null 2>&1
+      mv "$Q/done/$NAME.task" "$Q/hold/"
+      if [ -n "$CARD" ]; then $PY -X utf8 scripts/card.py hold "$CARD" "$NAME 불변 위반: $COND" >/dev/null 2>&1; commit "card: $CARD 보류"; fi
+      continue
+    fi
   fi
   commit "$LINE: $NAME"
   if [ -n "$CARD" ]; then   # 넘김: 증거 묶음(build 끝, bash 에서) → 다음 단계 → 다음 일꾼 대기열. 기록은 docs/team/handoffs.jsonl
