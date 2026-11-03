@@ -94,10 +94,10 @@ public class DayLoopCheck : MonoBehaviour
 
         if (d.PackSpot != null && d.PackSpot.V3Table != null)
         {
-            // D-294: 2D 보드가 켜져 있으면 먼저 그 길(E → 보드 → 상자 끌기 → 열림 → 물러남)을 확인하고, ②③ 포장 완성 전이라 3D 손 흐름으로 이어서 하루를 끝까지 돈다.
+            // D-294: 2D 보드가 켜져 있으면 그 길(롤 뜯기 → 넣기 → 덮기 → 테이프 → 흔들기 → 판 밖으로 = 상자 들기)로 끝까지 — 3D 손 흐름은 2D 가 꺼졌을 때만.
             bool two = d.PackSpot.Use2D;
             if (two) yield return Pack2D(d.PackSpot.V3Table);
-            yield return PackV3(d.PackSpot.V3Table, two);
+            else yield return PackV3(d.PackSpot.V3Table);
         }
         else yield return OldPack();
 
@@ -138,7 +138,13 @@ public class DayLoopCheck : MonoBehaviour
         sb.Append("],\n\"log\":[\n");
         for (int i = 0; i < d.Log.Count; i++) sb.Append("\"").Append(d.Log[i].Replace("\"", "'")).Append(i < d.Log.Count - 1 ? "\",\n" : "\"\n");
         sb.Append("]}\n");
-        System.IO.File.WriteAllText(outPath, sb.ToString());
+        try
+        {
+            string dir = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(outPath));
+            if (!string.IsNullOrEmpty(dir)) System.IO.Directory.CreateDirectory(dir);   // 상대 경로는 F1/ 기준 — 폴더가 없어도 상태가 "run" 에 걸리지 않게
+            System.IO.File.WriteAllText(outPath, sb.ToString());
+        }
+        catch (System.Exception e) { Debug.LogWarning("[DayLoopCheck] 결과 저장 실패: " + e.Message); }
         Status = "done";
         Destroy(gameObject);
     }
@@ -204,8 +210,9 @@ public class DayLoopCheck : MonoBehaviour
     }
 
     /// <summary>
-    /// D-294 포장 2D ①: 물건 집고 걷기(순간이동 없음) → 포장대 [E](시선, 안 잡히면 SimUse) → 2D 보드 켜짐·물건 조각 → 상자를 사람과 같은 길로 끌어 가운데 → 열림 → 물러남.
-    /// 끝나면 2D 를 끄고(디버그 스위치) 3D 흐름이 이어진다.
+    /// D-294 포장 2D: 물건 집고 걷기(순간이동 없음) → 포장대 [E](시선, 안 잡히면 SimUse) → 2D 보드 켜짐·물건 조각 →
+    /// ① 소 상자: 물건이 안 들어가고 튕김 + R 돌림 ② 대 상자: 들어가되 헐거움 → 닫고 테이프 → 흔들어 덜그럭(소리 수·rattle) ③ 중 상자: 뽁뽁이 바닥 → 물건 → 뽁뽁이 덮기 → 테이프 → 흔들기 → 판 밖(아래)으로 = 상자 들기.
+    /// 전부 사람과 같은 길(PackBoard 의 Begin/Move/End)로. ②는 시험 한 판이라 끝나면 보드를 처음으로 되돌린다(DebugRestart).
     /// </summary>
     IEnumerator Pack2D(PackTable2 t)
     {
@@ -216,27 +223,69 @@ public class DayLoopCheck : MonoBehaviour
         yield return Look(t.workSpot.position);
         Step("포장대 앞(2D)"); yield return Press();
         if (d.State != OnFootDirector.Mode.Pack) { Step("시선 E 안 잡힘 → SimUse"); t.SimUse(t); yield return null; }
-        var board = spot.Board2D;
-        yield return Wait(() => d.State == OnFootDirector.Mode.Pack && board.On, 3f);
-        bool on = d.State == OnFootDirector.Mode.Pack && board.On;
-        var pp = board.Find(PackPieceKind.Parcel);
+        var b = spot.Board2D;
+        yield return Wait(() => d.State == OnFootDirector.Mode.Pack && b.On, 3f);
+        bool on = d.State == OnFootDirector.Mode.Pack && b.On;
+        var pp = b.Find(PackPieceKind.Parcel);
         bool parcelOn = pp != null && pp.active && pp.parcel == parcel;
-        var box = board.Find(PackPieceKind.Box, 1) ?? board.Find(PackPieceKind.Box, 0);
-        bool dragged = board.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
-        bool opened = box != null && box.open && board.InSlot == box;
-        Step($"2D 보드 {(on && parcelOn && opened ? "PASS" : "FAIL")} 켜짐={on} 물건조각={parcelOn} 조각 상자{board.Count(PackPieceKind.Box)}·롤{board.Count(PackPieceKind.Roll)}·테이프{board.Count(PackPieceKind.Tape)} 끌기={dragged} 열림={opened} | {board.LastAct}");
+        Step($"2D 보드 {(on && parcelOn ? "PASS" : "FAIL")} 켜짐={on} 물건조각={parcelOn} 조각 상자{b.Count(PackPieceKind.Box)}·롤{b.Count(PackPieceKind.Roll)}·테이프{b.Count(PackPieceKind.Tape)} | {b.LastAct}");
         yield return new WaitForSecondsRealtime(0.3f);
-        if (!string.IsNullOrEmpty(Pack2DShot))
+
+        var bS = b.Find(PackPieceKind.Box, 0); var bM = b.Find(PackPieceKind.Box, 1); var bL = b.Find(PackPieceKind.Box, 2);
+        var bubble = b.Find(PackPieceKind.Roll, 0);
+
+        // ① 소 상자: 안 들어가고 튕김. 들고 R 로 돌려도 마찬가지(물건이 정사각이라 그대로)
+        b.SimDrag(bS, PackBoard.SlotU, PackBoard.SlotV);
+        bool sOpen = bS.open && b.InSlot == bS;
+        b.SimGrab(pp); b.SimRotate(); bool rotated = pp.rot90; b.SimRelease(PackBoard.SlotU, PackBoard.SlotV);
+        bool bounced = bS.content == null && pp.holder == null && Mathf.Approximately(pp.u, pp.homeU) && !pp.rot90;
+        Step($"① 소 상자 {(sOpen && rotated && bounced ? "PASS" : "FAIL")} 열림={sOpen} R돌림={rotated} 튕김={bounced} | {b.LastAct}");
+        b.SimDrag(bS, bS.homeU, bS.homeV);                                    // 비운 상자는 도로 집어 치운다
+
+        // ② 대 상자: 들어가되 헐거움 → 닫고 흔들어 덜그럭
+        int beats0 = b.RattleBeats;
+        yield return PackRun(b, bL, bubble, false, null);
+        float rattleL = bL.rattle; int beatsL = b.RattleBeats - beats0; var fitL = bL.fit;
+        Step($"② 대 상자 {(fitL == PackFit.Loose && bL.closed && bL.Taped && rattleL > 0.5f && beatsL > 3 ? "PASS" : "FAIL")} fit={fitL} 닫힘={bL.closed} 테이프={bL.strips.Count} rattle={rattleL:F2} 덜그럭 소리 {beatsL}번 | 시작값(참고) {PackRules.StartIntegrity("깨짐", fitL, bL.bottom, bL.top, rattleL) * 100f:F0}%");
+        b.DebugRestart(); beats0 = b.RattleBeats;
+        pp = b.Find(PackPieceKind.Parcel);
+
+        // ③ 중 상자: 한 판 끝까지
+        int left0 = bubble.left;
+        yield return PackRun(b, bM, bubble, true, Pack2DShot);
+        float rattleM = bM.rattle; int beatsM = b.RattleBeats - beats0;
+        float start = b.LastStart;
+        yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving && d.CarryingBox, 5f);
+        bool carry = d.CarryingBox;
+        bool good = bM.fit == PackFit.Snug && bM.bottom == PackFiller.Bubble && bM.top == PackFiller.Bubble && bM.strips.Count == 1 && Mathf.Abs(start - 0.90f) < 0.005f && bubble.left == left0 - 2 && carry && !b.On;
+        Step($"③ 중 상자 {(good ? "PASS" : "FAIL")} fit={bM.fit} 바닥={bM.bottom} 덮기={bM.top} 테이프 {bM.strips.Count}줄 뽁뽁이 롤 {left0}→{bubble.left} rattle={rattleM:F2}(덜그럭 {beatsM}번) 화물 시작 {start * 100f:F1}% 들고 나감={carry} | {b.LastAct}");
+        Step($"포장 결과 → 포장대 Ready={t.Ready} StartIntegrity01={t.StartIntegrity01 * 100f:F1}% 손에 든 상자(CarryingBox)={d.CarryingBox}");
+    }
+
+    /// <summary>한 판: 상자 가운데 → 롤 한 장(바닥) → 물건 → 롤 한 장(덮기) → 테이프 가로지름(+그림) → 쥐고 흔들기 → 놓기(takeOut 이면 판 밖 아래로).</summary>
+    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, string shot)
+    {
+        var pc = b.Find(PackPieceKind.Parcel); var tape = b.Find(PackPieceKind.Tape);
+        b.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
+        b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 뜯은 한 장 → 첫 장 = 바닥
+        b.SimDrag(pc, PackBoard.SlotU, PackBoard.SlotV);                      // 물건 넣기
+        b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 한 장 더 = 덮기
+        yield return null;
+        float cu = PackBoard.SlotU, cv = PackBoard.SlotV + 0.02f;
+        b.SimDragPath(tape, new Vector2(cu - 0.34f, cv), new Vector2(cu - 0.1f, cv), new Vector2(cu, cv), new Vector2(cu + 0.1f, cv), new Vector2(cu + 0.34f, cv));
+        yield return new WaitForSecondsRealtime(0.4f);
+        if (!string.IsNullOrEmpty(shot))
         {
             yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(Pack2DShot);
+            ScreenCapture.CaptureScreenshot(shot);
             yield return new WaitForSecondsRealtime(0.5f);
-            Step("2D 보드 그림 " + Pack2DShot);
+            Step("2D 보드 그림 " + shot);
         }
-        d.SimPackLeave();
-        yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving, 3f);
-        Step($"2D 물러남 {(d.State == OnFootDirector.Mode.OnFoot && !board.On ? "PASS" : "FAIL")}");
-        spot.DebugUse2D(false);
+        if (!b.SimGrab(box)) yield break;
+        float tt = 0f;
+        while (tt < 1.2f) { b.SimShakeTick(Time.unscaledDeltaTime, Time.unscaledTime); tt += Time.unscaledDeltaTime; yield return null; }
+        b.SimRelease(PackBoard.SlotU, takeOut ? -PackBoard.HalfH - 0.12f : PackBoard.SlotV);
+        yield return null;
     }
 
     /// <summary>받는 곳 선반 앞에서 시선 E 로 물건을 집는다(안 잡히면 SimUse).</summary>

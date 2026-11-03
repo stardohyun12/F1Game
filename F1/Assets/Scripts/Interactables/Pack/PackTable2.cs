@@ -433,6 +433,14 @@ public class PackTable2 : PackThing
     void Deny() { Act("손이 안 맞음(그대로)"); Sfx(4); }
     void Sfx(int k) => PackBench.PlayCue(k);
 
+    /// <summary>D-294 ②③: 2D 보드(PackBoard)에서 싸서 들고 나간 결과를 3D 흐름과 같은 자리에 넣는다 → 상자 들기(Take)·출발 화물 시작값(StartIntegrity01)이 그대로 이어진다.</summary>
+    public void Accept2D(float start, PackBox.ShakeResult r, PackFiller bottom, PackFiller top, PackFit fit)
+    {
+        Result = r; StartIntegrity01 = start; Bottom = bottom; Top = top; Fit = fit;
+        InBox = BoardParcel; Picked = true; Ready = true;
+        Act($"2D 포장 결과 rattle={r.rattle:F2} fit={fit} 바닥={bottom} 덮기={top} → 시작 {start * 100f:F0}%");
+    }
+
     // ── 하루·바깥 ──
     /// <summary>카트에 실음(DepotPackSpot.Take) — 작업면 상자를 치운다.</summary>
     public void Take()

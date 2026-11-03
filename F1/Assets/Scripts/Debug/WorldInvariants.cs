@@ -45,7 +45,50 @@ public static class WorldInvariants
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
         ("들린 물건 Rigidbody 보간 꺼짐(걸을 때 따라옴)", () => HeldFollowsHand()),
         ("포장 2D 보드 조각(상자3·롤2·테이프·물건)·판 안·안 겹침", () => PackBoard2D()),
+        ("포장 2D 규칙: 소 튕김·중 딱맞음(+뽁뽁이 90%)·대 헐거움·롤 가득·뜯은 조각 0", () => PackBoard2DRules()),
     };
+
+    /// <summary>
+    /// D-294 포장 2D ②③: 달걀 한 판이 소 상자엔 안 들어가고(TooSmall) 중엔 딱 맞고(Snug) 대엔 헐겁고(Loose), 중 + 뽁뽁이 위·아래면 시작값 90%(Core 규칙 그대로).
+    /// 롤은 가득(left==full>0)으로 시작하고 뜯은 한 장(Sheet) 조각이 처음부터 남아 있지 않다. 상자 inner 가 바뀌어 규칙이 어긋나면 여기서 잡힌다.
+    /// </summary>
+    static List<string> PackBoard2DRules()
+    {
+        var bad = new List<string>();
+        var sp = UnityEngine.Object.FindFirstObjectByType<DepotPackSpot>(FindObjectsInactive.Include);
+        var t = UnityEngine.Object.FindFirstObjectByType<PackTable2>(FindObjectsInactive.Include);
+        if (sp == null || t == null || !sp.Use2D) return bad;
+        var go = new GameObject("PackBoard2DRules_check") { hideFlags = HideFlags.HideAndDontSave };
+        try
+        {
+            var b = go.AddComponent<PackBoard>();
+            b.Build(t);
+            var tr = WorldData.Orders != null ? WorldData.Orders.TraitOf("달걀 한 판") : null;
+            Vector3 sz = tr != null ? tr.size : new Vector3(0.30f, 0.07f, 0.30f);
+            string trait = tr != null ? tr.trait : "깨짐";
+            PackFit[] want = { PackFit.TooSmall, PackFit.Snug, PackFit.Loose };
+            for (int i = 0; i < 3; i++)
+            {
+                var bx = b.Find(PackPieceKind.Box, i);
+                if (bx == null) { bad.Add($"상자 {i} 없음"); continue; }
+                var fit = PackRules.FitOf(sz.x, sz.y, sz.z, bx.inner.x, bx.inner.y, bx.inner.z);
+                if (fit != want[i]) bad.Add($"{bx.name}: 달걀 한 판 {fit} (기대 {want[i]})");
+                if (i == 1)
+                {
+                    float s = PackRules.StartIntegrity(trait, fit, PackFiller.Bubble, PackFiller.Bubble, 0f);
+                    if (Mathf.Abs(s - 0.90f) > 0.005f) bad.Add($"중 + 뽁뽁이 위·아래 시작값 {s * 100f:F1}% (기대 90%)");
+                }
+            }
+            for (int i = 0; i < b.Count(PackPieceKind.Roll); i++)
+            {
+                var r = b.Find(PackPieceKind.Roll, i);
+                if (r.full <= 0 || r.left != r.full) bad.Add($"롤 {r.name} 남은 {r.left}/{r.full} (가득 아님)");
+            }
+            if (b.Count(PackPieceKind.Sheet) != 0) bad.Add($"처음부터 뜯은 조각 {b.Count(PackPieceKind.Sheet)}개");
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); }
+        return bad;
+    }
 
     /// <summary>
     /// D-294 포장 2D ①: use2D 가 켜져 있으면 보드 조각 = world.yaml 상자 수 + 롤 수 + 테이프 1 + 물건 1, 전부 판(±1.0×±0.42) 안, 서로·가운데 빈 자리와 안 겹침,

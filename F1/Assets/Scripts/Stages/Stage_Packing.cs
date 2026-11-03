@@ -99,6 +99,7 @@ public class Stage_Packing : DayStage
             d.EnterFoot();
             d.footCam.HoldLook = false;
             d.Mark(spot.Ready ? $"작업대에서 물러남 — 흔들어 본 상자 있음(시작 {spot.StartIntegrity01 * 100f:F0}%)" : "작업대에서 물러남");
+            if (board != null && board.PendingTake) { board.ConsumeTake(); SignalBus.Raise(Signal.BoxTaken, "포장 2D 상자"); }   // 판 밖으로 들고 나간 상자
         }));
     }
 
