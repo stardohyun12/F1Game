@@ -5,6 +5,7 @@
         "PitCrew",
         "PitCrew.Core",
         "PitCrew.Signals",
+        "PitCrew.World",
         "PitCrew.Interactables",
         "PitCrew.Presentation",
         "Unity.InputSystem",

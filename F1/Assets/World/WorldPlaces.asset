@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6bba4f098e4a604e8d3ad3f60708437, type: 3}
+  m_Name: WorldPlaces
+  m_EditorClassIdentifier: PitCrew.World::WorldPlaces
+  sourceHash: 8c10db24e9bdecf420d7b06943cd28f12a603605
+  spots:
+  - name: "\uC9D1 \uBC29"
+    role: "2\uCE35 \uBC29 \uAC00\uC6B4\uB370, \uBB38 \uCABD\uC744 \uBD04"
+    feet: {x: 187.1, y: 28.5, z: -62.7}
+    yaw: 41
+    car: CartSpot
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uC9D1 \uC55E"
+    role: "1\uCE35 \uD604\uAD00(DOOR_01 184.5,-63.9) \uBC16 2.6 m, \uC9D1\uC744 \uBD04"
+    feet: {x: 184.1, y: 25.4, z: -66.5}
+    yaw: 10
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uC815\uBE44\uC18C(\uC0AC\uC7A5 \uC55E)"
+    role: "\uC0AC\uC7A5(232.7,-55.2) 1.9 m \uC55E \u2014 E \uB9D0\uD558\uAE30\uAC00
+      \uB5A0\uC57C \uD568"
+    feet: {x: 231.1, y: 26.7, z: -56.4}
+    yaw: 53
+    car: CartSpot
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uCE74\uD2B8 \uC606"
+    role: "\uC9C0\uAE08 \uCE74\uD2B8\uAC00 \uC788\uB294 \uACF3, \uB0B4\uB9B4 \uB54C
+      \uC11C\uB294 \uC790\uB9AC \u2014 E \uD0C0\uAE30\uAC00 \uB5A0\uC57C \uD568"
+    feet: {x: 0, y: 0, z: 0}
+    yaw: 0
+    car: BesideCar
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uCCAB \uBC30\uB2EC \uCC3B\uC9D1"
+    role: "DP_tea (93.8,-288.0) \uD45C\uC2DD 6 m \uBD81\uCABD \uB3C4\uB85C\uC5D0\uC11C
+      \uD45C\uC2DD\uC744 \uBD04"
+    feet: {x: 93.8, y: 4, z: -282}
+    yaw: 180
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uB178\uC744 \uB09A\uC2DC \uC790\uB9AC"
+    role: "\uC190\uAC00\uB77D \uBD80\uB450 \uB0A8\uCABD \uB05D \uC790\uB9AC \uB4A4
+      1.1 m \u2014 E \uC549\uAE30\uAC00 \uB5A0\uC57C \uD568"
+    feet: {x: -9, y: 1.3, z: -289.9}
+    yaw: 180
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uD56D\uAD6C"
+    role: "\uB3D9\uCABD \uBD80\uB450 \uAC11\uD310(Pier 272,-235), \uBC14\uB2E4\uB97C
+      \uBD04"
+    feet: {x: 272.2, y: 1.3, z: -234.7}
+    yaw: 270
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uC5B8\uB355 \uAEBC\uC9D0(sink_1031)"
+    role: "Cam_FB_sink \uAC00 \uBCF4\uB294 \uC810(120,19,18)\uC744 \uB0B4\uB824\uB2E4\uBCF4\uB294
+      \uC790\uB9AC"
+    feet: {x: 110, y: 18.7, z: 30}
+    yaw: 140
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uD070\uAE38"
+    role: "main \uB3C4\uB85C \uC911\uC2EC\uC120 \uC810(175,-75)"
+    feet: {x: 175.2, y: 18, z: -75.2}
+    yaw: 90
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uC815\uBE44\uC18C \uC548"
+    role: "\uCC28\uACE0 \uAC00\uC6B4\uB370(\uBCBD\uAE4C\uC9C0 5~8 m) \u2014 \uBC14\uB78C\xB7\uD30C\uB3C4\uAC00
+      \uBA39\uBA39\uD574\uC57C \uD568"
+    feet: {x: 216, y: 26.7, z: -55.5}
+    yaw: 90
+    car: CartSpot
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uC5B8\uB355 \uAF2D\uB300\uAE30"
+    role: "\uB9C8\uC744 \uB458\uB808 \uC9C0\uD615 \uCD5C\uACE0\uC810(y 64.8, \uB808\uC774
+      \uACA9\uC790 4 m) \u2014 \uBC14\uB78C\uC774 \uAC00\uC7A5 \uD07C"
+    feet: {x: 244, y: 64.8, z: 118}
+    yaw: 200
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
+  - name: "\uD0DD\uBC30 \uBCF4\uAD00\uC18C \uC55E"
+    role: "\uC5F4\uB9B0 \uC154\uD130(x 268~271.5) \uC55E \uB9C8\uB2F9, \uC548\uC744
+      \uBD04 \u2014 \uCE74\uD2B8\uB294 \uC55E \uAE38, \uB9C8\uB2F9\uC5D4 \uB3D9\uCABD
+      \uD68C\uC0C9 \uACBD\uC0AC\uB85C(x 277)\uB85C"
+    feet: {x: 270.5, y: 30.9, z: -34}
+    yaw: 0
+    car: Fixed
+    carAt: {x: 273.5, y: 29.6, z: -37.4}
+    carYaw: 90
+  - name: "\uD0DD\uBC30 \uBCF4\uAD00\uC18C \uCE60\uD310"
+    role: "\uC11C\uCABD \uBCBD \uCE60\uD310 1.8 m \uC55E \u2014 E \uCE60\uD310 \uBCF4\uAE30\uAC00
+      \uB5A0\uC57C \uD568"
+    feet: {x: 268.9, y: 31.1, z: -29.4}
+    yaw: 270
+    car: Fixed
+    carAt: {x: 273.5, y: 29.6, z: -37.4}
+    carYaw: 90
+  deliveryPoints:
+  - name: DP_tea
+    label: "\uCC3B\uC9D1"
+    role: "\uCCAB \uBC30\uB2EC(\uB2EC\uAC40 \uD55C \uD310). \uB4A4\uB85C \uBC14\uB2E4\uAC00
+      \uC5F4\uB9AC\uB294 \uC790\uB9AC"
+    pos: {x: 93.8, y: 4.6, z: -288}
+    recipient: "\uC904\uB9AC\uC544"
+  - name: DP_hill_field
+    label: "\uC5B8\uB355 \uBC2D"
+    role: "\uBC2D\xB7\uB18D\uAC00 \uBC30\uB2EC"
+    pos: {x: 180.8, y: 28.3, z: 6.9}
+    recipient: 
+  - name: DP_lighthouse
+    label: "\uB4F1\uB300"
+    role: "\uBC14\uAE65 \uBA40\uACE0 \uAE34 \uBC30\uB2EC. \uC774\uC57C\uAE30\uB85C
+      \uC5F4\uB9BC"
+    pos: {x: -378, y: 2.1, z: -361.1}
+    recipient: 
+  - name: DP_top_house
+    label: "\uAF2D\uB300\uAE30 \uC9D1"
+    role: "\uBE44\uD0C8 \uAF2D\uB300\uAE30 \uB9C8\uC744\uC744 \uB0B4\uB824\uB2E4\uBD04"
+    pos: {x: -295.4, y: 63.5, z: 357.9}
+    recipient: 
+  - name: DP_MART
+    label: MART
+    role: "\uAC00\uAC8C. \uC61B \uD29C\uD1A0\uB9AC\uC5BC \uCD9C\uBC1C\uC9C0"
+    pos: {x: 225.1, y: 22, z: -78.3}
+    recipient: 
+  - name: DP_depot
+    label: "\uD0DD\uBC30 \uBCF4\uAD00\uC18C"
+    role: "\uB3CC\uC544\uC624\uB294 \uBAA9\uC801\uC9C0"
+    pos: {x: 270, y: 32.6, z: -34.6}
+    recipient: "\uBCF4\uAD00\uC18C \uC9C1\uC6D0"

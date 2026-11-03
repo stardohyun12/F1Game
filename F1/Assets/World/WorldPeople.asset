@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27899690e0bf1f844b3369a44c2d4b76, type: 3}
+  m_Name: WorldPeople
+  m_EditorClassIdentifier: PitCrew.World::WorldPeople
+  people:
+  - name: "\uC5C4\uB9C8"
+    place: "\uC9D1 1\uCE35"
+    role: "\uC800\uB141\uC5D0 \uD55C\uB450 \uB9C8\uB514. \uD558\uB8E8 \uB05D \uB300\uD654
+      \uD55C \uC904"
+    status: "\uD655\uC815"
+  - name: "\uC815\uBE44\uC18C \uC0AC\uC7A5"
+    place: "\uC815\uBE44\uC18C"
+    role: "\uC804\uC9C1 \uB808\uC774\uC11C \uD241\uBA85\uD55C \uB9D0\uD22C \uC18D
+      \uCC59\uAE40. \uCE74\uD2B8\uB97C \uB0B4\uC8FC\uACE0 \uACE0\uCCD0 \uC90C(\uC774\uB984
+      \uAC00\uC548 \uB9C8\uB974\uCF54 \uC624\uAC00\uD0C0)"
+    status: "\uAC00\uC548"
+  - name: "\uC904\uB9AC\uC544"
+    place: "\uCC3B\uC9D1"
+    role: "\uC218\uB2E4\uC2A4\uB7FD\uACE0 \uC18C\uBB38\uC744 \uB2E4 \uC548\uB2E4.
+      \uAE68\uC9C4 \uB2EC\uAC40\uB3C4 \uC6C3\uC5B4\uB118\uAE40. \uCCAB \uC190\uB2D8"
+    status: "\uD655\uC815"
+  - name: "\uBCF4\uAD00\uC18C \uC9C1\uC6D0"
+    place: "\uD0DD\uBC30 \uBCF4\uAD00\uC18C"
+    role: "\uBC14\uC058\uACE0 \uCE5C\uC808 \uB9D0\uC740 \uC9E7\uACE0 \uC190\uC9D3\uC774
+      \uD07C. \uCE60\uD310\uC5D0 \uC624\uB298 \uC8FC\uBB38\uC744 \uC801\uC74C(\uC774\uB984
+      \uAC00\uC548 \uD1A0\uBAA8 \uBE44\uC559\uD0A4)"
+    status: "\uAC00\uC548"

@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary>
 /// D-248 디버그 창의 "장소 옮기기" 표 — 좌표는 전부 여기 한 곳. Map_TownV6 기준(월드 좌표). 높이는 이동할 때 레이로 땅에 맞추니
 /// y 는 어림이어도 된다(레이는 y+1.5 에서 아래로). 지도가 바뀌어 어긋나면 이 표만 고친다.
+/// (D-289: 아래 출처 줄은 표를 yaml 로 옮기기 전 기록이다. 표 자체는 world/world.yaml 의 places.)
 /// 출처: 집 방 = OnFootSetup(OnFoot_Spawn_Room) · 정비소 = FirstOrderSetup(접근점 229.4,-57.6 에서 사장 쪽) · 찻집 = 씬 DP_tea ·
 /// 낚시 = PitCrewSunsetMenu.SeatPos 뒤 1.1 m · 꺼짐 = docs/qa/tmp/sink1935/camsave.cs 의 Cam_FB_sink 가 보는 점(120,18) · 큰길/항구/집 앞 = 씬에서 레이로 잰 점.
 /// </summary>
@@ -32,23 +33,26 @@ public static class DebugPlaces
     /// <summary>D-250 택배 보관소 앞 카트 자리 — 셔터 앞 마을 길(v2_ridge_up_c_1, 273.1,-37.1) 위, 동쪽을 봄.</summary>
     public static readonly Vector3 DepotCart = OnFootDirector.DepotCartSpot;
 
-    public static readonly Place[] All =
+    static Place[] all;
+
+    /// <summary>D-289: 장소 표는 world/world.yaml 이 원천 → WorldPlaces.asset(gen.py). 여기는 읽어서 Place 로 바꿀 뿐이다. 에셋이 없으면 빈 표.</summary>
+    public static Place[] All => all ??= Build();
+
+    /// <summary>에셋을 다시 만든 뒤(gen.py) 부른다 — 캐시를 버리고 다시 읽는다.</summary>
+    public static void Reload() { all = null; }
+
+    static Place[] Build()
     {
-        new Place("집 방",            new Vector3(187.1f, 28.5f, -62.7f), 41f,  CarRule.CartSpot, "2층 방 가운데, 문 쪽을 봄"),
-        new Place("집 앞",            new Vector3(184.1f, 25.4f, -66.5f), 10f,  CarRule.Near,     "1층 현관(DOOR_01 184.5,-63.9) 밖 2.6 m, 집을 봄"),
-        new Place("정비소(사장 앞)",   new Vector3(231.1f, 26.7f, -56.4f), 53f,  CarRule.CartSpot, "사장(232.7,-55.2) 1.9 m 앞 — E 말하기가 떠야 함"),
-        new Place("카트 옆",          Vector3.zero,                       0f,   CarRule.BesideCar, "지금 카트가 있는 곳, 내릴 때 서는 자리 — E 타기가 떠야 함"),
-        new Place("첫 배달 찻집",      new Vector3(93.8f, 4.0f, -282.0f),  180f, CarRule.Near,     "DP_tea (93.8,-288.0) 표식 6 m 북쪽 도로에서 표식을 봄"),
-        new Place("노을 낚시 자리",    new Vector3(-9.0f, 1.3f, -289.9f),  180f, CarRule.Near,     "손가락 부두 남쪽 끝 자리 뒤 1.1 m — E 앉기가 떠야 함"),
-        new Place("항구",             new Vector3(272.2f, 1.3f, -234.7f), 270f, CarRule.Near,     "동쪽 부두 갑판(Pier 272,-235), 바다를 봄"),
-        new Place("언덕 꺼짐(sink_1031)", new Vector3(110.0f, 18.7f, 30.0f), 140f, CarRule.Near,   "Cam_FB_sink 가 보는 점(120,19,18)을 내려다보는 자리"),
-        new Place("큰길",             new Vector3(175.2f, 18.0f, -75.2f), 90f,  CarRule.Near,     "main 도로 중심선 점(175,-75)"),
-        // D-248 ③ 환경음 확인용 — 지붕·벽 판정이 갈리는 자리
-        new Place("정비소 안",         new Vector3(216.0f, 26.7f, -55.5f), 90f,  CarRule.CartSpot, "차고 가운데(벽까지 5~8 m) — 바람·파도가 먹먹해야 함"),
-        new Place("언덕 꼭대기",       new Vector3(244.0f, 64.8f, 118.0f), 200f, CarRule.Near,     "마을 둘레 지형 최고점(y 64.8, 레이 격자 4 m) — 바람이 가장 큼"),
-        // D-250 택배 보관소(Q3_Depot, D198_depot 271.9,-32.4) — 주문 칠판·포장 대역
-        new Place("택배 보관소 앞",     new Vector3(270.5f, 30.9f, -34.0f), 0f,   DepotCart, 90f,  "열린 셔터(x 268~271.5) 앞 마당, 안을 봄 — 카트는 앞 길, 마당엔 동쪽 회색 경사로(x 277)로"),
-        new Place("택배 보관소 칠판",   new Vector3(268.9f, 31.1f, -29.4f), 270f, DepotCart, 90f,  "서쪽 벽 칠판 1.8 m 앞 — E 칠판 보기가 떠야 함"),
-    };
+        var src = WorldData.Places;
+        if (src == null) { Debug.LogWarning("[DebugPlaces] WorldPlaces 에셋 없음 — python tools/world/gen.py"); return new Place[0]; }
+        var list = new Place[src.spots.Count];
+        for (int i = 0; i < list.Length; i++)
+        {
+            var s = src.spots[i];
+            var rule = (CarRule)System.Enum.Parse(typeof(CarRule), s.car);
+            list[i] = rule == CarRule.Fixed ? new Place(s.name, s.feet, s.yaw, s.carAt, s.carYaw, s.role) : new Place(s.name, s.feet, s.yaw, rule, s.role);
+        }
+        return list;
+    }
 }
 #endif

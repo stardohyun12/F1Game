@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class RepairSpot : MonoBehaviour
 {
-    public const int Cost = Rules.RepairCost;   // 가설: 수리비 한 번 300원 — 도현 한 판 뒤 정함
+    public static int Cost => Rules.RepairCost;   // 가설: 수리비 한 번 300원 — 도현 한 판 뒤 정함
 
     public static RepairSpot Active { get; private set; }
 

@@ -82,6 +82,7 @@ public partial class OnFootDirector : MonoBehaviour
 
     void Awake()
     {
+        WorldData.Numbers?.ApplyTo();   // D-289: 수치 원천 world/world.yaml → Core.Rules (에셋 없으면 Core 기본값)
         DayView.Reset(); DayView.Present = true;   // 5단계: 화면은 감독 대신 View 를 읽는다
         depot = new Stage_Depot(this); dayEnd = new Stage_DayEnd(this);
         drive = new Stage_Drive(this); door = new Stage_Door(this); ret = new Stage_Return(this);

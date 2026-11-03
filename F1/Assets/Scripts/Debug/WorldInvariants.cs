@@ -40,6 +40,7 @@ public static class WorldInvariants
         ("아침 카트는 정비소 앞", () => MorningCartAtGarage()),
         ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
         ("스크립트 Missing 0", () => NoMissingScripts()),
+        ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
     };
 
     public static string Check()
@@ -263,6 +264,45 @@ public static class WorldInvariants
         if (m > 6f) bad.Add(string.Format(Inv, "아침 카트 {0} 가 사장({1})에서 {2:0.0} m — 정비소에서 받아야(6 m 안)", V(c), V(boss), m));
         var dep = OnFootDirector.DepotCartSpot;
         if (Vector2.Distance(new Vector2(c.x, c.z), new Vector2(dep.x, dep.z)) < 15f) bad.Add("아침 카트가 보관소 앞에 있다 — 첫날 카트는 정비소에서 시작");
+        return bad;
+    }
+
+    /// <summary>
+    /// D-289: world/world.yaml(→ WorldPlaces.asset) 의 장소 좌표와 씬이 0.5 m 안에서 같다. 비교 짝 = 배달 지점 ↔ 씬 DP_ 오브젝트 ·
+    /// 「집 방」 ↔ OnFoot_Spawn_Room · Fixed 카트 자리 ↔ DebugPlaces.DepotCart(코드 상수). 어긋나면 양쪽 좌표를 같이 적는다 —
+    /// 건물·오브젝트는 도현이 놓은 쪽이 기준이니 보통 yaml 을 고치고(gen.py), 씬 쪽이 실수로 밀렸으면 되돌린다.
+    /// 에셋이 yaml 보다 낡았으면(해시 다름) 그것도 여기서 알린다.
+    /// </summary>
+    static List<string> YamlVsScene()
+    {
+        var bad = new List<string>(); const float Tol = 0.5f;
+        var src = WorldData.Places;
+        if (src == null) { bad.Add("WorldPlaces.asset 없음 — python tools/world/gen.py"); return bad; }
+        string yamlPath = System.IO.Path.GetFullPath(Application.dataPath + "/../../world/world.yaml");
+        if (System.IO.File.Exists(yamlPath))
+        {
+            string text = System.IO.File.ReadAllText(yamlPath, Encoding.UTF8).Replace("\r\n", "\n");
+            var sb = new StringBuilder();
+            using (var sha = System.Security.Cryptography.SHA1.Create()) foreach (var b in sha.ComputeHash(Encoding.UTF8.GetBytes(text))) sb.Append(b.ToString("x2"));
+            if (sb.ToString() != src.sourceHash) bad.Add("WorldPlaces.asset 이 world.yaml 보다 낡음(해시 다름) — python tools/world/gen.py 로 다시 만들기");
+        }
+        var dps = new Dictionary<string, Transform>();
+        foreach (var t in DpTransforms(true)) dps[t.name] = t;
+        foreach (var d in src.deliveryPoints)
+        {
+            if (!dps.TryGetValue(d.name, out var t)) { bad.Add("yaml 배달 지점 " + d.name + " " + V(d.pos) + " — 씬에 켜진 " + d.name + " 없음"); continue; }
+            float m = Vector3.Distance(d.pos, t.position);
+            if (m > Tol) bad.Add(d.name + string.Format(Inv, " yaml {0} ↔ 씬 {1} ({2}) 차 {3:0.00} m > 0.5", V(d.pos), V(t.position), WorldSnapshot.Path(t), m));
+        }
+        foreach (var kv in dps)
+            if (!src.deliveryPoints.Exists(x => x.name == kv.Key)) bad.Add("씬 " + kv.Key + " " + V(kv.Value.position) + " — yaml delivery_points 에 없음");
+        var spawn = GameObject.Find("OnFoot_Spawn_Room");
+        var room = src.spots.Find(s => s.name == "집 방");
+        if (spawn != null && room != null && Vector3.Distance(room.feet, spawn.transform.position) > Tol)
+            bad.Add(string.Format(Inv, "집 방 yaml {0} ↔ 씬 OnFoot_Spawn_Room {1} 차 {2:0.00} m > 0.5", V(room.feet), V(spawn.transform.position), Vector3.Distance(room.feet, spawn.transform.position)));
+        foreach (var s in src.spots)
+            if (s.car == "Fixed" && Vector3.Distance(s.carAt, DebugPlaces.DepotCart) > Tol)
+                bad.Add(string.Format(Inv, "장소 '{0}' yaml 카트 자리 {1} ↔ 코드 DepotCart {2} 차 {3:0.00} m > 0.5", s.name, V(s.carAt), V(DebugPlaces.DepotCart), Vector3.Distance(s.carAt, DebugPlaces.DepotCart)));
         return bad;
     }
 

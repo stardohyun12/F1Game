@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4eca6653af8ebc4d9eae973d45b4eb4, type: 3}
+  m_Name: WorldOrders
+  m_EditorClassIdentifier: PitCrew.World::WorldOrders
+  cargo:
+  - name: "\uB2EC\uAC40 \uD55C \uD310"
+    weakTo: "\uAE09\uAC00\uC18D\xB7\uAE09\uC81C\uB3D9\xB7\uCDA9\uB3CC"
+    status: "\uD655\uC815"
+  - name: "\uC720\uB9AC\uBCD1"
+    weakTo: "\uCDA9\uB3CC"
+    status: "\uCD08\uC548"
+  - name: "\uD654\uBD84"
+    weakTo: "\uAE30\uC6B8\uAE30"
+    status: "\uCD08\uC548"
+  - name: "\uC5BC\uC74C \uCC44\uC6B4 \uC0DD\uC120"
+    weakTo: "\uAE09\uCEE4\uBE0C\xB7\uC2DC\uAC04"
+    status: "\uCD08\uC548"
+  - name: "\uD3B8\uC9C0\xB7\uAF43"
+    weakTo: 
+    status: "\uCD08\uC548"
+  orders:
+  - id: first_egg
+    from: "\uBCF4\uAD00\uC18C \uC9C1\uC6D0"
+    to: "\uC904\uB9AC\uC544"
+    cargo: "\uB2EC\uAC40 \uD55C \uD310"
+    reward: 1200
+    dest: DP_tea

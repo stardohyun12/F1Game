@@ -5,10 +5,10 @@
 /// </summary>
 public static class Rules
 {
-    /// <summary>정비소 수리 한 번(가설: 도현 한 판 뒤 정함).</summary>
-    public const int RepairCost = 300;
-    /// <summary>첫 배달(과제 01 쪽지) 기본 보수.</summary>
-    public const int FirstOrderReward = 1200;
+    /// <summary>정비소 수리 한 번(가설: 도현 한 판 뒤 정함). D-289: 원천은 world/world.yaml — Stages 가 시작 때 WorldNumbers 값을 넣는다(기본값 = 옛 상수).</summary>
+    public static int RepairCost = 300;
+    /// <summary>첫 배달(과제 01 쪽지) 기본 보수. 값을 넣는 곳은 RepairCost 와 같다.</summary>
+    public static int FirstOrderReward = 1200;
 
     /// <summary>문 앞 정산: 기본 보수 × 배율, 반올림(Mathf.RoundToInt 와 같은 Math.Round).</summary>
     public static int HandoverPay(int baseReward, float pay)
