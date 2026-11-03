@@ -142,6 +142,7 @@ public class PackTable2 : PackThing
     /// <summary>작업면(포장대 판) E: 든 것을 내려놓는다.</summary>
     public override void Use(PackTable2 t)
     {
+        if (Board2D) { Open2D(); return; }
         if (Holding == Hold.Lifted) { PutDown(); return; }
         if (Holding == Hold.Box) { PlaceBox(heldBox); return; }
         if (Holding == Hold.Parcel)   // 상자에 넣기는 상자를 보고 E(UseBox) — 판을 보면 판 위에 내려놓는다
@@ -149,6 +150,26 @@ public class PackTable2 : PackThing
             SetDown(heldParcel.transform, parcelRest); heldParcel.OnShelf = false; Release(); Act("물건을 작업면에"); return;
         }
         if (Holding == Hold.Sheet && WorkBox != null) { LaySheet(); return; }
+    }
+
+    /// <summary>D-294: 2D 보드 스위치(DepotPackSpot.use2D). 켜지면 작업면 E = 보드 열기, 상자·롤 3D 집기는 안 한다(물건 집기·들고 걷기는 그대로).</summary>
+    public bool Board2D { get; set; }
+    /// <summary>2D 보드에 올린 물건(작업면에 내려놓은 Parcel). 없으면 null.</summary>
+    public Parcel BoardParcel { get; private set; }
+    public Parcel HeldParcel => Holding == Hold.Parcel ? heldParcel : null;
+
+    /// <summary>작업면 E(2D): 든 물건은 작업면에 내려놓고(손 비움) 포장 보드를 연다 → Stage_Packing 이 PackOpened 를 듣고 카메라를 내린다.</summary>
+    void Open2D()
+    {
+        if (Holding == Hold.Parcel)
+        {
+            var p = heldParcel;
+            SetDown(p.transform, parcelRest); p.OnShelf = false; Release(); BoardParcel = p;
+            Act("물건을 작업면에(2D 보드로)");
+        }
+        else if (Holding != Hold.None) { Deny(); return; }
+        Act("작업면 E → 2D 보드");
+        SignalBus.Raise(Signal.PackOpened, "포장 2D");
     }
 
     public void UseParcel(Parcel p)
@@ -164,6 +185,7 @@ public class PackTable2 : PackThing
 
     public void UseBox(BoxPick b)
     {
+        if (Board2D) return;
         if (b == WorkBox)
         {
             if (Holding == Hold.Lifted) { PutDown(); return; }
@@ -187,6 +209,7 @@ public class PackTable2 : PackThing
 
     public void UseRoll(Roll r)
     {
+        if (Board2D) return;
         if (Holding != Hold.None) { if (Holding == Hold.Sheet) return; Deny(); return; }
         if (!r.Take()) { Deny(); return; }
         var g = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -429,6 +452,7 @@ public class PackTable2 : PackThing
         foreach (var b in boxes) if (b != null && b.transform.parent != b.shelfParent) b.BackToShelf();
         foreach (var r in rolls) if (r != null) r.Refill();
         if (receive != null) receive.ResetForNextDay();
+        BoardParcel = null;
         WorkBox = null; InBox = null; dropped = null; stack = 0f; Bottom = Top = PackFiller.None;
         Picked = Ready = Taken = false; StartIntegrity01 = 1f; Result = default; Fit = PackFit.Snug;
     }

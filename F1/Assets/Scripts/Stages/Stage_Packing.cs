@@ -18,6 +18,8 @@ public class Stage_Packing : DayStage
     /// <summary>작업대를 떠나려고 든 상자가 내려앉길 기다리는 중.</summary>
     bool leaving, simLeave;
     Coroutine move;
+    /// <summary>D-294 2D 보드로 내려가고 올라오는 시간(초).</summary>
+    const float BoardSec = 0.4f;
     Vector3 eyePos; Quaternion eyeRot;
     /// <summary>출발 때 정한 화물 상태 시작값(0~1, 포장 결과). 음수 = 아직.</summary>
     public float StartIntegrity { get; private set; } = -1f;
@@ -40,7 +42,9 @@ public class Stage_Packing : DayStage
     public override void Enter()
     {
         var spot = d.packSpot;
-        if (spot == null || spot.Eye == null) return;
+        if (spot == null) return;
+        var board = spot.Board2D;                                           // D-294: 2D 보드 스위치(use2D) 켜짐이면 윗면 시점
+        if (board == null && spot.Eye == null) return;
         d.StopDestFocus();
         d.State = OnFootDirector.Mode.Pack; leaving = false;
         d.player.enabled = false;
@@ -48,6 +52,16 @@ public class Stage_Packing : DayStage
         eyePos = d.cam.transform.position; eyeRot = d.cam.transform.rotation;
         d.SetPrompt(""); d.PromptAnchor = null; d.GazeTarget = null;
         if (d.dotRoot != null) d.dotRoot.SetActive(false);
+        if (board != null)
+        {
+            Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
+            if (board.GetComponent<PackBoardView>() == null) PackBoardView.Create(board, spot.BoardFont);
+            board.CamPose(d.cam, out var bp, out var br);
+            if (move != null) d.StopCoroutine(move);
+            move = d.StartCoroutine(MoveCam(bp, br, BoardSec, () => board.SetOn(true, d.cam, spot.V3Table != null ? spot.V3Table.BoardParcel : null)));
+            d.Mark($"작업대 2D 보드 눈 {bp.ToString("F2")} 위에서 내려봄");
+            return;
+        }
         var e = spot.Eye;
         if (move != null) d.StopCoroutine(move);
         move = d.StartCoroutine(MoveCam(e.position, e.rotation, d.boardFocusSec, () => spot.SetPacking(true, d.cam)));
@@ -64,6 +78,8 @@ public class Stage_Packing : DayStage
         bool leave = simLeave || (kb != null && kb.qKey.wasPressedThisFrame);
         simLeave = false;
         if (move != null) return;                                           // 옮겨 가는 동안은 입력 안 받음
+        var board = d.packSpot.Board2D;
+        if (board != null) { if (board.TakeExit() || leave) Exit(); return; }   // D-294: Esc · 빈 자리 오른쪽 클릭(PackBoard) · 봇 SimLeave
         var bench = d.packSpot.Bench;
         if (leave && !leaving) { leaving = true; bench.ReleaseAll(); }
         if (leaving && bench.CanLeave) Exit();
@@ -73,9 +89,11 @@ public class Stage_Packing : DayStage
     {
         var spot = d.packSpot;
         leaving = false;
+        var board = spot.Board2D;
+        if (board != null) board.SetOn(false, null, null);
         spot.SetPacking(false);                                             // PackBench.OnDisable 가 커서 잠금을 푼다 → 걷기 카메라가 다시 잠금
         if (move != null) d.StopCoroutine(move);
-        move = d.StartCoroutine(MoveCam(eyePos, eyeRot, d.boardFocusSec * 0.6f, () =>
+        move = d.StartCoroutine(MoveCam(eyePos, eyeRot, board != null ? BoardSec : d.boardFocusSec * 0.6f, () =>
         {
             d.player.enabled = true;
             d.EnterFoot();
@@ -88,7 +106,9 @@ public class Stage_Packing : DayStage
     internal void Abort()
     {
         if (move != null) { d.StopCoroutine(move); move = null; }
-        d.packSpot.Bench.ReleaseAll(); d.packSpot.SetPacking(false); leaving = false;
+        if (d.packSpot.Bench != null) d.packSpot.Bench.ReleaseAll();
+        d.packSpot.SetPacking(false); leaving = false;
+        if (d.packSpot.Board2D != null) d.packSpot.Board2D.SetOn(false, null, null);
         d.cam.transform.SetPositionAndRotation(eyePos, eyeRot);
         d.player.enabled = true;
     }

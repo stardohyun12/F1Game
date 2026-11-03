@@ -20,6 +20,9 @@ public class DayLoopCheck : MonoBehaviour
     float t0;
     readonly List<string> steps = new List<string>();
 
+    /// <summary>D-294: 값이 있으면 2D 보드가 켜진(상자가 가운데에 열린) 순간의 게임 화면을 이 경로에 저장한다.</summary>
+    public static string Pack2DShot;
+
     public static string Begin(string path)
     {
         var dir = FindFirstObjectByType<OnFootDirector>();
@@ -89,7 +92,13 @@ public class DayLoopCheck : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.5f);
         Step("사장 끝 Talked=" + d.Talked);
 
-        if (d.PackSpot != null && d.PackSpot.V3Table != null) yield return PackV3(d.PackSpot.V3Table);
+        if (d.PackSpot != null && d.PackSpot.V3Table != null)
+        {
+            // D-294: 2D 보드가 켜져 있으면 먼저 그 길(E → 보드 → 상자 끌기 → 열림 → 물러남)을 확인하고, ②③ 포장 완성 전이라 3D 손 흐름으로 이어서 하루를 끝까지 돈다.
+            bool two = d.PackSpot.Use2D;
+            if (two) yield return Pack2D(d.PackSpot.V3Table);
+            yield return PackV3(d.PackSpot.V3Table, two);
+        }
         else yield return OldPack();
 
         // 싣기
@@ -170,14 +179,14 @@ public class DayLoopCheck : MonoBehaviour
     /// D-290 포장 v3: 받는 곳 선반에서 물건 E(시선) → 포장대 앞 → 사람과 같은 Use 순서(작업면 · 상자 중 · 뽁뽁이 바닥 · 물건 · 뽁뽁이 덮기 · 닫기 · 테이프 · 들어 흔들기 · 내려놓기 · 상자 들기).
     /// 첫 E 는 시선 레이로(안 맞으면 SimUse), 포장대 위 물건들은 SimUse 로 바로 — 시선 각도 흔들림 없이.
     /// </summary>
-    IEnumerator PackV3(PackTable2 t)
+    IEnumerator PackV3(PackTable2 t, bool fromRest = false)
     {
-        yield return PickFromShelf(t);
-        yield return WalkWhileHolding(t);
+        if (!fromRest) { yield return PickFromShelf(t); yield return WalkWhileHolding(t); }
         var parcel = t.receive.today[0];
         d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
         yield return Look(t.workSpot.position);
         Step("포장대 앞");
+        if (fromRest) { t.SimUse(parcel); yield return null; }            // 2D 확인 뒤: 작업면에 있는 물건을 다시 손에
         t.SimUse(t); yield return null;                                   // 물건을 작업면에
         t.SimUse(t.boxes[1]); yield return null; t.SimUse(t); yield return null;   // 상자 중
         t.SimUse(t.rolls[0]); yield return null; t.SimUse(t); yield return null;   // 뽁뽁이 바닥
@@ -192,6 +201,42 @@ public class DayLoopCheck : MonoBehaviour
         Step($"포장 v3 끝 Ready={d.PackSpot.Ready} 시작={t.StartIntegrity01 * 100f:F0}% rattle={t.Result.rattle:F2} | {t.LastAct}");
         t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(2f);   // 상자 들기(BoxTaken)
         Step("상자 들기 Carrying=" + d.CarryingBox);
+    }
+
+    /// <summary>
+    /// D-294 포장 2D ①: 물건 집고 걷기(순간이동 없음) → 포장대 [E](시선, 안 잡히면 SimUse) → 2D 보드 켜짐·물건 조각 → 상자를 사람과 같은 길로 끌어 가운데 → 열림 → 물러남.
+    /// 끝나면 2D 를 끄고(디버그 스위치) 3D 흐름이 이어진다.
+    /// </summary>
+    IEnumerator Pack2D(PackTable2 t)
+    {
+        var spot = d.PackSpot; var parcel = t.receive.today[0];
+        yield return PickFromShelf(t);
+        yield return WalkWhileHolding(t);
+        d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
+        yield return Look(t.workSpot.position);
+        Step("포장대 앞(2D)"); yield return Press();
+        if (d.State != OnFootDirector.Mode.Pack) { Step("시선 E 안 잡힘 → SimUse"); t.SimUse(t); yield return null; }
+        var board = spot.Board2D;
+        yield return Wait(() => d.State == OnFootDirector.Mode.Pack && board.On, 3f);
+        bool on = d.State == OnFootDirector.Mode.Pack && board.On;
+        var pp = board.Find(PackPieceKind.Parcel);
+        bool parcelOn = pp != null && pp.active && pp.parcel == parcel;
+        var box = board.Find(PackPieceKind.Box, 1) ?? board.Find(PackPieceKind.Box, 0);
+        bool dragged = board.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
+        bool opened = box != null && box.open && board.InSlot == box;
+        Step($"2D 보드 {(on && parcelOn && opened ? "PASS" : "FAIL")} 켜짐={on} 물건조각={parcelOn} 조각 상자{board.Count(PackPieceKind.Box)}·롤{board.Count(PackPieceKind.Roll)}·테이프{board.Count(PackPieceKind.Tape)} 끌기={dragged} 열림={opened} | {board.LastAct}");
+        yield return new WaitForSecondsRealtime(0.3f);
+        if (!string.IsNullOrEmpty(Pack2DShot))
+        {
+            yield return new WaitForEndOfFrame();
+            ScreenCapture.CaptureScreenshot(Pack2DShot);
+            yield return new WaitForSecondsRealtime(0.5f);
+            Step("2D 보드 그림 " + Pack2DShot);
+        }
+        d.SimPackLeave();
+        yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving, 3f);
+        Step($"2D 물러남 {(d.State == OnFootDirector.Mode.OnFoot && !board.On ? "PASS" : "FAIL")}");
+        spot.DebugUse2D(false);
     }
 
     /// <summary>받는 곳 선반 앞에서 시선 E 로 물건을 집는다(안 잡히면 SimUse).</summary>

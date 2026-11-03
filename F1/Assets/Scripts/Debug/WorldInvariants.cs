@@ -44,7 +44,45 @@ public static class WorldInvariants
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
         ("들린 물건 Rigidbody 보간 꺼짐(걸을 때 따라옴)", () => HeldFollowsHand()),
+        ("포장 2D 보드 조각(상자3·롤2·테이프·물건)·판 안·안 겹침", () => PackBoard2D()),
     };
+
+    /// <summary>
+    /// D-294 포장 2D ①: use2D 가 켜져 있으면 보드 조각 = world.yaml 상자 수 + 롤 수 + 테이프 1 + 물건 1, 전부 판(±1.0×±0.42) 안, 서로·가운데 빈 자리와 안 겹침,
+    /// 판 틀(위·오른쪽)은 수평·직각. 조각이 판 밖으로 나가거나 겹치면(= 끌어서 집을 수 없다) 여기서 잡힌다. 임시 PackBoard 를 만들어 보고 지운다.
+    /// </summary>
+    static List<string> PackBoard2D()
+    {
+        var bad = new List<string>();
+        var sp = UnityEngine.Object.FindFirstObjectByType<DepotPackSpot>(FindObjectsInactive.Include);
+        var t = UnityEngine.Object.FindFirstObjectByType<PackTable2>(FindObjectsInactive.Include);
+        if (sp == null || t == null || !sp.Use2D) return bad;
+        var go = new GameObject("PackBoard2D_check") { hideFlags = HideFlags.HideAndDontSave };
+        try
+        {
+            var b = go.AddComponent<PackBoard>();
+            b.Build(t);
+            var pk = WorldData.Orders != null ? WorldData.Orders.packing : null;
+            int nBox = pk != null && pk.boxes.Count > 0 ? pk.boxes.Count : 3, nRoll = pk != null && pk.fillers.Count > 0 ? pk.fillers.Count : 2;
+            if (b.Count(PackPieceKind.Box) != nBox || b.Count(PackPieceKind.Roll) != nRoll || b.Count(PackPieceKind.Tape) != 1 || b.Count(PackPieceKind.Parcel) != 1)
+                bad.Add($"조각 상자{b.Count(PackPieceKind.Box)}/{nBox}·롤{b.Count(PackPieceKind.Roll)}/{nRoll}·테이프{b.Count(PackPieceKind.Tape)}/1·물건{b.Count(PackPieceKind.Parcel)}/1");
+            if (Mathf.Abs(b.Up.y) > 1e-3f || Mathf.Abs(b.Right.y) > 1e-3f || Mathf.Abs(Vector3.Dot(b.Up, b.Right)) > 1e-3f) bad.Add($"판 틀이 수평·직각이 아님 up={V(b.Up)} right={V(b.Right)}");
+            var ps = b.pieces;
+            for (int i = 0; i < ps.Count; i++)
+            {
+                var p = ps[i];
+                if (Mathf.Abs(p.homeU) + p.w * 0.5f > PackBoard.HalfW || Mathf.Abs(p.homeV) + p.d * 0.5f > PackBoard.HalfH) bad.Add($"{p.name} 판 밖 ({p.homeU:F2},{p.homeV:F2})");
+                if (Overlap(p.homeU, p.homeV, p.w, p.d, PackBoard.SlotU, PackBoard.SlotV, PackBoard.SlotW, PackBoard.SlotD)) bad.Add($"{p.name} 가운데 빈 자리와 겹침");
+                for (int j = i + 1; j < ps.Count; j++)
+                    if (Overlap(p.homeU, p.homeV, p.w, p.d, ps[j].homeU, ps[j].homeV, ps[j].w, ps[j].d)) bad.Add($"{p.name} ↔ {ps[j].name} 겹침");
+            }
+        }
+        finally { UnityEngine.Object.DestroyImmediate(go); }
+        return bad;
+    }
+
+    static bool Overlap(float u1, float v1, float w1, float d1, float u2, float v2, float w2, float d2) =>
+        Mathf.Abs(u1 - u2) < (w1 + w2) * 0.5f && Mathf.Abs(v1 - v2) < (d1 + d2) * 0.5f;
 
     /// <summary>
     /// D-290 버그: 상자를 들 때 물건이 바닥판을 뚫고 바닥으로 빠졌다(흔든 뒤 Ready 안 켜짐).

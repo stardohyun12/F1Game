@@ -27,6 +27,37 @@ public class DepotPackSpot : MonoBehaviour
     public bool UseV3 => useV3 && v3 != null;
     public PackTable2 V3Table => UseV3 ? v3 : null;
 
+    [Header("D-294 포장 2D 작업대 — 켜면 포장대 [E] 가 2D 보드(화면 = 작업대 윗면). 08 의 3D 손 흐름은 꺼 둔다(지우지 않음)")]
+    [SerializeField] bool use2D = true;
+    public bool Use2D => use2D && UseV3;
+    /// <summary>봇·디버그: 2D 스위치를 런타임에 바꾼다(씬 값은 그대로).</summary>
+    public void DebugUse2D(bool on) { use2D = on; if (v3 != null) v3.Board2D = Use2D; }
+    PackBoard board2D;
+    /// <summary>2D 보드(처음 부를 때 런타임에 만든다 — 씬 수정 없음). 스위치가 꺼졌으면 null.</summary>
+    public PackBoard Board2D
+    {
+        get
+        {
+            if (!Use2D) return null;
+            if (board2D == null)
+            {
+                board2D = gameObject.AddComponent<PackBoard>();
+                board2D.Build(v3);
+            }
+            return board2D;
+        }
+    }
+    /// <summary>보드 글자에 쓸 글꼴 — 08 물건 꼬리표와 같은 것(한글이 되는 글꼴). 그리기(Presentation/PackBoardView)는 Stage_Packing 이 붙인다.</summary>
+    public TMPro.TMP_FontAsset BoardFont
+    {
+        get
+        {
+            var tag = v3 != null && v3.receive != null && v3.receive.today != null && v3.receive.today.Length > 0 && v3.receive.today[0].tag3d != null
+                ? v3.receive.today[0].tag3d.GetComponentInChildren<TMPro.TextMeshPro>(true) : null;
+            return tag != null ? tag.font : null;
+        }
+    }
+
     [Header("포장 결과 → 화물 시작값(가설)")]
     [Tooltip("덜그럭(rattle) 이 값이면 rattleLoss 만큼 깎인다(선형, 넘으면 그대로).")]
     // 가설(11/02 실측): 맨바닥에 달걀판만 = rattle 1.23, 꽉 채움 = 0.00 → 2.0·0.40 이면 대충 75% / 꽉 100%
@@ -64,6 +95,7 @@ public class DepotPackSpot : MonoBehaviour
         if (cursor != null) cursor.enabled = false;
         // 옛 작업대 off(스위치): PackBench 컴포넌트는 Eye 에 있고 판·상자·재료는 형제다 — 자식 전부를 끈다(v3 는 형제 PackV3)
         if (UseV3) foreach (Transform c in transform) c.gameObject.SetActive(false);
+        if (v3 != null) v3.Board2D = Use2D;
     }
 
     // ── 다음 날 아침(과제 20261102-1951): 처음 모습 스냅샷 → 되돌리기 ──
@@ -86,7 +118,7 @@ public class DepotPackSpot : MonoBehaviour
     /// <summary>하루가 바뀌었다: 손·상자·재료를 처음 자리로, 만든 것(구긴 종이·뽁뽁이·라벨)은 치우고, 흔들기 결과·포장 상태를 비운다.</summary>
     public void ResetForNextDay()
     {
-        if (UseV3) { v3.ResetForNextDay(); Taken = false; return; }
+        if (UseV3) { v3.ResetForNextDay(); if (board2D != null) { board2D.SetOn(false, null, null); board2D.ResetAll(); } Taken = false; return; }
         if (snaps.Count == 0) return;
         if (bench != null) { SetPacking(false); bench.ResetForNextDay(); }
         // 작업 중 새로 생긴 물건(뽁뽁이·구긴 신문지 등)
