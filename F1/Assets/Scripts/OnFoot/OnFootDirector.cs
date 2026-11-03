@@ -314,6 +314,7 @@ public class OnFootDirector : MonoBehaviour
         if (State == Mode.Starting) return;
         if (overlayUI != null && overlayUI.enabled == UseDot) overlayUI.enabled = !UseDot;   // 도트 UI 가 켜져 있으면 예전 화면 안내·자막을 끈다
         PromptLow = false;
+        TrackStep();
         bool press = InteractPressed();
         UpdateHeldBox();
         UpdateHeldPaper();
@@ -600,7 +601,7 @@ public class OnFootDirector : MonoBehaviour
         player.gameObject.SetActive(true);
         player.Teleport(ExitPoint(), car.transform.eulerAngles.y);
         EnterFoot();
-        if (Delivered && handover != null && !HandedOver && !CarryingBox) BeginCarry();
+        if (Delivered && handover != null && !HandedOver && !CarryingBox) { BeginCarry(); FocusThing(handover.DoorCenter, "배달지 문"); }   // C-003: 다음 = 문 두드리기
     }
 
     // ── D-250 ③④ 문 앞 건네기 ──
@@ -918,6 +919,7 @@ public class OnFootDirector : MonoBehaviour
         OrderStarted = false; Delivered = false; HandedOver = false; CarryingBox = false; Knocking = false;
         HandoverTierIdx = -1; HandoverMoney = 0; moneyText = null; MoneyAt = -99f; MoneyEnd = -99f;
         StartIntegrity = -1f; freeDriveEntered = false;
+        StepTrail = "없음";
         talkLine = -1; curLines = null; speaker = null; onTalkLine = null; onTalkEnd = null;
         // 손에 든 상자: 받는 사람에게 건넨 것은 치우고 새로 만든다(MoveBoxToHands 가 heldBox 를 비웠다)
         if (heldBoxGiven != null) { Destroy(heldBoxGiven); heldBoxGiven = null; }
@@ -972,7 +974,7 @@ public class OnFootDirector : MonoBehaviour
             EnterFoot();
             footCam.HoldLook = false;
             Mark("칠판 닫기");
-            if (OrderPicked && destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
+            if (OrderPicked) FocusNext(0f);
         }));
     }
 
@@ -1043,7 +1045,45 @@ public class OnFootDirector : MonoBehaviour
         Held = note;
         SetPrompt(""); PromptAnchor = null;
         Mark($"쪽지 집음: {pickedJob.displayName} → 손에 든 전표 · 목적지 표식 {firstDrop?.Label}");
-        if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDestAfter(HeldPaperLiftSec));
+        FocusNext(HeldPaperLiftSec);
+    }
+
+    // ── C-003: 첫 배달 이음새 — 한 단계를 마치면 다음 할 곳 쪽으로 시선이 한 번 돈다(D-252 목적지 시선과 같은 방식) ──
+    /// <summary>주문을 맡은 뒤: 아직 안 쌌으면 작업대(가서 [E] 포장하기), 쌌으면 예전처럼 목적지 표식.</summary>
+    void FocusNext(float delay)
+    {
+        if (destFocusSec <= 0f) return;
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
+        if (DepotFlow && packSpot != null && !Packed) destFocus = StartCoroutine(FocusAfter(delay, packSpot.Top - Vector3.up * 0.15f, "작업대"));
+        else if (WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDestAfter(delay));
+    }
+
+    /// <summary>가까운 물건(작업대·카트·문) 쪽으로 — 위아래도 끝까지 따라간다.</summary>
+    void FocusThing(Vector3 at, string what)
+    {
+        if (destFocusSec <= 0f) return;
+        if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
+        destFocus = StartCoroutine(FocusAfter(0f, at, what));
+    }
+
+    IEnumerator FocusAfter(float sec, Vector3 at, string what)
+    {
+        if (sec > 0f) yield return new WaitForSecondsRealtime(sec);
+        if (State == Mode.OnFoot && !InTalk) yield return FocusLook(at, 1f, what);
+        destFocus = null;
+    }
+
+    /// <summary>C-003: 첫 배달 단계 — 없음 → 쪽지 → 포장 → 실음 → 도착 → 건넴. QA·start.cs 가 읽는다.</summary>
+    public string DeliveryStep => HandedOver ? "건넴" : Delivered ? "도착" : OrderStarted ? "실음" : OrderPicked && Packed ? "포장" : OrderPicked ? "쪽지" : "없음";
+    /// <summary>지금까지 거친 단계(바뀔 때마다 한 칸) — 예: 없음→쪽지→포장→실음→도착→건넴.</summary>
+    public string StepTrail { get; private set; } = "없음";
+
+    void TrackStep()
+    {
+        string s = DeliveryStep;
+        if (StepTrail.EndsWith(s)) return;
+        StepTrail += "→" + s;
+        Mark("배달 단계 " + s);
     }
 
     const float HeldPaperLiftSec = 0.6f;
@@ -1125,6 +1165,7 @@ public class OnFootDirector : MonoBehaviour
         packSpot.Take();
         CarryingBox = true;
         Mark($"작업대 상자 들기 rattle={packSpot.Result.rattle:F2} → 화물 시작 {packSpot.StartIntegrity01 * 100f:F0}% 예정");
+        FocusThing(car.transform.position + Vector3.up * 0.7f, "카트");   // C-003: 다음 = 카트에 싣기
     }
 
     /// <summary>출발 직후(BeginRun 이 화물을 새것으로 채운 뒤) 포장 결과를 화물 상태 시작값으로.</summary>
@@ -1143,13 +1184,16 @@ public class OnFootDirector : MonoBehaviour
     /// D-252: 목적지 표식이 처음 뜨는 순간(사장이 "언덕 위 찻집"이라고 말한 뒤) 시선이 한 번 그쪽으로 — FocusSpeaker 와 같은 방식(destFocusSec 동안 SmoothStep).
     /// 멀리(수백 m) 있어도 표식은 도트 UI 라 건물에 안 가린다. 위아래는 반만 따라간다(먼 점을 정확히 보면 하늘·땅만 보여서).
     /// </summary>
-    IEnumerator FocusDest(DeliveryPoint target)
+    IEnumerator FocusDest(DeliveryPoint target) => FocusLook(DotScreenUI.DestAnchorOf(target), 0.5f, "목적지");
+
+    /// <summary>FocusDest 와 같은 시선 돌리기 — 점 at 쪽으로. pitchK = 위아래를 얼마나 따라가나(먼 표식 0.5, 가까운 물건 1).</summary>
+    IEnumerator FocusLook(Vector3 at, float pitchK, string what)
     {
         footCam.HoldLook = true;
         float y0 = footCam.Yaw, p0 = footCam.Pitch;
-        footCam.LookAt(DotScreenUI.DestAnchorOf(target));
-        float dy = Mathf.DeltaAngle(y0, footCam.Yaw), p1 = Mathf.Lerp(p0, footCam.Pitch, 0.5f);
-        Mark($"목적지 시선 {dy:F1}° 옆 / {p1 - p0:F1}° 위아래, {destFocusSec:F2}s + {destHoldSec:F2}s");
+        footCam.LookAt(at);
+        float dy = Mathf.DeltaAngle(y0, footCam.Yaw), p1 = Mathf.Lerp(p0, footCam.Pitch, pitchK);
+        Mark($"{what} 시선 {dy:F1}° 옆 / {p1 - p0:F1}° 위아래, {destFocusSec:F2}s + {destHoldSec:F2}s");
         for (float t = 0f; t < destFocusSec; t += Mathf.Min(Time.unscaledDeltaTime, 1f / 30f))
         {
             float k = Mathf.SmoothStep(0f, 1f, t / destFocusSec);
