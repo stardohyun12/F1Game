@@ -172,7 +172,8 @@ public class OnFootDirector : MonoBehaviour
     {
         get
         {
-            if (!Talked || firstDrop == null || Delivered) return null;
+            if (firstDrop == null || Delivered) return null;
+            if (!Talked) return opening != null ? opening.PreTalkDest : null;   // C-002: 집을 나서면 정비소
             if (!DepotFlow) return firstDrop;
             return OrderPicked ? firstDrop : depotDest;
         }
@@ -181,6 +182,8 @@ public class OnFootDirector : MonoBehaviour
     public bool DestFocusing => destFocus != null;
     Coroutine talkFocus, destFocus;
     DotScreenUI dotUI;
+    OpeningSequence opening;
+    public OpeningSequence OpeningSeq => opening;
     Canvas overlayUI;
     readonly Dictionary<Object, Vector3> anchorOffset = new Dictionary<Object, Vector3>();
     bool UseDot => dotUI != null && dotUI.isActiveAndEnabled;
@@ -194,10 +197,11 @@ public class OnFootDirector : MonoBehaviour
         ("사장", "첫 주문. 달걀 한 판, 언덕 위 찻집 줄리아네."),
     };
     // D-250 보관소 흐름의 사장 대사 — 대역(도현이 정함). 정비소 = 카트 점검, 주문은 택배 보관소 칠판에서.
+    // C-002 오프닝: 2줄에서 카트 열쇠를 건넨다(대역 문구 — 도현 확인 필요).
     static readonly (string who, string text)[] DepotBossLines =
     {
-        ("사장", "왔냐. 카트는 내가 봐 놨다. 브레이크 멀쩡해."),
-        ("사장", "뒤에 짐상자 달아 놨어. 깨지는 건 네 책임."),
+        ("사장", "왔냐. 방학 첫날이지? 카트는 내가 봐 놨다."),
+        ("사장", "자, 열쇠. 뒤 짐상자 깨지는 건 네 책임이다."),
         ("사장", "주문은 택배 보관소 칠판에 있어. 오늘은 거기 가 봐."),
     };
     (string who, string text)[] Lines => curLines ?? (DepotFlow ? DepotBossLines : BossLines);
@@ -283,6 +287,9 @@ public class OnFootDirector : MonoBehaviour
         if (spawn != null) player.Teleport(spawn.position, spawn.eulerAngles.y);
         if (orderBoard != null) orderBoard.SetLines(BoardLines);
         EnterFoot();
+        opening = GetComponent<OpeningSequence>();
+        if (opening == null) opening = gameObject.AddComponent<OpeningSequence>();
+        opening.Begin(this);                     // C-002: 방에서 눈을 뜬다
         Mark($"Start doors={doors.Count} spawn={(spawn != null ? spawn.position.ToString("F1") : "-")} 흐름={(DepotFlow ? "보관소(D-250)" : "사장 말 주문")}");
     }
 
@@ -518,6 +525,7 @@ public class OnFootDirector : MonoBehaviour
     void EnterCart()
     {
         Mark("카트 타기");
+        if (opening != null) opening.OnCartEnter();
         if (destFocus != null) { StopCoroutine(destFocus); destFocus = null; footCam.HoldLook = false; }
         State = Mode.InCart;
         EngineAudio.OnFootMute = false;
@@ -745,6 +753,7 @@ public class OnFootDirector : MonoBehaviour
         ShowSubtitle();
         if (talkFocusSec > 0f) { if (talkFocus != null) StopCoroutine(talkFocus); talkFocus = StartCoroutine(FocusSpeaker()); }
         Mark(sp == boss ? "사장 대화 시작" : sp.name + " 대화 시작");
+        if (sp == boss && opening != null) opening.OnTalkBegin();
     }
 
     /// <summary>
@@ -819,6 +828,7 @@ public class OnFootDirector : MonoBehaviour
         }
         Talked = true;
         Mark("사장 대화 끝" + (DepotFlow ? " → 보관소로" : ""));
+        if (opening != null) { opening.OnTalkEnd(); Mark("카트 열쇠 받음"); }
         if (destFocusSec > 0f && WalkDest != null && UseDot) destFocus = StartCoroutine(FocusDest(WalkDest));
     }
 
