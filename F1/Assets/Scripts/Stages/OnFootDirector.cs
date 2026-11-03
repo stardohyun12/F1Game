@@ -82,7 +82,8 @@ public partial class OnFootDirector : MonoBehaviour
 
     void Awake()
     {
-        WorldData.Numbers?.ApplyTo();   // D-289: 수치 원천 world/world.yaml → Core.Rules (에셋 없으면 Core 기본값)
+        WorldData.Orders?.ApplyPacking();   // D-290: 상자·완충재 궁합 → Core.PackRules
+        WorldData.Numbers?.ApplyTo();// D-289: 수치 원천 world/world.yaml → Core.Rules (에셋 없으면 Core 기본값)
         DayView.Reset(); DayView.Present = true;   // 5단계: 화면은 감독 대신 View 를 읽는다
         depot = new Stage_Depot(this); dayEnd = new Stage_DayEnd(this);
         drive = new Stage_Drive(this); door = new Stage_Door(this); ret = new Stage_Return(this);
@@ -152,7 +153,7 @@ public partial class OnFootDirector : MonoBehaviour
     /// <summary>시선 배선(Gaze) + 단계 귀 꽂기. Start 에서 문·낚시 자리를 모은 뒤 한 번.</summary>
     void Plug()
     {
-        gaze.player = player.transform; gaze.cam = cam; gaze.car = car; gaze.boss = boss; gaze.board = orderBoard; gaze.packSpot = packSpot;
+        gaze.player = player.transform; gaze.cam = cam; gaze.car = car; gaze.boss = boss; gaze.board = orderBoard; gaze.packSpot = packSpot; gaze.pack3 = packSpot != null ? packSpot.V3Table : null;
         gaze.handover = handover; gaze.calendar = calendar; gaze.bed = bed; gaze.doors = doors; gaze.spots = spots;
         gaze.gazeReach = gazeReach; gaze.talkReach = talkReach; gaze.cartLoadReach = CartLoadReach;
         gaze.Build();

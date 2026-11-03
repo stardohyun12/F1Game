@@ -65,33 +65,8 @@ public class DayLoopCheck : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.5f);
         Step("사장 끝 Talked=" + d.Talked);
 
-        // 쪽지
-        DebugWindow.GoPlace(12); yield return null;
-        yield return Look(d.OrderBoard.Center);
-        yield return Wait(() => d.Prompt == "E 쪽지 집기", 1f);
-        Step("칠판 앞"); yield return Press();
-        yield return new WaitForSecondsRealtime(2f);
-        Step("쪽지 OrderPicked=" + d.OrderPicked);
-
-        // 작업대
-        yield return new WaitForSecondsRealtime(1.5f);   // 쪽지 뒤 작업대 쪽 시선(0.5+0.8 s)이 끝나길
-        d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
-        yield return Look(d.PackSpot.Top);
-        yield return Wait(() => d.Prompt.StartsWith("E "), 1f);
-        Step("작업대 앞");
-        Call("EnterPack");   // 시선 레이가 작업대 판을 못 잡을 때가 있다 — E 대신 감독의 작업대 들어가기를 바로
-        yield return Wait(() => d.State == OnFootDirector.Mode.Pack && !d.PackMoving, 4f);
-        Step("작업대 안");
-        PitCrew.PackBench.PackBench.BotRun("full");
-        yield return Wait(() => PitCrew.PackBench.PackBench.BotStatus.Contains(" done "), 40f);
-        yield return new WaitForSecondsRealtime(1f);
-        Step("포장 봇 끝 Ready=" + d.PackSpot.Ready);
-        d.SimPackLeave();
-        yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving, 6f);
-        Step("작업대 물러남");
-        Call("TakePacked");
-        yield return new WaitForSecondsRealtime(2f);
-        Step("상자 들기 Carrying=" + d.CarryingBox);
+        if (d.PackSpot != null && d.PackSpot.V3Table != null) yield return PackV3(d.PackSpot.V3Table);
+        else yield return OldPack();
 
         // 싣기
         DebugWindow.GoPlace(3); yield return null;
@@ -133,5 +108,71 @@ public class DayLoopCheck : MonoBehaviour
         System.IO.File.WriteAllText(outPath, sb.ToString());
         Status = "done";
         Destroy(gameObject);
+    }
+
+    /// <summary>D-290 전: 칠판 쪽지 → 옛 작업대(PackBench 봇) → 상자 들기.</summary>
+    IEnumerator OldPack()
+    {
+        // 쪽지
+        DebugWindow.GoPlace(12); yield return null;
+        yield return Look(d.OrderBoard.Center);
+        yield return Wait(() => d.Prompt == "E 쪽지 집기", 1f);
+        Step("칠판 앞"); yield return Press();
+        yield return new WaitForSecondsRealtime(2f);
+        Step("쪽지 OrderPicked=" + d.OrderPicked);
+
+        // 작업대
+        yield return new WaitForSecondsRealtime(1.5f);   // 쪽지 뒤 작업대 쪽 시선(0.5+0.8 s)이 끝나길
+        d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
+        yield return Look(d.PackSpot.Top);
+        yield return Wait(() => d.Prompt.StartsWith("E "), 1f);
+        Step("작업대 앞");
+        Call("EnterPack");   // 시선 레이가 작업대 판을 못 잡을 때가 있다 — E 대신 감독의 작업대 들어가기를 바로
+        yield return Wait(() => d.State == OnFootDirector.Mode.Pack && !d.PackMoving, 4f);
+        Step("작업대 안");
+        PitCrew.PackBench.PackBench.BotRun("full");
+        yield return Wait(() => PitCrew.PackBench.PackBench.BotStatus.Contains(" done "), 40f);
+        yield return new WaitForSecondsRealtime(1f);
+        Step("포장 봇 끝 Ready=" + d.PackSpot.Ready);
+        d.SimPackLeave();
+        yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving, 6f);
+        Step("작업대 물러남");
+        Call("TakePacked");
+        yield return new WaitForSecondsRealtime(2f);
+        Step("상자 들기 Carrying=" + d.CarryingBox);
+    }
+
+    /// <summary>
+    /// D-290 포장 v3: 받는 곳 선반에서 물건 E(시선) → 포장대 앞 → 사람과 같은 Use 순서(작업면 · 상자 중 · 뽁뽁이 바닥 · 물건 · 뽁뽁이 덮기 · 닫기 · 테이프 · 들어 흔들기 · 내려놓기 · 상자 들기).
+    /// 첫 E 는 시선 레이로(안 맞으면 SimUse), 포장대 위 물건들은 SimUse 로 바로 — 시선 각도 흔들림 없이.
+    /// </summary>
+    IEnumerator PackV3(PackTable2 t)
+    {
+        var parcel = t.receive.today[0];
+        var pp = parcel.transform.position;
+        d.DebugTeleport(new Vector3(pp.x, 31.1f, pp.z - 1.1f), 0f, null, 0f); yield return null;
+        yield return Look(pp);
+        Step("받는 곳 선반 앞 시선=" + d.GazeTarget);
+        yield return Press();
+        if (!t.Picked) { Step("시선 E 안 잡힘 → SimUse"); t.SimUse(parcel); yield return null; }
+        yield return new WaitForSecondsRealtime(0.5f);
+        Step("물건 집음 OrderPicked=" + d.OrderPicked + " 손=" + t.Holding);
+        d.DebugTeleport(new Vector3(273.2f, 31.1f, -29.5f), 90f, null, 0f); yield return null;
+        yield return Look(t.workSpot.position);
+        Step("포장대 앞");
+        t.SimUse(t); yield return null;                                   // 물건을 작업면에
+        t.SimUse(t.boxes[1]); yield return null; t.SimUse(t); yield return null;   // 상자 중
+        t.SimUse(t.rolls[0]); yield return null; t.SimUse(t); yield return null;   // 뽁뽁이 바닥
+        t.SimUse(parcel); yield return null; t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(2f);   // 물건 넣기(떨어짐)
+        t.SimUse(t.rolls[0]); yield return null; t.SimUse(t); yield return null;   // 뽁뽁이 덮기
+        Step($"넣음 InBox={(t.InBox != null)} 바닥={t.Bottom} 덮기={t.Top} fit={t.Fit}");
+        t.SimUse(t.WorkBox); yield return null;                            // 닫기
+        t.SimTape(); yield return null; yield return null;
+        t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(0.3f);   // 들기
+        t.SimShake(2f); yield return new WaitForSecondsRealtime(2.5f);
+        t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(0.5f);   // 내려놓기
+        Step($"포장 v3 끝 Ready={d.PackSpot.Ready} 시작={t.StartIntegrity01 * 100f:F0}% rattle={t.Result.rattle:F2} | {t.LastAct}");
+        t.SimUse(t.WorkBox); yield return new WaitForSecondsRealtime(2f);   // 상자 들기(BoxTaken)
+        Step("상자 들기 Carrying=" + d.CarryingBox);
     }
 }

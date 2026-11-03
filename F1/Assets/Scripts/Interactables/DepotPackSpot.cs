@@ -21,6 +21,12 @@ public class DepotPackSpot : MonoBehaviour
     [Tooltip("칠판에서 주문을 맡으면 작업대에 놓이는 화물(첫 주문 = 달걀 한 판).")]
     [SerializeField] GameObject cargo;
 
+    [Header("D-290 포장 v3(도현 묘사) — 켜면 옛 작업대는 꺼 둔다(지우지 않음)")]
+    [SerializeField] PackTable2 v3;
+    [SerializeField] bool useV3 = true;
+    public bool UseV3 => useV3 && v3 != null;
+    public PackTable2 V3Table => UseV3 ? v3 : null;
+
     [Header("포장 결과 → 화물 시작값(가설)")]
     [Tooltip("덜그럭(rattle) 이 값이면 rattleLoss 만큼 깎인다(선형, 넘으면 그대로).")]
     // 가설(11/02 실측): 맨바닥에 달걀판만 = rattle 1.23, 꽉 채움 = 0.00 → 2.0·0.40 이면 대충 75% / 꽉 100%
@@ -40,13 +46,14 @@ public class DepotPackSpot : MonoBehaviour
     public bool Packed => bench != null ? Taken : packedLegacy;
     public bool Taken { get; private set; }
     /// <summary>닫고 테이프 붙인 상자를 흔들어 봤고, 그 뒤로 다시 안 열었다.</summary>
-    public bool Ready => bench != null && hasResult && resultBox != null && resultBox == bench.BenchBox
+    public bool Ready => UseV3 ? v3.Ready && !Taken : bench != null && hasResult && resultBox != null && resultBox == bench.BenchBox
                          && resultBox.IsClosed && resultBox.Taped && resultBox.OpenCount == resultOpenCount && result.closed && result.taped;
     /// <summary>작업대 상자가 닫히고 테이프까지 됐는데 아직 안 흔들어 봄.</summary>
-    public bool NeedsShake => bench != null && !Ready && bench.BenchBox != null && bench.BenchBox.IsClosed && bench.BenchBox.Taped;
+    public bool NeedsShake => !UseV3 && bench != null && !Ready && bench.BenchBox != null && bench.BenchBox.IsClosed && bench.BenchBox.Taped;
     public PackBench Bench => bench;
-    public PackBox.ShakeResult Result => result;
-    public float StartIntegrity01 { get; private set; } = 1f;
+    public PackBox.ShakeResult Result => UseV3 ? v3.Result : result;
+    float startIntegrity = 1f;
+    public float StartIntegrity01 { get => UseV3 ? v3.StartIntegrity01 : startIntegrity; private set => startIntegrity = value; }
     public Transform Eye => eye;
 
     void Awake()
@@ -55,6 +62,8 @@ public class DepotPackSpot : MonoBehaviour
         if (cargo != null) cargo.SetActive(false);
         if (bench != null) bench.enabled = false;
         if (cursor != null) cursor.enabled = false;
+        // 옛 작업대 off(스위치): PackBench 컴포넌트는 Eye 에 있고 판·상자·재료는 형제다 — 자식 전부를 끈다(v3 는 형제 PackV3)
+        if (UseV3) foreach (Transform c in transform) c.gameObject.SetActive(false);
     }
 
     // ── 다음 날 아침(과제 20261102-1951): 처음 모습 스냅샷 → 되돌리기 ──
@@ -77,6 +86,7 @@ public class DepotPackSpot : MonoBehaviour
     /// <summary>하루가 바뀌었다: 손·상자·재료를 처음 자리로, 만든 것(구긴 종이·뽁뽁이·라벨)은 치우고, 흔들기 결과·포장 상태를 비운다.</summary>
     public void ResetForNextDay()
     {
+        if (UseV3) { v3.ResetForNextDay(); Taken = false; return; }
         if (snaps.Count == 0) return;
         if (bench != null) { SetPacking(false); bench.ResetForNextDay(); }
         // 작업 중 새로 생긴 물건(뽁뽁이·구긴 신문지 등)
@@ -123,7 +133,7 @@ public class DepotPackSpot : MonoBehaviour
     /// <summary>포장 시점 켜기/끄기(카메라 옮기기는 OnFootDirector).</summary>
     public void SetPacking(bool on, Camera cam = null)
     {
-        if (bench == null) return;
+        if (bench == null || UseV3) return;
         if (cam != null) bench.cam = cam;                                  // 걷기·주행과 같은 카메라(PackBenchCursor 가 첫 켜짐에 이걸 잡는다)
         bench.enabled = on;
         if (cursor != null) cursor.enabled = on;
@@ -139,6 +149,7 @@ public class DepotPackSpot : MonoBehaviour
     public void Take()
     {
         if (!Ready) return;
+        if (UseV3) { Taken = true; v3.Take(); return; }
         Taken = true;
         resultBox.gameObject.SetActive(false);
     }
@@ -151,6 +162,7 @@ public class DepotPackSpot : MonoBehaviour
     {
         get
         {
+            if (UseV3) return v3.workSpot != null ? v3.workSpot.position + Vector3.up * 0.3f : transform.position + Vector3.up * 0.3f;
             if (bench != null)
             {
                 var b = bench.BenchBox;

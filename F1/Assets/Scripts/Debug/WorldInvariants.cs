@@ -41,7 +41,58 @@ public static class WorldInvariants
         ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
         ("스크립트 Missing 0", () => NoMissingScripts()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
+        ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
+        ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
     };
+
+    /// <summary>
+    /// D-290 버그: 상자를 들 때 물건이 바닥판을 뚫고 바닥으로 빠졌다(흔든 뒤 Ready 안 켜짐).
+    /// 받는 곳 물건·포장대 상자 Rigidbody 는 Discrete 이면 안 된다.
+    /// </summary>
+    static List<string> PackV3Continuous()
+    {
+        var bad = new List<string>();
+        var t = UnityEngine.Object.FindFirstObjectByType<PackTable2>(FindObjectsInactive.Include);
+        if (t == null) return bad;
+        var bodies = new List<Rigidbody>();
+        if (t.boxes != null) foreach (var b in t.boxes) if (b != null) bodies.Add(b.GetComponent<Rigidbody>());
+        if (t.receive != null && t.receive.today != null) foreach (var p in t.receive.today) if (p != null) bodies.Add(p.GetComponent<Rigidbody>());
+        foreach (var rb in bodies)
+            if (rb == null) bad.Add("Rigidbody 없음");
+            else if (rb.collisionDetectionMode == CollisionDetectionMode.Discrete) bad.Add($"{rb.name} 충돌 감지 Discrete(들면 물건이 빠진다)");
+        return bad;
+    }
+
+    /// <summary>
+    /// D-290 포장 v3(SPEC §6-4): 포장대 선반 = 상자 3(소·중·대) + 롤 2(뽁뽁이·종이), 전부 켜져 있고 시선이 맞을 콜라이더가 있고 작업면에서 2.2 m 안.
+    /// 안내 0 — 어떤 물건을 봐도 칩 글이 비어 있다(「E 」 칩이 되살아나면 여기서 잡힌다). 받는 곳 선반에 오늘 물건이 1개 이상.
+    /// </summary>
+    static List<string> PackV3Shelf()
+    {
+        var bad = new List<string>();
+        var ts = UnityEngine.Object.FindObjectsByType<PackTable2>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (ts.Length != 1) { bad.Add($"PackTable2 {ts.Length}개(1개여야) — PitCrew/World/Build Pack v3"); return bad; }
+        var t = ts[0];
+        var things = new List<PackThing>();
+        if (t.boxes != null) foreach (var b in t.boxes) if (b != null) things.Add(b);
+        if (t.rolls != null) foreach (var r in t.rolls) if (r != null) things.Add(r);
+        int nb = t.boxes == null ? 0 : t.boxes.Length, nr = t.rolls == null ? 0 : t.rolls.Length;
+        if (nb != 3 || nr != 2 || things.Count != 5) bad.Add($"포장대 선반 상자 {nb}·롤 {nr}(3·2 여야), 빈 칸 포함 {things.Count}/5");
+        Vector3 ws = t.workSpot != null ? t.workSpot.position : t.transform.position;
+        foreach (var x in things)
+        {
+            if (!x.gameObject.activeInHierarchy) bad.Add($"{x.name} 꺼짐");
+            if (x.GetComponentInChildren<Collider>() == null) bad.Add($"{x.name} 콜라이더 없음(시선이 못 맞힘)");
+            float d = Vector3.Distance(x.transform.position, ws);
+            if (d > 2.2f) bad.Add($"{x.name} 작업면에서 {d:F2}m {V(x.transform.position)}");
+            string p = t.PromptOf(x);
+            if (!string.IsNullOrEmpty(p)) bad.Add($"{x.name} 칩 「{p}」(안내 0 이어야)");
+        }
+        string tp = t.PromptOf(t);
+        if (!string.IsNullOrEmpty(tp)) bad.Add($"작업면 칩 「{tp}」");
+        if (t.receive == null || t.receive.today == null || t.receive.today.Length == 0 || t.receive.today[0] == null) bad.Add("받는 곳 선반에 오늘 물건 없음");
+        return bad;
+    }
 
     public static string Check()
     {

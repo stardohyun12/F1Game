@@ -1,0 +1,41 @@
+using NUnit.Framework;
+
+/// <summary>D-290: 포장 규칙(상자 크기·완충재 궁합). 값 = world.yaml packing 기본값.</summary>
+public class PackRulesTests
+{
+    // 달걀 한 판 0.30×0.07×0.30 — 상자 소 0.22 / 중 0.315 / 대 0.46
+    [Test] public void 상자_작으면_안들어감() { Assert.AreEqual(PackFit.TooSmall, PackRules.FitOf(0.30f, 0.07f, 0.30f, 0.22f, 0.12f, 0.22f)); }
+    [Test] public void 상자_중간_꼭맞음() { Assert.AreEqual(PackFit.Snug, PackRules.FitOf(0.30f, 0.07f, 0.30f, 0.315f, 0.15f, 0.315f)); }
+    [Test] public void 상자_크면_헐렁() { Assert.AreEqual(PackFit.Loose, PackRules.FitOf(0.30f, 0.07f, 0.30f, 0.46f, 0.24f, 0.46f)); }
+
+    [Test] public void 궁합_깨짐_뽁뽁이가_종이보다_큼()
+    {
+        Assert.Greater(PackRules.Cushion("깨짐", PackFiller.Bubble), PackRules.Cushion("깨짐", PackFiller.Paper));
+        Assert.Greater(PackRules.Cushion("깨짐", PackFiller.Paper), 0f);
+    }
+    [Test] public void 궁합_안맞으면_0()
+    {
+        Assert.AreEqual(0f, PackRules.Cushion("젖음", PackFiller.Paper));
+        Assert.AreEqual(0f, PackRules.Cushion("기울기", PackFiller.Bubble));
+        Assert.AreEqual(0f, PackRules.Cushion("깨짐", PackFiller.None));
+    }
+    [Test] public void 시작상태_뽁뽁이_종이_맨몸_순()
+    {
+        float b = PackRules.StartIntegrity("깨짐", PackFit.Snug, PackFiller.Bubble, PackFiller.Bubble, 0f);
+        float p = PackRules.StartIntegrity("깨짐", PackFit.Snug, PackFiller.Paper, PackFiller.Paper, 0f);
+        float n = PackRules.StartIntegrity("깨짐", PackFit.Snug, PackFiller.None, PackFiller.None, 0f);
+        Assert.Greater(b, p); Assert.Greater(p, n);
+        Assert.AreEqual(0, HandoverTier.Of(b));   // 뽁뽁이로 꼭 맞게 = 멀쩡
+        Assert.AreEqual(1, HandoverTier.Of(n));   // 맨몸 달걀 = 조금 상함
+    }
+    [Test] public void 시작상태_헐렁하면_낮음()
+    {
+        Assert.Less(PackRules.StartIntegrity("깨짐", PackFit.Loose, PackFiller.None, PackFiller.None, 1.2f),
+                    PackRules.StartIntegrity("깨짐", PackFit.Snug, PackFiller.None, PackFiller.None, 1.2f));
+    }
+    [Test] public void 시작상태_바닥값과_안들어감()
+    {
+        Assert.AreEqual(PackRules.MinStart, PackRules.StartIntegrity("깨짐", PackFit.TooSmall, PackFiller.Bubble, PackFiller.Bubble, 0f));
+        Assert.GreaterOrEqual(PackRules.StartIntegrity("깨짐", PackFit.Loose, PackFiller.None, PackFiller.None, 99f), PackRules.MinStart);
+    }
+}

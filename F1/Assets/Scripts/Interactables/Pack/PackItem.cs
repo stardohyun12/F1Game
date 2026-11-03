@@ -62,7 +62,7 @@ namespace PitCrew.PackBench
         void Hit(Collision c)
         {
             var bench = PackBench.I;
-            var box = bench != null ? bench.Shaking : null;
+            var box = PackBox.Current != null && PackBox.Current.IsShaking ? PackBox.Current : bench != null ? bench.Shaking : null;   // D-290 v3 는 작업대 없이 흔든다
             var other = c.collider != null ? c.collider.GetComponentInParent<PackItem>() : null;
             if (box == null || !box.HasContent(this))
             {

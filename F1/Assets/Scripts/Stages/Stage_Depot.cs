@@ -33,7 +33,7 @@ public class Stage_Depot : DayStage
     {
         base.Plug();
         Listen(Signal.BoardOpened, _ => Enter());
-        Listen(Signal.NotePicked, a => { if (a is HeldPaper n) PickNote(n); });
+        Listen(Signal.NotePicked, a => { if (a is HeldPaper n) PickNote(n); else if (a == null && PickedJob == null) PickThing(); });
     }
 
     protected override void NewDay()
@@ -124,6 +124,14 @@ public class Stage_Depot : DayStage
         d.SetPrompt(""); d.PromptAnchor = null;
         d.Mark($"쪽지 집음: {PickedJob.displayName} → 손에 든 전표 · 목적지 표식 {d.firstDrop?.Label}");
         d.FocusNext(HeldPaperLiftSec);
+    }
+
+    /// <summary>D-290 포장 v3: 받는 곳 선반에서 물건을 집었다 = 주문 맡음(칠판·쪽지 대신). 꼬리표가 전표 몫이라 손 전표는 없다.</summary>
+    void PickThing()
+    {
+        d.StopDestFocus();
+        PickedJob = MakeFirstJob();
+        d.Mark($"물건 집음(포장 v3): {PickedJob.displayName} → 목적지 표식 {d.firstDrop?.Label}");
     }
 
     /// <summary>Tab: 걷기·카트에서 들기 → 읽기 → 내려놓기. 대화·상자 들기·작업대·칠판·달력·일기에선 내려놓는다.</summary>

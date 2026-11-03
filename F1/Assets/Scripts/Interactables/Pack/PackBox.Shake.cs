@@ -28,6 +28,8 @@ namespace PitCrew.PackBench
         float shakeT0;
         bool shaking;
         public bool IsShaking => shaking;
+        /// <summary>D-290: 지금 흔드는 상자(작업대 없이 — 포장 v3). PackItem.Hit 가 먼저 본다.</summary>
+        public static PackBox Current { get; private set; }
 
         /// <summary>상자를 들어 올린 순간 — 내용물 정리·판정·달걀판 축 잠금.</summary>
         public void BeginShake()
@@ -88,7 +90,7 @@ namespace PitCrew.PackBench
             foreach (var it in shakeSet) { if (it.Body != null) it.Body.WakeUp(); }
             pairs.Clear();
             prevPos = Body.position; prevVel = Vector3.zero;
-            shakeT0 = Time.time; shaking = true;
+            shakeT0 = Time.time; shaking = true; Current = this;
         }
 
         void FixedUpdate()
@@ -115,7 +117,7 @@ namespace PitCrew.PackBench
         public ShakeResult EndShake()
         {
             if (!shaking) return cur;
-            shaking = false;
+            shaking = false; if (Current == this) Current = null;
             cur.seconds = Time.time - shakeT0;
             foreach (var it in shakeSet) if (it != null && !InsideInner(it.transform.position, 0.01f)) cur.escaped++;
             if (trayJoint != null) { Destroy(trayJoint); trayJoint = null; }

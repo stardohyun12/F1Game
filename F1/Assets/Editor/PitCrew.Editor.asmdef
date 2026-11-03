@@ -9,6 +9,7 @@
         "PitCrew.Interactables",
         "PitCrew.Presentation",
         "PitCrew.Stages",
+        "PitCrew.World",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Unity.RenderPipelines.Universal.Runtime",

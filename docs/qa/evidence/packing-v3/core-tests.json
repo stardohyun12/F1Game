@@ -1,0 +1,27 @@
+[2026-11-04 01:11:03] 시작 F1 테스트 25개
+Passed  Pay_배율
+Passed  Pay_첫배달_깨짐_360
+Passed  Pay_첫배달_멀쩡_1200
+Passed  Pay_첫배달_조금상함_840
+Passed  Tier_40미만_깨짐
+Passed  Tier_40이상80미만_조금상함
+Passed  Tier_80이상_멀쩡
+Passed  Tier_이름3개
+Passed  달력_1일째월_6일째토_7일째일
+Passed  달력_28일째에서_멈춤
+Passed  달력_28칸
+Passed  달력_주말8_평일20
+Passed  수리비_300
+Passed  오늘번돈_배달빼기수리
+Passed  주문_단계순서
+Passed  주문_카트칩
+Passed  첫배달_보수_1200
+Passed  궁합_깨짐_뽁뽁이가_종이보다_큼
+Passed  궁합_안맞으면_0
+Passed  상자_작으면_안들어감
+Passed  상자_중간_꼭맞음
+Passed  상자_크면_헐렁
+Passed  시작상태_바닥값과_안들어감
+Passed  시작상태_뽁뽁이_종이_맨몸_순
+Passed  시작상태_헐렁하면_낮음
+끝: 통과 25 · 실패 0 · 건너뜀 0 · 0.80s

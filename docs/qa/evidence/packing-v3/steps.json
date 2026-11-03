@@ -1,0 +1,11 @@
+{"steps":[
+"꼬리표 보임=True 시선=Parcel_Eggs 칩='' | 손=None 상자=- InBox=False 바닥=None 덮기=None fit=Snug | ",
+"집음 OrderPicked=True 꼬리표 보임=False | 손=Parcel 상자=- InBox=False 바닥=None 덮기=None fit=Snug | 물건 집음: 달걀 한 판 → 줄리아·찻집",
+"물건 판 위 | 손=None 상자=- InBox=False 바닥=None 덮기=None fit=Snug | 물건을 작업면에",
+"작은 상자 시험: 물건 바닥 y(상자 기준)=0.150 테두리 y=0.132 | 손=None 상자=소 InBox=False 바닥=None 덮기=None fit=TooSmall | 물건 걸림 — 안 들어감",
+"상자 중 집음 | 손=Box 상자=- InBox=False 바닥=None 덮기=None fit=TooSmall | 상자 중 집음",
+"뽁뽁이 한 장 | 손=Sheet 상자=중 InBox=False 바닥=None 덮기=None fit=Snug | 뽁뽁이 한 장 당김(남은 11)",
+"물건 넣음 | 손=None 상자=중 InBox=True 바닥=Bubble 덮기=None fit=Snug | 물건 들어감 (fit=Snug)",
+"닫음=True 테이프=1.00 | 손=None 상자=중 InBox=True 바닥=Bubble 덮기=Bubble fit=Snug | 테이프(봇) 1.00",
+"내려놓음 Ready=True spot.Ready=True 시작=90% rattle=0.00 hits=0 | 손=None 상자=중 InBox=True 바닥=Bubble 덮기=Bubble fit=Snug | 내려놓음 rattle=0.00 hits=0 fit=Snug 바닥=Bubble 덮기=Bubble 테이프=True → 시작 90% Ready=True"
+]}

@@ -35,3 +35,43 @@ MonoBehaviour:
     cargo: "\uB2EC\uAC40 \uD55C \uD310"
     reward: 1200
     dest: DP_tea
+  packing:
+    boxes:
+    - name: "\uC18C"
+      inner: {x: 0.22, y: 0.12, z: 0.22}
+    - name: "\uC911"
+      inner: {x: 0.315, y: 0.15, z: 0.315}
+    - name: "\uB300"
+      inner: {x: 0.46, y: 0.24, z: 0.46}
+    fillers:
+    - name: "\uBF41\uBF41\uC774"
+      kind: Bubble
+      thick: 0.02
+      roll: 12
+    - name: "\uC885\uC774"
+      kind: Paper
+      thick: 0.01
+      roll: 12
+    traits:
+    - cargo: "\uB2EC\uAC40 \uD55C \uD310"
+      trait: "\uAE68\uC9D0"
+      size: {x: 0.3, y: 0.07, z: 0.3}
+    - cargo: "\uC720\uB9AC\uBCD1"
+      trait: "\uAE68\uC9D0"
+      size: {x: 0.1, y: 0.25, z: 0.1}
+    - cargo: "\uC5BC\uC74C \uCC44\uC6B4 \uC0DD\uC120"
+      trait: "\uC816\uC74C"
+      size: {x: 0.4, y: 0.12, z: 0.2}
+    cushions:
+    - trait: "\uAE68\uC9D0"
+      bubble: 0.6
+      paper: 0.2
+    - trait: "\uC816\uC74C"
+      bubble: 0.5
+      paper: 0
+    snugGapMax: 0.03
+    baseLoss: 0.25
+    rattleLoss: 0.4
+    rattleFull: 2
+    looseLoss: 0.15
+    minStart: 0.4

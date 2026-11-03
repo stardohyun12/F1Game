@@ -1,0 +1,82 @@
+# PitCrew 세계 — 구조 있는 값의 원천 (D-289). 사람이 읽는 글은 world/SPEC.md.
+# 고치면: python tools/world/gen.py --check → 에디터에서 python tools/world/gen.py (에셋 덮어쓰기)
+# 좌표 = 2026-11-03 씬 스냅숏(docs/world/WORLD.md) 값. 도현이 정한 건물 위치와 어긋나면 씬이 아니라 여기를 고친다.
+
+# SPEC §3 장소 — 디버그 창 순간이동 자리 (순서 = DebugWindow.GoPlace(n) 의 n)
+# car: CartSpot(차고 마당 처음 자리) | Near(둘레 빈 곳) | BesideCar(카트 옆에 섬) | Fixed(car_at·car_yaw 에 놓음)
+places:
+  - {name: 집 방,            role: "2층 방 가운데, 문 쪽을 봄",                     feet: [187.1, 28.5, -62.7], yaw: 41,  car: CartSpot}
+  - {name: 집 앞,            role: "1층 현관(DOOR_01 184.5,-63.9) 밖 2.6 m, 집을 봄",       feet: [184.1, 25.4, -66.5], yaw: 10,  car: Near}
+  - {name: 정비소(사장 앞),   role: "사장(232.7,-55.2) 1.9 m 앞 — E 말하기가 떠야 함",         feet: [231.1, 26.7, -56.4], yaw: 53,  car: CartSpot}
+  - {name: 카트 옆,          role: "지금 카트가 있는 곳, 내릴 때 서는 자리 — E 타기가 떠야 함",                  feet: [0.0, 0.0, 0.0],      yaw: 0,   car: BesideCar}
+  - {name: 첫 배달 찻집,      role: "DP_tea (93.8,-288.0) 표식 6 m 북쪽 도로에서 표식을 봄",                    feet: [93.8, 4.0, -282.0],   yaw: 180, car: Near}
+  - {name: 노을 낚시 자리,    role: "손가락 부두 남쪽 끝 자리 뒤 1.1 m — E 앉기가 떠야 함",     feet: [-9.0, 1.3, -289.9],   yaw: 180, car: Near}
+  - {name: 항구,             role: "동쪽 부두 갑판(Pier 272,-235), 바다를 봄",        feet: [272.2, 1.3, -234.7], yaw: 270, car: Near}
+  - {name: 언덕 꺼짐(sink_1031), role: "Cam_FB_sink 가 보는 점(120,19,18)을 내려다보는 자리", feet: [110.0, 18.7, 30.0], yaw: 140, car: Near}
+  - {name: 큰길,            role: "main 도로 중심선 점(175,-75)",                   feet: [175.2, 18.0, -75.2], yaw: 90,  car: Near}
+  - {name: 정비소 안,         role: "차고 가운데(벽까지 5~8 m) — 바람·파도가 먹먹해야 함",          feet: [216.0, 26.7, -55.5], yaw: 90,  car: CartSpot}
+  - {name: 언덕 꼭대기,       role: "마을 둘레 지형 최고점(y 64.8, 레이 격자 4 m) — 바람이 가장 큼",         feet: [244.0, 64.8, 118.0], yaw: 200, car: Near}
+  - {name: 택배 보관소 앞,    role: "열린 셔터(x 268~271.5) 앞 마당, 안을 봄 — 카트는 앞 길, 마당엔 동쪽 회색 경사로(x 277)로",   feet: [270.5, 30.9, -34.0], yaw: 0,   car: Fixed, car_at: [273.5, 29.6, -37.4], car_yaw: 90}
+  - {name: 택배 보관소 칠판,   role: "서쪽 벽 칠판 1.8 m 앞 — E 칠판 보기가 떠야 함",           feet: [268.9, 31.1, -29.4], yaw: 270, car: Fixed, car_at: [273.5, 29.6, -37.4], car_yaw: 90}
+
+# SPEC §3-4 배달 지점 (씬 DP_*) — pos = 씬 DP 오브젝트 위치
+delivery_points:
+  - {name: DP_tea,        label: 찻집,       role: "첫 배달(달걀 한 판). 뒤로 바다가 열리는 자리", pos: [93.8, 4.6, -288.0],     recipient: 줄리아}
+  - {name: DP_hill_field, label: 언덕 밭,    role: "밭·농가 배달",                              pos: [180.8, 28.3, 6.9],       recipient: ~}
+  - {name: DP_lighthouse, label: 등대,       role: "바깥 멀고 긴 배달. 이야기로 열림",            pos: [-378.0, 2.1, -361.1],   recipient: ~}
+  - {name: DP_top_house,  label: 꼭대기 집,  role: "비탈 꼭대기 마을을 내려다봄",                pos: [-295.4, 63.5, 357.9],    recipient: ~}
+  - {name: DP_MART,       label: MART,       role: "가게. 옛 튜토리얼 출발지",                  pos: [225.1, 22.0, -78.3],     recipient: ~}
+  - {name: DP_depot,      label: 택배 보관소, role: "돌아오는 목적지",                          pos: [270.0, 32.6, -34.6],     recipient: 보관소 직원}
+
+# SPEC §4 주민 — 이름은 자료에 있는 것만. status: 확정 | 가안(도현 판정 대기)
+people:
+  - {name: 엄마,        place: 집 1층,     role: "저녁에 한두 마디. 하루 끝 대화 한 줄",                            status: 확정}
+  - {name: 정비소 사장,  place: 정비소,     role: "전직 레이서 퉁명한 말투 속 챙김. 카트를 내주고 고쳐 줌(이름 가안 마르코 오가타)", status: 가안}
+  - {name: 줄리아,      place: 찻집,       role: "수다스럽고 소문을 다 안다. 깨진 달걀도 웃어넘김. 첫 손님",          status: 확정}
+  - {name: 보관소 직원,  place: 택배 보관소, role: "바쁘고 친절 말은 짧고 손짓이 큼. 칠판에 오늘 주문을 적음(이름 가안 토모 비앙키)", status: 가안}
+
+# SPEC §5 물건 — 화물 종류 (status: 확정 = 첫 배달에 쓰임 | 초안)
+cargo:
+  - {name: 달걀 한 판,    weak_to: 급가속·급제동·충돌,  status: 확정}
+  - {name: 유리병,        weak_to: 충돌,               status: 초안}
+  - {name: 화분,          weak_to: 기울기,             status: 초안}
+  - {name: 얼음 채운 생선, weak_to: 급커브·시간,         status: 초안}
+  - {name: 편지·꽃,       weak_to: ~,                  status: 초안}
+
+# 주문 — 첫 주문 1건 (SPEC §7: 받는 돈 = 보수 × 상태 비율)
+orders:
+  - {id: first_egg, from: 보관소 직원, to: 줄리아, cargo: 달걀 한 판, reward: 1200, dest: DP_tea}
+
+# SPEC §2·§7 수치
+numbers:
+  repair_cost: 300
+  tier_ok_min: 0.8        # 이상 = 멀쩡
+  tier_dent_min: 0.4      # 이상 = 조금 상함, 밑 = 깨짐
+  pay_ok: 1.0
+  pay_dent: 0.7
+  pay_broken: 0.3
+  sunset_seconds: 60
+  calendar_days: 28
+
+# SPEC §6-4 포장 (D-290) — 상자 3 · 완충재 2 · 화물 성질. 크기 m [가로, 높이, 세로]. Core.PackRules 가 쓴다(WorldOrders.ApplyPacking).
+packing:
+  boxes:
+    - {name: 소, inner: [0.22, 0.12, 0.22]}
+    - {name: 중, inner: [0.315, 0.15, 0.315]}
+    - {name: 대, inner: [0.46, 0.24, 0.46]}
+  fillers:
+    - {name: 뽁뽁이, kind: Bubble, thick: 0.02, roll: 12}
+    - {name: 종이,   kind: Paper,  thick: 0.01, roll: 12}
+  cargo_traits:
+    - {cargo: 달걀 한 판,     trait: 깨짐, size: [0.30, 0.07, 0.30]}
+    - {cargo: 유리병,         trait: 깨짐, size: [0.10, 0.25, 0.10]}
+    - {cargo: 얼음 채운 생선, trait: 젖음, size: [0.40, 0.12, 0.20]}
+  cushions:            # 성질별 완충재 효과(0~1) — 안 맞으면 0
+    - {trait: 깨짐, Bubble: 0.6, Paper: 0.2}
+    - {trait: 젖음, Bubble: 0.5, Paper: 0.0}
+  snug_gap_max: 0.03
+  base_loss: 0.25
+  rattle_loss: 0.40
+  rattle_full: 2.0
+  loose_loss: 0.15
+  min_start: 0.4

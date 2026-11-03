@@ -15,6 +15,8 @@ public class Gaze
     public Transform boss;
     public DepotOrderBoard board;
     public DepotPackSpot packSpot;
+    /// <summary>D-290 포장 v3(켜져 있으면 칠판·쪽지·옛 작업대 대신 — 받는 곳 선반·포장대 물건을 먼저 본다).</summary>
+    public PackTable2 pack3;
     public DoorHandover handover;
     public RoomCalendar calendar;
     public RoomBed bed;
@@ -49,12 +51,19 @@ public class Gaze
     /// <summary>지금 시선이 가리키는 물건(없으면 null). 걷는 중 매 프레임 한 번.</summary>
     public IInteractable Find()
     {
+        bool v3 = pack3 != null && pack3.On;
+        if (v3 && !DayState.CarryingBox)
+        {
+            var p3 = pack3.Look(cam.transform, out var t3);
+            if (p3 != null) { Target = t3; return p3; }
+        }
         Object hit = Ray(out DoorHinge dh);
         if (hit == null && DayState.DepotFlow && DayState.CarryingBox && !DayState.OrderStarted && NearCart(car, player.position, cartLoadReach)) hit = car;
         Target = hit != null ? hit.name : null;
 
         if (handover != null && hit == handover) return knock;
         if (boss != null && hit == boss) return bossThing;
+        if (v3 && (board != null && hit == board || packSpot != null && hit == packSpot)) return null;   // 칠판·옛 작업대 꺼짐(받는 곳 선반이 대신)
         if (board != null && hit == board)
         {
             if (!board.NotesOn) return boardThing;

@@ -5,6 +5,7 @@
         "PitCrew",
         "PitCrew.Core",
         "PitCrew.Signals",
+        "PitCrew.World",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Unity.RenderPipelines.Core.Runtime"

@@ -15,10 +15,14 @@ namespace PitCrew.PackBench
         /// <summary>QA: 이번 흔들기에서 실제로 낸 덜그럭 소리 수·크기 합.</summary>
         public static int RattlePlayed; public static float RattleVolumeSum;
 
-        void EnsureSfx()
+        void EnsureSfx() => EnsureSfxOn(gameObject);
+
+        /// <summary>D-290: 옛 작업대가 꺼져 있어도(포장 v3) 같은 소리 풀을 쓴다.</summary>
+        public static void EnsureSfxOn(GameObject host)
         {
+            if (pool != null && pool.Length > 0 && pool[0] != null) return;
             pool = new AudioSource[8];
-            for (int i = 0; i < pool.Length; i++) { var s = gameObject.AddComponent<AudioSource>(); s.playOnAwake = false; s.spatialBlend = 0f; pool[i] = s; }
+            for (int i = 0; i < pool.Length; i++) { var s = host.AddComponent<AudioSource>(); s.playOnAwake = false; s.spatialBlend = 0f; pool[i] = s; }
             const string dir = "WrapMaterials/Sfx/";
             sfxHard = Resources.Load<AudioClip>(dir + "drop_002");
             sfxLight = Resources.Load<AudioClip>(dir + "tick_002");
@@ -35,6 +39,20 @@ namespace PitCrew.PackBench
             if (c == null || pool == null) return;
             var s = pool[poolNext]; poolNext = (poolNext + 1) % pool.Length;
             s.pitch = pitch; s.PlayOneShot(c, vol);
+        }
+
+        /// <summary>D-290 v3 손동작 소리: 0 집기 · 1 툭 · 3 닫기 · 4 안 됨 · 5 뽁뽁이·테이프 · 그 밖 완료.</summary>
+        public static void PlayCue(int k)
+        {
+            switch (k)
+            {
+                case 0: Sfx(sfxPick, 0.5f, 1f); break;
+                case 1: Sfx(sfxHard, 0.4f, 1f); break;
+                case 3: Sfx(sfxClose, 0.5f, 1f); break;
+                case 4: Sfx(sfxDeny, 0.35f, 0.7f); break;
+                case 5: Sfx(sfxBubble, 0.35f, Random.Range(0.9f, 1.1f)); break;
+                default: Sfx(sfxDone, 0.5f, 1f); break;
+            }
         }
 
         /// <summary>흔드는 중이 아닐 때 닿음(내려놓기·벽에 부딪힘) → 살짝 툭. 무른 쪽 소리.</summary>
