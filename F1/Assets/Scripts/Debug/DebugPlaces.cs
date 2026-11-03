@@ -40,7 +40,7 @@ public static class DebugPlaces
         new Place("카트 옆",          Vector3.zero,                       0f,   CarRule.BesideCar, "지금 카트가 있는 곳, 내릴 때 서는 자리 — E 타기가 떠야 함"),
         new Place("첫 배달 찻집",      new Vector3(93.8f, 4.0f, -282.0f),  180f, CarRule.Near,     "DP_tea (93.8,-288.0) 표식 6 m 북쪽 도로에서 표식을 봄"),
         new Place("노을 낚시 자리",    new Vector3(-9.0f, 1.3f, -289.9f),  180f, CarRule.Near,     "손가락 부두 남쪽 끝 자리 뒤 1.1 m — E 앉기가 떠야 함"),
-        new Place("항구",             new Vector3(272.2f, 1.3f, -234.7f), 180f, CarRule.Near,     "동쪽 부두 갑판(Pier 272,-235), 바다를 봄"),
+        new Place("항구",             new Vector3(272.2f, 1.3f, -234.7f), 270f, CarRule.Near,     "동쪽 부두 갑판(Pier 272,-235), 바다를 봄"),
         new Place("언덕 꺼짐(sink_1031)", new Vector3(110.0f, 18.7f, 30.0f), 140f, CarRule.Near,   "Cam_FB_sink 가 보는 점(120,19,18)을 내려다보는 자리"),
         new Place("큰길",             new Vector3(175.2f, 18.0f, -75.2f), 90f,  CarRule.Near,     "main 도로 중심선 점(175,-75)"),
         // D-248 ③ 환경음 확인용 — 지붕·벽 판정이 갈리는 자리

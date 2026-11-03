@@ -19,13 +19,19 @@ public static class BuildPierRails
         var old = GameObject.Find("PierRails"); if (old != null) Object.DestroyImmediate(old);
         var root = new GameObject("PierRails");
         root.AddComponent<WalkOnlyRail>();
-        float x0 = -13f, x1 = 22f, z0 = -297f, z1 = -277f;
+        // 부두 전체(손가락 부두·항구 부두 …)를 한 격자로 훑는다 — 구역을 나누면 이음매마다 가짜 난간이 선다.
+        var piers = GameObject.Find("Piers"); if (piers == null) return "Piers 없음";
+        var pb = new List<Bounds>(); Bounds all = default; bool first = true;
+        foreach (var c in piers.GetComponentsInChildren<Collider>(true)) { pb.Add(c.bounds); if (first) { all = c.bounds; first = false; } else all.Encapsulate(c.bounds); }
+        float x0 = Mathf.Floor(all.min.x) - 2f, x1 = Mathf.Ceil(all.max.x) + 2f, z0 = Mathf.Floor(all.min.z) - 2f, z1 = Mathf.Ceil(all.max.z) + 2f;
         int nx = Mathf.CeilToInt((x1 - x0) / Cell), nz = Mathf.CeilToInt((z1 - z0) / Cell);
         var deckY = new float[nx, nz]; var deck = new bool[nx, nz]; var ground = new bool[nx, nz];
         for (int i = 0; i < nx; i++)
             for (int j = 0; j < nz; j++)
             {
                 var o = new Vector3(x0 + (i + .5f) * Cell, 2.2f, z0 + (j + .5f) * Cell);
+                bool near = false; foreach (var b in pb) { var e = b; e.Expand(new Vector3(2f, 100f, 2f)); if (e.Contains(o)) { near = true; break; } }
+                if (!near) continue;
                 foreach (var h in Physics.RaycastAll(o, Vector3.down, 6f, ~0, QueryTriggerInteraction.Ignore))
                 {
                     if (h.point.y < 0.5f) continue;
