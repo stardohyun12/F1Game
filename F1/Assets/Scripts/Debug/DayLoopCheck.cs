@@ -238,54 +238,70 @@ public class DayLoopCheck : MonoBehaviour
         b.SimDrag(bS, PackBoard.SlotU, PackBoard.SlotV);
         bool sOpen = bS.open && b.InSlot == bS;
         b.SimGrab(pp); b.SimRotate(); bool rotated = pp.rot90; b.SimRelease(PackBoard.SlotU, PackBoard.SlotV);
-        bool bounced = bS.content == null && pp.holder == null && Mathf.Approximately(pp.u, pp.homeU) && !pp.rot90;
-        Step($"① 소 상자 {(sOpen && rotated && bounced ? "PASS" : "FAIL")} 열림={sOpen} R돌림={rotated} 튕김={bounced} | {b.LastAct}");
+        bool perched = pp.perch > 0f;                                         // D-295: 바로 사라지지 않고 벽에 걸려 있다가 튕겨 나온다
+        yield return Wait(() => pp.perch <= 0f && !b.Settling, 3f);
+        bool bounced = perched && bS.content == null && pp.holder == null && Mathf.Approximately(pp.u, pp.homeU) && !pp.rot90;
+        Step($"① 소 상자 {(sOpen && rotated && bounced ? "PASS" : "FAIL")} 열림={sOpen} R돌림={rotated} 벽에 걸림={perched} 튕김={bounced} | {b.LastAct}");
         b.SimDrag(bS, bS.homeU, bS.homeV);                                    // 비운 상자는 도로 집어 치운다
 
         // ② 대 상자: 들어가되 헐거움 → 닫고 흔들어 덜그럭
         int beats0 = b.RattleBeats;
-        yield return PackRun(b, bL, bubble, false, null);
+        yield return PackRun(b, bL, bubble, false, Pack2DShot == null ? null : Pack2DShot + "-L");
         float rattleL = bL.rattle; int beatsL = b.RattleBeats - beats0; var fitL = bL.fit;
-        Step($"② 대 상자 {(fitL == PackFit.Loose && bL.closed && bL.Taped && rattleL > 0.5f && beatsL > 3 ? "PASS" : "FAIL")} fit={fitL} 닫힘={bL.closed} 테이프={bL.strips.Count} rattle={rattleL:F2} 덜그럭 소리 {beatsL}번 | 시작값(참고) {PackRules.StartIntegrity("깨짐", fitL, bL.bottom, bL.top, rattleL) * 100f:F0}%");
+        Step($"② 대 상자 {(fitL == PackFit.Loose && bL.closed && bL.Taped && rattleL > 0.05f && beatsL > 3 ? "PASS" : "FAIL")} fit={fitL} 닫힘={bL.closed} 테이프={bL.strips.Count} 흔들림 {rattleL * 100f:F1} cm(흔든 {bL.shakeSecs:F1}s) 덜그럭 소리 {beatsL}번 | 시작값(참고) {PackRules.StartFromShake("깨짐", bL.bottom, bL.top, rattleL) * 100f:F0}%");
         b.DebugRestart(); beats0 = b.RattleBeats;
         pp = b.Find(PackPieceKind.Parcel);
 
         // ③ 중 상자: 한 판 끝까지
         int left0 = bubble.left;
-        yield return PackRun(b, bM, bubble, true, Pack2DShot);
-        float rattleM = bM.rattle; int beatsM = b.RattleBeats - beats0;
+        yield return PackRun(b, bM, bubble, true, Pack2DShot == null ? null : Pack2DShot + "-M");
+        float rattleM = bM.rattle; int beatsM = b.RattleBeats - beats0; float shakeM = bM.shakeSecs;
         float start = b.LastStart;
         yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving && d.CarryingBox, 5f);
         bool carry = d.CarryingBox;
-        bool good = bM.fit == PackFit.Snug && bM.bottom == PackFiller.Bubble && bM.top == PackFiller.Bubble && bM.strips.Count == 1 && Mathf.Abs(start - 0.90f) < 0.005f && bubble.left == left0 - 2 && carry && !b.On;
-        Step($"③ 중 상자 {(good ? "PASS" : "FAIL")} fit={bM.fit} 바닥={bM.bottom} 덮기={bM.top} 테이프 {bM.strips.Count}줄 뽁뽁이 롤 {left0}→{bubble.left} rattle={rattleM:F2}(덜그럭 {beatsM}번) 화물 시작 {start * 100f:F1}% 들고 나감={carry} | {b.LastAct}");
+        bool good = bM.fit == PackFit.Snug && bM.bottom == PackFiller.Bubble && bM.top == PackFiller.Bubble && bM.strips.Count == 1 && Mathf.Abs(start - 0.90f) < 0.005f && b.LastShake < 0.02f && bubble.left == left0 - 2 && carry && !b.On;
+        Step($"③ 중 상자 {(good ? "PASS" : "FAIL")} fit={bM.fit} 바닥={bM.bottom} 덮기={bM.top} 테이프 {bM.strips.Count}줄 뽁뽁이 롤 {left0}→{bubble.left} 흔들림 {b.LastShake * 100f:F2} cm(흔든 {shakeM:F1}s · 덜그럭 {beatsM}번 · {b.LastShakeHow}) 화물 시작 {start * 100f:F1}% 들고 나감={carry} | {b.LastAct}");
         Step($"포장 결과 → 포장대 Ready={t.Ready} StartIntegrity01={t.StartIntegrity01 * 100f:F1}% 손에 든 상자(CarryingBox)={d.CarryingBox}");
     }
 
-    /// <summary>한 판: 상자 가운데 → 롤 한 장(바닥) → 물건 → 롤 한 장(덮기) → 테이프 가로지름(+그림) → 쥐고 흔들기 → 놓기(takeOut 이면 판 밖 아래로).</summary>
+    /// <summary>
+    /// 한 판: 상자 가운데 → 롤 한 장(바닥, 떨어져 자리 잡음) → 물건을 던져 넣기(손 속도 0.8×0.4 m/s, 그림 1) → 롤 한 장(덮기) → 테이프 가로지름 → 쥐고 2.6 s 흔들기(1.5 s 넘게 가속해야 직접 잰 값을 쓴다, 그림 2) → 놓기(takeOut 이면 판 밖 아래로).
+    /// shot 은 그림 파일 접두사("….png" 앞) — 없으면 안 찍는다.
+    /// </summary>
     IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, string shot)
     {
         var pc = b.Find(PackPieceKind.Parcel); var tape = b.Find(PackPieceKind.Tape);
         b.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
         b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 뜯은 한 장 → 첫 장 = 바닥
-        b.SimDrag(pc, PackBoard.SlotU, PackBoard.SlotV);                      // 물건 넣기
+        yield return Wait(() => !b.Settling, 3f);
+        b.SimDragThrow(pc, PackBoard.SlotU - 0.05f, PackBoard.SlotV + 0.04f, new Vector2(0.8f, 0.4f));   // 물건 던져 넣기
+        yield return null; yield return null;
+        yield return Snap(shot, "-drop");
+        yield return Wait(() => !b.Settling, 3f);
         b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 한 장 더 = 덮기
-        yield return null;
+        yield return Wait(() => !b.Settling, 3f);
         float cu = PackBoard.SlotU, cv = PackBoard.SlotV + 0.02f;
         b.SimDragPath(tape, new Vector2(cu - 0.34f, cv), new Vector2(cu - 0.1f, cv), new Vector2(cu, cv), new Vector2(cu + 0.1f, cv), new Vector2(cu + 0.34f, cv));
         yield return new WaitForSecondsRealtime(0.4f);
-        if (!string.IsNullOrEmpty(shot))
-        {
-            yield return new WaitForEndOfFrame();
-            ScreenCapture.CaptureScreenshot(shot);
-            yield return new WaitForSecondsRealtime(0.5f);
-            Step("2D 보드 그림 " + shot);
-        }
         if (!b.SimGrab(box)) yield break;
-        float tt = 0f;
-        while (tt < 1.2f) { b.SimShakeTick(Time.unscaledDeltaTime, Time.unscaledTime); tt += Time.unscaledDeltaTime; yield return null; }
+        float tt = 0f; bool shot2 = false;
+        while (tt < 2.6f)
+        {
+            b.SimShakeTick(Time.unscaledDeltaTime, Time.unscaledTime); tt += Time.unscaledDeltaTime; yield return null;
+            if (!shot2 && tt > 0.9f) { shot2 = true; yield return Snap(shot, "-shake"); }
+        }
         b.SimRelease(PackBoard.SlotU, takeOut ? -PackBoard.HalfH - 0.12f : PackBoard.SlotV);
         yield return null;
+    }
+
+    IEnumerator Snap(string shot, string tag)
+    {
+        if (string.IsNullOrEmpty(shot)) yield break;
+        yield return new WaitForEndOfFrame();
+        string f = shot + tag + ".png";
+        ScreenCapture.CaptureScreenshot(f);
+        yield return new WaitForSecondsRealtime(0.4f);
+        Step("2D 보드 그림 " + f);
     }
 
     /// <summary>받는 곳 선반 앞에서 시선 E 로 물건을 집는다(안 잡히면 SimUse).</summary>

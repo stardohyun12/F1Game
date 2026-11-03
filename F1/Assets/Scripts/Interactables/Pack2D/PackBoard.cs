@@ -7,7 +7,8 @@ using UnityEngine.InputSystem;
 /// D-294 포장 2D 작업대 ①: 화면 = 작업대 윗면. 카메라가 작업대 위로 내려가면(0.4 s, 세상 안 — 노을빛 그대로) 윗면이 판이 되고,
 /// 왼쪽 = 받은 물건(08 의 Parcel·꼬리표 재사용) · 가운데 = 빈 자리(slot) · 오른쪽 = 상자 소/중/대 + 롤(뽁뽁이·종이) + 테이프. 마우스로 집어 놓는다(월드 평면 끌기 — UI 캔버스 아님).
 /// 상자를 가운데에 놓으면 열린다. ②③: 롤을 끌면 한 장 뜯겨 나와 상자 바닥(첫 장)/물건 위(덮기)에 놓이고, 물건을 열린 상자에 끌면 들어간다(PackRules.FitOf — 작으면 튕김),
-/// 테이프를 상자 위로 가로질러 끌면 뚜껑이 닫히고 줄 1개, 닫은 상자를 집고 흔들면 소리(헐거우면 덜그럭 큼), 상자를 판 밖(아래)으로 끌면 들고 나감(BoxTaken) → PackRules.StartIntegrity 가 화물 시작값.
+/// 테이프를 상자 위로 가로질러 끌면 뚜껑이 닫히고 줄 1개, 닫은 상자를 집고 흔들면 안의 물건이 PackPhysics 로 실제 움직이고(틈이 크면 많이 · 완충재가 틈을 메우면 거의 안) 부딪힐 때 소리, 상자를 판 밖(아래)으로 끌면 들고 나감(BoxTaken) → 1.5 s 흔들림 합 → PackRules.StartFromShake 가 화물 시작값.
+/// D-295: 놓는 순간부터 물리 — 조각은 떨어져 자리 잡고, 물건은 손의 속도로 상자 안에서 미끄러지며, 작은 상자엔 벽에 걸려 튕겨 나온다.
 /// 자리 틀: 원점 = 포장대 판 한가운데 윗면, 화면 위 = workSpot.forward, 화면 오른쪽 = workSpot.right. 좌표는 판 기준 m(u 오른쪽, v 위쪽) — 손으로 쓴 월드 좌표 없음.
 /// 그리기는 Presentation/PackBoardView, 켜고 끄기는 Stage_Packing. 08 의 3D 손 흐름(PackTable2)은 꺼 두기만 하고 지우지 않는다.
 /// </summary>
@@ -38,7 +39,6 @@ public class PackBoard : MonoBehaviour
     Vector2 grabOff;
     readonly List<Vector2> path = new List<Vector2>();   // 테이프를 끈 궤적
     float rawU, rawV;                                      // 마우스가 판 위에서 가리킨 자리(조각은 판 안으로 잘림)
-    float prevU, prevV, shakeBeat;
     bool pendingTake, simHold;
     PackItem sfxItem;
     readonly List<(Renderer r, bool was)> hidden = new List<(Renderer, bool)>();
@@ -96,6 +96,73 @@ public class PackBoard : MonoBehaviour
         string cargo = pp != null && pp.parcel != null ? pp.parcel.cargoName : "달걀 한 판";
         var w = WorldData.Orders; var t = w != null ? w.TraitOf(cargo) : null;
         return t ?? new WorldOrders.Trait { cargo = cargo, trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
+    }
+
+    // ── D-295 물성: world.yaml packing (mass·bounce·friction) → PackPhysics ──
+    /// <summary>놓는 순간 떨어지기 시작하는 높이(m) · 벽에 걸린 물건이 떠 있는 높이.</summary>
+    public const float DropZ = 0.07f, RimZ = 0.05f;
+    const float ThrowMax = 1.5f;
+
+    static PackPhysics.Mat BoxMat(string pieceName)
+    {
+        var pk = WorldData.Orders != null ? WorldData.Orders.packing : null;
+        if (pk != null) foreach (var b in pk.boxes) if ("상자 " + b.name == pieceName) return new PackPhysics.Mat(b.mass, b.bounce, b.friction);
+        return new PackPhysics.Mat(0.12f, 0.30f, 0.40f);
+    }
+
+    /// <summary>완충재 한 장의 물성과 두께(m). yaml fillers 에서 종류로 찾고, 없으면 기본값.</summary>
+    public static PackPhysics.Mat FillerMat(PackFiller k, out float thick)
+    {
+        var pk = WorldData.Orders != null ? WorldData.Orders.packing : null;
+        if (pk != null) foreach (var f in pk.fillers) if (KindOf(f.kind, f.name) == k) { thick = f.thick; return new PackPhysics.Mat(f.mass, f.bounce, f.friction); }
+        thick = k == PackFiller.Paper ? 0.01f : 0.02f;
+        return k == PackFiller.Paper ? new PackPhysics.Mat(0.01f, 0.30f, 0.60f) : new PackPhysics.Mat(0.02f, 0.10f, 0.90f);
+    }
+
+    /// <summary>
+    /// 상자 안 물건의 물리 설정. 상자 틀에서 본 안쪽(눕힌 방향 + 돌림) · 물건 발자국 · 틈을 메우는 완충재 두께 합 · 마찰(깔린 면과 평균) ·
+    /// 벽 반발 √(물건×상자) × 놓인 완충재 반발 유지율의 곱. 불변 검사도 이 함수로 같은 물리를 만든다.
+    /// </summary>
+    public static PackPhysics Setup(Vector3 inner, bool boxRot, PackPhysics.Mat boxMat, WorldOrders.Trait cargo, bool parcelRot, PackFiller bottom, PackFiller top)
+    {
+        var ph = new PackPhysics
+        {
+            inner = boxRot ? new Vector2(inner.z, inner.x) : new Vector2(inner.x, inner.z),
+            part = parcelRot ? new Vector2(cargo.size.z, cargo.size.x) : new Vector2(cargo.size.x, cargo.size.z),
+            mass = cargo.mass,
+        };
+        float surf = boxMat.friction, e = Mathf.Sqrt(Mathf.Max(0f, cargo.bounce * boxMat.bounce)), pad = 0f;
+        foreach (var f in new[] { bottom, top })
+        {
+            if (f == PackFiller.None) continue;
+            var fm = FillerMat(f, out float th);
+            pad += th; e *= fm.bounce;
+            if (f == bottom) surf = fm.friction;                              // 물건은 바닥 완충재 위에 앉는다
+        }
+        ph.pad = pad; ph.e = e; ph.mu = (cargo.friction + surf) * 0.5f;
+        return ph;
+    }
+
+    PackPhysics NewPhys(PackPiece box, PackPiece pc)
+    {
+        return Setup(box.inner, box.rot90, BoxMat(box.name), TraitOfParcel(pc), pc.rot90, box.bottom, box.top);
+    }
+
+    /// <summary>완충재가 더해졌다 → 같은 상자의 물리 설정만 새로(자리·속도·측정은 그대로).</summary>
+    void RefreshPhys(PackPiece box)
+    {
+        if (box.phys == null || box.content == null) return;
+        var n = NewPhys(box, box.content);
+        box.phys.pad = n.pad; box.phys.e = n.e; box.phys.mu = n.mu;
+        var l = box.phys.Limit;
+        box.phys.pos = new Vector2(Mathf.Clamp(box.phys.pos.x, -l.x, l.x), Mathf.Clamp(box.phys.pos.y, -l.y, l.y));
+    }
+
+    void PlaceContent(PackPiece box)
+    {
+        if (box.content == null) return;
+        var o = box.phys != null ? box.phys.pos : Vector2.zero;
+        box.content.u = box.u + o.x; box.content.v = box.v + o.y;
     }
 
     public PackPiece Find(PackPieceKind k, int index = 0)
@@ -180,6 +247,7 @@ public class PackBoard : MonoBehaviour
         Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
         var ms = Mouse.current; var kb = Keyboard.current;
         if (kb != null && kb.escapeKey.wasPressedThisFrame) ExitAsked = true;
+        Tick(Mathf.Min(Time.unscaledDeltaTime, 0.05f));                      // 물리는 마우스와 상관없이 매 프레임
         if (simHold) return;                                                 // 봇이 쥐고 있는 동안은 마우스를 안 본다
         if (ms == null || !PointerOnBoard(ms.position.ReadValue(), out float u, out float v)) return;
         if (ms.leftButton.wasPressedThisFrame) Begin(u, v);
@@ -187,7 +255,6 @@ public class PackBoard : MonoBehaviour
         {
             if (kb != null && kb.rKey.wasPressedThisFrame) Rotate();
             Move(u, v);
-            ShakeStep(Time.deltaTime);
             if (ms.leftButton.wasReleasedThisFrame) End();
         }
         else if (ms.rightButton.wasPressedThisFrame && Pick(u, v) == null) { ExitAsked = true; Act("빈 자리 오른쪽 클릭 → 물러남"); }
@@ -226,10 +293,10 @@ public class PackBoard : MonoBehaviour
             Act($"{p.filler} 한 장 뜯음(롤에 {roll.left} 남음)");
         }
         else if (p.kind == PackPieceKind.Box && p.content != null && !p.closed) { Deny($"{p.name} 안에 물건이 있음(먼저 물건을 꺼낸다)"); return; }
-        else if (p.kind == PackPieceKind.Box && !p.closed && p.Stuffed) { p.bottom = p.top = PackFiller.None; Act($"{p.name} 바닥 완충재 걷어냄"); }
-        else if (p.kind == PackPieceKind.Parcel && p.holder != null) { p.holder.content = null; p.holder.top = PackFiller.None; p.holder = null; Act("물건을 상자에서 꺼냄(덮은 완충재는 버려짐)"); }
-        Held = p; p.lifted = true; grabOff = new Vector2(p.u - u, p.v - v);
-        rawU = u; rawV = v; prevU = p.u; prevV = p.v; shakeBeat = 0f;
+        else if (p.kind == PackPieceKind.Box && !p.closed && p.Stuffed) { p.bottom = p.top = PackFiller.None; p.dropBottom = p.dropTop = default; Act($"{p.name} 바닥 완충재 걷어냄"); }
+        else if (p.kind == PackPieceKind.Parcel && p.holder != null) { p.holder.content = null; p.holder.top = PackFiller.None; p.holder.dropTop = default; p.holder.phys = null; p.holder = null; Act("물건을 상자에서 꺼냄(덮은 완충재는 버려짐)"); }
+        Held = p; p.lifted = true; p.drop = default; p.hand = Vector2.zero; p.lastPos = new Vector2(p.u, p.v); grabOff = new Vector2(p.u - u, p.v - v);
+        rawU = u; rawV = v;
         if (p.kind == PackPieceKind.Tape) { path.Clear(); path.Add(new Vector2(p.u, p.v)); }
         pieces.Remove(p); pieces.Add(p);                  // 맨 위로
         if (p.content != null) { pieces.Remove(p.content); pieces.Add(p.content); }
@@ -243,7 +310,7 @@ public class PackBoard : MonoBehaviour
         rawU = u; rawV = v;
         p.u = Mathf.Clamp(u + grabOff.x, -HalfW + p.w * 0.5f, HalfW - p.w * 0.5f);
         p.v = Mathf.Clamp(v + grabOff.y, -HalfH + p.d * 0.5f, HalfH - p.d * 0.5f);
-        if (p.content != null) { p.content.u = p.u; p.content.v = p.v; }
+        PlaceContent(p);
         if (p.kind == PackPieceKind.Tape && (path.Count == 0 || (path[path.Count - 1] - new Vector2(p.u, p.v)).sqrMagnitude > 0.0001f)) path.Add(new Vector2(p.u, p.v));
     }
 
@@ -262,6 +329,7 @@ public class PackBoard : MonoBehaviour
     {
         var p = Held; if (p == null) return;
         Held = null; p.lifted = false; p.jit = Vector2.zero;
+        if (p.kind != PackPieceKind.Roll) p.drop.Drop(DropZ, DropBounce(p));          // 놓는 순간부터 떨어진다
         switch (p.kind)
         {
             case PackPieceKind.Box: EndBox(p); break;
@@ -279,7 +347,7 @@ public class PackBoard : MonoBehaviour
         {
             if (InSlot != null && InSlot != p) InSlot.Home();
             p.u = SlotU; p.v = SlotV; p.open = !p.closed; InSlot = p;
-            if (p.content != null) { p.content.u = p.u; p.content.v = p.v; }
+            PlaceContent(p);
             if (!p.closed) OpenedCount++;
             Act($"{p.name} 가운데에 놓음 → {(p.closed ? "닫힌 채" : "열림")}");
         }
@@ -295,16 +363,20 @@ public class PackBoard : MonoBehaviour
         float px = p.rot90 ? sz.z : sz.x, pz = p.rot90 ? sz.x : sz.z;
         float bx = box.rot90 ? inn.z : inn.x, bz = box.rot90 ? inn.x : inn.z;
         var fit = PackRules.FitOf(px, sz.y, pz, bx, inn.y, bz);
-        if (fit == PackFit.TooSmall)
+        if (fit == PackFit.TooSmall)                                          // 벽에 걸린다: 상자 가장자리에 얹혀 잠깐 떠 있다가 튕겨 나온다(Tick)
         {
-            p.Home(); PackBench.PlayCue(4);
-            Act($"물건이 {box.name} 에 안 들어감(물건 {px:F2}×{pz:F2} > 안 {bx:F2}×{bz:F2}) → 튕김");
+            p.u = box.u; p.v = box.v; p.drop = default; p.perch = 0.45f; PackBench.PlayCue(4);
+            Act($"물건이 {box.name} 에 안 들어감(물건 {px:F2}×{pz:F2} > 안 {bx:F2}×{bz:F2}) → 벽에 걸림");
             return;
         }
-        box.content = p; p.holder = box; box.fit = fit; p.u = box.u; p.v = box.v;
+        box.content = p; p.holder = box; box.fit = fit;
+        var rel = new Vector2(p.u - box.u, p.v - box.v);
+        box.phys = NewPhys(box, p);                                           // 놓은 자리·손의 속도 그대로 상자 안에서 미끄러진다
+        box.phys.Reset(rel, Vector2.ClampMagnitude(p.hand, ThrowMax));
+        PlaceContent(box);
         pieces.Remove(p); pieces.Insert(pieces.IndexOf(box) + 1, p);
         PackBench.PlayCue(1);
-        Act($"물건이 {box.name} 에 들어감 fit={fit}{(fit == PackFit.Loose ? "(헐거움)" : "")}");
+        Act($"물건이 {box.name} 에 들어감 fit={fit}{(fit == PackFit.Loose ? "(헐거움)" : "")} 틈 {box.phys.Limit.x * 2f * 100f:F1}×{box.phys.Limit.y * 2f * 100f:F1} cm 던진 속도 {box.phys.vel.magnitude:F2} m/s");
     }
 
     void EndSheet(PackPiece p)
@@ -312,8 +384,9 @@ public class PackBoard : MonoBehaviour
         pieces.Remove(p);
         var box = InSlot;
         if (box == null || box.closed || !InSlotRect(p)) { Act($"{p.filler} 한 장 놓친 자리에 버려짐"); return; }
-        if (box.content == null) { if (box.bottom == PackFiller.None) box.bottom = p.fillerKind; Act($"{p.filler} 바닥에 깔림"); }
-        else { if (box.top == PackFiller.None) box.top = p.fillerKind; Act($"{p.filler} 물건 위에 덮임"); }
+        float e = FillerMat(p.fillerKind, out _).bounce;
+        if (box.content == null) { if (box.bottom == PackFiller.None) { box.bottom = p.fillerKind; box.dropBottom.Drop(DropZ, e); } Act($"{p.filler} 바닥에 깔림"); }
+        else { if (box.top == PackFiller.None) { box.top = p.fillerKind; box.dropTop.Drop(DropZ, e); RefreshPhys(box); } Act($"{p.filler} 물건 위에 덮임"); }
         PackBench.PlayCue(5);
     }
 
@@ -337,46 +410,94 @@ public class PackBoard : MonoBehaviour
         strip.du = Mathf.Clamp(strip.du, -hw * 0.6f, hw * 0.6f); strip.dv = Mathf.Clamp(strip.dv, -hd * 0.6f, hd * 0.6f);
         bool wasOpen = !box.closed;
         box.closed = true; box.open = false; box.strips.Add(strip);
+        if (wasOpen && box.phys != null) { box.phys.ResetMeasure(); box.rattle = 0f; box.shakeSecs = 0f; }   // 닫은 순간부터 잰다
         PackBench.PlayCue(wasOpen ? 3 : 5);
         Act($"테이프 {(h ? "가로" : "세로")} 줄 {box.strips.Count}개{(wasOpen ? " — 뚜껑 닫힘" : "")}");
     }
 
-    // ── 흔들기: 닫은 상자를 집은 채 마우스가 빠르게 오가면 소리 ──
-    /// <summary>든 닫힌 상자가 얼마나 빨리 움직이는지로 흔들림을 센다. 헐거우면 덜그럭이 크고 rattle(덜그럭 합)이 쌓인다 — 꼭 맞으면 거의 안 들린다.</summary>
-    void ShakeStep(float dt)
+    // ── 물리 한 걸음(매 프레임) · 흔들기: 닫은 상자를 집은 채 마우스가 오가면 상자 가속 → 안의 물건이 실제로 움직인다 ──
+    static float DropBounce(PackPiece p)
     {
-        var p = Held; if (p == null || p.kind != PackPieceKind.Box || !p.closed || dt <= 0f) return;
-        float speed = new Vector2(p.u - prevU, p.v - prevV).magnitude / dt;
-        prevU = p.u; prevV = p.v;
-        if (speed < 0.9f) { p.jit = Vector2.zero; return; }
-        bool loose = p.content != null && p.fit == PackFit.Loose;
-        p.shakeSecs += dt;
-        if (loose) p.rattle = Mathf.Min(PackRules.RattleFull, p.rattle + dt);
-        p.jit = new Vector2(Mathf.Sin(Time.unscaledTime * 83f), Mathf.Cos(Time.unscaledTime * 71f)) * (loose ? 0.016f : 0.007f);
-        shakeBeat += dt;
-        if (shakeBeat < 0.11f || p.content == null) return;
-        shakeBeat = 0f;
+        if (p.kind == PackPieceKind.Box) return BoxMat(p.name).bounce;
+        if (p.kind == PackPieceKind.Parcel && p.parcel != null) { var t = WorldData.Orders != null ? WorldData.Orders.TraitOf(p.parcel.cargoName) : null; if (t != null) return t.bounce; }
+        return 0.3f;
+    }
+
+    /// <summary>떨어지는 것·걸린 것·상자 안 물건을 dt 만큼. 상자를 쥐고 있으면 손 속도의 변화 = 상자 가속(m/s²)을 안의 물리에 먹인다.</summary>
+    public void Tick(float dt)
+    {
+        if (dt <= 0f) return;
+        foreach (var p in pieces.ToArray())
+        {
+            if (p.kind != PackPieceKind.Roll && p.kind != PackPieceKind.Tape) p.drop.Step(dt);
+            p.dropBottom.Step(dt); p.dropTop.Step(dt);
+            var pos = new Vector2(p.u, p.v);
+            Vector2 acc = Vector2.zero;
+            if (Held == p)
+            {
+                var v = (pos - p.lastPos) / dt;
+                acc = Vector2.ClampMagnitude((v - p.hand) / dt, 300f);
+                p.hand = v;
+            }
+            p.lastPos = pos;
+            if (p.perch > 0f)
+            {
+                p.perch -= dt;
+                if (p.perch <= 0f) { p.perch = 0f; p.Home(); PackBench.PlayCue(4); Act("벽에 걸린 물건이 튕겨 나옴"); }
+            }
+            if (p.kind != PackPieceKind.Box || p.phys == null) continue;
+            p.phys.Advance(dt, acc);
+            PlaceContent(p);
+            if (p.closed) { p.rattle = p.phys.PeakWindow; p.shakeSecs = p.phys.ShakeTime; }
+            p.jit = p.closed ? Vector2.ClampMagnitude(p.phys.vel * 0.03f, 0.02f) : Vector2.zero;
+            float im = p.phys.TakeImpact();
+            if (im > 0.02f) Rattle(im);
+        }
+    }
+
+    void Rattle(float impact)
+    {
         if (sfxItem == null) { var g = new GameObject("pack2d_sfx") { hideFlags = HideFlags.HideAndDontSave }; sfxItem = g.AddComponent<PackItem>(); sfxItem.kind = PackItemKind.Eggs; }
-        PackBench.PlayRattle(sfxItem, loose ? 0.9f : 0.12f);
+        PackBench.PlayRattle(sfxItem, Mathf.Clamp01(impact / 0.5f));
         RattleBeats++;
     }
+
     /// <summary>QA: 이 보드가 낸 덜그럭 소리 수.</summary>
     public int RattleBeats { get; private set; }
 
-    /// <summary>상자를 판 밖(아래)으로 끌었다: 화물 시작값을 Core 로 구해 포장대(PackTable2)에 넘기고, 판에서 물러난 뒤 BoxTaken 을 올린다.</summary>
+    /// <summary>QA: 떨어지는 조각·걸린 물건이 아직 있나(없으면 다 자리 잡음).</summary>
+    public bool Settling
+    {
+        get
+        {
+            foreach (var p in pieces) if (p.drop.Active || p.dropBottom.Active || p.dropTop.Active || p.perch > 0f) return true;
+            return false;
+        }
+    }
+
+    /// <summary>마지막으로 들고 나간 상자의 흔들림 측정(m)과 어떻게 쟀는지.</summary>
+    public float LastShake { get; private set; }
+    public string LastShakeHow { get; private set; } = "";
+
+    /// <summary>상자를 판 밖(아래)으로 끌었다: 흔들림 측정 → 화물 시작값을 Core 로 구해 포장대(PackTable2)에 넘기고, 판에서 물러난 뒤 BoxTaken 을 올린다.</summary>
     void TakeOut(PackPiece box)
     {
         var parcel = box.content;
         var tr = TraitOfParcel(parcel);
-        float start = PackRules.StartIntegrity(tr.trait, box.fit, box.bottom, box.top, box.rattle);
+        float shake; string how;
+        if (box.phys == null) { shake = 0f; how = "물리 없음"; }
+        else if (box.shakeSecs >= PackPhysics.Window) { shake = box.rattle; how = $"직접 흔든 {box.shakeSecs:F1}s 중 1.5s 합"; }
+        else { shake = box.phys.MeasureStandard(); how = $"흔든 시간 {box.shakeSecs:F1}s < 1.5s → 표준 흔들기(진폭 {PackPhysics.StdAmp * 100f:F0}cm·{PackPhysics.StdHz:F0}Hz)로 잼"; }
+        float start = PackRules.StartFromShake(tr.trait, box.bottom, box.top, shake);
+        var lim = box.phys != null ? box.phys.Limit : Vector2.zero;
         var r = new PackBox.ShakeResult
         {
-            box = box.name, seconds = box.shakeSecs, rattle = box.rattle, closed = true, taped = true, upright = true, locks = "", faces = "",
-            gap = box.fit == PackFit.Loose ? 0.1f : 0.01f,
+            box = box.name, seconds = box.shakeSecs, rattle = shake, closed = true, taped = true, upright = true, locks = "", faces = "",
+            gap = Mathf.Max(lim.x, lim.y) * 2f,
         };
-        LastStart = start; LastResult = r;
+        LastStart = start; LastResult = r; LastShake = shake; LastShakeHow = how;
         if (table != null) table.Accept2D(start, r, box.bottom, box.top, box.fit);
-        Act($"상자 들고 나감 → 화물 시작 {start * 100f:F0}% (상자 {box.name} fit={box.fit} 바닥={box.bottom} 덮기={box.top} rattle={box.rattle:F2} 테이프 {box.strips.Count}줄)");
+        Act($"상자 들고 나감 → 화물 시작 {start * 100f:F0}% (흔들림 {shake * 100f:F1} cm / {how}; 상자 {box.name} 바닥={box.bottom} 덮기={box.top} 테이프 {box.strips.Count}줄)");
         box.active = false; parcel.active = false; InSlot = null;
         pendingTake = true; ExitAsked = true;
     }
@@ -393,6 +514,16 @@ public class PackBoard : MonoBehaviour
         Begin(p.u, p.v);
         if (Held == null) return false;
         Move(toU, toV); End();
+        return true;
+    }
+
+    /// <summary>봇: SimDrag 인데 놓는 순간 손 속도(m/s)가 handV 였던 것처럼 — 던져 넣기.</summary>
+    public bool SimDragThrow(PackPiece p, float toU, float toV, Vector2 handV)
+    {
+        if (p == null || !On || !p.active) return false;
+        Begin(p.u, p.v);
+        if (Held != p) return false;
+        Move(toU, toV); p.hand = handV; End();
         return true;
     }
 
@@ -416,12 +547,11 @@ public class PackBoard : MonoBehaviour
         simHold = true; return true;
     }
 
-    /// <summary>봇: 쥔 상자를 좌우로 흔든다(한 프레임분). 사람이 마우스를 빠르게 오가는 것과 같은 길(Move → ShakeStep).</summary>
+    /// <summary>봇: 쥔 상자를 좌우로 흔든다(한 프레임분). 사람이 마우스를 빠르게 오가는 것과 같은 길(Move → 다음 Tick 이 가속을 읽는다).</summary>
     public void SimShakeTick(float dt, float time)
     {
         if (Held == null) return;
-        Move(SlotU + Mathf.Sin(time * 28f) * 0.12f, SlotV + Mathf.Cos(time * 19f) * 0.03f);
-        ShakeStep(dt);
+        Move(SlotU + Mathf.Sin(time * 28f) * 0.12f, SlotV + Mathf.Cos(time * 19f) * 0.03f);   // 물리는 Update 의 Tick 이 돈다
     }
 
     public bool SimRelease(float toU, float toV)

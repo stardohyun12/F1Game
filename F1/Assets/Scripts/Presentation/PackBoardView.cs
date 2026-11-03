@@ -146,15 +146,16 @@ public class PackBoardView : MonoBehaviour
             float h = p.kind == PackPieceKind.Box ? 0.05f : 0.03f;
             float lift = p.lifted ? 0.07f : 0f;
             float pu = p.u + p.jit.x, pv = p.v + p.jit.y;
-            float baseY = 0.012f + h * 0.5f + lift;
-            if (p.holder != null) baseY = BoxTop + (p.holder.bottom != PackFiller.None ? SheetH : 0f) + ParcelH * 0.5f + (p.holder.lifted ? 0.07f : 0f);
+            float z = p.perch > 0f ? PackBoard.RimZ : p.drop.z;                // D-295: 놓은 뒤 떨어지는 높이 · 벽에 걸려 떠 있는 높이
+            float baseY = 0.012f + h * 0.5f + lift + z;
+            if (p.holder != null) baseY = BoxTop + (p.holder.bottom != PackFiller.None ? SheetH : 0f) + ParcelH * 0.5f + (p.holder.lifted ? 0.07f : 0f) + p.holder.drop.z + z;
             float dd = p.d;
             if (p.kind == PackPieceKind.Roll) dd = p.d * Mathf.Lerp(0.35f, 1f, (float)p.left / Mathf.Max(1, p.full));   // 롤이 가늘어진다
             b.localScale = new Vector3(p.w, h, dd);
             Place(b, pu, pv, baseY);
             float topY = baseY + h * 0.5f;
             if (inner.TryGetValue(p, out var i)) i.gameObject.SetActive(p.open);
-            if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift);
+            if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift + z);
             var t = label[p];
             bool hideLabel = p.kind == PackPieceKind.Box && p.Stuffed && !p.closed;
             SetAct(t.transform, !hideLabel);
@@ -174,7 +175,7 @@ public class PackBoardView : MonoBehaviour
         {
             x.bottom.GetComponent<Renderer>().sharedMaterial = Mat(FillerColor(p.bottom));
             x.bottom.localScale = new Vector3(p.w * 0.82f, SheetH, p.d * 0.82f);
-            Place(x.bottom, pu, pv, y + SheetH * 0.5f); y += SheetH;
+            Place(x.bottom, pu, pv, y + p.dropBottom.z + SheetH * 0.5f); y += SheetH;
         }
         if (p.content != null) y += ParcelH;
         SetAct(x.top, hasTop);
@@ -182,7 +183,7 @@ public class PackBoardView : MonoBehaviour
         {
             x.top.GetComponent<Renderer>().sharedMaterial = Mat(FillerColor(p.top));
             x.top.localScale = new Vector3(p.w * 0.82f, SheetH, p.d * 0.82f);
-            Place(x.top, pu, pv, y + SheetH * 0.5f); y += SheetH;
+            Place(x.top, pu, pv, y + p.dropTop.z + SheetH * 0.5f); y += SheetH;
         }
         SetAct(x.lid, p.closed);
         if (p.closed)

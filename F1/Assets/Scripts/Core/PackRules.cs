@@ -17,6 +17,8 @@ public static class PackRules
     /// <summary>헐렁한 상자 하나로 더 깎이는 값. 가설.</summary>
     public static float LooseLoss = 0.15f;
     public static float MinStart = 0.4f;
+    /// <summary>D-295: 1.5 s 흔들림 합(m)이 이만큼이면 흔들림 손실이 최대(RattleLoss). 가설 — 곡선은 선형.</summary>
+    public static float ShakeFull = 0.5f;
 
     /// <summary>궁합 표 [성질][완충재] = 손상 줄이는 비율(0~1). 성질: 0 깨짐 · 1 젖음. 완충재: 0 없음 · 1 뽁뽁이 · 2 종이.</summary>
     public static float[,] Cushions =
@@ -41,6 +43,19 @@ public static class PackRules
         if (ix > bx || iy > by || iz > bz) return PackFit.TooSmall;
         float gap = System.Math.Max(bx - ix, bz - iz);
         return gap <= SnugGapMax ? PackFit.Snug : PackFit.Loose;
+    }
+
+    /// <summary>
+    /// D-295 물리 시뮬 판 시작값: 흔들림 측정(1.5 s 동안 물건이 상자 기준 움직인 거리 합, m)에서 온다. 틈 0(꽉 낌) = 흔들림 0 → 바탕 손상만,
+    /// ShakeFull 이상 움직이면 RattleLoss 만큼 더. 헐렁한 상자의 벌점(LooseLoss)은 따로 없다 — 틈이 크면 많이 움직이니 이미 흔들림에 들어 있다.
+    /// </summary>
+    public static float StartFromShake(string trait, PackFiller bottom, PackFiller top, float shakeMeters)
+    {
+        float r = shakeMeters / System.Math.Max(0.01f, ShakeFull);
+        if (r < 0f) r = 0f; if (r > 1f) r = 1f;
+        float loss = (BaseLoss + RattleLoss * r) * (1f - (Cushion(trait, bottom) + Cushion(trait, top)) * 0.5f);
+        float v = 1f - loss;
+        return v < MinStart ? MinStart : v > 1f ? 1f : v;
     }
 
     /// <summary>출발 때 화물 상태(0~1). 안 들어간 상자는 판정할 수 없다 → 바닥값.</summary>

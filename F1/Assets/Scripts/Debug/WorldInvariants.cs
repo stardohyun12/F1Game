@@ -46,7 +46,33 @@ public static class WorldInvariants
         ("들린 물건 Rigidbody 보간 꺼짐(걸을 때 따라옴)", () => HeldFollowsHand()),
         ("포장 2D 보드 조각(상자3·롤2·테이프·물건)·판 안·안 겹침", () => PackBoard2D()),
         ("포장 2D 규칙: 소 튕김·중 딱맞음(+뽁뽁이 90%)·대 헐거움·롤 가득·뜯은 조각 0", () => PackBoard2DRules()),
+        ("포장 물리: 중+뽁뽁이2장+달걀 흔들림<2cm·소리0 · 대 뽁뽁이0장 >5cm · 중 뽁뽁이0장 > 뽁뽁이2장", () => PackPhysicsShake()),
     };
+
+    /// <summary>
+    /// D-295 포장 2D ③: 상자 안 물리(PackPhysics)의 표준 흔들기(진폭 4 cm · 3 Hz, 1.5 s 합) — 사람이 흔드는 것과 같은 물리 길.
+    /// 중 상자 + 뽁뽁이 2장(틈이 메워짐) + 달걀 한 판은 2 cm 미만, 대 상자 + 뽁뽁이 0장은 5 cm 초과, 같은 중 상자라도 뽁뽁이가 없으면 있을 때보다 많이 움직인다.
+    /// 물성(world.yaml packing mass·bounce·friction)이나 틈 계산이 어긋나 틈이 있는데 안 움직이거나 꽉 끼었는데 덜그럭거리면 여기서 잡힌다. 씬 없이 돈다.
+    /// </summary>
+    static List<string> PackPhysicsShake()
+    {
+        var bad = new List<string>();
+        var od = WorldData.Orders; var pk = od != null ? od.packing : null;
+        var tr = od != null ? od.TraitOf("달걀 한 판") : null;
+        if (tr == null) tr = new WorldOrders.Trait { cargo = "달걀 한 판", trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
+        bool yaml = pk != null && pk.boxes.Count >= 3;
+        Vector3 mid = yaml ? pk.boxes[1].inner : new Vector3(0.315f, 0.15f, 0.315f), big = yaml ? pk.boxes[2].inner : new Vector3(0.46f, 0.24f, 0.46f);
+        var mm = yaml ? new PackPhysics.Mat(pk.boxes[1].mass, pk.boxes[1].bounce, pk.boxes[1].friction) : new PackPhysics.Mat(0.12f, 0.3f, 0.4f);
+        var bm = yaml ? new PackPhysics.Mat(pk.boxes[2].mass, pk.boxes[2].bounce, pk.boxes[2].friction) : new PackPhysics.Mat(0.2f, 0.3f, 0.4f);
+        float midBubble = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.Bubble, PackFiller.Bubble).MeasureStandard(out int midHits);
+        float midBare = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+        float bigBare = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+        if (midBubble >= 0.02f) bad.Add($"중 상자 + 뽁뽁이 2장 + {tr.cargo}: 흔들림 {midBubble * 100f:F1} cm (기대 < 2 cm) — 틈이 안 메워짐? 물성 {tr.mass:F2}kg/반발{tr.bounce:F2}/마찰{tr.friction:F2}");
+        if (midHits > 0) bad.Add($"중 상자 + 뽁뽁이 2장: 꽉 끼었는데 벽에 {midHits}번 부딪힘(덜그럭 소리가 남) — 틈 0 이면 소리도 0");
+        if (bigBare <= 0.05f) bad.Add($"대 상자 + 뽁뽁이 0장 + {tr.cargo}: 흔들림 {bigBare * 100f:F1} cm (기대 > 5 cm) — 틈이 있는데 안 움직임");
+        if (midBare <= midBubble) bad.Add($"중 상자: 뽁뽁이 0장 {midBare * 100f:F1} cm ≤ 2장 {midBubble * 100f:F1} cm — 완충재가 도움이 안 됨");
+        return bad;
+    }
 
     /// <summary>
     /// D-294 포장 2D ②③: 달걀 한 판이 소 상자엔 안 들어가고(TooSmall) 중엔 딱 맞고(Snug) 대엔 헐겁고(Loose), 중 + 뽁뽁이 위·아래면 시작값 90%(Core 규칙 그대로).

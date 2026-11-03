@@ -44,10 +44,21 @@ public class PackPiece
     public PackPiece holder;
     public PackFit fit = PackFit.Snug;
     public readonly List<PackStrip> strips = new List<PackStrip>();
+    /// <summary>shakeSecs = 흔든 시간(s) · rattle = 덜그럭 값 = 1.5 s 동안 물건이 상자 기준 움직인 거리 합의 최댓값(m, PackPhysics.PeakWindow).</summary>
     public float shakeSecs, rattle;
     public Vector2 jit;
 
-    public bool Contains(float pu, float pv) => active && (holder == null || !holder.closed) && Mathf.Abs(pu - u) <= w * 0.5f && Mathf.Abs(pv - v) <= d * 0.5f;
+    // ── D-295 물리 ──
+    /// <summary>상자 조각: 안에 든 물건의 물리(물건이 들어간 동안만).</summary>
+    public PackPhysics phys;
+    /// <summary>놓은 순간부터 떨어지는 높이(조각 자신 · 상자 안 바닥 완충재 · 덮은 완충재).</summary>
+    public PackPhysics.Fall drop, dropBottom, dropTop;
+    /// <summary>들어가지 못하고 상자 벽 위에 걸려 있는 남은 시간(s). 0 이면 아님.</summary>
+    public float perch;
+    /// <summary>손으로 끄는 동안의 속도(판 m/s) — 놓을 때 던지는 속도. 상자의 가속(흔들림)도 여기서 구한다.</summary>
+    public Vector2 hand, lastPos;
+
+    public bool Contains(float pu, float pv) => active && perch <= 0f && (holder == null || !holder.closed) && Mathf.Abs(pu - u) <= w * 0.5f && Mathf.Abs(pv - v) <= d * 0.5f;
     public bool Stuffed => content != null || bottom != PackFiller.None;
     public bool Taped => strips.Count > 0;
 
@@ -55,7 +66,7 @@ public class PackPiece
     {
         u = homeU; v = homeV; w = homeW; d = homeD; rot90 = false; lifted = false; open = false; jit = Vector2.zero;
         closed = false; bottom = top = PackFiller.None; content = null; holder = null; fit = PackFit.Snug;
-        strips.Clear(); shakeSecs = rattle = 0f;
+        strips.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
     }
 
     /// <summary>R: 90° 돌림(발자국 w·d 바뀜).</summary>

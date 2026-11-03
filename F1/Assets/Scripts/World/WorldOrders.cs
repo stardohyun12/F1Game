@@ -26,9 +26,9 @@ public class WorldOrders : ScriptableObject
         public string dest;
     }
 
-    [Serializable] public class Box { public string name; public Vector3 inner; }
-    [Serializable] public class Filler { public string name; public string kind; public float thick; public int roll; }
-    [Serializable] public class Trait { public string cargo; public string trait; public Vector3 size; }
+    [Serializable] public class Box { public string name; public Vector3 inner; public float mass = 0.1f, bounce = 0.3f, friction = 0.4f; }
+    [Serializable] public class Filler { public string name; public string kind; public float thick; public int roll; public float mass = 0.02f, bounce = 0.2f, friction = 0.7f; }
+    [Serializable] public class Trait { public string cargo; public string trait; public Vector3 size; public float mass = 0.6f, bounce = 0.4f, friction = 0.8f; }
     [Serializable] public class Cushion { public string trait; public float bubble, paper; }
 
     [Serializable]
@@ -38,7 +38,7 @@ public class WorldOrders : ScriptableObject
         public List<Filler> fillers = new List<Filler>();
         public List<Trait> traits = new List<Trait>();
         public List<Cushion> cushions = new List<Cushion>();
-        public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f;
+        public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f, shakeFull = 0.5f;
     }
 
     public List<Cargo> cargo = new List<Cargo>();
@@ -54,7 +54,7 @@ public class WorldOrders : ScriptableObject
         var p = packing;
         if (p == null || p.boxes.Count == 0) return;
         PackRules.SnugGapMax = p.snugGapMax; PackRules.BaseLoss = p.baseLoss; PackRules.RattleLoss = p.rattleLoss;
-        PackRules.RattleFull = p.rattleFull; PackRules.LooseLoss = p.looseLoss; PackRules.MinStart = p.minStart;
+        PackRules.RattleFull = p.rattleFull; PackRules.LooseLoss = p.looseLoss; PackRules.MinStart = p.minStart; PackRules.ShakeFull = p.shakeFull;
         foreach (var c in p.cushions)
         {
             int t = PackRules.TraitIndex(c.trait);
