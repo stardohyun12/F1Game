@@ -715,7 +715,7 @@ public class OnFootRouteBot : MonoBehaviour
     /// 차길 그래프 최단길(TownPathBot.Pairs 와 같은 방식): 중심선 점 = 노드, 앞뒤 연결 + 다른 길 점 2.5 m 안이면 갈림목.
     /// 계단·인도 띠는 뺀다. 지름길(shortcut)은 달걀이 흔들려서 먼저 빼 보고, 길이 없으면 넣는다.
     /// </summary>
-    static List<Vector3> RoadPath(Vector3 from, Vector3 to, out string info)
+    internal static List<Vector3> RoadPath(Vector3 from, Vector3 to, out string info)
     {
         var roads = new List<RoadSurface>();
         foreach (var r in FindObjectsByType<RoadSurface>(FindObjectsSortMode.None))

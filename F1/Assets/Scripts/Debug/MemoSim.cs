@@ -62,7 +62,7 @@ public class MemoSim : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         var pl = dir.Player; var cam = pl.Cam;
         float t0 = Time.time;
-        Line($"카트 처음 자리={P(dir.Car.transform.position)} 안내글='{OpeningSequence.Current?.Caption}'");
+        Line($"카트 처음 자리={P(dir.Car.transform.position)}");
         if (fromHouseFront)
         {
             DebugWindow.GoPlace(1);

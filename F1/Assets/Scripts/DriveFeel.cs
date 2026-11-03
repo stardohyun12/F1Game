@@ -30,6 +30,10 @@ public struct DriveFeelValues
     public float steerReturnLag;
     /// <summary>화물 무게가 가속·제동·출렁임에 먹는 정도(0 = 무시, 1 = 그대로).</summary>
     public float weightInfluence;
+    /// <summary>후진 최고속 = 이 비율 × 전진 최고속(D-284). 0 = 차의 reverseMaxKmh 필드 그대로(예전).</summary>
+    public float reverseMaxRatio;
+    /// <summary>후진 가속 = 전진 엔진 힘 × 이 값(D-284). 0 = 예전 0.5.</summary>
+    public float reverseAccelMul;
     // 차체·짐칸 출렁임 (CartBodyMotion). bodyPitchPerG 0 = 끔.
     public float bodyPitchPerG, bodyRollPerG, bodyMaxDeg, bodyFreq, bodyDampRatio, bodyHeaveGain;
     public float boxSwayPerG, boxMaxDeg, boxFreq, boxDampRatio;
@@ -62,15 +66,18 @@ public static class DriveFeel
     {
         maxSpeedKmh = 72f,          // 96 → 72: 마을 골목·비탈에 맞춤
         // 차 상자 마찰(CarLowFriction 0.15 ≈ 1.5 m/s²)·공기 저항이 늘 빠진다 — 3.6·0.45 로는 0→40 이 9.6초였다(1차 실측).
-        accelTime = 2.9f,           // 엔진 힘 = 100kg × 20m/s ÷ 2.9 (A 는 ÷ 2.8 에 최고속 26.7)
+        // D-284 두 번째 한 판 메모 3 "조작이 조금 무거운 것 같음" — 아래 값은 전부 가설(도현이 타 보고 고른다). 이전 값은 보고서 표.
+        accelTime = 2.6f,           // 2.9 → 2.6: 엔진 힘 = 100kg × 20m/s ÷ 2.6 (A 는 ÷ 2.8 에 최고속 26.7)
         accelFalloff = 0.3f,        // 끝으로 갈수록 힘이 빠져 최고속엔 천천히 붙는다
         // 반 페달 봇이 오르막에서 33곳 섰다(D-257 4번 이슈). 실측: 45kg 상자 + 페달 0.5 는 평지에서도 0m — 엔진 힘(2.4 m/s²)이 바닥 마찰(≈2.6)과 같다.
         rollAssist = 2.6f,
         slopeAssist = 1f,
         brakeDecel = 9f,            // 13 → 9: 제동 거리 조금 길게
-        steerLag = 0.16f,           // 0.05 → 0.16: 핸들이 손을 따라오는 데 걸리는 시간
-        steerReturnLag = 0.12f,
-        throttleLag = 0.18f,        // 0.03 → 0.18: 발이 페달을 서서히
+        steerLag = 0.10f,           // 0.16 → 0.10 (D-284): 핸들이 손을 따라오는 데 걸리는 시간
+        steerReturnLag = 0.08f,     // 0.12 → 0.08
+        throttleLag = 0.12f,        // 0.18 → 0.12: 발이 페달을 따라오는 시간
+        reverseMaxRatio = 0.7f,     // 후진 최고속 = 전진의 70% (이전: 차 필드 20~25 km/h = 전진의 28~35%)
+        reverseAccelMul = 1.0f,     // 후진 가속 힘 0.5 → 1.0 (2배)
         maxTurnDegPerSec = 110f,
         // 저속에서 반경 하한 — 4.5 는 1m/s 에서 초당 13°로 묶여 좁은 길·출발에서 봇이 29곳 끼었다(2차). A 는 15km/h 에서 1.8m.
         minTurnRadius = 2.5f,
@@ -98,6 +105,7 @@ public static class DriveFeel
             // 무게감은 최고속·핸들·발 지연·짐 영향(weightInfluence)으로 낸다.
             v.accelTime = 2.9f;
             v.brakeDecel = 8f;
+            v.reverseMaxRatio = 0f; v.reverseAccelMul = 0f;   // C 는 예전 후진 그대로(D-284 는 B 만)
             v.steerLag = 0.22f;
             v.steerReturnLag = 0.16f;
             v.throttleLag = 0.25f;

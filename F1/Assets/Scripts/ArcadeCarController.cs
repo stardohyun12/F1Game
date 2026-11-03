@@ -161,6 +161,7 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
         downforceAccel = v.downforceAccel; coastDrag = v.coastDrag; wheelSpring = v.wheelSpring; wheelDamper = v.wheelDamper;
         driftEnabled = v.driftEnabled; minTurnRadius = v.minTurnRadius; accelFalloff = v.accelFalloff; steerReturnLag = v.steerReturnLag;
         weightInfluence = v.weightInfluence; slopeAssist = v.slopeAssist; rollAssist = v.rollAssist;
+        reverseMaxRatio = v.reverseMaxRatio; reverseAccelMul = v.reverseAccelMul;
         feelNow = v;
         RecalculateForces();
         driveMode = v.driveMode;
@@ -250,6 +251,10 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
     private Vector2 smoothVel;       // SmoothDamp 내부 velocity 상태
     private float maxSpeedMps;
     private float reverseMaxMps;
+    // D-284: 프리셋이 정한 후진 비율·가속 배율(0 = 예전: reverseMaxKmh 필드, 힘 ×0.5).
+    private float reverseMaxRatio, reverseAccelMul;
+    /// <summary>후진 최고속(m/s) — 프리셋 비율이 있으면 전진 최고속 × 비율.</summary>
+    public float ReverseMaxMps => reverseMaxRatio > 0f ? maxSpeedMps * reverseMaxRatio : reverseMaxMps;
     private float accelForce;
     private bool isGrounded;
     private bool wasDrifting;
@@ -563,8 +568,13 @@ public class ArcadeCarController : MonoBehaviour, IArcadeCarController
                 float brakeMult = brakeStrengthBySpeed.Evaluate(brakeSpeedNorm);
                 rb.AddForce(-transform.forward * (brakeDecel * rb.mass * -t * brakeMult * loadMul), ForceMode.Force);
             }
-            else if (forwardSpeed > -reverseMaxMps)
-                rb.AddForce(transform.forward * (effectiveAccelForce * t * 0.5f), ForceMode.Force);
+            else if (forwardSpeed > -ReverseMaxMps)
+            {
+                // D-284: 후진 힘 배율(0 = 예전 0.5) — 끝으로 갈수록 힘이 빠지는 건 전진과 같다.
+                float mul = reverseAccelMul > 0f ? reverseAccelMul : 0.5f;
+                float falloff = reverseAccelMul > 0f ? 1f - accelFalloff * Mathf.Clamp01(-forwardSpeed / ReverseMaxMps) : 1f;
+                rb.AddForce(transform.forward * (effectiveAccelForce * t * mul * falloff), ForceMode.Force);
+            }
         }
         else
         {

@@ -1,0 +1,4 @@
+02_home_front.png t=0.00s yaw=76.5 pitch=357.6 ui='dot'
+01_garage_key.png t=0.00s yaw=265.0 pitch=358.9 ui='bubble'
+01b_beside_cart.png t=0.00s yaw=295.0 pitch=33.8 ui='dot chip destedge'
+04_depot_arrive.png t=0.00s yaw=23.6 pitch=10.8 ui='arrow dist warn chip destedge'

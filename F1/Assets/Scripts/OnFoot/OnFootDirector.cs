@@ -133,7 +133,8 @@ public class OnFootDirector : MonoBehaviour
     public OrderJob PickedJob => pickedJob;
     public bool Packed => packSpot == null ? OrderPicked : packSpot.Packed;
     /// <summary>
-    /// 첫 한 판 메모 2(D-283): 보관소 흐름의 아침 카트 자리 = 보관소 앞 길. 집 → 보관소는 걸어서(SPEC §6-2), 카트는 상자를 실을 때 거기 있다.
+    /// 디버그 순간이동용 보관소 앞 길 카트 자리(DebugPlaces.DepotCart). 두 번째 한 판 메모(D-284): 아침 카트는 여기 서 있지 않다 —
+    /// 첫날 카트는 정비소(cartSpot)에서 받아 타고 보관소로 간다(SPEC §1 거점은 몸으로 배운다). 보관소에서 상자를 싣는 논리는 카트가 어디 서 있든 같다(NearCart).
     /// 좌표는 DebugPlaces.DepotCart 가 이 값을 가져다 쓴다(디버그 코드는 정식 빌드에 없어 값은 여기).
     /// </summary>
     public static readonly Vector3 DepotCartSpot = new Vector3(273.5f, 29.6f, -37.4f);
@@ -149,11 +150,12 @@ public class OnFootDirector : MonoBehaviour
         return orderPicked ? "상자부터 실어" : "E 타기";   // 주문을 맡고도 상자가 없으면 못 탄다 — 무엇부터 할지 한 줄
     }
 
-    /// <summary>아침 카트 자리: 보관소 흐름이면 보관소 앞, 아니면 정비소 자리(cartSpot).</summary>
+    /// <summary>아침 카트 자리 = 정비소 자리(cartSpot, SPEC §3-2 카트 자리). 불변 조건 「아침 카트 정비소」가 본다.</summary>
+    public Vector3? MorningCartAt => cartSpot != null ? cartSpot.position : (Vector3?)null;
+
     void ParkMorningCart()
     {
-        if (DepotFlow) ParkCar(DepotCartSpot, DepotCartYaw);
-        else if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
+        if (cartSpot != null) ParkCar(cartSpot.position, cartSpot.eulerAngles.y);
     }
 
     /// <summary>카트 몸 가장자리까지 수평 거리가 within 이내.</summary>
@@ -231,7 +233,7 @@ public class OnFootDirector : MonoBehaviour
             if (firstDrop == null || Delivered) return null;
             // 첫 과제 01-first-loop(SPEC §11-7): 보관소 흐름은 사장 대화가 없어도 칠판 쪽지를 집으면 찻집을 가리킨다.
             if (DepotFlow && OrderPicked) return firstDrop;
-            if (!Talked) return null;   // C-002(도현 D-277 B): 걷는 구간엔 방향 표시 없음 — 집을 나서면 정비소 건물이 화면에 들어온다(OpeningSequence)
+            if (!Talked) return null;   // C-002(도현 D-277 B): 걷는 구간엔 방향 표시 없음
             return DepotFlow ? depotDest : firstDrop;
         }
     }
@@ -255,11 +257,12 @@ public class OnFootDirector : MonoBehaviour
     };
     // D-250 보관소 흐름의 사장 대사 — 대역(도현이 정함). 정비소 = 카트 점검, 주문은 택배 보관소 칠판에서.
     // C-002 오프닝: 2줄에서 카트 열쇠를 건넨다(대역 문구 — 도현 확인 필요).
+    // D-284(SPEC §11-7): 사장은 정비·카트 얘기만 — 주문 얘기는 보관소 칠판이 한다.
     static readonly (string who, string text)[] DepotBossLines =
     {
         ("사장", "왔냐. 방학 첫날이지? 카트는 내가 봐 놨다."),
         ("사장", "자, 열쇠. 뒤 짐상자 깨지는 건 네 책임이다."),
-        ("사장", "주문은 택배 보관소 칠판에 있어. 오늘은 거기 가 봐."),
+        ("사장", "상하면 가져와. 고쳐 줄 테니."),
     };
     (string who, string text)[] Lines => curLines ?? (DepotFlow ? DepotBossLines : BossLines);
     // 칠판 줄: 첫 주문 1줄(찻집·줄리아·달걀 한 판) + 대역 2줄 — 글은 도현이 정함.
@@ -1230,7 +1233,6 @@ public class OnFootDirector : MonoBehaviour
     {
         if (!DepotFlow || !OrderPicked || InTalk || Knocking) return "";
         if (State != Mode.OnFoot && State != Mode.InCart) return "";
-        if (opening != null && opening.Caption.Length > 0) return "";
         var job = firstJob != null ? firstJob : pickedJob;
         string place = !string.IsNullOrEmpty(job.callerName) ? job.callerName : firstDrop != null ? firstDrop.Label : "배달지";
         string who = string.IsNullOrEmpty(job.recipientName) ? "" : " " + job.recipientName;

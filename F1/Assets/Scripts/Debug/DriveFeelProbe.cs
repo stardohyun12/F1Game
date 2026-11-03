@@ -17,6 +17,8 @@ public class DriveFeelProbe : MonoBehaviour
     public static float QaRollAssist = -1f;
     /// <summary>QA: true 면 반 페달 시험(평지 출발·10° 비탈)만 돌린다.</summary>
     public static bool QaOnlyHalf;
+    /// <summary>QA: true 면 후진 4초 + 직진 가속 7초만 돌린다(D-284 조작 전/후 비교용).</summary>
+    public static bool QaOnlyReverse;
     public static bool Busy { get; private set; }
     public static string Result { get; private set; } = "";
     public static string Status { get; private set; } = "";
@@ -54,12 +56,30 @@ public class DriveFeelProbe : MonoBehaviour
         js.Append("{\"preset\":\"").Append(DriveFeel.Label(car.FeelPreset)).Append("\",\"mode\":\"").Append(car.Mode).Append("\"");
 
         if (QaOnlyHalf) { yield return HalfPedal(); goto Finish; }
+        // 0) 후진 4초 (D-284 두 번째 한 판 메모 3) — 정지에서 풀 후진: 1·2·3·4초 속도와 최고속, 10 km/h 까지
+        yield return Place(new Vector3(0, Y0, -250), 0);
+        {
+            float tr = 0, r1 = 0, r2 = 0, r3 = 0, r4 = 0, rmax = 0, t10 = -1;
+            car.SetMoveInput(new Vector2(0, -1));
+            while (tr < 4f)
+            {
+                yield return new WaitForFixedUpdate(); tr += Time.fixedDeltaTime;
+                float rk = -Kmh(); rmax = Mathf.Max(rmax, rk);
+                if (t10 < 0 && rk >= 10f) t10 = tr;
+                if (tr <= 1f) r1 = rk; if (tr <= 2f) r2 = rk; if (tr <= 3f) r3 = rk; r4 = rk;
+            }
+            car.SetMoveInput(Vector2.zero);
+            Put("reverse", $"\"kmhAt1s\":{r1:F1},\"kmhAt2s\":{r2:F1},\"kmhAt3s\":{r3:F1},\"kmhAt4s\":{r4:F1},\"kmhMax\":{rmax:F1},\"t0to10\":{t10:F2}");
+        }
+
         // 1) 직진 가속 7초
         yield return Place(new Vector3(0, Y0, -250), 0);
         float t40 = -1, v5 = 0, vmax = 0, t = 0; ResetPeaks();
         car.SetMoveInput(new Vector2(0, 1));
-        while (t < 7f) { yield return new WaitForFixedUpdate(); t += Time.fixedDeltaTime; float k = Kmh(); if (t40 < 0 && k >= 40) t40 = t; if (t <= 5f) v5 = k; vmax = Mathf.Max(vmax, k); Sample(); }
-        Put("accel", $"\"t0to40\":{t40:F2},\"kmhAt5s\":{v5:F1},\"kmhAt7s\":{vmax:F1}," + Peaks());
+        float v1 = 0, v2 = 0;
+        while (t < 7f) { yield return new WaitForFixedUpdate(); t += Time.fixedDeltaTime; float k = Kmh(); if (t40 < 0 && k >= 40) t40 = t; if (t <= 1f) v1 = k; if (t <= 2f) v2 = k; if (t <= 5f) v5 = k; vmax = Mathf.Max(vmax, k); Sample(); }
+        Put("accel", $"\"t0to40\":{t40:F2},\"kmhAt1s\":{v1:F1},\"kmhAt2s\":{v2:F1},\"kmhAt5s\":{v5:F1},\"kmhAt7s\":{vmax:F1}," + Peaks());
+        if (QaOnlyReverse) goto Finish;
 
         // 2) 40km/h 에서 급제동
         yield return Place(new Vector3(0, Y0, -250), 0);

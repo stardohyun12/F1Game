@@ -36,6 +36,9 @@ public static class WorldInvariants
         ("디렉터 1개", () => OneDirector()),
         ("첫 배달 한 바퀴 배선", () => FirstLoopWiring()),
         ("상자 든 채 카트 칩", () => CartChipWithBox()),
+        ("길 표지판 꺼짐", () => RoadSignOff()),
+        ("아침 카트는 정비소 앞", () => MorningCartAtGarage()),
+        ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
     };
 
     public static string Check()
@@ -234,6 +237,41 @@ public static class WorldInvariants
             float m = Vector2.Distance(new Vector2(spot.x, spot.z), new Vector2(d.PackSpot.transform.position.x, d.PackSpot.transform.position.z));
             if (m > 25f) bad.Add(string.Format(Inv, "아침 카트 자리가 작업대에서 {0:0} m — 상자 들고 25 m 안이어야", m));
         }
+        return bad;
+    }
+
+    /// <summary>두 번째 한 판 메모 4(D-284): "표지판으로 방향을 알려 주는 게 분위기에 안 맞는다" — 보관소 길 표지판(DepotRoadSign)은 꺼져 있어야 한다. 지우지 않고 끈다.</summary>
+    static List<string> RoadSignOff()
+    {
+        var bad = new List<string>();
+        foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            if (t.name == "DepotRoadSign" && t.gameObject.activeInHierarchy) bad.Add("DepotRoadSign 켜짐 " + V(t.position) + " — 강제 안내 표지판은 꺼 둔다(메모 4)");
+        return bad;
+    }
+
+    /// <summary>두 번째 한 판 메모 5(D-284): 첫날 카트는 정비소(사장 곁)에서 받는다 — 아침 카트 자리가 사장에서 6 m 안, 보관소 앞(DepotCartSpot)이 아니어야.</summary>
+    static List<string> MorningCartAtGarage()
+    {
+        var bad = new List<string>();
+        var ds = UnityEngine.Object.FindObjectsByType<OnFootDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (ds.Length == 0 || ds[0].Boss == null) return bad;
+        var at = ds[0].MorningCartAt;
+        if (at == null) { bad.Add("cartSpot 비어 있음 — 아침 카트가 어디에도 없다"); return bad; }
+        var boss = ds[0].Boss.position; var c = at.Value;
+        float m = Vector2.Distance(new Vector2(c.x, c.z), new Vector2(boss.x, boss.z));
+        if (m > 6f) bad.Add(string.Format(Inv, "아침 카트 {0} 가 사장({1})에서 {2:0.0} m — 정비소에서 받아야(6 m 안)", V(c), V(boss), m));
+        var dep = OnFootDirector.DepotCartSpot;
+        if (Vector2.Distance(new Vector2(c.x, c.z), new Vector2(dep.x, dep.z)) < 15f) bad.Add("아침 카트가 보관소 앞에 있다 — 첫날 카트는 정비소에서 시작");
+        return bad;
+    }
+
+    /// <summary>두 번째 한 판 메모 3(D-284): 후진이 너무 느렸다(전진의 28%, 4초에 7 km/h). 기본 프리셋 B 의 후진 최고속·가속이 그 아래로 되돌아가지 않게.</summary>
+    static List<string> ReverseNotCrawling()
+    {
+        var bad = new List<string>();
+        var b = DriveFeel.B;
+        if (b.reverseMaxRatio < 0.5f) bad.Add(string.Format(Inv, "B 후진 최고속 비율 {0:0.00} < 0.5 — 후진이 기어간다", b.reverseMaxRatio));
+        if (b.reverseAccelMul < 1f) bad.Add(string.Format(Inv, "B 후진 가속 배율 {0:0.00} < 1 — 바닥 마찰에 먹혀 4초에 7 km/h 였다", b.reverseAccelMul));
         return bad;
     }
 }
