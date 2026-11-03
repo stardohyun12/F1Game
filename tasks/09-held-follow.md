@@ -1,0 +1,5 @@
+[EDITOR][버그 — 들고 있는 물건이 걸을 때 따라오지 않음 (D-293)]
+도현 원문(한 판): "지금 물건 들고 움직여도 물건이 따라오지 않는데?" 시간 상자 30분. 여는 파일: `Interactables/Pack/PackTable2.cs`(Grab/Hand) · 필요하면 `Interactables/Pack/Parcel.cs` · `Debug/DayLoopCheck.cs`(검사 추가). 그 밖은 손대지 않는다. 캡처 1장, Play 2회까지.
+먼저 원인: `PackTable2.Grab` 은 `Camera.main` 아래 `PackHand` 에 붙인다. 그런데 08 봇은 선반→포장대를 **순간이동**으로 가서 걷는 동안 따라오는지 한 번도 검사하지 않았다. 의심: ① 집는 순간 Camera.main 이 Main Camera 가 아님(다른 카메라/LowRes DisplayCam) ② Rigidbody 가 isKinematic 전환 뒤에도 물리 위치를 되돌림(interpolation/`Parcel.Update`) ③ 감독·Stage 쪽 다른 코드가 Parcel 의 부모를 다시 바꿈(`SetParent(transform.parent)` :235 류) ④ PackHand 가 Main Camera 가 아니라 OnFootCamera 가 움직이지 않는 다른 오브젝트에 붙음. **원인을 로그로 확정하고 1줄로 보고.**
+고치기: 들고 있는 동안 매 LateUpdate 에 손 위치로 따라오게(카메라 LateUpdate 뒤 실행 순서 보장 — `[DefaultExecutionOrder]` 또는 OnFootCamera 뒤) 또는 부모를 OnFootCamera transform 으로. Rigidbody 는 들고 있는 동안 isKinematic+detectCollisions false.
+검사(안 됐으면 실패): DayLoopCheck 에 "집은 뒤 **걸어서**(Sim 입력 W 2초, 순간이동 금지) 이동 → 물건-카메라 거리 변화 < 0.05m" 한 줄 추가. 컴파일 0 · 그 검사 통과 · world_check 통과. 보고 4줄.
