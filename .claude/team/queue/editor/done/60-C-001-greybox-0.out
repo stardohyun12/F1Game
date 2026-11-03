@@ -1,0 +1,34 @@
+[build] ok=True cost=$3.59
+상처 2' → 상처 0 · 돈 글자 '−300원'`
+
+**바꾼 것**
+- **상처 (새 파일 `Garage/CartDamage.cs`):** 벽 같은 데 7 m/s(약 25 km/h) 이상으로 박으면 한 단계 오르고, 최대 3단계입니다. 카트 코 위에 회색 판이 단계마다 더 꺾이고, 작은 회색 연기 조각이 더 자주 나옵니다. 운전·속도·화물에는 영향이 없습니다.
+- **정비 자리 (새 파일 `Garage/RepairSpot.cs`):** 정비소 문 안쪽 바닥에 회색 판으로 깔립니다. Play 할 때 저절로 생겨서 씬은 저장하지 않았습니다. 사람과 상한 카트가 둘 다 판 위에 있으면 「E 고치기」가 뜹니다. 수리비는 300원(가설값)입니다.
+- **`OnFootDirector`:** 「E 고치기」 칩, E 누르면 「−300원」 글자를 띄우는 부분만 넣었습니다(+19줄).
+- **`DayLog`:** 수리비 목록을 두고, 그날 번 돈에서 뺍니다.
+- **디버그 창:** 「카트 상처 +1」 버튼을 넣었습니다.
+
+**확인한 것**
+- 카트를 타고 정비소 마당에서 서쪽 벽 쪽으로 밀어 봤습니다. 벽 앞 드럼에 10 m/s로 박혀 1단계가 됐습니다.
+- 콘솔 에러 0, Play 꺼짐, 씬 저장 안 함, 폰트 되돌림, 공유 .mat 변경 0입니다.
+- 사진 2장을 찍었습니다(2단계 + 칩, 고친 뒤 −300원). 처음엔 「−300원」이 카트 칩과 겹쳐서 더 위로 올렸습니다.
+- 하네스 증거 묶음과 봇 전체 경로는 돌리지 않았습니다(하네스 몫, D-270).
+
+**남은 이슈**
+- **일기장에 수리 줄이 따로 안 나옵니다.** 일기 화면(`DotScreenUI.Diary`)이 카드 범위 밖이라, 「오늘 번 돈」 합계에서 빠지기만 합니다. 수리만 한 날은 합계가 「+-300원」으로 찍힙니다. 카드의 사람 확인 「그날 일기에 수리 줄」을 하려면 일기 한 줄 고치는 카드가 따로 필요합니다.
+- **장소 9에서 바로 E를 누를 수 없습니다.** 장소 9는 카트를 정비 자리 밖 마당에 둡니다. 직접 해 볼 때는 카트를 문 안 회색 판 위로 몰고 들어와 내려야 합니다. start.cs는 카트를 안으로 옮긴 뒤 시작합니다.
+- 1단계와 2단계는 차이가 작습니다. 3단계가 되면 더 뚜렷합니다.
+- 7 m/s와 300원은 둘 다 가설값이고, 드럼 같은 소품에 박아도 상처가 오릅니다.
+
+파일:
+- 보고서: `docs/team/reports/build-20261103-0126.md`
+- 사진: `docs/team/cards/C-001-repair-one/shot_stage2_chip.png`, `shot_repaired_money.png`
+
+![2단계 + 칩](file:///D:/Github/F1Game/docs/team/cards/C-001-repair-one/shot_stage2_chip.png)
+![고친 뒤 −300원](file:///D:/Github/F1Game/docs/team/cards/C-001-repair-one/shot_repaired_money.png)
+시작 장면: 정비소 안: (216.0, 26.8, -55.5) 땅 GARAGE_shell y=26.73 카트 (229.5, 27.2, -55.5)
+start.cs: 상처 2→0 · DayLog 수리 −300 (오늘 번 돈 -300) · 정비 자리 준비=True · 시연 시작(3.0s +1, 5.0s +1, 7.0s E)
+clip: clip start frame=1177 src=LowRes
+after: frames 1177→1323 (+146, uniq 146) · 캡처 96장 · 경고 0 · 에러 0 · 기계 PASS
+   docs/team/cards/C-001-repair-one/evidence/after/clip.mp4 docs/team/cards/C-001-repair-one/evidence/after/strip.png docs/team/cards/C-001-repair-one/evidence/after/shot.png
+.claude/team/queue/verify/60-C-001-verify-0.task

@@ -46,3 +46,5 @@
   - 팀 도구: 대시보드 `python scripts/team_dashboard.py`(localhost:8765, 역할별 모델·추론·예산 설정), 아트 UI 담당 `artui`(Codex), 리서치팀 `research`.
   - **도현 귀가 후 할 일**: 음성 대화 설정 — STT 언어 ko·TTS edge `ko-KR-InJoonNeural` 로 바꿨고 edge-tts 7.3.1 로 올렸음(Bing 403 해결). **게이트웨이 재시작해야 음성 답장이 동작**(팀 작업 없을 때). 그다음 데스크톱 음성 대화·웨이크워드.
   - 도현 판정 대기: 화물 5종(cargo-set-v2), UI 최종(ui-final), HUD 두 박자(ui-flow) — 코스 재구성(교토·포지타노)과 맞는지 함께 재확인.
+- 02:45 PD: Codex 주간 한도 리셋 확인(사용 0%, 다음 리셋 10-31 02:44). 도현 지시로 art·artui 추론 xhigh→high (토큰 절약).
+- 03:10 PD: P2 QA FAIL(s164.5 정지·떠 있는 콜라이더·리스폰 길 밖·폭 4.1m·헤어핀 유리 −50) → P3 programmer [EDITOR] 수정 시작. A1 독립 게이트 6/10(<7) → art 2차 수정 시작. 커밋 없음(FAIL). 이번 비용 QA $3.68(오늘 밤 Claude 누적 약 $8.1).
