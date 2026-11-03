@@ -92,6 +92,10 @@ def move(cid, to, by=None, note="", fail=False, verdict=None, evidence=None):
     frm = h["stage"]
     if to != "blocked" and to not in FLOW["transitions"].get(frm, []):
         sys.exit(f"안 되는 넘김: {frm} → {to} (허용 {FLOW['transitions'].get(frm)})")
+    # 도현 판정 칸을 떠나면 그 답은 dohyun-<n>.json 으로 — 다음 판 때 웹 버튼이 「답함」으로 숨지 않게(D-273)
+    if frm == "dohyun" and to != "dohyun" and os.path.exists(f"{d}/dohyun.json"):
+        k = len(glob.glob(f"{d}/dohyun-*.json")) + 1
+        os.replace(f"{d}/dohyun.json", f"{d}/dohyun-{k}.json")
     fails = int(h.get("fails", 0)) + (1 if fail else 0)
     if fail and fails >= FLOW["fail_limit"]:
         note = f"{note} | 3회 규칙: {fails}번 불통과 → 멈춤, 도현 2지선다"
