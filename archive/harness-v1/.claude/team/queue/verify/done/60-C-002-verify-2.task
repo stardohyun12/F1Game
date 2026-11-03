@@ -1,0 +1,17 @@
+[C-002 검증] 오프닝 — 방에서 깨어나 정비소에서 카트를 받는다
+너는 블라인드 검증자다. 이 과제 글에 적힌 파일만 본다 — 코드·git diff·작업자 보고서(docs/team/reports)·card.md 의 다른 절은 열지 마라. 「재밌나」는 판정하지 않는다(도현 몫).
+## 수용 기준
+1. 도현이 새 게임을 시작하면 2층 방 침대 옆에서 눈을 뜨고, 방 안 물건(달력·일기장) 하나가 [E]로 보인다.
+2. 도현이 집을 나서면 정비소 쪽을 가리키는 방향 표시가 뜨고, 정비소 사장 앞에서 말풍선 대화 3줄 이내 후 카트 열쇠를 받는다.
+3. 도현이 카트에 타면 방향 표시가 택배 보관소를 가리킨다(첫 배달 카드로 이어짐).
+
+
+증거 묶음(이것만 본다):
+- docs/team/cards/C-002-opening/evidence.json — 기계 확인(frames_ok = 프레임이 실제로 늘었나, log_ok = 에러 0, warnings 수·samples)
+- docs/team/cards/C-002-opening/evidence/after/strip.png — 클립 10초를 시간 순 8칸(왼쪽 위 → 오른쪽 아래)
+- docs/team/cards/C-002-opening/evidence/after/shot.png · docs/team/cards/C-002-opening/evidence/before/shot.png — 전/후 한 쌍
+(클립 원본 docs/team/cards/C-002-opening/evidence/after/clip.mp4 는 도현용 — 너는 strip 으로 본다)
+
+판정: 수용 기준 문장마다 「보인다/안 보인다」 + 근거 칸(strip 몇 번째 칸, 또는 evidence.json 값). 하나라도 안 보이거나 기계 확인이 false 면 FAIL.
+결과를 docs/team/cards/C-002-opening/verdict.json 에 쓴다(덮어씀): {"verdict":"PASS|FAIL","reason":"한 줄","frames":"strip 3·5칸","criteria":[{"text":"...","seen":true,"evidence":"..."}],"by":"verify"}
+보고서는 verdict 한 줄 + 표만. 다른 파일은 고치지 않는다.

@@ -1,96 +1,6 @@
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end.sh\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop.sh\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
-      {
-        "matcher": "AskUserQuestion",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .claude/hooks/flash.ps1",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Agent|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.py\"",
-            "timeout": 10
-          }
-        ]
-      },
       {
         "matcher": "Bash|Edit|Write|MultiEdit",
         "hooks": [
@@ -109,18 +19,6 @@
           {
             "type": "command",
             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-post.py\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/feedback-detect.sh\"",
             "timeout": 10
           }
         ]

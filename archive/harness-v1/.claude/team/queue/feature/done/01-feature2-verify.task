@@ -1,0 +1,5 @@
+[feature][기능 2 실제 확인 — 설치·Play·봇·캡처 (밤 자율)] 새 세션. 커밋 금지. 턴 제한 없음. 시간 상자 45분.
+작업 위치·규칙은 직전과 같음: D:/Github/F1Game_shot(feature/onfoot) F1/Assets 만, Unity = 사본 에디터(UCLI_PROJ=D:/Github/F1Game_shot/F1, PD 가 방금 재시작), Map_TownV6 씬 저장 금지(시험 후 dirty 버림).
+직전 보고 docs/team/reports/feature-20261031-0209.md: 코드는 다 썼지만 사본 에디터가 멈춰 실제 실행 0. 준비된 스크립트 docs/qa/tmp/feature2/ setup.cs → bot_start.cs → bot_status.cs.
+할 것: 에디터 컴파일 에러 0 확인 → 기능 1 설치 메뉴 + `PitCrew/기능/정비소 첫 주문 설치` → Play → 봇: 방 → 사장 대화 → 카트 → 찻집(DP_tea) 도착까지. 막히면 고치고 다시. 기능 1 봇(방 → 큰길)도 1회(퇴행 확인).
+캡처: 사장 대화 자막·대화 전 탑승 막힘 안내·탑승·HUD 목표·도착 → docs/qa/evidence/feature2/. 완주 시간·화물 상태 표. 보고 3줄.

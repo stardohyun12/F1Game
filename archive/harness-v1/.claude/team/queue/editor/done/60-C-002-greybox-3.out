@@ -1,0 +1,37 @@
+[build] ok=True cost=$3.43
+C-002 그레이박스 4판을 마쳤습니다. 수용 기준 셋 다 화면과 숫자로 확인했고 콘솔 에러는 0입니다. 하네스 증거 묶음(`bundle.sh`)은 돌리지 않았습니다.
+
+**고친 것 (판정 원문 + 도현 B 결정 기준)**
+- **걷는 구간 방향 표시를 없앴습니다.** 사장과 말하기 전에는 목적지가 비어 있어서 화살·거리·깃발이 안 나옵니다 (`OnFootDirector.cs:176`). 정비소를 가리키던 대역 표식도 지웠습니다. 안내 글은 화살·거리 없이 「정비소로 — 사장님이 카트를 봐 놨다」만 남겼습니다.
+- **집 앞에서 정비소가 보이게 했습니다.** 집을 나와 현관에서 2.8 m 걸어 나오면 시선이 0.8초 동안 정비소 아치 지붕 쪽으로 한 번 돕니다 (`OpeningSequence.cs:73-112`). 그 뒤엔 마우스로 그대로 움직입니다.
+  - 현관 처마 밑(장소 1)에서는 집 벽이 화면 왼쪽 거의 절반을 가려 정비소가 반만 보였습니다. 마당으로 3 m 나오면 집 두 채 사이로 정비소가 다 보입니다. 같은 카메라로 두 자리를 찍어 비교했습니다.
+- **열쇠 받는 순간**: 대화가 끝나면 「카트 열쇠를 받았다 — 카트에 타자」가 뜹니다. start.cs 에서는 이 글이 1.3초 동안 화면에 남아 strip 6칸에 잡히게 했습니다.
+
+**확인 결과** (하네스와 같은 순서: 새 Play → 장소 0 → critN → 2초 → 캡처)
+- crit1: 달력 [E] 「달력 보기」가 뜹니다.
+- crit2: 정비소가 화면 가운데에 보이고 방향 표시는 없습니다. 캡처가 끝난 뒤 실제 대화 3줄을 돌려 열쇠를 받는 것까지 확인했습니다.
+- crit3: 카트에 타면 「택배 보관소 ↑ 45m」와 깃발이 보입니다.
+- start.cs: 단계가 방 → 집 앞 → 대화 → 열쇠 → 카트 순서대로 바뀝니다.
+
+![crit2](docs/qa/tmp/c002_crit2.png)
+
+**남은 이슈**
+- 열쇠 받는 장면은 crit2 사진에 없습니다. 집 앞과 장소가 달라 한 장에 못 담습니다. 증거는 crit2 결과 문자열과 start.cs strip 6칸입니다. 검증 일꾼이 crit2 사진만 보고 판정하면 또 걸릴 수 있습니다.
+- crit2 와 start.cs 는 현관에서 마당까지 3 m 를 걷는 대신 순간이동으로 줄였습니다.
+- 시선을 저절로 돌리는 게 거슬리는지는 도현이 직접 해 보고 판단할 부분입니다. 끄려면 `frontTurnSec` 를 0 으로 하면 됩니다.
+- 정비소 건물은 씬 오브젝트 이름 `GARAGE_shell` 로 찾습니다. 이름이 바뀌면 시선만 안 돌고 에러는 안 납니다.
+- `docs/qa/tmp/c002_*` 에 확인용 파일(사진·임시 스크립트)이 남아 있습니다. 삭제 명령이 권한 확인에 막혀 지우지 못했습니다.
+
+끝 상태: Play 꺼짐, Map_TownV6 저장 안 된 변경 없음, 폰트 SDF 되돌림, 공유 .mat 변경 없음.
+
+보고서: `docs/team/reports/build-20261103-1422.md`
+OK 10/10
+시작 장면: 집 방: (187.1, 28.5, -62.7) 땅 RUG_01 y=28.48 카트 (229.5, 27.2, -55.5)
+start.cs: C-002 오프닝 시연 대기: 클립 시작(또는 6초) 뒤 약 9.5초 — 끝나면 SessionState c002.log / 콘솔 [Opening] 시연 끝 = Step 순서(Room→Front→Talk→Key→Cart)
+clip: clip start frame=1509 src=LowRes
+crit1: docs/team/cards/C-002-opening/evidence/after/crit1.png · 기준1: 새 게임 Begin → Step=Room (1.8 s 뒤 달력 [E] — 결과 SessionState c002.crit1)
+crit2: FAIL 캡처 없음 · FAIL: Play 아님 · FAIL: 감독/오프닝 없음
+crit3: docs/team/cards/C-002-opening/evidence/after/crit3.png · 기준3: 사장 대화 → 열쇠 → 카트 탑승 (결과 SessionState c002.crit3)
+after: frames 1509→2314 (+805, uniq 805) · 캡처 121장 · 경고 0 · 에러 0 · 기준 사진 2장(빠짐 [2]) · 기계 PASS
+   docs/team/cards/C-002-opening/evidence/after/clip.mp4 docs/team/cards/C-002-opening/evidence/after/strip.png docs/team/cards/C-002-opening/evidence/after/shot.png
+.claude/team/queue/verify/60-C-002-verify-3.task

@@ -1,5 +1,7 @@
 # PitCrew 상주 팀 (Hermes 하이브리드, 2026-10-23 도현 결정) — 보관됨
 
+> **2026-11-03 카디널(D-281)**: 기준 `docs/CARDINAL.md`. 일꾼은 build 하나, 호출은 `scripts/run_task.sh`. roles/·queue/·config.json 은 `archive/harness-v1/.claude/team/`. 아래는 옛 기록.
+
 > **2026-11-03 팀 재편(D-271): 일꾼 5개 — PD · build(구현) · verify(블라인드 검증) · art · research. 규칙은 `docs/team/FLOW.md`.**
 > 역할 프롬프트 `roles/{pd,build,verify,art,research}.md`, 옛 10개는 `roles/archive/2026-11-03/`. **아래 표·설명은 보관됨(옛 기록)** — 지금 입구는 `docs/team/README.md`, 화면은 http://localhost:8765 (스튜디오 화면).
 

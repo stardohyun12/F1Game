@@ -1,0 +1,12 @@
+[art] ok=True
+① 10안·② 12모델 후보 제작 완료했습니다.
+
+| 결과 | 미리보기 | 보고 |
+|---|---|---|
+| 보관소 소품 | [비교 시트](/D:/Github/F1Game/art/_review/2026-11-02-depot-props/index.html) | [보고서](/D:/Github/F1Game/docs/team/reports/art-20261102-2028.md) |
+| 포장 재료 | [비교 시트](/D:/Github/F1Game/art/_review/2026-11-02-packing-materials/index.html) | [보고서](/D:/Github/F1Game/docs/team/reports/art-20261102-2052.md) |
+
+FBX 치수·피벗·삼각형 수 검사 통과. **도현 승인 필요.**
+
+Unity 미검증으로 **QA/프로그래밍 임포트 필요**합니다. F1/Assets 미투입, 커밋·푸시하지 않았습니다.
+autofix 261102-1153: open 아님 — 건너뜀

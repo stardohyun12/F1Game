@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 BOT_RE = re.compile(r"OnFootRouteBot\.(Begin|Run)|BeginFirstOrder|route_feature2|RegressSweep\.Run")
 SLEEP_RE = re.compile(r"\bsleep\s+[0-9]{3,}\b|until\s+\[\s*-f\s+.*\]\s*;\s*do\s+sleep")
-# 잠긴 경로(docs/team/CARD_TEMPLATE.md 「하지 말 것」 + roles/build.md: 차 조작값·공유 .mat·ProjectSettings·씬·프리팹)
+# 잠긴 경로(roles/build.md, 카디널 D-281: 차 조작값·공유 .mat·ProjectSettings·씬·프리팹)
 LOCKED = [
     (re.compile(r"/F1/ProjectSettings/"), "F1/ProjectSettings 는 PD 만(runInBackground 는 런타임 코드로)"),
     (re.compile(r"/F1/Assets/.*\.mat$"), "공유 .mat 수정 금지 — 씬 전용 사본이나 전역 셰이더 값으로"),
@@ -18,8 +18,8 @@ LOCKED = [
     (re.compile(r"\.prefab$"), ".prefab 은 텍스트 편집 금지 — 에디터로만"),
 ]
 # D-277 브리프 한 장: 팀원 세션(TEAM_ROLE 있음)은 규칙 문서를 열지 않는다 — 시작 글(브리프)에 필요한 규칙이 다 있고, 나머지는 이 훅이 막는다.
-RULE_DOCS = re.compile(r"(^|/)(PIPELINE\.md|AGENTS\.md|project_rules/[^/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md)$")
-RULE_DOCS_CMD = re.compile(r"(^|[\s/])(PIPELINE\.md|AGENTS\.md|project_rules/[^\s/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md)\b")
+RULE_DOCS = re.compile(r"(^|/)(PIPELINE\.md|AGENTS\.md|project_rules/[^/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md|archive/harness-v1/.*)$")
+RULE_DOCS_CMD = re.compile(r"(^|[\s/])(PIPELINE\.md|AGENTS\.md|project_rules/[^\s/]+\.md|docs/harness/dohyun-checklist\.md|docs/team/FLOW\.md|docs/team/WORKFLOW-v2\.md|archive/harness-v1/[^\s]*)\b")
 
 
 def log(what):

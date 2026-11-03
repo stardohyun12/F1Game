@@ -1,0 +1,13 @@
+[verify] ok=True cost=$0.16
+**판정: FAIL.** 기계 확인은 통과했지만 수용 기준 3개 모두 strip 에서 안 보였습니다.
+
+기계 확인은 `frames_ok` 와 `log_ok` 가 true 입니다. 631프레임이 늘었고 경고·에러는 0입니다.
+
+- **기준 1 (안 보임):** strip 1칸에 `[E] 달력 보기` 는 있습니다. 그런데 창·의자·돌 난간이 있는 바깥 시점이라 침대와 방 안이 안 보입니다.
+- **기준 2 (안 보임):** 집을 나서는 2~3칸에 방향 표시가 없습니다. 사장 말풍선은 3·4칸에 한 줄씩 보이지만, 카트 열쇠를 받는 장면은 없습니다.
+- **기준 3 (안 보임):** 6~8칸과 `after/shot.png` 에 `270m` 화살표와 깃발이 있습니다. 하지만 목적지가 택배 보관소인지 알 수 있는 라벨이 없습니다.
+
+`evidence/before/shot.png` 도 파일이 없어서 전/후를 비교하지 못했습니다.
+
+판정은 `docs/team/cards/C-002-opening/verdict.json` 에, 보고서는 `docs/team/reports/verify-20261103-1138.md` 에 썼습니다.
+.claude/team/queue/editor/60-C-002-greybox-1.task

@@ -1,0 +1,17 @@
+[C-003 검증] 첫 배달 — 칠판 쪽지부터 찻집 문 앞 건네기까지
+너는 블라인드 검증자다. 이 과제 글에 적힌 파일만 본다 — 코드·git diff·작업자 보고서(docs/team/reports)·card.md 의 다른 절은 열지 마라. 「재밌나」는 판정하지 않는다(도현 몫).
+## 수용 기준
+1. 도현이 칠판 쪽지를 집으면 손에 전표가 들리고, 작업대 쪽이 [E]로 보인다(다음 할 일을 화면이 알려 줌).
+2. 도현이 포장을 마치고 상자를 들고 카트로 가면 상자가 짐칸에 실리고 방향 표시가 찻집(줄리아)을 가리킨다.
+3. 도현이 찻집 문 앞에서 E 를 누르면 건네기 장면이 나오고 배달 끝 상태가 된다 — 중간에 막혀 다음 할 일을 모르는 곳 0.
+
+
+증거 묶음(이것만 본다):
+- docs/team/cards/C-003-first-delivery/evidence.json — 기계 확인(frames_ok = 프레임이 실제로 늘었나, log_ok = 에러 0, warnings 수·samples)
+- docs/team/cards/C-003-first-delivery/evidence/after/strip.png — 클립 10초를 시간 순 8칸(왼쪽 위 → 오른쪽 아래)
+- docs/team/cards/C-003-first-delivery/evidence/after/shot.png · docs/team/cards/C-003-first-delivery/evidence/before/shot.png — 전/후 한 쌍
+(클립 원본 docs/team/cards/C-003-first-delivery/evidence/after/clip.mp4 는 도현용 — 너는 strip 으로 본다)
+
+판정: 수용 기준 문장마다 「보인다/안 보인다」 + 근거 칸(strip 몇 번째 칸, 또는 evidence.json 값). 하나라도 안 보이거나 기계 확인이 false 면 FAIL.
+결과를 docs/team/cards/C-003-first-delivery/verdict.json 에 쓴다(덮어씀): {"verdict":"PASS|FAIL","reason":"한 줄","frames":"strip 3·5칸","criteria":[{"text":"...","seen":true,"evidence":"..."}],"by":"verify"}
+보고서는 verdict 한 줄 + 표만. 다른 파일은 고치지 않는다.

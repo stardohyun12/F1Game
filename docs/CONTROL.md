@@ -1,6 +1,6 @@
 # 🎮 PitCrew — 지금 어디까지 왔나
 
-> **기준: `docs/team/WORKFLOW-v2.md`**(D-277, 작업 방식 한 장 — 아래 글과 어긋나면 그 장이 이김)
+> **기준: `docs/CARDINAL.md`**(D-281 카디널 작업 방식 — 아래 글과 어긋나면 그 장이 이김. 옷 규약은 `archive/harness-v1/`, 상태는 `docs/NOW.md`)
 
 오늘 <!-- AUTO:status -->2026-10-22 | D-14<!-- /AUTO:status -->  · "D-14" = 프로토타입까지 남은 날
 

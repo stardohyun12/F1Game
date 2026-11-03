@@ -1,0 +1,9 @@
+[build] ok=True cost=$0.53
+`WorldInvariants.Check()` 은 이제 `OK 10/10` 이다. 수정 전에는 9/10 이었다. 다만 `scripts/world_check.sh 56` 은 이 세션에서 실행 권한이 없어 못 돌렸다. 같은 검사를 ucli exec 로 직접 호출했다. 그래서 `docs/world/INVARIANTS.log` 에 줄이 안 남았고, 하네스가 돌릴 때 남는다.
+
+- **난간 범위가 넓어졌다.** 난간 스캔이 손가락 부두 고정 구역만 훑고 있어서, 항구 부두에는 난간이 하나도 없었다. 스캔을 부두 전체("Piers")로 넓히고 `BuildPierRails.Run()` 을 다시 돌렸다. 난간이 43칸에서 1108칸이 됐고, 항구 부두 서쪽 가장자리에도 선다. 항구에서 서쪽으로 쏜 레이는 1.6m 앞에서 난간에 맞는다. 사선 부두라 계단식으로 쪼개져서 개수가 많다. 변경은 `BuildPierRails.cs:19-30` 이다.
+- **항구 방향도 바꿨다.** `DebugPlaces.cs:43` 항구의 yaw 를 180에서 270으로 바꿨다. 이 위치에서 −z 방향은 부두 길이 방향이라 8m 앞에 끝이 없었고, 바다는 서쪽이다. 장소 설명도 "바다를 봄"이다. 원래 의도가 부두 길 끝을 향해 서는 것이었다면 이 수정은 틀린 것이니 확인이 필요하다.
+- **저장·되돌림.** `Map_TownV6.unity` 를 저장했고 Play 는 꺼져 있다. 폰트 SDF 와 공유 .mat 은 건드리지 않았다. `LofiSurface.shader`·`packages-lock.json`·`ProjectSettings.asset` 변경은 이 과제 시작 전부터 있던 것이다.
+- **확인 못 한 것.** Play 로 부두를 걸어 보지 않았다. 언덕 쪽 이음매나 배 타는 자리에서 걷기가 막히는지는 모른다.
+
+보고서는 `docs/team/reports/build-20261103-1311.md` 에 있다.

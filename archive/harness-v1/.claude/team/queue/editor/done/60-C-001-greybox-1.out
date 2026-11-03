@@ -1,0 +1,41 @@
+[build] ok=True cost=$3.07
+상자 3개는 지웠습니다. 기준 1·2·3 모두 정비소 안 화면에서 확인했습니다.
+
+**바꾼 것**
+- `CartDamage.cs`: 회색 상자 코드를 지웠습니다(49줄). 상처는 지금처럼 보이기만 하고 운전·속도·화물에는 영향이 없습니다.
+- 처음 연기 값으로 1단계를 찍어 보니 연기 입자는 18~27개 떠 있었습니다. 그런데 어두운 회색이라 카트 그늘에 묻혀 화면에서 안 보였습니다. 그래서 단계마다 색과 양을 갈랐습니다:
+  - 1단계: 밝은 회색 김, 초당 10개
+  - 2단계: 갈색빛 회색, 초당 16개
+  - 3단계: 짙은 검은 연기, 초당 24개
+- 기준별 장면 파일 `crit1.cs`·`crit2.cs`·`crit3.cs`를 새로 만들었습니다. `start.cs`는 주석만 고쳤고 동작은 그대로입니다.
+- `crit3.cs`에는 사진용 설정이 하나 들어 있습니다. exec 한 번이 컴파일 때문에 2~4초 걸려서, 「2초 뒤 캡처」가 실제로는 4~6초 뒤에 찍힙니다. 돈 글자는 2.6초만 떠 있어서 한 번 놓쳤습니다. 그래서 그 Play 안에서만 돈 글자 시간을 10초로 늘립니다. 코드에 정해 둔 값은 바꾸지 않았습니다.
+
+**실제로 돌린 결과**
+- 기계 확인(`start.cs`): `상처 2→0 · DayLog 수리 −300 · 정비 자리 준비=True`
+- `start.cs`의 E 누름 시연: 3단계에서 「E 고치기」 칩이 뜨고, E 뒤 상처 0, 「−300원」이 떴습니다.
+- crit1: 3단계 짙은 연기가 보이고 회색 조각은 0개입니다. 상자가 남아 있었다면 이 숫자가 3으로 찍혀 실패했을 검사입니다.
+- crit2: 2단계 연기와 「E 고치기」 칩이 보입니다.
+- crit3: E 뒤 연기가 꺼지고 「−300원」이 보입니다.
+- 마지막 Play 의 콘솔 에러는 0입니다. 그 전 Play 에서 제가 저장 경로를 잘못 줘서 캡처 실패 에러가 1건 났고, 그 Play 는 껐습니다.
+
+같은 자리·같은 시선에서 찍은 1단계와 3단계 비교입니다:
+
+![1단계](file:///D:/Github/F1Game/docs/qa/tmp/c001_r5_stage1.png)
+![3단계](file:///D:/Github/F1Game/docs/qa/tmp/c001_r5_crit1.png)
+
+**남은 이슈**
+- 고친 뒤 칩이 「사장님한테 먼저」로 바뀝니다. 아직 사장과 말하기 전이라 원래부터 뜨는 안내인데, 한 판 하실 때 헷갈릴 수 있습니다. 카드 범위 밖이라 손대지 않았습니다.
+- 해가 비치는 바깥에서 1단계 밝은 김이 잘 보이는지는 확인 못 했습니다. 정비소 안에서만 찍었습니다.
+- 카드의 수용 기준 1 문장은 아직 「앞판이 기운 회색 대역 + 작은 연기」입니다. 「연기」로 고치는 건 PD 쪽 일입니다.
+
+끝 상태는 Play 꺼짐, 원래 씬(Map_TownV6), 저장 안 된 변경 없음, 폰트 되돌림입니다. 공유 .mat 은 건드리지 않았습니다. 보고서는 `docs/team/reports/build-20261103-1405.md` 에 있습니다.
+OK 10/10
+시작 장면: 정비소 안: (216.0, 26.8, -55.5) 땅 GARAGE_shell y=26.73 카트 (229.5, 27.2, -55.5)
+start.cs: 상처 2→0 · DayLog 수리 −300 (오늘 번 돈 -300) · 정비 자리 준비=True · 시연 대기(클립 시작 +0.6s 1단계, +2.4s 2단계, +4.2s 3단계, +6.6s E)
+clip: clip start frame=1747 src=LowRes
+crit1: docs/team/cards/C-001-repair-one/evidence/after/crit1.png · 상처 3단계 · 연기 재생=True · 회색 조각 0개 · 1단계 rate=10 size≤0.80 a=0.90 / 2단계 rate=16 size≤1.05 / 3단계 rate=24 size≤1.30 a=1.00
+crit2: FAIL 캡처 없음 · FAIL: Play 아님 · FAIL: Play 중에만
+crit3: docs/team/cards/C-001-repair-one/evidence/after/crit3.png · 상처 2단계 · 정비 자리 준비=True · +0.8s 에 E (결과는 SessionState c001.crit3 · 콘솔 [C-001 crit3])
+after: frames 1747→2536 (+789, uniq 789) · 캡처 121장 · 경고 0 · 에러 0 · 기준 사진 2장(빠짐 [2]) · 기계 PASS
+   docs/team/cards/C-001-repair-one/evidence/after/clip.mp4 docs/team/cards/C-001-repair-one/evidence/after/strip.png docs/team/cards/C-001-repair-one/evidence/after/shot.png
+.claude/team/queue/verify/60-C-001-verify-1.task

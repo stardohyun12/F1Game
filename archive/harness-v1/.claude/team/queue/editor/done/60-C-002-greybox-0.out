@@ -1,0 +1,31 @@
+[build] ok=True cost=$4.12
+, 끝나면 `[E] 달력 보기` 가 뜹니다(`gaze=Room_Calendar`).
+2. **집을 나서면 정비소 표식:** 1층으로 내려와 머리 위에 지붕이 없으면 정비소에 빨간 깃발이 뜹니다. 사장 대화는 3줄이고, 끝나면 「카트 열쇠 받음」 단계로 넘어갑니다.
+3. **카트에 타면 택배 보관소:** 기존 코드가 이미 하고 있어서 확인만 했습니다. 탑승 뒤 화면 위에 「270m」 화살표와 보관소 깃발이 보였습니다.
+
+**바꾼 것**
+- 새 파일 `OpeningSequence.cs`: 단계 값 `Opening.Step`, 깨어나기 시선, 집을 나섰는지 판정, 정비소 표식을 맡습니다.
+- `OnFootDirector.cs`: 위 단계에 연결하는 몇 줄만 넣었습니다. 사장 대화 전 표식 자리는 `:176`, 단계 연결은 `:290`·`:528`·`:756`·`:831` 입니다.
+- 사장 대사 1·2줄을 대역 문구로 바꿨습니다. 「왔냐. 방학 첫날이지? 카트는 내가 봐 놨다.」 / 「자, 열쇠. 뒤 짐상자 깨지는 건 네 책임이다.」 — 도현이 확인해야 합니다.
+- `docs/team/cards/C-002-opening/start.cs`: 10초 시연입니다. 방 → 집 앞 → 사장 대화 → 카트 순서로 보여 줍니다.
+- 씬은 저장하지 않았습니다. 기능 2 봇 전체 경로는 D-270 에 따라 돌리지 않았습니다.
+
+**남은 문제**
+- **Play 중 다른 일꾼의 스크립트 때문에 에러가 났습니다.** 시연 중에 범위 밖 새 파일 `WorldInvariants.cs`·`WorldSnapshot.cs` 가 들어와 Play 중 재컴파일이 일어났습니다. 그 뒤 `DotScreenUI.cs:819` 에서 NullReference 가 10초에 720번 났고, Play 를 새로 켜니 0이 됐습니다. 하네스가 증거 묶음을 찍는 도중에 같은 일이 나면 log_ok 가 FAIL 이 됩니다. `editor.lock` 이 .cs 쓰기까지 막는지 PD 가 확인해야 합니다.
+- **규칙 위반:** 처음 편집 몇 줄을 Play 가 켜진 채로 저장했습니다. 컴파일 전에 바로 껐고 피해는 없었습니다.
+- 깨어나는 자리는 기존 시작점 그대로(침대에서 1.2 m)입니다. 더 붙이려면 씬을 고쳐야 해서 하지 않았습니다.
+- 열쇠는 대사와 단계 값뿐이고, 화면에 열쇠 물건은 없습니다.
+- `1-room.png` 는 같은 Play 안에서 다시 찍은 것이라 왼쪽 위에 보관소 깃발이 보입니다. 새 게임에서는 깃발이 없습니다.
+
+끝에 Play 끄고 폰트 되돌렸고, 공유 .mat 변경은 0입니다.
+
+보고서: `docs/team/reports/build-20261103-1119.md`
+
+![방 — 달력 [E]](file:///D:/Github/F1Game/docs/team/reports/build-20261103-1119/1-room.png)
+![사장 대화 1줄](file:///D:/Github/F1Game/docs/team/reports/build-20261103-1119/2-talk.png)
+시작 장면: 집 방: (187.1, 28.5, -62.7) 땅 RUG_01 y=28.48 카트 (229.5, 27.2, -55.5)
+start.cs: C-002 오프닝 시연 시작: Step=Room 시선= (10초 뒤 콘솔 [Opening] 시연 끝 = 단계 순서)
+clip: clip start frame=1776 src=LowRes
+after: frames 1776→2407 (+631, uniq 631) · 캡처 111장 · 경고 0 · 에러 0 · 기계 PASS
+   docs/team/cards/C-002-opening/evidence/after/clip.mp4 docs/team/cards/C-002-opening/evidence/after/strip.png docs/team/cards/C-002-opening/evidence/after/shot.png
+.claude/team/queue/verify/60-C-002-verify-0.task

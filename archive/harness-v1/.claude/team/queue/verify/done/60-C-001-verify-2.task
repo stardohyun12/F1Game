@@ -1,0 +1,18 @@
+[C-001 검증] 수리 1개 — 부딪혀 상한 카트를 정비소에서 고친다
+너는 블라인드 검증자다. 이 과제 글에 적힌 파일만 본다 — 코드·git diff·작업자 보고서(docs/team/reports)·card.md 의 다른 절은 열지 마라. 「재밌나」는 판정하지 않는다(도현 몫).
+## 수용 기준
+1. 도현이 카트로 벽에 세게 부딪히면(또는 디버그 창 「카트 상처 +1」) 카트에 상한 표시(앞판이 기운 회색 대역 + 작은 연기)가 보이고, 단계가 오를수록 더 심해 보인다.
+2. 도현이 상한 카트 곁 정비 자리(정비소 안)에 서면 [E 고치기] 칩이 보이고, E 를 누르면 상한 표시가 사라진다.
+3. 고친 순간 수리비 돈 글자(「−숫자」)가 떠오른다.
+
+
+증거 묶음(이것만 본다):
+- docs/team/cards/C-001-repair-one/evidence.json — 기계 확인(frames_ok = 프레임이 실제로 늘었나, log_ok = 에러 0, warnings 수·samples, after.crit = 기준별 사진 목록·crit_missing = 빠진 번호)
+- docs/team/cards/C-001-repair-one/evidence/after/crit<N>.png (+ crit<N>_3x.png 3배 확대) — **수용 기준 N 은 critN.png 로 판정한다.** 그 번호 사진이 없으면(crit_missing) 그 기준은 strip 으로 찾고, 거기도 없으면 안 보임.
+- docs/team/cards/C-001-repair-one/evidence/after/strip.png — 클립 10초를 시간 순 8칸(왼쪽 위 → 오른쪽 아래). 흐름이 돌았나(프레임 증가)·기준 사진이 없는 기준용
+- docs/team/cards/C-001-repair-one/evidence/after/shot.png · docs/team/cards/C-001-repair-one/evidence/before/shot.png — 전/후 한 쌍
+(클립 원본 docs/team/cards/C-001-repair-one/evidence/after/clip.mp4 는 도현용 — 너는 strip 으로 본다)
+
+판정: 수용 기준 문장마다 「보인다/안 보인다」 + 근거(critN.png, strip 몇 번째 칸, 또는 evidence.json 값). 하나라도 안 보이거나 기계 확인이 false 면 FAIL.
+결과를 docs/team/cards/C-001-repair-one/verdict.json 에 쓴다(덮어씀): {"verdict":"PASS|FAIL","reason":"한 줄","frames":"crit2.png · strip 3·5칸","criteria":[{"text":"...","seen":true,"evidence":"..."}],"by":"verify"}
+보고서는 verdict 한 줄 + 표만. 다른 파일은 고치지 않는다.

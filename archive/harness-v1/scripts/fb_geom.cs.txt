@@ -93,6 +93,27 @@ for (int i = 0; i < bName.Count; i++) for (int j = i + 1; j < bName.Count; j++) 
   if (ox > 0.2f && oz > 0.2f && oy > 0.2f) sb.Append("O\t" + bName[i] + "\t" + bName[j] + "\t" + F(ox) + "\t" + F(oz) + "\n");
 }
 // ── 길: 경계 변(삼각형 하나만 쓰는 변)을 1m 간격으로 → 지형 높이와 비교. 정점도 건물 발자국 안인지 본다
+//  0640(fb 4607): 경계 변이 다른 길 면 위에 같은 높이(±0.08m)로 놓여 있으면 길-길 이음매(갈림목 끝단)라 지형에 드러나지 않는다 → 건너뛴다.
+//   예전엔 갈림목 세 길 끝단이 서로의 띠 안(지형 = 길밑 −0.15 설계값)에 있어 +0.15~0.22 "뜸"으로 셌다.
+//   길 콜라이더는 일부만 있어서(452 중 125) 메시 삼각형으로 직접 본다.
+var roadTris = new System.Collections.Generic.List<(UnityEngine.GameObject go, UnityEngine.Vector3 a, UnityEngine.Vector3 b, UnityEngine.Vector3 c)>();
+foreach (var mf in UnityEngine.Object.FindObjectsByType<UnityEngine.MeshFilter>(UnityEngine.FindObjectsSortMode.None)) {
+  if (!mf.name.StartsWith("ROAD") || mf.sharedMesh == null || !mf.gameObject.activeInHierarchy) continue;
+  var rb = mf.GetComponent<UnityEngine.Renderer>().bounds;
+  if (new UnityEngine.Vector2(UnityEngine.Mathf.Clamp(P.x, rb.min.x, rb.max.x) - P.x, UnityEngine.Mathf.Clamp(P.z, rb.min.z, rb.max.z) - P.z).magnitude > RAD + 2f) continue;
+  var mv = mf.sharedMesh.vertices; var mt = mf.sharedMesh.triangles; var tf = mf.transform;
+  for (int i = 0; i < mt.Length; i += 3) roadTris.Add((mf.gameObject, tf.TransformPoint(mv[mt[i]]), tf.TransformPoint(mv[mt[i + 1]]), tf.TransformPoint(mv[mt[i + 2]])));
+}
+System.Func<UnityEngine.GameObject, UnityEngine.Vector3, bool> onOtherRoad = (self, q) => {
+  foreach (var t in roadTris) {
+    if (t.go == self) continue;
+    float d = (t.b.z - t.c.z) * (t.a.x - t.c.x) + (t.c.x - t.b.x) * (t.a.z - t.c.z); if (UnityEngine.Mathf.Abs(d) < 1e-6f) continue;
+    float l1 = ((t.b.z - t.c.z) * (q.x - t.c.x) + (t.c.x - t.b.x) * (q.z - t.c.z)) / d, l2 = ((t.c.z - t.a.z) * (q.x - t.c.x) + (t.a.x - t.c.x) * (q.z - t.c.z)) / d, l3 = 1f - l1 - l2;
+    if (l1 < -0.01f || l2 < -0.01f || l3 < -0.01f) continue;   // 경계 위 1 cm 까지 안으로 친다
+    if (UnityEngine.Mathf.Abs(l1 * t.a.y + l2 * t.b.y + l3 * t.c.y - q.y) <= 0.08f) return true;
+  }
+  return false;
+};
 foreach (var mf in UnityEngine.Object.FindObjectsByType<UnityEngine.MeshFilter>(UnityEngine.FindObjectsSortMode.None)) {
   if (!mf.name.StartsWith("ROAD") || mf.sharedMesh == null || !mf.gameObject.activeInHierarchy) continue;
   var rb = mf.GetComponent<UnityEngine.Renderer>().bounds;
@@ -122,6 +143,7 @@ foreach (var mf in UnityEngine.Object.FindObjectsByType<UnityEngine.MeshFilter>(
       var q = UnityEngine.Vector3.Lerp(A, Bv, (s + 0.5f) / steps);
       if (new UnityEngine.Vector2(q.x - P.x, q.z - P.z).magnitude > RAD) continue;
       var g = ground(q.x, q.z); if (float.IsNaN(g)) continue;
+      if (onOtherRoad(mf.gameObject, q)) continue;
       float d = q.y - g; n++;
       if (UnityEngine.Mathf.Abs(d) > 0.15f) bad++;
       if (d < -0.02f) covered++;
