@@ -1122,6 +1122,86 @@ public class OnFootDirector : MonoBehaviour
         Mark("배달 단계 " + s);
     }
 
+    // ── C-003 첫 배달 안내 글(그레이박스 대역 문구 — 도현 확인 필요) ──
+    // 오프닝 안내(OpeningSequence)가 끝난 뒤 같은 자리·같은 모양으로 단계마다 "다음 할 일" 한 줄. 카트 안 = 화면 아래(위는 화살·거리·깃발 자리).
+    /// <summary>QA: 지금 보이는 배달 안내 글("" = 숨김).</summary>
+    public string DeliveryCaption { get; private set; } = "";
+    Image dcapBox; Text dcapText; RectTransform dcapRoot;
+
+    string DeliveryCaptionNow()
+    {
+        if (!DepotFlow || !OrderPicked || InTalk || Knocking) return "";
+        if (State != Mode.OnFoot && State != Mode.InCart) return "";
+        if (opening != null && opening.Caption.Length > 0) return "";
+        var job = firstJob != null ? firstJob : pickedJob;
+        string place = !string.IsNullOrEmpty(job.callerName) ? job.callerName : firstDrop != null ? firstDrop.Label : "배달지";
+        string who = string.IsNullOrEmpty(job.recipientName) ? "" : " " + job.recipientName;
+        if (HandedOver) return $"첫 배달 끝 +{HandoverMoney:N0}원 — 집에 가서 자자";
+        if (Delivered) return CarryingBox ? $"상자 들고{who}네 문 두드리기" : $"다 왔다 — 내려서{who}에게";
+        if (OrderStarted)
+        {
+            if (State == Mode.OnFoot) return $"카트 타고 {place}{who}네로";
+            Vector3 d = firstDrop.transform.position - car.transform.position; d.y = 0f;
+            return d.magnitude <= arriveM ? $"다 왔다 — E 내려서{who}에게" : $"{place}{who}네 {DeliveryArrow(d)} {Mathf.RoundToInt(d.magnitude / (d.magnitude >= 100f ? 10 : 5)) * (d.magnitude >= 100f ? 10 : 5)}m";
+        }
+        if (CarryingBox) return "상자를 카트에 싣자";
+        if (packSpot != null && packSpot.Ready) return "포장 끝 — 상자 들고 카트로";
+        return $"작업대에서 포장 → {place}{who}";
+    }
+
+    static readonly string[] CapArrows = { "↑", "↗", "→", "↘", "↓", "↙", "←", "↖" };
+    /// <summary>카메라 앞 기준 8방향 화살(OpeningSequence 안내와 같은 방식).</summary>
+    string DeliveryArrow(Vector3 to)
+    {
+        Vector3 f = cam.transform.forward; f.y = 0f;
+        float ang = f.sqrMagnitude > 1e-4f && to.sqrMagnitude > 1e-4f ? Vector3.SignedAngle(f, to, Vector3.up) : 0f;
+        return CapArrows[((Mathf.RoundToInt(ang / 45f) % 8) + 8) % 8];
+    }
+
+    void LateUpdate()
+    {
+        if (State == Mode.Starting) return;
+        string s = DeliveryCaptionNow();
+        DeliveryCaption = s;
+        if (!EnsureDeliveryCaption()) return;
+        bool on = s.Length > 0;
+        if (dcapBox.gameObject.activeSelf != on) dcapBox.gameObject.SetActive(on);
+        if (!on) return;
+        if (dcapText.text != s) dcapText.text = s;
+        // Galmuri11 12px: 한글·화살표 12, 나머지 6 픽셀로 어림(OpeningSequence 와 같음)
+        int w = 8;
+        foreach (char c in s) w += (c >= 0xAC00 && c <= 0xD7A3) || (c >= 0x2190 && c <= 0x21FF) ? 12 : 6;
+        Vector2 sz = dcapRoot.sizeDelta;
+        var r = dcapBox.rectTransform;
+        r.sizeDelta = new Vector2(w, 15);
+        r.anchoredPosition = new Vector2(Mathf.Round((sz.x - w) * 0.5f), State == Mode.InCart ? 20f : Mathf.Round(sz.y - 44f));
+        r.SetAsLastSibling();
+    }
+
+    bool EnsureDeliveryCaption()
+    {
+        if (dcapText != null) return true;
+        var canvas = cam != null ? cam.transform.Find("DotScreenUI_Canvas") : null;
+        if (dotUI == null || canvas == null) return false;
+        dcapRoot = (RectTransform)canvas;
+        var go = new GameObject("DeliveryCaption", typeof(RectTransform), typeof(Image));
+        go.transform.SetParent(dcapRoot, false);
+        dcapBox = go.GetComponent<Image>();
+        dcapBox.color = UIPalette.Ink; dcapBox.raycastTarget = false;
+        var r = dcapBox.rectTransform; r.anchorMin = r.anchorMax = r.pivot = Vector2.zero;
+        var tg = new GameObject("Text", typeof(RectTransform));
+        tg.transform.SetParent(go.transform, false);
+        var tr = (RectTransform)tg.transform;
+        tr.anchorMin = Vector2.zero; tr.anchorMax = Vector2.one; tr.offsetMin = new Vector2(0, 1); tr.offsetMax = Vector2.zero;
+        dcapText = tg.AddComponent<Text>();
+        dcapText.font = dotUI.BodyFont; dcapText.fontSize = 12; dcapText.color = UIPalette.Paper;
+        dcapText.alignment = TextAnchor.MiddleCenter; dcapText.raycastTarget = false;
+        dcapText.horizontalOverflow = HorizontalWrapMode.Overflow; dcapText.verticalOverflow = VerticalWrapMode.Overflow;
+        tg.AddComponent<PixelSnapText>().root = dcapRoot;
+        go.SetActive(false);
+        return true;
+    }
+
     const float HeldPaperLiftSec = 0.6f;
     IEnumerator FocusDestAfter(float sec)
     {
