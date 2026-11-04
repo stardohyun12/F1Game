@@ -14,7 +14,7 @@ public class PackBoardView : MonoBehaviour
     readonly Dictionary<PackPiece, Transform> body = new Dictionary<PackPiece, Transform>();
     readonly Dictionary<PackPiece, Transform> inner = new Dictionary<PackPiece, Transform>();
     readonly Dictionary<PackPiece, TextMeshPro> label = new Dictionary<PackPiece, TextMeshPro>();
-    sealed class BoxX { public Transform bottom, top, lid; public readonly List<Transform> strips = new List<Transform>(); }
+    sealed class BoxX { public Transform bottom, top, lid; public readonly List<Transform> strips = new List<Transform>(), wads = new List<Transform>(); }
     readonly Dictionary<PackPiece, BoxX> extras = new Dictionary<PackPiece, BoxX>();
     readonly Dictionary<PackPiece, Transform> shell = new Dictionary<PackPiece, Transform>();   // D-296 물건을 감싼 뽁뽁이 층(대역: 물건보다 넓고 밝은 테두리)
     readonly Dictionary<Color, Material> mats = new Dictionary<Color, Material>();
@@ -45,9 +45,9 @@ public class PackBoardView : MonoBehaviour
         return mats[c] = m;
     }
 
-    Transform Slab(string n, Transform parent, Color c)
+    Transform Slab(string n, Transform parent, Color c, PrimitiveType shape = PrimitiveType.Cube)
     {
-        var g = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var g = GameObject.CreatePrimitive(shape);
         g.name = n;
         Destroy(g.GetComponent<Collider>());
         g.GetComponent<Renderer>().sharedMaterial = Mat(c);
@@ -92,7 +92,7 @@ public class PackBoardView : MonoBehaviour
     {
         if (body.ContainsKey(p)) return;
         var c = p.kind == PackPieceKind.Parcel ? parcelC : p.kind == PackPieceKind.Box ? boxC : p.kind == PackPieceKind.Tape ? tapeC : FillerColor(p.fillerKind);
-        var b = Slab(p.name, root, c); b.localScale = new Vector3(p.w, 0.03f, p.d); body[p] = b;
+        var b = Slab(p.name, root, c, p.crumple ? PrimitiveType.Cylinder : PrimitiveType.Cube); b.localScale = new Vector3(p.w, 0.03f, p.d); body[p] = b;   // 구긴 종이 = 원통(둥근 덩어리 대역)
         if (p.kind == PackPieceKind.Box)
         {
             var i = Slab(p.name + " 속", b, insideC);
@@ -110,7 +110,7 @@ public class PackBoardView : MonoBehaviour
     {
         if (body.TryGetValue(p, out var b) && b != null) Destroy(b.gameObject);
         if (label.TryGetValue(p, out var t) && t != null) Destroy(t.gameObject);
-        if (extras.TryGetValue(p, out var x)) { Destroy(x.bottom.gameObject); Destroy(x.top.gameObject); Destroy(x.lid.gameObject); foreach (var s in x.strips) Destroy(s.gameObject); }
+        if (extras.TryGetValue(p, out var x)) { Destroy(x.bottom.gameObject); Destroy(x.top.gameObject); Destroy(x.lid.gameObject); foreach (var s in x.strips) Destroy(s.gameObject); foreach (var s in x.wads) Destroy(s.gameObject); }
         if (shell.TryGetValue(p, out var sh) && sh != null) Destroy(sh.gameObject);
         body.Remove(p); label.Remove(p); inner.Remove(p); extras.Remove(p); shell.Remove(p);
     }
@@ -125,6 +125,9 @@ public class PackBoardView : MonoBehaviour
     /// <summary>감싼 겹 하나가 물건 테두리를 넓히는 폭(m, 그림용 과장 — 실제 크기 증가는 PackRules.WrapThick).</summary>
     const float WrapRim = 0.03f;
     static readonly Color wrap2C = new Color(0.94f, 0.98f, 1.0f);
+    /// <summary>구긴 종이 덩어리 높이(m, 눌린 뒤) · 이웃 덩어리와 구분되게 살짝 다른 종이색.</summary>
+    const float WadH = 0.03f;
+    static readonly Color wadC = new Color(0.78f, 0.75f, 0.68f);
 
     static void SetAct(Transform t, bool on) { if (t.gameObject.activeSelf != on) t.gameObject.SetActive(on); }
 
@@ -147,9 +150,9 @@ public class PackBoardView : MonoBehaviour
             var b = body[p];
             bool show = p.active && !(p.holder != null && (p.holder.closed || !p.holder.active));
             if (b.gameObject.activeSelf != show) { b.gameObject.SetActive(show); label[p].gameObject.SetActive(show); }
-            if (!p.active && extras.TryGetValue(p, out var off)) { SetAct(off.bottom, false); SetAct(off.top, false); SetAct(off.lid, false); foreach (var st in off.strips) SetAct(st, false); }
+            if (!p.active && extras.TryGetValue(p, out var off)) { SetAct(off.bottom, false); SetAct(off.top, false); SetAct(off.lid, false); foreach (var st in off.strips) SetAct(st, false); foreach (var wd in off.wads) SetAct(wd, false); }
             if (!show) { if (shell.TryGetValue(p, out var sh0)) SetAct(sh0, false); continue; }
-            float h = p.kind == PackPieceKind.Box ? 0.05f : 0.03f;
+            float h = p.kind == PackPieceKind.Box ? 0.05f : p.crumple ? Mathf.Lerp(0.012f, WadH + 0.01f, p.crumpleT) : 0.03f;
             float lift = p.lifted ? 0.07f : 0f;
             float pu = p.u + p.jit.x, pv = p.v + p.jit.y;
             float z = p.perch > 0f ? PackBoard.RimZ : p.drop.z;                // D-295: 놓은 뒤 떨어지는 높이 · 벽에 걸려 떠 있는 높이
@@ -157,7 +160,8 @@ public class PackBoardView : MonoBehaviour
             if (p.holder != null) baseY = BoxTop + (p.holder.bottom != PackFiller.None ? SheetH : 0f) + ParcelH * 0.5f + (p.holder.lifted ? 0.07f : 0f) + p.holder.drop.z + z;
             float dd = p.d;
             if (p.kind == PackPieceKind.Roll) dd = p.d * Mathf.Lerp(0.35f, 1f, (float)p.left / Mathf.Max(1, p.full));   // 롤이 가늘어진다
-            b.localScale = new Vector3(p.w, h, dd);
+            if (p.crumple) b.localScale = new Vector3(Mathf.Lerp(0.20f, p.w, p.crumpleT), h * 0.5f, Mathf.Lerp(0.18f, p.d, p.crumpleT));   // 평평한 장 → 둥근 덩어리(원통 높이는 2배라 절반)
+            else b.localScale = new Vector3(p.w, h, dd);
             Place(b, pu, pv, baseY);
             float topY = baseY + h * 0.5f;
             if (shell.TryGetValue(p, out var sx))                              // D-296: 감싼 겹이 있으면 물건 둘레에 밝고 넓은 테두리(겹마다 더 두껍고 더 밝게)
@@ -174,7 +178,7 @@ public class PackBoardView : MonoBehaviour
             if (inner.TryGetValue(p, out var i)) i.gameObject.SetActive(p.open);
             if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift + z);
             var t = label[p];
-            bool hideLabel = p.kind == PackPieceKind.Box && p.Stuffed && !p.closed;
+            bool hideLabel = p.crumple || (p.kind == PackPieceKind.Box && p.Stuffed && !p.closed);
             SetAct(t.transform, !hideLabel);
             t.transform.SetPositionAndRotation(board.Origin + board.Right * pu + board.Up * pv + Vector3.up * (topY + 0.004f), Quaternion.LookRotation(Vector3.down, board.Up));
             string s = p.kind == PackPieceKind.Parcel && p.parcel != null ? p.parcel.cargoName + "\n" + p.parcel.recipient + "·" + p.parcel.destLabel : p.name;
@@ -219,6 +223,19 @@ public class PackBoardView : MonoBehaviour
             Place(x.strips[k], pu + st.du, pv + st.dv, y + 0.002f);
         }
         if (p.closed && p.strips.Count > 0) y += 0.004f;
+        // D-296 틈에 자리 잡은 구긴 종이(뚜껑이 덮이면 안 보인다). 놓인 만큼 눌려 납작·넓게
+        while (x.wads.Count < p.wads.Count) x.wads.Add(Slab(p.name + " 구긴 종이", root, paperC, PrimitiveType.Cylinder));
+        float rad = PackBoard.PaperRadius * 0.6f;
+        for (int k = 0; k < x.wads.Count; k++)
+        {
+            bool has = k < p.wads.Count && !p.closed;
+            SetAct(x.wads[k], has);
+            if (!has) continue;
+            var wd = p.wads[k];
+            x.wads[k].GetComponent<Renderer>().sharedMaterial = Mat(k % 2 == 0 ? paperC : wadC);
+            x.wads[k].localScale = new Vector3(rad * 2.2f, WadH * 0.5f, rad * 2.2f);
+            Place(x.wads[k], pu + wd.off.x, pv + wd.off.y, BoxTop + lift + wd.fall.z + WadH * 0.5f + 0.002f);
+        }
         return y;
     }
 }

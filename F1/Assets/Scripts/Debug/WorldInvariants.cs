@@ -50,7 +50,41 @@ public static class WorldInvariants
         ("포장 2D 보드 조각(상자3·롤2·테이프·물건)·판 안·안 겹침", () => PackBoard2D()),
         ("포장 2D 규칙: 소 튕김·중 딱맞음(+뽁뽁이 90%)·대 헐거움·롤 가득·뜯은 조각 0", () => PackBoard2DRules()),
         ("포장 물리(D-296): 달걀 감싸기 2겹 + 중 상자 → 빈틈 있고 흔들림 있되 부딪힘 손상 ≤ 안 감쌌을 때의 40% · 대 상자 안 감쌈 >5cm", () => PackPhysicsShake()),
+        ("포장 구긴 종이(D-296): 달걀 + 중 상자 + 4덩어리 → 흔들림 ≤ 종이 0일 때의 50% · 덩어리 늘면 틈 메움↑(≤0.85)", () => PackPaperShake()),
     };
+
+    /// <summary>
+    /// D-296 구긴 종이: 달걀 한 판 + 중 상자(안 감쌈)를 표준 흔들기(진폭 4 cm · 3 Hz)로 흔든 덜그럭 값이 종이 0덩어리일 때보다 4덩어리일 때 절반 이하여야 한다(종이가 틈을 메우면 움직임↓).
+    /// 덩어리가 늘수록 메운 비율(fill)이 줄지 않고 PaperFillMax 를 넘지 않으며, 대 상자에서도 4덩어리가 흔들림을 줄인다. 씬 없이 돈다.
+    /// </summary>
+    static List<string> PackPaperShake()
+    {
+        var bad = new List<string>();
+        var od = WorldData.Orders; var pk = od != null ? od.packing : null;
+        var tr = od != null ? od.TraitOf("달걀 한 판") : null;
+        if (tr == null) tr = new WorldOrders.Trait { cargo = "달걀 한 판", trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
+        bool yaml = pk != null && pk.boxes.Count >= 3;
+        Vector3 mid = yaml ? pk.boxes[1].inner : new Vector3(0.315f, 0.15f, 0.315f), big = yaml ? pk.boxes[2].inner : new Vector3(0.46f, 0.24f, 0.46f);
+        var mm = yaml ? new PackPhysics.Mat(pk.boxes[1].mass, pk.boxes[1].bounce, pk.boxes[1].friction) : new PackPhysics.Mat(0.12f, 0.3f, 0.4f);
+        var bm = yaml ? new PackPhysics.Mat(pk.boxes[2].mass, pk.boxes[2].bounce, pk.boxes[2].friction) : new PackPhysics.Mat(0.2f, 0.3f, 0.4f);
+        if (PackBoard.PaperRadius <= 0f || PackBoard.PaperMass <= 0f || PackBoard.PaperFriction <= 0f) bad.Add($"paper_* 숫자가 없음 r={PackBoard.PaperRadius} m={PackBoard.PaperMass} μ={PackBoard.PaperFriction}");
+        float s0 = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+        var four = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None, 0, 4);
+        float s4 = four.MeasureStandard();
+        if (s0 <= 0f) bad.Add($"종이 0 + 중 상자 + {tr.cargo}: 흔들림 {s0 * 100f:F2} cm — 비교할 기준이 없음");
+        else if (s4 > s0 * 0.5f) bad.Add($"종이 4덩어리 흔들림 {s4 * 100f:F2} cm > 종이 0 {s0 * 100f:F2} cm 의 50% (틈 메움 {four.fill * 100f:F0}%)");
+        float prev = 0f;
+        for (int n = 1; n <= PackBoard.PaperMax; n++)
+        {
+            float f = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None, 0, n).fill;
+            if (f < prev || f > PackBoard.PaperFillMax + 1e-4f || f <= 0f) bad.Add($"대 상자 종이 {n}덩어리 메움 {f:F2} (앞 {prev:F2}, 0 초과 {PackBoard.PaperFillMax:F2} 이하·줄지 않아야 함)");
+            prev = f;
+        }
+        float b0 = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+        float b4 = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None, 0, 4).MeasureStandard();
+        if (b0 > 0f && b4 >= b0) bad.Add($"대 상자 종이 4덩어리 흔들림 {b4 * 100f:F1} cm ≥ 종이 0 {b0 * 100f:F1} cm — 종이가 틈을 안 메움");
+        return bad;
+    }
 
     /// <summary>
     /// D-295 포장 2D ③: 상자 안 물리(PackPhysics)의 표준 흔들기(진폭 4 cm · 3 Hz, 1.5 s 합) — 사람이 흔드는 것과 같은 물리 길.

@@ -102,3 +102,6 @@ MonoBehaviour:
     shakeFull: 0.5
     wrapThick: 0.003
     wrapDamp: 0.5
+    paperMass: 0.01
+    paperFriction: 0.9
+    paperRadius: 0.04

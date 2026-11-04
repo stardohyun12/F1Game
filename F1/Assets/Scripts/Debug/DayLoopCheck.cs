@@ -22,6 +22,8 @@ public class DayLoopCheck : MonoBehaviour
 
     /// <summary>D-294: 값이 있으면 2D 보드가 켜진(상자가 가운데에 열린) 순간의 게임 화면을 이 경로에 저장한다.</summary>
     public static string Pack2DShot;
+    /// <summary>④ 구긴 종이 그림 파일 접두사 — 없으면 안 찍는다.</summary>
+    public static string PaperShot;
 
     public static string Begin(string path)
     {
@@ -249,6 +251,25 @@ public class DayLoopCheck : MonoBehaviour
         yield return PackRun(b, bL, bubble, false, 0, Pack2DShot == null ? null : Pack2DShot + "-L");
         float rattleL = bL.rattle; int beatsL = b.RattleBeats - beats0; var fitL = bL.fit;
         Step($"② 대 상자 {(fitL == PackFit.Loose && bL.closed && bL.Taped && rattleL > 0.05f && beatsL > 3 ? "PASS" : "FAIL")} fit={fitL} 닫힘={bL.closed} 테이프={bL.strips.Count} 흔들림 {rattleL * 100f:F1} cm(흔든 {bL.shakeSecs:F1}s) 덜그럭 소리 {beatsL}번 | 시작값(참고) {PackRules.StartFromShake("깨짐", bL.bottom, bL.top, rattleL) * 100f:F0}%");
+        b.DebugRestart();
+
+        // ④ D-296 구긴 종이: 대 상자에 7번 → 6덩어리까지(7번째·상자 밖은 버려짐) / 중 상자: 종이 4덩어리 + 달걀 → 흔들어 표준 흔들기와 비교
+        var paper = b.Find(PackPieceKind.Roll, 1);
+        b.SimDrag(bL, PackBoard.SlotU, PackBoard.SlotV);
+        for (int k = 0; k < 7; k++) b.SimDrag(paper, PackBoard.SlotU + ((k % 3) - 1) * 0.12f, PackBoard.SlotV + ((k / 3) - 1) * 0.08f);
+        int capN = bL.wads.Count; int sheetsLeft = b.Count(PackPieceKind.Sheet);
+        b.SimDrag(paper, -0.8f, -0.3f);                                       // 상자 밖에 놓기
+        bool outGone = bL.wads.Count == capN && b.Count(PackPieceKind.Sheet) == 0;
+        yield return Wait(() => !b.Settling, 3f);
+        b.DebugRestart(); beats0 = b.RattleBeats;
+        pp = b.Find(PackPieceKind.Parcel);
+        paper = b.Find(PackPieceKind.Roll, 1);
+        yield return PackRun(b, bM, bubble, false, 0, null, paper, 4, PaperShot);
+        var wf = bM.phys != null ? bM.phys.Copy() : null;
+        float stdFree = 0f, stdPaper = 0f;
+        if (wf != null) { stdPaper = wf.MeasureStandard(); wf.fill = 0f; stdFree = wf.MeasureStandard(); }
+        bool goodPaper = capN == PackBoard.PaperMax && sheetsLeft == 0 && outGone && bM.wads.Count == 4 && pp.wrap == 0 && bM.phys != null && bM.phys.fill > 0f && stdFree > 0f && stdPaper <= stdFree * 0.5f;
+        Step($"④ 구긴 종이 {(goodPaper ? "PASS" : "FAIL")} 대 상자 7번 → {capN}덩어리(최대 {PackBoard.PaperMax}) 상자 밖 버려짐={outGone} | 중 상자 4덩어리 틈 {(bM.phys != null ? bM.phys.fill * 100f : 0f):F0}% 메움 · 직접 흔든 덜그럭 {bM.rattle * 100f:F2} cm · 표준 흔들기 종이 0 {stdFree * 100f:F2} → 4덩어리 {stdPaper * 100f:F2} cm | {b.LastAct}");
         b.DebugRestart(); beats0 = b.RattleBeats;
         pp = b.Find(PackPieceKind.Parcel);
 
@@ -269,10 +290,12 @@ public class DayLoopCheck : MonoBehaviour
     /// 한 판: 상자 가운데 → 롤 한 장(바닥, 떨어져 자리 잡음) → 물건을 던져 넣기(손 속도 0.8×0.4 m/s, 그림 1) → 롤 한 장(덮기) → 테이프 가로지름 → 쥐고 2.6 s 흔들기(1.5 s 넘게 가속해야 직접 잰 값을 쓴다, 그림 2) → 놓기(takeOut 이면 판 밖 아래로).
     /// shot 은 그림 파일 접두사("….png" 앞) — 없으면 안 찍는다.
     /// </summary>
-    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, int wraps, string shot)
+    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, int wraps, string shot, PackPiece paper = null, int papers = 0, string paperShot = null)
     {
         var pc = b.Find(PackPieceKind.Parcel); var tape = b.Find(PackPieceKind.Tape);
         b.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
+        var corner = new[] { new Vector2(-0.07f, 0.07f), new Vector2(0.07f, 0.07f), new Vector2(0.07f, -0.07f) };
+        for (int k = 0; k < papers - 1 && k < corner.Length; k++) b.SimDrag(paper, box.u + corner[k].x, box.v + corner[k].y);   // D-296: 물건 들어가기 전에 틈 모서리에 구긴 종이
         for (int k = 0; k < wraps; k++)                                       // D-296: 뜯은 뽁뽁이 한 장을 물건 위로 끌어다 놓는다 = 감싼다
         {
             b.SimDrag(roll, pc.u, pc.v);
@@ -284,6 +307,12 @@ public class DayLoopCheck : MonoBehaviour
         yield return null; yield return null;
         yield return Snap(shot, "-drop");
         yield return Wait(() => !b.Settling, 3f);
+        if (papers > 0)                                                       // 마지막 한 덩어리는 물건 위에 놓는다 → 감싸지 않고 틈으로 밀려난다
+        {
+            b.SimDrag(paper, pc.u, pc.v);
+            yield return Wait(() => !b.Settling, 3f);
+            yield return Snap(paperShot, "-paper");
+        }
         float cu = PackBoard.SlotU, cv = PackBoard.SlotV + 0.02f;
         b.SimDragPath(tape, new Vector2(cu - 0.34f, cv), new Vector2(cu - 0.1f, cv), new Vector2(cu, cv), new Vector2(cu + 0.1f, cv), new Vector2(cu + 0.34f, cv));
         yield return new WaitForSecondsRealtime(0.4f);
@@ -303,6 +332,8 @@ public class DayLoopCheck : MonoBehaviour
         if (string.IsNullOrEmpty(shot)) yield break;
         yield return new WaitForEndOfFrame();
         string f = shot + tag + ".png";
+        var fd = System.IO.Path.GetDirectoryName(f);
+        if (!string.IsNullOrEmpty(fd)) System.IO.Directory.CreateDirectory(fd);   // 폴더 없으면 캡처가 조용히 실패한다
         ScreenCapture.CaptureScreenshot(f);
         yield return new WaitForSecondsRealtime(0.4f);
         Step("2D 보드 그림 " + f);

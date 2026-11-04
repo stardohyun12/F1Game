@@ -39,6 +39,8 @@ public class WorldOrders : ScriptableObject
         public List<Trait> traits = new List<Trait>();
         public List<Cushion> cushions = new List<Cushion>();
         public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f, shakeFull = 0.5f, wrapThick = 0.003f, wrapDamp = 0.5f;
+        /// <summary>D-296 구긴 종이 덩어리: 질량 kg · 마찰 · 반지름 m (world.yaml packing paper_*).</summary>
+        public float paperMass = 0.01f, paperFriction = 0.9f, paperRadius = 0.04f;
     }
 
     public List<Cargo> cargo = new List<Cargo>();

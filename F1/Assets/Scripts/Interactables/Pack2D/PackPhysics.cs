@@ -46,6 +46,7 @@ public sealed class PackPhysics
     public float pad;                  // 완충재가 메우는 두께 합(m)
     public float mu, e, mass;          // 마찰 계수 · 벽 반발 · 물건 질량(kg)
     public float wrapK = 1f;           // D-296 겹 계수: 감싼 물건은 부딪힘 세기(소리·손상)가 이만큼으로. 반발 e 에는 이미 곱해 들어 있다
+    public float fill;                 // D-296 구긴 종이가 메운 틈 비율(0~1): 물건이 움직일 폭이 (1−fill)배, 부딪힘 세기도 (1−fill)배
 
     // ── 상태 ──
     public Vector2 pos, vel;           // 상자 가운데 기준 물건 자리·속도
@@ -64,7 +65,7 @@ public sealed class PackPhysics
     int ringAt;
 
     /// <summary>한 축이 움직일 수 있는 절반 폭(m). 0 이면 물건이 꽉 끼었다.</summary>
-    public Vector2 Limit => new Vector2(Mathf.Max(0f, inner.x - part.x - pad) * 0.5f, Mathf.Max(0f, inner.y - part.y - pad) * 0.5f);
+    public Vector2 Limit => new Vector2(Mathf.Max(0f, inner.x - part.x - pad) * 0.5f, Mathf.Max(0f, inner.y - part.y - pad) * 0.5f) * (1f - fill);
 
     public void Reset(Vector2 at, Vector2 v)
     {
@@ -81,7 +82,7 @@ public sealed class PackPhysics
         System.Array.Clear(ring, 0, ring.Length);
     }
 
-    public PackPhysics Copy() => new PackPhysics { inner = inner, part = part, pad = pad, mu = mu, e = e, mass = mass, wrapK = wrapK };
+    public PackPhysics Copy() => new PackPhysics { inner = inner, part = part, pad = pad, mu = mu, e = e, mass = mass, wrapK = wrapK, fill = fill };
 
     /// <summary>boxAcc(상자의 가속, m/s²)가 dt 동안 일정하다고 보고 나아간다. 프레임이 얼마든 고정 간격으로 쪼개서 같은 값이 나온다.</summary>
     public void Advance(float dt, Vector2 boxAcc)
@@ -114,7 +115,7 @@ public sealed class PackPhysics
             float s = x > 0f ? 1f : -1f, hit = v * s;
             if (hit > 0f)
             {
-                if (hit > HitMin) { Hits++; float im = hit * mass * wrapK; if (im > impact) impact = im; }
+                if (hit > HitMin) { Hits++; float im = hit * mass * wrapK * (1f - fill); if (im > impact) impact = im; }
                 v = hit * e > 0.05f ? -hit * e * s : 0f;
             }
             return lim * s;

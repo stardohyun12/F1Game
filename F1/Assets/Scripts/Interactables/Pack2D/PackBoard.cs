@@ -117,6 +117,15 @@ public class PackBoard : MonoBehaviour
     public const float DropZ = 0.07f, RimZ = 0.05f;
     const float ThrowMax = 1.5f;
 
+    // ── D-296 구긴 종이: world.yaml packing paper_* ──
+    /// <summary>한 상자에 놓을 수 있는 구긴 종이 덩어리 수 · 덩어리가 메울 수 있는 틈 비율의 위(1 이면 물건이 꽉 끼어 소리가 아예 안 난다 — 종이는 그 정도는 아니다).</summary>
+    public const int PaperMax = 6;
+    public const float PaperFillMax = 0.85f;
+    static WorldOrders.Packing Pk => WorldData.Orders != null ? WorldData.Orders.packing : null;
+    public static float PaperRadius => Pk != null ? Pk.paperRadius : 0.04f;
+    public static float PaperFriction => Pk != null ? Pk.paperFriction : 0.9f;
+    public static float PaperMass => Pk != null ? Pk.paperMass : 0.01f;
+
     static PackPhysics.Mat BoxMat(string pieceName)
     {
         var pk = WorldData.Orders != null ? WorldData.Orders.packing : null;
@@ -137,7 +146,7 @@ public class PackBoard : MonoBehaviour
     /// 상자 안 물건의 물리 설정. 상자 틀에서 본 안쪽(눕힌 방향 + 돌림) · 물건 발자국 · 틈을 메우는 완충재 두께 합 · 마찰(깔린 면과 평균) ·
     /// 벽 반발 √(물건×상자) × 놓인 완충재 반발 유지율의 곱. 불변 검사도 이 함수로 같은 물리를 만든다.
     /// </summary>
-    public static PackPhysics Setup(Vector3 inner, bool boxRot, PackPhysics.Mat boxMat, WorldOrders.Trait cargo, bool parcelRot, PackFiller bottom, PackFiller top, int wrap = 0)
+    public static PackPhysics Setup(Vector3 inner, bool boxRot, PackPhysics.Mat boxMat, WorldOrders.Trait cargo, bool parcelRot, PackFiller bottom, PackFiller top, int wrap = 0, int wads = 0)
     {
         float sx = PackRules.Wrapped(cargo.size.x, wrap), sz = PackRules.Wrapped(cargo.size.z, wrap);   // D-296: 감싼 만큼 물건이 커서 틈이 준다(메우기 효과 pad 와는 별개)
         var ph = new PackPhysics
@@ -156,12 +165,19 @@ public class PackBoard : MonoBehaviour
             if (f == bottom) surf = fm.friction;                              // 물건은 바닥 완충재 위에 앉는다
         }
         ph.pad = pad; ph.e = e * ph.wrapK; ph.mu = (cargo.friction + surf) * 0.5f;
+        if (wads > 0)                                                         // D-296: 구긴 종이가 틈(상자 바닥 − 물건 발자국)의 얼마를 메우나 → 움직일 폭·반발↓, 마찰↑
+        {
+            float gapArea = Mathf.Max(1e-4f, inner.x * inner.z - sx * sz), r = PaperRadius;
+            ph.fill = Mathf.Min(PaperFillMax, wads * Mathf.PI * r * r / gapArea);
+            ph.e *= Mathf.Lerp(1f, FillerMat(PackFiller.Paper, out _).bounce, ph.fill);
+            ph.mu = Mathf.Lerp(ph.mu, Mathf.Max(ph.mu, PaperFriction), ph.fill);
+        }
         return ph;
     }
 
     PackPhysics NewPhys(PackPiece box, PackPiece pc)
     {
-        return Setup(box.inner, box.rot90, BoxMat(box.name), TraitOfParcel(pc), pc.rot90, box.bottom, box.top, pc.wrap);
+        return Setup(box.inner, box.rot90, BoxMat(box.name), TraitOfParcel(pc), pc.rot90, box.bottom, box.top, pc.wrap, box.wads.Count);
     }
 
     /// <summary>완충재가 더해졌다 → 같은 상자의 물리 설정만 새로(자리·속도·측정은 그대로).</summary>
@@ -169,7 +185,7 @@ public class PackBoard : MonoBehaviour
     {
         if (box.phys == null || box.content == null) return;
         var n = NewPhys(box, box.content);
-        box.phys.pad = n.pad; box.phys.e = n.e; box.phys.mu = n.mu;
+        box.phys.pad = n.pad; box.phys.e = n.e; box.phys.mu = n.mu; box.phys.fill = n.fill;
         var l = box.phys.Limit;
         box.phys.pos = new Vector2(Mathf.Clamp(box.phys.pos.x, -l.x, l.x), Mathf.Clamp(box.phys.pos.y, -l.y, l.y));
     }
@@ -303,13 +319,15 @@ public class PackBoard : MonoBehaviour
             if (p.left <= 0) { Deny($"{p.name} 다 씀"); return; }
             p.left--;
             var roll = p;
-            p = Add(PackPieceKind.Sheet, roll.filler + " 한 장", u, v, 0.20f, 0.18f);
-            p.filler = roll.filler; p.fillerKind = roll.fillerKind;
+            bool paper = roll.fillerKind == PackFiller.Paper;                 // D-296: 종이는 집는 순간 구겨진다(둥근 덩어리, 크기는 paper_radius × 상자와 같은 축척)
+            float dm = PaperRadius * 2f * BoxScale;
+            p = Add(PackPieceKind.Sheet, roll.filler + (paper ? " 구긴 덩어리" : " 한 장"), u, v, paper ? dm : 0.20f, paper ? dm : 0.18f);
+            p.filler = roll.filler; p.fillerKind = roll.fillerKind; p.crumple = paper;
             PackBench.PlayCue(5);
-            Act($"{p.filler} 한 장 뜯음(롤에 {roll.left} 남음)");
+            Act($"{p.filler} 한 장 뜯음{(paper ? " → 집는 순간 구겨짐" : "")}(롤에 {roll.left} 남음)");
         }
         else if (p.kind == PackPieceKind.Box && p.content != null && !p.closed) { Deny($"{p.name} 안에 물건이 있음(먼저 물건을 꺼낸다)"); return; }
-        else if (p.kind == PackPieceKind.Box && !p.closed && p.Stuffed) { p.bottom = p.top = PackFiller.None; p.dropBottom = p.dropTop = default; Act($"{p.name} 바닥 완충재 걷어냄"); }
+        else if (p.kind == PackPieceKind.Box && !p.closed && p.Stuffed) { p.bottom = p.top = PackFiller.None; p.dropBottom = p.dropTop = default; p.wads.Clear(); Act($"{p.name} 바닥 완충재·구긴 종이 걷어냄"); }
         else if (p.kind == PackPieceKind.Parcel && p.holder != null) { p.holder.content = null; p.holder.top = PackFiller.None; p.holder.dropTop = default; p.holder.phys = null; p.holder = null; Act("물건을 상자에서 꺼냄(덮은 완충재는 버려짐)"); }
         Held = p; p.lifted = true; p.drop = default; p.hand = Vector2.zero; p.lastPos = new Vector2(p.u, p.v); grabOff = new Vector2(p.u - u, p.v - v);
         rawU = u; rawV = v;
@@ -400,11 +418,55 @@ public class PackBoard : MonoBehaviour
         pieces.Remove(p);
         if (p.fillerKind == PackFiller.Bubble) { WrapWith(p); return; }          // D-296: 뽁뽁이는 깔지 않는다 — 물건을 감싼다
         var box = InSlot;
+        if (p.crumple) { PutWad(p, box); return; }                               // D-296: 구긴 종이는 깔지도 덮지도 않는다 — 틈에 들어간다
         if (box == null || box.closed || !InSlotRect(p)) { Act($"{p.filler} 한 장 놓친 자리에 버려짐"); return; }
         float e = FillerMat(p.fillerKind, out _).bounce;
         if (box.content == null) { if (box.bottom == PackFiller.None) { box.bottom = p.fillerKind; box.dropBottom.Drop(DropZ, e); } Act($"{p.filler} 바닥에 깔림"); }
         else { if (box.top == PackFiller.None) { box.top = p.fillerKind; box.dropTop.Drop(DropZ, e); RefreshPhys(box); } Act($"{p.filler} 물건 위에 덮임"); }
         PackBench.PlayCue(5);
+    }
+
+    /// <summary>
+    /// D-296 구긴 종이를 열린 상자(가운데에 놓인) 위에서 놓으면 떨어져 틈에 자리 잡는다. 상자 밖이면 버려지고, 한 상자 PaperMax 덩어리가 넘으면 그것도 버려진다.
+    /// 물건 위에 놓아도 감싸지 않는다 — 물건 가장자리 밖 틈으로 밀려난다. 놓인 덩어리 수가 물리의 fill(틈 메운 비율)을 바꾼다.
+    /// </summary>
+    void PutWad(PackPiece sheet, PackPiece box)
+    {
+        if (box == null || box.closed || Mathf.Abs(sheet.u - box.u) > box.w * 0.5f || Mathf.Abs(sheet.v - box.v) > box.d * 0.5f) { Act("구긴 종이 상자 밖에 놓여 버려짐"); return; }
+        if (box.wads.Count >= PaperMax) { Deny($"구긴 종이 {box.name} 에 이미 {PaperMax}덩어리 — 더 못 넣음(버려짐)"); return; }
+        float rad = PaperRadius * BoxScale;
+        var off = new Vector2(sheet.u - box.u, sheet.v - box.v);
+        if (box.content != null)
+        {
+            var co = new Vector2(box.content.u - box.u, box.content.v - box.v);
+            float hx = box.content.w * 0.5f, hz = box.content.d * 0.5f;
+            var rel = off - co;
+            if (Mathf.Abs(rel.x) < hx && Mathf.Abs(rel.y) < hz)                  // 물건 위 → 가까운 가장자리 밖(틈)으로
+            {
+                if (hx - Mathf.Abs(rel.x) < hz - Mathf.Abs(rel.y)) off.x = co.x + (rel.x >= 0f ? 1f : -1f) * (hx + rad * 0.3f);
+                else off.y = co.y + (rel.y >= 0f ? 1f : -1f) * (hz + rad * 0.3f);
+            }
+        }
+        float mx = box.w * 0.5f - rad * 0.3f, mz = box.d * 0.5f - rad * 0.3f;
+        for (int pass = 0; pass < 8; pass++)                                      // 먼저 놓인 덩어리와 겹치지 않게 조금씩 비킨다
+        {
+            off = new Vector2(Mathf.Clamp(off.x, -mx, mx), Mathf.Clamp(off.y, -mz, mz));
+            bool moved = false;
+            foreach (var w in box.wads)
+            {
+                var d = off - w.off;
+                if (d.magnitude >= rad * 1.2f) continue;
+                off = w.off + (d.sqrMagnitude > 1e-6f ? d.normalized : Vector2.right) * rad * 1.2f; moved = true;
+            }
+            if (!moved) break;
+        }
+        var wad = new PackPiece.Wad { off = off };
+        wad.fall.Drop(DropZ, 0.15f);                                              // 가볍고 푹신해서 거의 안 튄다
+        box.wads.Add(wad);
+        RefreshPhys(box);
+        PackBench.PlayCue(5);
+        float fill = box.phys != null ? box.phys.fill : 0f;
+        Act($"구긴 종이가 {box.name} 틈에 자리 잡음 {box.wads.Count}/{PaperMax}덩어리(종이 {box.wads.Count * PaperMass * 1000f:F0} g{(box.phys != null ? $" · 틈 {fill * 100f:F0}% 메움" : "")})");
     }
 
     /// <summary>
@@ -465,6 +527,8 @@ public class PackBoard : MonoBehaviour
         {
             if (p.kind != PackPieceKind.Roll && p.kind != PackPieceKind.Tape) p.drop.Step(dt);
             p.dropBottom.Step(dt); p.dropTop.Step(dt);
+            foreach (var w in p.wads) w.fall.Step(dt);
+            if (p.crumple && p.crumpleT < 1f) p.crumpleT = Mathf.Min(1f, p.crumpleT + dt / 0.12f);
             var pos = new Vector2(p.u, p.v);
             Vector2 acc = Vector2.zero;
             if (Held == p)
@@ -504,7 +568,11 @@ public class PackBoard : MonoBehaviour
     {
         get
         {
-            foreach (var p in pieces) if (p.drop.Active || p.dropBottom.Active || p.dropTop.Active || p.perch > 0f) return true;
+            foreach (var p in pieces)
+            {
+                if (p.drop.Active || p.dropBottom.Active || p.dropTop.Active || p.perch > 0f) return true;
+                foreach (var w in p.wads) if (w.fall.Active) return true;
+            }
             return false;
         }
     }
@@ -523,7 +591,8 @@ public class PackBoard : MonoBehaviour
         else if (box.shakeSecs >= PackPhysics.Window) { shake = box.rattle; how = $"직접 흔든 {box.shakeSecs:F1}s 중 1.5s 합"; }
         else { shake = box.phys.MeasureStandard(); how = $"흔든 시간 {box.shakeSecs:F1}s < 1.5s → 표준 흔들기(진폭 {PackPhysics.StdAmp * 100f:F0}cm·{PackPhysics.StdHz:F0}Hz)로 잼"; }
         float wrapK = box.phys != null ? box.phys.wrapK : 1f;
-        float start = PackRules.StartFromShake(tr.trait, box.bottom, box.top, shake, wrapK);
+        var top = box.top == PackFiller.None && box.wads.Count > 0 ? PackFiller.Paper : box.top;   // D-296: 구긴 종이가 있으면 종이 궁합(깨짐 0.2)도 한 장 몫
+        float start = PackRules.StartFromShake(tr.trait, box.bottom, top, shake, wrapK);
         var lim = box.phys != null ? box.phys.Limit : Vector2.zero;
         var r = new PackBox.ShakeResult
         {

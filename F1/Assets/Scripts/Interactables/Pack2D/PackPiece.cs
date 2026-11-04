@@ -33,6 +33,10 @@ public class PackPiece
     /// <summary>D-296 물건 조각: 뽁뽁이로 감싼 겹 수(0~PackRules.WrapMax). 물건 겉에 붙고 크기가 조금 커진다. Home 에서 0.</summary>
     public int wrap;
 
+    /// <summary>D-296 뜯은 종이 한 장(Sheet): 집는 순간 구겨진 둥근 덩어리(crumple). crumpleT 0 = 평평한 장 → 1 = 다 구겨짐(그림용).</summary>
+    public bool crumple;
+    public float crumpleT;
+
     // ── 롤 ──
     public int left = 12, full = 12;
 
@@ -46,6 +50,9 @@ public class PackPiece
     public PackPiece holder;
     public PackFit fit = PackFit.Snug;
     public readonly List<PackStrip> strips = new List<PackStrip>();
+    /// <summary>D-296 상자 조각: 열린 상자 틈에 자리 잡은 구긴 종이 덩어리(자리는 상자 가운데 기준 판 m). 최대 PackBoard.PaperMax.</summary>
+    public readonly List<Wad> wads = new List<Wad>();
+    public sealed class Wad { public Vector2 off; public PackPhysics.Fall fall; }
     /// <summary>shakeSecs = 흔든 시간(s) · rattle = 덜그럭 값 = 1.5 s 동안 물건이 상자 기준 움직인 거리 합의 최댓값(m, PackPhysics.PeakWindow).</summary>
     public float shakeSecs, rattle;
     public Vector2 jit;
@@ -61,14 +68,14 @@ public class PackPiece
     public Vector2 hand, lastPos;
 
     public bool Contains(float pu, float pv) => active && perch <= 0f && (holder == null || !holder.closed) && Mathf.Abs(pu - u) <= w * 0.5f && Mathf.Abs(pv - v) <= d * 0.5f;
-    public bool Stuffed => content != null || bottom != PackFiller.None;
+    public bool Stuffed => content != null || bottom != PackFiller.None || wads.Count > 0;
     public bool Taped => strips.Count > 0;
 
     public void Home()
     {
         u = homeU; v = homeV; w = homeW; d = homeD; rot90 = false; lifted = false; open = false; jit = Vector2.zero;
         wrap = 0; closed = false; bottom = top = PackFiller.None; content = null; holder = null; fit = PackFit.Snug;
-        strips.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
+        strips.Clear(); wads.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
     }
 
     /// <summary>R: 90° 돌림(발자국 w·d 바뀜).</summary>
