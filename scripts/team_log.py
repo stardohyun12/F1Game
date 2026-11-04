@@ -11,7 +11,8 @@ import sys
 import time
 
 role, live_path, result_path = sys.argv[1], sys.argv[2], sys.argv[3]
-live = open(live_path, "a", encoding="utf-8", buffering=1)
+sys.stdin.reconfigure(encoding="utf-8", errors="replace")   # 깨진 바이트 하나로 파이프가 죽으면 구현 세션도 끊긴다
+live = open(live_path, "a", encoding="utf-8", errors="replace", buffering=1)
 result = {"role": role, "final": "", "session_id": None, "cost_usd": None, "ok": None}
 
 
