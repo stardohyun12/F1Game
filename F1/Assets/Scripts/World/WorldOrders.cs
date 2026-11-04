@@ -41,6 +41,9 @@ public class WorldOrders : ScriptableObject
         public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f, shakeFull = 0.5f, wrapThick = 0.003f, wrapDamp = 0.5f;
         /// <summary>D-296 구긴 종이 덩어리: 질량 kg · 마찰 · 반지름 m (world.yaml packing paper_*).</summary>
         public float paperMass = 0.01f, paperFriction = 0.9f, paperRadius = 0.04f;
+        /// <summary>D-296 스티로폼 알갱이: 한 줌 개수 · 반지름 m · 한 상자 최대 개수 · 질량 kg · 마찰 · 반발 유지율 · 붙듦이 꺾이는 질량비 (world.yaml packing bead_*).</summary>
+        public int beadScoop = 30, beadMax = 500;
+        public float beadRadius = 0.006f, beadMass = 0.002f, beadFriction = 0.95f, beadBounce = 0.10f, beadHold = 0.10f;
     }
 
     public List<Cargo> cargo = new List<Cargo>();

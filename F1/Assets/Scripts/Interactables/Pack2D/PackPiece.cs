@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PackPieceKind { Parcel, Box, Roll, Tape, Sheet }
+public enum PackPieceKind { Parcel, Box, Roll, Tape, Sheet, BeadBin, Scoop }
 
 /// <summary>상자 뚜껑 위 테이프 한 줄(상자 가운데 기준 자리). horiz = 판 가로(u) 방향으로 가로지름.</summary>
 public struct PackStrip { public float du, dv, len; public bool horiz; }
@@ -53,6 +53,9 @@ public class PackPiece
     /// <summary>D-296 상자 조각: 열린 상자 틈에 자리 잡은 구긴 종이 덩어리(자리는 상자 가운데 기준 판 m). 최대 PackBoard.PaperMax.</summary>
     public readonly List<Wad> wads = new List<Wad>();
     public sealed class Wad { public Vector2 off; public PackPhysics.Fall fall; }
+    /// <summary>D-296 상자 조각: 쏟아 넣은 스티로폼 알갱이(자리는 상자 가운데 기준 판 m). 최대 PackBoard.BeadMax. 쏟은 자리 from 에서 off 로 날아가 떨어진다(delay 만큼 늦게 — 쏟아지는 모양).</summary>
+    public readonly List<Bead> beads = new List<Bead>();
+    public sealed class Bead { public Vector2 from, off; public float delay, t; public PackPhysics.Fall fall; public bool Moving => delay > 0f || t < PackBoard.BeadFlight || fall.Active; }
     /// <summary>shakeSecs = 흔든 시간(s) · rattle = 덜그럭 값 = 1.5 s 동안 물건이 상자 기준 움직인 거리 합의 최댓값(m, PackPhysics.PeakWindow).</summary>
     public float shakeSecs, rattle;
     public Vector2 jit;
@@ -68,14 +71,14 @@ public class PackPiece
     public Vector2 hand, lastPos;
 
     public bool Contains(float pu, float pv) => active && perch <= 0f && (holder == null || !holder.closed) && Mathf.Abs(pu - u) <= w * 0.5f && Mathf.Abs(pv - v) <= d * 0.5f;
-    public bool Stuffed => content != null || bottom != PackFiller.None || wads.Count > 0;
+    public bool Stuffed => content != null || bottom != PackFiller.None || wads.Count > 0 || beads.Count > 0;
     public bool Taped => strips.Count > 0;
 
     public void Home()
     {
         u = homeU; v = homeV; w = homeW; d = homeD; rot90 = false; lifted = false; open = false; jit = Vector2.zero;
         wrap = 0; closed = false; bottom = top = PackFiller.None; content = null; holder = null; fit = PackFit.Snug;
-        strips.Clear(); wads.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
+        strips.Clear(); wads.Clear(); beads.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
     }
 
     /// <summary>R: 90° 돌림(발자국 w·d 바뀜).</summary>
