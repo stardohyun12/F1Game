@@ -37,6 +37,7 @@ RULES = """## 필수 규칙 (훅이 못 막는 것만 — 나머지는 훅이 �
 
 CHEATS = """## 에디터 명령 치트
 - 실행: `bash scripts/ucli-http.sh exec 'return DebugWindow.GoPlace(12);'` (긴 C# 는 파일로 `exec @docs/qa/tmp/<이름>.cs`; `Object` 는 `UnityEngine.Object` 로 완전 한정)
+- **명령은 항상 `bash scripts/…` 로 시작**(앞에 `cd … &&`·`timeout`·`until` 을 붙이면 허용 목록에 안 맞아 승인 대기에 걸려 과제가 멈춘다. 작업 폴더는 이미 리포 루트다.)
 - Play: `bash scripts/ucli-http.sh editor play --wait` → 바로 `exec 'Application.runInBackground = true; return "ok";'` → 끝에 `editor stop`
 - 콘솔: `bash scripts/ucli-http.sh console --type error` (에러 0 이어야 끝)
 - 순간이동: `DebugWindow.GoPlace(n)` — n 은 아래 세계 스냅숏 「장소」 표 순서(0부터). 카트는 장소의 카트 규칙대로 같이 옮겨진다
