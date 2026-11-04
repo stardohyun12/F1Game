@@ -85,12 +85,26 @@ Shader "PitCrew/SceneA7/Lit"
         //  ① 텍스처 걸러 읽기(텍셀 네모·나무결·벽 얼룩 없앰) ② 빛 3단(해 자국 / 면 방향 2단) ③ 근거리 안개(그늘색) ④ 밝기 n단 + Bayer 4×4 디더(렌더 픽셀 고정)
         //  _A7InQ = (거르는 탭 간격 텍셀, 국소 평균 쪽 대비 줄임 0..1, 단 끝 디더 폭 0..1, 단 자를 때 결 빼기 0..1)
         float4x4 _A7InBox; float4 _A7InP; float4 _A7InQ;
+        // 디오라마(과제 20261104-1559, D-298, RoomDiorama 가 저해상 카메라에만 넣음 — 기본 0 = 아무 일 없음):
+        //  _A7Dio = (켬, -, 카메라 쪽 벽 버리는 문턱(상자 좌표), 천장 버리는 문턱) · _A7DioAmb = 실내 바탕빛(어두운 색)
+        //  켜지면 방 상자 밖 조각은 버리고(배경 검정), 카메라 쪽 벽·천장도 버린다. 상자 안은 해 대신 추가 광원(창·책상 전등)만 받는다
+        float4 _A7Dio; float4 _A7DioAmb;
         SAMPLER(sampler_linear_repeat);
         bool A7Inside(float3 wp)
         {
             if (_A7InP.x < 0.5) return false;
             float3 b = abs(mul(_A7InBox, float4(wp, 1)).xyz);
             return max(b.x, max(b.y, b.z)) <= 1;
+        }
+        bool A7DioCut(float3 wp)
+        {
+            if (_A7Dio.x < 0.5 || _A7InP.x < 0.5) return false;
+            float3 b = mul(_A7InBox, float4(wp, 1)).xyz;
+            if (max(abs(b.x), max(abs(b.y), abs(b.z))) > 1 || b.y > _A7Dio.w) return true;
+            float3 c = mul(_A7InBox, float4(_WorldSpaceCameraPos, 1)).xyz;
+            if (abs(c.x) > 1 && b.x * sign(c.x) > _A7Dio.z) return true;
+            if (abs(c.z) > 1 && b.z * sign(c.z) > _A7Dio.z) return true;
+            return false;
         }
         // ① 바이리니어 9탭(1-2-1, 간격 _A7InQ.x 텍셀) → 국소 평균(±2.5간격) 쪽으로 대비 _A7InQ.y 만큼 줄임. 큰 모양(문·포스터 그림)은 남고 1텍셀 결은 사라진다
         static float a7InK = 1;   // 넓은 평균 / 이 픽셀 텍스처 밝기(선형). 외곽선 패스는 1
@@ -116,7 +130,7 @@ Shader "PitCrew/SceneA7/Lit"
         float3 A7InPost(float3 lin, float3 wp, float2 spos)
         {
             float d = distance(_WorldSpaceCameraPos, wp);
-            lin = lerp(lin, _A7Shade.rgb * 0.95, saturate((d - 0.6) / max(0.5, _A7InP.w - 0.6)) * _A7InP.z);
+            if (_A7Dio.x < 0.5) lin = lerp(lin, _A7Shade.rgb * 0.95, saturate((d - 0.6) / max(0.5, _A7InP.w - 0.6)) * _A7InP.z);   // 디오라마: 밝은 근거리 안개 없음(어두운 방)
             float3 g = pow(max(lin, 0), 1.0 / 2.2);
             float L = max(1e-4, dot(g, float3(0.299, 0.587, 0.114)));
             float n = max(2, _A7InP.y);
@@ -172,6 +186,8 @@ Shader "PitCrew/SceneA7/Lit"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _FORWARD_PLUS _CLUSTER_LIGHT_LOOP
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
@@ -198,8 +214,10 @@ Shader "PitCrew/SceneA7/Lit"
             {
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
+                if (A7DioCut(i.wp)) discard;
                 bool inside = A7Inside(i.wp);
-                if (inside) t.rgb = A7InTex(i.uv);
+                bool dio = inside && _A7Dio.x > 0.5;
+                if (inside && !dio) t.rgb = A7InTex(i.uv);   // 디오라마는 재질 텍스처(Point) 그대로 — 걸러 읽지 않음
                 float3 n = normalize(i.n) * (front ? 1 : -1);
                 float ndl = saturate(dot(n, normalize(_SunDir.xyz)));
                 if (_Steps > 0.5) ndl = floor(ndl * _Steps + 0.5) / _Steps;
@@ -221,6 +239,20 @@ Shader "PitCrew/SceneA7/Lit"
                         float face = n.y > 0.5 ? 1.0 : (n.y < -0.5 ? 0.0 : (dot(nxz, sxz) > -0.2 ? 0.5 : 0.0));
                         c *= face > 0.75 ? 1.16 : (face > 0.25 ? 1.06 : 0.84);   // 1.06 = 벽 결이 밝기 단 문턱에 안 걸리는 값(0.96 은 벽 전체가 디더 얼룩, 실측)
                     }
+                }
+                // 디오라마: 해·그늘색 대신 어두운 바탕빛 + 추가 광원(창 한 곳·책상 전등 한 곳). 4단 계단(garage A7LitPoint 와 같은 식)
+                if (dio)
+                {
+                    c = t.rgb * _A7DioAmb.rgb;
+                    InputData inputData = (InputData)0; inputData.positionWS = i.wp; inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.pos);
+                    uint pixelLightCount = GetAdditionalLightsCount();
+                    LIGHT_LOOP_BEGIN(pixelLightCount)
+                        Light al = GetAdditionalLight(lightIndex, i.wp);
+                        float k = max(max(al.color.r, al.color.g), max(al.color.b, 1e-4));
+                        float a = al.distanceAttenuation * saturate(dot(n, al.direction)) * k;
+                        a = floor(a * 4 + 0.35) / 4;
+                        c += t.rgb * (al.color / k) * a;
+                    LIGHT_LOOP_END
                 }
                 // R1: 해 방향 계단 3단. 밝은 단 = 1(텍스처 그대로), 그늘 = 안개색 × _RampDark
                 if (_Ramp > 0.5 && _R1Ok > 0.5)
@@ -309,6 +341,7 @@ Shader "PitCrew/SceneA7/Lit"
             {
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
+                if (A7DioCut(i.wp)) discard;
                 float3 c = max(0, lerp(dot(t.rgb, float3(0.299, 0.587, 0.114)).xxx, t.rgb, _Sat * 1.15)) * _WB.rgb * _OutlineDark;
                 if (_T1 > 0.5 && i.sun > 0.45) c = min(1, t.rgb * _WB.rgb * 1.35 + 0.04);   // T1(약식): 해를 보는 쪽 실루엣은 밝은 선
                 c = Grade(Fog(c, i.wp), i.wp);

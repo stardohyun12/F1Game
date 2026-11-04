@@ -115,6 +115,10 @@ public partial class OnFootDirector : MonoBehaviour
         footCam.target = player.transform;
         footCam.Fov = follow != null ? follow.BaseFov : cam.fieldOfView;   // 걷기도 게임 기본 시야각 그대로
         player.Cam = footCam;
+        // 실내 디오라마(과제 20261104-1559, D-298): 2층 방 상자 안이면 카메라가 뒤·위로 빠진다
+        var dio = cam.GetComponent<RoomDiorama>();
+        if (dio == null) dio = cam.gameObject.AddComponent<RoomDiorama>();
+        dio.Init(footCam, player.transform, () => dotRoot);
 
         DayLog.ResetAll();                       // 저장 방식이 없다 — 플레이마다 방학 1일째
         if (rc != null) rc.BeginNoClock();

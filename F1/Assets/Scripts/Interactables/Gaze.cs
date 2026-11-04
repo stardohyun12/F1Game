@@ -85,8 +85,9 @@ public class Gaze
     Object Ray(out DoorHinge door)
     {
         door = null;
-        Transform eye = cam.transform;
-        int n = Physics.RaycastNonAlloc(eye.position, eye.forward, hits, Mathf.Max(gazeReach, boss != null || board != null || handover != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        // 디오라마(과제 20261104-1559): 카메라가 뒤·위로 빠져 있어도 레이는 1인칭 눈에서 쏜다
+        RoomDiorama.EyeRay(cam.transform, out var eyePos, out var eyeFwd);
+        int n = Physics.RaycastNonAlloc(eyePos, eyeFwd, hits, Mathf.Max(gazeReach, boss != null || board != null || handover != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
         Collider first = null; float best = float.MaxValue; float packD = float.MaxValue;
         for (int i = 0; i < n; i++)
         {
@@ -97,7 +98,7 @@ public class Gaze
         }
         // 방 달력(벽에 붙은 판)·침대(충돌체 없이 경계 상자) — 앞에 다른 것이 먼저 맞으면 못 잡는다.
         if (calendar != null && first != null && first.transform.IsChildOf(calendar.transform) && best <= talkReach) return calendar;
-        if (bed != null && bed.Hit(new Ray(eye.position, eye.forward), Mathf.Min(best + 0.02f, talkReach), out _)) return bed;
+        if (bed != null && bed.Hit(new Ray(eyePos, eyeFwd), Mathf.Min(best + 0.02f, talkReach), out _)) return bed;
         // 작업대 판(BenchTop)은 카운터 윗면과 같은 높이 — 2cm 안으로 비기면 작업대가 이긴다.
         if (packD <= best + 0.02f && packD <= gazeReach) return packSpot;
         // 사장(사람)은 talkReach 까지, 나머지(문·카트)는 예전처럼 gazeReach 까지.
@@ -112,7 +113,7 @@ public class Gaze
         if (car != null)
         {
             Vector3 to = car.transform.position - player.position; to.y = 0f;
-            Vector3 fw = eye.forward; fw.y = 0f;
+            Vector3 fw = eyeFwd; fw.y = 0f;
             if (to.magnitude < 3.0f && fw.sqrMagnitude > 1e-4f && Vector3.Dot(fw.normalized, to.normalized) > 0.5f
                 && (first == null || first.GetComponentInParent<DoorHinge>() == null)) return car;
         }

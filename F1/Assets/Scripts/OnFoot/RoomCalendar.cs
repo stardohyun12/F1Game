@@ -44,6 +44,8 @@ public class RoomCalendar : MonoBehaviour
     void OnDisable() { DayLog.Changed -= Redraw; }
 
     public void SetHint(bool viewing) { if (hintText != null) hintText.gameObject.SetActive(viewing); }
+    /// <summary>디오라마(과제 20261104-1559): 멀리서 볼 땐 28칸 글자판을 끄고 판(Frame·Sheet) 한 장만 남긴다. 다가가 볼 때 다시 켠다.</summary>
+    public void SetDetail(bool on) { if (canvas != null && canvas.gameObject.activeSelf != on) canvas.gameObject.SetActive(on); }
 
     /// <summary>보기 시점: 달력 면 앞(법선 = transform.forward) 거리 d, 높이 = 달력 가운데. 세로 시야각에서 달력 높이가 viewFill.</summary>
     public void ViewPose(float vFovDeg, float aspect, out Vector3 pos, out Quaternion rot)

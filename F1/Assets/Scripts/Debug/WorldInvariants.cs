@@ -43,6 +43,7 @@ public static class WorldInvariants
         ("B 후진 ≥ 전진의 50%", () => ReverseNotCrawling()),
         ("스크립트 Missing 0", () => NoMissingScripts()),
         ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
+        ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
@@ -579,6 +580,40 @@ public static class WorldInvariants
             float half = (inv.MultiplyPoint3x4(ax) - inv.MultiplyPoint3x4(Vector3.zero)).magnitude;
             if (half < 0.8f || half > 8f) bad.Add(string.Format(Inv, "방 상자 축{0} 반폭 {1:0.00} m — 0.8~8 m 밖(레이가 벽을 지나쳤거나 소품에 막힘)", a, half));
         }
+        return bad;
+    }
+
+    /// <summary>
+    /// D-298 실내 디오라마(과제 20261104-1559): 기준 화면 07 = 잔소품 없음 · 원본 텍스처의 거친 결. 집 빌더나 17 의 RoomFlatBuild 를 다시 돌리면
+    /// 잔소품이 되살아나고 단색 사본(_roomflat)이 다시 꽂힌다 — 그걸 잡는다. 남길 큰 덩어리(침대·책상·의자·일기장)가 같이 꺼져도 잡는다.
+    /// </summary>
+    static List<string> RoomDioramaProps()
+    {
+        var bad = new List<string>();
+        var g = UnityEngine.Object.FindFirstObjectByType<A7ShadeGlobals>();
+        if (g == null) return bad;
+        Transform room = null;
+        foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (t.name == g.roomName && t.parent != null) { room = t; break; }
+        if (room == null || !A7ShadeGlobals.TryRoomBox(room, out var box)) return bad;
+        var keep = new HashSet<string>();
+        foreach (var r in room.parent.GetComponentsInChildren<Renderer>(true))
+        {
+            var q = box.MultiplyPoint3x4(r.bounds.center);
+            if (Mathf.Max(Mathf.Abs(q.x), Mathf.Max(Mathf.Abs(q.y), Mathf.Abs(q.z))) > 1.05f) continue;
+            bool on = r.gameObject.activeInHierarchy;
+            if (on && RoomDiorama.IsSmallProp(r.name)) bad.Add("잔소품 켜짐: " + r.name);
+            foreach (var k in new[] { "BED_", "DESK_", "CHAIR_", "NOTEBOOK_" }) if (on && r.name.StartsWith(k)) keep.Add(k);
+            if (!on) continue;
+            foreach (var m in r.sharedMaterials)
+            {
+                if (m == null) continue;
+                if (m.name.EndsWith("_roomflat")) { bad.Add("단색 사본 재질: " + r.name + " ← " + m.name); continue; }
+                if (m.shader != null && m.shader.name == "PitCrew/SceneA7/Lit" && m.GetTexture("_BaseMap") is Texture tx && tx.filterMode != FilterMode.Point) bad.Add("방 텍스처 Point 아님: " + r.name + " ← " + tx.name);
+            }
+        }
+        foreach (var k in new[] { "BED_", "DESK_", "CHAIR_", "NOTEBOOK_" }) if (!keep.Contains(k)) bad.Add("남길 것 꺼짐/없음: " + k);
+        if (bad.Count > 12) { int n = bad.Count; bad.RemoveRange(12, n - 12); bad.Add("… 외 " + (n - 12)); }
         return bad;
     }
 
