@@ -74,16 +74,16 @@ else
   [ $WC = 2 ] && say "불변 검사 보류(에디터 응답 없음)"
 fi
 
-# 7. 커밋 — 통과면 F1/Assets + docs/qa 만. index.lock 이면 10초 뒤 재시도(다른 세션이 커밋 중일 수 있음)
+# 7. 커밋 — 통과면 F1/Assets + docs/qa + world 만. index.lock 이면 10초 뒤 재시도(다른 세션이 커밋 중일 수 있음)
 COMMIT=""; RESULT=ok
 if [ ${#FAILS[@]} -gt 0 ]; then
   RESULT=fail; say "커밋 안 함 — ${FAILS[*]}"
 elif [ "$DRY" = 1 ]; then
-  echo "[DRY] git add -A F1/Assets docs/qa && git commit -m 'task: $NAME [skip-verifier]' && git push"
+  echo "[DRY] git add -A F1/Assets docs/qa world && git commit -m 'task: $NAME [skip-verifier]' && git push"
 else
   git checkout -- F1/Assets/UI/Fonts 2>/dev/null || true   # 폰트 SDF 는 Play 마다 바뀜
   for i in 1 2 3; do [ -f .git/index.lock ] && { say "index.lock 대기"; sleep 10; } || break; done
-  git add -A F1/Assets docs/qa
+  git add -A F1/Assets docs/qa world   # world/ = 명세 원본(장소·포장 값). 빠지면 생성물(.asset)만 커밋된다
   if git diff --cached --quiet; then say "변경 없음(커밋 없음)"
   else
     git commit -q -m "task: $NAME [skip-verifier]" && COMMIT=$(git rev-parse --short HEAD) && say "커밋 $COMMIT"
