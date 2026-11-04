@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bba4f098e4a604e8d3ad3f60708437, type: 3}
   m_Name: WorldPlaces
   m_EditorClassIdentifier: PitCrew.World::WorldPlaces
-  sourceHash: b026afb9c619d887594d864384bdb74a7d8e8962
+  sourceHash: fa5f2f75c16b40e6d6c1d947f8a95f57f2a40978
   spots:
   - name: "\uC9D1 \uBC29"
     role: "2\uCE35 \uBC29 \uAC00\uC6B4\uB370, \uBB38 \uCABD\uC744 \uBD04"
@@ -116,6 +116,16 @@ MonoBehaviour:
     car: Fixed
     carAt: {x: 273.5, y: 29.6, z: -37.4}
     carYaw: 90
+  - name: "\uB9C8\uC744 \uD48D\uACBD"
+    role: "\uB9C8\uC744 \uD48D\uACBD \uC790\uB9AC(\uC810\uC218 122.8): \uAC74\uBB3C
+      10.0% \xB7 \uBC14\uB2E4 10.7% \xB7 \uD558\uB298 48.4% \xB7 \uC9C0\uD615 \uAC00\uB9BC
+      \uC5C6\uC74C \u2014 \uB9C8\uC744 \uC911\uC2EC\uC744 \uBCF4\uB294 \uB208\uB192\uC774
+      \uC2DC\uC120"
+    feet: {x: 220, y: 34.7, z: -20}
+    yaw: 206
+    car: Near
+    carAt: {x: 0, y: 0, z: 0}
+    carYaw: 0
   deliveryPoints:
   - name: DP_tea
     label: "\uCC3B\uC9D1"

@@ -79,6 +79,12 @@ public class DebugWindow : MonoBehaviour
         SetDusk(1f);
         return Fish();   // 앉기(DebugFishNow)가 자리로 옮기고 앉아 찌까지 던진다
     }
+    /// <summary>「마을 풍경」 — 장소 표의 「마을 풍경」(world.yaml, 과제 26 ② 자동 선택)으로 간다. 시간대는 지금 그대로.</summary>
+    public static string GoTownView()
+    {
+        for (int k = 0; k < DebugPlaces.All.Length; k++) if (DebugPlaces.All[k].name == "마을 풍경") return GoPlace(k);
+        return Say("장소 표에 「마을 풍경」 없음");
+    }
     public static string Recast() { var d = Dir(); return Say(d != null && d.DebugRecast() ? "찌 다시 던짐" : "낚시 자리에 앉아 있을 때만"); }
     public static string ToggleCart() { var d = Dir(); return Say(d == null ? "감독 없음" : "카트: " + d.DebugToggleCart()); }
     public static string SetSpeed(float s) { Time.timeScale = s; return Say("시간 " + s + "배속"); }
@@ -202,6 +208,7 @@ public class DebugWindow : MonoBehaviour
 
         GUILayout.Label("디버그 창   ` / F1 닫기", sTitle);
         if (GUILayout.Button("바다로 가서 낚시", sBtnOn, GUILayout.Height(rowH * 1.8f))) GoFish();
+        if (GUILayout.Button("마을 풍경", sBtnOn, GUILayout.Height(rowH * 1.8f))) GoTownView();
         GUILayout.Space(2 * s);
         GUILayout.Label(StateLine(), sText);
         var l = SunsetLook.Find();
