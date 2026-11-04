@@ -57,7 +57,40 @@ public static class WorldInvariants
         ("포장 알갱이(D-296): 달걀 + 중 상자 + 알갱이 2줌 → 흔들림 ≤ 알갱이 0일 때의 50% · 같은 양이면 무거운 물건일수록 덜 붙듦 · 개수 늘면 메움↑(≤0.9)", () => PackBeadShake()),
         ("포장 보이고 들리게(D-300): 신호 7종(구김·툭·감쌈·삽·쏟기·밖쏟기·덜컹) 전부 · 합성음 출처 5줄 다 적힘(AI 그림·외부 음원 없음)", () => PackFxSignals()),
         ("포장 소리 풀(20261105): 꺼진 오브젝트에 매달린 풀은 켜진 host 로 옮겨짐 — 덜그럭이 조용하지 않게", () => PackSfxPoolActive()),
+        ("포장 첫 튜토리얼(D-301): 조작법 8줄 다 있음 · 지금 할 일 6줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→열림→채움→테이프→닫힘→흔듦)", () => PackTutorialSteps()),
     };
+
+    static List<string> PackTutorialSteps()
+    {
+        var bad = new List<string>();
+        if (PackTutorial.Controls.Length != 8) bad.Add("조작법 줄 " + PackTutorial.Controls.Length + "개(8개여야 — 도현 원문 8가지)");
+        if (PackTutorial.Now.Length != Enum.GetValues(typeof(PackTutorial.Step)).Length) bad.Add("지금 할 일 줄 수와 단계 수가 다름");
+        foreach (var k in new[] { "R 회전", "뽁뽁이", "종이", "알갱이", "테이프", "흔들기", "판 아래" })
+        {
+            bool has = false;
+            foreach (var l in PackTutorial.Controls) if (l.Contains(k)) has = true;
+            if (!has) bad.Add("조작법에 '" + k + "' 줄이 없음");
+        }
+        var box = new PackPiece { kind = PackPieceKind.Box, active = true };
+        var egg = new PackPiece { kind = PackPieceKind.Parcel, active = true };
+        void Is(PackTutorial.Step want, PackPiece b, bool shook, string what)
+        {
+            var got = PackTutorial.StepOf(b, shook);
+            if (got != want) bad.Add(what + ": 단계 " + got + " (기대 " + want + ")");
+        }
+        Is(PackTutorial.Step.PickBox, null, false, "상자 없음");
+        Is(PackTutorial.Step.PutParcel, box, false, "빈 상자 열림");
+        box.content = egg;
+        Is(PackTutorial.Step.Fill, box, false, "물건만 넣음");
+        egg.wrap = 1;
+        Is(PackTutorial.Step.Tape, box, false, "물건 감쌈");
+        egg.wrap = 0; box.top = PackFiller.Paper;
+        Is(PackTutorial.Step.Tape, box, false, "덮은 완충재");
+        box.closed = true;
+        Is(PackTutorial.Step.Shake, box, false, "닫힘 흔들기 전");
+        Is(PackTutorial.Step.TakeOut, box, true, "닫힘 흔든 뒤");
+        return bad;
+    }
 
     /// <summary>
     /// 버그(20261105): 덜그럭·뽁뽁이·툭 소리 풀(PackBench.pool)이 꺼진 옛 작업대 Eye 에 만들어져 2D 보드에서 RattlePlayed 만 오르고 소리는 안 났다(isPlaying 0/282 프레임).

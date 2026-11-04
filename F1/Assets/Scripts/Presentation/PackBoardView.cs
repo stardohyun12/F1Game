@@ -93,7 +93,12 @@ public class PackBoardView : MonoBehaviour
         beadD = new PackBoardFx.Layer("알갱이 어두운 톤", root, Mat(beadDkC));   // 월드 좌표로 꼭짓점을 직접 쓴다
         beadL = new PackBoardFx.Layer("알갱이 밝은 톤", root, Mat(beadC));
         fx = new PackBoardFx(board, root, Mat);
+        tut = new PackTutorial(board, root, font);
     }
+
+    PackTutorial tut;
+    /// <summary>QA: 첫 포장 튜토리얼(D-301).</summary>
+    public PackTutorial Tutorial => tut;
 
     void OnDestroy() { if (fx != null) fx.Dispose(); }
 
@@ -215,6 +220,7 @@ public class PackBoardView : MonoBehaviour
         bool on = board != null && board.On;
         if (root == null) { if (!on) return; BuildAll(); }
         if (root.gameObject.activeSelf != on) root.gameObject.SetActive(on);
+        tut.Tick(on);
         if (!on) return;
         float now = Time.unscaledTime;
         fx.Begin();

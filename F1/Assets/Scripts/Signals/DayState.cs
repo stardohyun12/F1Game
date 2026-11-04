@@ -14,6 +14,9 @@ public static class DayState
     public static bool Talked, OrderPicked, OrderStarted, Delivered, CarryingBox, Knocking, HandedOver, InTalk;
     /// <summary>일기를 펼친 때(unscaled 초) · 덮을 수 있기까지 최소 초.</summary>
     public static float DiaryAt = -99f, DiaryMinSec = 0.8f;
+    /// <summary>D-301 첫 포장 튜토리얼을 끝까지 봤다(상자를 들고 나갔다). 하루가 바뀌어도 안 지운다 — Reset 도 건드리지 않는다.
+    /// 저장 파일이 아직 없어 프로세스 동안만 산다(하루 단위 저장이 생기면 이 한 값을 거기에 얹는다).</summary>
+    public static bool PackTutorialSeen;
 
     public static void Reset()
     {
