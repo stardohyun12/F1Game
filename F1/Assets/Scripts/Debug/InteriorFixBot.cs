@@ -20,10 +20,12 @@ public class InteriorFixBot : MonoBehaviour
     readonly List<string> log = new List<string>();
     static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    static bool doorOnly;
+    static bool doorOnly, fitOnly;
+    /// <summary>D-307 ⑧: 방마다 들어가 fit-&lt;이름&gt;.png + 거리·캡슐 화면 높이 %·바닥 모서리 화면 안(실제 카메라로 투영)을 bot-fit.txt 에.</summary>
+    public static string BeginFit(string outDir) { var s = Begin(outDir); fitOnly = true; return s; }
     public static string Begin(string outDir, bool onlyDoor = false)
     {
-        doorOnly = onlyDoor;
+        doorOnly = onlyDoor; fitOnly = false;
         var dr = FindFirstObjectByType<OnFootDirector>();
         if (dr == null) return "no dir";
         dir = outDir; Directory.CreateDirectory(dir); Status = "run";
@@ -38,6 +40,12 @@ public class InteriorFixBot : MonoBehaviour
         while (d.State != OnFootDirector.Mode.OnFoot) yield return null;
         yield return Frames(10);
         var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok);
+        if (fitOnly)
+        {
+            yield return FitViews(list);
+            File.WriteAllLines(Path.Combine(dir, "bot-fit.txt"), log);
+            Status = "done " + log.Count; Destroy(gameObject); yield break;
+        }
         if (!doorOnly) yield return OutsideCheck(list);
         yield return DoorWalk(list, true);
         yield return DoorWalk(list, false);
@@ -215,6 +223,43 @@ public class InteriorFixBot : MonoBehaviour
             if (it == null) { log.Add("[시점] " + key + " 없음"); continue; }
             yield return GoIn(list, it, a);
             log.Add($"[시점] {file} = {it.name} half={V(it.half)} active={RoomDiorama.Active} room={dio.RoomNow} cam={V(cam.transform.position)}");
+            yield return Shot(file);
+        }
+    }
+
+    // D-307 ⑧ 방이 다 보이게 — 방마다(문 쪽 안에 서서) 실제 카메라로 바닥 네 모서리·벽 위 네 모서리·사람 캡슐을 투영해 잰다
+    IEnumerator FitViews(List<A7ShadeGlobals.Interior> list)
+    {
+        var doors = FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
+        var cc = pl.GetComponent<CharacterController>();
+        float capH = cc != null ? cc.height : dio.capsuleHeight;
+        log.Add($"[맞춤] fov={cam.fieldOfView:F1} aspect={cam.aspect:F3} pitch={dio.pitch} margin={dio.fitMargin} minCapsule={dio.minCapsule} grainB={dio.grainB} 캡슐 높이 {capH:F2}");
+        foreach (var stood in list)
+        {
+            yield return GoIn(list, stood, true);
+            yield return Secs(0.6f);   // 0.4초 섞임 + SmoothDamp
+            // 겹친 상자(작은 쪽이 먼저)·떨어짐이 있으니 재는 건 지금 화면에 보이는 방
+            var it = list.Find(i => i.name == dio.RoomNow) ?? stood;
+            Vector3 feet = it.box.MultiplyPoint3x4(pl.transform.position);
+            log.Add(string.Format(Inv, "[맞춤] 세운 방 {0} → 보이는 방 {1} 발(상자 좌표) {2}", stood.name, dio.RoomNow, V(feet)));
+            float yaw = RoomDiorama.FixedYaw(it, list, doors, null);
+            float ceilY = RoomDiorama.CeilOf(it.box, dio.ceilCut, dio.ceilMetres);
+            RoomDiorama.Fit(it.box.inverse, yaw, dio.pitch, cam.fieldOfView, cam.aspect, dio.fitMargin, ceilY, dio.capsuleHeight, out _, out float dist, out float capF);
+            bool fit = capF >= dio.minCapsule;
+            // 실제 카메라 투영(맞춤 식과 따로)
+            float minX = 9f, maxX = -9f, minY = 9f, maxY = -9f; int outFloor = 0;
+            for (int k = 0; k < 8; k++)
+            {
+                Vector3 q = new Vector3((k & 1) == 0 ? -1f : 1f, (k & 2) == 0 ? -1f : ceilY, (k & 4) == 0 ? -1f : 1f);
+                Vector3 v = cam.WorldToViewportPoint(it.box.inverse.MultiplyPoint3x4(q));
+                minX = Mathf.Min(minX, v.x); maxX = Mathf.Max(maxX, v.x); minY = Mathf.Min(minY, v.y); maxY = Mathf.Max(maxY, v.y);
+                if ((k & 2) == 0 && (v.z <= 0f || v.x < 0f || v.x > 1f || v.y < 0f || v.y > 1f)) outFloor++;
+            }
+            Vector3 f0 = cam.WorldToViewportPoint(pl.transform.position), f1 = cam.WorldToViewportPoint(pl.transform.position + Vector3.up * capH);
+            float camDist = Vector3.Distance(cam.transform.position, it.box.inverse.MultiplyPoint3x4(Vector3.zero));
+            string file = "fit-" + stood.name.Replace('/', '-').Replace('#', '_');
+            log.Add(string.Format(Inv, "[맞춤] {0} half={1} {2} 맞춤거리 {3:F1}m 캡슐(바닥 가운데) {4:P1} | 실제: active={5} 카메라-상자가운데 {6:F1}m 플레이어 캡슐 {7:P1} 상자 8점 화면 x {8:F2}~{9:F2} y {10:F2}~{11:F2} 바닥 모서리 화면 밖 {12} → {13}.png",
+                it.name, V(it.half), fit ? "고정" : "평행이동", dist, capF, RoomDiorama.Active, camDist, Mathf.Abs(f1.y - f0.y), minX, maxX, minY, maxY, outFloor, file));
             yield return Shot(file);
         }
     }

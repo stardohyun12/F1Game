@@ -15,7 +15,8 @@ using UnityEngine.Rendering;
 /// 좌표는 손으로 적지 않는다 — 방 상자(A7ShadeGlobals.TryRoomBox)·창 유리(GLASS_*)·책상(DESK_*) 이름에서 매번 잡는다.
 /// 과제 20261105-0359(D-304): 2층 방만이 아니라 건물 안 전부(A7ShadeGlobals.FindInteriors — 집 1층·보관소·우체국·정비소. 컷 셰이더가 없는 건물은 1인칭 — CanCut). 상자 → 상자는 w 를 그대로 두고
 /// 상자만 바꿔 끼운다(실내 도트·빛 전역값도 그 상자로). 작업대·칠판·카트·낚시가 카메라를 가져간 동안은 그림까지 비켜 있다.
-/// 과제 20261105-0419(D-306): 시점 고정 — 방마다 한 각도(문 쪽 벽 뒤·위, FixedYaw). 작은 방은 카메라 자리까지, 넓은 곳(가로 반폭 > wideHalf)은 각도 그대로 플레이어를 따라 평행이동.
+/// 과제 20261105-0419(D-306): 시점 고정 — 방마다 한 각도(문 쪽 벽 뒤·위, FixedYaw). 작은 방은 카메라 자리까지, 넓은 곳은 각도 그대로 플레이어를 따라 평행이동.
+/// D-307: 카메라 자리 = 바닥 네 모서리 + 천장 컷 높이 벽 위가 화면 안에 다 드는 자리(Fit). 그러면 사람이 화면 높이 minCapsule 보다 작아지는 방만 넓은 곳.
 /// 안에선 WASD = 화면 기준(OnFootPlayer.ScreenYaw), 몸은 가는 쪽, 마우스 시선 없음, E = 몸 앞 부채꼴 안 가장 가까운 물건(Gaze.Fan). 정비소도 셰이더에 컷을 넣어 디오라마.
 /// </summary>
 [DefaultExecutionOrder(100)]   // OnFootCamera(0) 가 눈 자세를 놓은 뒤에 덮어쓴다
@@ -35,8 +36,12 @@ public sealed class RoomDiorama : MonoBehaviour
     [Tooltip("과제 20261105-0359(D-304) 가설값: 이름 없는 건물 안(보관소·정비소처럼 넓은 곳)은 거리 = 상자 가로 반폭(큰 쪽) × 이 값, distance~maxDistance. 2층 방은 distance 그대로")]
     public float distPerHalf = 1.6f;
     public float maxDistance = 12f;
-    [Tooltip("D-306 가설값: 가로 반폭(큰 쪽)이 이보다 크면 넓은 곳 — 각도 고정, 카메라는 플레이어를 따라 평행이동. 아니면 카메라 자리까지 고정")]
-    public float wideHalf = 3f;
+    [Header("방이 다 보이게(D-307 ⑧) — 피치 그대로, 바닥 네 모서리 + 천장 컷 높이 벽 위 네 모서리가 화면 안 여백에 들게 카메라 자리를 푼다")]
+    [Tooltip("화면 가장자리 여백(한쪽, 화면 크기 비율)")]
+    [Range(0f, 0.2f)] public float fitMargin = 0.05f;
+    [Tooltip("맞췄을 때 사람 캡슐(방 바닥 가운데에 선 키 capsuleHeight)이 화면 높이의 이 비율보다 작으면 그 방만 넓은 곳 — 각도 고정, 플레이어를 따라 평행이동(옛 거리 규칙)")]
+    public float minCapsule = 0.06f;
+    public float capsuleHeight = 1.8f;
 
     [Header("빛 — 시간대(낮 / 노을 = SunsetLook.dusk / 밤 = 해 꺼짐)")]
     [Tooltip("바탕빛: 낮 밝은 회청 · 노을 주황빛 · 밤 남색")]
@@ -61,12 +66,14 @@ public sealed class RoomDiorama : MonoBehaviour
     public float ceilCut = 0.9f;
     [Tooltip("천장 컷 상한(바닥에서 m) — 높은 상자(정비소)는 지붕 처마가 ceilCut 아래로 내려와 화면을 덮었다")]
     public float ceilMetres = 2.6f;
-    [Header("결 — 디오라마 전용(과제 20261105-0453 ⑥, 도현 판정 전: A = 지금 값, B = 디더·결 덜). 1인칭 실내 도트 값은 안 건드림")]
-    [Tooltip("켜면 B. 끄면 A(디더 폭 = A7ShadeGlobals.indoorDitherWidth, 텍스처 안 거름)")]
-    public bool grainB;
+    [Header("결 — 디오라마 전용(D-307 ⑦ 도현 「잔결을 줄인 것으로」 = B 기본). 1인칭 실내 도트 값은 안 건드림")]
+    [Tooltip("켜면 B(기본). 끄면 A(디더 폭 = A7ShadeGlobals.indoorDitherWidth, 텍스처 안 거름 — 과제 20261105-0453 의 옛 값)")]
+    public bool grainB = true;
     [Tooltip("B: 텍스처 거르는 탭 간격(텍셀) — 바닥·벽 텍스처 잔점을 눌러 준다")] [Range(0f, 4f)] public float grainBFilterTexels = 1f;
     [Tooltip("B: 밝기 단 끝 디더 폭(0..1)")] [Range(0f, 1f)] public float grainBDitherWidth = 0.04f;
-    float Ceil => Mathf.Min(ceilCut, -1f + ceilMetres / Mathf.Max(0.1f, box.inverse.MultiplyVector(Vector3.up).magnitude));
+    float Ceil => CeilOf(box, ceilCut, ceilMetres);
+    /// <summary>천장 컷 높이(상자 좌표 y) — 검사도 같은 식을 쓴다.</summary>
+    public static float CeilOf(Matrix4x4 b, float cut, float metres) => Mathf.Min(cut, -1f + metres / Mathf.Max(0.1f, b.inverse.MultiplyVector(Vector3.up).magnitude));
 
     /// <summary>잔소품 이름 머리(RoomDioramaBuild 가 끄고, WorldInvariants 가 켜진 게 없는지 본다). 남길 것: 침대·책상·의자·창·문·NOTEBOOK(일기장)·선반·러그.</summary>
     public static readonly string[] SmallKeys =
@@ -275,17 +282,43 @@ public sealed class RoomDiorama : MonoBehaviour
         return best;
     }
 
-    /// <summary>방 i 가 넓은 곳(카메라가 플레이어를 따라 평행이동)인가.</summary>
-    bool Wide(int i) => rooms[i].room == null && Mathf.Max(rooms[i].half.x, rooms[i].half.z) > wideHalf;
-
-    /// <summary>D-306 고정 시점 카메라 자세(검사용 — 플레이어 가슴 chest 를 넣는다). 실제 화면은 이 값으로 0.4초 섞인다.</summary>
-    public static Pose FixedPose(A7ShadeGlobals.Interior it, float yaw, Vector3 chest, float pitch, float dist, float roomPull, bool wide)
+    /// <summary>
+    /// D-307 ⑧: 각도(pitch·yaw) 그대로, 상자 바닥 네 모서리 + 벽 위(천장 컷 ceilY) 네 모서리가 화면 안(한쪽 margin 여백)에 드는 가장 가까운 카메라 자리.
+    /// look = 카메라가 보는 점(카메라 = look - 앞 × dist). capFrac = 바닥 가운데에 선 키 capsule 사람이 화면 높이에서 차지하는 비율.
+    /// </summary>
+    public static void Fit(Matrix4x4 boxInv, float yaw, float pitch, float vfov, float aspect, float margin, float ceilY, float capsule, out Vector3 look, out float dist, out float capFrac)
     {
-        Vector3 mid = it.box.inverse.MultiplyPoint3x4(new Vector3(0f, -0.6f, 0f));
-        Vector3 look = wide ? Vector3.Lerp(chest, mid, roomPull) : mid;
         var r = Quaternion.Euler(pitch, yaw, 0f);
-        return new Pose(look - r * Vector3.forward * dist, r);
+        Vector3 R = r * Vector3.right, U = r * Vector3.up, F = r * Vector3.forward, o = boxInv.MultiplyPoint3x4(Vector3.zero);
+        float tan = Mathf.Tan(vfov * 0.5f * Mathf.Deg2Rad), ty = tan * (1f - 2f * margin), tx = ty * aspect;
+        // 점 (x,y,z)(카메라 축 기준, 상자 가운데 원점)가 거리 D 카메라 (px,py) 화면 안: |x - px| <= tx (z + D)
+        float ax = float.MinValue, bx = float.MaxValue, ay = float.MinValue, by = float.MaxValue;
+        for (int k = 0; k < 8; k++)
+        {
+            Vector3 q = new Vector3((k & 1) == 0 ? -1f : 1f, (k & 2) == 0 ? -1f : ceilY, (k & 4) == 0 ? -1f : 1f);
+            Vector3 d = boxInv.MultiplyPoint3x4(q) - o;
+            float x = Vector3.Dot(d, R), y = Vector3.Dot(d, U), z = Vector3.Dot(d, F);
+            ax = Mathf.Max(ax, x - tx * z); bx = Mathf.Min(bx, x + tx * z);
+            ay = Mathf.Max(ay, y - ty * z); by = Mathf.Min(by, y + ty * z);
+        }
+        dist = Mathf.Max((ax - bx) / (2f * tx), (ay - by) / (2f * ty));
+        look = o + R * ((ax + bx) * 0.5f) + U * ((ay + by) * 0.5f);
+        Vector3 cp = look - F * dist, foot = boxInv.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)), head = foot + Vector3.up * capsule;
+        float V(Vector3 p) { Vector3 e = p - cp; return Vector3.Dot(e, U) / Mathf.Max(0.01f, Vector3.Dot(e, F)); }
+        capFrac = Mathf.Abs(V(head) - V(foot)) / (2f * tan);
     }
+
+    /// <summary>방 i 의 카메라가 보는 점·거리. 맞춘 사람이 너무 작으면(minCapsule) 넓은 곳 = 옛 거리 규칙 + 플레이어 따라 평행이동 → false.</summary>
+    bool Aim(int i, out Vector3 look, out float dist)
+    {
+        var it = rooms[i]; Matrix4x4 inv = it.box.inverse;
+        Fit(inv, roomYaw[i], pitch, cam.fieldOfView, cam.aspect, fitMargin, CeilOf(it.box, ceilCut, ceilMetres), capsuleHeight, out look, out dist, out float capF);
+        if (capF >= minCapsule) return true;
+        look = inv.MultiplyPoint3x4(new Vector3(0f, -0.6f, 0f)); dist = DistFor(i);
+        return false;
+    }
+
+    void SnapAim() { Aim(cur, out midNow, out distNow); midVel = Vector3.zero; distVel = 0f; }
 
     // 고정 시점 조작을 놓는다(나감·비킴·꺼짐)
     void Release()
@@ -356,9 +389,9 @@ public sealed class RoomDiorama : MonoBehaviour
             bool otherHouse = cur < 0 || rooms[now].building != building;
             Select(now);
             // 다른 건물(순간이동)은 마을을 가로질러 미끄러지지 않게 바로 놓는다
-            if ((!inRoom && w <= 0f) || otherHouse) { midNow = FloorMid(); distNow = DistFor(cur); midVel = Vector3.zero; distVel = 0f; }
+            if ((!inRoom && w <= 0f) || otherHouse) SnapAim();
         }
-        else if (now >= 0 && !inRoom && w <= 0f) { midNow = FloorMid(); distNow = DistFor(cur); midVel = Vector3.zero; distVel = 0f; }
+        else if (now >= 0 && !inRoom && w <= 0f) SnapAim();
         if (now >= 0 && !inRoom) { yawNow = roomYaw[cur]; yawVel = 0f; }   // D-306: 들어오는 순간부터 방의 고정 각도
         if (now < 0 && inRoom) Release();   // 나가면 1인칭 — 눈은 몸이 향한 쪽 수평
         inRoom = now >= 0;
@@ -383,10 +416,11 @@ public sealed class RoomDiorama : MonoBehaviour
         yawNow = Mathf.SmoothDampAngle(yawNow, roomYaw[cur], ref yawVel, yawSmooth);
         if (inRoom && body != null) body.ScreenYaw = yawNow;
         // 방 바닥 가운데·거리는 상자가 바뀌면 부드럽게 따라간다(한 방 안에선 상수)
-        midNow = Vector3.SmoothDamp(midNow, FloorMid(), ref midVel, yawSmooth);
-        distNow = Mathf.SmoothDamp(distNow, DistFor(cur), ref distVel, yawSmooth);
-        // 작은 방 = 카메라 자리까지 고정(방 바닥 가운데를 봄), 넓은 곳 = 같은 각도로 플레이어 ↔ 방 가운데 사이를 봄(평행이동만)
-        Vector3 look = Wide(cur) ? Vector3.Lerp(player.position + Vector3.up * 0.9f, midNow, roomPull) : midNow;
+        bool fit = Aim(cur, out Vector3 aimLook, out float aimDist);
+        midNow = Vector3.SmoothDamp(midNow, aimLook, ref midVel, yawSmooth);
+        distNow = Mathf.SmoothDamp(distNow, aimDist, ref distVel, yawSmooth);
+        // D-307: 방이 다 보이게 맞춘 자리에 고정. 맞추면 사람이 너무 작은 넓은 곳만 같은 각도로 플레이어 ↔ 방 가운데 사이를 봄(평행이동만)
+        Vector3 look = fit ? midNow : Vector3.Lerp(player.position + Vector3.up * 0.9f, midNow, roomPull);
         Quaternion dr = Quaternion.Euler(pitch, yawNow, 0f);
         Vector3 dp = look - dr * Vector3.forward * distNow;
         float s = w * w * (3f - 2f * w);
@@ -628,7 +662,6 @@ public sealed class RoomDiorama : MonoBehaviour
         return null;
     }
 
-    Vector3 FloorMid() => boxInv.MultiplyPoint3x4(new Vector3(0f, -0.6f, 0f));
 
     Light MakeLight(string n, Vector3 p, Color c, float i, float range)
     {

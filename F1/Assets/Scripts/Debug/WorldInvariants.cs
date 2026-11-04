@@ -47,6 +47,7 @@ public static class WorldInvariants
         ("건물 안 전부 디오라마(D-304): 건물마다 방 상자 ≥1 · 2층 방 있음 · 반폭 0.8~10 m", () => InteriorBoxes()),
         ("건물 안 고정 시점(D-306): 건물마다 컷 셰이더(정비소 포함) · 작은 방 고정 카메라 = 상자 밖 · 건물 안 Unlit = 유리로 다룸 · 천장 컷 바닥 위 ≤2.7m", () => InteriorFixedView()),
         ("건물 문 밖 1 m 는 디오라마가 아니다(과제 20261105-0453): 바깥 벽·문·셔터 1 m 밖 점이 어느 방 상자에도 안 듦", () => InteriorDoorOutside()),
+        ("작은 방은 바닥 네 모서리가 화면 안(D-307 ⑧): 맞춘 고정 카메라로 투영한 바닥 모서리 4점 |NDC| ≤ 1", () => InteriorRoomInFrame()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
@@ -798,7 +799,8 @@ public static class WorldInvariants
         var doors = UnityEngine.Object.FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
         var rd = UnityEngine.Object.FindFirstObjectByType<RoomDiorama>(FindObjectsInactive.Include);
         // 씬에 없으면(실행 중에만 붙는다) RoomDiorama 필드 기본값
-        float pitch = rd != null ? rd.pitch : 50f, dist = rd != null ? rd.distance : 5f, per = rd != null ? rd.distPerHalf : 1.6f, maxD = rd != null ? rd.maxDistance : 12f, wideHalf = rd != null ? rd.wideHalf : 3f;
+        float pitch = rd != null ? rd.pitch : 50f, margin = rd != null ? rd.fitMargin : 0.05f, minCap = rd != null ? rd.minCapsule : 0.06f, capH = rd != null ? rd.capsuleHeight : 1.8f;
+        DioramaLens(out float fov, out float aspect);
         var seen = new HashSet<Transform>();
         foreach (var it in list)
         {
@@ -810,17 +812,62 @@ public static class WorldInvariants
                         bad.Add(it.building.name + "/" + r.name + ": Unlit(" + r.sharedMaterial.name + ") 인데 유리로 안 잡힘 — 안 잘리고 남는다");
             }
             // 천장 컷이 바닥에서 2.7m 를 넘으면 높은 상자(정비소)의 지붕 처마가 안 잘리고 화면 절반을 덮는다
-            float ceilY = Mathf.Min(rd != null ? rd.ceilCut : 0.9f, -1f + (rd != null ? rd.ceilMetres : 2.6f) / Mathf.Max(0.1f, it.half.y));
+            float ceilY = RoomDiorama.CeilOf(it.box, rd != null ? rd.ceilCut : 0.9f, rd != null ? rd.ceilMetres : 2.6f);
             if ((ceilY + 1f) * it.half.y > 2.7f)
                 bad.Add(string.Format(Inv, "{0}: 천장 컷 바닥 위 {1:F2}m — 2.7m 초과(지붕 처마가 남는다)", it.name, (ceilY + 1f) * it.half.y));
-            if (it.room == null && Mathf.Max(it.half.x, it.half.z) > wideHalf) continue;   // 넓은 곳은 플레이어 따라 움직인다
-            float d = it.room != null ? dist : Mathf.Clamp(per * Mathf.Max(it.half.x, it.half.z), dist, maxD);
             float yaw = RoomDiorama.FixedYaw(it, list, doors, null);
-            var pose = RoomDiorama.FixedPose(it, yaw, Vector3.zero, pitch, d, 0f, false);
-            Vector3 c = it.box.MultiplyPoint3x4(pose.position);
-            if (Mathf.Max(Mathf.Abs(c.x), Mathf.Abs(c.z)) <= 1.05f || c.y <= 1f)
-                bad.Add(string.Format(Inv, "{0}: 고정 카메라 상자 좌표 {1} — 상자 밖·천장 위가 아님(문 쪽 벽이 안 잘린다)", it.name, V(c)));
+            RoomDiorama.Fit(it.box.inverse, yaw, pitch, fov, aspect, margin, ceilY, capH, out Vector3 look, out float d, out float cap);
+            if (cap < minCap) continue;   // 맞추면 사람이 너무 작은 넓은 곳은 플레이어 따라 움직인다
+            Vector3 c = it.box.MultiplyPoint3x4(look - Quaternion.Euler(pitch, yaw, 0f) * Vector3.forward * d);
+            if (Mathf.Max(Mathf.Abs(c.x), Mathf.Abs(c.z)) <= 1.05f || c.y <= ceilY)
+                bad.Add(string.Format(Inv, "{0}: 고정 카메라 상자 좌표 {1} — 상자 밖·천장 컷 위가 아님(문 쪽 벽이 안 잘린다)", it.name, V(c)));
         }
+        return bad;
+    }
+
+    /// <summary>디오라마 카메라 시야각·화면비: 실행 중이면 그 카메라, 아니면 게임 기본 시야각(FollowCamera.BaseFov — 걷기도 같은 값) · 16:9.</summary>
+    static void DioramaLens(out float fov, out float aspect)
+    {
+        var fc = UnityEngine.Object.FindFirstObjectByType<FollowCamera>(FindObjectsInactive.Include);
+        var cam = Camera.main;
+        fov = Application.isPlaying && cam != null ? cam.fieldOfView : fc != null ? fc.BaseFov : 60f;
+        aspect = Application.isPlaying && cam != null ? cam.aspect : 16f / 9f;
+    }
+
+    /// <summary>
+    /// D-307 ⑧(도현 11/05 「방안을 보여주는 카메라 각도도 방안이 다 보이게」): 작은 방(맞춘 자리에 고정되는 방)은 바닥 네 모서리가 화면 안.
+    /// 옛 고정 거리 표(2층 방 5 m 등)로는 모서리가 화면 밖으로 잘렸다. RoomDiorama.Fit 이 준 자세로 따로 투영 행렬을 만들어 확인한다
+    /// (맞춤 식이 틀려도 걸리게 — 식을 다시 쓰지 않음). 넓은 곳(사람 캡슐 < minCapsule)은 따라 움직이니 뺀다.
+    /// </summary>
+    static List<string> InteriorRoomInFrame()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok);
+        var doors = UnityEngine.Object.FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
+        var rd = UnityEngine.Object.FindFirstObjectByType<RoomDiorama>(FindObjectsInactive.Include);
+        float pitch = rd != null ? rd.pitch : 50f, margin = rd != null ? rd.fitMargin : 0.05f, minCap = rd != null ? rd.minCapsule : 0.06f, capH = rd != null ? rd.capsuleHeight : 1.8f;
+        DioramaLens(out float fov, out float aspect);
+        Matrix4x4 proj = Matrix4x4.Perspective(fov, aspect, 0.1f, 500f);
+        int small = 0;
+        foreach (var it in list)
+        {
+            float ceilY = RoomDiorama.CeilOf(it.box, rd != null ? rd.ceilCut : 0.9f, rd != null ? rd.ceilMetres : 2.6f);
+            float yaw = RoomDiorama.FixedYaw(it, list, doors, null);
+            RoomDiorama.Fit(it.box.inverse, yaw, pitch, fov, aspect, margin, ceilY, capH, out Vector3 look, out float d, out float cap);
+            if (cap < minCap) continue;
+            small++;
+            var r = Quaternion.Euler(pitch, yaw, 0f);
+            Matrix4x4 view = Matrix4x4.TRS(look - r * Vector3.forward * d, r, new Vector3(1f, 1f, -1f)).inverse;   // Unity 카메라 = -z 앞
+            for (int k = 0; k < 4; k++)
+            {
+                Vector3 q = new Vector3((k & 1) == 0 ? -1f : 1f, -1f, (k & 2) == 0 ? -1f : 1f);
+                Vector3 wp = it.box.inverse.MultiplyPoint3x4(q);
+                Vector4 h = proj * (view * new Vector4(wp.x, wp.y, wp.z, 1f));
+                if (h.w <= 0f || Mathf.Abs(h.x / h.w) > 1.001f || Mathf.Abs(h.y / h.w) > 1.001f)
+                    bad.Add(string.Format(Inv, "{0}: 바닥 모서리 {1} 화면 좌표 ({2:F2},{3:F2}) w={4:F2} — 화면 밖(거리 {5:F1}m)", it.name, V(q), h.x / h.w, h.y / h.w, h.w, d));
+            }
+        }
+        if (list.Count > 0 && small == 0) bad.Add("작은 방 0 — 모든 방이 넓은 곳으로 빠졌다(minCapsule·시야각 확인)");
         return bad;
     }
 
