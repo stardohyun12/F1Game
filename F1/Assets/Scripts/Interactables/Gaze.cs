@@ -31,7 +31,12 @@ public class Gaze
     /// <summary>레이가 처음 맞은 점(쪽지 고르기용).</summary>
     public Vector3 Point { get; private set; }
 
+    /// <summary>D-306(과제 20261105-0419) 건물 안 고정 시점: E 대상 = 몸 앞 부채꼴(fanReach m, ±fanHalfDeg) 안 가장 가까운 물건(가설값).</summary>
+    public float fanReach = 1.5f, fanHalfDeg = 60f;
+
     readonly RaycastHit[] hits = new RaycastHit[16];
+    Vector3 eyePos, eyeFwd; Transform eyeT;
+    readonly List<Transform> fan = new List<Transform>();
     Note note; Board boardThing; PackTable pack; Cart cart; Repair repair; KnockDoor knock; Boss bossThing; WallCalendar cal; Bed bedThing; Door door; Seat seat;
     public readonly Diary Diary = new Diary();
 
@@ -52,9 +57,14 @@ public class Gaze
     public IInteractable Find()
     {
         bool v3 = pack3 != null && pack3.On;
+        // 디오라마(과제 20261104-1559): 카메라가 뒤·위로 빠져 있어도 레이는 1인칭 눈에서 쏜다
+        RoomDiorama.EyeRay(cam.transform, out eyePos, out eyeFwd);
+        RoomDiorama.Mark = null;
+        if (RoomDiorama.Fixed) Fan();
         if (v3 && !DayState.CarryingBox)
         {
-            var p3 = pack3.Look(cam.transform, out var t3);
+            // 과제 20261105-0419: 포장 물건도 눈 레이로 — 전엔 cam.transform 이라 디오라마 카메라(뒤·위)에서 쐈다
+            var p3 = pack3.Look(Eye(), out var t3);
             if (p3 != null) { Target = t3; return p3; }
         }
         Object hit = Ray(out DoorHinge dh);
@@ -85,8 +95,6 @@ public class Gaze
     Object Ray(out DoorHinge door)
     {
         door = null;
-        // 디오라마(과제 20261104-1559): 카메라가 뒤·위로 빠져 있어도 레이는 1인칭 눈에서 쏜다
-        RoomDiorama.EyeRay(cam.transform, out var eyePos, out var eyeFwd);
         int n = Physics.RaycastNonAlloc(eyePos, eyeFwd, hits, Mathf.Max(gazeReach, boss != null || board != null || handover != null ? talkReach : 0f), Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
         Collider first = null; float best = float.MaxValue; float packD = float.MaxValue;
         for (int i = 0; i < n; i++)
@@ -125,6 +133,56 @@ public class Gaze
         foreach (var d in doors)
             if (d != null) foreach (var r in d.riders) if (r != null && first.transform.IsChildOf(r)) { door = d; return d; }
         return null;
+    }
+
+    Transform Eye()
+    {
+        if (eyeT == null) { eyeT = new GameObject("GazeEye").transform; eyeT.gameObject.hideFlags = HideFlags.HideInHierarchy; }
+        eyeT.SetPositionAndRotation(eyePos, Quaternion.LookRotation(eyeFwd));
+        return eyeT;
+    }
+
+    /// <summary>
+    /// D-306 고정 시점(마우스 시선 없음): 몸 앞 부채꼴 안에서 가장자리가 가장 가까운 상호작용 물건으로 눈 레이를 돌린다.
+    /// 그 뒤 판정은 레이 규칙 그대로 — 벽이 먼저 맞으면 없음(벽 너머 물건은 안 잡힌다).
+    /// </summary>
+    void Fan()
+    {
+        Vector3 p = player.position, f = player.forward; f.y = 0f;
+        if (f.sqrMagnitude < 1e-4f) return;
+        f.Normalize();
+        fan.Clear();
+        if (calendar != null) fan.Add(calendar.transform);
+        if (board != null) fan.Add(board.transform);
+        if (packSpot != null) fan.Add(packSpot.transform);
+        if (handover != null) fan.Add(handover.transform);
+        if (boss != null) fan.Add(boss);
+        if (doors != null) foreach (var d in doors) if (d != null) fan.Add(d.transform);
+        if (pack3 != null && pack3.On)
+            foreach (var t in (pack3.transform.parent != null ? pack3.transform.parent : pack3.transform).GetComponentsInChildren<PackThing>()) fan.Add(t.transform);
+        float bd = float.MaxValue; Bounds best = default; bool any = false;
+        if (bed != null && bed.isActiveAndEnabled) Consider(bed.Box, p, f, ref bd, ref best, ref any);
+        foreach (var t in fan)
+        {
+            if (t == null || !t.gameObject.activeInHierarchy) continue;
+            var rs = t.GetComponentsInChildren<Renderer>();
+            if (rs.Length == 0) continue;
+            var b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds);
+            Consider(b, p, f, ref bd, ref best, ref any);
+        }
+        if (!any) return;
+        eyeFwd = (best.center - eyePos).normalized;
+        RoomDiorama.Mark = new Vector3(best.center.x, best.max.y, best.center.z);
+    }
+
+    void Consider(Bounds b, Vector3 p, Vector3 f, ref float bd, ref Bounds best, ref bool any)
+    {
+        Vector3 q = b.ClosestPoint(new Vector3(p.x, Mathf.Clamp(p.y + 1f, b.min.y, b.max.y), p.z)) - p; q.y = 0f;
+        float d = q.magnitude;
+        if (d > fanReach || d >= bd) return;
+        Vector3 c = b.center - p; c.y = 0f;
+        if (d > 0.05f && Vector3.Angle(f, q) > fanHalfDeg && Vector3.Angle(f, c) > fanHalfDeg) return;
+        bd = d; best = b; any = true;
     }
 
     // ── 칩 자리 도우미(감독의 대화 말풍선도 같이 쓴다) ──

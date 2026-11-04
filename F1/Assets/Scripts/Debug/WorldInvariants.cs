@@ -45,6 +45,7 @@ public static class WorldInvariants
         ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
         ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
         ("건물 안 전부 디오라마(D-304): 건물마다 방 상자 ≥1 · 2층 방 있음 · 반폭 0.8~10 m", () => InteriorBoxes()),
+        ("건물 안 고정 시점(D-306): 건물마다 컷 셰이더(정비소 포함) · 작은 방 고정 카메라 = 상자 밖 · 건물 안 Unlit = 유리로 다룸 · 천장 컷 바닥 위 ≤2.7m", () => InteriorFixedView()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
@@ -779,6 +780,45 @@ public static class WorldInvariants
             foreach (Transform b in t)
                 if (b.gameObject.activeInHierarchy && !list.Exists(i => i.ok && i.building == b))
                     bad.Add(b.name + ": 건물 안 0 — 바닥(위 보는 면) 위 1 m 에서 천장·네 벽이 그 건물 콜라이더에 안 닿음");
+        }
+        return bad;
+    }
+
+    /// <summary>
+    /// D-306(과제 20261105-0419) 건물 안 고정 시점. 고친 버그 셋을 다시 잡는다:
+    /// ① 정비소(Library/A7LitPoint)에 컷이 없어 디오라마에서 빠짐 → 건물 안이 잡힌 건물마다 RoomDiorama.CanCut.
+    /// ② 우체국 유리(URP Unlit, Q4_*_glass)가 GLASS_ 이름이 아니라 안 잘림 → 건물 안 Unlit 렌더러는 전부 RoomDiorama.IsGlass.
+    /// ③ 고정 카메라가 상자 안이면 문 쪽 벽이 안 잘려 화면을 덮는다 → 작은 방 고정 자세가 상자 밖(수평 |q| > 1.05)·천장 위.
+    /// </summary>
+    static List<string> InteriorFixedView()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok);
+        var doors = UnityEngine.Object.FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
+        var rd = UnityEngine.Object.FindFirstObjectByType<RoomDiorama>(FindObjectsInactive.Include);
+        // 씬에 없으면(실행 중에만 붙는다) RoomDiorama 필드 기본값
+        float pitch = rd != null ? rd.pitch : 50f, dist = rd != null ? rd.distance : 5f, per = rd != null ? rd.distPerHalf : 1.6f, maxD = rd != null ? rd.maxDistance : 12f, wideHalf = rd != null ? rd.wideHalf : 3f;
+        var seen = new HashSet<Transform>();
+        foreach (var it in list)
+        {
+            if (seen.Add(it.building))
+            {
+                if (!RoomDiorama.CanCut(it.building)) bad.Add(it.building.name + ": 컷 셰이더(" + string.Join(", ", RoomDiorama.CutShaders) + ") 재질 0 — 디오라마에서 빠진다");
+                foreach (var r in it.building.GetComponentsInChildren<Renderer>(true))
+                    if (r.sharedMaterial != null && r.sharedMaterial.shader != null && r.sharedMaterial.shader.name.Contains("Unlit") && !RoomDiorama.IsGlass(r))
+                        bad.Add(it.building.name + "/" + r.name + ": Unlit(" + r.sharedMaterial.name + ") 인데 유리로 안 잡힘 — 안 잘리고 남는다");
+            }
+            // 천장 컷이 바닥에서 2.7m 를 넘으면 높은 상자(정비소)의 지붕 처마가 안 잘리고 화면 절반을 덮는다
+            float ceilY = Mathf.Min(rd != null ? rd.ceilCut : 0.9f, -1f + (rd != null ? rd.ceilMetres : 2.6f) / Mathf.Max(0.1f, it.half.y));
+            if ((ceilY + 1f) * it.half.y > 2.7f)
+                bad.Add(string.Format(Inv, "{0}: 천장 컷 바닥 위 {1:F2}m — 2.7m 초과(지붕 처마가 남는다)", it.name, (ceilY + 1f) * it.half.y));
+            if (it.room == null && Mathf.Max(it.half.x, it.half.z) > wideHalf) continue;   // 넓은 곳은 플레이어 따라 움직인다
+            float d = it.room != null ? dist : Mathf.Clamp(per * Mathf.Max(it.half.x, it.half.z), dist, maxD);
+            float yaw = RoomDiorama.FixedYaw(it, list, doors, null);
+            var pose = RoomDiorama.FixedPose(it, yaw, Vector3.zero, pitch, d, 0f, false);
+            Vector3 c = it.box.MultiplyPoint3x4(pose.position);
+            if (Mathf.Max(Mathf.Abs(c.x), Mathf.Abs(c.z)) <= 1.05f || c.y <= 1f)
+                bad.Add(string.Format(Inv, "{0}: 고정 카메라 상자 좌표 {1} — 상자 밖·천장 위가 아님(문 쪽 벽이 안 잘린다)", it.name, V(c)));
         }
         return bad;
     }

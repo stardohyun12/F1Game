@@ -12,6 +12,8 @@ public class RoomBed : MonoBehaviour
     [SerializeField] Vector3 size = new Vector3(1f, 0.6f, 2f);
 
     public Vector3 Center => center;
+    /// <summary>경계 상자(Gaze 부채꼴 E 가 가장자리까지 거리를 잰다 — D-306).</summary>
+    public Bounds Box => new Bounds(center, size);
     /// <summary>[E] 칩 자리 = 침대 윗면 가운데 조금 위.</summary>
     public Vector3 Anchor => center + Vector3.up * (size.y * 0.5f + 0.12f);
 

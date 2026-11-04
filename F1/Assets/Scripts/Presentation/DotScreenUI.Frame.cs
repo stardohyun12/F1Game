@@ -24,7 +24,9 @@ public partial class DotScreenUI
             if (DayView.InTalk) TalkUI(vis);
             else
             {
-                if (DayView.Held == null || DayView.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
+                if (RoomDiorama.Fixed)   // D-306 건물 안 고정 시점: 가운데 조준점 대신 E 대상 윗면 바로 위 작은 표시(대상이 없으면 없음)
+                { if (RoomDiorama.Mark is Vector3 mk && ToScreen(mk, out var ms)) { Show(dot, Mathf.RoundToInt(ms.x) - 1, Mathf.RoundToInt(ms.y) + 3); vis.Append("mark "); } }
+                else if (DayView.Held == null || DayView.Held.State != HeldPaper.Pose.Read) { Show(dot, Mathf.RoundToInt(W * 0.5f) - 1, Mathf.RoundToInt(H * 0.5f) - 1); vis.Append("dot "); }
                 ChipUI(vis);
                 CartMarkUI(vis);
                 if (DayView.PickedJob != null && !DayView.OrderStarted)            // D-250: 칠판에서 맡은 주문 = 걷는 중에도 Tab 전표

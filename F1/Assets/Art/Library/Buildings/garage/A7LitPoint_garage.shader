@@ -81,6 +81,24 @@ Shader "PitCrew/Library/A7LitPoint"
         CBUFFER_END
         // A7 전역(A7LightToggles): 그늘 색, 3단 문턱(해 받는 면, 옆), 옆 단 높이
         float4 _A7Shade; float4 _A7T; float _A7Mid;
+        // 디오라마 자르기(과제 20261105-0419) — SceneA7Lit.shader 의 A7DioCut/A7DioShadowCut 그대로. 전역 0 이면 아무 일 없음
+        float4x4 _A7InBox; float4 _A7InP; float4 _A7Dio; float4 _A7DioAmb;
+        bool A7DioShadowCut(float3 wp)
+        {
+            if (_A7Dio.x < 0.5 || _A7InP.x < 0.5) return false;
+            float3 b = mul(_A7InBox, float4(wp, 1)).xyz;
+            return max(abs(b.x), abs(b.z)) <= _A7DioAmb.w && b.y > _A7Dio.w;
+        }
+        bool A7DioCut(float3 wp)
+        {
+            if (_A7Dio.x < 0.5 || _A7InP.x < 0.5) return false;
+            float3 b = mul(_A7InBox, float4(wp, 1)).xyz;
+            float3 c = mul(_A7InBox, float4(_WorldSpaceCameraPos, 1)).xyz;
+            if (max(abs(b.x), max(abs(b.y), abs(b.z))) > 1 || b.y > _A7Dio.w) return true;
+            if (abs(c.x) > 1 && b.x * sign(c.x) > _A7Dio.z) return true;
+            if (abs(c.z) > 1 && b.z * sign(c.z) > _A7Dio.z) return true;
+            return false;
+        }
         half4 SampleBase(float2 uv)
         {
             if (_R2 > 0.5 && _HasR2 > 0.5) return SAMPLE_TEXTURE2D(_BaseMapR2, sampler_BaseMap, uv) * _Tint;
@@ -152,6 +170,7 @@ Shader "PitCrew/Library/A7LitPoint"
             float _Emit;
             half4 frag(V i, bool front : SV_IsFrontFace) : SV_Target
             {
+                if (A7DioCut(i.wp)) discard;
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
                 float3 n = normalize(i.n) * (front ? 1 : -1);
@@ -227,10 +246,10 @@ Shader "PitCrew/Library/A7LitPoint"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
             float3 _LightDirection;
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
-            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; };
+            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; };
             V vert(A i)
             {
-                V o; float3 wp = TransformObjectToWorld(i.pos.xyz); float3 nw = TransformObjectToWorldNormal(i.n);
+                V o; float3 wp = TransformObjectToWorld(i.pos.xyz); float3 nw = TransformObjectToWorldNormal(i.n); o.wp = wp;
                 float4 cp = TransformWorldToHClip(ApplyShadowBias(wp, nw, _LightDirection));
                 #if UNITY_REVERSED_Z
                     cp.z = min(cp.z, UNITY_NEAR_CLIP_VALUE);
@@ -239,7 +258,7 @@ Shader "PitCrew/Library/A7LitPoint"
                 #endif
                 o.pos = cp; o.uv = TRANSFORM_TEX(i.uv, _BaseMap); return o;
             }
-            half4 frag(V i) : SV_Target { clip(SampleBase(i.uv).a - _Cutoff); return 0; }
+            half4 frag(V i) : SV_Target { clip(SampleBase(i.uv).a - _Cutoff); if (A7DioShadowCut(i.wp)) discard; return 0; }
             ENDHLSL
         }
 
@@ -266,6 +285,7 @@ Shader "PitCrew/Library/A7LitPoint"
             }
             half4 frag(V i) : SV_Target
             {
+                if (A7DioCut(i.wp)) discard;
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
                 float3 c = max(0, lerp(dot(t.rgb, float3(0.299, 0.587, 0.114)).xxx, t.rgb, _Sat * 1.15)) * _WB.rgb * _OutlineDark;
