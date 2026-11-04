@@ -64,7 +64,7 @@ else
 claude -p "$PROMPT" "${SESS[@]}" \
   --model "$C_MODEL" ${C_EFFORT:+--effort "$C_EFFORT"} \
   --append-system-prompt-file "$SYSFILE" \
-  --setting-sources user --settings .claude/team/guard.settings.json \
+  --setting-sources user --settings .claude/team/guard.settings.json --strict-mcp-config \
   --permission-mode acceptEdits \
   --allowedTools "Read" "Edit" "Write" "Glob" "Grep" "TodoWrite" \
      "Bash(bash scripts/ucli-http.sh:*)" "Bash(bash scripts/world_check.sh:*)" "Bash(awk:*)" \
