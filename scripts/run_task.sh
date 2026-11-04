@@ -22,6 +22,14 @@ ucli() { if [ "$DRY" = 1 ]; then echo "[DRY] ucli-http.sh $*"; else timeout 60 $
 # 1. 에디터 상태 — Play 중이면 멈춘다(스냅숏·검사는 에디트 모드에서만). 에디터가 꺼져 있으면 그대로 진행(구현이 보고한다).
 ST=$(ucli status | tail -1)
 say "에디터: $ST"
+# D-301: 에디터가 꺼져 있으면 띄우고 기다린다(최대 6분)
+if [ "$DRY" != 1 ] && printf '%s' "$ST" | grep -q '^FAIL'; then
+  say "에디터 꺼짐 → open-editor.ps1"
+  rm -f F1/Temp/UnityLockfile
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/open-editor.ps1 >/dev/null 2>&1
+  for i in $(seq 1 24); do sleep 15; ST=$(ucli status | tail -1); printf '%s' "$ST" | grep -q '^FAIL' || break; done
+  say "에디터: $ST ($((i*15))s)"
+fi
 if [ "$DRY" != 1 ] && ! printf '%s' "$ST" | grep -q '^FAIL'; then
   P=$(ucli exec 'return UnityEditor.EditorApplication.isPlaying ? "PLAYING" : "EDIT";' | tail -1 | tr -d '\r')
   [ "$P" = PLAYING ] && { say "Play 중 → editor stop"; ucli editor stop >/dev/null; sleep 3; }
