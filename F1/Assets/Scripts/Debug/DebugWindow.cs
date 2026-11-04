@@ -69,6 +69,16 @@ public class DebugWindow : MonoBehaviour
     }
 
     public static string Fish() { var d = Dir(); return Say(d == null ? "감독 없음" : "낚시: " + d.DebugFishNow()); }
+    /// <summary>「바다로 가서 낚시」 — 노을 낚시 자리로 가서(이름으로 찾음) 노을로 바꾸고 앉아 찌를 던진다.</summary>
+    public static string GoFish()
+    {
+        int i = -1;
+        for (int k = 0; k < DebugPlaces.All.Length; k++) if (DebugPlaces.All[k].name == "노을 낚시 자리") { i = k; break; }
+        if (i < 0) return Say("장소 표에 「노을 낚시 자리」 없음");
+        GoPlace(i);
+        SetDusk(1f);
+        return Fish();   // 앉기(DebugFishNow)가 자리로 옮기고 앉아 찌까지 던진다
+    }
     public static string Recast() { var d = Dir(); return Say(d != null && d.DebugRecast() ? "찌 다시 던짐" : "낚시 자리에 앉아 있을 때만"); }
     public static string ToggleCart() { var d = Dir(); return Say(d == null ? "감독 없음" : "카트: " + d.DebugToggleCart()); }
     public static string SetSpeed(float s) { Time.timeScale = s; return Say("시간 " + s + "배속"); }
@@ -191,6 +201,8 @@ public class DebugWindow : MonoBehaviour
         scroll = GUILayout.BeginScrollView(scroll, false, false, GUIStyle.none, GUIStyle.none);
 
         GUILayout.Label("디버그 창   ` / F1 닫기", sTitle);
+        if (GUILayout.Button("바다로 가서 낚시", sBtnOn, GUILayout.Height(rowH * 1.8f))) GoFish();
+        GUILayout.Space(2 * s);
         GUILayout.Label(StateLine(), sText);
         var l = SunsetLook.Find();
         GUILayout.Label($"시간대 dusk={(l != null ? l.dusk.ToString("F2") : "-")}   배속 {Time.timeScale:F1}×", sText);
