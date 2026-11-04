@@ -303,4 +303,121 @@ public sealed class A7ShadeGlobals : MonoBehaviour
             list.Add(it);
         }
     }
+
+    /// <summary>o 에서 d 쪽으로 가장 가까운 그 건물 벽(IsWall). RaycastAll 은 한 메시 콜라이더에 한 점만 줘서(HOUSE_shell — 지붕만 나옴) 하나씩 넘으며 쏜다.</summary>
+    public static bool FirstWall(Vector3 o, Vector3 d, float far, Transform bld, out RaycastHit hit)
+    {
+        for (int s = 0; s < 16 && far > 0f && Physics.Raycast(o, d, out hit, far, ~0, QueryTriggerInteraction.Ignore); s++)
+        {
+            if (hit.transform.IsChildOf(bld) && IsWall(hit.collider)) return true;
+            far -= hit.distance + 0.01f; o = hit.point + d * 0.01f;
+        }
+        hit = default; return false;
+    }
+
+    /// <summary>
+    /// 과제 20261105-0535 ②: 방 네 벽의 안쪽 면(상자 좌표 0..1, +x·−x·+z·−z 순). 상자 높이 가운데에서 벽 쪽으로 레이 5개(옆 −0.6..0.6),
+    /// 그 건물 벽에 맞은 첫 점의 중앙값. 3개 미만이면 1(모름 = 상자 끝).
+    /// 집 2층 복도(2F#2)는 계단 구멍 때문에 상자가 깊어 문 쪽 벽 안쪽 면이 0.87 — 컷선(wallCut 0.95)보다 안이라 그 벽이 남아 캡슐을 가렸다.
+    /// </summary>
+    public static Vector4 WallFaces(Interior it)
+    {
+        var inv = it.box.inverse; var f = new Vector4(1f, 1f, 1f, 1f);
+        bool bf = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+        try
+        {
+            for (int s = 0; s < 4; s++)
+            {
+                var d = s == 0 ? Vector3.right : s == 1 ? Vector3.left : s == 2 ? Vector3.forward : Vector3.back;
+                var side = new Vector3(Mathf.Abs(d.z), 0f, Mathf.Abs(d.x));
+                Vector3 dw = inv.MultiplyVector(d); float far = dw.magnitude * 1.2f; dw.Normalize();
+                var got = new List<float>();
+                for (int k = -2; k <= 2; k++)
+                    if (FirstWall(inv.MultiplyPoint3x4(side * (k * 0.3f)), dw, far, it.building, out var h))
+                        got.Add(Vector3.Dot(it.box.MultiplyPoint3x4(h.point), d));
+                if (got.Count >= 3) { got.Sort(); f[s] = Mathf.Clamp01(got[got.Count / 2]); }
+            }
+        }
+        finally { Physics.queriesHitBackfaces = bf; }
+        return f;
+    }
+
+    /// <summary>
+    /// 과제 20261105-0535 ②: 카메라 → 사람 가슴 레이에 걸린 그 건물 벽(IsWall, 뒷면 포함) 중 셰이더 A7DioCut 에 안 잘리는 것
+    /// (상자 안 · 천장 아래 · 카메라 쪽 컷선 cut 안). 없으면 null, 있으면 「이름 상자좌표」.
+    /// 문짝·셔터(DOOR*·SHUTTER*)는 벽이 아니라 여닫히는 물건이라 넘긴다 — 씬에 열린 채 저장된 2층 방 문이 방 안으로 0.55 m 들어와 문 옆 구석을 가리는 건 따로(과제 20261105-0535 남은 것).
+    /// </summary>
+    public static string CapsuleBlocker(Interior it, Vector3 cam, Vector3 chest, float cut, float ceilY)
+    {
+        Vector3 dd = (chest - cam).normalized, end = chest - dd * 0.3f, c = it.box.MultiplyPoint3x4(cam);
+        bool bf = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+        try
+        {
+            Vector3 o = cam;
+            for (int s = 0; s < 16 && FirstWall(o, dd, Vector3.Dot(end - o, dd), it.building, out var h); s++)
+            {
+                Vector3 b = it.box.MultiplyPoint3x4(h.point);
+                bool gone = MaxAbs(b) > 1f || b.y > ceilY
+                            || (Mathf.Abs(c.x) > 1f && b.x * Mathf.Sign(c.x) > cut) || (Mathf.Abs(c.z) > 1f && b.z * Mathf.Sign(c.z) > cut);
+                bool leaf = h.collider.name.StartsWith("DOOR") || h.collider.name.StartsWith("SHUTTER");
+                if (!gone && !leaf) return h.collider.name + " 상자" + b.ToString("F2");
+                o = h.point + dd * 0.01f;
+            }
+            return null;
+        }
+        finally { Physics.queriesHitBackfaces = bf; }
+    }
+
+    /// <summary>바닥 고침 콜라이더 이름 앞머리(PatchOneSidedFloors).</summary>
+    public const string FloorPatchPrefix = "FLOOR_PATCH ";
+
+    /// <summary>
+    /// 과제 20261105-0535 ③: 상자 바닥이 아래만 보는 한 면인가(우체국 2층 — Q4_PostOffice_body 의 2층 바닥 법선 −y). 위에서 쏜 레이도 캐릭터도 빠져 1층으로 떨어진다.
+    /// 바닥 9×9 점 중 절반 넘게 「뒷면으로만 맞는 바닥」이면 참, y = 그 높이(중앙값).
+    /// </summary>
+    public static bool OneSidedFloor(Interior it, out float y)
+    {
+        var inv = it.box.inverse; var ys = new List<float>(); int n = 0; y = 0f;
+        bool bf = Physics.queriesHitBackfaces;
+        try
+        {
+            for (int gx = -4; gx <= 4; gx++)
+                for (int gz = -4; gz <= 4; gz++)
+                {
+                    n++;
+                    Vector3 o = inv.MultiplyPoint3x4(new Vector3(gx * 0.22f, -1f, gz * 0.22f)) + Vector3.up;
+                    Physics.queriesHitBackfaces = false;
+                    bool hf = Physics.Raycast(o, Vector3.down, out var f, 6f, ~0, QueryTriggerInteraction.Ignore);
+                    Physics.queriesHitBackfaces = true;
+                    bool hb = Physics.Raycast(o, Vector3.down, out var b, 6f, ~0, QueryTriggerInteraction.Ignore);
+                    if (hb && b.normal.y < -0.5f && b.transform.IsChildOf(it.building) && (!hf || f.point.y < b.point.y - 0.3f)) ys.Add(b.point.y);
+                }
+        }
+        finally { Physics.queriesHitBackfaces = bf; }
+        if (ys.Count * 2 <= n) return false;
+        ys.Sort(); y = ys[ys.Count / 2];
+        return true;
+    }
+
+    /// <summary>
+    /// 과제 20261105-0535 ③: OneSidedFloor 인 방마다 그 바닥 높이에 얇은 BoxCollider(그림 없음, 윗면 = 바닥)를 건물 아래 붙인다. 이미 있으면 그대로.
+    /// 메시(공유 에셋)는 안 건드린다. 실행 중에만 — DontSave. 붙인 것 목록.
+    /// </summary>
+    public static List<GameObject> PatchOneSidedFloors(IList<Interior> list)
+    {
+        var made = new List<GameObject>();
+        foreach (var it in list)
+        {
+            if (!it.ok || it.building == null || it.building.Find(FloorPatchPrefix + it.name) != null || !OneSidedFloor(it, out float y)) continue;
+            var inv = it.box.inverse;
+            Vector3 ax = inv.MultiplyVector(Vector3.right), az = inv.MultiplyVector(Vector3.forward), c = inv.MultiplyPoint3x4(Vector3.zero);
+            var go = new GameObject(FloorPatchPrefix + it.name) { hideFlags = HideFlags.DontSave };
+            go.transform.SetPositionAndRotation(new Vector3(c.x, y - 0.025f, c.z), Quaternion.LookRotation(az, Vector3.up));
+            go.transform.SetParent(it.building, true);
+            var ls = go.transform.lossyScale;
+            go.AddComponent<BoxCollider>().size = new Vector3(ax.magnitude * 2f / ls.x, 0.05f / ls.y, az.magnitude * 2f / ls.z);
+            made.Add(go);
+        }
+        return made;
+    }
 }

@@ -34,17 +34,8 @@ public class RepairSpot : MonoBehaviour
     void Awake()
     {
         Active = this;
-        // 회색 바닥 표시: 충돌체 없는 얇은 판(시선 레이·카트 바퀴에 안 걸린다)
-        var mark = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        Destroy(mark.GetComponent<Collider>());
-        mark.name = "RepairSpot_Floor (greybox)";
-        mark.transform.SetParent(transform, false);
-        mark.transform.localPosition = new Vector3(0f, 0.012f, 0f);
-        mark.transform.localScale = new Vector3(size.x, 0.02f, size.z);
-        var r = mark.GetComponent<Renderer>();
-        var m = new Material(r.sharedMaterial) { hideFlags = HideFlags.DontSave, color = new Color(0.45f, 0.45f, 0.45f) };
-        r.sharedMaterial = m;
-        r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        // 과제 20261105-0535 ①: 회색 바닥 판(런타임 큐브, URP Lit 사본 회색 0.45)을 없앴다 — 컷 셰이더가 아니라 디오라마에서 안 잘리고 결 B 도트도 안 먹어
+        // 정비소 바닥 한가운데 회색 판으로 떴다. 자리 판정(Contains)은 그대로. 정비 자리 바닥 표시는 아트로(도현 판정).
     }
 
     void OnDestroy() { if (Active == this) Active = null; }

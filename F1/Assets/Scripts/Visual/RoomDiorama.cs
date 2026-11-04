@@ -105,7 +105,7 @@ public sealed class RoomDiorama : MonoBehaviour
     float w, target, yawNow, yawVel; bool inRoom;
     RoomCalendar calendar;
     // 과제 20261105-0359(D-304): 건물 안 전부 — 상자 여럿(A7ShadeGlobals.FindInteriors), 지금 상자 cur
-    List<A7ShadeGlobals.Interior> rooms; int cur = -1; float[] roomYaw;
+    List<A7ShadeGlobals.Interior> rooms; int cur = -1; float[] roomYaw; Vector4[] roomFaces;
     Vector3 midNow, midVel; float distNow, distVel;
     /// <summary>지금(또는 마지막) 상자 이름(검사·캡처용). 없으면 "".</summary>
     public string RoomNow => cur >= 0 ? rooms[cur].name : "";
@@ -163,8 +163,9 @@ public sealed class RoomDiorama : MonoBehaviour
             // ⚠ 컷(천장·카메라 쪽 벽 버림)은 CutShaders 에만 있다 — 그 재질이 하나도 없는 건물은 지붕이 화면을 덮으므로 1인칭 그대로
             calendar = FindFirstObjectByType<RoomCalendar>();
             var doors = FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
-            roomYaw = new float[rooms.Count];
-            for (int i = 0; i < rooms.Count; i++) roomYaw[i] = FixedYaw(rooms[i], rooms, doors, player);
+            roomYaw = new float[rooms.Count]; roomFaces = new Vector4[rooms.Count];
+            for (int i = 0; i < rooms.Count; i++) { roomYaw[i] = FixedYaw(rooms[i], rooms, doors, player); roomFaces[i] = A7ShadeGlobals.WallFaces(rooms[i]); }
+            A7ShadeGlobals.PatchOneSidedFloors(rooms);   // 과제 20261105-0535 ③: 우체국 2층 한 면 바닥
         }
         return rooms.Count > 0;
     }
@@ -604,11 +605,27 @@ public sealed class RoomDiorama : MonoBehaviour
     bool Cut(Vector3 wp)
     {
         Vector3 b = box.MultiplyPoint3x4(wp), c = box.MultiplyPoint3x4(cam.transform.position);
+        float cut = CutLine(box, cam.transform.position, roomFaces[cur], wallCut);
         if (MaxAbs(b) > 1.15f || b.y > Ceil) return true;
-        if (Mathf.Abs(c.x) > 1f && b.x * Mathf.Sign(c.x) > wallCut) return true;
-        if (Mathf.Abs(c.z) > 1f && b.z * Mathf.Sign(c.z) > wallCut) return true;
+        if (Mathf.Abs(c.x) > 1f && b.x * Mathf.Sign(c.x) > cut) return true;
+        if (Mathf.Abs(c.z) > 1f && b.z * Mathf.Sign(c.z) > cut) return true;
         return false;
     }
+
+    /// <summary>
+    /// 과제 20261105-0535 ②: 카메라 쪽 벽 컷선(상자 좌표) = wallCut, 단 카메라가 넘어선 쪽 벽의 안쪽 면(WallFaces)이 그보다 안이면 그 면 − 0.02.
+    /// 다른 방은 안쪽 면 ≥ 0.96 이라 그대로 0.95(바뀐 방 = 집 2층 복도 2F#2 하나, 0.853). 셰이더 _A7Dio.z 와 Cut() 이 같은 값을 쓴다.
+    /// </summary>
+    public static float CutLine(Matrix4x4 box, Vector3 camPos, Vector4 faces, float wallCut)
+    {
+        Vector3 c = box.MultiplyPoint3x4(camPos); float t = wallCut;
+        if (Mathf.Abs(c.x) > 1f) t = Inside(t, c.x > 0f ? faces.x : faces.y, wallCut);
+        if (Mathf.Abs(c.z) > 1f) t = Inside(t, c.z > 0f ? faces.z : faces.w, wallCut);
+        return t;
+    }
+
+    // 안쪽 면이 컷선 밖(≥ wallCut)이면 이미 잘리니 그대로 — 다른 방 그림이 1 cm 도 안 바뀌게
+    static float Inside(float t, float face, float wallCut) => face < wallCut ? Mathf.Min(t, face - 0.02f) : t;
 
     void UpdateGlass()
     {
@@ -687,7 +704,7 @@ public sealed class RoomDiorama : MonoBehaviour
                                              : new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f));
         // y = 해 세기 배수(창빛 = 1 − 안개) · 바탕빛(시간대) w = 그림자에서 지붕을 빼는 집 범위
         ApplyTime();
-        Shader.SetGlobalVector(DioId, new Vector4(1f, 1f - Mathf.Clamp01(fog), wallCut, Ceil));
+        Shader.SetGlobalVector(DioId, new Vector4(1f, 1f - Mathf.Clamp01(fog), CutLine(box, cam.transform.position, roomFaces[cur], wallCut), Ceil));
         Color amb = Mix(ambientDay, ambientDusk, ambientNight, DuskW, NightW);
         Color a = QualitySettings.activeColorSpace == ColorSpace.Linear ? amb.linear : amb;
         Shader.SetGlobalVector(DioAmbId, new Vector4(a.r, a.g, a.b, houseReach));

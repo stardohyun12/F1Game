@@ -48,6 +48,8 @@ public static class WorldInvariants
         ("건물 안 고정 시점(D-306): 건물마다 컷 셰이더(정비소 포함) · 작은 방 고정 카메라 = 상자 밖 · 건물 안 Unlit = 유리로 다룸 · 천장 컷 바닥 위 ≤2.7m", () => InteriorFixedView()),
         ("건물 문 밖 1 m 는 디오라마가 아니다(과제 20261105-0453): 바깥 벽·문·셔터 1 m 밖 점이 어느 방 상자에도 안 듦", () => InteriorDoorOutside()),
         ("작은 방은 바닥 네 모서리가 화면 안(D-307 ⑧): 맞춘 고정 카메라로 투영한 바닥 모서리 4점 |NDC| ≤ 1", () => InteriorRoomInFrame()),
+        ("디오라마 시점에서 캡슐 앞을 가리는 벽이 없다(과제 20261105-0535): 방마다 카메라 → 가슴(바닥+1.1m, 3×3) 레이의 벽이 다 컷에 잘림", () => InteriorCapsuleClear()),
+        ("건물 안 방 바닥은 위에서 선다(과제 20261105-0535): 한 면 바닥(우체국 2층) → 고침 콜라이더 뒤 0", () => InteriorFloorStandable()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
@@ -868,6 +870,72 @@ public static class WorldInvariants
             }
         }
         if (list.Count > 0 && small == 0) bad.Add("작은 방 0 — 모든 방이 넓은 곳으로 빠졌다(minCapsule·시야각 확인)");
+        return bad;
+    }
+
+    /// <summary>
+    /// 과제 20261105-0535 ②: 디오라마 시점에서 캡슐 앞을 가리는 벽이 없다. 방마다 맞춘 고정 카메라(RoomDiorama.Fit) → 사람 가슴(바닥 + 1.1 m, 상자 3×3 점)
+    /// 레이에 걸린 그 건물 벽이 셰이더 컷(상자 밖 · 천장 위 · 카메라 쪽 컷선 RoomDiorama.CutLine 밖)에 안 잘리면 실패.
+    /// 집 2층 복도(2F#2)는 문 쪽 벽 안쪽 면이 0.87 이라 옛 컷선(wallCut 0.95 하나)에 안 걸려 그 벽이 캡슐을 가렸다.
+    /// </summary>
+    static List<string> InteriorCapsuleClear()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok && RoomDiorama.CanCut(i.building));
+        var doors = UnityEngine.Object.FindObjectsByType<DoorHinge>(FindObjectsSortMode.None);
+        var rd = UnityEngine.Object.FindFirstObjectByType<RoomDiorama>(FindObjectsInactive.Include);
+        float pitch = rd != null ? rd.pitch : 50f, margin = rd != null ? rd.fitMargin : 0.05f, capH = rd != null ? rd.capsuleHeight : 1.8f, wallCut = rd != null ? rd.wallCut : 0.95f;
+        DioramaLens(out float fov, out float aspect);
+        int rays = 0;
+        bool bf = Physics.queriesHitBackfaces;
+        try
+        {
+            foreach (var it in list)
+            {
+                float ceilY = RoomDiorama.CeilOf(it.box, rd != null ? rd.ceilCut : 0.9f, rd != null ? rd.ceilMetres : 2.6f);
+                float yaw = RoomDiorama.FixedYaw(it, list, doors, null);
+                RoomDiorama.Fit(it.box.inverse, yaw, pitch, fov, aspect, margin, ceilY, capH, out Vector3 look, out float d, out _);
+                Vector3 cp = look - Quaternion.Euler(pitch, yaw, 0f) * Vector3.forward * d;
+                float cut = RoomDiorama.CutLine(it.box, cp, A7ShadeGlobals.WallFaces(it), wallCut);
+                for (int gx = -1; gx <= 1; gx++)
+                    for (int gz = -1; gz <= 1; gz++)
+                    {
+                        // 바닥 = 상자 높이 가운데에서 아래로 그 건물 벽·바닥 메시(뒷면 포함 — 우체국 2층 한 면 바닥)
+                        Physics.queriesHitBackfaces = true;
+                        if (!A7ShadeGlobals.FirstWall(it.box.inverse.MultiplyPoint3x4(new Vector3(gx * 0.6f, 0f, gz * 0.6f)), Vector3.down, 8f, it.building, out var fl)) continue;
+                        Vector3 chest = fl.point + Vector3.up * 1.1f, cb = it.box.MultiplyPoint3x4(chest);
+                        if (it.box.MultiplyPoint3x4(fl.point).y < -1.05f || cb.y > ceilY) continue;
+                        rays++;
+                        string blk = A7ShadeGlobals.CapsuleBlocker(it, cp, chest, cut, ceilY);
+                        if (blk != null) bad.Add(string.Format(Inv, "{0}: 카메라 {1} → 가슴 {2}(상자 {3}) 레이에 안 잘린 벽 {4} — 컷선 {5:F3}", it.name, V(cp), V(chest), cb.ToString("F2"), blk, cut));
+                    }
+            }
+        }
+        finally { Physics.queriesHitBackfaces = bf; }
+        if (list.Count > 0 && rays == 0) bad.Add("잰 레이 0 — 바닥을 못 찾음");
+        return bad;
+    }
+
+    /// <summary>
+    /// 과제 20261105-0535 ③: 건물 안 방 바닥은 위에서 선다. 우체국 2층 바닥은 아래만 보는 한 면이라 순간이동 레이·캐릭터가 빠져 1층으로 떨어졌다.
+    /// A7ShadeGlobals.PatchOneSidedFloors 를 붙인 뒤에는 「뒷면으로만 맞는 바닥」 방이 0 이어야 한다(에디트 모드면 붙였다 바로 지움).
+    /// </summary>
+    static List<string> InteriorFloorStandable()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok);
+        int one = list.FindAll(i => A7ShadeGlobals.OneSidedFloor(i, out _)).Count;
+        var made = A7ShadeGlobals.PatchOneSidedFloors(list);
+        Physics.SyncTransforms();
+        try
+        {
+            foreach (var it in list)
+                if (A7ShadeGlobals.OneSidedFloor(it, out float y)) bad.Add(string.Format(Inv, "{0}: 바닥 y={1:F2} 이 아래만 보는 한 면 — 고침 콜라이더 뒤에도 위에서 못 섬(한 면 방 {2}개, 새로 붙임 {3})", it.name, y, one, made.Count));
+        }
+        finally
+        {
+            if (!Application.isPlaying) { foreach (var g in made) UnityEngine.Object.DestroyImmediate(g); Physics.SyncTransforms(); }
+        }
         return bad;
     }
 

@@ -20,12 +20,14 @@ public class InteriorFixBot : MonoBehaviour
     readonly List<string> log = new List<string>();
     static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    static bool doorOnly, fitOnly;
+    static bool doorOnly, fitOnly, leftOnly;
     /// <summary>D-307 ⑧: 방마다 들어가 fit-&lt;이름&gt;.png + 거리·캡슐 화면 높이 %·바닥 모서리 화면 안(실제 카메라로 투영)을 bot-fit.txt 에.</summary>
     public static string BeginFit(string outDir) { var s = Begin(outDir); fitOnly = true; return s; }
+    /// <summary>과제 20261105-0535: garage·house2f-hall·postoffice-2f·hold 4장(결 B) + bot-left.txt.</summary>
+    public static string BeginLeft(string outDir) { var s = Begin(outDir); leftOnly = true; return s; }
     public static string Begin(string outDir, bool onlyDoor = false)
     {
-        doorOnly = onlyDoor; fitOnly = false;
+        doorOnly = onlyDoor; fitOnly = false; leftOnly = false;
         var dr = FindFirstObjectByType<OnFootDirector>();
         if (dr == null) return "no dir";
         dir = outDir; Directory.CreateDirectory(dir); Status = "run";
@@ -44,6 +46,12 @@ public class InteriorFixBot : MonoBehaviour
         {
             yield return FitViews(list);
             File.WriteAllLines(Path.Combine(dir, "bot-fit.txt"), log);
+            Status = "done " + log.Count; Destroy(gameObject); yield break;
+        }
+        if (leftOnly)
+        {
+            yield return Left(list);
+            File.WriteAllLines(Path.Combine(dir, "bot-left.txt"), log);
             Status = "done " + log.Count; Destroy(gameObject); yield break;
         }
         if (!doorOnly) yield return OutsideCheck(list);
@@ -267,6 +275,7 @@ public class InteriorFixBot : MonoBehaviour
     // ⑥ 결 A/B — 같은 자리에서 grainB 만 바꿔 두 장
     IEnumerator Grain(List<A7ShadeGlobals.Interior> list)
     {
+        bool g0 = dio.grainB;
         foreach (var (key, file) in new[] { ("house_home/ROOM_2F", "grain-room2f"), ("house_home/1F", "grain-house1f"), ("D198_depot", "grain-depot") })
         {
             var it = list.Find(i => i.name.StartsWith(key));
@@ -274,22 +283,71 @@ public class InteriorFixBot : MonoBehaviour
             yield return GoIn(list, it, false);
             dio.grainB = false; yield return Frames(3); yield return Shot(file + "-A");
             dio.grainB = true; yield return Frames(3); yield return Shot(file + "-B");
-            dio.grainB = false;
             log.Add($"[결] {file} = {it.name} active={RoomDiorama.Active}");
         }
+        dio.grainB = g0;   // 과제 20261105-0535 ④: 전엔 false 로 끝내 뒤 hold.png 가 결 A 였다
     }
+
+    // 과제 20261105-0535: 남은 넷 — 정비소 바닥 판 · 2층 복도 앞벽 · 우체국 2층 · 든 상자(결 B, 맞춘 카메라)
+    IEnumerator Left(List<A7ShadeGlobals.Interior> list)
+    {
+        bool g0 = dio.grainB; dio.grainB = true;
+        foreach (var it in list)
+            if (it.name.StartsWith("house_home") || it.name.StartsWith("D198_postoffice"))
+                log.Add($"[상자] {it.name} 가운데={V(it.box.inverse.MultiplyPoint3x4(Vector3.zero))} half={V(it.half)} 점={it.samples} 벽 안쪽 면={A7ShadeGlobals.WallFaces(it)}");
+        foreach (var (key, file) in new[] { ("D198_garage", "garage"), ("house_home/2F#2", "house2f-hall"), ("D198_postoffice/2F", "postoffice-2f") })
+        {
+            var it = list.Find(i => i.name.StartsWith(key));
+            if (it == null) { log.Add("[남은] " + key + " 없음"); continue; }
+            yield return GoIn(list, it, true);
+            yield return Secs(0.6f);
+            var now = list.Find(i => i.name == dio.RoomNow) ?? it;
+            Vector3 cp = cam.transform.position, chest = pl.transform.position + Vector3.up * 1.1f;
+            float ceilY = RoomDiorama.CeilOf(now.box, dio.ceilCut, dio.ceilMetres);
+            float cut = RoomDiorama.CutLine(now.box, cp, A7ShadeGlobals.WallFaces(now), dio.wallCut);
+            string blk = A7ShadeGlobals.CapsuleBlocker(now, cp, chest, cut, ceilY);
+            string under = Physics.Raycast(pl.transform.position + Vector3.up * 0.5f, Vector3.down, out var g, 3f, ~0, QueryTriggerInteraction.Ignore) ? g.collider.name + " y=" + g.point.y.ToString("F2", Inv) : "없음";
+            log.Add(string.Format(Inv, "[남은] {0} 세운 방 {1} → 보이는 방 {2} active={3} 발={4} 발(상자)={5} 발 밑={6} 컷선={7:F3} 캡슐 앞 벽={8} 회색 판={9}",
+                file, it.name, dio.RoomNow, RoomDiorama.Active, V(pl.transform.position), V(now.box.MultiplyPoint3x4(pl.transform.position)), under, cut, blk ?? "없음",
+                GameObject.Find("RepairSpot_Floor (greybox)") != null ? "있음" : "없음"));
+            yield return Shot(file);
+        }
+        yield return HoldCheck(list);
+        dio.grainB = g0;
+    }
+
+    static bool InBox(Vector3 q) => Mathf.Abs(q.x) <= 1f && Mathf.Abs(q.y) <= 1f && Mathf.Abs(q.z) <= 1f;
 
     // ④ 보관소 안에서 상자 들기 → 손 물건이 가슴 앞인지
     IEnumerator HoldCheck(List<A7ShadeGlobals.Interior> list)
     {
         var it = list.Find(i => i.name.StartsWith("D198_depot"));
-        yield return GoIn(list, it, false);
+        // 과제 20261105-0535 ④: 전엔 뒤 선반 구석(b)에 카메라와 같은 쪽을 보고 서서 가슴 앞 상자가 몸·선반 뒤로 숨었다 →
+        // 빈 바닥 가운데에 카메라 쪽을 보고 선다
+        float yaw = RoomDiorama.FixedYaw(it, list, FindObjectsByType<DoorHinge>(FindObjectsSortMode.None), null);
+        d.DebugTeleport(it.box.inverse.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)) + Vector3.up * 0.1f, yaw + 180f, null, 0f);
+        yield return Secs(1.8f);
         SignalBus.Raise(Signal.BoxTaken, "봇");
         yield return Secs(1f);
         var hb = cam.transform.Find("HeldBox");
         string s = hb == null ? "HeldBox 없음" : string.Format(Inv, "HeldBox 켜짐={0} 화면={1} 가슴까지={2:0.00}m",
             hb.gameObject.activeInHierarchy, V(cam.WorldToViewportPoint(hb.position)), Vector3.Distance(hb.position, pl.transform.position + Vector3.up * 1.1f));
-        log.Add($"[손] active={RoomDiorama.Active} 옮긴 손={dio.HandsMoved} {s}");
+        log.Add($"[손] active={RoomDiorama.Active} 옮긴 손={dio.HandsMoved} grainB={dio.grainB} {s}");
+        if (hb != null)
+        {
+            // 과제 20261105-0535 ④: 보이는가 — 렌더러 켜짐·셰이더·카메라 → 상자 사이 첫 콜라이더(몸 캡슐이면 몸 뒤에 가림)
+            foreach (var r in hb.GetComponentsInChildren<Renderer>(true))
+                log.Add($"[손] 렌더러 {r.name} enabled={r.enabled} active={r.gameObject.activeInHierarchy} forceOff={r.forceRenderingOff} layer={LayerMask.LayerToName(r.gameObject.layer)} cullMask={(cam.cullingMask & (1 << r.gameObject.layer)) != 0} shader={(r.sharedMaterial != null ? r.sharedMaterial.shader.name : "-")} bounds={V(r.bounds.center)} size={V(r.bounds.size)}");
+            Vector3 cp = cam.transform.position, to = hb.position - cp;
+            // 천장(셰이더가 자름)은 빼고 본다 — 이 건물 밖·자른 쪽 콜라이더면 다음으로
+            string first = "없음";
+            var hits = Physics.RaycastAll(cp, to.normalized, to.magnitude, ~0, QueryTriggerInteraction.Ignore);
+            System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+            foreach (var fh in hits)
+                if (fh.collider.transform.IsChildOf(pl.transform) || InBox(it.box.MultiplyPoint3x4(fh.point)))
+                { first = fh.collider.name + " 거리 " + fh.distance.ToString("F2", Inv) + "/" + to.magnitude.ToString("F2", Inv); break; }
+            log.Add($"[손] 카메라→상자 첫 콜라이더 {first} · 몸 앞쪽·카메라 앞쪽 내적={Vector3.Dot(pl.transform.forward, cam.transform.forward):F2}");
+        }
         yield return Shot("hold");
     }
 }
