@@ -231936,6 +231936,15 @@ MonoBehaviour:
   brightAbove: 0.3
   sideAbove: 0.02
   sideLevel: 0.6
+  indoorDot: 0
+  roomName: ROOM_2F
+  indoorLevels: 10
+  indoorFogMax: 0.15
+  indoorFogEnd: 6
+  indoorFilterTexels: 0.5
+  indoorMeanPull: 0.15
+  indoorDitherWidth: 0.15
+  indoorGrainKeep: 0
 --- !u!4 &408345758
 Transform:
   m_ObjectHideFlags: 0
@@ -452822,7 +452831,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4279507487
   m_fontColor: {r: 0.12, g: 0.1, b: 0.08, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -452835,7 +452844,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -852685,6 +852694,7 @@ MonoBehaviour:
   cargo: {fileID: 1664846833}
   v3: {fileID: 390292857}
   useV3: 1
+  use2D: 1
   rattleFull: 2
   rattleLoss: 0.4
   notUprightLoss: 0.15
@@ -969840,7 +969850,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2

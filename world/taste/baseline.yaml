@@ -1,0 +1,35 @@
+# 도트 풍경 잣대 (과제 20261104-0501, D-295). 기준 = good/01_bay_afternoon_dot.png 와 같은 문법의 게임 화면.
+# 측정: docs/qa/tmp/dotstats.py (360 높이 프레임, 아니면 Nearest 로 맞춤) · 게임 화면은 LowResRenderTest.Present 640×360 · 오후(SunsetLook.dusk=0).
+#  small_step = 이웃 픽셀 밝기 차 1~6(0~255) 비율 — 높으면 사진 결(점무늬)
+#  big_step   = 이웃 밝기 차 ≥7 비율 — 높으면 픽셀 계단·체커
+#  dither     = 좌우(위아래) 이웃이 같고 가운데만 다른 픽셀 비율
+#  flat       = 3×3 이 한 색인 비율 · lum_levels = 밝기 32칸 중 1% 넘는 칸 수
+# 색 수(colors)는 잣대가 아니다 — 바다 6090 > 방 3002 인데 방이 더 「사진」이었다.
+
+measured:
+  good_png:   {file: world/taste/good/01_bay_afternoon_dot.png, colors: 10184, small_step: 0.111, big_step: 0.084, dither: 0.017, flat: 0.253, lum_levels: 16}
+  bad_png:    {file: world/taste/bad/01_room_no_dot.png,        colors: 8064,  small_step: 0.175, big_step: 0.084, dither: 0.010, flat: 0.261, lum_levels: 16}
+  bay_game:   {file: docs/qa/evidence/art-indoor/ref_harbor.png,  colors: 6090, small_step: 0.091, big_step: 0.086, dither: 0.021, flat: 0.244, lum_levels: 14}
+  room_before: {file: docs/qa/evidence/art-indoor/before_room.png, colors: 3002, small_step: 0.129, big_step: 0.064, dither: 0.008, flat: 0.316, lum_levels: 17}
+  room_after:  {file: docs/qa/evidence/art-indoor/after_room.png,  colors: 8893, small_step: 0.087, big_step: 0.063, dither: 0.027, flat: 0.348, lum_levels: 11}
+
+# 통과 범위 — good_png·bay_game 두 값을 감싸고 bad_png·room_before 는 빠지게 잡음(표본 2+2, 가설)
+range:
+  small_step: [0.07, 0.12]     # bad 0.175 · before 0.129 는 밖
+  big_step:   [0.04, 0.10]     # 넘으면 체커(첫 시도 0.196 = 디더 과다)
+  dither:     [0.015, 0.035]   # before 0.008 은 밖, 첫 시도 0.142 도 밖
+
+texel:
+  # 텍셀 하나가 화면 몇 px 인가(360 프레임). 1.5 px 넘으면 텍스처 결이 그대로 「사진 점무늬」로 보인다
+  room_wall_texel_per_m: 28
+  room_props_texel_per_m: 64
+  room_px_per_texel_at_1p5_to_3m: [2.4, 7.0]   # 실내 — 그대로면 결이 커져 보임 → 걸러 읽음(9탭, 0.5텍셀 간격)
+  bay_far: "<1 px/텍셀 — 먼 물체는 결이 평균으로 사라지고 바다·하늘은 절차 색면"
+  max_px_per_texel_unfiltered: 1.5
+
+light:
+  # 흰 텍스처로 바꾼 화면(빛만)의 밝기 칸 수
+  room_before_levels: 4        # 그늘 한 색 + 창 해 자국
+  room_after_levels: 5         # 바닥 / 해 쪽 벽 / 등진 벽·천장 / 해 자국
+  bay: "해 면·그늘 면 + 하늘 6띠(Dusk.hlsl 띠 끝 Bayer 디더) — 같은 방식(흰 텍스처) 측정은 안 함"
+  target_levels: [3, 6]
