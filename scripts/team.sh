@@ -61,7 +61,8 @@ if [ "${RUN_DRY:-0}" = 1 ]; then
   echo "[DRY] claude -p <브리프 $(printf '%s' "$PROMPT" | wc -c)자> ${SESS[*]} --model $C_MODEL --effort $C_EFFORT ${TURNARG[*]:-} --max-budget-usd $C_BUDGET"
   printf '{"role":"%s","ok":true,"final":"[DRY] 실행 안 함","session_id":"%s","cost_usd":0}\n' "$ROLE" "$(cat "$SIDFILE")" > "$RESULT"
 else
-claude -p "$PROMPT" "${SESS[@]}" \
+# 프롬프트는 stdin — 인자로 넘기면 Windows 명령줄 한도(32,767자)에서 "Argument list too long" 으로 죽는다(과제 29 이어서, 33,045자)
+printf '%s' "$PROMPT" | claude -p "${SESS[@]}" \
   --model "$C_MODEL" ${C_EFFORT:+--effort "$C_EFFORT"} \
   --append-system-prompt-file "$SYSFILE" \
   --setting-sources user --settings .claude/team/guard.settings.json --strict-mcp-config \
