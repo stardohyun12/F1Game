@@ -25,9 +25,12 @@ public class InteriorFixBot : MonoBehaviour
     public static string BeginFit(string outDir) { var s = Begin(outDir); fitOnly = true; return s; }
     /// <summary>과제 20261105-0535: garage·house2f-hall·postoffice-2f·hold 4장(결 B) + bot-left.txt.</summary>
     public static string BeginLeft(string outDir) { var s = Begin(outDir); leftOnly = true; return s; }
+    /// <summary>과제 20261105-0617: 든 상자 3장(dio-front · dio-back · fp-outside) + bot-held.txt.</summary>
+    public static string BeginHeld(string outDir) { var s = Begin(outDir); heldOnly = true; return s; }
+    static bool heldOnly;
     public static string Begin(string outDir, bool onlyDoor = false)
     {
-        doorOnly = onlyDoor; fitOnly = false; leftOnly = false;
+        doorOnly = onlyDoor; fitOnly = false; leftOnly = false; heldOnly = false;
         var dr = FindFirstObjectByType<OnFootDirector>();
         if (dr == null) return "no dir";
         dir = outDir; Directory.CreateDirectory(dir); Status = "run";
@@ -46,6 +49,12 @@ public class InteriorFixBot : MonoBehaviour
         {
             yield return FitViews(list);
             File.WriteAllLines(Path.Combine(dir, "bot-fit.txt"), log);
+            Status = "done " + log.Count; Destroy(gameObject); yield break;
+        }
+        if (heldOnly)
+        {
+            yield return HeldShots(list);
+            File.WriteAllLines(Path.Combine(dir, "bot-held.txt"), log);
             Status = "done " + log.Count; Destroy(gameObject); yield break;
         }
         if (leftOnly)
@@ -314,6 +323,41 @@ public class InteriorFixBot : MonoBehaviour
         }
         yield return HoldCheck(list);
         dio.grainB = g0;
+    }
+
+    // 과제 20261105-0617: 보관소에서 상자 든 채 — 카메라 쪽을 봄 · 등짐 · 밖에서 1인칭(든 상자 위치는 안 바뀜)
+    IEnumerator HeldShots(List<A7ShadeGlobals.Interior> list)
+    {
+        bool g0 = dio.grainB; dio.grainB = true;
+        var it = list.Find(i => i.name.StartsWith("D198_depot"));
+        float yaw = RoomDiorama.FixedYaw(it, list, FindObjectsByType<DoorHinge>(FindObjectsSortMode.None), null);
+        Vector3 floor = it.box.inverse.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)) + Vector3.up * 0.1f;
+        d.DebugTeleport(floor, yaw + 180f, null, 0f);
+        yield return Secs(1.8f);
+        SignalBus.Raise(Signal.BoxTaken, "봇");
+        yield return Secs(1f);
+        LogHeld("dio-front");
+        yield return Shot("dio-front");
+        d.DebugTeleport(floor, yaw, null, 0f);
+        yield return Secs(1.2f);
+        LogHeld("dio-back");
+        yield return Shot("dio-back");
+        d.DebugTeleport(new Vector3(270.5f, 30.9f, -34.0f), 0f, null, 0f);
+        yield return Secs(1.5f);
+        LogHeld("fp-outside");
+        yield return Shot("fp-outside");
+        dio.grainB = g0;
+    }
+
+    void LogHeld(string tag)
+    {
+        var hb = cam.transform.Find("HeldBox");
+        if (hb == null) { log.Add($"[든 상자] {tag} HeldBox 없음"); return; }
+        string rs = ""; foreach (var r in hb.GetComponentsInChildren<Renderer>(true)) rs += r.name + ":" + (r.sharedMaterial != null ? r.sharedMaterial.name : "-") + "|" + r.sharedMaterial.shader.name + " ";
+        var vp = cam.WorldToViewportPoint(hb.position);
+        log.Add(string.Format(Inv, "[든 상자] {0} active={1} 디오라마={2} 켜짐={3} 위치={4} 화면={5} 카메라→상자 {6:0.00}m 플레이어 정면·카메라 정면 내적={7:0.00} 렌더러 {8}",
+            tag, hb.gameObject.activeInHierarchy, RoomDiorama.Active, hb.gameObject.activeSelf, V(hb.position), V(vp), Vector3.Distance(cam.transform.position, hb.position),
+            Vector3.Dot(pl.transform.forward, cam.transform.forward), rs));
     }
 
     static bool InBox(Vector3 q) => Mathf.Abs(q.x) <= 1f && Mathf.Abs(q.y) <= 1f && Mathf.Abs(q.z) <= 1f;

@@ -177,7 +177,7 @@ public class DepotPackSpot : MonoBehaviour
         if (packedMark != null) packedMark.SetActive(true);
     }
 
-    /// <summary>걷기 시점에서 흔들어 본 상자를 든다 — 작업대 상자를 숨긴다(손에 든 상자는 OnFootDirector 의 HeldBox 대역).</summary>
+    /// <summary>걷기 시점에서 흔들어 본 상자를 든다 — 작업대 상자를 숨긴다(손에 든 상자는 Stage_Door 의 HeldBox — 선반 택배 상자 모델).</summary>
     public void Take()
     {
         if (!Ready) return;

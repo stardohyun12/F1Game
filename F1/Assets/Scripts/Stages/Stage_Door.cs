@@ -97,22 +97,75 @@ public class Stage_Door : DayStage
         foreach (var r in bedRs) if (r != null) r.enabled = BedBox;
     }
 
-    /// <summary>회색 대역 상자: 카메라 자식, 화면 아래 가운데 조금 오른쪽. 아트는 나중에 이 자리(HeldBox)에 모델로. 감독 Start 에서 한 번.</summary>
+    /// <summary>손에 든 상자의 크기(m, 카메라 기준 가로·높이·깊이) — 예전 회색 대역 큐브 크기 그대로.</summary>
+    public static readonly Vector3 HeldSize = new Vector3(0.42f, 0.24f, 0.32f);
+
+    /// <summary>손에 든 상자: 카메라 자식, 화면 아래 가운데 조금 오른쪽. 모양 = 보관소 선반 택배 상자(PARCEL_*) 메시·재질 그대로(없으면 회색 큐브). 감독 Start 에서 한 번.</summary>
     internal void BuildHeldBox()
     {
-        heldBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        heldBox.name = "HeldBox";
-        Object.Destroy(heldBox.GetComponent<Collider>());
+        heldBox = new GameObject("HeldBox");
         heldBox.transform.SetParent(d.cam.transform, false);
         heldBox.transform.localPosition = new Vector3(0.06f, -0.34f, 0.62f);
         heldBox.transform.localRotation = Quaternion.Euler(14f, -4f, 0f);
-        heldBox.transform.localScale = new Vector3(0.42f, 0.24f, 0.32f);
-        var mr = heldBox.GetComponent<MeshRenderer>();
-        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        var src = FindShelfParcel(out _);
+        if (src != null) AddParcelModel(heldBox.transform, src);
+        else AddGreyCube(heldBox.transform);
+        foreach (var r in heldBox.GetComponentsInChildren<Renderer>(true)) r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        heldBox.SetActive(false);
+    }
+
+    /// <summary>선반 택배 상자(보관소 건물 q3_depot 아래 PARCEL_*) 중 HeldSize 와 비례(가로:높이:깊이)가 가장 가까운 것. 못 찾으면 null. ratioErr = 가장 가까운 것의 비례 오차(로그 합, 0 = 같음).</summary>
+    public static MeshFilter FindShelfParcel(out float ratioErr)
+    {
+        MeshFilter best = null; ratioErr = float.MaxValue;
+        foreach (var mf in Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (!mf.name.StartsWith("PARCEL_") || mf.sharedMesh == null || mf.transform.parent == null || mf.transform.parent.name != "q3_depot") continue;
+            if (mf.GetComponent<MeshRenderer>() == null) continue;
+            var s = ParcelBounds(mf).size;
+            if (s.x < 0.01f || s.y < 0.01f || s.z < 0.01f) continue;
+            float e = Mathf.Abs(Mathf.Log(s.x / s.y) - Mathf.Log(HeldSize.x / HeldSize.y)) + Mathf.Abs(Mathf.Log(s.z / s.y) - Mathf.Log(HeldSize.z / HeldSize.y));
+            if (e < ratioErr) { ratioErr = e; best = mf; }
+        }
+        return best;
+    }
+
+    /// <summary>선반 상자 메시의 크기·중심 — 건물 안 자기 회전(fbx 위쪽 축 보정)·배율만 적용한 부모 기준 값(건물 방향은 안 탄다).</summary>
+    static Bounds ParcelBounds(MeshFilter mf)
+    {
+        var m = Matrix4x4.TRS(Vector3.zero, mf.transform.localRotation, mf.transform.localScale);
+        var mb = mf.sharedMesh.bounds;
+        var b = new Bounds(m.MultiplyPoint3x4(mb.center), Vector3.zero);
+        for (int k = 0; k < 8; k++)
+            b.Encapsulate(m.MultiplyPoint3x4(mb.center + Vector3.Scale(mb.extents, new Vector3((k & 1) == 0 ? -1f : 1f, (k & 2) == 0 ? -1f : 1f, (k & 4) == 0 ? -1f : 1f))));
+        return b;
+    }
+
+    /// <summary>선반 상자 메시·재질을 holder 자식으로 복사한다(재질은 공유 그대로 읽기만). 크기 = HeldSize 와 같은 부피, 중심이 holder 원점.</summary>
+    static void AddParcelModel(Transform holder, MeshFilter src)
+    {
+        var b = ParcelBounds(src);
+        float k = Mathf.Pow(HeldSize.x * HeldSize.y * HeldSize.z / (b.size.x * b.size.y * b.size.z), 1f / 3f);
+        var go = new GameObject("Parcel");
+        go.transform.SetParent(holder, false);
+        go.transform.localRotation = src.transform.localRotation;
+        go.transform.localScale = src.transform.localScale * k;
+        go.transform.localPosition = -b.center * k;
+        go.AddComponent<MeshFilter>().sharedMesh = src.sharedMesh;
+        go.AddComponent<MeshRenderer>().sharedMaterials = src.GetComponent<MeshRenderer>().sharedMaterials;
+    }
+
+    /// <summary>선반 상자를 못 찾았을 때만 — 예전 회색 큐브.</summary>
+    static void AddGreyCube(Transform holder)
+    {
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.name = "GreyCube";
+        Object.Destroy(cube.GetComponent<Collider>());
+        cube.transform.SetParent(holder, false);
+        cube.transform.localScale = HeldSize;
         var mpb = new MaterialPropertyBlock();
         mpb.SetColor("_BaseColor", new Color(0.58f, 0.57f, 0.55f)); mpb.SetColor("_Color", new Color(0.58f, 0.57f, 0.55f));
-        mr.SetPropertyBlock(mpb);
-        heldBox.SetActive(false);
+        cube.GetComponent<MeshRenderer>().SetPropertyBlock(mpb);
     }
 
     internal void Knock()

@@ -65,8 +65,24 @@ public static class WorldInvariants
         ("포장 3D 작업대(D-301): 들어가는 물건(감싼 겹 포함)이 그림에서도 상자 안 벽 안쪽에 들어간다(벽 뚫고 삐져나옴 0)", () => PackBench3DFit()),
         ("포장 소리 풀(20261105): 꺼진 오브젝트에 매달린 풀은 켜진 host 로 옮겨짐 — 덜그럭이 조용하지 않게", () => PackSfxPoolActive()),
         ("포장 첫 튜토리얼(D-302): 단계마다 큰 글 한 줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→완충재→넣기→틈(선택)→테이프→닫힘=들고 나가기, 흔들기 단계 없음)", () => PackTutorialSteps()),
+        ("손에 든 상자 = 선반 택배 모델(20261105-0617): 보관소 선반 PARCEL_* 가 씬에 있고 크기 비례가 든 상자 크기와 ±35% 안 — 없으면 회색 큐브로 되돌아감", () => HeldBoxModel()),
         ("포장 흔들기 선택(D-302): 안 흔든 상자(흔든 시간 0 < 1.5 s)는 표준 흔들기로 재고, 헐거운 상자면 그 값으로 시작값이 깎인다(흔들림 0 일 때보다 낮음)", () => PackNoShakeStart()),
     };
+
+    /// <summary>
+    /// 버그(20261105-0617): 손에 든 상자가 회색 큐브 대역이라 디오라마 화면에서 회색 캡슐과 구분이 안 됐다.
+    /// 모양은 보관소 선반 택배(PARCEL_*) 메시·재질 — 그 원본이 씬에서 사라지거나 비례가 크게 다르면 Stage_Door 가 조용히 회색 큐브로 돌아간다.
+    /// </summary>
+    static List<string> HeldBoxModel()
+    {
+        var bad = new List<string>();
+        var src = Stage_Door.FindShelfParcel(out float err);
+        if (src == null) { bad.Add("선반 택배 상자(q3_depot/PARCEL_*)가 씬에 없음 → 든 상자가 회색 큐브로 돌아감. 보관소 건물 이름·구조를 바꿨으면 Stage_Door.FindShelfParcel 을 같이"); return bad; }
+        if (err > Mathf.Log(1.35f) * 2f) bad.Add($"가장 가까운 선반 상자 {src.name} 도 비례 오차 {err:F2} — 든 상자 크기({Stage_Door.HeldSize.x}×{Stage_Door.HeldSize.y}×{Stage_Door.HeldSize.z})와 너무 다름");
+        var mr = src.GetComponent<MeshRenderer>();
+        if (mr.sharedMaterial == null || mr.sharedMaterial.shader.name.StartsWith("Universal Render Pipeline")) bad.Add(src.name + " 재질이 건물 셰이더가 아님(회색 대역 재질) — " + (mr.sharedMaterial != null ? mr.sharedMaterial.name : "없음"));
+        return bad;
+    }
 
     static List<string> PackTutorialSteps()
     {

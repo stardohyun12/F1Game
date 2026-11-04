@@ -443,6 +443,8 @@ public sealed class RoomDiorama : MonoBehaviour
     // 과제 20261105-0453 ④: 손에 든 것(카메라 자식 — 문 앞 상자 HeldBox, 보관소 포장대 PackHand)은 1인칭 눈 앞 자리라
     // 디오라마 카메라를 따라가 화면 아래 큰 회색 판이 됐다 → 안에선 몸 앞 가슴 높이로. w 로 눈 자리 ↔ 가슴을 섞고, 나가면 원래 자리로
     static readonly string[] HandNames = { "HeldBox", "PackHand" };
+    /// <summary>든 상자 높이(m) — Stage_Door.HeldSize.y 와 같은 값(Visual 은 Stages 를 못 본다).</summary>
+    const float HeldBoxHeight = 0.24f;
     readonly Dictionary<Transform, Pose> handLocal = new Dictionary<Transform, Pose>();
     /// <summary>검사용: 지금 가슴 앞으로 옮겨 둔 손 물건 수.</summary>
     public int HandsMoved => handLocal.Count;
@@ -451,13 +453,15 @@ public sealed class RoomDiorama : MonoBehaviour
     {
         var cc = body != null ? body.Controller : null;
         Vector3 chest = player.position + Vector3.up * 1.1f + player.forward * ((cc != null ? cc.radius : 0.3f) + 0.25f);
+        // 과제 20261105-0617 ②: 든 상자는 머리 위 살짝 — 가슴 앞이면 카메라를 등지고 걸을 때 몸 캡슐에 가린다(위에서 내려다보는 시점). 포장대 손(PackHand)은 가슴 그대로
+        Vector3 over = player.position + Vector3.up * ((cc != null ? cc.height : 1.8f) + HeldBoxHeight * 0.5f + 0.06f) + player.forward * 0.1f;
         foreach (var n in HandNames)
         {
             var h = cam.transform.Find(n);
             if (h == null) continue;
             if (!handLocal.TryGetValue(h, out var lp)) { lp = new Pose(h.localPosition, h.localRotation); handLocal[h] = lp; }
             Vector3 atEye = eyeP + eyeR * lp.position;
-            h.SetPositionAndRotation(Vector3.Lerp(atEye, chest, s), Quaternion.Slerp(eyeR * lp.rotation, player.rotation * lp.rotation, s));
+            h.SetPositionAndRotation(Vector3.Lerp(atEye, n == "HeldBox" ? over : chest, s),Quaternion.Slerp(eyeR * lp.rotation, player.rotation * lp.rotation, s));
         }
     }
 

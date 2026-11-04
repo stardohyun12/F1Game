@@ -1,0 +1,3 @@
+[든 상자] dio-front active=True 디오라마=True 켜짐=True 위치=(271.62,32.94,-29.23) 화면=(0.50,0.60,8.35) 카메라→상자 8.39m 플레이어 정면·카메라 정면 내적=-0.64 렌더러 Parcel:M_depot_wall|PitCrew/SceneA7/Lit 
+[든 상자] dio-back active=True 디오라마=True 켜짐=True 위치=(271.61,32.94,-29.03) 화면=(0.50,0.62,8.48) 카메라→상자 8.53m 플레이어 정면·카메라 정면 내적=0.64 렌더러 Parcel:M_depot_wall|PitCrew/SceneA7/Lit 
+[든 상자] fp-outside active=True 디오라마=False 켜짐=True 위치=(270.56,32.19,-33.38) 화면=(0.56,-0.06,0.62) 카메라→상자 0.71m 플레이어 정면·카메라 정면 내적=1.00 렌더러 Parcel:M_depot_wall|PitCrew/SceneA7/Lit 
