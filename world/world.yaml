@@ -59,18 +59,21 @@ numbers:
   calendar_days: 28
 
 # SPEC §6-4 포장 (D-290) — 상자 3 · 완충재 2 · 화물 성질. 크기 m [가로, 높이, 세로]. Core.PackRules 가 쓴다(WorldOrders.ApplyPacking).
+# D-295 물리 시뮬(Interactables/Pack2D/PackPhysics) 물성 — 전부 「가설」(도현 판정 전). mass kg · bounce 0~1 · friction 마찰 계수.
+#   마찰: 물건이 깔린 면과의 평균(바닥 완충재가 있으면 그 위, 없으면 상자 바닥). 벽 반발 = √(물건 bounce × 상자 bounce) × 놓인 완충재 bounce 의 곱.
+#   완충재 bounce = 반발 유지율(뽁뽁이 0.1 = 부딪힘의 90% 를 먹는다). 완충재 thick 의 합만큼 물건과 벽 사이 틈이 메워진다.
 packing:
   boxes:
-    - {name: 소, inner: [0.22, 0.12, 0.22]}
-    - {name: 중, inner: [0.315, 0.15, 0.315]}
-    - {name: 대, inner: [0.46, 0.24, 0.46]}
+    - {name: 소, inner: [0.22, 0.12, 0.22],   mass: 0.08, bounce: 0.30, friction: 0.40}
+    - {name: 중, inner: [0.315, 0.15, 0.315], mass: 0.12, bounce: 0.30, friction: 0.40}
+    - {name: 대, inner: [0.46, 0.24, 0.46],   mass: 0.20, bounce: 0.30, friction: 0.40}
   fillers:
-    - {name: 뽁뽁이, kind: Bubble, thick: 0.02, roll: 12}
-    - {name: 종이,   kind: Paper,  thick: 0.01, roll: 12}
+    - {name: 뽁뽁이, kind: Bubble, thick: 0.02, roll: 12, mass: 0.02, bounce: 0.10, friction: 0.90}
+    - {name: 종이,   kind: Paper,  thick: 0.01, roll: 12, mass: 0.01, bounce: 0.30, friction: 0.60}
   cargo_traits:
-    - {cargo: 달걀 한 판,     trait: 깨짐, size: [0.30, 0.07, 0.30]}
-    - {cargo: 유리병,         trait: 깨짐, size: [0.10, 0.25, 0.10]}
-    - {cargo: 얼음 채운 생선, trait: 젖음, size: [0.40, 0.12, 0.20]}
+    - {cargo: 달걀 한 판,     trait: 깨짐, size: [0.30, 0.07, 0.30], mass: 0.60, bounce: 0.40, friction: 0.80}
+    - {cargo: 유리병,         trait: 깨짐, size: [0.10, 0.25, 0.10], mass: 0.90, bounce: 0.30, friction: 0.30}
+    - {cargo: 얼음 채운 생선, trait: 젖음, size: [0.40, 0.12, 0.20], mass: 1.50, bounce: 0.05, friction: 0.60}
   cushions:            # 성질별 완충재 효과(0~1) — 안 맞으면 0
     - {trait: 깨짐, Bubble: 0.6, Paper: 0.2}
     - {trait: 젖음, Bubble: 0.5, Paper: 0.0}
@@ -80,3 +83,6 @@ packing:
   rattle_full: 2.0
   loose_loss: 0.15
   min_start: 0.4
+  shake_full: 0.5      # D-295 가설: 1.5 s 흔들림 합이 이만큼(m)이면 흔들림 손실 최대(rattle_loss)
+  wrap_thick: 0.003    # D-296 가설: 뽁뽁이 감싸기 한 겹이 물건 한 변에 더하는 두께(m). 달걀 2겹 = 0.30→0.312, 중 상자(0.315)에 겨우 들어간다
+  wrap_damp: 0.5       # D-296 가설: 감싼 겹 하나가 부딪힘 세기·반발을 줄이는 비율. 겹 계수 = (1-wrap_damp)^겹 (최대 2겹 → 0.25)
