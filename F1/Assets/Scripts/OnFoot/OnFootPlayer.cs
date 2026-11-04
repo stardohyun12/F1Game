@@ -43,6 +43,9 @@ public class OnFootPlayer : MonoBehaviour
     public OnFootCamera Cam { get; set; }
     /// <summary>D-306(과제 20261105-0419) 건물 안 고정 시점: 값이 있으면 WASD 는 이 방향 기준(W = 화면 위), 몸은 가는 쪽으로 돈다. RoomDiorama 가 넣고 뺀다.</summary>
     public float? ScreenYaw { get; set; }
+    /// <summary>봇 비교용: 참이면 문턱 입력 붙듦(③)을 끈다 — 고치기 전 동작.</summary>
+    public static bool NoInputLatch;
+    float? latchYaw; Vector2 latchM; bool lastScreen; float lastYaw;
     public CharacterController Controller => cc;
     public float Speed { get; private set; }
     /// <summary>발이 땅에서 떨어져 있다(점프·낙하 공통).</summary>
@@ -108,7 +111,13 @@ public class OnFootPlayer : MonoBehaviour
         if (dt <= 0f) return;
         dt = Mathf.Min(dt, 0.05f);   // 렉(0.27 s 이상)이 뛰는 순간에 걸려도 위로 속도가 한 프레임에 다 깎여 점프가 사라지지 않게
         Vector2 m = ReadMove();
-        float yaw = ScreenYaw ?? (Cam != null ? Cam.Yaw : transform.eulerAngles.y);
+        float free = ScreenYaw ?? (Cam != null ? Cam.Yaw : transform.eulerAngles.y);
+        // 과제 20261105-0453 ③: 문턱에서 화면 기준 ↔ 몸 기준이 바뀌어도 누르던 키는 같은 쪽으로 — 안 그러면 S(화면 아래 = 밖)가
+        // 나가자마자 「몸 뒤 = 방 안」이 돼 다시 들어가고, 문턱을 오가며 시점이 부들댔다. 키를 바꾸거나 떼면 풀린다.
+        if (m.sqrMagnitude < 0.01f || m != latchM) latchYaw = null;
+        if (!NoInputLatch && latchYaw == null && m.sqrMagnitude >= 0.01f && ScreenYaw.HasValue != lastScreen) latchYaw = lastYaw;
+        float yaw = latchYaw ?? free;
+        lastScreen = ScreenYaw.HasValue; lastYaw = yaw; latchM = m;
         Quaternion q = Quaternion.Euler(0f, yaw, 0f);
         Vector3 dir = q * new Vector3(m.x, 0f, m.y);
         float sp = ReadRun() ? runSpeed : walkSpeed;
@@ -117,7 +126,7 @@ public class OnFootPlayer : MonoBehaviour
         hv = wasGrounded ? h : Vector3.MoveTowards(hv, h, airAccel * dt);
         // 1인칭(D-219): 몸은 늘 보는 쪽을 향한다(옆걸음·뒷걸음이 되게). 카메라가 없으면 예전처럼 가는 쪽으로 돈다.
         if (ScreenYaw.HasValue) { if (dir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), turnSpeedDeg * dt); }
-        else if (Cam != null && Cam.isActiveAndEnabled) transform.rotation = q;
+        else if (Cam != null && Cam.isActiveAndEnabled) transform.rotation = Quaternion.Euler(0f, free, 0f);
         else if (dir.sqrMagnitude > 0.01f)
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(dir), turnSpeedDeg * dt);
 

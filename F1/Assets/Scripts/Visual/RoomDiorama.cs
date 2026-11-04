@@ -61,6 +61,11 @@ public sealed class RoomDiorama : MonoBehaviour
     public float ceilCut = 0.9f;
     [Tooltip("천장 컷 상한(바닥에서 m) — 높은 상자(정비소)는 지붕 처마가 ceilCut 아래로 내려와 화면을 덮었다")]
     public float ceilMetres = 2.6f;
+    [Header("결 — 디오라마 전용(과제 20261105-0453 ⑥, 도현 판정 전: A = 지금 값, B = 디더·결 덜). 1인칭 실내 도트 값은 안 건드림")]
+    [Tooltip("켜면 B. 끄면 A(디더 폭 = A7ShadeGlobals.indoorDitherWidth, 텍스처 안 거름)")]
+    public bool grainB;
+    [Tooltip("B: 텍스처 거르는 탭 간격(텍셀) — 바닥·벽 텍스처 잔점을 눌러 준다")] [Range(0f, 4f)] public float grainBFilterTexels = 1f;
+    [Tooltip("B: 밝기 단 끝 디더 폭(0..1)")] [Range(0f, 1f)] public float grainBDitherWidth = 0.04f;
     float Ceil => Mathf.Min(ceilCut, -1f + ceilMetres / Mathf.Max(0.1f, box.inverse.MultiplyVector(Vector3.up).magnitude));
 
     /// <summary>잔소품 이름 머리(RoomDioramaBuild 가 끄고, WorldInvariants 가 켜진 게 없는지 본다). 남길 것: 침대·책상·의자·창·문·NOTEBOOK(일기장)·선반·러그.</summary>
@@ -314,9 +319,21 @@ public sealed class RoomDiorama : MonoBehaviour
             if (Mx(i, p) <= lim && v < bv) { best = i; bv = v; }
         }
         if (best >= 0 || !inRoom || cur < 0) return best;
+        return Holds(rooms, cur, p) ? cur : -1;
+    }
+
+    /// <summary>방 사이 문턱에서 지금 상자를 붙드는 범위(상자 좌표).</summary>
+    public const float HoldLim = 1.3f;
+    /// <summary>
+    /// 지금 상자 cur 를 붙드는가: p 가 cur 에도, 같은 건물 다른 상자에도 HoldLim 안(두 방 사이 문턱).
+    /// 과제 20261105-0453 ①: 전엔 「다른 상자 1.3 안」만 봐서 집 1층 벽 밖 1 m(1층 상자 1.16)에 서도 2층 방 디오라마가 남았다.
+    /// </summary>
+    public static bool Holds(IReadOnlyList<A7ShadeGlobals.Interior> rooms, int cur, Vector3 p)
+    {
+        if (MaxAbs(rooms[cur].box.MultiplyPoint3x4(p)) > HoldLim) return false;
         for (int i = 0; i < rooms.Count; i++)
-            if (i != cur && rooms[i].building == rooms[cur].building && Mx(i, p) <= 1.3f) return cur;
-        return -1;
+            if (i != cur && rooms[i].building == rooms[cur].building && MaxAbs(rooms[i].box.MultiplyPoint3x4(p)) <= HoldLim) return true;
+        return false;
     }
 
     float DistFor(int i)
@@ -330,7 +347,7 @@ public sealed class RoomDiorama : MonoBehaviour
         eyeValid = false;
         if (foot == null || player == null || cam == null || !FindBox()) return;
         // 작업대·칠판·카트·낚시가 카메라를 가져간 동안: 그림도 비켜 있다(w 는 그대로 두어 돌아오면 이어진다)
-        if (camTaken != null && camTaken()) { SetRendering(false); RestoreDot(); Release(); return; }
+        if (camTaken != null && camTaken()) { SetRendering(false); RestoreDot(); RestoreHands(); Release(); return; }
         Vector3 probe = player.position + Vector3.up * 1.0f;
         int now = Pick(probe);
         if (now >= 0 && now != cur)
@@ -353,12 +370,14 @@ public sealed class RoomDiorama : MonoBehaviour
 
         w = Mathf.MoveTowards(w, target, Time.deltaTime / Mathf.Max(0.01f, blendSec));
         SetRendering(inRoom);   // 나갈 때는 바로 끈다(카메라만 0.4초에 눈으로 돌아온다)
+        if (rendering) BodyOn();
         ApplyCalendar();
-        if (w <= 0f) { RestoreDot(); return; }
+        if (w <= 0f) { RestoreDot(); RestoreHands(); return; }
 
         // 1인칭 눈(OnFootCamera 가 이번 프레임에 놓은 자세) 저장 → Gaze 가 여기서 레이를 쏜다
         Transform t = cam.transform;
-        eyeP = t.position; eyeF = inRoom ? Quaternion.Euler(aimPitch, player.eulerAngles.y, 0f) * Vector3.forward : t.forward; eyeCam = t; eyeValid = true;
+        Quaternion eyeR = t.rotation;
+        eyeP = t.position; eyeF =inRoom ? Quaternion.Euler(aimPitch, player.eulerAngles.y, 0f) * Vector3.forward : t.forward; eyeCam = t; eyeValid = true;
 
         // D-306: 방의 고정 각도(상자 → 상자로 바뀔 때만 부드럽게 돈다). 몸 방향(foot.Yaw)은 안 따른다
         yawNow = Mathf.SmoothDampAngle(yawNow, roomYaw[cur], ref yawVel, yawSmooth);
@@ -373,7 +392,45 @@ public sealed class RoomDiorama : MonoBehaviour
         float s = w * w * (3f - 2f * w);
         t.SetPositionAndRotation(Vector3.Lerp(eyeP, dp, s), Quaternion.Slerp(Quaternion.LookRotation(eyeF), dr, s));
         if (rendering) UpdateGlass();   // 카메라를 디오라마 자리로 옮긴 뒤에 — 눈(방 안) 기준이면 카메라 쪽 벽 유리를 못 자른다
+        PlaceHands(eyeR, s);
         MoveDot();
+    }
+
+    // 과제 20261105-0453 ②: 달력·침대·일기를 닫으면 EnterFoot → OnFootCamera.OnEnable 이 몸을 그림자만(1인칭)으로 돌린다.
+    // SetRendering(true) 은 이미 켜져 있어 다시 안 불려 몸이 안 보였다 → 그리는 동안은 매 프레임 몸을 켠다.
+    Renderer[] bodyR;
+    void BodyOn()
+    {
+        if (bodyR == null) bodyR = player.GetComponentsInChildren<Renderer>(true);
+        foreach (var r in bodyR) if (r != null && r.shadowCastingMode != ShadowCastingMode.On) r.shadowCastingMode = ShadowCastingMode.On;
+    }
+
+    // 과제 20261105-0453 ④: 손에 든 것(카메라 자식 — 문 앞 상자 HeldBox, 보관소 포장대 PackHand)은 1인칭 눈 앞 자리라
+    // 디오라마 카메라를 따라가 화면 아래 큰 회색 판이 됐다 → 안에선 몸 앞 가슴 높이로. w 로 눈 자리 ↔ 가슴을 섞고, 나가면 원래 자리로
+    static readonly string[] HandNames = { "HeldBox", "PackHand" };
+    readonly Dictionary<Transform, Pose> handLocal = new Dictionary<Transform, Pose>();
+    /// <summary>검사용: 지금 가슴 앞으로 옮겨 둔 손 물건 수.</summary>
+    public int HandsMoved => handLocal.Count;
+
+    void PlaceHands(Quaternion eyeR, float s)
+    {
+        var cc = body != null ? body.Controller : null;
+        Vector3 chest = player.position + Vector3.up * 1.1f + player.forward * ((cc != null ? cc.radius : 0.3f) + 0.25f);
+        foreach (var n in HandNames)
+        {
+            var h = cam.transform.Find(n);
+            if (h == null) continue;
+            if (!handLocal.TryGetValue(h, out var lp)) { lp = new Pose(h.localPosition, h.localRotation); handLocal[h] = lp; }
+            Vector3 atEye = eyeP + eyeR * lp.position;
+            h.SetPositionAndRotation(Vector3.Lerp(atEye, chest, s), Quaternion.Slerp(eyeR * lp.rotation, player.rotation * lp.rotation, s));
+        }
+    }
+
+    void RestoreHands()
+    {
+        if (handLocal.Count == 0) return;
+        foreach (var kv in handLocal) if (kv.Key != null) kv.Key.SetLocalPositionAndRotation(kv.Value.position, kv.Value.rotation);
+        handLocal.Clear();
     }
 
     void ApplyCalendar()
@@ -593,7 +650,8 @@ public sealed class RoomDiorama : MonoBehaviour
         var g = FindFirstObjectByType<A7ShadeGlobals>();
         Shader.SetGlobalMatrix(InBoxId, box);
         Shader.SetGlobalVector(InPId, new Vector4(1f, g != null ? g.indoorLevels : 10, 0f, 6f));
-        Shader.SetGlobalVector(InQId, new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f));
+        Shader.SetGlobalVector(InQId, grainB ? new Vector4(grainBFilterTexels, 0f, grainBDitherWidth, 0f)
+                                             : new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f));
         // y = 해 세기 배수(창빛 = 1 − 안개) · 바탕빛(시간대) w = 그림자에서 지붕을 빼는 집 범위
         ApplyTime();
         Shader.SetGlobalVector(DioId, new Vector4(1f, 1f - Mathf.Clamp01(fog), wallCut, Ceil));

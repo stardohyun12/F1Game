@@ -1,0 +1,53 @@
+[밖1m] house_home/ROOM_2F 벽 발=(189.87,24.40,-63.05) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/ROOM_2F 벽 발=(186.70,28.50,-65.19) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/DOOR_01 발=(184.32,25.30,-64.85) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/DOOR_BALCONY 발=(186.69,28.50,-65.23) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/DOOR_PARENTS 발=(183.79,28.50,-64.72) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_01 발=(180.61,25.30,-64.34) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_02 발=(182.66,25.30,-64.71) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_03 발=(180.84,28.50,-64.35) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_04 발=(182.19,29.25,-64.62) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_05 발=(189.79,24.40,-64.65) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/SHUTTER_06 발=(190.08,24.40,-63.05) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/1F#0 벽 발=(216.71,26.67,-61.49) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/1F#0 벽 발=(215.70,26.67,-49.53) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/1F#0 벽 발=(223.21,26.75,-54.92) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/1F#0 벽 발=(209.21,26.68,-56.11) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/DOOR_01 발=(222.86,26.75,-50.58) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_garage/SHUTTER_01 발=(223.45,26.75,-54.81) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_depot/1F#0 벽 발=(266.08,30.93,-29.59) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_depot/1F#0 벽 발=(277.16,30.93,-28.66) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_depot/1F#0 벽 발=(271.96,30.93,-33.18) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_depot/1F#0 벽 발=(271.27,30.93,-25.08) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/1F#0 벽 발=(280.78,31.60,-27.85) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/1F#0 벽 발=(291.78,31.60,-27.85) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/1F#0 벽 발=(286.28,31.60,-22.94) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/2F#1 벽 발=(280.95,31.60,-27.76) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/2F#1 벽 발=(291.74,31.60,-27.76) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/2F#1 벽 발=(286.28,33.92,-32.76) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] D198_postoffice/2F#1 벽 발=(286.28,31.60,-22.76) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/1F#1 벽 발=(179.93,24.40,-60.12) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/1F#1 벽 발=(190.07,24.40,-61.90) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/1F#1 벽 발=(184.33,25.30,-64.81) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/1F#1 벽 발=(185.67,24.53,-57.21) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#2 벽 발=(190.37,24.40,-60.20) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#3 벽 발=(179.80,24.41,-61.05) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#3 벽 발=(182.56,29.42,-64.49) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#3 벽 발=(183.90,24.52,-56.90) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#4 벽 발=(179.93,24.40,-60.11) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#4 벽 발=(181.90,28.52,-63.90) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] house_home/2F#4 벽 발=(183.48,24.51,-56.82) → active=False w=0.00 room=house_home/ROOM_2F 1인칭
+[밖1m] 합계 39곳 실패 0
+[문 걷기 붙듦=끔] 디오라마 켜짐/꺼짐 바뀜 0번 · w 방향 뒤집힘 0번 (한 번 들어갔다 나오면 2번·1번)
+[문 걷기 붙듦=켬] 디오라마 켜짐/꺼짐 바뀜 0번 · w 방향 뒤집힘 0번 (한 번 들어갔다 나오면 2번·1번)
+[달력] 전 몸[On×2] · 열림 state=Calendar · 닫은 뒤 state=OnFoot active=True 몸[On×2] → 몸 보임
+[시점] fixed-garage-a = D198_garage/1F#0 half=(5.06,1.65,6.08) active=True room=D198_garage/1F#0 cam=(224.26,34.95,-54.82)
+[시점] fixed-garage-b = D198_garage/1F#0 half=(5.06,1.65,6.08) active=True room=D198_garage/1F#0 cam=(220.75,35.24,-56.65)
+[시점] fixed-postoffice-a = D198_postoffice/1F#0 half=(4.56,1.73,3.97) active=True room=D198_postoffice/1F#0 cam=(286.29,37.96,-33.73)
+[시점] fixed-postoffice-b = D198_postoffice/1F#0 half=(4.56,1.73,3.97) active=True room=D198_postoffice/1F#0 cam=(284.91,37.96,-31.35)
+[시점] fixed-house2f2 = house_home/2F#2 half=(2.24,1.79,1.19) active=True room=house_home/2F#2 cam=(186.69,32.15,-62.81)
+[시점] fixed-house2f3 = house_home/2F#3 half=(2.41,1.38,1.91) active=True room=house_home/2F#3 cam=(183.62,32.79,-58.50)
+[결] grain-room2f = house_home/ROOM_2F active=True
+[결] grain-house1f = house_home/1F#1 active=True
+[결] grain-depot = D198_depot/1F#0 active=True
+[손] active=True 옮긴 손=1 HeldBox 켜짐=True 화면=(0.40,0.67,8.08) 가슴까지=0.55m

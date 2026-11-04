@@ -46,6 +46,7 @@ public static class WorldInvariants
         ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
         ("건물 안 전부 디오라마(D-304): 건물마다 방 상자 ≥1 · 2층 방 있음 · 반폭 0.8~10 m", () => InteriorBoxes()),
         ("건물 안 고정 시점(D-306): 건물마다 컷 셰이더(정비소 포함) · 작은 방 고정 카메라 = 상자 밖 · 건물 안 Unlit = 유리로 다룸 · 천장 컷 바닥 위 ≤2.7m", () => InteriorFixedView()),
+        ("건물 문 밖 1 m 는 디오라마가 아니다(과제 20261105-0453): 바깥 벽·문·셔터 1 m 밖 점이 어느 방 상자에도 안 듦", () => InteriorDoorOutside()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
@@ -822,6 +823,72 @@ public static class WorldInvariants
         }
         return bad;
     }
+
+    /// <summary>
+    /// 과제 20261105-0453 ①: 건물 문 밖 1 m 는 디오라마가 아니다. 정비소 벽(한 면짜리 메시)을 안에서 쏜 레이가 못 맞혀
+    /// 상자가 왼쪽 벽 밖 3.9 m 까지 뻗었고, 밖에 서 있어도 디오라마로 바뀌었다.
+    /// 건물 안 상자마다 바닥 위 1 m 에서 집 축 네 옆으로 벽(IsWall, 뒷면 포함)까지 쏘고, 그 벽 1 m 밖 · 문·셔터 양쪽 1 m 중
+    /// 더 바깥에 그 건물 벽이 없는 점(= 건물 밖)이 어느 상자에도(≤1.02) 들거나, 방 사이 문턱 붙듦(RoomDiorama.Holds)에 걸리면 실패
+    /// (집 1층 벽 밖 1 m 가 「같은 건물 다른 상자 1.3 안」이라 2층 방 디오라마가 남았다).
+    /// </summary>
+    static List<string> InteriorDoorOutside()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null).FindAll(i => i.ok);
+        bool bf = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+        try
+        {
+            bool WallHit(Transform bld, Vector3 o, Vector3 d, float far, out RaycastHit best)
+            {
+                best = default; bool got = false;
+                foreach (var h in Physics.RaycastAll(o, d, far, ~0, QueryTriggerInteraction.Ignore))
+                    if (h.transform.IsChildOf(bld) && A7ShadeGlobals.IsWall(h.collider) && (!got || h.distance < best.distance)) { best = h; got = true; }
+                return got;
+            }
+            void Probe(Transform bld, Vector3 p0, Vector3 d, string what)
+            {
+                if (WallHit(bld, p0, d, 40f, out _)) return;   // 더 바깥에 그 건물 벽이 있다 = 옆 방(안 벽)
+                Probe1(p0, what);
+                // 2층 벽 밖은 허공 — 그 아래 땅에 선 사람(발 위 1 m = RoomDiorama 가 보는 점)도. 그 건물 차양·지붕 위는 못 서니 뺀다
+                if (Physics.Raycast(p0, Vector3.down, out var g, 12f, ~0, QueryTriggerInteraction.Ignore) && g.distance > 0.5f && !g.transform.IsChildOf(bld)) Probe1(g.point + Vector3.up, what + "(아래 땅)");
+            }
+            void Probe1(Vector3 p, string what)
+            {
+                foreach (var o in list)
+                {
+                    var q = o.box.MultiplyPoint3x4(p);
+                    if (Mathf.Max(Mathf.Abs(q.x), Mathf.Max(Mathf.Abs(q.y), Mathf.Abs(q.z))) <= 1.02f)
+                    { bad.Add(string.Format(Inv, "{0} 밖 1 m {1} 가 {2} 상자 안(상자 좌표 {3}) — 밖에 서도 디오라마", what, V(p), o.name, V(q))); return; }
+                }
+                // 안에서 걸어 나올 때: 방 사이 문턱 붙듦(RoomDiorama.Holds)이 밖까지 지금 상자를 붙들면 안 된다
+                for (int c = 0; c < list.Count; c++)
+                    if (RoomDiorama.Holds(list, c, p)) { bad.Add(string.Format(Inv, "{0} 밖 1 m {1} 에서 {2} 상자를 문턱으로 붙듦 — 나와도 디오라마", what, V(p), list[c].name)); return; }
+            }
+            var seen = new HashSet<Transform>();
+            foreach (var it in list)
+            {
+                var inv = it.box.inverse;
+                Vector3 o = inv.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)) + Vector3.up;
+                foreach (var a in new[] { it.building.right, -it.building.right, it.building.forward, -it.building.forward })
+                    if (WallHit(it.building, o, a, 40f, out var h)) Probe(it.building, h.point + a * 1f, a, it.name + " 벽");
+                if (!seen.Add(it.building)) continue;
+                foreach (var c in it.building.GetComponentsInChildren<Collider>())
+                {
+                    if (!c.enabled || c.isTrigger || !(c.name.StartsWith("DOOR") || c.name.StartsWith("SHUTTER"))) continue;
+                    var b = c.bounds; var e = b.extents;
+                    // 문짝의 얇은 축 = 문을 지나는 방향(집 축 x 또는 z 중 반폭이 작은 쪽)
+                    Vector3 n = Mathf.Abs(Vector3.Dot(e, Abs(it.building.right))) < Mathf.Abs(Vector3.Dot(e, Abs(it.building.forward))) ? it.building.right : it.building.forward;
+                    Vector3 p0 = new Vector3(b.center.x, b.min.y + 1f, b.center.z);
+                    Probe(it.building, p0 + n * 1f, n, it.building.name + "/" + c.name);
+                    Probe(it.building, p0 - n * 1f, -n, it.building.name + "/" + c.name);
+                }
+            }
+        }
+        finally { Physics.queriesHitBackfaces = bf; }
+        return bad;
+    }
+
+    static Vector3 Abs(Vector3 v) => new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
 
     /// <summary>
     /// D-298 실내 디오라마(과제 20261104-1559): 기준 화면 07 = 잔소품 없음 · 원본 텍스처의 거친 결. 집 빌더나 17 의 RoomFlatBuild 를 다시 돌리면

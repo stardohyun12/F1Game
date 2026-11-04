@@ -147,7 +147,12 @@ public sealed class A7ShadeGlobals : MonoBehaviour
                 }
                 else
                 {
-                    dist = Cast(wo, wd, far, ignore, shell.HasValue ? house : null, out var hit2) ? hit2.distance : float.MaxValue;
+                    // 과제 20261105-0453 ①⑤: 한 면짜리 메시 벽(정비소 GARAGE_shell — 면이 바깥만 봄)은 안에서 쏘면 안 맞는다 → 뒷면도 맞게.
+                    // 안 그러면 셸 겉 상자까지 뻗어 왼쪽 벽 밖 3.9 m 까지 상자가 되고(밖에 서도 디오라마), 뒤 벽 쪽은 짧게 잘렸다(뒤가 검은 허공)
+                    // 벽 = 그 건물 메시 콜라이더·문·셔터만(IsWall) —우체국 카운터·우체통(상자 콜라이더)에 막혀 상자가 방 가운데서 끊기면 벽이 다 밖이라 검게 지워졌다
+                    bool bf = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+                    dist = Cast(wo, wd, far, ignore, shell.HasValue ? house : null, out var hit2, shell.HasValue) ? hit2.distance : float.MaxValue;
+                    Physics.queriesHitBackfaces = bf;
                     if (shell.HasValue && shell.Value.IntersectRay(new Ray(wo + wd * far, -wd), out var back)) dist = Mathf.Min(dist, far - back);
                     if (dist == float.MaxValue) { why = "레이 " + d + " 벽·건물 끝 없음"; return false; }
                 }
@@ -166,8 +171,12 @@ public sealed class A7ShadeGlobals : MonoBehaviour
 
     static readonly RaycastHit[] castBuf = new RaycastHit[32];
 
+    /// <summary>방 끝으로 치는 콜라이더 = 건물 메시(벽·바닥·천장) + 문·셔터. 카운터·선반·우체통 같은 상자 소품은 아니다.</summary>
+    public static bool IsWall(Collider c) =>
+        c is MeshCollider || c.name.StartsWith("DOOR") || c.name.StartsWith("SHUTTER");
+
     /// <summary>가장 가까운 맞은 곳(트리거·ignore 아래 제외, only 가 있으면 그 아래만).</summary>
-    static bool Cast(Vector3 o, Vector3 d, float far, Transform ignore, Transform only, out RaycastHit best)
+    static bool Cast(Vector3 o, Vector3 d, float far, Transform ignore, Transform only, out RaycastHit best, bool meshOnly = false)
     {
         best = default; bool got = false;
         int n = Physics.RaycastNonAlloc(o, d, castBuf, far, ~0, QueryTriggerInteraction.Ignore);
@@ -175,6 +184,7 @@ public sealed class A7ShadeGlobals : MonoBehaviour
         {
             var h = castBuf[i];
             if (ignore != null && h.transform.IsChildOf(ignore)) continue;
+            if (meshOnly && !IsWall(h.collider)) continue;
             if (only != null && !h.transform.IsChildOf(only)) continue;
             if (!got || h.distance < best.distance) { best = h; got = true; }
         }
@@ -225,6 +235,13 @@ public sealed class A7ShadeGlobals : MonoBehaviour
     static float MaxAbs(Vector3 q) => Mathf.Max(Mathf.Abs(q.x), Mathf.Max(Mathf.Abs(q.y), Mathf.Abs(q.z)));
 
     static void ScanBuilding(Transform bld, List<Interior> list, Transform ignore)
+    {
+        // 과제 20261105-0453 ①⑤: 한 면짜리 메시 벽을 안에서도 맞게(정비소 — 안 그러면 안 점이 적어 씨앗이 앞쪽에 쏠렸다)
+        bool bf = Physics.queriesHitBackfaces; Physics.queriesHitBackfaces = true;
+        try { ScanBuildingBody(bld, list, ignore); } finally { Physics.queriesHitBackfaces = bf; }
+    }
+
+    static void ScanBuildingBody(Transform bld, List<Interior> list, Transform ignore)
     {
         bool any = false; var B = new Bounds();
         foreach (var c in bld.GetComponentsInChildren<Collider>())
