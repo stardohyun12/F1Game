@@ -16,6 +16,7 @@ public class PackBoardView : MonoBehaviour
     readonly Dictionary<PackPiece, TextMeshPro> label = new Dictionary<PackPiece, TextMeshPro>();
     sealed class BoxX { public Transform bottom, top, lid; public readonly List<Transform> strips = new List<Transform>(); }
     readonly Dictionary<PackPiece, BoxX> extras = new Dictionary<PackPiece, BoxX>();
+    readonly Dictionary<PackPiece, Transform> shell = new Dictionary<PackPiece, Transform>();   // D-296 물건을 감싼 뽁뽁이 층(대역: 물건보다 넓고 밝은 테두리)
     readonly Dictionary<Color, Material> mats = new Dictionary<Color, Material>();
     TMP_FontAsset font;
     Quaternion flat;
@@ -101,6 +102,7 @@ public class PackBoardView : MonoBehaviour
                 bottom = Slab(p.name + " 바닥 완충재", root, bubbleC), top = Slab(p.name + " 덮은 완충재", root, bubbleC), lid = Slab(p.name + " 뚜껑", root, boxLidC),
             };
         }
+        if (p.kind == PackPieceKind.Parcel) { var sh = Slab(p.name + " 감싼 뽁뽁이", root, bubbleC); sh.gameObject.SetActive(false); shell[p] = sh; }
         var t = Text(p.name + " 글", root, 0.5f); label[p] = t;   // 조각(납작하게 눌린 부모)이 아니라 root 아래 — 글자가 일그러지지 않게
     }
 
@@ -109,7 +111,8 @@ public class PackBoardView : MonoBehaviour
         if (body.TryGetValue(p, out var b) && b != null) Destroy(b.gameObject);
         if (label.TryGetValue(p, out var t) && t != null) Destroy(t.gameObject);
         if (extras.TryGetValue(p, out var x)) { Destroy(x.bottom.gameObject); Destroy(x.top.gameObject); Destroy(x.lid.gameObject); foreach (var s in x.strips) Destroy(s.gameObject); }
-        body.Remove(p); label.Remove(p); inner.Remove(p); extras.Remove(p);
+        if (shell.TryGetValue(p, out var sh) && sh != null) Destroy(sh.gameObject);
+        body.Remove(p); label.Remove(p); inner.Remove(p); extras.Remove(p); shell.Remove(p);
     }
 
     void Place(Transform t, float u, float v, float h)
@@ -119,6 +122,9 @@ public class PackBoardView : MonoBehaviour
 
     // 높이(m, 판 윗면 기준): 상자 속 윗면 0.068 · 완충재 한 장 0.012 · 물건 0.03
     const float BoxTop = 0.068f, SheetH = 0.012f, ParcelH = 0.03f;
+    /// <summary>감싼 겹 하나가 물건 테두리를 넓히는 폭(m, 그림용 과장 — 실제 크기 증가는 PackRules.WrapThick).</summary>
+    const float WrapRim = 0.03f;
+    static readonly Color wrap2C = new Color(0.94f, 0.98f, 1.0f);
 
     static void SetAct(Transform t, bool on) { if (t.gameObject.activeSelf != on) t.gameObject.SetActive(on); }
 
@@ -142,7 +148,7 @@ public class PackBoardView : MonoBehaviour
             bool show = p.active && !(p.holder != null && (p.holder.closed || !p.holder.active));
             if (b.gameObject.activeSelf != show) { b.gameObject.SetActive(show); label[p].gameObject.SetActive(show); }
             if (!p.active && extras.TryGetValue(p, out var off)) { SetAct(off.bottom, false); SetAct(off.top, false); SetAct(off.lid, false); foreach (var st in off.strips) SetAct(st, false); }
-            if (!show) continue;
+            if (!show) { if (shell.TryGetValue(p, out var sh0)) SetAct(sh0, false); continue; }
             float h = p.kind == PackPieceKind.Box ? 0.05f : 0.03f;
             float lift = p.lifted ? 0.07f : 0f;
             float pu = p.u + p.jit.x, pv = p.v + p.jit.y;
@@ -154,6 +160,17 @@ public class PackBoardView : MonoBehaviour
             b.localScale = new Vector3(p.w, h, dd);
             Place(b, pu, pv, baseY);
             float topY = baseY + h * 0.5f;
+            if (shell.TryGetValue(p, out var sx))                              // D-296: 감싼 겹이 있으면 물건 둘레에 밝고 넓은 테두리(겹마다 더 두껍고 더 밝게)
+            {
+                SetAct(sx, p.wrap > 0);
+                if (p.wrap > 0)
+                {
+                    float sh = h - 0.004f;
+                    sx.localScale = new Vector3(p.w + WrapRim * p.wrap, sh, p.d + WrapRim * p.wrap);
+                    sx.GetComponent<Renderer>().sharedMaterial = Mat(p.wrap >= 2 ? wrap2C : bubbleC);
+                    Place(sx, pu, pv, baseY - h * 0.5f + sh * 0.5f);
+                }
+            }
             if (inner.TryGetValue(p, out var i)) i.gameObject.SetActive(p.open);
             if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift + z);
             var t = label[p];

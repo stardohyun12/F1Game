@@ -33,6 +33,29 @@ public class PackRulesTests
         Assert.Less(PackRules.StartIntegrity("깨짐", PackFit.Loose, PackFiller.None, PackFiller.None, 1.2f),
                     PackRules.StartIntegrity("깨짐", PackFit.Snug, PackFiller.None, PackFiller.None, 1.2f));
     }
+    // D-296 뽁뽁이 감싸기: 겹 계수 = (1-wrap_damp)^겹, 크기는 겹마다 양쪽으로 wrap_thick
+    [Test] public void 감싸기_겹_계수는_겹마다_줄어듦()
+    {
+        Assert.AreEqual(1f, PackRules.WrapK(0));
+        Assert.Less(PackRules.WrapK(1), PackRules.WrapK(0));
+        Assert.Less(PackRules.WrapK(2), PackRules.WrapK(1));
+        Assert.AreEqual(PackRules.WrapK(PackRules.WrapMax), PackRules.WrapK(PackRules.WrapMax + 5));   // 최대 겹 넘으면 더 안 줄어듦
+    }
+    [Test] public void 감싸기_크기는_겹마다_커지고_달걀_2겹은_중상자에_들어감()
+    {
+        Assert.Greater(PackRules.Wrapped(0.30f, 1), 0.30f);
+        Assert.Greater(PackRules.Wrapped(0.30f, 2), PackRules.Wrapped(0.30f, 1));
+        float w = PackRules.Wrapped(0.30f, 2), h = PackRules.Wrapped(0.07f, 2);
+        Assert.AreEqual(PackFit.Snug, PackRules.FitOf(w, h, w, 0.315f, 0.15f, 0.315f));
+    }
+    [Test] public void 감싸기_겹_계수는_흔들림_손상만_줄임()
+    {
+        float s0 = PackRules.StartFromShake("깨짐", PackFiller.None, PackFiller.None, 0f);
+        float bare = PackRules.StartFromShake("깨짐", PackFiller.None, PackFiller.None, 0.2f);
+        float wrapped = PackRules.StartFromShake("깨짐", PackFiller.None, PackFiller.None, 0.2f, PackRules.WrapK(2));
+        Assert.Greater(wrapped, bare);                        // 같은 흔들림이면 감싼 쪽 손상이 작다
+        Assert.LessOrEqual(wrapped, s0);                      // 바탕 손상은 그대로 — 0 흔들림보다 좋아지진 않는다
+    }
     [Test] public void 시작상태_바닥값과_안들어감()
     {
         Assert.AreEqual(PackRules.MinStart, PackRules.StartIntegrity("깨짐", PackFit.TooSmall, PackFiller.Bubble, PackFiller.Bubble, 0f));

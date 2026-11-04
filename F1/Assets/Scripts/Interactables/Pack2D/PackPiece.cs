@@ -30,6 +30,8 @@ public class PackPiece
     /// <summary>롤 조각의 완충재 이름(뽁뽁이·종이) — world.yaml fillers. 뜯긴 한 장(Sheet)도 같은 이름.</summary>
     public string filler;
     public PackFiller fillerKind;
+    /// <summary>D-296 물건 조각: 뽁뽁이로 감싼 겹 수(0~PackRules.WrapMax). 물건 겉에 붙고 크기가 조금 커진다. Home 에서 0.</summary>
+    public int wrap;
 
     // ── 롤 ──
     public int left = 12, full = 12;
@@ -65,7 +67,7 @@ public class PackPiece
     public void Home()
     {
         u = homeU; v = homeV; w = homeW; d = homeD; rot90 = false; lifted = false; open = false; jit = Vector2.zero;
-        closed = false; bottom = top = PackFiller.None; content = null; holder = null; fit = PackFit.Snug;
+        wrap = 0; closed = false; bottom = top = PackFiller.None; content = null; holder = null; fit = PackFit.Snug;
         strips.Clear(); shakeSecs = rattle = 0f; phys = null; drop = dropBottom = dropTop = default; perch = 0f; hand = Vector2.zero; lastPos = new Vector2(u, v);
     }
 

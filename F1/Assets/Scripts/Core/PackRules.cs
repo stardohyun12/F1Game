@@ -19,6 +19,20 @@ public static class PackRules
     public static float MinStart = 0.4f;
     /// <summary>D-295: 1.5 s 흔들림 합(m)이 이만큼이면 흔들림 손실이 최대(RattleLoss). 가설 — 곡선은 선형.</summary>
     public static float ShakeFull = 0.5f;
+    /// <summary>D-296 뽁뽁이 감싸기: 한 겹이 물건 한 변에 더하는 두께(m) · 한 겹이 부딪힘 세기를 줄이는 비율 · 최대 겹 수. 가설.</summary>
+    public static float WrapThick = 0.003f, WrapDamp = 0.5f;
+    public const int WrapMax = 2;
+
+    /// <summary>겹 계수(0~1): 감싼 겹 수만큼 부딪힘 세기·반발에 곱한다. 0겹 = 1.</summary>
+    public static float WrapK(int layers)
+    {
+        if (layers <= 0) return 1f;
+        if (layers > WrapMax) layers = WrapMax;
+        return (float)System.Math.Pow(System.Math.Max(0f, 1f - WrapDamp), layers);
+    }
+
+    /// <summary>감싼 물건의 실제 크기 한 변: 겹마다 양쪽으로 WrapThick.</summary>
+    public static float Wrapped(float side, int layers) => side + 2f * WrapThick * System.Math.Min(System.Math.Max(layers, 0), WrapMax);
 
     /// <summary>궁합 표 [성질][완충재] = 손상 줄이는 비율(0~1). 성질: 0 깨짐 · 1 젖음. 완충재: 0 없음 · 1 뽁뽁이 · 2 종이.</summary>
     public static float[,] Cushions =
@@ -47,11 +61,11 @@ public static class PackRules
 
     /// <summary>
     /// D-295 물리 시뮬 판 시작값: 흔들림 측정(1.5 s 동안 물건이 상자 기준 움직인 거리 합, m)에서 온다. 틈 0(꽉 낌) = 흔들림 0 → 바탕 손상만,
-    /// ShakeFull 이상 움직이면 RattleLoss 만큼 더. 헐렁한 상자의 벌점(LooseLoss)은 따로 없다 — 틈이 크면 많이 움직이니 이미 흔들림에 들어 있다.
+    /// ShakeFull 이상 움직이면 RattleLoss 만큼 더(wrapK = 감싼 겹 계수 — 움직인 양에 곱해 부딪힘 손상만 줄인다). 헐렁한 상자의 벌점(LooseLoss)은 따로 없다 — 틈이 크면 많이 움직이니 이미 흔들림에 들어 있다.
     /// </summary>
-    public static float StartFromShake(string trait, PackFiller bottom, PackFiller top, float shakeMeters)
+    public static float StartFromShake(string trait, PackFiller bottom, PackFiller top, float shakeMeters, float wrapK = 1f)
     {
-        float r = shakeMeters / System.Math.Max(0.01f, ShakeFull);
+        float r = shakeMeters * wrapK / System.Math.Max(0.01f, ShakeFull);               // D-296: 감싼 겹 계수는 흔들림(부딪힘 손상)에만 곱한다
         if (r < 0f) r = 0f; if (r > 1f) r = 1f;
         float loss = (BaseLoss + RattleLoss * r) * (1f - (Cushion(trait, bottom) + Cushion(trait, top)) * 0.5f);
         float v = 1f - loss;

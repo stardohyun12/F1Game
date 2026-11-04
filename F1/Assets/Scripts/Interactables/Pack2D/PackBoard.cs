@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// D-294 포장 2D 작업대 ①: 화면 = 작업대 윗면. 카메라가 작업대 위로 내려가면(0.4 s, 세상 안 — 노을빛 그대로) 윗면이 판이 되고,
 /// 왼쪽 = 받은 물건(08 의 Parcel·꼬리표 재사용) · 가운데 = 빈 자리(slot) · 오른쪽 = 상자 소/중/대 + 롤(뽁뽁이·종이) + 테이프. 마우스로 집어 놓는다(월드 평면 끌기 — UI 캔버스 아님).
-/// 상자를 가운데에 놓으면 열린다. ②③: 롤을 끌면 한 장 뜯겨 나와 상자 바닥(첫 장)/물건 위(덮기)에 놓이고, 물건을 열린 상자에 끌면 들어간다(PackRules.FitOf — 작으면 튕김),
+/// 상자를 가운데에 놓으면 열린다. ②③: 롤을 끌면 한 장 뜯겨 나와 종이는 상자 바닥(첫 장)/물건 위(덮기)에 놓이고, 뽁뽁이는 물건 위에 놓으면 물건을 감싸고(D-296, 최대 2겹), 물건을 열린 상자에 끌면 들어간다(PackRules.FitOf — 작으면 튕김),
 /// 테이프를 상자 위로 가로질러 끌면 뚜껑이 닫히고 줄 1개, 닫은 상자를 집고 흔들면 안의 물건이 PackPhysics 로 실제 움직이고(틈이 크면 많이 · 완충재가 틈을 메우면 거의 안) 부딪힐 때 소리, 상자를 판 밖(아래)으로 끌면 들고 나감(BoxTaken) → 1.5 s 흔들림 합 → PackRules.StartFromShake 가 화물 시작값.
 /// D-295: 놓는 순간부터 물리 — 조각은 떨어져 자리 잡고, 물건은 손의 속도로 상자 안에서 미끄러지며, 작은 상자엔 벽에 걸려 튕겨 나온다.
 /// 자리 틀: 원점 = 포장대 판 한가운데 윗면, 화면 위 = workSpot.forward, 화면 오른쪽 = workSpot.right. 좌표는 판 기준 m(u 오른쪽, v 위쪽) — 손으로 쓴 월드 좌표 없음.
@@ -98,6 +98,20 @@ public class PackBoard : MonoBehaviour
         return t ?? new WorldOrders.Trait { cargo = cargo, trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
     }
 
+    /// <summary>D-296 감싼 물건의 실제 크기: 겹마다 세 변 모두 양쪽으로 WrapThick.</summary>
+    public static Vector3 WrappedSize(Vector3 size, int wrap)
+    {
+        return new Vector3(PackRules.Wrapped(size.x, wrap), PackRules.Wrapped(size.y, wrap), PackRules.Wrapped(size.z, wrap));
+    }
+
+    /// <summary>물건 조각의 판 위 발자국을 실제 크기(감싼 것 포함) × 상자와 같은 축척으로. 돌린 상태(rot90)는 그대로. 집 자리(home) 크기는 안 감싼 그대로.</summary>
+    void FitFootprint(PackPiece pp)
+    {
+        var sz = WrappedSize(TraitOfParcel(pp).size, pp.wrap);
+        float fw = sz.x * BoxScale, fd = sz.z * BoxScale;
+        pp.w = pp.rot90 ? fd : fw; pp.d = pp.rot90 ? fw : fd;
+    }
+
     // ── D-295 물성: world.yaml packing (mass·bounce·friction) → PackPhysics ──
     /// <summary>놓는 순간 떨어지기 시작하는 높이(m) · 벽에 걸린 물건이 떠 있는 높이.</summary>
     public const float DropZ = 0.07f, RimZ = 0.05f;
@@ -123,13 +137,15 @@ public class PackBoard : MonoBehaviour
     /// 상자 안 물건의 물리 설정. 상자 틀에서 본 안쪽(눕힌 방향 + 돌림) · 물건 발자국 · 틈을 메우는 완충재 두께 합 · 마찰(깔린 면과 평균) ·
     /// 벽 반발 √(물건×상자) × 놓인 완충재 반발 유지율의 곱. 불변 검사도 이 함수로 같은 물리를 만든다.
     /// </summary>
-    public static PackPhysics Setup(Vector3 inner, bool boxRot, PackPhysics.Mat boxMat, WorldOrders.Trait cargo, bool parcelRot, PackFiller bottom, PackFiller top)
+    public static PackPhysics Setup(Vector3 inner, bool boxRot, PackPhysics.Mat boxMat, WorldOrders.Trait cargo, bool parcelRot, PackFiller bottom, PackFiller top, int wrap = 0)
     {
+        float sx = PackRules.Wrapped(cargo.size.x, wrap), sz = PackRules.Wrapped(cargo.size.z, wrap);   // D-296: 감싼 만큼 물건이 커서 틈이 준다(메우기 효과 pad 와는 별개)
         var ph = new PackPhysics
         {
             inner = boxRot ? new Vector2(inner.z, inner.x) : new Vector2(inner.x, inner.z),
-            part = parcelRot ? new Vector2(cargo.size.z, cargo.size.x) : new Vector2(cargo.size.x, cargo.size.z),
+            part = parcelRot ? new Vector2(sz, sx) : new Vector2(sx, sz),
             mass = cargo.mass,
+            wrapK = PackRules.WrapK(wrap),
         };
         float surf = boxMat.friction, e = Mathf.Sqrt(Mathf.Max(0f, cargo.bounce * boxMat.bounce)), pad = 0f;
         foreach (var f in new[] { bottom, top })
@@ -139,13 +155,13 @@ public class PackBoard : MonoBehaviour
             pad += th; e *= fm.bounce;
             if (f == bottom) surf = fm.friction;                              // 물건은 바닥 완충재 위에 앉는다
         }
-        ph.pad = pad; ph.e = e; ph.mu = (cargo.friction + surf) * 0.5f;
+        ph.pad = pad; ph.e = e * ph.wrapK; ph.mu = (cargo.friction + surf) * 0.5f;
         return ph;
     }
 
     PackPhysics NewPhys(PackPiece box, PackPiece pc)
     {
-        return Setup(box.inner, box.rot90, BoxMat(box.name), TraitOfParcel(pc), pc.rot90, box.bottom, box.top);
+        return Setup(box.inner, box.rot90, BoxMat(box.name), TraitOfParcel(pc), pc.rot90, box.bottom, box.top, pc.wrap);
     }
 
     /// <summary>완충재가 더해졌다 → 같은 상자의 물리 설정만 새로(자리·속도·측정은 그대로).</summary>
@@ -358,7 +374,7 @@ public class PackBoard : MonoBehaviour
     {
         var box = InSlot;
         if (box == null || box.closed || box.content != null || !InSlotRect(p)) { Act($"놓음 {p.name} ({p.u:F2},{p.v:F2})"); return; }
-        var sz = TraitOfParcel(p).size;
+        var sz = WrappedSize(TraitOfParcel(p).size, p.wrap);
         var inn = box.inner;
         float px = p.rot90 ? sz.z : sz.x, pz = p.rot90 ? sz.x : sz.z;
         float bx = box.rot90 ? inn.z : inn.x, bz = box.rot90 ? inn.x : inn.z;
@@ -376,18 +392,36 @@ public class PackBoard : MonoBehaviour
         PlaceContent(box);
         pieces.Remove(p); pieces.Insert(pieces.IndexOf(box) + 1, p);
         PackBench.PlayCue(1);
-        Act($"물건이 {box.name} 에 들어감 fit={fit}{(fit == PackFit.Loose ? "(헐거움)" : "")} 틈 {box.phys.Limit.x * 2f * 100f:F1}×{box.phys.Limit.y * 2f * 100f:F1} cm 던진 속도 {box.phys.vel.magnitude:F2} m/s");
+        Act($"물건{(p.wrap > 0 ? $"(뽁뽁이 {p.wrap}겹)" : "")}이 {box.name} 에 들어감 fit={fit}{(fit == PackFit.Loose ? "(헐거움)" : "")} 틈 {box.phys.Limit.x * 2f * 100f:F1}×{box.phys.Limit.y * 2f * 100f:F1} cm 던진 속도 {box.phys.vel.magnitude:F2} m/s");
     }
 
     void EndSheet(PackPiece p)
     {
         pieces.Remove(p);
+        if (p.fillerKind == PackFiller.Bubble) { WrapWith(p); return; }          // D-296: 뽁뽁이는 깔지 않는다 — 물건을 감싼다
         var box = InSlot;
         if (box == null || box.closed || !InSlotRect(p)) { Act($"{p.filler} 한 장 놓친 자리에 버려짐"); return; }
         float e = FillerMat(p.fillerKind, out _).bounce;
         if (box.content == null) { if (box.bottom == PackFiller.None) { box.bottom = p.fillerKind; box.dropBottom.Drop(DropZ, e); } Act($"{p.filler} 바닥에 깔림"); }
         else { if (box.top == PackFiller.None) { box.top = p.fillerKind; box.dropTop.Drop(DropZ, e); RefreshPhys(box); } Act($"{p.filler} 물건 위에 덮임"); }
         PackBench.PlayCue(5);
+    }
+
+    /// <summary>
+    /// D-296 뜯은 뽁뽁이 한 장을 물건 위에 놓으면 물건을 감싼다(최대 PackRules.WrapMax 겹). 물건 밖에 놓은 장·상자 안 물건 위의 장은 버려진다.
+    /// 감싸면 물건이 겹마다 양쪽 WrapThick 씩 커지고(발자국·상자 맞춤·물리 모두), 겹 계수가 부딪힘 세기·반발·손상을 줄인다. 틈을 메우는 효과(pad)는 없다.
+    /// </summary>
+    void WrapWith(PackPiece sheet)
+    {
+        var pc = Find(PackPieceKind.Parcel);
+        bool over = pc != null && pc.active && pc.perch <= 0f && Mathf.Abs(sheet.u - pc.u) <= pc.w * 0.5f + 0.04f && Mathf.Abs(sheet.v - pc.v) <= pc.d * 0.5f + 0.04f;
+        if (!over) { Deny($"{sheet.filler} 한 장 물건 밖에 놓여 버려짐(물건 위로 끌어다 놓아야 감싼다)"); return; }
+        if (pc.holder != null) { Deny($"{sheet.filler} 상자 안 물건은 못 감쌈(꺼내서 감싼다)"); return; }
+        if (pc.wrap >= PackRules.WrapMax) { Deny($"{sheet.filler} 이미 {pc.wrap}겹 — 더 못 감쌈"); return; }
+        pc.wrap++; FitFootprint(pc);
+        pc.drop.Drop(DropZ, DropBounce(pc));
+        PackBench.PlayCue(5);
+        Act($"{sheet.filler} 물건을 감쌈 {pc.wrap}겹(크기 +{(PackRules.Wrapped(1f, pc.wrap) - 1f) * 100f:F1} cm · 겹 계수 {PackRules.WrapK(pc.wrap):F2})");
     }
 
     void EndTape(PackPiece p)
@@ -488,7 +522,8 @@ public class PackBoard : MonoBehaviour
         if (box.phys == null) { shake = 0f; how = "물리 없음"; }
         else if (box.shakeSecs >= PackPhysics.Window) { shake = box.rattle; how = $"직접 흔든 {box.shakeSecs:F1}s 중 1.5s 합"; }
         else { shake = box.phys.MeasureStandard(); how = $"흔든 시간 {box.shakeSecs:F1}s < 1.5s → 표준 흔들기(진폭 {PackPhysics.StdAmp * 100f:F0}cm·{PackPhysics.StdHz:F0}Hz)로 잼"; }
-        float start = PackRules.StartFromShake(tr.trait, box.bottom, box.top, shake);
+        float wrapK = box.phys != null ? box.phys.wrapK : 1f;
+        float start = PackRules.StartFromShake(tr.trait, box.bottom, box.top, shake, wrapK);
         var lim = box.phys != null ? box.phys.Limit : Vector2.zero;
         var r = new PackBox.ShakeResult
         {
@@ -497,7 +532,7 @@ public class PackBoard : MonoBehaviour
         };
         LastStart = start; LastResult = r; LastShake = shake; LastShakeHow = how;
         if (table != null) table.Accept2D(start, r, box.bottom, box.top, box.fit);
-        Act($"상자 들고 나감 → 화물 시작 {start * 100f:F0}% (흔들림 {shake * 100f:F1} cm / {how}; 상자 {box.name} 바닥={box.bottom} 덮기={box.top} 테이프 {box.strips.Count}줄)");
+        Act($"상자 들고 나감 → 화물 시작 {start * 100f:F0}% (흔들림 {shake * 100f:F1} cm / {how}; 상자 {box.name} 바닥={box.bottom} 덮기={box.top} 감쌈 {parcel.wrap}겹(계수 {wrapK:F2}) 테이프 {box.strips.Count}줄)");
         box.active = false; parcel.active = false; InSlot = null;
         pendingTake = true; ExitAsked = true;
     }

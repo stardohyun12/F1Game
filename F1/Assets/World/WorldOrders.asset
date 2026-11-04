@@ -100,3 +100,5 @@ MonoBehaviour:
     looseLoss: 0.15
     minStart: 0.4
     shakeFull: 0.5
+    wrapThick: 0.003
+    wrapDamp: 0.5

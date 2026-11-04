@@ -38,7 +38,7 @@ public class WorldOrders : ScriptableObject
         public List<Filler> fillers = new List<Filler>();
         public List<Trait> traits = new List<Trait>();
         public List<Cushion> cushions = new List<Cushion>();
-        public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f, shakeFull = 0.5f;
+        public float snugGapMax = 0.03f, baseLoss = 0.25f, rattleLoss = 0.4f, rattleFull = 2f, looseLoss = 0.15f, minStart = 0.4f, shakeFull = 0.5f, wrapThick = 0.003f, wrapDamp = 0.5f;
     }
 
     public List<Cargo> cargo = new List<Cargo>();
@@ -55,6 +55,7 @@ public class WorldOrders : ScriptableObject
         if (p == null || p.boxes.Count == 0) return;
         PackRules.SnugGapMax = p.snugGapMax; PackRules.BaseLoss = p.baseLoss; PackRules.RattleLoss = p.rattleLoss;
         PackRules.RattleFull = p.rattleFull; PackRules.LooseLoss = p.looseLoss; PackRules.MinStart = p.minStart; PackRules.ShakeFull = p.shakeFull;
+        PackRules.WrapThick = p.wrapThick; PackRules.WrapDamp = p.wrapDamp;
         foreach (var c in p.cushions)
         {
             int t = PackRules.TraitIndex(c.trait);

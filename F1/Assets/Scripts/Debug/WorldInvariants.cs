@@ -49,13 +49,14 @@ public static class WorldInvariants
         ("들린 물건 Rigidbody 보간 꺼짐(걸을 때 따라옴)", () => HeldFollowsHand()),
         ("포장 2D 보드 조각(상자3·롤2·테이프·물건)·판 안·안 겹침", () => PackBoard2D()),
         ("포장 2D 규칙: 소 튕김·중 딱맞음(+뽁뽁이 90%)·대 헐거움·롤 가득·뜯은 조각 0", () => PackBoard2DRules()),
-        ("포장 물리: 중+뽁뽁이2장+달걀 흔들림<2cm·소리0 · 대 뽁뽁이0장 >5cm · 중 뽁뽁이0장 > 뽁뽁이2장", () => PackPhysicsShake()),
+        ("포장 물리(D-296): 달걀 감싸기 2겹 + 중 상자 → 빈틈 있고 흔들림 있되 부딪힘 손상 ≤ 안 감쌌을 때의 40% · 대 상자 안 감쌈 >5cm", () => PackPhysicsShake()),
     };
 
     /// <summary>
     /// D-295 포장 2D ③: 상자 안 물리(PackPhysics)의 표준 흔들기(진폭 4 cm · 3 Hz, 1.5 s 합) — 사람이 흔드는 것과 같은 물리 길.
-    /// 중 상자 + 뽁뽁이 2장(틈이 메워짐) + 달걀 한 판은 2 cm 미만, 대 상자 + 뽁뽁이 0장은 5 cm 초과, 같은 중 상자라도 뽁뽁이가 없으면 있을 때보다 많이 움직인다.
-    /// 물성(world.yaml packing mass·bounce·friction)이나 틈 계산이 어긋나 틈이 있는데 안 움직이거나 꽉 끼었는데 덜그럭거리면 여기서 잡힌다. 씬 없이 돈다.
+    /// 달걀 한 판을 뽁뽁이로 2겹 감싸면 물건이 커져(PackRules.WrapThick) 중 상자에 들어가되 빈틈이 조금 남는다(= 흔들림은 있다). 부딪힘 손상 = 시작값이 흔들림 때문에 깎인 만큼(바탕 손상 제외)은
+    /// 안 감쌌을 때(같은 중 상자·같은 표준 흔들기)의 40% 이하여야 한다 겹 계수(WrapK)가 물리에 실제로 들어갔는지(1 미만)도 따로 본다.
+    /// 대 상자 + 안 감쌈은 5 cm 초과(틈이 있는데 안 움직이면 물성·틈 계산이 어긋난 것). 씬 없이 돈다.
     /// </summary>
     static List<string> PackPhysicsShake()
     {
@@ -67,14 +68,29 @@ public static class WorldInvariants
         Vector3 mid = yaml ? pk.boxes[1].inner : new Vector3(0.315f, 0.15f, 0.315f), big = yaml ? pk.boxes[2].inner : new Vector3(0.46f, 0.24f, 0.46f);
         var mm = yaml ? new PackPhysics.Mat(pk.boxes[1].mass, pk.boxes[1].bounce, pk.boxes[1].friction) : new PackPhysics.Mat(0.12f, 0.3f, 0.4f);
         var bm = yaml ? new PackPhysics.Mat(pk.boxes[2].mass, pk.boxes[2].bounce, pk.boxes[2].friction) : new PackPhysics.Mat(0.2f, 0.3f, 0.4f);
-        float midBubble = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.Bubble, PackFiller.Bubble).MeasureStandard(out int midHits);
-        float midBare = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+        var wrapped = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None, PackRules.WrapMax);
+        var bare = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None);
+        float shW = wrapped.MeasureStandard(out int hitsW), shB = bare.MeasureStandard();
         float bigBare = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
-        if (midBubble >= 0.02f) bad.Add($"중 상자 + 뽁뽁이 2장 + {tr.cargo}: 흔들림 {midBubble * 100f:F1} cm (기대 < 2 cm) — 틈이 안 메워짐? 물성 {tr.mass:F2}kg/반발{tr.bounce:F2}/마찰{tr.friction:F2}");
-        if (midHits > 0) bad.Add($"중 상자 + 뽁뽁이 2장: 꽉 끼었는데 벽에 {midHits}번 부딪힘(덜그럭 소리가 남) — 틈 0 이면 소리도 0");
-        if (bigBare <= 0.05f) bad.Add($"대 상자 + 뽁뽁이 0장 + {tr.cargo}: 흔들림 {bigBare * 100f:F1} cm (기대 > 5 cm) — 틈이 있는데 안 움직임");
-        if (midBare <= midBubble) bad.Add($"중 상자: 뽁뽁이 0장 {midBare * 100f:F1} cm ≤ 2장 {midBubble * 100f:F1} cm — 완충재가 도움이 안 됨");
+        var gap = wrapped.Limit;
+        if (PackRules.WrapK(PackRules.WrapMax) >= 1f) bad.Add($"겹 계수 {PackRules.WrapK(PackRules.WrapMax):F2} ≥ 1 — 감싸도 부딪힘이 안 줄어든다 (wrap_damp {PackRules.WrapDamp:F2})");
+        if (!Mathf.Approximately(wrapped.wrapK, PackRules.WrapK(PackRules.WrapMax))) bad.Add($"물리에 겹 계수가 안 들어감 wrapK {wrapped.wrapK:F2} ≠ {PackRules.WrapK(PackRules.WrapMax):F2}");
+        if (FitCheck(mid, tr.size, PackRules.WrapMax) != PackFit.Snug) bad.Add($"{tr.cargo} {PackRules.WrapMax}겹 감쌈 → 중 상자 {FitCheck(mid, tr.size, PackRules.WrapMax)} (기대 Snug — 안 들어가면 wrap_thick {PackRules.WrapThick:F3} 이 너무 두꺼움)");
+        if (gap.x <= 0f || gap.y <= 0f) bad.Add($"감싼 달걀 + 중 상자: 빈틈 없음(꽉 끼었다) 틈 {gap.x * 2000f:F1}×{gap.y * 2000f:F1} mm — 감싸도 흔들림은 있어야 한다");
+        if (shW <= 0f || hitsW <= 0) bad.Add($"감싼 달걀 + 중 상자: 흔들림 {shW * 100f:F2} cm · 벽 부딪힘 {hitsW}번 — 빈틈이 있는데 안 움직임");
+        float s0 = PackRules.StartFromShake(tr.trait, PackFiller.None, PackFiller.None, 0f);
+        float dmgB = s0 - PackRules.StartFromShake(tr.trait, PackFiller.None, PackFiller.None, shB);
+        float dmgW = s0 - PackRules.StartFromShake(tr.trait, PackFiller.None, PackFiller.None, shW, wrapped.wrapK);
+        if (dmgB <= 0f) bad.Add($"안 감싼 달걀 + 중 상자: 부딪힘 손상 {dmgB * 100f:F2}%p ≤ 0 (흔들림 {shB * 100f:F1} cm) — 비교할 기준이 없음");
+        else if (dmgW > dmgB * 0.40f) bad.Add($"부딪힘 손상 감싼 {dmgW * 100f:F2}%p > 안 감싼 {dmgB * 100f:F2}%p 의 40% (흔들림 감싼 {shW * 100f:F2} cm / 안 감싼 {shB * 100f:F1} cm)");
+        if (bigBare <= 0.05f) bad.Add($"대 상자 + 안 감쌈 + {tr.cargo}: 흔들림 {bigBare * 100f:F1} cm (기대 > 5 cm) — 틈이 있는데 안 움직임");
         return bad;
+    }
+
+    static PackFit FitCheck(Vector3 inner, Vector3 sz, int wrap)
+    {
+        var w = PackBoard.WrappedSize(sz, wrap);
+        return PackRules.FitOf(w.x, w.y, w.z, inner.x, inner.y, inner.z);
     }
 
     /// <summary>

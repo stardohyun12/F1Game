@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bba4f098e4a604e8d3ad3f60708437, type: 3}
   m_Name: WorldPlaces
   m_EditorClassIdentifier: PitCrew.World::WorldPlaces
-  sourceHash: 1de85f1d3d56b17f0b2db259260f43d89c249faf
+  sourceHash: 9fc98772a615287b22417991e643c355a4549bed
   spots:
   - name: "\uC9D1 \uBC29"
     role: "2\uCE35 \uBC29 \uAC00\uC6B4\uB370, \uBB38 \uCABD\uC744 \uBD04"

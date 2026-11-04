@@ -211,7 +211,7 @@ public class DayLoopCheck : MonoBehaviour
 
     /// <summary>
     /// D-294 포장 2D: 물건 집고 걷기(순간이동 없음) → 포장대 [E](시선, 안 잡히면 SimUse) → 2D 보드 켜짐·물건 조각 →
-    /// ① 소 상자: 물건이 안 들어가고 튕김 + R 돌림 ② 대 상자: 들어가되 헐거움 → 닫고 테이프 → 흔들어 덜그럭(소리 수·rattle) ③ 중 상자: 뽁뽁이 바닥 → 물건 → 뽁뽁이 덮기 → 테이프 → 흔들기 → 판 밖(아래)으로 = 상자 들기.
+    /// ① 소 상자: 물건이 안 들어가고 튕김 + R 돌림 ② 대 상자: 들어가되 헐거움 → 닫고 테이프 → 흔들어 덜그럭(소리 수·rattle) ③ 중 상자: 뽁뽁이 두 장으로 물건 감싸기(2겹) → 물건 → 테이프 → 흔들기 → 판 밖(아래)으로 = 상자 들기.
     /// 전부 사람과 같은 길(PackBoard 의 Begin/Move/End)로. ②는 시험 한 판이라 끝나면 보드를 처음으로 되돌린다(DebugRestart).
     /// </summary>
     IEnumerator Pack2D(PackTable2 t)
@@ -246,7 +246,7 @@ public class DayLoopCheck : MonoBehaviour
 
         // ② 대 상자: 들어가되 헐거움 → 닫고 흔들어 덜그럭
         int beats0 = b.RattleBeats;
-        yield return PackRun(b, bL, bubble, false, Pack2DShot == null ? null : Pack2DShot + "-L");
+        yield return PackRun(b, bL, bubble, false, 0, Pack2DShot == null ? null : Pack2DShot + "-L");
         float rattleL = bL.rattle; int beatsL = b.RattleBeats - beats0; var fitL = bL.fit;
         Step($"② 대 상자 {(fitL == PackFit.Loose && bL.closed && bL.Taped && rattleL > 0.05f && beatsL > 3 ? "PASS" : "FAIL")} fit={fitL} 닫힘={bL.closed} 테이프={bL.strips.Count} 흔들림 {rattleL * 100f:F1} cm(흔든 {bL.shakeSecs:F1}s) 덜그럭 소리 {beatsL}번 | 시작값(참고) {PackRules.StartFromShake("깨짐", bL.bottom, bL.top, rattleL) * 100f:F0}%");
         b.DebugRestart(); beats0 = b.RattleBeats;
@@ -254,13 +254,14 @@ public class DayLoopCheck : MonoBehaviour
 
         // ③ 중 상자: 한 판 끝까지
         int left0 = bubble.left;
-        yield return PackRun(b, bM, bubble, true, Pack2DShot == null ? null : Pack2DShot + "-M");
+        yield return PackRun(b, bM, bubble, true, 2, Pack2DShot == null ? null : Pack2DShot + "-M");
         float rattleM = bM.rattle; int beatsM = b.RattleBeats - beats0; float shakeM = bM.shakeSecs;
-        float start = b.LastStart;
+        float start = b.LastStart; int wrapM = pp.wrap;
         yield return Wait(() => d.State == OnFootDirector.Mode.OnFoot && !d.PackMoving && d.CarryingBox, 5f);
         bool carry = d.CarryingBox;
-        bool good = bM.fit == PackFit.Snug && bM.bottom == PackFiller.Bubble && bM.top == PackFiller.Bubble && bM.strips.Count == 1 && Mathf.Abs(start - 0.90f) < 0.005f && b.LastShake < 0.02f && bubble.left == left0 - 2 && carry && !b.On;
-        Step($"③ 중 상자 {(good ? "PASS" : "FAIL")} fit={bM.fit} 바닥={bM.bottom} 덮기={bM.top} 테이프 {bM.strips.Count}줄 뽁뽁이 롤 {left0}→{bubble.left} 흔들림 {b.LastShake * 100f:F2} cm(흔든 {shakeM:F1}s · 덜그럭 {beatsM}번 · {b.LastShakeHow}) 화물 시작 {start * 100f:F1}% 들고 나감={carry} | {b.LastAct}");
+        float want = PackRules.StartFromShake("깨짐", PackFiller.None, PackFiller.None, b.LastShake, PackRules.WrapK(2));   // D-296: 감싼 2겹이면 흔들림에 겹 계수를 곱한 값
+        bool good = wrapM == 2 && bM.fit == PackFit.Snug && bM.bottom == PackFiller.None && bM.top == PackFiller.None && bM.strips.Count == 1 && bM.phys != null && Mathf.Approximately(bM.phys.wrapK, PackRules.WrapK(2)) && b.LastShake > 0f && Mathf.Abs(start - want) < 0.005f && bubble.left == left0 - 2 && carry && !b.On;
+        Step($"③ 중 상자 {(good ? "PASS" : "FAIL")} 감싸기 {wrapM}번 fit={bM.fit} 바닥={bM.bottom} 덮기={bM.top} 테이프 {bM.strips.Count}줄 뽁뽁이 롤 {left0}→{bubble.left} 흔들림 {b.LastShake * 100f:F2} cm(흔든 {shakeM:F1}s · 덜그럭 {beatsM}번 · {b.LastShakeHow}) 화물 시작 {start * 100f:F1}%(기대 {want * 100f:F1}) 들고 나감={carry} | {b.LastAct}");
         Step($"포장 결과 → 포장대 Ready={t.Ready} StartIntegrity01={t.StartIntegrity01 * 100f:F1}% 손에 든 상자(CarryingBox)={d.CarryingBox}");
     }
 
@@ -268,17 +269,20 @@ public class DayLoopCheck : MonoBehaviour
     /// 한 판: 상자 가운데 → 롤 한 장(바닥, 떨어져 자리 잡음) → 물건을 던져 넣기(손 속도 0.8×0.4 m/s, 그림 1) → 롤 한 장(덮기) → 테이프 가로지름 → 쥐고 2.6 s 흔들기(1.5 s 넘게 가속해야 직접 잰 값을 쓴다, 그림 2) → 놓기(takeOut 이면 판 밖 아래로).
     /// shot 은 그림 파일 접두사("….png" 앞) — 없으면 안 찍는다.
     /// </summary>
-    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, string shot)
+    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, int wraps, string shot)
     {
         var pc = b.Find(PackPieceKind.Parcel); var tape = b.Find(PackPieceKind.Tape);
         b.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
-        b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 뜯은 한 장 → 첫 장 = 바닥
-        yield return Wait(() => !b.Settling, 3f);
-        b.SimDragThrow(pc, PackBoard.SlotU - 0.05f, PackBoard.SlotV + 0.04f, new Vector2(0.8f, 0.4f));   // 물건 던져 넣기
+        for (int k = 0; k < wraps; k++)                                       // D-296: 뜯은 뽁뽁이 한 장을 물건 위로 끌어다 놓는다 = 감싼다
+        {
+            b.SimDrag(roll, pc.u, pc.v);
+            yield return Wait(() => !b.Settling, 3f);
+            if (k == 0) yield return Snap(shot, "-wrap1");
+        }
+        yield return Snap(shot, "-wrapped");
+        b.SimDragThrow(pc, PackBoard.SlotU - 0.05f, PackBoard.SlotV + 0.04f, new Vector2(0.8f, 0.4f));   // 감싼 물건 던져 넣기
         yield return null; yield return null;
         yield return Snap(shot, "-drop");
-        yield return Wait(() => !b.Settling, 3f);
-        b.SimDrag(roll, PackBoard.SlotU, PackBoard.SlotV);                    // 한 장 더 = 덮기
         yield return Wait(() => !b.Settling, 3f);
         float cu = PackBoard.SlotU, cv = PackBoard.SlotV + 0.02f;
         b.SimDragPath(tape, new Vector2(cu - 0.34f, cv), new Vector2(cu - 0.1f, cv), new Vector2(cu, cv), new Vector2(cu + 0.1f, cv), new Vector2(cu + 0.34f, cv));
