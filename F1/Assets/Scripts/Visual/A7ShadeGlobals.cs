@@ -29,6 +29,17 @@ public sealed class A7ShadeGlobals : MonoBehaviour
     [Tooltip("밝기 단 끝 디더 폭(0..1). 0.15 에서 바다 화면 디더 비율과 비슷(실측 방 0.027 vs 바다 0.021)")] [Range(0f, 1f)] public float indoorDitherWidth = 0.15f;
     [Tooltip("단 자를 때 텍스처 결 빼기. 0 = 결째로 잘라 얼룩이 단으로 뭉개짐")] [Range(0f, 1f)] public float indoorGrainKeep = 0f;
 
+    [Header("방 윤곽선 A/B(과제 20261104-1449, D-297) — 끔 = A(윤곽선 없음) · 켬 = B(깊이·법선 1px 어두운 선)")]
+    [Tooltip("켜면 저해상 카메라가 roomName 방 상자 안에 있을 때만 그 집에 1px 어두운 윤곽선을 그린다. 방 밖에선 아무 일도 안 한다. Play 중에만 동작.")]
+    public bool roomOutline = false;
+    [Tooltip("깊이 끊김 문턱(앞뒤 거리 비율)")] [Range(0.005f, 0.3f)] public float outlineDepth = 0.015f;
+    [Tooltip("면 꺾임 문턱(두 법선 dot 이 이보다 작으면 선)")] [Range(0f, 1f)] public float outlineCrease = 0.8f;
+    [Tooltip("선 색 = 바탕 × 이 값")] [Range(0f, 1f)] public float outlineDark = 0.15f;
+    [Tooltip("선 색을 먹색 쪽으로 섞는 양")] [Range(0f, 1f)] public float outlineInk = 0f;
+    RoomOutline outline;
+    /// <summary>B안 윤곽선이 지금 걸려 있나(검사·캡처용).</summary>
+    public RoomOutline Outline => outline;
+
     static readonly int ShadeId = Shader.PropertyToID("_A7Shade"), TId = Shader.PropertyToID("_A7T"), MidId = Shader.PropertyToID("_A7Mid");
     static readonly int InBoxId = Shader.PropertyToID("_A7InBox"), InPId = Shader.PropertyToID("_A7InP"), InQId = Shader.PropertyToID("_A7InQ");
 
@@ -37,7 +48,8 @@ public sealed class A7ShadeGlobals : MonoBehaviour
 
     void OnEnable() => Apply();
     void OnValidate() { if (isActiveAndEnabled) Apply(); }
-    void OnDisable() => Shader.SetGlobalVector(InPId, Vector4.zero);
+    void OnDisable() { Shader.SetGlobalVector(InPId, Vector4.zero); SetOutline(false); }
+    void Update() { if (Application.isPlaying && (outline != null) != roomOutline) SetOutline(roomOutline); }
 
     public void Apply()
     {
@@ -46,6 +58,17 @@ public sealed class A7ShadeGlobals : MonoBehaviour
         Shader.SetGlobalVector(TId, new Vector4(brightAbove, sideAbove, 0f, 0f));
         Shader.SetGlobalFloat(MidId, sideLevel);
         ApplyIndoor();
+        if (Application.isPlaying) SetOutline(roomOutline);
+    }
+
+    void SetOutline(bool on)
+    {
+        if (outline != null && (!on || outline.Dirty(this))) { outline.Disable(); outline = null; }
+        if (!on || outline != null) return;
+        var room = FindRoom(roomName);
+        if (room == null) return;
+        outline = new RoomOutline(room) { depthRatio = outlineDepth, creaseDot = outlineCrease, dark = outlineDark, ink = outlineInk };
+        outline.Enable();
     }
 
     void ApplyIndoor()

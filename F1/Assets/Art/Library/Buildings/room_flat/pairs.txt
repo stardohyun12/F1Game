@@ -1,0 +1,2 @@
+Assets/Art/Library/Buildings/house_home/M_house_home_house_home.mat	Assets/Art/Library/Buildings/room_flat/M_house_home_house_home_roomflat.mat
+Assets/Art/Library/Buildings/room/M_room_room.mat	Assets/Art/Library/Buildings/room_flat/M_room_room_roomflat.mat
