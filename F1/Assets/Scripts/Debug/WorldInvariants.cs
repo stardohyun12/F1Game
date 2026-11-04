@@ -44,6 +44,7 @@ public static class WorldInvariants
         ("스크립트 Missing 0", () => NoMissingScripts()),
         ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
         ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
+        ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
@@ -614,6 +615,32 @@ public static class WorldInvariants
         }
         foreach (var k in new[] { "BED_", "DESK_", "CHAIR_", "NOTEBOOK_" }) if (!keep.Contains(k)) bad.Add("남길 것 꺼짐/없음: " + k);
         if (bad.Count > 12) { int n = bad.Count; bad.RemoveRange(12, n - 12); bad.Add("… 외 " + (n - 12)); }
+        return bad;
+    }
+
+    /// <summary>
+    /// D-299(과제 20261104-1635): 19 의 창 고르기는 넓이만 봐서 바닥 가까이 내려오는 유리문(GLASS_17)을 창으로 골랐다.
+    /// RoomDiorama.PickWindow 가 고른 창이 유리문이 아니고(아래 끝이 바닥 + DoorGlassFloor 위) 책상(DESK_*) 가까이 있는지 본다.
+    /// </summary>
+    static List<string> RoomDioramaWindow()
+    {
+        var bad = new List<string>();
+        var g = UnityEngine.Object.FindFirstObjectByType<A7ShadeGlobals>();
+        if (g == null) return bad;
+        Transform room = null;
+        foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (t.name == g.roomName && t.parent != null) { room = t; break; }
+        if (room == null || !A7ShadeGlobals.TryRoomBox(room, out var box)) return bad;
+        if (!RoomDiorama.PickWindow(room, box, out var c, out var low)) { bad.Add("방 창(GLASS_*) 못 고름"); return bad; }
+        if (low < RoomDiorama.DoorGlassFloor) bad.Add($"고른 창 아래 끝이 바닥 위 {low:F2} m — 유리문");
+        Renderer desk = null;
+        foreach (var r in room.GetComponentsInChildren<Renderer>(true)) if (r.name.StartsWith("DESK_")) { desk = r; break; }
+        if (desk == null) bad.Add("책상 DESK_* 없음");
+        else
+        {
+            var d = desk.bounds.center - c; d.y = 0f;
+            if (d.magnitude > 2.5f) bad.Add($"고른 창이 책상에서 {d.magnitude:F1} m — 책상 창 아님");
+        }
         return bad;
     }
 

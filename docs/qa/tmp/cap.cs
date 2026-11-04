@@ -1,2 +1,4 @@
-var n=UnityEditor.SessionState.GetString("qacapn","a"); UnityEngine.ScreenCapture.CaptureScreenshot("D:/Github/F1Game/docs/qa/evidence/20261023-1504-boundary-"+n+".png");
-var c=UnityEngine.Object.FindFirstObjectByType<ArcadeCarController>(); return "cap "+n+" car="+c.transform.position+" cam="+Camera.main.transform.position;
+var name = System.IO.File.ReadAllText("D:/Github/F1Game/docs/qa/tmp/cap_name.txt").Trim();
+ScreenCapture.CaptureScreenshot("D:/Github/F1Game/docs/qa/evidence/room-daylight/" + name + ".png");
+var cam = Camera.main;
+return name + " cam " + cam.transform.position.ToString("F2") + " rot " + cam.transform.eulerAngles.ToString("F0");
