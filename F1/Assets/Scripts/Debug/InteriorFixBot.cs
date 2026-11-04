@@ -27,10 +27,12 @@ public class InteriorFixBot : MonoBehaviour
     public static string BeginLeft(string outDir) { var s = Begin(outDir); leftOnly = true; return s; }
     /// <summary>과제 20261105-0617: 든 상자 3장(dio-front · dio-back · fp-outside) + bot-held.txt.</summary>
     public static string BeginHeld(string outDir) { var s = Begin(outDir); heldOnly = true; return s; }
-    static bool heldOnly;
+    static bool heldOnly, carryOnly;
+    /// <summary>과제 20261105-0630: 안은 상자 carry-{a,b}-{front,side,back} 6장 + 걷기 떨림 · 결 B/C 3곳 + noise-probe.txt(손잡이별 잔점 %).</summary>
+    public static string BeginCarry(string outDir) { var s = Begin(outDir); carryOnly = true; return s; }
     public static string Begin(string outDir, bool onlyDoor = false)
     {
-        doorOnly = onlyDoor; fitOnly = false; leftOnly = false; heldOnly = false;
+        doorOnly = onlyDoor; fitOnly = false; leftOnly = false; heldOnly = false; carryOnly = false;
         var dr = FindFirstObjectByType<OnFootDirector>();
         if (dr == null) return "no dir";
         dir = outDir; Directory.CreateDirectory(dir); Status = "run";
@@ -50,6 +52,15 @@ public class InteriorFixBot : MonoBehaviour
             yield return FitViews(list);
             File.WriteAllLines(Path.Combine(dir, "bot-fit.txt"), log);
             Status = "done " + log.Count; Destroy(gameObject); yield break;
+        }
+        if (carryOnly)
+        {
+            yield return CarryShots(list);
+            File.WriteAllLines(Path.Combine(dir, "bot-carry.txt"), log);
+            var probe = new List<string>();
+            yield return NoiseProbe(list, probe);
+            File.WriteAllLines(Path.Combine(dir, "noise-probe.txt"), probe);
+            Status = "done " + log.Count + "/" + probe.Count; Destroy(gameObject); yield break;
         }
         if (heldOnly)
         {
@@ -347,6 +358,145 @@ public class InteriorFixBot : MonoBehaviour
         LogHeld("fp-outside");
         yield return Shot("fp-outside");
         dio.grainB = g0;
+    }
+
+    // 과제 20261105-0630 ①: 보관소 바닥 가운데에서 상자 든 채 — 카메라 쪽(front)·옆(side)·등짐(back) × 팔 없음(a)/있음(b). 그다음 걷기 2초 떨림
+    IEnumerator CarryShots(List<A7ShadeGlobals.Interior> list)
+    {
+        bool g0 = dio.grainB, c0 = dio.grainC, a0 = dio.heldArms; dio.grainB = true; dio.grainC = false;
+        var it = list.Find(i => i.name.StartsWith("D198_depot"));
+        float yaw = RoomDiorama.FixedYaw(it, list, FindObjectsByType<DoorHinge>(FindObjectsSortMode.None), null);
+        Vector3 floor = it.box.inverse.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)) + Vector3.up * 0.1f;
+        d.DebugTeleport(floor, yaw + 180f, null, 0f);
+        yield return Secs(1.8f);
+        SignalBus.Raise(Signal.BoxTaken, "봇");
+        yield return Secs(1f);
+        var cc = pl.GetComponent<CharacterController>();
+        var bb = new Bounds(pl.transform.position, Vector3.zero); bool got = false;
+        foreach (var r in pl.GetComponentsInChildren<Renderer>()) { if (!got) { bb = r.bounds; got = true; } else bb.Encapsulate(r.bounds); }
+        log.Add(string.Format(Inv, "[몸] cc 반지름 {0:F3} 키 {1:F2} · 몸 렌더러 bounds 가로 반 {2:F3}/{3:F3} 높이 {4:F2}", cc != null ? cc.radius : -1f, cc != null ? cc.height : -1f, bb.extents.x, bb.extents.z, bb.size.y));
+        foreach (var arms in new[] { false, true })
+        {
+            dio.heldArms = arms;
+            foreach (var (tag, dy) in new[] { ("front", 180f), ("side", 90f), ("back", 0f) })
+            {
+                d.DebugTeleport(floor, yaw + dy, null, 0f);
+                yield return Secs(1.2f);
+                string f = $"carry-{(arms ? "b" : "a")}-{tag}";
+                LogHeld(f);
+                LogHug(f, cc);
+                yield return Shot(f);
+            }
+        }
+        // 걷기: 화면 오른쪽으로 2초(몸이 옆으로 돈다) — 몸 기준 상자·팔 자리가 프레임마다 얼마나 흔들리나
+        d.DebugTeleport(floor - it.box.inverse.MultiplyVector(Vector3.right).normalized * 1.5f, yaw + 90f, null, 0f);
+        yield return Secs(1f);
+        var hb = cam.transform.Find("HeldBox");
+        pl.simActive = true; pl.simRun = false; pl.simMove = new Vector2(1f, 0f);
+        float t = 0f, maxDev = 0f, maxStep = 0f; int n = 0; Vector3 lastL = Vector3.zero; bool first = true;
+        Vector3 p0 = pl.transform.position;
+        while (t < 2f)
+        {
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+            if (hb == null || !RoomDiorama.Active) continue;
+            float rad = cc != null ? cc.radius : 0.3f;
+            Vector3 want = RoomDiorama.HeldPos(pl.transform.position, pl.transform.rotation, rad, RoomDiorama.HeldBoxSize);
+            Vector3 l = Quaternion.Inverse(pl.transform.rotation) * (hb.position - pl.transform.position);
+            maxDev = Mathf.Max(maxDev, Vector3.Distance(hb.position, want));
+            if (!first) maxStep = Mathf.Max(maxStep, Vector3.Distance(l, lastL));
+            lastL = l; first = false; n++;
+        }
+        pl.simMove = Vector2.zero; pl.simActive = false;
+        log.Add(string.Format(Inv, "[걷기] 2초 {0}프레임 · 걸은 거리 {1:F2} m · 상자 ↔ 식 자리 최대 {2:F4} m · 몸 기준 상자 자리 프레임 사이 최대 변화 {3:F4} m → {4}",
+            n, Vector3.Distance(p0, pl.transform.position), maxDev, maxStep, maxDev < 0.005f && maxStep < 0.005f ? "몸과 같이 움직임(떨림 없음)" : "떨림"));
+        dio.grainB = g0; dio.grainC = c0; dio.heldArms = a0;
+    }
+
+    void LogHug(string tag, CharacterController cc)
+    {
+        var hb = cam.transform.Find("HeldBox");
+        if (hb == null) return;
+        Vector3 l = Quaternion.Inverse(pl.transform.rotation) * (hb.position - pl.transform.position);
+        float rad = cc != null ? cc.radius : 0.3f;
+        log.Add(string.Format(Inv, "[안기] {0} 몸 기준 상자 가운데 (옆 {1:F3}, 높이 {2:F3}, 앞 {3:F3}) · 뒷면 ↔ 캡슐 앞면 틈 {4:F3} m · 팔 보임={5} · 상자 회전-몸 회전 {6:F1}°",
+            tag, l.x, l.y, l.z, l.z - RoomDiorama.HeldBoxSize.z * 0.5f - rad, dio.ArmsShown, Quaternion.Angle(hb.rotation, pl.transform.rotation)));
+    }
+
+    // 과제 20261105-0630 ②: 같은 자리·같은 카메라에서 손잡이만 바꿔 저해상 화면(cam.targetTexture) 잔점 비율을 잰다
+    //  잔점 = 이웃 4픽셀 모두보다 밝기가 T 이상 튀거나(밝은 점) 꺼진(어두운 점) 픽셀 · 경계 = 이웃 하나라도 T 이상 차. 검정 배경(방 밖)은 뺀다. T = 0.06(감마 밝기)
+    IEnumerator NoiseProbe(List<A7ShadeGlobals.Interior> list, List<string> o)
+    {
+        bool g0 = dio.grainB, c0 = dio.grainC;
+        var knobs = new (string, Vector4, Vector4)[]
+        {
+            ("B 지금(디더 0.04, 거름 1 — 디오라마에선 거름 안 읽힘)", new Vector4(1f, 0f, 0.04f, 0f), Vector4.zero),
+            ("(1) 디더 0", new Vector4(0f, 0f, 0f, 0f), Vector4.zero),
+            ("    A 옛 값(디더 0.15)", new Vector4(0f, 0f, 0.15f, 0f), Vector4.zero),
+            ("(2) 텍스처 거름 0(바이리니어 1탭)", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(1f, 0f, 0f, 0f)),
+            ("(2) 텍스처 거름 1텍셀", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(1f, 1f, 0f, 0f)),
+            ("(2) 텍스처 거름 3텍셀", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(1f, 3f, 0f, 0f)),
+            ("(3) 밉 바이어스 +2(재질 텍스처 mips=1)", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(2f, 0f, 0f, 0f)),
+            ("(3') 밉 대신 화면 픽셀 폭 거름 ×1", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(1f, 0f, 1f, 0f)),
+            ("(4) 단 자를 때 결 빼기 1(거름 ×1 위)", new Vector4(0f, 0f, 0.04f, 1f), new Vector4(1f, 0f, 1f, 0f)),
+            ("(5) 면 결 _SN 끔(점 그대로)", new Vector4(0f, 0f, 0.04f, 0f), new Vector4(0f, 0f, 0f, 1f)),
+            ("C (필드값)", Vector4.zero, Vector4.zero),
+        };
+        o.Add("# 화면 잔점 비율 — 저해상 화면 " + (cam.targetTexture != null ? cam.targetTexture.width + "x" + cam.targetTexture.height : "?") + " · 잔점/경계 % = 검정(방 밖) 뺀 픽셀 중 · T=0.06");
+        o.Add(string.Format(Inv, "# C 필드: 거름 최소 {0} 텍셀 · 화면 픽셀 폭 × {1} · 디더 {2} · 결 빼기 {3} · 면 결 빼기 {4}", dio.grainCFilterTexels, dio.grainCFootprint, dio.grainCDitherWidth, dio.grainCGrainCut, dio.grainCSurfaceCut));
+        foreach (var (key, file) in new[] { ("D198_depot", "depot"), ("D198_postoffice/1F", "postoffice"), ("house_home/ROOM_2F", "room2f") })
+        {
+            var it = list.Find(i => i.name.StartsWith(key));
+            if (it == null) { o.Add("[결] " + key + " 없음"); continue; }
+            yield return GoIn(list, it, false);
+            yield return Secs(0.8f);
+            o.Add($"## {file} = {it.name} 보이는 방 {dio.RoomNow} active={RoomDiorama.Active} 카메라 {V(cam.transform.position)} → 방 가운데 {Vector3.Distance(cam.transform.position, it.box.inverse.MultiplyPoint3x4(Vector3.zero)):F1} m");
+            foreach (var (name, q, tx) in knobs)
+            {
+                bool isC = name.StartsWith("C ");
+                dio.probe = !isC; dio.probeInQ = q; dio.probeTex = tx; dio.grainC = isC; dio.grainB = true;
+                yield return Frames(4);
+                yield return new WaitForEndOfFrame();
+                Measure(out float spike, out float edge, out int px);
+                o.Add(string.Format(Inv, "{0,-44} 잔점 {1,6:F2}%  경계 {2,6:F2}%  (픽셀 {3}, RT {4}칸 = 1 픽셀)", name, spike, edge, px, probeStride));
+            }
+            dio.probe = false; dio.grainC = false; dio.grainB = true; yield return Frames(4); yield return Shot($"grain-{file}-B");
+            dio.grainC = true; yield return Frames(4); yield return Shot($"grain-{file}-C");
+        }
+        dio.probe = false; dio.grainB = g0; dio.grainC = c0;
+    }
+
+    Texture2D probeTex;
+    int probeStride;
+    void Measure(out float spike, out float edge, out int count)
+    {
+        spike = edge = 0f; count = 0;
+        var rt = cam.targetTexture;
+        if (rt == null) return;
+        if (probeTex == null || probeTex.width != rt.width || probeTex.height != rt.height) probeTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+        var prev = RenderTexture.active; RenderTexture.active = rt;
+        probeTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0); probeTex.Apply(false);
+        RenderTexture.active = prev;
+        var px32 = probeTex.GetPixels32();
+        // RT 는 renderScale 로 커진 크기(1280x720) — 실제 그리는 픽셀(360 높이) 한 칸씩 띄어 읽는다(칸 가운데). 붙은 RT 픽셀끼리 비교하면 확대 블록 안이라 잔점이 0 으로 나온다
+        int k = Mathf.Max(1, Mathf.RoundToInt(rt.height / 360f)), w = rt.width / k, h = rt.height / k;
+        probeStride = k;
+        var L = new float[w * h];
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) { var p = px32[(y * k + k / 2) * rt.width + x * k + k / 2]; L[y * w + x] = (0.299f * p.r + 0.587f * p.g + 0.114f * p.b) / 255f; }
+        const float T = 0.06f, Black = 0.02f; int sp = 0, ed = 0;
+        for (int y = 1; y < h - 1; y++)
+            for (int x = 1; x < w - 1; x++)
+            {
+                int i = y * w + x; float c = L[i];
+                float a = L[i - 1], b = L[i + 1], u = L[i - w], dn = L[i + w];
+                if (c < Black || a < Black || b < Black || u < Black || dn < Black) continue;
+                count++;
+                float mx = Mathf.Max(Mathf.Max(a, b), Mathf.Max(u, dn)), mn = Mathf.Min(Mathf.Min(a, b), Mathf.Min(u, dn));
+                if (c - mx > T || mn - c > T) sp++;
+                if (Mathf.Max(Mathf.Max(Mathf.Abs(c - a), Mathf.Abs(c - b)), Mathf.Max(Mathf.Abs(c - u), Mathf.Abs(c - dn))) > T) ed++;
+            }
+        if (count > 0) { spike = 100f * sp / count; edge = 100f * ed / count; }
     }
 
     void LogHeld(string tag)

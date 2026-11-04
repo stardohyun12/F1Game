@@ -90,6 +90,9 @@ Shader "PitCrew/SceneA7/Lit"
         //  켜지면 방 상자 밖·천장·카메라 쪽 벽을 버린다(배경 검정 — 과제 20261104-2033 「창 밖은 다시 검정」).
         //  상자 안은 해(그림자 포함) × 배수 + 시간대 바탕빛 + 추가 광원(책상 전등)
         float4 _A7Dio; float4 _A7DioAmb;
+        // 과제 20261105-0630: 디오라마 텍스처 읽기 _A7DioTex = (방식 0 점 그대로 / 1 걸러 읽기 / 2 밉 바이어스 +2, 탭 간격 텍셀, 화면 픽셀 크기 배수, 면 결(_SN) 빼기 0..1)
+        //  실내 텍스처는 밉맵 없음·Point(실측 mips=1) — 5~12 m 에서 화면 1픽셀에 텍셀 여러 개가 들어 픽셀마다 다른 잔점이 찍힌다. 1 = 화면 픽셀이 덮는 텍셀 폭만큼 넓혀 걸러 읽음(밉 대신)
+        float4 _A7DioTex;
         // 그림자 패스용: 집 범위 안 천장 위(지붕·천장판)는 그림자를 안 드리운다 — 그림에서 자른 지붕이 그림자로 남아 방을 덮던 것(과제 20261104-2033 원인)
         bool A7DioShadowCut(float3 wp)
         {
@@ -130,6 +133,21 @@ Shader "PitCrew/SceneA7/Lit"
             half3 wide = SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv, 3).rgb;
             float3 lw = float3(0.299, 0.587, 0.114);
             a7InK = clamp(max(1e-4, dot(wide, lw)) / max(1e-4, dot(c, lw)), 0.25, 4);
+            return c * _Tint.rgb;
+        }
+        // 디오라마 _A7DioTex.x = 1: 탭 간격 = max(고정 텍셀, 화면 픽셀이 덮는 텍셀 × 배수) — 1-2-1 9탭이 픽셀 한 칸 넓이를 평균. 큰 얼룩(여러 픽셀)은 남는다
+        // fp = 화면 1픽셀이 덮는 텍셀 수(분기 밖에서 ddx/ddy 로 잼 — 분기 안 미분은 정의 안 됨)
+        half3 A7DioTex(float2 uv, float fp)
+        {
+            float2 st = _BaseMap_TexelSize.xy * max(_A7DioTex.y, fp * _A7DioTex.z);
+            half3 c = 0;
+            [unroll] for (int y = -1; y <= 1; y++) [unroll] for (int x = -1; x <= 1; x++)
+                c += (x == 0 ? 2 : 1) * (y == 0 ? 2 : 1) * SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv + float2(x, y) * st, 0).rgb;
+            c /= 16;
+            half3 m = 0;
+            [unroll] for (int k = 0; k < 4; k++) m += SAMPLE_TEXTURE2D_LOD(_BaseMap, sampler_linear_repeat, uv + float2(k < 2 ? -2.5 : 2.5, k % 2 ? -2.5 : 2.5) * st, 0).rgb;
+            float3 lw = float3(0.299, 0.587, 0.114);
+            a7InK = clamp(max(1e-4, dot(m * 0.25, lw)) / max(1e-4, dot(c, lw)), 0.25, 4);   // 단 자를 때 결 빼기(_A7InQ.w)가 디오라마에서도 먹게
             return c * _Tint.rgb;
         }
         float A7InBayer2(float2 a) { a = floor(a); return frac(a.x * .5 + a.y * a.y * .75); }
@@ -220,12 +238,15 @@ Shader "PitCrew/SceneA7/Lit"
 
             half4 frag(V i, bool front : SV_IsFrontFace) : SV_Target
             {
+                float2 uvDx = ddx(i.uv), uvDy = ddy(i.uv);
                 half4 t = SampleBase(i.uv);
                 clip(t.a - _Cutoff);
                 if (A7DioCut(i.wp)) discard;
                 bool inside = A7Inside(i.wp);
                 bool dio = inside && _A7Dio.x > 0.5;
                 if (inside && !dio) t.rgb = A7InTex(i.uv);   // 디오라마는 재질 텍스처(Point) 그대로 — 걸러 읽지 않음
+                else if (dio && _A7DioTex.x > 1.5) t.rgb = SAMPLE_TEXTURE2D_GRAD(_BaseMap, sampler_BaseMap, i.uv, uvDx * 4, uvDy * 4).rgb * _Tint.rgb;   // 측정용: 밉 바이어스 +2(밉 없으면 그대로)
+                else if (dio && _A7DioTex.x > 0.5) t.rgb = A7DioTex(i.uv, max(length(uvDx * _BaseMap_TexelSize.zw), length(uvDy * _BaseMap_TexelSize.zw)));
                 float3 n = normalize(i.n) * (front ? 1 : -1);
                 float ndl = saturate(dot(n, normalize(_SunDir.xyz)));
                 if (_Steps > 0.5) ndl = floor(ndl * _Steps + 0.5) / _Steps;
@@ -287,7 +308,7 @@ Shader "PitCrew/SceneA7/Lit"
                 if (_SN > 0)
                 {
                     float px = max(max(fwidth(i.op.x), fwidth(i.op.y)), fwidth(i.op.z));   // 화면 1px 당 칸 수
-                    c *= 1 + _SN * (h3(floor(i.op) + 0.5) * 2 - 1) * saturate((1 - px) * 2);
+                    c *= 1 + _SN * (dio ? 1 - _A7DioTex.w : 1) * (h3(floor(i.op) + 0.5) * 2 - 1) * saturate((1 - px) * 2);
                 }
                 float lum = dot(c, float3(0.299, 0.587, 0.114));
                 c = max(0, lerp(lum.xxx, c, _Sat)) * _WB.rgb;

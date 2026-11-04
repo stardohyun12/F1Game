@@ -67,7 +67,37 @@ public static class WorldInvariants
         ("포장 첫 튜토리얼(D-302): 단계마다 큰 글 한 줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→완충재→넣기→틈(선택)→테이프→닫힘=들고 나가기, 흔들기 단계 없음)", () => PackTutorialSteps()),
         ("손에 든 상자 = 선반 택배 모델(20261105-0617): 보관소 선반 PARCEL_* 가 씬에 있고 크기 비례가 든 상자 크기와 ±35% 안 — 없으면 회색 큐브로 되돌아감", () => HeldBoxModel()),
         ("포장 흔들기 선택(D-302): 안 흔든 상자(흔든 시간 0 < 1.5 s)는 표준 흔들기로 재고, 헐거운 상자면 그 값으로 시작값이 깎인다(흔들림 0 일 때보다 낮음)", () => PackNoShakeStart()),
+        ("든 상자 안기(20261105-0630): 디오라마 상자 = 몸 앞 배~가슴(0.8~1.3 m), 뒷면이 캡슐 앞면에 틈 0(≤1 cm), 크기 = Stage_Door.HeldSize, 팔 끝이 상자 옆면 밖 굵기 반", () => HeldBoxHug()),
     };
+
+    /// <summary>
+    /// 버그(20261105-0630): 0617 에 든 상자를 머리 위(발 + 키 + 상자 반)로 옮겨 머리에 얹은 것처럼 보였다. 지금 식(RoomDiorama.HeldPos)이 다시 거기로 가거나
+    /// 몸에서 뜨면(크기 상수가 Stage_Door 와 어긋나도 뒷면 틈이 생김) 여기서 잡힌다. 몸 반지름 0.2~0.5 m · 몸 방향 4개로 잰다.
+    /// </summary>
+    static List<string> HeldBoxHug()
+    {
+        var bad = new List<string>();
+        if (RoomDiorama.HeldBoxSize != Stage_Door.HeldSize) bad.Add($"RoomDiorama.HeldBoxSize {RoomDiorama.HeldBoxSize} ≠ Stage_Door.HeldSize {Stage_Door.HeldSize}");
+        var s = Stage_Door.HeldSize;
+        foreach (float rad in new[] { 0.2f, 0.3f, 0.5f })
+            foreach (float yaw in new[] { 0f, 90f, 175f, 271f })
+            {
+                Vector3 feet = new Vector3(270f, 31f, -30f); var rot = Quaternion.Euler(0f, yaw, 0f);
+                Vector3 p = RoomDiorama.HeldPos(feet, rot, rad, RoomDiorama.HeldBoxSize), l = Quaternion.Inverse(rot) * (p - feet);
+                float h = l.y, gap = l.z - s.z * 0.5f - rad;
+                if (h < 0.8f || h > 1.3f) bad.Add($"반지름 {rad} yaw {yaw}: 상자 가운데 높이 {h:F2} m — 배~가슴(0.8~1.3) 밖");
+                if (Mathf.Abs(gap) > 0.01f) bad.Add($"반지름 {rad} yaw {yaw}: 상자 뒷면 ↔ 캡슐 앞면 틈 {gap:F3} m");
+                if (Mathf.Abs(l.x) > 0.01f) bad.Add($"반지름 {rad} yaw {yaw}: 상자가 몸 정면에서 옆으로 {l.x:F2} m");
+                for (int k = -1; k <= 1; k += 2)
+                {
+                    RoomDiorama.ArmEnds(feet, rot, rad, s, k, out var a, out var g);
+                    float gx = (Quaternion.Inverse(rot) * (g - p)).x * k;
+                    if (Mathf.Abs(gx - (s.x * 0.5f + RoomDiorama.ArmThick * 0.5f)) > 0.005f) bad.Add($"반지름 {rad} yaw {yaw} 팔 {k}: 잡는 끝이 상자 옆면 밖 {gx - s.x * 0.5f:F3} m(굵기 반 {RoomDiorama.ArmThick * 0.5f})");
+                    if (a.y - feet.y <= h) bad.Add($"반지름 {rad} yaw {yaw} 팔 {k}: 어깨가 상자보다 낮음");
+                }
+            }
+        return bad;
+    }
 
     /// <summary>
     /// 버그(20261105-0617): 손에 든 상자가 회색 큐브 대역이라 디오라마 화면에서 회색 캡슐과 구분이 안 됐다.

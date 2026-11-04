@@ -71,6 +71,17 @@ public sealed class RoomDiorama : MonoBehaviour
     public bool grainB = true;
     [Tooltip("B: 텍스처 거르는 탭 간격(텍셀) — 바닥·벽 텍스처 잔점을 눌러 준다")] [Range(0f, 4f)] public float grainBFilterTexels = 1f;
     [Tooltip("B: 밝기 단 끝 디더 폭(0..1)")] [Range(0f, 1f)] public float grainBDitherWidth = 0.04f;
+    [Header("결 C — 과제 20261105-0630 「건물 안 지직임」. 실내 텍스처는 밉맵 없음·Point(실측 mips=1) → 화면 1픽셀이 텍셀 여럿을 덮어 픽셀마다 다른 잔점")]
+    [Tooltip("켜면 C(grainB 보다 먼저). 텍스처 파일은 안 건드리고 디오라마 그릴 때만 셰이더가 걸러 읽는다(_A7DioTex)")]
+    public bool grainC = false;
+    [Tooltip("C: 탭 간격 최소(텍셀)")] [Range(0f, 4f)] public float grainCFilterTexels = 1f;
+    [Tooltip("C: 탭 간격 = 화면 1픽셀이 덮는 텍셀 수 × 이 값(밉맵 대신)")] [Range(0f, 3f)] public float grainCFootprint = 1f;
+    [Tooltip("C: 밝기 단 끝 디더 폭(0..1)")] [Range(0f, 1f)] public float grainCDitherWidth = 0.04f;
+    [Tooltip("C: 단 자를 때 텍스처 결 빼기 0..1(1 = 빛만 자르고 결은 비율로 되얹음)")] [Range(0f, 1f)] public float grainCGrainCut = 0f;
+    [Tooltip("C: 재질 면 결(_SN, 8칸/m ±4%) 빼기 0..1")] [Range(0f, 1f)] public float grainCSurfaceCut = 0f;
+    /// <summary>측정 봇용(noise-probe): 켜면 아래 두 값을 그대로 넣는다(_A7InQ, _A7DioTex).</summary>
+    [NonSerialized] public bool probe; [NonSerialized] public Vector4 probeInQ, probeTex;
+    static readonly int DioTexId = Shader.PropertyToID("_A7DioTex");
     float Ceil => CeilOf(box, ceilCut, ceilMetres);
     /// <summary>천장 컷 높이(상자 좌표 y) — 검사도 같은 식을 쓴다.</summary>
     public static float CeilOf(Matrix4x4 b, float cut, float metres) => Mathf.Min(cut, -1f + metres / Mathf.Max(0.1f, b.inverse.MultiplyVector(Vector3.up).magnitude));
@@ -142,7 +153,7 @@ public sealed class RoomDiorama : MonoBehaviour
         RenderPipelineManager.endCameraRendering += OnEnd;
     }
 
-    void OnDestroy() { if (glassMat != null) Destroy(glassMat); }
+    void OnDestroy() { if (glassMat != null) Destroy(glassMat); if (arms != null) Destroy(arms.gameObject); }
 
     void OnDisable()
     {
@@ -443,30 +454,96 @@ public sealed class RoomDiorama : MonoBehaviour
     // 과제 20261105-0453 ④: 손에 든 것(카메라 자식 — 문 앞 상자 HeldBox, 보관소 포장대 PackHand)은 1인칭 눈 앞 자리라
     // 디오라마 카메라를 따라가 화면 아래 큰 회색 판이 됐다 → 안에선 몸 앞 가슴 높이로. w 로 눈 자리 ↔ 가슴을 섞고, 나가면 원래 자리로
     static readonly string[] HandNames = { "HeldBox", "PackHand" };
-    /// <summary>든 상자 높이(m) — Stage_Door.HeldSize.y 와 같은 값(Visual 은 Stages 를 못 본다).</summary>
-    const float HeldBoxHeight = 0.24f;
+    /// <summary>든 상자 크기(m, 가로·높이·깊이) — Stage_Door.HeldSize 와 같은 값(Visual 은 Stages 를 못 본다. WorldInvariants 가 둘이 같은지 본다).</summary>
+    public static readonly Vector3 HeldBoxSize = new Vector3(0.42f, 0.24f, 0.32f);
+    /// <summary>과제 20261105-0630 ①: 안고 드는 높이(발에서 상자 가운데까지, m) — 배~가슴.</summary>
+    public const float CarryHeight = 1.0f;
+    /// <summary>팔 굵기(지름 m)·어깨 높이(발에서 m).</summary>
+    public const float ArmThick = 0.08f, ShoulderHeight = 1.4f;
+    [Header("든 상자(과제 20261105-0630 ① — 몸 앞 배~가슴, 캡슐 앞면에 붙여 안음)")]
+    [Tooltip("켜면 캡슐 색 짧은 팔 두 개(양옆에서 상자 옆면을 잡음, 굵기 0.08 m). 끄면 상자만 — 도현 판정 (a)/(b)")]
+    public bool heldArms = true;
     readonly Dictionary<Transform, Pose> handLocal = new Dictionary<Transform, Pose>();
     /// <summary>검사용: 지금 가슴 앞으로 옮겨 둔 손 물건 수.</summary>
     public int HandsMoved => handLocal.Count;
+    Transform arms; Transform[] arm;
+    /// <summary>검사용: 팔이 지금 보이나.</summary>
+    public bool ArmsShown => arms != null && arms.gameObject.activeSelf;
+
+    /// <summary>
+    /// 안은 상자 자리: 몸이 보는 방향 앞, 상자 뒷면이 캡슐 앞면(발 + 반지름)에 틈 0으로 닿고 가운데가 발 위 CarryHeight. 회전 = 몸 회전(수평).
+    /// 검사(WorldInvariants)도 같은 식을 쓴다.
+    /// </summary>
+    public static Vector3 HeldPos(Vector3 feet, Quaternion bodyRot, float radius, Vector3 size)
+        => feet + Vector3.up * CarryHeight + bodyRot * Vector3.forward * (radius + size.z * 0.5f);
+
+    /// <summary>팔 한쪽(side ±1): 어깨(캡슐 옆 안쪽, ShoulderHeight) → 상자 옆면 가운데 바로 밖(굵기 반만큼). 둘 다 월드.</summary>
+    public static void ArmEnds(Vector3 feet, Quaternion bodyRot, float radius, Vector3 size, float side, out Vector3 shoulder, out Vector3 grip)
+    {
+        Vector3 r = bodyRot * Vector3.right, f = bodyRot * Vector3.forward;
+        float x = size.x * 0.5f + ArmThick * 0.5f;
+        shoulder = feet + Vector3.up * ShoulderHeight + r * (side * Mathf.Min(x, radius * 0.95f)) + f * (radius * 0.2f);
+        grip = HeldPos(feet, bodyRot, radius, size) + r * (side * x);
+    }
 
     void PlaceHands(Quaternion eyeR, float s)
     {
         var cc = body != null ? body.Controller : null;
-        Vector3 chest = player.position + Vector3.up * 1.1f + player.forward * ((cc != null ? cc.radius : 0.3f) + 0.25f);
-        // 과제 20261105-0617 ②: 든 상자는 머리 위 살짝 — 가슴 앞이면 카메라를 등지고 걸을 때 몸 캡슐에 가린다(위에서 내려다보는 시점). 포장대 손(PackHand)은 가슴 그대로
-        Vector3 over = player.position + Vector3.up * ((cc != null ? cc.height : 1.8f) + HeldBoxHeight * 0.5f + 0.06f) + player.forward * 0.1f;
+        float rad = cc != null ? cc.radius : 0.3f;
+        Vector3 chest = player.position + Vector3.up * 1.1f + player.forward * (rad + 0.25f);
+        // 과제 20261105-0630 ①: 든 상자는 몸 앞 배~가슴에 안는다(0617 의 머리 위는 머리에 얹은 것처럼 보였다). 등지면 몸에 가려지는 건 받아들임(도현).
+        // 기울기 없이 몸 회전 그대로 — 1인칭 자리의 기울기(14°)를 섞으면 뒷면이 캡슐에 안 붙는다. 포장대 손(PackHand)은 가슴 그대로
+        Vector3 hug = HeldPos(player.position, player.rotation, rad, HeldBoxSize);
+        bool held = false;
         foreach (var n in HandNames)
         {
             var h = cam.transform.Find(n);
             if (h == null) continue;
             if (!handLocal.TryGetValue(h, out var lp)) { lp = new Pose(h.localPosition, h.localRotation); handLocal[h] = lp; }
             Vector3 atEye = eyeP + eyeR * lp.position;
-            h.SetPositionAndRotation(Vector3.Lerp(atEye, n == "HeldBox" ? over : chest, s),Quaternion.Slerp(eyeR * lp.rotation, player.rotation * lp.rotation, s));
+            bool box = n == "HeldBox";
+            h.SetPositionAndRotation(Vector3.Lerp(atEye, box ? hug : chest, s), Quaternion.Slerp(eyeR * lp.rotation, box ? player.rotation : player.rotation * lp.rotation, s));
+            if (box && h.gameObject.activeInHierarchy) held = true;
+        }
+        PlaceArms(held && heldArms && rendering && s >= 0.999f, rad);
+    }
+
+    // 팔 = 원통 둘(캡슐 재질 그대로 — 공유 재질은 읽기만). 플레이어 자식이 아니라 따로 두고 매 프레임 놓는다(1인칭엔 안 보임)
+    void PlaceArms(bool on, float rad)
+    {
+        if (!on) { if (arms != null && arms.gameObject.activeSelf) arms.gameObject.SetActive(false); return; }
+        if (arms == null)
+        {
+            arms = new GameObject("DIO_HeldArms").transform;
+            Material skin = null;
+            if (bodyR == null) bodyR = player.GetComponentsInChildren<Renderer>(true);
+            foreach (var r in bodyR) if (r != null && r.sharedMaterial != null) { skin = r.sharedMaterial; break; }
+            arm = new Transform[2];
+            for (int k = 0; k < 2; k++)
+            {
+                var c = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                c.name = k == 0 ? "ArmL" : "ArmR";
+                Destroy(c.GetComponent<Collider>());
+                c.transform.SetParent(arms, false);
+                var mr = c.GetComponent<MeshRenderer>();
+                if (skin != null) mr.sharedMaterial = skin;
+                mr.shadowCastingMode = ShadowCastingMode.On;
+                arm[k] = c.transform;
+            }
+        }
+        if (!arms.gameObject.activeSelf) arms.gameObject.SetActive(true);
+        for (int k = 0; k < 2; k++)
+        {
+            ArmEnds(player.position, player.rotation, rad, HeldBoxSize, k == 0 ? -1f : 1f, out var a, out var b);
+            Vector3 d = b - a;
+            arm[k].SetPositionAndRotation((a + b) * 0.5f, Quaternion.FromToRotation(Vector3.up, d));
+            arm[k].localScale = new Vector3(ArmThick, d.magnitude * 0.5f, ArmThick);   // 원통 = 높이 2·지름 1
         }
     }
 
     void RestoreHands()
     {
+        PlaceArms(false, 0f);
         if (handLocal.Count == 0) return;
         foreach (var kv in handLocal) if (kv.Key != null) kv.Key.SetLocalPositionAndRotation(kv.Value.position, kv.Value.rotation);
         handLocal.Clear();
@@ -704,8 +781,14 @@ public sealed class RoomDiorama : MonoBehaviour
         var g = FindFirstObjectByType<A7ShadeGlobals>();
         Shader.SetGlobalMatrix(InBoxId, box);
         Shader.SetGlobalVector(InPId, new Vector4(1f, g != null ? g.indoorLevels : 10, 0f, 6f));
-        Shader.SetGlobalVector(InQId, grainB ? new Vector4(grainBFilterTexels, 0f, grainBDitherWidth, 0f)
-                                             : new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f));
+        // ⚠ B 의 거름(grainBFilterTexels)은 디오라마 셰이더 분기에서 안 읽힌다(_A7InQ.x 는 1인칭 실내만) — B 의 실제 손잡이는 디더 폭뿐
+        Vector4 inQ = grainC ? new Vector4(0f, 0f, grainCDitherWidth, grainCGrainCut)
+                    : grainB ? new Vector4(grainBFilterTexels, 0f, grainBDitherWidth, 0f)
+                             : new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f);
+        Vector4 tex = grainC ? new Vector4(1f, grainCFilterTexels, grainCFootprint, grainCSurfaceCut) : Vector4.zero;
+        if (probe) { inQ = probeInQ; tex = probeTex; }
+        Shader.SetGlobalVector(InQId, inQ);
+        Shader.SetGlobalVector(DioTexId, tex);
         // y = 해 세기 배수(창빛 = 1 − 안개) · 바탕빛(시간대) w = 그림자에서 지붕을 빼는 집 범위
         ApplyTime();
         Shader.SetGlobalVector(DioId, new Vector4(1f, 1f - Mathf.Clamp01(fog), CutLine(box, cam.transform.position, roomFaces[cur], wallCut), Ceil));
@@ -717,7 +800,7 @@ public sealed class RoomDiorama : MonoBehaviour
     void OnEnd(ScriptableRenderContext ctx, Camera c)
     {
         if (c != cam) return;
-        Shader.SetGlobalVector(DioId, Vector4.zero);
+        Shader.SetGlobalVector(DioId, Vector4.zero); Shader.SetGlobalVector(DioTexId, Vector4.zero);
         if (!swapped) return;
         Shader.SetGlobalMatrix(InBoxId, prevInBox); Shader.SetGlobalVector(InPId, prevInP); Shader.SetGlobalVector(InQId, prevInQ);
         swapped = false;
