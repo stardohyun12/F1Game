@@ -56,7 +56,51 @@ public static class WorldInvariants
         ("포장 구긴 종이(D-296): 달걀 + 중 상자 + 4덩어리 → 흔들림 ≤ 종이 0일 때의 50% · 덩어리 늘면 틈 메움↑(≤0.85)", () => PackPaperShake()),
         ("포장 알갱이(D-296): 달걀 + 중 상자 + 알갱이 2줌 → 흔들림 ≤ 알갱이 0일 때의 50% · 같은 양이면 무거운 물건일수록 덜 붙듦 · 개수 늘면 메움↑(≤0.9)", () => PackBeadShake()),
         ("포장 보이고 들리게(D-300): 신호 7종(구김·툭·감쌈·삽·쏟기·밖쏟기·덜컹) 전부 · 합성음 출처 5줄 다 적힘(AI 그림·외부 음원 없음)", () => PackFxSignals()),
+        ("포장 소리 풀(20261105): 꺼진 오브젝트에 매달린 풀은 켜진 host 로 옮겨짐 — 덜그럭이 조용하지 않게", () => PackSfxPoolActive()),
     };
+
+    /// <summary>
+    /// 버그(20261105): 덜그럭·뽁뽁이·툭 소리 풀(PackBench.pool)이 꺼진 옛 작업대 Eye 에 만들어져 2D 보드에서 RattlePlayed 만 오르고 소리는 안 났다(isPlaying 0/282 프레임).
+    /// 꺼진 host 에서 풀을 만든 뒤 켜진 host 로 EnsureSfxOn 하면 풀이 켜진 host 로 옮겨져야 한다. 임시 오브젝트는 지우고 풀·씬 dirty 를 되돌린다.
+    /// </summary>
+    static List<string> PackSfxPoolActive()
+    {
+        var bad = new List<string>();
+        var T = typeof(PackBoard).Assembly.GetType("PitCrew.PackBench.PackBench");
+        var f = T != null ? T.GetField("pool", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic) : null;
+        if (f == null) { bad.Add("PackBench.pool 필드를 못 찾음"); return bad; }
+        var ens = T.GetMethod("EnsureSfxOn", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+#if UNITY_EDITOR
+        var ps = UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();   // 임시 오브젝트는 미리보기 씬에 — 열린 씬을 dirty 로 안 만든다
+#endif
+        var saved = f.GetValue(null);
+        GameObject a = null, b = null;
+        try
+        {
+            f.SetValue(null, null);
+            a = new GameObject("_sfxpool_off") { hideFlags = HideFlags.HideAndDontSave }; a.SetActive(false);
+            b = new GameObject("_sfxpool_on") { hideFlags = HideFlags.HideAndDontSave };
+#if UNITY_EDITOR
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(a, ps); UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(b, ps);
+#endif
+            ens.Invoke(null, new object[] { a });
+            ens.Invoke(null, new object[] { b });
+            var pool = (AudioSource[])f.GetValue(null);
+            if (pool == null || pool.Length == 0 || pool[0] == null) bad.Add("EnsureSfxOn 뒤 풀이 비었음");
+            else if (!pool[0].gameObject.activeInHierarchy) bad.Add($"소리 풀이 꺼진 오브젝트 '{pool[0].gameObject.name}' 에 매달려 있음 — 소리가 안 난다 (켜진 host 로 옮겨야 함)");
+        }
+        finally
+        {
+            f.SetValue(null, null);
+            if (a != null) UnityEngine.Object.DestroyImmediate(a);
+            if (b != null) UnityEngine.Object.DestroyImmediate(b);
+            f.SetValue(null, saved);
+#if UNITY_EDITOR
+            UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(ps);
+#endif
+        }
+        return bad;
+    }
 
     /// <summary>
     /// D-300 포장 2D 보이고 들리게: 판이 보내는 신호(PackBoard.PackFx)가 7종 그대로이고(하나 빠지면 그 소리·모양이 조용히 사라진다), 소리 출처 표(PackBoardFx.SoundSources)가 비어 있지 않다.

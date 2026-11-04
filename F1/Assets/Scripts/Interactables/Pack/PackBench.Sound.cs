@@ -20,7 +20,9 @@ namespace PitCrew.PackBench
         /// <summary>D-290: 옛 작업대가 꺼져 있어도(포장 v3) 같은 소리 풀을 쓴다.</summary>
         public static void EnsureSfxOn(GameObject host)
         {
-            if (pool != null && pool.Length > 0 && pool[0] != null) return;
+            // 꺼진 오브젝트(옛 작업대 Eye)에 매달린 풀은 소리가 안 난다 → 켜진 host 가 오면 거기로 옮긴다
+            if (pool != null && pool.Length > 0 && pool[0] != null && (pool[0].gameObject.activeInHierarchy || !host.activeInHierarchy)) return;
+            if (pool != null) foreach (var old in pool) if (old != null) { if (Application.isPlaying) Object.Destroy(old); else Object.DestroyImmediate(old); }
             pool = new AudioSource[8];
             for (int i = 0; i < pool.Length; i++) { var s = host.AddComponent<AudioSource>(); s.playOnAwake = false; s.spatialBlend = 0f; pool[i] = s; }
             const string dir = "WrapMaterials/Sfx/";
