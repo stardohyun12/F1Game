@@ -111,6 +111,9 @@ public class PackBoard : MonoBehaviour
         return t ?? new WorldOrders.Trait { cargo = cargo, trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
     }
 
+    /// <summary>D-301 3D 그림용: 물건의 실제 크기(m, 감싸기 전) — 읽기만.</summary>
+    public Vector3 CargoSizeOf(PackPiece pp) => TraitOfParcel(pp).size;
+
     /// <summary>D-296 감싼 물건의 실제 크기: 겹마다 세 변 모두 양쪽으로 WrapThick.</summary>
     public static Vector3 WrappedSize(Vector3 size, int wrap)
     {
@@ -257,13 +260,70 @@ public class PackBoard : MonoBehaviour
     public int Count(PackPieceKind k) { int n = 0; foreach (var p in pieces) if (p.kind == k) n++; return n; }
 
     // ── 켜고 끄기 ──
-    /// <summary>카메라가 판을 위에서 내려다보는 자리(판 전체가 화면에 들어오게).</summary>
+    /// <summary>D-301 3D 작업대: 바로 위 정사영 대신 기울인 원근. 피치(수평에서 아래로) · 시야각.</summary>
+    public const float CamPitch = 57f, CamFov = 35f;
+    /// <summary>마우스 레이가 만나는 평면 높이(작업대 윗면 위 m) — 물건 몸통 가운데쯤이라 기울여 봐도 보이는 자리와 집는 자리가 덜 어긋난다.</summary>
+    public const float PickY = 0.04f;
+    /// <summary>QA: 마지막 CamPose 의 작업대 위 카메라 높이(m).</summary>
+    public float CamHeight { get; private set; }
+
+    /// <summary>
+    /// 카메라 자리: 판 앞쪽(화면 아래)에서 CamPitch 로 내려다보고, 시야각 CamFov 로 판 네 모서리 · 아래 들고 나가는 띠 · 위 안내 띠가 다 들어오는 가장 가까운 거리.
+    /// 시야각은 0.4 s 동안 CamFov 로 바뀌고, 보드를 끄면 원래대로 돌아간다.
+    /// </summary>
     public void CamPose(Camera cam, out Vector3 pos, out Quaternion rot)
     {
-        float tv = Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        float h = Mathf.Max((HalfW + 0.08f) / (tv * Mathf.Max(0.5f, cam.aspect)), (HalfH + 0.08f) / tv);
-        pos = Origin + Vector3.up * h;
-        rot = Quaternion.LookRotation(Vector3.down, Up);
+        float tv = Mathf.Tan(CamFov * 0.5f * Mathf.Deg2Rad), th = tv * Mathf.Max(0.5f, cam.aspect);
+        float pr = CamPitch * Mathf.Deg2Rad;
+        var fwd = (Up * Mathf.Cos(pr) + Vector3.down * Mathf.Sin(pr)).normalized;
+        rot = Quaternion.LookRotation(fwd, Vector3.up);
+        var inv = Quaternion.Inverse(rot);
+        float u0 = HalfW + 0.04f, vLo = -HalfH - 0.13f, vHi = 0.58f;
+        var pts = new[]
+        {
+            W(-u0, vLo, 0f), W(u0, vLo, 0f), W(-u0, vHi, 0.06f), W(u0, vHi, 0.06f), W(-u0, vLo, 0.10f), W(u0, vLo, 0.10f), W(0f, HalfH, 0.16f),
+        };
+        var aim = Origin; float dist = 2f;
+        for (int it = 0; it < 5; it++)
+        {
+            float lo = 0.3f, hi = 10f;
+            for (int k = 0; k < 32; k++) { float mid = (lo + hi) * 0.5f; if (Fits(pts, aim - fwd * mid, inv, tv, th, out _, out _)) hi = mid; else lo = mid; }
+            dist = hi;
+            Fits(pts, aim - fwd * dist, inv, tv, th, out float yMin, out float yMax);
+            aim += Up * ((yMax + yMin) * 0.5f * dist * tv / Mathf.Sin(pr));   // 위아래 여백이 같게 가운데를 옮긴다
+        }
+        pos = aim - fwd * dist;
+        CamHeight = pos.y - TopY;
+        if (fovCam != cam || fovBack < 0f) { fovCam = cam; fovBack = cam.fieldOfView; }
+        FovTo(CamFov);
+    }
+
+    Vector3 W(float u, float v, float y) => Origin + Right * u + Up * v + Vector3.up * y;
+
+    static bool Fits(Vector3[] pts, Vector3 pos, Quaternion inv, float tv, float th, out float yMin, out float yMax)
+    {
+        yMin = float.MaxValue; yMax = float.MinValue; bool ok = true;
+        foreach (var p in pts)
+        {
+            var l = inv * (p - pos);
+            if (l.z < 0.05f) { ok = false; continue; }
+            float x = l.x / (l.z * th), y = l.y / (l.z * tv);
+            yMin = Mathf.Min(yMin, y); yMax = Mathf.Max(yMax, y);
+            if (Mathf.Abs(x) > 0.98f || Mathf.Abs(y) > 0.98f) ok = false;
+        }
+        return ok;
+    }
+
+    // 시야각 바꾸기(보드 켜기·끄기와 같은 0.4 s) — 걷기 카메라의 원래 값은 fovBack 에 둔다
+    Camera fovCam; float fovBack = -1f, fovFrom, fovGoal, fovT = -1f;
+    const float FovSec = 0.4f;
+    void FovTo(float goal) { if (fovCam == null) return; fovFrom = fovCam.fieldOfView; fovGoal = goal; fovT = 0f; }
+    void LateUpdate()
+    {
+        if (fovT < 0f || fovCam == null) return;
+        fovT = Mathf.Min(1f, fovT + Time.unscaledDeltaTime / FovSec);
+        fovCam.fieldOfView = Mathf.Lerp(fovFrom, fovGoal, fovT * fovT * (3f - 2f * fovT));
+        if (fovT >= 1f) { fovT = -1f; if (!On && Mathf.Approximately(fovGoal, fovBack)) fovBack = -1f; }
     }
 
     public void SetOn(bool on, Camera cam, Parcel held)
@@ -286,7 +346,7 @@ public class PackBoard : MonoBehaviour
             HideWorld(true);
             Act("2D 보드 켜짐");
         }
-        else { HideWorld(false); Act("2D 보드 꺼짐"); }
+        else { HideWorld(false); if (fovBack > 0f) FovTo(fovBack); Act("2D 보드 꺼짐"); }
     }
 
     /// <summary>보드가 켜진 동안 3D 상자·롤·물건은 보이지 않게(판 위 대역이 그 자리를 맡는다). 포장대 판·바닥은 그대로.</summary>
@@ -351,7 +411,7 @@ public class PackBoard : MonoBehaviour
     {
         u = v = 0f;
         var ray = Cam.ViewportPointToRay(new Vector3(px.x / Mathf.Max(1, Screen.width), px.y / Mathf.Max(1, Screen.height), 0f));
-        var plane = new Plane(Vector3.up, new Vector3(0f, TopY, 0f));
+        var plane = new Plane(Vector3.up, new Vector3(0f, TopY + PickY, 0f));   // D-301: 기울인 원근이라 물건 몸통 높이 평면에서 만난다(규칙은 같다 — 레이 ↔ 평면)
         if (!plane.Raycast(ray, out float dist)) return false;
         var p = ray.GetPoint(dist) - Origin;
         u = Vector3.Dot(p, Right); v = Vector3.Dot(p, Up);

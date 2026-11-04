@@ -56,6 +56,7 @@ public static class WorldInvariants
         ("포장 구긴 종이(D-296): 달걀 + 중 상자 + 4덩어리 → 흔들림 ≤ 종이 0일 때의 50% · 덩어리 늘면 틈 메움↑(≤0.85)", () => PackPaperShake()),
         ("포장 알갱이(D-296): 달걀 + 중 상자 + 알갱이 2줌 → 흔들림 ≤ 알갱이 0일 때의 50% · 같은 양이면 무거운 물건일수록 덜 붙듦 · 개수 늘면 메움↑(≤0.9)", () => PackBeadShake()),
         ("포장 보이고 들리게(D-300): 신호 7종(구김·툭·감쌈·삽·쏟기·밖쏟기·덜컹) 전부 · 합성음 출처 5줄 다 적힘(AI 그림·외부 음원 없음)", () => PackFxSignals()),
+        ("포장 3D 작업대(D-301): 들어가는 물건(감싼 겹 포함)이 그림에서도 상자 안 벽 안쪽에 들어간다(벽 뚫고 삐져나옴 0)", () => PackBench3DFit()),
         ("포장 소리 풀(20261105): 꺼진 오브젝트에 매달린 풀은 켜진 host 로 옮겨짐 — 덜그럭이 조용하지 않게", () => PackSfxPoolActive()),
         ("포장 첫 튜토리얼(D-302): 단계마다 큰 글 한 줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→완충재→넣기→틈(선택)→테이프→닫힘=들고 나가기, 흔들기 단계 없음)", () => PackTutorialSteps()),
         ("포장 흔들기 선택(D-302): 안 흔든 상자(흔든 시간 0 < 1.5 s)는 표준 흔들기로 재고, 헐거운 상자면 그 값으로 시작값이 깎인다(흔들림 0 일 때보다 낮음)", () => PackNoShakeStart()),
@@ -144,6 +145,32 @@ public static class WorldInvariants
         var src = PackBoardFx.SoundSources;
         if (src == null || src.Length < 5) bad.Add($"소리 출처 표 {(src == null ? 0 : src.Length)}줄 (5줄 이상)");
         else foreach (var l in src) if (string.IsNullOrWhiteSpace(l)) bad.Add("소리 출처 줄이 비었음");
+        return bad;
+    }
+
+    /// <summary>
+    /// D-301 3D 작업대: 판지 벽 두께만큼 상자 안이 좁아, 달걀 한 판 + 뽁뽁이 2겹이 중 상자 벽을 뚫고 삐져나왔다(2026-11-05 Play 그림).
+    /// world.yaml 상자 3종 × 감싼 겹 0~2 중 규칙상 들어가는 조합마다, PackBoardView.FitInside 를 거친 그림 겉이 안 벽 사이에 들어가고 너무 찌그러지지(80% 미만) 않아야 한다. 씬 없이 돈다.
+    /// </summary>
+    static List<string> PackBench3DFit()
+    {
+        var bad = new List<string>();
+        var od = WorldData.Orders; var pk = od != null ? od.packing : null;
+        if (pk == null || pk.boxes.Count == 0) { bad.Add("world.yaml packing.boxes 없음"); return bad; }
+        var tr = od.TraitOf("달걀 한 판");
+        var size = tr != null ? tr.size : new Vector3(0.30f, 0.07f, 0.30f);
+        float S = PackBoardView.DrawScale, wall = 0.006f;
+        foreach (var bx in pk.boxes)
+            for (int wrap = 0; wrap <= 2; wrap++)
+            {
+                var ws = PackBoard.WrappedSize(size, wrap);
+                if (ws.x > bx.inner.x || ws.z > bx.inner.z) continue;               // 규칙상 안 들어감 — 그림 문제 아님
+                float ow = size.x * S + PackBoardView.WrapDraw * wrap, odp = size.z * S + PackBoardView.WrapDraw * wrap;
+                float bw = bx.inner.x * S, bd = bx.inner.z * S;
+                float s = PackBoardView.FitInside(ow, odp, bw, bd);
+                if (ow * s > bw - 2f * wall + 1e-4f || odp * s > bd - 2f * wall + 1e-4f) bad.Add($"{bx.inner} 상자 + {wrap}겹: 그림 겉 {ow * s:F3}×{odp * s:F3} m > 안 벽 사이 {bw - 2f * wall:F3}×{bd - 2f * wall:F3}");
+                if (s < 0.8f) bad.Add($"{bx.inner} 상자 + {wrap}겹: 그림을 {s:P0} 로 찌그러뜨려야 들어감 — 그림 축척·벽 두께가 규칙 크기와 어긋남");
+            }
         return bad;
     }
 
