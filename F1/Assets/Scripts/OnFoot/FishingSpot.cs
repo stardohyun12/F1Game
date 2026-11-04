@@ -243,7 +243,7 @@ public class FishingSpot : MonoBehaviour
         if (!Seated || cam == null) return;
         if (!simActive && !OnFootCamera.UiCapture && Mouse.current != null)
         {
-            if (Cursor.lockState == CursorLockMode.Locked) { Vector2 d = Mouse.current.delta.ReadValue() * mouseSensitivity; AddLook(d.x, -d.y); }
+            if (Cursor.lockState == CursorLockMode.Locked) { Vector2 d = Mouse.current.delta.ReadValue() * mouseSensitivity; AddLook(d.x, d.y); }   // 여기 pitch 는 +가 위(Place 에서 뺀다) — 걷기 카메라(+가 아래)와 부호가 반대
             if (Mouse.current.leftButton.wasPressedThisFrame) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
         }
         castT += Time.deltaTime;
