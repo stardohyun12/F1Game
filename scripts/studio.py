@@ -114,13 +114,30 @@ def today_block():
             if body: out.append(f" {label}: " + " / ".join(b[:60] for b in body[:3]))
     return out
 
+def _w(t):
+    # 동아시아 글자는 2칸
+    import unicodedata
+    return sum(2 if unicodedata.east_asian_width(c) in "WF" else 1 for c in t)
+
+def _fit(t, w):
+    out, n = [], 0
+    for c in t:
+        k = 2 if __import__("unicodedata").east_asian_width(c) in "WF" else 1
+        if n + k > w: break
+        out.append(c); n += k
+    return "".join(out) + " " * (w - n)
+
 def render():
-    W = 100
-    def hdr(t): return "┌ " + t + " " + "─" * max(0, W - len(t) - 3)
+    try: W, H = os.get_terminal_size()
+    except Exception: W, H = 100, 38
+    W = max(60, W - 1); H = max(20, H)
+    def hdr(t): return "┌ " + t + " " + "─" * max(0, W - _w(t) - 3)
     rows = [hdr("지금")] + now_block() + [hdr("줄 (실시간)")] + live_block() + [hdr("오늘")] + today_block()
     rows.append("└" + "─" * (W - 1))
     rows.append(f"  {datetime.now().strftime('%H:%M:%S')} · 읽기 전용 · 조작은 Hermes 대화에서 · 닫아도 됨")
-    return "\n".join(rows)
+    rows = rows[:H - 1]
+    while len(rows) < H - 1: rows.append("")
+    return "\n".join(_fit(r, W) for r in rows)
 
 def main():
     try:
@@ -130,7 +147,7 @@ def main():
     sys.stdout.write("\x1b[?25l")
     try:
         while True:
-            sys.stdout.write("\x1b[H\x1b[2J" + render() + "\n"); sys.stdout.flush()
+            sys.stdout.write("\x1b[H" + render()); sys.stdout.flush()
             time.sleep(2)
     except KeyboardInterrupt:
         pass
