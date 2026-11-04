@@ -105,3 +105,10 @@ MonoBehaviour:
     paperMass: 0.01
     paperFriction: 0.9
     paperRadius: 0.04
+    beadScoop: 30
+    beadMax: 500
+    beadRadius: 0.006
+    beadMass: 0.002
+    beadFriction: 0.95
+    beadBounce: 0.1
+    beadHold: 0.08

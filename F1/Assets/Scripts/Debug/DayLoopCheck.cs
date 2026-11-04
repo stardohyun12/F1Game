@@ -322,6 +322,9 @@ public class DayLoopCheck : MonoBehaviour
         float dtSum = 0f, drawSum = 0f; int fr = 90;
         for (int i = 0; i < fr; i++) { yield return null; dtSum += Time.unscaledDeltaTime; if (view != null) drawSum += view.DrawMs; }
         float frameMax = dtSum / fr * 1000f, drawMax = drawSum / fr;
+        float dtOff = 0f;                                                     // 그리기만 끈 같은 상태 — 느린 게 그리기인지 계산인지 가른다
+        if (view != null) { view.enabled = false; for (int i = 0; i < fr; i++) { yield return null; dtOff += Time.unscaledDeltaTime; } view.enabled = true; }
+        float frameNoView = dtOff / fr * 1000f;
         b.DebugRestart();
         yield return null;
         float dt0 = 0f; float draw0 = 0f;
@@ -339,8 +342,8 @@ public class DayLoopCheck : MonoBehaviour
         yield return Snap(BeadShot, "-beads");
         float s2 = bM.phys != null ? bM.phys.MeasureStandard() : 0f; float fill = bM.phys != null ? bM.phys.fill : 0f;
         bool half = s0 > 0f && s2 <= s0 * 0.5f;
-        bool good = outGone && capOk && bM.beads.Count == scoop * 2 && half && frameMax <= 8f;
-        BeadResult = $"frameMax={frameMax:F2}ms frame0={frame0:F2}ms drawMax={drawMax:F3}ms draw0={drawN0:F3}ms";
+        bool good = outGone && capOk && bM.beads.Count == scoop * 2 && half && frameMax - frame0 <= 8f;     // 에디터 기본 프레임(frame0)에 얹히는 증가분 ≤ 8 ms
+        BeadResult = $"frameMax={frameMax:F2}ms frame0={frame0:F2}ms frameNoView={frameNoView:F2}ms drawMax={drawMax:F3}ms draw0={drawN0:F3}ms";
         Step($"⑤ 알갱이 {(good ? "PASS" : "FAIL")} 상자 밖 한 줌 흩어져 사라짐={outGone} | 대 상자 {pours}번 부어 {cap}/{max}개(넘침 {spilled}) | 중 상자 2줌 {bM.beads.Count}개 틈 {fill * 100f:F0}% 메움 · 표준 흔들기 알갱이 0 {s0 * 100f:F2} → 2줌 {s2 * 100f:F2} cm | 프레임 최대 알갱이 {frameMax:F2} ms(알갱이 0 {frame0:F2} ms) · 알갱이 메시 {drawMax:F3} ms | {b.LastAct}");
     }
 

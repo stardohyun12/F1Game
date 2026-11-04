@@ -110,6 +110,8 @@ public class PackBoardView : MonoBehaviour
     Vector3 WorldAt(float u, float v, float y) => board.Origin + board.Right * u + board.Up * v + Vector3.up * y;
     static float Frac(float x) => x - Mathf.Floor(x);
 
+    int beadSig;
+
     /// <summary>알갱이 전부(통의 점 · 삽의 한 줌 · 열린 상자 안 · 흩어지는 것)를 한 메시로.</summary>
     void DrawBeads()
     {
@@ -152,6 +154,10 @@ public class PackBoardView : MonoBehaviour
             }
         }
         foreach (var s in board.scatter) Dot(WorldAt(s.pos.x, s.pos.y, 0.06f), r);
+        int sig = bv.Count;                                                     // 알갱이가 안 움직이면 메시를 다시 올리지 않는다(500개 다시 올리면 에디터 프레임이 11→39 ms)
+        for (int i = 0; i < bv.Count; i += 7) sig = sig * 31 + bv[i].GetHashCode();
+        if (sig == beadSig) return;
+        beadSig = sig;
         beadMesh.Clear();
         if (bv.Count == 0) return;
         beadMesh.SetVertices(bv); beadMesh.SetNormals(bn); beadMesh.SetTriangles(bt, 0);

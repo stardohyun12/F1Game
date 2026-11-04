@@ -1,0 +1,11 @@
+var od = WorldData.Orders; var pk = od.packing;
+var tr = od.TraitOf("달걀 한 판");
+var mid = pk.boxes[1].inner;
+var mm = new PackPhysics.Mat(pk.boxes[1].mass, pk.boxes[1].bounce, pk.boxes[1].friction);
+float none = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None).MeasureStandard();
+float wrap2 = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None, 2).MeasureStandard();
+var p4 = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None, 0, 4);
+float paper4 = p4.MeasureStandard();
+var b2 = PackBoard.Setup(mid, false, mm, tr, false, PackFiller.None, PackFiller.None, 0, 0, 60);
+float beads2 = b2.MeasureStandard();
+return "none=" + (none*100f).ToString("F2") + " wrap2=" + (wrap2*100f).ToString("F2") + " paper4=" + (paper4*100f).ToString("F2") + " fillP=" + p4.fill.ToString("F2") + " beads2=" + (beads2*100f).ToString("F2") + " fillB=" + b2.fill.ToString("F2");
