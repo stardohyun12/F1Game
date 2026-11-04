@@ -57,38 +57,35 @@ public static class WorldInvariants
         ("포장 알갱이(D-296): 달걀 + 중 상자 + 알갱이 2줌 → 흔들림 ≤ 알갱이 0일 때의 50% · 같은 양이면 무거운 물건일수록 덜 붙듦 · 개수 늘면 메움↑(≤0.9)", () => PackBeadShake()),
         ("포장 보이고 들리게(D-300): 신호 7종(구김·툭·감쌈·삽·쏟기·밖쏟기·덜컹) 전부 · 합성음 출처 5줄 다 적힘(AI 그림·외부 음원 없음)", () => PackFxSignals()),
         ("포장 소리 풀(20261105): 꺼진 오브젝트에 매달린 풀은 켜진 host 로 옮겨짐 — 덜그럭이 조용하지 않게", () => PackSfxPoolActive()),
-        ("포장 첫 튜토리얼(D-301): 조작법 8줄 다 있음 · 지금 할 일 6줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→열림→채움→테이프→닫힘→흔듦)", () => PackTutorialSteps()),
+        ("포장 첫 튜토리얼(D-302): 단계마다 큰 글 한 줄 · 보드 상태마다 단계가 순서대로 바뀜(상자 없음→완충재→넣기→틈(선택)→테이프→닫힘=들고 나가기, 흔들기 단계 없음)", () => PackTutorialSteps()),
+        ("포장 흔들기 선택(D-302): 안 흔든 상자(흔든 시간 0 < 1.5 s)는 표준 흔들기로 재고, 헐거운 상자면 그 값으로 시작값이 깎인다(흔들림 0 일 때보다 낮음)", () => PackNoShakeStart()),
     };
 
     static List<string> PackTutorialSteps()
     {
         var bad = new List<string>();
-        if (PackTutorial.Controls.Length != 8) bad.Add("조작법 줄 " + PackTutorial.Controls.Length + "개(8개여야 — 도현 원문 8가지)");
-        if (PackTutorial.Now.Length != Enum.GetValues(typeof(PackTutorial.Step)).Length) bad.Add("지금 할 일 줄 수와 단계 수가 다름");
-        foreach (var k in new[] { "R 회전", "뽁뽁이", "종이", "알갱이", "테이프", "흔들기", "판 아래" })
-        {
-            bool has = false;
-            foreach (var l in PackTutorial.Controls) if (l.Contains(k)) has = true;
-            if (!has) bad.Add("조작법에 '" + k + "' 줄이 없음");
-        }
+        int steps = Enum.GetValues(typeof(PackTutorial.Step)).Length;
+        if (PackTutorial.Now.Length != steps || PackTutorial.Hint.Length != steps) bad.Add("단계 글 줄 수가 단계 수(" + steps + ")와 다름");
+        foreach (var l in PackTutorial.Now) if (string.IsNullOrEmpty(l)) bad.Add("큰 글이 빈 단계가 있음");
         var box = new PackPiece { kind = PackPieceKind.Box, active = true };
         var egg = new PackPiece { kind = PackPieceKind.Parcel, active = true };
-        void Is(PackTutorial.Step want, PackPiece b, bool shook, string what)
+        void Is(PackTutorial.Step want, PackPiece b, PackPiece p, string what)
         {
-            var got = PackTutorial.StepOf(b, shook);
+            var got = PackTutorial.StepOf(b, p);
             if (got != want) bad.Add(what + ": 단계 " + got + " (기대 " + want + ")");
         }
-        Is(PackTutorial.Step.PickBox, null, false, "상자 없음");
-        Is(PackTutorial.Step.PutParcel, box, false, "빈 상자 열림");
-        box.content = egg;
-        Is(PackTutorial.Step.Fill, box, false, "물건만 넣음");
+        Is(PackTutorial.Step.PickBox, null, egg, "상자 없음");
+        Is(PackTutorial.Step.Cushion, box, egg, "빈 상자 열림 · 완충재 아직");
         egg.wrap = 1;
-        Is(PackTutorial.Step.Tape, box, false, "물건 감쌈");
-        egg.wrap = 0; box.top = PackFiller.Paper;
-        Is(PackTutorial.Step.Tape, box, false, "덮은 완충재");
-        box.closed = true;
-        Is(PackTutorial.Step.Shake, box, false, "닫힘 흔들기 전");
-        Is(PackTutorial.Step.TakeOut, box, true, "닫힘 흔든 뒤");
+        Is(PackTutorial.Step.PutParcel, box, egg, "물건 감쌈 → 넣기");
+        egg.wrap = 0; box.bottom = PackFiller.Paper;
+        Is(PackTutorial.Step.PutParcel, box, egg, "바닥 완충재 → 넣기(깔기도 통과)");
+        box.bottom = PackFiller.None; box.content = egg;
+        Is(PackTutorial.Step.Gap, box, egg, "물건 넣음 · 틈 아직(선택 단계)");
+        box.top = PackFiller.Paper;
+        Is(PackTutorial.Step.Tape, box, egg, "덮은 완충재 → 테이프");
+        box.top = PackFiller.None; box.closed = true;
+        Is(PackTutorial.Step.TakeOut, box, egg, "닫힘 → 흔들지 않아도 들고 나가기");   // D-302 흔들기는 선택: 단계가 흔든 적에 달려 있지 않다
         return bad;
     }
 
@@ -248,6 +245,25 @@ public static class WorldInvariants
         if (dmgB <= 0f) bad.Add($"안 감싼 달걀 + 중 상자: 부딪힘 손상 {dmgB * 100f:F2}%p ≤ 0 (흔들림 {shB * 100f:F1} cm) — 비교할 기준이 없음");
         else if (dmgW > dmgB * 0.40f) bad.Add($"부딪힘 손상 감싼 {dmgW * 100f:F2}%p > 안 감싼 {dmgB * 100f:F2}%p 의 40% (흔들림 감싼 {shW * 100f:F2} cm / 안 감싼 {shB * 100f:F1} cm)");
         if (bigBare <= 0.05f) bad.Add($"대 상자 + 안 감쌈 + {tr.cargo}: 흔들림 {bigBare * 100f:F1} cm (기대 > 5 cm) — 틈이 있는데 안 움직임");
+        return bad;
+    }
+
+    /// <summary>D-302 흔들기는 선택: 안 흔든 닫힌 상자(ShakeTime 0 &lt; Window)는 PackBoard.TakeOut 이 표준 흔들기로 잰다. 대 상자 + 안 감쌈이면 그 값 &gt; 0 이고 시작값이 흔들림 0 일 때보다 낮아야 한다. 씬 없이 돈다.</summary>
+    static List<string> PackNoShakeStart()
+    {
+        var bad = new List<string>();
+        var od = WorldData.Orders; var pk = od != null ? od.packing : null;
+        var tr = od != null ? od.TraitOf("달걀 한 판") : null;
+        if (tr == null) tr = new WorldOrders.Trait { cargo = "달걀 한 판", trait = "깨짐", size = new Vector3(0.30f, 0.07f, 0.30f) };
+        bool yaml = pk != null && pk.boxes.Count >= 3;
+        Vector3 big = yaml ? pk.boxes[2].inner : new Vector3(0.46f, 0.24f, 0.46f);
+        var bm = yaml ? new PackPhysics.Mat(pk.boxes[2].mass, pk.boxes[2].bounce, pk.boxes[2].friction) : new PackPhysics.Mat(0.2f, 0.3f, 0.4f);
+        var ph = PackBoard.Setup(big, false, bm, tr, false, PackFiller.None, PackFiller.None);
+        if (ph.ShakeTime >= PackPhysics.Window) bad.Add($"안 흔든 상자인데 흔든 시간 {ph.ShakeTime:F1}s ≥ {PackPhysics.Window:F1}s — 표준 흔들기 경로를 안 탐");
+        float std = ph.MeasureStandard();
+        float noShake = PackRules.StartFromShake(tr.trait, PackFiller.None, PackFiller.None, 0f), withStd = PackRules.StartFromShake(tr.trait, PackFiller.None, PackFiller.None, std);
+        if (std <= 0f) bad.Add($"대 상자 + 안 감쌈 표준 흔들기 {std * 100f:F2} cm ≤ 0 — 안 흔든 상자의 시작값을 잴 수 없음");
+        else if (withStd >= noShake) bad.Add($"표준 흔들기 시작값 {withStd * 100f:F1}% ≥ 흔들림 0 의 {noShake * 100f:F1}% — 헐거운 상자가 안 깎임");
         return bad;
     }
 

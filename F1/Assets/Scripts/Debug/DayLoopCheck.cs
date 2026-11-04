@@ -282,6 +282,18 @@ public class DayLoopCheck : MonoBehaviour
         b.DebugRestart(); beats0 = b.RattleBeats;
         pp = b.Find(PackPieceKind.Parcel);
 
+        // ⑥ D-302 흔들기는 선택: 같은 중 상자 한 판을 흔들지 않고 바로 판 아래로 → 표준 흔들기 값으로 시작값. 보드가 곧 나가므로 놓은 같은 프레임에 읽고 보드를 되돌린다(③ 이 이어서 끝까지 한다)
+        bool nsTaken = false; float nsShake = -1f, nsStart = -1f, nsSecs = -1f; string nsHow = "", nsAct = "";
+        yield return PackRun(b, bM, bubble, true, 2, null, null, 0, null, false, () =>
+        {
+            nsTaken = b.PendingTake; nsShake = b.LastShake; nsStart = b.LastStart; nsHow = b.LastShakeHow; nsSecs = bM.shakeSecs; nsAct = b.LastAct;
+            b.DebugRestart();
+        });
+        float nsWant = PackRules.StartFromShake("깨짐", PackFiller.None, PackFiller.None, nsShake, PackRules.WrapK(2));
+        bool nsGood = nsTaken && nsSecs < PackPhysics.Window && nsHow.Contains("표준 흔들기") && nsShake > 0f && nsStart > 0f && Mathf.Abs(nsStart - nsWant) < 0.005f;
+        Step($"⑥ 흔들기 없이 들고 나감 {(nsGood ? "PASS" : "FAIL")} 들고 나감={nsTaken} 흔든 시간 {nsSecs:F1}s 흔들림 {nsShake * 100f:F2} cm({nsHow}) 화물 시작 {nsStart * 100f:F1}%(기대 {nsWant * 100f:F1}) | {nsAct}");
+        pp = b.Find(PackPieceKind.Parcel); beats0 = b.RattleBeats;
+
         // ③ 중 상자: 한 판 끝까지
         int left0 = bubble.left;
         yield return PackRun(b, bM, bubble, true, 2, Pack2DShot == null ? null : Pack2DShot + "-M");
@@ -351,7 +363,7 @@ public class DayLoopCheck : MonoBehaviour
     /// 한 판: 상자 가운데 → 롤 한 장(바닥, 떨어져 자리 잡음) → 물건을 던져 넣기(손 속도 0.8×0.4 m/s, 그림 1) → 롤 한 장(덮기) → 테이프 가로지름 → 쥐고 2.6 s 흔들기(1.5 s 넘게 가속해야 직접 잰 값을 쓴다, 그림 2) → 놓기(takeOut 이면 판 밖 아래로).
     /// shot 은 그림 파일 접두사("….png" 앞) — 없으면 안 찍는다.
     /// </summary>
-    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, int wraps, string shot, PackPiece paper = null, int papers = 0, string paperShot = null)
+    IEnumerator PackRun(PackBoard b, PackPiece box, PackPiece roll, bool takeOut, int wraps, string shot, PackPiece paper = null, int papers = 0, string paperShot = null, bool shake = true, System.Action afterRelease = null)
     {
         var pc = b.Find(PackPieceKind.Parcel); var tape = b.Find(PackPieceKind.Tape);
         b.SimDrag(box, PackBoard.SlotU, PackBoard.SlotV);
@@ -377,6 +389,11 @@ public class DayLoopCheck : MonoBehaviour
         float cu = PackBoard.SlotU, cv = PackBoard.SlotV + 0.02f;
         b.SimDragPath(tape, new Vector2(cu - 0.34f, cv), new Vector2(cu - 0.1f, cv), new Vector2(cu, cv), new Vector2(cu + 0.1f, cv), new Vector2(cu + 0.34f, cv));
         yield return new WaitForSecondsRealtime(0.4f);
+        if (!shake)                                                           // D-302 흔들기는 선택: 닫힌 상자를 바로 판 아래로 끌어 든다(사람의 끌기와 같은 길)
+        {
+            b.SimDrag(box, PackBoard.SlotU, -PackBoard.HalfH - 0.12f);
+            afterRelease?.Invoke(); yield return null; yield break;
+        }
         if (!b.SimGrab(box)) yield break;
         float tt = 0f; bool shot2 = false;
         while (tt < 2.6f)
@@ -385,6 +402,7 @@ public class DayLoopCheck : MonoBehaviour
             if (!shot2 && tt > 0.9f) { shot2 = true; yield return Snap(shot, "-shake"); }
         }
         b.SimRelease(PackBoard.SlotU, takeOut ? -PackBoard.HalfH - 0.12f : PackBoard.SlotV);
+        afterRelease?.Invoke();
         yield return null;
     }
 
