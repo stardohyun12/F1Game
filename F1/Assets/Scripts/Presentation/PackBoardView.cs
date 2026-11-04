@@ -7,6 +7,7 @@ using UnityEngine;
 /// 판 바탕·가운데 빈 자리 테두리·조각(상자는 열리면 속이 보임, 바닥/덮은 완충재·들어간 물건, 닫히면 뚜껑+테이프 줄)·글자(조각 이름, 물건은 꼬리표 글).
 /// D-296 알갱이(통의 흰 점 · 삽에 뜬 한 줌 · 상자에 쏟은 알갱이 · 흩어지는 알갱이)는 작은 육각형 원판 수백 개를 메시 하나에 모아 그린다 — 드로콜 1.
 /// 뜯긴 한 장(Sheet)은 생기고 사라지므로 조각은 처음 볼 때 만든다. 보드가 켜진 동안만 보인다. 조각 자료는 건드리지 않는다.
+/// D-300 알갱이는 큰 원 + 작은 밝은 원(두 톤)으로 호를 그리며 떨어지고, 뽁뽁이 띠·구긴 종이 다각형·쏟는 삽·손·상자 덜컹은 PackBoardFx 가 그린다(소리도).
 /// </summary>
 public class PackBoardView : MonoBehaviour
 {
@@ -34,11 +35,10 @@ public class PackBoardView : MonoBehaviour
         boxC = new Color(0.86f, 0.70f, 0.45f), insideC = new Color(0.20f, 0.15f, 0.10f), bubbleC = new Color(0.78f, 0.84f, 0.86f),
         paperC = new Color(0.86f, 0.84f, 0.78f), tapeC = new Color(0.85f, 0.75f, 0.20f), boxLidC = new Color(0.93f, 0.78f, 0.52f);
 
-    static readonly Color beadC = new Color(0.97f, 0.97f, 0.94f), binC = new Color(0.40f, 0.46f, 0.52f), scoopC = new Color(0.72f, 0.72f, 0.76f);
-    Mesh beadMesh;
-    readonly List<Vector3> bv = new List<Vector3>(4096), bn = new List<Vector3>(4096);
-    readonly List<int> bt = new List<int>(8192);
-    static readonly Vector2[] hex = { new Vector2(1f, 0f), new Vector2(0.5f, 0.866f), new Vector2(-0.5f, 0.866f), new Vector2(-1f, 0f), new Vector2(-0.5f, -0.866f), new Vector2(0.5f, -0.866f) };
+    static readonly Color beadC = new Color(0.97f, 0.97f, 0.94f), beadDkC = new Color(0.70f, 0.74f, 0.79f), binC = new Color(0.40f, 0.46f, 0.52f), scoopC = new Color(0.72f, 0.72f, 0.76f);
+    PackBoardFx fx;
+    PackBoardFx.Layer beadD, beadL;                                   // 알갱이 두 톤(어두운 큰 원 · 밝은 작은 원)
+    readonly List<Vector3> ring = new List<Vector3>(12);
 
     Material Mat(Color c)
     {
@@ -90,32 +90,37 @@ public class PackBoardView : MonoBehaviour
         slotIn = Slab("빈 자리", root, matC);
         slotIn.localScale = new Vector3(PackBoard.SlotW, 0.004f, PackBoard.SlotD);
         Place(slotFrame, PackBoard.SlotU, PackBoard.SlotV, 0.0085f); Place(slotIn, PackBoard.SlotU, PackBoard.SlotV, 0.0095f);
-        var bg = new GameObject("알갱이 메시");                               // 월드 좌표로 꼭짓점을 직접 쓴다
-        bg.transform.SetParent(root, false); bg.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-        beadMesh = new Mesh { name = "pack2d beads(runtime)", indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 };
-        beadMesh.MarkDynamic();
-        bg.AddComponent<MeshFilter>().sharedMesh = beadMesh;
-        var mr = bg.AddComponent<MeshRenderer>();
-        mr.sharedMaterial = Mat(beadC); mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false;
+        beadD = new PackBoardFx.Layer("알갱이 어두운 톤", root, Mat(beadDkC));   // 월드 좌표로 꼭짓점을 직접 쓴다
+        beadL = new PackBoardFx.Layer("알갱이 밝은 톤", root, Mat(beadC));
+        fx = new PackBoardFx(board, root, Mat);
     }
 
-    void Dot(Vector3 c, float r)
+    void OnDestroy() { if (fx != null) fx.Dispose(); }
+
+    void Round(PackBoardFx.Layer l, Vector3 c, float r, int sides)
     {
-        int i = bv.Count;
-        bv.Add(c); bn.Add(Vector3.up);
-        for (int k = 0; k < 6; k++) { bv.Add(c + new Vector3(hex[k].x * r, 0f, hex[k].y * r)); bn.Add(Vector3.up); }
-        for (int k = 0; k < 6; k++) { bt.Add(i); bt.Add(i + 1 + (k + 1) % 6); bt.Add(i + 1 + k); }   // 위에서 보아 시계 방향 = 앞면
+        ring.Clear();
+        for (int k = 0; k < sides; k++) { float a = k * Mathf.PI * 2f / sides; ring.Add(c + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r)); }
+        l.Fan(c, ring, false);                                          // 위에서 보아 시계 방향 = 앞면
+    }
+
+    /// <summary>통 안의 알갱이: 밝은 한 톤 점.</summary>
+    void Dot(Vector3 c, float r) => Round(beadL, c, r, 6);
+
+    /// <summary>쌓이고 쏟아지는 알갱이: 어두운 작은 원 위에 밝은 더 작은 원(두 톤).</summary>
+    void Bead(Vector3 c, float r)
+    {
+        Round(beadD, c, r, 8);
+        Round(beadL, c + (board.Up * 0.2f - board.Right * 0.2f) * r + Vector3.up * 0.0012f, r * 0.6f, 6);
     }
 
     Vector3 WorldAt(float u, float v, float y) => board.Origin + board.Right * u + board.Up * v + Vector3.up * y;
     static float Frac(float x) => x - Mathf.Floor(x);
 
-    int beadSig;
-
     /// <summary>알갱이 전부(통의 점 · 삽의 한 줌 · 열린 상자 안 · 흩어지는 것)를 한 메시로.</summary>
     void DrawBeads()
     {
-        bv.Clear(); bn.Clear(); bt.Clear();
+        beadD.Clear(); beadL.Clear();
         float r = PackBoard.BeadRadius * 0.6f;                                  // 판 위 알갱이 반지름 = 실제 × 상자와 같은 축척(0.6)
         foreach (var p in board.pieces)
         {
@@ -137,7 +142,7 @@ public class PackBoardView : MonoBehaviour
                 for (int i = 0; i < n; i++)
                 {
                     float a = i * 2.39996f, s = Mathf.Sqrt((i + 0.5f) / n) * 0.035f;
-                    Dot(WorldAt(p.u + Mathf.Cos(a) * s * 1.3f, p.v + Mathf.Sin(a) * s * 0.8f, y + (i % 4) * 0.0012f), r * 1.2f);
+                    Bead(WorldAt(p.u + Mathf.Cos(a) * s * 1.3f, p.v + Mathf.Sin(a) * s * 0.8f, y + (i % 4) * 0.0012f), r * 1.2f);
                 }
             }
             else if (p.kind == PackPieceKind.Box && !p.closed && p.beads.Count > 0)
@@ -147,21 +152,15 @@ public class PackBoardView : MonoBehaviour
                 {
                     var bd = p.beads[i];
                     if (bd.delay > 0f) continue;                                 // 아직 안 쏟아짐
-                    float k = Mathf.Clamp01(bd.t / PackBoard.BeadFlight); k = k * k * (3f - 2f * k);
+                    float k0 = Mathf.Clamp01(bd.t / PackBoard.BeadFlight), k = k0 * k0 * (3f - 2f * k0);
                     var pos = Vector2.Lerp(bd.from, bd.off, k);
-                    Dot(WorldAt(pu + pos.x, pv + pos.y, BoxTop + lift + p.drop.z + bd.fall.z + 0.003f + (i % 5) * 0.0012f), r);
+                    float arc = 4f * k0 * (1f - k0) * 0.045f;                    // D-300 호를 그리며: 날아가는 중간이 가장 높다
+                    Bead(WorldAt(pu + pos.x, pv + pos.y, BoxTop + lift + p.drop.z + bd.fall.z + arc + 0.003f + (i % 5) * 0.0012f), r * (k0 < 1f ? 1.25f : 1f));
                 }
             }
         }
-        foreach (var s in board.scatter) Dot(WorldAt(s.pos.x, s.pos.y, 0.06f), r);
-        int sig = bv.Count;                                                     // 알갱이가 안 움직이면 메시를 다시 올리지 않는다(500개 다시 올리면 에디터 프레임이 11→39 ms)
-        for (int i = 0; i < bv.Count; i += 7) sig = sig * 31 + bv[i].GetHashCode();
-        if (sig == beadSig) return;
-        beadSig = sig;
-        beadMesh.Clear();
-        if (bv.Count == 0) return;
-        beadMesh.SetVertices(bv); beadMesh.SetNormals(bn); beadMesh.SetTriangles(bt, 0);
-        beadMesh.RecalculateBounds();
+        foreach (var s in board.scatter) Bead(WorldAt(s.pos.x, s.pos.y, 0.06f), r);
+        beadD.FlushIfChanged(); beadL.FlushIfChanged();                         // 알갱이가 안 움직이면 메시를 다시 올리지 않는다(500개 다시 올리면 에디터 프레임이 11→39 ms)
     }
 
     static Color FillerColor(PackFiller f) => f == PackFiller.Paper ? paperC : bubbleC;
@@ -171,7 +170,8 @@ public class PackBoardView : MonoBehaviour
     {
         if (body.ContainsKey(p)) return;
         var c = p.kind == PackPieceKind.Parcel ? parcelC : p.kind == PackPieceKind.Box ? boxC : p.kind == PackPieceKind.Tape ? tapeC : p.kind == PackPieceKind.BeadBin ? binC : p.kind == PackPieceKind.Scoop ? scoopC : FillerColor(p.fillerKind);
-        var b = Slab(p.name, root, c, p.crumple ? PrimitiveType.Cylinder : PrimitiveType.Cube); b.localScale = new Vector3(p.w, 0.03f, p.d); body[p] = b;   // 구긴 종이 = 원통(둥근 덩어리 대역)
+        var b = Slab(p.name, root, c, p.crumple ? PrimitiveType.Cylinder : PrimitiveType.Cube); b.localScale = new Vector3(p.w, 0.03f, p.d); body[p] = b;
+        if (p.crumple) b.GetComponent<Renderer>().enabled = false;           // D-300 구긴 종이는 PackBoardFx 가 울퉁불퉁 다각형으로 그린다(몸은 높이 계산용)
         if (p.kind == PackPieceKind.Box)
         {
             var i = Slab(p.name + " 속", b, insideC);
@@ -216,6 +216,8 @@ public class PackBoardView : MonoBehaviour
         if (root == null) { if (!on) return; BuildAll(); }
         if (root.gameObject.activeSelf != on) root.gameObject.SetActive(on);
         if (!on) return;
+        float now = Time.unscaledTime;
+        fx.Begin();
         var pcs = board.pieces;
         for (int n = 0; n < pcs.Count; n++) Ensure(pcs[n]);
         if (body.Count != pcs.Count)                                     // 뜯어 쓴 한 장은 사라진다
@@ -234,15 +236,20 @@ public class PackBoardView : MonoBehaviour
             float h = p.kind == PackPieceKind.Box ? 0.05f : p.crumple ? Mathf.Lerp(0.012f, WadH + 0.01f, p.crumpleT) : 0.03f;
             float lift = p.lifted ? 0.07f : 0f;
             float pu = p.u + p.jit.x, pv = p.v + p.jit.y;
+            var shakeBox = p.kind == PackPieceKind.Box ? p : p.holder;           // D-300 안의 것이 움직인 만큼 상자 겉(과 든 물건)이 덜컹
+            var sk = shakeBox != null && shakeBox.kind == PackPieceKind.Box ? fx.ShakeOf(shakeBox, now) : Vector3.zero;
+            pu += sk.x; pv += sk.y;
             float z = p.perch > 0f ? PackBoard.RimZ : p.drop.z;                // D-295: 놓은 뒤 떨어지는 높이 · 벽에 걸려 떠 있는 높이
-            float baseY = 0.012f + h * 0.5f + lift + z;
-            if (p.holder != null) baseY = BoxTop + (p.holder.bottom != PackFiller.None ? SheetH : 0f) + ParcelH * 0.5f + (p.holder.lifted ? 0.07f : 0f) + p.holder.drop.z + z;
+            float baseY = 0.012f + h * 0.5f + lift + z + sk.z;
+            if (p.holder != null) baseY = BoxTop + (p.holder.bottom != PackFiller.None ? SheetH : 0f) + ParcelH * 0.5f + (p.holder.lifted ? 0.07f : 0f) + p.holder.drop.z + z + sk.z;
             float dd = p.d;
             if (p.kind == PackPieceKind.Roll) dd = p.d * Mathf.Lerp(0.35f, 1f, (float)p.left / Mathf.Max(1, p.full));   // 롤이 가늘어진다
             if (p.crumple) b.localScale = new Vector3(Mathf.Lerp(0.20f, p.w, p.crumpleT), h * 0.5f, Mathf.Lerp(0.18f, p.d, p.crumpleT));   // 평평한 장 → 둥근 덩어리(원통 높이는 2배라 절반)
             else b.localScale = new Vector3(p.w, h, dd);
             Place(b, pu, pv, baseY);
             float topY = baseY + h * 0.5f;
+            if (p.crumple) fx.Paper(pu, pv, topY + 0.002f, p.w * 0.55f, p.crumpleT, 7 + pcs.IndexOf(p) % 5 * 3);
+            if (p.kind == PackPieceKind.Parcel && p.wrap > 0) fx.WrapBands(p, pu, pv, topY + 0.003f, p.w, p.d, WrapRim, now);
             if (shell.TryGetValue(p, out var sx))                              // D-296: 감싼 겹이 있으면 물건 둘레에 밝고 넓은 테두리(겹마다 더 두껍고 더 밝게)
             {
                 SetAct(sx, p.wrap > 0);
@@ -255,7 +262,7 @@ public class PackBoardView : MonoBehaviour
                 }
             }
             if (inner.TryGetValue(p, out var i)) i.gameObject.SetActive(p.open);
-            if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift + z);
+            if (extras.TryGetValue(p, out var x)) topY = DrawBox(p, x, pu, pv, lift + z + sk.z);
             var t = label[p];
             bool hideLabel = p.crumple || p.kind == PackPieceKind.Scoop || (p.kind == PackPieceKind.Box && p.Stuffed && !p.closed);
             SetAct(t.transform, !hideLabel);
@@ -263,6 +270,7 @@ public class PackBoardView : MonoBehaviour
             string s = p.kind == PackPieceKind.Parcel && p.parcel != null ? p.parcel.cargoName + "\n" + p.parcel.recipient + "·" + p.parcel.destLabel : p.name;
             if (t.text != s) t.text = s;
         }
+        fx.End(now);
         long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
         DrawBeads();
         DrawMs = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000f / System.Diagnostics.Stopwatch.Frequency;
@@ -309,18 +317,13 @@ public class PackBoardView : MonoBehaviour
         }
         if (p.closed && p.strips.Count > 0) y += 0.004f;
         // D-296 틈에 자리 잡은 구긴 종이(뚜껑이 덮이면 안 보인다). 놓인 만큼 눌려 납작·넓게
-        while (x.wads.Count < p.wads.Count) x.wads.Add(Slab(p.name + " 구긴 종이", root, paperC, PrimitiveType.Cylinder));
-        float rad = PackBoard.PaperRadius * 0.6f;
-        for (int k = 0; k < x.wads.Count; k++)
-        {
-            bool has = k < p.wads.Count && !p.closed;
-            SetAct(x.wads[k], has);
-            if (!has) continue;
-            var wd = p.wads[k];
-            x.wads[k].GetComponent<Renderer>().sharedMaterial = Mat(k % 2 == 0 ? paperC : wadC);
-            x.wads[k].localScale = new Vector3(rad * 2.2f, WadH * 0.5f, rad * 2.2f);
-            Place(x.wads[k], pu + wd.off.x, pv + wd.off.y, BoxTop + lift + wd.fall.z + WadH * 0.5f + 0.002f);
-        }
+        float rad = PackBoard.PaperRadius * 0.6f;                               // D-300 울퉁불퉁 다각형(PackBoardFx.Paper) — 슬랩 아님
+        if (!p.closed)
+            for (int k = 0; k < p.wads.Count; k++)
+            {
+                var wd = p.wads[k];
+                fx.Paper(pu + wd.off.x, pv + wd.off.y, BoxTop + lift + wd.fall.z + 0.022f, rad * 1.15f, 1f, 100 + k * 17 + p.name.Length);
+            }
         return y;
     }
 }

@@ -20,6 +20,17 @@ public class PackBoard : MonoBehaviour
     const float BoxScale = 0.6f;
 
     public readonly List<PackPiece> pieces = new List<PackPiece>();
+
+    /// <summary>D-300 보이고 들리는 신호(그리기·소리는 Presentation/PackBoardFx 가 받는다 — 여기는 알리기만, 물리 값 변동 0). 받는 이가 없으면 옛 소리(PlayCue 5).</summary>
+    public enum PackFx { Crumple, WadSet, WrapOn, Scoop, Pour, PourOut, Rattle }
+    public event System.Action<PackFx, PackPiece, float> FxEvent;
+    void Fx(PackFx k, PackPiece p, float amount = 0f) { if (FxEvent != null) FxEvent(k, p, amount); else if (k != PackFx.Rattle) PackBench.PlayCue(5); }
+    /// <summary>손 커서: 마우스가 판 위에 있다 · 가리킨 자리(판 m) · 지금 뭘 쥐고 있나(봇이 쥐어도 같다). HandDrawn = 그림이 손을 그리고 있으니 OS 커서는 숨긴다.</summary>
+    public bool PointerOn { get; private set; }
+    public Vector2 Pointer { get; private set; }
+    public bool Gripping => Held != null;
+    public Vector2 HandPos => Held != null ? new Vector2(rawU, rawV) : Pointer;
+    public bool HandDrawn;
     public bool On { get; private set; }
     public PackPiece Held { get; private set; }
     public PackPiece InSlot { get; private set; }
@@ -317,12 +328,14 @@ public class PackBoard : MonoBehaviour
     void Update()
     {
         if (!On || Cam == null) return;
-        Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None; Cursor.visible = !HandDrawn;
         var ms = Mouse.current; var kb = Keyboard.current;
         if (kb != null && kb.escapeKey.wasPressedThisFrame) ExitAsked = true;
         Tick(Mathf.Min(Time.unscaledDeltaTime, 0.05f));                      // 물리는 마우스와 상관없이 매 프레임
         if (simHold) return;                                                 // 봇이 쥐고 있는 동안은 마우스를 안 본다
+        PointerOn = false;
         if (ms == null || !PointerOnBoard(ms.position.ReadValue(), out float u, out float v)) return;
+        PointerOn = true; Pointer = new Vector2(u, v);
         if (ms.leftButton.wasPressedThisFrame) Begin(u, v);
         if (Held != null)
         {
@@ -364,13 +377,13 @@ public class PackBoard : MonoBehaviour
             float dm = PaperRadius * 2f * BoxScale;
             p = Add(PackPieceKind.Sheet, roll.filler + (paper ? " 구긴 덩어리" : " 한 장"), u, v, paper ? dm : 0.20f, paper ? dm : 0.18f);
             p.filler = roll.filler; p.fillerKind = roll.fillerKind; p.crumple = paper;
-            PackBench.PlayCue(5);
+            if (paper) Fx(PackFx.Crumple, p); else PackBench.PlayCue(5);
             Act($"{p.filler} 한 장 뜯음{(paper ? " → 집는 순간 구겨짐" : "")}(롤에 {roll.left} 남음)");
         }
         else if (p.kind == PackPieceKind.BeadBin)                            // D-296: 통은 집는 게 아니라 삽으로 한 줌 떠서 손에 든다
         {
             p = Add(PackPieceKind.Scoop, "삽", u, v, 0.10f, 0.06f);
-            PackBench.PlayCue(5);
+            Fx(PackFx.Scoop, p);
             Act($"삽으로 알갱이 한 줌 뜸({BeadScoop}개)");
         }
         else if (p.kind == PackPieceKind.Box && p.content != null && !p.closed) { Deny($"{p.name} 안에 물건이 있음(먼저 물건을 꺼낸다)"); return; }
@@ -487,7 +500,7 @@ public class PackBoard : MonoBehaviour
         LastSpilled = 0;
         if (box == null || box.closed || Mathf.Abs(sheet.u - box.u) > box.w * 0.5f || Mathf.Abs(sheet.v - box.v) > box.d * 0.5f)
         {
-            SprayBeads(at, n); PackBench.PlayCue(5); Act("알갱이 상자 밖에 쏟음 → 흩어져 사라짐"); return;
+            SprayBeads(at, n); Fx(PackFx.PourOut, sheet); Act("알갱이 상자 밖에 쏟음 → 흩어져 사라짐"); return;
         }
         int put = Mathf.Min(n, Mathf.Max(0, BeadMax - box.beads.Count));
         if (put < n) { LastSpilled = n - put; SprayBeads(at, n - put); }
@@ -496,12 +509,12 @@ public class PackBoard : MonoBehaviour
         int first = box.beads.Count;
         for (int i = 0; i < put; i++)
         {
-            var bd = new PackPiece.Bead { from = from + new Vector2(Rnd(-0.02f, 0.02f), Rnd(-0.02f, 0.02f)), off = PourTarget(box, rad), delay = i * 0.012f + Rnd(0f, 0.04f) };
+            var bd = new PackPiece.Bead { from = from + new Vector2(Rnd(-0.02f, 0.02f), Rnd(-0.02f, 0.02f)), off = PourTarget(box, rad), delay = i * 0.006f + Rnd(0f, 0.04f) };
             box.beads.Add(bd);
         }
         Relax(box, first, rad);
         if (put > 0) RefreshPhys(box);
-        PackBench.PlayCue(5);
+        Fx(PackFx.Pour, sheet);
         float fill = box.phys != null ? box.phys.fill : 0f;
         Act($"알갱이 {put}개 쏟음 → {box.name} 에 {box.beads.Count}/{BeadMax}개{(put < n ? $" · {n - put}개 넘쳐 흩어짐" : "")}{(box.phys != null ? $" · 틈 {fill * 100f:F0}% 메움" : "")}");
     }
@@ -595,7 +608,7 @@ public class PackBoard : MonoBehaviour
         wad.fall.Drop(DropZ, 0.15f);                                              // 가볍고 푹신해서 거의 안 튄다
         box.wads.Add(wad);
         RefreshPhys(box);
-        PackBench.PlayCue(5);
+        Fx(PackFx.WadSet, sheet);
         float fill = box.phys != null ? box.phys.fill : 0f;
         Act($"구긴 종이가 {box.name} 틈에 자리 잡음 {box.wads.Count}/{PaperMax}덩어리(종이 {box.wads.Count * PaperMass * 1000f:F0} g{(box.phys != null ? $" · 틈 {fill * 100f:F0}% 메움" : "")})");
     }
@@ -613,7 +626,7 @@ public class PackBoard : MonoBehaviour
         if (pc.wrap >= PackRules.WrapMax) { Deny($"{sheet.filler} 이미 {pc.wrap}겹 — 더 못 감쌈"); return; }
         pc.wrap++; FitFootprint(pc);
         pc.drop.Drop(DropZ, DropBounce(pc));
-        PackBench.PlayCue(5);
+        Fx(PackFx.WrapOn, pc);
         Act($"{sheet.filler} 물건을 감쌈 {pc.wrap}겹(크기 +{(PackRules.Wrapped(1f, pc.wrap) - 1f) * 100f:F1} cm · 겹 계수 {PackRules.WrapK(pc.wrap):F2})");
     }
 
@@ -671,7 +684,7 @@ public class PackBoard : MonoBehaviour
                 if (bd.t < BeadFlight) bd.t = Mathf.Min(BeadFlight, bd.t + dt);
                 bd.fall.Step(dt);
             }
-            if (p.crumple && p.crumpleT < 1f) p.crumpleT = Mathf.Min(1f, p.crumpleT + dt / 0.12f);
+            if (p.crumple && p.crumpleT < 1f) p.crumpleT = Mathf.Min(1f, p.crumpleT + dt / 0.15f);
             var pos = new Vector2(p.u, p.v);
             Vector2 acc = Vector2.zero;
             if (Held == p)
@@ -692,14 +705,15 @@ public class PackBoard : MonoBehaviour
             if (p.closed) { p.rattle = p.phys.PeakWindow; p.shakeSecs = p.phys.ShakeTime; }
             p.jit = p.closed ? Vector2.ClampMagnitude(p.phys.vel * 0.03f, 0.02f) : Vector2.zero;
             float im = p.phys.TakeImpact();
-            if (im > 0.02f) Rattle(im);
+            if (im > 0.02f) Rattle(im, p);
         }
     }
 
-    void Rattle(float impact)
+    void Rattle(float impact, PackPiece box)
     {
         if (sfxItem == null) { var g = new GameObject("pack2d_sfx") { hideFlags = HideFlags.HideAndDontSave }; sfxItem = g.AddComponent<PackItem>(); sfxItem.kind = PackItemKind.Eggs; }
         PackBench.PlayRattle(sfxItem, Mathf.Clamp01(impact / 0.5f));
+        Fx(PackFx.Rattle, box, Mathf.Clamp01(impact / 0.5f));
         RattleBeats++;
     }
 

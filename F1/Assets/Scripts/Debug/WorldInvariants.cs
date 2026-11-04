@@ -55,7 +55,23 @@ public static class WorldInvariants
         ("포장 물리(D-296): 달걀 감싸기 2겹 + 중 상자 → 빈틈 있고 흔들림 있되 부딪힘 손상 ≤ 안 감쌌을 때의 40% · 대 상자 안 감쌈 >5cm", () => PackPhysicsShake()),
         ("포장 구긴 종이(D-296): 달걀 + 중 상자 + 4덩어리 → 흔들림 ≤ 종이 0일 때의 50% · 덩어리 늘면 틈 메움↑(≤0.85)", () => PackPaperShake()),
         ("포장 알갱이(D-296): 달걀 + 중 상자 + 알갱이 2줌 → 흔들림 ≤ 알갱이 0일 때의 50% · 같은 양이면 무거운 물건일수록 덜 붙듦 · 개수 늘면 메움↑(≤0.9)", () => PackBeadShake()),
+        ("포장 보이고 들리게(D-300): 신호 7종(구김·툭·감쌈·삽·쏟기·밖쏟기·덜컹) 전부 · 합성음 출처 5줄 다 적힘(AI 그림·외부 음원 없음)", () => PackFxSignals()),
     };
+
+    /// <summary>
+    /// D-300 포장 2D 보이고 들리게: 판이 보내는 신호(PackBoard.PackFx)가 7종 그대로이고(하나 빠지면 그 소리·모양이 조용히 사라진다), 소리 출처 표(PackBoardFx.SoundSources)가 비어 있지 않다.
+    /// 씬 없이 돈다. 화면·소리 자체는 Play 에서 본다(그림 3장).
+    /// </summary>
+    static List<string> PackFxSignals()
+    {
+        var bad = new List<string>();
+        int n = System.Enum.GetValues(typeof(PackBoard.PackFx)).Length;
+        if (n != 7) bad.Add($"PackFx 신호가 {n}종 (7종이어야 함 — 그림/소리 연결이 어긋남)");
+        var src = PackBoardFx.SoundSources;
+        if (src == null || src.Length < 5) bad.Add($"소리 출처 표 {(src == null ? 0 : src.Length)}줄 (5줄 이상)");
+        else foreach (var l in src) if (string.IsNullOrWhiteSpace(l)) bad.Add("소리 출처 줄이 비었음");
+        return bad;
+    }
 
     /// <summary>
     /// D-296 스티로폼 알갱이: 달걀 한 판 + 중 상자(안 감쌈)를 표준 흔들기(진폭 4 cm · 3 Hz)로 흔든 덜그럭 값이 알갱이 0줌일 때보다 2줌(= 2 × bead_scoop 개)일 때 절반 이하여야 한다.
