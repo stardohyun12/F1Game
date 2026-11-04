@@ -53,9 +53,13 @@ printf '%s' "$NAME" > "$SESS/build.task_name"
 rm -f "$SESS/build.playcount"   # D-292 Play 횟수 과제마다 초기화
 RUN_DRY="$DRY" bash scripts/team.sh build "$BRIEF"; RC=$?
 say "team.sh rc=$RC"
+# 보고서가 뼈대 그대로면(team.sh 가 FAILED-NOREPORT 를 붙임) 실패 — 과제 29 이어서 첫 시도가 즉사했는데 "끝: ok" 로 나왔다
+REP=$(ls -t docs/team/reports/build-*.md 2>/dev/null | head -1)
+[ "$DRY" != 1 ] && [ -n "$REP" ] && grep -q '하네스 자동 기록 (구현이 보고서를 못 씀)' "$REP" && FAILS_PRE="보고서 없음($REP)"
 
 # 5. 컴파일 에러 확인
 FAILS=()
+[ -n "${FAILS_PRE:-}" ] && FAILS+=("$FAILS_PRE")
 if [ "$DRY" = 1 ]; then echo "[DRY] ucli-http.sh console --type error → (없음)"
 else
   CF=$(ucli exec 'return UnityEditor.EditorUtility.scriptCompilationFailed ? "BROKEN" : "OK";' | tail -1 | tr -d '\r')
