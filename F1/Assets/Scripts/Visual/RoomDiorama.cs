@@ -8,10 +8,10 @@ using UnityEngine.Rendering;
 /// 카메라가 플레이어 뒤·위로 빠져 방 전체를 상자처럼 내려다본다(기준 화면 world/taste/interior-candidates/07).
 /// - 걷기·E 상호작용은 1인칭 그대로: OnFootCamera 가 놓은 눈 자세를 저장해 두고 Gaze 가 그 눈에서 레이를 쏜다(EyeRay). 조준점(dot)은 그 레이가 맞은 곳의 화면 위치로 옮긴다.
 /// - 전환은 포장 2D(Stage_Packing.BoardSec)와 같은 0.4초. 문을 지나 상자를 나가면 1인칭으로 돌아온다.
-/// - 그리는 동안(저해상 카메라에만): A7 셰이더 전역 _A7Dio 를 켜 집을 단면으로 자른다 — 방 천장 위(지붕 포함)와 카메라 쪽 벽 바깥만 버리고,
-///   집 밖(하늘·바다·마을·지형)과 방 바닥 아래(1층)는 그대로 그린다. 배경은 카메라 원래 하늘(과제 20261104-1635, D-299 「창 밖은 바깥 세계」).
-///   빛 = 씬의 해(방향광 — 시간대 dusk 로 색·각도가 바뀜, 그림자 켬) × (1 − 안개) + 약한 바탕빛 + 책상 전등 한 곳(실시간 점광원, 실행 중에만 만든다).
-///   해가 꺼지면(밤) 전등만 남는다. 방에 닿는 다른 점·스팟 빛과 전역광은 낮춘다. 창 유리는 투명 사본으로 바꿔 그린다. 나오면 전부 되돌린다.
+/// - 그리는 동안(저해상 카메라에만): A7 셰이더 전역 _A7Dio 를 켜 방 상자 밖·천장·카메라 쪽 벽을 버린다. 배경 검정, 방과 안 겹치는 렌더러·지형은 끈다
+///   (forceRenderingOff — enabled 는 안 건드림). 과제 20261104-2033: 20 의 「창 밖은 바깥 세계」를 되돌림 — 창 유리는 시간대 단색 판(낮 하늘색·노을 주황·밤 남색).
+///   빛 = 씬의 해(방향광 — 시간대 dusk 로 색·각도가 바뀜, 그림자 켬, 잘린 지붕은 그림자도 안 드리움) × (1 − 안개) + 시간대 바탕빛 + 책상 전등 한 곳.
+///   전등은 밤에만 주역(낮엔 작고 약하게). 해가 꺼지면(밤) 바탕빛 남색 + 전등. 방에 닿는 다른 점·스팟 빛과 전역광은 낮춘다. 나오면 전부 되돌린다.
 /// 좌표는 손으로 적지 않는다 — 방 상자(A7ShadeGlobals.TryRoomBox)·창 유리(GLASS_*)·책상(DESK_*) 이름에서 매번 잡는다.
 /// </summary>
 [DefaultExecutionOrder(100)]   // OnFootCamera(0) 가 눈 자세를 놓은 뒤에 덮어쓴다
@@ -29,16 +29,23 @@ public sealed class RoomDiorama : MonoBehaviour
     [Tooltip("카메라가 고개 돌림(Yaw)을 따라가는 시간(초)")]
     public float yawSmooth = 0.25f;
 
-    [Header("빛")]
-    public Color ambient = new Color(0.10f, 0.11f, 0.14f);
+    [Header("빛 — 시간대(낮 / 노을 = SunsetLook.dusk / 밤 = 해 꺼짐)")]
+    [Tooltip("바탕빛: 낮 밝은 회청 · 노을 주황빛 · 밤 남색")]
+    public Color ambientDay = new Color(0.62f, 0.66f, 0.72f);
+    public Color ambientDusk = new Color(0.62f, 0.42f, 0.28f);
+    public Color ambientNight = new Color(0.07f, 0.08f, 0.18f);
+    [Tooltip("창 유리 단색 판: 낮 하늘색 · 노을 주황 · 밤 짙은 남색")]
+    public Color glassDay = new Color(0.62f, 0.80f, 0.96f);
+    public Color glassDusk = new Color(1.00f, 0.60f, 0.30f);
+    public Color glassNight = new Color(0.07f, 0.09f, 0.24f);
     [Tooltip("날씨 안개 0..1 — 창빛(해) 세기 = 1 − 안개. 날씨 시스템이 아직 없어 값 하나만 둔다(생기면 여기 묶는다)")]
     [Range(0f, 1f)] public float fog = 0f;
-    [Tooltip("창 유리 투명도(0 = 안 보임, 1 = 불투명)")]
-    [Range(0f, 1f)] public float glassAlpha = 0.18f;
-    [Tooltip("단면으로 자르는 집 범위(방 상자 좌표 — 방 가운데에서 이만큼 옆까지). 그 밖 세계는 안 자른다")]
+    [Tooltip("그림자에서 지붕을 빼는 집 범위(방 상자 좌표 — 방 가운데에서 이만큼 옆까지, 천장 위만)")]
     public float houseReach = 3f;
     public Color lampColor = new Color(1.00f, 0.78f, 0.48f);
-    public float lampIntensity = 2.6f, lampRange = 2.2f;
+    [Tooltip("책상 전등: 밤 세기·반경 / 낮 세기·반경(낮엔 작고 약하게)")]
+    public float lampIntensity = 1.8f, lampRange = 1.6f;
+    public float lampDayIntensity = 0.5f, lampDayRange = 1.0f;
     [Tooltip("카메라 쪽 벽을 버리는 문턱(상자 좌표, 벽 안쪽 면 ≈ 0.97)")]
     public float wallCut = 0.95f;
     [Tooltip("천장을 버리는 문턱(상자 좌표)")]
@@ -74,8 +81,13 @@ public sealed class RoomDiorama : MonoBehaviour
     readonly List<Renderer> glass = new List<Renderer>();
     readonly List<Material> glassSaved = new List<Material>();
     readonly List<Light> dimmed = new List<Light>();
-    Light lampLight; Material glassMat;
-    float savedAmb; bool rendering;
+    readonly List<Renderer> hidden = new List<Renderer>();
+    readonly List<Terrain> hiddenTerrain = new List<Terrain>();
+    Light lampLight; Material glassMat; SunsetLook sunset; bool sunsetLooked;
+    CameraClearFlags savedClear; Color savedBg; float savedAmb; bool rendering;
+    /// <summary>지금 시간대 무게(검사·캡처용): 노을 0..1, 밤 0..1.</summary>
+    public float DuskW { get; private set; }
+    public float NightW { get; private set; }
     /// <summary>창 고르기 결과(검사·캡처용) — 책상 창 가운데. 못 찾으면 방 가운데.</summary>
     public Vector3 WindowCenter { get; private set; }
     RectTransform dotRt; Vector2 dotMin, dotMax, dotPos;
@@ -193,17 +205,27 @@ public sealed class RoomDiorama : MonoBehaviour
         rendering = on; Active = on;
         if (on)
         {
-            savedAmb = RenderSettings.ambientIntensity;
+            savedClear = cam.clearFlags; savedBg = cam.backgroundColor; savedAmb = RenderSettings.ambientIntensity;
+            cam.clearFlags = CameraClearFlags.SolidColor; cam.backgroundColor = Color.black;
             RenderSettings.ambientIntensity = savedAmb * 0.25f;
             var wb = WorldBounds();
-            // 창 유리: 19 는 껐다 → 투명 사본으로 바꿔 그린다(공유 .mat 은 안 건드림). 단면에 걸린 유리는 UpdateGlass 가 매 프레임 숨긴다
+            // 창 유리: 시간대 단색 판(실행 중 사본 — 공유 .mat 은 안 건드림). 카메라 쪽 벽 유리는 UpdateGlass 가 매 프레임 숨긴다
             foreach (var r in room.parent.GetComponentsInChildren<Renderer>(true))
             {
                 if (!r.name.StartsWith("GLASS_")) continue;
                 glass.Add(r); glassSaved.Add(r.sharedMaterial);
-                r.sharedMaterial = GlassMat(r.sharedMaterial);
+                r.sharedMaterial = GlassMat();
             }
             UpdateGlass();
+            // 방 밖은 검정: 방 상자와 안 겹치는 렌더러·지형을 끈다. A7 재질은 셰이더가 상자 밖을 버리므로 상자에 걸치면 남긴다. 그 밖(지형 메시·URP Lit …)은 가운데가 상자 안일 때만
+            foreach (var r in FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            {
+                if (r.forceRenderingOff || r.transform.IsChildOf(player) || r.name.StartsWith("GLASS_")) continue;
+                bool a7 = r.sharedMaterial != null && r.sharedMaterial.shader != null && r.sharedMaterial.shader.name == "PitCrew/SceneA7/Lit";
+                bool keep = a7 ? r.bounds.Intersects(wb) : MaxAbs(box.MultiplyPoint3x4(r.bounds.center)) <= 1.05f;
+                if (!keep) { r.forceRenderingOff = true; hidden.Add(r); }
+            }
+            foreach (var tr in Terrain.activeTerrains) if (tr.drawHeightmap) { tr.drawHeightmap = false; tr.drawTreesAndFoliage = false; hiddenTerrain.Add(tr); }
             foreach (var l in FindObjectsByType<Light>(FindObjectsSortMode.None))
             {
                 if (!l.enabled || l.type == LightType.Directional) continue;
@@ -216,9 +238,12 @@ public sealed class RoomDiorama : MonoBehaviour
         else
         {
             RenderSettings.ambientIntensity = savedAmb;
+            if (cam != null) { cam.clearFlags = savedClear; cam.backgroundColor = savedBg; }
             for (int i = 0; i < glass.Count; i++) if (glass[i] != null) { glass[i].sharedMaterial = glassSaved[i]; glass[i].forceRenderingOff = false; }
             foreach (var l in dimmed) if (l != null) l.enabled = true;
-            glass.Clear(); glassSaved.Clear(); dimmed.Clear();
+            foreach (var r in hidden) if (r != null) r.forceRenderingOff = false;
+            foreach (var tr in hiddenTerrain) if (tr != null) { tr.drawHeightmap = true; tr.drawTreesAndFoliage = true; }
+            glass.Clear(); glassSaved.Clear(); dimmed.Clear(); hidden.Clear(); hiddenTerrain.Clear();
             if (lampLight != null) Destroy(lampLight.gameObject);
             if (player != null && foot != null && foot.enabled)
                 foreach (var r in player.GetComponentsInChildren<Renderer>(true)) r.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
@@ -266,33 +291,14 @@ public sealed class RoomDiorama : MonoBehaviour
         return true;
     }
 
-    /// <summary>방 바닥 아래 이만큼(상자 좌표)부터는 안 자른다 — 바닥판·발코니 판 윗면까지는 자르고 1층은 남긴다.</summary>
-    public const float FloorKeep = -1.12f;
-
-    // 셰이더 A7DioCut 과 같은 규칙(유리처럼 A7 이 아닌 것용): 집 범위 안에서 방 상자 밖이면 방을 지나 보일 때만 남김(창 너머), 상자 안이면 천장·카메라 쪽 벽을 자름
+    // 셰이더 A7DioCut 과 같은 규칙(유리처럼 A7 이 아닌 것용): 방 상자(벽 두께 여유 1.15) 밖·천장·카메라 쪽 벽이면 숨김
     bool Cut(Vector3 wp)
     {
         Vector3 b = box.MultiplyPoint3x4(wp), c = box.MultiplyPoint3x4(cam.transform.position);
-        if (Mathf.Max(Mathf.Abs(b.x), Mathf.Abs(b.z)) > houseReach || b.y < FloorKeep) return false;
-        if (MaxAbs(b) > 1f) return !ThroughBox(c, b);
-        if (b.y > ceilCut) return true;
+        if (MaxAbs(b) > 1.15f || b.y > ceilCut) return true;
         if (Mathf.Abs(c.x) > 1f && b.x * Mathf.Sign(c.x) > wallCut) return true;
         if (Mathf.Abs(c.z) > 1f && b.z * Mathf.Sign(c.z) > wallCut) return true;
         return false;
-    }
-
-    /// <summary>카메라(c)에서 조각(b)까지 선분이 방 상자를 지나 b 앞에서 빠져나가나(상자 좌표) — 창·문 너머로 보이는 것.</summary>
-    public static bool ThroughBox(Vector3 c, Vector3 b)
-    {
-        float te = 0f, tx = 1f;
-        for (int k = 0; k < 3; k++)
-        {
-            float d = b[k] - c[k];
-            if (Mathf.Abs(d) < 1e-5f) { if (Mathf.Abs(c[k]) > 1f) return false; continue; }
-            float t0 = (-1f - c[k]) / d, t1 = (1f - c[k]) / d;
-            te = Mathf.Max(te, Mathf.Min(t0, t1)); tx = Mathf.Min(tx, Mathf.Max(t0, t1));
-        }
-        return te < tx && tx < 1f;
     }
 
     void UpdateGlass()
@@ -300,22 +306,40 @@ public sealed class RoomDiorama : MonoBehaviour
         foreach (var r in glass) if (r != null) r.forceRenderingOff = Cut(r.bounds.center);
     }
 
-    // 원래 유리 색 그대로 + 투명(URP Unlit 사본, 실행 중에만)
-    Material GlassMat(Material src)
+    // 창 유리 = 불투명 단색 판(URP Unlit 사본, 실행 중에만). 색은 OnBegin 이 시간대마다 넣는다
+    Material GlassMat()
     {
         if (glassMat == null)
         {
-            var m = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "DIO_Glass(runtime)" };
-            m.SetFloat("_Surface", 1f); m.SetFloat("_Blend", 0f); m.SetFloat("_Cull", 0f); m.SetFloat("_ZWrite", 0f);
-            m.SetFloat("_SrcBlend", (float)BlendMode.SrcAlpha); m.SetFloat("_DstBlend", (float)BlendMode.OneMinusSrcAlpha);
-            m.SetFloat("_SrcBlendAlpha", (float)BlendMode.One); m.SetFloat("_DstBlendAlpha", (float)BlendMode.OneMinusSrcAlpha);
-            m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT"); m.SetOverrideTag("RenderType", "Transparent");
-            m.renderQueue = (int)RenderQueue.Transparent;
-            glassMat = m;
+            glassMat = new Material(Shader.Find("Universal Render Pipeline/Unlit")) { name = "DIO_Glass(runtime)" };
+            glassMat.SetFloat("_Cull", 0f);   // 양면 — 유리 판 앞면이 바깥을 봐서 방 안에서 보면 뒷면이다
         }
-        Color c = src != null && src.HasProperty("_BaseColor") ? src.GetColor("_BaseColor") : new Color(0.7f, 0.8f, 0.9f);
-        c.a = glassAlpha; glassMat.SetColor("_BaseColor", c);
         return glassMat;
+    }
+
+    /// <summary>
+    /// 시간대 무게: 노을 = SunsetLook.dusk(켜져 있을 때), 밤 = 해(RenderSettings.sun)가 꺼졌거나 세기 0.5 아래로 내려간 만큼.
+    /// 바탕빛·유리 색·전등 세기를 이 둘로 섞는다(낮 → 노을 → 밤).
+    /// </summary>
+    public static void TimeWeights(SunsetLook sl, Light sun, out float dusk, out float night)
+    {
+        dusk = sl != null && sl.IsOn ? Mathf.Clamp01(sl.dusk) : 0f;
+        night = sun == null || !sun.isActiveAndEnabled ? 1f : 1f - Mathf.Clamp01(sun.intensity / 0.5f);
+    }
+
+    public static Color Mix(Color day, Color dusk, Color night, float dw, float nw) => Color.Lerp(Color.Lerp(day, dusk, dw), night, nw);
+
+    void ApplyTime()
+    {
+        if (!sunsetLooked) { sunset = SunsetLook.Find(); sunsetLooked = true; }
+        TimeWeights(sunset, RenderSettings.sun, out var dw, out var nw);
+        DuskW = dw; NightW = nw;
+        if (glassMat != null) glassMat.SetColor("_BaseColor", Mix(glassDay, glassDusk, glassNight, dw, nw));
+        if (lampLight != null)
+        {
+            lampLight.intensity = Mathf.Lerp(lampDayIntensity, lampIntensity, nw);
+            lampLight.range = Mathf.Lerp(lampDayRange, lampRange, nw);
+        }
     }
 
     // 책상 전등 = 방 안 DESK_* 윗면 + 0.45 m
@@ -347,9 +371,11 @@ public sealed class RoomDiorama : MonoBehaviour
         Shader.SetGlobalMatrix(InBoxId, box);
         Shader.SetGlobalVector(InPId, new Vector4(1f, g != null ? g.indoorLevels : 10, 0f, 6f));
         Shader.SetGlobalVector(InQId, new Vector4(0f, 0f, g != null ? g.indoorDitherWidth : 0.15f, 0f));
-        // y = 해 세기 배수(창빛 = 1 − 안개) · 바탕빛 w = 단면으로 자르는 집 범위
+        // y = 해 세기 배수(창빛 = 1 − 안개) · 바탕빛(시간대) w = 그림자에서 지붕을 빼는 집 범위
+        ApplyTime();
         Shader.SetGlobalVector(DioId, new Vector4(1f, 1f - Mathf.Clamp01(fog), wallCut, ceilCut));
-        Color a = QualitySettings.activeColorSpace == ColorSpace.Linear ? ambient.linear : ambient;
+        Color amb = Mix(ambientDay, ambientDusk, ambientNight, DuskW, NightW);
+        Color a = QualitySettings.activeColorSpace == ColorSpace.Linear ? amb.linear : amb;
         Shader.SetGlobalVector(DioAmbId, new Vector4(a.r, a.g, a.b, houseReach));
     }
 

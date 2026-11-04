@@ -86,10 +86,17 @@ Shader "PitCrew/SceneA7/Lit"
         //  _A7InQ = (거르는 탭 간격 텍셀, 국소 평균 쪽 대비 줄임 0..1, 단 끝 디더 폭 0..1, 단 자를 때 결 빼기 0..1)
         float4x4 _A7InBox; float4 _A7InP; float4 _A7InQ;
         // 디오라마(과제 20261104-1559, D-298, RoomDiorama 가 저해상 카메라에만 넣음 — 기본 0 = 아무 일 없음):
-        //  _A7Dio = (켬, 해 세기 배수(1 − 안개), 카메라 쪽 벽 버리는 문턱(상자 좌표), 천장 버리는 문턱) · _A7DioAmb = (실내 바탕빛 rgb, 자르는 집 범위(상자 좌표))
-        //  켜지면 집을 단면으로 자른다: 집 범위 안에서 천장 위(지붕)와 카메라 쪽 벽 바깥만 버리고, 집 밖 세계·방 바닥 아래는 그린다(과제 20261104-1635: 창 밖 = 바깥 세계).
-        //  상자 안은 해(그림자 포함) × 배수 + 약한 바탕빛 + 추가 광원(책상 전등)
+        //  _A7Dio = (켬, 해 세기 배수(1 − 안개), 카메라 쪽 벽 버리는 문턱(상자 좌표), 천장 버리는 문턱) · _A7DioAmb = (실내 바탕빛 rgb — 시간대별, 그림자에서 지붕을 빼는 집 범위(상자 좌표))
+        //  켜지면 방 상자 밖·천장·카메라 쪽 벽을 버린다(배경 검정 — 과제 20261104-2033 「창 밖은 다시 검정」).
+        //  상자 안은 해(그림자 포함) × 배수 + 시간대 바탕빛 + 추가 광원(책상 전등)
         float4 _A7Dio; float4 _A7DioAmb;
+        // 그림자 패스용: 집 범위 안 천장 위(지붕·천장판)는 그림자를 안 드리운다 — 그림에서 자른 지붕이 그림자로 남아 방을 덮던 것(과제 20261104-2033 원인)
+        bool A7DioShadowCut(float3 wp)
+        {
+            if (_A7Dio.x < 0.5 || _A7InP.x < 0.5) return false;
+            float3 b = mul(_A7InBox, float4(wp, 1)).xyz;
+            return max(abs(b.x), abs(b.z)) <= _A7DioAmb.w && b.y > _A7Dio.w;
+        }
         SAMPLER(sampler_linear_repeat);
         bool A7Inside(float3 wp)
         {
@@ -101,17 +108,8 @@ Shader "PitCrew/SceneA7/Lit"
         {
             if (_A7Dio.x < 0.5 || _A7InP.x < 0.5) return false;
             float3 b = mul(_A7InBox, float4(wp, 1)).xyz;
-            if (max(abs(b.x), abs(b.z)) > _A7DioAmb.w || b.y < -1.12) return false;   // 집 밖·1층은 그대로(-1.12 = RoomDiorama.FloorKeep)
             float3 c = mul(_A7InBox, float4(_WorldSpaceCameraPos, 1)).xyz;
-            if (max(abs(b.x), max(abs(b.y), abs(b.z))) > 1)
-            {
-                // 집 안이지만 방 상자 밖(옆방·지붕·발코니): 카메라 → 조각 선분이 방 상자를 지나 그 앞에서 빠져나갈 때만 남긴다(창·문 너머) — RoomDiorama.ThroughBox
-                float3 d = b - c; d = (step(0, d) * 2 - 1) * max(abs(d), 1e-5);
-                float3 t0 = (-1 - c) / d, t1 = (1 - c) / d, lo = min(t0, t1), hi = max(t0, t1);
-                float te = max(0, max(lo.x, max(lo.y, lo.z))), tx = min(1, min(hi.x, min(hi.y, hi.z)));
-                return !(te < tx && tx < 1);
-            }
-            if (b.y > _A7Dio.w) return true;
+            if (max(abs(b.x), max(abs(b.y), abs(b.z))) > 1 || b.y > _A7Dio.w) return true;
             if (abs(c.x) > 1 && b.x * sign(c.x) > _A7Dio.z) return true;
             if (abs(c.z) > 1 && b.z * sign(c.z) > _A7Dio.z) return true;
             return false;
@@ -313,7 +311,7 @@ Shader "PitCrew/SceneA7/Lit"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
             float3 _LightDirection;
             struct A { float4 pos : POSITION; float3 n : NORMAL; float2 uv : TEXCOORD0; };
-            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; };
+            struct V { float4 pos : SV_POSITION; float2 uv : TEXCOORD0; float3 wp : TEXCOORD1; };
             V vert(A i)
             {
                 V o; float3 wp = TransformObjectToWorld(i.pos.xyz); float3 nw = TransformObjectToWorldNormal(i.n);
@@ -323,9 +321,9 @@ Shader "PitCrew/SceneA7/Lit"
                 #else
                     cp.z = max(cp.z, UNITY_NEAR_CLIP_VALUE);
                 #endif
-                o.pos = cp; o.uv = TRANSFORM_TEX(i.uv, _BaseMap); return o;
+                o.pos = cp; o.uv = TRANSFORM_TEX(i.uv, _BaseMap); o.wp = wp; return o;
             }
-            half4 frag(V i) : SV_Target { clip(SampleBase(i.uv).a - _Cutoff); return 0; }
+            half4 frag(V i) : SV_Target { clip(SampleBase(i.uv).a - _Cutoff); if (A7DioShadowCut(i.wp)) discard; return 0; }
             ENDHLSL
         }
 

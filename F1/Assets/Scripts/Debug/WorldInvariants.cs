@@ -45,6 +45,7 @@ public static class WorldInvariants
         ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
         ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
+        ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
         ("포장대 선반 물건 5개·칩 0", () => PackV3Shelf()),
         ("포장 v3 물건·상자 연속 충돌(들면 안 빠짐)", () => PackV3Continuous()),
@@ -675,6 +676,38 @@ public static class WorldInvariants
             var d = desk.bounds.center - c; d.y = 0f;
             if (d.magnitude > 2.5f) bad.Add($"고른 창이 책상에서 {d.magnitude:F1} m — 책상 창 아님");
         }
+        return bad;
+    }
+
+    /// <summary>
+    /// 과제 20261104-2033: 디오라마가 지붕·천장을 그림에서만 버리고 그림자 패스에선 그대로 그려서, 잘린 지붕 그림자가 방 전체를 덮었다
+    /// → 낮·밤 방 밝기가 같았다(실측 전등 밖 L 0.158 / 0.158). A7 그림자 패스가 A7DioShadowCut 으로 지붕을 버리는지,
+    /// 해가 꺼지면 밤 무게 1 인지, 시간대 바탕빛이 낮 ≥ 밤×2.5 · 저녁은 주황(R > B×1.3)인지 본다.
+    /// </summary>
+    static List<string> RoomDioramaTimeLight()
+    {
+        var bad = new List<string>();
+        var sp = System.IO.Path.Combine(Application.dataPath, "Art/SceneA7/SceneA7Lit.shader");
+        if (System.IO.File.Exists(sp))
+        {
+            var src = System.IO.File.ReadAllText(sp);
+            if (!src.Contains("if (A7DioShadowCut(i.wp)) discard;")) bad.Add("SceneA7Lit 그림자 패스에 A7DioShadowCut 없음 — 잘린 지붕이 방에 그림자를 드리움");
+        }
+        RoomDiorama.TimeWeights(null, null, out _, out var nw);
+        if (nw < 0.99f) bad.Add($"해 없음인데 밤 무게 {nw:F2} (기대 1)");
+        // 디오라마는 Play 때 OnFootDirector 가 붙인다 — 없으면 숨긴 임시 오브젝트에 붙여 기본값을 본다(에디트 모드라 Awake 안 돎)
+        var go = new GameObject("_inv_sun") { hideFlags = HideFlags.HideAndDontSave };
+        var sun = go.AddComponent<Light>(); sun.type = LightType.Directional; sun.intensity = 1.35f;
+        RoomDiorama.TimeWeights(null, sun, out var dw, out nw);
+        var d = UnityEngine.Object.FindFirstObjectByType<RoomDiorama>(FindObjectsInactive.Include);
+        if (d == null) d = go.AddComponent<RoomDiorama>();
+        Color day = RoomDiorama.Mix(d.ambientDay, d.ambientDusk, d.ambientNight, 0, 0), night = RoomDiorama.Mix(d.ambientDay, d.ambientDusk, d.ambientNight, 0, 1);
+        Color dusk = RoomDiorama.Mix(d.ambientDay, d.ambientDusk, d.ambientNight, 1, 0);
+        UnityEngine.Object.DestroyImmediate(go);
+        if (nw > 0.01f || dw > 0.01f) bad.Add($"해 켜짐(1.35)·노을 꺼짐인데 저녁 {dw:F2} · 밤 {nw:F2} (기대 0 · 0)");
+        float Lum(Color c) => 0.299f * c.r + 0.587f * c.g + 0.114f * c.b;
+        if (Lum(day) < 2.5f * Lum(night)) bad.Add($"바탕빛 낮 {Lum(day):F2} < 밤 {Lum(night):F2} × 2.5 — 낮밤 방이 같아 보임");
+        if (dusk.r <= 1.3f * dusk.b) bad.Add($"저녁 바탕빛 R {dusk.r:F2} ≤ B {dusk.b:F2} × 1.3 — 주황 아님");
         return bad;
     }
 
