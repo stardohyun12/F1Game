@@ -118,7 +118,7 @@ public partial class OnFootDirector : MonoBehaviour
         // 실내 디오라마(과제 20261104-1559, D-298): 2층 방 상자 안이면 카메라가 뒤·위로 빠진다
         var dio = cam.GetComponent<RoomDiorama>();
         if (dio == null) dio = cam.gameObject.AddComponent<RoomDiorama>();
-        dio.Init(footCam, player.transform, () => dotRoot);
+        dio.Init(footCam, player.transform, () => dotRoot, () => State == Mode.InCart || State == Mode.Seated || State == Mode.Board || State == Mode.Pack);   // D-304: 이 장면들 동안 디오라마는 비켜 있다
 
         DayLog.ResetAll();                       // 저장 방식이 없다 — 플레이마다 방학 1일째
         if (rc != null) rc.BeginNoClock();

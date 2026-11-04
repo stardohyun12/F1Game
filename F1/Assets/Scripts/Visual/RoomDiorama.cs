@@ -13,6 +13,8 @@ using UnityEngine.Rendering;
 ///   빛 = 씬의 해(방향광 — 시간대 dusk 로 색·각도가 바뀜, 그림자 켬, 잘린 지붕은 그림자도 안 드리움) × (1 − 안개) + 시간대 바탕빛 + 책상 전등 한 곳.
 ///   전등은 밤에만 주역(낮엔 작고 약하게). 해가 꺼지면(밤) 바탕빛 남색 + 전등. 방에 닿는 다른 점·스팟 빛과 전역광은 낮춘다. 나오면 전부 되돌린다.
 /// 좌표는 손으로 적지 않는다 — 방 상자(A7ShadeGlobals.TryRoomBox)·창 유리(GLASS_*)·책상(DESK_*) 이름에서 매번 잡는다.
+/// 과제 20261105-0359(D-304): 2층 방만이 아니라 건물 안 전부(A7ShadeGlobals.FindInteriors — 집 1층·보관소·우체국. 정비소는 컷 셰이더가 없어 1인칭 — CanCut). 상자 → 상자는 w 를 그대로 두고
+/// 상자만 바꿔 끼운다(실내 도트·빛 전역값도 그 상자로). 작업대·칠판·카트·낚시가 카메라를 가져간 동안은 그림까지 비켜 있다.
 /// </summary>
 [DefaultExecutionOrder(100)]   // OnFootCamera(0) 가 눈 자세를 놓은 뒤에 덮어쓴다
 public sealed class RoomDiorama : MonoBehaviour
@@ -28,6 +30,9 @@ public sealed class RoomDiorama : MonoBehaviour
     public float aimPitch = 30f;
     [Tooltip("카메라가 고개 돌림(Yaw)을 따라가는 시간(초)")]
     public float yawSmooth = 0.25f;
+    [Tooltip("과제 20261105-0359(D-304) 가설값: 이름 없는 건물 안(보관소·정비소처럼 넓은 곳)은 거리 = 상자 가로 반폭(큰 쪽) × 이 값, distance~maxDistance. 2층 방은 distance 그대로")]
+    public float distPerHalf = 1.6f;
+    public float maxDistance = 12f;
 
     [Header("빛 — 시간대(낮 / 노을 = SunsetLook.dusk / 밤 = 해 꺼짐)")]
     [Tooltip("바탕빛: 낮 밝은 회청 · 노을 주황빛 · 밤 남색")]
@@ -72,10 +77,17 @@ public sealed class RoomDiorama : MonoBehaviour
         pos = camT.position; fwd = camT.forward;
     }
 
-    Camera cam; OnFootCamera foot; Transform player; Func<GameObject> dot;
-    Matrix4x4 box, boxInv; bool hasBox; Transform room;
+    Camera cam; OnFootCamera foot; Transform player; Func<GameObject> dot; Func<bool> camTaken;
+    Matrix4x4 box, boxInv; Transform room, building;
     float w, target, yawNow, yawVel; bool inRoom;
     RoomCalendar calendar;
+    // 과제 20261105-0359(D-304): 건물 안 전부 — 상자 여럿(A7ShadeGlobals.FindInteriors), 지금 상자 cur
+    List<A7ShadeGlobals.Interior> rooms; int cur = -1;
+    Vector3 midNow, midVel; float distNow, distVel;
+    /// <summary>지금(또는 마지막) 상자 이름(검사·캡처용). 없으면 "".</summary>
+    public string RoomNow => cur >= 0 ? rooms[cur].name : "";
+    /// <summary>찾은 건물 안 목록(검사·캡처용, 첫 LateUpdate 뒤).</summary>
+    public IReadOnlyList<A7ShadeGlobals.Interior> Rooms => rooms;
 
     // 되돌릴 것
     readonly List<Renderer> glass = new List<Renderer>();
@@ -92,9 +104,10 @@ public sealed class RoomDiorama : MonoBehaviour
     public Vector3 WindowCenter { get; private set; }
     RectTransform dotRt; Vector2 dotMin, dotMax, dotPos;
 
-    public void Init(OnFootCamera footCam, Transform playerT, Func<GameObject> dotRoot)
+    /// <param name="taken">참이면 다른 장면(작업대·칠판·카트·낚시)이 카메라를 가져간 동안 — 디오라마는 그림까지 비켜 있다.</param>
+    public void Init(OnFootCamera footCam, Transform playerT, Func<GameObject> dotRoot, Func<bool> taken = null)
     {
-        foot = footCam; player = playerT; dot = dotRoot;
+        foot = footCam; player = playerT; dot = dotRoot; camTaken = taken;
     }
 
     void Awake() { cam = GetComponent<Camera>(); }
@@ -116,36 +129,87 @@ public sealed class RoomDiorama : MonoBehaviour
         Shader.SetGlobalVector(DioId, Vector4.zero);
     }
 
+    // 건물 안 목록은 처음 한 번만 찾는다(플레이어 콜라이더는 안 맞는 셈) — 첫째는 2층 방(이름 방) 상자 그대로
     bool FindBox()
     {
-        if (hasBox) return true;
-        var g = FindFirstObjectByType<A7ShadeGlobals>();
-        string n = g != null ? g.roomName : "ROOM_2F";
-        foreach (var t in FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
-            if (t.name == n && t.parent != null) { room = t; break; }
-        if (room == null) return false;
-        if (g != null && g.IndoorBox != Matrix4x4.zero) box = g.IndoorBox;
-        else if (!A7ShadeGlobals.TryRoomBox(room, out box)) return false;
-        boxInv = box.inverse; hasBox = true;
-        calendar = FindFirstObjectByType<RoomCalendar>();
-        return true;
+        if (rooms == null)
+        {
+            rooms = A7ShadeGlobals.FindInteriors(player);
+            rooms.RemoveAll(r => !r.ok || !CanCut(r.building));
+            // ⚠ 컷(천장·카메라 쪽 벽 버림)은 SceneA7/Lit 셰이더에만 있다 — 그 재질이 하나도 없는 건물(정비소 = Library/A7LitPoint)은 지붕이 화면을 덮으므로 1인칭 그대로
+            calendar = FindFirstObjectByType<RoomCalendar>();
+        }
+        return rooms.Count > 0;
+    }
+
+    public const string CutShader = "PitCrew/SceneA7/Lit";
+    public static bool CanCut(Transform building)
+    {
+        if (building == null) return false;
+        foreach (var r in building.GetComponentsInChildren<Renderer>())
+            foreach (var m in r.sharedMaterials)
+                if (m != null && m.shader != null && m.shader.name == CutShader) return true;
+        return false;
+    }
+
+    void Select(int i)
+    {
+        cur = i; var it = rooms[i];
+        box = it.box; boxInv = box.inverse; room = it.room; building = it.building;
     }
 
     static float MaxAbs(Vector3 q) => Mathf.Max(Mathf.Abs(q.x), Mathf.Max(Mathf.Abs(q.y), Mathf.Abs(q.z)));
+    float Mx(int i, Vector3 p) => MaxAbs(rooms[i].box.MultiplyPoint3x4(p));
+    static float Vol(A7ShadeGlobals.Interior it) => it.room != null ? 0f : it.half.x * it.half.y * it.half.z;
+
+    /// <summary>
+    /// 발 위 1 m 점이 든 상자(들어갈 땐 0.98, 지금 상자에서 나갈 땐 1.02 — 문턱에서 깜빡이지 않게). 여럿이면 작은 쪽(2층 방이 맨 먼저).
+    /// 없어도 같은 건물 다른 상자 1.3 안(방 사이 문턱·틈)이면 지금 상자를 붙든다 — 방 → 방이 끊기지 않게.
+    /// </summary>
+    int Pick(Vector3 p)
+    {
+        int best = -1; float bv = float.MaxValue;
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            float lim = inRoom && i == cur ? 1.02f : 0.98f;
+            float v = Vol(rooms[i]);
+            if (Mx(i, p) <= lim && v < bv) { best = i; bv = v; }
+        }
+        if (best >= 0 || !inRoom || cur < 0) return best;
+        for (int i = 0; i < rooms.Count; i++)
+            if (i != cur && rooms[i].building == rooms[cur].building && Mx(i, p) <= 1.3f) return cur;
+        return -1;
+    }
+
+    float DistFor(int i)
+    {
+        var it = rooms[i];
+        return it.room != null ? distance : Mathf.Clamp(distPerHalf * Mathf.Max(it.half.x, it.half.z), distance, maxDistance);
+    }
 
     void LateUpdate()
     {
         eyeValid = false;
         if (foot == null || player == null || cam == null || !FindBox()) return;
-        // 판정: 발 위 1 m 점이 방 상자 안(들어갈 땐 0.98, 나올 땐 1.02 — 문턱에서 깜빡이지 않게)
-        float m = MaxAbs(box.MultiplyPoint3x4(player.position + Vector3.up * 1.0f));
-        bool now = inRoom ? m <= 1.02f : m <= 0.98f;
-        if (now && !inRoom)
+        // 작업대·칠판·카트·낚시가 카메라를 가져간 동안: 그림도 비켜 있다(w 는 그대로 두어 돌아오면 이어진다)
+        if (camTaken != null && camTaken()) { SetRendering(false); RestoreDot(); return; }
+        Vector3 probe = player.position + Vector3.up * 1.0f;
+        int now = Pick(probe);
+        if (now >= 0 && now != cur)
+        {
+            SetRendering(false);   // 상자 바꿈: 끄고 새 상자로 아래에서 다시 켠다(w 는 그대로 — 상자 → 상자는 안 끊김)
+            bool otherHouse = cur < 0 || rooms[now].building != building;
+            Select(now);
+            // 다른 건물(순간이동)은 마을을 가로질러 미끄러지지 않게 바로 놓는다
+            if ((!inRoom && w <= 0f) || otherHouse) { midNow = FloorMid(); distNow = DistFor(cur); midVel = Vector3.zero; distVel = 0f; }
+        }
+        else if (now >= 0 && !inRoom && w <= 0f) { midNow = FloorMid(); distNow = DistFor(cur); midVel = Vector3.zero; distVel = 0f; }
+        if (now >= 0 && !inRoom)
         {
             yawNow = foot.Yaw; yawVel = 0f;
             if (foot.enabled && Mathf.Abs(foot.Pitch) < 5f) foot.Pitch = aimPitch;
         }
-        inRoom = now;
+        inRoom = now >= 0;
         target = inRoom ? 1f : 0f;
         if (!foot.enabled) { ApplyCalendar(); return; }   // 달력·일기·침대 보기 중: 그 장면의 카메라 이동을 건드리지 않는다
 
@@ -159,10 +223,12 @@ public sealed class RoomDiorama : MonoBehaviour
         eyeP = t.position; eyeF = t.forward; eyeCam = t; eyeValid = true;
 
         yawNow = Mathf.SmoothDampAngle(yawNow, foot.Yaw, ref yawVel, yawSmooth);
-        Vector3 floorMid = boxInv.MultiplyPoint3x4(new Vector3(0f, -0.6f, 0f));
-        Vector3 look = Vector3.Lerp(player.position + Vector3.up * 0.9f, floorMid, roomPull);
+        // 방 바닥 가운데·거리는 상자가 바뀌면 부드럽게 따라간다(한 방 안에선 상수 — 2층 방은 전과 같다)
+        midNow = Vector3.SmoothDamp(midNow, FloorMid(), ref midVel, yawSmooth);
+        distNow = Mathf.SmoothDamp(distNow, DistFor(cur), ref distVel, yawSmooth);
+        Vector3 look = Vector3.Lerp(player.position + Vector3.up * 0.9f, midNow, roomPull);
         Quaternion dr = Quaternion.Euler(pitch, yawNow, 0f);
-        Vector3 dp = look - dr * Vector3.forward * distance;
+        Vector3 dp = look - dr * Vector3.forward * distNow;
         float s = w * w * (3f - 2f * w);
         t.SetPositionAndRotation(Vector3.Lerp(eyeP, dp, s), Quaternion.Slerp(Quaternion.LookRotation(eyeF), dr, s));
         if (rendering) UpdateGlass();   // 카메라를 디오라마 자리로 옮긴 뒤에 — 눈(방 안) 기준이면 카메라 쪽 벽 유리를 못 자른다
@@ -210,7 +276,7 @@ public sealed class RoomDiorama : MonoBehaviour
             RenderSettings.ambientIntensity = savedAmb * 0.25f;
             var wb = WorldBounds();
             // 창 유리: 시간대 단색 판(실행 중 사본 — 공유 .mat 은 안 건드림). 카메라 쪽 벽 유리는 UpdateGlass 가 매 프레임 숨긴다
-            foreach (var r in room.parent.GetComponentsInChildren<Renderer>(true))
+            foreach (var r in building.GetComponentsInChildren<Renderer>(true))
             {
                 if (!r.name.StartsWith("GLASS_")) continue;
                 glass.Add(r); glassSaved.Add(r.sharedMaterial);
@@ -231,8 +297,9 @@ public sealed class RoomDiorama : MonoBehaviour
                 if (!l.enabled || l.type == LightType.Directional) continue;
                 if (wb.SqrDistance(l.transform.position) < l.range * l.range) { l.enabled = false; dimmed.Add(l); }
             }
-            PickWindow(room, box, out var wc, out _); WindowCenter = wc;
-            lampLight = MakeLight("DIO_DeskLamp", LampPoint(), lampColor, lampIntensity, lampRange);
+            PickWindowIn(building, box, out var wc, out _); WindowCenter = wc;
+            var lp = LampPoint();
+            if (lp.HasValue) lampLight = MakeLight("DIO_DeskLamp", lp.Value, lampColor, lampIntensity, lampRange);
             foreach (var r in player.GetComponentsInChildren<Renderer>(true)) r.shadowCastingMode = ShadowCastingMode.On;
         }
         else
@@ -267,11 +334,15 @@ public sealed class RoomDiorama : MonoBehaviour
     /// 돌려주는 것: 그 무리 가운데, 아래 끝의 바닥 위 높이(m). 없으면 false·방 가운데.
     /// </summary>
     public static bool PickWindow(Transform room, Matrix4x4 box, out Vector3 center, out float bottomAboveFloor)
+        => PickWindowIn(room.parent, box, out center, out bottomAboveFloor);
+
+    /// <summary>PickWindow 의 몸통 — 유리를 찾는 곳이 건물(house) 전체.</summary>
+    public static bool PickWindowIn(Transform house, Matrix4x4 box, out Vector3 center, out float bottomAboveFloor)
     {
         var inv = box.inverse;
         float floorY = inv.MultiplyPoint3x4(new Vector3(0f, -1f, 0f)).y;
         var sum = new Dictionary<int, Vector3>(); var area = new Dictionary<int, float>(); var low = new Dictionary<int, float>();
-        foreach (var r in room.parent.GetComponentsInChildren<Renderer>(true))
+        foreach (var r in house.GetComponentsInChildren<Renderer>(true))
         {
             if (!r.name.StartsWith("GLASS_")) continue;
             Vector3 q = box.MultiplyPoint3x4(r.bounds.center);
@@ -342,13 +413,18 @@ public sealed class RoomDiorama : MonoBehaviour
         }
     }
 
-    // 책상 전등 = 방 안 DESK_* 윗면 + 0.45 m
-    Vector3 LampPoint()
+    // 책상 전등 = 방 안 DESK_* 윗면 + 0.45 m. 이름 없는 건물 안은 그 건물의 상자 안 DESK_ 만, 없으면 전등 없음
+    Vector3? LampPoint()
     {
-        foreach (var r in room.GetComponentsInChildren<Renderer>(true))
-            if (r.name.StartsWith("DESK_")) return new Vector3(r.bounds.center.x, r.bounds.max.y + 0.45f, r.bounds.center.z);
-        return boxInv.MultiplyPoint3x4(Vector3.zero);
+        var src = room != null ? room : building;
+        foreach (var r in src.GetComponentsInChildren<Renderer>(true))
+            if (r.name.StartsWith("DESK_") && (room != null || MaxAbs(box.MultiplyPoint3x4(r.bounds.center)) <= 1f))
+                return new Vector3(r.bounds.center.x, r.bounds.max.y + 0.45f, r.bounds.center.z);
+        if (room != null) return boxInv.MultiplyPoint3x4(Vector3.zero);
+        return null;
     }
+
+    Vector3 FloorMid() => boxInv.MultiplyPoint3x4(new Vector3(0f, -0.6f, 0f));
 
     Light MakeLight(string n, Vector3 p, Color c, float i, float range)
     {

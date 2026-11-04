@@ -44,6 +44,7 @@ public static class WorldInvariants
         ("스크립트 Missing 0", () => NoMissingScripts()),
         ("실내 도트 방 상자(반폭 0.8~8 m, 방 소품 품음)", () => IndoorDotBox()),
         ("실내 디오라마(D-298): 방 잔소품 켜짐 0 · 침대·책상·의자·일기장 켜짐 · 단색 사본(_roomflat) 0 · 방 텍스처 Point", () => RoomDioramaProps()),
+        ("건물 안 전부 디오라마(D-304): 건물마다 방 상자 ≥1 · 2층 방 있음 · 반폭 0.8~10 m", () => InteriorBoxes()),
         ("디오라마 창(D-299) = 유리문 아님(아래 끝 바닥 + 0.5 m 위) · 책상 2.5 m 안", () => RoomDioramaWindow()),
         ("디오라마 방 빛 시간대(과제 20261104-2033): 잘린 지붕 그림자 안 드리움 · 해 꺼짐 = 밤 · 바탕빛 낮 ≥ 밤×2.5 · 저녁 R > B×1.3", () => RoomDioramaTimeLight()),
         ("world.yaml 좌표 ≤0.5m", () => YamlVsScene()),
@@ -751,6 +752,33 @@ public static class WorldInvariants
             var ax = Vector3.zero; ax[a] = 1f;
             float half = (inv.MultiplyPoint3x4(ax) - inv.MultiplyPoint3x4(Vector3.zero)).magnitude;
             if (half < 0.8f || half > 8f) bad.Add(string.Format(Inv, "방 상자 축{0} 반폭 {1:0.00} m — 0.8~8 m 밖(레이가 벽을 지나쳤거나 소품에 막힘)", a, half));
+        }
+        return bad;
+    }
+
+    /// <summary>
+    /// D-304(과제 20261105-0359) 건물 안 전부 디오라마: A7ShadeGlobals.FindInteriors 가 찾은 건물 안마다 방 상자가 잡힌다.
+    /// D198_Buildings 아래 켜진 건물마다 상자 ≥1 · 2층 방(이름 방) 있음 · 상자 반폭 0.8~10 m · 못 잡힌 곳은 이름과 이유.
+    /// 건물이 옮겨지거나 바닥·벽 콜라이더가 빠지면 그 건물 안에서 조용히 1인칭으로 돌아간다 — 여기서 잡는다.
+    /// </summary>
+    static List<string> InteriorBoxes()
+    {
+        var bad = new List<string>();
+        var list = A7ShadeGlobals.FindInteriors(null);
+        if (!list.Exists(i => i.room != null)) bad.Add("2층 방(이름 방) 상자 없음");
+        foreach (var it in list)
+        {
+            if (!it.ok) { bad.Add(it.name + ": 상자 못 잡음 — " + it.why); continue; }
+            if (it.room != null) continue;   // 2층 방은 위 「실내 도트 방 상자」 검사가 본다
+            float lo = Mathf.Min(it.half.x, Mathf.Min(it.half.y, it.half.z)), hi = Mathf.Max(it.half.x, Mathf.Max(it.half.y, it.half.z));
+            if (lo < 0.8f || hi > 10f) bad.Add(string.Format(Inv, "{0}: 반폭 {1} — 0.8~10 m 밖", it.name, V(it.half)));
+        }
+        foreach (var t in UnityEngine.Object.FindObjectsByType<Transform>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        {
+            if (t.name != A7ShadeGlobals.BuildingsRoot) continue;
+            foreach (Transform b in t)
+                if (b.gameObject.activeInHierarchy && !list.Exists(i => i.ok && i.building == b))
+                    bad.Add(b.name + ": 건물 안 0 — 바닥(위 보는 면) 위 1 m 에서 천장·네 벽이 그 건물 콜라이더에 안 닿음");
         }
         return bad;
     }
