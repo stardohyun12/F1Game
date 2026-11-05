@@ -88,7 +88,7 @@ public sealed class RoomDiorama : MonoBehaviour
     [Tooltip("낮 바탕빛 — 마을 집 재질의 _Ambient 와 같은 값. 노을은 SunsetLook 의 _PCDuskAmb 로 당긴다")]
     public Color townAmbient = new Color(0.703f, 0.7885f, 0.855f);
     [Tooltip("방 밖: 끄면 검정, 켜면 바깥 안개색(낮 = townFog, 노을 = SunsetLook 안개색)")]
-    public bool outsideHaze = false;
+    public bool outsideHaze = true;
     [Tooltip("낮 바깥 안개색 — 마을 집 재질의 _FogColor 와 같은 값")]
     public Color townFog = new Color(0.74f, 0.83f, 0.9f);
     static readonly int FlatId = Shader.PropertyToID("_A7DioFlat"), FlatAmbId = Shader.PropertyToID("_A7FlatAmb"),
