@@ -30,9 +30,13 @@ public class InteriorFixBot : MonoBehaviour
     static bool heldOnly, carryOnly;
     /// <summary>과제 20261105-0630: 안은 상자 carry-{a,b}-{front,side,back} 6장 + 걷기 떨림 · 결 B/C 3곳 + noise-probe.txt(손잡이별 잔점 %).</summary>
     public static string BeginCarry(string outDir) { var s = Begin(outDir); carryOnly = true; return s; }
+    static bool townOnly; static string hillOnly;
+    /// <summary>과제 20261105-0942(D-308 마을 그림 실내): {depot,postoffice,room2f}-{day,dusk} · depot-grain-{0,1,2} · depot-out-{black,haze} · town-hill-after + probe.txt.
+    /// hill = "before"/"after" 면 언덕 꼭대기 town-hill-{hill} 한 장 + probe-{hill}.txt 만(고정 카메라 자세 — 셰이더 바꾸기 전·후로 한 번씩 돌린다).</summary>
+    public static string BeginTown(string outDir, string hill = null) { var s = Begin(outDir); townOnly = true; hillOnly = hill; return s; }
     public static string Begin(string outDir, bool onlyDoor = false)
     {
-        doorOnly = onlyDoor; fitOnly = false; leftOnly = false; heldOnly = false; carryOnly = false;
+        doorOnly = onlyDoor; fitOnly = false; leftOnly = false; heldOnly = false; carryOnly = false; townOnly = false;
         var dr = FindFirstObjectByType<OnFootDirector>();
         if (dr == null) return "no dir";
         dir = outDir; Directory.CreateDirectory(dir); Status = "run";
@@ -61,6 +65,13 @@ public class InteriorFixBot : MonoBehaviour
             yield return NoiseProbe(list, probe);
             File.WriteAllLines(Path.Combine(dir, "noise-probe.txt"), probe);
             Status = "done " + log.Count + "/" + probe.Count; Destroy(gameObject); yield break;
+        }
+        if (townOnly)
+        {
+            var probe = new List<string>();
+            yield return TownShots(list, probe);
+            File.WriteAllLines(Path.Combine(dir, hillOnly != null ? "probe-" + hillOnly + ".txt" : "probe.txt"), probe);
+            Status = "done " + probe.Count; Destroy(gameObject); yield break;
         }
         if (heldOnly)
         {
@@ -466,24 +477,173 @@ public class InteriorFixBot : MonoBehaviour
         dio.probe = false; dio.grainB = g0; dio.grainC = c0;
     }
 
+    // 과제 20261105-0942: 마을 그림 실내 — 같은 방을 낮·노을로, 결 0/기본/2배, 방 밖 검정/안개색, 언덕 꼭대기(바깥 기준) + 잔점 %·면 한 장 밝기 퍼짐
+    IEnumerator TownShots(List<A7ShadeGlobals.Interior> list, List<string> o)
+    {
+        var sl = SunsetLook.Find(); faceRooms = list;
+        bool sl0 = sl != null && sl.IsOn, haze0 = dio.outsideHaze; float g0 = dio.flatGrain;
+        o.Add("# 잔점 % — 과제 32 noise-probe 와 같은 식(저해상 화면, 이웃 4픽셀 모두보다 T=0.06 이상 튐, 검정(방 밖) 뺌)");
+        o.Add("# 면 퍼짐 = 화면 가운데 레이로 맞은 면(같은 콜라이더·같은 법선) 중 가장 큰 면 한 장의 밝기(감마) 표준편차/평균");
+        o.Add(string.Format(Inv, "# townLook={0} flatGrain={1} flatGrainSize={2} faceShade={3} SunsetLook 시작={4}", dio.townLook, dio.flatGrain, dio.flatGrainSize, dio.flatFaceShade, sl0));
+        if (sl != null) sl.SetOn(false);
+        yield return Frames(6);
+        // 바깥: 언덕 꼭대기(낮)
+        int hill = -1; for (int k = 0; k < DebugPlaces.All.Length; k++) if (DebugPlaces.All[k].name == "언덕 꼭대기") hill = k;
+        if (hill >= 0)
+        {
+            DebugWindow.GoPlace(hill);
+            yield return Secs(2.5f);
+            // 따라가기 카메라는 차 흔들림·지연으로 판마다 자세가 달라진다 → 장소 기준 고정 자세로 놓고 찍는다(전·후 같은 그림)
+            var fc = cam.GetComponent<FollowCamera>(); var oc = cam.GetComponent<OverviewCamera>();
+            bool fc0 = fc != null && fc.enabled, oc0 = oc != null && oc.enabled;
+            if (fc != null) fc.enabled = false; if (oc != null) oc.enabled = false;
+            var pc = DebugPlaces.All[hill]; var fwd = Quaternion.Euler(0f, pc.yaw, 0f) * Vector3.forward;
+            cam.transform.SetPositionAndRotation(pc.feet + Vector3.up * 9f - fwd * 8f, Quaternion.LookRotation(pc.feet + fwd * 24f - (pc.feet + Vector3.up * 9f - fwd * 8f)));
+            yield return Frames(4);
+            yield return new WaitForEndOfFrame();
+            ProbeLine(o, string.Format(Inv, "town-hill(언덕 꼭대기, 낮, 고정 카메라 {0})", cam.transform.position), false);
+            yield return Shot(hillOnly != null ? "town-hill-" + hillOnly : "town-hill-after");
+            if (fc != null) fc.enabled = fc0; if (oc != null) oc.enabled = oc0;
+        }
+        else o.Add("[언덕] 장소 표에 「언덕 꼭대기」 없음");
+        // 면 퍼짐을 실내와 비슷한 거리(수 m)에서도 — 큰길(길가 마을 집)
+        int road = -1; for (int k = 0; k < DebugPlaces.All.Length; k++) if (DebugPlaces.All[k].name == "큰길") road = k;
+        if (road >= 0 && hillOnly == null)
+        {
+            DebugWindow.GoPlace(road);
+            yield return Secs(2.5f);
+            yield return new WaitForEndOfFrame();
+            ProbeLine(o, "town-road(큰길, 낮)", false);
+        }
+        if (hillOnly != null) { if (sl != null) sl.SetOn(sl0); yield break; }
+        foreach (var (key, file) in new[] { ("D198_depot", "depot"), ("D198_postoffice/1F", "postoffice"), ("house_home/ROOM_2F", "room2f") })
+        {
+            var it = list.Find(i => i.name.StartsWith(key));
+            if (it == null) { o.Add("[방] " + key + " 없음"); continue; }
+            yield return GoIn(list, it, false);
+            yield return Secs(0.8f);
+            o.Add($"## {file} = {it.name} 보이는 방 {dio.RoomNow} active={RoomDiorama.Active} 카메라→방 가운데 {Vector3.Distance(cam.transform.position, it.box.inverse.MultiplyPoint3x4(Vector3.zero)):F1} m");
+            foreach (bool dusk in new[] { false, true })
+            {
+                if (sl != null) sl.SetOn(dusk);
+                yield return Frames(6);
+                yield return new WaitForEndOfFrame();
+                ProbeLine(o, $"{file}-{(dusk ? "dusk" : "day")}", true);
+                yield return Shot($"{file}-{(dusk ? "dusk" : "day")}");
+            }
+            if (sl != null) sl.SetOn(false);
+            if (file != "depot") continue;
+            for (int g = 0; g <= 2; g++)
+            {
+                dio.flatGrain = g0 * g;
+                yield return Frames(4);
+                yield return new WaitForEndOfFrame();
+                ProbeLine(o, string.Format(Inv, "depot-grain-{0} (flatGrain {1:0.00})", g, dio.flatGrain), true);
+                yield return Shot($"depot-grain-{g}");
+            }
+            dio.flatGrain = g0;
+            foreach (bool hz in new[] { false, true })
+            {
+                dio.outsideHaze = hz;
+                yield return Frames(4);
+                o.Add(string.Format(Inv, "depot-out-{0} 배경 {1}", hz ? "haze" : "black", dio.OutsideColor()));
+                yield return Shot($"depot-out-{(hz ? "haze" : "black")}");
+            }
+            dio.outsideHaze = haze0;
+            // 마을 그림 끈 판(옛 디오라마) 같은 자리 비교 — 잔점 % 만
+            dio.townLook = false; yield return Frames(4); yield return new WaitForEndOfFrame();
+            ProbeLine(o, "depot-day 옛 판(townLook 끔, 결 B)", true);
+            dio.townLook = true; yield return Frames(4);
+        }
+        if (sl != null) sl.SetOn(sl0);
+        dio.flatGrain = g0; dio.outsideHaze = haze0;
+    }
+
+    void ProbeLine(List<string> o, string name, bool inside)
+    {
+        Measure(out float spike, out float edge, out int px);
+        string face = FaceSpread(inside);
+        o.Add(string.Format(Inv, "{0,-34} 잔점 {1,6:F2}%  경계 {2,6:F2}%  (픽셀 {3}, 1 픽셀 = RT {4}칸)  {5}", name, spike, edge, px, probeStride, face));
+    }
+
+    // 화면 한 장에서 같은 면(콜라이더·법선 같음)에 맞은 픽셀을 모아 가장 큰 면의 밝기 퍼짐. 실내 = 지금 보이는 방 상자 안의 벽만(IsWall, 셰이더가 자른 카메라 쪽 벽·천장은 건너뜀), 바깥 = 플레이어 아닌 아무 면
+    List<A7ShadeGlobals.Interior> faceRooms;
+    // 바깥 기준 면 = 마을 집(LofiSurface 재질, 땅 제외 — 법선이 거의 수평인 면만)
+    static bool TownHouse(Collider col)
+    {
+        var r = col.GetComponent<Renderer>(); if (r == null) r = col.GetComponentInParent<Renderer>();
+        return r != null && r.sharedMaterial != null && r.sharedMaterial.shader.name == "PitCrew/LofiPilot/Surface" && !(col is TerrainCollider);
+    }
+    string FaceSpread(bool inside)
+    {
+        var L = ReadLum(out int w, out int h);
+        if (L == null) return "면 -";
+        var it = inside ? faceRooms?.Find(i => i.name == dio.RoomNow) : null;
+        if (inside && it == null) return "면 - (보이는 방 없음)";
+        Vector3 c = inside ? it.box.MultiplyPoint3x4(cam.transform.position) : Vector3.zero;
+        var groups = new Dictionary<string, List<float>>(); var dist = new Dictionary<string, float>();
+        for (int y = 2; y < h - 2; y += 2)
+            for (int x = 2; x < w - 2; x += 2)
+            {
+                var ray = cam.ViewportPointToRay(new Vector3((x + 0.5f) / w, (y + 0.5f) / h, 0f));
+                RaycastHit hit = default; bool got = false;
+                var hits = Physics.RaycastAll(ray, 400f, ~0, QueryTriggerInteraction.Ignore);
+                System.Array.Sort(hits, (p, q) => p.distance.CompareTo(q.distance));
+                foreach (var hh in hits)
+                {
+                    if (hh.collider.transform.IsChildOf(pl.transform)) continue;
+                    if (inside)
+                    {
+                        Vector3 b = it.box.MultiplyPoint3x4(hh.point);
+                        bool cut = Mathf.Abs(b.x) > 1.02f || Mathf.Abs(b.y) > 1.02f || Mathf.Abs(b.z) > 1.02f || b.y > 0.85f
+                                || (Mathf.Abs(c.x) > 1f && b.x * Mathf.Sign(c.x) > 0.9f) || (Mathf.Abs(c.z) > 1f && b.z * Mathf.Sign(c.z) > 0.9f);
+                        if (cut) continue;
+                    }
+                    hit = hh; got = true; break;
+                }
+                if (!got || (inside && !A7ShadeGlobals.IsWall(hit.collider)) || (!inside && (!TownHouse(hit.collider) || Mathf.Abs(hit.normal.y) > 0.3f))) continue;
+                float l = L[y * w + x]; if (l < 0.02f) continue;
+                Vector3 nr = hit.normal; string key = hit.collider.GetInstanceID() + ":" + Mathf.RoundToInt(nr.x * 10) + "," + Mathf.RoundToInt(nr.y * 10) + "," + Mathf.RoundToInt(nr.z * 10);
+                if (!groups.TryGetValue(key, out var lst)) { lst = new List<float>(); groups[key] = lst; dist[key] = 0f; }
+                lst.Add(l); dist[key] += hit.distance;
+            }
+        string best = null; foreach (var kv in groups) if (best == null || kv.Value.Count > groups[best].Count) best = kv.Key;
+        if (best == null) return "면 없음";
+        var v = groups[best]; float m = 0f; foreach (var l in v) m += l; m /= v.Count;
+        float s = 0f; foreach (var l in v) s += (l - m) * (l - m); s = Mathf.Sqrt(s / v.Count);
+        return string.Format(Inv, "면 퍼짐 sd {0:0.0000} / 평균 {1:0.000} = {2:0.0}% (표본 {3}, 거리 {4:0.0} m)", s, m, 100f * s / Mathf.Max(1e-4f, m), v.Count, dist[best] / v.Count);
+    }
+
     Texture2D probeTex;
     int probeStride;
-    void Measure(out float spike, out float edge, out int count)
+    // 저해상 화면 밝기(감마). RT 는 renderScale 로 커진 크기(1280x720) — 실제 그리는 픽셀(360 높이) 한 칸씩 띄어 읽는다(칸 가운데). RT 가 없으면 화면을 읽는다
+    float[] ReadLum(out int w, out int h)
     {
-        spike = edge = 0f; count = 0;
-        var rt = cam.targetTexture;
-        if (rt == null) return;
-        if (probeTex == null || probeTex.width != rt.width || probeTex.height != rt.height) probeTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
-        var prev = RenderTexture.active; RenderTexture.active = rt;
-        probeTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0); probeTex.Apply(false);
-        RenderTexture.active = prev;
-        var px32 = probeTex.GetPixels32();
-        // RT 는 renderScale 로 커진 크기(1280x720) — 실제 그리는 픽셀(360 높이) 한 칸씩 띄어 읽는다(칸 가운데). 붙은 RT 픽셀끼리 비교하면 확대 블록 안이라 잔점이 0 으로 나온다
-        int k = Mathf.Max(1, Mathf.RoundToInt(rt.height / 360f)), w = rt.width / k, h = rt.height / k;
+        var rt = cam.targetTexture; Texture2D tex; int W, H;
+        if (rt != null)
+        {
+            if (probeTex == null || probeTex.width != rt.width || probeTex.height != rt.height) probeTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+            var prev = RenderTexture.active; RenderTexture.active = rt;
+            probeTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0); probeTex.Apply(false);
+            RenderTexture.active = prev; tex = probeTex; W = rt.width; H = rt.height;
+        }
+        else
+        {
+            tex = ScreenCapture.CaptureScreenshotAsTexture(); W = tex.width; H = tex.height;
+        }
+        var px32 = tex.GetPixels32();
+        if (rt == null) Destroy(tex);
+        int k = Mathf.Max(1, Mathf.RoundToInt(H / 360f)); w = W / k; h = H / k;
         probeStride = k;
         var L = new float[w * h];
         for (int y = 0; y < h; y++)
-            for (int x = 0; x < w; x++) { var p = px32[(y * k + k / 2) * rt.width + x * k + k / 2]; L[y * w + x] = (0.299f * p.r + 0.587f * p.g + 0.114f * p.b) / 255f; }
+            for (int x = 0; x < w; x++) { var p = px32[(y * k + k / 2) * W + x * k + k / 2]; L[y * w + x] = (0.299f * p.r + 0.587f * p.g + 0.114f * p.b) / 255f; }
+        return L;
+    }
+    void Measure(out float spike, out float edge, out int count)
+    {
+        spike = edge = 0f; count = 0;
+        var L = ReadLum(out int w, out int h);
         const float T = 0.06f, Black = 0.02f; int sp = 0, ed = 0;
         for (int y = 1; y < h - 1; y++)
             for (int x = 1; x < w - 1; x++)

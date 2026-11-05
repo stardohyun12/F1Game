@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMapFlat:
+        m_Texture: {fileID: 2800000, guid: 3c062bbe1670ebcd7dcc9b7e75347c52, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 08d11d0a2ca0b2e46bae6427ff2c2896, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -33,6 +37,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _FlatOk: 1
     - _A7Lit: 1
     - _Blotch: 0
     - _BlotchSize: 1.2

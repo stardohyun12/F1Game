@@ -79,6 +79,28 @@ public sealed class RoomDiorama : MonoBehaviour
     [Tooltip("C: 밝기 단 끝 디더 폭(0..1)")] [Range(0f, 1f)] public float grainCDitherWidth = 0.04f;
     [Tooltip("C: 단 자를 때 텍스처 결 빼기 0..1(1 = 빛만 자르고 결은 비율로 되얹음)")] [Range(0f, 1f)] public float grainCGrainCut = 0f;
     [Tooltip("C: 재질 면 결(_SN, 8칸/m ±4%) 빼기 0..1")] [Range(0f, 1f)] public float grainCSurfaceCut = 0f;
+    [Header("마을 그림 — 과제 20261105-0942(D-308 「바깥 마을 그림이 실내에서도」). 켜면 위 결 B·C·밝기 단·디더는 벽·바닥·몰딩·지붕에 안 먹는다")]
+    [Tooltip("벽·바닥·몰딩·지붕(_FlatOk 재질)을 칸 평균색 판 × 마을 집과 같은 빛(바탕빛×0.36 + 해×N·L, 노을은 SunsetLook 값)으로. 상자·선반 물건·인물은 그대로")]
+    public bool townLook = true;
+    [Tooltip("결 세기 — 손바닥만 한 옅은 얼룩. 0.12 = 밝기 최대 ±3%(실측 p95 ±1.8%)")] [Range(0f, 0.3f)] public float flatGrain = 0.12f;
+    [Tooltip("결 얼룩 크기(m)")] public float flatGrainSize = 0.35f;
+    [Tooltip("면 명암 세기 — 마을 집 재질(Parcels_Body*)의 _FaceShade 와 같은 값")] [Range(0f, 1f)] public float flatFaceShade = 0.9f;
+    [Tooltip("낮 바탕빛 — 마을 집 재질의 _Ambient 와 같은 값. 노을은 SunsetLook 의 _PCDuskAmb 로 당긴다")]
+    public Color townAmbient = new Color(0.703f, 0.7885f, 0.855f);
+    [Tooltip("방 밖: 끄면 검정, 켜면 바깥 안개색(낮 = townFog, 노을 = SunsetLook 안개색)")]
+    public bool outsideHaze = false;
+    [Tooltip("낮 바깥 안개색 — 마을 집 재질의 _FogColor 와 같은 값")]
+    public Color townFog = new Color(0.74f, 0.83f, 0.9f);
+    static readonly int FlatId = Shader.PropertyToID("_A7DioFlat"), FlatAmbId = Shader.PropertyToID("_A7FlatAmb"),
+        PCDuskId = Shader.PropertyToID("_PCDusk"), PCDuskFogId = Shader.PropertyToID("_PCDuskFog");
+    /// <summary>방 밖 색(검정 또는 지금 시간대 안개색) — 봇·검사도 같은 값을 쓴다.</summary>
+    public Color OutsideColor()
+    {
+        if (!outsideHaze) return Color.black;
+        float k = Mathf.Clamp01(Shader.GetGlobalVector(PCDuskId).x);
+        Color dusk = Shader.GetGlobalColor(PCDuskFogId);
+        return Color.Lerp(townFog, QualitySettings.activeColorSpace == ColorSpace.Linear ? dusk.gamma : dusk, k);
+    }
     /// <summary>측정 봇용(noise-probe): 켜면 아래 두 값을 그대로 넣는다(_A7InQ, _A7DioTex).</summary>
     [NonSerialized] public bool probe; [NonSerialized] public Vector4 probeInQ, probeTex;
     static readonly int DioTexId = Shader.PropertyToID("_A7DioTex");
@@ -795,12 +817,16 @@ public sealed class RoomDiorama : MonoBehaviour
         Color amb = Mix(ambientDay, ambientDusk, ambientNight, DuskW, NightW);
         Color a = QualitySettings.activeColorSpace == ColorSpace.Linear ? amb.linear : amb;
         Shader.SetGlobalVector(DioAmbId, new Vector4(a.r, a.g, a.b, houseReach));
+        Color ta = QualitySettings.activeColorSpace == ColorSpace.Linear ? townAmbient.linear : townAmbient;
+        Shader.SetGlobalVector(FlatId, townLook ? new Vector4(1f, flatGrain, flatFaceShade, flatGrainSize) : Vector4.zero);
+        Shader.SetGlobalVector(FlatAmbId, new Vector4(ta.r, ta.g, ta.b, 0f));
+        cam.backgroundColor = OutsideColor();
     }
 
     void OnEnd(ScriptableRenderContext ctx, Camera c)
     {
         if (c != cam) return;
-        Shader.SetGlobalVector(DioId, Vector4.zero); Shader.SetGlobalVector(DioTexId, Vector4.zero);
+        Shader.SetGlobalVector(DioId, Vector4.zero); Shader.SetGlobalVector(DioTexId, Vector4.zero); Shader.SetGlobalVector(FlatId, Vector4.zero);
         if (!swapped) return;
         Shader.SetGlobalMatrix(InBoxId, prevInBox); Shader.SetGlobalVector(InPId, prevInP); Shader.SetGlobalVector(InQId, prevInQ);
         swapped = false;

@@ -68,7 +68,37 @@ public static class WorldInvariants
         ("손에 든 상자 = 선반 택배 모델(20261105-0617): 보관소 선반 PARCEL_* 가 씬에 있고 크기 비례가 든 상자 크기와 ±35% 안 — 없으면 회색 큐브로 되돌아감", () => HeldBoxModel()),
         ("포장 흔들기 선택(D-302): 안 흔든 상자(흔든 시간 0 < 1.5 s)는 표준 흔들기로 재고, 헐거운 상자면 그 값으로 시작값이 깎인다(흔들림 0 일 때보다 낮음)", () => PackNoShakeStart()),
         ("든 상자 안기(20261105-0630): 디오라마 상자 = 몸 앞 배~가슴(0.8~1.3 m), 뒷면이 캡슐 앞면에 틈 0(≤1 cm), 크기 = Stage_Door.HeldSize, 팔 끝이 상자 옆면 밖 굵기 반", () => HeldBoxHug()),
+        ("실내 마을 그림(20261105-0942, D-308): 건물 안 벽·바닥·몰딩·지붕·집 재질 = _FlatOk 1 + 칸 평균색 판(_BaseMapFlat, 원본과 같은 크기·Point)", () => InteriorTownLook()),
     };
+
+    /// <summary>
+    /// 20261105-0942: 실내 면이 바깥 마을 집처럼 칸마다 한 색이려면 재질마다 단색판(tools/art/flat_interior.py)이 붙어 있어야 한다.
+    /// 판이 빠지면(재질을 새로 굽거나 builder 가 _dio 사본을 다시 만듦) 셰이더가 흰 판을 읽어 방이 하얗게 된다 — 크기가 원본과 다르면 원본을 다시 구운 뒤 판을 안 만든 것.
+    /// </summary>
+    static List<string> InteriorTownLook()
+    {
+        var bad = new List<string>();
+        var seen = new HashSet<Material>(); int n = 0;
+        var keys = new[] { "wall", "floor", "trim", "roof", "house_home" };
+        foreach (var it in A7ShadeGlobals.FindInteriors(null))
+        {
+            if (it.building == null) continue;
+            foreach (var r in it.building.GetComponentsInChildren<Renderer>(true))
+                foreach (var m in r.sharedMaterials)
+                {
+                    if (m == null || !seen.Add(m) || m.shader.name != "PitCrew/SceneA7/Lit" || !m.HasProperty("_BaseMapFlat")) continue;
+                    var t = m.GetTexture("_BaseMap");
+                    if (t == null || Array.FindIndex(keys, k => t.name.StartsWith(k)) < 0 || t.name.EndsWith("_flat")) continue;
+                    n++;
+                    var f = m.GetTexture("_BaseMapFlat");
+                    if (m.GetFloat("_FlatOk") < 0.5f) bad.Add($"{m.name}({t.name}) _FlatOk 0 — python -X utf8 tools/art/flat_interior.py");
+                    else if (f == null || f.name != t.name + "_flat") bad.Add($"{m.name} _BaseMapFlat = {(f != null ? f.name : "없음")} (기대 {t.name}_flat)");
+                    else if (f.width != t.width || f.height != t.height || f.filterMode != FilterMode.Point) bad.Add($"{m.name} {f.name} {f.width}x{f.height} {f.filterMode} ≠ 원본 {t.width}x{t.height} Point — 원본을 다시 구웠으면 판도 다시");
+                }
+        }
+        if (n == 0) bad.Add("건물 안 벽·바닥 재질을 하나도 못 찾음(셰이더·텍스처 이름이 바뀌었나)");
+        return bad;
+    }
 
     /// <summary>
     /// 버그(20261105-0630): 0617 에 든 상자를 머리 위(발 + 키 + 상자 반)로 옮겨 머리에 얹은 것처럼 보였다. 지금 식(RoomDiorama.HeldPos)이 다시 거기로 가거나

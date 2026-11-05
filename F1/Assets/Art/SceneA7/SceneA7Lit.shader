@@ -62,6 +62,9 @@ Shader "PitCrew/SceneA7/Lit"
         _SN ("A6d surface grain ±", Range(0,0.15)) = 0
         _SNDens ("A6d surface grain cells per m", Float) = 8
         _A7Lit ("A7 real light on", Float) = 1
+        // 과제 20261105-0942(D-308): 디오라마 실내를 바깥 마을 집과 같은 그림으로 — 칸 평균색 판(tools/art/flat_interior.py)
+        _BaseMapFlat ("Town-look flat texture (칸 평균색)", 2D) = "white" {}
+        _FlatOk ("Town-look eligible (벽·바닥·몰딩·지붕)", Float) = 0
     }
     SubShader
     {
@@ -69,15 +72,28 @@ Shader "PitCrew/SceneA7/Lit"
 
         HLSLINCLUDE
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-        TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap); TEXTURE2D(_BaseMapR2);
+        TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap); TEXTURE2D(_BaseMapR2); TEXTURE2D(_BaseMapFlat); SAMPLER(sampler_BaseMapFlat);
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseMap_ST; float4 _BaseMapR2_ST; float _R2; float _HasR2; float4 _Tint; float4 _SunDir; float4 _Ambient; float _Sun; float _LightAmt; float _Steps;
             float _Ramp; float _R1Ok; float4 _RampSun; float4 _RampT; float _RampMid; float _RampDark; float _Outline; float _R3Ok; float _OutlinePx; float _OutlineDark;
             float _S1; float4 _S1P; float _S2; float4 _Warm; float _WarmAmt; float4 _ShadeTeal; float _SplitAmt; float _S3; float _S3Flat; float4 _Haze; float4 _HazeP; float _T1; float _T2;
             float4 _FogColor; float _FogStart; float _FogEnd; float _FogMax;
             float _GroundY; float _GradAmt; float _GradH; float _FootDark; float _FootH; float _Blotch; float _BlotchSize; float4 _BlotchHue; float _Cutoff; float _Sat; float4 _WB; float _Lift; float4 _LiftTint;
-            float _SN; float _SNDens; float _A7Lit; float4 _BaseMap_TexelSize;
+            float _SN; float _SNDens; float _A7Lit; float4 _BaseMap_TexelSize; float _FlatOk;
         CBUFFER_END
+        // 과제 20261105-0942: 마을 그림 모드(RoomDiorama.townLook). _A7DioFlat = (켬, 얼룩 세기(±절반), 면 명암 faceShade, 얼룩 크기 m)
+        //  _A7FlatAmb = 마을 집과 같은 바탕빛(낮). 노을은 SunsetLook 의 _PCDusk·_PCDuskAmb 를 그대로 받는다(LofiSurface PCShade Look 0 과 같은 식)
+        float4 _A7DioFlat; float4 _A7FlatAmb; float4 _PCDusk; float4 _PCDuskAmb;
+        bool A7Flat(bool dio) { return dio && _A7DioFlat.x > 0.5 && _FlatOk > 0.5; }
+        float a7Hash(float2 p) { p = frac(p * float2(123.34, 345.45)); p += dot(p, p + 34.345); return frac(p.x * p.y); }
+        float a7Noise(float2 p) { float2 i = floor(p), f = frac(p); f = f * f * (3 - 2 * f); return lerp(lerp(a7Hash(i), a7Hash(i + float2(1, 0)), f.x), lerp(a7Hash(i + float2(0, 1)), a7Hash(i + 1), f.x), f.y); }
+        // 결: 면 방향으로 월드 평면 좌표 → 손바닥만 한 옅은 얼룩 2겹(PCPost 5 얼룩과 같은 꼴). 점이 아니라 수십 px 크기, ±_A7DioFlat.y/2
+        float A7FlatGrain(float3 wp, float3 n)
+        {
+            float3 a = abs(n);
+            float2 p = (a.y > a.x && a.y > a.z ? wp.xz : (a.x > a.z ? wp.zy : wp.xy)) / max(0.05, _A7DioFlat.w);
+            return 1 + (a7Noise(p) * .55 + a7Noise(p * .45 + 3.7) * .45 - .5) * _A7DioFlat.y;
+        }
         // A7 전역(A7LightToggles): 그늘 색, 3단 문턱(해 받는 면, 옆), 옆 단 높이
         float4 _A7Shade; float4 _A7T; float _A7Mid;
         // 실내 도트(과제 20261104-0501, A7ShadeGlobals 가 넣음): 방 상자 안 조각만 바다 화면과 같은 문법으로.
@@ -244,6 +260,23 @@ Shader "PitCrew/SceneA7/Lit"
                 if (A7DioCut(i.wp)) discard;
                 bool inside = A7Inside(i.wp);
                 bool dio = inside && _A7Dio.x > 0.5;
+                // 마을 그림 모드: 칸 평균색 × (마을 바탕빛·해·면 방향) × 옅은 얼룩 — 밝기 단·디더·근거리 안개·걸러 읽기·면 결(_SN) 전부 건너뜀
+                if (A7Flat(dio))
+                {
+                    float3 fn = normalize(i.n) * (front ? 1 : -1);
+                    float3 fc = SAMPLE_TEXTURE2D(_BaseMapFlat, sampler_BaseMapFlat, i.uv).rgb * _Tint.rgb;
+                    Light fl = GetMainLight(TransformWorldToShadowCoord(i.wp));
+                    float3 amb = lerp(_A7FlatAmb.rgb, _PCDuskAmb.rgb, _PCDusk.x);
+                    float3 lit = amb * 0.36 + fl.color * (saturate(dot(fn, fl.direction)) * fl.shadowAttenuation);
+                    float3 o = fc * lerp(1.0.xxx, lit, _A7DioFlat.z);
+                    uint flc = GetAdditionalLightsCount();
+                    InputData inputData = (InputData)0; inputData.positionWS = i.wp; inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(i.pos);
+                    LIGHT_LOOP_BEGIN(flc)
+                        Light al = GetAdditionalLight(lightIndex, i.wp);
+                        o += fc * al.color * (al.distanceAttenuation * saturate(dot(fn, al.direction)) * _A7DioFlat.z);
+                    LIGHT_LOOP_END
+                    return half4(o * A7FlatGrain(i.wp, fn), 1);
+                }
                 if (inside && !dio) t.rgb = A7InTex(i.uv);   // 디오라마는 재질 텍스처(Point) 그대로 — 걸러 읽지 않음
                 else if (dio && _A7DioTex.x > 1.5) t.rgb = SAMPLE_TEXTURE2D_GRAD(_BaseMap, sampler_BaseMap, i.uv, uvDx * 4, uvDy * 4).rgb * _Tint.rgb;   // 측정용: 밉 바이어스 +2(밉 없으면 그대로)
                 else if (dio && _A7DioTex.x > 0.5) t.rgb = A7DioTex(i.uv, max(length(uvDx * _BaseMap_TexelSize.zw), length(uvDy * _BaseMap_TexelSize.zw)));
@@ -377,7 +410,8 @@ Shader "PitCrew/SceneA7/Lit"
                 float3 c = max(0, lerp(dot(t.rgb, float3(0.299, 0.587, 0.114)).xxx, t.rgb, _Sat * 1.15)) * _WB.rgb * _OutlineDark;
                 if (_T1 > 0.5 && i.sun > 0.45) c = min(1, t.rgb * _WB.rgb * 1.35 + 0.04);   // T1(약식): 해를 보는 쪽 실루엣은 밝은 선
                 c = Grade(Fog(c, i.wp), i.wp);
-                if (A7Inside(i.wp)) c = A7InPost(c, i.wp, i.pos.xy);
+                bool ins = A7Inside(i.wp);
+                if (ins && !A7Flat(_A7Dio.x > 0.5)) c = A7InPost(c, i.wp, i.pos.xy);
                 return half4(c, 1);
             }
             ENDHLSL
